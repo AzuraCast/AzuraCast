@@ -1401,6 +1401,11 @@ export type Station = HasAutoIncrementId & {
    * @example "UTC"
    */
   timezone?: string | null;
+  /**
+   * The maximum bitrate at which a station may broadcast, in Kbps
+   * @example 128
+   */
+  max_bitrate?: number;
   /** An array containing station-specific branding configuration */
   branding_config?: any[];
 };

@@ -296,7 +296,6 @@ class StationsController extends AbstractApiCrudController
     protected function handleEdit(Station $station): Station
     {
         $originalRecord = $this->em->getUnitOfWork()->getOriginalEntityData($station);
-
         $this->em->persist($station);
         $this->em->flush();
 
@@ -320,6 +319,7 @@ class StationsController extends AbstractApiCrudController
         $oldFrontend = $originalRecord['frontend_type'];
         $oldBackend = $originalRecord['backend_type'];
         $oldHls = (bool)$originalRecord['enable_hls'];
+        $oldMaxBitrate = (int) $originalRecord['max_bitrate'];
         $oldEnabled = (bool)$originalRecord['is_enabled'];
 
         $frontendChanged = ($oldFrontend !== $station->getFrontendType());
@@ -337,7 +337,24 @@ class StationsController extends AbstractApiCrudController
             $this->stationRepo->resetHls($station);
         }
 
-        if ($adapterChanged || $enabledChanged) {
+        $maxBitrateChanged =
+            ($oldMaxBitrate !== 0 && $station->getMaxBitrate() !== 0 && $oldMaxBitrate > $station->getMaxBitrate())
+            || ($oldMaxBitrate === 0 && $station->getMaxBitrate() !== 0);
+
+        if ($maxBitrateChanged) {
+            if (!$frontendChanged) {
+                $this->stationRepo->lowerMountsBitrate($station);
+            }
+
+            if (!$hlsChanged && !$backendChanged) {
+                $this->stationRepo->lowerHlsBitrate($station);
+            }
+
+            $this->stationRepo->lowerRemoteRelayAutoDjBitrate($station);
+            $this->stationRepo->lowerLiveBroadcastRecordingBitrate($station);
+        }
+
+        if ($adapterChanged || $maxBitrateChanged || $enabledChanged) {
             try {
                 $this->configuration->writeConfiguration(
                     station: $station,

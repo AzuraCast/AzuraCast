@@ -11,6 +11,7 @@ use App\Doctrine\Repository;
 use App\Entity\Station;
 use App\Entity\StationHlsStream;
 use App\Entity\StationMount;
+use App\Entity\StationRemote;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
 use App\Radio\Enums\StreamFormats;
@@ -109,11 +110,11 @@ final class StationRepository extends Repository
         // Create default mountpoints if station supports them.
         if ($station->getFrontendType()->supportsMounts()) {
             $record = new StationMount($station);
-            $record->setName('/radio.mp3');
+            $record->setName('/radio');
             $record->setIsDefault(true);
             $record->setEnableAutodj(true);
             $record->setAutodjFormat(StreamFormats::Mp3);
-            $record->setAutodjBitrate(128);
+            $record->setAutodjBitrate($station->getMaxBitrate() !== 0 ? $station->getMaxBitrate() : 128);
             $this->em->persist($record);
         }
 
@@ -131,7 +132,7 @@ final class StationRepository extends Repository
             $streams = [
                 'aac_lofi' => 48,
                 'aac_midfi' => 96,
-                'aac_hifi' => 192,
+                'aac_hifi' => $station->getMaxBitrate() !== 0 ? $station->getMaxBitrate() : 128,
             ];
 
             foreach ($streams as $name => $bitrate) {
@@ -141,6 +142,58 @@ final class StationRepository extends Repository
                 $record->setBitrate($bitrate);
                 $this->em->persist($record);
             }
+        }
+
+        $this->em->flush();
+        $this->em->refresh($station);
+    }
+
+    public function lowerMountsBitrate(Station $station): void
+    {
+        foreach ($station->getMounts() as $mount) {
+            if ($mount->getAutodjBitrate() > $station->getMaxBitrate()) {
+                $mount->setAutodjBitrate($station->getMaxBitrate());
+                $this->em->persist($mount);
+            }
+        }
+
+        $this->em->flush();
+        $this->em->refresh($station);
+    }
+
+    public function lowerHlsBitrate(Station $station): void
+    {
+        foreach ($station->getHlsStreams() as $hlsStream) {
+            if ($hlsStream->getBitrate() > $station->getMaxBitrate()) {
+                $hlsStream->setBitrate($station->getMaxBitrate());
+                $this->em->persist($hlsStream);
+            }
+        }
+
+        $this->em->flush();
+        $this->em->refresh($station);
+    }
+
+    public function lowerRemoteRelayAutoDjBitrate(Station $station): void
+    {
+        foreach ($station->getRemotes() as $remoteRelay) {
+            if ($remoteRelay->getAutodjBitrate() > $station->getMaxBitrate()) {
+                $remoteRelay->setAutodjBitrate($station->getMaxBitrate());
+                $this->em->persist($remoteRelay);
+            }
+        }
+
+        $this->em->flush();
+        $this->em->refresh($station);
+    }
+
+    public function lowerLiveBroadcastRecordingBitrate(Station $station): void
+    {
+        $backendConfig = $station->getBackendConfig();
+        if ($backendConfig->getRecordStreamsBitrate() > $station->getMaxBitrate()) {
+            $backendConfig->setRecordStreamsBitrate($station->getMaxBitrate());
+            $station->setBackendConfig($backendConfig);
+            $this->em->persist($station);
         }
 
         $this->em->flush();

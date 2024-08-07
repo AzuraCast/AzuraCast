@@ -31,6 +31,7 @@
                 v-if="formatSupportsBitrateOptions"
                 id="edit_form_autodj_bitrate"
                 class="col-md-6"
+                :max-bitrate="maxBitrate"
                 :field="v$.autodj_bitrate"
                 :label="$gettext('AutoDJ Bitrate (kbps)')"
             />
@@ -46,6 +47,7 @@ import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
+import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 
 const props = defineProps({
     form: {
@@ -57,6 +59,9 @@ const props = defineProps({
         required: true
     }
 });
+
+
+const {maxBitrate} = useAzuraCastStation();
 
 const emit = defineEmits(['update:form']);
 const form = useVModel(props, 'form', emit);

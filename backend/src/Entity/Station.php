@@ -118,7 +118,11 @@ class Station implements Stringable, IdentifiableEntityInterface
             type: "object"
         ),
         ORM\Column(type: 'json', nullable: true),
-        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL]),
+        AppAssert\StationMaxBitrateChecker(
+            stationGetter: 'self',
+            selectedBitrate: ['backendConfig', 'recordStreamsBitrate']
+        )
     ]
     protected ?array $backend_config = null;
 
@@ -150,7 +154,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     protected ?string $genre = null;
 
     #[
-        OA\Property(example: "/var/azuracast/stations/azuratest_radio"),
+        OA\Property(example: "/var/azuracast/stations/azuracast_radio"),
         ORM\Column(length: 255, nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
@@ -278,6 +282,16 @@ class Station implements Stringable, IdentifiableEntityInterface
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
     protected ?string $timezone = 'UTC';
+
+    #[
+        OA\Property(
+            description: "The maximum bitrate at which a station may broadcast, in Kbps. 0 for unlimited",
+            example: 128
+        ),
+        ORM\Column,
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected int $max_bitrate = 0;
 
     /**
      * @var ConfigData|null
@@ -883,6 +897,19 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function setTimezone(?string $timezone): void
     {
         $this->timezone = $timezone;
+    }
+
+    public function getMaxBitrate(): int
+    {
+        return $this->max_bitrate;
+    }
+
+    public function setMaxBitrate(int $max_bitrate): void
+    {
+        if ($this->max_bitrate !== $max_bitrate) {
+            $this->setNeedsRestart(true);
+        }
+        $this->max_bitrate = $max_bitrate;
     }
 
     public function getBrandingConfig(): StationBrandingConfiguration

@@ -93,7 +93,6 @@ final class Environment
         } else {
             $this->data = $elements;
         }
-
         $this->appEnv = ApplicationEnvironment::tryFrom(
             Types::string($this->data[self::APP_ENV] ?? null, '', true)
         ) ?? ApplicationEnvironment::default();

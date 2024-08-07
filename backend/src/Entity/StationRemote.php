@@ -10,6 +10,7 @@ use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
 use App\Radio\Remote\AbstractRemote;
 use App\Utilities;
+use App\Validator\Constraints as AppAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Psr\Http\Message\UriInterface;
 use Stringable;
@@ -57,7 +58,10 @@ class StationRemote implements
     #[ORM\Column(type: 'string', length: 10, nullable: true, enumType: StreamFormats::class)]
     protected ?StreamFormats $autodj_format = null;
 
-    #[ORM\Column(type: 'smallint', nullable: true)]
+    #[
+        ORM\Column(type: 'smallint', nullable: true),
+        AppAssert\StationMaxBitrateChecker(stationGetter: 'station', selectedBitrate: 'autodjBitrate')
+    ]
     protected ?int $autodj_bitrate = null;
 
     #[ORM\Column(length: 255, nullable: true)]

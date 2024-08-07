@@ -10,6 +10,7 @@ use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
 use App\Radio\Frontend\AbstractFrontend;
 use App\Utilities\Urls;
+use App\Validator\Constraints as AppAssert;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
@@ -20,7 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
     OA\Schema(type: "object"),
     ORM\Entity,
     ORM\Table(name: 'station_mounts'),
-    Attributes\Auditable
+    Attributes\Auditable,
+    ORM\HasLifecycleCallbacks
 ]
 class StationMount implements
     Stringable,
@@ -110,7 +112,8 @@ class StationMount implements
 
     #[
         OA\Property(example: 128),
-        ORM\Column(type: 'smallint', nullable: true)
+        ORM\Column(type: 'smallint', nullable: true),
+        AppAssert\StationMaxBitrateChecker(stationGetter: 'station', selectedBitrate: 'autodjBitrate')
     ]
     protected ?int $autodj_bitrate = 128;
 

@@ -11,7 +11,7 @@ fi
 mkdir -p "$ACME_DIR/challenges" || true
 
 # If the final cert path is a symlink (working or otherwise), remove it to re-establish it in the next step.
-if [ ! -e "$ACME_DIR/ssl.crt" || -L "$ACME_DIR/ssl.crt" ]; then
+if [ ! -e "$ACME_DIR/ssl.crt" ] || [ -L "$ACME_DIR/ssl.crt" ]; then
   rm -rf "$ACME_DIR/ssl.key" || true
   rm -rf "$ACME_DIR/ssl.crt" || true
 fi

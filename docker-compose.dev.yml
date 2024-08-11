@@ -12,8 +12,8 @@ services:
       VAR_DUMPER_FORMAT: server
       VAR_DUMPER_SERVER: host.docker.internal:9912
     volumes:
-      - $PWD/util/local_ssl/default.crt:/var/azuracast/storage/acme/ssl.crt:ro
-      - $PWD/util/local_ssl/default.key:/var/azuracast/storage/acme/ssl.key:ro
+      # - $PWD/util/local_ssl/default.crt:/var/azuracast/storage/acme/ssl.crt:ro
+      # - $PWD/util/local_ssl/default.key:/var/azuracast/storage/acme/ssl.key:ro
       - $PWD/node_modules:/var/azuracast/www/node_modules
       - $PWD/vendor:/var/azuracast/www/vendor
       - $PWD:/var/azuracast/www

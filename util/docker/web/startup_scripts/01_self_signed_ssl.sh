@@ -10,10 +10,8 @@ fi
 
 mkdir -p "$ACME_DIR/challenges" || true
 
-if [ -f "$ACME_DIR/default.crt" ]; then
-    rm -rf "$ACME_DIR/default.key" || true
-    rm -rf "$ACME_DIR/default.crt" || true
-fi
+rm -rf "$ACME_DIR/default.key" || true
+rm -rf "$ACME_DIR/default.crt" || true
 
 # Generate a self-signed certificate if one doesn't exist in the certs path.
 if [ ! -f "$ACME_DIR/default.crt" ]; then
@@ -25,10 +23,10 @@ if [ ! -f "$ACME_DIR/default.crt" ]; then
         -out "$ACME_DIR/default.crt"
 fi
 
-# Check for broken symlinks (may be caused by storage location changes)
-if [ ! -e "$ACME_DIR/ssl.crt" ]; then
-    rm -rf "$ACME_DIR/ssl.key" || true
-    rm -rf "$ACME_DIR/ssl.crt" || true
+# If the final cert path is empty or a directory, remove it.
+if [ ! -e "$ACME_DIR/ssl.crt" || -d "$ACME_DIR/ssl.crt" ]; then
+  rm -rf "$ACME_DIR/ssl.key" || true
+  rm -rf "$ACME_DIR/ssl.crt" || true
 fi
 
 if [ ! -f "$ACME_DIR/ssl.crt" ]; then

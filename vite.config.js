@@ -67,7 +67,11 @@ export default defineConfig({
         strictPort: true,
         host: true,
         fs: {
-            allow: ['..']
+            allow: [
+                resolve(__dirname, './frontend/'),
+                resolve(__dirname, './node_modules/'),
+                resolve(__dirname, './translations/')
+            ]
         }
     },
     resolve: {

@@ -15,6 +15,7 @@
                 :types="buildTypeInfo([
                     WebhookType.Discord,
                     WebhookType.Telegram,
+                    WebhookType.GroupMe,
                     WebhookType.Mastodon
                 ])"
                 @select="selectType"

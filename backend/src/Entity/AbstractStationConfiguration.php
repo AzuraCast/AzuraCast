@@ -71,6 +71,8 @@ abstract class AbstractStationConfiguration implements JsonSerializable
             };
         }
 
+        ksort($return);
+
         return $return;
     }
 

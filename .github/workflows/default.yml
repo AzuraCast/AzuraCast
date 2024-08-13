@@ -15,6 +15,7 @@ on:
       - ci-testing
       - main
       - stable
+      - 'dev-*'
     tags:
       - '*'
   schedule:

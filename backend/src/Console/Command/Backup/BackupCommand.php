@@ -164,7 +164,7 @@ final class BackupCommand extends AbstractDatabaseCommand
         switch ($fileExt) {
             case 'tzst':
                 $this->passThruProcess(
-                    $io,
+                    $output,
                     array_merge(
                         [
                             'tar',
@@ -182,7 +182,7 @@ final class BackupCommand extends AbstractDatabaseCommand
             case 'gz':
             case 'tgz':
                 $this->passThruProcess(
-                    $io,
+                    $output,
                     array_merge(
                         [
                             'tar',
@@ -200,7 +200,7 @@ final class BackupCommand extends AbstractDatabaseCommand
                 $dontCompress = ['.tar.gz', '.zip', '.jpg', '.mp3', '.ogg', '.flac', '.aac', '.wav'];
 
                 $this->passThruProcess(
-                    $io,
+                    $output,
                     array_merge(
                         [
                             'zip',

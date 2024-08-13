@@ -92,8 +92,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     #[
         OA\Property(
             description: "An array containing station-specific frontend configuration",
-            type: "array",
-            items: new OA\Items()
+            type: "object"
         ),
         ORM\Column(type: 'json', nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
@@ -116,8 +115,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     #[
         OA\Property(
             description: "An array containing station-specific backend configuration",
-            type: "array",
-            items: new OA\Items()
+            type: "object"
         ),
         ORM\Column(type: 'json', nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL]),
@@ -301,8 +299,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     #[
         OA\Property(
             description: "An array containing station-specific branding configuration",
-            type: "array",
-            items: new OA\Items()
+            type: "object"
         ),
         ORM\Column(type: 'json', nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
@@ -612,7 +609,13 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function setUrl(string $url = null): void
     {
-        $this->url = $this->truncateNullableString($url);
+        $url = $this->truncateNullableString($url);
+
+        if ($url !== $this->url) {
+            $this->setNeedsRestart(true);
+        }
+
+        $this->url = $url;
     }
 
     public function getGenre(): ?string
@@ -850,7 +853,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function setNeedsRestart(bool $needsRestart): void
     {
-        $this->needs_restart = $this->hasLocalServices()
+        $this->needs_restart = $this->hasLocalServices() && $this->has_started
             ? $needsRestart
             : false;
     }

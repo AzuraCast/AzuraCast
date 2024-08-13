@@ -15,7 +15,7 @@
                     class="navdrawer-nav-icon"
                     :icon="category.icon"
                 />
-                {{ category.label }}
+                <span class="might-overflow">{{ category.label }}</span>
             </router-link>
             <a
                 v-else
@@ -27,7 +27,7 @@
                     class="navdrawer-nav-icon"
                     :icon="category.icon"
                 />
-                {{ category.label }}
+                <span class="might-overflow">{{ category.label }}</span>
                 <icon
                     v-if="category.external"
                     class="sm ms-2"
@@ -53,8 +53,9 @@
                             :to="item.url"
                             class="nav-link ps-4 py-2"
                             :class="getLinkClass(item)"
+                            :title="item.title"
                         >
-                            {{ item.label }}
+                            <span class="might-overflow">{{ item.label }}</span>
                         </router-link>
                         <a
                             v-else
@@ -64,7 +65,7 @@
                             :target="(item.external) ? '_blank' : ''"
                             :title="item.title"
                         >
-                            {{ item.label }}
+                            <span class="might-overflow">{{ item.label }}</span>
                             <icon
                                 v-if="item.external"
                                 class="sm ms-2"
@@ -136,3 +137,11 @@ const getCategoryLink = (item) => {
     return linkAttrs;
 }
 </script>
+
+<style lang="scss">
+@import "~/scss/_mixins.scss";
+
+.might-overflow {
+    @include might-overflow();
+}
+</style>

@@ -785,7 +785,6 @@ final class ConfigWriter implements EventSubscriberInterface
             add_skip_command(radio)
             LIQ
         );
-
     }
 
     /**
@@ -1164,17 +1163,43 @@ final class ConfigWriter implements EventSubscriberInterface
 
             # Live Broadcasting
             live = input.harbor({$harborParams})
+            
+            last_live_meta = ref([])
 
             def insert_missing(m) =
-                if m == [] then
-                    [("title", "{$liveBroadcastText}"), ("is_live", "true")]
-                else
-                    [("is_live", "true")]
+                def updates =
+                    if m == [] then
+                        [("title", "{$liveBroadcastText}"), ("is_live", "true")]
+                    else
+                        [("is_live", "true")]
+                    end
                 end
+                last_live_meta := [...m, ...list.assoc.remove("title", updates)]
+                updates
             end
             live = metadata.map(insert_missing, live)
-
-            radio = fallback(id="live_fallback", track_sensitive=false, replay_metadata=true, [live, radio])
+            
+            live = insert_metadata(live)
+            def insert_latest_live_metadata() =
+              log("Inserting last live meta: #{last_live_meta()}")
+              live.insert_metadata(last_live_meta())
+            end
+            
+            def transition_to_live(_, s) =
+              log("executing transition to live")
+              insert_latest_live_metadata()
+              s
+            end
+            
+            def transition_to_radio(_, s) = s end
+            
+            radio = fallback(
+              id="live_fallback",
+              track_sensitive=false,
+              replay_metadata=true,
+              transitions=[transition_to_live, transition_to_radio],
+              [live, radio]
+            )
 
             # Skip non-live track when live DJ goes live.
             def check_live() =
@@ -1278,21 +1303,24 @@ final class ConfigWriter implements EventSubscriberInterface
                         if (m["title"] != last_title() or m["artist"] != last_artist()) then
                             last_title.set(m["title"])
                             last_artist.set(m["artist"])
-
-                            j = json()
-
-                            if (m["song_id"] != "") then
-                                j.add("song_id", m["song_id"])
-                                j.add("media_id", m["media_id"])
-                                j.add("playlist_id", m["playlist_id"])
-                            else
-                                j.add("artist", m["artist"])
-                                j.add("title", m["title"])
+                            
+                            # Only send some metadata to AzuraCast
+                            def fl(k, _) =
+                                tags = ["song_id", "media_id", "playlist_id", "artist", "title"]
+                                string.contains(prefix="liq_", k) or string.contains(prefix="replaygain_", k) or list.mem(k, tags)
                             end
-
+                            
+                            feedback_meta = list.assoc.filter((fl), metadata.cover.remove(m))
+                            
+                            j = json()
+                            for item = list.iterator(feedback_meta) do
+                                let (tag, value) = item
+                                j.add(tag, value)
+                            end
+                            
                             _ = azuracast_api_call(
                                 "feedback",
-                                json.stringify(j)
+                                json.stringify(compact=true, j)
                             )
                         end
                     end
@@ -1604,6 +1632,16 @@ final class ConfigWriter implements EventSubscriberInterface
         return Types::bool($value, false, true)
             ? 'true'
             : 'false';
+    }
+
+    public static function valueToString(string|int|float|bool $dataVal): string
+    {
+        return match (true) {
+            'true' === $dataVal || 'false' === $dataVal => $dataVal,
+            is_bool($dataVal) => self::toBool($dataVal),
+            is_numeric($dataVal) => self::toFloat($dataVal),
+            default => Types::string($dataVal)
+        };
     }
 
     public static function formatTimeCode(int $timeCode): string

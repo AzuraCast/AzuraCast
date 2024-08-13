@@ -6,6 +6,7 @@
         centered
         :title="$gettext('Add API Key')"
         no-enforce-focus
+        @shown="onShown"
         @hidden="clearContents"
     >
         <template #default>
@@ -23,6 +24,7 @@
             >
                 <form-group-field
                     id="form_comments"
+                    ref="$field"
                     :field="v$.comment"
                     autofocus
                     :label="$gettext('API Key Description/Comments')"
@@ -49,6 +51,7 @@
                     {{ $gettext('Close') }}
                 </button>
                 <button
+                    v-if="newKey === null"
                     type="submit"
                     class="btn"
                     :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
@@ -66,7 +69,7 @@ import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue
 import AccountApiKeyNewKey from "./ApiKeyNewKey.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {required} from '@vuelidate/validators';
-import {ref} from "vue";
+import {nextTick, ref} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
@@ -105,6 +108,14 @@ const {show, hide} = useHasModal($modal);
 const create = () => {
     clearContents();
     show();
+};
+
+const $field = ref<InstanceType<typeof FormGroupField> | null>(null);
+
+const onShown = () => {
+    nextTick(() => {
+        $field.value?.focus();
+    })
 };
 
 const {axios} = useAxios();

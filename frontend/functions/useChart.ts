@@ -1,6 +1,6 @@
 import {Chart, registerables} from "chart.js";
 import {defaultsDeep} from "lodash";
-import {computed, onMounted, onUnmounted, Ref, toRef, watch} from "vue";
+import {computed, isRef, MaybeRef, onMounted, onUnmounted, Ref, toRef, toValue, watch} from "vue";
 import zoomPlugin from 'chartjs-plugin-zoom';
 import chartjsColorSchemes from "~/vendor/chartjs_colorschemes.ts";
 
@@ -43,14 +43,14 @@ export type ChartTemplateRef = HTMLCanvasElement | null;
 export default function useChart(
     props,
     $canvas: Ref<ChartTemplateRef>,
-    defaultOptions = {}
+    defaultOptions: MaybeRef<object>
 ) {
     let $chart = null;
 
     const chartConfig = computed(() => {
         const config = defaultsDeep({
             data: {}
-        }, props.options, defaultOptions);
+        }, props.options, toValue(defaultOptions));
 
         config.data.datasets = props.data;
         if (props.labels) {
@@ -83,6 +83,10 @@ export default function useChart(
             $chart.update();
         }
     });
+
+    if (isRef(defaultOptions)) {
+        watch(defaultOptions, rebuildChart);
+    }
 
     if (props.labels) {
         watch(toRef(props, 'labels'), (newLabels) => {

@@ -116,14 +116,7 @@ class StationMediaMetadata extends AbstractStationConfiguration
             if (method_exists($this, $methodName)) {
                 $this->$methodName($dataVal);
             } else {
-                // Apply some normalization of incoming data.
-                $dataVal = match (true) {
-                    'true' === $dataVal || 'false' === $dataVal => Types::bool($dataVal, false, true),
-                    is_numeric($dataVal) => Types::float($dataVal),
-                    default => $dataVal
-                };
-
-                $this->set($dataKey, $dataVal);
+                $this->set($dataKey, self::normalizeLiquidsoapValue($dataVal));
             }
         }
 
@@ -145,6 +138,8 @@ class StationMediaMetadata extends AbstractStationConfiguration
             };
         }
 
+        ksort($return);
+
         return $return;
     }
 
@@ -160,6 +155,15 @@ class StationMediaMetadata extends AbstractStationConfiguration
         }
 
         return Types::floatOrNull($annotation);
+    }
+
+    public static function normalizeLiquidsoapValue(mixed $dataVal = null): mixed
+    {
+        return match (true) {
+            'true' === $dataVal || 'false' === $dataVal => Types::bool($dataVal, false, true),
+            is_numeric($dataVal) => Types::float($dataVal),
+            default => $dataVal
+        };
     }
 
     public static function isLiquidsoapAnnotation(string $key): bool

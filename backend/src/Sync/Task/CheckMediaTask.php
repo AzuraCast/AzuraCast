@@ -21,6 +21,7 @@ use App\Message\ReprocessMediaMessage;
 use App\MessageQueue\QueueManagerInterface;
 use App\MessageQueue\QueueNames;
 use App\Radio\Quota;
+use App\Utilities\Types;
 use Brick\Math\BigInteger;
 use Doctrine\ORM\AbstractQuery;
 use League\Flysystem\FilesystemException;
@@ -219,14 +220,10 @@ final class CheckMediaTask extends AbstractTask
                 $fileInfo = $musicFiles[$pathHash];
                 $mtime = $fileInfo[StorageAttributes::ATTRIBUTE_LAST_MODIFIED] ?? 0;
 
-                if (
-                    empty($mediaRow['unique_id'])
-                    || StationMedia::needsReprocessing($mtime, (int)$mediaRow['mtime'])
-                ) {
+                if (StationMedia::needsReprocessing($mtime, Types::int($mediaRow['mtime']))) {
                     $message = new ReprocessMediaMessage();
                     $message->storage_location_id = $storageLocation->getIdRequired();
                     $message->media_id = (int)$mediaRow['id'];
-                    $message->force = empty($mediaRow['unique_id']);
 
                     $this->messageBus->dispatch($message);
                     $stats['updated']++;
@@ -270,7 +267,7 @@ final class CheckMediaTask extends AbstractTask
                 $fileInfo = $musicFiles[$pathHash];
                 $mtime = $fileInfo[StorageAttributes::ATTRIBUTE_LAST_MODIFIED] ?? 0;
 
-                if (UnprocessableMedia::needsReprocessing($mtime, $unprocessableRow['mtime'] ?? 0)) {
+                if (UnprocessableMedia::needsReprocessing($mtime, Types::int($unprocessableRow['mtime']))) {
                     $message = new AddNewMediaMessage();
                     $message->storage_location_id = $storageLocation->getIdRequired();
                     $message->path = $unprocessableRow['path'];

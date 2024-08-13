@@ -319,6 +319,8 @@ final class ListAction implements SingleActionInterface
             'sm.genre',
             'sm.isrc',
             'sm.length',
+            'sm.mtime',
+            'sm.uploaded_at',
             'sm.art_updated_at'
         );
 
@@ -333,6 +335,8 @@ final class ListAction implements SingleActionInterface
          *     genre: string | null,
          *     isrc: string | null,
          *     length: string,
+         *     mtime: int,
+         *     uploaded_at: int,
          *     art_updated_at: int
          * }> $mediaInDirRaw
          */

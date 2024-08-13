@@ -6,7 +6,6 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Interfaces\PathAwareInterface;
-use App\Entity\Interfaces\ProcessableMediaInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[
@@ -14,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
     ORM\Table(name: 'unprocessable_media'),
     ORM\UniqueConstraint(name: 'path_unique_idx', columns: ['path', 'storage_location_id'])
 ]
-class UnprocessableMedia implements ProcessableMediaInterface, PathAwareInterface, IdentifiableEntityInterface
+class UnprocessableMedia implements PathAwareInterface, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
 
@@ -30,8 +29,8 @@ class UnprocessableMedia implements ProcessableMediaInterface, PathAwareInterfac
     #[ORM\Column(length: 500)]
     protected string $path;
 
-    #[ORM\Column(nullable: true)]
-    protected ?int $mtime = 0;
+    #[ORM\Column(nullable: false)]
+    protected int $mtime = 0;
 
     #[ORM\Column(type: 'text', nullable: true)]
     protected ?string $error = null;
@@ -58,12 +57,12 @@ class UnprocessableMedia implements ProcessableMediaInterface, PathAwareInterfac
         $this->path = $path;
     }
 
-    public function getMtime(): ?int
+    public function getMtime(): int
     {
         return $this->mtime;
     }
 
-    public function setMtime(?int $mtime): void
+    public function setMtime(int $mtime): void
     {
         $this->mtime = $mtime;
     }

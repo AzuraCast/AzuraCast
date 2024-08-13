@@ -12,8 +12,9 @@ uptime_wait db || exit 1
 azuracast_cli azuracast:setup --init || exit 1
 azuracast_cli azuracast:acme:get-certificate || true
 
-# Start PHP-FPM
+# Start PHP-FPM and Centrifugo
 supervisorctl start php-fpm
+supervisorctl start centrifugo
 
 # Delay to allow PHP-FPM to spin up
 sleep 2

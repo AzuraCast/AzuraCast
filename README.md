@@ -50,8 +50,7 @@ and open-source software, and pull requests are always welcome.
 ## Need Help?
 
 If you need help with AzuraCast, the first place you should visit is
-our [Support page](https://www.azuracast.com/docs/help/troubleshooting/)
-, which features solutions to a number of commonly encountered issues and questions, as well as instructions on how to
+our [Support page](https://www.azuracast.com/docs/help/troubleshooting/), which features solutions to a number of commonly encountered issues and questions, as well as instructions on how to
 check your server's log files for more details. If you do need our help via GitHub, supplying these logs is absolutely
 essential in helping us diagnose and resolve your issue.
 
@@ -75,7 +74,6 @@ We frequently post to social media any time there are significant updates to our
 should be aware of, or upcoming changes to third-party software. You can get these updates in a more timely fashion by
 following our accounts:
 
-- On Twitter at [@AzuraCast](https://twitter.com/azuracast), or
 - On Mastodon at [@AzuraCast@fosstodon.org](https://fosstodon.org/@AzuraCast)
 
 If you are an AzuraCast user, station owner, developer or other contributor, you can also join our Discord community,

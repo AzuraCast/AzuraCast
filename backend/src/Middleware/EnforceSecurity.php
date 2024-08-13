@@ -7,6 +7,7 @@ namespace App\Middleware;
 use App\AppFactory;
 use App\Container\SettingsAwareTrait;
 use App\Http\ServerRequest;
+use App\Utilities\Types;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -35,12 +36,13 @@ final class EnforceSecurity extends AbstractMiddleware
     {
         $alwaysUseSsl = $this->readSettings()->getAlwaysUseSsl();
 
-        $internalApiUrl = mb_stripos($request->getUri()->getPath(), '/api/internal') === 0;
+        // Requests through the internal port (:6010) have this server param set.
+        $isInternal = Types::bool($request->getServerParam('IS_INTERNAL'), false, true);
 
         $addHstsHeader = false;
         if ('https' === $request->getUri()->getScheme()) {
             $addHstsHeader = true;
-        } elseif ($alwaysUseSsl && !$internalApiUrl) {
+        } elseif ($alwaysUseSsl && !$isInternal) {
             return $this->responseFactory->createResponse(307)
                 ->withHeader('Location', (string)$request->getUri()->withScheme('https'));
         }

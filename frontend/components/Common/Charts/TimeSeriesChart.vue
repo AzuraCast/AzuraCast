@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
 import useChart, {chartProps, ChartTemplateRef} from "~/functions/useChart";
@@ -18,6 +18,10 @@ import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     ...chartProps,
+    tz: {
+        type: String,
+        default: 'UTC'
+    }
 });
 
 const $canvas = ref<ChartTemplateRef>(null);
@@ -28,7 +32,7 @@ const {DateTime} = useLuxon();
 useChart(
     props,
     $canvas,
-    {
+    computed(() => ({
         type: 'line',
         options: {
             aspectRatio: props.aspectRatio,
@@ -52,8 +56,14 @@ useChart(
                     type: 'time',
                     distribution: 'linear',
                     display: true,
-                    min: DateTime.now().minus({days: 30}).toJSDate(),
-                    max: DateTime.now().toJSDate(),
+                    min: DateTime.local({zone: props.tz}).minus({days: 30}).toJSDate(),
+                    max: DateTime.local({zone: props.tz}).toJSDate(),
+                    adapters: {
+                        date: {
+                            setZone: true,
+                            zone: props.tz
+                        }
+                    },
                     time: {
                         unit: 'day',
                         tooltipFormat: DateTime.DATE_SHORT,
@@ -89,6 +99,6 @@ useChart(
                 }
             }
         }
-    }
+    }))
 );
 </script>

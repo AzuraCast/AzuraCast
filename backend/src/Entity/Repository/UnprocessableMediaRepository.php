@@ -73,7 +73,7 @@ final class UnprocessableMediaRepository extends Repository
             $record->setError($error);
         }
 
-        $record->setMtime(time());
+        $record->setMtime(time() + 5);
 
         $this->em->persist($record);
         $this->em->flush();

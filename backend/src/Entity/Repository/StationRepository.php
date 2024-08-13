@@ -200,6 +200,38 @@ final class StationRepository extends Repository
         $this->em->refresh($station);
     }
 
+    public function reduceMountPointsToLimit(Station $station): void
+    {
+        if ($station->getMaxMounts() === 0) {
+            return;
+        }
+
+        foreach ($station->getMounts() as $index => $stationMount) {
+            if (($index + 1) > $station->getMaxMounts()) {
+                $this->em->remove($stationMount);
+            }
+        }
+
+        $this->em->flush();
+        $this->em->refresh($station);
+    }
+
+    public function reduceHlsStreamsToLimit(Station $station): void
+    {
+        if ($station->getMaxHlsStreams() === 0) {
+            return;
+        }
+
+        foreach ($station->getHlsStreams() as $index => $stationHlsStream) {
+            if (($index + 1) > $station->getMaxHlsStreams()) {
+                $this->em->remove($stationHlsStream);
+            }
+        }
+
+        $this->em->flush();
+        $this->em->refresh($station);
+    }
+
     public function flushRelatedMedia(Station $station): void
     {
         $this->em->createQuery(

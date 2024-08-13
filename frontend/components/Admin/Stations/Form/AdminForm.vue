@@ -13,6 +13,16 @@
             />
 
             <form-group-field
+                v-if="enableAdvancedFeatures"
+                id="edit_form_radio_base_dir"
+                class="col-md-8"
+                :field="v$.radio_base_dir"
+                advanced
+                :label="$gettext('Base Station Directory')"
+                :description="$gettext('The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.')"
+            />
+
+            <form-group-field
                 id="edit_form_max_bitrate"
                 class="col-md-2"
                 :field="v$.max_bitrate"
@@ -21,13 +31,19 @@
             />
 
             <form-group-field
-                v-if="enableAdvancedFeatures"
-                id="edit_form_radio_base_dir"
-                class="col-md-6"
-                :field="v$.radio_base_dir"
-                advanced
-                :label="$gettext('Base Station Directory')"
-                :description="$gettext('The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.')"
+                id="edit_form_max_mounts"
+                class="col-md-2"
+                :field="v$.max_mounts"
+                :label="$gettext('Maximum Mounts')"
+                :description="$gettext('The maximum number of mount points allowed. 0 for unlimited.')"
+            />
+
+            <form-group-field
+                id="edit_form_max_hls_streams"
+                class="col-md-2"
+                :field="v$.max_hls_streams"
+                :label="$gettext('Maximum Hls Streams')"
+                :description="$gettext('The maximum number of HLS streams allowed. 0 for unlimited.')"
             />
         </div>
 
@@ -102,7 +118,9 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             media_storage_location: {},
             recordings_storage_location: {},
             podcasts_storage_location: {},
-            max_bitrate: {}
+            max_bitrate: {},
+            max_mounts: {},
+            max_hls_streams: {}
         };
 
         if (enableAdvancedFeatures) {
@@ -124,6 +142,8 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             podcasts_storage_location: '',
             is_enabled: true,
             max_bitrate: 128,
+            max_mounts: 0,
+            max_hls_streams: 0
         };
 
         if (enableAdvancedFeatures) {

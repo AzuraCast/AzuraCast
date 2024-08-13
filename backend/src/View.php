@@ -235,6 +235,8 @@ final class View extends Engine
                     'timezone' => $station->getTimezone(),
                     'offlineText' => $station->getBrandingConfig()->getOfflineText(),
                     'maxBitrate' => $station->getMaxBitrate(),
+                    'maxMounts' => $station->getMaxMounts(),
+                    'maxHlsStreams' => $station->getMaxHlsStreams(),
                 ]);
             }
 

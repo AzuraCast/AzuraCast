@@ -49,7 +49,7 @@ final class GroupMe extends AbstractConnector
 
         $requestParams = [
             'bot_id' => $botId,
-            'text' => $messages['text']
+            'text' => $messages['text'],
         ];
 
         $response = $this->httpClient->request(

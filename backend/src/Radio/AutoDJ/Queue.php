@@ -72,6 +72,9 @@ final class Queue
 
         $lastSongId = null;
         $queueLength = 0;
+        $removedPlaylistMedia = [];
+        $removedRequests = [];
+        $restOfQueueIsInvalid = false;
 
         foreach ($upcomingQueue as $queueRow) {
             if ($queueRow->getSentToAutodj()) {
@@ -85,7 +88,28 @@ final class Queue
                     $queueLength = 1;
                 }
             } else {
-                if (!$this->isQueueRowStillValid($queueRow, $expectedPlayTime)) {
+                $playlist = $queueRow->getPlaylist();
+                $spm = $queueRow->getPlaylistMedia();
+                $request = $queueRow->getRequest();
+                if ($restOfQueueIsInvalid || !$this->isQueueRowStillValid($queueRow, $expectedPlayTime)) {
+                    $this->logger->debug(
+                        'Queue item is invalid and will be removed',
+                        [
+                            'id' => $queueRow->getId(),
+                            'playlist' => $playlist->getName(),
+                            'song' => $spm->getMedia()->getTitle(),
+                        ]
+                        );
+                    if(null !== $spm)
+                    {
+                        $removedPlaylistMedia[] = $spm;
+
+                    }
+                    if(null !== $request)
+                    {
+                        $removedRequests[] = $request;
+                    }
+                    $restOfQueueIsInvalid = true;
                     $this->em->remove($queueRow);
                     continue;
                 }
@@ -103,6 +127,38 @@ final class Queue
             $expectedPlayTime = $this->addDurationToTime($station, $expectedPlayTime, $queueRow->getDuration());
 
             $lastSongId = $queueRow->getSongId();
+        }
+        //If items were removed from the queue, then we must perform some other bookkeeping so that they actually get requeued at the appropriate time.
+        //Most importantly, playlist media must be requeued on the playlist from which they came, otherwise we would forget to play them.
+        foreach($removedPlaylistMedia as $spm)
+        {
+            $this->logger->debug(
+                'Playlist media must be requeued on its original playlist.',
+                [
+                    'media' => $spm->getMedia()->getTitle(),
+                    'playlist' => $spm->getPlaylist()->getName(),
+
+                ]
+                );
+            $spm->requeue();
+            $this->em->persist($spm);
+            
+
+        }
+        //It would also be very sad if we let requesters get shafted.
+        foreach($removedRequests as $request)
+        {
+            $this->logger->debug(
+                'Request must be marked unplayed.',
+                [
+                    'media' => $request->getTrack()->getTitle(),
+                    'Request id' => $request->getId(),
+
+                ]
+                );
+
+            $request->setPlayedAt(0);
+            $this->em->persist($request);
         }
 
         $this->em->flush();
@@ -260,10 +316,11 @@ final class Queue
         }
 
         return $playlist->getIsEnabled() &&
-            $this->scheduler->isPlaylistScheduledToPlayNow(
+            $this->scheduler->shouldPlaylistPlayNow(
                 $playlist,
                 $expectedPlayTime,
-                true
+                true,
+                $queueRow->getId()
             );
     }
 

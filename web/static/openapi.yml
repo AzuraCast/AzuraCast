@@ -858,8 +858,10 @@ paths:
       description: 'Sets the album art for a track.'
       operationId: postMediaArt
       parameters:
-        - $ref: '#/components/parameters/StationIdRequired'
-        - name: media_id
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: media_id
           in: path
           description: 'Media ID'
           required: true
@@ -2754,7 +2756,7 @@ paths:
           name: action
           in: path
           description: 'The action to perform (start, stop, restart)'
-          required: true
+          required: false
           schema:
             type: string
             default: restart
@@ -2783,7 +2785,7 @@ paths:
           name: action
           in: path
           description: 'The action to perform (for all: start, stop, restart, skip, disconnect)'
-          required: true
+          required: false
           schema:
             type: string
             default: restart

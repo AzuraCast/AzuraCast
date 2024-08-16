@@ -305,6 +305,8 @@ final class QueueBuilder implements EventSubscriberInterface
 
         $stationQueueEntry = StationQueue::fromMedia($playlist->getStation(), $mediaToPlay);
         $stationQueueEntry->setPlaylist($playlist);
+        $stationQueueEntry->setPlaylistMedia($spm);
+
         $this->em->persist($stationQueueEntry);
 
         return $stationQueueEntry;

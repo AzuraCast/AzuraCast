@@ -90,26 +90,31 @@ final class StationQueueRepository extends AbstractStationBasedRepository
 
     public function isPlaylistRecentlyPlayed(
         StationPlaylist $playlist,
-        ?int $playPerSongs = null
+        ?int $playPerSongs = null,
+        int $belowId = null
     ): bool {
         $playPerSongs ??= $playlist->getPlayPerSongs();
+        $recentPlayedQuery = $this->em->createQueryBuilder()
+            ->select('sq.playlist_id')
+            ->from(StationQueue::class, 'sq')
+            ->where('sq.station = :station')
+            ->setParameter('station', $playlist->getStation())
+            ->andWhere('sq.playlist_id is not null')
+            ->andWhere('sq.playlist = :playlist OR sq.is_visible = 1')
+            ->setParameter('playlist', $playlist)
+            ->setMaxResults($playPerSongs)
+            ->orderBy('sq.id', 'desc');
 
-        $recentPlayedQuery = $this->em->createQuery(
-            <<<'DQL'
-                SELECT sq.playlist_id
-                FROM App\Entity\StationQueue sq
-                WHERE sq.station = :station
-                AND sq.playlist_id IS NOT NULL
-                AND (sq.playlist = :playlist OR sq.is_visible = 1)
-                ORDER BY sq.id DESC
-            DQL
-        )->setParameters([
-            'station' => $playlist->getStation(),
-            'playlist' => $playlist,
-        ])->setMaxResults($playPerSongs);
+        if (null !== $belowId) {
+            $recentPlayedQuery = $recentPlayedQuery->andWhere('sq.id < :bel')
+                ->setParameter('bel', $belowId);
+        }
 
-        $recentPlayedPlaylists = $recentPlayedQuery->getSingleColumnResult();
-        return in_array($playlist->getIdRequired(), (array)$recentPlayedPlaylists, true);
+        return in_array(
+            $playlist->getIdRequired(),
+            $recentPlayedQuery->getQuery()->getSingleColumnResult(),
+            true
+        );
     }
 
     /**
@@ -191,6 +196,26 @@ final class StationQueueRepository extends AbstractStationBasedRepository
 
         $cuedPlaylistContentCount = $cuedPlaylistContentCountQuery->getSingleScalarResult();
         return $cuedPlaylistContentCount > 0;
+    }
+
+    public function getLastPlayedTimeForPlaylist(
+        StationPlaylist $playlist,
+        CarbonInterface $now
+    ): int {
+        $sq = $this->em->createQuery(
+            <<<'DQL'
+            SELECT sq
+            FROM App\Entity\StationQueue sq
+            WHERE sq.playlist_id = :playlist
+            and sq.timestamp_played < :now
+            ORDER BY sq.timestamp_played DESC
+            DQL
+        )->setParameter('playlist', $playlist)
+            ->setParameter('now', $now->getTimestamp())
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+
+        return null === $sq ? 0 : $sq->getTimestampPlayed();
     }
 
     public function getUnplayedBaseQuery(Station $station): QueryBuilder

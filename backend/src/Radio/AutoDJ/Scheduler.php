@@ -31,7 +31,9 @@ final class Scheduler
 
     public function shouldPlaylistPlayNow(
         StationPlaylist $playlist,
-        CarbonInterface $now = null
+        CarbonInterface $now = null,
+        bool $excludeSpecialRules = false,
+        int $belowIdForOncePerXSongs = null
     ): bool {
         $this->logger->pushProcessor(
             function (LogRecord $record) use ($playlist) {
@@ -47,7 +49,7 @@ final class Scheduler
             $now = CarbonImmutable::now($playlist->getStation()->getTimezoneObject());
         }
 
-        if (!$this->isPlaylistScheduledToPlayNow($playlist, $now)) {
+        if (!$this->isPlaylistScheduledToPlayNow($playlist, $now, $excludeSpecialRules)) {
             $this->logger->debug('Playlist is not scheduled to play now.');
             $this->logger->popProcessor();
             return false;
@@ -69,7 +71,11 @@ final class Scheduler
 
             case PlaylistTypes::OncePerXSongs:
                 $playPerSongs = $playlist->getPlayPerSongs();
-                $shouldPlay = !$this->queueRepo->isPlaylistRecentlyPlayed($playlist, $playPerSongs);
+                $shouldPlay = !$this->queueRepo->isPlaylistRecentlyPlayed(
+                    $playlist,
+                    $playPerSongs,
+                    $belowIdForOncePerXSongs
+                );
 
                 $this->logger->debug(
                     sprintf(
@@ -149,7 +155,7 @@ final class Scheduler
         CarbonInterface $now,
         int $minutes
     ): bool {
-        $playedAt = $playlist->getPlayedAt();
+        $playedAt = $this->queueRepo->getLastPlayedTimeForPlaylist($playlist, $now);
         if (0 === $playedAt) {
             return false;
         }

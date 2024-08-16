@@ -75,6 +75,11 @@ class StationPlaylistMedia implements JsonSerializable, IdentifiableEntityInterf
         return $this->last_played;
     }
 
+    public function requeue(): void
+    {
+        $this->is_queued = true;
+    }
+
     public function played(int $timestamp = null): void
     {
         $this->last_played = $timestamp ?? time();

@@ -48,6 +48,13 @@ class StationQueue implements
     protected ?int $media_id = null;
 
     #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'playlist_media_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?StationPlaylistMedia $playlistMedia = null;
+
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    protected ?int $playlist_media_id = null;
+
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'request_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?StationRequest $request = null;
 
@@ -121,6 +128,16 @@ class StationQueue implements
     public function setRequest(?StationRequest $request): void
     {
         $this->request = $request;
+    }
+
+    public function getPlaylistMedia(): ?StationPlaylistMedia
+    {
+        return $this->playlistMedia;
+    }
+
+    public function setPlaylistMedia(?StationPlaylistMedia $playlistMedia): void
+    {
+        $this->playlistMedia = $playlistMedia;
     }
 
     public function getAutodjCustomUri(): ?string

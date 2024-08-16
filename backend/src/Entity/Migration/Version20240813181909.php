@@ -26,5 +26,4 @@ final class Version20240813181909 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_277B005517421B18 ON station_queue');
         $this->addSql('ALTER TABLE station_queue DROP playlist_media_id');
     }
-
 }

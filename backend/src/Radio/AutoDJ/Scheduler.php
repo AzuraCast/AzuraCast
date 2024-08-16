@@ -71,7 +71,11 @@ final class Scheduler
 
             case PlaylistTypes::OncePerXSongs:
                 $playPerSongs = $playlist->getPlayPerSongs();
-                $shouldPlay = !$this->queueRepo->isPlaylistRecentlyPlayed($playlist, $playPerSongs, $belowIdForOncePerXSongs);
+                $shouldPlay = !$this->queueRepo->isPlaylistRecentlyPlayed(
+                    $playlist,
+                    $playPerSongs,
+                    $belowIdForOncePerXSongs
+                );
 
                 $this->logger->debug(
                     sprintf(

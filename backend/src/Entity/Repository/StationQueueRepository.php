@@ -211,11 +211,13 @@ final class StationQueueRepository extends AbstractStationBasedRepository
             ORDER BY sq.timestamp_played DESC
             DQL
         )->setParameter('playlist', $playlist)
-        ->setParameter('now', $now->getTimestamp())
-        ->setMaxResults(1)
-        ->getOneOrNullResult();
+            ->setParameter('now', $now->getTimestamp())
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+
         return null === $sq ? 0 : $sq->getTimestampPlayed();
     }
+
     public function getUnplayedBaseQuery(Station $station): QueryBuilder
     {
         return $this->getBaseQuery($station)

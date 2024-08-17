@@ -34,6 +34,7 @@ class StationPlaylist implements
     use Traits\TruncateStrings;
 
     public const int DEFAULT_WEIGHT = 3;
+    public const int DEFAULT_PRIORITY = 0;
     public const int DEFAULT_REMOTE_BUFFER = 20;
 
     public const string OPTION_INTERRUPT_OTHER_SONGS = 'interrupt';
@@ -133,6 +134,13 @@ class StationPlaylist implements
         ORM\Column(type: 'smallint')
     ]
     protected int $weight = self::DEFAULT_WEIGHT;
+    #[
+        OA\Property(
+            description: "Determines the order in which playlists will play when multiple playlists are eligible. Higher priority playlists are guaranteed to play before lower priority ones. If multiple playlists have the same priority, they will be shuffled based on their weights.",
+            example: 0),
+        ORM\Column(nullable: true, type: 'smallint')
+    ]
+    protected ?int $priority = null;
 
     #[
         OA\Property(example: true),
@@ -340,6 +348,16 @@ class StationPlaylist implements
     public function setWeight(int $weight): void
     {
         $this->weight = $weight;
+    }
+
+    public function getPriority(): ?int
+    {
+        return $this->priority;
+    }
+
+    public function setPriority(?int $priority): void
+    {
+        $this->priority = priority;
     }
 
     public function getIncludeInRequests(): bool

@@ -345,15 +345,15 @@ class StationsController extends AbstractApiCrudController
 
         if ($maxBitrateChanged) {
             if (!$frontendChanged) {
-                $this->stationRepo->lowerMountsBitrate($station);
+                $this->stationRepo->reduceMountsBitrateToLimit($station);
             }
 
             if (!$hlsChanged && !$backendChanged) {
-                $this->stationRepo->lowerHlsBitrate($station);
+                $this->stationRepo->reduceHlsBitrateToLimit($station);
             }
 
-            $this->stationRepo->lowerRemoteRelayAutoDjBitrate($station);
-            $this->stationRepo->lowerLiveBroadcastRecordingBitrate($station);
+            $this->stationRepo->reduceRemoteRelayAutoDjBitrateToLimit($station);
+            $this->stationRepo->reduceLiveBroadcastRecordingBitrateToLimit($station);
         }
 
         $maxMountsLowered = $station->getMaxMounts() !== 0 && ($oldMaxMounts > $station->getMaxMounts());
@@ -368,8 +368,11 @@ class StationsController extends AbstractApiCrudController
         }
 
         if (
-            $adapterChanged || $maxBitrateChanged || $enabledChanged
-            || $maxMountsLowered || $maxHlsStreamsLowered
+            $adapterChanged
+            || $maxBitrateChanged
+            || $enabledChanged
+            || $maxMountsLowered
+            || $maxHlsStreamsLowered
         ) {
             try {
                 $this->configuration->writeConfiguration(

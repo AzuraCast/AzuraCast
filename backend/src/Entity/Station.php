@@ -154,7 +154,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     protected ?string $genre = null;
 
     #[
-        OA\Property(example: "/var/azuracast/stations/azuracast_radio"),
+        OA\Property(example: "/var/azuracast/stations/azuratest_radio"),
         ORM\Column(length: 255, nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
@@ -924,12 +924,12 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->max_bitrate;
     }
 
-    public function setMaxBitrate(int $max_bitrate): void
+    public function setMaxBitrate(int $maxBitrate): void
     {
-        if ($this->max_bitrate !== $max_bitrate) {
+        if ($this->max_bitrate !== $maxBitrate) {
             $this->setNeedsRestart(true);
         }
-        $this->max_bitrate = $max_bitrate;
+        $this->max_bitrate = $maxBitrate;
     }
 
     public function getMaxMounts(): int
@@ -941,12 +941,12 @@ class Station implements Stringable, IdentifiableEntityInterface
         return 0;
     }
 
-    public function setMaxMounts(int $max_mounts): void
+    public function setMaxMounts(int $maxMounts): void
     {
-        if ($this->max_mounts !== $max_mounts) {
+        if ($this->max_mounts !== $maxMounts) {
             $this->setNeedsRestart(true);
         }
-        $this->max_mounts = $max_mounts;
+        $this->max_mounts = $maxMounts;
     }
 
     public function getMaxHlsStreams(): int
@@ -958,12 +958,12 @@ class Station implements Stringable, IdentifiableEntityInterface
         return 0;
     }
 
-    public function setMaxHlsStreams(int $max_hls_streams): void
+    public function setMaxHlsStreams(int $maxHlsStreams): void
     {
-        if ($this->max_hls_streams !== $max_hls_streams) {
+        if ($this->max_hls_streams !== $maxHlsStreams) {
             $this->setNeedsRestart(true);
         }
-        $this->max_hls_streams = $max_hls_streams;
+        $this->max_hls_streams = $maxHlsStreams;
     }
 
     public function getBrandingConfig(): StationBrandingConfiguration

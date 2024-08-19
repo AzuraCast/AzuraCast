@@ -190,7 +190,7 @@ final class Icecast extends AbstractFrontend
             ];
 
             if ($station->getMaxBitrate() !== 0) {
-                $maxBitrateInBps = (int) $station->getMaxBitrate() * 1000 + 2500;
+                $maxBitrateInBps = (int) $station->getMaxBitrate() * 1024 + 2500;
                 $mount['limit-rate'] = $maxBitrateInBps;
             }
 

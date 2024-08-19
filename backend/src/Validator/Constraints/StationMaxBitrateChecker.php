@@ -15,12 +15,12 @@ final class StationMaxBitrateChecker extends Constraint
         public string|array $selectedBitrate = '',
         array $options = []
     ) {
-
         $options['stationGetter'] = $stationGetter;
         $options['selectedBitrate'] = $selectedBitrate;
 
         parent::__construct($options);
     }
+
     public function getTargets(): string
     {
         return self::PROPERTY_CONSTRAINT;

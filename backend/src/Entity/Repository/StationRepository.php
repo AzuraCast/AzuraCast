@@ -114,7 +114,7 @@ final class StationRepository extends Repository
             $record->setIsDefault(true);
             $record->setEnableAutodj(true);
             $record->setAutodjFormat(StreamFormats::Mp3);
-            $record->setAutodjBitrate($station->getMaxBitrate() !== 0 ? $station->getMaxBitrate() : 128);
+            $record->setAutodjBitrate($station->getMaxBitrate() !== 0 ? $station->getMaxBitrate() : 192);
             $this->em->persist($record);
         }
 
@@ -148,7 +148,7 @@ final class StationRepository extends Repository
         $this->em->refresh($station);
     }
 
-    public function lowerMountsBitrate(Station $station): void
+    public function reduceMountsBitrateToLimit(Station $station): void
     {
         foreach ($station->getMounts() as $mount) {
             if ($mount->getAutodjBitrate() > $station->getMaxBitrate()) {
@@ -161,7 +161,7 @@ final class StationRepository extends Repository
         $this->em->refresh($station);
     }
 
-    public function lowerHlsBitrate(Station $station): void
+    public function reduceHlsBitrateToLimit(Station $station): void
     {
         foreach ($station->getHlsStreams() as $hlsStream) {
             if ($hlsStream->getBitrate() > $station->getMaxBitrate()) {
@@ -174,7 +174,7 @@ final class StationRepository extends Repository
         $this->em->refresh($station);
     }
 
-    public function lowerRemoteRelayAutoDjBitrate(Station $station): void
+    public function reduceRemoteRelayAutoDjBitrateToLimit(Station $station): void
     {
         foreach ($station->getRemotes() as $remoteRelay) {
             if ($remoteRelay->getAutodjBitrate() > $station->getMaxBitrate()) {
@@ -187,7 +187,7 @@ final class StationRepository extends Repository
         $this->em->refresh($station);
     }
 
-    public function lowerLiveBroadcastRecordingBitrate(Station $station): void
+    public function reduceLiveBroadcastRecordingBitrateToLimit(Station $station): void
     {
         $backendConfig = $station->getBackendConfig();
         if ($backendConfig->getRecordStreamsBitrate() > $station->getMaxBitrate()) {

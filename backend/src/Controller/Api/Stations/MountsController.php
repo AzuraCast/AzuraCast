@@ -228,7 +228,7 @@ final class MountsController extends AbstractStationApiCrudController
         $station = $request->getStation();
         if ($station->getMaxMounts() !== 0 && $station->getMaxMounts() <= $station->getMounts()->count()) {
             throw new ValidationException(
-                'Unable to create a new mount point, station\'s maximum mount points reached.'
+                __('Unable to create a new mount point, station\'s maximum mount points reached.')
             );
         }
 

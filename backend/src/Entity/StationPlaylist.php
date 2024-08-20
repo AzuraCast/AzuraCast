@@ -137,7 +137,8 @@ class StationPlaylist implements
     #[
         OA\Property(
             description: "Determines the order in which playlists will play when multiple playlists are eligible. Higher priority playlists are guaranteed to play before lower priority ones. If multiple playlists have the same priority, they will be shuffled based on their weights.",
-            example: 0),
+            example: 0
+        ),
         ORM\Column(nullable: true, type: 'smallint')
     ]
     protected ?int $priority = null;

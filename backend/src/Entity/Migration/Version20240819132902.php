@@ -22,5 +22,4 @@ final class Version20240819132902 extends AbstractMigration
     {
         $this->addSql('ALTER TABLE station DROP requests_follow_format');
     }
-
 }

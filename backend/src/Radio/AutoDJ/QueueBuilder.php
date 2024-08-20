@@ -17,10 +17,10 @@ use App\Entity\Repository\StationRequestRepository;
 use App\Entity\Song;
 use App\Entity\Station;
 use App\Entity\StationMedia;
-use App\Entity\StationRequest;
 use App\Entity\StationPlaylist;
 use App\Entity\StationPlaylistMedia;
 use App\Entity\StationQueue;
+use App\Entity\StationRequest;
 use App\Event\Radio\BuildQueue;
 use App\Radio\PlaylistParser;
 use Carbon\CarbonInterface;
@@ -75,7 +75,7 @@ final class QueueBuilder implements EventSubscriberInterface
 
     /**
      * Called once to configure the object at the beginning of queue building.
-     * 
+     *
      * @param Station $station
      * @param CarbonInterface $expectedPlayTime
      * @return bool
@@ -296,9 +296,7 @@ final class QueueBuilder implements EventSubscriberInterface
                 //If this playlist is at or below general request priority, then general requests win.
                 if (
                     !$playlist->backendMerge()
-                    && $this->shouldConsiderGeneralRequests($this->getPlaylistPriority($playlist, $this->legacyPriority
-                    )
-                    )
+                    && $this->shouldConsiderGeneralRequests($this->getPlaylistPriority($playlist, $this->legacyPriority))
                 ) {
                     $request = $this->getRequestFromGroup($this->generalRequests);
                     if (null !== $request) {
@@ -307,7 +305,7 @@ final class QueueBuilder implements EventSubscriberInterface
                             [
                                 'id' => $request->getId(),
                                 'track' => $request->getTrack()
-                                    ->getTitle()
+                                    ->getTitle(),
                             ]
                         );
                         //Rewind playlists so this playlist gets attempted again if this request doesn't go through.
@@ -372,7 +370,7 @@ final class QueueBuilder implements EventSubscriberInterface
             'name' => $playlist->getName(),
             'type' => $playlist->getType()->name,
             'priority' => $playlist->getPriority(),
-            'weight' => $playlist->getWeight()
+            'weight' => $playlist->getWeight(),
         ];
     }
 

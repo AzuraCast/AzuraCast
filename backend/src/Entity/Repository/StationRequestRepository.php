@@ -79,7 +79,6 @@ final class StationRequestRepository extends AbstractStationBasedRepository
     public function getAllPotentialRequests(
         Station $station,
         CarbonInterface $now
-
     ): array {
         return $this->em->createQuery(
             <<<'DQL'
@@ -91,7 +90,6 @@ final class StationRequestRepository extends AbstractStationBasedRepository
             DQL
         )->setParameter('station', $station)
             ->execute();
-
     }
 
     public function getNextPlayableRequest(

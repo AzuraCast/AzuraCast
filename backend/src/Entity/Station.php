@@ -765,15 +765,18 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->request_threshold = $requestThreshold;
     }
 
-    public function getRequestPriority(): int|null {
+    public function getRequestPriority(): int|null
+    {
         return $this->request_priority;
     }
 
-    public function setRequestPriority(int $priority = null) {
+    public function setRequestPriority(int $priority = null)
+    {
         $this->request_priority = $priority;
     }
-    
-    public function getRequestsFollowFormat(): int {
+
+    public function getRequestsFollowFormat(): int
+    {
         return $this->requests_follow_format;
     }
 

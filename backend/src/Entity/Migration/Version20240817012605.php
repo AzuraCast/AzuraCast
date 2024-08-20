@@ -22,5 +22,4 @@ final class Version20240817012605 extends AbstractMigration
     {
         $this->addSql('ALTER TABLE station_playlists DROP priority');
     }
-
 }

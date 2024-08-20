@@ -22,5 +22,4 @@ final class Version20240818155439 extends AbstractMigration
     {
         $this->addSql('ALTER TABLE station DROP request_priority');
     }
-
 }

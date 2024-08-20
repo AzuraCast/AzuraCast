@@ -157,7 +157,6 @@ final class StationRepository extends Repository
         }
 
         $this->em->flush();
-        $this->em->refresh($station);
     }
 
     public function reduceHlsBitrateToLimit(Station $station): void
@@ -170,7 +169,6 @@ final class StationRepository extends Repository
         }
 
         $this->em->flush();
-        $this->em->refresh($station);
     }
 
     public function reduceRemoteRelayAutoDjBitrateToLimit(Station $station): void
@@ -183,7 +181,6 @@ final class StationRepository extends Repository
         }
 
         $this->em->flush();
-        $this->em->refresh($station);
     }
 
     public function reduceLiveBroadcastRecordingBitrateToLimit(Station $station): void
@@ -196,7 +193,6 @@ final class StationRepository extends Repository
         }
 
         $this->em->flush();
-        $this->em->refresh($station);
     }
 
     public function reduceMountPointsToLimit(Station $station): void

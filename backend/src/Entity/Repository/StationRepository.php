@@ -208,7 +208,6 @@ final class StationRepository extends Repository
         }
 
         $this->em->flush();
-        $this->em->refresh($station);
     }
 
     public function reduceHlsStreamsToLimit(Station $station): void
@@ -224,7 +223,6 @@ final class StationRepository extends Repository
         }
 
         $this->em->flush();
-        $this->em->refresh($station);
     }
 
     public function flushRelatedMedia(Station $station): void

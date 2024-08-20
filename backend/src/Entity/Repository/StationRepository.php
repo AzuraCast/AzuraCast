@@ -131,7 +131,7 @@ final class StationRepository extends Repository
             $streams = [
                 'aac_lofi' => 48,
                 'aac_midfi' => 96,
-                'aac_hifi' => $station->getMaxBitrate() !== 0 ? $station->getMaxBitrate() : 128,
+                'aac_hifi' => $station->getMaxBitrate() !== 0 ? $station->getMaxBitrate() : 192,
             ];
 
             foreach ($streams as $name => $bitrate) {

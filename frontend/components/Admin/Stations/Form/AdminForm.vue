@@ -6,7 +6,7 @@
         <div class="row g-3 mb-3">
             <form-group-checkbox
                 id="edit_form_is_enabled"
-                class="col-md-3"
+                class="col-md-6"
                 :field="v$.is_enabled"
                 :label="$gettext('Enable Broadcasting')"
                 :description="$gettext('If disabled, the station will not broadcast or shuffle its AutoDJ.')"
@@ -15,16 +15,18 @@
             <form-group-field
                 v-if="enableAdvancedFeatures"
                 id="edit_form_radio_base_dir"
-                class="col-md-8"
+                class="col-md-6"
                 :field="v$.radio_base_dir"
                 advanced
                 :label="$gettext('Base Station Directory')"
                 :description="$gettext('The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.')"
             />
+        </div>
 
+        <div class="row g-3 mb-3">
             <form-group-field
                 id="edit_form_max_bitrate"
-                class="col-md-2"
+                class="col-md-4"
                 :field="v$.max_bitrate"
                 :label="$gettext('Maximum Bitrate')"
                 :description="$gettext('The maximum bitrate in which the station allowed to broadcast at, in Kbps. 0 for unlimited.')"
@@ -32,7 +34,7 @@
 
             <form-group-field
                 id="edit_form_max_mounts"
-                class="col-md-2"
+                class="col-md-4"
                 :field="v$.max_mounts"
                 :label="$gettext('Maximum Mounts')"
                 :description="$gettext('The maximum number of mount points allowed. 0 for unlimited.')"
@@ -40,7 +42,7 @@
 
             <form-group-field
                 id="edit_form_max_hls_streams"
-                class="col-md-2"
+                class="col-md-4"
                 :field="v$.max_hls_streams"
                 :label="$gettext('Maximum Hls Streams')"
                 :description="$gettext('The maximum number of HLS streams allowed. 0 for unlimited.')"

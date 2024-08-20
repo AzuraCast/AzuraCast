@@ -179,6 +179,18 @@ class Station implements Stringable, IdentifiableEntityInterface
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
     protected ?int $request_threshold = 15;
+       #[
+        OA\Property(example: 10),
+        ORM\Column(nullable: true, type: 'smallint'),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected ?int $request_priority = null;
+        #[
+        OA\Property(example: 0),
+        ORM\Column(options: ['default' => 0]),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected int $requests_follow_format = 0;
 
     #[
         OA\Property(example: 0),
@@ -751,6 +763,18 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function setRequestThreshold(int $requestThreshold = null): void
     {
         $this->request_threshold = $requestThreshold;
+    }
+
+    public function getRequestPriority(): int|null {
+        return $this->request_priority;
+    }
+
+    public function setRequestPriority(int $priority = null) {
+        $this->request_priority = $priority;
+    }
+    
+    public function getRequestsFollowFormat(): int {
+        return $this->requests_follow_format;
     }
 
     public function getDisconnectDeactivateStreamer(): ?int

@@ -76,15 +76,12 @@ final class StationRequestRepository extends AbstractStationBasedRepository
 
         return ($pendingRequest > 0);
     }
-
-    public function getNextPlayableRequest(
+    public function getAllPotentialRequests(
         Station $station,
-        ?CarbonInterface $now = null
-    ): ?StationRequest {
-        $now ??= CarbonImmutable::now($station->getTimezoneObject());
+        CarbonInterface $now
 
-        // Look up all requests that have at least waited as long as the threshold.
-        $requests = $this->em->createQuery(
+    ): array {
+        return $this->em->createQuery(
             <<<'DQL'
                 SELECT sr, sm
                 FROM App\Entity\StationRequest sr JOIN sr.track sm
@@ -94,6 +91,17 @@ final class StationRequestRepository extends AbstractStationBasedRepository
             DQL
         )->setParameter('station', $station)
             ->execute();
+
+    }
+
+    public function getNextPlayableRequest(
+        Station $station,
+        ?CarbonInterface $now = null
+    ): ?StationRequest {
+        $now ??= CarbonImmutable::now($station->getTimezoneObject());
+
+        // Look up all requests that have at least waited as long as the threshold.
+        $requests = $this->getAllPotentialRequests($station, $now);
 
         foreach ($requests as $request) {
             /** @var StationRequest $request */

@@ -17,6 +17,7 @@ use App\Entity\Repository\StationRequestRepository;
 use App\Entity\Song;
 use App\Entity\Station;
 use App\Entity\StationMedia;
+use App\Entity\StationRequest;
 use App\Entity\StationPlaylist;
 use App\Entity\StationPlaylistMedia;
 use App\Entity\StationQueue;
@@ -33,13 +34,22 @@ final class QueueBuilder implements EventSubscriberInterface
 {
     use LoggerAwareTrait;
     use EntityManagerAwareTrait;
+
     private const array LEGACY_PRIORITIES = [
         PlaylistTypes::OncePerHour->value => 3,
         PlaylistTypes::OncePerXSongs->value => 2,
         PlaylistTypes::OncePerXMinutes->value => 1,
         PlaylistTypes::Standard->value => 0,
-        'scheduledBonus' => 4
     ];
+    private ?array $recentSongHistory = null;
+    private ?Station $station = null;
+    private ?CarbonInterface $expectedPlayTime = null;
+    private ?array $playlists = null;
+    private bool $legacyPriority = false;
+    private array $requestsByPlaylist = [];
+    private array $generalRequests = [];
+    private ?array $eligibilityTable = [];
+    private bool $allowDuplicates = false;//Will stay off until end of first iteration, then switch on for second.
 
     public function __construct(
         private readonly Scheduler $scheduler,
@@ -64,91 +74,155 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     /**
-     * Determine the next-playing song for this station based on its playlist rotation rules.
-     *
-     * @param BuildQueue $event
+     * Called once to configure the object at the beginning of queue building.
+     * 
+     * @param Station $station
+     * @param CarbonInterface $expectedPlayTime
+     * @return bool
      */
-    public function calculateNextSong(BuildQueue $event): void
-    {
-        $this->logger->info('AzuraCast AutoDJ is calculating the next song to play...');
-
-        $station = $event->getStation();
-        $expectedPlayTime = $event->getExpectedPlayTime();
-        $recentSongHistoryForDuplicatePrevention = $this->queueRepo->getRecentlyPlayedByTimeRange(
+    private function setup(
+        Station $station,
+        CarbonInterface $expectedPlayTime
+    ): bool {
+        $this->station = $station;
+        $this->expectedPlayTime = $expectedPlayTime;
+        $this->recentSongHistory = $this->queueRepo->getRecentlyPlayedByTimeRange(
             $station,
             $expectedPlayTime,
             $station->getBackendConfig()->getDuplicatePreventionTimeRange()
         );
+        $playlists = $station->getPlaylists();
+        $priorities = [];
+        if (empty($playlists)) {
+            return false;
+        }
+        $this->legacyPriority = !$this->stationUsesPriorities();
+        $this->logger->debug(
+            sprintf(
+                'Station %s playlist priorities.',
+                $this->legacyPriority ? 'does not define' : 'defines'
+            ),
+        );
+        //Playlists with the merge option set must be handled specially because we don't control those.
+        $backendMerge = [];
+        foreach ($playlists as $playlist) {
+            if (!$playlist->getIsEnabled()) {
+                $this->logger->debug(
+                    sprintf(
+                        'Playlist "%s" is disabled.',
+                        $playlist->getName()
+                    )
+                );
+                continue;
+            }
+            if (0 === count($playlist->getMediaItems())) {
+                $this->logger->debug(
+                    sprintf(
+                        'Playlist "%s" is empty.',
+                        $playlist->getName()
+                    )
+                );
+            }
+            $playlistId = $playlist->getId();
+            $this->eligibilityTable[$playlistId] = null;
+            if ($playlist->backendMerge()) {
+                $backendMerge[] = $playlist;
+                continue;
+            }
+            $priority = $this->getPlaylistPriority($playlist, $this->legacyPriority);
+            $priorities[$priority][$playlistId] = $playlist;
+        }
+        krsort($priorities);
+        //Build our list of playlists, sorted first by priority, then by weight.
+        $this->logger->debug(
+            sprintf(
+                'Station has %d playlists with the following priorities.',
+                count($playlists)
+            ),
+            $this->getLogPriorities($priorities)
+        );
+        foreach ($priorities as $playlists) {
+            $weights = [];
+            foreach ($playlists as $playlist) {
+                $weights[$playlist->getId()] = $playlist->getWeight();
+            }
+            $weights = $this->weightedShuffle($weights);
+            foreach ($weights as $id => $weight) {
+                $this->playlists[] = $playlists[$id];
+            }
+        }
+        //Force backend merge playlists to the front.
+        $this->playlists = array_merge($backendMerge, $this->playlists);
+        //Create a mapping of requests to playlists in order to support limiting requests based on the current schedule.
+        $requests = $this->requestRepo->getAllPotentialRequests($this->station, $this->expectedPlayTime);
+        $this->generalRequests = $requests;
+        foreach ($requests as $request) {
+            $track = $request->getTrack();
+            foreach ($track->getPlaylists() as $playlistItem) {
+                $playlist = $playlistItem->getPlaylist();
+                $this->requestsByPlaylist[$playlist->getId()][] = $request;
+            }
+        }
 
+        return true;
+    }
+
+    /**
+     * Determine the next-playing song for this station based on its playlist rotation rules.
+     *
+     * @param BuildQueue $event
+     */
+
+    public function calculateNextSong(BuildQueue $event): void
+    {
+        $this->logger->info('AzuraCast AutoDJ is calculating the next song to play...');
+        $this->setup(
+            $event->getStation(),
+            $event->getExpectedPlayTime()
+        );
         $this->logger->debug(
             'AutoDJ recent song playback history',
             [
-                'history_duplicate_prevention' => $recentSongHistoryForDuplicatePrevention,
+                'history_duplicate_prevention' => $this->recentSongHistory,
             ]
         );
-
-        $eligiblePlaylists = $this->getEligiblePlaylists($station, $expectedPlayTime);
-        if(empty($eligiblePlaylists))
-        {
-            $this->logger->error('No valid playlists detected. Skipping AutoDJ calculations.');
-            return;
-
-        }
-        //The identified playlists can now be shuffled based on weight rules.
-        $eligiblePlaylistsByWeight = [];
-        foreach($eligiblePlaylists as $playlistId => $playlist)
-        {
-            $eligiblePlaylistsByWeight[$playlistId] = $playlist->getWeight();
-        }
-        $eligiblePlaylistsByWeight = $this->weightedShuffle($eligiblePlaylistsByWeight);
-
-        // Loop through the playlists and attempt to play them with no duplicates first,
-        // then loop through them again while allowing duplicates.
         foreach ([false, true] as $allowDuplicates) {
-            foreach ($eligiblePlaylistsByWeight as $playlistId => $weight) {
-                $playlist = $eligiblePlaylists[$playlistId];
-
-                if (
-                    $event->setNextSongs(
-                        $this->playSongFromPlaylist(
-                            $playlist,
-                            $recentSongHistoryForDuplicatePrevention,
-                            $expectedPlayTime,
-                            $allowDuplicates
-                        )
-                    )
-                ) {
+            while (null !== $songs = $this->getNextSongs($allowDuplicates)) {
+                if ($event->setNextSongs($songs)) {
                     $this->logger->info(
                         'Playable track(s) found and registered.',
                         [
-                            'next_song' => (string)$event,
+                            'next_song' => (string) $event,
                         ]
                     );
+
                     return;
                 }
             }
-
+            $this->reset();
+        }
+        $this->logger->error("No playable tracks were found.");
     }
-    if ($event->isInterrupting()) {
-        $this->logger->info('No interrupting tracks to play.');
-    } else {
-        $this->logger->error('No playable tracks were found.');
-    }
-
-    }
-
-    private function stationUsesPriorities(Station $station): bool
+/**
+ * Checks if at least one of this station's playlists has a priority defined.
+ * Priorities should be set on all or none of a station's playlists, not a mix of both.
+ * If priorities are not used, then all playlists will be prioritized based on their type and whether or not they are scheduled to maintain legacy behaviour.
+ * If priorities are in use, then any playlist lacking one will be interpreted as having a priority of 0, which could render it unreachable.
+ */
+    private function stationUsesPriorities(): bool
     {
-        foreach($station->getPlaylists() as $playlist)
-        {
-            if(null != $playlist->getPriority())
-            {
-                return true;
-            }
+        $playlists = $this->station->getPlaylists();
+        if (empty($playlists)) {
             return false;
         }
-
+        foreach ($playlists as $playlist) {
+            if (null !== $playlist->getPriority()) {
+                return true;
+            }
+        }
+        return false;
     }
+
     /**
      * For stations not using playlist priorities, generate a token priority for a playlist based on its type.
      * This preserves the somewhat arbitrary precedents that were previously defined:
@@ -156,94 +230,20 @@ final class QueueBuilder implements EventSubscriberInterface
      */
     private function getLegacyPriority(StationPlaylist $playlist): int
     {
-        $this->logger->debug(
-            'Computing legacy, type-based priority for the following playlist.',
-            [
-                'name' => $playlist->getName(),
-                'type' => $playlist->getType()->name
-            ]
-            );
-
-        $priority = self::LEGACY_PRIORITIES[$playlist->getType()->value];
-        $this->logger->debug(
-            sprintf(
-                'Base priority for this playlist type is %d.',
-                $priority
-            )
-            );
-
-        $schedules = $playlist->getScheduleItems();
-        if($schedules->count() > 0)
-        {
-            $bonus = self::LEGACY_PRIORITIES['scheduledBonus'];
-            $this->logger->debug(
-                sprintf(
-                    'Playlist has scheduled items. The priority is increased by %d.',
-                    $bonus
-                )
-                );
-$priority += $bonus;
-        }        $this->logger->debug(
-            sprintf(
-                'Final computed priority for this playlist is %d.',
-                $priority
-            )
-            );
-            return $priority;
+        $scheduled = count($playlist->getScheduleItems()) > 0 ? count(PlaylistTypes::cases()) : 0;
+        return self::LEGACY_PRIORITIES[$playlist->getType()->value] + $scheduled;
     }
 
     /**
-     * Organizes station playlists by priority.
-     * If no playlist priorities are defined, uses getLegacyPriority method to retain backward compatibility.
-     * If the station playlists have a mix of defined and undefined priorities, then those playlists with undefined priorities will be interpreted as having a value of 0.
-     * This could result in a playlist being unreachable depending on other priorities, so it is recommended that either all or none of your playlists should define a priority.
-     * @param Station $station
-     * @return array
+     * Gets a configured, legacy or default priority.
+     * @param $playlist
      */
-    private function getPlaylistsByPriority(Station $station): array
+    private function getPlaylistPriority(StationPlaylist $playlist, bool $legacy): int
     {
-        $playlists = [];
-        $highest = 0;
-        $usesPriorities = $this->stationUsesPriorities($station);
-        if($usesPriorities)
-        {
-            $this->logger->debug(
-                    'Station has playlist priorities defined.');
-
+        if ($legacy) {
+            return $this->getLegacyPriority($playlist);
         }
-        else
-        {
-            $this->logger->debug('Station has no playlist priorities defined. Playlists are prioritized based on their type and whether or not they have schedule items.');
-
-        }
-        foreach($station->getPlaylists() as $playlist)
-        {
-            if(!$usesPriorities)
-            {
-                $priority = $this->getLegacyPriority($playlist);
-            }
-            else
-            {
-                $priority = $playlist->getPriority();
-                if(null === $priority)
-                {
-                    $this->logger->info(
-                        'This playlist has no priority. It will be considered to have a priority of 0.',
-                        [
-                            'name' => $playlist->getName()
-                        ]
-                        );
-                    $priority = 0;
-                }
-            }
-            if($priority > $highest)
-            {
-                $highest = $priority;
-            }
-            $playlists[$priority][] = $playlist;
-        }
-        $playlists['highest'] = $highest;
-        return $playlists;
+        return $playlist->getPriority() ?? 0;
     }
 
     /**
@@ -251,79 +251,198 @@ $priority += $bonus;
      * @param array $playlists
      * @return array
      */
-    private function convertPrioritizedPlaylistsToLog(array $playlists): array
+    private function getLogPriorities(array $playlists): array
     {
         $summary = [];
-        for($i = $playlists['highest']; $i >= 0; $i--)
-        {
-            if(!isset($playlists[$i]))
-            {
-                continue;
-            }
-            foreach($playlists[$i] as $playlist)
-            {
-                $summary[$i][] = $playlist->getName();
+        foreach ($playlists as $priority => $group) {
+            foreach ($group as $playlist) {
+                $summary[$priority][] = $playlist->getName();
             }
         }
         return $summary;
     }
 
     /**
-     * Returns currently available playlists, according to priority and eligibility rules.
-     * @param Station $station
-     * @return array|null
+     * Selects the next eligible playlist or song request, only checking eligibility when required.
      */
-    private function getEligiblePlaylists(Station $station, CarbonInterface $expectedPlayTime)
+    private function getNextEligiblePlaylistOrRequest(): StationPlaylist|StationRequest|null
     {
-        $allPlaylists = $this->getPlaylistsByPriority($station);
-        $prioritySummary = $this->convertPrioritizedPlaylistsToLog($allPlaylists);
-        $this->logger->debug(
-            'Station playlists are prioritized as follows.',
-            $prioritySummary
-        );
-        $eligiblePlaylists = [];
-        $logPlaylists = [];
-        for($i = $allPlaylists['highest']; $i >= 0; $i--)
+        $this->logger->debug('Selecting next playlist.');
+        while (null !== $key = key($this->playlists)) {
+            $playlist = $this->playlists[$key];
+            next($this->playlists);
+
+            $logPlaylist = $this->getLogPlaylist($playlist);
+            $this->logger->debug(
+                'Playlist currently under consideration:',
+                $logPlaylist,
+            );
+            $playlistId = $playlist->getId();
+            if (null === $this->eligibilityTable[$playlistId]) {
+                $this->logger->debug(
+                    'Checking eligibility for playlist:',
+                    $logPlaylist
+                );
+                $this->eligibilityTable[$playlistId] = $this->scheduler->shouldPlaylistPlayNow(
+                    $playlist,
+                    $this->expectedPlayTime
+                );
+            }
+            if ($this->eligibilityTable[$playlistId]) {
+                $this->logger->debug(
+                    'Playlist has been selected:',
+                    $logPlaylist
+                );
+                //If this playlist is at or below general request priority, then general requests win.
+                if (
+                    !$playlist->backendMerge()
+                    && $this->shouldConsiderGeneralRequests($this->getPlaylistPriority($playlist, $this->legacyPriority
+                    )
+                    )
+                ) {
+                    $request = $this->getRequestFromGroup($this->generalRequests);
+                    if (null !== $request) {
+                        $this->logger->info(
+                            'Eligible request found',
+                            [
+                                'id' => $request->getId(),
+                                'track' => $request->getTrack()
+                                    ->getTitle()
+                            ]
+                        );
+                        //Rewind playlists so this playlist gets attempted again if this request doesn't go through.
+                        prev($this->playlists);
+                        return $request;
+                    }
+                }
+                //Otherwise go forward with normal track selection.
+                $this->logger->debug(
+                    'No requests available. Proceeding with regular track selection',
+                    $logPlaylist
+                );
+                return $playlist;
+            }
+        }
+        $this->logger->warning('No eligible playlists found.');
+        return null;
+    }
+
+    private function reset()
     {
-        foreach($allPlaylists[$i] as $playlist)
-        {
-            if (!$this->scheduler->shouldPlaylistPlayNow($playlist, $expectedPlayTime)) {
-                continue;
+        reset($this->playlists);
+    }
+
+    private function getNextSongs(bool $allowDuplicates): StationQueue|array|null
+    {
+        while (true) {
+            $playlist = null;
+            $request = null;
+            $playlistOrRequest = $this->getNextEligiblePlaylistOrRequest();
+            if (null === $playlistOrRequest) {
+                //No songs available.
+                return null;
+            }
+            if ($playlistOrRequest instanceof StationPlaylist) {
+                $playlist = $playlistOrRequest;
+            } else {
+                $request = $playlistOrRequest;
+            }
+            //Try to play requests for this playlist first, then try to play it normally.
+            if (
+                null === $request
+                && !$playlist->backendMerge()
+            ) {
+                $request = $this->getRequestForPlaylist($playlist);
+            }
+            if (null !== $request) {
+                return $this->playRequest($request);
             }
 
-            $eligiblePlaylists[$playlist->getId()] = $playlist;
-            $logPlaylists[] = [
-                'id' => $playlist->getId(),
-                'name' => $playlist->getName(),
-                'weight' => $playlist->getWeight(),
-            ];
-
+            $song = $this->playSongFromPlaylist($playlist, $this->recentSongHistory, $this->expectedPlayTime, $allowDuplicates);
+            if (null !== $song) {
+                return $song;
+            }
         }
-        if(!empty($eligiblePlaylists))
-        {
-            $this->logger->info(
-                sprintf(
-                    '%d playable playlist(s) found at priority level %s.',
-                    count($eligiblePlaylists),
-                    $i
-                ),
-                ['playlists' => $logPlaylists]
-            );
+    }
 
-            return $eligiblePlaylists;
+    private function getLogPlaylist($playlist): array
+    {
+        return [
+            'id' => $playlist->getId(),
+            'name' => $playlist->getName(),
+            'type' => $playlist->getType()->name,
+            'priority' => $playlist->getPriority(),
+            'weight' => $playlist->getWeight()
+        ];
+    }
+
+    //requests.
+    private function validateRequest(StationRequest $request): bool
+    {
+        return $request->shouldPlayNow($this->expectedPlayTime) && !$this->requestRepo->hasPlayedRecently($request->getTrack(), $this->station);
+    }
+
+    /**
+     * Returns the first valid request from a group of requests, or null.
+     */
+    private function getRequestFromGroup(array $requests): StationRequest|null
+    {
+        while (($request = current($requests)) instanceof StationRequest) {
+            next($requests);
+            if ($this->validateRequest($request)) {
+                return $request;
+            }
         }
-        $this->logger->info(
+
+        return null;
+    }
+
+    /**
+     * If available, gets a request for a specific playlist.
+     */
+    private function getRequestForPlaylist(StationPlaylist $playlist): StationRequest|null
+    {
+        $playlistId = $playlist->getId();
+        $requests = $this->requestsByPlaylist[$playlistId] ?? [];
+        return $this->getRequestFromGroup($requests);
+    }
+
+    private function shouldConsiderGeneralRequests(int $playlistPriority = null): bool
+    {
+        $this->logger->debug('Checking if general requests should be considered at this time.');
+        if (0 !== $this->station->getRequestsFollowFormat()) {
+            $this->logger->debug("Requests are required to follow the station's format. General requests are not permitted.");
+            return false;
+        }
+        $requestPriority = $this->station->getRequestPriority();
+        if (null === $requestPriority) {
+            //Legacy mode where requests take precedence over everything.
+            $this->logger->debug('No request priority defined, so requests should always be considered.');
+            return true;
+        }
+        $this->logger->debug(
             sprintf(
-                'No playable playlists found at priority level %d',
-                $i
+                'Playlist priority: %d, request priority: %d. General requests should %sbe considered.',
+                $playlistPriority,
+                $requestPriority,
+                $requestPriority >= $playlistPriority ? '' : 'not '
             )
-            );
-
+        );
+        return $requestPriority >= $playlistPriority;
     }
-    $this->logger->error('No playable playlists found.');
-    return null;
 
+    private function playRequest(StationRequest $request)
+    {
+        $this->logger->debug(sprintf('Queueing next song from request ID %d.', $request->getId()));
+
+        $stationQueueEntry = StationQueue::fromRequest($request);
+        $this->em->persist($stationQueueEntry);
+
+        $request->setPlayedAt($this->expectedPlayTime->getTimestamp());
+        $this->em->persist($request);
+        return $stationQueueEntry;
     }
+
     /**
      * Apply a weighted shuffle to the given array in the form:
      *  [ key1 => weight1, key2 => weight2 ]
@@ -409,7 +528,8 @@ $priority += $bonus;
             };
 
             if (null !== $validTrack) {
-                $queueEntry = $this->makeQueueFromApi($validTrack, $playlist, $expectedPlayTime);
+                //Items generated here are subject to duplicate rejection, so we send them with this tentative flag to keep them from being automatically queued.
+                $queueEntry = $this->makeQueueFromApi($validTrack, $playlist, $expectedPlayTime, true);
 
                 if (null !== $queueEntry) {
                     $playlist->setPlayedAt($expectedPlayTime->getTimestamp());
@@ -434,6 +554,7 @@ $priority += $bonus;
         StationPlaylistQueue $validTrack,
         StationPlaylist $playlist,
         CarbonInterface $expectedPlayTime,
+        bool $tentative = false
     ): ?StationQueue {
         $mediaToPlay = $this->em->find(StationMedia::class, $validTrack->media_id);
         if (!$mediaToPlay instanceof StationMedia) {
@@ -449,8 +570,10 @@ $priority += $bonus;
         $stationQueueEntry = StationQueue::fromMedia($playlist->getStation(), $mediaToPlay);
         $stationQueueEntry->setPlaylist($playlist);
         $stationQueueEntry->setPlaylistMedia($spm);
+        if (!$tentative) {
+            $this->em->persist($stationQueueEntry);
+        }
 
-        $this->em->persist($stationQueueEntry);
 
         return $stationQueueEntry;
     }
@@ -585,30 +708,5 @@ $priority += $bonus;
         $mediaQueue = $this->spmRepo->getQueue($playlist);
 
         return $this->duplicatePrevention->preventDuplicates($mediaQueue, $recentSongHistory, false);
-    }
-
-    public function getNextSongFromRequests(BuildQueue $event): void
-    {
-        // Don't use this to cue requests.
-        if ($event->isInterrupting()) {
-            return;
-        }
-
-        $expectedPlayTime = $event->getExpectedPlayTime();
-
-        $request = $this->requestRepo->getNextPlayableRequest($event->getStation(), $expectedPlayTime);
-        if (null === $request) {
-            return;
-        }
-
-        $this->logger->debug(sprintf('Queueing next song from request ID %d.', $request->getId()));
-
-        $stationQueueEntry = StationQueue::fromRequest($request);
-        $this->em->persist($stationQueueEntry);
-
-        $request->setPlayedAt($expectedPlayTime->getTimestamp());
-        $this->em->persist($request);
-
-        $event->setNextSongs($stationQueueEntry);
     }
 }

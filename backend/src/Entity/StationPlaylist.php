@@ -350,14 +350,14 @@ class StationPlaylist implements
         $this->weight = $weight;
     }
 
-    public function getPriority(): ?int
+    public function getPriority(): int|null
     {
         return $this->priority;
     }
 
     public function setPriority(?int $priority): void
     {
-        $this->priority = priority;
+        $this->priority = $priority;
     }
 
     public function getIncludeInRequests(): bool

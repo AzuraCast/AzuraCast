@@ -151,12 +151,10 @@ const props = defineProps({
     }
 });
 
-
 const {enableAdvancedFeatures} = useAzuraCast();
 
 const emit = defineEmits(['update:form']);
 const form = useVModel(props, 'form', emit);
-
 
 const {v$, tabClass} = useVuelidateOnFormTab(
     computed(() => {
@@ -253,10 +251,9 @@ const recordStreamsOptions = computed(() => {
 
 const route = useRoute()
 let _maxBitrate;
-if(route.matched.some(({ name }) => name.startsWith('admin:'))){
+if (route.matched.some(({ name }) => name.toString().startsWith('admin:'))){
     _maxBitrate = null;
-}
-else {
+} else {
     ({maxBitrate: _maxBitrate} = useAzuraCastStation());
 }
 </script>

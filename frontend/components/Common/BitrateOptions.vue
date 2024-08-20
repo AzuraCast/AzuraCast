@@ -116,7 +116,6 @@ const radioBitrates = [
     32, 48, 64, 96, 128, 192, 256, 320
 ].filter((bitrate) => props.maxBitrate === 0 || bitrate <= props.maxBitrate);
 
-
 const customField: ComputedRef<number | null> = computed({
     get() {
         return includes(radioBitrates, model.value)

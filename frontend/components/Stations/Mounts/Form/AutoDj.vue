@@ -60,7 +60,6 @@ const props = defineProps({
     }
 });
 
-
 const {maxBitrate} = useAzuraCastStation();
 
 const emit = defineEmits(['update:form']);

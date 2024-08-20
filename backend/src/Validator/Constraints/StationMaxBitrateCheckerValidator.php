@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Validator\Constraints;
 
-use App\Entity\Station;
-use App\Radio\Configuration;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -41,8 +39,7 @@ final class StationMaxBitrateCheckerValidator extends ConstraintValidator
         }
 
         $message = __(
-            'The bitrate you selected: %selected_bitrate%, 
-                    is higher than your station\'s bitrate limit:  %station_limit%'
+            'The selected bitrate: %selected_bitrate%, is higher than the station\'s bitrate limit:  %station_limit%'
         );
 
         if ($selectedBitrate > $stationMaxBitrate) {

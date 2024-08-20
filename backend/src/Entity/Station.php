@@ -770,7 +770,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->request_priority;
     }
 
-    public function setRequestPriority(int $priority = null)
+    public function setRequestPriority(int $priority = null): void
     {
         $this->request_priority = $priority;
     }

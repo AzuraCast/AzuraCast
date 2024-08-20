@@ -136,7 +136,7 @@ class StationPlaylist implements
     protected int $weight = self::DEFAULT_WEIGHT;
     #[
         OA\Property(
-            description: "Determines the order in which playlists will play when multiple playlists are eligible. Higher priority playlists are guaranteed to play before lower priority ones. If multiple playlists have the same priority, they will be shuffled based on their weights.",
+            description: "Determines which playlists are allowed to play when multiple playlists are eligible.",
             example: 0
         ),
         ORM\Column(nullable: true, type: 'smallint')

@@ -141,13 +141,13 @@ final class QueueBuilder implements EventSubscriberInterface
             ),
             $this->getLogPriorities($priorities)
         );
+                    $this->playlists = [];
         foreach ($priorities as $playlists) {
             $weights = [];
             foreach ($playlists as $playlist) {
                 $weights[$playlist->getId()] = $playlist->getWeight();
             }
             $weights = $this->weightedShuffle($weights);
-            $this->playlists = [];
             foreach ($weights as $id => $weight) {
                 $this->playlists[] = $playlists[$id];
             }

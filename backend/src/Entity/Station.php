@@ -187,10 +187,10 @@ class Station implements Stringable, IdentifiableEntityInterface
     protected ?int $request_priority = null;
         #[
         OA\Property(example: 0),
-        ORM\Column(options: ['default' => 0]),
+        ORM\Column(options: ['default' => false]),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected int $requests_follow_format = 0;
+    protected bool $requests_follow_format = false;
 
     #[
         OA\Property(example: 0),
@@ -775,7 +775,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->request_priority = $priority;
     }
 
-    public function getRequestsFollowFormat(): int
+    public function getRequestsFollowFormat(): bool
     {
         return $this->requests_follow_format;
     }

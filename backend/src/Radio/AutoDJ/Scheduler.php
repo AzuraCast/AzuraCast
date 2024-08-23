@@ -359,40 +359,27 @@ final class Scheduler
         }
 
         $playlistPlayedAt = CarbonImmutable::createFromTimestamp(
-            $playlist->getPlayedAt(),
-            $now->getTimezone()
+            $this->queueRepo->getLastPlayedTimeForPlaylist(
+                $playlist,
+                $now
+            )
         );
-
         $isQueueEmpty = $this->spmRepo->isQueueEmpty($playlist);
         $hasCuedPlaylistMedia = $this->queueRepo->hasCuedPlaylistMedia($playlist);
 
         if (!$dateRange->contains($playlistPlayedAt)) {
             $this->logger->debug('Playlist was not played yet.');
-
-            $isQueueFilled = $this->spmRepo->isQueueCompletelyFilled($playlist);
-
-            if ((!$isQueueFilled || $isQueueEmpty) && !$hasCuedPlaylistMedia) {
-                $now = $dateRange->getStart()->subSecond();
-
-                $this->logger->debug('Resetting playlist queue with now override', [$now]);
-
-                $this->spmRepo->resetQueue($playlist, $now);
-                $isQueueEmpty = false;
-            }
-        } elseif ($isQueueEmpty && !$hasCuedPlaylistMedia) {
-            $this->logger->debug('Resetting playlist queue.');
-
-            $this->spmRepo->resetQueue($playlist);
+            $this->logger->debug('Resetting playlist queue with now override.');
+            $startOfWindow = $dateRange->getStart()->subSecond();
+            $this->spmRepo->resetQueue($playlist, $startOfWindow);
             $isQueueEmpty = false;
         }
 
         $playlist = $this->em->refetch($playlist);
-
-        $playlistQueueResetAt = CarbonImmutable::createFromTimestamp(
-            $playlist->getQueueResetAt(),
-            $now->getTimezone()
-        );
-
+                $playlistQueueResetAt = CarbonImmutable::createFromTimestamp(
+                    $playlist->getQueueResetAt(),
+                    $now->getTimezone()
+                );
         if (!$isQueueEmpty && !$dateRange->contains($playlistQueueResetAt)) {
             $this->logger->debug('Playlist should loop.');
             return true;

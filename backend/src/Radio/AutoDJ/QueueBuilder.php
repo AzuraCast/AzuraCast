@@ -425,7 +425,7 @@ final class QueueBuilder implements EventSubscriberInterface
     private function shouldConsiderGeneralRequests(int $playlistPriority = null): bool
     {
         $this->logger->debug('Checking if general requests should be considered at this time.');
-        if (!$this->station->getRequestsFollowFormat()) {
+        if ($this->station->getRequestsFollowFormat()) {
             $this->logger->debug(
                 "Requests are required to follow the station's format. General requests are not permitted."
             );

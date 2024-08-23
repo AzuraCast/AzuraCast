@@ -387,11 +387,13 @@ const weightOptions = map(
     }
 );
 const priorityOptions = map(
-    range(0, 100),
+    [null]
+    .concat(
+    range(0, 100)),
     (val) => {
         return {
             value: val,
-            text: val
+            text: (null === val? $gettext('Unset'): val)
         }
     }
 );

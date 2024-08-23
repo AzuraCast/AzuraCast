@@ -363,7 +363,11 @@ msgid "Allow Song Requests"
 msgstr ""
 
 #: frontend/components/Admin/Stations/Form/RequestsForm.vue:53
-msgid "Requests must follow station format"
+msgid "Requests Must Follow Station Format"
+msgstr ""
+
+#: frontend/components/Admin/Stations/Form/RequestsForm.vue:64
+msgid "Request Priority"
 msgstr ""
 
 #: frontend/components/Admin/Stations/Form/StreamersForm.vue:16
@@ -2464,6 +2468,10 @@ msgstr ""
 
 #: frontend/components/Stations/Playlists/Form/BasicInfo.vue:122
 msgid "When multiple playlists are eligible to play, higher priority playlists prevent lower priority playlists from playing."
+msgstr ""
+
+#: frontend/components/Stations/Playlists/Form/BasicInfo.vue:396
+msgid "Unset"
 msgstr ""
 
 #: frontend/components/Stations/Playlists/Form/BasicInfo.vue:122
@@ -6429,10 +6437,6 @@ msgstr ""
 
 #: frontend/components/Stations/Playlists.vue:99
 msgid "Weight"
-msgstr ""
-
-#: frontend/components/Stations/Playlists.vue:94
-msgid "Priority"
 msgstr ""
 
 #: frontend/components/Login.vue:17

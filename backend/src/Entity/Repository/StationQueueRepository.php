@@ -228,6 +228,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
             ->setMaxResults(1)
             ->getOneOrNullResult();
     }
+
     public function getUnplayedBaseQuery(Station $station): QueryBuilder
     {
         return $this->getBaseQuery($station)

@@ -6,6 +6,7 @@ namespace App\Radio\AutoDJ;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Entity\Enums\PlaylistTypes;
 use App\Entity\Repository\StationQueueRepository;
 use App\Entity\Station;
 use App\Entity\StationQueue;
@@ -92,7 +93,13 @@ final class Queue
                 $spm = $queueRow->getPlaylistMedia();
                 $request = $queueRow->getRequest();
 
-                if ($restOfQueueIsInvalid || !$this->isQueueRowStillValid($queueRow, $expectedPlayTime)) {
+                if (
+                    $restOfQueueIsInvalid
+                    || (!$this->isExemptFromValidation(
+                        $queueRow
+                    )
+                    && !$this->isQueueRowStillValid($queueRow, $expectedPlayTime))
+                ) {
                     $this->logger->debug(
                         'Queue item is invalid and will be removed',
                         array_filter([
@@ -321,6 +328,38 @@ final class Queue
                 true,
                 $queueRow->getId()
             );
+    }
+    /**
+     * A queue item is exempt from validation if:
+     * The playlist it belongs to is not 'General Rotation';
+     * The playlist it belongs to has the merge setting enabled;
+     * The item is not the first track to play from that playlist.
+     * @param StationQueue $queueRow
+     * @return bool
+     */
+    private function isExemptFromValidation(StationQueue $queueRow): bool
+    {
+        $playlist = $queueRow->getPlaylist();
+        if (null === $playlist) {
+            return false;
+        }
+        if (!$playlist->backendMerge()) {
+            return false;
+        }
+        $station = $queueRow->getStation();
+        $playlist = $queueRow->getPlaylist();
+        if (null === $playlist) {
+            return false;
+        }
+        $previousQueue = $this->queueRepo->getPreviousItem($station, $queueRow);
+        if (null === $previousQueue) {
+            return false;
+        }
+        $previousPlaylist = $previousQueue->getPlaylist();
+        if (null === $previousPlaylist) {
+            return false;
+        }
+        return $playlist->getId() === $previousPlaylist->getId();
     }
 
     public function getQueueRowLog(StationQueue $queueRow): ?array

@@ -218,6 +218,17 @@ final class StationQueueRepository extends AbstractStationBasedRepository
         return null === $sq ? 0 : $sq->getTimestampPlayed();
     }
 
+    public function getPreviousItem(Station $station, StationQueue $currentItem): ?StationQueue
+    {
+        return $this->getBaseQuery($station)
+            ->andWhere('sq.id < :id')
+            ->setParameter('id', $currentItem->getId())
+            ->orderBy('sq.id', 'desc')
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+    }
+
     public function getUnplayedBaseQuery(Station $station): QueryBuilder
     {
         return $this->getBaseQuery($station)

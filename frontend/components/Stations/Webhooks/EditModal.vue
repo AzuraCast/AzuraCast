@@ -51,6 +51,7 @@ import Tabs from "~/components/Common/Tabs.vue";
 import RadioDe from "~/components/Stations/Webhooks/Form/RadioDe.vue";
 import GetMeRadio from "~/components/Stations/Webhooks/Form/GetMeRadio.vue";
 import RadioReg from "~/components/Stations/Webhooks/Form/RadioReg.vue";
+import GroupMe from "~/components/Stations/Webhooks/Form/GroupMe.vue";
 
 const props = defineProps({
     ...baseEditModalProps,
@@ -85,6 +86,7 @@ const webhookComponents = {
     [WebhookType.GetMeRadio]: GetMeRadio,
     [WebhookType.Discord]: Discord,
     [WebhookType.Telegram]: Telegram,
+    [WebhookType.GroupMe]: GroupMe,
     [WebhookType.Mastodon]: Mastodon,
     [WebhookType.GoogleAnalyticsV4]: GoogleAnalyticsV4,
     [WebhookType.MatomoAnalytics]: MatomoAnalytics,

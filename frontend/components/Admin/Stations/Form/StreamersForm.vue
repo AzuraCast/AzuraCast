@@ -28,7 +28,6 @@
                         :description="$gettext('If enabled, AzuraCast will automatically record any live broadcasts made to this station to per-broadcast recordings.')"
                     />
                 </div>
-
                 <div
                     v-if="form.backend_config.record_streams"
                     class="row g-3 mb-3"
@@ -46,6 +45,7 @@
                     <bitrate-options
                         id="edit_form_backend_record_streams_bitrate"
                         class="col-md-6"
+                        :max-bitrate="_maxBitrate ?? props.form.max_bitrate"
                         :field="v$.backend_config.record_streams_bitrate"
                         :label="$gettext('Live Broadcast Recording Bitrate (kbps)')"
                     />
@@ -135,9 +135,10 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric} from "@vuelidate/validators";
-import {useAzuraCast} from "~/vendor/azuracast";
+import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
+import { useRoute } from 'vue-router'
 
 const props = defineProps({
     form: {
@@ -154,7 +155,6 @@ const {enableAdvancedFeatures} = useAzuraCast();
 
 const emit = defineEmits(['update:form']);
 const form = useVModel(props, 'form', emit);
-
 
 const {v$, tabClass} = useVuelidateOnFormTab(
     computed(() => {
@@ -248,4 +248,12 @@ const recordStreamsOptions = computed(() => {
         }
     ];
 });
+
+const route = useRoute()
+let _maxBitrate;
+if (route.matched.some(({ name }) => name.toString().startsWith('admin:'))){
+    _maxBitrate = null;
+} else {
+    ({maxBitrate: _maxBitrate} = useAzuraCastStation());
+}
 </script>

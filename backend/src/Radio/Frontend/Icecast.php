@@ -189,6 +189,11 @@ final class Icecast extends AbstractFrontend
                 'listenurl' => $this->getUrlForMount($station, $mountRow),
             ];
 
+            if ($station->getMaxBitrate() !== 0) {
+                $maxBitrateInBps = (int) $station->getMaxBitrate() * 1024 + 2500;
+                $mount['limit-rate'] = $maxBitrateInBps;
+            }
+
             if (!empty($station->getDescription())) {
                 $mount['stream-description'] = $station->getDescription();
             }

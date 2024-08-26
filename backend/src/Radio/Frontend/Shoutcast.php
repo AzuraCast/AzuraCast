@@ -161,6 +161,11 @@ final class Shoutcast extends AbstractFrontend
             'publicip' => $urlHost,
         ];
 
+        if ($station->getMaxBitrate() !== 0) {
+            $maxBitrateInBps = (int) $station->getMaxBitrate() * 1024 + 2500;
+            $config['maxbitrate'] = $maxBitrateInBps;
+        }
+
         $customConfig = trim($frontendConfig->getCustomConfiguration() ?? '');
         if (!empty($customConfig)) {
             $customConf = $this->processCustomConfig($customConfig);

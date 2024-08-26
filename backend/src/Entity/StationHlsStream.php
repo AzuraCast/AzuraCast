@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Radio\Enums\StreamFormats;
 use App\Utilities\Strings;
+use App\Validator\Constraints as AppAssert;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use Stringable;
@@ -50,7 +51,8 @@ class StationHlsStream implements
 
     #[
         OA\Property(example: 128),
-        ORM\Column(type: 'smallint', nullable: true)
+        ORM\Column(type: 'smallint', nullable: true),
+        AppAssert\StationMaxBitrateChecker(stationGetter: 'station', selectedBitrate: 'bitrate')
     ]
     protected ?int $bitrate = 128;
 

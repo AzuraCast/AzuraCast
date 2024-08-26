@@ -23,6 +23,32 @@
             />
         </div>
 
+        <div class="row g-3 mb-3">
+            <form-group-field
+                id="edit_form_max_bitrate"
+                class="col-md-4"
+                :field="v$.max_bitrate"
+                :label="$gettext('Maximum Bitrate')"
+                :description="$gettext('The maximum bitrate in which the station allowed to broadcast at, in Kbps. 0 for unlimited.')"
+            />
+
+            <form-group-field
+                id="edit_form_max_mounts"
+                class="col-md-4"
+                :field="v$.max_mounts"
+                :label="$gettext('Maximum Mounts')"
+                :description="$gettext('The maximum number of mount points allowed. 0 for unlimited.')"
+            />
+
+            <form-group-field
+                id="edit_form_max_hls_streams"
+                class="col-md-4"
+                :field="v$.max_hls_streams"
+                :label="$gettext('Maximum Hls Streams')"
+                :description="$gettext('The maximum number of HLS streams allowed. 0 for unlimited.')"
+            />
+        </div>
+
         <loading :loading="storageLocationsLoading">
             <div class="row g-3">
                 <form-group-select
@@ -94,6 +120,9 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             media_storage_location: {},
             recordings_storage_location: {},
             podcasts_storage_location: {},
+            max_bitrate: {},
+            max_mounts: {},
+            max_hls_streams: {}
         };
 
         if (enableAdvancedFeatures) {
@@ -114,6 +143,9 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             recordings_storage_location: '',
             podcasts_storage_location: '',
             is_enabled: true,
+            max_bitrate: 128,
+            max_mounts: 0,
+            max_hls_streams: 0
         };
 
         if (enableAdvancedFeatures) {

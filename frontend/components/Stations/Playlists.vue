@@ -91,7 +91,8 @@
                                 </div>
                             </template>
                             <template #cell(priority)="{ item }">
-                                {{ $gettext('Priority') }}: {{ null === item.priority? $gettext('Unset'): item.priority }}
+                                <span class="visually-hidden">{{ $gettext('Priority') }}: </span>
+                                {{ null === item.priority ? $gettext('Unset') : item.priority }}
                             </template>
                             <template #cell(scheduling)="{ item }">
                                 <template v-if="!item.is_enabled">

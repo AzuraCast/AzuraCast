@@ -108,11 +108,13 @@
                 </div>
 
                 <div class="row g-3">
-                    <form-group-select
+                    <form-group-field
                         id="form_edit_priority"
                         class="col-md-12"
                         :field="v$.priority"
-                        :options="priorityOptions"
+                        input-type="number"
+                        :input-attrs="{min: '0', max: '150'}"
+                        clearable
                         :label="$gettext('Playlist Priority')"
                         :description="$gettext('When multiple playlists are eligible to play, higher priority playlists prevent lower priority playlists from playing.')"
                     />
@@ -386,16 +388,4 @@ const weightOptions = map(
         }
     }
 );
-const priorityOptions = map(
-    [null]
-    .concat(
-    range(0, 100)),
-    (val) => {
-        return {
-            value: val,
-            text: (null === val? $gettext('Unset'): val)
-        }
-    }
-);
-
 </script>

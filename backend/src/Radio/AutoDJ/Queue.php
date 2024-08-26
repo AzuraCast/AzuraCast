@@ -331,7 +331,6 @@ final class Queue
     }
     /**
      * A queue item is exempt from validation if:
-     * The playlist it belongs to is not 'General Rotation';
      * The playlist it belongs to has the merge setting enabled;
      * The item is not the first track to play from that playlist.
      * @param StationQueue $queueRow

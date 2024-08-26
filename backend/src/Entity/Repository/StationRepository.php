@@ -113,7 +113,7 @@ final class StationRepository extends Repository
             $record->setIsDefault(true);
             $record->setEnableAutodj(true);
             $record->setAutodjFormat(StreamFormats::Mp3);
-            $record->setAutodjBitrate(128);
+            $record->setAutodjBitrate($station->getMaxBitrate() !== 0 ? $station->getMaxBitrate() : 192);
             $this->em->persist($record);
         }
 
@@ -131,7 +131,7 @@ final class StationRepository extends Repository
             $streams = [
                 'aac_lofi' => 48,
                 'aac_midfi' => 96,
-                'aac_hifi' => 192,
+                'aac_hifi' => $station->getMaxBitrate() !== 0 ? $station->getMaxBitrate() : 192,
             ];
 
             foreach ($streams as $name => $bitrate) {
@@ -145,6 +145,84 @@ final class StationRepository extends Repository
 
         $this->em->flush();
         $this->em->refresh($station);
+    }
+
+    public function reduceMountsBitrateToLimit(Station $station): void
+    {
+        foreach ($station->getMounts() as $mount) {
+            if ($mount->getAutodjBitrate() > $station->getMaxBitrate()) {
+                $mount->setAutodjBitrate($station->getMaxBitrate());
+                $this->em->persist($mount);
+            }
+        }
+
+        $this->em->flush();
+    }
+
+    public function reduceHlsBitrateToLimit(Station $station): void
+    {
+        foreach ($station->getHlsStreams() as $hlsStream) {
+            if ($hlsStream->getBitrate() > $station->getMaxBitrate()) {
+                $hlsStream->setBitrate($station->getMaxBitrate());
+                $this->em->persist($hlsStream);
+            }
+        }
+
+        $this->em->flush();
+    }
+
+    public function reduceRemoteRelayAutoDjBitrateToLimit(Station $station): void
+    {
+        foreach ($station->getRemotes() as $remoteRelay) {
+            if ($remoteRelay->getAutodjBitrate() > $station->getMaxBitrate()) {
+                $remoteRelay->setAutodjBitrate($station->getMaxBitrate());
+                $this->em->persist($remoteRelay);
+            }
+        }
+
+        $this->em->flush();
+    }
+
+    public function reduceLiveBroadcastRecordingBitrateToLimit(Station $station): void
+    {
+        $backendConfig = $station->getBackendConfig();
+        if ($backendConfig->getRecordStreamsBitrate() > $station->getMaxBitrate()) {
+            $backendConfig->setRecordStreamsBitrate($station->getMaxBitrate());
+            $station->setBackendConfig($backendConfig);
+            $this->em->persist($station);
+        }
+
+        $this->em->flush();
+    }
+
+    public function reduceMountPointsToLimit(Station $station): void
+    {
+        if ($station->getMaxMounts() === 0) {
+            return;
+        }
+
+        foreach ($station->getMounts() as $index => $stationMount) {
+            if (($index + 1) > $station->getMaxMounts()) {
+                $this->em->remove($stationMount);
+            }
+        }
+
+        $this->em->flush();
+    }
+
+    public function reduceHlsStreamsToLimit(Station $station): void
+    {
+        if ($station->getMaxHlsStreams() === 0) {
+            return;
+        }
+
+        foreach ($station->getHlsStreams() as $index => $stationHlsStream) {
+            if (($index + 1) > $station->getMaxHlsStreams()) {
+                $this->em->remove($stationHlsStream);
+            }
+        }
+
+        $this->em->flush();
     }
 
     public function flushRelatedMedia(Station $station): void

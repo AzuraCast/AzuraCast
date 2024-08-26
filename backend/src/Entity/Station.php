@@ -118,7 +118,11 @@ class Station implements Stringable, IdentifiableEntityInterface
             type: "object"
         ),
         ORM\Column(type: 'json', nullable: true),
-        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL]),
+        AppAssert\StationMaxBitrateChecker(
+            stationGetter: 'self',
+            selectedBitrate: ['backendConfig', 'recordStreamsBitrate']
+        )
     ]
     protected ?array $backend_config = null;
 
@@ -290,6 +294,36 @@ class Station implements Stringable, IdentifiableEntityInterface
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
     protected ?string $timezone = 'UTC';
+
+    #[
+        OA\Property(
+            description: "The maximum bitrate at which a station may broadcast, in Kbps. 0 for unlimited",
+            example: 128
+        ),
+        ORM\Column,
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected int $max_bitrate = 0;
+
+    #[
+        OA\Property(
+            description: "The maximum number of mount points the station can have, 0 for unlimited",
+            example: 3
+        ),
+        ORM\Column,
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected int $max_mounts = 0;
+
+    #[
+        OA\Property(
+            description: "The maximum number of HLS streams the station can have, 0 for unlimited",
+            example: 3
+        ),
+        ORM\Column,
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected int $max_hls_streams = 0;
 
     /**
      * @var ConfigData|null
@@ -910,6 +944,53 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function setTimezone(?string $timezone): void
     {
         $this->timezone = $timezone;
+    }
+
+    public function getMaxBitrate(): int
+    {
+        return $this->max_bitrate;
+    }
+
+    public function setMaxBitrate(int $maxBitrate): void
+    {
+        if ($this->max_bitrate !== $maxBitrate) {
+            $this->setNeedsRestart(true);
+        }
+        $this->max_bitrate = $maxBitrate;
+    }
+
+    public function getMaxMounts(): int
+    {
+        if (!empty($this->max_mounts)) {
+            return $this->max_mounts;
+        }
+
+        return 0;
+    }
+
+    public function setMaxMounts(int $maxMounts): void
+    {
+        if ($this->max_mounts !== $maxMounts) {
+            $this->setNeedsRestart(true);
+        }
+        $this->max_mounts = $maxMounts;
+    }
+
+    public function getMaxHlsStreams(): int
+    {
+        if (!empty($this->max_hls_streams)) {
+            return $this->max_hls_streams;
+        }
+
+        return 0;
+    }
+
+    public function setMaxHlsStreams(int $maxHlsStreams): void
+    {
+        if ($this->max_hls_streams !== $maxHlsStreams) {
+            $this->setNeedsRestart(true);
+        }
+        $this->max_hls_streams = $maxHlsStreams;
     }
 
     public function getBrandingConfig(): StationBrandingConfiguration

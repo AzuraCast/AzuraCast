@@ -141,7 +141,7 @@ final class Scheduler
             $targetTime = $now->minute($targetMinute);
         }
 
-        $playlistDiff = $targetTime->diffInMinutes($now, false);
+        $playlistDiff = $targetTime->diffInMinutes($now);
 
         if ($playlistDiff < 0 || $playlistDiff > 15) {
             return false;
@@ -166,8 +166,6 @@ final class Scheduler
 
     /**
      * Get the duration of scheduled play time in seconds (used for remote URLs of indeterminate length).
-     *
-     * @param StationPlaylist $playlist
      */
     public function getPlaylistScheduleDuration(StationPlaylist $playlist): int
     {
@@ -359,35 +357,22 @@ final class Scheduler
         }
 
         $playlistPlayedAt = CarbonImmutable::createFromTimestamp(
-            $playlist->getPlayedAt(),
-            $now->getTimezone()
+            $this->queueRepo->getLastPlayedTimeForPlaylist(
+                $playlist,
+                $now
+            )
         );
 
         $isQueueEmpty = $this->spmRepo->isQueueEmpty($playlist);
-        $hasCuedPlaylistMedia = $this->queueRepo->hasCuedPlaylistMedia($playlist);
-
         if (!$dateRange->contains($playlistPlayedAt)) {
             $this->logger->debug('Playlist was not played yet.');
-
-            $isQueueFilled = $this->spmRepo->isQueueCompletelyFilled($playlist);
-
-            if ((!$isQueueFilled || $isQueueEmpty) && !$hasCuedPlaylistMedia) {
-                $now = $dateRange->getStart()->subSecond();
-
-                $this->logger->debug('Resetting playlist queue with now override', [$now]);
-
-                $this->spmRepo->resetQueue($playlist, $now);
-                $isQueueEmpty = false;
-            }
-        } elseif ($isQueueEmpty && !$hasCuedPlaylistMedia) {
-            $this->logger->debug('Resetting playlist queue.');
-
-            $this->spmRepo->resetQueue($playlist);
+            $this->logger->debug('Resetting playlist queue with now override.');
+            $startOfWindow = $dateRange->getStart()->subSecond();
+            $this->spmRepo->resetQueue($playlist, $startOfWindow);
             $isQueueEmpty = false;
         }
 
         $playlist = $this->em->refetch($playlist);
-
         $playlistQueueResetAt = CarbonImmutable::createFromTimestamp(
             $playlist->getQueueResetAt(),
             $now->getTimezone()

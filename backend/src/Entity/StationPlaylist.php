@@ -134,12 +134,13 @@ class StationPlaylist implements
         ORM\Column(type: 'smallint')
     ]
     protected int $weight = self::DEFAULT_WEIGHT;
+
     #[
         OA\Property(
             description: "Determines which playlists are allowed to play when multiple playlists are eligible.",
             example: 0
         ),
-        ORM\Column(nullable: true, type: 'smallint')
+        ORM\Column(type: 'smallint', nullable: true)
     ]
     protected ?int $priority = null;
 

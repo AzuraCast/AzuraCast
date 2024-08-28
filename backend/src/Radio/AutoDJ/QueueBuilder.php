@@ -81,12 +81,14 @@ final class QueueBuilder implements EventSubscriberInterface
         if ($playlists->isEmpty()) {
             return null;
         }
+
         $this->logger->debug(
             sprintf(
                 'Station %s playlist priorities.',
                 $useLegacyPriority ? 'does not define' : 'defines'
             ),
         );
+
         $outPlaylists = [];
         foreach ($playlists as $playlist) {
             if (!$playlist->getIsEnabled()) {
@@ -118,7 +120,9 @@ final class QueueBuilder implements EventSubscriberInterface
             $priority = $this->getPlaylistPriority($playlist, $useLegacyPriority);
             $priorities[$priority][$playlistId] = $playlist;
         }
+
         krsort($priorities);
+
         //Build our list of playlists, sorted first by priority, then by weight.
         $this->logger->debug(
             sprintf(
@@ -127,6 +131,7 @@ final class QueueBuilder implements EventSubscriberInterface
             ),
             $this->getLogPriorities($priorities)
         );
+
         foreach ($priorities as $playlists) {
             $weights = [];
             foreach ($playlists as $playlist) {
@@ -150,9 +155,10 @@ final class QueueBuilder implements EventSubscriberInterface
     public function calculateNextSong(BuildQueue $event): void
     {
         $this->logger->info('AzuraCast AutoDJ is calculating the next song to play...');
+
         $station = $event->getStation();
         $expectedPlayTime = $event->getExpectedPlayTime();
-                        $useLegacyPriority = !$this->stationUsesPriorities($station);
+        $useLegacyPriority = !$this->stationUsesPriorities($station);
         $playlists = $this->getPrioritizedPlaylists(
             $station,
             $event->getExpectedPlayTime(),
@@ -199,25 +205,42 @@ final class QueueBuilder implements EventSubscriberInterface
         }
         $this->logger->error("No playable tracks were found.");
     }
-/**
- * Checks if at least one of this station's playlists has a priority defined.
- * Priorities should be set on all or none of a station's playlists, not a mix of both.
- * If priorities are not used, then all playlists will be prioritized by type and whether they're scheduled.
- * This maintains legacy behaviour.
- * If priorities are in use, then any playlist lacking one will be interpreted as having a priority of 0.
- */
+
+    /**
+     * Checks if at least one of this station's playlists has a priority defined.
+     * Priorities should be set on all or none of a station's playlists, not a mix of both.
+     * If priorities are not used, then all playlists will be prioritized by type and whether they're scheduled.
+     * This maintains legacy behaviour.
+     * If priorities are in use, then any playlist lacking one will be interpreted as having a priority of 0.
+     */
     private function stationUsesPriorities(Station $station): bool
     {
         $playlists = $station->getPlaylists();
         if ($playlists->isEmpty()) {
             return false;
         }
+
         foreach ($playlists as $playlist) {
             if (null !== $playlist->getPriority()) {
                 return true;
             }
         }
+
         return false;
+    }
+
+    /**
+     * Gets a configured, legacy or default priority.
+     */
+    private function getPlaylistPriority(
+        StationPlaylist $playlist,
+        bool $legacy
+    ): int {
+        if ($legacy) {
+            return $this->getLegacyPriority($playlist);
+        }
+
+        return $playlist->getPriority() ?? 0;
     }
 
     /**
@@ -229,20 +252,6 @@ final class QueueBuilder implements EventSubscriberInterface
     {
         $scheduled = count($playlist->getScheduleItems()) > 0 ? count(PlaylistTypes::cases()) : 0;
         return self::LEGACY_PRIORITIES[$playlist->getType()->value] + $scheduled;
-    }
-
-    /**
-     * Gets a configured, legacy or default priority.
-     * @param $playlist
-     */
-    private function getPlaylistPriority(
-        StationPlaylist $playlist,
-        bool $legacy
-    ): int {
-        if ($legacy) {
-            return $this->getLegacyPriority($playlist);
-        }
-        return $playlist->getPriority() ?? 0;
     }
 
     /**
@@ -272,52 +281,53 @@ final class QueueBuilder implements EventSubscriberInterface
         bool $useLegacyPriority
     ): StationPlaylist|StationRequest|null {
         $this->logger->debug('Selecting next playlist.');
+
         while (null !== $key = key($playlists)) {
             $playlist = $playlists[$key];
             next($playlists);
 
             $logPlaylist = $this->getLogPlaylist($playlist);
-            $playlistId = $playlist->getId();
-                $this->logger->debug(
-                    'Playlist has been selected:',
-                    $logPlaylist
-                );
-                //If this playlist is at or below general request priority, then general requests win.
+            $this->logger->debug(
+                'Playlist has been selected:',
+                $logPlaylist
+            );
+
+            //If this playlist is at or below general request priority, then general requests win.
             if (
-                    !$playlist->backendMerge()
-                    && $this->shouldConsiderGeneralRequests(
-                        $station,
-                        $this->getPlaylistPriority(
-                            $playlist,
-                            $useLegacyPriority
-                        )
-                    )
+                !$playlist->backendMerge()
+                && $this->shouldConsiderGeneralRequests(
+                    $station,
+                    $this->getPlaylistPriority($playlist, $useLegacyPriority)
+                )
             ) {
                 $request = $this->getRequestFromGroup(
                     $requests,
                     $expectedPlayTime
                 );
+
                 if (null !== $request) {
                     $this->logger->info(
                         'Eligible request found',
                         [
                             'id' => $request->getId(),
-                            'track' => $request->getTrack()
-                                ->getTitle(),
+                            'track' => $request->getTrack()->getTitle(),
                         ]
                     );
+
                     //Rewind playlists so this playlist gets attempted again if this request doesn't go through.
                     prev($playlists);
                     return $request;
                 }
             }
-                //Otherwise go forward with normal track selection.
-                $this->logger->debug(
-                    'No requests available. Proceeding with regular track selection',
-                    $logPlaylist
-                );
-                return $playlist;
+
+            // Otherwise go forward with normal track selection.
+            $this->logger->debug(
+                'No requests available. Proceeding with regular track selection',
+                $logPlaylist
+            );
+            return $playlist;
         }
+
         $this->logger->warning('No eligible playlists found.');
         return null;
     }
@@ -330,10 +340,11 @@ final class QueueBuilder implements EventSubscriberInterface
         bool $useLegacyPriority,
         bool $allowDuplicates
     ): StationQueue|array|null {
-                        $requests = $this->requestRepo->getAllPotentialRequests($station, $expectedPlayTime);
+        $requests = $this->requestRepo->getAllPotentialRequests($station, $expectedPlayTime);
         while (true) {
             $playlist = null;
             $request = null;
+
             $playlistOrRequest = $this->getNextEligiblePlaylistOrRequest(
                 $station,
                 $playlists,
@@ -341,16 +352,19 @@ final class QueueBuilder implements EventSubscriberInterface
                 $expectedPlayTime,
                 $useLegacyPriority
             );
+
             if (null === $playlistOrRequest) {
                 //No songs available.
                 return null;
             }
+
             if ($playlistOrRequest instanceof StationPlaylist) {
                 $playlist = $playlistOrRequest;
             } else {
                 /** @var StationPlaylist $playlist */
                 $request = $playlistOrRequest;
             }
+
             //Try to play requests for this playlist first, then try to play it normally.
             if (
                 null === $request
@@ -362,6 +376,7 @@ final class QueueBuilder implements EventSubscriberInterface
                     $expectedPlayTime
                 );
             }
+
             if (null !== $request) {
                 return $this->playRequest(
                     $request,
@@ -375,6 +390,7 @@ final class QueueBuilder implements EventSubscriberInterface
                 $expectedPlayTime,
                 $allowDuplicates
             );
+
             if (null !== $song) {
                 return $song;
             }
@@ -392,14 +408,12 @@ final class QueueBuilder implements EventSubscriberInterface
         ];
     }
 
-    //requests.
     private function validateRequest(
         StationRequest $request,
         CarbonInterface $expectedPlayTime
     ): bool {
-        return $request->shouldPlayNow(
-            $expectedPlayTime
-        )
+        return
+            $request->shouldPlayNow($expectedPlayTime)
             && !$this->requestRepo->hasPlayedRecently(
                 $request->getTrack(),
                 $request->getStation()
@@ -440,6 +454,7 @@ final class QueueBuilder implements EventSubscriberInterface
                 }
             }
         }
+
         return $this->getRequestFromGroup(
             $requestsByPlaylist,
             $expectedPlayTime
@@ -451,18 +466,21 @@ final class QueueBuilder implements EventSubscriberInterface
         int $playlistPriority
     ): bool {
         $this->logger->debug('Checking if general requests should be considered at this time.');
+
         if ($station->getRequestsFollowFormat()) {
             $this->logger->debug(
                 "Requests are required to follow the station's format. General requests are not permitted."
             );
             return false;
         }
+
         $requestPriority = $station->getRequestPriority();
         if (null === $requestPriority) {
             //Legacy mode where requests take precedence over everything.
             $this->logger->debug('No request priority defined, so requests should always be considered.');
             return true;
         }
+
         $this->logger->debug(
             sprintf(
                 'Playlist priority: %d, request priority: %d. General requests should %sbe considered.',
@@ -471,6 +489,7 @@ final class QueueBuilder implements EventSubscriberInterface
                 $requestPriority >= $playlistPriority ? '' : 'not '
             )
         );
+
         return $requestPriority >= $playlistPriority;
     }
 
@@ -483,6 +502,7 @@ final class QueueBuilder implements EventSubscriberInterface
         $stationQueueEntry = StationQueue::fromRequest($request);
         $request->setPlayedAt($expectedPlayTime->getTimestamp());
         $this->em->persist($request);
+
         return $stationQueueEntry;
     }
 
@@ -750,6 +770,6 @@ final class QueueBuilder implements EventSubscriberInterface
         $this->spmRepo->resetQueue($playlist);
         $mediaQueue = $this->spmRepo->getQueue($playlist);
 
-        return $this->duplicatePrevention->preventDuplicates($mediaQueue, $recentSongHistory, false);
+        return $this->duplicatePrevention->preventDuplicates($mediaQueue, $recentSongHistory);
     }
 }

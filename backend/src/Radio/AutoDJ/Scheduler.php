@@ -141,7 +141,7 @@ final class Scheduler
             $targetTime = $now->minute($targetMinute);
         }
 
-        $playlistDiff = $targetTime->diffInMinutes($now, false);
+        $playlistDiff = $targetTime->diffInMinutes($now);
 
         if ($playlistDiff < 0 || $playlistDiff > 15) {
             return false;
@@ -166,8 +166,6 @@ final class Scheduler
 
     /**
      * Get the duration of scheduled play time in seconds (used for remote URLs of indeterminate length).
-     *
-     * @param StationPlaylist $playlist
      */
     public function getPlaylistScheduleDuration(StationPlaylist $playlist): int
     {
@@ -364,9 +362,8 @@ final class Scheduler
                 $now
             )
         );
-        $isQueueEmpty = $this->spmRepo->isQueueEmpty($playlist);
-        $hasCuedPlaylistMedia = $this->queueRepo->hasCuedPlaylistMedia($playlist);
 
+        $isQueueEmpty = $this->spmRepo->isQueueEmpty($playlist);
         if (!$dateRange->contains($playlistPlayedAt)) {
             $this->logger->debug('Playlist was not played yet.');
             $this->logger->debug('Resetting playlist queue with now override.');
@@ -376,10 +373,11 @@ final class Scheduler
         }
 
         $playlist = $this->em->refetch($playlist);
-                $playlistQueueResetAt = CarbonImmutable::createFromTimestamp(
-                    $playlist->getQueueResetAt(),
-                    $now->getTimezone()
-                );
+        $playlistQueueResetAt = CarbonImmutable::createFromTimestamp(
+            $playlist->getQueueResetAt(),
+            $now->getTimezone()
+        );
+
         if (!$isQueueEmpty && !$dateRange->contains($playlistQueueResetAt)) {
             $this->logger->debug('Playlist should loop.');
             return true;

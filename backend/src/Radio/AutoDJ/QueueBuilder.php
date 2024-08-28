@@ -340,7 +340,8 @@ final class QueueBuilder implements EventSubscriberInterface
         bool $useLegacyPriority,
         bool $allowDuplicates
     ): StationQueue|array|null {
-        $requests = $this->requestRepo->getAllPotentialRequests($station, $expectedPlayTime);
+        $requests = $this->requestRepo->getAllPotentialRequests($station);
+
         while (true) {
             $playlist = null;
             $request = null;

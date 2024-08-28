@@ -76,9 +76,28 @@ final class StationRequestRepository extends AbstractStationBasedRepository
 
         return ($pendingRequest > 0);
     }
-    public function getAllPotentialRequests(
+
+    public function getNextPlayableRequest(
         Station $station,
-        CarbonInterface $now
+        ?CarbonInterface $now = null
+    ): ?StationRequest {
+        $now ??= CarbonImmutable::now($station->getTimezoneObject());
+
+        // Look up all requests that have at least waited as long as the threshold.
+        $requests = $this->getAllPotentialRequests($station);
+
+        foreach ($requests as $request) {
+            /** @var StationRequest $request */
+            if ($request->shouldPlayNow($now) && !$this->hasPlayedRecently($request->getTrack(), $station)) {
+                return $request;
+            }
+        }
+
+        return null;
+    }
+
+    public function getAllPotentialRequests(
+        Station $station
     ): array {
         return $this->em->createQuery(
             <<<'DQL'
@@ -90,25 +109,6 @@ final class StationRequestRepository extends AbstractStationBasedRepository
             DQL
         )->setParameter('station', $station)
             ->execute();
-    }
-
-    public function getNextPlayableRequest(
-        Station $station,
-        ?CarbonInterface $now = null
-    ): ?StationRequest {
-        $now ??= CarbonImmutable::now($station->getTimezoneObject());
-
-        // Look up all requests that have at least waited as long as the threshold.
-        $requests = $this->getAllPotentialRequests($station, $now);
-
-        foreach ($requests as $request) {
-            /** @var StationRequest $request */
-            if ($request->shouldPlayNow($now) && !$this->hasPlayedRecently($request->getTrack(), $station)) {
-                return $request;
-            }
-        }
-
-        return null;
     }
 
     /**

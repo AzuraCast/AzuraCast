@@ -1,7 +1,7 @@
 #
 # Golang dependencies build step
 #
-FROM golang:1.22-bookworm AS go-dependencies
+FROM golang:1.23-bookworm AS go-dependencies
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends openssl git

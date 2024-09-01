@@ -811,9 +811,14 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->request_priority = $priority;
     }
 
-    public function getRequestsFollowFormat(): bool
+    public function requestsFollowFormat(): bool
     {
         return $this->requests_follow_format;
+    }
+
+    public function setRequestsFollowFormat(bool $requests_follow_format): void
+    {
+        $this->requests_follow_format = $requests_follow_format;
     }
 
     public function getDisconnectDeactivateStreamer(): ?int

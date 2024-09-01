@@ -378,7 +378,7 @@ final class QueueBuilder implements EventSubscriberInterface
     ): bool {
         $this->logger->debug('Checking if general requests should be considered at this time.');
 
-        if ($station->getRequestsFollowFormat()) {
+        if ($station->requestsFollowFormat()) {
             $this->logger->debug(
                 "Requests are required to follow the station's format. General requests are not permitted."
             );

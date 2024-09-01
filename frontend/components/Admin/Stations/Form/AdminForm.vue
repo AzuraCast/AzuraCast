@@ -143,7 +143,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             recordings_storage_location: '',
             podcasts_storage_location: '',
             is_enabled: true,
-            max_bitrate: 128,
+            max_bitrate: 0,
             max_mounts: 0,
             max_hls_streams: 0
         };

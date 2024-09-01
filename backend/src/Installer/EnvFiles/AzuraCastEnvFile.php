@@ -253,6 +253,14 @@ final class AzuraCastEnvFile extends AbstractEnvFile
                     ),
                     'default' => '50M',
                 ],
+                'NGINX_BLOCK_BOTS' => [
+                    'name' => __('Automatically block common bots and crawlers'),
+                    'description' => __(
+                        'If enabled, this will automatically download and update the Ultimate Nginx Bad Bot Blocker, which will block aggressive crawlers and other bots.'
+                    ),
+                    'options' => [true, false],
+                    'default' => false,
+                ],
                 Environment::ENABLE_WEB_UPDATER => [
                     'name' => __('Enable web-based Docker image updates'),
                     'default' => true,

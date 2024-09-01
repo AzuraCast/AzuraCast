@@ -24,3 +24,7 @@ touch /tmp/nginx_fastcgi/.tmpreaper
 touch /tmp/nginx_cache/.tmpreaper
 
 chmod -R 777 /tmp/nginx_*
+
+# Fetch nginx bot blocker install script
+wget https://raw.githubusercontent.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker/master/install-ngxblocker -O /usr/local/sbin/install-ngxblocker
+chmod +x /usr/local/sbin/install-ngxblocker

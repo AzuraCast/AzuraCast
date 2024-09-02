@@ -310,6 +310,7 @@ final class BatchAction implements SingleActionInterface
 
                     $newQueue = StationQueue::fromMedia($stationRef, $media);
                     $newQueue->setTimestampCued($cuedTimestamp);
+                    $newQueue->setTimestampScheduled($cuedTimestamp);
                     $this->em->persist($newQueue);
                 } catch (Throwable $e) {
                     $result->errors[] = sprintf('%s: %s', $media->getPath(), $e->getMessage());

@@ -21,9 +21,12 @@ use App\Entity\StationPlaylist;
 use App\Entity\StationPlaylistMedia;
 use App\Entity\StationQueue;
 use App\Entity\StationRequest;
+use App\Entity\StationSchedule;
+use App\Utilities\DateRange;
 use App\Event\Radio\BuildQueue;
 use App\Radio\PlaylistParser;
 use Carbon\CarbonInterface;
+use Carbon\CarbonImmutable;
 use Generator;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -68,17 +71,36 @@ final class QueueBuilder implements EventSubscriberInterface
     /**
      * Filters and sorts playlists by eligibility, priority and weight.
      */
-    private function getPrioritizedPlaylists(
+    private function getPrioritizedPlaylistsAndSchedules(
         Station $station,
-        CarbonInterface $expectedPlayTime
-    ): array|null {
+        CarbonInterface $expectedPlayTime,
+        array& $outPlaylists,
+        array& $outSchedules,
+        array& $outDateRanges
+    ): void {
         $playlists = $station->getPlaylists();
         $priorities = [];
         if ($playlists->isEmpty()) {
-            return null;
+            return;
+        }
+        //Find out when the last scheduled playlist played. Don't do schedule checks any earlier than this.
+        $lastScheduledTrack = $this->queueRepo->getLatestScheduledTrack($station);
+        if (null !== $lastScheduledTrack) {
+            $lastScheduledTime = CarbonImmutable::createFromTimestamp(
+                $lastScheduledTrack->getTimestampScheduled(),
+                $station->getTimeZone()
+            );
+            if ($lastScheduledTime->greaterThan($expectedPlayTime)) {
+                $this->logger->debug("Station schedule has drifted backwards in time. Using last scheduled track timestamp instead of current playtime.",
+                [
+                    'now' => $expectedPlayTime,
+                    'lastScheduledTime' => $lastScheduledTime,
+                ]
+                );
+                $expectedPlayTime = $lastScheduledTime;
+            }
         }
 
-        $outPlaylists = [];
         foreach ($playlists as $playlist) {
             if (!$playlist->getIsEnabled()) {
                 $this->logger->debug(
@@ -99,10 +121,17 @@ final class QueueBuilder implements EventSubscriberInterface
                 );
             }
 
+
+            $schedule = null;
+            $dateRange = null;
             if (
                 !$this->scheduler->shouldPlaylistPlayNow(
                     $playlist,
-                    $expectedPlayTime
+                    $expectedPlayTime,
+                    false,
+                    null,
+                    $schedule,
+                    $dateRange
                 )
             ) {
                 continue;
@@ -111,6 +140,8 @@ final class QueueBuilder implements EventSubscriberInterface
             $playlistId = $playlist->getId();
             $priority = $this->getPlaylistPriority($playlist);
             $priorities[$priority][$playlistId] = $playlist;
+            $outSchedules[$playlistId] = $schedule;
+            $outDateRanges[$playlistId] = $dateRange;
         }
 
         krsort($priorities);
@@ -135,7 +166,6 @@ final class QueueBuilder implements EventSubscriberInterface
             }
         }
 
-        return $outPlaylists;
     }
 
     /**
@@ -147,9 +177,16 @@ final class QueueBuilder implements EventSubscriberInterface
 
         $station = $event->getStation();
         $expectedPlayTime = $event->getExpectedPlayTime();
-
-        $playlists = $this->getPrioritizedPlaylists($station, $event->getExpectedPlayTime());
-        if (null === $playlists) {
+        $playlists = [];
+        $schedules = [];
+        $dateRanges = [];
+        $this->getPrioritizedPlaylistsAndSchedules(
+            $station,
+            $event->getExpectedPlayTime(),
+            $playlists,
+            $schedules,
+            $dateRanges);
+        if (0 === count($playlists)) {
             return;
         }
 
@@ -171,6 +208,8 @@ final class QueueBuilder implements EventSubscriberInterface
                 $this->getNextSongs(
                     $station,
                     $playlists,
+                    $schedules,
+                    $dateRanges,
                     $expectedPlayTime,
                     $recentSongHistory,
                     $allowDuplicates
@@ -236,6 +275,8 @@ final class QueueBuilder implements EventSubscriberInterface
     private function getNextSongs(
         Station $station,
         array $playlists,
+        array $schedules,
+        array $dateRanges,
         CarbonInterface $expectedPlayTime,
         array $recentSongHistory,
         bool $allowDuplicates
@@ -297,8 +338,11 @@ final class QueueBuilder implements EventSubscriberInterface
             }
 
             // Otherwise go forward with normal track selection.
+            $playlistId = $playlist->getId();
             yield $this->playSongFromPlaylist(
                 $playlist,
+                $schedules[$playlistId],
+                $dateRanges[$playlistId],
                 $recentSongHistory,
                 $expectedPlayTime,
                 $allowDuplicates
@@ -413,6 +457,7 @@ final class QueueBuilder implements EventSubscriberInterface
         $stationQueueEntry = StationQueue::fromRequest($request);
         $request->setPlayedAt($expectedPlayTime->getTimestamp());
         $this->em->persist($request);
+        $stationQueueEntry->setTimestampScheduled($expectedPlayTime->getTimestamp());
 
         return $stationQueueEntry;
     }
@@ -461,6 +506,8 @@ final class QueueBuilder implements EventSubscriberInterface
      */
     private function playSongFromPlaylist(
         StationPlaylist $playlist,
+        StationSchedule|null $schedule,
+        DateRange|null $dateRange,
         array $recentSongHistory,
         CarbonInterface $expectedPlayTime,
         bool $allowDuplicates = false
@@ -474,8 +521,8 @@ final class QueueBuilder implements EventSubscriberInterface
 
             $queueEntries = array_filter(
                 array_map(
-                    function (StationPlaylistQueue $validTrack) use ($playlist, $expectedPlayTime) {
-                        return $this->makeQueueFromApi($validTrack, $playlist, $expectedPlayTime);
+                    function (StationPlaylistQueue $validTrack) use ($playlist, $schedule, $dateRange, $expectedPlayTime) {
+                        return $this->makeQueueFromApi($validTrack, $playlist, $schedule, $dateRange, $expectedPlayTime);
                     },
                     $this->spmRepo->getQueue($playlist)
                 )
@@ -502,8 +549,7 @@ final class QueueBuilder implements EventSubscriberInterface
             };
 
             if (null !== $validTrack) {
-                //Prevent automatic queueing in case it's a duplicate.
-                $queueEntry = $this->makeQueueFromApi($validTrack, $playlist, $expectedPlayTime, true);
+                $queueEntry = $this->makeQueueFromApi($validTrack, $playlist, $schedule, $dateRange, $expectedPlayTime);
 
                 if (null !== $queueEntry) {
                     $playlist->setPlayedAt($expectedPlayTime->getTimestamp());
@@ -527,8 +573,9 @@ final class QueueBuilder implements EventSubscriberInterface
     private function makeQueueFromApi(
         StationPlaylistQueue $validTrack,
         StationPlaylist $playlist,
+        StationSchedule|null $schedule,
+        DateRange|null $dateRange,
         CarbonInterface $expectedPlayTime,
-        bool $tentative = false
     ): ?StationQueue {
         $mediaToPlay = $this->em->find(StationMedia::class, $validTrack->media_id);
         if (!$mediaToPlay instanceof StationMedia) {
@@ -544,8 +591,9 @@ final class QueueBuilder implements EventSubscriberInterface
         $stationQueueEntry = StationQueue::fromMedia($playlist->getStation(), $mediaToPlay);
         $stationQueueEntry->setPlaylist($playlist);
         $stationQueueEntry->setPlaylistMedia($spm);
-        if (!$tentative) {
-            $this->em->persist($stationQueueEntry);
+        $stationQueueEntry->setSchedule($schedule);
+        if (null !== $dateRange) {
+            $stationQueueEntry->setTimestampScheduled($dateRange->getStart()->getTimestamp());
         }
 
 

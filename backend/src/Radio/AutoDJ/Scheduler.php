@@ -33,7 +33,9 @@ final class Scheduler
         StationPlaylist $playlist,
         CarbonInterface $now = null,
         bool $excludeSpecialRules = false,
-        int $belowIdForOncePerXSongs = null
+        int $belowIdForOncePerXSongs = null,
+        StationSchedule& $outSchedule = null,
+        DateRange& $outDateRange = null
     ): bool {
         $this->logger->pushProcessor(
             function (LogRecord $record) use ($playlist) {
@@ -49,7 +51,7 @@ final class Scheduler
             $now = CarbonImmutable::now($playlist->getStation()->getTimezoneObject());
         }
 
-        if (!$this->isPlaylistScheduledToPlayNow($playlist, $now, $excludeSpecialRules)) {
+        if (!$this->isPlaylistScheduledToPlayNow($playlist, $now, $excludeSpecialRules, $outSchedule, $outDateRange)) {
             $this->logger->debug('Playlist is not scheduled to play now.');
             $this->logger->popProcessor();
             return false;
@@ -115,7 +117,9 @@ final class Scheduler
     public function isPlaylistScheduledToPlayNow(
         StationPlaylist $playlist,
         CarbonInterface $now,
-        bool $excludeSpecialRules = false
+        bool $excludeSpecialRules = false,
+        StationSchedule& $outSchedule = null,
+        DateRange& $outDateRange = null
     ): bool {
         $scheduleItems = $playlist->getScheduleItems();
 
@@ -124,7 +128,8 @@ final class Scheduler
             return true;
         }
 
-        $scheduleItem = $this->getActiveScheduleFromCollection($scheduleItems, $now, $excludeSpecialRules);
+        $scheduleItem = $this->getActiveScheduleFromCollection($scheduleItems, $now, $excludeSpecialRules, $outDateRange);
+        $outSchedule = $scheduleItem;
         return null !== $scheduleItem;
     }
 
@@ -156,6 +161,7 @@ final class Scheduler
         int $minutes
     ): bool {
         $playedAt = $this->queueRepo->getLastPlayedTimeForPlaylist($playlist, $now);
+
         if (0 === $playedAt) {
             return false;
         }
@@ -209,19 +215,21 @@ final class Scheduler
     private function getActiveScheduleFromCollection(
         Collection $scheduleItems,
         CarbonInterface $now,
-        bool $excludeSpecialRules = false
+        bool $excludeSpecialRules = false,
+        DateRange& $outDateRange = null
     ): ?StationSchedule {
         if ($scheduleItems->count() > 0) {
             foreach ($scheduleItems as $scheduleItem) {
                 $scheduleName = (string)$scheduleItem;
 
-                if ($this->shouldSchedulePlayNow($scheduleItem, $now, $excludeSpecialRules)) {
+                if ($this->shouldSchedulePlayNow($scheduleItem, $now, $excludeSpecialRules, $outDateRange)) {
                     $this->logger->debug(
                         sprintf(
                             '%s - Should Play Now',
                             $scheduleName
                         )
                     );
+
                     return $scheduleItem;
                 }
 
@@ -239,7 +247,8 @@ final class Scheduler
     public function shouldSchedulePlayNow(
         StationSchedule $schedule,
         CarbonInterface $now,
-        bool $excludeSpecialRules = false
+        bool $excludeSpecialRules = false,
+        DateRange& $outDateRange = null
     ): bool {
         $startTime = StationSchedule::getDateTime($schedule->getStartTime(), $now);
         $endTime = StationSchedule::getDateTime($schedule->getEndTime(), $now);
@@ -289,6 +298,7 @@ final class Scheduler
 
         foreach ($comparePeriods as $dateRange) {
             if ($this->shouldPlayInSchedulePeriod($schedule, $dateRange, $now, $excludeSpecialRules)) {
+                $outDateRange = $dateRange;
                 return true;
             }
         }
@@ -356,15 +366,15 @@ final class Scheduler
             return false;
         }
 
-        $playlistPlayedAt = CarbonImmutable::createFromTimestamp(
-            $this->queueRepo->getLastPlayedTimeForPlaylist(
-                $playlist,
-                $now
+        $scheduleRunStarted = (
+            null !== $this->queueRepo->getStartOfScheduleRun(
+                $playlist->getStation(),
+                $schedule,
+                $dateRange->getStartTimestamp()
             )
-        );
-
+            );
         $isQueueEmpty = $this->spmRepo->isQueueEmpty($playlist);
-        if (!$dateRange->contains($playlistPlayedAt)) {
+if (!$scheduleRunStarted) {
             $this->logger->debug('Playlist was not played yet.');
             $this->logger->debug('Resetting playlist queue with now override.');
             $startOfWindow = $dateRange->getStart()->subSecond();

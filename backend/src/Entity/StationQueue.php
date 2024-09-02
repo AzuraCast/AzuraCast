@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
     ORM\Table(name: 'station_queue'),
     ORM\Index(name: 'idx_is_played', columns: ['is_played']),
     ORM\Index(name: 'idx_timestamp_played', columns: ['timestamp_played']),
+    ORM\Index(name: 'idx_timestamp_scheduled', columns: ['timestamp_scheduled']),
     ORM\Index(name: 'idx_sent_to_autodj', columns: ['sent_to_autodj']),
     ORM\Index(name: 'idx_timestamp_cued', columns: ['timestamp_cued'])
 ]
@@ -78,6 +79,16 @@ class StationQueue implements
 
     #[ORM\Column]
     protected int $timestamp_played;
+
+    #[ORM\Column]
+    protected int $timestamp_scheduled;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'schedule_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?StationSchedule $schedule = null;
+
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    protected ?int $schedule_id = null;
 
     #[ORM\Column(nullable: true)]
     protected ?int $duration = null;
@@ -219,6 +230,25 @@ class StationQueue implements
         $this->timestamp_played = $timestampPlayed;
     }
 
+    public function getTimestampScheduled(): int
+    {
+        return $this->timestamp_scheduled;
+    }
+
+    public function setTimestampScheduled(int $timestampScheduled): void
+    {
+        $this->timestamp_scheduled = $timestampScheduled;
+    }
+
+
+    public function getSchedule(): StationSchedule|null
+    {
+        return $this->schedule;
+    }
+
+    public function setSchedule(StationSchedule $schedule = null) {
+        $this->schedule = $schedule;
+    }
     public function __toString(): string
     {
         return (null !== $this->media)

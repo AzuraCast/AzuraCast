@@ -10,7 +10,7 @@ final class Version20240901011513 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Track timestamp_scheduled and schedule_id in station_queue.';
     }
 
     public function up(Schema $schema): void

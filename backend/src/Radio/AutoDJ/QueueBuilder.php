@@ -83,7 +83,8 @@ final class QueueBuilder implements EventSubscriberInterface
         if ($playlists->isEmpty()) {
             return;
         }
-        //Find out when the last scheduled playlist played. Don't do schedule checks any earlier than this.
+
+        // Find out when the last scheduled playlist played. Don't do schedule checks any earlier than this.
         $lastScheduledTrack = $this->queueRepo->getLatestScheduledTrack($station);
         if (null !== $lastScheduledTrack) {
             $lastScheduledTime = CarbonImmutable::createFromTimestamp(

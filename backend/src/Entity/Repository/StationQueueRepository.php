@@ -241,15 +241,17 @@ final class StationQueueRepository extends AbstractStationBasedRepository
         int $startTime,
         bool $includeCancelled = false
     ): StationQueue|null {
-            $query = $this->getBaseQuery($station)
+        $query = $this->getBaseQuery($station)
             ->andWhere('sq.schedule = :schedule')
             ->setParameter('schedule', $schedule)
             ->andWhere('sq.timestamp_scheduled = :time')
             ->setParameter('time', $startTime);
+
         if (!$includeCancelled) {
             $query->andWhere('sq.is_cancelled = 0');
         }
-            return $query ->orderBy('sq.id', 'asc')
+
+        return $query->orderBy('sq.id', 'asc')
             ->getQuery()
             ->setMaxResults(1)
             ->getOneOrNullResult();

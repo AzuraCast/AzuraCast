@@ -254,7 +254,6 @@ class StationQueue implements
         $this->timestamp_scheduled = $timestampScheduled;
     }
 
-
     public function getSchedule(): StationSchedule|null
     {
         return $this->schedule;
@@ -264,6 +263,7 @@ class StationQueue implements
     {
         $this->schedule = $schedule;
     }
+
     public function __toString(): string
     {
         return (null !== $this->media)

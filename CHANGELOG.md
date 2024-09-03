@@ -5,6 +5,20 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- Installation administrators can now specify a maximum bitrate for AutoDJ mount points and remote relays, as well as a
+  maximum number of mount points and HLS streams. This can help multi-tenant AzuraCast installations avoid situations
+  where individual stations consume excessive resources.
+
+- You can now specify a priority value for playlists and song requests. If two playlists are set to play at the same
+  time, the higher-priority playlist will always play first. This also lets you prevent requests from always pre-empting
+  playlists by setting them to a lower priority, or forcing them to adhere to the priority rules of the playlists
+  themselves.
+
+- Automatically block bad crawlers, spammers and bots by setting `NGINX_BLOCK_BOTS=true` in `azuracast.env`. This
+  feature is powered by
+  the [Nginx Ultimate Bad Bot Blocker](https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker). If enabled,
+  the rules will automatically be updated daily to ensure up-to-date protection.
+
 ## Code Quality/Technical Changes
 
 ## Bug Fixes

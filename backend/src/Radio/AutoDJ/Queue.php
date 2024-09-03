@@ -117,7 +117,8 @@ final class Queue
                     }
 
                     $restOfQueueIsInvalid = true;
-                    $this->em->remove($queueRow);
+                    $queueRow->setIsCancelled(true);
+                    $this->em->persist($queueRow);
                     continue;
                 }
 
@@ -205,7 +206,7 @@ final class Queue
                 $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
                 $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
                 if (null === $queueRow->getSchedule()) {
-                $queueRow->setTimestampScheduled($expectedPlayTime->getTimestamp());
+                    $queueRow->setTimestampScheduled($expectedPlayTime->getTimestamp());
                 }
                 $queueRow->updateVisibility();
                 $this->em->persist($queueRow);
@@ -327,11 +328,12 @@ final class Queue
         if (
             null !== $schedule
             && $queueRow->getTimestampPlayed() < $queueRow->getTimestampScheduled()
-            ) {
+        ) {
             $first = $this->queueRepo->getStartOfScheduleRun(
                 $station,
                 $schedule,
-                $queueRow->getTimestampScheduled()
+                $queueRow->getTimestampScheduled(),
+                true
             );
             //Item is exempt from being invalidated if it's not the first to come from this schedule run.
             if (
@@ -339,7 +341,6 @@ final class Queue
                 && $first->getId() !== $queueRow->getId()
             ) {
                 return true;
-
             }
         }
 

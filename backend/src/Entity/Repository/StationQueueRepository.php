@@ -8,8 +8,8 @@ use App\Entity\Interfaces\SongInterface;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
-use App\Entity\StationSchedule;
 use App\Entity\StationQueue;
+use App\Entity\StationSchedule;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -154,7 +154,8 @@ final class StationQueueRepository extends AbstractStationBasedRepository
     {
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\Entity\StationQueue sq
+                UPDATE App\Entity\StationQueue sq
+                SET sq.is_cancelled = 1
                 WHERE sq.station = :station
                 AND sq.sent_to_autodj = 0
             DQL
@@ -164,7 +165,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
 
     public function getNextToSendToAutoDj(Station $station): ?StationQueue
     {
-        return $this->getBaseQuery($station)
+        return $this->getUnplayedBaseQuery($station)
             ->andWhere('sq.sent_to_autodj = 0')
             ->orderBy('sq.timestamp_cued', 'ASC')
             ->getQuery()
@@ -237,18 +238,22 @@ final class StationQueueRepository extends AbstractStationBasedRepository
     public function getStartOfScheduleRun(
         Station $station,
         StationSchedule $schedule,
-        int $startTime
-        ): StationQueue|null {
-            return $this->getBaseQuery($station)
+        int $startTime,
+        bool $includeCancelled = false
+    ): StationQueue|null {
+            $query = $this->getBaseQuery($station)
             ->andWhere('sq.schedule = :schedule')
             ->setParameter('schedule', $schedule)
             ->andWhere('sq.timestamp_scheduled = :time')
-            ->setParameter('time', $startTime)
-            ->orderBy('sq.id', 'asc')
+            ->setParameter('time', $startTime);
+        if (!$includeCancelled) {
+            $query->andWhere('sq.is_cancelled = 0');
+        }
+            return $query ->orderBy('sq.id', 'asc')
             ->getQuery()
             ->setMaxResults(1)
             ->getOneOrNullResult();
-        }
+    }
     /**
      * Retrieves the most recent track for this station that came from a schedule.
      */
@@ -256,6 +261,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
     {
         return $this->getBaseQuery($station)
         ->andWhere('sq.schedule is not null')
+        ->andWhere('sq.is_cancelled = 0')
         ->orderBy('sq.timestamp_scheduled', 'desc')
         ->getQuery()
         ->setMaxResults(1)
@@ -266,6 +272,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
     {
         return $this->getBaseQuery($station)
             ->andWhere('sq.is_played = 0')
+            ->andWhere('sq.is_cancelled = 0')
             ->orderBy('sq.sent_to_autodj', 'DESC')
             ->addOrderBy('sq.timestamp_cued', 'ASC');
     }

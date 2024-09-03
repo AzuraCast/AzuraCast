@@ -362,6 +362,7 @@ final class BatchAction implements SingleActionInterface
 
                     $newQueue = StationQueue::fromMedia($station, $media);
                     $newQueue->setTimestampCued($cuedTimestamp);
+                    $newQueue->setTimestampScheduled($cuedTimestamp);
                     $newQueue->setIsPlayed();
                     $this->em->persist($newQueue);
 

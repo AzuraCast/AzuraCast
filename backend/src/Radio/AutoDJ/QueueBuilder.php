@@ -22,11 +22,11 @@ use App\Entity\StationPlaylistMedia;
 use App\Entity\StationQueue;
 use App\Entity\StationRequest;
 use App\Entity\StationSchedule;
-use App\Utilities\DateRange;
 use App\Event\Radio\BuildQueue;
 use App\Radio\PlaylistParser;
-use Carbon\CarbonInterface;
+use App\Utilities\DateRange;
 use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use Generator;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -74,9 +74,9 @@ final class QueueBuilder implements EventSubscriberInterface
     private function getPrioritizedPlaylistsAndSchedules(
         Station $station,
         CarbonInterface $expectedPlayTime,
-        array& $outPlaylists,
-        array& $outSchedules,
-        array& $outDateRanges
+        array &$outPlaylists,
+        array &$outSchedules,
+        array &$outDateRanges
     ): void {
         $playlists = $station->getPlaylists();
         $priorities = [];
@@ -91,11 +91,12 @@ final class QueueBuilder implements EventSubscriberInterface
                 $station->getTimeZone()
             );
             if ($lastScheduledTime->greaterThan($expectedPlayTime)) {
-                $this->logger->debug("Station schedule has drifted backwards in time. Using last scheduled track timestamp instead of current playtime.",
-                [
-                    'now' => $expectedPlayTime,
-                    'lastScheduledTime' => $lastScheduledTime,
-                ]
+                $this->logger->debug(
+                    "schedule has drifted back in time. Using last scheduled track time instead of current playtime.",
+                    [
+                        'now' => $expectedPlayTime,
+                        'lastScheduledTime' => $lastScheduledTime,
+                    ]
                 );
                 $expectedPlayTime = $lastScheduledTime;
             }
@@ -119,8 +120,17 @@ final class QueueBuilder implements EventSubscriberInterface
                         $playlist->getName()
                     )
                 );
+                continue;
             }
-
+            if ($playlist->backendInterruptOtherSongs()) {
+                $this->logger->debug(
+                    sprintf(
+                        'Playlist %s is set to interrupt other songs. Playlist is managed by Liquidsoap.',
+                        $playlist->getName()
+                    )
+                );
+                continue;
+            }
 
             $schedule = null;
             $dateRange = null;
@@ -165,7 +175,6 @@ final class QueueBuilder implements EventSubscriberInterface
                 $outPlaylists[] = $playlists[$id];
             }
         }
-
     }
 
     /**
@@ -185,7 +194,8 @@ final class QueueBuilder implements EventSubscriberInterface
             $event->getExpectedPlayTime(),
             $playlists,
             $schedules,
-            $dateRanges);
+            $dateRanges
+        );
         if (0 === count($playlists)) {
             return;
         }
@@ -204,17 +214,16 @@ final class QueueBuilder implements EventSubscriberInterface
         );
 
         foreach ([false, true] as $allowDuplicates) {
-            foreach (
-                $this->getNextSongs(
-                    $station,
-                    $playlists,
-                    $schedules,
-                    $dateRanges,
-                    $expectedPlayTime,
-                    $recentSongHistory,
-                    $allowDuplicates
-                ) as $songs
-            ) {
+            $gen = $this->getNextSongs(
+                $station,
+                $playlists,
+                $schedules,
+                $dateRanges,
+                $expectedPlayTime,
+                $recentSongHistory,
+                $allowDuplicates
+            );
+            foreach ($gen as $songs) {
                 if ($event->setNextSongs($songs)) {
                     $this->logger->info(
                         'Playable track(s) found and registered.',
@@ -521,8 +530,21 @@ final class QueueBuilder implements EventSubscriberInterface
 
             $queueEntries = array_filter(
                 array_map(
-                    function (StationPlaylistQueue $validTrack) use ($playlist, $schedule, $dateRange, $expectedPlayTime) {
-                        return $this->makeQueueFromApi($validTrack, $playlist, $schedule, $dateRange, $expectedPlayTime);
+                    function (
+                        StationPlaylistQueue $validTrack
+                    ) use (
+                        $playlist,
+                        $schedule,
+                        $dateRange,
+                        $expectedPlayTime
+                    ) {
+                        return $this->makeQueueFromApi(
+                            $validTrack,
+                            $playlist,
+                            $schedule,
+                            $dateRange,
+                            $expectedPlayTime
+                        );
                     },
                     $this->spmRepo->getQueue($playlist)
                 )

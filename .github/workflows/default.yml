@@ -135,6 +135,7 @@ jobs:
         with:
           name: assets
           if-no-files-found: error
+          include-hidden-files: true
           path: |
             .gitinfo
             translations

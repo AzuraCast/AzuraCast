@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Radio\AutoDJ;
 
-use App\Utilities\DateRange;
 use App\Entity\Station;
-use App\Entity\StationSchedule;
 use App\Entity\StationPlaylist;
+use App\Entity\StationSchedule;
+use App\Utilities\DateRange;
 use Carbon\CarbonInterface;
 
 /**
@@ -29,7 +29,7 @@ final class SchedulerContext
         $this->playlist = $playlist;
         return $this;
     }
-    public function withNow(?CarbonInterface $now): self
+    public function withNow(CarbonInterface $now): self
     {
         $this->now = $now;
         return $this;
@@ -79,4 +79,4 @@ final class SchedulerContext
     {
         return $this->dateRange;
     }
-    }
+}

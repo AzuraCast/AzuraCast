@@ -92,4 +92,9 @@ final class SchedulerContext
     {
         return $this->dateRange;
     }
+    public function clearForOutput(): void
+    {
+        $this->schedule = null;
+        $this->dateRange = null;
+    }
 }

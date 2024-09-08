@@ -31,6 +31,8 @@ final class Scheduler
 
     public function shouldPlaylistPlayNow(SchedulerContext $ctx): bool
     {
+        //Make sure we don't give back info from a previous run.
+        $ctx->clearForOutput();
         $playlist = $ctx->getPlaylistRequired();
         $this->logger->pushProcessor(
             function (LogRecord $record) use ($playlist) {

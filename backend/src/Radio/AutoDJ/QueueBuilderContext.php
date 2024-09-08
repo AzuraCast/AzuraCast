@@ -13,6 +13,10 @@ use Carbon\CarbonInterface;
 use generator;
 use Monolog\Logger;
 
+/**
+ * Handles registration, tracking, and selection of which playlist to play.
+ * Instances of this class are single-use.
+ */
 final class QueueBuilderContext
 {
     /**
@@ -21,20 +25,12 @@ final class QueueBuilderContext
     private array $registeredSchedulerContexts;
     private int $registeredPlaylistCount = 0;
     public function __construct(
-        private Station $station,
+        public readonly Station $station,
         private readonly QueueBuilder $queueBuilder,
         private readonly Scheduler $scheduler,
         private readonly Logger $logger,
-        private CarbonInterface $now
+        public readonly CarbonInterface $expectedPlayTime
     ) {
-    }
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-    public function getNow(): CarbonInterface
-    {
-        return $this->now;
     }
 
     /**
@@ -68,9 +64,7 @@ final class QueueBuilderContext
             );
             return false;
         }
-        $ctx = $this->scheduler->createContext()
-            ->withPlaylist($playlist)
-            ->withNow($this->now);
+        $ctx = new SchedulerContext($playlist, $this->expectedPlayTime);
         if (!$this->scheduler->shouldPlaylistPlayNow($ctx)) {
             return false;
         }
@@ -89,7 +83,7 @@ final class QueueBuilderContext
         $summary = [];
         foreach ($this->registeredSchedulerContexts as $priority => $group) {
             foreach ($group as $ctx) {
-                $summary[$priority][] = $ctx->getPlaylistRequired()->getName();
+                $summary[$priority][] = $ctx->playlist->getName();
             }
         }
         return $summary;
@@ -104,7 +98,7 @@ final class QueueBuilderContext
         foreach ($this->registeredSchedulerContexts as $contexts) {
             $weights = [];
             foreach ($contexts as $ctx) {
-                $playlist = $ctx->getPlaylistRequired();
+                $playlist = $ctx->playlist;
                 $weights[$playlist->getId()] = $playlist->getWeight();
             }
             $weights = $this->weightedShuffle($weights);

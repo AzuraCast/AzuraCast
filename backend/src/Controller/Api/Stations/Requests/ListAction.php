@@ -119,10 +119,11 @@ final class ListAction extends AbstractSearchableListAction
             foreach ($playlists as $playlist) {
                 if (
                     $this->scheduler->isPlaylistScheduledToPlayNow(
-                        $this->scheduler->createContext()
-                        ->withPlaylist($playlist)
-                        ->withNow($now)
-                        ->withExcludeSpecialRules(true)
+                        new SchedulerContext(
+                            $playlist,
+                            $now,
+                            true
+                        )
                     )
                 ) {
                     $ids[] = $playlist->getIdRequired();

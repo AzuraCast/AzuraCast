@@ -343,14 +343,11 @@ final class Queue
                 return true;
             }
         }
-
+                $ctx = new SchedulerContext($playlist, $expectedPlayTime, true);
+                $ctx->belowId = $queueRow->getId();
         return $playlist->getIsEnabled() &&
             $this->scheduler->shouldPlaylistPlayNow(
-                $this->scheduler->createContext()
-                ->withPlaylist($playlist)
-                ->withNow($expectedPlayTime)
-                ->withExcludeSpecialRules(true)
-                ->withBelowId($queueRow->getId())
+                $ctx
             );
     }
 

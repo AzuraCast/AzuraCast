@@ -44,13 +44,10 @@ final class Scheduler
             }
         );
         $this->logger->debug('Checking if playlist should play now.');
-        $now = $ctx->getNow();
-        if (null === $now) {
-            $now = CarbonImmutable::now($playlist->getStation()->getTimezoneObject());
-            //Report now back to the context for later calls.
-            $ctx->withNow($now);
+        if (null === $ctx->expectedPlayTime) {
+            $ctx->expectedPlayTime = CarbonImmutable::now($playlist->getStation()->getTimezoneObject());
         }
-
+        $expectedPlayTime = $ctx->getExpectedPlayTimeRequired();
         if (!$this->isPlaylistScheduledToPlayNow($ctx)) {
             $this->logger->debug('Playlist is not scheduled to play now.');
             $this->logger->popProcessor();
@@ -61,7 +58,7 @@ final class Scheduler
 
         switch ($playlist->getType()) {
             case PlaylistTypes::OncePerHour:
-                $shouldPlay = $this->shouldPlaylistPlayNowPerHour($playlist, $now);
+                $shouldPlay = $this->shouldPlaylistPlayNowPerHour($playlist, $expectedPlayTime);
 
                 $this->logger->debug(
                     sprintf(
@@ -76,7 +73,7 @@ final class Scheduler
                 $shouldPlay = !$this->queueRepo->isPlaylistRecentlyPlayed(
                     $playlist,
                     $playPerSongs,
-                    $ctx->getBelowId()
+                    $ctx->belowId
                 );
 
                 $this->logger->debug(
@@ -90,7 +87,7 @@ final class Scheduler
 
             case PlaylistTypes::OncePerXMinutes:
                 $playPerMinutes = $playlist->getPlayPerMinutes();
-                $shouldPlay = !$this->wasPlaylistPlayedInLastXMinutes($playlist, $now, $playPerMinutes);
+                $shouldPlay = !$this->wasPlaylistPlayedInLastXMinutes($playlist, $expectedPlayTime, $playPerMinutes);
 
                 $this->logger->debug(
                     sprintf(
@@ -171,13 +168,13 @@ final class Scheduler
     public function getPlaylistScheduleDuration(StationPlaylist $playlist): int
     {
         $now = CarbonImmutable::now($playlist->getStation()->getTimezoneObject());
-
         $scheduleItem = $this->getActiveScheduleFromCollection(
             $playlist->getScheduleItems(),
-            $this->createContext()
-            ->withNow($now)
+            new SchedulerContext(
+                null,
+                $now
+            )
         );
-
         if ($scheduleItem instanceof StationSchedule) {
             return $scheduleItem->getDuration();
         }
@@ -195,11 +192,12 @@ final class Scheduler
         if (null === $now) {
             $now = CarbonImmutable::now($streamer->getStation()->getTimezoneObject());
         }
-
         $scheduleItem = $this->getActiveScheduleFromCollection(
             $streamer->getScheduleItems(),
-            $this->createContext()
-            ->withNow($now)
+            new SchedulerContext(
+                null,
+                $now
+            )
         );
         return null !== $scheduleItem;
     }
@@ -239,7 +237,7 @@ final class Scheduler
 
     public function shouldSchedulePlayNow(StationSchedule $schedule, SchedulerContext $ctx): bool
     {
-        $now = $ctx->getNowRequired();
+        $now = $ctx->getExpectedPlayTimeRequired();
         $startTime = StationSchedule::getDateTime($schedule->getStartTime(), $now);
         $endTime = StationSchedule::getDateTime($schedule->getEndTime(), $now);
         $this->logger->debug('Checking to see whether schedule should play now.', [
@@ -289,8 +287,8 @@ final class Scheduler
         foreach ($comparePeriods as $dateRange) {
             if ($this->shouldPlayInSchedulePeriod($schedule, $dateRange, $ctx)) {
                 //Report final results to the context for retrieval by the caller.
-                $ctx->withSchedule($schedule)
-                ->withDateRange($dateRange);
+                $ctx->schedule = $schedule;
+                $ctx->dateRange = $dateRange;
                 return true;
             }
         }
@@ -303,7 +301,7 @@ final class Scheduler
         DateRange $dateRange,
         SchedulerContext $ctx
     ): bool {
-        $now = $ctx->getNowRequired();
+        $now = $ctx->getExpectedPlayTimeRequired();
         if (!$dateRange->contains($now)) {
             return false;
         }
@@ -321,7 +319,7 @@ final class Scheduler
         }
 
         // Skip the remaining checks if we're doing a "still scheduled to play" Queue check.
-        if ($ctx->getExcludeSpecialRules()) {
+        if ($ctx->excludeSpecialRules) {
             return true;
         }
 
@@ -440,9 +438,5 @@ final class Scheduler
         $playOnceDays = $schedule->getDays();
         return empty($playOnceDays)
             || in_array($dayToCheck, $playOnceDays, true);
-    }
-    public function createContext(): SchedulerContext
-    {
-        return new SchedulerContext();
     }
 }

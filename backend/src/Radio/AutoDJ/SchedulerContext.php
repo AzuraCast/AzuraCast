@@ -9,21 +9,20 @@ use App\Entity\StationPlaylist;
 use App\Entity\StationSchedule;
 use App\Utilities\DateRange;
 use Carbon\CarbonInterface;
+use RuntimeException;
 
 /**
  * Inputs and outputs for a single scheduling task.
  */
 final class SchedulerContext
 {
-    private ?StationPlaylist $playlist;
-    private ?StationSchedule $schedule;
-    private ?DateRange $dateRange;
+    private ?StationPlaylist $playlist = null;
+    private ?CarbonInterface $now = null;
+    private ?StationSchedule $schedule = null;
+    private ?DateRange $dateRange = null;
     private bool $excludeSpecialRules = false;
     private ?int $belowId = null;
     // inputs.
-    public function __construct(private CarbonInterface $now)
-    {
-    }
     public function withPlaylist(?StationPlaylist $playlist): self
     {
         $this->playlist = $playlist;
@@ -59,8 +58,22 @@ final class SchedulerContext
     {
         return $this->playlist;
     }
-    public function getNow(): CarbonInterface
+    public function getPlaylistRequired(): StationPlaylist
     {
+        if (null === $this->playlist) {
+            throw new RuntimeException("No playlist given.");
+        }
+        return $this->playlist;
+    }
+    public function getNow(): CarbonInterface|null
+    {
+        return $this->now;
+    }
+    public function getNowRequired(): CarbonInterface
+    {
+        if (null === $this->now) {
+            throw new RuntimeException("No now given.");
+        }
         return $this->now;
     }
     public function getExcludeSpecialRules(): bool

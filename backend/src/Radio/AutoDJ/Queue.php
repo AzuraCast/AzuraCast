@@ -346,10 +346,11 @@ final class Queue
 
         return $playlist->getIsEnabled() &&
             $this->scheduler->shouldPlaylistPlayNow(
-                $playlist,
-                $expectedPlayTime,
-                true,
-                $queueRow->getId()
+                $this->scheduler->createContext()
+                ->withPlaylist($playlist)
+                ->withNow($expectedPlayTime)
+                ->withExcludeSpecialRules(true)
+                ->withBelowId($queueRow->getId())
             );
     }
 

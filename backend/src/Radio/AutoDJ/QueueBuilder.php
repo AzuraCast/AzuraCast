@@ -187,7 +187,7 @@ final class QueueBuilder implements EventSubscriberInterface
          * This preserves the somewhat arbitrary precedents that were previously defined:
          * Once per hour -> Once per X songs -> Once per X minutes -> Standard, scheduled -> unscheduled.
          */
-        $scheduled = count($playlist->getScheduleItems()) > 0 ? count(PlaylistTypes::cases()) : 0;
+        $scheduled = count($playlist->getScheduleItems()) > 0 ? 1 : 0;
         return (self::LEGACY_PRIORITIES[$playlist->getType()->value] ?? 0) + $scheduled;
     }
 

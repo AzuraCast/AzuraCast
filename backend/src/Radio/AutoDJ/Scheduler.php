@@ -43,10 +43,12 @@ final class Scheduler
                 return $record;
             }
         );
+
         $this->logger->debug('Checking if playlist should play now.');
         if (null === $ctx->expectedPlayTime) {
             $ctx->expectedPlayTime = CarbonImmutable::now($playlist->getStation()->getTimezoneObject());
         }
+
         $expectedPlayTime = $ctx->getExpectedPlayTimeRequired();
         if (!$this->isPlaylistScheduledToPlayNow($ctx)) {
             $this->logger->debug('Playlist is not scheduled to play now.');
@@ -192,6 +194,7 @@ final class Scheduler
         if (null === $now) {
             $now = CarbonImmutable::now($streamer->getStation()->getTimezoneObject());
         }
+
         $scheduleItem = $this->getActiveScheduleFromCollection(
             $streamer->getScheduleItems(),
             new SchedulerContext(
@@ -199,6 +202,7 @@ final class Scheduler
                 $now
             )
         );
+
         return null !== $scheduleItem;
     }
 

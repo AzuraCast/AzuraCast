@@ -96,6 +96,7 @@ final class QueueBuilder implements EventSubscriberInterface
                 $expectedPlayTime = $lastScheduledTime;
             }
         }
+
         $ctx = new QueueBuilderContext(
             $station,
             $this,
@@ -103,9 +104,11 @@ final class QueueBuilder implements EventSubscriberInterface
             $this->logger,
             $expectedPlayTime
         );
+
         foreach ($playlists as $playlist) {
             $ctx->registerPlaylist($playlist);
         }
+
         if (0 === $ctx->getPlaylistCount()) {
             $this->logger->warning('No eligible playlists found.');
             return null;
@@ -118,6 +121,7 @@ final class QueueBuilder implements EventSubscriberInterface
             ),
             $ctx->getLogPriorities()
         );
+
         return $ctx;
     }
 

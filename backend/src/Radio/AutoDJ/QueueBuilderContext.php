@@ -24,6 +24,7 @@ final class QueueBuilderContext
      */
     private array $registeredSchedulerContexts;
     private int $registeredPlaylistCount = 0;
+
     public function __construct(
         public readonly Station $station,
         private readonly QueueBuilder $queueBuilder,
@@ -40,6 +41,7 @@ final class QueueBuilderContext
     {
         return $this->registeredPlaylistCount;
     }
+
     /**
      * Qualifies and registers a playlist for selection.
      */
@@ -75,6 +77,7 @@ final class QueueBuilderContext
         $this->registeredPlaylistCount++;
         return true;
     }
+
     /**
      * Generate a map of priority values to playlist names for logging purposes.
      */
@@ -88,6 +91,7 @@ final class QueueBuilderContext
         }
         return $summary;
     }
+
     /**
      * Contextual iteration over all registered playlists, organized by priority and weight.
      */
@@ -107,6 +111,7 @@ final class QueueBuilderContext
             }
         }
     }
+
     /**
      * Apply a weighted shuffle to the given array in the form:
      *  [ key1 => weight1, key2 => weight2 ]

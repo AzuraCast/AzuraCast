@@ -14,6 +14,7 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Radio\AutoDJ\Queue;
 use App\Utilities\Types;
+use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -173,5 +174,21 @@ final class QueueController extends AbstractStationApiCrudController
         $this->queueRepo->clearUpcomingQueue($station);
 
         return $response->withJson(Status::deleted());
+    }
+
+    /**
+     * Don't delete, just cancel.
+     * This prevents playout, but keeps the record around for other decision making, bug investigation, etc.
+     */
+    protected function deleteRecord(object $record): void
+    {
+        if (!($record instanceof $this->entityClass)) {
+            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
+        }
+
+        $record->setIsCancelled(true);
+
+        $this->em->persist($record);
+        $this->em->flush();
     }
 }

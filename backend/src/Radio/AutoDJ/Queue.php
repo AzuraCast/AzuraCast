@@ -117,7 +117,8 @@ final class Queue
                     }
 
                     $restOfQueueIsInvalid = true;
-                    $this->em->remove($queueRow);
+                    $queueRow->setIsCancelled(true);
+                    $this->em->persist($queueRow);
                     continue;
                 }
 
@@ -204,6 +205,9 @@ final class Queue
             foreach ($nextSongs as $queueRow) {
                 $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
                 $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
+                if (null === $queueRow->getSchedule()) {
+                    $queueRow->setTimestampScheduled($expectedPlayTime->getTimestamp());
+                }
                 $queueRow->updateVisibility();
                 $this->em->persist($queueRow);
                 $this->em->flush();
@@ -319,13 +323,31 @@ final class Queue
         if (null === $playlist) {
             return true;
         }
-
+        $schedule = $queueRow->getSchedule();
+        $station = $queueRow->getStation();
+        if (
+            null !== $schedule
+            && $queueRow->getTimestampPlayed() < $queueRow->getTimestampScheduled()
+        ) {
+            $first = $this->queueRepo->getStartOfScheduleRun(
+                $station,
+                $schedule,
+                $queueRow->getTimestampScheduled(),
+                true
+            );
+            //Item is exempt from being invalidated if it's not the first to come from this schedule run.
+            if (
+                null !== $first
+                && $first->getId() !== $queueRow->getId()
+            ) {
+                return true;
+            }
+        }
+                $ctx = new SchedulerContext($playlist, $expectedPlayTime, true);
+                $ctx->belowId = $queueRow->getId();
         return $playlist->getIsEnabled() &&
             $this->scheduler->shouldPlaylistPlayNow(
-                $playlist,
-                $expectedPlayTime,
-                true,
-                $queueRow->getId()
+                $ctx
             );
     }
 

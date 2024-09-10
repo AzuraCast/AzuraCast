@@ -21,8 +21,11 @@ use App\Entity\StationPlaylist;
 use App\Entity\StationPlaylistMedia;
 use App\Entity\StationQueue;
 use App\Entity\StationRequest;
+use App\Entity\StationSchedule;
 use App\Event\Radio\BuildQueue;
 use App\Radio\PlaylistParser;
+use App\Utilities\DateRange;
+use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Generator;
 use Psr\SimpleCache\CacheInterface;
@@ -66,76 +69,60 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     /**
-     * Filters and sorts playlists by eligibility, priority and weight.
+     * Creates a QueueBuilderContext populated with all qualifying playlists.
      */
-    private function getPrioritizedPlaylists(
-        Station $station,
-        CarbonInterface $expectedPlayTime
-    ): array|null {
+    private function createContext(Station $station, CarbonInterface $expectedPlayTime): QueueBuilderContext|null
+    {
         $playlists = $station->getPlaylists();
-        $priorities = [];
         if ($playlists->isEmpty()) {
             return null;
         }
 
-        $outPlaylists = [];
-        foreach ($playlists as $playlist) {
-            if (!$playlist->getIsEnabled()) {
+        // Find out when the last scheduled playlist played. Don't do schedule checks any earlier than this.
+        $lastScheduledTrack = $this->queueRepo->getLatestScheduledTrack($station);
+        if (null !== $lastScheduledTrack) {
+            $lastScheduledTime = CarbonImmutable::createFromTimestamp(
+                $lastScheduledTrack->getTimestampScheduled(),
+                $station->getTimeZone()
+            );
+            if ($lastScheduledTime->greaterThan($expectedPlayTime)) {
                 $this->logger->debug(
-                    sprintf(
-                        'Playlist "%s" is disabled.',
-                        $playlist->getName()
-                    )
+                    "schedule has drifted back in time. Using last scheduled track time instead of current playtime.",
+                    [
+                        'now' => $expectedPlayTime,
+                        'lastScheduledTime' => $lastScheduledTime,
+                    ]
                 );
-                continue;
+                $expectedPlayTime = $lastScheduledTime;
             }
-
-            if (0 === count($playlist->getMediaItems())) {
-                $this->logger->debug(
-                    sprintf(
-                        'Playlist "%s" is empty.',
-                        $playlist->getName()
-                    )
-                );
-            }
-
-            if (
-                !$this->scheduler->shouldPlaylistPlayNow(
-                    $playlist,
-                    $expectedPlayTime
-                )
-            ) {
-                continue;
-            }
-
-            $playlistId = $playlist->getId();
-            $priority = $this->getPlaylistPriority($playlist);
-            $priorities[$priority][$playlistId] = $playlist;
         }
 
-        krsort($priorities);
-
-        // Build our list of playlists, sorted first by priority, then by weight.
-        $this->logger->debug(
-            sprintf(
-                'Station has %d playlists with the following priorities.',
-                count($playlists)
-            ),
-            $this->getLogPriorities($priorities)
+        $ctx = new QueueBuilderContext(
+            $station,
+            $this,
+            $this->scheduler,
+            $this->logger,
+            $expectedPlayTime
         );
 
-        foreach ($priorities as $playlists) {
-            $weights = [];
-            foreach ($playlists as $playlist) {
-                $weights[$playlist->getId()] = $playlist->getWeight();
-            }
-            $weights = $this->weightedShuffle($weights);
-            foreach ($weights as $id => $weight) {
-                $outPlaylists[] = $playlists[$id];
-            }
+        foreach ($playlists as $playlist) {
+            $ctx->registerPlaylist($playlist);
         }
 
-        return $outPlaylists;
+        if (0 === $ctx->getPlaylistCount()) {
+            $this->logger->warning('No eligible playlists found.');
+            return null;
+        }
+
+        $this->logger->debug(
+            sprintf(
+                'The following $%d playlists are eligible.',
+                $ctx->getPlaylistCount()
+            ),
+            $ctx->getLogPriorities()
+        );
+
+        return $ctx;
     }
 
     /**
@@ -147,9 +134,8 @@ final class QueueBuilder implements EventSubscriberInterface
 
         $station = $event->getStation();
         $expectedPlayTime = $event->getExpectedPlayTime();
-
-        $playlists = $this->getPrioritizedPlaylists($station, $event->getExpectedPlayTime());
-        if (null === $playlists) {
+        $ctx = $this->createContext($station, $expectedPlayTime);
+        if (null === $ctx) {
             return;
         }
 
@@ -167,15 +153,8 @@ final class QueueBuilder implements EventSubscriberInterface
         );
 
         foreach ([false, true] as $allowDuplicates) {
-            foreach (
-                $this->getNextSongs(
-                    $station,
-                    $playlists,
-                    $expectedPlayTime,
-                    $recentSongHistory,
-                    $allowDuplicates
-                ) as $songs
-            ) {
+            $gen = $this->getNextSongs($ctx, $recentSongHistory, $allowDuplicates);
+            foreach ($gen as $songs) {
                 if ($event->setNextSongs($songs)) {
                     $this->logger->info(
                         'Playable track(s) found and registered.',
@@ -195,7 +174,7 @@ final class QueueBuilder implements EventSubscriberInterface
     /**
      * Gets a configured, legacy or default priority.
      */
-    private function getPlaylistPriority(
+    public function getPlaylistPriority(
         StationPlaylist $playlist
     ): int {
         $priority = $playlist->getPriority();
@@ -208,24 +187,8 @@ final class QueueBuilder implements EventSubscriberInterface
          * This preserves the somewhat arbitrary precedents that were previously defined:
          * Once per hour -> Once per X songs -> Once per X minutes -> Standard, scheduled -> unscheduled.
          */
-        $scheduled = count($playlist->getScheduleItems()) > 0 ? count(PlaylistTypes::cases()) : 0;
+        $scheduled = count($playlist->getScheduleItems()) > 0 ? 1 : 0;
         return (self::LEGACY_PRIORITIES[$playlist->getType()->value] ?? 0) + $scheduled;
-    }
-
-    /**
-     * Convert the array returned by getPrioritizedPlaylists into a summary for logging purposes.
-     * @param array& $playlists
-     * @return array
-     */
-    private function getLogPriorities(array &$playlists): array
-    {
-        $summary = [];
-        foreach ($playlists as $priority => $group) {
-            foreach ($group as $playlist) {
-                $summary[$priority][] = $playlist->getName();
-            }
-        }
-        return $summary;
     }
 
     /**
@@ -234,21 +197,15 @@ final class QueueBuilder implements EventSubscriberInterface
      * @return Generator<StationQueue|array|null>
      */
     private function getNextSongs(
-        Station $station,
-        array $playlists,
-        CarbonInterface $expectedPlayTime,
+        QueueBuilderContext $ctx,
         array $recentSongHistory,
         bool $allowDuplicates
     ): Generator {
-        $requests = $this->requestRepo->getAllPotentialRequests($station);
+        $requests = $this->requestRepo->getAllPotentialRequests($ctx->station);
         $this->logger->debug('Selecting next playlist.');
 
-        if (0 === count($playlists)) {
-            $this->logger->warning('No eligible playlists found.');
-            return null;
-        }
-
-        foreach ($playlists as $playlist) {
+        foreach ($ctx->getPlaylists() as $playlistContext) {
+            $playlist = $playlistContext->getPlaylistRequired();
             $logPlaylist = $this->getLogPlaylist($playlist);
             $this->logger->debug(
                 'Playlist has been selected:',
@@ -262,13 +219,13 @@ final class QueueBuilder implements EventSubscriberInterface
                 // If this playlist is at or below general request priority, then general requests win.
                 if (
                     $this->shouldConsiderGeneralRequests(
-                        $station,
+                        $ctx->station,
                         $this->getPlaylistPriority($playlist)
                     )
                 ) {
                     $request = $this->getRequestFromGroup(
                         $requests,
-                        $expectedPlayTime
+                        $ctx->expectedPlayTime
                     );
                 }
 
@@ -276,7 +233,7 @@ final class QueueBuilder implements EventSubscriberInterface
                     $request = $this->getRequestForPlaylist(
                         $playlist,
                         $requests,
-                        $expectedPlayTime
+                        $ctx->expectedPlayTime
                     );
                 }
 
@@ -291,18 +248,13 @@ final class QueueBuilder implements EventSubscriberInterface
 
                     yield $this->playRequest(
                         $request,
-                        $expectedPlayTime
+                        $ctx->expectedPlayTime
                     );
                 }
             }
 
             // Otherwise go forward with normal track selection.
-            yield $this->playSongFromPlaylist(
-                $playlist,
-                $recentSongHistory,
-                $expectedPlayTime,
-                $allowDuplicates
-            );
+            yield $this->playSongFromPlaylist($playlistContext, $recentSongHistory, $allowDuplicates);
         }
 
         return null;
@@ -413,58 +365,27 @@ final class QueueBuilder implements EventSubscriberInterface
         $stationQueueEntry = StationQueue::fromRequest($request);
         $request->setPlayedAt($expectedPlayTime->getTimestamp());
         $this->em->persist($request);
+        $stationQueueEntry->setTimestampScheduled($expectedPlayTime->getTimestamp());
 
         return $stationQueueEntry;
     }
 
-    /**
-     * Apply a weighted shuffle to the given array in the form:
-     *  [ key1 => weight1, key2 => weight2 ]
-     *
-     * Based on: https://gist.github.com/savvot/e684551953a1716208fbda6c4bb2f344
-     *
-     * @param array& $original
-     * @return array
-     */
-    private function weightedShuffle(array &$original): array
-    {
-        $new = $original;
-        $max = 1.0 / mt_getrandmax();
-
-        array_walk(
-            $new,
-            static function (&$value) use ($max): void {
-                $value = (mt_rand() * $max) ** (1.0 / $value);
-            }
-        );
-
-        arsort($new);
-
-        array_walk(
-            $new,
-            static function (&$value, $key) use ($original): void {
-                $value = $original[$key];
-            }
-        );
-
-        return $new;
-    }
 
     /**
      * Given a specified (sequential or shuffled) playlist, choose a song from the playlist to play and return it.
      *
-     * @param StationPlaylist $playlist
+     * @param SchedulerContext $playlistContext
      * @param array $recentSongHistory
-     * @param CarbonInterface $expectedPlayTime
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      * @return StationQueue|StationQueue[]|null
      */
     private function playSongFromPlaylist(
-        StationPlaylist $playlist,
+        SchedulerContext $playlistContext,
         array $recentSongHistory,
-        CarbonInterface $expectedPlayTime,
         bool $allowDuplicates = false
     ): StationQueue|array|null {
+        $playlist = $playlistContext->getPlaylistRequired();
+        $expectedPlayTime = $playlistContext->getExpectedPlayTimeRequired();
         if (PlaylistSources::RemoteUrl === $playlist->getSource()) {
             return $this->getSongFromRemotePlaylist($playlist, $expectedPlayTime);
         }
@@ -474,8 +395,13 @@ final class QueueBuilder implements EventSubscriberInterface
 
             $queueEntries = array_filter(
                 array_map(
-                    function (StationPlaylistQueue $validTrack) use ($playlist, $expectedPlayTime) {
-                        return $this->makeQueueFromApi($validTrack, $playlist, $expectedPlayTime);
+                    function (
+                        StationPlaylistQueue $validTrack
+                    ) use ($playlistContext) {
+                        return $this->makeQueueFromApi(
+                            $validTrack,
+                            $playlistContext
+                        );
                     },
                     $this->spmRepo->getQueue($playlist)
                 )
@@ -502,8 +428,7 @@ final class QueueBuilder implements EventSubscriberInterface
             };
 
             if (null !== $validTrack) {
-                //Prevent automatic queueing in case it's a duplicate.
-                $queueEntry = $this->makeQueueFromApi($validTrack, $playlist, $expectedPlayTime, true);
+                $queueEntry = $this->makeQueueFromApi($validTrack, $playlistContext);
 
                 if (null !== $queueEntry) {
                     $playlist->setPlayedAt($expectedPlayTime->getTimestamp());
@@ -526,10 +451,10 @@ final class QueueBuilder implements EventSubscriberInterface
 
     private function makeQueueFromApi(
         StationPlaylistQueue $validTrack,
-        StationPlaylist $playlist,
-        CarbonInterface $expectedPlayTime,
-        bool $tentative = false
+        SchedulerContext $playlistContext
     ): ?StationQueue {
+            $playlist = $playlistContext->getPlaylistRequired();
+            $expectedPlayTime = $playlistContext->getExpectedPlayTimeRequired();
         $mediaToPlay = $this->em->find(StationMedia::class, $validTrack->media_id);
         if (!$mediaToPlay instanceof StationMedia) {
             return null;
@@ -544,10 +469,10 @@ final class QueueBuilder implements EventSubscriberInterface
         $stationQueueEntry = StationQueue::fromMedia($playlist->getStation(), $mediaToPlay);
         $stationQueueEntry->setPlaylist($playlist);
         $stationQueueEntry->setPlaylistMedia($spm);
-        if (!$tentative) {
-            $this->em->persist($stationQueueEntry);
+        $stationQueueEntry->setSchedule($playlistContext->schedule);
+        if (null !== $playlistContext->dateRange) {
+            $stationQueueEntry->setTimestampScheduled($playlistContext->dateRange->getStart()->getTimestamp());
         }
-
 
         return $stationQueueEntry;
     }

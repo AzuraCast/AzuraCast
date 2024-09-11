@@ -302,7 +302,7 @@ class Station implements Stringable, IdentifiableEntityInterface
             description: "The maximum bitrate at which a station may broadcast, in Kbps. 0 for unlimited",
             example: 128
         ),
-        ORM\Column,
+        ORM\Column(type: 'smallint', nullable: false, options: ['default' => 0]),
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
     protected int $max_bitrate = 0;
@@ -312,7 +312,7 @@ class Station implements Stringable, IdentifiableEntityInterface
             description: "The maximum number of mount points the station can have, 0 for unlimited",
             example: 3
         ),
-        ORM\Column,
+        ORM\Column(type: 'smallint', nullable: false, options: ['default' => 0]),
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
     protected int $max_mounts = 0;
@@ -322,7 +322,7 @@ class Station implements Stringable, IdentifiableEntityInterface
             description: "The maximum number of HLS streams the station can have, 0 for unlimited",
             example: 3
         ),
-        ORM\Column,
+        ORM\Column(type: 'smallint', nullable: false, options: ['default' => 0]),
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
     protected int $max_hls_streams = 0;

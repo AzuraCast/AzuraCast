@@ -72,7 +72,7 @@ class StationQueue implements
     #[ORM\Column]
     protected bool $is_visible = true;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => 0])]
     protected bool $is_cancelled = false;
 
     #[ORM\Column(length: 255, nullable: true)]

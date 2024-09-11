@@ -292,7 +292,7 @@ final class ConfigWriter implements EventSubscriberInterface
             azuracast_api_url = "{$stationApiUrl}"
             azuracast_api_key = "{$stationApiAuth}"
 
-            def azuracast_api_call(~timeout=2.0, url, payload) =
+            def azuracast_api_call(~timeout=10.0, url, payload) =
                 full_url = "#{azuracast_api_url}/#{url}"
 
                 log("API #{url} - Sending POST request to '#{full_url}' with body: #{payload}")

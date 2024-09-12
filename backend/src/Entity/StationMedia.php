@@ -223,7 +223,7 @@ class StationMedia implements
 
     public function getExtraMetadata(): StationMediaMetadata
     {
-        return new StationMediaMetadata((array)$this->extra_metadata);
+        return new StationMediaMetadata($this->extra_metadata ?? []);
     }
 
     public function setExtraMetadata(
@@ -236,7 +236,7 @@ class StationMedia implements
 
     public function clearExtraMetadata(): void
     {
-        $this->extra_metadata = (new StationMediaMetadata([]))->toArray();
+        $this->extra_metadata = null;
     }
 
     /**
@@ -248,13 +248,13 @@ class StationMedia implements
 
         $extraMeta = $this->getExtraMetadata();
 
-        $cueOut = $extraMeta->getLiqCueOut();
+        $cueOut = $extraMeta->getCueOut();
         if ($cueOut > 0) {
             $lengthRemoved = $length - $cueOut;
             $length -= $lengthRemoved;
         }
 
-        $cueIn = $extraMeta->getLiqCueIn();
+        $cueIn = $extraMeta->getCueIn();
         if ($cueIn > 0) {
             $length -= $cueIn;
         }
@@ -356,7 +356,7 @@ class StationMedia implements
         );
 
         $metadata->setKnownTags($tags);
-        $metadata->setExtraTags($this->getExtraMetadata()->toArray());
+        $metadata->setExtraTags($this->getExtraMetadata()->toArray() ?? []);
 
         return $metadata;
     }

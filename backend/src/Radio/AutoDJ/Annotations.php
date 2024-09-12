@@ -90,74 +90,18 @@ final class Annotations implements EventSubscriberInterface
             return;
         }
 
-        $annotations = [];
-        $annotationsRaw = array_filter([
+        $annotations = array_filter([
             'title' => $media->getTitle(),
             'artist' => $media->getArtist(),
             'duration' => $media->getLength(),
             'song_id' => $media->getSongId(),
             'media_id' => $media->getId(),
-            ...$media->getExtraMetadata()->toArray(),
+            ...$media->getExtraMetadata()->toAnnotations($media->getLength()),
         ], fn ($row) => ('' !== $row && null !== $row));
 
-        // Safety checks for cue lengths.
-        if (
-            isset($annotationsRaw[StationMediaMetadata::CUE_OUT])
-            && $annotationsRaw[StationMediaMetadata::CUE_OUT] < 0
-        ) {
-            $cueOut = abs($annotationsRaw[StationMediaMetadata::CUE_OUT]);
-
-            if (0.0 === $cueOut) {
-                unset($annotationsRaw[StationMediaMetadata::CUE_OUT]);
-            }
-
-            if (isset($annotationsRaw['duration'])) {
-                if ($cueOut > $annotationsRaw['duration']) {
-                    unset($annotationsRaw[StationMediaMetadata::CUE_OUT]);
-                } else {
-                    $annotationsRaw[StationMediaMetadata::CUE_OUT] = max(0, $annotationsRaw['duration'] - $cueOut);
-                }
-            }
-        }
-
-        if (
-            isset($annotationsRaw[StationMediaMetadata::CUE_OUT], $annotationsRaw['duration'])
-            && $annotationsRaw[StationMediaMetadata::CUE_OUT] > $annotationsRaw['duration']
-        ) {
-            unset($annotationsRaw[StationMediaMetadata::CUE_OUT]);
-        }
-
-        if (
-            isset($annotationsRaw[StationMediaMetadata::CUE_IN], $annotationsRaw['duration'])
-            && $annotationsRaw[StationMediaMetadata::CUE_IN] > $annotationsRaw['duration']
-        ) {
-            unset($annotationsRaw[StationMediaMetadata::CUE_IN]);
-        }
-
-        foreach ($annotationsRaw as $name => $prop) {
-            $prop = ConfigWriter::annotateString((string)$prop);
-
-            if ('duration' === $name) {
-                $prop = ConfigWriter::toFloat($prop);
-            }
-
-            // Process Liquidsoap-specific annotations.
-            if (StationMediaMetadata::isLiquidsoapAnnotation($name)) {
-                $prop = match ($name) {
-                    'liq_blank_skipped',
-                    'liq_cue_file',
-                    'liq_longtail',
-                    'liq_sustained_ending'
-                        => ConfigWriter::toBool($prop),
-                    'liq_amplify' => $prop . ' dB',
-                    default => ConfigWriter::valueToString($prop)
-                };
-            }
-
-            $annotations[$name] = $prop;
-        }
-
-        $event->addAnnotations($annotations);
+        $event->addAnnotations(
+            array_map([ConfigWriter::class, 'valueToString'], $annotations)
+        );
     }
 
     public function annotatePlaylist(AnnotateNextSong $event): void

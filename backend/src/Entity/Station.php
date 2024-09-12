@@ -532,7 +532,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function getFrontendConfig(): StationFrontendConfiguration
     {
-        return new StationFrontendConfiguration((array)$this->frontend_config);
+        return new StationFrontendConfiguration($this->frontend_config ?? []);
     }
 
     /**
@@ -548,6 +548,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         if ($this->frontend_config !== $config) {
             $this->setNeedsRestart(true);
         }
+
         $this->frontend_config = $config;
     }
 
@@ -578,7 +579,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function getBackendConfig(): StationBackendConfiguration
     {
-        return new StationBackendConfiguration((array)$this->backend_config);
+        return new StationBackendConfiguration($this->backend_config ?? []);
     }
 
     public function hasLocalServices(): bool
@@ -1002,7 +1003,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function getBrandingConfig(): StationBrandingConfiguration
     {
-        return new StationBrandingConfiguration((array)$this->branding_config);
+        return new StationBrandingConfiguration($this->branding_config ?? []);
     }
 
     /**
@@ -1244,12 +1245,12 @@ class Station implements Stringable, IdentifiableEntityInterface
 
         // Clear ports
         $feConfig = $this->getFrontendConfig();
-        $feConfig->setPort(null);
+        $feConfig->setPort();
         $this->setFrontendConfig($feConfig);
 
         $beConfig = $this->getBackendConfig();
-        $beConfig->setDjPort(null);
-        $beConfig->setTelnetPort(null);
+        $beConfig->setDjPort();
+        $beConfig->setTelnetPort();
         $this->setBackendConfig($beConfig);
     }
 

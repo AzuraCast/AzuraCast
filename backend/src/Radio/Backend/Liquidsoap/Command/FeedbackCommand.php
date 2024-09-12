@@ -14,6 +14,7 @@ use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationMediaMetadata;
 use App\Entity\StationPlaylist;
+use App\Utilities\Types;
 use Exception;
 use RuntimeException;
 
@@ -39,7 +40,15 @@ final class FeedbackCommand extends AbstractCommand
 
         // Process Liquidsoap list.assoc to JSON mapping
         $payload = array_map(
-            [StationMediaMetadata::class, 'normalizeLiquidsoapValue'],
+            fn($dataVal) => match (true) {
+                'true' === $dataVal || 'false' === $dataVal => Types::bool(
+                    $dataVal,
+                    false,
+                    true
+                ),
+                is_numeric($dataVal) => Types::float($dataVal),
+                default => $dataVal
+            },
             $payload
         );
 
@@ -93,20 +102,6 @@ final class FeedbackCommand extends AbstractCommand
         $media = $this->em->find(StationMedia::class, $payload['media_id']);
         if (!$media instanceof StationMedia) {
             throw new RuntimeException('Media ID does not exist for station.');
-        }
-
-        // If AutoCue information exists, cache it back to the DB to improve performance.
-        if ($station->getBackendConfig()->getEnableAutoCue()) {
-            $currentExtraMeta = $media->getExtraMetadata()->toArray();
-
-            $media->setExtraMetadata($payload);
-
-            $newExtraMeta = $media->getExtraMetadata()->toArray();
-
-            if ($newExtraMeta !== $currentExtraMeta) {
-                $this->em->persist($media);
-                $this->em->flush();
-            }
         }
 
         if (!$this->historyRepo->isDifferentFromCurrentSong($station, $media)) {

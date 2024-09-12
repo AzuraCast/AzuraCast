@@ -38,7 +38,12 @@ abstract class AbstractStationConfiguration implements JsonSerializable
         array|self $data
     ): static {
         if ($data instanceof self) {
-            $data = $data->toArray();
+            $data = $data->toArray() ?? [];
+        }
+
+        // Only accept hashmap-style data, not lists.
+        if (0 === count($data) || array_is_list($data)) {
+            return $this;
         }
 
         foreach ($data as $dataKey => $dataVal) {
@@ -54,9 +59,9 @@ abstract class AbstractStationConfiguration implements JsonSerializable
     }
 
     /**
-     * @return ConfigData
+     * @return ConfigData|null
      */
-    public function toArray(): array
+    public function toArray(): ?array
     {
         $return = [];
 
@@ -73,16 +78,13 @@ abstract class AbstractStationConfiguration implements JsonSerializable
 
         ksort($return);
 
-        return $return;
+        return (0 === count($return)) ? null : $return;
     }
 
     public function jsonSerialize(): array|object
     {
         $result = $this->toArray();
-
-        return (0 !== count($result))
-            ? $result
-            : (object)[];
+        return $result ?? (object)[];
     }
 
     protected function get(string $key, mixed $default = null): mixed

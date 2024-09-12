@@ -72,6 +72,9 @@ final class Queue
 
         $lastSongId = null;
         $queueLength = 0;
+        $removedPlaylistMedia = [];
+        $removedRequests = [];
+        $restOfQueueIsInvalid = false;
 
         foreach ($upcomingQueue as $queueRow) {
             if ($queueRow->getSentToAutodj()) {
@@ -85,8 +88,37 @@ final class Queue
                     $queueLength = 1;
                 }
             } else {
-                if (!$this->isQueueRowStillValid($queueRow, $expectedPlayTime)) {
-                    $this->em->remove($queueRow);
+                $playlist = $queueRow->getPlaylist();
+                $spm = $queueRow->getPlaylistMedia();
+                $request = $queueRow->getRequest();
+
+                if (
+                    $restOfQueueIsInvalid
+                    || (
+                        !$this->isExemptFromValidation($queueRow)
+                        && !$this->isQueueRowStillValid($queueRow, $expectedPlayTime)
+                    )
+                ) {
+                    $this->logger->debug(
+                        'Queue item is invalid and will be removed',
+                        array_filter([
+                            'id' => $queueRow->getId(),
+                            'playlist' => $playlist?->getName(),
+                            'song' => $spm?->getMedia()->getTitle(),
+                        ])
+                    );
+
+                    if (null !== $spm) {
+                        $removedPlaylistMedia[] = $spm;
+                    }
+
+                    if (null !== $request) {
+                        $removedRequests[] = $request;
+                    }
+
+                    $restOfQueueIsInvalid = true;
+                    $queueRow->setIsCancelled(true);
+                    $this->em->persist($queueRow);
                     continue;
                 }
 
@@ -103,6 +135,36 @@ final class Queue
             $expectedPlayTime = $this->addDurationToTime($station, $expectedPlayTime, $queueRow->getDuration());
 
             $lastSongId = $queueRow->getSongId();
+        }
+
+        // Queue any removed playlist items to play again.
+        foreach ($removedPlaylistMedia as $spm) {
+            $this->logger->debug(
+                'Playlist media must be requeued on its original playlist.',
+                [
+                    'media' => $spm->getMedia()->getTitle(),
+                    'playlist' => $spm->getPlaylist()->getName(),
+
+                ]
+            );
+
+            $spm->requeue();
+            $this->em->persist($spm);
+        }
+
+        // Mark any removed requests as unplayed so they requeue.
+        foreach ($removedRequests as $request) {
+            $this->logger->debug(
+                'Request must be marked unplayed.',
+                [
+                    'media' => $request->getTrack()->getTitle(),
+                    'Request id' => $request->getId(),
+
+                ]
+            );
+
+            $request->setPlayedAt(0);
+            $this->em->persist($request);
         }
 
         $this->em->flush();
@@ -143,6 +205,9 @@ final class Queue
             foreach ($nextSongs as $queueRow) {
                 $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
                 $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
+                if (null === $queueRow->getSchedule()) {
+                    $queueRow->setTimestampScheduled($expectedPlayTime->getTimestamp());
+                }
                 $queueRow->updateVisibility();
                 $this->em->persist($queueRow);
                 $this->em->flush();
@@ -258,13 +323,69 @@ final class Queue
         if (null === $playlist) {
             return true;
         }
-
-        return $playlist->getIsEnabled() &&
-            $this->scheduler->isPlaylistScheduledToPlayNow(
-                $playlist,
-                $expectedPlayTime,
+        $schedule = $queueRow->getSchedule();
+        $station = $queueRow->getStation();
+        if (
+            null !== $schedule
+            && $queueRow->getTimestampPlayed() < $queueRow->getTimestampScheduled()
+        ) {
+            $first = $this->queueRepo->getStartOfScheduleRun(
+                $station,
+                $schedule,
+                $queueRow->getTimestampScheduled(),
                 true
             );
+            //Item is exempt from being invalidated if it's not the first to come from this schedule run.
+            if (
+                null !== $first
+                && $first->getId() !== $queueRow->getId()
+            ) {
+                return true;
+            }
+        }
+                $ctx = new SchedulerContext($playlist, $expectedPlayTime, true);
+                $ctx->belowId = $queueRow->getId();
+        return $playlist->getIsEnabled() &&
+            $this->scheduler->shouldPlaylistPlayNow(
+                $ctx
+            );
+    }
+
+    /**
+     * A queue item is exempt from validation if:
+     *  - The playlist it belongs to has the merge setting enabled;
+     *  - The item is not the first track to play from that playlist.
+     * @param StationQueue $queueRow
+     * @return bool
+     */
+    private function isExemptFromValidation(StationQueue $queueRow): bool
+    {
+        $playlist = $queueRow->getPlaylist();
+        if (null === $playlist) {
+            return false;
+        }
+
+        if (!$playlist->backendMerge()) {
+            return false;
+        }
+
+        $station = $queueRow->getStation();
+        $playlist = $queueRow->getPlaylist();
+        if (null === $playlist) {
+            return false;
+        }
+
+        $previousQueue = $this->queueRepo->getPreviousItem($station, $queueRow);
+        if (null === $previousQueue) {
+            return false;
+        }
+
+        $previousPlaylist = $previousQueue->getPlaylist();
+        if (null === $previousPlaylist) {
+            return false;
+        }
+
+        return $playlist->getId() === $previousPlaylist->getId();
     }
 
     public function getQueueRowLog(StationQueue $queueRow): ?array

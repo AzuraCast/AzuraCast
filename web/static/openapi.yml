@@ -861,7 +861,7 @@ paths:
         -
           $ref: '#/components/parameters/StationIdRequired'
         -
-          name: id
+          name: media_id
           in: path
           description: 'Media ID'
           required: true
@@ -893,7 +893,7 @@ paths:
         -
           $ref: '#/components/parameters/StationIdRequired'
         -
-          name: id
+          name: media_id
           in: path
           description: 'Media ID'
           required: true
@@ -2756,7 +2756,7 @@ paths:
           name: action
           in: path
           description: 'The action to perform (start, stop, restart)'
-          required: false
+          required: true
           schema:
             type: string
             default: restart
@@ -2785,7 +2785,7 @@ paths:
           name: action
           in: path
           description: 'The action to perform (for all: start, stop, restart, skip, disconnect)'
-          required: false
+          required: true
           schema:
             type: string
             default: restart

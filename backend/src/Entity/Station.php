@@ -118,7 +118,11 @@ class Station implements Stringable, IdentifiableEntityInterface
             type: "object"
         ),
         ORM\Column(type: 'json', nullable: true),
-        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL]),
+        AppAssert\StationMaxBitrateChecker(
+            stationGetter: 'self',
+            selectedBitrate: ['backendConfig', 'recordStreamsBitrate']
+        )
     ]
     protected ?array $backend_config = null;
 
@@ -179,6 +183,20 @@ class Station implements Stringable, IdentifiableEntityInterface
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
     protected ?int $request_threshold = 15;
+
+    #[
+        OA\Property(example: 10),
+        ORM\Column(type: 'smallint', nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected ?int $request_priority = null;
+
+    #[
+        OA\Property(example: 0),
+        ORM\Column(options: ['default' => false]),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected bool $requests_follow_format = false;
 
     #[
         OA\Property(example: 0),
@@ -278,6 +296,36 @@ class Station implements Stringable, IdentifiableEntityInterface
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
     protected ?string $timezone = 'UTC';
+
+    #[
+        OA\Property(
+            description: "The maximum bitrate at which a station may broadcast, in Kbps. 0 for unlimited",
+            example: 128
+        ),
+        ORM\Column(type: 'smallint', nullable: false, options: ['default' => 0]),
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected int $max_bitrate = 0;
+
+    #[
+        OA\Property(
+            description: "The maximum number of mount points the station can have, 0 for unlimited",
+            example: 3
+        ),
+        ORM\Column(type: 'smallint', nullable: false, options: ['default' => 0]),
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected int $max_mounts = 0;
+
+    #[
+        OA\Property(
+            description: "The maximum number of HLS streams the station can have, 0 for unlimited",
+            example: 3
+        ),
+        ORM\Column(type: 'smallint', nullable: false, options: ['default' => 0]),
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected int $max_hls_streams = 0;
 
     /**
      * @var ConfigData|null
@@ -484,7 +532,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function getFrontendConfig(): StationFrontendConfiguration
     {
-        return new StationFrontendConfiguration((array)$this->frontend_config);
+        return new StationFrontendConfiguration($this->frontend_config ?? []);
     }
 
     /**
@@ -500,6 +548,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         if ($this->frontend_config !== $config) {
             $this->setNeedsRestart(true);
         }
+
         $this->frontend_config = $config;
     }
 
@@ -530,7 +579,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function getBackendConfig(): StationBackendConfiguration
     {
-        return new StationBackendConfiguration((array)$this->backend_config);
+        return new StationBackendConfiguration($this->backend_config ?? []);
     }
 
     public function hasLocalServices(): bool
@@ -753,6 +802,26 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->request_threshold = $requestThreshold;
     }
 
+    public function getRequestPriority(): int|null
+    {
+        return $this->request_priority;
+    }
+
+    public function setRequestPriority(int $priority = null): void
+    {
+        $this->request_priority = $priority;
+    }
+
+    public function requestsFollowFormat(): bool
+    {
+        return $this->requests_follow_format;
+    }
+
+    public function setRequestsFollowFormat(bool $requests_follow_format): void
+    {
+        $this->requests_follow_format = $requests_follow_format;
+    }
+
     public function getDisconnectDeactivateStreamer(): ?int
     {
         return $this->disconnect_deactivate_streamer;
@@ -885,9 +954,56 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->timezone = $timezone;
     }
 
+    public function getMaxBitrate(): int
+    {
+        return $this->max_bitrate;
+    }
+
+    public function setMaxBitrate(int $maxBitrate): void
+    {
+        if ($this->max_bitrate !== $maxBitrate) {
+            $this->setNeedsRestart(true);
+        }
+        $this->max_bitrate = $maxBitrate;
+    }
+
+    public function getMaxMounts(): int
+    {
+        if (!empty($this->max_mounts)) {
+            return $this->max_mounts;
+        }
+
+        return 0;
+    }
+
+    public function setMaxMounts(int $maxMounts): void
+    {
+        if ($this->max_mounts !== $maxMounts) {
+            $this->setNeedsRestart(true);
+        }
+        $this->max_mounts = $maxMounts;
+    }
+
+    public function getMaxHlsStreams(): int
+    {
+        if (!empty($this->max_hls_streams)) {
+            return $this->max_hls_streams;
+        }
+
+        return 0;
+    }
+
+    public function setMaxHlsStreams(int $maxHlsStreams): void
+    {
+        if ($this->max_hls_streams !== $maxHlsStreams) {
+            $this->setNeedsRestart(true);
+        }
+        $this->max_hls_streams = $maxHlsStreams;
+    }
+
     public function getBrandingConfig(): StationBrandingConfiguration
     {
-        return new StationBrandingConfiguration((array)$this->branding_config);
+        return new StationBrandingConfiguration($this->branding_config ?? []);
     }
 
     /**
@@ -1129,12 +1245,12 @@ class Station implements Stringable, IdentifiableEntityInterface
 
         // Clear ports
         $feConfig = $this->getFrontendConfig();
-        $feConfig->setPort(null);
+        $feConfig->setPort();
         $this->setFrontendConfig($feConfig);
 
         $beConfig = $this->getBackendConfig();
-        $beConfig->setDjPort(null);
-        $beConfig->setTelnetPort(null);
+        $beConfig->setDjPort();
+        $beConfig->setTelnetPort();
         $this->setBackendConfig($beConfig);
     }
 

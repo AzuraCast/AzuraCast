@@ -114,12 +114,12 @@ const {
             art: {},
             custom_fields: {},
             extra_metadata: {
-                liq_amplify: {},
-                liq_cross_start_next: {},
-                liq_fade_in: {},
-                liq_fade_out: {},
-                liq_cue_in: {},
-                liq_cue_out: {}
+                amplify: {},
+                cross_start_next: {},
+                fade_in: {},
+                fade_out: {},
+                cue_in: {},
+                cue_out: {}
             },
             playlists: {},
         };
@@ -141,12 +141,12 @@ const {
             isrc: null,
             custom_fields: {},
             extra_metadata: {
-                liq_amplify: null,
-                liq_cross_start_next: null,
-                liq_fade_in: null,
-                liq_fade_out: null,
-                liq_cue_in: null,
-                liq_cue_out: null
+                amplify: null,
+                cross_start_next: null,
+                fade_in: null,
+                fade_out: null,
+                cue_in: null,
+                cue_out: null
             },
             playlists: [],
         };

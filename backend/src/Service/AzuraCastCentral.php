@@ -62,6 +62,10 @@ final class AzuraCastCentral
 
             $updateDataRaw = $response->getBody()->getContents();
 
+            $this->logger->debug('Update response body.', [
+                'response' => $updateDataRaw,
+            ]);
+
             $updateData = json_decode($updateDataRaw, true, 512, JSON_THROW_ON_ERROR);
             return $updateData['updates'] ?? null;
         } catch (Exception $e) {

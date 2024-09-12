@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Entity\StationHlsStream;
+use App\Exception\ValidationException;
+use App\Http\ServerRequest;
 use App\OpenApi;
 use OpenApi\Attributes as OA;
 
@@ -135,4 +137,16 @@ final class HlsStreamsController extends AbstractStationApiCrudController
 {
     protected string $entityClass = StationHlsStream::class;
     protected string $resourceRouteName = 'api:stations:hls_stream';
+
+    protected function createRecord(ServerRequest $request, array $data): object
+    {
+        $station = $request->getStation();
+        if ($station->getMaxHlsStreams() !== 0 && $station->getMaxHlsStreams() <= $station->getHlsStreams()->count()) {
+            throw new ValidationException(
+                __('Unable to create a new stream, station\'s maximum HLS streams reached.')
+            );
+        }
+
+        return parent::createRecord($request, $data);
+    }
 }

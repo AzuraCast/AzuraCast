@@ -260,7 +260,8 @@ const newPlaylist = ref('');
 watch(selectedItems, (items) => {
     // Get all playlists that are active on ALL selected items.
     const playlistsForItems = map(items.all, (item) => {
-        return map(item.playlists, 'id');
+        const itemPlaylists = item.dir?.playlists ?? item.media?.playlists ?? [];
+        return map(itemPlaylists, 'id');
     });
 
     // Check the checkboxes for those playlists.

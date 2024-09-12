@@ -11,136 +11,76 @@ use ReflectionObject;
 
 class StationMediaMetadata extends AbstractStationConfiguration
 {
-    public const string AMPLIFY = 'liq_amplify';
+    public const string AMPLIFY = 'amplify';
 
-    public function getLiqAmplify(): ?float
+    public function getAmplify(): ?float
     {
         return Types::floatOrNull($this->get(self::AMPLIFY));
     }
 
-    public function setLiqAmplify(float|string $amplify = null): void
+    public function setAmplify(float|string $amplify = null): void
     {
         $this->set(self::AMPLIFY, self::getNumericValue($amplify));
     }
 
-    public const string CROSS_START_NEXT = 'liq_cross_start_next';
+    public const string CROSS_START_NEXT = 'cross_start_next';
 
-    public function getLiqCrossStartNext(): ?float
+    public function getCrossStartNext(): ?float
     {
         return Types::floatOrNull($this->get(self::CROSS_START_NEXT));
     }
 
-    public function setLiqCrossStartNext(string|int|float $startNext = null): void
+    public function setCrossStartNext(string|int|float $startNext = null): void
     {
         $this->set(self::CROSS_START_NEXT, self::getNumericValue($startNext));
     }
 
-    public const string FADE_IN = 'liq_fade_in';
+    public const string FADE_IN = 'fade_in';
 
-    public function getLiqFadeIn(): ?float
+    public function getFadeIn(): ?float
     {
         return Types::floatOrNull($this->get(self::FADE_IN));
     }
 
-    public function setLiqFadeIn(string|int|float $fadeIn = null): void
+    public function setFadeIn(string|int|float $fadeIn = null): void
     {
         $this->set(self::FADE_IN, self::getNumericValue($fadeIn));
     }
 
-    public const string FADE_OUT = 'liq_fade_out';
+    public const string FADE_OUT = 'fade_out';
 
-    public function getLiqFadeOut(): ?float
+    public function getFadeOut(): ?float
     {
         return Types::floatOrNull($this->get(self::FADE_OUT));
     }
 
-    public function setLiqFadeOut(string|int|float $fadeOut = null): void
+    public function setFadeOut(string|int|float $fadeOut = null): void
     {
         $this->set(self::FADE_OUT, $fadeOut);
     }
 
-    public const string CUE_IN = 'liq_cue_in';
+    public const string CUE_IN = 'cue_in';
 
-    public function getLiqCueIn(): ?float
+    public function getCueIn(): ?float
     {
         return Types::floatOrNull($this->get(self::CUE_IN));
     }
 
-    public function setLiqCueIn(string|int|float $cueIn = null): void
+    public function setCueIn(string|int|float $cueIn = null): void
     {
         $this->set(self::CUE_IN, self::getNumericValue($cueIn));
     }
 
-    public const string CUE_OUT = 'liq_cue_out';
+    public const string CUE_OUT = 'cue_out';
 
-    public function getLiqCueOut(): ?float
+    public function getCueOut(): ?float
     {
         return Types::floatOrNull($this->get(self::CUE_OUT));
     }
 
-    public function setLiqCueOut(string|int|float $cueOut = null): void
+    public function setCueOut(string|int|float $cueOut = null): void
     {
         $this->set(self::CUE_OUT, self::getNumericValue($cueOut));
-    }
-
-    public function fromArray(
-        array|AbstractStationConfiguration $data
-    ): static {
-        if ($data instanceof AbstractStationConfiguration) {
-            $data = $data->toArray();
-        }
-
-        $reflClass = new ReflectionObject($this);
-
-        // Only accept hashmap-style data, not lists.
-        if (array_is_list($data)) {
-            return $this;
-        }
-
-        foreach ($data as $dataKey => $dataVal) {
-            if (is_int($dataKey)) {
-                continue;
-            }
-
-            $dataKey = mb_strtolower($dataKey);
-
-            if (!$reflClass->hasConstant($dataKey) && !self::isLiquidsoapAnnotation($dataKey)) {
-                continue;
-            }
-
-            if (is_string($dataVal) && ($sepPos = strpos($dataVal, Metadata::MULTI_VALUE_SEPARATOR)) !== false) {
-                $dataVal = substr($dataVal, 0, $sepPos);
-            }
-
-            $methodName = $this->inflector->camelize('set_' . $dataKey);
-            if (method_exists($this, $methodName)) {
-                $this->$methodName($dataVal);
-            } else {
-                $this->set($dataKey, self::normalizeLiquidsoapValue($dataVal));
-            }
-        }
-
-        return $this;
-    }
-
-    public function toArray(): array
-    {
-        $return = [];
-
-        foreach ($this->data as $dataKey => $dataVal) {
-            $getMethodName = $this->inflector->camelize('get_' . $dataKey);
-            $methodName = $this->inflector->camelize($dataKey);
-
-            $return[$dataKey] = match (true) {
-                method_exists($this, $getMethodName) => $this->$getMethodName(),
-                method_exists($this, $methodName) => $this->$methodName(),
-                default => $this->get($dataKey)
-            };
-        }
-
-        ksort($return);
-
-        return $return;
     }
 
     public static function getNumericValue(string|int|float $annotation = null): ?float
@@ -157,20 +97,58 @@ class StationMediaMetadata extends AbstractStationConfiguration
         return Types::floatOrNull($annotation);
     }
 
-    public static function normalizeLiquidsoapValue(mixed $dataVal = null): mixed
+    public function toAnnotations(float $duration): array
     {
-        return match (true) {
-            'true' === $dataVal || 'false' === $dataVal => Types::bool($dataVal, false, true),
-            is_numeric($dataVal) => Types::float($dataVal),
-            default => $dataVal
-        };
-    }
+        $annotationsRaw = $this->toArray();
 
-    public static function isLiquidsoapAnnotation(string $key): bool
-    {
-        $key = mb_strtolower($key);
+        if (null === $annotationsRaw) {
+            return [];
+        }
 
-        return str_starts_with($key, 'liq_')
-            || str_starts_with($key, 'replaygain_');
+        // Safety checks for cue lengths.
+        if (
+            isset($annotationsRaw[self::CUE_OUT])
+            && $annotationsRaw[self::CUE_OUT] < 0
+        ) {
+            $cueOut = abs($annotationsRaw[self::CUE_OUT]);
+
+            if (0.0 === $cueOut) {
+                unset($annotationsRaw[self::CUE_OUT]);
+            }
+
+            if ($cueOut > $duration) {
+                unset($annotationsRaw[self::CUE_OUT]);
+            } else {
+                $annotationsRaw[self::CUE_OUT] = max(0, $duration - $cueOut);
+            }
+        }
+
+        if (
+            isset($annotationsRaw[self::CUE_OUT])
+            && $annotationsRaw[self::CUE_OUT] > $duration
+        ) {
+            unset($annotationsRaw[self::CUE_OUT]);
+        }
+
+        if (
+            isset($annotationsRaw[self::CUE_IN])
+            && $annotationsRaw[self::CUE_IN] > $duration
+        ) {
+            unset($annotationsRaw[self::CUE_IN]);
+        }
+
+        // Specify formatting on Amplify.
+        if (isset($annotationsRaw[self::AMPLIFY])) {
+            $annotationsRaw[self::AMPLIFY] .= ' dB';
+        }
+
+        // Directly write annotations as `liq_` values (pre-2.3.x)
+        $annotations = [];
+        foreach ($annotationsRaw as $key => $val) {
+            $key = 'liq_' . $key;
+            $annotations[$key] = $val;
+        }
+
+        return $annotations;
     }
 }

@@ -20,6 +20,7 @@ console.log(inputs);
 
 // https://vitejs.dev/config/
 export default defineConfig({
+    root: resolve(__dirname, './frontend/'),
     base: '/static/vite_dist',
     build: {
         rollupOptions: {
@@ -66,7 +67,11 @@ export default defineConfig({
         strictPort: true,
         host: true,
         fs: {
-            allow: ['..']
+            allow: [
+                resolve(__dirname, './frontend/'),
+                resolve(__dirname, './node_modules/'),
+                resolve(__dirname, './translations/')
+            ]
         }
     },
     resolve: {

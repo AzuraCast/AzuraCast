@@ -198,7 +198,10 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
                 $triggers[] = WebhookTriggers::ListenerGained->value;
             }
 
-            if (!$npOld->live->is_live && $np->live->is_live) {
+            if (
+                (!$npOld->live->is_live && $np->live->is_live)
+                || ($npOld->live->streamer_name != $np->live->streamer_name)
+            ) {
                 $triggers[] = WebhookTriggers::LiveConnect->value;
             } elseif ($npOld->live->is_live && !$np->live->is_live) {
                 $triggers[] = WebhookTriggers::LiveDisconnect->value;

@@ -10,7 +10,7 @@
         <form-group-field
             id="edit_form_amplify"
             class="col-md-6"
-            :field="form.extra_metadata.liq_amplify"
+            :field="form.extra_metadata.amplify"
             input-type="number"
             :input-attrs="{ step: 'any' }"
             :label="$gettext('Amplify: Amplification (dB)')"
@@ -19,9 +19,9 @@
         />
 
         <form-group-field
-            id="edit_form_liq_cross_start_next"
+            id="edit_form_cross_start_next"
             class="col-md-6"
-            :field="form.extra_metadata.liq_cross_start_next"
+            :field="form.extra_metadata.cross_start_next"
             input-type="number"
             :input-attrs="{ step: 'any' }"
             :label="$gettext('Custom Fading: Start Next (seconds)')"
@@ -32,7 +32,7 @@
         <form-group-field
             id="edit_form_fade_in"
             class="col-md-6"
-            :field="form.extra_metadata.liq_fade_in"
+            :field="form.extra_metadata.fade_in"
             input-type="number"
             :input-attrs="{ step: 'any' }"
             :label="$gettext('Custom Fading: Fade-In Time (seconds)')"
@@ -43,7 +43,7 @@
         <form-group-field
             id="edit_form_fade_out"
             class="col-md-6"
-            :field="form.extra_metadata.liq_fade_out"
+            :field="form.extra_metadata.fade_out"
             input-type="number"
             :input-attrs="{ step: 'any' }"
             :label="$gettext('Custom Fading: Fade-Out Time (seconds)')"
@@ -54,7 +54,7 @@
         <form-group-field
             id="edit_form_cue_in"
             class="col-md-6"
-            :field="form.extra_metadata.liq_cue_in"
+            :field="form.extra_metadata.cue_in"
             input-type="number"
             :input-attrs="{ step: 'any' }"
             :label="$gettext('Custom Cues: Cue-In Point (seconds)')"
@@ -65,7 +65,7 @@
         <form-group-field
             id="edit_form_cue_out"
             class="col-md-6"
-            :field="form.extra_metadata.liq_cue_out"
+            :field="form.extra_metadata.cue_out"
             input-type="number"
             :input-attrs="{ step: 'any' }"
             :label="$gettext('Custom Cues: Cue-Out Point (seconds)')"

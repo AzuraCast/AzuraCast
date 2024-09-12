@@ -32,18 +32,18 @@ final class AzuraCastEnvFile extends AbstractEnvFile
 
             $config = [
                 Environment::LANG => [
-                    'name' => __('The locale to use for CLI commands.'),
+                    'name' => __('The locale to use for CLI commands'),
                     'options' => $langOptions,
                     'default' => SupportedLocales::default()->getLocaleWithoutEncoding(),
                     'required' => true,
                 ],
                 Environment::APP_ENV => [
-                    'name' => __('The application environment.'),
+                    'name' => __('The application environment'),
                     'options' => ApplicationEnvironment::toSelect(),
                     'required' => true,
                 ],
                 Environment::LOG_LEVEL => [
-                    'name' => __('Manually modify the logging level.'),
+                    'name' => __('Manually modify the logging level'),
                     'description' => __(
                         'This allows you to log debug-level errors temporarily (for problem-solving) or reduce the volume of logs that are produced by your installation, without needing to modify whether your installation is a production or development instance.'
                     ),
@@ -81,7 +81,7 @@ final class AzuraCastEnvFile extends AbstractEnvFile
                 Environment::SHOW_DETAILED_ERRORS => [
                     'name' => __('Show Detailed Slim Application Errors'),
                     'description' => __(
-                        'This allows you to debug Slim Application Errors you may encounter. Please report any Slim Application Error logs to the development team on GitHub.'
+                        'This allows you to debug Slim Application Errors you may encounter. By default, this is disabled to prevent users from seeing privileged information. Please report any Slim Application Error logs to the development team on GitHub.'
                     ),
                     'options' => [true, false],
                     'default' => false,
@@ -209,7 +209,7 @@ final class AzuraCastEnvFile extends AbstractEnvFile
                 Environment::NOW_PLAYING_DELAY_TIME => [
                     'name' => __('Now Playing Delay Time (Seconds)'),
                     'description' => __(
-                        'The delay between Now Playing checks for every station. Decrease for more frequent checks at the expense of performance; increase for less frequent checks but better performance (for large installations).'
+                        'The delay (in seconds) between Now Playing checks for every station. Decrease for more frequent checks at the expense of performance; increase for less frequent checks but better performance (for large installations).'
                     ),
                 ],
                 Environment::NOW_PLAYING_MAX_CONCURRENT_PROCESSES => [
@@ -252,6 +252,14 @@ final class AzuraCastEnvFile extends AbstractEnvFile
                         'This is the total size any single request body can be. AzuraCast chunks its uploads into smaller file sizes, so this only applies when doing custom uploads via the API. Sizes should be listed in a format like "100K", "128M", "1G" for kilobytes, megabytes, and gigabytes respectively.'
                     ),
                     'default' => '50M',
+                ],
+                'NGINX_BLOCK_BOTS' => [
+                    'name' => __('Automatically block common bots and crawlers'),
+                    'description' => __(
+                        'If enabled, this will automatically download and update the Ultimate Nginx Bad Bot Blocker, which will block aggressive crawlers and other bots.'
+                    ),
+                    'options' => [true, false],
+                    'default' => false,
                 ],
                 Environment::ENABLE_WEB_UPDATER => [
                     'name' => __('Enable web-based Docker image updates'),

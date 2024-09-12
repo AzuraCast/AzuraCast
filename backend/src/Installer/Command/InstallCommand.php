@@ -260,6 +260,11 @@ final class InstallCommand extends Command
                     $azuracastEnv->getAsBool(Environment::ENABLE_WEB_UPDATER, true)
                 ) ? 'true' : 'false';
             }
+
+            $azuracastEnv['NGINX_BLOCK_BOTS'] = $io->confirm(
+                $azuracastEnvConfig['NGINX_BLOCK_BOTS']['name'],
+                $azuracastEnv->getAsBool('NGINX_BLOCK_BOTS', false)
+            ) ? 'true' : 'false';
         }
 
         $io->writeln(

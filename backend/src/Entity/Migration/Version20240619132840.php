@@ -15,7 +15,7 @@ final class Version20240619132840 extends AbstractMigration
 
     public function preUp(Schema $schema): void
     {
-        $allMedia = $this->connection->fetchAllAssociative(
+        $allMedia = $this->connection->iterateAssociativeIndexed(
             <<<SQL
                 SELECT id, amplify, fade_start_next, fade_in, fade_out, cue_in, cue_out
                 FROM station_media
@@ -38,23 +38,26 @@ final class Version20240619132840 extends AbstractMigration
             'cue_out' => 'liq_cue_out',
         ];
 
-        foreach ($allMedia as $row) {
+        foreach ($allMedia as $id => $row) {
             $extraMeta = [];
-
             foreach ($fieldLookup as $original => $new) {
-                $originalVal = $row[$original] ?? null;
-                if (null !== $originalVal && '' !== $originalVal) {
-                    $extraMeta[$new] = $originalVal;
+                if (isset($row[$original])) {
+                    $originalVal = $row[$original];
+                    if ('' !== $originalVal) {
+                        $extraMeta[$new] = $originalVal;
+                    }
                 }
             }
 
             $this->connection->update(
                 'station_media',
                 [
-                    'extra_metadata' => json_encode($extraMeta, JSON_THROW_ON_ERROR),
+                    'extra_metadata' => (0 === count($extraMeta))
+                        ? null
+                        : json_encode($extraMeta, JSON_THROW_ON_ERROR),
                 ],
                 [
-                    'id' => $row['id'],
+                    'id' => $id,
                 ]
             );
         }

@@ -69,7 +69,7 @@ use Psr\Http\Message\ResponseInterface;
                 name: 'action',
                 description: 'The action to perform (start, stop, restart)',
                 in: 'path',
-                required: false,
+                required: true,
                 schema: new OA\Schema(type: 'string', default: 'restart')
             ),
         ],
@@ -92,7 +92,7 @@ use Psr\Http\Message\ResponseInterface;
                 name: 'action',
                 description: 'The action to perform (for all: start, stop, restart, skip, disconnect)',
                 in: 'path',
-                required: false,
+                required: true,
                 schema: new OA\Schema(type: 'string', default: 'restart')
             ),
         ],

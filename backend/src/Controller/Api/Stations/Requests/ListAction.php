@@ -15,6 +15,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Radio\AutoDJ\Scheduler;
+use App\Radio\AutoDJ\SchedulerContext;
 use Carbon\CarbonImmutable;
 use OpenApi\Attributes as OA;
 use Psr\Cache\CacheItemPoolInterface;
@@ -116,7 +117,15 @@ final class ListAction extends AbstractSearchableListAction
 
             /** @var StationPlaylist $playlist */
             foreach ($playlists as $playlist) {
-                if ($this->scheduler->isPlaylistScheduledToPlayNow($playlist, $now, true)) {
+                if (
+                    $this->scheduler->isPlaylistScheduledToPlayNow(
+                        new SchedulerContext(
+                            $playlist,
+                            $now,
+                            true
+                        )
+                    )
+                ) {
                     $ids[] = $playlist->getIdRequired();
                 }
             }

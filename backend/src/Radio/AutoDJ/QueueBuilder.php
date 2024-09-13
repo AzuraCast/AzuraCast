@@ -116,7 +116,7 @@ final class QueueBuilder implements EventSubscriberInterface
 
         $this->logger->debug(
             sprintf(
-                'The following $%d playlists are eligible.',
+                'The following %d playlists are eligible.',
                 $ctx->getPlaylistCount()
             ),
             $ctx->getLogPriorities()

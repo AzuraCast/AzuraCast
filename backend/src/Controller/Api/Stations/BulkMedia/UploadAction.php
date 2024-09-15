@@ -213,7 +213,7 @@ final class UploadAction implements SingleActionInterface
             } elseif ('playlists' === $key) {
                 $hasPlaylists = true;
                 if (null !== $value) {
-                    foreach (explode(',', $value) as $playlistName) {
+                    foreach (explode(', ', $value) as $playlistName) {
                         $playlistShortName = StationPlaylist::generateShortName($playlistName);
                         if (isset($playlistsByName[$playlistShortName])) {
                             /** @var int $playlistId */

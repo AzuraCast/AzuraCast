@@ -14,6 +14,8 @@ RUN go install github.com/aptible/supercronic@v0.2.32
 
 RUN go install github.com/centrifugal/centrifugo/v5@v5.4.5
 
+RUN strip /go/bin/*
+
 #
 # MariaDB dependencies build step
 #

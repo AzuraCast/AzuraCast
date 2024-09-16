@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 #
 # Golang dependencies build step
 #
@@ -63,46 +65,45 @@ ENV TZ="UTC" \
     LANG="en_US.UTF-8" \
     LC_TYPE="en_US.UTF-8"
 
-COPY --from=dependencies / /
+COPY --link --from=dependencies / /
 
 # Run base build process
-COPY ./util/docker/common /bd_build/
+RUN --mount=type=bind,source=./util/docker/common,target=/bd_build,rw \
+    bash /bd_build/prepare.sh && \
+    bash /bd_build/add_user.sh && \
+    bash /bd_build/cleanup.sh
 
-RUN bash /bd_build/prepare.sh \
-    && bash /bd_build/add_user.sh \
-    && bash /bd_build/cleanup.sh
+# Build each set of dependencies in their own step for cacheability.
+RUN --mount=type=bind,source=./util/docker/common,target=/bd_build,rw \
+    --mount=type=bind,source=./util/docker/supervisor,target=/bd_build/supervisor,rw \
+    bash /bd_build/supervisor/setup.sh && \
+    bash /bd_build/cleanup.sh
+
+RUN --mount=type=bind,source=./util/docker/common,target=/bd_build,rw \
+    --mount=type=bind,source=./util/docker/stations,target=/bd_build/stations,rw \
+    bash /bd_build/stations/setup.sh && \
+    bash /bd_build/cleanup.sh
+
+RUN --mount=type=bind,source=./util/docker/common,target=/bd_build,rw \
+    --mount=type=bind,source=./util/docker/web,target=/bd_build/web,rw \
+    bash /bd_build/web/setup.sh && \
+    bash /bd_build/cleanup.sh
+
+RUN --mount=type=bind,source=./util/docker/common,target=/bd_build,rw \
+    --mount=type=bind,source=./util/docker/mariadb,target=/bd_build/mariadb,rw \
+    bash /bd_build/mariadb/setup.sh && \
+    bash /bd_build/cleanup.sh
+
+RUN --mount=type=bind,source=./util/docker/common,target=/bd_build,rw \
+    --mount=type=bind,source=./util/docker/redis,target=/bd_build/redis,rw \
+    bash /bd_build/redis/setup.sh && \
+    bash /bd_build/cleanup.sh
+
+RUN --mount=type=bind,source=./util/docker/common,target=/bd_build,rw \
+    bash /bd_build/chown_dirs.sh
 
 # Add built-in docs
 COPY --from=docs --chown=azuracast:azuracast /dist /var/azuracast/docs
-
-# Build each set of dependencies in their own step for cacheability.
-COPY ./util/docker/supervisor /bd_build/supervisor/
-RUN bash /bd_build/supervisor/setup.sh \
-    && bash /bd_build/cleanup.sh \
-    && rm -rf /bd_build/supervisor
-
-COPY ./util/docker/stations /bd_build/stations/
-RUN bash /bd_build/stations/setup.sh \
-    && bash /bd_build/cleanup.sh \
-    && rm -rf /bd_build/stations
-
-COPY ./util/docker/web /bd_build/web/
-RUN bash /bd_build/web/setup.sh \
-    && bash /bd_build/cleanup.sh \
-    && rm -rf /bd_build/web
-
-COPY ./util/docker/mariadb /bd_build/mariadb/
-RUN bash /bd_build/mariadb/setup.sh \
-    && bash /bd_build/cleanup.sh \
-    && rm -rf /bd_build/mariadb
-
-COPY ./util/docker/redis /bd_build/redis/
-RUN bash /bd_build/redis/setup.sh \
-    && bash /bd_build/cleanup.sh \
-    && rm -rf /bd_build/redis
-
-RUN bash /bd_build/chown_dirs.sh \
-    && rm -rf /bd_build
 
 USER azuracast
 

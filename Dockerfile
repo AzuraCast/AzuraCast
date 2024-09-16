@@ -32,16 +32,9 @@ FROM ghcr.io/azuracast/icecast-kh-ac:2024-02-13 AS icecast
 #
 FROM mlocati/php-extension-installer AS php-extension-installer
 
-#
-# Final build image
-#
-FROM php:8.3-fpm-bookworm AS pre-final
+# ---
 
-ENV TZ="UTC" \
-    LANGUAGE="en_US.UTF-8" \
-    LC_ALL="en_US.UTF-8" \
-    LANG="en_US.UTF-8" \
-    LC_TYPE="en_US.UTF-8"
+FROM scratch AS dependencies
 
 # Add PHP extension installer tool
 COPY --from=php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
@@ -58,6 +51,19 @@ COPY --from=mariadb /usr/local/bin/docker-entrypoint.sh /usr/local/bin/db_entryp
 # Add Icecast
 COPY --from=icecast /usr/local/bin/icecast /usr/local/bin/icecast
 COPY --from=icecast /usr/local/share/icecast /usr/local/share/icecast
+
+#
+# Final build image
+#
+FROM php:8.3-fpm-bookworm AS pre-final
+
+ENV TZ="UTC" \
+    LANGUAGE="en_US.UTF-8" \
+    LC_ALL="en_US.UTF-8" \
+    LANG="en_US.UTF-8" \
+    LC_TYPE="en_US.UTF-8"
+
+COPY --from=dependencies / /
 
 # Run base build process
 COPY ./util/docker/common /bd_build/

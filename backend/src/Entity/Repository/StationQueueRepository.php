@@ -209,7 +209,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
             SELECT sq
             FROM App\Entity\StationQueue sq
             WHERE sq.playlist_id = :playlist
-            and sq.timestamp_played <= :now
+            and sq.timestamp_played < :now
             ORDER BY sq.timestamp_played DESC
             DQL
         )->setParameter('playlist', $playlist)

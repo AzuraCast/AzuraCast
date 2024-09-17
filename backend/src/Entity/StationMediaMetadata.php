@@ -99,54 +99,47 @@ class StationMediaMetadata extends AbstractStationConfiguration
 
     public function toAnnotations(float $duration): array
     {
-        $annotationsRaw = $this->toArray();
+        $annotations = $this->toArray();
 
-        if (null === $annotationsRaw) {
+        if (null === $annotations) {
             return [];
         }
 
         // Safety checks for cue lengths.
         if (
-            isset($annotationsRaw[self::CUE_OUT])
-            && $annotationsRaw[self::CUE_OUT] < 0
+            isset($annotations[self::CUE_OUT])
+            && $annotations[self::CUE_OUT] < 0
         ) {
-            $cueOut = abs($annotationsRaw[self::CUE_OUT]);
+            $cueOut = abs($annotations[self::CUE_OUT]);
 
             if (0.0 === $cueOut) {
-                unset($annotationsRaw[self::CUE_OUT]);
+                unset($annotations[self::CUE_OUT]);
             }
 
             if ($cueOut > $duration) {
-                unset($annotationsRaw[self::CUE_OUT]);
+                unset($annotations[self::CUE_OUT]);
             } else {
-                $annotationsRaw[self::CUE_OUT] = max(0, $duration - $cueOut);
+                $annotations[self::CUE_OUT] = max(0, $duration - $cueOut);
             }
         }
 
         if (
-            isset($annotationsRaw[self::CUE_OUT])
-            && $annotationsRaw[self::CUE_OUT] > $duration
+            isset($annotations[self::CUE_OUT])
+            && $annotations[self::CUE_OUT] > $duration
         ) {
-            unset($annotationsRaw[self::CUE_OUT]);
+            unset($annotations[self::CUE_OUT]);
         }
 
         if (
-            isset($annotationsRaw[self::CUE_IN])
-            && $annotationsRaw[self::CUE_IN] > $duration
+            isset($annotations[self::CUE_IN])
+            && $annotations[self::CUE_IN] > $duration
         ) {
-            unset($annotationsRaw[self::CUE_IN]);
+            unset($annotations[self::CUE_IN]);
         }
 
         // Specify formatting on Amplify.
-        if (isset($annotationsRaw[self::AMPLIFY])) {
-            $annotationsRaw[self::AMPLIFY] .= ' dB';
-        }
-
-        // Directly write annotations as `liq_` values (pre-2.3.x)
-        $annotations = [];
-        foreach ($annotationsRaw as $key => $val) {
-            $key = 'liq_' . $key;
-            $annotations[$key] = $val;
+        if (isset($annotations[self::AMPLIFY])) {
+            $annotations[self::AMPLIFY] .= ' dB';
         }
 
         return $annotations;

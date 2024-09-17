@@ -7,7 +7,7 @@ apt-get install -y --no-install-recommends python3-minimal python3-pip
 pip3 install --no-cache-dir --break-system-packages mutagen
 
 mkdir -p /tmp/autocue
-mkdir -p /var/azuracast/autocue
+mkdir -p /var/azuracast/liquidsoap
 
 cd /tmp/autocue
 
@@ -20,8 +20,8 @@ tar -xvf autocue.tar.gz --strip-components=1
 mv ./cue_file /usr/local/bin/cue_file
 chmod a+x /usr/local/bin/cue_file
 
-mv ./autocue.cue_file.liq /var/azuracast/autocue/autocue.liq
-chown -R azuracast:azuracast /var/azuracast/autocue
+mv ./autocue.cue_file.liq /var/azuracast/liquidsoap/autocue.liq
+chown -R azuracast:azuracast /var/azuracast/liquidsoap
 
-cd /var/azuracast/autocue
+cd /var/azuracast/liquidsoap
 rm -rf /tmp/autocue

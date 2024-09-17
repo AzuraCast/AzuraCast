@@ -230,56 +230,10 @@ final class ConfigWriter implements EventSubscriberInterface
         $station = $event->getStation();
 
         $configDir = $station->getRadioConfigDir();
-        $pidfile = $configDir . DIRECTORY_SEPARATOR . 'liquidsoap.pid';
-
-        $socketFile = $configDir . DIRECTORY_SEPARATOR . 'liquidsoap.sock';
+        $pidfile = $configDir . '/liquidsoap.pid';
+        $socketFile = $configDir . '/liquidsoap.sock';
 
         $stationTz = self::cleanUpString($station->getTimezone());
-
-        $event->appendBlock(
-            <<<LIQ
-            init.daemon.set(false)
-            init.daemon.pidfile.path.set("{$pidfile}")
-
-            log.stdout.set(true)
-            log.file.set(false)
-
-            settings.server.log.level.set(4)
-
-            settings.server.socket.set(true)
-            settings.server.socket.permissions.set(0o660)
-            settings.server.socket.path.set("{$socketFile}")
-
-            settings.harbor.bind_addrs.set(["0.0.0.0"])
-            settings.encoder.metadata.export.set(["artist","title","album","song"])
-
-            environment.set("TZ", "{$stationTz}")
-
-            autodj_is_loading = ref(true)
-            ignore(autodj_is_loading)
-
-            autodj_ping_attempts = ref(0)
-            ignore(autodj_ping_attempts)
-
-            # Track live-enabled status.
-            live_enabled = ref(false)
-            ignore(live_enabled)
-
-            # Track live transition for crossfades.
-            to_live = ref(false)
-            ignore(to_live)
-
-            # Reimplement LS's now-deprecated drop_metadata function.
-            def drop_metadata(~id=null(), s)
-                let {metadata=_, ...tracks} = source.tracks(s)
-                source(id=id, tracks)
-            end
-
-            # Transport for HTTPS outputs.
-            https_transport = http.transport.ssl()
-            ignore(https_transport)
-            LIQ
-        );
 
         $stationApiAuth = self::cleanUpString($station->getAdapterApiKey());
         $stationApiUrl = self::cleanUpString(
@@ -287,33 +241,19 @@ final class ConfigWriter implements EventSubscriberInterface
                 ->withPath('/api/internal/' . $station->getId() . '/liquidsoap')
         );
 
+        $commonLibPath = $this->environment->getParentDirectory() . '/liquidsoap/azuracast.liq';
+
         $event->appendBlock(
             <<<LIQ
+            init.daemon.pidfile.path.set("{$pidfile}")
+            settings.server.socket.path.set("{$socketFile}")
+            environment.set("TZ", "{$stationTz}")  
+            
             azuracast_api_url = "{$stationApiUrl}"
             azuracast_api_key = "{$stationApiAuth}"
-
-            def azuracast_api_call(~timeout=10.0, url, payload) =
-                full_url = "#{azuracast_api_url}/#{url}"
-
-                log("API #{url} - Sending POST request to '#{full_url}' with body: #{payload}")
-                try
-                    response = http.post(full_url,
-                        headers=[
-                            ("Content-Type", "application/json"),
-                            ("User-Agent", "Liquidsoap AzuraCast"),
-                            ("X-Liquidsoap-Api-Key", "#{azuracast_api_key}")
-                        ],
-                        timeout=timeout,
-                        data=payload
-                    )
-
-                    log("API #{url} - Response (#{response.status_code}): #{response}")
-                    "#{response}"
-                catch err do
-                    log("API #{url} - Error: #{error.kind(err)} - #{error.message(err)}")
-                    "false"
-                end
-            end
+            
+            # AzuraCast Common Runtime Functions
+            %include "{$commonLibPath}"
             LIQ
         );
 
@@ -382,9 +322,9 @@ final class ConfigWriter implements EventSubscriberInterface
             );
         }
 
-        // Add AutoCue common configuration.
         if ($backendConfig->getEnableAutoCue()) {
-            $autoCueCommon = $this->environment->getParentDirectory() . '/autocue/autocue.liq';
+            // Add Moonbase AutoCue common configuration.
+            $autoCueCommon = $this->environment->getParentDirectory() . '/liquidsoap/autocue.liq';
 
             $event->appendBlock(
                 <<<LIQ
@@ -393,6 +333,15 @@ final class ConfigWriter implements EventSubscriberInterface
 
                 settings.autocue.cue_file.nice := true
                 settings.request.prefetch := 2
+                LIQ
+            );
+        } else {
+            // Register AzuraCast as an AutoCue provider
+            $event->appendBlock(
+                <<<LIQ
+                enable_autocue_metadata()
+                autocue.register(name="azuracast", azuracast_autocue)
+                settings.autocue.preferred := "azuracast"
                 LIQ
             );
         }
@@ -678,37 +627,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
             $event->appendBlock(
                 <<< LIQ
-                # AutoDJ Next Song Script
-                def autodj_next_song() =
-                    response = azuracast_api_call(
-                        "nextsong",
-                        ""
-                    )
-                    if (response == "") or (response == "false") then
-                        null()
-                    else
-                        request.create(response)
-                    end
-                end
-
-                # Delayed ping for AutoDJ Next Song
-                def wait_for_next_song(autodj)
-                    autodj_ping_attempts.set(autodj_ping_attempts() + 1)
-
-                    if source.is_ready(autodj) then
-                        log("AutoDJ is ready!")
-                        autodj_is_loading.set(false)
-                        -1.0
-                    elsif autodj_ping_attempts() > 200 then
-                        log("AutoDJ could not be initialized within the specified timeout.")
-                        autodj_is_loading.set(false)
-                        -1.0
-                    else
-                        0.5
-                    end
-                end
-
-                dynamic = request.dynamic(id="next_song", timeout={$nextSongTimeout}, retry_delay=10., autodj_next_song)
+                dynamic = request.dynamic(id="next_song", timeout={$nextSongTimeout}, retry_delay=10., azuracast_autodj_next_song)
 
                 dynamic_startup = fallback(
                     id = "dynamic_startup",
@@ -717,14 +636,14 @@ final class ConfigWriter implements EventSubscriberInterface
                         dynamic,
                         source.available(
                             blank(id = "autodj_startup_blank", duration = 120.),
-                            predicate.activates({autodj_is_loading()})
+                            predicate.activates({azuracast_autodj_is_loading()})
                         )
                     ]
                 )
                 radio = fallback(id="autodj_fallback", track_sensitive = true, [dynamic_startup, radio])
 
                 ref_dynamic = ref(dynamic);
-                thread.run.recurrent(delay=0.25, { wait_for_next_song(ref_dynamic()) })
+                thread.run.recurrent(delay=0.25, { azuracast_wait_for_next_song(ref_dynamic()) })
                 LIQ
             );
         }
@@ -898,13 +817,8 @@ final class ConfigWriter implements EventSubscriberInterface
 
     public function writeCrossfadeConfiguration(WriteLiquidsoapConfiguration $event): void
     {
-        $settings = $event->getStation()->getBackendConfig();
-
         // Write pre-crossfade section.
         $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_PRE_FADE);
-
-        // Need to move amplify & Replaygain after CUSTOM_PRE_FADE
-        // in case user has defined own fallbacks/switches
 
         // Amplify
         $event->appendBlock(
@@ -927,53 +841,20 @@ final class ConfigWriter implements EventSubscriberInterface
             );
         }
 
-        // Show metadata, used with and without Autocue
-        $showMetaFunc = <<<LS
-        # Show metadata in log (Debug)
-        def show_meta(m)
-            label="show_meta"
-            l = list.sort.natural(metadata.cover.remove(m))
-            list.iter(fun(v) -> log(level=4, label=label, "#{v}"), l)
-
-            nowplaying = ref(m["artist"] ^ " - " ^ m["title"])
-
-            if m["artist"] == "" then
-                if string.contains(substring=" - ", m["title"]) then
-                    let (a, t) = string.split.first(separator=" - ", m["title"])
-                    nowplaying := a ^ " - " ^ t
-                end
-            end
-
-            # show `liq_` & other metadata in level 3
-            def fl(k, _) =
-                tags = ["duration", "media_id", "replaygain_track_gain", "replaygain_reference_loudness"]
-                string.contains(prefix="liq_", k) or list.mem(k, tags)
-            end
-
-            liq = list.assoc.filter((fl), l)
-            list.iter(fun(v) -> log(level=3, label=label, "#{v}"), liq)
-            log(level=3, label=label, "Now playing: #{nowplaying()}")
-
-            if m["liq_amplify"] == "" then
-                log(level=2, label=label, "Warning: No liq_amplify found, expect loudness jumps!")
-            end
-            if m["liq_blank_skipped"] == "true" then
-                log(level=2, label=label, "Blank (silence) detected in track, ending early.")
-            end
-        end
-
-        radio.on_metadata(show_meta)
-        LS;
+        // Add debug logging for metadata.
+        $event->appendBlock(
+            <<<LS
+            radio.on_metadata(azuracast_log_meta)
+            LS
+        );
 
         if ($settings->getEnableAutoCue()) {
             // AutoCue preempts normal fading to use its own settings.
             $event->appendBlock(
                 <<<LS
-                {$showMetaFunc}
-
                 # Fading/crossing/segueing
                 def live_aware_crossfade(old, new) =
-                    if to_live() then
+                    if azuracast_to_live() then
                         # If going to the live show, play a simple sequence
                         # fade out AutoDJ, do (almost) not fade in streamer
                         sequence([
@@ -996,7 +877,7 @@ final class ConfigWriter implements EventSubscriberInterface
                         ])
                     end
                 end
-
+                
                 radio = cross(
                     duration=settings.autocue.cue_file.fade_out(),
                     live_aware_crossfade,
@@ -1020,27 +901,8 @@ final class ConfigWriter implements EventSubscriberInterface
 
             $event->appendBlock(
                 <<<LS
-                # reinstate liq_cross_duration if AutoCue is disabled
-                def set_cross_duration(m) =
-                    fade_out = float_of_string(default=0., m["liq_fade_out"])
-                    duration = float_of_string(default=0., m["duration"])
-                    cue_out = float_of_string(default=duration, m["liq_cue_out"])
-                    start_next = float_of_string(default=cue_out, m["liq_cross_start_next"])
-                    cross_duration = max(cue_out - start_next, fade_out)
-                    log(level=4, label="set_cross_duration", "Setting liq_cross_duration=#{cross_duration}")
-                    
-                    if cross_duration > 0. then
-                        [("liq_cross_duration", "#{cross_duration}")]
-                    else
-                        []
-                    end
-                end
-                radio = metadata.map(set_cross_duration, radio)
-
-                {$showMetaFunc}
-
                 def live_aware_crossfade(old, new) =
-                    if to_live() then
+                    if azuracast_to_live() then
                         # If going to the live show, play a simple sequence
                         sequence([fade.out(old.source),fade.in(new.source)])
                     else
@@ -1074,73 +936,16 @@ final class ConfigWriter implements EventSubscriberInterface
         $djMount = $settings->getDjMountPoint();
         $recordLiveStreams = $settings->recordStreams();
 
-        $event->appendBlock(
-            <<< LIQ
-            # DJ Authentication
-            last_authenticated_dj = ref("")
-            live_dj = ref("")
-
-            def dj_auth(login) =
-                auth_info =
-                    if (login.user == "source" or login.user == "") and (string.match(pattern="(:|,)+", login.password)) then
-                        auth_string = string.split(separator="(:|,)", login.password)
-                        {user = list.nth(default="", auth_string, 0),
-                        password = list.nth(default="", auth_string, 2)}
-                    else
-                        {user = login.user, password = login.password}
-                    end
-
-                response = azuracast_api_call(
-                    timeout=5.0,
-                    "auth",
-                    json.stringify(auth_info)
-                )
-
-                if (response == "true") then
-                    last_authenticated_dj.set(auth_info.user)
-                    true
-                else
-                    false
-                end
-            end
-
-            def live_connected(header) =
-                dj = last_authenticated_dj()
-                log("DJ Source connected! Last authenticated DJ: #{dj} - #{header}")
-
-                live_enabled.set(true)
-                live_dj.set(dj)
-
-                _ = azuracast_api_call(
-                    timeout=5.0,
-                    "djon",
-                    json.stringify({user = dj})
-                )
-            end
-
-            def live_disconnected() =
-                _ = azuracast_api_call(
-                    timeout=5.0,
-                    "djoff",
-                    json.stringify({user = live_dj()})
-                )
-
-                live_enabled.set(false)
-                live_dj.set("")
-            end
-            LIQ
-        );
-
         $harborParams = [
             '"' . self::cleanUpString($djMount) . '"',
             'id = "input_streamer"',
             'port = ' . $this->liquidsoap->getStreamPort($station),
-            'auth = dj_auth',
+            'auth = azuracast_dj_auth',
             'icy = true',
             'icy_metadata_charset = "' . $charset . '"',
             'metadata_charset = "' . $charset . '"',
-            'on_connect = live_connected',
-            'on_disconnect = live_disconnected',
+            'on_connect = azuracast_live_connected',
+            'on_disconnect = azuracast_live_disconnected',
         ];
 
         $djBuffer = $settings->getDjBuffer();
@@ -1236,7 +1041,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 output.file(
                     {$formatString},
                     fun () -> begin
-                        if (live_enabled()) then
+                        if (azuracast_live_enabled()) then
                             time.string("#{recording_base_path}/#{live_dj()}/{$recordPathPrefix}_%Y%m%d-%H%M%S.#{recording_extension}.tmp")
                         else
                             ""
@@ -1294,42 +1099,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(
             <<<LIQ
             # Send metadata changes back to AzuraCast
-            last_title = ref("")
-            last_artist = ref("")
-
-            def metadata_updated(m) =
-                def f() =
-                    if (m["is_error_file"] != "true") then
-                        if (m["title"] != last_title() or m["artist"] != last_artist()) then
-                            last_title.set(m["title"])
-                            last_artist.set(m["artist"])
-                            
-                            # Only send some metadata to AzuraCast
-                            def fl(k, _) =
-                                tags = ["song_id", "media_id", "playlist_id", "artist", "title"]
-                                string.contains(prefix="liq_", k) or string.contains(prefix="replaygain_", k) or list.mem(k, tags)
-                            end
-                            
-                            feedback_meta = list.assoc.filter((fl), metadata.cover.remove(m))
-                            
-                            j = json()
-                            for item = list.iterator(feedback_meta) do
-                                let (tag, value) = item
-                                j.add(tag, value)
-                            end
-                            
-                            _ = azuracast_api_call(
-                                "feedback",
-                                json.stringify(compact=true, j)
-                            )
-                        end
-                    end
-                end
-
-                thread.run(f)
-            end
-
-            radio.on_metadata(metadata_updated)
+            radio.on_metadata(azuracast_send_feedback)
 
             # Handle "Jingle Mode" tracks by replaying the previous metadata.
             last_metadata = ref([])

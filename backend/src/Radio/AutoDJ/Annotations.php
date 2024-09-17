@@ -90,18 +90,61 @@ final class Annotations implements EventSubscriberInterface
             return;
         }
 
+        $duration = $media->getLength();
+
         $annotations = array_filter([
             'title' => $media->getTitle(),
             'artist' => $media->getArtist(),
-            'duration' => $media->getLength(),
+            'duration' => $duration,
             'song_id' => $media->getSongId(),
             'media_id' => $media->getId(),
-            ...$media->getExtraMetadata()->toAnnotations($media->getLength()),
+            ...$this->processAutocueAnnotations(
+                $station,
+                $media->getExtraMetadata()->toAnnotations($duration),
+                $duration,
+            ),
         ], fn ($row) => ('' !== $row && null !== $row));
 
         $event->addAnnotations(
             array_map([ConfigWriter::class, 'valueToString'], $annotations)
         );
+    }
+
+    private function processAutocueAnnotations(
+        Station $station,
+        array $annotations,
+        float $duration,
+    ): array {
+        $backendConfig = $station->getBackendConfig();
+
+        if ($backendConfig->getEnableAutoCue()) {
+            // Directly write annotations as `liq_` values (pre-2.3.x)
+            $annotationsNew = [];
+            foreach ($annotations as $key => $val) {
+                $key = 'liq_' . $key;
+                $annotationsNew[$key] = $val;
+            }
+
+            return $annotationsNew;
+        }
+
+        $defaultStartNext = $backendConfig->isCrossfadeEnabled()
+            ? $backendConfig->getCrossfadeDuration()
+            : $duration;
+
+        $defaultFade = $backendConfig->isCrossfadeEnabled()
+            ? $backendConfig->getCrossfade()
+            : 0.0;
+
+        return [
+            'azuracast_autocue' => true,
+            'azuracast_amplify' => $annotations[StationMediaMetadata::AMPLIFY],
+            'azuracast_cue_in' => $annotations[StationMediaMetadata::CUE_IN] ?? 0.0,
+            'azuracast_cue_out' => $annotations[StationMediaMetadata::CUE_OUT] ?? $duration,
+            'azuracast_fade_in' => $annotations[StationMediaMetadata::FADE_IN] ?? $defaultFade,
+            'azuracast_fade_out' => $annotations[StationMediaMetadata::FADE_OUT] ?? $defaultFade,
+            'azuracast_start_next' => $annotations[StationMediaMetadata::CROSS_START_NEXT] ?? $defaultStartNext,
+        ];
     }
 
     public function annotatePlaylist(AnnotateNextSong $event): void

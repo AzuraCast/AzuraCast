@@ -50,7 +50,7 @@
                         <dt class="mb-1">
                             {{ $gettext('Server:') }}
                         </dt>
-                        <dd><code>{{ connectionInfo.url }}</code></dd>
+                        <dd><code>{{ connectionInfo.serverUrl }}</code></dd>
 
                         <dd v-if="connectionInfo.ip">
                             {{ $gettext('You may need to connect directly to your IP address:') }}

@@ -26,3 +26,8 @@ dpkg -i /tmp/liquidsoap.deb
 apt-get install -y -f --no-install-recommends
 rm -f /tmp/liquidsoap.deb
 ln -s /usr/bin/liquidsoap /usr/local/bin/liquidsoap
+
+# Add Common AzuraCast Functions
+mkdir -p /var/azuracast/liquidsoap
+cp /bd_build/stations/liquidsoap/* /var/azuracast/liquidsoap
+chown -R azuracast:azuracast /var/azuracast/liquidsoap

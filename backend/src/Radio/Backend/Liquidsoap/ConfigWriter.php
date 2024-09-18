@@ -1009,12 +1009,12 @@ final class ConfigWriter implements EventSubscriberInterface
             # Skip non-live track when live DJ goes live.
             def check_live() =
                 if live.is_ready() then
-                    if not to_live() then
-                        to_live.set(true)
+                    if not azuracast_to_live() then
+                        azuracast_to_live.set(true)
                         radio_without_live.skip()
                     end
                 else
-                    to_live.set(false)
+                    azuracast_to_live.set(false)
                 end
             end
 

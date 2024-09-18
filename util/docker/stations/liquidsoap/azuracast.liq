@@ -74,11 +74,11 @@ def azuracast_autocue(
             list.assoc("azuracast_#{label}", request_metadata)
         end
 
-        def azuracast_optional_meta(label) =
-            if list.assoc.mem("azuracast_#{label}", request_metadata) then
-                [(label, list.assoc("azuracast_#{label}", request_metadata))]
+        def azuracast_optional_amplify =
+            if list.assoc.mem("azuracast_amplify", request_metadata) then
+                { amplify = list.assoc("azuracast_amplify", request_metadata) }
             else
-                []
+                { }
             end
         end
 
@@ -88,7 +88,7 @@ def azuracast_autocue(
             fade_in = float_of_string(azuracast_meta("fade_in")),
             fade_out = float_of_string(azuracast_meta("fade_out")),
             start_next = float_of_string(azuracast_meta("start_next")),
-            ...azuracast_optional_meta("amplify")
+            ...azuracast_optional_amplify
         }
     else
         null()
@@ -186,7 +186,7 @@ def azuracast_send_feedback(m) =
                 # Only send some metadata to AzuraCast
                 def fl(k, _) =
                     tags = ["song_id", "media_id", "playlist_id", "artist", "title"]
-                    string.contains(prefix="liq_", k) or string.contains(prefix="replaygain_", k) or list.mem(k, tags)
+                    list.mem(k, tags)
                 end
 
                 feedback_meta = list.assoc.filter((fl), metadata.cover.remove(m))

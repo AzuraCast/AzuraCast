@@ -99,16 +99,19 @@ class StationMediaMetadata extends AbstractStationConfiguration
 
     public function toAnnotations(float $duration): array
     {
-        $annotations = $this->toArray();
+        $annotations = array_filter(
+            $this->toArray() ?? [],
+            fn($row) => $row !== null
+        );
 
-        if (null === $annotations) {
+        if (0 === count($annotations)) {
             return [];
         }
 
         // Safety checks for cue lengths.
         if (
             isset($annotations[self::CUE_OUT])
-            && $annotations[self::CUE_OUT] < 0
+            && $annotations[self::CUE_OUT] < 0.0
         ) {
             $cueOut = abs($annotations[self::CUE_OUT]);
 

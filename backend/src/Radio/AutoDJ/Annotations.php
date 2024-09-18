@@ -115,6 +115,10 @@ final class Annotations implements EventSubscriberInterface
         array $annotations,
         float $duration,
     ): array {
+        if (0 === count($annotations)) {
+            return [];
+        }
+
         $backendConfig = $station->getBackendConfig();
 
         if ($backendConfig->getEnableAutoCue()) {
@@ -128,23 +132,49 @@ final class Annotations implements EventSubscriberInterface
             return $annotationsNew;
         }
 
-        $defaultStartNext = $backendConfig->isCrossfadeEnabled()
-            ? $backendConfig->getCrossfadeDuration()
-            : $duration;
+        // Ensure default values for all annotations.
+        $annotations[StationMediaMetadata::CUE_IN] ??= 0.0;
+        $annotations[StationMediaMetadata::CUE_OUT] ??= $duration;
 
         $defaultFade = $backendConfig->isCrossfadeEnabled()
             ? $backendConfig->getCrossfade()
             : 0.0;
 
-        return [
-            'azuracast_autocue' => true,
-            'azuracast_amplify' => $annotations[StationMediaMetadata::AMPLIFY],
-            'azuracast_cue_in' => $annotations[StationMediaMetadata::CUE_IN] ?? 0.0,
-            'azuracast_cue_out' => $annotations[StationMediaMetadata::CUE_OUT] ?? $duration,
-            'azuracast_fade_in' => $annotations[StationMediaMetadata::FADE_IN] ?? $defaultFade,
-            'azuracast_fade_out' => $annotations[StationMediaMetadata::FADE_OUT] ?? $defaultFade,
-            'azuracast_start_next' => $annotations[StationMediaMetadata::CROSS_START_NEXT] ?? $defaultStartNext,
+        $annotations[StationMediaMetadata::FADE_IN] ??= $defaultFade;
+        $annotations[StationMediaMetadata::FADE_OUT] ??= $defaultFade;
+
+        if (!isset($annotations[StationMediaMetadata::CROSS_START_NEXT])) {
+            $defaultStartNext = $backendConfig->isCrossfadeEnabled()
+                ? $duration - $backendConfig->getCrossfadeDuration()
+                : $duration;
+
+            if ($defaultStartNext < 0) {
+                $defaultStartNext = $duration;
+            }
+
+            $annotations[StationMediaMetadata::CROSS_START_NEXT] = $defaultStartNext;
+        }
+
+        $annotationMapping = [
+            StationMediaMetadata::AMPLIFY => 'azuracast_amplify',
+            StationMediaMetadata::CUE_IN => 'azuracast_cue_in',
+            StationMediaMetadata::CUE_OUT => 'azuracast_cue_out',
+            StationMediaMetadata::FADE_IN => 'azuracast_fade_in',
+            StationMediaMetadata::FADE_OUT => 'azuracast_fade_out',
+            StationMediaMetadata::CROSS_START_NEXT => 'azuracast_start_next',
         ];
+
+        $annotationsNew = [
+            'azuracast_autocue' => true,
+        ];
+
+        foreach ($annotations as $key => $value) {
+            if (isset($annotationMapping[$key])) {
+                $annotationsNew[$annotationMapping[$key]] = $value;
+            }
+        }
+
+        return $annotationsNew;
     }
 
     public function annotatePlaylist(AnnotateNextSong $event): void

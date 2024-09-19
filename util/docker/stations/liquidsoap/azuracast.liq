@@ -2,31 +2,62 @@
 # AzuraCast Common Functionality
 #
 
+# Default Settings for AzuraCast Instances
+init.daemon := false
+
+log.stdout := true
+log.file := false
+
+settings.server.log.level := 4
+
+settings.server.socket := true
+settings.server.socket.permissions := 0o660
+
+settings.harbor.bind_addrs := ["0.0.0.0"]
+settings.encoder.metadata.export := ["artist","title","album","song"]
+
 # Settings
-init.daemon.set(false)
+let settings.azuracast = ()
 
-log.stdout.set(true)
-log.file.set(false)
+let settings.azuracast.api_url = settings.make(
+    description="The API URL used by AzuraCast API calls.",
+    ""
+)
 
-settings.server.log.level.set(4)
+let settings.azuracast.api_key = settings.make(
+    description="An API key authorized to make internal API calls.",
+    ""
+)
 
-settings.server.socket.set(true)
-settings.server.socket.permissions.set(0o660)
-
-settings.harbor.bind_addrs.set(["0.0.0.0"])
-settings.encoder.metadata.export.set(["artist","title","album","song"])
+let settings.azuracast.media_path = settings.make(
+    description="The base path for local media, or 'api' to make API calls to retrieve media.'",
+    "api"
+)
 
 # Variables
-azuracast_autodj_is_loading = ref(true)
-azuracast_autodj_ping_attempts = ref(0)
+let azuracast = ()
 
-azuracast_last_authenticated_dj = ref("")
-azuracast_live_dj = ref("")
-azuracast_to_live = ref(false)
-azuracast_live_enabled = ref(false)
+# True if the first "next song" hasn't been received yet, false if it has.
+let azuracast.autodj_is_loading = ref(true)
 
-azuracast_last_title = ref("")
-azuracast_last_artist = ref("")
+# Number of attempts that have been made to ping the AutoDJ for the next song.
+let azuracast.autodj_ping_attempts = ref(0)
+
+# The username of the last authenticated DJ.
+let azuracast.last_authenticated_dj = ref("")
+
+# The username of the current live DJ.
+let azuracast.live_dj = ref("")
+
+# Whether Liquidsoap is currently transitioning to a live stream.
+let azuracast.to_live = ref(false)
+
+# Whether a DJ is successfully authenticated (and thus live broadcasting is enabled).
+let azuracast.live_enabled = ref(false)
+
+# The last non-jingle artist and title metadata.
+let azuracast.last_title = ref("")
+let azuracast.last_artist = ref("")
 
 # Reimplement LS's now-deprecated drop_metadata function.
 def drop_metadata(~id=null(), s)
@@ -39,8 +70,8 @@ https_transport = http.transport.ssl()
 ignore(https_transport)
 
 # API Calls
-def azuracast_api_call(~timeout=10.0, url, payload) =
-    full_url = "#{azuracast_api_url}/#{url}"
+def azuracast.api_call(~timeout=10.0, url, payload) =
+    full_url = "#{settings.azuracast.api_url()}/#{url}"
 
     log("API #{url} - Sending POST request to '#{full_url}' with body: #{payload}")
     try
@@ -48,7 +79,7 @@ def azuracast_api_call(~timeout=10.0, url, payload) =
             headers=[
                 ("Content-Type", "application/json"),
                 ("User-Agent", "Liquidsoap AzuraCast"),
-                ("X-Liquidsoap-Api-Key", "#{azuracast_api_key}")
+                ("X-Liquidsoap-Api-Key", "#{settings.azuracast.api_key()}")
             ],
             timeout=timeout,
             data=payload
@@ -62,10 +93,32 @@ def azuracast_api_call(~timeout=10.0, url, payload) =
     end
 end
 
+# AzuraCast protocol implementation.
+def azuracast.media_protocol(~rlog=_,~maxtime,arg) =
+    let station_media_dir = settings.azuracast.media_path()
+    if station_media_dir == "api" then
+        timeout = 1000.0 * (maxtime - time())
+
+        j = json()
+        j.add("uri", arg)
+
+        [azuracast.api_call(timeout=timeout, "cp", json.stringify(j))]
+    else
+        ["#{station_media_dir}/#{arg}"]
+    end
+end
+
+protocol.add(
+    "media",
+    azuracast.media_protocol,
+    doc="Pull files from AzuraCast media directory.",
+    syntax="media:uri"
+)
+
 # AzuraCast AutoCue Provider
-def azuracast_autocue(
+def azuracast.autocue(
     ~request_metadata,
-    ~file_metadata,
+    ~file_metadata=_,
     filename
 ) =
     # Check if `"azuracast_autocue"` is present and set to `"true"`. If so, use azuracast autocue implementation:
@@ -96,8 +149,8 @@ def azuracast_autocue(
 end
 
 # AutoDJ Next Song Script
-def azuracast_autodj_next_song() =
-    response = azuracast_api_call(
+def azuracast.autodj_next_song() =
+    response = azuracast.api_call(
         "nextsong",
         ""
     )
@@ -109,16 +162,16 @@ def azuracast_autodj_next_song() =
 end
 
 # Delayed ping for AutoDJ Next Song
-def azuracast_wait_for_next_song(autodj)
-    azuracast_autodj_ping_attempts.set(azuracast_autodj_ping_attempts() + 1)
+def azuracast.wait_for_next_song(autodj)
+    azuracast.autodj_ping_attempts := azuracast.autodj_ping_attempts() + 1
 
     if source.is_ready(autodj) then
         log("AutoDJ is ready!")
-        azuracast_autodj_is_loading.set(false)
+        azuracast.autodj_is_loading := false
         -1.0
-    elsif azuracast_autodj_ping_attempts() > 200 then
+    elsif azuracast.autodj_ping_attempts() > 200 then
         log("AutoDJ could not be initialized within the specified timeout.")
-        azuracast_autodj_is_loading.set(false)
+        azuracast.autodj_is_loading := false
         -1.0
     else
         0.5
@@ -126,7 +179,7 @@ def azuracast_wait_for_next_song(autodj)
 end
 
 # DJ Authentication
-def azuracast_dj_auth(login) =
+def azuracast.dj_auth(login) =
     auth_info =
         if (login.user == "source" or login.user == "") and (string.match(pattern="(:|,)+", login.password)) then
             auth_string = string.split(separator="(:|,)", login.password)
@@ -136,52 +189,52 @@ def azuracast_dj_auth(login) =
             {user = login.user, password = login.password}
         end
 
-    response = azuracast_api_call(
+    response = azuracast.api_call(
         timeout=5.0,
         "auth",
         json.stringify(auth_info)
     )
 
     if (response == "true") then
-        azuracast_last_authenticated_dj.set(auth_info.user)
+        azuracast.last_authenticated_dj := auth_info.user
         true
     else
         false
     end
 end
 
-def azuracast_live_connected(header) =
-    dj = azuracast_last_authenticated_dj()
+def azuracast.live_connected(header) =
+    dj = azuracast.last_authenticated_dj()
     log("DJ Source connected! Last authenticated DJ: #{dj} - #{header}")
 
-    azuracast_live_enabled.set(true)
-    azuracast_live_dj.set(dj)
+    azuracast.live_enabled := true
+    azuracast.live_dj := dj
 
-    _ = azuracast_api_call(
+    _ = azuracast.api_call(
         timeout=5.0,
         "djon",
         json.stringify({user = dj})
     )
 end
 
-def azuracast_live_disconnected() =
-    _ = azuracast_api_call(
+def azuracast.live_disconnected() =
+    _ = azuracast.api_call(
         timeout=5.0,
         "djoff",
-        json.stringify({user = azuracast_live_dj()})
+        json.stringify({user = azuracast.live_dj()})
     )
 
-    azuracast_live_enabled.set(false)
-    azuracast_live_dj.set("")
+    azuracast.live_enabled := false
+    azuracast.live_dj := ""
 end
 
 # Send metadata changes back to AzuraCast
-def azuracast_send_feedback(m) =
+def azuracast.send_feedback(m) =
     def f() =
         if (m["is_error_file"] != "true") then
-            if (m["title"] != azuracast_last_title() or m["artist"] != azuracast_last_artist()) then
-                azuracast_last_title.set(m["title"])
-                azuracast_last_artist.set(m["artist"])
+            if (m["title"] != azuracast.last_title() or m["artist"] != azuracast.last_artist()) then
+                azuracast.last_title := m["title"]
+                azuracast.last_artist := m["artist"]
 
                 # Only send some metadata to AzuraCast
                 def fl(k, _) =
@@ -197,7 +250,7 @@ def azuracast_send_feedback(m) =
                     j.add(tag, value)
                 end
 
-                _ = azuracast_api_call(
+                _ = azuracast.api_call(
                     "feedback",
                     json.stringify(compact=true, j)
                 )
@@ -209,7 +262,7 @@ def azuracast_send_feedback(m) =
 end
 
 # Debugging
-def azuracast_log_meta(m)
+def azuracast.log_meta(m)
     label="log_meta"
     l = list.sort.natural(metadata.cover.remove(m))
     list.iter(fun(v) -> log(level=4, label=label, "#{v}"), l)

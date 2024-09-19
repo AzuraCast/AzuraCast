@@ -243,62 +243,25 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $commonLibPath = $this->environment->getParentDirectory() . '/liquidsoap/azuracast.liq';
 
+        $mediaStorageLocation = $station->getMediaStorageLocation();
+        $stationMediaDir = $mediaStorageLocation->isLocal()
+            ? $mediaStorageLocation->getFilteredPath()
+            : 'api';
+
         $event->appendBlock(
             <<<LIQ
+            # AzuraCast Common Runtime Functions
+            %include "{$commonLibPath}"
+            
             init.daemon.pidfile.path.set("{$pidfile}")
             settings.server.socket.path.set("{$socketFile}")
             environment.set("TZ", "{$stationTz}")  
             
-            azuracast_api_url = "{$stationApiUrl}"
-            azuracast_api_key = "{$stationApiAuth}"
-            
-            # AzuraCast Common Runtime Functions
-            %include "{$commonLibPath}"
+            settings.azuracast.api_url := "{$stationApiUrl}"
+            settings.azuracast.api_key := "{$stationApiAuth}"
+            settings.azuracast.media_path := "{$stationMediaDir}"
             LIQ
         );
-
-        $mediaStorageLocation = $station->getMediaStorageLocation();
-
-        if ($mediaStorageLocation->isLocal()) {
-            $stationMediaDir = $mediaStorageLocation->getFilteredPath();
-
-            $event->appendBlock(
-                <<<LIQ
-                station_media_dir = "{$stationMediaDir}"
-                def azuracast_media_protocol(~rlog=_,~maxtime=_,arg) =
-                    ["#{station_media_dir}/#{arg}"]
-                end
-
-                protocol.add(
-                    "media",
-                    azuracast_media_protocol,
-                    doc="Pull files from AzuraCast media directory.",
-                    syntax="media:uri"
-                )
-                LIQ
-            );
-        } else {
-            $event->appendBlock(
-                <<<LIQ
-                def azuracast_media_protocol(~rlog=_,~maxtime,arg) =
-                    timeout = 1000.0 * (maxtime - time())
-
-                    j = json()
-                    j.add("uri", arg)
-
-                    [azuracast_api_call(timeout=timeout, "cp", json.stringify(j))]
-                end
-
-                protocol.add(
-                    "media",
-                    azuracast_media_protocol,
-                    temporary=true,
-                    doc="Pull files from AzuraCast media directory.",
-                    syntax="media:uri"
-                )
-                LIQ
-            );
-        }
 
         $backendConfig = $event->getBackendConfig();
 
@@ -328,7 +291,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
             $event->appendBlock(
                 <<<LIQ
-                # AutoCue
+                # Use MoonBase AutoCue
                 %include "{$autoCueCommon}"
 
                 settings.autocue.cue_file.nice := true
@@ -339,8 +302,9 @@ final class ConfigWriter implements EventSubscriberInterface
             // Register AzuraCast as an AutoCue provider
             $event->appendBlock(
                 <<<LIQ
+                # Register AzuraCast as Liquidsoap AutoCue Provider
                 enable_autocue_metadata()
-                autocue.register(name="azuracast", azuracast_autocue)
+                autocue.register(name="azuracast", azuracast.autocue)
                 settings.autocue.preferred := "azuracast"
                 LIQ
             );
@@ -627,7 +591,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
             $event->appendBlock(
                 <<< LIQ
-                dynamic = request.dynamic(id="next_song", timeout={$nextSongTimeout}, retry_delay=10., azuracast_autodj_next_song)
+                dynamic = request.dynamic(id="next_song", timeout={$nextSongTimeout}, retry_delay=10., azuracast.autodj_next_song)
 
                 dynamic_startup = fallback(
                     id = "dynamic_startup",
@@ -636,14 +600,14 @@ final class ConfigWriter implements EventSubscriberInterface
                         dynamic,
                         source.available(
                             blank(id = "autodj_startup_blank", duration = 120.),
-                            predicate.activates({azuracast_autodj_is_loading()})
+                            predicate.activates({azuracast.autodj_is_loading()})
                         )
                     ]
                 )
                 radio = fallback(id="autodj_fallback", track_sensitive = true, [dynamic_startup, radio])
 
                 ref_dynamic = ref(dynamic);
-                thread.run.recurrent(delay=0.25, { azuracast_wait_for_next_song(ref_dynamic()) })
+                thread.run.recurrent(delay=0.25, { azuracast.wait_for_next_song(ref_dynamic()) })
                 LIQ
             );
         }
@@ -844,7 +808,7 @@ final class ConfigWriter implements EventSubscriberInterface
         // Add debug logging for metadata.
         $event->appendBlock(
             <<<LS
-            radio.on_metadata(azuracast_log_meta)
+            radio.on_metadata(azuracast.log_meta)
             LS
         );
 
@@ -854,7 +818,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 <<<LS
                 # Fading/crossing/segueing
                 def live_aware_crossfade(old, new) =
-                    if azuracast_to_live() then
+                    if azuracast.to_live() then
                         # If going to the live show, play a simple sequence
                         # fade out AutoDJ, do (almost) not fade in streamer
                         sequence([
@@ -902,7 +866,7 @@ final class ConfigWriter implements EventSubscriberInterface
             $event->appendBlock(
                 <<<LS
                 def live_aware_crossfade(old, new) =
-                    if azuracast_to_live() then
+                    if azuracast.to_live() then
                         # If going to the live show, play a simple sequence
                         sequence([fade.out(old.source),fade.in(new.source)])
                     else
@@ -940,12 +904,12 @@ final class ConfigWriter implements EventSubscriberInterface
             '"' . self::cleanUpString($djMount) . '"',
             'id = "input_streamer"',
             'port = ' . $this->liquidsoap->getStreamPort($station),
-            'auth = azuracast_dj_auth',
+            'auth = azuracast.dj_auth',
             'icy = true',
             'icy_metadata_charset = "' . $charset . '"',
             'metadata_charset = "' . $charset . '"',
-            'on_connect = azuracast_live_connected',
-            'on_disconnect = azuracast_live_disconnected',
+            'on_connect = azuracast.live_connected',
+            'on_disconnect = azuracast.live_disconnected',
         ];
 
         $djBuffer = $settings->getDjBuffer();
@@ -1009,12 +973,12 @@ final class ConfigWriter implements EventSubscriberInterface
             # Skip non-live track when live DJ goes live.
             def check_live() =
                 if live.is_ready() then
-                    if not azuracast_to_live() then
-                        azuracast_to_live.set(true)
+                    if not azuracast.to_live() then
+                        azuracast.to_live := true
                         radio_without_live.skip()
                     end
                 else
-                    azuracast_to_live.set(false)
+                    azuracast.to_live := false
                 end
             end
 
@@ -1041,8 +1005,8 @@ final class ConfigWriter implements EventSubscriberInterface
                 output.file(
                     {$formatString},
                     fun () -> begin
-                        if (azuracast_live_enabled()) then
-                            time.string("#{recording_base_path}/#{azuracast_live_dj()}/{$recordPathPrefix}_%Y%m%d-%H%M%S.#{recording_extension}.tmp")
+                        if (azuracast.live_enabled()) then
+                            time.string("#{recording_base_path}/#{azuracast.live_dj()}/{$recordPathPrefix}_%Y%m%d-%H%M%S.#{recording_extension}.tmp")
                         else
                             ""
                         end
@@ -1099,7 +1063,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(
             <<<LIQ
             # Send metadata changes back to AzuraCast
-            radio.on_metadata(azuracast_send_feedback)
+            radio.on_metadata(azuracast.send_feedback)
 
             # Handle "Jingle Mode" tracks by replaying the previous metadata.
             last_metadata = ref([])

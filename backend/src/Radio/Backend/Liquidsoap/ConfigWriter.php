@@ -248,14 +248,18 @@ final class ConfigWriter implements EventSubscriberInterface
             ? $mediaStorageLocation->getFilteredPath()
             : 'api';
 
+        $logLevel = $this->environment->isProduction() ? 3 : 4;
+
         $event->appendBlock(
             <<<LIQ
             # AzuraCast Common Runtime Functions
             %include "{$commonLibPath}"
             
-            init.daemon.pidfile.path.set("{$pidfile}")
-            settings.server.socket.path.set("{$socketFile}")
-            environment.set("TZ", "{$stationTz}")  
+            settings.server.log.level := {$logLevel}
+            init.daemon.pidfile.path := "{$pidfile}"
+            settings.server.socket.path := "{$socketFile}"
+            
+            environment.set("TZ", "{$stationTz}") 
             
             settings.azuracast.api_url := "{$stationApiUrl}"
             settings.azuracast.api_key := "{$stationApiAuth}"

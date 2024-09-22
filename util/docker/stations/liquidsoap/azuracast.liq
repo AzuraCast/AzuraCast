@@ -8,8 +8,6 @@ init.daemon := false
 log.stdout := true
 log.file := false
 
-settings.server.log.level := 4
-
 settings.server.socket := true
 settings.server.socket.permissions := 0o660
 

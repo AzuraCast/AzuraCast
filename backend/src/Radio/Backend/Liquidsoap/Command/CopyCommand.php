@@ -23,7 +23,11 @@ final class CopyCommand extends AbstractCommand
 
         $uri = $payload['uri'];
 
-        return $this->stationFilesystems->getMediaFilesystem($station)
-            ->getLocalPath($uri);
+        $mediaFs = $this->stationFilesystems->getMediaFilesystem($station);
+        $localPath = $mediaFs->getLocalPath($uri);
+
+        return $mediaFs->isLocal()
+            ? $localPath
+            : 'tmp:' . $localPath;
     }
 }

@@ -117,7 +117,7 @@ protocol.add(
 def azuracast.autocue(
     ~request_metadata,
     ~file_metadata=_,
-    filename
+    _
 ) =
     # Check if `"azuracast_autocue"` is present and set to `"true"`. If so, use azuracast autocue implementation:
     if list.assoc(default="false", "azuracast_autocue", request_metadata) == "true" then

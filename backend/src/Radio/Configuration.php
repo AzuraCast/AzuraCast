@@ -159,6 +159,7 @@ final class Configuration
                 'directory' => $station->getRadioConfigDir(),
                 'environment' => self::buildEnvironment([
                     'TZ' => $station->getTimezone(),
+                    'LIQ_CACHE' => 'false', // TODO Re-evaluate later
                 ]),
                 'autostart' => 'false',
                 'autorestart' => 'true',

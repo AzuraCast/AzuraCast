@@ -1181,10 +1181,10 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $event->appendBlock(
             <<<LIQ
-            def hls_segment_name(~position,~extname,stream_name) =
+            def hls_segment_name(metadata) =
                 timestamp = int_of_float(time())
                 duration = {$hlsSegmentLength}
-                "#{stream_name}_#{duration}_#{timestamp}_#{position}.#{extname}"
+                "#{metadata.stream_name}_#{duration}_#{timestamp}_#{metadata.position}.#{metadata.extname}"
             end
 
             output.file.hls(playlist="live.m3u8",

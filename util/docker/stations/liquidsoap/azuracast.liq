@@ -100,9 +100,9 @@ def azuracast.media_protocol(~rlog=_,~maxtime,arg) =
         j = json()
         j.add("uri", arg)
 
-        [azuracast.api_call(timeout=timeout, "cp", json.stringify(j))]
+        azuracast.api_call(timeout=timeout, "cp", json.stringify(j))
     else
-        ["#{station_media_dir}/#{arg}"]
+        "#{station_media_dir}/#{arg}"
     end
 end
 

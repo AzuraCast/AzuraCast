@@ -4,11 +4,10 @@ set -x
 
 # Packages required by Liquidsoap
 apt-get install -y --no-install-recommends \
+    ffmpeg bubblewrap \
     libao4 libfaad2 libfdk-aac2 libgd3 liblo7 libmad0 libmagic1 libportaudio2 \
-    libsdl2-image-2.0-0 libsdl2-ttf-2.0-0 libsoundtouch1 libxpm4 \
-    libasound2 libavcodec60 libavdevice60 libavfilter9 libavformat60 libavutil58 \
-    libpulse0 libsamplerate0 libswresample4 libswscale7 libtag1v5 \
-    libsrt1.5-openssl bubblewrap ffmpeg liblilv-0-0 libjemalloc2 libpcre3
+    libsdl2-image-2.0-0 libsdl2-ttf-2.0-0 libsoundtouch1 libxpm4 libpulse0 \
+    libsamplerate0 libtag1v5 libsrt1.5-openssl liblilv-0-0
 
 # Audio Post-processing
 apt-get install -y --no-install-recommends ladspa-sdk

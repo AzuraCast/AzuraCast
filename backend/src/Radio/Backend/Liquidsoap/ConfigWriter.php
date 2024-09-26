@@ -264,6 +264,14 @@ final class ConfigWriter implements EventSubscriberInterface
             $backendConfig->getLiveBroadcastText()
         );
 
+        $fallbackPath = self::cleanUpString(
+            $this->fallbackFile->getFallbackPathForStation($station)
+        );
+
+        $tempPath = self::cleanUpString(
+            $station->getRadioTempDir()
+        );
+
         $event->appendBlock(
             <<<LIQ
             # AzuraCast Common Runtime Functions
@@ -278,6 +286,8 @@ final class ConfigWriter implements EventSubscriberInterface
             settings.azuracast.api_url := "{$stationApiUrl}"
             settings.azuracast.api_key := "{$stationApiAuth}"
             settings.azuracast.media_path := "{$stationMediaDir}"
+            settings.azuracast.fallback_path := "{$fallbackPath}"
+            settings.azuracast.temp_path := "{$tempPath}"
             
             settings.azuracast.compute_autocue := {$useComputeAutocue}
             
@@ -627,22 +637,6 @@ final class ConfigWriter implements EventSubscriberInterface
                 );
             }
         }
-
-        $event->appendBlock(
-            <<<LIQ
-            # Skip command (used by web UI)
-            def add_skip_command(s) =
-                def skip(_) =
-                    source.skip(s)
-                    "Done!"
-                end
-
-                server.register(namespace="radio", usage="skip", description="Skip the current song.", "skip",skip)
-            end
-
-            add_skip_command(radio)
-            LIQ
-        );
     }
 
     /**
@@ -759,9 +753,12 @@ final class ConfigWriter implements EventSubscriberInterface
         // Write pre-crossfade section.
         $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_PRE_FADE);
 
-        // Amplify
+        // Amplify and Skip
         $event->appendBlock(
             <<<LIQ
+            # Allow Telnet to skip the current track.
+            add_skip_command(radio)
+            
             # Apply amplification metadata (if supplied)
             radio = amplify(override="liq_amplify", 1., radio)
             LIQ
@@ -857,24 +854,25 @@ final class ConfigWriter implements EventSubscriberInterface
             
             live = insert_metadata(live)
             def insert_latest_live_metadata() =
-              log("Inserting last live meta: #{last_live_meta()}")
-              live.insert_metadata(last_live_meta())
+                log("Inserting last live meta: #{last_live_meta()}")
+                live.insert_metadata(last_live_meta())
             end
-            
-            def transition_to_live(_, s) =
-              log("executing transition to live")
-              insert_latest_live_metadata()
-              s
-            end
-            
-            def transition_to_radio(_, s) = s end
             
             radio = fallback(
-              id="live_fallback",
-              track_sensitive=false,
-              replay_metadata=true,
-              transitions=[transition_to_live, transition_to_radio],
-              [live, radio]
+                id="live_fallback",
+                track_sensitive=false,
+                replay_metadata=true,
+                transitions=[
+                    fun (_, s) -> begin
+                        log("executing transition to live")
+                        insert_latest_live_metadata()
+                        s
+                    end, 
+                    fun (_, s) -> begin
+                        s
+                    end
+                ],
+                [live, radio]
             )
 
             # Skip non-live track when live DJ goes live.
@@ -900,20 +898,16 @@ final class ConfigWriter implements EventSubscriberInterface
 
             $formatString = $this->getOutputFormatString($recordLiveStreamsFormat, $recordLiveStreamsBitrate);
             $recordExtension = $recordLiveStreamsFormat->getExtension();
-            $recordBasePath = self::cleanUpString($station->getRadioTempDir());
             $recordPathPrefix = StationStreamerBroadcast::PATH_PREFIX;
 
             $event->appendBlock(
                 <<< LIQ
                 # Record Live Broadcasts
-                recording_base_path = "{$recordBasePath}"
-                recording_extension = "{$recordExtension}"
-
                 output.file(
                     {$formatString},
                     fun () -> begin
                         if (azuracast.live_enabled()) then
-                            time.string("#{recording_base_path}/#{azuracast.live_dj()}/{$recordPathPrefix}_%Y%m%d-%H%M%S.#{recording_extension}.tmp")
+                            time.string("#{settings.azuracast.temp_path()}/#{azuracast.live_dj()}/{$recordPathPrefix}_%Y%m%d-%H%M%S.{$recordExtension}.tmp")
                         else
                             ""
                         end
@@ -936,7 +930,6 @@ final class ConfigWriter implements EventSubscriberInterface
 
     public function writePreBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void
     {
-        $station = $event->getStation();
         $settings = $event->getBackendConfig();
 
         $event->appendBlock(
@@ -950,35 +943,16 @@ final class ConfigWriter implements EventSubscriberInterface
             $this->writePostProcessingSection($event);
         }
 
-        // Write fallback to safety file to ensure infallible source for the broadcast outputs.
-        $errorFile = $this->fallbackFile->getFallbackPathForStation($station);
-
         $event->appendBlock(
             <<<LIQ
-            error_file = single(id="error_jingle", "{$errorFile}")
-
-            def tag_error_file(_) =
-                [("is_error_file", "true")]
-            end
-            error_file = metadata.map(tag_error_file, error_file)
-
-            radio = fallback(id="safe_fallback", track_sensitive = false, [radio, error_file])
+            # Add Fallback
+            radio = azuracast.add_fallback(radio)
             
             # Send metadata changes back to AzuraCast
             radio.on_metadata(azuracast.send_feedback)
 
             # Handle "Jingle Mode" tracks by replaying the previous metadata.
-            last_metadata = ref([])
-            def handle_jingle_mode(m) =
-                if (m["jingle_mode"] == "true") then
-                    last_metadata()
-                else
-                    last_metadata.set(m)
-                    m
-                end
-            end
-
-            radio = metadata.map(update=false, strip=true, handle_jingle_mode, radio)
+            radio = azuracast.handle_jingle_mode(radio)
             LIQ
         );
 
@@ -1070,7 +1044,6 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $configDir = $station->getRadioConfigDir();
         $hlsBaseDir = $station->getRadioHlsDir();
-        $tempDir = $station->getRadioTempDir();
 
         $backendConfig = $event->getBackendConfig();
         $hlsSegmentLength = $backendConfig->getHlsSegmentLength();
@@ -1091,7 +1064,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 segments_overhead={$hlsSegmentsOverhead},
                 segment_name=hls_segment_name,
                 persist_at="{$configDir}/hls.config",
-                temp_dir="{$tempDir}",
+                temp_dir="#{settings.azuracast.temp_path()}",
                 "{$hlsBaseDir}",
                 hls_streams,
                 radio

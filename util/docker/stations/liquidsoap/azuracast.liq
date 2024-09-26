@@ -1,6 +1,6 @@
-#
-# AzuraCast Common Functionality
-#
+#<-----
+AzuraCast Common Runtime
+----->#
 
 # TODO Depends on AutoCue implementation
 %include "./autocue.liq"
@@ -24,7 +24,10 @@ settings.request.prefetch := 2
 # TODO Depends on AutoCue implementation
 settings.autocue.cue_file.nice := true
 
-# Settings
+#<-----
+Settings
+----->#
+
 let settings.azuracast = ()
 
 let settings.azuracast.api_url = settings.make(
@@ -40,6 +43,16 @@ let settings.azuracast.api_key = settings.make(
 let settings.azuracast.media_path = settings.make(
     description="The base path for local media, or 'api' to make API calls to retrieve media.'",
     "api"
+)
+
+let settings.azuracast.fallback_path = settings.make(
+    description="The path for the fallback error message played when no audio is available.",
+    "/usr/local/share/icecast/web/error.mp3"
+)
+
+let settings.azuracast.temp_path = settings.make(
+    description="A temporary path to write ephemeral files (like recordings and HLS segments).",
+    "/tmp"
 )
 
 let settings.azuracast.compute_autocue = settings.make(
@@ -112,7 +125,10 @@ def settings.azuracast.request_timeout() =
     end
 end 
 
-# Variables
+#<-----
+Variables
+----->#
+
 let azuracast = ()
 
 # True if the first "next song" hasn't been received yet, false if it has.
@@ -137,6 +153,10 @@ let azuracast.live_enabled = ref(false)
 let azuracast.last_title = ref("")
 let azuracast.last_artist = ref("")
 
+#<-----
+Utility Functions
+----->#
+
 # Reimplement LS's now-deprecated drop_metadata function.
 def drop_metadata(~id=null(), s)
     let {metadata=_, ...tracks} = source.tracks(s)
@@ -147,7 +167,20 @@ end
 https_transport = http.transport.ssl()
 ignore(https_transport)
 
-# API Calls
+# Skip command (used by web UI)
+def add_skip_command(s) =
+    def skip(_) =
+        source.skip(s)
+        "Done!"
+    end
+
+    server.register(namespace="radio", usage="skip", description="Skip the current song.", "skip",skip)
+end
+
+#<-----
+API Utilities
+----->#
+
 def azuracast.api_call(~timeout=10.0, url, payload) =
     full_url = "#{settings.azuracast.api_url()}/#{url}"
 
@@ -193,7 +226,10 @@ protocol.add(
     syntax="media:uri"
 )
 
-# AzuraCast AutoCue Provider
+#<-----
+AutoCue
+----->#
+
 def azuracast.autocue(
     ~request_metadata,
     ~file_metadata,
@@ -239,6 +275,10 @@ def azuracast.verify_autocue_settings() =
         null()
     end
 end
+
+#<-----
+AutoDJ
+----->#
 
 # AutoDJ Next Song Script
 def azuracast.autodj_next_song() =
@@ -298,6 +338,10 @@ def azuracast.enable_autodj(s) =
     s
 end
 
+#<-----
+Live Streamers/DJs
+----->#
+
 # DJ Authentication
 def azuracast.dj_auth(login) =
     auth_info =
@@ -348,7 +392,10 @@ def azuracast.live_disconnected() =
     azuracast.live_dj := ""
 end
 
-# Live-aware Crossfade and Relevant Functions
+#<-----
+Live-aware Crossfade
+----->#
+
 def azuracast.live_aware_crossfade_impl(old, new) =
     if azuracast.to_live() then
         # If going to the live show, play a simple sequence
@@ -399,6 +446,10 @@ def azuracast.apply_crossfade(s) =
     )
 end
 
+#<-----
+Feedback API
+----->#
+
 # Send metadata changes back to AzuraCast
 def azuracast.send_feedback(m) =
     def f() =
@@ -432,7 +483,42 @@ def azuracast.send_feedback(m) =
     thread.run(f)
 end
 
-# Debugging
+#<-----
+Fallback
+----->#
+
+def azuracast.add_fallback(s) =
+    error_file = single(id="error_jingle", "#{settings.azuracast.fallback_path()}")
+
+    def tag_error_file(_) =
+        [("is_error_file", "true")]
+    end
+    error_file = metadata.map(tag_error_file, error_file)
+
+    s = fallback(id="safe_fallback", track_sensitive = false, [s, error_file])
+    s
+end
+
+def azuracast.handle_jingle_mode(s) =
+    last_metadata = ref([])
+
+    def handle_jingle_mode(m) =
+        if (m["jingle_mode"] == "true") then
+            last_metadata()
+        else
+            last_metadata.set(m)
+            m
+        end
+    end
+
+    s = metadata.map(update=false, strip=true, handle_jingle_mode, s)
+    s
+end
+
+#<-----
+Debugging
+----->#
+
 def azuracast.log_meta(m)
     label="log_meta"
     l = list.sort.natural(metadata.cover.remove(m))

@@ -604,10 +604,10 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $event->appendBlock(
             <<< LIQ
-            requests = request.queue(id="{$requestsQueueName}", timeout=azuracast.request_timeout())
+            requests = request.queue(id="{$requestsQueueName}", timeout=settings.azuracast.request_timeout())
             radio = fallback(id="requests_fallback", track_sensitive = true, [requests, radio])
 
-            interrupting_queue = request.queue(id="{$interruptingQueueName}", timeout=azuracast.request_timeout())
+            interrupting_queue = request.queue(id="{$interruptingQueueName}", timeout=settings.azuracast.request_timeout())
             radio = fallback(id="interrupting_fallback", track_sensitive = false, [interrupting_queue, radio])
             LIQ
         );

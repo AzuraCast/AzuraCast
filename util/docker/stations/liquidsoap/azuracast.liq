@@ -2,7 +2,7 @@
 # AzuraCast Common Functionality
 #
 
-# Include Moonbase AutoCue implementation
+# TODO Depends on AutoCue implementation
 %include "./autocue.liq"
 
 # Default Settings for AzuraCast Instances
@@ -21,6 +21,7 @@ settings.encoder.metadata.export := ["artist","title","album","song"]
 settings.request.prefetch := 2
 
 # Moonbase-specific AutoCue settings.
+# TODO Depends on AutoCue implementation
 settings.autocue.cue_file.nice := true
 
 # Settings
@@ -66,7 +67,7 @@ let settings.azuracast.crossfade_type = settings.make(
     "normal"
 )
 
-let settings.azuracast.request_timeout = settings.make(
+let settings.azuracast.default_request_timeout = settings.make(
     description="The timeout for requests (i.e. song requests and 'Next Song' resolution).",
     20.0
 )
@@ -75,6 +76,41 @@ let settings.azuracast.live_broadcast_text = settings.make(
     description="The placeholder metadata when live DJs connect with no initial metadata.",
     "Live Broadcast"
 )
+
+# Settings based on whether AutoCue is enabled
+# TODO: Depends on AutoCue implementation
+
+def settings.azuracast.fade_in() =
+    if (settings.azuracast.compute_autocue()) then
+        settings.autocue.cue_file.fade_in()
+    else
+        settings.azuracast.default_fade()
+    end
+end
+
+def settings.azuracast.fade_out() =
+    if (settings.azuracast.compute_autocue()) then
+        settings.autocue.cue_file.fade_out()
+    else
+        settings.azuracast.default_fade()
+    end
+end
+
+def settings.azuracast.cross_duration() =
+    if (settings.azuracast.compute_autocue()) then
+        settings.autocue.cue_file.fade_out()
+    else
+        settings.azuracast.default_cross()
+    end
+end
+
+def settings.azuracast.request_timeout() = 
+    if settings.azuracast.compute_autocue() then
+        settings.autocue.cue_file.timeout()
+    else
+        settings.azuracast.default_request_timeout()
+    end
+end 
 
 # Variables
 let azuracast = ()
@@ -234,18 +270,10 @@ def azuracast.wait_for_next_song(autodj)
     end
 end
 
-def azuracast.request_timeout() = 
-    if settings.azuracast.compute_autocue() then
-        settings.autocue.cue_file.timeout()
-    else
-        settings.azuracast.request_timeout()
-    end
-end 
-
 def azuracast.enable_autodj(s) =
     dynamic = request.dynamic(
         id="next_song", 
-        timeout=azuracast.request_timeout(), 
+        timeout=settings.azuracast.request_timeout(), 
         retry_delay=10., 
         azuracast.autodj_next_song
     )
@@ -321,37 +349,13 @@ def azuracast.live_disconnected() =
 end
 
 # Live-aware Crossfade and Relevant Functions
-def azuracast.fade_in() =
-    if (settings.azuracast.compute_autocue()) then
-        settings.autocue.cue_file.fade_in()
-    else
-        settings.azuracast.default_fade()
-    end
-end
-
-def azuracast.fade_out() =
-    if (settings.azuracast.compute_autocue()) then
-        settings.autocue.cue_file.fade_out()
-    else
-        settings.azuracast.default_fade()
-    end
-end
-
-def azuracast.cross_duration() =
-    if (settings.azuracast.compute_autocue()) then
-        settings.autocue.cue_file.fade_out()
-    else
-        settings.azuracast.default_cross()
-    end
-end
-
 def azuracast.live_aware_crossfade_impl(old, new) =
     if azuracast.to_live() then
         # If going to the live show, play a simple sequence
         # fade out AutoDJ, do (almost) not fade in streamer
         sequence([
-            fade.out(duration=azuracast.fade_out(), old.source),
-            fade.in(duration=azuracast.fade_in(), new.source)
+            fade.out(duration=settings.azuracast.fade_out(), old.source),
+            fade.in(duration=settings.azuracast.fade_in(), new.source)
         ])
     elsif settings.azuracast.enable_crossfade() then
         if settings.azuracast.crossfade_type() == "smart" then
@@ -359,15 +363,15 @@ def azuracast.live_aware_crossfade_impl(old, new) =
                 old,
                 new,
                 margin=8.,
-                fade_in=azuracast.fade_in(),
-                fade_out=azuracast.fade_out()
+                fade_in=settings.azuracast.fade_in(),
+                fade_out=settings.azuracast.fade_out()
             )
         else
             cross.simple(
                 old.source, 
                 new.source, 
-                fade_in=azuracast.fade_in(),
-                fade_out=azuracast.fade_out()
+                fade_in=settings.azuracast.fade_in(),
+                fade_out=settings.azuracast.fade_out()
             )
         end
     else
@@ -375,12 +379,12 @@ def azuracast.live_aware_crossfade_impl(old, new) =
         add(normalize=false, [
             fade.in(
                 initial_metadata=new.metadata,
-                duration=settings.autocue.cue_file.fade_in(),
+                duration=settings.azuracast.fade_in(),
                 new.source
             ),
             fade.out(
                 initial_metadata=old.metadata,
-                duration=settings.autocue.cue_file.fade_out(),
+                duration=settings.azuracast.fade_out(),
                 old.source
             )
         ])
@@ -389,7 +393,7 @@ end
 
 def azuracast.apply_crossfade(s) =
     cross(
-        duration=azuracast.cross_duration(),
+        duration=settings.azuracast.cross_duration(),
         azuracast.live_aware_crossfade_impl,
         s
     )

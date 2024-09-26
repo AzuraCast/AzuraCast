@@ -121,17 +121,6 @@ final class Annotations implements EventSubscriberInterface
 
         $backendConfig = $station->getBackendConfig();
 
-        if ($backendConfig->getEnableAutoCue()) {
-            // Directly write annotations as `liq_` values (pre-2.3.x)
-            $annotationsNew = [];
-            foreach ($annotations as $key => $val) {
-                $key = 'liq_' . $key;
-                $annotationsNew[$key] = $val;
-            }
-
-            return $annotationsNew;
-        }
-
         // Ensure default values for all annotations.
         $annotations[StationMediaMetadata::CUE_IN] ??= 0.0;
         $annotations[StationMediaMetadata::CUE_OUT] ??= $duration;

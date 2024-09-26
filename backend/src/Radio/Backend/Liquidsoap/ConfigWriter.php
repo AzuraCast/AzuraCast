@@ -272,6 +272,8 @@ final class ConfigWriter implements EventSubscriberInterface
             $station->getRadioTempDir()
         );
 
+        $prefetchRequests = $backendConfig->getEnableAutoCue() ? 2 : 1;
+
         $event->appendBlock(
             <<<LIQ
             # AzuraCast Common Runtime Functions
@@ -297,6 +299,8 @@ final class ConfigWriter implements EventSubscriberInterface
             settings.azuracast.crossfade_type := "{$crossfadeType}"
             
             settings.azuracast.live_broadcast_text := "{$liveBroadcastText}"
+            
+            settings.request.prefetch := {$prefetchRequests}
             LIQ
         );
 
@@ -326,13 +330,6 @@ final class ConfigWriter implements EventSubscriberInterface
         $station = $event->getStation();
 
         $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_PRE_PLAYLISTS);
-
-        $event->appendBlock(
-            <<<LIQ
-            # Ensure AutoCue settings are valid
-            ignore(azuracast.verify_autocue_settings())
-            LIQ
-        );
 
         // Set up playlists using older format as a fallback.
         $playlistVarNames = [];

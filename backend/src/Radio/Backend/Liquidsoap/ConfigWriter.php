@@ -250,6 +250,28 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $logLevel = $this->environment->isProduction() ? 3 : 4;
 
+        $backendConfig = $event->getBackendConfig();
+        $useComputeAutocue = $backendConfig->getEnableAutoCue() ? 'true' : 'false';
+
+        $enableCrossfade = $backendConfig->isCrossfadeEnabled() ? 'true' : 'false';
+        $crossfadeType = (CrossfadeModes::Smart === $backendConfig->getCrossfadeTypeEnum())
+            ? 'smart'
+            : 'normal';
+        $defaultFade = self::toFloat($backendConfig->getCrossfade());
+        $defaultCross = self::toFloat($backendConfig->getCrossfadeDuration());
+
+        $liveBroadcastText = self::cleanUpString(
+            $backendConfig->getLiveBroadcastText()
+        );
+
+        $fallbackPath = self::cleanUpString(
+            $this->fallbackFile->getFallbackPathForStation($station)
+        );
+
+        $tempPath = self::cleanUpString(
+            $station->getRadioTempDir()
+        );
+
         $event->appendBlock(
             <<<LIQ
             # AzuraCast Common Runtime Functions
@@ -264,10 +286,19 @@ final class ConfigWriter implements EventSubscriberInterface
             settings.azuracast.api_url := "{$stationApiUrl}"
             settings.azuracast.api_key := "{$stationApiAuth}"
             settings.azuracast.media_path := "{$stationMediaDir}"
+            settings.azuracast.fallback_path := "{$fallbackPath}"
+            settings.azuracast.temp_path := "{$tempPath}"
+            
+            settings.azuracast.compute_autocue := {$useComputeAutocue}
+            
+            settings.azuracast.default_fade := {$defaultFade}
+            settings.azuracast.default_cross := {$defaultCross}
+            settings.azuracast.enable_crossfade := {$enableCrossfade}
+            settings.azuracast.crossfade_type := "{$crossfadeType}"
+            
+            settings.azuracast.live_broadcast_text := "{$liveBroadcastText}"
             LIQ
         );
-
-        $backendConfig = $event->getBackendConfig();
 
         $perfMode = $backendConfig->getPerformanceModeEnum();
         if ($perfMode !== StationBackendPerformanceModes::Disabled) {
@@ -288,31 +319,6 @@ final class ConfigWriter implements EventSubscriberInterface
                 LIQ
             );
         }
-
-        if ($backendConfig->getEnableAutoCue()) {
-            // Add Moonbase AutoCue common configuration.
-            $autoCueCommon = $this->environment->getParentDirectory() . '/liquidsoap/autocue.liq';
-
-            $event->appendBlock(
-                <<<LIQ
-                # Use MoonBase AutoCue
-                %include "{$autoCueCommon}"
-
-                settings.autocue.cue_file.nice := true
-                settings.request.prefetch := 2
-                LIQ
-            );
-        } else {
-            // Register AzuraCast as an AutoCue provider
-            $event->appendBlock(
-                <<<LIQ
-                # Register AzuraCast as Liquidsoap AutoCue Provider
-                enable_autocue_metadata()
-                autocue.register(name="azuracast", azuracast.autocue)
-                settings.autocue.preferred := "azuracast"
-                LIQ
-            );
-        }
     }
 
     public function writePlaylistConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -321,17 +327,12 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_PRE_PLAYLISTS);
 
-        // Override some AutoCue settings if they're set in the section above.
-        $enableAutoCue = $event->getBackendConfig()->getEnableAutoCue();
-
-        if ($enableAutoCue) {
-            $event->appendBlock(
-                <<<LIQ
-                # Ensure AutoCue settings are valid
-                ignore(check_autocue_setup(shutdown=true, print=false))
-                LIQ
-            );
-        }
+        $event->appendBlock(
+            <<<LIQ
+            # Ensure AutoCue settings are valid
+            ignore(azuracast.verify_autocue_settings())
+            LIQ
+        );
 
         // Set up playlists using older format as a fallback.
         $playlistVarNames = [];
@@ -591,27 +592,9 @@ final class ConfigWriter implements EventSubscriberInterface
         }
 
         if (!$station->useManualAutoDJ()) {
-            $nextSongTimeout = $enableAutoCue ? 'settings.autocue.cue_file.timeout()' : '20.0';
-
             $event->appendBlock(
                 <<< LIQ
-                dynamic = request.dynamic(id="next_song", timeout={$nextSongTimeout}, retry_delay=10., azuracast.autodj_next_song)
-
-                dynamic_startup = fallback(
-                    id = "dynamic_startup",
-                    track_sensitive = false,
-                    [
-                        dynamic,
-                        source.available(
-                            blank(id = "autodj_startup_blank", duration = 120.),
-                            predicate.activates({azuracast.autodj_is_loading()})
-                        )
-                    ]
-                )
-                radio = fallback(id="autodj_fallback", track_sensitive = true, [dynamic_startup, radio])
-
-                ref_dynamic = ref(dynamic);
-                thread.run.recurrent(delay=0.25, { azuracast.wait_for_next_song(ref_dynamic()) })
+                radio = azuracast.enable_autodj(radio)
                 LIQ
             );
         }
@@ -629,14 +612,12 @@ final class ConfigWriter implements EventSubscriberInterface
         $requestsQueueName = LiquidsoapQueues::Requests->value;
         $interruptingQueueName = LiquidsoapQueues::Interrupting->value;
 
-        $requestQueueTimeout = $enableAutoCue ? 'settings.autocue.cue_file.timeout()' : '20.0';
-
         $event->appendBlock(
             <<< LIQ
-            requests = request.queue(id="{$requestsQueueName}", timeout={$requestQueueTimeout})
+            requests = request.queue(id="{$requestsQueueName}", timeout=settings.azuracast.request_timeout())
             radio = fallback(id="requests_fallback", track_sensitive = true, [requests, radio])
 
-            interrupting_queue = request.queue(id="{$interruptingQueueName}", timeout={$requestQueueTimeout})
+            interrupting_queue = request.queue(id="{$interruptingQueueName}", timeout=settings.azuracast.request_timeout())
             radio = fallback(id="interrupting_fallback", track_sensitive = false, [interrupting_queue, radio])
             LIQ
         );
@@ -656,22 +637,6 @@ final class ConfigWriter implements EventSubscriberInterface
                 );
             }
         }
-
-        $event->appendBlock(
-            <<<LIQ
-            # Skip command (used by web UI)
-            def add_skip_command(s) =
-                def skip(_) =
-                    source.skip(s)
-                    "Done!"
-                end
-
-                server.register(namespace="radio", usage="skip", description="Skip the current song.", "skip",skip)
-            end
-
-            add_skip_command(radio)
-            LIQ
-        );
     }
 
     /**
@@ -788,9 +753,12 @@ final class ConfigWriter implements EventSubscriberInterface
         // Write pre-crossfade section.
         $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_PRE_FADE);
 
-        // Amplify
+        // Amplify and Skip
         $event->appendBlock(
             <<<LIQ
+            # Allow Telnet to skip the current track.
+            add_skip_command(radio)
+            
             # Apply amplification metadata (if supplied)
             radio = amplify(override="liq_amplify", 1., radio)
             LIQ
@@ -812,77 +780,13 @@ final class ConfigWriter implements EventSubscriberInterface
         // Add debug logging for metadata.
         $event->appendBlock(
             <<<LS
+            # Log current metadata for debugging.
             radio.on_metadata(azuracast.log_meta)
+            
+            # Apply crossfade.
+            radio = azuracast.apply_crossfade(radio)
             LS
         );
-
-        if ($settings->getEnableAutoCue()) {
-            // AutoCue preempts normal fading to use its own settings.
-            $event->appendBlock(
-                <<<LS
-                # Fading/crossing/segueing
-                def live_aware_crossfade(old, new) =
-                    if azuracast.to_live() then
-                        # If going to the live show, play a simple sequence
-                        # fade out AutoDJ, do (almost) not fade in streamer
-                        sequence([
-                          fade.out(duration=settings.autocue.cue_file.fade_out(), old.source),
-                          fade.in(duration=settings.autocue.cue_file.fade_in(), new.source)
-                        ])
-                    else
-                        # Otherwise, use a beautiful add
-                        add(normalize=false, [
-                            fade.in(
-                                initial_metadata=new.metadata,
-                                duration=settings.autocue.cue_file.fade_in(),
-                                new.source
-                            ),
-                            fade.out(
-                                initial_metadata=old.metadata,
-                                duration=settings.autocue.cue_file.fade_out(),
-                                old.source
-                            )
-                        ])
-                    end
-                end
-                
-                radio = cross(
-                    duration=settings.autocue.cue_file.fade_out(),
-                    live_aware_crossfade,
-                    radio
-                )
-                LS
-            );
-        } elseif ($settings->isCrossfadeEnabled()) {
-            // Crossfading happens before the live broadcast is mixed in, because of buffer issues.
-            $crossfadeType = $settings->getCrossfadeTypeEnum();
-            $crossfade = self::toFloat($settings->getCrossfade());
-            $crossDuration = self::toFloat($settings->getCrossfadeDuration());
-
-            if (CrossfadeModes::Smart === $crossfadeType) {
-                $crossfadeFunc = 'cross.smart(old, new, margin=8., fade_in=' . $crossfade
-                    . ', fade_out=' . $crossfade . ')';
-            } else {
-                $crossfadeFunc = 'cross.simple(old.source, new.source, fade_in=' . $crossfade
-                    . ', fade_out=' . $crossfade . ')';
-            }
-
-            $event->appendBlock(
-                <<<LS
-                def live_aware_crossfade(old, new) =
-                    if azuracast.to_live() then
-                        # If going to the live show, play a simple sequence
-                        sequence([fade.out(old.source),fade.in(new.source)])
-                    else
-                        # Otherwise, use the smart transition
-                        {$crossfadeFunc}
-                    end
-                end
-
-                radio = cross(duration={$crossDuration}, live_aware_crossfade, radio)
-                LS
-            );
-        }
 
         if ($settings->isAudioProcessingEnabled() && !$settings->getPostProcessingIncludeLive()) {
             $this->writePostProcessingSection($event);
@@ -924,10 +828,6 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $harborParams = implode(', ', $harborParams);
 
-        $liveBroadcastText = self::cleanUpString(
-            $settings->getLiveBroadcastText()
-        );
-
         $event->appendBlock(
             <<<LIQ
             # A Pre-DJ source of radio that can be broadcast if needed
@@ -942,7 +842,7 @@ final class ConfigWriter implements EventSubscriberInterface
             def insert_missing(m) =
                 def updates =
                     if m == [] then
-                        [("title", "{$liveBroadcastText}"), ("is_live", "true")]
+                        [("title", "#{settings.azuracast.live_broadcast_text()}"), ("is_live", "true")]
                     else
                         [("is_live", "true")]
                     end
@@ -954,24 +854,25 @@ final class ConfigWriter implements EventSubscriberInterface
             
             live = insert_metadata(live)
             def insert_latest_live_metadata() =
-              log("Inserting last live meta: #{last_live_meta()}")
-              live.insert_metadata(last_live_meta())
+                log("Inserting last live meta: #{last_live_meta()}")
+                live.insert_metadata(last_live_meta())
             end
-            
-            def transition_to_live(_, s) =
-              log("executing transition to live")
-              insert_latest_live_metadata()
-              s
-            end
-            
-            def transition_to_radio(_, s) = s end
             
             radio = fallback(
-              id="live_fallback",
-              track_sensitive=false,
-              replay_metadata=true,
-              transitions=[transition_to_live, transition_to_radio],
-              [live, radio]
+                id="live_fallback",
+                track_sensitive=false,
+                replay_metadata=true,
+                transitions=[
+                    fun (_, s) -> begin
+                        log("executing transition to live")
+                        insert_latest_live_metadata()
+                        s
+                    end, 
+                    fun (_, s) -> begin
+                        s
+                    end
+                ],
+                [live, radio]
             )
 
             # Skip non-live track when live DJ goes live.
@@ -997,20 +898,16 @@ final class ConfigWriter implements EventSubscriberInterface
 
             $formatString = $this->getOutputFormatString($recordLiveStreamsFormat, $recordLiveStreamsBitrate);
             $recordExtension = $recordLiveStreamsFormat->getExtension();
-            $recordBasePath = self::cleanUpString($station->getRadioTempDir());
             $recordPathPrefix = StationStreamerBroadcast::PATH_PREFIX;
 
             $event->appendBlock(
                 <<< LIQ
                 # Record Live Broadcasts
-                recording_base_path = "{$recordBasePath}"
-                recording_extension = "{$recordExtension}"
-
                 output.file(
                     {$formatString},
                     fun () -> begin
                         if (azuracast.live_enabled()) then
-                            time.string("#{recording_base_path}/#{azuracast.live_dj()}/{$recordPathPrefix}_%Y%m%d-%H%M%S.#{recording_extension}.tmp")
+                            time.string("#{settings.azuracast.temp_path()}/#{azuracast.live_dj()}/{$recordPathPrefix}_%Y%m%d-%H%M%S.{$recordExtension}.tmp")
                         else
                             ""
                         end
@@ -1033,7 +930,6 @@ final class ConfigWriter implements EventSubscriberInterface
 
     public function writePreBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void
     {
-        $station = $event->getStation();
         $settings = $event->getBackendConfig();
 
         $event->appendBlock(
@@ -1047,40 +943,16 @@ final class ConfigWriter implements EventSubscriberInterface
             $this->writePostProcessingSection($event);
         }
 
-        // Write fallback to safety file to ensure infallible source for the broadcast outputs.
-        $errorFile = $this->fallbackFile->getFallbackPathForStation($station);
-
         $event->appendBlock(
             <<<LIQ
-            error_file = single(id="error_jingle", "{$errorFile}")
-
-            def tag_error_file(m) =
-                ignore(m)
-                [("is_error_file", "true")]
-            end
-            error_file = metadata.map(tag_error_file, error_file)
-
-            radio = fallback(id="safe_fallback", track_sensitive = false, [radio, error_file])
-            LIQ
-        );
-
-        $event->appendBlock(
-            <<<LIQ
+            # Add Fallback
+            radio = azuracast.add_fallback(radio)
+            
             # Send metadata changes back to AzuraCast
             radio.on_metadata(azuracast.send_feedback)
 
             # Handle "Jingle Mode" tracks by replaying the previous metadata.
-            last_metadata = ref([])
-            def handle_jingle_mode(m) =
-                if (m["jingle_mode"] == "true") then
-                    last_metadata()
-                else
-                    last_metadata.set(m)
-                    m
-                end
-            end
-
-            radio = metadata.map(update=false, strip=true, handle_jingle_mode, radio)
+            radio = azuracast.handle_jingle_mode(radio)
             LIQ
         );
 
@@ -1172,7 +1044,6 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $configDir = $station->getRadioConfigDir();
         $hlsBaseDir = $station->getRadioHlsDir();
-        $tempDir = $station->getRadioTempDir();
 
         $backendConfig = $event->getBackendConfig();
         $hlsSegmentLength = $backendConfig->getHlsSegmentLength();
@@ -1193,7 +1064,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 segments_overhead={$hlsSegmentsOverhead},
                 segment_name=hls_segment_name,
                 persist_at="{$configDir}/hls.config",
-                temp_dir="{$tempDir}",
+                temp_dir="#{settings.azuracast.temp_path()}",
                 "{$hlsBaseDir}",
                 hls_streams,
                 radio

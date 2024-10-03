@@ -187,6 +187,7 @@ final class Liquidsoap extends AbstractLocalAdapter
     {
         $metaStr = [];
         foreach ($newMeta as $metaKey => $metaVal) {
+            if ($metaVal === null) continue;
             $metaStr[] = $metaKey . '="' . ConfigWriter::annotateString($metaVal) . '"';
         }
 

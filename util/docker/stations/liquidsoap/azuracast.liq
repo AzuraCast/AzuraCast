@@ -72,8 +72,13 @@ let settings.azuracast.crossfade_type = settings.make(
 )
 
 let settings.azuracast.request_timeout = settings.make(
-    description="The timeout for requests (i.e. song requests and 'Next Song' resolution).",
+    description="The timeout for requests (i.e. song requests and 'Next Song' resolution), in seconds.",
     20.0
+)
+
+let settings.azuracast.http_timeout = settings.make(
+    description="The timeout for HTTP API requests, in seconds.",
+    10.0
 )
 
 let settings.azuracast.live_broadcast_text = settings.make(
@@ -124,7 +129,7 @@ ignore(https_transport)
 API Utilities
 ----->#
 
-def azuracast.api_call(~timeout=10.0, url, payload) =
+def azuracast.api_call(~timeout=settings.azuracast.http_timeout(), url, payload) =
     full_url = "#{settings.azuracast.api_url()}/#{url}"
 
     log("API #{url} - Sending POST request to '#{full_url}' with body: #{payload}")

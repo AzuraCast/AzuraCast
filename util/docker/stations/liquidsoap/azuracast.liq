@@ -95,6 +95,11 @@ let settings.azuracast.live_broadcast_text = settings.make(
     "Live Broadcast"
 )
 
+let settings.azuracast.apply_amplify = settings.make(
+    description="Apply amplification metadata to the stream signal.",
+    true
+)
+
 # Settings based on whether AutoCue is enabled
 # TODO: Depends on AutoCue implementation
 
@@ -299,7 +304,7 @@ def azuracast.autodj_next_song() =
 end
 
 # Delayed ping for AutoDJ Next Song
-def azuracast.wait_for_next_song(autodj)
+def azuracast.wait_for_next_song(autodj) = 
     azuracast.autodj_ping_attempts := azuracast.autodj_ping_attempts() + 1
 
     if source.is_ready(autodj) then
@@ -520,11 +525,19 @@ def azuracast.handle_jingle_mode(s) =
     s
 end
 
+def azuracast.apply_amplify(s) = 
+    if (settings.azuracast.apply_amplify()) then
+        (amplify(override="liq_amplify", 1., s) : source)
+    else
+        s
+    end
+end
+
 #<-----
 Debugging
 ----->#
 
-def azuracast.log_meta(m)
+def azuracast.log_meta(m) = 
     label="log_meta"
     l = list.sort.natural(metadata.cover.remove(m))
     list.iter(fun(v) -> log(level=4, label=label, "#{v}"), l)

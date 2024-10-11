@@ -757,7 +757,9 @@ final class ConfigWriter implements EventSubscriberInterface
             add_skip_command(radio)
             
             # Apply amplification metadata (if supplied)
-            radio = amplify(override="liq_amplify", 1., radio)
+            # This can be disabled by setting:
+            #   settings.azuracast.apply_amplify := false
+            radio = azuracast.apply_amplify(radio)
             LIQ
         );
 
@@ -778,7 +780,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(
             <<<LS
             # Log current metadata for debugging.
-            radio.on_metadata(azuracast.log_meta)
+            radio = source.on_metadata(radio, azuracast.log_meta)
             
             # Apply crossfade.
             radio = azuracast.apply_crossfade(radio)

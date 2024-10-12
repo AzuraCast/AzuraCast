@@ -75,6 +75,7 @@
                 type="button"
                 class="btn btn-primary"
                 @click="doMove"
+                :disabled="props.selectedItems.all.length === 0"
             >
                 {{ $gettext('Move to Directory') }}
             </button>
@@ -154,7 +155,7 @@ const {state: directories, execute: reload, isLoading} = useAsyncState(
 );
 
 const doMove = () => {
-    (props.selectedItems.all.length) && axios.put(props.batchUrl, {
+    axios.put(props.batchUrl, {
             'do': 'move',
             'currentDirectory': props.currentDirectory,
             'directory': destinationDirectory.value,

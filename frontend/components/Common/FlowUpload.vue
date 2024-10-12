@@ -225,7 +225,7 @@ onMounted(() => {
                     }
                 }
             }
-        } catch (e) {
+        } catch {
             // Noop
         }
 

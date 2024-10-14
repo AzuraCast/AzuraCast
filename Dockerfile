@@ -10,7 +10,7 @@ RUN apt-get update \
 
 RUN go install github.com/jwilder/dockerize@v0.8.0
 
-RUN go install github.com/aptible/supercronic@v0.2.32
+RUN go install github.com/aptible/supercronic@v0.2.33
 
 RUN go install github.com/centrifugal/centrifugo/v5@v5.4.6
 

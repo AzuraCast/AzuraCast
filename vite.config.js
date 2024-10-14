@@ -63,6 +63,14 @@ export default defineConfig({
         chunkSizeWarningLimit: '1m',
         outDir: resolve(__dirname, './web/static/vite_dist')
     },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                quietDeps: true,
+                silenceDeprecations: ['legacy-js-api']
+            }
+        }
+    },
     server: {
         strictPort: true,
         host: true,

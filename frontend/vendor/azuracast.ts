@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+ 
 
 import {GlobalPermission, StationPermission} from "~/acl.ts";
 

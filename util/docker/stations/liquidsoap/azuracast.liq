@@ -433,7 +433,7 @@ Fallback
 ----->#
 
 def azuracast.add_fallback(s) =
-    error_file = single(id="error_jingle", "#{settings.azuracast.fallback_path()}")
+    error_file = single(id="error_jingle", "annotate:liq_disable_autocue=\"true\":#{settings.azuracast.fallback_path()}")
 
     def tag_error_file(_) =
         [("is_error_file", "true")]

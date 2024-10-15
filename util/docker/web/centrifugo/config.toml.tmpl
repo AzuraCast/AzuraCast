@@ -14,7 +14,7 @@ client_connect_include_server_time = true
 {{ if isTrue .Env.ENABLE_REDIS }}
 engine = "redis"
 redis_address = "{{ .Env.REDIS_HOST }}:{{ default .Env.REDIS_PORT "6379" }}"
-redis_db = 0
+redis_db = {{ default .Env.REDIS_DB 0 }}
 {{ end }}
 
 [[namespaces]]

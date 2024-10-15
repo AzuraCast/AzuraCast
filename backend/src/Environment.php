@@ -74,6 +74,7 @@ final class Environment
     public const string ENABLE_REDIS = 'ENABLE_REDIS';
     public const string REDIS_HOST = 'REDIS_HOST';
     public const string REDIS_PORT = 'REDIS_PORT';
+    public const string REDIS_DB = 'REDIS_DB';
 
     public function __construct(array $elements = [])
     {
@@ -387,6 +388,7 @@ final class Environment
      * @return array{
      *     host: string,
      *     port: int,
+     *     db: int,
      *     socket?: string
      * }
      */
@@ -401,6 +403,10 @@ final class Environment
             'port' => Types::int(
                 $this->data[self::REDIS_PORT] ?? null,
                 6379
+            ),
+            'db' => Types::int(
+                $this->data[self::REDIS_DB] ?? null,
+                0
             ),
         ];
 

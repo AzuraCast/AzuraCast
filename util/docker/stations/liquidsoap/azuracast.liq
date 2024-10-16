@@ -210,10 +210,7 @@ def azuracast.autocue(
             start_next = float_of_string(azuracast_meta("start_next")),
             ...azuracast_optional_amplify
         }
-    elsif (settings.azuracast.compute_autocue()) 
-        and (request_metadata["is_error_file"] != "true") 
-        and (request_metadata["jingle_mode"] != "true") 
-        then
+    elsif settings.azuracast.compute_autocue() then
         autocue.internal.implementation(request_metadata=request_metadata, file_metadata=file_metadata, filename)
     else
         null()

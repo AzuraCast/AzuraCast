@@ -272,8 +272,6 @@ final class ConfigWriter implements EventSubscriberInterface
             $station->getRadioTempDir()
         );
 
-        $prefetchRequests = $backendConfig->getEnableAutoCue() ? 2 : 1;
-
         $event->appendBlock(
             <<<LIQ
             # AzuraCast Common Runtime Functions
@@ -300,7 +298,6 @@ final class ConfigWriter implements EventSubscriberInterface
             
             settings.azuracast.live_broadcast_text := "{$liveBroadcastText}"
             
-            settings.request.prefetch := {$prefetchRequests}
             LIQ
         );
 

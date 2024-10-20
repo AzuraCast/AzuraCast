@@ -37,7 +37,6 @@ final class Annotations implements EventSubscriberInterface
                 ['annotateForLiquidsoap', 15],
                 ['annotatePlaylist', 10],
                 ['annotateRequest', 5],
-                ['enableAutoCue', -5],
                 ['postAnnotation', -10],
             ],
         ];
@@ -191,13 +190,6 @@ final class Annotations implements EventSubscriberInterface
             $event->addAnnotations([
                 'request_id' => $request->getId(),
             ]);
-        }
-    }
-
-    public function enableAutoCue(AnnotateNextSong $event): void
-    {
-        if ($event->getStation()->getBackendConfig()->getEnableAutoCue()) {
-            $event->setProtocol('autocue');
         }
     }
 

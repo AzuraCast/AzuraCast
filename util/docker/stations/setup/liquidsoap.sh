@@ -26,6 +26,13 @@ apt-get install -y -f --no-install-recommends
 rm -f /tmp/liquidsoap.deb
 ln -s /usr/bin/liquidsoap /usr/local/bin/liquidsoap
 
+# Add temp directories for caching.
+mkdir -p /tmp/liquidsoap_cache
+chown -R azuracast:azuracast /tmp/liquidsoap_cache
+
+mkdir -p /var/azuracast/www_tmp/liquidsoap_cache
+chown -R azuracast:azuracast /var/azuracast/www_tmp/liquidsoap_cache
+
 # Add Common AzuraCast Functions
 mkdir -p /var/azuracast/liquidsoap
 cp /bd_build/stations/liquidsoap/* /var/azuracast/liquidsoap

@@ -9,5 +9,6 @@ exec tmpreaper 12h --verbose \
     /tmp/nginx_fastcgi \
     /tmp/nginx_cache \
     /tmp/sftpgo_temp \
+    /tmp/liquidsoap_cache \
     /var/azuracast/stations/*/temp \
     /var/azuracast/www_tmp

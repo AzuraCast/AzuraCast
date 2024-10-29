@@ -19,6 +19,9 @@ use Symfony\Component\Process\Process;
 
 final class Liquidsoap extends AbstractLocalAdapter
 {
+    public const string GLOBAL_CACHE_PATH = '/tmp/liquidsoap_cache';
+    public const string USER_CACHE_DIR = '/liquidsoap_cache';
+
     /**
      * @inheritDoc
      */
@@ -107,6 +110,24 @@ final class Liquidsoap extends AbstractLocalAdapter
         }
 
         return null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getEnvironmentVariables(Station $station): array
+    {
+        if ($this->environment->isProduction()) {
+            return [
+                'LIQ_CACHE_SYSTEM_DIR' => self::GLOBAL_CACHE_PATH,
+                'LIQ_CACHE_USER_DIR' => $this->environment->getTempDirectory() . self::USER_CACHE_DIR,
+            ];
+        }
+
+        // Disable cache for dev/testing environments.
+        return [
+            'LIQ_CACHE' => 'false',
+        ];
     }
 
     /**

@@ -33,6 +33,12 @@ chown -R azuracast:azuracast /tmp/liquidsoap_cache
 mkdir -p /var/azuracast/www_tmp/liquidsoap_cache
 chown -R azuracast:azuracast /var/azuracast/www_tmp/liquidsoap_cache
 
+# Pre-warm the initial LS opcode cache.
+export LIQ_CACHE_SYSTEM_DIR=/tmp/liquidsoap_cache
+export LIQ_CACHE_USER_DIR=/var/azuracast/www_tmp/liquidsoap_cache
+
+gosu azuracast liquidsoap --cache-stdlib
+
 # Add Common AzuraCast Functions
 mkdir -p /var/azuracast/liquidsoap
 cp /bd_build/stations/liquidsoap/* /var/azuracast/liquidsoap

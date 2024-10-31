@@ -280,6 +280,7 @@ final class ConfigWriter implements EventSubscriberInterface
             settings.server.log.level := {$logLevel}
             init.daemon.pidfile.path := "{$pidfile}"
             settings.server.socket.path := "{$socketFile}"
+            settings.init.compact_before_start := true
             
             environment.set("TZ", "{$stationTz}") 
             

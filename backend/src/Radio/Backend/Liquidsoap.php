@@ -118,7 +118,7 @@ final class Liquidsoap extends AbstractLocalAdapter
     public function getEnvironmentVariables(Station $station): array
     {
         $tempDir = [
-            'TMPDIR' => $station->getRadioTempDir()
+            'TMPDIR' => $station->getRadioTempDir(),
         ];
 
         if ($this->environment->isProduction()) {

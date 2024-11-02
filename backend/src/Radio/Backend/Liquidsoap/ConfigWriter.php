@@ -1245,7 +1245,7 @@ final class ConfigWriter implements EventSubscriberInterface
         return match (true) {
             'true' === $dataVal || 'false' === $dataVal => $dataVal,
             is_bool($dataVal) => self::toBool($dataVal),
-            is_numeric($dataVal) => self::toFloat($dataVal),
+            is_numeric($dataVal) && !is_int($dataVal) => self::toFloat($dataVal),
             default => Types::string($dataVal)
         };
     }

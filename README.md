@@ -89,10 +89,8 @@ location.
 
 We would like to thank the following organizations for their support of AzuraCast's ongoing development:
 
-- [Vultr](https://www.vultr.com/marketplace/apps/azuracast?ref=8888059) for providing the server resources we use for
-  our demonstration instance, staging and testing environments, and more
-- [JetBrains](https://www.jetbrains.com/) for making our development faster, easier and more productive with tools like
-  PhpStorm
+- [DigitalOcean](https://marketplace.digitalocean.com/apps/azuracast) for sponsoring our open-source efforts and providing infrastructure that helps run AzuraCast services
+- [JetBrains](https://www.jetbrains.com/) for making our development faster, easier and more productive with tools like PhpStorm
 - [CrowdIn](https://crowdin.com/) for giving us a simple and powerful tool to help translate our application for users
   around the world
 - [Netlify](https://www.netlify.com/) for supporting open-source software like ours and for serving as the host of our

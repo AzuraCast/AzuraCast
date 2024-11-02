@@ -138,7 +138,12 @@ API Utilities
 def azuracast.api_call(~timeout=settings.azuracast.http_timeout(), url, payload) =
     full_url = "#{settings.azuracast.api_url()}/#{url}"
 
-    log("API #{url} - Sending POST request to '#{full_url}' with body: #{payload}")
+    log(
+        level=3,
+        label="azuracast.api",
+        "API #{url} - Sending POST request to '#{full_url}' with body: #{payload}"
+    )
+
     try
         response = http.post(full_url,
             headers=[
@@ -150,10 +155,18 @@ def azuracast.api_call(~timeout=settings.azuracast.http_timeout(), url, payload)
             data=payload
         )
 
-        log("API #{url} - Response (#{response.status_code}): #{response}")
+        log(
+            level=3,
+            label="azuracast.api",
+            "API #{url} - Response (#{response.status_code}): #{response}"
+        )
         "#{response}"
     catch err do
-        log("API #{url} - Error: #{error.kind(err)} - #{error.message(err)}")
+        log(
+            level=2,
+            label="azuracast.api",
+            "API #{url} - Error: #{error.kind(err)} - #{error.message(err)}"
+        )
         "false"
     end
 end

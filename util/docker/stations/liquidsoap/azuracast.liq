@@ -229,7 +229,7 @@ def azuracast.autocue(
         )
 
         if azuracast.cache.has(cache_key) then
-            let cache_result_raw = azuracast.cache.get(cache_key)
+            let cache_result_raw = null.get(azuracast.cache.get(cache_key))
 
             log(
                 level=2,

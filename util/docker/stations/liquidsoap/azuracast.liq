@@ -123,6 +123,7 @@ let azuracast.last_artist = ref("")
 Utility Functions
 ----->#
 
+%include "./cache.liq"
 %include "./crossfade.liq"
 %include "./utilities.liq"
 
@@ -188,8 +189,16 @@ def azuracast.autocue(
     ~file_metadata,
     filename
 ) =
+    label="azuracast.autocue"
+
     # Check if `"azuracast_autocue"` is present and set to `"true"`. If so, use azuracast autocue implementation:
     if list.assoc(default="false", "azuracast_autocue", request_metadata) == "true" then
+        log(
+            level=2,
+            label=label,
+            "Using AzuraCast custom cue/fade data in lieu of AutoCue."
+        )
+
         def azuracast_meta(label) =
             list.assoc("azuracast_#{label}", request_metadata)
         end
@@ -211,7 +220,65 @@ def azuracast.autocue(
             ...azuracast_optional_amplify
         }
     elsif settings.azuracast.compute_autocue() then
-        autocue.internal.implementation(request_metadata=request_metadata, file_metadata=file_metadata, filename)
+        let cache_key = "autocue_#{filename}"
+
+        log(
+            level=3,
+            label=label,
+            "Cache key: #{cache_key}"
+        )
+
+        if azuracast.cache.has(cache_key) then
+            let cache_result_raw = azuracast.cache.get(cache_key)
+
+            log(
+                level=2,
+                label=label,
+                "Pulling AutoCue data from cache."
+            )
+            log(
+                level=3,
+                label=label,
+                "Cache result: #{cache_result_raw}"
+            )
+
+            try
+                let json.parse (
+                    autocue_result : {
+                        cue_in: float,
+                        cue_out: float,
+                        fade_in: float,
+                        fade_out: float,
+                        start_next: float?,
+                        amplify: string?
+                    }?
+                ) = cache_result_raw
+
+                autocue_result
+            catch err: [error.json] do
+                log(
+                    level=1,
+                    label=label,
+                    "ERROR parsing JSON: #{err}"
+                )
+                null()
+            end
+        else
+            log(
+                level=2,
+                label=label,
+                "Cache missed; computing AutoCue values."
+            )
+
+            let autocue_result = autocue.internal.implementation(
+                request_metadata=request_metadata, 
+                file_metadata=file_metadata, 
+                filename
+            )
+
+            azuracast.cache.set(cache_key, json.stringify(autocue_result))
+            autocue_result
+        end
     else
         null()
     end

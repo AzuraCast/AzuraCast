@@ -117,8 +117,13 @@ final class Liquidsoap extends AbstractLocalAdapter
      */
     public function getEnvironmentVariables(Station $station): array
     {
+        $tempDir = [
+            'TMPDIR' => $station->getRadioTempDir()
+        ];
+
         if ($this->environment->isProduction()) {
             return [
+                ...$tempDir,
                 'LIQ_CACHE_SYSTEM_DIR' => self::GLOBAL_CACHE_PATH,
                 'LIQ_CACHE_USER_DIR' => $this->environment->getTempDirectory() . self::USER_CACHE_DIR,
             ];
@@ -126,6 +131,7 @@ final class Liquidsoap extends AbstractLocalAdapter
 
         // Disable cache for dev/testing environments.
         return [
+            ...$tempDir,
             'LIQ_CACHE' => 'false',
         ];
     }

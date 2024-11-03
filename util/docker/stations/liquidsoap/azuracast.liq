@@ -160,6 +160,7 @@ def azuracast.api_call(~timeout=settings.azuracast.http_timeout(), url, payload)
             label="azuracast.api",
             "API #{url} - Response (#{response.status_code}): #{response}"
         )
+
         "#{response}"
     catch err do
         log(
@@ -167,19 +168,19 @@ def azuracast.api_call(~timeout=settings.azuracast.http_timeout(), url, payload)
             label="azuracast.api",
             "API #{url} - Error: #{error.kind(err)} - #{error.message(err)}"
         )
+
         "false"
     end
 end
 
 # AzuraCast protocol implementation.
 def azuracast.media_protocol(~rlog=_,~maxtime,arg) =
-    let station_media_dir = settings.azuracast.media_path()
+    station_media_dir = settings.azuracast.media_path()
     if station_media_dir == "api" then
         timeout = 1000.0 * (maxtime - time())
 
         j = json()
         j.add("uri", arg)
-
         azuracast.api_call(timeout=timeout, "cp", json.stringify(j))
     else
         "#{station_media_dir}/#{arg}"
@@ -232,7 +233,7 @@ def azuracast.autocue(
             ) = autocue_data_raw
 
             autocue_result
-        catch err: [error.json] do
+        catch err do
             log(
                 level=1,
                 label=label,
@@ -276,7 +277,7 @@ def azuracast.autocue(
                 ) = cache_result_raw
 
                 autocue_result
-            catch err: [error.json] do
+            catch err do
                 log(
                     level=1,
                     label=label,
@@ -331,11 +332,21 @@ def azuracast.wait_for_next_song(autodj) =
     azuracast.autodj_ping_attempts := azuracast.autodj_ping_attempts() + 1
 
     if source.is_ready(autodj) then
-        log("AutoDJ is ready!")
+        log(
+            level=2,
+            label="azuracast.autodj",
+            "AutoDJ is ready!"
+        )
+
         azuracast.autodj_is_loading := false
         -1.0
     elsif azuracast.autodj_ping_attempts() > 200 then
-        log("AutoDJ could not be initialized within the specified timeout.")
+        log(
+            level=1,
+            label="azuracast.autodj",
+            "ERROR: AutoDJ could not be initialized within the specified timeout."
+        )
+
         azuracast.autodj_is_loading := false
         -1.0
     else
@@ -402,7 +413,12 @@ end
 
 def azuracast.live_connected(header) =
     dj = azuracast.last_authenticated_dj()
-    log("DJ Source connected! Last authenticated DJ: #{dj} - #{header}")
+
+    log(
+        level=2,
+        label="azuracast.dj",
+        "DJ Source connected! Last authenticated DJ: #{dj} - #{header}"
+    )
 
     azuracast.live_enabled := true
     azuracast.live_dj := dj

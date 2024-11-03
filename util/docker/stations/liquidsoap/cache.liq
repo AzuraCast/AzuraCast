@@ -15,8 +15,7 @@ let azuracast.cache.db = ref(null())
 
 def azuracast.cache.init() =
     if null.defined(azuracast.cache.db()) then
-        let db = null.get(azuracast.cache.db())
-        db
+        null.get(azuracast.cache.db())
     else
         log(
             level=2,
@@ -24,7 +23,7 @@ def azuracast.cache.init() =
             "Initializing cache database..."
         )
 
-        let db_path = file.temp(
+        db_path = file.temp(
             cleanup=true,
             'cache_',
             '.db'
@@ -61,9 +60,9 @@ def azuracast.cache.get(key) =
         )
         null()
     else
-        let db = azuracast.cache.init()
+        db = azuracast.cache.init()
 
-        let results = db.select(
+        results = db.select(
             table="cache",
             where="key=#{sqlite.escape(key)}"
         )
@@ -89,7 +88,7 @@ def azuracast.cache.has(key) =
         )
         false
     else
-        let db = azuracast.cache.init()
+        db = azuracast.cache.init()
 
         n = db.count(
             table="cache",
@@ -109,8 +108,7 @@ def azuracast.cache.unset(key) =
         )
         null()
     else
-        let db = azuracast.cache.init()
-        
+        db = azuracast.cache.init()
         db.exec("DELETE FROM cache WHERE key=#{sqlite.escape(key)}")
     end
 end
@@ -126,8 +124,7 @@ def azuracast.cache.set(key, value) =
     else
         azuracast.cache.unset(key)
 
-        let db = azuracast.cache.init()
-
+        db = azuracast.cache.init()
         db.insert(
             table="cache",
             {
@@ -147,8 +144,7 @@ def azuracast.cache.clear() =
         )
         null()
     else
-        let db = azuracast.cache.init()
-        
+        db = azuracast.cache.init()
         db.exec("DELETE FROM cache")
     end
 end

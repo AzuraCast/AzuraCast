@@ -212,17 +212,9 @@ final class Liquidsoap extends AbstractLocalAdapter
      */
     public function updateMetadata(Station $station, array $newMeta): array
     {
-        $metaStr = [];
-        foreach ($newMeta as $metaKey => $metaVal) {
-            if ($metaVal === null) {
-                continue;
-            }
-            $metaStr[] = $metaKey . '="' . ConfigWriter::annotateString($metaVal) . '"';
-        }
-
         return $this->command(
             $station,
-            'custom_metadata.insert ' . implode(',', $metaStr),
+            'custom_metadata.insert ' . ConfigWriter::annotateArray($newMeta),
         );
     }
 

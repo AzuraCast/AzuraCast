@@ -204,34 +204,42 @@ def azuracast.autocue(
 ) =
     label="azuracast.autocue"
 
-    # Check if `"azuracast_autocue"` is present and set to `"true"`. If so, use azuracast autocue implementation:
-    if list.assoc(default="false", "azuracast_autocue", request_metadata) == "true" then
+    # Check if `"azuracast_autocue"` is present; If so, use azuracast autocue implementation:
+    if list.assoc.mem("azuracast_autocue", request_metadata) then
         log(
             level=2,
             label=label,
             "Using AzuraCast custom cue/fade data in lieu of AutoCue."
         )
 
-        def azuracast_meta(label) =
-            list.assoc("azuracast_#{label}", request_metadata)
-        end
+        autocue_data_raw = list.assoc("azuracast_autocue", request_metadata)
+        log(
+            level=3,
+            label=label,
+            "AzuraCast AutoCue raw data: #{autocue_data_raw}."
+        )
 
-        def azuracast_optional_amplify =
-            if list.assoc.mem("azuracast_amplify", request_metadata) then
-                { amplify = list.assoc("azuracast_amplify", request_metadata) }
-            else
-                { }
-            end
-        end
+        try
+            let json.parse (
+                autocue_result : {
+                    cue_in: float,
+                    cue_out: float,
+                    fade_in: float,
+                    fade_out: float,
+                    start_next: float?,
+                    amplify: string?
+                }?
+            ) = autocue_data_raw
 
-        {
-            cue_in = float_of_string(azuracast_meta("cue_in")),
-            cue_out = float_of_string(azuracast_meta("cue_out")),
-            fade_in = float_of_string(azuracast_meta("fade_in")),
-            fade_out = float_of_string(azuracast_meta("fade_out")),
-            start_next = float_of_string(azuracast_meta("start_next")),
-            ...azuracast_optional_amplify
-        }
+            autocue_result
+        catch err: [error.json] do
+            log(
+                level=1,
+                label=label,
+                "ERROR parsing JSON: #{err}"
+            )
+            null()
+        end
     elsif settings.azuracast.compute_autocue() then
         let cache_key = "autocue_#{filename}"
 

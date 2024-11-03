@@ -22,8 +22,6 @@ final class AnnotateNextSong extends Event
 {
     private ?string $songPath;
 
-    private ?string $protocol = null;
-
     /** @var array Custom annotations that should be sent along with the AutoDJ response. */
     private array $annotations = [];
 
@@ -77,11 +75,6 @@ final class AnnotateNextSong extends Event
         $this->songPath = $songPath;
     }
 
-    public function setProtocol(string $protocol): void
-    {
-        $this->protocol = $protocol;
-    }
-
     public function isAsAutoDj(): bool
     {
         return $this->asAutoDj;
@@ -102,10 +95,6 @@ final class AnnotateNextSong extends Event
                 ConfigWriter::annotateArray($this->annotations),
                 $this->songPath,
             ];
-
-            if (null !== $this->protocol) {
-                array_unshift($annotateParts, $this->protocol);
-            }
 
             return implode(':', $annotateParts);
         }

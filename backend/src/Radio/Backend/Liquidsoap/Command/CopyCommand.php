@@ -6,6 +6,7 @@ namespace App\Radio\Backend\Liquidsoap\Command;
 
 use App\Entity\Station;
 use App\Flysystem\StationFilesystems;
+use InvalidArgumentException;
 use RuntimeException;
 
 final class CopyCommand extends AbstractCommand
@@ -15,10 +16,10 @@ final class CopyCommand extends AbstractCommand
     ) {
     }
 
-    protected function doRun(Station $station, bool $asAutoDj = false, array $payload = []): string
+    protected function doRun(Station $station, bool $asAutoDj = false, array $payload = []): array
     {
         if (empty($payload['uri'])) {
-            throw new RuntimeException('No URI provided.');
+            throw new InvalidArgumentException('No URI provided.');
         }
 
         $uri = $payload['uri'];
@@ -26,8 +27,9 @@ final class CopyCommand extends AbstractCommand
         $mediaFs = $this->stationFilesystems->getMediaFilesystem($station);
         $localPath = $mediaFs->getLocalPath($uri);
 
-        return $mediaFs->isLocal()
-            ? $localPath
-            : 'tmp:' . $localPath;
+        return [
+            'uri' => $localPath,
+            'isTemp' => !$mediaFs->isLocal(),
+        ];
     }
 }

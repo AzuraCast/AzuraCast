@@ -161,15 +161,19 @@ def azuracast.api_call(~timeout=settings.azuracast.http_timeout(), url, payload)
             "API #{url} - Response (#{response.status_code}): #{response}"
         )
 
-        "#{response}"
+        if response.status_code != 200 then
+            null()
+        else
+            "#{response}"
+        end
     catch err do
         log(
             level=2,
             label="azuracast.api",
             "API #{url} - Error: #{error.kind(err)} - #{error.message(err)}"
         )
-
-        "false"
+        
+        null()
     end
 end
 
@@ -181,7 +185,38 @@ def azuracast.media_protocol(~rlog=_,~maxtime,arg) =
 
         j = json()
         j.add("uri", arg)
-        azuracast.api_call(timeout=timeout, "cp", json.stringify(j))
+
+        try
+            api_response = azuracast.api_call(timeout=timeout, "cp", json.stringify(j))
+
+            if null.defined(api_response) then
+                let json.parse (
+                    {
+                        uri,
+                        isTemp
+                    } : {
+                        uri: string,
+                        isTemp: bool
+                    }
+                ) = null.get(api_response)
+
+                if isTemp then
+                    "tmp:#{uri}"
+                else
+                    "#{uri}"
+                end
+            else 
+                null()
+            end
+        catch err do
+            log(
+                level=1,
+                label="azuracast.media_protocol",
+                "ERROR parsing JSON: #{err}"
+            )
+
+            null()
+        end
     else
         "#{station_media_dir}/#{arg}"
     end
@@ -316,14 +351,33 @@ AutoDJ
 
 # AutoDJ Next Song Script
 def azuracast.autodj_next_song() =
-    response = azuracast.api_call(
-        "nextsong",
-        ""
-    )
-    if (response == "") or (response == "false") then
+    try
+        api_response = azuracast.api_call(
+            "nextsong",
+            ""
+        )
+
+        if null.defined(api_response) then
+            let json.parse (
+                {
+                    uri,
+                } : {
+                    uri: string,
+                }
+            ) = null.get(api_response)
+
+            request.create(uri)
+        else 
+            null()
+        end
+    catch err do
+        log(
+            level=1,
+            label="azuracast.autodj",
+            "ERROR parsing JSON: #{err}"
+        )
+
         null()
-    else
-        request.create(response)
     end
 end
 
@@ -397,16 +451,38 @@ def azuracast.dj_auth(login) =
             {user = login.user, password = login.password}
         end
 
-    response = azuracast.api_call(
-        timeout=5.0,
-        "auth",
-        json.stringify(auth_info)
-    )
+    try
+        api_response = azuracast.api_call(
+            timeout=5.0,
+            "auth",
+            json.stringify(auth_info)
+        )
 
-    if (response == "true") then
-        azuracast.last_authenticated_dj := auth_info.user
-        true
-    else
+        if null.defined(api_response) then
+            let json.parse (
+                {
+                    allow
+                } : {
+                    allow: bool
+                }
+            ) = null.get(api_response)
+
+            if allow then
+                azuracast.last_authenticated_dj := auth_info.user
+                true
+            else
+                false
+            end
+        else 
+            false
+        end
+    catch err do
+        log(
+            level=1,
+            label="azuracast.streamer",
+            "ERROR parsing JSON: #{err}"
+        )
+
         false
     end
 end

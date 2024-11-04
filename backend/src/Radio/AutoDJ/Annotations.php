@@ -15,6 +15,7 @@ use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Backend\Liquidsoap\ConfigWriter;
 use App\Utilities\Types;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class Annotations implements EventSubscriberInterface
@@ -49,11 +50,11 @@ final class Annotations implements EventSubscriberInterface
     public function annotateNextSong(
         Station $station,
         bool $asAutoDj = false,
-    ): string|bool {
+    ): string {
         $queueRow = $this->queueRepo->getNextToSendToAutoDj($station);
 
         if (null === $queueRow) {
-            return false;
+            throw new RuntimeException('Queue is empty!');
         }
 
         $event = AnnotateNextSong::fromStationQueue($queueRow, $asAutoDj);

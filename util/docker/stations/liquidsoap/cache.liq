@@ -122,7 +122,7 @@ def azuracast.cache.set(key, value) =
         )
         null()
     else
-        azuracast.cache.unset(key)
+        _ = azuracast.cache.unset(key)
 
         db = azuracast.cache.init()
         db.insert(

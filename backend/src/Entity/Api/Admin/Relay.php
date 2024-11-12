@@ -87,9 +87,7 @@ final class Relay implements ResolvableUrlInterface
     public function resolveUrls(UriInterface $base): void
     {
         foreach ($this->mounts as $mount) {
-            if ($mount instanceof ResolvableUrlInterface) {
-                $mount->resolveUrls($base);
-            }
+            $mount->resolveUrls($base);
         }
     }
 }

@@ -271,8 +271,6 @@ final class StreamersController extends AbstractScheduledEntityController
 
     protected function viewRecord(object $record, ServerRequest $request): array
     {
-        assert($record instanceof StationStreamer);
-
         $return = parent::viewRecord($record, $request);
 
         $isInternal = $request->isInternal();
@@ -315,10 +313,6 @@ final class StreamersController extends AbstractScheduledEntityController
 
     protected function deleteRecord(object $record): void
     {
-        if (!($record instanceof StationStreamer)) {
-            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
-        }
-
         $this->streamerRepo->delete($record);
     }
 }

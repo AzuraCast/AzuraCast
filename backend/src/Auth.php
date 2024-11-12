@@ -191,10 +191,7 @@ final class Auth
      */
     public function logout(): void
     {
-        if (isset($this->session) && $this->session instanceof SessionInterface) {
-            $this->session->clear();
-        }
-
+        $this->session->clear();
         $this->session->regenerate();
         $this->user = null;
     }

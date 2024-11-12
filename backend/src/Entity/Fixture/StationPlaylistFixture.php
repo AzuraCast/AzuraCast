@@ -14,8 +14,7 @@ final class StationPlaylistFixture extends AbstractFixture implements DependentF
 {
     public function load(ObjectManager $manager): void
     {
-        /** @var Station $station */
-        $station = $this->getReference('station');
+        $station = $this->getReference('station', Station::class);
 
         $playlist = new StationPlaylist($station);
         $playlist->setName('default');

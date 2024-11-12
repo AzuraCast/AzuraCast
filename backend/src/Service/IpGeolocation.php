@@ -35,13 +35,13 @@ final class IpGeolocation
 
         $this->isInitialized = true;
 
+        /** @var class-string<IpGeolocator\IpGeolocatorInterface>[] $readers */
         $readers = [
             IpGeolocator\GeoLite::class,
             IpGeolocator\DbIp::class,
         ];
 
         foreach ($readers as $reader) {
-            /** @var IpGeolocator\IpGeolocatorInterface $reader */
             if ($reader::isAvailable()) {
                 $this->reader = $reader::getReader();
                 $this->readerShortName = $reader::getReaderShortName();

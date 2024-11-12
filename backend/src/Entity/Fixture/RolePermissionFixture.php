@@ -17,8 +17,7 @@ final class RolePermissionFixture extends AbstractFixture implements DependentFi
 {
     public function load(ObjectManager $manager): void
     {
-        /** @var Station $station */
-        $station = $this->getReference('station');
+        $station = $this->getReference('station', Station::class);
 
         $permissions = [
             'admin_role' => [
@@ -37,8 +36,7 @@ final class RolePermissionFixture extends AbstractFixture implements DependentFi
         ];
 
         foreach ($permissions as $roleReference => $permNames) {
-            /** @var Role $role */
-            $role = $this->getReference($roleReference);
+            $role = $this->getReference($roleReference, Role::class);
 
             foreach ($permNames as $permName) {
                 $rp = new RolePermission($role, $permName[1], $permName[0]);

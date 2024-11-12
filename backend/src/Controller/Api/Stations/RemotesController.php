@@ -184,8 +184,6 @@ final class RemotesController extends AbstractStationApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): ApiStationRemote
     {
-        assert($record instanceof StationRemote);
-
         $returnArray = $this->toArray($record);
 
         $return = new ApiStationRemote();

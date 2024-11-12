@@ -20,7 +20,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 final class AnnotateNextSong extends Event
 {
-    private ?string $songPath;
+    private ?string $songPath = null;
 
     /** @var array Custom annotations that should be sent along with the AutoDJ response. */
     private array $annotations = [];

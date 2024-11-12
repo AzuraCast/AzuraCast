@@ -16,7 +16,7 @@ abstract class AbstractUniqueMessage extends AbstractMessage implements UniqueMe
         return $staticClass . '_' . md5(serialize($this));
     }
 
-    public function getTtl(): ?float
+    public function getTtl(): float
     {
         return 60;
     }

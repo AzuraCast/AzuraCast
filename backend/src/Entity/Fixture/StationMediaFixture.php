@@ -30,14 +30,12 @@ final class StationMediaFixture extends AbstractFixture implements DependentFixt
             return;
         }
 
-        /** @var Station $station */
-        $station = $this->getReference('station');
+        $station = $this->getReference('station', Station::class);
 
         $mediaStorage = $station->getMediaStorageLocation();
         $fs = $this->storageLocationRepo->getAdapter($mediaStorage)->getFilesystem();
 
-        /** @var StationPlaylist $playlist */
-        $playlist = $this->getReference('station_playlist');
+        $playlist = $this->getReference('station_playlist', StationPlaylist::class);
 
         $finder = (new Finder())
             ->files()

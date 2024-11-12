@@ -15,8 +15,7 @@ final class PodcastFixture extends AbstractFixture implements DependentFixtureIn
 {
     public function load(ObjectManager $manager): void
     {
-        /** @var Station $station */
-        $station = $this->getReference('station');
+        $station = $this->getReference('station', Station::class);
 
         $podcastStorage = $station->getPodcastsStorageLocation();
 

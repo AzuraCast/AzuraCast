@@ -83,10 +83,6 @@ final class Reader
                         $child = ['_' => $child];
                     }
 
-                    if (!is_array($child)) {
-                        $child = [];
-                    }
-
                     $child = array_merge($child, $attributes);
                 }
 

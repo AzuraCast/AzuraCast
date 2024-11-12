@@ -180,7 +180,7 @@ final class Environment
         );
     }
 
-    public function getAssetUrl(): ?string
+    public function getAssetUrl(): string
     {
         return Types::string(
             $this->data[self::ASSET_URL] ?? null,

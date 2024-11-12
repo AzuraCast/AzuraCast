@@ -142,9 +142,7 @@ final class Station implements ResolvableUrlInterface
         $this->playlist_m3u_url = (string)Router::resolveUri($base, $this->playlist_m3u_url, true);
 
         foreach ($this->mounts as $mount) {
-            if ($mount instanceof ResolvableUrlInterface) {
-                $mount->resolveUrls($base);
-            }
+            $mount->resolveUrls($base);
         }
 
         $this->hls_url = (null !== $this->hls_url)

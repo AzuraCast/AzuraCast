@@ -29,8 +29,7 @@ final class PodcastEpisodeFixture extends AbstractFixture implements DependentFi
             return;
         }
 
-        /** @var Podcast $podcast */
-        $podcast = $this->getReference('podcast');
+        $podcast = $this->getReference('podcast', Podcast::class);
 
         $fs = $this->storageLocationRepo->getAdapter($podcast->getStorageLocation())
             ->getFilesystem();

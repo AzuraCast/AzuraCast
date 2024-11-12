@@ -240,8 +240,6 @@ final class PlaylistsController extends AbstractScheduledEntityController
      */
     protected function viewRecord(object $record, ServerRequest $request): array
     {
-        assert($record instanceof StationPlaylist);
-
         $return = $this->toArray($record);
 
         /** @var array{num_songs: int, total_length: string} $songTotals */

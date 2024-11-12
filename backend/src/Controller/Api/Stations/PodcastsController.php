@@ -230,8 +230,6 @@ final class PodcastsController extends AbstractApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): ApiPodcast
     {
-        assert($record instanceof Podcast);
-
         $isInternal = $request->isInternal();
         $router = $request->getRouter();
 

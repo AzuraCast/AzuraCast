@@ -102,12 +102,12 @@ final class Icecast extends AbstractFrontend
         return $defaultResult;
     }
 
-    public function getConfigurationPath(Station $station): ?string
+    public function getConfigurationPath(Station $station): string
     {
         return $station->getRadioConfigDir() . '/icecast.xml';
     }
 
-    public function getCurrentConfiguration(Station $station): ?string
+    public function getCurrentConfiguration(Station $station): string
     {
         $frontendConfig = $station->getFrontendConfig();
         $configDir = $station->getRadioConfigDir();
@@ -302,10 +302,9 @@ final class Icecast extends AbstractFrontend
 
     public function getCommand(Station $station): ?string
     {
-        if ($binary = $this->getBinary()) {
-            return $binary . ' -c ' . $this->getConfigurationPath($station);
-        }
-        return null;
+        return ($binary = $this->getBinary())
+            ? $binary . ' -c ' . $this->getConfigurationPath($station)
+            : null;
     }
 
     /**

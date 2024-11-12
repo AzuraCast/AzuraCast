@@ -21,7 +21,7 @@ parameters:
         - php
 
     excludePaths:
-        - backend/config/routes.dev.php
+        - backend/config/routes.dev.php?
 
     bootstrapFiles:
         - ./util/phpstan.php

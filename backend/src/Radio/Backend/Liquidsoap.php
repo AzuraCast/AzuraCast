@@ -25,7 +25,7 @@ final class Liquidsoap extends AbstractLocalAdapter
     /**
      * @inheritDoc
      */
-    public function getConfigurationPath(Station $station): ?string
+    public function getConfigurationPath(Station $station): string
     {
         return $station->getRadioConfigDir() . '/liquidsoap.liq';
     }
@@ -33,7 +33,7 @@ final class Liquidsoap extends AbstractLocalAdapter
     /**
      * @inheritDoc
      */
-    public function getCurrentConfiguration(Station $station): ?string
+    public function getCurrentConfiguration(Station $station): string
     {
         $event = new WriteLiquidsoapConfiguration($station, false, true);
         $this->dispatcher->dispatch($event);
@@ -139,7 +139,7 @@ final class Liquidsoap extends AbstractLocalAdapter
     /**
      * @inheritDoc
      */
-    public function getBinary(): ?string
+    public function getBinary(): string
     {
         return '/usr/local/bin/liquidsoap';
     }
@@ -147,9 +147,6 @@ final class Liquidsoap extends AbstractLocalAdapter
     public function getVersion(): ?string
     {
         $binary = $this->getBinary();
-        if (null === $binary) {
-            return null;
-        }
 
         $process = new Process([$binary, '--version']);
         $process->run();

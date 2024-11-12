@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use App\Http\HttpFactory;
+use App\Http\Response;
 use App\Http\ServerRequest;
-use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
@@ -24,9 +25,7 @@ final class RemoveSlashes extends AbstractMiddleware
             // to their non-trailing counterpart
             $uri = $uri->withPath(substr($path, 0, -1));
 
-            /** @var ResponseInterface $response */
-            $response = new Response(308);
-
+            $response = (new HttpFactory())->createResponse(308);
             return $response->withHeader('Location', (string)$uri);
         }
 

@@ -189,8 +189,6 @@ final class RolesController extends AbstractApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): array
     {
-        assert($record instanceof Role);
-
         /** @var array<array-key, mixed> $result */
         $result = parent::viewRecord($record, $request);
 
@@ -202,7 +200,7 @@ final class RolesController extends AbstractApiCrudController
     protected function editRecord(?array $data, ?object $record = null, array $context = []): object
     {
         if (
-            $record instanceof Role
+            null !== $record
             && $this->superAdminRole->getIdRequired() === $record->getIdRequired()
         ) {
             throw new RuntimeException('Cannot modify the Super Administrator role.');
@@ -213,10 +211,6 @@ final class RolesController extends AbstractApiCrudController
 
     protected function deleteRecord(object $record): void
     {
-        if (!($record instanceof Role)) {
-            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
-        }
-
         if ($this->superAdminRole->getIdRequired() === $record->getIdRequired()) {
             throw new RuntimeException('Cannot remove the Super Administrator role.');
         }

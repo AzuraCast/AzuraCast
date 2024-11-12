@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Message;
 
 use App\Environment;
+use App\Utilities\Types;
 use Monolog\Level;
 
 final class TestWebhookMessage extends AbstractUniqueMessage
@@ -22,8 +23,10 @@ final class TestWebhookMessage extends AbstractUniqueMessage
         return 'TestWebHook_' . $this->webhookId;
     }
 
-    public function getTtl(): ?float
+    public function getTtl(): float
     {
-        return Environment::getInstance()->getSyncLongExecutionTime();
+        return Types::float(
+            Environment::getInstance()->getSyncLongExecutionTime()
+        );
     }
 }

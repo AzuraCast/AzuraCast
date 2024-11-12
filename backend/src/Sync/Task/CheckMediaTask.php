@@ -112,9 +112,7 @@ final class CheckMediaTask extends AbstractTask
         foreach ($fsIterator as $file) {
             try {
                 $size = $file->fileSize();
-                if (null !== $size) {
-                    $totalSize = $totalSize->plus($size);
-                }
+                $totalSize = $totalSize->plus($size);
             } catch (UnableToRetrieveMetadata) {
                 continue;
             }

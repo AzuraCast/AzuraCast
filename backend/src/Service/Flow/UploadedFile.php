@@ -98,7 +98,7 @@ final class UploadedFile implements UploadedFileInterface, JsonSerializable
         $this->moved = true;
     }
 
-    public function getClientMediaType(): ?string
+    public function getClientMediaType(): string
     {
         $this->validateActive();
 

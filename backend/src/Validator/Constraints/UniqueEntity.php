@@ -68,7 +68,7 @@ final class UniqueEntity extends Constraint
     /**
      * {@inheritDoc}
      */
-    public function getTargets(): array|string
+    public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }

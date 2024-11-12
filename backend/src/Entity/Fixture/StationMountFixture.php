@@ -14,8 +14,7 @@ final class StationMountFixture extends AbstractFixture implements DependentFixt
 {
     public function load(ObjectManager $manager): void
     {
-        /** @var Station $station */
-        $station = $this->getReference('station');
+        $station = $this->getReference('station', Station::class);
 
         $mountRadio = new StationMount($station);
         $mountRadio->setName('/radio.mp3');

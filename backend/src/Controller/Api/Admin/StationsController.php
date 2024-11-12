@@ -191,8 +191,6 @@ class StationsController extends AbstractApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
-        assert($record instanceof Station);
-
         $return = $this->toArray($record);
 
         $isInternal = $request->isInternal();

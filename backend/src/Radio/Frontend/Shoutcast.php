@@ -124,12 +124,12 @@ final class Shoutcast extends AbstractFrontend
         return $defaultResult;
     }
 
-    public function getConfigurationPath(Station $station): ?string
+    public function getConfigurationPath(Station $station): string
     {
         return $station->getRadioConfigDir() . '/sc_serv.conf';
     }
 
-    public function getCurrentConfiguration(Station $station): ?string
+    public function getCurrentConfiguration(Station $station): string
     {
         $configPath = $station->getRadioConfigDir();
         $frontendConfig = $station->getFrontendConfig();

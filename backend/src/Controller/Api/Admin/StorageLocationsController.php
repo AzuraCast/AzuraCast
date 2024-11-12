@@ -169,8 +169,6 @@ final class StorageLocationsController extends AbstractApiCrudController
     /** @inheritDoc */
     protected function viewRecord(object $record, ServerRequest $request): object
     {
-        assert($record instanceof StorageLocation);
-
         $original = parent::viewRecord($record, $request);
 
         $return = new ApiStorageLocation();
@@ -197,10 +195,6 @@ final class StorageLocationsController extends AbstractApiCrudController
 
     protected function deleteRecord(object $record): void
     {
-        if (!($record instanceof StorageLocation)) {
-            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
-        }
-
         $stations = $this->storageLocationRepo->getStationsUsingLocation($record);
 
         if (0 !== count($stations)) {

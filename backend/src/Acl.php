@@ -35,7 +35,7 @@ final class Acl
     private array $permissions;
 
     /**
-     * @var null|array<
+     * @var array<
      *     int,
      *     array{
      *         stations?: array<int, array<string>>,
@@ -43,7 +43,7 @@ final class Acl
      *     }
      * >
      */
-    private ?array $actions;
+    private array $actions;
 
     public function __construct(
         private readonly ReloadableEntityManagerInterface $em,

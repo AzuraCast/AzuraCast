@@ -23,8 +23,7 @@ final class UserFixture extends AbstractFixture implements DependentFixtureInter
             $demoUser->setNewPassword('demo');
             $demoUser->setName('AzuraCast Demo User');
 
-            /** @var Role $demoRole */
-            $demoRole = $this->getReference('demo_role');
+            $demoRole = $this->getReference('demo_role', Role::class);
             $demoUser->getRoles()->add($demoRole);
 
             $manager->persist($demoUser);
@@ -36,8 +35,7 @@ final class UserFixture extends AbstractFixture implements DependentFixtureInter
             $adminUser->setName('System Administrator');
             $adminUser->setNewPassword($adminPassword);
 
-            /** @var Role $adminRole */
-            $adminRole = $this->getReference('admin_role');
+            $adminRole = $this->getReference('admin_role', Role::class);
             $adminUser->getRoles()->add($adminRole);
 
             $admin2faSecret = getenv('INIT_ADMIN_2FA_SECRET');

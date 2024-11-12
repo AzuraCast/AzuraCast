@@ -220,8 +220,6 @@ final class FilesController extends AbstractStationApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): ApiStationMedia
     {
-        assert($record instanceof StationMedia);
-
         $returnArray = $this->toArray($record);
 
         $return = ApiStationMedia::fromArray(
@@ -365,41 +363,39 @@ final class FilesController extends AbstractStationApiCrudController
             throw ValidationException::fromValidationErrors($errors);
         }
 
-        if ($record instanceof StationMedia) {
-            $this->mediaRepo->writeToFile($record);
-            $this->em->persist($record);
-            $this->em->flush();
+        $this->mediaRepo->writeToFile($record);
+        $this->em->persist($record);
+        $this->em->flush();
 
-            if (null !== $customFields) {
-                $this->customFieldsRepo->setCustomFields($record, $customFields);
+        if (null !== $customFields) {
+            $this->customFieldsRepo->setCustomFields($record, $customFields);
+        }
+
+        if (null !== $playlists) {
+            $playlistsToAssign = [];
+            foreach ($playlists as $newPlaylist) {
+                if (is_array($newPlaylist)) {
+                    $playlistsToAssign[(int)$newPlaylist['id']] = $newPlaylist['weight'] ?? 0;
+                } else {
+                    $playlistsToAssign[(int)$newPlaylist] = 0;
+                }
             }
 
-            if (null !== $playlists) {
-                $playlistsToAssign = [];
-                foreach ($playlists as $newPlaylist) {
-                    if (is_array($newPlaylist)) {
-                        $playlistsToAssign[(int)$newPlaylist['id']] = $newPlaylist['weight'] ?? 0;
-                    } else {
-                        $playlistsToAssign[(int)$newPlaylist] = 0;
-                    }
-                }
+            $affectedPlaylistIds = $this->playlistMediaRepo->setPlaylistsForMedia(
+                $record,
+                $station,
+                $playlistsToAssign
+            );
 
-                $affectedPlaylistIds = $this->playlistMediaRepo->setPlaylistsForMedia(
-                    $record,
-                    $station,
-                    $playlistsToAssign
-                );
+            // Handle playlist changes.
+            $backend = $this->adapters->getBackendAdapter($station);
+            if ($backend instanceof Liquidsoap) {
+                foreach ($affectedPlaylistIds as $playlistId => $playlistRow) {
+                    // Instruct the message queue to start a new "write playlist to file" task.
+                    $message = new WritePlaylistFileMessage();
+                    $message->playlist_id = $playlistId;
 
-                // Handle playlist changes.
-                $backend = $this->adapters->getBackendAdapter($station);
-                if ($backend instanceof Liquidsoap) {
-                    foreach ($affectedPlaylistIds as $playlistId => $playlistRow) {
-                        // Instruct the message queue to start a new "write playlist to file" task.
-                        $message = new WritePlaylistFileMessage();
-                        $message->playlist_id = $playlistId;
-
-                        $this->messageBus->dispatch($message);
-                    }
+                    $this->messageBus->dispatch($message);
                 }
             }
         }
@@ -455,12 +451,10 @@ final class FilesController extends AbstractStationApiCrudController
     /** @inheritDoc */
     protected function toArray(object $record, array $context = []): array
     {
-        $row = parent::toArray($record, $context);
-
-        if ($record instanceof StationMedia) {
-            $row['custom_fields'] = $this->customFieldsRepo->getCustomFields($record);
-        }
-        return $row;
+        return [
+            ...parent::toArray($record, $context),
+            'custom_fields' => $this->customFieldsRepo->getCustomFields($record),
+        ];
     }
 
     /**
@@ -468,10 +462,6 @@ final class FilesController extends AbstractStationApiCrudController
      */
     protected function deleteRecord(object $record): void
     {
-        if (!($record instanceof StationMedia)) {
-            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
-        }
-
         // Delete the media file off the filesystem.
         // Write new PLS playlist configuration.
         foreach ($this->mediaRepo->remove($record, true) as $playlistId => $playlistRecord) {

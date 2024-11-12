@@ -19,7 +19,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 final class AnnotateNextSong extends Event
 {
-    private ?string $songPath;
+    private ?string $songPath = null;
 
     private ?string $protocol = null;
 

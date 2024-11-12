@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Vue;
 
 use App\Container\EnvironmentAwareTrait;
+use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -14,6 +15,7 @@ use Psr\Http\Message\ResponseInterface;
 final class SftpUsersAction implements SingleActionInterface
 {
     use EnvironmentAwareTrait;
+    use SettingsAwareTrait;
 
     public function __construct(
         private readonly AzuraCastCentral $acCentral
@@ -25,7 +27,9 @@ final class SftpUsersAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $baseUrl = $request->getRouter()->getBaseUrl()
+        $settings = $this->settingsRepo->readSettings();
+
+        $baseUrl = ($settings->getBaseUrlAsUri() ?? $request->getRouter()->getBaseUrl())
             ->withScheme('sftp')
             ->withPort(null);
 

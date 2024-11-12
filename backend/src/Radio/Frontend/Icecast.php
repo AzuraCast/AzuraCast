@@ -179,7 +179,6 @@ final class Icecast extends AbstractFrontend
         $allowedIps = $this->getIpsAsArray($station->getFrontendConfig()->getAllowedIps());
         $useListenerAuth = !empty($bannedCountries) || !empty($allowedIps);
         $charset = match ($station->getBackendConfig()->getCharset()) {
-            'UTF-8' => 'UTF8',
             'ISO-8859-1' => 'ISO8859-1',
             default => 'UTF8',
         };

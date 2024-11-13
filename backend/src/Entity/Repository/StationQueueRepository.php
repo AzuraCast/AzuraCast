@@ -154,8 +154,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
     {
         $this->em->createQuery(
             <<<'DQL'
-                UPDATE App\Entity\StationQueue sq
-                SET sq.is_cancelled = 1
+                DELETE FROM App\Entity\StationQueue sq
                 WHERE sq.station = :station
                 AND sq.sent_to_autodj = 0
             DQL
@@ -209,7 +208,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
             SELECT sq
             FROM App\Entity\StationQueue sq
             WHERE sq.playlist_id = :playlist
-            and sq.timestamp_played < :now
+            AND sq.timestamp_played < :now
             ORDER BY sq.timestamp_played DESC
             DQL
         )->setParameter('playlist', $playlist)
@@ -238,18 +237,13 @@ final class StationQueueRepository extends AbstractStationBasedRepository
     public function getStartOfScheduleRun(
         Station $station,
         StationSchedule $schedule,
-        int $startTime,
-        bool $includeCancelled = false
+        int $startTime
     ): StationQueue|null {
         $query = $this->getBaseQuery($station)
             ->andWhere('sq.schedule = :schedule')
             ->setParameter('schedule', $schedule)
             ->andWhere('sq.timestamp_scheduled = :time')
             ->setParameter('time', $startTime);
-
-        if (!$includeCancelled) {
-            $query->andWhere('sq.is_cancelled = 0');
-        }
 
         return $query->orderBy('sq.id', 'asc')
             ->getQuery()
@@ -263,7 +257,6 @@ final class StationQueueRepository extends AbstractStationBasedRepository
     {
         return $this->getBaseQuery($station)
         ->andWhere('sq.schedule is not null')
-        ->andWhere('sq.is_cancelled = 0')
         ->orderBy('sq.timestamp_scheduled', 'desc')
         ->getQuery()
         ->setMaxResults(1)
@@ -274,7 +267,6 @@ final class StationQueueRepository extends AbstractStationBasedRepository
     {
         return $this->getBaseQuery($station)
             ->andWhere('sq.is_played = 0')
-            ->andWhere('sq.is_cancelled = 0')
             ->orderBy('sq.sent_to_autodj', 'DESC')
             ->addOrderBy('sq.timestamp_cued', 'ASC');
     }

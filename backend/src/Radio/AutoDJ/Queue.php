@@ -117,8 +117,8 @@ final class Queue
                     }
 
                     $restOfQueueIsInvalid = true;
-                    $queueRow->setIsCancelled(true);
-                    $this->em->persist($queueRow);
+
+                    $this->em->remove($queueRow);
                     continue;
                 }
 
@@ -325,6 +325,7 @@ final class Queue
         }
         $schedule = $queueRow->getSchedule();
         $station = $queueRow->getStation();
+
         if (
             null !== $schedule
             && $queueRow->getTimestampPlayed() < $queueRow->getTimestampScheduled()
@@ -332,10 +333,10 @@ final class Queue
             $first = $this->queueRepo->getStartOfScheduleRun(
                 $station,
                 $schedule,
-                $queueRow->getTimestampScheduled(),
-                true
+                $queueRow->getTimestampScheduled()
             );
-            //Item is exempt from being invalidated if it's not the first to come from this schedule run.
+
+            // Item is exempt from being invalidated if it's not the first to come from this schedule run.
             if (
                 null !== $first
                 && $first->getId() !== $queueRow->getId()
@@ -343,12 +344,12 @@ final class Queue
                 return true;
             }
         }
-                $ctx = new SchedulerContext($playlist, $expectedPlayTime, true);
-                $ctx->belowId = $queueRow->getId();
-        return $playlist->getIsEnabled() &&
-            $this->scheduler->shouldPlaylistPlayNow(
-                $ctx
-            );
+
+        $ctx = new SchedulerContext($playlist, $expectedPlayTime, true);
+        $ctx->belowId = $queueRow->getId();
+
+        return $playlist->getIsEnabled()
+            && $this->scheduler->shouldPlaylistPlayNow($ctx);
     }
 
     /**

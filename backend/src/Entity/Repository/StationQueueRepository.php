@@ -100,8 +100,8 @@ final class StationQueueRepository extends AbstractStationBasedRepository
             ->from(StationQueue::class, 'sq')
             ->where('sq.station = :station')
             ->setParameter('station', $playlist->getStation())
-            ->andWhere('sq.playlist_id is not null')
-            ->andWhere('sq.playlist = :playlist OR sq.is_visible = 1')
+            ->andWhere('sq.playlist_id IS NOT NULL')
+            ->andWhere('sq.playlist = :playlist')
             ->setParameter('playlist', $playlist)
             ->setMaxResults($playPerSongs)
             ->orderBy('sq.id', 'desc');

@@ -30,9 +30,11 @@ final class StreamersAction implements SingleActionInterface
         $settings = $this->readSettings();
         $backendConfig = $station->getBackendConfig();
 
+        $serverUrl = ($settings->getBaseUrlAsUri() ?? $request->getRouter()->getBaseUrl())->getHost();
+
         return $response->withJson([
             'connectionInfo' => [
-                'serverUrl' => $settings->getBaseUrl(),
+                'serverUrl' => $serverUrl,
                 'streamPort' => $backendConfig->getDjPort(),
                 'ip' => $this->acCentral->getIp(),
                 'djMountPoint' => $backendConfig->getDjMountPoint(),

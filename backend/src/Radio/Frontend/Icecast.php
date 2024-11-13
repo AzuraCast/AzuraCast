@@ -178,13 +178,17 @@ final class Icecast extends AbstractFrontend
         $bannedCountries = $station->getFrontendConfig()->getBannedCountries() ?? [];
         $allowedIps = $this->getIpsAsArray($station->getFrontendConfig()->getAllowedIps());
         $useListenerAuth = !empty($bannedCountries) || !empty($allowedIps);
+        $charset = match ($station->getBackendConfig()->getCharset()) {
+            'ISO-8859-1' => 'ISO8859-1',
+            default => 'UTF8',
+        };
 
         /** @var StationMount $mountRow */
         foreach ($station->getMounts() as $mountRow) {
             $mount = [
                 '@type' => 'normal',
                 'mount-name' => $mountRow->getName(),
-                'charset' => 'UTF8',
+                'charset' => $charset,
                 'stream-name' => $station->getName(),
                 'listenurl' => $this->getUrlForMount($station, $mountRow),
             ];

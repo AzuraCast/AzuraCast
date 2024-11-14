@@ -95,13 +95,14 @@ final class StationQueueRepository extends AbstractStationBasedRepository
         int $belowId = null
     ): bool {
         $playPerSongs ??= $playlist->getPlayPerSongs();
+
         $recentPlayedQuery = $this->em->createQueryBuilder()
             ->select('sq.playlist_id')
             ->from(StationQueue::class, 'sq')
             ->where('sq.station = :station')
             ->setParameter('station', $playlist->getStation())
             ->andWhere('sq.playlist_id IS NOT NULL')
-            ->andWhere('sq.playlist = :playlist')
+            ->andWhere('sq.playlist = :playlist OR sq.is_visible = 1')
             ->setParameter('playlist', $playlist)
             ->setMaxResults($playPerSongs)
             ->orderBy('sq.id', 'desc');

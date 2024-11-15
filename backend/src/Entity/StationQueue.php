@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
     ORM\Entity,
     ORM\Table(name: 'station_queue'),
     ORM\Index(name: 'idx_is_played', columns: ['is_played']),
-    ORM\Index(name: 'idx_is_cancelled', columns: ['is_cancelled']),
     ORM\Index(name: 'idx_timestamp_played', columns: ['timestamp_played']),
     ORM\Index(name: 'idx_timestamp_scheduled', columns: ['timestamp_scheduled']),
     ORM\Index(name: 'idx_sent_to_autodj', columns: ['sent_to_autodj']),
@@ -71,9 +70,6 @@ class StationQueue implements
 
     #[ORM\Column]
     protected bool $is_visible = true;
-
-    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => 0])]
-    protected bool $is_cancelled = false;
 
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $autodj_custom_uri = null;
@@ -217,16 +213,6 @@ class StationQueue implements
     public function setIsVisible(bool $isVisible): void
     {
         $this->is_visible = $isVisible;
-    }
-
-    public function getIsCancelled(): bool
-    {
-        return $this->is_cancelled;
-    }
-
-    public function setIsCancelled(bool $isCancelled): void
-    {
-        $this->is_cancelled = $isCancelled;
     }
 
     public function updateVisibility(): void

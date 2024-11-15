@@ -366,7 +366,8 @@ final class Scheduler
                 $schedule,
                 $dateRange->getStartTimestamp()
             )
-            );
+        );
+
         $isQueueEmpty = $this->spmRepo->isQueueEmpty($playlist);
         if (!$scheduleRunStarted) {
             $this->logger->debug('Playlist was not played yet.');

@@ -14,6 +14,7 @@ use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationMediaMetadata;
 use App\Entity\StationPlaylist;
+use App\Entity\StationQueue;
 use App\Utilities\Types;
 use Exception;
 use RuntimeException;
@@ -96,26 +97,31 @@ final class FeedbackCommand extends AbstractCommand
             throw new RuntimeException('Song is not different from current song.');
         }
 
-        $sq = $this->queueRepo->findRecentlyCuedSong($station, $media);
+        if (!empty($payload['sq_id'])) {
+            $sq = $this->em->find(StationQueue::class, $payload['sq_id']);
+        } else {
+            $sq = $this->queueRepo->findRecentlyCuedSong($station, $media);
+
+            if (null !== $sq) {
+                // If there's an existing record, ensure it has all the proper metadata.
+                if (null === $sq->getMedia()) {
+                    $sq->setMedia($media);
+                }
+
+                if (!empty($payload['playlist_id']) && null === $sq->getPlaylist()) {
+                    $playlist = $this->em->find(StationPlaylist::class, $payload['playlist_id']);
+                    if ($playlist instanceof StationPlaylist) {
+                        $sq->setPlaylist($playlist);
+                    }
+                }
+
+                $this->em->persist($sq);
+                $this->em->flush();
+            }
+        }
 
         if (null !== $sq) {
-            // If there's an existing record, ensure it has all the proper metadata.
-            if (null === $sq->getMedia()) {
-                $sq->setMedia($media);
-            }
-
-            if (!empty($payload['playlist_id']) && null === $sq->getPlaylist()) {
-                $playlist = $this->em->find(StationPlaylist::class, $payload['playlist_id']);
-                if ($playlist instanceof StationPlaylist) {
-                    $sq->setPlaylist($playlist);
-                }
-            }
-
-            $this->em->persist($sq);
-            $this->em->flush();
-
             $this->queueRepo->trackPlayed($station, $sq);
-
             return SongHistory::fromQueue($sq);
         }
 

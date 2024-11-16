@@ -585,7 +585,7 @@ def azuracast.send_feedback(m) =
 
                 # Only send some metadata to AzuraCast
                 def fl(k, _) =
-                    tags = ["song_id", "media_id", "playlist_id", "artist", "title"]
+                    tags = ["song_id", "media_id", "playlist_id", "sq_id", "artist", "title"]
                     list.mem(k, tags)
                 end
 

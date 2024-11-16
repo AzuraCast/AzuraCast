@@ -97,6 +97,7 @@ final class Annotations implements EventSubscriberInterface
             'duration' => $duration,
             'song_id' => $media->getSongId(),
             'media_id' => $media->getId(),
+            'sq_id' => $event->getQueue()?->getIdRequired(),
             ...$this->processAutocueAnnotations(
                 $station,
                 $media->getExtraMetadata()->toAnnotations($duration),

@@ -137,6 +137,20 @@ final class LogsAction
             ];
         }
 
+        $liquidsoapDir = $this->environment->getParentDirectory() . '/liquidsoap';
+
+        $logPaths['azuracast_liq_functions'] = [
+            'name' => __('AzuraCast Common Liquidsoap Functions'),
+            'path' => $liquidsoapDir . '/azuracast.liq',
+            'tail' => false,
+        ];
+
+        $logPaths['azuracast_liq_autocue'] = [
+            'name' => __('AutoCue Liquidsoap Functions'),
+            'path' => $liquidsoapDir . '/autocue.liq',
+            'tail' => false,
+        ];
+
         return $logPaths;
     }
 }

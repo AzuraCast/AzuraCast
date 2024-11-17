@@ -20,6 +20,7 @@ console.log(inputs);
 
 // https://vitejs.dev/config/
 export default defineConfig({
+    root: resolve(__dirname, './frontend/'),
     base: '/static/vite_dist',
     build: {
         rollupOptions: {
@@ -62,11 +63,23 @@ export default defineConfig({
         chunkSizeWarningLimit: '1m',
         outDir: resolve(__dirname, './web/static/vite_dist')
     },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                quietDeps: true,
+                silenceDeprecations: ['legacy-js-api']
+            }
+        }
+    },
     server: {
         strictPort: true,
         host: true,
         fs: {
-            allow: ['..']
+            allow: [
+                resolve(__dirname, './frontend/'),
+                resolve(__dirname, './node_modules/'),
+                resolve(__dirname, './translations/')
+            ]
         }
     },
     resolve: {

@@ -9,6 +9,7 @@ use App\Webhook\Connector\Email;
 use App\Webhook\Connector\Generic;
 use App\Webhook\Connector\GetMeRadio;
 use App\Webhook\Connector\GoogleAnalyticsV4;
+use App\Webhook\Connector\GroupMe;
 use App\Webhook\Connector\Mastodon;
 use App\Webhook\Connector\MatomoAnalytics;
 use App\Webhook\Connector\RadioDe;
@@ -28,6 +29,7 @@ enum WebhookTypes: string
 
     case Discord = 'discord';
     case Telegram = 'telegram';
+    case GroupMe = 'groupme';
     case Mastodon = 'mastodon';
 
     case GoogleAnalyticsV4 = 'google_analytics_v4';
@@ -51,6 +53,7 @@ enum WebhookTypes: string
             self::GetMeRadio => GetMeRadio::class,
             self::Discord => Discord::class,
             self::Telegram => Telegram::class,
+            self::GroupMe => GroupMe::class,
             self::Mastodon => Mastodon::class,
             self::GoogleAnalyticsV4 => GoogleAnalyticsV4::class,
             self::MatomoAnalytics => MatomoAnalytics::class,

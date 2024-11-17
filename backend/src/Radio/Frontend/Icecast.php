@@ -102,12 +102,12 @@ final class Icecast extends AbstractFrontend
         return $defaultResult;
     }
 
-    public function getConfigurationPath(Station $station): ?string
+    public function getConfigurationPath(Station $station): string
     {
         return $station->getRadioConfigDir() . '/icecast.xml';
     }
 
-    public function getCurrentConfiguration(Station $station): ?string
+    public function getCurrentConfiguration(Station $station): string
     {
         $frontendConfig = $station->getFrontendConfig();
         $configDir = $station->getRadioConfigDir();
@@ -178,16 +178,25 @@ final class Icecast extends AbstractFrontend
         $bannedCountries = $station->getFrontendConfig()->getBannedCountries() ?? [];
         $allowedIps = $this->getIpsAsArray($station->getFrontendConfig()->getAllowedIps());
         $useListenerAuth = !empty($bannedCountries) || !empty($allowedIps);
+        $charset = match ($station->getBackendConfig()->getCharset()) {
+            'ISO-8859-1' => 'ISO8859-1',
+            default => 'UTF8',
+        };
 
         /** @var StationMount $mountRow */
         foreach ($station->getMounts() as $mountRow) {
             $mount = [
                 '@type' => 'normal',
                 'mount-name' => $mountRow->getName(),
-                'charset' => 'UTF8',
+                'charset' => $charset,
                 'stream-name' => $station->getName(),
                 'listenurl' => $this->getUrlForMount($station, $mountRow),
             ];
+
+            if ($station->getMaxBitrate() !== 0) {
+                $maxBitrateInBps = (int) $station->getMaxBitrate() * 1024 + 2500;
+                $mount['limit-rate'] = $maxBitrateInBps;
+            }
 
             if (!empty($station->getDescription())) {
                 $mount['stream-description'] = $station->getDescription();
@@ -297,10 +306,9 @@ final class Icecast extends AbstractFrontend
 
     public function getCommand(Station $station): ?string
     {
-        if ($binary = $this->getBinary()) {
-            return $binary . ' -c ' . $this->getConfigurationPath($station);
-        }
-        return null;
+        return ($binary = $this->getBinary())
+            ? $binary . ' -c ' . $this->getConfigurationPath($station)
+            : null;
     }
 
     /**

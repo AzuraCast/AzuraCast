@@ -79,6 +79,7 @@ export enum WebhookType {
     GetMeRadio = 'getmeradio',
     Discord = 'discord',
     Telegram = 'telegram',
+    GroupMe = 'groupme',
     Mastodon = 'mastodon',
     GoogleAnalyticsV4 = 'google_analytics_v4',
     MatomoAnalytics = 'matomo_analytics'
@@ -120,6 +121,10 @@ export function useTypeDetails() {
             title: $gettext('Telegram Chat Message'),
             description: $gettext('Use the Telegram Bot API to send a message to a channel.')
         },
+        [WebhookType.GroupMe]: {
+            title: $gettext('GroupMe Chat Message'),
+            description: $gettext('Use the GroupMe Bot API to send a message to a channel.'),
+        },
         [WebhookType.Mastodon]: {
             title: $gettext('Mastodon Post'),
             description: $gettext('Automatically publish to a Mastodon instance.')
@@ -151,6 +156,7 @@ export function getTriggers(type: WebhookType) {
 
         case WebhookType.Discord:
         case WebhookType.Telegram:
+        case WebhookType.GroupMe:
         case WebhookType.Mastodon:
         default:
             return allTriggersExceptListeners;

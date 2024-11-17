@@ -172,6 +172,10 @@ abstract class AbstractEnvFile implements ArrayAccess
             return implode(',', $value);
         }
 
+        if ($value === true || $value === false) {
+            return ($value) ? 'true' : 'false';
+        }
+
         $value = Types::string($value);
 
         if (str_contains($value, ' ')) {

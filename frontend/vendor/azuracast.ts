@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+ 
 
 import {GlobalPermission, StationPermission} from "~/acl.ts";
 
@@ -15,6 +15,9 @@ export interface AzuraCastStationConstants {
     shortName: string | null,
     timezone: string | null,
     offlineText: string | null,
+    maxBitrate: number | null,
+    maxMounts: number | null,
+    maxHlsStreams: number | null
 }
 
 export interface AzuraCastUserConstants {
@@ -64,6 +67,9 @@ export function useAzuraCastStation(): AzuraCastStationConstants {
         isEnabled: null,
         shortName: null,
         timezone: null,
-        offlineText: null
+        offlineText: null,
+        maxBitrate: null,
+        maxMounts: null,
+        maxHlsStreams: null
     };
 }

@@ -17,8 +17,8 @@ final class CheckUpdatesTask extends AbstractTask
     use EnvironmentAwareTrait;
     use SettingsAwareTrait;
 
-    // 3 hours + ~3 minutes to force irregularity in update checks.
-    private const int|float UPDATE_THRESHOLD = (60 * 60 * 3) + 150;
+    // 13 hours + ~3 minutes to force irregularity in update checks.
+    private const int|float UPDATE_THRESHOLD = (60 * 60 * 13) + 150;
 
     public function __construct(
         private readonly AzuraCastCentral $azuracastCentral

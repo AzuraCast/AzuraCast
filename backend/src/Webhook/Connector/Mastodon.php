@@ -15,7 +15,7 @@ use App\Utilities\Urls;
  */
 final class Mastodon extends AbstractSocialConnector
 {
-    protected function getRateLimitTime(StationWebhook $webhook): ?int
+    protected function getRateLimitTime(StationWebhook $webhook): int
     {
         $config = $webhook->getConfig();
         $rateLimitSeconds = Types::int($config['rate_limit'] ?? null);

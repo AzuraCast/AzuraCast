@@ -113,6 +113,7 @@ class StationMedia
         $media->album = $row['album'];
         $media->genre = $row['genre'];
         $media->isrc = $row['isrc'];
+        $media->lyrics = $row['lyrics'];
 
         $media->length = Types::int($row['length']);
         $media->length_text = self::getLengthText($row['length']);

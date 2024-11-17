@@ -191,8 +191,6 @@ class StationsController extends AbstractApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
-        assert($record instanceof Station);
-
         $return = $this->toArray($record);
 
         $isInternal = $request->isInternal();
@@ -296,7 +294,6 @@ class StationsController extends AbstractApiCrudController
     protected function handleEdit(Station $station): Station
     {
         $originalRecord = $this->em->getUnitOfWork()->getOriginalEntityData($station);
-
         $this->em->persist($station);
         $this->em->flush();
 
@@ -320,6 +317,9 @@ class StationsController extends AbstractApiCrudController
         $oldFrontend = $originalRecord['frontend_type'];
         $oldBackend = $originalRecord['backend_type'];
         $oldHls = (bool)$originalRecord['enable_hls'];
+        $oldMaxBitrate = (int)$originalRecord['max_bitrate'];
+        $oldMaxMounts = (int)$originalRecord['max_mounts'];
+        $oldMaxHlsStreams = (int)$originalRecord['max_hls_streams'];
         $oldEnabled = (bool)$originalRecord['is_enabled'];
 
         $frontendChanged = ($oldFrontend !== $station->getFrontendType());
@@ -337,7 +337,44 @@ class StationsController extends AbstractApiCrudController
             $this->stationRepo->resetHls($station);
         }
 
-        if ($adapterChanged || $enabledChanged) {
+        $maxBitrateChanged =
+            ($oldMaxBitrate !== 0 && $station->getMaxBitrate() !== 0 && $oldMaxBitrate > $station->getMaxBitrate())
+            || ($oldMaxBitrate === 0 && $station->getMaxBitrate() !== 0);
+
+        if ($maxBitrateChanged) {
+            if (!$frontendChanged) {
+                $this->stationRepo->reduceMountsBitrateToLimit($station);
+            }
+
+            if (!$hlsChanged && !$backendChanged) {
+                $this->stationRepo->reduceHlsBitrateToLimit($station);
+            }
+
+            $this->stationRepo->reduceRemoteRelayAutoDjBitrateToLimit($station);
+            $this->stationRepo->reduceLiveBroadcastRecordingBitrateToLimit($station);
+        }
+
+        $maxMountsLowered =
+            $station->getMaxMounts() !== 0
+            && ($oldMaxMounts > $station->getMaxMounts() || $oldMaxMounts === 0);
+        if ($maxMountsLowered) {
+            $this->stationRepo->reduceMountPointsToLimit($station);
+        }
+
+        $maxHlsStreamsLowered =
+            $station->getMaxHlsStreams() !== 0
+            && ($oldMaxHlsStreams > $station->getMaxHlsStreams() || $oldMaxHlsStreams === 0);
+        if ($maxHlsStreamsLowered) {
+            $this->stationRepo->reduceHlsStreamsToLimit($station);
+        }
+
+        if (
+            $adapterChanged
+            || $maxBitrateChanged
+            || $enabledChanged
+            || $maxMountsLowered
+            || $maxHlsStreamsLowered
+        ) {
             try {
                 $this->configuration->writeConfiguration(
                     station: $station,

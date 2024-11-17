@@ -172,8 +172,6 @@ class UsersController extends AbstractApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
-        assert($record instanceof User);
-
         $return = $this->toArray($record);
 
         $isInternal = $request->isInternal();
@@ -228,8 +226,6 @@ class UsersController extends AbstractApiCrudController
     protected function fromArray(array $data, ?object $record = null, array $context = []): object
     {
         $record = parent::fromArray($data, $record, $context);
-
-        assert($record instanceof User);
 
         if (isset($data['new_password'])) {
             $record->setNewPassword(Types::stringOrNull($data['new_password'], true));

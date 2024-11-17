@@ -48,6 +48,7 @@ import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import {useVModel} from "@vueuse/core";
 import Tab from "~/components/Common/Tab.vue";
+import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 
 const props = defineProps({
     form: {
@@ -58,6 +59,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:form']);
 const form = useVModel(props, 'form', emit);
+const {maxBitrate} = useAzuraCastStation();
 
 const {v$, tabClass} = useVuelidateOnFormTab(
     {
@@ -81,7 +83,7 @@ const formatOptions = [
 ];
 
 const bitrateOptions = map(
-    [32, 48, 64, 96, 128, 192, 256, 320],
+    [32, 48, 64, 96, 128, 192, 256, 320].filter((bitrate) => maxBitrate === 0 || bitrate <= maxBitrate),
     (val) => {
         return {
             value: val,

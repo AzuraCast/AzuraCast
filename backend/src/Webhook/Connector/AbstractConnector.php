@@ -76,7 +76,7 @@ abstract class AbstractConnector implements ConnectorInterface
 
     protected function getRateLimitTime(StationWebhook $webhook): ?int
     {
-        return 10;
+        return null;
     }
 
     /**

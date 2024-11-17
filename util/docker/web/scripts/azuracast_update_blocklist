@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ $(whoami) != 'root' ]; then
+    echo 'This script must be run as the "root" user. Rerunning...'
+    exec gosu root azuracast_update_blocklist "$@"
+fi
+
+bool() {
+  case "$1" in
+  Y* | y* | true | TRUE | 1) return 0 ;;
+  esac
+  return 1
+}
+
+# Update the nginx blocker if environment variables are set.
+NGINX_BLOCK_BOTS=${NGINX_BLOCK_BOTS:-false}
+
+if bool "$NGINX_BLOCK_BOTS"; then
+    update-ngxblocker -n
+fi

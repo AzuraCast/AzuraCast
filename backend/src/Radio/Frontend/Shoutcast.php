@@ -124,12 +124,12 @@ final class Shoutcast extends AbstractFrontend
         return $defaultResult;
     }
 
-    public function getConfigurationPath(Station $station): ?string
+    public function getConfigurationPath(Station $station): string
     {
         return $station->getRadioConfigDir() . '/sc_serv.conf';
     }
 
-    public function getCurrentConfiguration(Station $station): ?string
+    public function getCurrentConfiguration(Station $station): string
     {
         $configPath = $station->getRadioConfigDir();
         $frontendConfig = $station->getFrontendConfig();
@@ -160,6 +160,11 @@ final class Shoutcast extends AbstractFrontend
             'publicdns' => $urlHost,
             'publicip' => $urlHost,
         ];
+
+        if ($station->getMaxBitrate() !== 0) {
+            $maxBitrateInBps = (int) $station->getMaxBitrate() * 1024 + 2500;
+            $config['maxbitrate'] = $maxBitrateInBps;
+        }
 
         $customConfig = trim($frontendConfig->getCustomConfiguration() ?? '');
         if (!empty($customConfig)) {

@@ -39,16 +39,6 @@ class Song implements SongInterface
             return self::getSongHash($songText['text'] ?? '');
         }
 
-        if (!is_string($songText)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    '$songText parameter must be a string, array, or instance of %s or %s.',
-                    self::class,
-                    CurrentSong::class
-                )
-            );
-        }
-
         $songText = mb_substr($songText, 0, 150, 'UTF-8');
 
         // Strip out characters that are likely to not be properly translated or relayed through the radio.

@@ -24,7 +24,13 @@
                 class="col-md-6"
                 :field="v$.genre"
                 :label="$gettext('Genre')"
-            />
+            >
+                <template #description>
+                    {{
+                        $gettext('The primary genre this station plays, such as "rock", "electronic", or "talk".')
+                    }}
+                </template>
+            </form-group-field>
 
             <form-group-field
                 id="edit_form_url"

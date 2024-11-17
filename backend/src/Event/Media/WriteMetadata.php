@@ -15,7 +15,7 @@ final class WriteMetadata extends Event
     ) {
     }
 
-    public function getMetadata(): ?MetadataInterface
+    public function getMetadata(): MetadataInterface
     {
         return $this->metadata;
     }

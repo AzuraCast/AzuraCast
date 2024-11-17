@@ -8,6 +8,7 @@ use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Repository\StationMountRepository;
 use App\Entity\StationMount;
+use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\Router;
 use App\Http\ServerRequest;
@@ -196,8 +197,6 @@ final class MountsController extends AbstractStationApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
-        assert($record instanceof StationMount);
-
         $return = parent::viewRecord($record, $request);
 
         $station = $request->getStation();
@@ -224,6 +223,13 @@ final class MountsController extends AbstractStationApiCrudController
 
     protected function createRecord(ServerRequest $request, array $data): object
     {
+        $station = $request->getStation();
+        if ($station->getMaxMounts() !== 0 && $station->getMaxMounts() <= $station->getMounts()->count()) {
+            throw new ValidationException(
+                __('Unable to create a new mount point, station\'s maximum mount points reached.')
+            );
+        }
+
         $record = parent::createRecord($request, $data);
 
         if (!empty($data['intro_file'])) {

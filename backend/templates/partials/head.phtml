@@ -10,7 +10,7 @@ if ($environment->isDevelopment()) {
     HTML;
 }
 
-$componentDeps = $this->getVueComponentInfo('frontend/js/layout.js');
+$componentDeps = $this->getVueComponentInfo('js/layout.js');
 
 echo <<<HTML
     <script type="module" src="{$componentDeps['js']}"></script>

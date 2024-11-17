@@ -1,4 +1,4 @@
-/* eslint-disable */
+ 
 /* tslint:disable */
 /*
  * ---------------------------------------------------------------
@@ -1401,6 +1401,21 @@ export type Station = HasAutoIncrementId & {
    * @example "UTC"
    */
   timezone?: string | null;
+  /**
+   * The maximum bitrate at which a station may broadcast, in Kbps, 0 for unlimited.
+   * @example 128
+   */
+  max_bitrate?: number;
+  /**
+   * The maximum number of mounts a station may have, 0 for unlimited.
+   * @example 3
+   */
+  max_mounts?: number;
+  /**
+   * The maximum number of hls streams a station may have, 0 for unlimited.
+   * @example 3
+   */
+  max_hls_streams?: number;
   /** An array containing station-specific branding configuration */
   branding_config?: any[];
 };

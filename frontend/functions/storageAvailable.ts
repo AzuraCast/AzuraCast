@@ -5,7 +5,7 @@ export default function storageAvailable(type: string): boolean {
         storage.setItem(x, x);
         storage.removeItem(x);
         return true;
-    } catch (e) {
+    } catch {
         return false;
     }
 }

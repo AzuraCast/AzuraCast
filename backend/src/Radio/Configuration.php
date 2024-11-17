@@ -157,7 +157,9 @@ final class Configuration
                 'startretries' => 5,
                 'command' => $adapter->getCommand($station),
                 'directory' => $station->getRadioConfigDir(),
-                'environment' => 'TZ="' . $station->getTimezone() . '"',
+                'environment' => self::buildEnvironment([
+                    'TZ' => $station->getTimezone(),
+                ]),
                 'autostart' => 'false',
                 'autorestart' => 'true',
                 'stdout_logfile' => $adapter->getLogPath($station),
@@ -425,6 +427,22 @@ final class Configuration
         @unlink($supervisorConfigPath);
 
         $this->reloadSupervisor();
+    }
+
+    protected static function buildEnvironment(array $values): string
+    {
+        return implode(
+            ',',
+            array_map(
+                static fn (string $k, mixed $v) => sprintf(
+                    '%s="%s"',
+                    $k,
+                    str_replace('%', '%%', $v)
+                ),
+                array_keys($values),
+                array_values($values)
+            )
+        );
     }
 
     /**

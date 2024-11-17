@@ -43,7 +43,7 @@ export default function useAutoRefreshingAsyncState<Data, Params extends any[] =
         async () => {
             try {
                 await execute();
-            } catch (e) {
+            } catch {
                 pause();
             }
         },

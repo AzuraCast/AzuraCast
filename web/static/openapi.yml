@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 0.20.2
+  version: 0.20.3
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -861,7 +861,7 @@ paths:
         -
           $ref: '#/components/parameters/StationIdRequired'
         -
-          name: id
+          name: media_id
           in: path
           description: 'Media ID'
           required: true
@@ -893,7 +893,7 @@ paths:
         -
           $ref: '#/components/parameters/StationIdRequired'
         -
-          name: id
+          name: media_id
           in: path
           description: 'Media ID'
           required: true
@@ -2756,7 +2756,7 @@ paths:
           name: action
           in: path
           description: 'The action to perform (start, stop, restart)'
-          required: false
+          required: true
           schema:
             type: string
             default: restart
@@ -2785,7 +2785,7 @@ paths:
           name: action
           in: path
           description: 'The action to perform (for all: start, stop, restart, skip, disconnect)'
-          required: false
+          required: true
           schema:
             type: string
             default: restart
@@ -4876,6 +4876,13 @@ components:
               type: integer
               example: 15
               nullable: true
+            request_priority:
+              type: integer
+              example: 10
+              nullable: true
+            requests_follow_format:
+              type: boolean
+              example: 0
             disconnect_deactivate_streamer:
               type: integer
               example: 0
@@ -4913,6 +4920,18 @@ components:
               type: string
               example: UTC
               nullable: true
+            max_bitrate:
+              description: 'The maximum bitrate at which a station may broadcast, in Kbps. 0 for unlimited'
+              type: integer
+              example: 128
+            max_mounts:
+              description: 'The maximum number of mount points the station can have, 0 for unlimited'
+              type: integer
+              example: 3
+            max_hls_streams:
+              description: 'The maximum number of HLS streams the station can have, 0 for unlimited'
+              type: integer
+              example: 3
             branding_config:
               description: 'An array containing station-specific branding configuration'
               type: object
@@ -5045,6 +5064,11 @@ components:
             weight:
               type: integer
               example: 3
+            priority:
+              description: 'Determines which playlists are allowed to play when multiple playlists are eligible.'
+              type: integer
+              example: 0
+              nullable: true
             include_in_requests:
               type: boolean
               example: true

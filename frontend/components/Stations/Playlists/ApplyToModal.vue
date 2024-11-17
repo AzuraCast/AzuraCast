@@ -52,6 +52,7 @@
             <button
                 type="button"
                 class="btn btn-primary"
+                :disabled="selectedDirs.length === 0"
                 @click="save"
             >
                 {{ $gettext('Apply to Folders') }}
@@ -140,7 +141,7 @@ const {notifySuccess} = useNotify();
 
 const save = () => {
     ifValid(() => {
-        (selectedDirs.value.length) && axios.put(applyToUrl.value, {
+        axios.put(applyToUrl.value, {
             ...form.value,
             directories: selectedDirs.value
         }).then(() => {

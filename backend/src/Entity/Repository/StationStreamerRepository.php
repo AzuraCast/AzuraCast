@@ -49,12 +49,7 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
         return $streamer->authenticate($password) && $this->scheduler->canStreamerStreamNow($streamer);
     }
 
-    /**
-     * @param Station $station
-     * @param string $username
-     *
-     */
-    public function onConnect(Station $station, string $username = ''): string|bool
+    public function onConnect(Station $station, string $username = ''): bool
     {
         // End all current streamer sessions.
         $this->broadcastRepo->endAllActiveBroadcasts($station);

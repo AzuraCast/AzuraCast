@@ -71,18 +71,12 @@ class NowPlaying implements ResolvableUrlInterface
 
         $this->live->resolveUrls($base);
 
-        if ($this->now_playing instanceof ResolvableUrlInterface) {
-            $this->now_playing->resolveUrls($base);
-        }
+        $this->now_playing?->resolveUrls($base);
 
-        if ($this->playing_next instanceof ResolvableUrlInterface) {
-            $this->playing_next->resolveUrls($base);
-        }
+        $this->playing_next?->resolveUrls($base);
 
         foreach ($this->song_history as $historyObj) {
-            if ($historyObj instanceof ResolvableUrlInterface) {
-                $historyObj->resolveUrls($base);
-            }
+            $historyObj->resolveUrls($base);
         }
     }
 }

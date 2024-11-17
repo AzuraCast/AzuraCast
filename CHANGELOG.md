@@ -9,6 +9,44 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+---
+
+# AzuraCast 0.20.3 (Nov 17, 2024)
+
+## New Features/Changes
+
+- Installation administrators can now specify a maximum bitrate for AutoDJ mount points and remote relays, as well as a
+  maximum number of mount points and HLS streams. This can help multi-tenant AzuraCast installations avoid situations
+  where individual stations consume excessive resources.
+
+- You can now specify a priority value for playlists and song requests. If two playlists are set to play at the same
+  time, the higher-priority playlist will always play first. This also lets you prevent requests from always pre-empting
+  playlists by setting them to a lower priority, or forcing them to adhere to the priority rules of the playlists
+  themselves.
+
+- Automatically block bad crawlers, spammers and bots by setting `NGINX_BLOCK_BOTS=true` in `azuracast.env`. This
+  feature is powered by
+  the [Nginx Ultimate Bad Bot Blocker](https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker). If enabled,
+  the rules will automatically be updated daily to ensure up-to-date protection.
+
+## Code Quality/Technical Changes
+
+- Significant work has been done on the AutoDJ scheduler. While this work continues, we believe we have reached a stable
+  state where the updated scheduler can reliably be used in a majority of cases.
+
+- A majority of AzuraCast's custom Liquidsoap configuration has been moved to a "Common Runtime" file to improve
+  cacheability and maintainability. You may need to update your Liquidsoap custom configuration if you use any. Note
+  that this will be the last stable release before Liquidsoap 2.3.x ships, which will also require modification of
+  custom code.
+
+## Bug Fixes
+
+- Fixed a bug preventing song lyrics from persisting when editing media.
+
+- Fixed an error that caused the "Live Connected" webhook to dispatch when a DJ disconnects.
+
+---
+
 # AzuraCast 0.20.2 (Aug 1, 2024)
 
 ## New Features/Changes
@@ -742,7 +780,7 @@ multi-tenant installations (i.e. resellers). Upgrading is strongly recommended i
 
 - Fixed a bug where the station could not be skipped if a Remote URL playlist was enabled.
 
-- Fixed a bug with logging (Liquidsoap, Docker, etc) to reduce CPU load issues. 
+- Fixed a bug with logging (Liquidsoap, Docker, etc) to reduce CPU load issues.
 
 - Fixed missing city fields in listener data.
 

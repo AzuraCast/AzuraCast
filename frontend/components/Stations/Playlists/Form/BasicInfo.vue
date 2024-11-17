@@ -107,6 +107,19 @@
                     />
                 </div>
 
+                <div class="row g-3">
+                    <form-group-field
+                        id="form_edit_priority"
+                        class="col-md-12"
+                        :field="v$.priority"
+                        input-type="number"
+                        :input-attrs="{min: '0', max: '150'}"
+                        clearable
+                        :label="$gettext('Playlist Priority')"
+                        :description="$gettext('When multiple playlists are eligible to play, higher priority playlists prevent lower priority playlists from playing.')"
+                    />
+                </div>
+
                 <form-fieldset v-show="form.type === 'default'">
                     <template #label>
                         {{ $gettext('General Rotation') }}
@@ -257,6 +270,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         type: {},
         source: {},
         order: {},
+        priority: {},
         remote_url: {},
         remote_type: {},
         remote_buffer: {},
@@ -276,6 +290,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         type: 'default',
         source: 'songs',
         order: 'shuffle',
+        priority: null,
         remote_url: null,
         remote_type: 'stream',
         remote_buffer: 0,

@@ -15,8 +15,7 @@ final class StationHlsStreamFixture extends AbstractFixture implements Dependent
 {
     public function load(ObjectManager $manager): void
     {
-        /** @var Station $station */
-        $station = $this->getReference('station');
+        $station = $this->getReference('station', Station::class);
 
         $mountLofi = new StationHlsStream($station);
         $mountLofi->setName('aac_lofi');

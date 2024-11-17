@@ -1,16 +1,20 @@
+# syntax=docker/dockerfile:1
+
 #
 # Golang dependencies build step
 #
-FROM golang:1.22-bookworm AS go-dependencies
+FROM golang:1.23-bookworm AS go-dependencies
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends openssl git
 
-RUN go install github.com/jwilder/dockerize@v0.6.1
+RUN go install github.com/jwilder/dockerize@v0.8.0
 
-RUN go install github.com/aptible/supercronic@v0.2.30
+RUN go install github.com/aptible/supercronic@v0.2.33
 
-RUN go install github.com/centrifugal/centrifugo/v5@v5.4.3
+RUN go install github.com/centrifugal/centrifugo/v5@v5.4.7
+
+RUN strip /go/bin/*
 
 #
 # MariaDB dependencies build step
@@ -32,16 +36,9 @@ FROM ghcr.io/azuracast/icecast-kh-ac:2024-02-13 AS icecast
 #
 FROM mlocati/php-extension-installer AS php-extension-installer
 
-#
-# Final build image
-#
-FROM php:8.3-fpm-bookworm AS pre-final
+# ---
 
-ENV TZ="UTC" \
-    LANGUAGE="en_US.UTF-8" \
-    LC_ALL="en_US.UTF-8" \
-    LANG="en_US.UTF-8" \
-    LC_TYPE="en_US.UTF-8"
+FROM scratch AS dependencies
 
 # Add PHP extension installer tool
 COPY --from=php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
@@ -59,44 +56,56 @@ COPY --from=mariadb /usr/local/bin/docker-entrypoint.sh /usr/local/bin/db_entryp
 COPY --from=icecast /usr/local/bin/icecast /usr/local/bin/icecast
 COPY --from=icecast /usr/local/share/icecast /usr/local/share/icecast
 
-# Run base build process
-COPY ./util/docker/common /bd_build/
+#
+# Final build image
+#
+FROM php:8.3-fpm-bookworm AS pre-final
 
-RUN bash /bd_build/prepare.sh \
-    && bash /bd_build/add_user.sh \
-    && bash /bd_build/cleanup.sh
+ENV TZ="UTC" \
+    LANGUAGE="en_US.UTF-8" \
+    LC_ALL="en_US.UTF-8" \
+    LANG="en_US.UTF-8" \
+    LC_TYPE="en_US.UTF-8"
+
+COPY --link --from=dependencies / /
+
+# Run base build process
+RUN --mount=type=bind,source=./util/docker/common,target=/bd_build,rw \
+    bash /bd_build/prepare.sh && \
+    bash /bd_build/add_user.sh && \
+    bash /bd_build/cleanup.sh
+
+# Build each set of dependencies in their own step for cacheability.
+RUN --mount=type=bind,source=./util/docker/common,target=/bd_build,rw \
+    --mount=type=bind,source=./util/docker/supervisor,target=/bd_build/supervisor,rw \
+    bash /bd_build/supervisor/setup.sh && \
+    bash /bd_build/cleanup.sh
+
+RUN --mount=type=bind,source=./util/docker/common,target=/bd_build,rw \
+    --mount=type=bind,source=./util/docker/stations,target=/bd_build/stations,rw \
+    bash /bd_build/stations/setup.sh && \
+    bash /bd_build/cleanup.sh
+
+RUN --mount=type=bind,source=./util/docker/common,target=/bd_build,rw \
+    --mount=type=bind,source=./util/docker/web,target=/bd_build/web,rw \
+    bash /bd_build/web/setup.sh && \
+    bash /bd_build/cleanup.sh
+
+RUN --mount=type=bind,source=./util/docker/common,target=/bd_build,rw \
+    --mount=type=bind,source=./util/docker/mariadb,target=/bd_build/mariadb,rw \
+    bash /bd_build/mariadb/setup.sh && \
+    bash /bd_build/cleanup.sh
+
+RUN --mount=type=bind,source=./util/docker/common,target=/bd_build,rw \
+    --mount=type=bind,source=./util/docker/redis,target=/bd_build/redis,rw \
+    bash /bd_build/redis/setup.sh && \
+    bash /bd_build/cleanup.sh
+
+RUN --mount=type=bind,source=./util/docker/common,target=/bd_build,rw \
+    bash /bd_build/chown_dirs.sh
 
 # Add built-in docs
 COPY --from=docs --chown=azuracast:azuracast /dist /var/azuracast/docs
-
-# Build each set of dependencies in their own step for cacheability.
-COPY ./util/docker/supervisor /bd_build/supervisor/
-RUN bash /bd_build/supervisor/setup.sh \
-    && bash /bd_build/cleanup.sh \
-    && rm -rf /bd_build/supervisor
-
-COPY ./util/docker/stations /bd_build/stations/
-RUN bash /bd_build/stations/setup.sh \
-    && bash /bd_build/cleanup.sh \
-    && rm -rf /bd_build/stations
-
-COPY ./util/docker/web /bd_build/web/
-RUN bash /bd_build/web/setup.sh \
-    && bash /bd_build/cleanup.sh \
-    && rm -rf /bd_build/web
-
-COPY ./util/docker/mariadb /bd_build/mariadb/
-RUN bash /bd_build/mariadb/setup.sh \
-    && bash /bd_build/cleanup.sh \
-    && rm -rf /bd_build/mariadb
-
-COPY ./util/docker/redis /bd_build/redis/
-RUN bash /bd_build/redis/setup.sh \
-    && bash /bd_build/cleanup.sh \
-    && rm -rf /bd_build/redis
-
-RUN bash /bd_build/chown_dirs.sh \
-    && rm -rf /bd_build
 
 USER azuracast
 
@@ -129,7 +138,7 @@ ENV LANG="en_US.UTF-8" \
     ENABLE_REDIS="true" \
     REDIS_HOST="localhost" \
     REDIS_PORT=6379 \
-    REDIS_DB=1 \
+    REDIS_DB=0 \
     NGINX_RADIO_PORTS="default" \
     NGINX_WEBDJ_PORTS="default" \
     COMPOSER_PLUGIN_MODE="false" \

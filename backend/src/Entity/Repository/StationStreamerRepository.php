@@ -41,6 +41,12 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
             return false;
         }
 
+        // Allow connections using the exact broadcast source password.
+        $sourcePw = $station->getFrontendConfig()->getSourcePassword();
+        if (!empty($sourcePw) && strcmp($sourcePw, $password) === 0) {
+            return true;
+        }
+
         $streamer = $this->getStreamer($station, $username);
         if (!($streamer instanceof StationStreamer)) {
             return false;

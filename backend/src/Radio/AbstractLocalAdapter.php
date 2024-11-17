@@ -129,12 +129,21 @@ abstract class AbstractLocalAdapter
 
     /**
      * Return the shell command required to run the program.
-     *
-     * @param Station $station
      */
     public function getCommand(Station $station): ?string
     {
         return null;
+    }
+
+    /**
+     * Return a list of environment variables to be attached to the process when it runs.
+     * Value is in the form of "Env var name" => "Env var value", both as strings.
+     *
+     * @return array<string, string>
+     */
+    public function getEnvironmentVariables(Station $station): array
+    {
+        return [];
     }
 
     /**

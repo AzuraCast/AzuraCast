@@ -54,26 +54,14 @@ final class FeedbackCommand extends AbstractCommand
         );
 
         // Process extra metadata sent by Liquidsoap (if it exists).
-        try {
-            $historyRow = $this->getSongHistory($station, $payload);
-            $this->em->persist($historyRow);
+        $historyRow = $this->getSongHistory($station, $payload);
+        $this->em->persist($historyRow);
 
-            $this->historyRepo->changeCurrentSong($station, $historyRow);
-            $this->em->flush();
+        $this->historyRepo->changeCurrentSong($station, $historyRow);
+        $this->em->flush();
 
-            $this->nowPlayingCache->forceUpdate($station);
-
-            return true;
-        } catch (Exception $e) {
-            $this->logger->error(
-                sprintf('Liquidsoap feedback error: %s', $e->getMessage()),
-                [
-                    'exception' => $e,
-                ]
-            );
-
-            return false;
-        }
+        $this->nowPlayingCache->forceUpdate($station);
+        return true;
     }
 
     private function getSongHistory(

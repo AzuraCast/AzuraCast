@@ -19,20 +19,16 @@ final class DjAuthCommand extends AbstractCommand
         Station $station,
         bool $asAutoDj = false,
         array $payload = []
-    ): bool {
+    ): array {
         if (!$station->getEnableStreamers()) {
-            throw new RuntimeException('Attempted DJ authentication when streamers are disabled on this station.');
+            throw new RuntimeException('Streamers are disabled on this station.');
         }
 
         $user = $payload['user'] ?? '';
         $pass = $payload['password'] ?? '';
 
-        // Allow connections using the exact broadcast source password.
-        $sourcePw = $station->getFrontendConfig()->getSourcePassword();
-        if (!empty($sourcePw) && strcmp($sourcePw, $pass) === 0) {
-            return true;
-        }
-
-        return $this->streamerRepo->authenticate($station, $user, $pass);
+        return [
+            'allow' => $this->streamerRepo->authenticate($station, $user, $pass),
+        ];
     }
 }

@@ -13,7 +13,9 @@ use App\Entity\StationQueue;
 use App\Entity\StationRequest;
 use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Backend\Liquidsoap\ConfigWriter;
+use App\Utilities\Types;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class Annotations implements EventSubscriberInterface
@@ -48,11 +50,11 @@ final class Annotations implements EventSubscriberInterface
     public function annotateNextSong(
         Station $station,
         bool $asAutoDj = false,
-    ): string|bool {
+    ): string {
         $queueRow = $this->queueRepo->getNextToSendToAutoDj($station);
 
         if (null === $queueRow) {
-            return false;
+            throw new RuntimeException('Queue is empty!');
         }
 
         $event = AnnotateNextSong::fromStationQueue($queueRow, $asAutoDj);
@@ -105,9 +107,7 @@ final class Annotations implements EventSubscriberInterface
             ),
         ], fn ($row) => ('' !== $row && null !== $row));
 
-        $event->addAnnotations(
-            array_map([ConfigWriter::class, 'valueToString'], $annotations)
-        );
+        $event->addAnnotations($annotations);
     }
 
     private function processAutocueAnnotations(
@@ -121,17 +121,6 @@ final class Annotations implements EventSubscriberInterface
 
         $backendConfig = $station->getBackendConfig();
 
-        if ($backendConfig->getEnableAutoCue()) {
-            // Directly write annotations as `liq_` values (pre-2.3.x)
-            $annotationsNew = [];
-            foreach ($annotations as $key => $val) {
-                $key = 'liq_' . $key;
-                $annotationsNew[$key] = $val;
-            }
-
-            return $annotationsNew;
-        }
-
         // Ensure default values for all annotations.
         $annotations[StationMediaMetadata::CUE_IN] ??= 0.0;
         $annotations[StationMediaMetadata::CUE_OUT] ??= $duration;
@@ -143,38 +132,19 @@ final class Annotations implements EventSubscriberInterface
         $annotations[StationMediaMetadata::FADE_IN] ??= $defaultFade;
         $annotations[StationMediaMetadata::FADE_OUT] ??= $defaultFade;
 
-        if (!isset($annotations[StationMediaMetadata::CROSS_START_NEXT])) {
-            $defaultStartNext = $backendConfig->isCrossfadeEnabled()
-                ? $duration - $backendConfig->getCrossfadeDuration()
-                : $duration;
-
-            if ($defaultStartNext < 0) {
-                $defaultStartNext = $duration;
-            }
-
-            $annotations[StationMediaMetadata::CROSS_START_NEXT] = $defaultStartNext;
-        }
-
-        $annotationMapping = [
-            StationMediaMetadata::AMPLIFY => 'azuracast_amplify',
-            StationMediaMetadata::CUE_IN => 'azuracast_cue_in',
-            StationMediaMetadata::CUE_OUT => 'azuracast_cue_out',
-            StationMediaMetadata::FADE_IN => 'azuracast_fade_in',
-            StationMediaMetadata::FADE_OUT => 'azuracast_fade_out',
-            StationMediaMetadata::CROSS_START_NEXT => 'azuracast_start_next',
+        return [
+            'azuracast_autocue' => json_encode(array_filter(
+                [
+                    'cue_in' => Types::float($annotations[StationMediaMetadata::CUE_IN]),
+                    'cue_out' => Types::float($annotations[StationMediaMetadata::CUE_OUT]),
+                    'fade_in' => Types::float($annotations[StationMediaMetadata::FADE_IN]),
+                    'fade_out' => Types::float($annotations[StationMediaMetadata::FADE_OUT]),
+                    'start_next' => Types::floatOrNull($annotations[StationMediaMetadata::CROSS_START_NEXT] ?? null),
+                    'amplify' => Types::stringOrNull($annotations[StationMediaMetadata::AMPLIFY] ?? null),
+                ],
+                fn($val) => $val !== null
+            )),
         ];
-
-        $annotationsNew = [
-            'azuracast_autocue' => true,
-        ];
-
-        foreach ($annotations as $key => $value) {
-            if (isset($annotationMapping[$key])) {
-                $annotationsNew[$annotationMapping[$key]] = $value;
-            }
-        }
-
-        return $annotationsNew;
     }
 
     public function annotatePlaylist(AnnotateNextSong $event): void

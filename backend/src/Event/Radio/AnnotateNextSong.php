@@ -9,6 +9,7 @@ use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Entity\StationQueue;
 use App\Entity\StationRequest;
+use App\Radio\Backend\Liquidsoap\ConfigWriter;
 use RuntimeException;
 use Symfony\Contracts\EventDispatcher\Event;
 
@@ -20,8 +21,6 @@ use Symfony\Contracts\EventDispatcher\Event;
 final class AnnotateNextSong extends Event
 {
     private ?string $songPath = null;
-
-    private ?string $protocol = null;
 
     /** @var array Custom annotations that should be sent along with the AutoDJ response. */
     private array $annotations = [];
@@ -76,11 +75,6 @@ final class AnnotateNextSong extends Event
         $this->songPath = $songPath;
     }
 
-    public function setProtocol(string $protocol): void
-    {
-        $this->protocol = $protocol;
-    }
-
     public function isAsAutoDj(): bool
     {
         return $this->asAutoDj;
@@ -95,23 +89,12 @@ final class AnnotateNextSong extends Event
             throw new RuntimeException('No valid path for song.');
         }
 
-        $this->annotations = array_filter($this->annotations);
-
         if (!empty($this->annotations)) {
-            $annotationsStr = [];
-            foreach ($this->annotations as $annotationKey => $annotationVal) {
-                $annotationsStr[] = $annotationKey . '="' . $annotationVal . '"';
-            }
-
             $annotateParts = [
                 'annotate',
-                implode(',', $annotationsStr),
+                ConfigWriter::annotateArray($this->annotations),
                 $this->songPath,
             ];
-
-            if (null !== $this->protocol) {
-                array_unshift($annotateParts, $this->protocol);
-            }
 
             return implode(':', $annotateParts);
         }

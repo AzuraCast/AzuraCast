@@ -14,6 +14,7 @@ settings.server.socket.permissions := 0o660
 settings.harbor.bind_addrs := ["0.0.0.0"]
 settings.encoder.metadata.export := ["artist","title","album","song"]
 
+settings.autocue.amplify_behavior := "keep"
 
 #<-----
 Settings
@@ -240,42 +241,40 @@ def azuracast.autocue(
 ) =
     label="azuracast.autocue"
 
-    # Check if `"azuracast_autocue"` is present; If so, use azuracast autocue implementation:
-    if list.assoc.mem("azuracast_autocue", request_metadata) then
-        log(
-            level=2,
-            label=label,
-            "Using AzuraCast custom cue/fade data in lieu of AutoCue."
-        )
+    # Check if `"azuracast_autocue"` is present and set to `"true"`. If so, use azuracast autocue implementation:
+    if list.assoc(default="false", "azuracast_autocue", request_metadata) == "true" then
+        def azuracast_optional_start_next = 
+            if list.assoc.mem("autocue_start_next", request_metadata) then
+                { start_next = float_of_string(list.assoc("autocue_start_next", request_metadata)) }
+            else
+                { }
+            end
+        end
 
-        autocue_data_raw = list.assoc("azuracast_autocue", request_metadata)
+        def azuracast_optional_amplify =
+            if list.assoc.mem("liq_amplify", request_metadata) then
+                { amplify = list.assoc("liq_amplify", request_metadata) }
+            else
+                { }
+            end
+        end
+
+        autocue_result = {
+            cue_in = float_of_string(list.assoc("autocue_cue_in", request_metadata)),
+            cue_out = float_of_string(list.assoc("autocue_cue_out", request_metadata)),
+            fade_in = float_of_string(list.assoc("autocue_fade_in", request_metadata)),
+            fade_out = float_of_string(list.assoc("autocue_fade_out", request_metadata)),
+            ...azuracast_optional_start_next,
+            ...azuracast_optional_amplify
+        }
+
         log(
             level=3,
             label=label,
-            "AzuraCast AutoCue raw data: #{autocue_data_raw}."
+            "AzuraCast AutoCue data: #{autocue_result}."
         )
 
-        try
-            let json.parse (
-                autocue_result : {
-                    cue_in: float,
-                    cue_out: float,
-                    fade_in: float,
-                    fade_out: float,
-                    start_next: float?,
-                    amplify: string?
-                }?
-            ) = autocue_data_raw
-
-            autocue_result
-        catch err do
-            log(
-                level=1,
-                label=label,
-                "ERROR parsing JSON: #{err}"
-            )
-            null()
-        end
+        autocue_result
     elsif settings.azuracast.compute_autocue() then
         let cache_key = "autocue_#{filename}"
 
@@ -642,7 +641,7 @@ end
 
 def azuracast.apply_amplify(s) = 
     if (settings.azuracast.apply_amplify()) then
-        (amplify(override="liq_amplify", 1., s) : source)
+        (amplify(1., s) : source)
     else
         s
     end

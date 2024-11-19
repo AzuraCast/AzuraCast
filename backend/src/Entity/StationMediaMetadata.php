@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Media\Metadata;
 use App\Utilities\Time;
 use App\Utilities\Types;
-use ReflectionObject;
 
 class StationMediaMetadata extends AbstractStationConfiguration
 {
@@ -95,56 +93,5 @@ class StationMediaMetadata extends AbstractStationConfiguration
         }
 
         return Types::floatOrNull($annotation);
-    }
-
-    public function toAnnotations(float $duration): array
-    {
-        $annotations = array_filter(
-            $this->toArray() ?? [],
-            fn($row) => $row !== null
-        );
-
-        if (0 === count($annotations)) {
-            return [];
-        }
-
-        // Safety checks for cue lengths.
-        if (
-            isset($annotations[self::CUE_OUT])
-            && $annotations[self::CUE_OUT] < 0.0
-        ) {
-            $cueOut = abs($annotations[self::CUE_OUT]);
-
-            if (0.0 === $cueOut) {
-                unset($annotations[self::CUE_OUT]);
-            }
-
-            if ($cueOut > $duration) {
-                unset($annotations[self::CUE_OUT]);
-            } else {
-                $annotations[self::CUE_OUT] = max(0, $duration - $cueOut);
-            }
-        }
-
-        if (
-            isset($annotations[self::CUE_OUT])
-            && $annotations[self::CUE_OUT] > $duration
-        ) {
-            unset($annotations[self::CUE_OUT]);
-        }
-
-        if (
-            isset($annotations[self::CUE_IN])
-            && $annotations[self::CUE_IN] > $duration
-        ) {
-            unset($annotations[self::CUE_IN]);
-        }
-
-        // Specify formatting on Amplify.
-        if (isset($annotations[self::AMPLIFY])) {
-            $annotations[self::AMPLIFY] .= ' dB';
-        }
-
-        return $annotations;
     }
 }

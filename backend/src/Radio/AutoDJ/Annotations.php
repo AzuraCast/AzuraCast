@@ -12,7 +12,6 @@ use App\Entity\StationMediaMetadata;
 use App\Entity\StationQueue;
 use App\Entity\StationRequest;
 use App\Event\Radio\AnnotateNextSong;
-use App\Radio\Backend\Liquidsoap\ConfigWriter;
 use App\Utilities\Types;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use RuntimeException;
@@ -102,29 +101,81 @@ final class Annotations implements EventSubscriberInterface
             'sq_id' => $event->getQueue()?->getIdRequired(),
             ...$this->processAutocueAnnotations(
                 $station,
-                $media->getExtraMetadata()->toAnnotations($duration),
+                $media->getExtraMetadata(),
                 $duration,
             ),
-        ], fn ($row) => ('' !== $row && null !== $row));
+        ], fn($row) => ('' !== $row && null !== $row));
 
         $event->addAnnotations($annotations);
     }
 
     private function processAutocueAnnotations(
         Station $station,
-        array $annotations,
+        StationMediaMetadata $metadata,
         float $duration,
     ): array {
+        $annotations = array_filter(
+            $metadata->toArray() ?? [],
+            fn($row) => $row !== null
+        );
+
         if (0 === count($annotations)) {
             return [];
         }
 
-        $backendConfig = $station->getBackendConfig();
+        // Safety checks for cue lengths.
+        if (
+            isset($annotations[StationMediaMetadata::CUE_OUT])
+            && $annotations[StationMediaMetadata::CUE_OUT] < 0.0
+        ) {
+            $cueOut = abs($annotations[StationMediaMetadata::CUE_OUT]);
+
+            if (0.0 === $cueOut) {
+                unset($annotations[StationMediaMetadata::CUE_OUT]);
+            }
+
+            if ($cueOut > $duration) {
+                unset($annotations[StationMediaMetadata::CUE_OUT]);
+            } else {
+                $annotations[StationMediaMetadata::CUE_OUT] = max(0, $duration - $cueOut);
+            }
+        }
+
+        if (
+            isset($annotations[StationMediaMetadata::CUE_OUT])
+            && $annotations[StationMediaMetadata::CUE_OUT] > $duration
+        ) {
+            unset($annotations[StationMediaMetadata::CUE_OUT]);
+        }
+
+        if (
+            isset($annotations[StationMediaMetadata::CUE_IN])
+            && $annotations[StationMediaMetadata::CUE_IN] > $duration
+        ) {
+            unset($annotations[StationMediaMetadata::CUE_IN]);
+        }
+
+        if (0 === count($annotations)) {
+            return [];
+        }
+
+        // Standardize Amplify metadata in Liquidsoap format.
+        if (isset($annotations[StationMediaMetadata::AMPLIFY])) {
+            $annotations[StationMediaMetadata::AMPLIFY] .= ' dB';
+
+            // If only amplify is specified, return just it to use it in other AutoCue/amplify functions.
+            if (1 === count($annotations)) {
+                return [
+                    'liq_amplify' => $annotations[StationMediaMetadata::AMPLIFY],
+                ];
+            }
+        }
 
         // Ensure default values for all annotations.
         $annotations[StationMediaMetadata::CUE_IN] ??= 0.0;
         $annotations[StationMediaMetadata::CUE_OUT] ??= $duration;
 
+        $backendConfig = $station->getBackendConfig();
         $defaultFade = $backendConfig->isCrossfadeEnabled()
             ? $backendConfig->getCrossfade()
             : 0.0;
@@ -133,17 +184,15 @@ final class Annotations implements EventSubscriberInterface
         $annotations[StationMediaMetadata::FADE_OUT] ??= $defaultFade;
 
         return [
-            'azuracast_autocue' => json_encode(array_filter(
-                [
-                    'cue_in' => Types::float($annotations[StationMediaMetadata::CUE_IN]),
-                    'cue_out' => Types::float($annotations[StationMediaMetadata::CUE_OUT]),
-                    'fade_in' => Types::float($annotations[StationMediaMetadata::FADE_IN]),
-                    'fade_out' => Types::float($annotations[StationMediaMetadata::FADE_OUT]),
-                    'start_next' => Types::floatOrNull($annotations[StationMediaMetadata::CROSS_START_NEXT] ?? null),
-                    'amplify' => Types::stringOrNull($annotations[StationMediaMetadata::AMPLIFY] ?? null),
-                ],
-                fn($val) => $val !== null
-            )),
+            'azuracast_autocue' => true,
+            'liq_amplify' => Types::stringOrNull($annotations[StationMediaMetadata::AMPLIFY] ?? null),
+            'autocue_cue_in' => Types::float($annotations[StationMediaMetadata::CUE_IN]),
+            'autocue_cue_out' => Types::float($annotations[StationMediaMetadata::CUE_OUT]),
+            'autocue_fade_in' => Types::float($annotations[StationMediaMetadata::FADE_IN]),
+            'autocue_fade_out' => Types::float($annotations[StationMediaMetadata::FADE_OUT]),
+            'autocue_start_next' => Types::floatOrNull(
+                $annotations[StationMediaMetadata::CROSS_START_NEXT] ?? null
+            ),
         ];
     }
 

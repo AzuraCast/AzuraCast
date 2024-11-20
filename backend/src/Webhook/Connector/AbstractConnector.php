@@ -18,6 +18,8 @@ abstract class AbstractConnector implements ConnectorInterface
 {
     use LoggerAwareTrait;
 
+    public const string RATE_LIMIT_KEY = 'rate_limit';
+
     public function __construct(
         protected Client $httpClient
     ) {
@@ -76,7 +78,8 @@ abstract class AbstractConnector implements ConnectorInterface
 
     protected function getRateLimitTime(StationWebhook $webhook): ?int
     {
-        return null;
+        $config = $webhook->getConfig();
+        return Types::intOrNull($config[self::RATE_LIMIT_KEY] ?? null);
     }
 
     /**

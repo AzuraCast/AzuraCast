@@ -7,6 +7,9 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- All web hooks can now have rate limits set for them, so they only dispatch once in the time specified, in case
+  third-party services need to receive updates less frequently.
+
 ## Bug Fixes
 
 ---

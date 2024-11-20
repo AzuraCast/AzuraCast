@@ -49,8 +49,6 @@
                 :field="v$.config.access_token"
                 :label="$gettext('Access Token')"
             />
-
-            <common-rate-limit-fields v-model:form="form" />
         </div>
 
         <div class="row g-3 mb-3">
@@ -73,7 +71,6 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import CommonRateLimitFields from "./Common/RateLimitFields.vue";
 import CommonSocialPostFields from "./Common/SocialPostFields.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";

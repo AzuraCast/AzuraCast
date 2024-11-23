@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 0.20.3
+  version: 0.20.4
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -4876,13 +4876,6 @@ components:
               type: integer
               example: 15
               nullable: true
-            request_priority:
-              type: integer
-              example: 10
-              nullable: true
-            requests_follow_format:
-              type: boolean
-              example: 0
             disconnect_deactivate_streamer:
               type: integer
               example: 0
@@ -5064,11 +5057,6 @@ components:
             weight:
               type: integer
               example: 3
-            priority:
-              description: 'Determines which playlists are allowed to play when multiple playlists are eligible.'
-              type: integer
-              example: 0
-              nullable: true
             include_in_requests:
               type: boolean
               example: true

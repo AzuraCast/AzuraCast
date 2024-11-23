@@ -90,10 +90,6 @@
                                     </span>
                                 </div>
                             </template>
-                            <template #cell(priority)="{ item }">
-                                <span class="visually-hidden">{{ $gettext('Priority') }}: </span>
-                                {{ null === item.priority ? $gettext('Unset') : item.priority }}
-                            </template>
                             <template #cell(scheduling)="{ item }">
                                 <template v-if="!item.is_enabled">
                                     {{ $gettext('Disabled') }}
@@ -347,7 +343,6 @@ const {$gettext} = useTranslate();
 
 const fields: DataTableField[] = [
     {key: 'name', isRowHeader: true, label: $gettext('Playlist'), sortable: true},
-        {key: 'priority', label: $gettext('Priority'), sortable: false},
     {key: 'scheduling', label: $gettext('Scheduling'), sortable: false},
     {key: 'num_songs', label: $gettext('# Songs'), sortable: false},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}

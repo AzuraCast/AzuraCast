@@ -94,9 +94,9 @@ final class DuplicatePrevention
                 $mediaIdsByTimePlayed[$trackKey] = $track;
             }
 
-            // Pull the lowest value, which corresponds to the least recently played song.
             ksort($mediaIdsByTimePlayed);
 
+            // Pull the lowest value, which corresponds to the least recently played song.
             $validTrack = array_shift($mediaIdsByTimePlayed);
 
             $this->logger->warning(

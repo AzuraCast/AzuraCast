@@ -9,7 +9,6 @@ use App\Entity\Station;
 use App\Entity\StationPlaylist;
 use App\Entity\StationSchedule;
 use App\Radio\AutoDJ\Scheduler;
-use App\Radio\AutoDJ\SchedulerContext;
 use App\Tests\Module;
 use Carbon\CarbonImmutable;
 use Codeception\Test\Unit;
@@ -52,27 +51,24 @@ class StationPlaylistTest extends Unit
         // Sanity check: Jan 15, 2018 is a Monday, and Jan 18, 2018 is a Thursday.
         self::assertTrue($testMonday->isMonday());
         self::assertTrue($testThursday->isThursday());
-        $ctx = new SchedulerContext($playlist);
+
         // Playlist SHOULD play Monday evening at 10:30PM.
-        $ctx->expectedPlayTime = $testMonday->setTime(22, 30);
-        self::assertTrue($this->scheduler->shouldPlaylistPlayNow($ctx));
+        $testTime = $testMonday->setTime(22, 30);
+        self::assertTrue($this->scheduler->shouldPlaylistPlayNow($playlist, $testTime));
 
         // Playlist SHOULD play Thursday morning at 3:00AM.
-        $ctx->expectedPlayTime = $testThursday->setTime(3, 0);
-        self::assertTrue($this->scheduler->shouldPlaylistPlayNow($ctx));
+        $testTime = $testThursday->setTime(3, 0);
+        self::assertTrue($this->scheduler->shouldPlaylistPlayNow($playlist, $testTime));
 
         // Playlist SHOULD NOT play Monday morning at 3:00AM.
-        $ctx->expectedPlayTime = $testMonday->setTime(3, 0);
-        self::assertFalse($this->scheduler->shouldPlaylistPlayNow($ctx));
+        $testTime = $testMonday->setTime(3, 0);
+        self::assertFalse($this->scheduler->shouldPlaylistPlayNow($playlist, $testTime));
 
         // Playlist SHOULD NOT play Thursday evening at 10:30PM.
-        $ctx->expectedPlayTime = $testThursday->setTime(22, 30);
-        self::assertFalse($this->scheduler->shouldPlaylistPlayNow($ctx));
+        $testTime = $testThursday->setTime(22, 30);
+        self::assertFalse($this->scheduler->shouldPlaylistPlayNow($playlist, $testTime));
     }
-    /**
-     * This test will not pass.
-     * The scheduler was updated to query recent songs instead of relying on played_at.
-     */
+
     public function testOncePerXMinutesPlaylist()
     {
         /** @var Station $station */
@@ -84,20 +80,19 @@ class StationPlaylistTest extends Unit
         $playlist->setPlayPerMinutes(30);
 
         $utc = new DateTimeZone('UTC');
-        $ctx = new SchedulerContext($playlist);
         $testDay = CarbonImmutable::create(2018, 1, 15, 0, 0, 0, $utc);
-        $ctx->expectedTime = $testDay;
+
         // Last played 20 minutes ago, SHOULD NOT play again.
         $lastPlayed = $testDay->addMinutes(0 - 20);
         $playlist->setPlayedAt($lastPlayed->getTimestamp());
 
-        self::assertFalse($this->scheduler->shouldPlaylistPlayNow($ctx));
+        self::assertFalse($this->scheduler->shouldPlaylistPlayNow($playlist, $testDay));
 
         // Last played 40 minutes ago, SHOULD play again.
         $lastPlayed = $testDay->addMinutes(0 - 40);
         $playlist->setPlayedAt($lastPlayed->getTimestamp());
 
-        self::assertTrue($this->scheduler->shouldPlaylistPlayNow($ctx));
+        self::assertTrue($this->scheduler->shouldPlaylistPlayNow($playlist, $testDay));
     }
 
     public function testOncePerHourPlaylist()
@@ -111,24 +106,22 @@ class StationPlaylistTest extends Unit
         $playlist->setPlayPerHourMinute(50);
 
         $utc = new DateTimeZone('UTC');
-        $ctx = new SchedulerContext($playlist);
         $testDay = CarbonImmutable::create(2018, 1, 15, 0, 0, 0, $utc);
-        $ctx->expectedPlayTime = $testDay;
 
         // Playlist SHOULD try to play at 11:59 PM.
-        $ctx->expectedPlayTime = $testDay->setTime(23, 59);
-        self::assertTrue($this->scheduler->shouldPlaylistPlayNow($ctx));
+        $testTime = $testDay->setTime(23, 59);
+        self::assertTrue($this->scheduler->shouldPlaylistPlayNow($playlist, $testTime));
 
         // Playlist SHOULD try to play at 12:04 PM.
-        $ctx->expectedPlayTime = $testDay->setTime(12, 4);
-        self::assertTrue($this->scheduler->shouldPlaylistPlayNow($ctx));
+        $testTime = $testDay->setTime(12, 4);
+        self::assertTrue($this->scheduler->shouldPlaylistPlayNow($playlist, $testTime));
 
         // Playlist SHOULD NOT try to play at 11:49 PM.
-        $ctx->expectedPlayTime = $testDay->setTime(23, 49);
-        self::assertFalse($this->scheduler->shouldPlaylistPlayNow($ctx));
+        $testTime = $testDay->setTime(23, 49);
+        self::assertFalse($this->scheduler->shouldPlaylistPlayNow($playlist, $testTime));
 
         // Playlist SHOULD NOT try to play at 12:06 PM.
-        $ctx->expectedPlayTime = $testDay->setTime(12, 6);
-        self::assertFalse($this->scheduler->shouldPlaylistPlayNow($ctx));
+        $testTime = $testDay->setTime(12, 6);
+        self::assertFalse($this->scheduler->shouldPlaylistPlayNow($playlist, $testTime));
     }
 }

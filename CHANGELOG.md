@@ -11,6 +11,13 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.20.4 (Nov 23, 2024)
+
+Due to bug reports relating to the updated AutoDJ scheduler, we're reverting the relevant code back to the code as it previously existed in versions 0.20.2 and earlier. This is the sole change in this
+version of the application.
+
+---
+
 # AzuraCast 0.20.3 (Nov 17, 2024)
 
 ## New Features/Changes

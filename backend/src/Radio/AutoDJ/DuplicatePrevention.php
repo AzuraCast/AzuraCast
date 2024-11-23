@@ -96,21 +96,19 @@ final class DuplicatePrevention
 
             ksort($mediaIdsByTimePlayed);
 
+            // Pull the lowest value, which corresponds to the least recently played song.
             $validTrack = array_shift($mediaIdsByTimePlayed);
 
-            // Pull the lowest value, which corresponds to the least recently played song.
-            if (null !== $validTrack) {
-                $this->logger->warning(
-                    'No way to avoid same title OR same artist; using least recently played song.',
-                    [
-                        'media_id' => $validTrack->media_id,
-                        'title' => $validTrack->title,
-                        'artist' => $validTrack->artist,
-                    ]
-                );
+            $this->logger->warning(
+                'No way to avoid same title OR same artist; using least recently played song.',
+                [
+                    'media_id' => $validTrack->media_id,
+                    'title' => $validTrack->title,
+                    'artist' => $validTrack->artist,
+                ]
+            );
 
-                return $validTrack;
-            }
+            return $validTrack;
         }
 
         return null;

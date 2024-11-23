@@ -84,22 +84,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
         $now ??= CarbonImmutable::now($station->getTimezoneObject());
 
         // Look up all requests that have at least waited as long as the threshold.
-        $requests = $this->getAllPotentialRequests($station);
-
-        foreach ($requests as $request) {
-            /** @var StationRequest $request */
-            if ($request->shouldPlayNow($now) && !$this->hasPlayedRecently($request->getTrack(), $station)) {
-                return $request;
-            }
-        }
-
-        return null;
-    }
-
-    public function getAllPotentialRequests(
-        Station $station
-    ): array {
-        return $this->em->createQuery(
+        $requests = $this->em->createQuery(
             <<<'DQL'
                 SELECT sr, sm
                 FROM App\Entity\StationRequest sr JOIN sr.track sm
@@ -109,6 +94,15 @@ final class StationRequestRepository extends AbstractStationBasedRepository
             DQL
         )->setParameter('station', $station)
             ->execute();
+
+        foreach ($requests as $request) {
+            /** @var StationRequest $request */
+            if ($request->shouldPlayNow($now) && !$this->hasPlayedRecently($request->getTrack(), $station)) {
+                return $request;
+            }
+        }
+
+        return null;
     }
 
     /**

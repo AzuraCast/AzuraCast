@@ -185,20 +185,6 @@ class Station implements Stringable, IdentifiableEntityInterface
     protected ?int $request_threshold = 15;
 
     #[
-        OA\Property(example: 10),
-        ORM\Column(type: 'smallint', nullable: true),
-        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
-    ]
-    protected ?int $request_priority = null;
-
-    #[
-        OA\Property(example: 0),
-        ORM\Column(options: ['default' => false]),
-        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
-    ]
-    protected bool $requests_follow_format = false;
-
-    #[
         OA\Property(example: 0),
         ORM\Column(nullable: true, options: ['default' => 0]),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
@@ -800,26 +786,6 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function setRequestThreshold(int $requestThreshold = null): void
     {
         $this->request_threshold = $requestThreshold;
-    }
-
-    public function getRequestPriority(): int|null
-    {
-        return $this->request_priority;
-    }
-
-    public function setRequestPriority(int $priority = null): void
-    {
-        $this->request_priority = $priority;
-    }
-
-    public function requestsFollowFormat(): bool
-    {
-        return $this->requests_follow_format;
-    }
-
-    public function setRequestsFollowFormat(bool $requests_follow_format): void
-    {
-        $this->requests_follow_format = $requests_follow_format;
     }
 
     public function getDisconnectDeactivateStreamer(): ?int

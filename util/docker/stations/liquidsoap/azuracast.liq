@@ -441,11 +441,12 @@ Live Streamers/DJs
 
 # DJ Authentication
 def azuracast.dj_auth(login) =
+    sep_re = r/([,:])/
     auth_info =
-        if (login.user == "source" or login.user == "") and (string.match(pattern="(:|,)+", login.password)) then
-            auth_string = string.split(separator="(:|,)", login.password)
-            {user = list.nth(default="", auth_string, 0),
-            password = list.nth(default="", auth_string, 2)}
+        if (login.user == "source" or login.user == "") and (sep_re.test(login.password)) then
+            sep = sep_re.exec(login.password)
+            let (u, p) = string.split.first(separator=sep[0], login.password)
+            {user = u, password = p}
         else
             {user = login.user, password = login.password}
         end

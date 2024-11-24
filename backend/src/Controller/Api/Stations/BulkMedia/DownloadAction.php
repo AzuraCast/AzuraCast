@@ -75,6 +75,7 @@ final class DownloadAction implements SingleActionInterface
             'lyrics',
             'isrc',
             'playlists',
+            'length',
             ...$extraMetadataFields,
         ];
 
@@ -113,6 +114,7 @@ final class DownloadAction implements SingleActionInterface
                 $row['lyrics'] ?? '',
                 $row['isrc'] ?? '',
                 implode(', ', $playlists),
+                $row['length'] ?? '0.0',
                 ...$extraMetadata,
             ];
 

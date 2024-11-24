@@ -4182,10 +4182,8 @@ components:
               type: string
               example: '4:00'
             custom_fields:
-              type: array
-              items:
-                type: string
-                example: custom_field_value
+              description: 'An object containing all custom fields, with the key being the value name.'
+              type: object
             extra_metadata:
               type: array
               items: {  }

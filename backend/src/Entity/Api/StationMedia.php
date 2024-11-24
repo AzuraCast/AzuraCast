@@ -83,8 +83,8 @@ class StationMedia
     public string $length_text = '0:00';
 
     #[OA\Property(
-        type: 'array',
-        items: new OA\Items(type: 'string', example: 'custom_field_value')
+        description: "An object containing all custom fields, with the key being the value name.",
+        type: "object"
     )]
     public HashMap $custom_fields;
 

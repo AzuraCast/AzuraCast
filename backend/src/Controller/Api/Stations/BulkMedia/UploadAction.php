@@ -39,12 +39,6 @@ final class UploadAction implements SingleActionInterface
         'genre',
         'lyrics',
         'isrc',
-        'amplify',
-        'fade_overlap',
-        'fade_in',
-        'fade_out',
-        'cue_in',
-        'cue_out',
     ];
 
     public function __construct(

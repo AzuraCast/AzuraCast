@@ -12,11 +12,14 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Fixed a bug where extra metadata (fade-in/out, cue-in/out, etc.) would not save on the Bulk Media Editor import.
+
 ---
 
 # AzuraCast 0.20.4 (Nov 23, 2024)
 
-Due to bug reports relating to the updated AutoDJ scheduler, we're reverting the relevant code back to the code as it previously existed in versions 0.20.2 and earlier. This is the sole change in this
+Due to bug reports relating to the updated AutoDJ scheduler, we're reverting the relevant code back to the code as it
+previously existed in versions 0.20.2 and earlier. This is the sole change in this
 version of the application.
 
 ---

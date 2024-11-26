@@ -54,7 +54,7 @@ class StationMediaMetadata extends AbstractStationConfiguration
 
     public function setFadeOut(string|int|float $fadeOut = null): void
     {
-        $this->set(self::FADE_OUT, $fadeOut);
+        $this->set(self::FADE_OUT, self::getNumericValue($fadeOut));
     }
 
     public const string CUE_IN = 'cue_in';
@@ -81,7 +81,7 @@ class StationMediaMetadata extends AbstractStationConfiguration
         $this->set(self::CUE_OUT, self::getNumericValue($cueOut));
     }
 
-    public static function getNumericValue(string|int|float $annotation = null): ?float
+    private function getNumericValue(string|int|float $annotation = null): ?float
     {
         if (is_string($annotation)) {
             if (str_contains($annotation, ':')) {
@@ -92,6 +92,14 @@ class StationMediaMetadata extends AbstractStationConfiguration
             }
         }
 
-        return Types::floatOrNull($annotation);
+        $annotation = Types::floatOrNull($annotation);
+
+        if (null === $annotation) {
+            return null;
+        }
+
+        return ($annotation >= 0)
+            ? $annotation
+            : null;
     }
 }

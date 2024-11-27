@@ -104,11 +104,13 @@ let azuracast.autodj_is_loading = ref(true)
 # Number of attempts that have been made to ping the AutoDJ for the next song.
 let azuracast.autodj_ping_attempts = ref(0)
 
-# The username of the last authenticated DJ.
+# The username/display name of the last authenticated DJ.
 let azuracast.last_authenticated_dj = ref("")
+let azuracast.last_authenticated_dj_name = ref("")
 
-# The username of the current live DJ.
+# The username/display name of the current live DJ.
 let azuracast.live_dj = ref("")
+let azuracast.live_dj_name = ref("")
 
 # Whether Liquidsoap is currently transitioning to a live stream.
 let azuracast.to_live = ref(false)
@@ -440,17 +442,7 @@ Live Streamers/DJs
 ----->#
 
 # DJ Authentication
-def azuracast.dj_auth(login) =
-    sep_re = r/([,:])/
-    auth_info =
-        if (login.user == "source" or login.user == "") and (sep_re.test(login.password)) then
-            sep = sep_re.exec(login.password)
-            let (u, p) = string.split.first(separator=sep[0], login.password)
-            {user = u, password = p}
-        else
-            {user = login.user, password = login.password}
-        end
-
+def azuracast.dj_auth(auth_info) =
     try
         api_response = azuracast.api_call(
             timeout=5.0,
@@ -461,14 +453,23 @@ def azuracast.dj_auth(login) =
         if null.defined(api_response) then
             let json.parse (
                 {
-                    allow
+                    allow,
+                    username,
+                    display_name,
                 } : {
-                    allow: bool
+                    allow: bool,
+                    username: string?,
+                    display_name: string?,
                 }
             ) = null.get(api_response)
 
             if allow then
-                azuracast.last_authenticated_dj := auth_info.user
+                azuracast.last_authenticated_dj := null.get(default='', username)
+                azuracast.last_authenticated_dj_name := null.get(
+                    default=settings.azuracast.live_broadcast_text(),
+                    display_name
+                )
+
                 true
             else
                 false
@@ -489,32 +490,48 @@ end
 
 def azuracast.live_connected(header) =
     dj = azuracast.last_authenticated_dj()
+    dj_name = azuracast.last_authenticated_dj_name()
 
     log(
         level=2,
         label="azuracast.dj",
-        "DJ Source connected! Last authenticated DJ: #{dj} - #{header}"
+        "DJ Source connected! Last authenticated DJ: #{dj} (#{dj_name}) - #{header}"
     )
 
     azuracast.live_enabled := true
     azuracast.live_dj := dj
+    azuracast.live_dj_name := dj_name
 
-    _ = azuracast.api_call(
-        timeout=5.0,
-        "djon",
-        json.stringify({user = dj})
-    )
+    def f() =
+        _ = azuracast.api_call(
+            timeout=5.0,
+            "djon",
+            json.stringify({
+                user = azuracast.live_dj()
+            })
+        )
+    end
+
+    thread.run(fast=false, f)
 end
 
 def azuracast.live_disconnected() =
-    _ = azuracast.api_call(
-        timeout=5.0,
-        "djoff",
-        json.stringify({user = azuracast.live_dj()})
-    )
-
     azuracast.live_enabled := false
-    azuracast.live_dj := ""
+
+    def f() =
+        _ = azuracast.api_call(
+            timeout=5.0,
+            "djoff",
+            json.stringify({
+                user = azuracast.live_dj()
+            })
+        )
+
+        azuracast.live_dj := ""
+        azuracast.live_dj_name := ""
+    end
+
+    thread.run(fast=false, f)
 end
 
 #<-----
@@ -605,7 +622,7 @@ def azuracast.send_feedback(m) =
         end
     end
 
-    thread.run(f)
+    thread.run(fast=false, f)
 end
 
 #<-----

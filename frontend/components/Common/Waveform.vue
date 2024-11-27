@@ -3,8 +3,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div id="waveform_container">
-                    <div id="waveform-timeline" />
-                    <div id="waveform" />
+                    <div id="waveform-timeline"/>
+                    <div id="waveform"/>
                 </div>
             </div>
         </div>
@@ -28,17 +28,15 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-5">
+            <div v-if="showVolume" class="col-md-5">
                 <div class="inline-volume-controls d-flex align-items-center">
-                    <div class="flex-shrink-0">
-                        <button
-                            type="button"
-                            class="btn btn-sm btn-outline-inverse"
-                            :title="$gettext('Mute')"
-                            @click="volume = 0"
-                        >
-                            <icon :icon="IconVolumeOff" />
-                        </button>
+                    <div class="flex-shrink-0 mx-2">
+                        <mute-button
+                            class="p-0"
+                            :volume="volume"
+                            :is-muted="isMuted"
+                            @toggle-mute="toggleMute"
+                        />
                     </div>
                     <div class="flex-fill mx-1">
                         <input
@@ -51,16 +49,6 @@
                             step="1"
                         >
                     </div>
-                    <div class="flex-shrink-0">
-                        <button
-                            type="button"
-                            class="btn btn-sm btn-outline-inverse"
-                            :title="$gettext('Full Volume')"
-                            @click="volume = 100"
-                        >
-                            <icon :icon="IconVolumeUp" />
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -72,11 +60,11 @@ import WS from 'wavesurfer.js';
 import timeline from 'wavesurfer.js/dist/plugins/timeline.js';
 import regions from 'wavesurfer.js/dist/plugins/regions.js';
 import getLogarithmicVolume from '~/functions/getLogarithmicVolume';
-import Icon from './Icon.vue';
 import {onMounted, onUnmounted, ref, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
 import usePlayerVolume from "~/functions/usePlayerVolume";
-import {IconVolumeOff, IconVolumeUp} from "~/components/Common/icons";
+import useShowVolume from "~/functions/useShowVolume.ts";
+import MuteButton from "~/components/Common/MuteButton.vue";
 
 const props = defineProps({
     audioUrl: {
@@ -99,6 +87,14 @@ let wavesurfer = null;
 let wsRegions = null;
 
 const volume = usePlayerVolume();
+const showVolume = useShowVolume();
+
+const isMuted = ref(false);
+
+const toggleMute = () => {
+    isMuted.value = !isMuted.value;
+}
+
 const zoom = ref(0);
 
 watch(zoom, (val) => {
@@ -107,6 +103,10 @@ watch(zoom, (val) => {
 
 watch(volume, (val) => {
     wavesurfer?.setVolume(getLogarithmicVolume(val));
+});
+
+watch(isMuted, (val) => {
+    wavesurfer?.setMuted(val);
 });
 
 const isExternalJson = ref(false);

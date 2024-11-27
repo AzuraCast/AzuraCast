@@ -10,6 +10,8 @@ release channel, you can take advantage of these new features and fixes.
 - All web hooks can now have rate limits set for them, so they only dispatch once in the time specified, in case
   third-party services need to receive updates less frequently.
 
+- Volume controls are hidden on iOS, as volume is immutable on that platform.
+
 ## Bug Fixes
 
 - Fixed a bug where extra metadata (fade-in/out, cue-in/out, etc.) would not save on the Bulk Media Editor import.

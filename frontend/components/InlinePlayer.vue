@@ -42,9 +42,9 @@
             :aria-label="$gettext('Stop')"
             @click="stop()"
         >
-            <icon :icon="IconStop" />
+            <icon :icon="IconStop"/>
         </button>
-        <div class="inline-volume-controls d-inline-flex align-items-center ms-2">
+        <div v-if="showVolume" class="inline-volume-controls d-inline-flex align-items-center ms-2">
             <div class="flex-shrink-0">
                 <mute-button
                     class="btn p-2 text-reset"
@@ -77,6 +77,7 @@ import MuteButton from "~/components/Common/MuteButton.vue";
 import usePlayerVolume from "~/functions/usePlayerVolume";
 import {IconStop} from "~/components/Common/icons";
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
+import useShowVolume from "~/functions/useShowVolume.ts";
 
 defineOptions({
     inheritAttrs: false
@@ -86,6 +87,8 @@ const {isPlaying, current, stop} = usePlayerStore();
 
 const volume = usePlayerVolume();
 const isMuted = ref(false);
+
+const showVolume = useShowVolume();
 
 const duration: Ref<number> = ref(0);
 const currentTime: Ref<number> = ref(0);

@@ -11,7 +11,7 @@
                 v-if="showAlbumArt && np.now_playing.song.art"
                 class="now-playing-art"
             >
-                <album-art :src="np.now_playing.song.art" />
+                <album-art :src="np.now_playing.song.art"/>
             </div>
             <div class="now-playing-main">
                 <h6
@@ -90,7 +90,7 @@
                         aria-expanded="false"
                     >
                         {{ currentStream.name }}
-                        <span class="caret" />
+                        <span class="caret"/>
                     </button>
                     <ul
                         class="dropdown-menu"
@@ -112,7 +112,7 @@
                 </div>
             </div>
 
-            <div class="radio-control-volume d-flex align-items-center">
+            <div v-if="showVolume" class="radio-control-volume d-flex align-items-center">
                 <div class="flex-shrink-0 mx-2">
                     <mute-button
                         class="p-0 text-secondary"
@@ -150,6 +150,7 @@ import {useAzuraCastStation} from "~/vendor/azuracast";
 import usePlayerVolume from "~/functions/usePlayerVolume";
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {useEventListener} from "@vueuse/core";
+import useShowVolume from "~/functions/useShowVolume.ts";
 
 const props = defineProps({
     ...playerProps
@@ -219,6 +220,7 @@ const streams = computed<CurrentStreamDescriptor[]>(() => {
 });
 
 const volume = usePlayerVolume();
+const showVolume = useShowVolume();
 
 const urlParamVolume = (new URL(document.location.href)).searchParams.get('volume');
 if (null !== urlParamVolume) {

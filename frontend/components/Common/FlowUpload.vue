@@ -50,12 +50,12 @@
                 type="button"
                 class="file-upload btn btn-primary text-center ms-1"
             >
-                <icon :icon="IconUpload" />
+                <icon :icon="IconUpload"/>
                 <span>
                     {{ $gettext('Select File') }}
                 </span>
             </button>
-            <small class="file-name" />
+            <small class="file-name"/>
             <input
                 type="file"
                 :accept="validMimeTypesList"
@@ -106,13 +106,15 @@ interface FlowFile {
     isCompleted: boolean,
     progressPercent: number,
     error?: string,
-    size: string
+    size: string,
+    targetUrl: string
 }
 
 interface OriginalFlowFile {
     uniqueIdentifier: string,
     name: string,
     size: number,
+
     progress(): number
 }
 
@@ -142,7 +144,8 @@ const files = reactive<{
             isVisible: true,
             isCompleted: false,
             progressPercent: 0,
-            error: null
+            error: null,
+            targetUrl: props.targetUrl
         };
     },
     get(file: OriginalFlowFile): FlowFile {
@@ -167,9 +170,7 @@ const {$gettext} = useTranslate();
 
 onMounted(() => {
     const defaultConfig = {
-        target: () => {
-            return props.targetUrl
-        },
+        target: (file: OriginalFlowFile) => files.get(file).targetUrl ?? props.targetUrl,
         singleFile: !props.allowMultiple,
         headers: {
             'Accept': 'application/json',
@@ -201,7 +202,7 @@ onMounted(() => {
     });
 
     flow.on('fileProgress', (file: OriginalFlowFile) => {
-      files.get(file).progressPercent = toInteger(file.progress() * 100);
+        files.get(file).progressPercent = toInteger(file.progress() * 100);
     });
 
     flow.on('fileSuccess', (file: OriginalFlowFile, message) => {

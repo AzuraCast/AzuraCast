@@ -14,6 +14,11 @@ release channel, you can take advantage of these new features and fixes.
 
 - Fixed a bug where extra metadata (fade-in/out, cue-in/out, etc.) would not save on the Bulk Media Editor import.
 
+- Fixed a bug where extra metadata (fade-in/out, cue-in/out, etc.) could contain invalid values (i.e. -1) that would
+  cause the track to skip when playing.
+
+- Fixed a bug where file uploads would fail if the user navigated to a different directory while uploading the file.
+
 ---
 
 # AzuraCast 0.20.4 (Nov 23, 2024)

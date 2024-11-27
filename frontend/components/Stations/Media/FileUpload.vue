@@ -1,7 +1,6 @@
 <template>
     <flow-upload
-        :target-url="uploadUrl"
-        :flow-configuration="flowConfiguration"
+        :target-url="targetUrl"
         :valid-mime-types="validMimeTypes"
         allow-multiple
         @complete="onFlowUpload"
@@ -11,6 +10,7 @@
 
 <script setup lang="ts">
 import FlowUpload from '~/components/Common/FlowUpload.vue';
+import {computed} from "vue";
 
 const props = defineProps({
     uploadUrl: {
@@ -35,14 +35,13 @@ const props = defineProps({
 
 const emit = defineEmits(['relist']);
 
-const flowConfiguration = {
-    query: () => {
-        return {
-            'currentDirectory': props.currentDirectory,
-            'searchPhrase': props.searchPhrase
-        };
-    }
-};
+const targetUrl = computed(() => {
+    const url = new URL(props.uploadUrl, document.location.href);
+    url.searchParams.set('currentDirectory', props.currentDirectory);
+    url.searchParams.set('searchPhrase', props.searchPhrase);
+
+    return url.toString();
+});
 
 const onFlowUpload = () => {
     emit('relist');

@@ -21,6 +21,7 @@ final class SettingsFixture extends AbstractFixture
         $settings->setBaseUrl((string)(getenv('INIT_BASE_URL') ?: 'http://docker.local'));
         $settings->setInstanceName((string)(getenv('INIT_INSTANCE_NAME') ?: 'local test'));
         $settings->setGeoliteLicenseKey((string)(getenv('INIT_GEOLITE_LICENSE_KEY') ?: ''));
+        $settings->setLastFmApiKey((string)(getenv('INIT_LASTFM_API_KEY') ?: ''));
 
         $settings->setSetupCompleteTime(time());
         $settings->setPreferBrowserUrl(true);

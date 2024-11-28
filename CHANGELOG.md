@@ -5,6 +5,12 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Update to Liquidsoap 2.3.0**: We have worked closely with the maintainers of Liquidsoap and members of the radio
+  community to test and refine the next big version of Liquidsoap, our underlying broadcast manager, and they have
+  released 2.3.0 as a stable release. We're planning on using this version moving forward, first in Rolling Release for
+  testing and then in Stable builds. Some custom code may require modification from previous versions, but a majority of
+  code should work unmodified.
+
 ## Code Quality/Technical Changes
 
 - All web hooks can now have rate limits set for them, so they only dispatch once in the time specified, in case
@@ -28,6 +34,8 @@ release channel, you can take advantage of these new features and fixes.
 Due to bug reports relating to the updated AutoDJ scheduler, we're reverting the relevant code back to the code as it
 previously existed in versions 0.20.2 and earlier. This is the sole change in this
 version of the application.
+
+**Technical note:** This is the last stable version of AzuraCast to use the Liquidsoap 2.2.x version series.
 
 ---
 

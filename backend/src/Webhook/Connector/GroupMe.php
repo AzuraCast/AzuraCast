@@ -47,26 +47,32 @@ final class GroupMe extends AbstractConnector
 
         $webhookUrl = $apiUrl . '/bots/post';
 
-        $requestParams = [
-            'bot_id' => $botId,
-            'text' => $messages['text'],
-        ];
+        $text = $messages['text'];
+        $chunks = str_split($text, 1000);
 
-        $response = $this->httpClient->request(
-            'POST',
-            $webhookUrl,
-            [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                ],
-                'json' => $requestParams,
-            ]
-        );
+        foreach ($chunks as $chunk) {
+            $requestParams = [
+                'bot_id' => $botId,
+                'text' => $chunk,
+            ];
 
-        $this->logHttpResponse(
-            $webhook,
-            $response,
-            $requestParams
-        );
+            $response = $this->httpClient->request(
+                'POST',
+                $webhookUrl,
+                [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                    ],
+                    'json' => $requestParams,
+                ]
+            );
+
+            $this->logHttpResponse(
+                $webhook,
+                $response,
+                $requestParams
+            );
+            usleep(100000); // Delay to prevent sending out of order
+        }
     }
 }

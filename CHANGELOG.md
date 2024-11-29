@@ -18,6 +18,10 @@ release channel, you can take advantage of these new features and fixes.
 
 - Volume controls are hidden on iOS, as volume is immutable on that platform.
 
+- AzuraCast will now detect a rename in a radio station's base directory and automatically shut down services pointing
+  to the original directory, move relevant files to the new directory (and storage locations, if appropriate), then
+  start up services in the new directory seamlessly with a single rename step.
+
 ## Bug Fixes
 
 - Fixed a bug where extra metadata (fade-in/out, cue-in/out, etc.) would not save on the Bulk Media Editor import.

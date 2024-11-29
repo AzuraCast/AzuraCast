@@ -7,6 +7,7 @@ namespace App\Controller\Api\Admin;
 use App\Controller\Api\AbstractApiCrudController;
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
+use App\Entity\Enums\StorageLocationAdapters;
 use App\Entity\Repository\StationQueueRepository;
 use App\Entity\Repository\StationRepository;
 use App\Entity\Repository\StorageLocationRepository;
@@ -17,10 +18,12 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Radio\Configuration;
+use App\Utilities\File;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -299,6 +302,17 @@ class StationsController extends AbstractApiCrudController
 
         $this->configuration->initializeConfiguration($station);
 
+        // Detect a change in the station's base config directory.
+        if (
+            !empty($originalRecord['radio_base_dir'])
+            && $originalRecord['radio_base_dir'] !== $station->getRadioBaseDir()
+        ) {
+            $baseDirRenamed = true;
+            $this->handleBaseDirRename($station, $originalRecord['radio_base_dir']);
+        } else {
+            $baseDirRenamed = false;
+        }
+
         // Delete media-related items if the media storage is changed.
         /** @var StorageLocation|null $oldMediaStorage */
         $oldMediaStorage = $originalRecord['media_storage_location'];
@@ -369,7 +383,8 @@ class StationsController extends AbstractApiCrudController
         }
 
         if (
-            $adapterChanged
+            $baseDirRenamed
+            || $adapterChanged
             || $maxBitrateChanged
             || $enabledChanged
             || $maxMountsLowered
@@ -385,6 +400,70 @@ class StationsController extends AbstractApiCrudController
         }
 
         return $station;
+    }
+
+    protected function handleBaseDirRename(
+        Station $station,
+        string $originalPath
+    ): void {
+        $newPath = $station->getRadioBaseDir();
+
+        // Unlink the old path's supervisor config file.
+        $originalConfPath = Configuration::getSupervisorConfPath($originalPath);
+        @unlink($originalConfPath);
+
+        // Force a reload of supervisor services and stop all for this station.
+        $this->configuration->removeConfiguration($station);
+
+        // Move any local storage locations that only point to this station.
+        $allStorageLocationsMoved = true;
+
+        foreach ($station->getAllStorageLocations() as $storageLocation) {
+            if (StorageLocationAdapters::Local !== $storageLocation->getAdapter()) {
+                continue;
+            }
+
+            $stationsUsingLocation = $this->storageLocationRepo->getStationsUsingLocation($storageLocation);
+            if (count($stationsUsingLocation) > 1) {
+                $allStorageLocationsMoved = false;
+                continue;
+            }
+
+            $locationPath = $storageLocation->getPath();
+
+            if (Path::isBasePath($originalPath, $locationPath)) {
+                $newLocationPath = Path::makeAbsolute(
+                    Path::makeRelative($locationPath, $originalPath),
+                    $newPath
+                );
+
+                dump($locationPath, $newLocationPath);
+
+                $storageLocation->setPath($newLocationPath);
+                $this->em->persist($storageLocation);
+
+                File::moveDirectoryContents(
+                    $locationPath,
+                    $newLocationPath
+                );
+            }
+        }
+
+        // Move non-storage-location directories.
+        foreach (Station::NON_STORAGE_LOCATION_DIRS as $otherDir) {
+            $dirOldPath = $originalPath . '/' . $otherDir;
+            $dirNewPath = $newPath . '/' . $otherDir;
+
+            File::moveDirectoryContents(
+                $dirOldPath,
+                $dirNewPath
+            );
+        }
+
+        // Clear the old directory entirely if all storage locations are moved.
+        if ($allStorageLocationsMoved) {
+            (new Filesystem())->remove($originalPath);
+        }
     }
 
     protected function handleCreate(Station $station): Station
@@ -415,12 +494,11 @@ class StationsController extends AbstractApiCrudController
         $this->configuration->removeConfiguration($station);
 
         // Remove directories generated specifically for this station.
-        $directoriesToEmpty = [
-            $station->getRadioConfigDir(),
-            $station->getRadioPlaylistsDir(),
-            $station->getRadioTempDir(),
-        ];
-        (new Filesystem())->remove($directoriesToEmpty);
+        $fsUtils = new Filesystem();
+        $stationBaseDir = $station->getRadioBaseDir();
+        foreach (Station::NON_STORAGE_LOCATION_DIRS as $otherDir) {
+            $fsUtils->remove($stationBaseDir . '/' . $otherDir);
+        }
 
         $this->em->flush();
 

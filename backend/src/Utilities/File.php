@@ -6,6 +6,8 @@ namespace App\Utilities;
 
 use FilesystemIterator;
 use InvalidArgumentException;
+use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
+use League\Flysystem\Visibility;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
@@ -70,6 +72,19 @@ final class File
         }
 
         return $fullPath;
+    }
+
+    public static function mkdirIfNotExists(string $dirname): void
+    {
+        if (is_dir($dirname)) {
+            return;
+        }
+
+        $visibility = (new PortableVisibilityConverter(
+            defaultForDirectories: Visibility::PUBLIC
+        ))->defaultForDirectories();
+
+        (new Filesystem())->mkdir($dirname, $visibility);
     }
 
     /**

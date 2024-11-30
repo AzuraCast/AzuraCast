@@ -437,8 +437,6 @@ class StationsController extends AbstractApiCrudController
                     $newPath
                 );
 
-                dump($locationPath, $newLocationPath);
-
                 $storageLocation->setPath($newLocationPath);
                 $this->em->persist($storageLocation);
 

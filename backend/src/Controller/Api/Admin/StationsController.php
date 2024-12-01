@@ -16,6 +16,7 @@ use App\Entity\StorageLocation;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Nginx\Nginx;
 use App\OpenApi;
 use App\Radio\Configuration;
 use App\Utilities\File;
@@ -156,6 +157,7 @@ class StationsController extends AbstractApiCrudController
         protected StorageLocationRepository $storageLocationRepo,
         protected StationQueueRepository $queueRepo,
         protected Configuration $configuration,
+        protected Nginx $nginx,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
@@ -302,15 +304,15 @@ class StationsController extends AbstractApiCrudController
 
         $this->configuration->initializeConfiguration($station);
 
+        $rewriteConfiguration = false;
+
         // Detect a change in the station's base config directory.
         if (
             !empty($originalRecord['radio_base_dir'])
             && $originalRecord['radio_base_dir'] !== $station->getRadioBaseDir()
         ) {
-            $baseDirRenamed = true;
+            $rewriteConfiguration = true;
             $this->handleBaseDirRename($station, $originalRecord['radio_base_dir']);
-        } else {
-            $baseDirRenamed = false;
         }
 
         // Delete media-related items if the media storage is changed.
@@ -327,35 +329,36 @@ class StationsController extends AbstractApiCrudController
             $this->queueRepo->clearUnplayed($station);
         }
 
-        // Get the original values to check for changes.
-        $oldFrontend = $originalRecord['frontend_type'];
-        $oldBackend = $originalRecord['backend_type'];
-        $oldHls = (bool)$originalRecord['enable_hls'];
-        $oldMaxBitrate = (int)$originalRecord['max_bitrate'];
-        $oldMaxMounts = (int)$originalRecord['max_mounts'];
-        $oldMaxHlsStreams = (int)$originalRecord['max_hls_streams'];
-        $oldEnabled = (bool)$originalRecord['is_enabled'];
+        // Check for changes in essential variables.
+        if ($originalRecord['short_name'] !== $station->getShortName()) {
+            $rewriteConfiguration = true;
+            $this->nginx->writeConfiguration($station);
+        }
 
-        $frontendChanged = ($oldFrontend !== $station->getFrontendType());
-        $backendChanged = ($oldBackend !== $station->getBackendType());
-        $adapterChanged = $frontendChanged || $backendChanged;
-
-        $hlsChanged = $oldHls !== $station->getEnableHls();
-        $enabledChanged = $oldEnabled !== $station->getIsEnabled();
-
+        $frontendChanged = ($originalRecord['frontend_type'] !== $station->getFrontendType());
         if ($frontendChanged) {
+            $rewriteConfiguration = true;
             $this->stationRepo->resetMounts($station);
         }
 
-        if ($hlsChanged || $backendChanged) {
+        $backendChanged = ($originalRecord['backend_type'] !== $station->getBackendType());
+        $hlsChanged = (bool)$originalRecord['enable_hls'] !== $station->getEnableHls();
+        if ($backendChanged || $hlsChanged) {
+            $rewriteConfiguration = true;
             $this->stationRepo->resetHls($station);
         }
 
-        $maxBitrateChanged =
-            ($oldMaxBitrate !== 0 && $station->getMaxBitrate() !== 0 && $oldMaxBitrate > $station->getMaxBitrate())
-            || ($oldMaxBitrate === 0 && $station->getMaxBitrate() !== 0);
+        if ((bool)$originalRecord['is_enabled'] !== $station->getIsEnabled()) {
+            $rewriteConfiguration = true;
+        }
 
-        if ($maxBitrateChanged) {
+        // Apply "Max Bitrate"
+        $oldMaxBitrate = (int)$originalRecord['max_bitrate'];
+
+        if (
+            ($oldMaxBitrate !== 0 && $station->getMaxBitrate() !== 0 && $oldMaxBitrate > $station->getMaxBitrate())
+            || ($oldMaxBitrate === 0 && $station->getMaxBitrate() !== 0)
+        ) {
             if (!$frontendChanged) {
                 $this->stationRepo->reduceMountsBitrateToLimit($station);
             }
@@ -368,28 +371,29 @@ class StationsController extends AbstractApiCrudController
             $this->stationRepo->reduceLiveBroadcastRecordingBitrateToLimit($station);
         }
 
-        $maxMountsLowered =
+        // Apply "Max Mount Points"
+        $oldMaxMounts = (int)$originalRecord['max_mounts'];
+
+        if (
             $station->getMaxMounts() !== 0
-            && ($oldMaxMounts > $station->getMaxMounts() || $oldMaxMounts === 0);
-        if ($maxMountsLowered) {
+            && ($oldMaxMounts > $station->getMaxMounts() || $oldMaxMounts === 0)
+        ) {
+            $rewriteConfiguration = true;
             $this->stationRepo->reduceMountPointsToLimit($station);
         }
 
-        $maxHlsStreamsLowered =
+        // Apply "Max HLS Streams"
+        $oldMaxHlsStreams = (int)$originalRecord['max_hls_streams'];
+
+        if (
             $station->getMaxHlsStreams() !== 0
-            && ($oldMaxHlsStreams > $station->getMaxHlsStreams() || $oldMaxHlsStreams === 0);
-        if ($maxHlsStreamsLowered) {
+            && ($oldMaxHlsStreams > $station->getMaxHlsStreams() || $oldMaxHlsStreams === 0)
+        ) {
+            $rewriteConfiguration = true;
             $this->stationRepo->reduceHlsStreamsToLimit($station);
         }
 
-        if (
-            $baseDirRenamed
-            || $adapterChanged
-            || $maxBitrateChanged
-            || $enabledChanged
-            || $maxMountsLowered
-            || $maxHlsStreamsLowered
-        ) {
+        if ($rewriteConfiguration) {
             try {
                 $this->configuration->writeConfiguration(
                     station: $station,

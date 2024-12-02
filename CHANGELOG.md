@@ -22,6 +22,9 @@ release channel, you can take advantage of these new features and fixes.
   to the original directory, move relevant files to the new directory (and storage locations, if appropriate), then
   start up services in the new directory seamlessly with a single rename step.
 
+- Similar to the above, AzuraCast will detect a rename in the station's "short code" (i.e. `my_radio_station`) and
+  update the custom `/listen/my_radio_station` URLs immediately to match.
+
 ## Bug Fixes
 
 - Fixed a bug where extra metadata (fade-in/out, cue-in/out, etc.) would not save on the Bulk Media Editor import.

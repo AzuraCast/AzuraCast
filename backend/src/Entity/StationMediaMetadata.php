@@ -18,7 +18,7 @@ class StationMediaMetadata extends AbstractStationConfiguration
 
     public function setAmplify(float|string $amplify = null): void
     {
-        $this->set(self::AMPLIFY, self::getNumericValue($amplify));
+        $this->set(self::AMPLIFY, self::getNumericValue($amplify, true));
     }
 
     public const string CROSS_START_NEXT = 'cross_start_next';
@@ -81,8 +81,10 @@ class StationMediaMetadata extends AbstractStationConfiguration
         $this->set(self::CUE_OUT, self::getNumericValue($cueOut));
     }
 
-    private function getNumericValue(string|int|float $annotation = null): ?float
-    {
+    private function getNumericValue(
+        string|int|float $annotation = null,
+        bool $allowNegative = false
+    ): ?float {
         if (is_string($annotation)) {
             if (str_contains($annotation, ':')) {
                 $annotation = Time::displayTimeToSeconds($annotation);
@@ -98,7 +100,7 @@ class StationMediaMetadata extends AbstractStationConfiguration
             return null;
         }
 
-        return ($annotation >= 0)
+        return ($allowNegative || $annotation >= 0)
             ? $annotation
             : null;
     }

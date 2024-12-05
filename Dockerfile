@@ -19,7 +19,7 @@ RUN strip /go/bin/*
 #
 # MariaDB dependencies build step
 #
-FROM mariadb:11.2-jammy AS mariadb
+FROM mariadb:lts-noble AS mariadb
 
 #
 # Built-in docs build step

@@ -768,8 +768,9 @@ final class ConfigWriter implements EventSubscriberInterface
             $event->appendBlock(
                 <<<LIQ
                 # Replaygain Metadata
-                enable_replaygain_metadata()
-                radio = replaygain(radio)
+                # Temporarily disabled until a runaway request issue is resolved.
+                # enable_replaygain_metadata()
+                # radio = replaygain(radio)
                 LIQ
             );
         }
@@ -1030,12 +1031,12 @@ final class ConfigWriter implements EventSubscriberInterface
         }
 
         $lsConfig[] = 'hls_streams = [' . implode(
-            ', ',
-            array_map(
-                static fn($row) => '("' . $row . '", ' . $row . ')',
-                $hlsStreams
-            )
-        ) . ']';
+                ', ',
+                array_map(
+                    static fn($row) => '("' . $row . '", ' . $row . ')',
+                    $hlsStreams
+                )
+            ) . ']';
 
         $event->appendLines($lsConfig);
 

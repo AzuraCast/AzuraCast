@@ -1031,12 +1031,12 @@ final class ConfigWriter implements EventSubscriberInterface
         }
 
         $lsConfig[] = 'hls_streams = [' . implode(
-                ', ',
-                array_map(
-                    static fn($row) => '("' . $row . '", ' . $row . ')',
-                    $hlsStreams
-                )
-            ) . ']';
+            ', ',
+            array_map(
+                static fn($row) => '("' . $row . '", ' . $row . ')',
+                $hlsStreams
+            )
+        ) . ']';
 
         $event->appendLines($lsConfig);
 

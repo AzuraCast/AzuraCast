@@ -11,6 +11,8 @@ release channel, you can take advantage of these new features and fixes.
   testing and then in Stable builds. Some custom code may require modification from previous versions, but a majority of
   code should work unmodified.
 
+- **Bluesky Post Webhook**: You can now add a web hook that, when dispatched, creates a new post on Bluesky.
+
 ## Code Quality/Technical Changes
 
 - All web hooks can now have rate limits set for them, so they only dispatch once in the time specified, in case

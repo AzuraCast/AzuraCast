@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Webhook\Enums;
 
+use App\Webhook\Connector\Bluesky;
 use App\Webhook\Connector\Discord;
 use App\Webhook\Connector\Email;
 use App\Webhook\Connector\Generic;
@@ -31,6 +32,7 @@ enum WebhookTypes: string
     case Telegram = 'telegram';
     case GroupMe = 'groupme';
     case Mastodon = 'mastodon';
+    case Bluesky = 'bluesky';
 
     case GoogleAnalyticsV4 = 'google_analytics_v4';
     case MatomoAnalytics = 'matomo_analytics';
@@ -55,6 +57,7 @@ enum WebhookTypes: string
             self::Telegram => Telegram::class,
             self::GroupMe => GroupMe::class,
             self::Mastodon => Mastodon::class,
+            self::Bluesky => Bluesky::class,
             self::GoogleAnalyticsV4 => GoogleAnalyticsV4::class,
             self::MatomoAnalytics => MatomoAnalytics::class,
             default => null

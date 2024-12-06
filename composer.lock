@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9e44bc176c14d62ff34b1847161d8660",
+    "content-hash": "73de7cbd3a155e01a529ead4393d43fb",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -4884,6 +4884,67 @@
                 }
             ],
             "time": "2024-09-16T03:06:04+00:00"
+        },
+        {
+            "name": "potibm/phluesky",
+            "version": "v0.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/potibm/phluesky.git",
+                "reference": "0c0bb89b156345e0ff0ba5bcd22f28667c1fb3c5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/potibm/phluesky/zipball/0c0bb89b156345e0ff0ba5bcd22f28667c1fb3c5",
+                "reference": "0c0bb89b156345e0ff0ba5bcd22f28667c1fb3c5",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "php": "^8.2",
+                "php-http/discovery": "^1.19",
+                "psr/http-client": "^1.0",
+                "psr/http-client-implementation": "*",
+                "psr/http-factory": "^1.0",
+                "psr/http-factory-implementation": "*",
+                "psr/http-message": "^2.0",
+                "psr/http-message-implementation": "*"
+            },
+            "require-dev": {
+                "nyholm/psr7": "^1.8",
+                "phpunit/phpunit": "^10",
+                "psalm/plugin-phpunit": "^0.19.0",
+                "symfony/http-client": "^7.0",
+                "symplify/easy-coding-standard": "^12.0.8",
+                "vimeo/psalm": "^5.15"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "potibm\\Bluesky\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Keßeler",
+                    "email": "poti@kaoz.org"
+                }
+            ],
+            "description": "An small PHP library for posting messages to the bluesky social network using the AT Protocol.",
+            "keywords": [
+                "at cprotocol",
+                "atproto",
+                "bluesky"
+            ],
+            "support": {
+                "issues": "https://github.com/potibm/phluesky/issues",
+                "source": "https://github.com/potibm/phluesky/tree/v0.5.0"
+            },
+            "time": "2024-12-04T09:34:46+00:00"
         },
         {
             "name": "promphp/prometheus_client_php",

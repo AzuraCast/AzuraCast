@@ -81,6 +81,7 @@ export enum WebhookType {
     Telegram = 'telegram',
     GroupMe = 'groupme',
     Mastodon = 'mastodon',
+    Bluesky = 'bluesky',
     GoogleAnalyticsV4 = 'google_analytics_v4',
     MatomoAnalytics = 'matomo_analytics'
 }
@@ -129,6 +130,10 @@ export function useTypeDetails() {
             title: $gettext('Mastodon Post'),
             description: $gettext('Automatically publish to a Mastodon instance.')
         },
+        [WebhookType.Bluesky]: {
+            title: $gettext('Bluesky Post'),
+            description: $gettext('Automatically publish to Bluesky.')
+        },
         [WebhookType.GoogleAnalyticsV4]: {
             title: $gettext('Google Analytics V4 Integration'),
             description: $gettext('Send stream listener details to Google Analytics.')
@@ -141,7 +146,7 @@ export function useTypeDetails() {
 }
 
 export function getTriggers(type: WebhookType) {
-    switch(type) {
+    switch (type) {
         case WebhookType.TuneIn:
         case WebhookType.RadioDe:
         case WebhookType.RadioReg:

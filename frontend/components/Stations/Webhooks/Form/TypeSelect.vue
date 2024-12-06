@@ -16,7 +16,8 @@
                     WebhookType.Discord,
                     WebhookType.Telegram,
                     WebhookType.GroupMe,
-                    WebhookType.Mastodon
+                    WebhookType.Mastodon,
+                    WebhookType.Bluesky
                 ])"
                 @select="selectType"
             />

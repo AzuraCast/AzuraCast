@@ -52,6 +52,7 @@ import RadioDe from "~/components/Stations/Webhooks/Form/RadioDe.vue";
 import GetMeRadio from "~/components/Stations/Webhooks/Form/GetMeRadio.vue";
 import RadioReg from "~/components/Stations/Webhooks/Form/RadioReg.vue";
 import GroupMe from "~/components/Stations/Webhooks/Form/GroupMe.vue";
+import Bluesky from "~/components/Stations/Webhooks/Form/Bluesky.vue";
 
 const props = defineProps({
     ...baseEditModalProps,
@@ -88,6 +89,7 @@ const webhookComponents = {
     [WebhookType.Telegram]: Telegram,
     [WebhookType.GroupMe]: GroupMe,
     [WebhookType.Mastodon]: Mastodon,
+    [WebhookType.Bluesky]: Bluesky,
     [WebhookType.GoogleAnalyticsV4]: GoogleAnalyticsV4,
     [WebhookType.MatomoAnalytics]: MatomoAnalytics,
 };

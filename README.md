@@ -50,7 +50,8 @@ and open-source software, and pull requests are always welcome.
 ## Need Help?
 
 If you need help with AzuraCast, the first place you should visit is
-our [Support page](https://www.azuracast.com/docs/help/troubleshooting/), which features solutions to a number of commonly encountered issues and questions, as well as instructions on how to
+our [Support page](https://www.azuracast.com/docs/help/troubleshooting/), which features solutions to a number of
+commonly encountered issues and questions, as well as instructions on how to
 check your server's log files for more details. If you do need our help via GitHub, supplying these logs is absolutely
 essential in helping us diagnose and resolve your issue.
 
@@ -74,6 +75,8 @@ We frequently post to social media any time there are significant updates to our
 should be aware of, or upcoming changes to third-party software. You can get these updates in a more timely fashion by
 following our accounts:
 
+- On Bluesky at [@azuracast.com](https://bsky.app/profile/azuracast.com)
+
 - On Mastodon at [@AzuraCast@fosstodon.org](https://fosstodon.org/@AzuraCast)
 
 If you are an AzuraCast user, station owner, developer or other contributor, you can also join our Discord community,
@@ -89,12 +92,12 @@ location.
 
 We would like to thank the following organizations for their support of AzuraCast's ongoing development:
 
-- [DigitalOcean](https://marketplace.digitalocean.com/apps/azuracast) for sponsoring our open-source efforts and providing infrastructure that helps run AzuraCast services
-- [JetBrains](https://www.jetbrains.com/) for making our development faster, easier and more productive with tools like PhpStorm
+- [JetBrains](https://www.jetbrains.com/) for making our development faster, easier and more productive with tools like
+  PhpStorm
 - [CrowdIn](https://crowdin.com/) for giving us a simple and powerful tool to help translate our application for users
   around the world
 - [Netlify](https://www.netlify.com/) for supporting open-source software like ours and for serving as the host of our
-  primary [azuracast.com](https://www.azuracast.com/) web site.
+  primary [azuracast.com](https://www.azuracast.com/) website.
 - [BrowserStack](https://www.browserstack.com/) for giving us tools to help test our software's accessibility and
   features across multiple browsers and operating systems.
 - [Depot](https://depot.dev/?utm_source=AzuraCast) for powering our Docker image builds.

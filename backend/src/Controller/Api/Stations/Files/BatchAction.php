@@ -363,6 +363,7 @@ final class BatchAction implements SingleActionInterface
                     $newQueue->setTimestampCued($cuedTimestamp);
                     $newQueue->setIsPlayed();
                     $this->em->persist($newQueue);
+                    $this->em->flush();
 
                     $event = AnnotateNextSong::fromStationQueue($newQueue, true);
                     $this->eventDispatcher->dispatch($event);

@@ -15,7 +15,7 @@
                     :disabled="dirHistory.length === 0"
                     @click="pageBack"
                 >
-                    <icon :icon="IconChevronLeft" />
+                    <icon :icon="IconChevronLeft"/>
                     <span>
                         {{ $gettext('Back') }}
                     </span>
@@ -49,7 +49,7 @@
                     <template #cell(name)="{item}">
                         <div class="is_dir d-flex align-items-center">
                             <span class="file-icon me-2">
-                                <icon :icon="IconFolder" />
+                                <icon :icon="IconFolder"/>
                             </span>
 
                             <a
@@ -134,7 +134,7 @@ const langHeader = computed(() => {
 });
 
 const $modal = ref<ModalTemplateRef>(null);
-const {show: open, hide} = useHasModal($modal);
+const {show, hide} = useHasModal($modal);
 
 const onHidden = () => {
     dirHistory.value = [];
@@ -152,15 +152,18 @@ const {state: directories, execute: reload, isLoading} = useAsyncState(
         }
     }).then((r) => r.data.rows),
     [],
+    {
+        immediate: false
+    }
 );
 
 const doMove = () => {
     axios.put(props.batchUrl, {
-            'do': 'move',
-            'currentDirectory': props.currentDirectory,
-            'directory': destinationDirectory.value,
-            'files': props.selectedItems.files,
-            'dirs': props.selectedItems.directories
+        'do': 'move',
+        'currentDirectory': props.currentDirectory,
+        'directory': destinationDirectory.value,
+        'files': props.selectedItems.files,
+        'dirs': props.selectedItems.directories
     }).then(({data}) => {
         handleBatchResponse(
             data,
@@ -197,6 +200,11 @@ const pageBack = () => {
     destinationDirectory.value = newDirectory;
     onDirChange();
 };
+
+const open = () => {
+    reload();
+    show();
+}
 
 defineExpose({
     open

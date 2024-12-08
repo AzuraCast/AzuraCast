@@ -768,9 +768,8 @@ final class ConfigWriter implements EventSubscriberInterface
             $event->appendBlock(
                 <<<LIQ
                 # Replaygain Metadata
-                # Temporarily disabled until a runaway request issue is resolved.
-                # enable_replaygain_metadata()
-                # radio = replaygain(radio)
+                enable_replaygain_metadata()
+                radio = replaygain(radio)
                 LIQ
             );
         }

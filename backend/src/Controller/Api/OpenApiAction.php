@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\Console\Command\GenerateApiDocsCommand;
+use App\Console\Command\Dev\GenerateApiDocsCommand;
 use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;

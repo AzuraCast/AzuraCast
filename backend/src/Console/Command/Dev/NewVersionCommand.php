@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Command;
+namespace App\Console\Command\Dev;
 
+use App\Console\Command\CommandAbstract;
 use App\Container\EnvironmentAwareTrait;
 use App\Entity\Attributes\StableMigration;
 use App\Utilities\Types;

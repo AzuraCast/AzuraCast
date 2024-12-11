@@ -20,20 +20,20 @@
                 </div>
                 <div class="modal-footer justify-content-center pt-2 pb-4 border-top-0">
                     <button
-                        ref="$cancelButton"
-                        class="btn"
-                        :class="cancelButtonClass"
-                        @click.prevent="onButtonClick(false)"
-                    >
-                        {{ cancelButtonText }}
-                    </button>
-                    <button
                         ref="$confirmButton"
                         class="btn"
                         :class="confirmButtonClass"
                         @click.prevent="onButtonClick(true)"
                     >
                         {{ confirmButtonText }}
+                    </button>
+                    <button
+                        ref="$cancelButton"
+                        class="btn"
+                        :class="cancelButtonClass"
+                        @click.prevent="onButtonClick(false)"
+                    >
+                        {{ cancelButtonText }}
                     </button>
                 </div>
             </div>
@@ -64,7 +64,7 @@ export interface DialogComponentProps extends DialogOptions {
 }
 
 const props = withDefaults(defineProps<DialogComponentProps>(), {
-    confirmButtonClass: 'btn-success',
+    confirmButtonClass: 'btn-primary',
     cancelButtonClass: 'btn-secondary',
     focusCancel: false
 });

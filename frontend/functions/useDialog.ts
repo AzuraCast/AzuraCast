@@ -7,7 +7,7 @@ export function createDialog(options: DialogOptions): Promise<DialogResponse> {
     let resolveFunc: (value: DialogResponse) => void = () => {
         /* Replaced by promise func below */
     }
-    
+
     const promise = new Promise<DialogResponse>((resolve) => {
         resolveFunc = resolve
     });
@@ -33,7 +33,6 @@ export function useDialog() {
         const props: DialogOptions = {
             title: $gettext('Are you sure?'),
             confirmButtonText: $gettext('Confirm'),
-            confirmButtonClass: 'btn-success',
             cancelButtonText: $gettext('Cancel'),
             ...options
         }

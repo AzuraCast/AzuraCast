@@ -36,11 +36,11 @@ import Icon from '~/components/Common/Icon.vue';
 import '~/vendor/sweetalert';
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
-import {useSweetAlert} from "~/vendor/sweetalert";
 import {IconDelete, IconEdit} from "~/components/Common/icons";
 import {computed, toRef} from "vue";
 import useHandlePodcastBatchResponse from "~/components/Stations/Podcasts/useHandlePodcastBatchResponse.ts";
 import {map} from "lodash";
+import {useDialog} from "~/functions/useDialog.ts";
 
 const props = defineProps({
     batchUrl: {
@@ -80,7 +80,7 @@ const doBatch = (action, successMessage, errorMessage) => {
     });
 };
 
-const {confirmDelete} = useSweetAlert();
+const {confirmDelete} = useDialog();
 
 const doDelete = () => {
     const numFiles = props.selectedItems.length;

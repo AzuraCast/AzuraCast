@@ -97,9 +97,9 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import CloneModal from "~/components/Admin/Stations/CloneModal.vue";
-import {useSweetAlert} from "~/vendor/sweetalert.ts";
 import {useNotify} from "~/functions/useNotify.ts";
 import {useAxios} from "~/vendor/axios.ts";
+import {useDialog} from "~/functions/useDialog.ts";
 
 const props = defineProps({
     ...stationFormProps,
@@ -160,7 +160,7 @@ const doClone = (stationName, url) => {
     $cloneModal.value.create(stationName, url);
 };
 
-const {showAlert} = useSweetAlert();
+const {showAlert} = useDialog();
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 

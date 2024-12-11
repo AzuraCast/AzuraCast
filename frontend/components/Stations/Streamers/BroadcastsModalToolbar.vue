@@ -23,11 +23,11 @@ import Icon from '~/components/Common/Icon.vue';
 import '~/vendor/sweetalert';
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
-import {useSweetAlert} from "~/vendor/sweetalert";
 import {IconDelete} from "~/components/Common/icons";
 import {computed, h, toRef} from "vue";
 import {forEach, map} from "lodash";
 import {useNotify} from "~/functions/useNotify.ts";
+import {useDialog} from "~/functions/useDialog.ts";
 
 const props = defineProps({
     batchUrl: {
@@ -100,7 +100,7 @@ const doBatch = (action, successMessage, errorMessage) => {
     });
 };
 
-const {confirmDelete} = useSweetAlert();
+const {confirmDelete} = useDialog();
 
 const doDelete = () => {
     const numFiles = props.selectedItems.length;

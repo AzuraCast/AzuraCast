@@ -73,7 +73,6 @@ import PlayButton from "~/components/Common/PlayButton.vue";
 import '~/vendor/sweetalert';
 import {ref, shallowRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
@@ -83,6 +82,7 @@ import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 import {usePlayerStore, useProvidePlayerStore} from "~/functions/usePlayerStore.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import BroadcastsModalToolbar from "~/components/Stations/Streamers/BroadcastsModalToolbar.vue";
+import {useDialog} from "~/functions/useDialog.ts";
 
 const listUrl = ref(null);
 const batchUrl = ref(null);
@@ -135,7 +135,7 @@ const fields: DataTableField[] = [
     }
 ];
 
-const {confirmDelete} = useSweetAlert();
+const {confirmDelete} = useDialog();
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 

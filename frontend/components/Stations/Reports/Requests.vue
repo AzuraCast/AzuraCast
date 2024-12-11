@@ -97,13 +97,13 @@ import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import Icon from "~/components/Common/Icon.vue";
 import {computed, nextTick, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {getStationApiUrl} from "~/router";
 import {IconRemove} from "~/components/Common/icons";
 import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import {useDialog} from "~/functions/useDialog.ts";
 
 const listUrl = getStationApiUrl('/reports/requests');
 const clearUrl = getStationApiUrl('/reports/requests/clear');
@@ -148,7 +148,7 @@ const setType = (type) => {
 
 const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
 
-const {confirmDelete} = useSweetAlert();
+const {confirmDelete} = useDialog();
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 

@@ -106,10 +106,10 @@
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
-import {useSweetAlert} from "~/vendor/sweetalert";
 import {ref} from "vue";
 import {getStationApiUrl} from "~/router";
 import {useRouter} from "vue-router";
+import {useDialog} from "~/functions/useDialog.ts";
 
 const props = defineProps({
     canReload: {
@@ -124,7 +124,7 @@ const restartUrl = getStationApiUrl('/restart');
 const isLoading = ref(false);
 
 const {axios} = useAxios();
-const {showAlert} = useSweetAlert();
+const {showAlert} = useDialog();
 const {notify} = useNotify();
 const {$gettext} = useTranslate();
 

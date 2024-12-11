@@ -80,12 +80,12 @@ import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
-import {useSweetAlert} from "~/vendor/sweetalert";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getStationApiUrl} from "~/router";
 import {IconRemove} from "~/components/Common/icons";
 import {useIntervalFn} from "@vueuse/core";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import {useDialog} from "~/functions/useDialog.ts";
 
 const listUrl = getStationApiUrl('/queue');
 const clearUrl = getStationApiUrl('/queue/clear');
@@ -122,7 +122,7 @@ const {doDelete} = useConfirmAndDelete(
     relist
 );
 
-const {confirmDelete} = useSweetAlert();
+const {confirmDelete} = useDialog();
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 

@@ -106,12 +106,12 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {computed, onMounted, ref} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {useSweetAlert} from "~/vendor/sweetalert";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
 import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
+import {useDialog} from "~/functions/useDialog.ts";
 
 const apiUrl = getApiUrl('/admin/geolite');
 
@@ -164,10 +164,12 @@ const doUpdate = () => {
     });
 };
 
-const {confirmDelete} = useSweetAlert();
+const {confirmDelete} = useDialog();
 
 const doDelete = () => {
     confirmDelete().then((result) => {
+        console.log(result);
+
         if (result.value) {
             form.value.key = null;
             doUpdate();

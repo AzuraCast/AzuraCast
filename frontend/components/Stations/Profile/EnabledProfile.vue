@@ -90,10 +90,10 @@ import publicPagesPanelProps from "./publicPagesPanelProps";
 import requestsPanelProps from "./requestsPanelProps";
 import streamersPanelProps from "./streamersPanelProps";
 import {pickProps} from "~/functions/pickProps";
-import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
+import {useDialog} from "~/functions/useDialog.ts";
 
 const props = defineProps({
     ...backendPanelProps,
@@ -147,7 +147,7 @@ const {state: profileInfo} = useAutoRefreshingAsyncState(
     }
 );
 
-const {showAlert} = useSweetAlert();
+const {showAlert} = useDialog();
 const {notify} = useNotify();
 const {$gettext} = useTranslate();
 

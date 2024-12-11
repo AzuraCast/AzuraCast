@@ -1,14 +1,14 @@
 import {useAxios} from "~/vendor/axios";
-import {useSweetAlert} from "~/vendor/sweetalert";
 import {useTranslate} from "~/vendor/gettext";
 import {getStationApiUrl} from "~/router.ts";
 import {useRouter} from "vue-router";
 import {set} from "lodash";
 import {useNotify} from "~/functions/useNotify";
+import {useDialog} from "~/functions/useDialog.ts";
 
 export default function useToggleFeature(feature, newValue) {
     const {axios} = useAxios();
-    const {showAlert} = useSweetAlert();
+    const {showAlert} = useDialog();
     const {notifySuccess} = useNotify();
     const {$gettext} = useTranslate();
     const router = useRouter();

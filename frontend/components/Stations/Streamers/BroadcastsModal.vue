@@ -70,7 +70,6 @@ import formatFileSize from '~/functions/formatFileSize';
 import InlinePlayer from '~/components/InlinePlayer.vue';
 import Icon from '~/components/Common/Icon.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
-import '~/vendor/sweetalert';
 import {ref, shallowRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";

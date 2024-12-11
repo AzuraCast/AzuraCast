@@ -20,7 +20,6 @@
 
 <script setup lang="ts">
 import Icon from '~/components/Common/Icon.vue';
-import '~/vendor/sweetalert';
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import {IconDelete} from "~/components/Common/icons";

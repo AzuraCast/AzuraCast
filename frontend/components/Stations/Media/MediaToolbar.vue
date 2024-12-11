@@ -212,7 +212,6 @@
 import {Dropdown} from 'bootstrap';
 import {intersection, map} from 'lodash';
 import Icon from '~/components/Common/Icon.vue';
-import '~/vendor/sweetalert';
 import {computed, ref, toRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";

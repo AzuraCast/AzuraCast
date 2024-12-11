@@ -3,16 +3,19 @@ import {Directive, h, render} from "vue";
 import {currentVueInstance} from "~/vendor/vueInstance.ts";
 import Dialog, {DialogComponentProps, DialogOptions, DialogResponse} from "~/components/Common/Dialog.vue";
 
-export function createDialog(props: DialogComponentProps) {
+export function createDialog(options: DialogOptions): Promise<DialogResponse> {
     let resolveFunc: (value: DialogResponse) => void = () => {
         /* Replaced by promise func below */
     }
-
+    
     const promise = new Promise<DialogResponse>((resolve) => {
         resolveFunc = resolve
     });
 
-    props.resolvePromise = resolveFunc;
+    const props: DialogComponentProps = {
+        ...options,
+        resolvePromise: resolveFunc
+    }
 
     const vNode = h(Dialog, props);
     vNode.appContext = currentVueInstance._context;
@@ -26,8 +29,9 @@ export function createDialog(props: DialogComponentProps) {
 export function useDialog() {
     const {$gettext} = useTranslate();
 
-    const showAlert = (options: DialogOptions = {}) => {
+    const showAlert = (options: Partial<DialogOptions> = {}): Promise<DialogResponse> => {
         const props: DialogOptions = {
+            title: $gettext('Are you sure?'),
             confirmButtonText: $gettext('Confirm'),
             confirmButtonClass: 'btn-success',
             cancelButtonText: $gettext('Cancel'),
@@ -37,7 +41,7 @@ export function useDialog() {
         return createDialog(props);
     }
 
-    const confirmDelete = (options: DialogOptions = {}) => {
+    const confirmDelete = (options: Partial<DialogOptions> = {}): Promise<DialogResponse> => {
         const props: DialogOptions = {
             title: $gettext('Delete Record?'),
             confirmButtonText: $gettext('Delete'),

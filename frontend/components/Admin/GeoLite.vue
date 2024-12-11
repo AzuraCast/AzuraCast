@@ -168,8 +168,6 @@ const {confirmDelete} = useDialog();
 
 const doDelete = () => {
     confirmDelete().then((result) => {
-        console.log(result);
-
         if (result.value) {
             form.value.key = null;
             doUpdate();

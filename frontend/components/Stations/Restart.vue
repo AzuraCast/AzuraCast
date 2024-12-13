@@ -163,7 +163,7 @@ const doReload = () => {
             return;
         }
 
-        makeApiCall(reloadUrl);
+        makeApiCall(reloadUrl.value);
     });
 }
 
@@ -177,7 +177,7 @@ const doRestart = () => {
             return;
         }
 
-        makeApiCall(restartUrl);
+        makeApiCall(restartUrl.value);
     });
 }
 </script>

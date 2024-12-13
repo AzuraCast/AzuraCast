@@ -17,8 +17,15 @@ export default function useToggleFeature(feature, newValue) {
 
     return () => {
         showAlert({
-            title: (newValue) ? $gettext('Enable?')
-                : $gettext('Disable?')
+            title: (newValue)
+                ? $gettext('Enable feature?')
+                : $gettext('Disable feature?'),
+            confirmButtonText: (newValue)
+                ? $gettext('Enable')
+                : $gettext('Disable'),
+            confirmButtonClass: (newValue)
+                ? 'btn-success'
+                : 'btn-danger'
         }).then((result) => {
             if (result.value) {
                 const remoteData = {};

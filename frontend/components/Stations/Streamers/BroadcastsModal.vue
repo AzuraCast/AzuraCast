@@ -149,7 +149,7 @@ const onRowSelected = (items) => {
 
 const doDelete = (url) => {
     confirmDelete({
-        title: $gettext('Delete Broadcast?')
+        title: $gettext('Delete Broadcast?'),
     }).then((result) => {
         if (result.value) {
             axios.delete(url).then((resp) => {

@@ -43,7 +43,7 @@
                                 type="button"
                                 class="btn btn-warning"
                                 :disabled="isLoading"
-                                @click="makeApiCall(reloadUrl)"
+                                @click="doReload"
                             >
                                 {{ $gettext('Reload Configuration') }}
                             </button>
@@ -91,7 +91,7 @@
                             type="button"
                             class="btn btn-warning"
                             :disabled="isLoading"
-                            @click="makeApiCall(restartUrl)"
+                            @click="doRestart"
                         >
                             {{ $gettext('Restart Broadcasting') }}
                         </button>
@@ -131,33 +131,53 @@ const {$gettext} = useTranslate();
 const router = useRouter();
 
 const makeApiCall = (uri) => {
+    isLoading.value = true;
+
+    axios.post(uri).then((resp) => {
+        notify(resp.data.formatted_message, {
+            variant: (resp.data.success) ? 'success' : 'warning'
+        });
+
+        setTimeout(
+            () => {
+                const profileRoute = router.resolve({
+                    name: 'stations:index'
+                });
+
+                window.location.href = profileRoute.href;
+            },
+            2000
+        );
+    }).finally(() => {
+        isLoading.value = false;
+    });
+};
+
+const doReload = () => {
     showAlert({
-        title: $gettext('Are you sure?')
+        title: $gettext('Are you sure?'),
+        confirmButtonClass: 'btn-warning',
+        confirmButtonText: $gettext('Reload Configuration')
     }).then((result) => {
         if (!result.value) {
             return;
         }
 
-        isLoading.value = true;
-
-        axios.post(uri).then((resp) => {
-            notify(resp.data.formatted_message, {
-                variant: (resp.data.success) ? 'success' : 'warning'
-            });
-
-            setTimeout(
-                () => {
-                    const profileRoute = router.resolve({
-                        name: 'stations:index'
-                    });
-
-                    window.location.href = profileRoute.href;
-                },
-                2000
-            );
-        }).finally(() => {
-            isLoading.value = false;
-        });
+        makeApiCall(reloadUrl);
     });
-};
+}
+
+const doRestart = () => {
+    showAlert({
+        title: $gettext('Are you sure?'),
+        confirmButtonClass: 'btn-warning',
+        confirmButtonText: $gettext('Restart Broadcasting')
+    }).then((result) => {
+        if (!result.value) {
+            return;
+        }
+
+        makeApiCall(restartUrl);
+    });
+}
 </script>

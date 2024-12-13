@@ -2,11 +2,12 @@
     <div
         v-bind="$attrs"
         ref="$modal"
-        class="modal modal-sm fade"
+        class="modal modal-md fade"
         tabindex="-1"
         :aria-label="title"
         aria-hidden="true"
         v-if="isActive"
+        role="dialog"
     >
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">

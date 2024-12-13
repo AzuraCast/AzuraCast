@@ -212,7 +212,8 @@ const {showAlert} = useDialog();
 
 const doUpdate = () => {
     showAlert({
-        title: $gettext('Update AzuraCast? Your installation will restart.')
+        title: $gettext('Update AzuraCast? Your installation will restart.'),
+        confirmButtonText: $gettext('Update via Web')
     }).then((result) => {
         if (result.value) {
             axios.put(updatesApiUrl.value).then(() => {

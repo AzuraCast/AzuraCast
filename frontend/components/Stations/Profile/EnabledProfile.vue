@@ -12,7 +12,6 @@
             <template v-if="hasStarted">
                 <profile-now-playing
                     v-bind="pickProps(props, nowPlayingPanelProps)"
-                    @api-call="makeApiCall"
                 />
 
                 <profile-schedule
@@ -47,7 +46,6 @@
                 <profile-frontend
                     v-bind="pickProps(props, frontendPanelProps)"
                     :frontend-running="profileInfo.services.frontend_running"
-                    @api-call="makeApiCall"
                 />
             </template>
 
@@ -55,7 +53,6 @@
                 <profile-backend
                     v-bind="pickProps(props, backendPanelProps)"
                     :backend-running="profileInfo.services.backend_running"
-                    @api-call="makeApiCall"
                 />
             </template>
             <template v-else>
@@ -90,10 +87,7 @@ import publicPagesPanelProps from "./publicPagesPanelProps";
 import requestsPanelProps from "./requestsPanelProps";
 import streamersPanelProps from "./streamersPanelProps";
 import {pickProps} from "~/functions/pickProps";
-import {useNotify} from "~/functions/useNotify";
-import {useTranslate} from "~/vendor/gettext";
 import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
-import {useDialog} from "~/functions/useDialog.ts";
 
 const props = defineProps({
     ...backendPanelProps,
@@ -126,7 +120,7 @@ const hasActiveBackend = computed(() => {
     return props.backendType !== BackendAdapter.None;
 });
 
-const {axios, axiosSilent} = useAxios();
+const {axiosSilent} = useAxios();
 
 const {state: profileInfo} = useAutoRefreshingAsyncState(
     () => axiosSilent.get(props.profileApiUri).then((r) => r.data),
@@ -146,24 +140,4 @@ const {state: profileInfo} = useAutoRefreshingAsyncState(
         timeout: 15000
     }
 );
-
-const {showAlert} = useDialog();
-const {notify} = useNotify();
-const {$gettext} = useTranslate();
-
-const makeApiCall = (uri) => {
-    showAlert({
-        title: $gettext('Are you sure?')
-    }).then((result) => {
-        if (!result.value) {
-            return;
-        }
-
-        axios.post(uri).then((resp) => {
-            notify(resp.data.formatted_message, {
-                variant: (resp.data.success) ? 'success' : 'warning'
-            });
-        });
-    });
-};
 </script>

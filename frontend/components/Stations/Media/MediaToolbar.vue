@@ -345,6 +345,7 @@ const doDelete = () => {
 
     confirmDelete({
         title: buttonConfirmText,
+        confirmButtonText: $gettext('Delete')
     }).then((result) => {
         if (result.value) {
             doBatch(

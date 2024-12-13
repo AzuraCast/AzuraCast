@@ -79,7 +79,7 @@
                                 </form-group-field>
                             </fieldset>
 
-                            <div class="buttons">
+                            <div class="buttons mt-3">
                                 <button
                                     type="submit"
                                     class="btn btn-primary"
@@ -167,7 +167,10 @@ const doUpdate = () => {
 const {confirmDelete} = useDialog();
 
 const doDelete = () => {
-    confirmDelete().then((result) => {
+    confirmDelete({
+        title: $gettext('Remove GeoLite license key?'),
+        confirmButtonText: $gettext('Remove Key')
+    }).then((result) => {
         if (result.value) {
             form.value.key = null;
             doUpdate();

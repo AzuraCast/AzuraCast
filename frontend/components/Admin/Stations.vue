@@ -165,13 +165,19 @@ const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const doToggle = (station) => {
-    const title = (station.is_enabled)
-        ? $gettext('Disable station?')
-        : $gettext('Enable station?');
-
-    showAlert({
-        title: title
-    }).then((result) => {
+    showAlert((station.is_enabled)
+        ? {
+            title: $gettext('Disable station?'),
+            confirmButtonText: $gettext('Disable'),
+            confirmButtonClass: 'btn-warning',
+            focusCancel: true
+        } : {
+            title: $gettext('Enable station?'),
+            confirmButtonText: $gettext('Enable'),
+            confirmButtonClass: 'btn-success',
+            focusCancel: false
+        }
+    ).then((result) => {
         if (result.value) {
             axios.put(station.links.self, {
                 is_enabled: !station.is_enabled

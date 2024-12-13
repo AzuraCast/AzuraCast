@@ -204,7 +204,7 @@
                 id="btn_skip_song"
                 type="button"
                 class="btn btn-link text-primary"
-                @click="makeApiCall(backendSkipSongUri)"
+                @click="doSkipSong()"
             >
                 <icon :icon="IconSkipNext" />
                 <span>
@@ -216,7 +216,7 @@
                 id="btn_disconnect_streamer"
                 type="button"
                 class="btn btn-link text-primary"
-                @click="makeApiCall(backendDisconnectStreamerUri)"
+                @click="doDisconnectStreamer()"
             >
                 <icon :icon="IconVolumeOff" />
                 <span>
@@ -264,12 +264,11 @@ import {
     IconVolumeOff
 } from "~/components/Common/icons";
 import UpdateMetadataModal from "~/components/Stations/Profile/UpdateMetadataModal.vue";
+import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 
 const props = defineProps({
     ...nowPlayingPanelProps,
 });
-
-const emit = defineEmits(['api-call']);
 
 const {offlineText} = useAzuraCastStation();
 
@@ -279,7 +278,7 @@ const {
     currentTrackElapsedDisplay
 } = useNowPlaying(props);
 
-const {$ngettext} = useTranslate();
+const {$gettext, $ngettext} = useTranslate();
 
 const langListeners = computed(() => {
     return $ngettext(
@@ -296,9 +295,21 @@ const isLiquidsoap = computed(() => {
 
 const {vLightbox} = useLightbox();
 
-const makeApiCall = (uri) => {
-    emit('api-call', uri);
-};
+const doSkipSong = useMakeApiCall(
+    props.backendSkipSongUri,
+    {
+        title: $gettext('Skip current song?'),
+        confirmButtonText: $gettext('Skip Song')
+    }
+);
+
+const doDisconnectStreamer = useMakeApiCall(
+    props.backendDisconnectStreamerUri,
+    {
+        title: $gettext('Disconnect current streamer?'),
+        confirmButtonText: $gettext('Disconnect Streamer')
+    }
+);
 
 const $updateMetadataModal: Ref<InstanceType<typeof UpdateMetadataModal> | null> = ref(null);
 const updateMetadata = () => {

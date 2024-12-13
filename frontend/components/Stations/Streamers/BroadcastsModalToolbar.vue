@@ -102,14 +102,11 @@ const doBatch = (action, successMessage, errorMessage) => {
 const {confirmDelete} = useDialog();
 
 const doDelete = () => {
-    const numFiles = props.selectedItems.length;
-    const buttonConfirmText = $gettext(
-        'Delete %{ num } broadcasts?',
-        {num: numFiles}
-    );
-
     confirmDelete({
-        title: buttonConfirmText,
+        title: $gettext(
+            'Delete %{ num } broadcasts?',
+            {num: props.selectedItems.length}
+        ),
     }).then((result) => {
         if (result.value) {
             doBatch(

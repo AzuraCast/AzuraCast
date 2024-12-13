@@ -179,7 +179,10 @@ const relist = () => {
 const {confirmDelete} = useDialog();
 
 const doDelete = () => {
-    confirmDelete().then((result) => {
+    confirmDelete({
+        title: $gettext('Uninstall Stereo Tool?'),
+        confirmButtonText: $gettext('Uninstall')
+    }).then((result) => {
         if (result.value) {
             axios.delete(apiUrl.value).then(relist);
         }

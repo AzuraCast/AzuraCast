@@ -46,7 +46,7 @@
             <button
                 type="button"
                 class="btn btn-link text-secondary"
-                @click="makeApiCall(backendRestartUri)"
+                @click="doRestart()"
             >
                 <icon :icon="IconUpdate" />
                 <span>
@@ -57,7 +57,7 @@
                 v-if="!backendRunning"
                 type="button"
                 class="btn btn-link text-success"
-                @click="makeApiCall(backendStartUri)"
+                @click="doStart()"
             >
                 <icon :icon="IconPlay" />
                 <span>
@@ -68,7 +68,7 @@
                 v-if="backendRunning"
                 type="button"
                 class="btn btn-link text-danger"
-                @click="makeApiCall(backendStopUri)"
+                @click="doStop()"
             >
                 <icon :icon="IconStop" />
                 <span>
@@ -89,6 +89,7 @@ import backendPanelProps from "~/components/Stations/Profile/backendPanelProps";
 import CardPage from "~/components/Common/CardPage.vue";
 import {StationPermission, userAllowedForStation} from "~/acl";
 import {IconPlay, IconStop, IconUpdate} from "~/components/Common/icons";
+import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 
 const props = defineProps({
     ...backendPanelProps,
@@ -97,8 +98,6 @@ const props = defineProps({
         required: true
     }
 });
-
-const emit = defineEmits(['api-call']);
 
 const {$gettext, $ngettext} = useTranslate();
 
@@ -133,7 +132,29 @@ const backendName = computed(() => {
     return '';
 });
 
-const makeApiCall = (uri) => {
-    emit('api-call', uri);
-};
+const doRestart = useMakeApiCall(
+    props.backendRestartUri,
+    {
+        title: $gettext('Restart service?'),
+        confirmButtonText: $gettext('Restart')
+    }
+);
+
+const doStart = useMakeApiCall(
+    props.backendStartUri,
+    {
+        title: $gettext('Start service?'),
+        confirmButtonText: $gettext('Start'),
+        confirmButtonClass: 'btn-success'
+    }
+);
+
+const doStop = useMakeApiCall(
+    props.backendStopUri,
+    {
+        title: $gettext('Stop service?'),
+        confirmButtonText: $gettext('Stop'),
+        confirmButtonClass: 'btn-danger'
+    }
+);
 </script>

@@ -28,10 +28,13 @@
                         >
                             <date-range-dropdown
                                 v-model="dateRange"
-                                time-picker
-                                :min-date="minDate"
-                                :max-date="maxDate"
-                                :tz="timezone"
+                                :options="{
+                                    timezone: timezone,
+                                    enableTimePicker: true,
+                                    minDate: minDate,
+                                    maxDate: maxDate,
+                                }"
+                                class="btn-dark"
                             />
                         </div>
                     </div>
@@ -201,6 +204,7 @@ import ListenerFiltersBar from "./Listeners/FiltersBar.vue";
 import {ApiListener} from "~/entities/ApiInterfaces.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
+import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 
 const props = defineProps({
     attribution: {
@@ -215,6 +219,8 @@ const isLive = ref<boolean>(true);
 const listeners: ShallowRef<ApiListener[]> = shallowRef([]);
 
 const {DateTime} = useLuxon();
+
+const {timezone} = useAzuraCastStation();
 const {
     now,
     formatTimestampAsDateTime

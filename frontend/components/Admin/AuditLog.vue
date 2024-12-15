@@ -9,7 +9,7 @@
                     {{ $gettext('Audit Log') }}
                 </h2>
                 <div class="flex-shrink">
-                    <date-range-dropdown v-model="dateRange" />
+                    <date-range-dropdown v-model="dateRange" class="btn-dark"/>
                 </div>
             </div>
         </template>
@@ -86,7 +86,7 @@
 import {computed, ref, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAzuraCast} from "~/vendor/azuracast";
-import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import Icon from "~/components/Common/Icon.vue";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";

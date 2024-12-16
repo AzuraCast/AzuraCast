@@ -7,54 +7,65 @@
 
 <script setup lang="ts">
 import FullCalendar from '@fullcalendar/vue3';
+import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import allLocales from '@fullcalendar/core/locales-all';
 import luxon3Plugin from '@fullcalendar/luxon3';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import {shallowRef} from "vue";
+import {computed} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast";
+import {CalendarOptions} from "@fullcalendar/core";
 
-const props = defineProps({
-    timezone: {
-        type: String,
-        required: true
-    },
-    scheduleUrl: {
-        type: String,
-        required: true
-    }
+defineOptions({
+    inheritAttrs: false
 });
 
-const emit = defineEmits(['click']);
+const props = defineProps<{
+    options?: CalendarOptions
+}>();
 
-const onEventClick = (arg) => {
-    emit('click', arg.event);
-};
+// Use the Bootstrap 5 theme, but revert some settings back to their defaults.
+bootstrap5Plugin.themeClasses["bootstrap5"].prototype.baseIconClass = 'fc-icon';
+bootstrap5Plugin.themeClasses["bootstrap5"].prototype.iconOverridePrefix = 'fc-';
+bootstrap5Plugin.themeClasses["bootstrap5"].prototype.iconClasses = {
+    close: 'fc-icon-x',
+    prev: 'fc-icon-chevron-left',
+    next: 'fc-icon-chevron-right',
+    prevYear: 'fc-icon-chevrons-left',
+    nextYear: 'fc-icon-chevrons-right',
+}
+bootstrap5Plugin.themeClasses["bootstrap5"].prototype.rtlIconClasses = {
+    prev: 'fc-icon-chevron-right',
+    next: 'fc-icon-chevron-left',
+    prevYear: 'fc-icon-chevrons-right',
+    nextYear: 'fc-icon-chevrons-left',
+}
 
 const {localeShort, timeConfig} = useAzuraCast();
 
-const calendarOptions = shallowRef({
-    locale: localeShort,
-    locales: allLocales,
-    plugins: [luxon3Plugin, timeGridPlugin],
-    initialView: 'timeGridWeek',
-    timeZone: props.timezone,
-    nowIndicator: true,
-    defaultTimedEventDuration: '00:20',
-    headerToolbar: false,
-    footerToolbar: false,
-    height: 'auto',
-    events: props.scheduleUrl,
-    eventClick: onEventClick,
-    views: {
-        timeGridWeek: {
-            slotLabelFormat: {
-                ...timeConfig,
-                hour: 'numeric',
-                minute: '2-digit',
-                omitZeroMinute: true,
-                meridiem: 'short'
+const calendarOptions = computed<CalendarOptions>(() => {
+    return {
+        locale: localeShort,
+        locales: allLocales,
+        plugins: [luxon3Plugin, timeGridPlugin, bootstrap5Plugin],
+        themeSystem: 'bootstrap5',
+        initialView: 'timeGridWeek',
+        nowIndicator: true,
+        defaultTimedEventDuration: '00:20',
+        headerToolbar: false,
+        footerToolbar: false,
+        height: 'auto',
+        views: {
+            timeGridWeek: {
+                slotLabelFormat: {
+                    ...timeConfig,
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    omitZeroMinute: true,
+                    meridiem: 'short'
+                }
             }
-        }
-    }
+        },
+        ...props.options
+    };
 });
 </script>

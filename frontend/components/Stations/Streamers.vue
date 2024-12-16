@@ -81,16 +81,10 @@
                                 </data-table>
                             </div>
                         </tab>
-                        <tab :label="$gettext('Schedule View')">
-                            <div class="card-body-flush">
-                                <schedule
-                                    ref="$schedule"
-                                    :timezone="timezone"
-                                    :schedule-url="scheduleUrl"
-                                    @click="doCalendarClick"
-                                />
-                            </div>
-                        </tab>
+                        <schedule-view-tab
+                            :schedule-url="scheduleUrl"
+                            @click="doCalendarClick"
+                        />
                     </tabs>
                 </div>
             </card-page>
@@ -102,10 +96,10 @@
         <edit-modal
             ref="$editModal"
             :create-url="listUrl"
-            :station-time-zone="timezone"
             :new-art-url="newArtUrl"
             @relist="relist"
         />
+
         <broadcasts-modal ref="$broadcastsModal" />
     </div>
 </template>
@@ -114,7 +108,6 @@
 import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import EditModal from './Streamers/EditModal.vue';
 import BroadcastsModal from './Streamers/BroadcastsModal.vue';
-import Schedule from '~/components/Common/ScheduleView.vue';
 import ConnectionInfo from "./Streamers/ConnectionInfo.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -123,12 +116,13 @@ import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable
 import useHasEditModal, {EditModalTemplateRef} from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useAzuraCastStation} from "~/vendor/azuracast";
 import {getStationApiUrl} from "~/router";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 import AddButton from "~/components/Common/AddButton.vue";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
+import ScheduleViewTab from "~/components/Stations/Common/ScheduleViewTab.vue";
+import {EventImpl} from "@fullcalendar/core/internal";
 
 const props = defineProps({
     connectionInfo: {
@@ -140,8 +134,6 @@ const props = defineProps({
 const listUrl = getStationApiUrl('/streamers');
 const newArtUrl = getStationApiUrl('/streamers/art');
 const scheduleUrl = getStationApiUrl('/streamers/schedule');
-
-const {timezone} = useAzuraCastStation();
 
 const {$gettext} = useTranslate();
 
@@ -159,7 +151,7 @@ const {relist} = useHasDatatable($datatable);
 const $editModal = ref<EditModalTemplateRef>(null);
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const doCalendarClick = (event) => {
+const doCalendarClick = (event: EventImpl) => {
     doEdit(event.extendedProps.edit_url);
 };
 

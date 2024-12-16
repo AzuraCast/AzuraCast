@@ -11,11 +11,11 @@
         
         <template #default>
             <div id="station-schedule-calendar">
-                <schedule
-                    ref="schedule"
-                    :timezone="stationTimeZone"
-                    :schedule-url="scheduleUrl"
-                    :station-time-zone="stationTimeZone"
+                <schedule-view
+                    :options="{
+                        timeZone: stationTimeZone,
+                        events: scheduleUrl
+                    }"
                 />
             </div>
         </template>
@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import Schedule from '~/components/Common/ScheduleView.vue';
+import ScheduleView from '~/components/Common/ScheduleView.vue';
 import FullHeightCard from "~/components/Public/FullHeightCard.vue";
 
 const props = defineProps({

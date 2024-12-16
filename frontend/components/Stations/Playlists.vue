@@ -260,19 +260,10 @@
                         </data-table>
                     </div>
                 </tab>
-                <tab
-                    id="schedule_view"
-                    :label="$gettext('Schedule View')"
-                >
-                    <div class="card-body-flush">
-                        <schedule
-                            ref="$schedule"
-                            :timezone="timezone"
-                            :schedule-url="scheduleUrl"
-                            @click="doCalendarClick"
-                        />
-                    </div>
-                </tab>
+                <schedule-view-tab
+                    :schedule-url="scheduleUrl"
+                    @click="doCalendarClick"
+                />
             </tabs>
         </div>
     </section>
@@ -280,7 +271,7 @@
     <edit-modal
         ref="$editModal"
         :create-url="listUrl"
-        @relist="relist"
+        @relist="refresh"
         @needs-restart="mayNeedRestart"
     />
     <reorder-modal ref="$reorderModal" />
@@ -288,22 +279,21 @@
     <reorder-modal ref="$reorderModal" />
     <import-modal
         ref="$importModal"
-        @relist="relist"
+        @relist="refresh"
     />
     <clone-modal
         ref="$cloneModal"
-        @relist="relist"
+        @relist="refresh"
         @needs-restart="mayNeedRestart"
     />
     <apply-to-modal
         ref="$applyToModal"
-        @relist="relist"
+        @relist="refresh"
     />
 </template>
 
 <script setup lang="ts">
 import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import Schedule from '~/components/Common/ScheduleView.vue';
 import EditModal from './Playlists/EditModal.vue';
 import ReorderModal from './Playlists/ReorderModal.vue';
 import ImportModal from './Playlists/ImportModal.vue';
@@ -317,7 +307,6 @@ import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-import {useAzuraCastStation} from "~/vendor/azuracast";
 import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
@@ -326,6 +315,9 @@ import Tab from "~/components/Common/Tab.vue";
 import AddButton from "~/components/Common/AddButton.vue";
 import {IconContract, IconExpand} from "~/components/Common/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
+import ScheduleViewTab from "~/components/Stations/Common/ScheduleViewTab.vue";
+import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import {EventImpl} from "@fullcalendar/core/internal";
 
 const props = defineProps({
     useManualAutoDj: {
@@ -336,8 +328,6 @@ const props = defineProps({
 
 const listUrl = getStationApiUrl('/playlists');
 const scheduleUrl = getStationApiUrl('/playlists/schedule');
-
-const {timezone} = useAzuraCastStation();
 
 const {$gettext} = useTranslate();
 
@@ -359,17 +349,13 @@ const formatLength = (length) => {
     return duration.rescale().toHuman();
 };
 
-const $datatable = ref<InstanceType<typeof DataTable> | null>(null);
-const $schedule = ref<InstanceType<typeof Schedule> | null>(null);
-
-const relist = () => {
-    $datatable.value?.refresh();
-};
+const $datatable = ref<DataTableTemplateRef>(null);
+const {refresh} = useHasDatatable($datatable);
 
 const $editModal = ref<EditModalTemplateRef>(null);
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const doCalendarClick = (event) => {
+const doCalendarClick = (event: EventImpl) => {
     doEdit(event.extendedProps.edit_url);
 };
 
@@ -421,14 +407,14 @@ const doModify = (url) => {
         mayNeedRestart();
 
         notifySuccess(resp.data.message);
-        relist();
+        refresh();
     });
 };
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Playlist?'),
     () => {
-        relist();
+        refresh();
         mayNeedRestart();
     },
 );
@@ -436,7 +422,7 @@ const {doDelete} = useConfirmAndDelete(
 const {doDelete: doEmpty} = useConfirmAndDelete(
     $gettext('Clear all media from playlist?'),
     () => {
-        relist();
+        refresh();
         mayNeedRestart();
     },
 );

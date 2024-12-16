@@ -13,6 +13,9 @@ release channel, you can take advantage of these new features and fixes.
 
 - **Bluesky Post Webhook**: You can now add a web hook that, when dispatched, creates a new post on Bluesky.
 
+- You can now navigate from week to week on the "Schedule" tab of Playlist/Streamer admin pages, as well as switch to "
+  Day" view.
+
 ## Code Quality/Technical Changes
 
 - All web hooks can now have rate limits set for them, so they only dispatch once in the time specified, in case

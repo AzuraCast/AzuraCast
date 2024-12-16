@@ -82,6 +82,7 @@
                             </div>
                         </tab>
                         <schedule-view-tab
+                            ref="$scheduleTab"
                             :schedule-url="scheduleUrl"
                             @click="doCalendarClick"
                         />
@@ -146,7 +147,14 @@ const fields: DataTableField[] = [
 ];
 
 const $datatable = ref<DataTableTemplateRef>(null);
-const {relist} = useHasDatatable($datatable);
+const {refresh: refreshDatatable} = useHasDatatable($datatable);
+
+const $scheduleTab = ref<InstanceType<ScheduleViewTab> | null>(null);
+
+const relist = () => {
+    refreshDatatable();
+    $scheduleTab.value?.refresh();
+}
 
 const $editModal = ref<EditModalTemplateRef>(null);
 const {doCreate, doEdit} = useHasEditModal($editModal);

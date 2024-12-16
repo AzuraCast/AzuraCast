@@ -261,6 +261,7 @@
                     </div>
                 </tab>
                 <schedule-view-tab
+                    ref="$scheduleTab"
                     :schedule-url="scheduleUrl"
                     @click="doCalendarClick"
                 />
@@ -271,7 +272,7 @@
     <edit-modal
         ref="$editModal"
         :create-url="listUrl"
-        @relist="refresh"
+        @relist="relist"
         @needs-restart="mayNeedRestart"
     />
     <reorder-modal ref="$reorderModal" />
@@ -279,16 +280,16 @@
     <reorder-modal ref="$reorderModal" />
     <import-modal
         ref="$importModal"
-        @relist="refresh"
+        @relist="relist"
     />
     <clone-modal
         ref="$cloneModal"
-        @relist="refresh"
+        @relist="relist"
         @needs-restart="mayNeedRestart"
     />
     <apply-to-modal
         ref="$applyToModal"
-        @relist="refresh"
+        @relist="relist"
     />
 </template>
 
@@ -350,7 +351,14 @@ const formatLength = (length) => {
 };
 
 const $datatable = ref<DataTableTemplateRef>(null);
-const {refresh} = useHasDatatable($datatable);
+const {refresh: refreshDatatable} = useHasDatatable($datatable);
+
+const $scheduleTab = ref<InstanceType<ScheduleViewTab> | null>(null);
+
+const relist = () => {
+    refreshDatatable();
+    $scheduleTab.value?.refresh();
+}
 
 const $editModal = ref<EditModalTemplateRef>(null);
 const {doCreate, doEdit} = useHasEditModal($editModal);
@@ -407,14 +415,14 @@ const doModify = (url) => {
         mayNeedRestart();
 
         notifySuccess(resp.data.message);
-        refresh();
+        relist();
     });
 };
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Playlist?'),
     () => {
-        refresh();
+        relist();
         mayNeedRestart();
     },
 );
@@ -422,7 +430,7 @@ const {doDelete} = useConfirmAndDelete(
 const {doDelete: doEmpty} = useConfirmAndDelete(
     $gettext('Clear all media from playlist?'),
     () => {
-        refresh();
+        relist();
         mayNeedRestart();
     },
 );

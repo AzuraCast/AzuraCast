@@ -1,8 +1,12 @@
 <template>
     <full-calendar
-        ref="calendar"
+        ref="$calendar"
         :options="calendarOptions"
-    />
+    >
+        <template v-for="(_, slot) of $slots" v-slot:[slot]="scope">
+            <slot :name="slot" v-bind="scope || {}"/>
+        </template>
+    </full-calendar>
 </template>
 
 <script setup lang="ts">
@@ -11,9 +15,9 @@ import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import allLocales from '@fullcalendar/core/locales-all';
 import luxon3Plugin from '@fullcalendar/luxon3';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import {computed} from "vue";
+import {computed, ref} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast";
-import {CalendarOptions} from "@fullcalendar/core";
+import {Calendar, CalendarOptions} from "@fullcalendar/core";
 
 defineOptions({
     inheritAttrs: false
@@ -22,6 +26,13 @@ defineOptions({
 const props = defineProps<{
     options?: CalendarOptions
 }>();
+
+const $calendar = ref<InstanceType<FullCalendar> | null>();
+const getCalendarApi = (): Calendar => $calendar.value?.getApi();
+
+defineExpose({
+    getCalendarApi
+});
 
 // Use the Bootstrap 5 theme, but revert some settings back to their defaults.
 bootstrap5Plugin.themeClasses["bootstrap5"].prototype.baseIconClass = 'fc-icon';

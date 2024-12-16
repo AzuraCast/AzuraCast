@@ -30,73 +30,71 @@
                     </th>
                 </tr>
             </thead>
-            <draggable
+            <vue-draggable
                 v-model="media"
                 tag="tbody"
                 item-key="id"
                 @change="save"
             >
-                <template #item="{element, index}">
-                    <tr class="align-middle">
-                        <td class="pe-2">
-                            <play-button
-                                :url="element.media.links.play"
-                            />
-                        </td>
-                        <td class="ps-2">
-                            <span class="typography-subheading">{{ element.media.title }}</span>
-                        </td>
-                        <td>{{ element.media.artist }}</td>
-                        <td>{{ element.media.album }}</td>
-                        <td>
-                            <div class="btn-group btn-group-sm">
-                                <button
-                                    v-if="index+1 < media.length"
-                                    type="button"
-                                    class="btn btn-secondary"
-                                    :title="$gettext('Move to Bottom')"
-                                    @click.prevent="moveToBottom(index)"
-                                >
-                                    <icon :icon="IconChevronBarDown" />
-                                </button>
-                                <button
-                                    v-if="index+1 < media.length"
-                                    type="button"
-                                    class="btn btn-primary"
-                                    :title="$gettext('Move Down')"
-                                    @click.prevent="moveDown(index)"
-                                >
-                                    <icon :icon="IconChevronDown" />
-                                </button>
-                                <button
-                                    v-if="index > 0"
-                                    type="button"
-                                    class="btn btn-primary"
-                                    :title="$gettext('Move Up')"
-                                    @click.prevent="moveUp(index)"
-                                >
-                                    <icon :icon="IconChevronUp" />
-                                </button>
-                                <button
-                                    v-if="index > 0"
-                                    type="button"
-                                    class="btn btn-secondary"
-                                    :title="$gettext('Move to Top')"
-                                    @click.prevent="moveToTop(index)"
-                                >
-                                    <icon :icon="IconChevronBarUp" />
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                </template>
-            </draggable>
+                <tr v-for="(element, index) in media" :key="element.media.id" class="align-middle">
+                    <td class="pe-2">
+                        <play-button
+                            :url="element.media.links.play"
+                        />
+                    </td>
+                    <td class="ps-2">
+                        <span class="typography-subheading">{{ element.media.title }}</span>
+                    </td>
+                    <td>{{ element.media.artist }}</td>
+                    <td>{{ element.media.album }}</td>
+                    <td>
+                        <div class="btn-group btn-group-sm">
+                            <button
+                                v-if="index+1 < media.length"
+                                type="button"
+                                class="btn btn-secondary"
+                                :title="$gettext('Move to Bottom')"
+                                @click.prevent="moveToBottom(index)"
+                            >
+                                <icon :icon="IconChevronBarDown"/>
+                            </button>
+                            <button
+                                v-if="index+1 < media.length"
+                                type="button"
+                                class="btn btn-primary"
+                                :title="$gettext('Move Down')"
+                                @click.prevent="moveDown(index)"
+                            >
+                                <icon :icon="IconChevronDown"/>
+                            </button>
+                            <button
+                                v-if="index > 0"
+                                type="button"
+                                class="btn btn-primary"
+                                :title="$gettext('Move Up')"
+                                @click.prevent="moveUp(index)"
+                            >
+                                <icon :icon="IconChevronUp"/>
+                            </button>
+                            <button
+                                v-if="index > 0"
+                                type="button"
+                                class="btn btn-secondary"
+                                :title="$gettext('Move to Top')"
+                                @click.prevent="moveToTop(index)"
+                            >
+                                <icon :icon="IconChevronBarUp"/>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </vue-draggable>
         </table>
     </modal>
 </template>
 
 <script setup lang="ts">
-import Draggable from 'vuedraggable';
+import {VueDraggable} from 'vue-draggable-plus';
 import Icon from '~/components/Common/Icon.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
 import InlinePlayer from '~/components/InlinePlayer.vue';

@@ -94,6 +94,9 @@
                                 <template v-if="!item.is_enabled">
                                     {{ $gettext('Disabled') }}
                                 </template>
+                                <template v-else-if="item.source !== 'songs'">
+                                    {{ $gettext('Remote URL') }}
+                                </template>
                                 <template v-else-if="item.type === 'default'">
                                     {{ $gettext('General Rotation') }}<br>
                                     {{ $gettext('Weight') }}: {{ item.weight }}

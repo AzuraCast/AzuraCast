@@ -193,9 +193,9 @@ const langReleaseChannel = computed(() => {
 
 const needsUpdates = computed(() => {
     if (props.releaseChannel === 'stable') {
-        return updateInfo.value?.needs_release_update ?? true;
+        return updateInfo.value?.needs_release_update ?? false;
     } else {
-        return updateInfo.value?.needs_rolling_update ?? true;
+        return updateInfo.value?.needs_rolling_update ?? false;
     }
 });
 

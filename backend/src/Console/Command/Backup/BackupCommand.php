@@ -18,7 +18,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
-use Throwable;
 
 use const PATHINFO_EXTENSION;
 
@@ -56,19 +55,14 @@ final class BackupCommand extends AbstractDatabaseCommand
 
         $fileExt = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
+        $tmpPath = null;
+        $tempFilesToCleanup = [];
+
         if (Path::isAbsolute($path)) {
-            $tmpPath = $path;
+            $destPath = $path;
             $storageLocation = null;
+            $fs = null;
         } else {
-            $tmpPath = $fsUtils->tempnam(
-                sys_get_temp_dir(),
-                'backup_',
-                '.' . $fileExt
-            );
-
-            // Zip command cannot handle an existing file (even an empty one)
-            @unlink($tmpPath);
-
             if (null === $storageLocationId) {
                 $io->error('You must specify a storage location when providing a relative path.');
                 return 1;
@@ -78,6 +72,7 @@ final class BackupCommand extends AbstractDatabaseCommand
                 StorageLocationTypes::Backup,
                 $storageLocationId
             );
+
             if (!($storageLocation instanceof StorageLocation)) {
                 $io->error('Invalid storage location specified.');
                 return 1;
@@ -87,41 +82,36 @@ final class BackupCommand extends AbstractDatabaseCommand
                 $io->error('Storage location is full.');
                 return 1;
             }
+
+            $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
+
+            if ($storageLocation->isLocal()) {
+                $destPath = $fs->getLocalPath($path);
+            } else {
+                $tmpPath = $fsUtils->tempnam(
+                    sys_get_temp_dir(),
+                    'backup_',
+                    '.' . $fileExt
+                );
+
+                $destPath = $tmpPath;
+                $tempFilesToCleanup[] = $tmpPath;
+            }
         }
 
-        $includeMedia = !$excludeMedia;
+        // Zip command cannot handle an existing file (even an empty one)
+        $fsUtils->remove($destPath);
+
         $filesToBackup = [];
 
         $io->title(__('AzuraCast Backup'));
         $io->writeln(__('Please wait while a backup is generated...'));
 
-        // Create temp directories
-        $io->section(__('Creating temporary directories...'));
-
-        $tmpDirMariadb = '/tmp/azuracast_backup_mariadb';
-        try {
-            $fsUtils->mkdir($tmpDirMariadb);
-        } catch (Throwable $e) {
-            $io->error($e->getMessage());
-            return 1;
-        }
-
-        $io->newLine();
-
-        // Back up MariaDB
-        $io->section(__('Backing up MariaDB...'));
-
-        $pathDbDump = $tmpDirMariadb . '/db.sql';
-        $this->dumpDatabase($io, $pathDbDump);
-
-        $filesToBackup[] = $pathDbDump;
-        $io->newLine();
-
         // Backup uploaded custom assets
         $filesToBackup[] = $this->environment->getUploadsDirectory();
 
         // Include station media if specified.
-        if ($includeMedia) {
+        if (!$excludeMedia) {
             $stations = $this->em->createQuery(
                 <<<'DQL'
                     SELECT s FROM App\Entity\Station s
@@ -147,88 +137,112 @@ final class BackupCommand extends AbstractDatabaseCommand
             }
         }
 
-        // Compress backup files.
-        $io->section(__('Creating backup archive...'));
+        try {
+            // Back up MariaDB
+            $io->section(__('Backing up MariaDB...'));
 
-        // Strip leading slashes from backup paths.
-        $filesToBackup = array_map(
-            static function (string $val) {
-                if (str_starts_with($val, '/')) {
-                    return substr($val, 1);
-                }
-                return $val;
-            },
-            $filesToBackup
-        );
+            $pathDbDump = self::DB_BACKUP_PATH;
+            $tmpDirMariadb = dirname($pathDbDump);
 
-        switch ($fileExt) {
-            case 'tzst':
-                $this->passThruProcess(
-                    $output,
-                    array_merge(
-                        [
-                            'tar',
-                            '-I',
-                            'zstd',
-                            '-cvf',
-                            $tmpPath,
-                        ],
-                        $filesToBackup
-                    ),
-                    '/'
-                );
-                break;
+            $fsUtils->mkdir($tmpDirMariadb);
+            $this->dumpDatabase($io, $pathDbDump);
 
-            case 'gz':
-            case 'tgz':
-                $this->passThruProcess(
-                    $output,
-                    array_merge(
-                        [
-                            'tar',
-                            'zcvf',
-                            $tmpPath,
-                        ],
-                        $filesToBackup
-                    ),
-                    '/'
-                );
-                break;
+            $filesToBackup[] = $pathDbDump;
 
-            case 'zip':
-            default:
-                $dontCompress = ['.tar.gz', '.zip', '.jpg', '.mp3', '.ogg', '.flac', '.aac', '.wav'];
+            $tempFilesToCleanup[] = $pathDbDump;
+            $tempFilesToCleanup[] = $tmpDirMariadb;
 
-                $this->passThruProcess(
-                    $output,
-                    array_merge(
-                        [
-                            'zip',
-                            '-r',
-                            '-n',
-                            implode(':', $dontCompress),
-                            $tmpPath,
-                        ],
-                        $filesToBackup
-                    ),
-                    '/'
-                );
-                break;
+            $io->newLine();
+
+            // Compress backup files.
+            $io->section(__('Creating backup archive...'));
+
+            // Strip leading slashes from backup paths.
+            $filesToBackup = array_map(
+                static function (string $val) {
+                    if (str_starts_with($val, '/')) {
+                        return substr($val, 1);
+                    }
+                    return $val;
+                },
+                $filesToBackup
+            );
+
+            switch ($fileExt) {
+                case 'tzst':
+                    $this->passThruProcess(
+                        $output,
+                        array_merge(
+                            [
+                                'tar',
+                                '-I',
+                                'zstd',
+                                '-cvf',
+                                $destPath,
+                            ],
+                            $filesToBackup
+                        ),
+                        '/'
+                    );
+                    break;
+
+                case 'gz':
+                case 'tgz':
+                    $this->passThruProcess(
+                        $output,
+                        array_merge(
+                            [
+                                'tar',
+                                'zcvf',
+                                $destPath,
+                            ],
+                            $filesToBackup
+                        ),
+                        '/'
+                    );
+                    break;
+
+                case 'zip':
+                default:
+                    $dontCompress = ['.tar.gz', '.zip', '.jpg', '.mp3', '.ogg', '.flac', '.aac', '.wav'];
+
+                    $this->passThruProcess(
+                        $output,
+                        array_merge(
+                            [
+                                'zip',
+                                '-r',
+                                '-n',
+                                implode(':', $dontCompress),
+                                $destPath,
+                            ],
+                            $filesToBackup
+                        ),
+                        '/'
+                    );
+                    break;
+            }
+
+            if (null !== $storageLocation) {
+                $storageLocation->addStorageUsed(filesize($destPath) ?: 0);
+
+                $this->em->persist($storageLocation);
+                $this->em->flush();
+            }
+
+            if (null !== $fs && null !== $tmpPath) {
+                $fs->uploadAndDeleteOriginal($tmpPath, $path);
+            }
+
+            $io->newLine();
+        } finally {
+            // Cleanup
+            $io->section(__('Cleaning up temporary files...'));
+
+            $fsUtils->remove($tempFilesToCleanup);
+
+            $io->newLine();
         }
-
-        if (null !== $storageLocation) {
-            $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
-            $fs->uploadAndDeleteOriginal($tmpPath, $path);
-        }
-
-        $io->newLine();
-
-        // Cleanup
-        $io->section(__('Cleaning up temporary files...'));
-
-        $fsUtils->remove($tmpDirMariadb);
-
-        $io->newLine();
 
         $endTime = microtime(true);
         $timeDiff = $endTime - $startTime;

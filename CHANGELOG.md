@@ -18,6 +18,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- Backups to local filesystems will now back directly up to the destination file, instead of writing to a temp file and
+  copying it; this avoids doubling up on disk space requirements, prevents temp files from remaining on the filesystem
+  and allows you to mount a larger custom backup storage location without issues.
+
 - All web hooks can now have rate limits set for them, so they only dispatch once in the time specified, in case
   third-party services need to receive updates less frequently.
 

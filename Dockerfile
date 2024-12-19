@@ -8,7 +8,7 @@ FROM golang:1.23-bookworm AS go-dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends openssl git
 
-RUN go install github.com/jwilder/dockerize@v0.8.0
+RUN go install github.com/jwilder/dockerize@v0.9.1
 
 RUN go install github.com/aptible/supercronic@v0.2.33
 

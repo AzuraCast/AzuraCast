@@ -8,6 +8,8 @@ services:
       - "127.0.0.1:3306:3306" # MariaDB
       - "127.0.0.1:6025:6025" # Centrifugo
       - "127.0.0.1:6379:6379" # Redis
+    cap_add:
+      - SYS_PTRACE
     # environment:
       # VAR_DUMPER_FORMAT: server
       # VAR_DUMPER_SERVER: host.docker.internal:9912

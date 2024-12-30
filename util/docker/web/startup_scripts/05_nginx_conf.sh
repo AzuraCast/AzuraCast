@@ -24,6 +24,15 @@ if [ -z "$ACME_DIR" ]; then
   fi
 fi
 
+# Determine the internal ports to listen on
+if [ -z "$INTERNAL_HTTP_PORT" ]; then
+  export INTERNAL_HTTP_PORT=${AZURACAST_HTTP_PORT:-80}
+fi
+
+if [ -z "$INTERNAL_HTTPS_PORT" ]; then
+  export INTERNAL_HTTPS_PORT=${AZURACAST_HTTPS_PORT:-443}
+fi
+
 # Copy the nginx template to its destination.
 dockerize -template "/etc/nginx/nginx.conf.tmpl:/etc/nginx/nginx.conf" \
     -template "/etc/nginx/azuracast.conf.tmpl:/etc/nginx/sites-available/default.vhost"

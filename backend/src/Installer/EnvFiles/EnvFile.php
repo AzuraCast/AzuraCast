@@ -39,25 +39,49 @@ final class EnvFile extends AbstractEnvFile
                     'required' => true,
                 ],
                 'AZURACAST_HTTP_PORT' => [
-                    'name' => __('HTTP Port'),
+                    'name' => __('External HTTP Port'),
                     'description' => __(
                         'The main port AzuraCast listens to for insecure HTTP connections.',
                     ),
                     'default' => 80,
                 ],
                 'AZURACAST_HTTPS_PORT' => [
-                    'name' => __('HTTPS Port'),
+                    'name' => __('External HTTPS Port'),
                     'description' => __(
                         'The main port AzuraCast listens to for secure HTTPS connections.',
                     ),
                     'default' => 443,
                 ],
                 'AZURACAST_SFTP_PORT' => [
-                    'name' => __('SFTP Port'),
+                    'name' => __('External SFTP Port'),
                     'description' => __(
                         'The port AzuraCast listens to for SFTP file management connections.',
                     ),
                     'default' => 2022,
+                ],
+                'INTERNAL_HTTP_PORT' => [
+                    'name' => __('Internal HTTP Port'),
+                    'description' => __(
+                        'The port used inside Docker for insecure HTTP connections.'
+                    ),
+                    'default' => 6080,
+                    'required' => true,
+                ],
+                'INTERNAL_HTTPS_PORT' => [
+                    'name' => __('Internal HTTPS Port'),
+                    'description' => __(
+                        'The port used inside Docker for secure HTTPS connections.'
+                    ),
+                    'default' => 6443,
+                    'required' => true,
+                ],
+                'INTERNAL_SFTP_PORT' => [
+                    'name' => __('Internal SFTP Port'),
+                    'description' => __(
+                        'The port used inside Docker for SFTP connections.'
+                    ),
+                    'default' => 6022,
+                    'required' => true,
                 ],
                 'AZURACAST_STATION_PORTS' => [
                     'name' => __('Station Ports'),

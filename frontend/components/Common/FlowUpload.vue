@@ -56,12 +56,6 @@
                 </span>
             </button>
             <small class="file-name"/>
-            <input
-                type="file"
-                :accept="validMimeTypesList"
-                :multiple="allowMultiple"
-                style="visibility: hidden; position: absolute;"
-            >
         </div>
     </div>
 </template>
@@ -70,11 +64,12 @@
 import formatFileSize from '~/functions/formatFileSize';
 import Icon from './Icon.vue';
 import {defaultsDeep, forEach, toInteger} from 'lodash';
-import {computed, onMounted, onUnmounted, reactive, ref} from "vue";
+import {onMounted, onUnmounted, reactive, ref} from "vue";
 import Flow from "@flowjs/flow.js";
 import {useAzuraCast} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
 import {IconUpload} from "~/components/Common/icons";
+import {useEventListener} from "@vueuse/core";
 
 const props = defineProps({
     targetUrl: {
@@ -120,10 +115,6 @@ interface OriginalFlowFile {
 
 const emit = defineEmits(['complete', 'success', 'error']);
 
-const validMimeTypesList = computed(() => {
-    return props.validMimeTypes.join(', ');
-});
-
 let flow = null;
 
 const files = reactive<{
@@ -168,6 +159,18 @@ const {apiCsrf} = useAzuraCast();
 
 const {$gettext} = useTranslate();
 
+useEventListener($fileDropTarget, 'dragenter', (e) => {
+    if (e.target.classList.contains('file-drop-target')) {
+        e.target.classList.add('drag_over');
+    }
+});
+
+useEventListener($fileDropTarget, 'dragleave', (e) => {
+    if (e.target.classList.contains('file-drop-target')) {
+        e.target.classList.remove('drag_over');
+    }
+});
+
 onMounted(() => {
     const defaultConfig = {
         target: (file: OriginalFlowFile) => files.get(file).targetUrl ?? props.targetUrl,
@@ -189,7 +192,9 @@ onMounted(() => {
 
     flow = new Flow(config);
 
-    flow.assignBrowse($fileBrowseTarget.value);
+    flow.assignBrowse($fileBrowseTarget.value, false, !props.allowMultiple, {
+        accept: props.validMimeTypes.join(', ')
+    });
     flow.assignDrop($fileDropTarget.value);
 
     flow.on('fileAdded', (file: OriginalFlowFile) => {
@@ -248,40 +253,3 @@ onUnmounted(() => {
     files.reset();
 });
 </script>
-
-<style lang="scss">
-div.flow-upload {
-    div.upload-progress {
-        padding: 4px 0;
-
-        & > div {
-            padding: 3px 0;
-        }
-
-        .error {
-            color: #a00;
-        }
-
-        .progress {
-            margin-bottom: 5px;
-
-            .progress-bar {
-                border-bottom-width: 10px;
-
-                &::after {
-                    height: 10px;
-                }
-            }
-        }
-    }
-
-    div.file-drop-target {
-        padding: 25px 0;
-        text-align: center;
-
-        input {
-            display: inline;
-        }
-    }
-}
-</style>

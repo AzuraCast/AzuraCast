@@ -10,6 +10,8 @@
 # with any changes you need to make.
 #
 
+name: azuracast
+
 services:
   web:
     container_name: azuracast

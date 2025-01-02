@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Radio\Frontend;
 
+use App\Entity\Api\LogType;
 use App\Entity\Station;
 use App\Entity\StationMount;
 use App\Environment;
@@ -251,5 +252,31 @@ final class Rsas extends Icecast
         }
 
         return $config;
+    }
+
+    public function getLogTypes(Station $station): array
+    {
+        $stationConfigDir = $station->getRadioConfigDir();
+
+        return [
+            new LogType(
+                'rsas_access_log',
+                __('RSAS Access Log'),
+                $stationConfigDir . '/rsas_access.log',
+                true
+            ),
+            new LogType(
+                'rsas_error_log',
+                __('RSAS Error Log'),
+                $stationConfigDir . '/rsas_error.log',
+                true
+            ),
+            new LogType(
+                'rsas_xml',
+                __('RSAS Configuration'),
+                $stationConfigDir . '/rsas.xml',
+                false
+            ),
+        ];
     }
 }

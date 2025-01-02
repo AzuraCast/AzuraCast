@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Radio\Backend;
 
+use App\Entity\Api\LogType;
 use App\Entity\Station;
 use App\Entity\StationStreamer;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
@@ -270,5 +271,25 @@ final class Liquidsoap extends AbstractLocalAdapter
     public function getSupervisorProgramName(Station $station): string
     {
         return Configuration::getSupervisorProgramName($station, 'backend');
+    }
+
+    public function getLogTypes(Station $station): array
+    {
+        $stationConfigDir = $station->getRadioConfigDir();
+
+        return [
+            new LogType(
+                'liquidsoap_log',
+                __('Liquidsoap Log'),
+                $stationConfigDir . '/liquidsoap.log',
+                true
+            ),
+            new LogType(
+                'liquidsoap_liq',
+                __('Liquidsoap Configuration'),
+                $stationConfigDir . '/liquidsoap.liq',
+                false
+            ),
+        ];
     }
 }

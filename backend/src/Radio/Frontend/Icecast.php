@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Radio\Frontend;
 
+use App\Entity\Api\LogType;
 use App\Entity\Station;
 use App\Entity\StationMount;
 use App\Radio\Enums\StreamFormats;
@@ -351,5 +352,31 @@ class Icecast extends AbstractFrontend
         $publicUrl = $this->getPublicUrl($station, $baseUrl);
         return $publicUrl
             ->withPath($publicUrl->getPath() . '/admin.html');
+    }
+
+    public function getLogTypes(Station $station): array
+    {
+        $stationConfigDir = $station->getRadioConfigDir();
+
+        return [
+            new LogType(
+                'icecast_access_log',
+                __('Icecast Access Log'),
+                $stationConfigDir . '/icecast_access.log',
+                true
+            ),
+            new LogType(
+                'icecast_error_log',
+                __('Icecast Error Log'),
+                $stationConfigDir . '/icecast.log',
+                true
+            ),
+            new LogType(
+                'icecast_xml',
+                __('Icecast Configuration'),
+                $stationConfigDir . '/icecast.xml',
+                false,
+            ),
+        ];
     }
 }

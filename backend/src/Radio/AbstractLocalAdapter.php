@@ -7,6 +7,7 @@ namespace App\Radio;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Entity\Api\LogType;
 use App\Entity\Station;
 use App\Exception\Supervisor\AlreadyRunningException;
 use App\Exception\Supervisor\NotRunningException;
@@ -261,6 +262,16 @@ abstract class AbstractLocalAdapter
         $eNew->addLoggingContext('station_name', $station->getName());
 
         throw $eNew;
+    }
+
+    /**
+     * Return the logs available for this adapter for the given station.
+     *
+     * @return LogType[]
+     */
+    public function getLogTypes(Station $station): array
+    {
+        return [];
     }
 
     /**

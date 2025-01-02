@@ -6,6 +6,7 @@ namespace App\Controller\Api\Admin;
 
 use App\Container\EnvironmentAwareTrait;
 use App\Controller\Api\Traits\HasLogViewer;
+use App\Entity\Api\LogType;
 use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -30,74 +31,77 @@ final class LogsAction
         /** @var string|null $log */
         $log = $params['log'] ?? null;
 
-        $logPaths = $this->getGlobalLogs();
+        $logTypes = $this->getGlobalLogs();
 
         if (null === $log) {
             $router = $request->getRouter();
             return $response->withJson(
                 [
                     'logs' => array_map(
-                        function (string $key, array $row) use ($router) {
-                            $row['key'] = $key;
-                            $row['links'] = [
+                        function (LogType $row) use ($router): LogType {
+                            $row->links = [
                                 'self' => $router->named(
                                     'api:admin:log',
                                     [
-                                        'log' => $key,
+                                        'log' => $row->key,
                                     ]
                                 ),
                             ];
                             return $row;
                         },
-                        array_keys($logPaths),
-                        array_values($logPaths)
+                        $logTypes
                     ),
                 ]
             );
         }
 
-        if (!isset($logPaths[$log])) {
+        $logTypes = array_column($logTypes, null, 'key');
+
+        if (!isset($logTypes[$log])) {
             throw new Exception('Invalid log file specified.');
         }
+
+        $logType = $logTypes[$log];
 
         return $this->streamLogToResponse(
             $request,
             $response,
-            $logPaths[$log]['path'],
-            $logPaths[$log]['tail'] ?? true
+            $logType->path,
+            $logType->tail
         );
     }
 
     /**
-     * @return array<string, array>
+     * @return LogType[]
      */
     private function getGlobalLogs(): array
     {
         $tempDir = $this->environment->getTempDirectory();
-        $logPaths = [];
-
-        $logPaths['azuracast_log'] = [
-            'name' => __('AzuraCast Application Log'),
-            'path' => $tempDir . '/app-' . gmdate('Y-m-d') . '.log',
-            'tail' => true,
-        ];
-
-        $logPaths['azuracast_nowplaying_log'] = [
-            'name' => __('AzuraCast Now Playing Log'),
-            'path' => $tempDir . '/app_nowplaying-' . gmdate('Y-m-d') . '.log',
-            'tail' => true,
-        ];
-
-        $logPaths['azuracast_sync_log'] = [
-            'name' => __('AzuraCast Synchronized Task Log'),
-            'path' => $tempDir . '/app_sync-' . gmdate('Y-m-d') . '.log',
-            'tail' => true,
-        ];
-
-        $logPaths['azuracast_worker_log'] = [
-            'name' => __('AzuraCast Queue Worker Log'),
-            'path' => $tempDir . '/app_worker-' . gmdate('Y-m-d') . '.log',
-            'tail' => true,
+        $logPaths = [
+            new LogType(
+                'azuracast_log',
+                __('AzuraCast Application Log'),
+                $tempDir . '/app-' . gmdate('Y-m-d') . '.log',
+                true,
+            ),
+            new LogType(
+                'azuracast_nowplaying_log',
+                __('AzuraCast Now Playing Log'),
+                $tempDir . '/app_nowplaying-' . gmdate('Y-m-d') . '.log',
+                true,
+            ),
+            new LogType(
+                'azuracast_sync_log',
+                __('AzuraCast Synchronized Task Log'),
+                $tempDir . '/app_sync-' . gmdate('Y-m-d') . '.log',
+                true
+            ),
+            new LogType(
+                'azuracast_worker_log',
+                __('AzuraCast Queue Worker Log'),
+                $tempDir . '/app_worker-' . gmdate('Y-m-d') . '.log',
+                true
+            ),
         ];
 
         if ($this->environment->isDocker()) {
@@ -107,49 +111,56 @@ final class LogsAction
                 $logPath = $tempDir . '/service_' . $serviceKey . '.log';
 
                 if (is_file($logPath)) {
-                    $logPaths['service_' . $serviceKey] = [
-                        'name' => sprintf($langServiceLog, $serviceKey, $serviceName),
-                        'path' => $logPath,
-                        'tail' => true,
-                    ];
+                    $logPaths[] = new LogType(
+                        'service_' . $serviceKey,
+                        sprintf($langServiceLog, $serviceKey, $serviceName),
+                        $logPath,
+                        true,
+                    );
                 }
             }
         } else {
-            $logPaths['nginx_access'] = [
-                'name' => __('Nginx Access Log'),
-                'path' => $tempDir . '/access.log',
-                'tail' => true,
-            ];
-            $logPaths['nginx_error'] = [
-                'name' => __('Nginx Error Log'),
-                'path' => $tempDir . '/error.log',
-                'tail' => true,
-            ];
-            $logPaths['php'] = [
-                'name' => __('PHP Application Log'),
-                'path' => $tempDir . '/php_errors.log',
-                'tail' => true,
-            ];
-            $logPaths['supervisord'] = [
-                'name' => __('Supervisord Log'),
-                'path' => $tempDir . '/supervisord.log',
-                'tail' => true,
-            ];
+            $logPaths[] = new LogType(
+                'nginx_access',
+                __('Nginx Access Log'),
+                $tempDir . '/access.log',
+                true
+            );
+            $logPaths[] = new LogType(
+                'nginx_error',
+                __('Nginx Error Log'),
+                $tempDir . '/error.log',
+                true,
+            );
+            $logPaths[] = new LogType(
+                'php',
+                __('PHP Application Log'),
+                $tempDir . '/php_errors.log',
+                true,
+            );
+            $logPaths[] = new LogType(
+                'supervisord',
+                __('Supervisord Log'),
+                $tempDir . '/supervisord.log',
+                true,
+            );
         }
 
         $liquidsoapDir = $this->environment->getParentDirectory() . '/liquidsoap';
 
-        $logPaths['azuracast_liq_functions'] = [
-            'name' => __('AzuraCast Common Liquidsoap Functions'),
-            'path' => $liquidsoapDir . '/azuracast.liq',
-            'tail' => false,
-        ];
+        $logPaths[] = new LogType(
+            'azuracast_liq_functions',
+            __('AzuraCast Common Liquidsoap Functions'),
+            $liquidsoapDir . '/azuracast.liq',
+            false,
+        );
 
-        $logPaths['azuracast_liq_autocue'] = [
-            'name' => __('AutoCue Liquidsoap Functions'),
-            'path' => $liquidsoapDir . '/autocue.liq',
-            'tail' => false,
-        ];
+        $logPaths[] = new LogType(
+            'azuracast_liq_autocue',
+            __('AutoCue Liquidsoap Functions'),
+            $liquidsoapDir . '/autocue.liq',
+            false,
+        );
 
         return $logPaths;
     }

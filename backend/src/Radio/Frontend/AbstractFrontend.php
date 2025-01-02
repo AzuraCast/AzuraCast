@@ -107,12 +107,18 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
     }
 
     /**
-     * @param string $customConfigRaw
+     * @param string|null $customConfigRaw
      *
      * @return mixed[]|false
      */
-    protected function processCustomConfig(string $customConfigRaw): array|false
+    protected function processCustomConfig(?string $customConfigRaw): array|false
     {
+        $customConfigRaw = trim($customConfigRaw ?? '');
+
+        if (empty($customConfigRaw)) {
+            return false;
+        }
+
         try {
             if (str_starts_with($customConfigRaw, '{')) {
                 return json_decode($customConfigRaw, true, 512, JSON_THROW_ON_ERROR);

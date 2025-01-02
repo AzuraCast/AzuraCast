@@ -1,6 +1,7 @@
 export enum FrontendAdapter {
     Icecast = 'icecast',
     Shoutcast = 'shoutcast2',
+    Rsas = 'rsas',
     Remote = 'remote'
 }
 

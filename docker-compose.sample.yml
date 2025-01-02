@@ -179,6 +179,7 @@ services:
       - www_uploads:/var/azuracast/storage/uploads
       - shoutcast2_install:/var/azuracast/storage/shoutcast2
       - stereo_tool_install:/var/azuracast/storage/stereo_tool
+      - rsas_install:/var/azuracast/storage/rsas
       - geolite_install:/var/azuracast/storage/geoip
       - sftpgo_data:/var/azuracast/storage/sftpgo
       - acme:/var/azuracast/storage/acme
@@ -208,6 +209,7 @@ volumes:
   acme: { }
   shoutcast2_install: { }
   stereo_tool_install: { }
+  rsas_install: { }
   geolite_install: { }
   sftpgo_data: { }
   station_data: { }

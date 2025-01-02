@@ -120,6 +120,24 @@ final class LogsAction implements SingleActionInterface
                 ];
                 break;
 
+            case FrontendAdapters::Rsas:
+                $logPaths['rsas_access_log'] = [
+                    'name' => __('RSAS Access Log'),
+                    'path' => $stationConfigDir . '/rsas_access.log',
+                    'tail' => true,
+                ];
+                $logPaths['rsas_error_log'] = [
+                    'name' => __('RSAS Error Log'),
+                    'path' => $stationConfigDir . '/rsas_error.log',
+                    'tail' => true,
+                ];
+                $logPaths['rsas_xml'] = [
+                    'name' => __('RSAS Configuration'),
+                    'path' => $stationConfigDir . '/rsas.xml',
+                    'tail' => false,
+                ];
+                break;
+
             case FrontendAdapters::Shoutcast:
                 $logPaths['shoutcast_log'] = [
                     'name' => __('Shoutcast Log'),

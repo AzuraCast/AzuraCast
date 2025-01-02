@@ -16,6 +16,8 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Supervisor\Exception\Fault;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
 use Supervisor\SupervisorInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Throwable;
 
 abstract class AbstractLocalAdapter
 {
@@ -44,15 +46,22 @@ abstract class AbstractLocalAdapter
             return false;
         }
 
-        $currentConfig = (is_file($configPath))
-            ? file_get_contents($configPath)
-            : null;
+        $fsUtils = new Filesystem();
 
-        $newConfig = $this->getCurrentConfiguration($station);
+        try {
+            $currentConfig = $fsUtils->readFile($configPath);
+        } catch (Throwable) {
+            $currentConfig = '';
+        }
 
-        file_put_contents($configPath, $newConfig);
+        $newConfig = $this->getCurrentConfiguration($station) ?? '';
 
-        return 0 !== strcmp($currentConfig ?: '', $newConfig ?: '');
+        $fsUtils->dumpFile(
+            $configPath,
+            $newConfig
+        );
+
+        return 0 !== strcmp($currentConfig, $newConfig);
     }
 
     /**

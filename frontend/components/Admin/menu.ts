@@ -1,6 +1,6 @@
 import {useTranslate} from "~/vendor/gettext.ts";
 import {GlobalPermission, userAllowed} from "~/acl.ts";
-import filterMenu, { MenuCategory, ReactiveMenu } from "~/functions/filterMenu.ts";
+import filterMenu, {MenuCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
 import {computed, reactive} from "vue";
 import {IconGroups, IconRadio, IconRouter} from "~/components/Common/icons.ts";
 
@@ -145,7 +145,15 @@ export function useAdminMenu(): ReactiveMenu {
                     url: {
                         name: 'admin:install_shoutcast:index'
                     },
-                    visible: userAllowed(GlobalPermission.All)
+                    visible: userAllowed(GlobalPermission.Settings)
+                },
+                {
+                    key: 'rsas',
+                    label: computed(() => $gettext('Install RSAS')),
+                    url: {
+                        name: 'admin:install_rsas:index'
+                    },
+                    visible: userAllowed(GlobalPermission.Settings)
                 },
                 {
                     key: 'stereo_tool',
@@ -153,7 +161,7 @@ export function useAdminMenu(): ReactiveMenu {
                     url: {
                         name: 'admin:stereo_tool:index'
                     },
-                    visible: userAllowed(GlobalPermission.All)
+                    visible: userAllowed(GlobalPermission.Settings)
                 },
                 {
                     key: 'geolite',
@@ -161,7 +169,7 @@ export function useAdminMenu(): ReactiveMenu {
                     url: {
                         name: 'admin:install_geolite:index'
                     },
-                    visible: userAllowed(GlobalPermission.All)
+                    visible: userAllowed(GlobalPermission.Settings)
                 }
             ]
         }

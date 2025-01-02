@@ -185,6 +185,10 @@ const props = defineProps({
         type: Object,
         required: true
     },
+    isRsasInstalled: {
+        type: Boolean,
+        default: false
+    },
     isShoutcastInstalled: {
         type: Boolean,
         default: false
@@ -275,6 +279,13 @@ const frontendTypeOptions = computed(() => {
             value: FrontendAdapter.Icecast
         },
     ];
+
+    if (props.isRsasInstalled) {
+        frontendOptions.push({
+            text: $gettext('Use Rocket Streaming Audio Server (RSAS) on this server.'),
+            value: FrontendAdapter.Rsas
+        });
+    }
 
     if (props.isShoutcastInstalled) {
         frontendOptions.push({

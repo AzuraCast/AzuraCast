@@ -166,13 +166,9 @@ final class Shoutcast extends AbstractFrontend
             $config['maxbitrate'] = $maxBitrateInBps;
         }
 
-        $customConfig = trim($frontendConfig->getCustomConfiguration() ?? '');
-        if (!empty($customConfig)) {
-            $customConf = $this->processCustomConfig($customConfig);
-
-            if (false !== $customConf) {
-                $config = array_merge($config, $customConf);
-            }
+        $customConf = $this->processCustomConfig($frontendConfig->getCustomConfiguration());
+        if (false !== $customConf) {
+            $config = array_merge($config, $customConf);
         }
 
         $i = 0;

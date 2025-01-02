@@ -5,6 +5,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Support for Rocket Streaming Audio Server (RSAS)**: RSAS is a popular, closed-source drop-in replacement for
+  Icecast, and AzuraCast now supports uploading the RSAS binary and license key, and selecting RSAS as a broadcasting
+  frontend, directly within the web UI.
+
 - **Update to Liquidsoap 2.3.0**: We have worked closely with the maintainers of Liquidsoap and members of the radio
   community to test and refine the next big version of Liquidsoap, our underlying broadcast manager, and they have
   released 2.3.0 as a stable release. We're planning on using this version moving forward, first in Rolling Release for

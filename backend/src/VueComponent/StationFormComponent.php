@@ -26,6 +26,7 @@ final class StationFormComponent implements VueComponentInterface
         return [
             'timezones' => $this->getTimezones(),
             'isShoutcastInstalled' => isset($installedFrontends[FrontendAdapters::Shoutcast->value]),
+            'isRsasInstalled' => isset($installedFrontends[FrontendAdapters::Rsas->value]),
             'isStereoToolInstalled' => StereoTool::isInstalled(),
             'countries' => Countries::getNames(),
         ];

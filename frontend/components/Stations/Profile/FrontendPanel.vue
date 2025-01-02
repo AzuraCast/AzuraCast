@@ -200,12 +200,19 @@ const langShowHideCredentials = computed(() => {
 });
 
 const frontendName = computed(() => {
-    if (props.frontendType === FrontendAdapter.Icecast) {
-        return 'Icecast';
-    } else if (props.frontendType === FrontendAdapter.Shoutcast) {
-        return 'Shoutcast';
+    switch (props.frontendType) {
+        case FrontendAdapter.Icecast:
+            return 'Icecast';
+
+        case FrontendAdapter.Rsas:
+            return 'Rocket Streaming Audio Server (RSAS)';
+
+        case FrontendAdapter.Shoutcast:
+            return 'Shoutcast';
+
+        default:
+            return '';
     }
-    return '';
 });
 
 const isShoutcast = computed(() => {

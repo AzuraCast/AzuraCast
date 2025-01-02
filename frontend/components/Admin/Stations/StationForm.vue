@@ -19,6 +19,7 @@
 
                 <admin-stations-frontend-form
                     v-model:form="form"
+                    :is-rsas-installed="isRsasInstalled"
                     :is-shoutcast-installed="isShoutcastInstalled"
                     :countries="countries"
                 />

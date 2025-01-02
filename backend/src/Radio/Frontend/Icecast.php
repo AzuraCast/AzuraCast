@@ -8,7 +8,7 @@ use App\Entity\Station;
 use App\Entity\StationMount;
 use App\Radio\Enums\StreamFormats;
 use App\Service\Acme;
-use App\Utilities;
+use App\Utilities\Arrays;
 use App\Xml\Writer;
 use GuzzleHttp\Promise\Utils;
 use GuzzleHttp\Psr7\Uri;
@@ -17,12 +17,16 @@ use Psr\Http\Message\UriInterface;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
 use Symfony\Component\Filesystem\Path;
 
-final class Icecast extends AbstractFrontend
+class Icecast extends AbstractFrontend
 {
     public const int LOGLEVEL_DEBUG = 4;
     public const int LOGLEVEL_INFO = 3;
     public const int LOGLEVEL_WARN = 2;
     public const int LOGLEVEL_ERROR = 1;
+
+    public const string BASE_DIR = '/usr/local/share/icecast';
+    public const string WEBROOT = self::BASE_DIR . '/web';
+    public const string ADMINROOT = self::BASE_DIR . '/admin';
 
     public function reload(Station $station): void
     {
@@ -109,6 +113,30 @@ final class Icecast extends AbstractFrontend
 
     public function getCurrentConfiguration(Station $station): string
     {
+        $config = $this->getConfigurationArray($station);
+        return Writer::toString($config, 'icecast', false);
+    }
+
+    protected function processCustomConfig(?string $customConfigRaw): array|false
+    {
+        $customConfParsed = parent::processCustomConfig($customConfigRaw);
+
+        if (false !== $customConfParsed) {
+            // Special handling for aliases.
+            if (isset($customConfParsed['paths']['alias'])) {
+                $alias = (array)$customConfParsed['paths']['alias'];
+                if (!is_numeric(key($alias))) {
+                    $alias = [$alias];
+                }
+                $customConfParsed['paths']['alias'] = $alias;
+            }
+        }
+
+        return $customConfParsed;
+    }
+
+    protected function getConfigurationArray(Station $station): array
+    {
         $frontendConfig = $station->getFrontendConfig();
         $configDir = $station->getRadioConfigDir();
 
@@ -144,10 +172,10 @@ final class Icecast extends AbstractFrontend
             'mount' => [],
             'fileserve' => 1,
             'paths' => [
-                'basedir' => '/usr/local/share/icecast',
+                'basedir' => self::BASE_DIR,
                 'logdir' => $configDir,
-                'webroot' => '/usr/local/share/icecast/web',
-                'adminroot' => '/usr/local/share/icecast/admin',
+                'webroot' => self::WEBROOT,
+                'adminroot' => self::ADMINROOT,
                 'pidfile' => $configDir . '/icecast.pid',
                 'alias' => [
                     [
@@ -175,8 +203,9 @@ final class Icecast extends AbstractFrontend
             ],
         ];
 
-        $bannedCountries = $station->getFrontendConfig()->getBannedCountries() ?? [];
-        $allowedIps = $this->getIpsAsArray($station->getFrontendConfig()->getAllowedIps());
+        $bannedCountries = $frontendConfig->getBannedCountries() ?? [];
+        $allowedIps = $this->getIpsAsArray($frontendConfig->getAllowedIps());
+
         $useListenerAuth = !empty($bannedCountries) || !empty($allowedIps);
         $charset = match ($station->getBackendConfig()->getCharset()) {
             'ISO-8859-1' => 'ISO8859-1',
@@ -194,7 +223,7 @@ final class Icecast extends AbstractFrontend
             ];
 
             if ($station->getMaxBitrate() !== 0) {
-                $maxBitrateInBps = (int) $station->getMaxBitrate() * 1024 + 2500;
+                $maxBitrateInBps = (int)$station->getMaxBitrate() * 1024 + 2500;
                 $mount['limit-rate'] = $maxBitrateInBps;
             }
 
@@ -219,7 +248,7 @@ final class Icecast extends AbstractFrontend
                 // The intro path is appended to webroot, so the path should be relative to it.
                 $mount['intro'] = Path::makeRelative(
                     $station->getRadioConfigDir() . '/' . $introPath,
-                    '/usr/local/share/icecast/web'
+                    self::WEBROOT
                 );
             }
 
@@ -242,7 +271,7 @@ final class Icecast extends AbstractFrontend
             if (!empty($mountFrontendConfig)) {
                 $mountConf = $this->processCustomConfig($mountFrontendConfig);
                 if (false !== $mountConf) {
-                    $mount = Utilities\Arrays::arrayMergeRecursiveDistinct($mount, $mountConf);
+                    $mount = Arrays::arrayMergeRecursiveDistinct($mount, $mountConf);
                 }
             }
 
@@ -283,25 +312,12 @@ final class Icecast extends AbstractFrontend
             $config['mount'][] = $mount;
         }
 
-        $customConfig = trim($frontendConfig->getCustomConfiguration() ?? '');
-        if (!empty($customConfig)) {
-            $customConfParsed = $this->processCustomConfig($customConfig);
-
-            if (false !== $customConfParsed) {
-                // Special handling for aliases.
-                if (isset($customConfParsed['paths']['alias'])) {
-                    $alias = (array)$customConfParsed['paths']['alias'];
-                    if (!is_numeric(key($alias))) {
-                        $alias = [$alias];
-                    }
-                    $customConfParsed['paths']['alias'] = $alias;
-                }
-
-                $config = Utilities\Arrays::arrayMergeRecursiveDistinct($config, $customConfParsed);
-            }
+        $customConfParsed = $this->processCustomConfig($frontendConfig->getCustomConfiguration());
+        if (false !== $customConfParsed) {
+            $config = Arrays::arrayMergeRecursiveDistinct($config, $customConfParsed);
         }
 
-        return Writer::toString($config, 'icecast', false);
+        return $config;
     }
 
     public function getCommand(Station $station): ?string

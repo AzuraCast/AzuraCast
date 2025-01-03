@@ -12,6 +12,7 @@ use App\Radio\Frontend\Shoutcast;
 use App\Service\Flow;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
 final class PostAction implements SingleActionInterface
@@ -30,25 +31,27 @@ final class PostAction implements SingleActionInterface
             return $flowResponse;
         }
 
+        $fsUtils = new Filesystem();
+
         $scBaseDir = Shoutcast::getDirectory();
         $scTgzPath = $scBaseDir . '/sc_serv.tar.gz';
-        if (is_file($scTgzPath)) {
-            unlink($scTgzPath);
-        }
+        $fsUtils->remove($scTgzPath);
 
         $flowResponse->moveTo($scTgzPath);
 
-        $process = new Process(
-            [
-                'tar',
-                'xvzf',
-                $scTgzPath,
-            ],
-            $scBaseDir
-        );
-        $process->mustRun();
-
-        unlink($scTgzPath);
+        try {
+            $process = new Process(
+                [
+                    'tar',
+                    'xvzf',
+                    $scTgzPath,
+                ],
+                $scBaseDir
+            );
+            $process->mustRun();
+        } finally {
+            $fsUtils->remove($scTgzPath);
+        }
 
         return $response->withJson(Status::success());
     }

@@ -76,6 +76,7 @@
 
                             <flow-upload
                                 :target-url="apiUrl"
+                                :valid-mime-types="['.tar.gz']"
                                 @complete="relist"
                             />
                         </div>
@@ -101,6 +102,7 @@
 
                             <flow-upload
                                 :target-url="licenseUrl"
+                                :valid-mime-types="['.key']"
                                 @complete="relist"
                                 accept
                             />

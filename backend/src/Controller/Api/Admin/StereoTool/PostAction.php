@@ -44,25 +44,29 @@ final class PostAction implements SingleActionInterface
         switch (strtolower(pathinfo($flowResponse->getClientFilename(), PATHINFO_EXTENSION))) {
             case 'zip':
                 $destTempPath = sys_get_temp_dir() . '/uploads/new_stereo_tool';
-                $fsUtils->remove($destTempPath);
-                $fsUtils->mkdir($destTempPath);
 
-                $process = new Process([
-                    'unzip',
-                    '-o',
-                    $sourceTempPath,
-                ]);
-                $process->setWorkingDirectory($destTempPath);
-                $process->setTimeout(600.0);
+                try {
+                    $fsUtils->remove($destTempPath);
+                    $fsUtils->mkdir($destTempPath);
 
-                $process->run();
+                    $process = new Process([
+                        'unzip',
+                        '-o',
+                        $sourceTempPath,
+                    ]);
+                    $process->setWorkingDirectory($destTempPath);
+                    $process->setTimeout(600.0);
 
-                $flowResponse->delete();
+                    $process->run();
 
-                $version = $this->processZipDir($destTempPath, $libraryPath, $fsUtils);
+                    $flowResponse->delete();
 
-                $fsUtils->dumpFile($libraryPath . '/' . StereoTool::VERSION_FILE, $version);
-                $fsUtils->remove($destTempPath);
+                    $version = $this->processZipDir($destTempPath, $libraryPath, $fsUtils);
+
+                    $fsUtils->dumpFile($libraryPath . '/' . StereoTool::VERSION_FILE, $version);
+                } finally {
+                    $fsUtils->remove($destTempPath);
+                }
                 break;
 
             case 'so':

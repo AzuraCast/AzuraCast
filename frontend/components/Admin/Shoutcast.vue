@@ -69,6 +69,7 @@
                         <flow-upload
                             :target-url="apiUrl"
                             @complete="relist"
+                            :valid-mime-types="['.tar.gz']"
                         />
                     </div>
                 </div>

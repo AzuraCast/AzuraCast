@@ -12,6 +12,7 @@ use App\Radio\Frontend\Rsas;
 use App\Service\Flow;
 use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
 final class PostAction implements SingleActionInterface
@@ -29,25 +30,27 @@ final class PostAction implements SingleActionInterface
         $baseDir = Rsas::getDirectory();
         File::mkdirIfNotExists($baseDir);
 
+        $fsUtils = new Filesystem();
+
         $tgzPath = $baseDir . '/rsas.tar.gz';
-        if (is_file($tgzPath)) {
-            unlink($tgzPath);
-        }
+        $fsUtils->remove($tgzPath);
 
         $flowResponse->moveTo($tgzPath);
 
-        $process = new Process(
-            [
-                'tar',
-                'xvzf',
-                $tgzPath,
-                '--strip-components=1',
-            ],
-            $baseDir
-        );
-        $process->mustRun();
-
-        unlink($tgzPath);
+        try {
+            $process = new Process(
+                [
+                    'tar',
+                    'xvzf',
+                    $tgzPath,
+                    '--strip-components=1',
+                ],
+                $baseDir
+            );
+            $process->mustRun();
+        } finally {
+            $fsUtils->remove($tgzPath);
+        }
 
         return $response->withJson(Status::success());
     }

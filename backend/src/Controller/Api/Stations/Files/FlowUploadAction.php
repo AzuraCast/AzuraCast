@@ -54,7 +54,7 @@ final class FlowUploadAction implements SingleActionInterface
 
         $currentDir = Types::string($request->getParam('currentDirectory'));
 
-        $destPath = $flowResponse->getClientFilename();
+        $destPath = $flowResponse->getClientFullPath();
         if (!empty($currentDir)) {
             $destPath = $currentDir . '/' . $destPath;
         }

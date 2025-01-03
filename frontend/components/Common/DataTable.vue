@@ -166,6 +166,9 @@
                                 column.class,
                                 (column.sortable) ? 'sortable' : ''
                             ]"
+                            :aria-sort="(column.sortable && sortField?.key === column.key)
+                                ? ((sortOrder === 'asc') ? 'ascending' : 'descending')
+                                : null"
                             @click.stop="sort(column)"
                         >
                             <slot
@@ -176,7 +179,7 @@
                                     {{ column.label }}
 
                                     <template v-if="column.sortable && sortField?.key === column.key">
-                                        <icon :icon="(sortOrder === 'asc') ? IconArrowDropDown : IconArrowDropUp"/>
+                                        <icon :icon="(sortOrder === 'asc') ? IconArrowDropUp : IconArrowDropDown"/>
                                     </template>
                                 </div>
                             </slot>

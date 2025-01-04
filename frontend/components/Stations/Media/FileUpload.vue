@@ -3,7 +3,6 @@
         :target-url="targetUrl"
         :valid-mime-types="validMimeTypes"
         allow-multiple
-        allow-directories
         @complete="onFlowUpload"
         @error="onFlowUpload"
     />

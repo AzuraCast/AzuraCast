@@ -80,7 +80,7 @@ const props = defineProps({
         type: Boolean,
         default: false
     },
-    allowDirectories: {
+    directoryMode: {
         type: Boolean,
         default: false
     },
@@ -196,7 +196,7 @@ onMounted(() => {
 
     flow = new Flow(config);
 
-    flow.assignBrowse($fileBrowseTarget.value, props.allowDirectories, !props.allowMultiple, {
+    flow.assignBrowse($fileBrowseTarget.value, props.directoryMode, !props.allowMultiple, {
         accept: props.validMimeTypes.join(', ')
     });
     flow.assignDrop($fileDropTarget.value);

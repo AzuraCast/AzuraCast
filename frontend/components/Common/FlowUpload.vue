@@ -197,7 +197,7 @@ onMounted(() => {
     flow = new Flow(config);
 
     flow.assignBrowse($fileBrowseTarget.value, props.directoryMode, !props.allowMultiple, {
-        accept: props.validMimeTypes.join(', ')
+        accept: props.validMimeTypes.join(',')
     });
     flow.assignDrop($fileDropTarget.value);
 

@@ -220,20 +220,12 @@ final class Rsas extends Icecast
             }
 
             if ($useListenerAuth) {
-                $mountAuthenticationUrl = $this->environment->getInternalUri()
-                    ->withPath('/api/internal/' . $station->getIdRequired() . '/listener-auth')
-                    ->withQuery(
-                        http_build_query([
-                            'api_auth' => $station->getAdapterApiKey(),
-                        ])
-                    );
-
                 $mount['authentication'][] = [
                     '@type' => 'url',
                     'option' => [
                         [
                             '@name' => 'listener_add',
-                            '@value' => (string)$mountAuthenticationUrl,
+                            '@value' => $this->getAuthenticationUrl($station),
                         ],
                         [
                             '@name' => 'auth_header',

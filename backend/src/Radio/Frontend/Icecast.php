@@ -7,6 +7,7 @@ namespace App\Radio\Frontend;
 use App\Entity\Api\LogType;
 use App\Entity\Station;
 use App\Entity\StationMount;
+use App\Http\Router;
 use App\Radio\Enums\StreamFormats;
 use App\Service\Acme;
 use App\Utilities\Arrays;
@@ -287,20 +288,12 @@ class Icecast extends AbstractFrontend
             }
 
             if ($useListenerAuth) {
-                $mountAuthenticationUrl = $this->environment->getInternalUri()
-                    ->withPath('/api/internal/' . $station->getIdRequired() . '/listener-auth')
-                    ->withQuery(
-                        http_build_query([
-                            'api_auth' => $station->getAdapterApiKey(),
-                        ])
-                    );
-
                 $mount['authentication'][] = [
                     '@type' => 'url',
                     'option' => [
                         [
                             '@name' => 'listener_add',
-                            '@value' => (string)$mountAuthenticationUrl,
+                            '@value' => $this->getAuthenticationUrl($station),
                         ],
                         [
                             '@name' => 'auth_header',
@@ -319,6 +312,21 @@ class Icecast extends AbstractFrontend
         }
 
         return $config;
+    }
+
+    protected function getAuthenticationUrl(Station $station): string
+    {
+        return (string)Router::resolveUri(
+            $this->environment->getInternalUri(),
+            $this->router->named(
+                'api:internal:listener-auth',
+                [
+                    'station_id' => $station->getIdRequired(),
+                    'api_auth' => $station->getAdapterApiKey(),
+                ]
+            ),
+            true
+        );
     }
 
     public function getCommand(Station $station): ?string

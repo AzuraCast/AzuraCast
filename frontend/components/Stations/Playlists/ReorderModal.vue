@@ -6,6 +6,7 @@
         :title="$gettext('Reorder Playlist')"
         :busy="loading"
         hide-footer
+        @shown="onShown"
         @hidden="onHidden"
     >
         <inline-player class="text-start bg-primary rounded mb-2 p-1" />
@@ -30,12 +31,7 @@
                     </th>
                 </tr>
             </thead>
-            <vue-draggable
-                v-model="media"
-                tag="tbody"
-                item-key="id"
-                @change="save"
-            >
+            <tbody ref="$tbody">
                 <tr v-for="(element, index) in media" :key="element.media.id" class="align-middle">
                     <td class="pe-2">
                         <play-button
@@ -88,13 +84,12 @@
                         </div>
                     </td>
                 </tr>
-            </vue-draggable>
+            </tbody>
         </table>
     </modal>
 </template>
 
 <script setup lang="ts">
-import {VueDraggable} from 'vue-draggable-plus';
 import Icon from '~/components/Common/Icon.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
 import InlinePlayer from '~/components/InlinePlayer.vue';
@@ -106,9 +101,12 @@ import Modal from "~/components/Common/Modal.vue";
 import {IconChevronBarDown, IconChevronBarUp, IconChevronDown, IconChevronUp} from "~/components/Common/icons";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 import {usePlayerStore, useProvidePlayerStore} from "~/functions/usePlayerStore.ts";
+import {useDraggable} from "vue-draggable-plus";
 
 const loading = ref(true);
 const reorderUrl = ref(null);
+
+const $tbody = ref<HTMLElement | null>(null);
 const media = ref([]);
 
 const $modal = ref<ModalTemplateRef>(null);
@@ -171,6 +169,14 @@ const moveToTop = (index) => {
 useProvidePlayerStore('reorder');
 
 const {stop} = usePlayerStore();
+
+const onShown = () => {
+    useDraggable($tbody, media, {
+        onEnd() {
+            save();
+        }
+    });
+};
 
 const onHidden = () => {
     stop();

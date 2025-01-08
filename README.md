@@ -6,7 +6,7 @@
 [![Latest Stable Release](https://img.shields.io/packagist/v/azuracast/azuracast.svg?label=latest+stable+version)]()
 [![AGPL-3.0 License](https://img.shields.io/github/license/azuracast/azuracast.svg)]()
 [![Ethical Open Source](https://img.shields.io/badge/open-ethical-%234baaaa)](https://ethicalsource.dev/)
-[![Mastodon Follow](https://img.shields.io/mastodon/follow/000062116?domain=https%3A%2F%2Ffosstodon.org&style=social)](https://fosstodon.org/@AzuraCast)
+[![Mastodon Follow](https://img.shields.io/mastodon/follow/000062116?domain=https%3A%2F%2Ffloss.social&style=social)](https://floss.social/@AzuraCast)
 
 [![Built with Depot](https://depot.dev/badges/built-with-depot.svg)](https://depot.dev/?utm_source=AzuraCast)
 
@@ -77,7 +77,7 @@ following our accounts:
 
 - On Bluesky at [@azuracast.com](https://bsky.app/profile/azuracast.com)
 
-- On Mastodon at [@AzuraCast@fosstodon.org](https://fosstodon.org/@AzuraCast)
+- On Mastodon at [@AzuraCast@floss.social](https://floss.social/@AzuraCast)
 
 If you are an AzuraCast user, station owner, developer or other contributor, you can also join our Discord community,
 where you can ask questions, share your station and more:

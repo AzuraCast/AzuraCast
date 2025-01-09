@@ -92,7 +92,7 @@ final class Annotations implements EventSubscriberInterface
 
         $duration = $media->getLength();
 
-        $annotations = array_filter([
+        $event->addAnnotations([
             'title' => $media->getTitle(),
             'artist' => $media->getArtist(),
             'duration' => $duration,
@@ -104,9 +104,7 @@ final class Annotations implements EventSubscriberInterface
                 $media->getExtraMetadata(),
                 $duration,
             ),
-        ], fn($row) => ('' !== $row && null !== $row));
-
-        $event->addAnnotations($annotations);
+        ]);
     }
 
     private function processAutocueAnnotations(

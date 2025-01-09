@@ -20,6 +20,27 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 final class AnnotateNextSong extends Event
 {
+    public const array ALLOWED_ANNOTATIONS = [
+        'title',
+        'artist',
+        'duration',
+        'song_id',
+        'media_id',
+        'sq_id',
+        'liq_amplify',
+        'azuracast_autocue',
+        'autocue_cue_in',
+        'autocue_cue_out',
+        'autocue_fade_in',
+        'autocue_fade_out',
+        'autocue_start_next',
+    ];
+
+    public const array ALWAYS_STRING_ANNOTATIONS = [
+        'title',
+        'artist',
+    ];
+
     private ?string $songPath = null;
 
     /** @var array Custom annotations that should be sent along with the AutoDJ response. */

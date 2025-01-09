@@ -18,6 +18,7 @@ use App\Entity\StationPlaylist;
 use App\Entity\StationRemote;
 use App\Entity\StationSchedule;
 use App\Entity\StationStreamerBroadcast;
+use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\AudioProcessingMethods;
@@ -1297,11 +1298,21 @@ final class ConfigWriter implements EventSubscriberInterface
      */
     public static function annotateArray(array $values): string
     {
-        $values = array_filter($values, fn($val) => $val !== null);
+        $values = array_filter(
+            $values,
+            fn(string|int|float|bool|null $val, string $key): bool => $val !== ''
+                && $val !== null
+                && !in_array($key, AnnotateNextSong::ALLOWED_ANNOTATIONS, true),
+            ARRAY_FILTER_USE_BOTH
+        );
 
         $annotations = [];
         foreach ($values as $key => $val) {
-            $annotations[] = $key . '="' . self::annotateValue($val) . '"';
+            $annotatedVal = in_array($key, AnnotateNextSong::ALWAYS_STRING_ANNOTATIONS, true)
+                ? Types::string($val)
+                : self::annotateValue($val);
+
+            $annotations[] = $key . '="' . $annotatedVal . '"';
         }
 
         return implode(',', $annotations);

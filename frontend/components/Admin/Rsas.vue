@@ -147,7 +147,7 @@ const {$gettext} = useTranslate();
 
 const langInstalledVersion = computed(() => {
     return $gettext(
-        'RSAS version "%{ version }" is currently installed.',
+        'RSAS version "%{version}" is currently installed.',
         {
             version: version.value
         }

@@ -36,7 +36,7 @@
                                 @click="doCreate"
                             />
                         </div>
-
+                        
                         <data-table
                             id="station_playlists"
                             ref="$datatable"

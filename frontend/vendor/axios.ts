@@ -1,4 +1,4 @@
-import axios, {AxiosStatic} from "axios";
+import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
 import VueAxios from "vue-axios";
 import {App, inject, InjectionKey} from "vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -6,29 +6,32 @@ import {useNotify} from "~/functions/useNotify";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
 import {useNProgress} from "~/vendor/nprogress.ts";
 
-const injectKey: InjectionKey<AxiosStatic> = Symbol() as InjectionKey<AxiosStatic>;
-const injectKeySilent: InjectionKey<AxiosStatic> = Symbol() as InjectionKey<AxiosStatic>;
+const injectKey: InjectionKey<AxiosInstance> = Symbol() as InjectionKey<AxiosInstance>;
+const injectKeySilent: InjectionKey<AxiosInstance> = Symbol() as InjectionKey<AxiosInstance>;
 
 /* Composition API Axios utilities */
 interface UseAxios {
-    axios: AxiosStatic,
-    axiosSilent: AxiosStatic
+    axios: AxiosInstance,
+    axiosSilent: AxiosInstance
 }
 
 export const useAxios = (): UseAxios => ({
-    axios: inject<AxiosStatic>(injectKey),
-    axiosSilent: inject<AxiosStatic>(injectKeySilent)
+    axios: inject<AxiosInstance>(injectKey),
+    axiosSilent: inject<AxiosInstance>(injectKeySilent)
 });
 
 export default function installAxios(vueApp: App) {
     // Configure auto-CSRF on requests
     const {apiCsrf} = useAzuraCast();
 
-    const axiosInstance = axios.create({
+    const config: AxiosRequestConfig = {
         headers: {
-            'X-API-CSRF': apiCsrf
+            "X-API-CSRF": apiCsrf
         }
-    });
+    }
+
+    const axiosInstance = axios.create(config);
+    const axiosSilent = axios.create(config);
 
     // Configure some Axios settings that depend on the BootstrapVue $bvToast superglobal.
     const handleAxiosError = (error) => {
@@ -51,8 +54,6 @@ export default function installAxios(vueApp: App) {
         const {notifyError} = useNotify();
         notifyError(notifyMessage);
     };
-
-    const axiosSilent = axiosInstance.create({});
 
     const {setLoading} = useNProgress();
 

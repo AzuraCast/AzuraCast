@@ -5,17 +5,14 @@
 </template>
 
 <script setup lang="ts">
-import {inject, onUnmounted, ref, watch} from 'vue';
-import {marker} from 'leaflet';
+import {inject, onUnmounted, ref, ShallowRef, watch} from 'vue';
+import {LatLngTuple, Map, marker} from 'leaflet';
 
-const props = defineProps({
-    position: {
-        type: Array,
-        required: true
-    }
-});
+const props = defineProps<{
+    position: LatLngTuple
+}>();
 
-const $map = inject('map');
+const $map = inject<ShallowRef<Map | null>>('map');
 const map = $map.value;
 
 const mapMarker = marker(props.position);

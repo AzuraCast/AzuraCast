@@ -27,7 +27,7 @@ const props = defineProps<{
     options?: CalendarOptions
 }>();
 
-const $calendar = ref<InstanceType<FullCalendar> | null>();
+const $calendar = ref<InstanceType<typeof FullCalendar> | null>();
 const getCalendarApi = (): Calendar => $calendar.value?.getApi();
 
 defineExpose({

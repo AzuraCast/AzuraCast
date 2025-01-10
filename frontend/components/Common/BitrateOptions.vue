@@ -8,7 +8,7 @@
             #label="slotProps"
         >
             <form-label
-                :is-required="isRequired"
+                :is-required="required"
                 :advanced="advanced"
             >
                 <slot
@@ -74,7 +74,7 @@ import {formFieldProps, useFormField} from "~/components/Form/useFormField";
 import {computed, ComputedRef, useSlots} from "vue";
 import {includes, map} from "lodash";
 import useSlotsExcept from "~/functions/useSlotsExcept.ts";
-import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
+import FormMultiCheck, {FormMultiCheckOption} from "~/components/Form/FormMultiCheck.vue";
 import FormLabel from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 
@@ -140,12 +140,12 @@ const radioField: ComputedRef<number | string | null> = computed({
     }
 });
 
-const bitrateOptions = map(
+const bitrateOptions: FormMultiCheckOption[] = map(
     radioBitrates,
-    (val) => {
+    (val: number) => {
         return {
             value: val,
-            text: val
+            text: String(val)
         };
     }
 );

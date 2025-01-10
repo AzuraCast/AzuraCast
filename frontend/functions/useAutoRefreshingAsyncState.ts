@@ -20,13 +20,7 @@ export default function useAutoRefreshingAsyncState<Data, Params extends any[] =
         timeout = 15000
     } = options ?? {}
 
-    const {
-        state,
-        isReady,
-        isLoading,
-        error,
-        execute
-    } = useRefreshableAsyncState(
+    const asyncStateReturn = useRefreshableAsyncState(
         promise,
         initialState,
         {
@@ -39,25 +33,19 @@ export default function useAutoRefreshingAsyncState<Data, Params extends any[] =
         (!document.hidden) ? timeout : (timeout * 2)
     );
 
-    const {isActive, pause, resume} = useIntervalFn(
+    const intervalFnReturn = useIntervalFn(
         async () => {
             try {
-                await execute();
+                await asyncStateReturn.execute();
             } catch {
-                pause();
+                intervalFnReturn.pause();
             }
         },
         intervalDelay
     );
 
     return {
-        state,
-        isReady,
-        isLoading,
-        error,
-        execute,
-        isActive,
-        pause,
-        resume
+        ...asyncStateReturn,
+        ...intervalFnReturn
     };
 }

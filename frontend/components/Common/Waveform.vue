@@ -143,16 +143,9 @@ onMounted(() => {
         progressColor: '#4081CF',
     });
 
-    wavesurfer.registerPlugin(timeline.create({
-        primaryColor: '#222',
-        secondaryColor: '#888',
-        primaryFontColor: '#222',
-        secondaryFontColor: '#888'
-    }));
+    wavesurfer.registerPlugin(timeline.create());
 
-    wsRegions = wavesurfer.registerPlugin(regions.create({
-        regions: []
-    }));
+    wsRegions = wavesurfer.registerPlugin(regions.create());
 
     wavesurfer.on('ready', () => {
         wavesurfer.setVolume(getLogarithmicVolume(volume.value));

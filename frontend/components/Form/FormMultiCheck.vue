@@ -34,39 +34,34 @@
     </div>
 </template>
 
+<script lang="ts">
+export interface FormMultiCheckOption {
+    value: any,
+    text: string,
+    description?: string
+}
+</script>
+
 <script setup lang="ts">
 import {useVModel} from "@vueuse/core";
 
-const props = defineProps({
-    modelValue: {
-        type: [String, Number, Boolean, Array],
-        required: true
-    },
-    id: {
-        type: String,
-        required: true
-    },
-    name: {
-        type: String,
-        default: (props) => props.id
-    },
-    fieldClass: {
-        type: String,
-        default: null,
-    },
-    options: {
-        type: Array<any>,
-        required: true
-    },
-    radio: {
-        type: Boolean,
-        default: false
-    },
-    stacked: {
-        type: Boolean,
-        default: false
-    },
-});
+const props = withDefaults(
+    defineProps<{
+        modelValue: string | number | boolean | Array<any>,
+        id: string,
+        name: string,
+        fieldClass: string,
+        options: FormMultiCheckOption[],
+        radio: boolean,
+        stacked: boolean
+    }>(),
+    {
+        name: (props) => props.id,
+        fieldClass: null,
+        radio: false,
+        stacked: false,
+    }
+)
 
 const emit = defineEmits(['update:modelValue']);
 

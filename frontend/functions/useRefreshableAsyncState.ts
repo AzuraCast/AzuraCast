@@ -14,13 +14,7 @@ export default function useRefreshableAsyncState<Data, Params extends any[] = []
     initialState: Data,
     options: UseAsyncStateOptions<Shallow, Data> = {}
 ): UseAsyncStateReturn<Data, Params, Shallow> {
-    const {
-        state,
-        isReady,
-        isLoading: allIsLoading,
-        error,
-        execute
-    } = useAsyncState(
+    const parentState = useAsyncState(
         promise,
         initialState,
         {
@@ -29,13 +23,10 @@ export default function useRefreshableAsyncState<Data, Params extends any[] = []
         }
     );
 
-    const isLoading: Ref<boolean> = syncOnce(allIsLoading);
+    const isLoading: Ref<boolean> = syncOnce(parentState.isLoading);
 
     return {
-        state,
-        isReady,
-        isLoading,
-        error,
-        execute
+        ...parentState,
+        isLoading: isLoading
     };
 }

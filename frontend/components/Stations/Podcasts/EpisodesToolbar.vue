@@ -86,7 +86,7 @@ const doDelete = () => {
         title: $gettext(
             'Delete %{num} episodes?',
             {
-                num: props.selectedItems.length
+                num: String(props.selectedItems.length)
             }
         ),
     }).then((result) => {

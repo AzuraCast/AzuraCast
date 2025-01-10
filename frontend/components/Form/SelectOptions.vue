@@ -18,16 +18,25 @@
     </template>
 </template>
 
+<script lang="ts">
+export interface SelectOptionItem {
+    value: any,
+    text: string
+}
+
+export interface SelectOptionGroup {
+    options: SelectOptionItem[],
+    label: string,
+}
+</script>
+
 <script setup lang="ts">
 import {computed} from "vue";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 
-const props = defineProps({
-    options: {
-        type: Array<any>,
-        required: true
-    }
-});
+const props = defineProps<{
+    options: (SelectOptionItem | SelectOptionGroup)[]
+}>();
 
 const parsedOptions = computed(() => {
     if (Array.isArray(props.options)) {

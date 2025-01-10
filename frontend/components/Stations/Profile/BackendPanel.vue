@@ -106,14 +106,18 @@ const langTotalTracks = computed(() => {
         '%{numSongs} uploaded song',
         '%{numSongs} uploaded songs',
         props.numSongs,
-        {numSongs: props.numSongs}
+        {
+            numSongs: String(props.numSongs)
+        }
     );
 
     const numPlaylists = $ngettext(
         '%{numPlaylists} playlist',
         '%{numPlaylists} playlists',
         props.numPlaylists,
-        {numPlaylists: props.numPlaylists}
+        {
+            numPlaylists: String(props.numPlaylists)
+        }
     );
 
     return $gettext(

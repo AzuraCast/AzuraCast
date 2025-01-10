@@ -11,16 +11,16 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, provide, ref, shallowRef, watch} from "vue";
-import {Control, Icon, map, tileLayer} from 'leaflet';
+import {onMounted, provide, ref, ShallowRef, shallowRef, watch} from "vue";
+import {Control, Icon, Map, map, tileLayer} from 'leaflet';
 import useTheme from "~/functions/theme";
 import 'leaflet-fullscreen';
 import {useTranslate} from "~/vendor/gettext";
 
 const $container = ref<HTMLDivElement | null>(null);
-const $map = shallowRef(null);
+const $map = shallowRef<Map | null>(null);
 
-provide('map', $map);
+provide<ShallowRef<Map | null>>('map', $map);
 
 const {currentTheme} = useTheme();
 const {$gettext} = useTranslate();

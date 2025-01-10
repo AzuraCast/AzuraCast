@@ -96,7 +96,7 @@ const {$gettext} = useTranslate();
 
 const langInstalledVersion = computed(() => {
     return $gettext(
-        'Shoutcast version "%{ version }" is currently installed.',
+        'Shoutcast version "%{version}" is currently installed.',
         {
             version: version.value
         }

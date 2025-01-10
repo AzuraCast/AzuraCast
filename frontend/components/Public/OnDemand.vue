@@ -46,14 +46,6 @@
                 <template #cell(art)="row">
                     <album-art :src="row.item.media.art" />
                 </template>
-                <template #cell(size)="row">
-                    <template v-if="!row.item.size">
-                        &nbsp;
-                    </template>
-                    <template v-else>
-                        {{ formatFileSize(row.item.size) }}
-                    </template>
-                </template>
             </data-table>
         </template>
     </full-height-card>

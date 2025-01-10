@@ -104,7 +104,7 @@
                         class="custom-file-input files"
                         accept="audio/*"
                         multiple
-                        @change="addNewFiles($event.target.files)"
+                        @change="onFileSelected"
                     >
                     <label
                         :for="id + '_files'"
@@ -272,8 +272,10 @@ const langHeader = computed(() => {
         : $gettext('Playlist 2');
 });
 
-const addNewFiles = (newFiles) => {
-    forEach(newFiles, (file) => {
+const onFileSelected = (e: Event) => {
+    const eventTarget = e.target as HTMLInputElement;
+
+    forEach(eventTarget.files, (file) => {
         file.readTaglibMetadata((data) => {
             files.value.push({
                 file: file,
@@ -282,7 +284,7 @@ const addNewFiles = (newFiles) => {
             });
         });
     });
-};
+}
 
 const selectFile = (options = {}) => {
     if (files.value.length === 0) {

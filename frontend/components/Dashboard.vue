@@ -314,6 +314,7 @@ const {state: notifications, isLoading: notificationsLoading} = useAsyncState(
 const stationFields: DataTableField[] = [
     {
         key: 'play_button',
+        label: '',
         sortable: false,
         class: 'shrink'
     },
@@ -334,6 +335,7 @@ const stationFields: DataTableField[] = [
     },
     {
         key: 'actions',
+        label: '',
         sortable: false,
         class: 'shrink'
     }

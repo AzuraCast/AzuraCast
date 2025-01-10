@@ -38,7 +38,7 @@ export interface DateRange {
 }
 
 const props = defineProps<{
-    options?: VueDatePickerProps,
+    options?: Partial<VueDatePickerProps>,
     modelValue: DateRange
 }>();
 
@@ -69,7 +69,11 @@ const dateRange = computed({
 const {$gettext} = useTranslate();
 
 const ranges = computed(() => {
-    const nowTz = DateTime.now().setZone(props.tz);
+    let nowTz = DateTime.now();
+    if (props.options?.timezone) {
+        nowTz = nowTz.setZone(props.options.timezone);
+    }
+
     const nowAtMidnightDate = nowTz.endOf('day').toJSDate();
 
     return [

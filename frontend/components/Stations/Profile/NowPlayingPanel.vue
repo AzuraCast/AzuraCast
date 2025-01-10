@@ -42,157 +42,155 @@
         </template>
 
         <div class="card-body">
-            <loading :loading="np.loading">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="clearfix">
-                            <div class="d-table">
-                                <div class="d-table-row">
-                                    <div class="d-table-cell align-middle text-end pe-2 pb-2">
-                                        <icon :icon="IconMusicNote" />
-                                    </div>
-                                    <div class="d-table-cell align-middle w-100 pb-2">
-                                        <h5 class="m-0">
-                                            {{ $gettext('Now Playing') }}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="clearfix">
+                        <div class="d-table">
+                            <div class="d-table-row">
+                                <div class="d-table-cell align-middle text-end pe-2 pb-2">
+                                    <icon :icon="IconMusicNote"/>
+                                </div>
+                                <div class="d-table-cell align-middle w-100 pb-2">
+                                    <h5 class="m-0">
+                                        {{ $gettext('Now Playing') }}
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="d-table-row">
+                                <div class="d-table-cell align-top text-end pe-2">
+                                    <a
+                                        v-if="np.now_playing.song.art"
+                                        v-lightbox
+                                        :href="np.now_playing.song.art"
+                                        target="_blank"
+                                    >
+                                        <img
+                                            class="rounded"
+                                            :src="np.now_playing.song.art"
+                                            alt="Album Art"
+                                            style="width: 50px;"
+                                        >
+                                    </a>
+                                </div>
+                                <div class="d-table-cell align-middle w-100">
+                                    <div v-if="!np.is_online">
+                                        <h5 class="media-heading m-0 text-muted">
+                                            {{ offlineText ?? $gettext('Station Offline') }}
                                         </h5>
                                     </div>
-                                </div>
-                                <div class="d-table-row">
-                                    <div class="d-table-cell align-top text-end pe-2">
-                                        <a
-                                            v-if="np.now_playing.song.art"
-                                            v-lightbox
-                                            :href="np.now_playing.song.art"
-                                            target="_blank"
+                                    <div v-else-if="np.now_playing.song.title !== ''">
+                                        <h6
+                                            class="media-heading m-0"
+                                            style="line-height: 1.2;"
                                         >
-                                            <img
-                                                class="rounded"
-                                                :src="np.now_playing.song.art"
-                                                alt="Album Art"
-                                                style="width: 50px;"
-                                            >
-                                        </a>
+                                            {{ np.now_playing.song.title }}<br>
+                                            <small class="text-muted">{{ np.now_playing.song.artist }}</small>
+                                        </h6>
                                     </div>
-                                    <div class="d-table-cell align-middle w-100">
-                                        <div v-if="!np.is_online">
-                                            <h5 class="media-heading m-0 text-muted">
-                                                {{ offlineText ?? $gettext('Station Offline') }}
-                                            </h5>
-                                        </div>
-                                        <div v-else-if="np.now_playing.song.title !== ''">
-                                            <h6
-                                                class="media-heading m-0"
-                                                style="line-height: 1.2;"
-                                            >
-                                                {{ np.now_playing.song.title }}<br>
-                                                <small class="text-muted">{{ np.now_playing.song.artist }}</small>
-                                            </h6>
-                                        </div>
-                                        <div v-else>
-                                            <h6
-                                                class="media-heading m-0"
-                                                style="line-height: 1.2;"
-                                            >
-                                                {{ np.now_playing.song.text }}
-                                            </h6>
-                                        </div>
-                                        <div v-if="np.now_playing.playlist">
-                                            <small class="text-muted">
-                                                {{ $gettext('Playlist') }}
-                                                : {{ np.now_playing.playlist }}</small>
-                                        </div>
-                                        <div
-                                            v-if="currentTrackElapsedDisplay"
-                                            class="nowplaying-progress"
+                                    <div v-else>
+                                        <h6
+                                            class="media-heading m-0"
+                                            style="line-height: 1.2;"
                                         >
-                                            <small>
-                                                {{ currentTrackElapsedDisplay }} / {{ currentTrackDurationDisplay }}
-                                            </small>
-                                        </div>
+                                            {{ np.now_playing.song.text }}
+                                        </h6>
+                                    </div>
+                                    <div v-if="np.now_playing.playlist">
+                                        <small class="text-muted">
+                                            {{ $gettext('Playlist') }}
+                                            : {{ np.now_playing.playlist }}</small>
+                                    </div>
+                                    <div
+                                        v-if="currentTrackElapsedDisplay"
+                                        class="nowplaying-progress"
+                                    >
+                                        <small>
+                                            {{ currentTrackElapsedDisplay }} / {{ currentTrackDurationDisplay }}
+                                        </small>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div
-                            v-if="!np.live.is_live && np.playing_next"
-                            class="clearfix"
-                        >
-                            <div class="d-table">
-                                <div class="d-table-row">
-                                    <div class="d-table-cell align-middle pe-2 text-end pb-2">
-                                        <icon :icon="IconSkipNext" />
-                                    </div>
-                                    <div class="d-table-cell align-middle w-100 pb-2">
-                                        <h5 class="m-0">
-                                            {{ $gettext('Playing Next') }}
-                                        </h5>
-                                    </div>
-                                </div>
-                                <div class="d-table-row">
-                                    <div class="d-table-cell align-top text-end pe-2">
-                                        <a
-                                            v-if="np.playing_next.song.art"
-                                            v-lightbox
-                                            :href="np.playing_next.song.art"
-                                            target="_blank"
-                                        >
-                                            <img
-                                                :src="np.playing_next.song.art"
-                                                class="rounded"
-                                                alt="Album Art"
-                                                style="width: 40px;"
-                                            >
-                                        </a>
-                                    </div>
-                                    <div class="d-table-cell align-middle w-100">
-                                        <div v-if="np.playing_next.song.title !== ''">
-                                            <h6
-                                                class="media-heading m-0"
-                                                style="line-height: 1;"
-                                            >
-                                                {{ np.playing_next.song.title }}<br>
-                                                <small class="text-muted">{{ np.playing_next.song.artist }}</small>
-                                            </h6>
-                                        </div>
-                                        <div v-else>
-                                            <h6
-                                                class="media-heading m-0"
-                                                style="line-height: 1;"
-                                            >
-                                                {{ np.playing_next.song.text }}
-                                            </h6>
-                                        </div>
-
-                                        <div v-if="np.playing_next.playlist">
-                                            <small class="text-muted">
-                                                {{ $gettext('Playlist') }}
-                                                : {{ np.playing_next.playlist }}</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div
-                            v-else-if="np.live.is_live"
-                            class="clearfix"
-                        >
-                            <h6 style="margin-left: 22px;">
-                                <icon :icon="IconMic" />
-                                {{ $gettext('Live') }}
-                            </h6>
-
-                            <h4
-                                class="media-heading"
-                                style="margin-left: 22px;"
-                            >
-                                {{ np.live.streamer_name }}
-                            </h4>
                         </div>
                     </div>
                 </div>
-            </loading>
+                <div class="col-md-6">
+                    <div
+                        v-if="!np.live.is_live && np.playing_next"
+                        class="clearfix"
+                    >
+                        <div class="d-table">
+                            <div class="d-table-row">
+                                <div class="d-table-cell align-middle pe-2 text-end pb-2">
+                                    <icon :icon="IconSkipNext"/>
+                                </div>
+                                <div class="d-table-cell align-middle w-100 pb-2">
+                                    <h5 class="m-0">
+                                        {{ $gettext('Playing Next') }}
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="d-table-row">
+                                <div class="d-table-cell align-top text-end pe-2">
+                                    <a
+                                        v-if="np.playing_next.song.art"
+                                        v-lightbox
+                                        :href="np.playing_next.song.art"
+                                        target="_blank"
+                                    >
+                                        <img
+                                            :src="np.playing_next.song.art"
+                                            class="rounded"
+                                            alt="Album Art"
+                                            style="width: 40px;"
+                                        >
+                                    </a>
+                                </div>
+                                <div class="d-table-cell align-middle w-100">
+                                    <div v-if="np.playing_next.song.title !== ''">
+                                        <h6
+                                            class="media-heading m-0"
+                                            style="line-height: 1;"
+                                        >
+                                            {{ np.playing_next.song.title }}<br>
+                                            <small class="text-muted">{{ np.playing_next.song.artist }}</small>
+                                        </h6>
+                                    </div>
+                                    <div v-else>
+                                        <h6
+                                            class="media-heading m-0"
+                                            style="line-height: 1;"
+                                        >
+                                            {{ np.playing_next.song.text }}
+                                        </h6>
+                                    </div>
+
+                                    <div v-if="np.playing_next.playlist">
+                                        <small class="text-muted">
+                                            {{ $gettext('Playlist') }}
+                                            : {{ np.playing_next.playlist }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        v-else-if="np.live.is_live"
+                        class="clearfix"
+                    >
+                        <h6 style="margin-left: 22px;">
+                            <icon :icon="IconMic"/>
+                            {{ $gettext('Live') }}
+                        </h6>
+
+                        <h4
+                            class="media-heading"
+                            style="margin-left: 22px;"
+                        >
+                            {{ np.live.streamer_name }}
+                        </h4>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <template
@@ -249,7 +247,6 @@ import {computed, Ref, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import nowPlayingPanelProps from "~/components/Stations/Profile/nowPlayingPanelProps";
 import useNowPlaying from "~/functions/useNowPlaying";
-import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLightbox} from "~/vendor/lightbox";
 import {StationPermission, userAllowedForStation} from "~/acl";
@@ -285,7 +282,9 @@ const langListeners = computed(() => {
         '%{listeners} Listener',
         '%{listeners} Listeners',
         np.value?.listeners?.total ?? 0,
-        {listeners: np.value?.listeners?.total ?? 0}
+        {
+            listeners: String(np.value?.listeners?.total ?? 0)
+        }
     );
 });
 

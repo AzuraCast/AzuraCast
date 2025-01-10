@@ -1,5 +1,3 @@
- 
-
 import {GlobalPermission, StationPermission} from "~/acl.ts";
 
 let globalProps: AzuraCastConstants;
@@ -36,9 +34,9 @@ export interface AzuraCastConstants {
     timeConfig: object,
     apiCsrf: string | null,
     enableAdvancedFeatures: boolean,
-    panelProps: object | null,
-    sidebarProps: object | null,
-    componentProps: object | null,
+    panelProps: Record<string, any> | null,
+    sidebarProps: Record<string, any> | null,
+    componentProps: Record<string, any> | null,
     user: AzuraCastUserConstants | null,
     station: AzuraCastStationConstants | null,
 }

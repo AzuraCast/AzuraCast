@@ -131,7 +131,7 @@ const {$gettext} = useTranslate();
 
 const langInstalledVersion = computed(() => {
     return $gettext(
-        'GeoLite version "%{ version }" is currently installed.',
+        'GeoLite version "%{version}" is currently installed.',
         {
             version: version.value
         }

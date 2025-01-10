@@ -105,7 +105,9 @@ const doDelete = () => {
     confirmDelete({
         title: $gettext(
             'Delete %{num} broadcasts?',
-            {num: props.selectedItems.length}
+            {
+                num: String(props.selectedItems.length)
+            }
         ),
     }).then((result) => {
         if (result.value) {

@@ -157,10 +157,10 @@
                 </div>
             </template>
             <!-- eslint-disable-next-line -->
-            <template #cell(media.length)="{ item }: { item: ApiFileList }">
+            <template #cell(media.length)="{ item }">
                 {{ item.media?.length_text }}
             </template>
-            <template #cell(size)="{ item }: { item: ApiFileList }">
+            <template #cell(size)="{ item }">
                 <template v-if="!item.size">
                     &nbsp;
                 </template>
@@ -168,7 +168,7 @@
                     {{ formatFileSize(item.size) }}
                 </template>
             </template>
-            <template #cell(playlists)="{ item }: { item: ApiFileList }">
+            <template #cell(playlists)="{ item }">
                 <template v-if="item.media?.playlists?.length > 0">
                     <template
                         v-for="(playlist, index) in item.media.playlists"
@@ -201,12 +201,12 @@
                     &nbsp;
                 </template>
             </template>
-            <template #cell(commands)="{ item }: { item: ApiFileList }">
+            <template #cell(commands)="{ item }">
                 <template v-if="item.media?.links?.self">
                     <button
                         type="button"
                         class="btn btn-sm btn-primary"
-                        @click="edit(item.media.links.self, item.media.links.art, item.media.links.play, item.media.links.waveform)"
+                        @click="edit(item.media.links.self)"
                     >
                         {{ $gettext('Edit') }}
                     </button>
@@ -474,7 +474,10 @@ const changeDirectory = (newDir) => {
 watch(
     () => route.params,
     async (newParams) => {
-        const path = newParams.path ?? '';
+        let path = newParams.path ?? '';
+        if (Array.isArray(path)) {
+            path = path.join('');
+        }
 
         if (isFilterString(path)) {
             await router.push({

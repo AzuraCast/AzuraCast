@@ -33,7 +33,6 @@
                         <playlist-time
                             :id="slotProps.id"
                             v-model="slotProps.field.$model"
-                            :state="slotProps.state"
                         />
                     </template>
                 </form-group-field>
@@ -55,7 +54,6 @@
                         <playlist-time
                             :id="slotProps.id"
                             v-model="slotProps.field.$model"
-                            :state="slotProps.state"
                         />
                     </template>
                 </form-group-field>

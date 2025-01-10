@@ -163,15 +163,19 @@ const {apiCsrf} = useAzuraCast();
 
 const {$gettext} = useTranslate();
 
-useEventListener($fileDropTarget, 'dragenter', (e) => {
-    if (e.target.classList.contains('file-drop-target')) {
-        e.target.classList.add('drag_over');
+useEventListener($fileDropTarget, 'dragenter', (e: DragEvent) => {
+    const targetElement = e.target as HTMLDivElement;
+
+    if (targetElement.classList.contains('file-drop-target')) {
+        targetElement.classList.add('drag_over');
     }
 });
 
-useEventListener($fileDropTarget, 'dragleave', (e) => {
-    if (e.target.classList.contains('file-drop-target')) {
-        e.target.classList.remove('drag_over');
+useEventListener($fileDropTarget, 'dragleave', (e: DragEvent) => {
+    const targetElement = e.target as HTMLDivElement;
+
+    if (targetElement.classList.contains('file-drop-target')) {
+        targetElement.classList.remove('drag_over');
     }
 });
 

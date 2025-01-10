@@ -322,7 +322,7 @@ export interface DataTableProps<Row extends DataTableRow = DataTableRow> {
     detailed?: boolean, // Allow showing "Detail" panel for selected rows.
     selectFields?: boolean, // Allow selecting which columns are visible.
     handleClientSide?: boolean, // Handle searching, sorting and pagination client-side without API calls.
-    requestConfig?(config: object): object, // Custom server-side request configuration (pre-request)
+    requestConfig?(config: AxiosRequestConfig): AxiosRequestConfig, // Custom server-side request configuration (pre-request)
     requestProcess?(rawData: object[]): Row[], // Custom server-side request result processing (post-request)
 }
 </script>
@@ -339,6 +339,7 @@ import Pagination from "~/components/Common/Pagination.vue";
 import useOptionalStorage from "~/functions/useOptionalStorage";
 import {IconArrowDropDown, IconArrowDropUp, IconFilterList, IconRefresh, IconSearch} from "~/components/Common/icons";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
+import {AxiosRequestConfig} from "axios";
 
 const props = withDefaults(defineProps<DataTableProps<Row>>(), {
     id: null,
@@ -369,7 +370,9 @@ const slots = defineSlots<{
     'detail'?: (props: {
         item: Row,
         index: number
-    }) => any
+    }) => any,
+    'caption'?: () => any,
+    'empty'?: () => any,
 }>()
 
 const emit = defineEmits([
@@ -600,7 +603,7 @@ const refreshServerSide = () => {
         }
     }
 
-    let requestConfig = {params: queryParams};
+    let requestConfig: AxiosRequestConfig = {params: queryParams};
     if (typeof props.requestConfig === 'function') {
         requestConfig = props.requestConfig(requestConfig);
     }

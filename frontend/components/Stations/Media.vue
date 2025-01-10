@@ -77,7 +77,7 @@
             @row-selected="onRowSelected"
             @filtered="onFiltered"
         >
-            <template #cell(path)="{ item }: { item: ApiFileList }">
+            <template #cell(path)="{ item }">
                 <div class="d-flex align-items-center">
                     <div class="flex-shrink-0 pe-2">
                         <template v-if="item.type === FileTypes.Media">
@@ -275,9 +275,9 @@ import InfoCard from "~/components/Common/InfoCard.vue";
 import {getStationApiUrl} from "~/router";
 import {useRoute, useRouter} from "vue-router";
 import {IconFile, IconFolder, IconImage} from "~/components/Common/icons";
-import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {ApiFileList, CustomField, FileTypes} from "~/entities/ApiInterfaces.ts";
+import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 
 const props = defineProps({
     initialPlaylists: {
@@ -317,8 +317,8 @@ const {$gettext} = useTranslate();
 
 const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
 
-const fields = computed<DataTableField[]>(() => {
-    const fields: DataTableField[] = [
+const fields = computed<DataTableField<ApiFileList>[]>(() => {
+    const fields: DataTableField<ApiFileList>[] = [
         {key: 'path', isRowHeader: true, label: $gettext('Name'), sortable: true},
         {key: 'media.title', label: $gettext('Title'), sortable: true, selectable: true, visible: false},
         {

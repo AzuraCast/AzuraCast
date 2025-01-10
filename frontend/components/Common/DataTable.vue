@@ -290,11 +290,25 @@
 </template>
 
 <script lang="ts">
-import {DataTableField} from "~/components/Common/DataTable.vue";
+type DataTableRow = Record<string, any>
 
-export interface DataTableProps<Row = object> {
+export interface DataTableField<Row extends DataTableRow = DataTableRow> {
+    key: string,
+    label: string,
+    isRowHeader?: boolean,
+    sortable?: boolean,
+    selectable?: boolean,
+    visible?: boolean,
+    "class"?: string | Array<any>,
+
+    formatter?(value: any, key: string, row: Row): string,
+
+    sorter?(row: Row): string
+}
+
+export interface DataTableProps<Row extends DataTableRow = DataTableRow> {
     id?: string,
-    fields: DataTableField[],
+    fields: DataTableField<Row>[],
     apiUrl?: string, // URL to fetch for server-side data
     items?: Row[], // Array of items for client-side data
     responsive?: boolean | string, // Make table responsive (boolean or CSS class for specific responsiveness width)
@@ -311,26 +325,12 @@ export interface DataTableProps<Row = object> {
     requestConfig?(config: object): object, // Custom server-side request configuration (pre-request)
     requestProcess?(rawData: object[]): Row[], // Custom server-side request result processing (post-request)
 }
-
-export interface DataTableField<Row = object> {
-    key: string,
-    label: string,
-    isRowHeader?: boolean,
-    sortable?: boolean,
-    selectable?: boolean,
-    visible?: boolean,
-    "class"?: string | Array<any>,
-
-    formatter?(column: any, key: string, row: Row): string,
-
-    sorter?(row: Row): string
-}
 </script>
 
-<script setup lang="ts" generic="Row extends object">
+<script setup lang="ts" generic="Row extends DataTableRow = DataTableRow">
 import {filter, forEach, get, includes, indexOf, isEmpty, map, reverse, slice, some} from 'lodash';
 import Icon from './Icon.vue';
-import {computed, onMounted, ref, shallowRef, toRaw, toRef, useSlots, watch} from "vue";
+import {computed, onMounted, ref, shallowRef, toRaw, toRef, watch} from "vue";
 import {watchDebounced} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
@@ -359,7 +359,18 @@ const props = withDefaults(defineProps<DataTableProps<Row>>(), {
     requestProcess: undefined
 });
 
-const slots = useSlots();
+const slots = defineSlots<{
+    [key: `cell(${string})`]: (props: {
+        column: DataTableField<Row>,
+        item: Row,
+        isActive: boolean,
+        toggleDetails: () => void
+    }) => any,
+    'detail'?: (props: {
+        item: Row,
+        index: number
+    }) => any
+}>()
 
 const emit = defineEmits([
     'refresh-clicked',

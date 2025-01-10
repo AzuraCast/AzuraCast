@@ -40,7 +40,7 @@ const onClick = (arg: EventClickArg) => {
     emit('click', arg.event);
 }
 
-const $schedule = ref<InstanceType<Schedule> | null>();
+const $schedule = ref<InstanceType<typeof Schedule> | null>();
 const getCalendarApi = (): Calendar => $schedule.value?.getCalendarApi();
 const refresh = () => getCalendarApi()?.refetchEvents();
 

@@ -115,7 +115,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
                 chat_id: '',
                 api: '',
                 text: $gettext(
-                    'Now playing on %{ station }: %{ title } by %{ artist }! Tune in now.',
+                    'Now playing on %{station}: %{title} by %{artist}! Tune in now.',
                     {
                         station: '{{ station.name }}',
                         title: '{{ now_playing.song.title }}',

@@ -94,7 +94,7 @@ const {v$} = useVuelidateOnFormTab(
         return {
             config: {
                 message: $gettext(
-                    'Now playing on %{ station }: %{ title } by %{ artist }! Tune in now: %{ url }',
+                    'Now playing on %{station}: %{title} by %{artist}! Tune in now: %{url}',
                     {
                         station: '{{ station.name }}',
                         title: '{{ now_playing.song.title }}',
@@ -103,7 +103,7 @@ const {v$} = useVuelidateOnFormTab(
                     }
                 ),
                 message_song_changed_live: $gettext(
-                    'Now playing on %{ station }: %{ title } by %{ artist } with your host, %{ dj }! Tune in now: %{ url }',
+                    'Now playing on %{station}: %{title} by %{artist} with your host, %{dj}! Tune in now: %{url}',
                     {
                         station: '{{ station.name }}',
                         title: '{{ now_playing.song.title }}',
@@ -113,7 +113,7 @@ const {v$} = useVuelidateOnFormTab(
                     }
                 ),
                 message_live_connect: $gettext(
-                    '%{ dj } is now live on %{ station }! Tune in now: %{ url }',
+                    '%{dj} is now live on %{station}! Tune in now: %{url}',
                     {
                         dj: '{{ live.streamer_name }}',
                         station: '{{ station.name }}',
@@ -121,19 +121,19 @@ const {v$} = useVuelidateOnFormTab(
                     }
                 ),
                 message_live_disconnect: $gettext(
-                    'Thanks for listening to %{ station }!',
+                    'Thanks for listening to %{station}!',
                     {
                         station: '{{ station.name }}',
                     }
                 ),
                 message_station_offline: $gettext(
-                    '%{ station } is going offline for now.',
+                    '%{station} is going offline for now.',
                     {
                         station: '{{ station.name }}'
                     }
                 ),
                 message_station_online: $gettext(
-                    '%{ station } is back online! Tune in now: %{ url }',
+                    '%{station} is back online! Tune in now: %{url}',
                     {
                         station: '{{ station.name }}',
                         url: '{{ station.public_player_url }}'

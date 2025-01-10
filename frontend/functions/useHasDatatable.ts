@@ -1,7 +1,8 @@
 import DataTable from "~/components/Common/DataTable.vue";
 import {Ref} from "vue";
+import {ComponentExposed} from "vue-component-type-helpers";
 
-export type DataTableTemplateRef = InstanceType<typeof DataTable> | null;
+export type DataTableTemplateRef = ComponentExposed<typeof DataTable> | null;
 
 export default function useHasDatatable($datatableRef: Ref<DataTableTemplateRef>) {
     /**

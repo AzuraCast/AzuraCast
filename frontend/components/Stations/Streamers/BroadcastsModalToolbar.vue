@@ -104,7 +104,7 @@ const {confirmDelete} = useDialog();
 const doDelete = () => {
     confirmDelete({
         title: $gettext(
-            'Delete %{ num } broadcasts?',
+            'Delete %{num} broadcasts?',
             {num: props.selectedItems.length}
         ),
     }).then((result) => {

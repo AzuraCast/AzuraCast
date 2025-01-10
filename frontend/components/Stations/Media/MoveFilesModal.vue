@@ -128,7 +128,7 @@ const fields: DataTableField[] = [
 
 const langHeader = computed(() => {
     return $gettext(
-        'Move %{ num } File(s) to',
+        'Move %{num} File(s) to',
         {num: props.selectedItems.all.length}
     );
 });

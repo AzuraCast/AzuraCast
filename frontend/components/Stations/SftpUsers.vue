@@ -80,11 +80,12 @@ import SftpUsersEditModal from "./SftpUsers/EditModal.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
-import useHasEditModal, {EditModalTemplateRef} from "~/functions/useHasEditModal";
+import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
+import EditModal from "~/components/Stations/HlsStreams/EditModal.vue";
 
 const props = defineProps({
     connectionInfo: {
@@ -105,7 +106,7 @@ const fields: DataTableField[] = [
 const $datatable = ref<DataTableTemplateRef>(null);
 const {relist} = useHasDatatable($datatable);
 
-const $editModal = ref<EditModalTemplateRef>(null);
+const $editModal = ref<InstanceType<typeof EditModal> | null>(null);
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const {doDelete} = useConfirmAndDelete(

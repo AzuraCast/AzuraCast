@@ -42,11 +42,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
-import Modal from 'bootstrap/js/src/modal';
-import {onMounted, ref} from "vue";
-import {useEventListener} from "@vueuse/core";
-
+<script lang="ts">
 export interface DialogOptions {
     title: string,
     confirmButtonText: string,
@@ -63,6 +59,12 @@ export interface DialogResponse {
 export interface DialogComponentProps extends DialogOptions {
     resolvePromise(body: DialogResponse)
 }
+</script>
+
+<script setup lang="ts">
+import Modal from 'bootstrap/js/src/modal';
+import {onMounted, ref} from "vue";
+import {useEventListener} from "@vueuse/core";
 
 const props = withDefaults(defineProps<DialogComponentProps>(), {
     confirmButtonClass: 'btn-primary',

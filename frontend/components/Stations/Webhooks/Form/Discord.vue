@@ -117,7 +117,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             config: {
                 webhook_url: '',
                 content: $gettext(
-                    'Now playing on %{ station }:',
+                    'Now playing on %{station}:',
                     {'station': '{{ station.name }}'}
                 ),
                 title: '{{ now_playing.song.title }}',

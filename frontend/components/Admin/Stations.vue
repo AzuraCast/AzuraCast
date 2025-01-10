@@ -91,7 +91,7 @@ import {pickProps} from "~/functions/pickProps";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
-import useHasEditModal, {EditModalTemplateRef} from "~/functions/useHasEditModal";
+import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
@@ -151,7 +151,7 @@ const fields: DataTableField[] = [
 const $datatable = ref<DataTableTemplateRef>(null);
 const {relist} = useHasDatatable($datatable);
 
-const $editModal = ref<EditModalTemplateRef>(null);
+const $editModal = ref<InstanceType<typeof AdminStationsEditModal> | null>(null);
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const $cloneModal = ref<InstanceType<typeof CloneModal> | null>(null);

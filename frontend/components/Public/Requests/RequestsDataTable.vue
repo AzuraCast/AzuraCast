@@ -53,7 +53,7 @@ const emit = defineEmits(['submitted']);
 const {$gettext} = useTranslate();
 
 const fields = computed<DataTableField[]>(() => {
-    const fields = [
+    const fields: DataTableField[] = [
         {
             key: 'name',
             isRowHeader: true,
@@ -107,7 +107,12 @@ const fields = computed<DataTableField[]>(() => {
     });
 
     fields.push(
-        {key: 'actions', label: $gettext('Actions'), class: 'shrink', sortable: false}
+        {
+            key: 'actions',
+            label: $gettext('Actions'),
+            class: 'shrink',
+            sortable: false
+        }
     );
 
     return fields;

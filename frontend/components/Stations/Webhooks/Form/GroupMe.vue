@@ -46,10 +46,10 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonFormattingInfo from "./Common/FormattingInfo.vue";
-import { useTranslate } from "~/vendor/gettext";
-import { useVModel } from "@vueuse/core";
-import { useVuelidateOnFormTab } from "~/functions/useVuelidateOnFormTab";
-import { required } from "@vuelidate/validators";
+import {useTranslate} from "~/vendor/gettext";
+import {useVModel} from "@vueuse/core";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
@@ -83,7 +83,7 @@ const { v$, tabClass } = useVuelidateOnFormTab(
                 bot_id: '',
                 api: '',
                 text: $gettext(
-                    'Now playing on %{ station }: %{ title } by %{ artist }! Tune in now.',
+                    'Now playing on %{station}: %{title} by %{artist}! Tune in now.',
                     {
                         station: '{{ station.name }}',
                         title: '{{ now_playing.song.title }}',

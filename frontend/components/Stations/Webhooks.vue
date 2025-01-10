@@ -104,14 +104,14 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
+import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import EditModal from './Webhooks/EditModal.vue';
 import {get, map} from 'lodash';
 import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
-import useHasEditModal, {EditModalTemplateRef} from "~/functions/useHasEditModal";
+import useHasEditModal from "~/functions/useHasEditModal";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
@@ -166,7 +166,7 @@ const getTriggerNames = (triggers) => {
 const $datatable = ref<DataTableTemplateRef>(null);
 const {relist} = useHasDatatable($datatable);
 
-const $editModal = ref<EditModalTemplateRef>(null);
+const $editModal = ref<InstanceType<typeof EditModal> | null>(null);
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const {notifySuccess} = useNotify();

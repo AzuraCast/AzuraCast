@@ -289,20 +289,10 @@
     </div>
 </template>
 
-<script setup lang="ts" generic="Row extends object">
-import {filter, forEach, get, includes, indexOf, isEmpty, map, reverse, slice, some} from 'lodash';
-import Icon from './Icon.vue';
-import {computed, onMounted, ref, shallowRef, toRaw, toRef, useSlots, watch} from "vue";
-import {watchDebounced} from "@vueuse/core";
-import {useAxios} from "~/vendor/axios";
-import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
-import FormCheckbox from "~/components/Form/FormCheckbox.vue";
-import Pagination from "~/components/Common/Pagination.vue";
-import useOptionalStorage from "~/functions/useOptionalStorage";
-import {IconArrowDropDown, IconArrowDropUp, IconFilterList, IconRefresh, IconSearch} from "~/components/Common/icons";
-import {useAzuraCast} from "~/vendor/azuracast.ts";
+<script lang="ts">
+import {DataTableField} from "~/components/Common/DataTable.vue";
 
-export interface DataTableProps {
+export interface DataTableProps<Row = object> {
     id?: string,
     fields: DataTableField[],
     apiUrl?: string, // URL to fetch for server-side data
@@ -322,7 +312,35 @@ export interface DataTableProps {
     requestProcess?(rawData: object[]): Row[], // Custom server-side request result processing (post-request)
 }
 
-const props = withDefaults(defineProps<DataTableProps>(), {
+export interface DataTableField<Row = object> {
+    key: string,
+    label: string,
+    isRowHeader?: boolean,
+    sortable?: boolean,
+    selectable?: boolean,
+    visible?: boolean,
+    "class"?: string | Array<any>,
+
+    formatter?(column: any, key: string, row: Row): string,
+
+    sorter?(row: Row): string
+}
+</script>
+
+<script setup lang="ts" generic="Row extends object">
+import {filter, forEach, get, includes, indexOf, isEmpty, map, reverse, slice, some} from 'lodash';
+import Icon from './Icon.vue';
+import {computed, onMounted, ref, shallowRef, toRaw, toRef, useSlots, watch} from "vue";
+import {watchDebounced} from "@vueuse/core";
+import {useAxios} from "~/vendor/axios";
+import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
+import FormCheckbox from "~/components/Form/FormCheckbox.vue";
+import Pagination from "~/components/Common/Pagination.vue";
+import useOptionalStorage from "~/functions/useOptionalStorage";
+import {IconArrowDropDown, IconArrowDropUp, IconFilterList, IconRefresh, IconSearch} from "~/components/Common/icons";
+import {useAzuraCast} from "~/vendor/azuracast.ts";
+
+const props = withDefaults(defineProps<DataTableProps<Row>>(), {
     id: null,
     apiUrl: null,
     items: null,
@@ -361,7 +379,7 @@ const searchPhrase = ref<string>('');
 const currentPage = ref<number>(1);
 const flushCache = ref<boolean>(false);
 
-const sortField = ref<DataTableField | null>(null);
+const sortField = ref<DataTableField<Row> | null>(null);
 const sortOrder = ref<string | null>(null);
 
 const isLoading = ref<boolean>(false);
@@ -375,22 +393,8 @@ const totalRows = ref(0);
 
 const activeDetailsRow = shallowRef<Row>(null);
 
-export interface DataTableField {
-    key: string,
-    label: string,
-    isRowHeader?: boolean,
-    sortable?: boolean,
-    selectable?: boolean,
-    visible?: boolean,
-    class?: string | Array<any>,
-
-    formatter?(column: any, key: string, row: Row): string,
-
-    sorter?(row: Row): string
-}
-
-const allFields = computed<DataTableField[]>(() => {
-    return map(props.fields, (field: DataTableField) => {
+const allFields = computed<DataTableField<Row>[]>(() => {
+    return map(props.fields, (field: DataTableField<Row>) => {
         return {
             label: '',
             isRowHeader: false,
@@ -405,7 +409,7 @@ const allFields = computed<DataTableField[]>(() => {
     });
 });
 
-const selectableFields = computed<DataTableField[]>(() => {
+const selectableFields = computed<DataTableField<Row>[]>(() => {
     return filter({...allFields.value}, (field) => {
         return field.selectable;
     });
@@ -463,7 +467,7 @@ const perPage = computed<number>(() => {
     return settings.value?.perPage ?? props.defaultPerPage;
 });
 
-const visibleFields = computed<DataTableField[]>(() => {
+const visibleFields = computed<DataTableField<Row>[]>(() => {
     const fields = allFields.value.slice();
 
     if (!props.selectFields) {
@@ -754,7 +758,7 @@ const responsiveClass = computed(() => {
     return (props.responsive ? 'table-responsive' : '');
 });
 
-const getColumnValue = (field: DataTableField, row: Row): string => {
+const getColumnValue = (field: DataTableField<Row>, row: Row): string => {
     const columnValue = get(row, field.key, null);
 
     return (field.formatter)

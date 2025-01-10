@@ -114,7 +114,7 @@ import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
-import useHasEditModal, {EditModalTemplateRef} from "~/functions/useHasEditModal";
+import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getStationApiUrl} from "~/router";
@@ -149,14 +149,14 @@ const fields: DataTableField[] = [
 const $datatable = ref<DataTableTemplateRef>(null);
 const {refresh: refreshDatatable} = useHasDatatable($datatable);
 
-const $scheduleTab = ref<InstanceType<ScheduleViewTab> | null>(null);
+const $scheduleTab = ref<InstanceType<typeof ScheduleViewTab> | null>(null);
 
 const relist = () => {
     refreshDatatable();
     $scheduleTab.value?.refresh();
 }
 
-const $editModal = ref<EditModalTemplateRef>(null);
+const $editModal = ref<InstanceType<typeof EditModal> | null>(null);
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const doCalendarClick = (event: EventImpl) => {

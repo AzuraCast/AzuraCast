@@ -8,10 +8,10 @@ interface BatchEpisode {
 }
 
 interface BatchResponse {
-    success: bool,
+    success: boolean,
     episodes: BatchEpisode[],
     errors: string[],
-    records?: array | null
+    records?: object[] | null
 }
 
 export default function useHandlePodcastBatchResponse() {

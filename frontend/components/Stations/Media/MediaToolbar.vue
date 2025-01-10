@@ -339,7 +339,7 @@ const {confirmDelete} = useDialog();
 const doDelete = () => {
     const numFiles = selectedItems.value.all.length;
     const buttonConfirmText = $gettext(
-        'Delete %{ num } media files?',
+        'Delete %{num} media files?',
         {num: numFiles}
     );
 

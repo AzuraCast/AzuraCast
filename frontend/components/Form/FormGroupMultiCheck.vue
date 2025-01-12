@@ -9,7 +9,8 @@
         >
             <form-label
                 :is-required="isRequired"
-                v-bind="pickProps(props, formLabelProps)"
+                :advanced="props.advanced"
+                :high-cpu="props.highCpu"
             >
                 <slot
                     name="label"
@@ -67,47 +68,34 @@
 
 <script setup lang="ts">
 import VuelidateError from "./VuelidateError.vue";
-import FormLabel from "~/components/Form/FormLabel.vue";
+import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 import useSlotsExcept from "~/functions/useSlotsExcept";
-import {formFieldProps, useFormField} from "~/components/Form/useFormField";
+import {FormFieldProps, useFormField} from "~/components/Form/useFormField";
 import {useSlots} from "vue";
-import formLabelProps from "~/components/Form/formLabelProps.ts";
-import {pickProps} from "~/functions/pickProps.ts";
+import {FormOption} from "~/functions/objectToFormOptions.ts";
 
-const props = defineProps({
-    ...formFieldProps,
-    ...formLabelProps,
-    id: {
-        type: String,
-        required: true
-    },
-    name: {
-        type: String,
-        default: null,
-    },
-    label: {
-        type: String,
-        default: null
-    },
-    description: {
-        type: String,
-        default: null
-    },
-    options: {
-        type: Array,
-        required: true
-    },
-    radio: {
-        type: Boolean,
-        default: false
-    },
-    stacked: {
-        type: Boolean,
-        default: false
+interface FormGroupMultiCheckProps extends FormFieldProps, FormLabelParentProps {
+    id: string,
+    name?: string,
+    label?: string,
+    description?: string,
+    options: FormOption[],
+    radio?: boolean,
+    stacked?: boolean
+}
+
+const props = withDefaults(
+    defineProps<FormGroupMultiCheckProps>(),
+    {
+        name: null,
+        label: null,
+        description: null,
+        radio: false,
+        stacked: false
     }
-});
+);
 
 const slots = useSlots();
 

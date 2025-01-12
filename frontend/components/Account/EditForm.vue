@@ -44,8 +44,8 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import objectToFormOptions from "~/functions/objectToFormOptions";
-import {computed} from "vue";
+import objectToFormOptions, {FormOption} from "~/functions/objectToFormOptions";
+import {computed, toRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 
@@ -62,16 +62,18 @@ const props = defineProps({
 
 const {$gettext} = useTranslate();
 
-const localeOptions = computed(() => {
-    const localeOptions = objectToFormOptions(props.supportedLocales);
+const localeOptions = computed<FormOption[]>(() => {
+    const localeOptions = objectToFormOptions(toRef(props, 'supportedLocales')).value;
+
     localeOptions.unshift({
         text: $gettext('Use Browser Default'),
         value: 'default'
     });
+
     return localeOptions;
 });
 
-const show24hourOptions = computed(() => {
+const show24hourOptions = computed<FormOption[]>(() => {
     return [
         {
             text: $gettext('Prefer System Default'),

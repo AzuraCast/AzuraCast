@@ -58,6 +58,7 @@ final class PodcastsAction implements SingleActionInterface
                 'hide_footer' => $isEmbedded,
             ],
             props: [
+                'stationName' => $station->getName(),
                 'baseUrl' => $router->fromHere('public:index'),
                 'groupLayout' => $groupLayout,
             ],

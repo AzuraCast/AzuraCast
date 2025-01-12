@@ -108,7 +108,7 @@ import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import StreamingLogView from "~/components/Common/StreamingLogView.vue";
-import {computed, ref} from "vue";
+import {ref, toRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Modal from "~/components/Common/Modal.vue";
@@ -128,9 +128,7 @@ const props = defineProps({
 
 const emit = defineEmits(['relist']);
 
-const storageLocationOptions = computed(() => {
-    return objectToFormOptions(props.storageLocations);
-});
+const storageLocationOptions = objectToFormOptions(toRef(props, 'storageLocations'));
 
 const logUrl = ref(null);
 const error = ref(null);

@@ -1,4 +1,5 @@
 import {useTranslate} from "~/vendor/gettext";
+import {map} from "lodash";
 
 export enum WebhookTrigger {
     SongChanged = 'song_changed',
@@ -86,10 +87,16 @@ export enum WebhookType {
     MatomoAnalytics = 'matomo_analytics'
 }
 
-export function useTypeDetails() {
+export interface WebhookTypeDetail {
+    key: WebhookType,
+    title: string,
+    description: string,
+}
+
+export function useTypeDetails(): Record<WebhookType, WebhookTypeDetail> {
     const {$gettext} = useTranslate();
 
-    return {
+    const typeDetails: Record<WebhookType, Partial<WebhookTypeDetail>> = {
         [WebhookType.Generic]: {
             title: $gettext('Generic Web Hook'),
             description: $gettext('Automatically send a message to any URL when your station data changes.')
@@ -143,6 +150,14 @@ export function useTypeDetails() {
             description: $gettext('Send stream listener details to Matomo Analytics.')
         },
     };
+
+    return map(
+        typeDetails,
+        (type: Partial<WebhookTypeDetail>, key: WebhookType): WebhookTypeDetail => ({
+            ...type,
+            key: key
+        })
+    );
 }
 
 export function getTriggers(type: WebhookType) {

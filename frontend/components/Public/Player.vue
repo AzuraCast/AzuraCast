@@ -137,28 +137,44 @@
     </div>
 </template>
 
+<script lang="ts">
+import {NowPlayingProps} from "~/functions/useNowPlaying.ts";
+
+export interface PlayerProps extends NowPlayingProps {
+    offlineText?: string,
+    showHls?: boolean,
+    showAlbumArt?: boolean,
+    autoplay?: boolean
+}
+</script>
+
 <script setup lang="ts">
 import AudioPlayer from '~/components/Common/AudioPlayer.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
 import {computed, nextTick, onMounted, ref, shallowRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
-import playerProps from "~/components/Public/playerProps";
 import MuteButton from "~/components/Common/MuteButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
-import {useAzuraCastStation} from "~/vendor/azuracast";
 import usePlayerVolume from "~/functions/usePlayerVolume";
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {useEventListener} from "@vueuse/core";
 import useShowVolume from "~/functions/useShowVolume.ts";
 
-const props = defineProps({
-    ...playerProps
+defineOptions({
+    inheritAttrs: false
 });
 
-const emit = defineEmits(['np_updated']);
+const props = withDefaults(
+    defineProps<PlayerProps>(),
+    {
+        showHls: true,
+        showAlbumArt: true,
+        autoplay: true
+    }
+);
 
-const {offlineText} = useAzuraCastStation();
+const emit = defineEmits(['np_updated']);
 
 const {
     np,

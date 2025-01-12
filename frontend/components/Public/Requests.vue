@@ -3,9 +3,27 @@
         <requests-data-table v-bind="props" />
     </div>
 </template>
+
+<script lang="ts">
+export interface RequestsProps {
+    requestListUri: string,
+    showAlbumArt?: boolean
+    customFields?: Array<any>
+}
+</script>
+
 <script setup lang="ts">
 import RequestsDataTable from "~/components/Public/Requests/RequestsDataTable.vue";
-import requestsProps from "~/components/Public/Requests/requestsProps.ts";
 
-const props = defineProps(requestsProps);
+defineOptions({
+    inheritAttrs: false
+});
+
+const props = withDefaults(
+    defineProps<RequestsProps>(),
+    {
+        showAlbumArt: true,
+        customFields: () => []
+    }
+);
 </script>

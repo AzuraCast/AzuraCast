@@ -28,7 +28,7 @@
 
     <template v-if="userAllowedForStation(StationPermission.Broadcasting)">
         <div
-            v-if="!station.hasStarted"
+            v-if="!hasStarted"
             class="navdrawer-alert bg-success-subtle text-success-emphasis"
         >
             <router-link
@@ -75,16 +75,9 @@ import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter
 import {useLuxon} from "~/vendor/luxon.ts";
 import {useRestartEventBus} from "~/functions/useMayNeedRestart.ts";
 
-const props = defineProps({
-    station: {
-        type: Object,
-        required: true
-    }
-});
-
 const menuItems = useStationsMenu();
 
-const {name} = useAzuraCastStation();
+const {name, hasStarted, needsRestart: initialNeedsRestart} = useAzuraCastStation();
 
 const {DateTime} = useLuxon();
 const {now, formatDateTimeAsTime} = useStationDateTimeFormatter();
@@ -100,7 +93,7 @@ useIntervalFn(() => {
 
 const restartEventBus = useRestartEventBus();
 const restartStatusUrl = getStationApiUrl('/restart-status');
-const needsRestart = ref(props.station.needsRestart);
+const needsRestart = ref<boolean>(initialNeedsRestart);
 const {axios} = useAxios();
 
 restartEventBus.on((forceRestart: boolean): void => {

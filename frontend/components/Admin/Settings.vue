@@ -60,6 +60,15 @@
     </form>
 </template>
 
+<script lang="ts">
+export interface SettingsProps {
+    apiUrl: string,
+    testMessageUrl: string,
+    acmeUrl: string,
+    releaseChannel?: string
+}
+</script>
+
 <script setup lang="ts">
 import SettingsGeneralTab from "./Settings/GeneralTab.vue";
 import SettingsServicesTab from "./Settings/ServicesTab.vue";
@@ -71,12 +80,18 @@ import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Loading from "~/components/Common/Loading.vue";
-import settingsProps from "~/components/Admin/settingsProps";
 import Tabs from "~/components/Common/Tabs.vue";
 
-const props = defineProps({
-    ...settingsProps
+defineOptions({
+    inheritAttrs: false
 });
+
+const props = withDefaults(
+    defineProps<SettingsProps>(),
+    {
+        releaseChannel: 'rolling'
+    }
+);
 
 const emit = defineEmits(['saved']);
 

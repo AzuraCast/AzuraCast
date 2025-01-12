@@ -167,13 +167,27 @@
     </card-page>
 </template>
 
+<script lang="ts">
+export interface ProfileFrontendPanelParentProps {
+    frontendType: string,
+    frontendAdminUri: string,
+    frontendAdminPassword: string,
+    frontendSourcePassword: string,
+    frontendRelayPassword: string,
+    frontendPort: number,
+    frontendRestartUri: string,
+    frontendStartUri: string,
+    frontendStopUri: string,
+    hasStarted: boolean
+}
+</script>
+
 <script setup lang="ts">
 import {FrontendAdapter} from '~/entities/RadioAdapters';
 import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton.vue';
 import Icon from '~/components/Common/Icon.vue';
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {computed} from "vue";
-import frontendPanelProps from "~/components/Stations/Profile/frontendPanelProps";
 import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
 import {StationPermission, userAllowedForStation} from "~/acl";
@@ -181,13 +195,15 @@ import useOptionalStorage from "~/functions/useOptionalStorage";
 import {IconMoreHoriz, IconPlay, IconStop, IconUpdate} from "~/components/Common/icons";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 
-const props = defineProps({
-    ...frontendPanelProps,
-    frontendRunning: {
-        type: Boolean,
-        required: true
-    }
+defineOptions({
+    inheritAttrs: false
 });
+
+interface ProfileFrontendPanelProps extends ProfileFrontendPanelParentProps {
+    frontendRunning: boolean,
+}
+
+const props = defineProps<ProfileFrontendPanelProps>();
 
 const credentialsVisible = useOptionalStorage<boolean>('station_show_frontend_credentials', false);
 

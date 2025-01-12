@@ -9,7 +9,7 @@
         @hidden="clearContents"
     >
         <admin-stations-form
-            v-bind="pickProps(props, stationFormProps)"
+            v-bind="props"
             ref="$form"
             is-modal
             :create-url="createUrl"
@@ -45,22 +45,22 @@
 </template>
 
 <script setup lang="ts">
-import AdminStationsForm from "~/components/Admin/Stations/StationForm.vue";
+import AdminStationsForm, {StationFormParentProps} from "~/components/Admin/Stations/StationForm.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import stationFormProps from "~/components/Admin/Stations/stationFormProps";
-import {pickProps} from "~/functions/pickProps";
 import Modal from "~/components/Common/Modal.vue";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
-const props = defineProps({
-    ...stationFormProps,
-    createUrl: {
-        type: String,
-        required: true
-    }
+defineOptions({
+    inheritAttrs: false
 });
+
+interface StationEditModalProps extends StationFormParentProps {
+    createUrl: string
+}
+
+const props = defineProps<StationEditModalProps>();
 
 const emit = defineEmits(['relist']);
 

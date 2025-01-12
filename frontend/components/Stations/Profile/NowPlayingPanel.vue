@@ -240,12 +240,21 @@
     </template>
 </template>
 
+<script lang="ts">
+import {NowPlayingProps} from "~/functions/useNowPlaying.ts";
+
+export interface ProfileNowPlayingPanelProps extends NowPlayingProps {
+    backendType: string,
+    backendSkipSongUri: string,
+    backendDisconnectStreamerUri: string
+}
+</script>
+
 <script setup lang="ts">
 import {BackendAdapter} from '~/entities/RadioAdapters';
 import Icon from '~/components/Common/Icon.vue';
 import {computed, Ref, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import nowPlayingPanelProps from "~/components/Stations/Profile/nowPlayingPanelProps";
 import useNowPlaying from "~/functions/useNowPlaying";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLightbox} from "~/vendor/lightbox";
@@ -263,9 +272,11 @@ import {
 import UpdateMetadataModal from "~/components/Stations/Profile/UpdateMetadataModal.vue";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 
-const props = defineProps({
-    ...nowPlayingPanelProps,
+defineOptions({
+    inheritAttrs: false
 });
+
+const props = defineProps<ProfileNowPlayingPanelProps>();
 
 const {offlineText} = useAzuraCastStation();
 

@@ -39,18 +39,27 @@
     </div>
 </template>
 
+<script lang="ts">
+export interface ProfileHeaderPanelParentProps {
+    stationName: string,
+    stationDescription: string,
+    hasStarted: boolean,
+}
+</script>
+
 <script setup lang="ts">
 import Icon from '~/components/Common/Icon.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
-import headerPanelProps from "~/components/Stations/Profile/headerPanelProps";
 import {StationPermission, userAllowedForStation} from "~/acl";
 import {IconEdit} from "~/components/Common/icons";
 
-const props = defineProps({
-    ...headerPanelProps,
-    station: {
-        type: Object,
-        required: true
-    }
+defineOptions({
+    inheritAttrs: false
 });
+
+interface ProfileHeaderPanelProps extends ProfileHeaderPanelParentProps {
+    station: object
+}
+
+const props = defineProps<ProfileHeaderPanelProps>();
 </script>

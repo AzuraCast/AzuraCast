@@ -186,13 +186,13 @@ const loadLocations = () => {
     axios.get(storageLocationApiUrl.value).then((resp) => {
         storageLocationOptions.media_storage_location = objectToFormOptions(
             filterLocations(resp.data.media_storage_location)
-        );
+        ).value;
         storageLocationOptions.recordings_storage_location = objectToFormOptions(
             filterLocations(resp.data.recordings_storage_location)
-        );
+        ).value;
         storageLocationOptions.podcasts_storage_location = objectToFormOptions(
             filterLocations(resp.data.podcasts_storage_location)
-        );
+        ).value;
     }).finally(() => {
         storageLocationsLoading.value = false;
     });

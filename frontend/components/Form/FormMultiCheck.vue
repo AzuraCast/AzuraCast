@@ -34,16 +34,9 @@
     </div>
 </template>
 
-<script lang="ts">
-export interface FormMultiCheckOption {
-    value: any,
-    text: string,
-    description?: string
-}
-</script>
-
 <script setup lang="ts">
 import {useVModel} from "@vueuse/core";
+import {FormOption} from "~/functions/objectToFormOptions.ts";
 
 const props = withDefaults(
     defineProps<{
@@ -51,7 +44,7 @@ const props = withDefaults(
         id: string,
         name: string,
         fieldClass: string,
-        options: FormMultiCheckOption[],
+        options: FormOption[],
         radio: boolean,
         stacked: boolean
     }>(),

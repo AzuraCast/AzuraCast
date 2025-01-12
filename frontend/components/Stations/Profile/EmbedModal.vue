@@ -92,18 +92,36 @@
     </modal>
 </template>
 
+<script lang="ts">
+export interface ProfileEmbedModalProps {
+    stationSupportsStreamers: boolean,
+    stationSupportsRequests: boolean,
+    enablePublicPage: boolean,
+    enableStreamers: boolean,
+    enableOnDemand: boolean,
+    enableRequests: boolean,
+    publicPageEmbedUri: string,
+    publicOnDemandEmbedUri: string,
+    publicRequestEmbedUri: string,
+    publicHistoryEmbedUri: string,
+    publicScheduleEmbedUri: string,
+    publicPodcastsEmbedUri: string
+}
+</script>
+
 <script setup lang="ts">
 import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton.vue';
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import embedModalProps from "./embedModalProps";
 import Modal from "~/components/Common/Modal.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
-const props = defineProps({
-    ...embedModalProps
+defineOptions({
+    inheritAttrs: false
 });
+
+const props = defineProps<ProfileEmbedModalProps>();
 
 const selectedType = ref('player');
 const selectedTheme = ref('light');

@@ -170,7 +170,7 @@ import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {FrontendAdapter} from "~/entities/RadioAdapters";
 import objectToFormOptions from "~/functions/objectToFormOptions";
-import {computed} from "vue";
+import {computed, toRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
@@ -302,9 +302,7 @@ const frontendTypeOptions = computed(() => {
     return frontendOptions;
 });
 
-const countryOptions = computed(() => {
-    return objectToFormOptions(props.countries);
-});
+const countryOptions = objectToFormOptions(toRef(props, 'countries'));
 
 const isLocalFrontend = computed(() => {
     return form.value.frontend_type !== FrontendAdapter.Remote;

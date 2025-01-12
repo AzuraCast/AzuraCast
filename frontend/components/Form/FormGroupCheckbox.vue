@@ -22,7 +22,8 @@
                     >
                         <form-label
                             :is-required="isRequired"
-                            v-bind="pickProps(props, formLabelProps)"
+                            :advanced="props.advanced"
+                            :high-cpu="props.highCpu"
                         >
                             <slot name="label">{{ label }}</slot>
                         </form-label>
@@ -52,40 +53,30 @@
 
 <script setup lang="ts">
 import VuelidateError from "./VuelidateError.vue";
-import FormLabel from "~/components/Form/FormLabel.vue";
+import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
-import {formFieldProps, useFormField} from "~/components/Form/useFormField";
+import {FormFieldProps, useFormField} from "~/components/Form/useFormField";
 import {useSlots} from "vue";
 import FormCheckbox from "~/components/Form/FormCheckbox.vue";
-import formLabelProps from "~/components/Form/formLabelProps.ts";
-import {pickProps} from "~/functions/pickProps.ts";
 
-const props = defineProps({
-    ...formFieldProps,
-    ...formLabelProps,
-    id: {
-        type: String,
-        required: true
-    },
-    name: {
-        type: String,
-        default: null
-    },
-    label: {
-        type: String,
-        default: null
-    },
-    description: {
-        type: String,
-        default: null
-    },
-    inputAttrs: {
-        type: Object,
-        default() {
-            return {};
+interface FormGroupCheckboxProps extends FormFieldProps, FormLabelParentProps {
+    id: string,
+    name?: string,
+    label?: string,
+    description?: string,
+    inputAttrs?: object
+}
+
+const props = withDefaults(
+    defineProps<FormGroupCheckboxProps>(),
+    {
+        name: null,
+        label: null,
+        description: null,
+        inputAttrs: () => {
         }
-    },
-});
+    }
+);
 
 const slots = useSlots();
 

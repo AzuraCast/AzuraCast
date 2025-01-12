@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Entity\Station;
 use App\Entity\User;
 use App\Enums\SupportedLocales;
 use App\Http\RouterInterface;
@@ -223,22 +222,6 @@ final class View extends Engine
             }
 
             $this->globalProps->set('timeConfig', $timeConfig);
-
-            // Station-specific properties
-            $station = $request->getAttribute(ServerRequest::ATTR_STATION);
-            if ($station instanceof Station) {
-                $this->globalProps->set('station', [
-                    'id' => $station->getIdRequired(),
-                    'name' => $station->getName(),
-                    'isEnabled' => $station->getIsEnabled(),
-                    'shortName' => $station->getShortName(),
-                    'timezone' => $station->getTimezone(),
-                    'offlineText' => $station->getBrandingConfig()->getOfflineText(),
-                    'maxBitrate' => $station->getMaxBitrate(),
-                    'maxMounts' => $station->getMaxMounts(),
-                    'maxHlsStreams' => $station->getMaxHlsStreams(),
-                ]);
-            }
 
             $this->addData($requestData);
         }

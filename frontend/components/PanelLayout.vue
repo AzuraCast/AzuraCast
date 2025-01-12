@@ -173,6 +173,20 @@
     </div>
 </template>
 
+<script lang="ts">
+export interface PanelLayoutProps {
+    instanceName: string,
+    userDisplayName: string,
+    homeUrl: string,
+    profileUrl: string,
+    adminUrl: string,
+    logoutUrl: string,
+    showAdmin: boolean,
+    version: string,
+    platform: string
+}
+</script>
+
 <script setup lang="ts">
 import {nextTick, onMounted, useSlots, watch} from "vue";
 import Icon from "~/components/Common/Icon.vue";
@@ -190,44 +204,7 @@ import {
 } from "~/components/Common/icons";
 import {useProvidePlayerStore} from "~/functions/usePlayerStore.ts";
 
-const props = defineProps({
-  instanceName: {
-    type: String,
-    required: true
-  },
-  userDisplayName: {
-    type: String,
-    required: true
-  },
-  homeUrl: {
-    type: String,
-    required: true,
-  },
-  profileUrl: {
-    type: String,
-    required: true,
-  },
-  adminUrl: {
-    type: String,
-    required: true
-  },
-  logoutUrl: {
-    type: String,
-    required: true
-  },
-  showAdmin: {
-    type: Boolean,
-    default: false
-  },
-  version: {
-    type: String,
-    required: true
-  },
-  platform: {
-      type: String,
-      required: true
-  }
-});
+const props = defineProps<PanelLayoutProps>();
 
 const slots = useSlots();
 

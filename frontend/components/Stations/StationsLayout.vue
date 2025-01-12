@@ -1,7 +1,7 @@
 <template>
     <panel-layout v-bind="panelProps">
         <template #sidebar>
-            <sidebar v-bind="sidebarProps" />
+            <sidebar/>
         </template>
         <template #default>
             <router-view />
@@ -22,7 +22,7 @@ import HeaderInlinePlayer from "~/components/HeaderInlinePlayer.vue";
 import {ref} from "vue";
 import {LightboxTemplateRef, useProvideLightbox} from "~/vendor/lightbox.ts";
 
-const {panelProps, sidebarProps} = useAzuraCast();
+const {panelProps} = useAzuraCast();
 
 const $lightbox = ref<LightboxTemplateRef>(null);
 useProvideLightbox($lightbox);

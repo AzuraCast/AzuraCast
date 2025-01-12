@@ -36,6 +36,7 @@ export default function useAutoRefreshingAsyncState<Data, Params extends any[] =
     const intervalFnReturn = useIntervalFn(
         async () => {
             try {
+                // @ts-expect-error Function call is accurate.
                 await asyncStateReturn.execute();
             } catch {
                 intervalFnReturn.pause();

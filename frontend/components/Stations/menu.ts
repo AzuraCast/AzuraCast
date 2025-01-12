@@ -1,7 +1,7 @@
 import {useTranslate} from "~/vendor/gettext.ts";
-import filterMenu, { MenuCategory, ReactiveMenu } from "~/functions/filterMenu.ts";
+import filterMenu, {MenuCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
 import {StationPermission, userAllowedForStation} from "~/acl.ts";
-import {useAzuraCast} from "~/vendor/azuracast.ts";
+import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {computed, reactive} from "vue";
 import {
     IconBroadcast,
@@ -19,8 +19,8 @@ import {
 export function useStationsMenu(): ReactiveMenu {
     const {$gettext} = useTranslate();
 
-    const {enableAdvancedFeatures, sidebarProps} = useAzuraCast();
-    const stationProps = sidebarProps.station;
+    const {enableAdvancedFeatures} = useAzuraCast();
+    const stationProps = useAzuraCastStation();
 
     // Reuse this variable to avoid multiple calls.
     const userCanManageMedia = userAllowedForStation(StationPermission.Media);

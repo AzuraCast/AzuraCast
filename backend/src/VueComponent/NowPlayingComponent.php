@@ -23,6 +23,7 @@ final class NowPlayingComponent implements VueComponentInterface
 
         return [
             ...$this->getDataProps($request),
+            'offlineText' => $station->getBrandingConfig()->getOfflineText(),
             'showAlbumArt' => !$customization->hideAlbumArt(),
             'autoplay' => !empty($request->getQueryParam('autoplay')),
             'showHls' => $backendConfig->getHlsEnableOnPublicPlayer(),

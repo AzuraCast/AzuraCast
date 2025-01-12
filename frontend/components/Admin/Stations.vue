@@ -69,7 +69,7 @@
     </card-page>
 
     <admin-stations-edit-modal
-        v-bind="pickProps(props, stationFormProps)"
+        v-bind="props"
         ref="$editModal"
         :create-url="listUrl"
         @relist="relist"
@@ -86,8 +86,6 @@ import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import AdminStationsEditModal from "./Stations/EditModal.vue";
 import {get} from "lodash";
 import AdminStationsCloneModal from "./Stations/CloneModal.vue";
-import stationFormProps from "./Stations/stationFormProps";
-import {pickProps} from "~/functions/pickProps";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
@@ -100,18 +98,14 @@ import CloneModal from "~/components/Admin/Stations/CloneModal.vue";
 import {useNotify} from "~/functions/useNotify.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import {useDialog} from "~/functions/useDialog.ts";
+import {StationFormParentProps} from "~/components/Admin/Stations/StationForm.vue";
 
-const props = defineProps({
-    ...stationFormProps,
-    frontendTypes: {
-        type: Object,
-        required: true
-    },
-    backendTypes: {
-        type: Object,
-        required: true
-    }
-});
+interface AdminStationsProps extends StationFormParentProps {
+    frontendTypes: object,
+    backendTypes: object
+}
+
+const props = defineProps<AdminStationsProps>();
 
 const listUrl = getApiUrl('/admin/stations');
 

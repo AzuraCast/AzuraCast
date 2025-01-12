@@ -42,11 +42,9 @@ import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
-import requestsProps from "~/components/Public/Requests/requestsProps.ts";
+import {RequestsProps} from "~/components/Public/Requests.vue";
 
-const props = defineProps({
-    ...requestsProps
-});
+const props = defineProps<RequestsProps>();
 
 const emit = defineEmits(['submitted']);
 

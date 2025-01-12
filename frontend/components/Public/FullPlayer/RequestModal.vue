@@ -18,11 +18,13 @@ import SongRequest from '../Requests.vue';
 import {ref} from "vue";
 import Modal from "~/components/Common/Modal.vue";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
-import requestsProps from "~/components/Public/Requests/requestsProps.ts";
+import {RequestsProps} from "~/components/Public/Requests.vue";
 
-const props = defineProps({
-    ...requestsProps
+defineOptions({
+    inheritAttrs: false
 });
+
+const props = defineProps<RequestsProps>();
 
 const $modal = ref<ModalTemplateRef>(null);
 const {show: open, hide} = useHasModal($modal);

@@ -45,18 +45,16 @@ import CardPage from "~/components/Common/CardPage.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 
-defineProps({
-    systemLogsUrl: {
-        type: String,
-        required: true,
-    },
-    stationLogs: {
-        type: Array,
-        default: () => {
-            return [];
-        }
-    }
-});
+interface StationLogsItem {
+    id: number,
+    name: string,
+    url: string
+}
+
+defineProps<{
+    systemLogsUrl: string,
+    stationLogs: StationLogsItem[]
+}>();
 
 const $modal: Ref<InstanceType<typeof StreamingLogModal> | null> = ref(null);
 

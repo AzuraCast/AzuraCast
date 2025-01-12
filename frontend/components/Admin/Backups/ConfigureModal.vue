@@ -86,7 +86,7 @@ import mergeExisting from "~/functions/mergeExisting";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import TimeCode from "~/components/Common/TimeCode.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions";
-import {computed, ref} from "vue";
+import {computed, ref, toRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
@@ -129,9 +129,7 @@ const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
     }
 );
 
-const storageLocationOptions = computed(() => {
-    return objectToFormOptions(props.storageLocations);
-});
+const storageLocationOptions = objectToFormOptions(toRef(props, 'storageLocations'));
 
 const formatOptions = computed(() => {
     return [

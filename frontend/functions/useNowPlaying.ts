@@ -6,22 +6,11 @@ import {getApiUrl} from "~/router.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import formatTime from "~/functions/formatTime.ts";
 
-export const nowPlayingProps = {
-    stationShortName: {
-        type: String,
-        required: true,
-    },
-    useStatic: {
-        type: Boolean,
-        required: false,
-        default: false,
-    },
-    useSse: {
-        type: Boolean,
-        required: false,
-        default: false
-    },
-};
+export interface NowPlayingProps {
+    stationShortName: string,
+    useStatic?: boolean,
+    useSse?: boolean
+}
 
 interface SsePayload {
     data: {
@@ -30,7 +19,13 @@ interface SsePayload {
     }
 }
 
-export default function useNowPlaying(props) {
+export default function useNowPlaying(initialProps: NowPlayingProps) {
+    const props = {
+        useStatic: false,
+        useSse: false,
+        ...initialProps
+    };
+
     const np: ShallowRef<ApiNowPlaying> = shallowRef(NowPlaying);
     const npTimestamp: Ref<number> = ref(0);
 

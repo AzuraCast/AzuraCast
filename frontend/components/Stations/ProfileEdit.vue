@@ -42,7 +42,7 @@
             class="card-body"
         >
             <admin-stations-form
-                v-bind="pickProps(props, stationFormProps)"
+                v-bind="props"
                 ref="$form"
                 is-edit-mode
                 :edit-url="editUrl"
@@ -54,17 +54,15 @@
 </template>
 
 <script setup lang="ts">
-import AdminStationsForm from "~/components/Admin/Stations/StationForm.vue";
+import AdminStationsForm, {StationFormParentProps} from "~/components/Admin/Stations/StationForm.vue";
 import {nextTick, onMounted, ref} from "vue";
-import stationFormProps from "~/components/Admin/Stations/stationFormProps";
-import {pickProps} from "~/functions/pickProps";
 import Icon from "~/components/InlinePlayer.vue";
 import ErrorCard from "~/components/Common/ErrorCard.vue";
 import {getStationApiUrl} from "~/router";
 import {useRouter} from "vue-router";
 import {IconRefresh} from "~/components/Common/icons";
 
-const props = defineProps(stationFormProps);
+const props = defineProps<StationFormParentProps>();
 
 const editUrl = getStationApiUrl('/profile/edit');
 

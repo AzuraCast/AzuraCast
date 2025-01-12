@@ -8,8 +8,9 @@
             #label="slotProps"
         >
             <form-label
-                :is-required="required"
-                :advanced="advanced"
+                :is-required="isRequired"
+                :advanced="props.advanced"
+                :high-cpu="props.highCpu"
             >
                 <slot
                     name="label"
@@ -70,47 +71,36 @@
 </template>
 
 <script setup lang="ts">
-import {formFieldProps, useFormField} from "~/components/Form/useFormField";
+import {FormFieldProps, useFormField} from "~/components/Form/useFormField";
 import {computed, ComputedRef, useSlots} from "vue";
 import {includes, map} from "lodash";
 import useSlotsExcept from "~/functions/useSlotsExcept.ts";
 import FormMultiCheck, {FormMultiCheckOption} from "~/components/Form/FormMultiCheck.vue";
-import FormLabel from "~/components/Form/FormLabel.vue";
+import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 
-const props = defineProps({
-    ...formFieldProps,
-    id: {
-        type: String,
-        required: true
-    },
-    maxBitrate: {
-        type: Number,
-        required: true
-    },
-    name: {
-        type: String,
-        default: null,
-    },
-    label: {
-        type: String,
-        default: null
-    },
-    description: {
-        type: String,
-        default: null
-    },
-    advanced: {
-        type: Boolean,
-        default: false
+interface BitrateOptionsProps extends FormFieldProps, FormLabelParentProps {
+    id: string,
+    maxBitrate: number,
+    name?: string,
+    label?: string,
+    description?: string,
+}
+
+const props = withDefaults(
+    defineProps<BitrateOptionsProps>(),
+    {
+        name: null,
+        label: null,
+        description: null,
     }
-});
+);
 
 const slots = useSlots();
 
 const emit = defineEmits(['update:modelValue']);
 
-const {model} = useFormField(props, emit);
+const {model, isRequired} = useFormField(props, emit);
 
 const radioBitrates = [
     32, 48, 64, 96, 128, 192, 256, 320

@@ -135,7 +135,7 @@ import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {computed} from "vue";
+import {computed, toRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {useVModel} from "@vueuse/core";
@@ -212,9 +212,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     }
 );
 
-const timezoneOptions = computed(() => {
-    return objectToFormOptions(props.timezones);
-});
+const timezoneOptions = objectToFormOptions(toRef(props, 'timezones'));
 
 const {$gettext} = useTranslate();
 

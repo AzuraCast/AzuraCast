@@ -43,7 +43,7 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions";
-import {computed} from "vue";
+import {computed, toRef} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
@@ -88,7 +88,5 @@ const {v$} = useVuelidateOnFormTab(
     }
 );
 
-const roleOptions = computed(() => {
-    return objectToFormOptions(props.roles);
-});
+const roleOptions = objectToFormOptions(toRef(props, 'roles'));
 </script>

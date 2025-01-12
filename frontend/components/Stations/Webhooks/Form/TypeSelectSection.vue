@@ -26,22 +26,18 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-    title: {
-        type: String,
-        required: true
-    },
-    types: {
-        type: Array,
-        required: true
-    }
-});
+import {WebhookType, WebhookTypeDetail} from "~/entities/Webhooks.ts";
 
-const emit = defineEmits([
-    'select'
-]);
+const props = defineProps<{
+    title: string,
+    types: WebhookTypeDetail[]
+}>();
 
-const selectType = (type) => {
+const emit = defineEmits<{
+    (e: 'select', type: WebhookType): void
+}>();
+
+const selectType = (type: WebhookType) => {
     emit('select', type);
 }
 </script>

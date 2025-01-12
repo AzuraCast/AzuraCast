@@ -176,6 +176,10 @@ import PlayButton from "~/components/Common/PlayButton.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {IconDownload, IconHeadphones} from "~/components/Common/icons";
 
+defineOptions({
+    inheritAttrs: false
+});
+
 const props = defineProps({
     station: {
         type: Object,

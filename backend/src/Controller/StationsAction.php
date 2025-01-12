@@ -27,32 +27,39 @@ final class StationsAction implements SingleActionInterface
 
         $globalProps = $view->getGlobalProps();
 
-        $globalProps->set('sidebarProps', [
-            'station' => [
-                'hasStarted' => $station->getHasStarted(),
-                'needsRestart' => $station->getNeedsRestart(),
-                'enablePublicPages' => $station->getEnablePublicPage(),
-                'publicPageUrl' => $router->named('public:index', ['station_id' => $station->getShortName()]),
-                'enableOnDemand' => $station->getEnableOnDemand(),
-                'onDemandUrl' => $router->named('public:ondemand', ['station_id' => $station->getShortName()]),
-                'webDjUrl' => (string)($router->namedAsUri(
-                    routeName: 'public:dj',
-                    routeParams: ['station_id' => $station->getShortName()],
-                    absolute: true
-                )->withScheme('https')),
-                'enableRequests' => $station->getEnableRequests(),
-                'features' => [
-                    'media' => StationFeatures::Media->supportedForStation($station),
-                    'sftp' => StationFeatures::Sftp->supportedForStation($station),
-                    'podcasts' => StationFeatures::Podcasts->supportedForStation($station),
-                    'streamers' => StationFeatures::Streamers->supportedForStation($station),
-                    'webhooks' => StationFeatures::Webhooks->supportedForStation($station),
-                    'mountPoints' => StationFeatures::MountPoints->supportedForStation($station),
-                    'hlsStreams' => StationFeatures::HlsStreams->supportedForStation($station),
-                    'remoteRelays' => StationFeatures::RemoteRelays->supportedForStation($station),
-                    'customLiquidsoapConfig' => StationFeatures::CustomLiquidsoapConfig->supportedForStation($station),
-                    'autoDjQueue' => $station->supportsAutoDjQueue(),
-                ],
+        $globalProps->set('station', [
+            'id' => $station->getIdRequired(),
+            'name' => $station->getName(),
+            'isEnabled' => $station->getIsEnabled(),
+            'hasStarted' => $station->getHasStarted(),
+            'needsRestart' => $station->getNeedsRestart(),
+            'shortName' => $station->getShortName(),
+            'timezone' => $station->getTimezone(),
+            'offlineText' => $station->getBrandingConfig()->getOfflineText(),
+            'maxBitrate' => $station->getMaxBitrate(),
+            'maxMounts' => $station->getMaxMounts(),
+            'maxHlsStreams' => $station->getMaxHlsStreams(),
+            'enablePublicPages' => $station->getEnablePublicPage(),
+            'publicPageUrl' => $router->named('public:index', ['station_id' => $station->getShortName()]),
+            'enableOnDemand' => $station->getEnableOnDemand(),
+            'onDemandUrl' => $router->named('public:ondemand', ['station_id' => $station->getShortName()]),
+            'webDjUrl' => (string)($router->namedAsUri(
+                routeName: 'public:dj',
+                routeParams: ['station_id' => $station->getShortName()],
+                absolute: true
+            )->withScheme('https')),
+            'enableRequests' => $station->getEnableRequests(),
+            'features' => [
+                'media' => StationFeatures::Media->supportedForStation($station),
+                'sftp' => StationFeatures::Sftp->supportedForStation($station),
+                'podcasts' => StationFeatures::Podcasts->supportedForStation($station),
+                'streamers' => StationFeatures::Streamers->supportedForStation($station),
+                'webhooks' => StationFeatures::Webhooks->supportedForStation($station),
+                'mountPoints' => StationFeatures::MountPoints->supportedForStation($station),
+                'hlsStreams' => StationFeatures::HlsStreams->supportedForStation($station),
+                'remoteRelays' => StationFeatures::RemoteRelays->supportedForStation($station),
+                'customLiquidsoapConfig' => StationFeatures::CustomLiquidsoapConfig->supportedForStation($station),
+                'autoDjQueue' => $station->supportsAutoDjQueue(),
             ],
         ]);
 

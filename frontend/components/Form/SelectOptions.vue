@@ -18,31 +18,13 @@
     </template>
 </template>
 
-<script lang="ts">
-export interface SelectOptionItem {
-    value: any,
-    text: string
-}
-
-export interface SelectOptionGroup {
-    options: SelectOptionItem[],
-    label: string,
-}
-</script>
-
 <script setup lang="ts">
-import {computed} from "vue";
-import objectToFormOptions from "~/functions/objectToFormOptions";
+import {toRef} from "vue";
+import objectToFormOptions, {FormOptionInput} from "~/functions/objectToFormOptions";
 
 const props = defineProps<{
-    options: (SelectOptionItem | SelectOptionGroup)[]
+    options: FormOptionInput
 }>();
 
-const parsedOptions = computed(() => {
-    if (Array.isArray(props.options)) {
-        return props.options;
-    }
-
-    return objectToFormOptions(props.options);
-});
+const parsedOptions = objectToFormOptions(toRef(props, 'options'));
 </script>

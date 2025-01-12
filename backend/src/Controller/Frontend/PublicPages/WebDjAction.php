@@ -66,6 +66,7 @@ final class WebDjAction implements SingleActionInterface
             ],
             props: [
                 'baseUri' => $wssUrl,
+                'stationName' => $station->getName(),
             ],
         );
     }

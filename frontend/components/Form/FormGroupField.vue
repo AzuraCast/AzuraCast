@@ -9,7 +9,8 @@
         >
             <form-label
                 :is-required="isRequired"
-                v-bind="pickProps(props, formLabelProps)"
+                :advanced="props.advanced"
+                :high-cpu="props.highCpu"
             >
                 <slot
                     name="label"
@@ -87,61 +88,39 @@
 import VuelidateError from "./VuelidateError.vue";
 import {computed, nextTick, onMounted, ref, useSlots} from "vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
-import FormLabel from "~/components/Form/FormLabel.vue";
-import {formFieldProps, useFormField} from "~/components/Form/useFormField";
-import formLabelProps from "~/components/Form/formLabelProps.ts";
-import {pickProps} from "~/functions/pickProps.ts";
+import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
+import {FormFieldProps, useFormField} from "~/components/Form/useFormField";
 
-const props = defineProps({
-    ...formFieldProps,
-    ...formLabelProps,
-    id: {
-        type: String,
-        required: true
-    },
-    name: {
-        type: String,
-        default: null
-    },
-    label: {
-        type: String,
-        default: null
-    },
-    description: {
-        type: String,
-        default: null
-    },
-    inputType: {
-        type: String,
-        default: 'text'
-    },
-    inputNumber: {
-        type: Boolean,
-        default: false
-    },
-    inputTrim: {
-        type: Boolean,
-        default: false
-    },
-    inputEmptyIsNull: {
-        type: Boolean,
-        default: false
-    },
-    inputAttrs: {
-        type: Object,
-        default() {
-            return {};
-        }
-    },
-    autofocus: {
-        type: Boolean,
-        default: false
-    },
-    clearable: {
-        type: Boolean,
-        default: false
+interface FormGroupFieldProps extends FormFieldProps, FormLabelParentProps {
+    id: string,
+    name?: string,
+    label?: string,
+    description?: string,
+    inputType?: string,
+    inputNumber?: boolean,
+    inputTrim?: boolean,
+    inputEmptyIsNull?: boolean,
+    inputAttrs?: object,
+    autofocus?: boolean,
+    clearable?: boolean,
+}
+
+const props = withDefaults(
+    defineProps<FormGroupFieldProps>(),
+    {
+        name: null,
+        label: null,
+        description: null,
+        inputType: 'text',
+        inputNumber: false,
+        inputTrim: false,
+        inputEmptyIsNull: false,
+        inputAttrs: () => {
+        },
+        autofocus: false,
+        clearable: false
     }
-});
+);
 
 const slots = useSlots();
 

@@ -258,9 +258,10 @@ import {useTranslate} from "~/vendor/gettext";
 import {useInjectWebDjNode} from "~/components/Public/WebDJ/useWebDjNode";
 import {usePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
 import {useInjectWebcaster} from "~/components/Public/WebDJ/useWebcaster";
-import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 
-const {name: stationName} = useAzuraCastStation();
+const props = defineProps<{
+    stationName: string | null
+}>();
 
 const djUsername = ref(null);
 const djPassword = ref(null);

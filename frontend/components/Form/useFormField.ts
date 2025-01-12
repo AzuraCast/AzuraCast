@@ -1,28 +1,18 @@
 import {computed} from "vue";
 import {has} from "lodash";
 
-export const formFieldProps = {
-    field: {
-        type: Object,
-        required: false,
-        default: () => {
-            return undefined;
-        }
-    },
-    modelValue: {
-        type: [String, Number, Boolean, Array],
-        required: false,
-        default: () => {
-            return undefined;
-        }
-    },
-    required: {
-        type: Boolean,
-        default: false
-    }
+export interface FormFieldProps {
+    field?: object,
+    modelValue?: string | number | boolean | Array<any>,
+    required?: boolean
 }
 
-export function useFormField(props, emit) {
+export function useFormField(initialProps: FormFieldProps, emit) {
+    const props = {
+        required: false,
+        ...initialProps
+    };
+
     const isVuelidateField = computed(() => {
         return props.field !== undefined;
     });

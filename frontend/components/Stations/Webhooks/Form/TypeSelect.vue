@@ -12,7 +12,7 @@
 
             <type-select-section
                 :title="$gettext('Social Media')"
-                :types="buildTypeInfo([
+                :types="reactivePick(typeDetails, [
                     WebhookType.Discord,
                     WebhookType.Telegram,
                     WebhookType.GroupMe,
@@ -25,7 +25,7 @@
         <div class="col-md-6">
             <type-select-section
                 :title="$gettext('Station Directories')"
-                :types="buildTypeInfo([
+                :types="reactivePick(typeDetails, [
                     WebhookType.TuneIn,
                     WebhookType.RadioDe,
                     WebhookType.RadioReg,
@@ -36,7 +36,7 @@
 
             <type-select-section
                 :title="$gettext('Analytics')"
-                :types="buildTypeInfo([
+                :types="reactivePick(typeDetails, [
                     WebhookType.GoogleAnalyticsV4,
                     WebhookType.MatomoAnalytics
                 ])"

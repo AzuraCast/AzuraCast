@@ -1,5 +1,5 @@
 import {useTranslate} from "~/vendor/gettext";
-import {map} from "lodash";
+import {mapValues} from "lodash";
 
 export enum WebhookTrigger {
     SongChanged = 'song_changed',
@@ -151,7 +151,7 @@ export function useTypeDetails(): Record<WebhookType, WebhookTypeDetail> {
         },
     };
 
-    return map(
+    return mapValues(
         typeDetails,
         (type: Partial<WebhookTypeDetail>, key: WebhookType): WebhookTypeDetail => ({
             ...type,

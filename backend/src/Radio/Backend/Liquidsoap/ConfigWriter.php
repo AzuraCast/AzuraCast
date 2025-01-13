@@ -858,7 +858,7 @@ final class ConfigWriter implements EventSubscriberInterface
             
             radio = fallback(
                 id="live_fallback",
-                track_sensitive=false,
+                track_sensitive=true,
                 replay_metadata=true,
                 transitions=[
                     fun (_, s) -> begin

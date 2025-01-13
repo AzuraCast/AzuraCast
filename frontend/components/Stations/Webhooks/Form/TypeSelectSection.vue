@@ -8,11 +8,11 @@
 
         <div class="list-group list-group-flush">
             <a
-                v-for="type in types"
-                :key="type.key"
+                v-for="(type, key) in types"
+                :key="key"
                 class="list-group-item list-group-item-action"
                 href="#"
-                @click.prevent="selectType(type.key)"
+                @click.prevent="selectType(key)"
             >
                 <h6 class="font-weight-bold mb-0">
                     {{ type.title }}
@@ -26,11 +26,11 @@
 </template>
 
 <script setup lang="ts">
-import {WebhookType, WebhookTypeDetail} from "~/entities/Webhooks.ts";
+import {WebhookType, WebhookTypeDetails} from "~/entities/Webhooks.ts";
 
 const props = defineProps<{
     title: string,
-    types: WebhookTypeDetail[]
+    types: Partial<WebhookTypeDetails>
 }>();
 
 const emit = defineEmits<{

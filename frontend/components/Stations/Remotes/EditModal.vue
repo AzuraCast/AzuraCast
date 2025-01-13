@@ -19,18 +19,25 @@
 <script setup lang="ts">
 import RemoteFormBasicInfo from "./Form/BasicInfo.vue";
 import RemoteFormAutoDj from "./Form/AutoDj.vue";
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {
+    BaseEditModalEmits,
+    BaseEditModalProps,
+    ModalFormTemplateRef,
+    useBaseEditModal
+} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 
-const props = defineProps({
-    ...baseEditModalProps,
-});
+const props = defineProps<BaseEditModalProps>();
 
-const emit = defineEmits(['relist', 'needs-restart']);
+interface RemotesEditModalEmits extends BaseEditModalEmits {
+    (e: 'needs-restart'): void
+}
+
+const emit = defineEmits<RemotesEditModalEmits>();
 
 const $modal = ref<ModalFormTemplateRef>(null);
 

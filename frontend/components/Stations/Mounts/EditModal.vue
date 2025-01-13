@@ -38,7 +38,12 @@ import MountFormAutoDj from './Form/AutoDj.vue';
 import MountFormAdvanced from './Form/Advanced.vue';
 import MountFormIntro from "./Form/Intro.vue";
 import mergeExisting from "~/functions/mergeExisting";
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {
+    BaseEditModalEmits,
+    BaseEditModalProps,
+    ModalFormTemplateRef,
+    useBaseEditModal
+} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
@@ -47,21 +52,20 @@ import ModalForm from "~/components/Common/ModalForm.vue";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tabs from "~/components/Common/Tabs.vue";
 
-const props = defineProps({
-    ...baseEditModalProps,
-    stationFrontendType: {
-        type: String,
-        required: true
-    },
-    newIntroUrl: {
-        type: String,
-        required: true
-    }
-});
+interface MountsEditModalProps extends BaseEditModalProps {
+    stationFrontendType: string,
+    newIntroUrl: string
+}
+
+const props = defineProps<MountsEditModalProps>();
 
 const {enableAdvancedFeatures} = useAzuraCast();
 
-const emit = defineEmits(['relist', 'needs-restart']);
+interface MountsEditModalEmits extends BaseEditModalEmits {
+    (e: 'needs-restart'): void
+}
+
+const emit = defineEmits<MountsEditModalEmits>();
 
 const $modal = ref<ModalFormTemplateRef>(null);
 

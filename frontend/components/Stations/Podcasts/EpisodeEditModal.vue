@@ -34,7 +34,12 @@
 import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo.vue';
 import PodcastCommonArtwork from './Common/Artwork.vue';
 import EpisodeFormMedia from './EpisodeForm/Media.vue';
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {
+    BaseEditModalEmits,
+    BaseEditModalProps,
+    ModalFormTemplateRef,
+    useBaseEditModal
+} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
 import {useResettableRef} from "~/functions/useResettableRef";
 import mergeExisting from "~/functions/mergeExisting";
@@ -42,21 +47,19 @@ import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 
-const props = defineProps({
-    ...baseEditModalProps,
-    podcast: {
-        type: Object,
-        required: true
-    }
-});
+interface EpisodeEditModalProps extends BaseEditModalProps {
+    podcast: object
+}
+
+const props = defineProps<EpisodeEditModalProps>();
+
+const emit = defineEmits<BaseEditModalEmits>();
 
 const newArtUrl = computed(() => props.podcast.links.episode_new_art);
 const newMediaUrl = computed(() => props.podcast.links.episode_new_media);
 const podcastIsManual = computed(() => {
     return props.podcast.source == 'manual';
 });
-
-const emit = defineEmits(['relist']);
 
 const $modal = ref<ModalFormTemplateRef>(null);
 

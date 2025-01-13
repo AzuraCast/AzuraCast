@@ -23,7 +23,12 @@
 import FormBasicInfo from './Form/BasicInfo.vue';
 import FormSchedule from './Form/Schedule.vue';
 import FormAdvanced from './Form/Advanced.vue';
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {
+    BaseEditModalEmits,
+    BaseEditModalProps,
+    ModalFormTemplateRef,
+    useBaseEditModal
+} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
@@ -31,13 +36,15 @@ import ModalForm from "~/components/Common/ModalForm.vue";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tabs from "~/components/Common/Tabs.vue";
 
-const props = defineProps({
-    ...baseEditModalProps
-});
+const props = defineProps<BaseEditModalProps>();
+
+interface PlaylistsEditModalEmits extends BaseEditModalEmits {
+    (e: 'needs-restart'): void
+}
+
+const emit = defineEmits<PlaylistsEditModalEmits>();
 
 const {enableAdvancedFeatures} = useAzuraCast();
-
-const emit = defineEmits(['relist', 'needs-restart']);
 
 const $modal = ref<ModalFormTemplateRef>(null);
 

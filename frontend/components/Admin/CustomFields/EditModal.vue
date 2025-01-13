@@ -20,18 +20,20 @@ import {required} from '@vuelidate/validators';
 import ModalForm from "~/components/Common/ModalForm.vue";
 import AdminCustomFieldsForm from "~/components/Admin/CustomFields/Form.vue";
 import {computed, ref} from "vue";
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {
+    BaseEditModalEmits,
+    BaseEditModalProps,
+    ModalFormTemplateRef,
+    useBaseEditModal
+} from "~/functions/useBaseEditModal";
 import {useTranslate} from "~/vendor/gettext";
 
-const props = defineProps({
-    ...baseEditModalProps,
-    autoAssignTypes: {
-        type: Object,
-        required: true
-    }
-});
+interface CustomFieldsEditModalProps extends BaseEditModalProps {
+    autoAssignTypes: object
+}
 
-const emit = defineEmits(['relist']);
+const props = defineProps<CustomFieldsEditModalProps>();
+const emit = defineEmits<BaseEditModalEmits>();
 
 const $modal = ref<ModalFormTemplateRef>(null);
 

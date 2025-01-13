@@ -1,5 +1,4 @@
 import {useTranslate} from "~/vendor/gettext";
-import {mapValues} from "lodash";
 
 export enum WebhookTrigger {
     SongChanged = 'song_changed',
@@ -32,7 +31,14 @@ const allTriggersExceptListeners = [
     WebhookTrigger.StationOnline
 ];
 
-export function useTriggerDetails() {
+export interface WebhookTriggerDetail {
+    title: string,
+    description: string,
+}
+
+export type WebhookTriggerDetails = { [key in WebhookTrigger]: WebhookTriggerDetail }
+
+export function useTriggerDetails(): WebhookTriggerDetails {
     const {$gettext} = useTranslate();
 
     return {
@@ -88,15 +94,16 @@ export enum WebhookType {
 }
 
 export interface WebhookTypeDetail {
-    key: WebhookType,
     title: string,
     description: string,
 }
 
-export function useTypeDetails(): Record<WebhookType, WebhookTypeDetail> {
+export type WebhookTypeDetails = { [key in WebhookType]: WebhookTypeDetail }
+
+export function useTypeDetails(): WebhookTypeDetails {
     const {$gettext} = useTranslate();
 
-    const typeDetails: Record<WebhookType, Partial<WebhookTypeDetail>> = {
+    return {
         [WebhookType.Generic]: {
             title: $gettext('Generic Web Hook'),
             description: $gettext('Automatically send a message to any URL when your station data changes.')
@@ -150,17 +157,9 @@ export function useTypeDetails(): Record<WebhookType, WebhookTypeDetail> {
             description: $gettext('Send stream listener details to Matomo Analytics.')
         },
     };
-
-    return mapValues(
-        typeDetails,
-        (type: Partial<WebhookTypeDetail>, key: WebhookType): WebhookTypeDetail => ({
-            ...type,
-            key: key
-        })
-    );
 }
 
-export function getTriggers(type: WebhookType) {
+export function getTriggers(type: WebhookType): WebhookTrigger[] {
     switch (type) {
         case WebhookType.TuneIn:
         case WebhookType.RadioDe:

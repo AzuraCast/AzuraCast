@@ -61,22 +61,22 @@ import ModalForm from "~/components/Common/ModalForm.vue";
 import {ref} from "vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
-import {ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal.ts";
+import {
+    BaseEditModalEmits,
+    BaseEditModalProps,
+    ModalFormTemplateRef,
+    useBaseEditModal
+} from "~/functions/useBaseEditModal.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 
-const props = defineProps({
-    customFields: {
-        type: Array,
-        required: true
-    },
-    playlists: {
-        type: Array,
-        required: true
-    }
-});
+interface MediaEditModalProps extends BaseEditModalProps {
+    customFields: any[],
+    playlists: any[]
+}
 
-const emit = defineEmits(['relist']);
+const props = defineProps<MediaEditModalProps>();
+const emit = defineEmits<BaseEditModalEmits>();
 
 const {record, reset} = useResettableRef({
     length_text: null,

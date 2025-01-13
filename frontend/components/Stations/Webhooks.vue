@@ -115,7 +115,7 @@ import useHasEditModal from "~/functions/useHasEditModal";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-import {useTriggerDetails, useTypeDetails} from "~/entities/Webhooks";
+import {useTriggerDetails, useTypeDetails, WebhookTrigger, WebhookType} from "~/entities/Webhooks";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import {getApiUrl, getStationApiUrl} from "~/router";
@@ -149,15 +149,15 @@ const getToggleVariant = (record) => {
         : 'btn-success';
 };
 
-const isWebhookSupported = (key) => {
+const isWebhookSupported = (key: WebhookType) => {
     return (key in langTypeDetails);
 }
 
-const getWebhookName = (key) => {
+const getWebhookName = (key: WebhookType) => {
     return get(langTypeDetails, [key, 'title'], '');
 };
 
-const getTriggerNames = (triggers) => {
+const getTriggerNames = (triggers: WebhookTrigger[]) => {
     return map(triggers, (trigger) => {
         return get(langTriggerDetails, [trigger, 'title'], '');
     });

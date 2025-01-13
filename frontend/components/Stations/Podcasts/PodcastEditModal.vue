@@ -38,7 +38,12 @@ import PodcastFormSource from './PodcastForm/Source.vue';
 import PodcastFormBranding from './PodcastForm/Branding.vue';
 import PodcastCommonArtwork from './Common/Artwork.vue';
 import mergeExisting from "~/functions/mergeExisting";
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {
+    BaseEditModalEmits,
+    BaseEditModalProps,
+    ModalFormTemplateRef,
+    useBaseEditModal
+} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
 import {useResettableRef} from "~/functions/useResettableRef";
 import {useTranslate} from "~/vendor/gettext";
@@ -46,23 +51,15 @@ import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import {map} from "lodash";
 
-const props = defineProps({
-    ...baseEditModalProps,
-    languageOptions: {
-        type: Object,
-        required: true
-    },
-    categoriesOptions: {
-        type: Object,
-        required: true
-    },
-    newArtUrl: {
-        type: String,
-        required: true
-    }
-});
+interface PodcastEditModalProps extends BaseEditModalProps {
+    languageOptions: object,
+    categoriesOptions: object,
+    newArtUrl: string
+}
 
-const emit = defineEmits(['relist']);
+const props = defineProps<PodcastEditModalProps>();
+
+const emit = defineEmits<BaseEditModalEmits>();
 
 const $modal = ref<ModalFormTemplateRef>(null);
 

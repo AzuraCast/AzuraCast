@@ -1,7 +1,10 @@
-import {ref, toValue} from "vue";
+import {MaybeRefOrGetter, Ref, ref, toValue} from "vue";
 import {cloneDeep} from "lodash";
 
-export function useResettableRef(original) {
+export function useResettableRef<T>(original: MaybeRefOrGetter<T>): {
+    record: Ref<T>,
+    reset(): void
+} {
     const record = ref(cloneDeep(toValue(original)));
 
     const reset = () => {

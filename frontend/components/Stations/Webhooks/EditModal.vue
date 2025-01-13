@@ -17,8 +17,8 @@
         <tabs v-else>
             <basic-info
                 v-model:form="form"
+                :type="type"
                 :trigger-details="triggerDetails"
-                :triggers="triggers"
             />
 
             <component
@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import TypeSelect from "./Form/TypeSelect.vue";
 import BasicInfo from "./Form/BasicInfo.vue";
-import {get, map} from "lodash";
+import {get} from "lodash";
 import Generic from "./Form/Generic.vue";
 import Email from "./Form/Email.vue";
 import Tunein from "./Form/Tunein.vue";
@@ -42,11 +42,11 @@ import Telegram from "./Form/Telegram.vue";
 import GoogleAnalyticsV4 from "./Form/GoogleAnalyticsV4.vue";
 import MatomoAnalytics from "./Form/MatomoAnalytics.vue";
 import Mastodon from "./Form/Mastodon.vue";
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {BaseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, nextTick, provide, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {getTriggers, WebhookType} from "~/entities/Webhooks";
+import {WebhookTriggerDetails, WebhookType, WebhookTypeDetails} from "~/entities/Webhooks";
 import Tabs from "~/components/Common/Tabs.vue";
 import RadioDe from "~/components/Stations/Webhooks/Form/RadioDe.vue";
 import GetMeRadio from "~/components/Stations/Webhooks/Form/GetMeRadio.vue";
@@ -54,27 +54,19 @@ import RadioReg from "~/components/Stations/Webhooks/Form/RadioReg.vue";
 import GroupMe from "~/components/Stations/Webhooks/Form/GroupMe.vue";
 import Bluesky from "~/components/Stations/Webhooks/Form/Bluesky.vue";
 
-const props = defineProps({
-    ...baseEditModalProps,
-    nowPlayingUrl: {
-        type: String,
-        required: true
-    },
-    typeDetails: {
-        type: Object,
-        required: true
-    },
-    triggerDetails: {
-        type: Object,
-        required: true
-    }
-});
+interface WebhookEditModalProps extends BaseEditModalProps {
+    nowPlayingUrl: string,
+    typeDetails: WebhookTypeDetails,
+    triggerDetails: WebhookTriggerDetails
+}
+
+const props = defineProps<WebhookEditModalProps>();
 
 provide('nowPlayingUrl', props.nowPlayingUrl);
 
 const emit = defineEmits(['relist']);
 
-const type = ref(null);
+const type = ref<WebhookType | null>(null);
 
 const $modal = ref<ModalFormTemplateRef>(null);
 
@@ -93,23 +85,6 @@ const webhookComponents = {
     [WebhookType.GoogleAnalyticsV4]: GoogleAnalyticsV4,
     [WebhookType.MatomoAnalytics]: MatomoAnalytics,
 };
-
-const triggers = computed(() => {
-    if (!type.value) {
-        return [];
-    }
-
-    return map(
-        getTriggers(type.value),
-        (trigger) => {
-            return {
-                key: trigger,
-                title: get(props.triggerDetails, [trigger, 'title']),
-                description: get(props.triggerDetails, [trigger, 'description'])
-            };
-        }
-    );
-});
 
 const typeTitle = computed(() => {
     return get(props.typeDetails, [type.value, 'title'], '');

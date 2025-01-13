@@ -26,7 +26,12 @@
 <script setup lang="ts">
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {computed, ref} from "vue";
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {
+    BaseEditModalEmits,
+    BaseEditModalProps,
+    ModalFormTemplateRef,
+    useBaseEditModal
+} from "~/functions/useBaseEditModal";
 import {useTranslate} from "~/vendor/gettext";
 import {required} from '@vuelidate/validators';
 import AdminPermissionsGlobalForm from "./Form/GlobalForm.vue";
@@ -34,23 +39,14 @@ import AdminPermissionsStationForm from "./Form/StationForm.vue";
 import {forEach, map} from 'lodash';
 import Tabs from "~/components/Common/Tabs.vue";
 
-const props = defineProps({
-    ...baseEditModalProps,
-    stations: {
-        type: Object,
-        required: true
-    },
-    globalPermissions: {
-        type: Object,
-        required: true
-    },
-    stationPermissions: {
-        type: Object,
-        required: true
-    }
-});
+interface PermissionsEditModalProps extends BaseEditModalProps {
+    stations: object,
+    globalPermissions: object,
+    stationPermissions: object
+}
 
-const emit = defineEmits(['relist']);
+const props = defineProps<PermissionsEditModalProps>();
+const emit = defineEmits<BaseEditModalEmits>();
 
 const $modal = ref<ModalFormTemplateRef>(null);
 

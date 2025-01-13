@@ -16,18 +16,25 @@
 
 <script setup lang="ts">
 import FormBasicInfo from './Form/BasicInfo.vue';
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {
+    BaseEditModalEmits,
+    BaseEditModalProps,
+    ModalFormTemplateRef,
+    useBaseEditModal
+} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 
-const props = defineProps({
-    ...baseEditModalProps,
-});
+const props = defineProps<BaseEditModalProps>();
 
-const emit = defineEmits(['relist', 'needs-restart']);
+interface HlsStreamsEditModalEmits extends BaseEditModalEmits {
+    (e: 'needs-restart'): void
+}
+
+const emit = defineEmits<HlsStreamsEditModalEmits>();
 
 const $modal = ref<ModalFormTemplateRef>(null);
 

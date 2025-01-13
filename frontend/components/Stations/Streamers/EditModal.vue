@@ -32,22 +32,25 @@ import FormBasicInfo from './Form/BasicInfo.vue';
 import FormSchedule from './Form/Schedule.vue';
 import FormArtwork from './Form/Artwork.vue';
 import mergeExisting from "~/functions/mergeExisting";
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {
+    BaseEditModalEmits,
+    BaseEditModalProps,
+    ModalFormTemplateRef,
+    useBaseEditModal
+} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useResettableRef} from "~/functions/useResettableRef";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 
-const props = defineProps({
-    ...baseEditModalProps,
-    newArtUrl: {
-        type: String,
-        required: true
-    },
-});
+interface StreamersEditModalProps extends BaseEditModalProps {
+    newArtUrl: string
+}
 
-const emit = defineEmits(['relist']);
+const props = defineProps<StreamersEditModalProps>();
+
+const emit = defineEmits<BaseEditModalEmits>();
 
 const $modal = ref<ModalFormTemplateRef>(null);
 

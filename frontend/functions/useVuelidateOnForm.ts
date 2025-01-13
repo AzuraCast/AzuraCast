@@ -1,10 +1,28 @@
-import useVuelidate from "@vuelidate/core";
+import useVuelidate, {GlobalConfig, Validation, ValidationArgs} from "@vuelidate/core";
 import {useResettableRef} from "~/functions/useResettableRef";
-import {computed, unref} from "vue";
+import {computed, ComputedRef, MaybeRef, unref} from "vue";
 import {useEventBus} from "@vueuse/core";
 import {cloneDeep, merge} from "lodash";
+import {Ref} from "vue-demi";
 
-export function useVuelidateOnForm(validations = {}, blankForm = {}, options = {}) {
+type ValidationFunc = (options: GlobalConfig) => ValidationArgs
+type BlankFormFunc = (options: GlobalConfig) => Record<string, any>
+
+export type VuelidateValidations = ValidationArgs | ValidationFunc
+export type VuelidateBlankForm = MaybeRef<Record<string, any> | BlankFormFunc>
+
+export function useVuelidateOnForm(
+    validations?: VuelidateValidations = {},
+    blankForm?: VuelidateBlankForm = {},
+    options?: GlobalConfig = {}
+): {
+    form: Ref<Record<string, any>>,
+    resetForm(): void,
+    v$: Ref<Validation>,
+    isValid: ComputedRef<boolean>,
+    validate(): Promise<boolean>,
+    ifValid(cb: () => void): void
+} {
     const formEventBus = useEventBus('form_tabs');
 
     // Build the blank form from any children elements to the one using this function.
@@ -51,7 +69,7 @@ export function useVuelidateOnForm(validations = {}, blankForm = {}, options = {
         return v$.value.$validate();
     }
 
-    const ifValid = (cb) => {
+    const ifValid = (cb: () => void) => {
         validate().then((isValid) => {
             if (!isValid) {
                 return;

@@ -30,7 +30,12 @@
 </template>
 
 <script setup lang="ts">
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {
+    BaseEditModalEmits,
+    BaseEditModalProps,
+    ModalFormTemplateRef,
+    useBaseEditModal
+} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
@@ -40,15 +45,12 @@ import S3 from "~/components/Admin/StorageLocations/Form/S3.vue";
 import Dropbox from "~/components/Admin/StorageLocations/Form/Dropbox.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 
-const props = defineProps({
-    ...baseEditModalProps,
-    type: {
-        type: String,
-        required: true
-    }
-});
+interface StorageLocationsEditModalProps extends BaseEditModalProps {
+    type: string
+}
 
-const emit = defineEmits(['relist']);
+const props = defineProps<StorageLocationsEditModalProps>();
+const emit = defineEmits<BaseEditModalEmits>();
 
 const $modal = ref<ModalFormTemplateRef>(null);
 

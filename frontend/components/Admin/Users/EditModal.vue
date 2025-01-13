@@ -20,19 +20,21 @@
 import AdminUsersForm from './Form.vue';
 import {map} from 'lodash';
 import {computed, ref} from "vue";
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {
+    BaseEditModalEmits,
+    BaseEditModalProps,
+    ModalFormTemplateRef,
+    useBaseEditModal
+} from "~/functions/useBaseEditModal";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 
-const props = defineProps({
-    ...baseEditModalProps,
-    roles: {
-        type: Object,
-        required: true
-    }
-});
+interface UsersEditModalProps extends BaseEditModalProps {
+    roles: object
+}
 
-const emit = defineEmits(['relist']);
+const props = defineProps<UsersEditModalProps>();
+const emit = defineEmits<BaseEditModalEmits>();
 
 const $modal = ref<ModalFormTemplateRef>(null);
 

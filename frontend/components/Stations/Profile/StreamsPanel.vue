@@ -180,10 +180,7 @@ defineOptions({
     inheritAttrs: false
 });
 
-const props = defineProps({
-    station: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    station: object
+}>();
 </script>

@@ -72,22 +72,16 @@ import {RemoteAdapter} from '~/entities/RadioAdapters';
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    }
-});
-
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const props = defineProps<FormTabProps>();
+const emit = defineEmits<FormTabEmits>();
 
 const {v$, tabClass} = useVuelidateOnFormTab(
+    props,
+    emit,
     {
         display_name: {},
         type: {required},
@@ -96,7 +90,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         admin_password: {},
         is_visible_on_public_pages: {},
     },
-    form,
     {
         display_name: null,
         type: RemoteAdapter.Icecast,

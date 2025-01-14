@@ -36,17 +36,12 @@ import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import {useLuxon} from "~/vendor/luxon";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
+import {DateRange} from "~/components/Stations/Reports/Overview/CommonMetricsView.vue";
 
-const props = defineProps({
-    dateRange: {
-        type: Object,
-        required: true
-    },
-    apiUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    dateRange: DateRange,
+    apiUrl: string,
+}>();
 
 const {$gettext} = useTranslate();
 

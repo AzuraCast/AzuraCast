@@ -30,12 +30,9 @@
 <script setup lang="ts">
 import {computed} from "vue";
 
-const props = defineProps({
-    currentDirectory: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    currentDirectory: string,
+}>();
 
 const emit = defineEmits(['change-directory']);
 

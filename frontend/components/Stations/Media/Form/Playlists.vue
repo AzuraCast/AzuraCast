@@ -15,17 +15,12 @@
 import {map} from "lodash";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import {VuelidateObject} from "~/functions/useVuelidateOnForm.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    playlists: {
-        type: Array,
-        required: true
-    }
-});
+const props = defineProps<{
+    form: VuelidateObject,
+    playlists: Array<any>, // TODO
+}>();
 
 const options = computed(() => {
     return map(props.playlists, function (row) {

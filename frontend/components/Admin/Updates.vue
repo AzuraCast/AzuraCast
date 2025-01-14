@@ -162,22 +162,16 @@ import {getApiUrl} from "~/router";
 import {IconInfo, IconSync, IconUpdate, IconUpload} from "~/components/Common/icons";
 import {useDialog} from "~/functions/useDialog.ts";
 
-const props = defineProps({
-    releaseChannel: {
-        type: String,
-        required: true
-    },
-    initialUpdateInfo: {
-        type: Object,
-        default: () => {
-            return {};
-        }
-    },
-    enableWebUpdates: {
-        type: Boolean,
-        required: true
+const props = withDefaults(
+    defineProps<{
+        releaseChannel: string,
+        initialUpdateInfo?: object,
+        enableWebUpdates: boolean,
+    }>(),
+    {
+        initialUpdateInfo: () => ({})
     }
-});
+);
 
 const updatesApiUrl = getApiUrl('/admin/updates');
 

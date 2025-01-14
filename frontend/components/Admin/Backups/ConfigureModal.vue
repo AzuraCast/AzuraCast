@@ -95,16 +95,10 @@ import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 
-const props = defineProps({
-    settingsUrl: {
-        type: String,
-        required: true
-    },
-    storageLocations: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    settingsUrl: string,
+    storageLocations: object, // TODO
+}>();
 
 const emit = defineEmits(['relist']);
 

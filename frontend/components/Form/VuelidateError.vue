@@ -13,12 +13,9 @@ import {useTranslate} from "~/vendor/gettext";
 import {get, map} from "lodash";
 import {computed} from "vue";
 
-const props = defineProps({
-    field: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    field: object, // TODO
+}>();
 
 const {$gettext} = useTranslate();
 
@@ -28,19 +25,19 @@ const messages = {
     },
     minLength: (params) => {
         return $gettext(
-            'This field must have at least %{ min } letters.',
+            'This field must have at least %{min} letters.',
             params
         );
     },
     maxLength: (params) => {
         return $gettext(
-            'This field must have at most %{ max } letters.',
+            'This field must have at most %{max} letters.',
             params
         );
     },
     between: (params) => {
         return $gettext(
-            'This field must be between %{ min } and %{ max }.',
+            'This field must be between %{min} and %{max}.',
             params
         );
     },

@@ -80,12 +80,9 @@ import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
 import QrCode from "~/components/Account/QrCode.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 
-const props = defineProps({
-    twoFactorUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    twoFactorUrl: string,
+}>();
 
 const emit = defineEmits(['relist']);
 

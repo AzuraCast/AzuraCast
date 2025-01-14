@@ -41,12 +41,9 @@ import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
 
-const props = defineProps({
-    albumArtUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    albumArtUrl: string
+}>();
 
 const albumArtSrc = ref(props.albumArtUrl);
 const reloadArt = () => {

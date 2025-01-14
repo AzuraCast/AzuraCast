@@ -81,22 +81,16 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    }
-});
-
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const props = defineProps<FormTabProps>();
+const emit = defineEmits<FormTabEmits>();
 
 const {v$, tabClass} = useVuelidateOnFormTab(
+    props,
+    emit,
     {
         base_url: {required},
         instance_name: {},
@@ -106,7 +100,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         enable_static_nowplaying: {},
         enable_advanced_features: {},
     },
-    form,
     {
         base_url: '',
         instance_name: '',

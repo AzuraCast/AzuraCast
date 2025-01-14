@@ -47,14 +47,9 @@ import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
 import SecurityPanel from "~/components/Account/SecurityPanel.vue";
 import ApiKeysPanel from "~/components/Account/ApiKeysPanel.vue";
 
-const props = defineProps({
-    supportedLocales: {
-        type: Object,
-        default: () => {
-            return {};
-        }
-    }
-});
+const props = defineProps<{
+    supportedLocales: Record<string, string>
+}>();
 
 const $editModal = ref<InstanceType<typeof AccountEditModal> | null>(null);
 

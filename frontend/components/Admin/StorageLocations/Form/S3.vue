@@ -60,23 +60,17 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    }
-});
-
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const props = defineProps<FormTabProps>();
+const emit = defineEmits<FormTabEmits>();
 
 const {v$, tabClass} = useVuelidateOnFormTab(
+    props,
+    emit,
     {
         s3CredentialKey: {required},
         s3CredentialSecret: {required},
@@ -85,7 +79,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         s3Bucket: {required},
         s3Endpoint: {required},
         s3UsePathStyle: {}
-    },
-    form
+    }
 );
 </script>

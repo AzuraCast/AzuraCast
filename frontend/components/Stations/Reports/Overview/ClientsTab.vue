@@ -16,15 +16,10 @@
 
 <script setup lang="ts">
 import CommonMetricsView from "./CommonMetricsView.vue";
+import {DateRange} from "~/components/Stations/Reports/Overview/CommonMetricsView.vue";
 
-const props = defineProps({
-    dateRange: {
-        type: Object,
-        required: true
-    },
-    apiUrl: {
-        type: String,
-        required: true
-    },
-});
+const props = defineProps<{
+    dateRange: DateRange,
+    apiUrl: string,
+}>();
 </script>

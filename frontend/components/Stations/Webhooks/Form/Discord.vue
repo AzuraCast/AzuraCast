@@ -76,29 +76,20 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonFormattingInfo from "./Common/FormattingInfo.vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {FormTabEmits, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import {useTranslate} from "~/vendor/gettext";
 import Tab from "~/components/Common/Tab.vue";
+import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
 
-const props = defineProps({
-    title: {
-        type: String,
-        required: true
-    },
-    form: {
-        type: Object,
-        required: true
-    }
-});
-
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const props = defineProps<WebhookComponentProps>();
+const emit = defineEmits<FormTabEmits>();
 
 const {$gettext} = useTranslate();
 
 const {v$, tabClass} = useVuelidateOnFormTab(
+    props,
+    emit,
     {
         config: {
             webhook_url: {required},
@@ -111,7 +102,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             footer: {},
         }
     },
-    form,
     () => {
         return {
             config: {

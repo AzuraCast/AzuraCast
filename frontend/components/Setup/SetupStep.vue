@@ -40,12 +40,14 @@
 import Icon from "~/components/Common/Icon.vue";
 import {IconArrowRight} from "~/components/Common/icons";
 
-const props = defineProps({
-    step: {
-        type: Number,
-        default: 1
+const props = withDefaults(
+    defineProps<{
+        step: number
+    }>(),
+    {
+        step: 1
     }
-});
+);
 
 const getStepperClass = (currentStep) => {
     if (props.step === currentStep) {

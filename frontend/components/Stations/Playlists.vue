@@ -323,12 +323,9 @@ import ScheduleViewTab from "~/components/Stations/Common/ScheduleViewTab.vue";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 import {EventImpl} from "@fullcalendar/core/internal";
 
-const props = defineProps({
-    useManualAutoDj: {
-        type: Boolean,
-        required: true
-    },
-});
+const props = defineProps<{
+    useManualAutoDj: boolean
+}>();
 
 const listUrl = getStationApiUrl('/playlists');
 const scheduleUrl = getStationApiUrl('/playlists/schedule');

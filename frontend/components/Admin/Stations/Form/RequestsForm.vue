@@ -59,32 +59,25 @@ import {BackendAdapter} from "~/entities/RadioAdapters";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import BackendDisabled from "./Common/BackendDisabled.vue";
 import {computed} from "vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    station: {
-        type: Object,
-        required: true
-    }
-});
+interface StationRequestsFormProps extends FormTabProps {
+    station: object, // TODO
+}
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const props = defineProps<StationRequestsFormProps>();
+const emit = defineEmits<FormTabEmits>();
 
 const {v$, tabClass} = useVuelidateOnFormTab(
+    props,
+    emit,
     {
         enable_requests: {},
         request_delay: {numeric},
         request_threshold: {numeric},
     },
-    form,
     {
         enable_requests: false,
         request_delay: 5,

@@ -28,16 +28,10 @@ import {forEach, map} from "lodash";
 import {useNotify} from "~/functions/useNotify.ts";
 import {useDialog} from "~/functions/useDialog.ts";
 
-const props = defineProps({
-    batchUrl: {
-        type: String,
-        required: true
-    },
-    selectedItems: {
-        type: Array,
-        required: true
-    }
-});
+const props = defineProps<{
+    batchUrl: string,
+    selectedItems: Array<any>,
+}>();
 
 const emit = defineEmits(['relist']);
 

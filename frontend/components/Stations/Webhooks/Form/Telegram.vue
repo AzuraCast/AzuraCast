@@ -76,28 +76,19 @@ import CommonFormattingInfo from "./Common/FormattingInfo.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {FormTabEmits, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
+import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
 
-const props = defineProps({
-    title: {
-        type: String,
-        required: true
-    },
-    form: {
-        type: Object,
-        required: true
-    }
-});
-
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const props = defineProps<WebhookComponentProps>();
+const emit = defineEmits<FormTabEmits>();
 
 const {$gettext} = useTranslate();
 
 const {v$, tabClass} = useVuelidateOnFormTab(
+    props,
+    emit,
     {
         config: {
             bot_token: {required},
@@ -107,7 +98,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             parse_mode: {required}
         }
     },
-    form,
     () => {
         return {
             config: {

@@ -66,20 +66,16 @@ import usePlayerVolume from "~/functions/usePlayerVolume";
 import useShowVolume from "~/functions/useShowVolume.ts";
 import MuteButton from "~/components/Common/MuteButton.vue";
 
-const props = defineProps({
-    audioUrl: {
-        type: String,
-        required: true
-    },
-    waveformUrl: {
-        type: String,
-        required: true
-    },
-    waveformCacheUrl: {
-        type: String,
-        default: null
+const props = withDefaults(
+    defineProps<{
+        audioUrl: string,
+        waveformUrl: string,
+        waveformCacheUrl?: string,
+    }>(),
+    {
+        waveformCacheUrl: null
     }
-});
+);
 
 const emit = defineEmits(['ready']);
 

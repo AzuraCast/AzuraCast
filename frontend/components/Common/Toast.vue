@@ -46,18 +46,15 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-    title: {
-        type: String,
-        default: null
-    },
-    message: {
-        type: String,
-        required: true
-    },
-    variant: {
-        type: String,
-        default: 'info'
+const props = withDefaults(
+    defineProps<{
+        message: string,
+        title?: string,
+        variant?: string,
+    }>(),
+    {
+        title: null,
+        variant: 'info',
     }
-})
+);
 </script>

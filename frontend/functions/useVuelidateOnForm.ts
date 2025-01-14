@@ -4,21 +4,25 @@ import {computed, ComputedRef, MaybeRef, unref} from "vue";
 import {useEventBus} from "@vueuse/core";
 import {cloneDeep, merge} from "lodash";
 import {Ref} from "vue-demi";
+import {GenericForm} from "~/entities/Forms.ts";
 
-type ValidationFunc = (options: GlobalConfig) => ValidationArgs
-type BlankFormFunc = (options: GlobalConfig) => Record<string, any>
+type ValidationFunc<T extends GenericForm = GenericForm> = (options: GlobalConfig) => ValidationArgs<T>
+type BlankFormFunc<T extends GenericForm = GenericForm> = (options: GlobalConfig) => T
 
-export type VuelidateValidations = ValidationArgs | ValidationFunc
-export type VuelidateBlankForm = MaybeRef<Record<string, any> | BlankFormFunc>
+export type VuelidateValidations<T extends GenericForm = GenericForm> = ValidationArgs<T> | ValidationFunc<T>
+export type VuelidateBlankForm<T extends GenericForm = GenericForm> = MaybeRef<T> | BlankFormFunc<T>
 
-export function useVuelidateOnForm(
+export type VuelidateObject<T extends GenericForm = GenericForm> = Validation<ValidationArgs<T>, T>
+export type VuelidateRef<T extends GenericForm = GenericForm> = Ref<VuelidateObject<T>>
+
+export function useVuelidateOnForm<T extends GenericForm = GenericForm>(
     validations?: VuelidateValidations = {},
-    blankForm?: VuelidateBlankForm = {},
+    blankForm?: VuelidateBlankForm<T> = {},
     options?: GlobalConfig = {}
 ): {
     form: Ref<Record<string, any>>,
     resetForm(): void,
-    v$: Ref<Validation>,
+    v$: VuelidateRef<T>,
     isValid: ComputedRef<boolean>,
     validate(): Promise<boolean>,
     ifValid(cb: () => void): void

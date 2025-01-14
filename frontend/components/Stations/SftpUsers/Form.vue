@@ -57,26 +57,20 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {computed} from "vue";
 import {required} from "@vuelidate/validators";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    isEditMode: {
-        type: Boolean,
-        required: true
-    }
-});
+interface SftpUsersFormProps extends FormTabProps {
+    isEditMode: boolean
+}
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const props = defineProps<SftpUsersFormProps>();
+const emit = defineEmits<FormTabEmits>();
 
 const {v$} = useVuelidateOnFormTab(
+    props,
+    emit,
     computed(() => {
         return {
             username: {required},
@@ -84,7 +78,6 @@ const {v$} = useVuelidateOnFormTab(
             publicKeys: {}
         }
     }),
-    form,
     {
         username: '',
         password: null,

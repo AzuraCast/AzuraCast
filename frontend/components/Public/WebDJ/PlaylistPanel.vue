@@ -187,12 +187,9 @@ import {useWebDjSource} from "~/components/Public/WebDJ/useWebDjSource";
 import {useInjectWebcaster} from "~/components/Public/WebDJ/useWebcaster";
 import {IconFastForward, IconFastRewind, IconPauseCircle, IconPlayCircle, IconStop} from "~/components/Common/icons";
 
-const props = defineProps({
-    id: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    id: string
+}>();
 
 const isLeftPlaylist = computed(() => {
     return props.id === 'playlist_1';

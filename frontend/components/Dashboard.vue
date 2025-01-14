@@ -263,32 +263,14 @@ import {getApiUrl} from "~/router.ts";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 
-const props = defineProps({
-    profileUrl: {
-        type: String,
-        required: true
-    },
-    adminUrl: {
-        type: String,
-        required: true
-    },
-    showAdmin: {
-        type: Boolean,
-        required: true
-    },
-    showCharts: {
-        type: Boolean,
-        required: true
-    },
-    manageStationsUrl: {
-        type: String,
-        required: true
-    },
-    showAlbumArt: {
-        type: Boolean,
-        required: true
-    }
-});
+const props = defineProps<{
+    profileUrl: string,
+    adminUrl: string,
+    showAdmin: boolean,
+    showCharts: boolean,
+    manageStationsUrl: string,
+    showAlbumArt: boolean,
+}>();
 
 const notificationsUrl = getApiUrl('/frontend/dashboard/notifications');
 const chartsUrl = getApiUrl('/frontend/dashboard/charts');

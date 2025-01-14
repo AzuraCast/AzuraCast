@@ -17,12 +17,9 @@
 import {useAsyncState} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 
-const props = defineProps({
-    url: {
-        type: String,
-        required: true
-    },
-});
+const props = defineProps<{
+    url: string
+}>();
 
 const emit = defineEmits(['view']);
 

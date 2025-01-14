@@ -30,33 +30,23 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonSocialPostFields from "./Common/SocialPostFields.vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {FormTabEmits, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
+import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
 
-const props = defineProps({
-    title: {
-        type: String,
-        required: true
-    },
-    form: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<WebhookComponentProps>();
+const emit = defineEmits<FormTabEmits>();
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
-
-const {v$, tabClass} = useVuelidateOnFormTab(
+const {form, v$, tabClass} = useVuelidateOnFormTab(
+    props,
+    emit,
     {
         config: {
             handle: {required},
             app_password: {required}
         }
     },
-    form,
     {
         config: {
             handle: '',

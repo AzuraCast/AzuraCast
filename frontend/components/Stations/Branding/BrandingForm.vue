@@ -95,12 +95,9 @@ import {useTranslate} from "~/vendor/gettext";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Loading from "~/components/Common/Loading.vue";
 
-const props = defineProps({
-    profileEditUrl: {
-        type: String,
-        required: true
-    },
-});
+const props = defineProps<{
+    profileEditUrl: string
+}>();
 
 const isLoading = ref(true);
 const error = ref(null);

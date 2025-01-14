@@ -26,20 +26,11 @@
 import ScheduleView from '~/components/Common/ScheduleView.vue';
 import FullHeightCard from "~/components/Public/FullHeightCard.vue";
 
-const props = defineProps({
-    scheduleUrl: {
-        type: String,
-        required: true
-    },
-    stationName: {
-        type: String,
-        required: true
-    },
-    stationTimeZone: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    scheduleUrl: string,
+    stationName: string,
+    stationTimeZone: string
+}>();
 </script>
 
 <style lang="scss" scoped>

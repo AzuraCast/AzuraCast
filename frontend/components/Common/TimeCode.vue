@@ -13,14 +13,18 @@
 import {computed} from "vue";
 import {isEmpty, padStart} from 'lodash';
 
-const props = defineProps({
-    modelValue: {
-        type: String,
-        default: null
+const props = withDefaults(
+    defineProps<{
+        modelValue?: string
+    }>(),
+    {
+        modelValue: null,
     }
-});
+);
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{
+    (e: 'update:modelValue', value: string | null): void
+}>();
 
 const parseTimeCode = (timeCode) => {
     if (timeCode !== '' && timeCode !== null) {

@@ -29,14 +29,14 @@ import MapPoint from "./MapPoint.vue";
 import {computed} from "vue";
 import {filter} from "lodash";
 
-const props = defineProps({
-    listeners: {
-        type: Array<any>,
-        default: () => {
-            return [];
-        }
-    },
-});
+const props = withDefaults(
+    defineProps<{
+        listeners: Array<any>
+    }>(),
+    {
+        listeners: () => []
+    }
+);
 
 const visibleListeners = computed(() => {
     return filter(props.listeners, function (l) {

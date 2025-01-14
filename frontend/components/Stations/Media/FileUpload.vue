@@ -12,26 +12,17 @@
 import FlowUpload from '~/components/Common/FlowUpload.vue';
 import {computed} from "vue";
 
-const props = defineProps({
-    uploadUrl: {
-        type: String,
-        required: true
-    },
-    currentDirectory: {
-        type: String,
-        required: true
-    },
-    searchPhrase: {
-        type: String,
-        required: true
-    },
-    validMimeTypes: {
-        type: Array,
-        default() {
-            return ['audio/*'];
-        }
+const props = withDefaults(
+    defineProps<{
+        uploadUrl: string,
+        currentDirectory: string,
+        searchPhrase: string,
+        validMimeTypes?: string[]
+    }>(),
+    {
+        validMimeTypes: () => ['audio/*']
     }
-});
+);
 
 const emit = defineEmits(['relist']);
 

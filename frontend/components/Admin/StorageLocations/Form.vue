@@ -45,28 +45,21 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    }
-});
-
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const props = defineProps<FormTabProps>();
+const emit = defineEmits<FormTabEmits>();
 
 const {v$, tabClass} = useVuelidateOnFormTab(
+    props,
+    emit,
     {
         adapter: {required},
         path: {},
         storageQuota: {},
     },
-    form,
     {
         adapter: 'local',
         path: '',

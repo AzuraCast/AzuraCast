@@ -43,10 +43,10 @@ const props = withDefaults(
         modelValue: string | number | boolean | Array<any>,
         id: string,
         name: string,
-        fieldClass: string,
+        fieldClass?: string,
         options: FormOption[],
-        radio: boolean,
-        stacked: boolean
+        radio?: boolean,
+        stacked?: boolean
     }>(),
     {
         name: (props) => props.id,

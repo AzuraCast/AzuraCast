@@ -19,12 +19,9 @@ import Loading from "~/components/Common/Loading.vue";
 import CodeMirror from "vue-codemirror6";
 import useTheme from "~/functions/theme";
 
-const props = defineProps({
-    logUrl: {
-        type: String,
-        required: true,
-    }
-});
+const props = defineProps<{
+    logUrl: string
+}>();
 
 const isLoading = ref(false);
 const logs = ref('');

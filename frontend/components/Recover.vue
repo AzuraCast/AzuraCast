@@ -78,16 +78,15 @@ import {required} from '@vuelidate/validators';
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {IconVpnKey} from "~/components/Common/icons";
 
-const props = defineProps({
-    csrf: {
-        type: String,
-        required: true
-    },
-    error: {
-        type: String,
-        default: null
-    },
-});
+const props = withDefaults(
+    defineProps<{
+        csrf: string,
+        error?: string,
+    }>(),
+    {
+        error: null
+    }
+);
 
 const {v$} = useVuelidateOnForm(
     {

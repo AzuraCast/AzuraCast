@@ -267,34 +267,22 @@ import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import Tab from "~/components/Common/Tab.vue";
 import {IconBadge, IconSend} from "~/components/Common/icons";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    releaseChannel: {
-        type: String,
-        required: true
-    },
-    testMessageUrl: {
-        type: String,
-        required: true
-    },
-    acmeUrl: {
-        type: String,
-        required: true
-    },
-});
+interface SettingsServiceTabProps extends FormTabProps {
+    releaseChannel: string,
+    testMessageUrl: string,
+    acmeUrl: string,
+}
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const props = defineProps<SettingsServiceTabProps>();
+const emit = defineEmits<FormTabEmits>();
 
 const {v$, tabClass} = useVuelidateOnFormTab(
+    props,
+    emit,
     {
         check_for_updates: {},
         acme_email: {},
@@ -313,7 +301,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         use_external_album_art_when_processing_media: {},
         last_fm_api_key: {},
     },
-    form,
     {
         check_for_updates: 1,
         acme_email: '',

@@ -47,22 +47,13 @@ import {find, isEmpty, pickBy} from 'lodash';
 import PermissionsFormStationRow from "~/components/Admin/Permissions/Form/StationRow.vue";
 import {computed} from "vue";
 import Tab from "~/components/Common/Tab.vue";
+import {VuelidateObject} from "~/functions/useVuelidateOnForm.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    stations: {
-        type: Object,
-        required: true
-    },
-    stationPermissions: {
-        type: Object,
-        required: true
-    }
-});
-
+const props = defineProps<{
+    form: VuelidateObject,
+    stations: object, // TODO
+    stationPermissions: object, // TODO
+}>();
 
 const remainingStations = computed(() => {
     return pickBy(props.stations, (_stationName, stationId) => {

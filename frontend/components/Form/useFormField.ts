@@ -1,13 +1,19 @@
 import {computed} from "vue";
 import {has} from "lodash";
 
+type ValidFormField = string | number | boolean | Array<any>
+
 export interface FormFieldProps {
     field?: object,
-    modelValue?: string | number | boolean | Array<any>,
+    modelValue?: ValidFormField,
     required?: boolean
 }
 
-export function useFormField(initialProps: FormFieldProps, emit) {
+export interface FormFieldEmits {
+    (e: 'update:modelValue', value: ValidFormField): void
+}
+
+export function useFormField(initialProps: FormFieldProps, emit: FormFieldEmits) {
     const props = {
         required: false,
         ...initialProps

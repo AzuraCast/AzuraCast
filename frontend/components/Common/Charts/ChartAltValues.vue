@@ -26,12 +26,9 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-    alt: {
-        type: Array,
-        default: () => {
-            return [];
-        }
-    }
-});
+import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
+
+const props = defineProps<{
+    alt: ChartAltValues[]
+}>();
 </script>

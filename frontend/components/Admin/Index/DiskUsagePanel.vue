@@ -40,12 +40,9 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-    stats: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    stats: object, // TODO
+}>;
 
 const getPercent = (amount, total) => {
     return ((amount / total) * 100) + '%';

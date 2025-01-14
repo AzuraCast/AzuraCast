@@ -76,16 +76,10 @@ import {useTranslate} from "~/vendor/gettext.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
 import BatchEditRow from "~/components/Stations/Podcasts/BatchEditRow.vue";
 
-const props = defineProps({
-    batchUrl: {
-        type: String,
-        required: true
-    },
-    selectedItems: {
-        type: Object,
-        required: true
-    },
-});
+const props = defineProps<{
+    batchUrl: string,
+    selectedItems: Array<any>,
+}>();
 
 const emit = defineEmits(['relist']);
 

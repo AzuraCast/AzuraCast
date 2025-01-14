@@ -46,21 +46,13 @@ import {useVModel} from "@vueuse/core";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {IconRemove} from "~/components/Common/icons";
+import {GenericForm} from "~/entities/Forms.ts";
 
-const props = defineProps({
-    row: {
-        type: Object,
-        required: true
-    },
-    stations: {
-        type: Object,
-        required: true
-    },
-    stationPermissions: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    row: GenericForm,
+    stations: object, // TODO,
+    stationPermissions: object, // TODO
+}>();
 
 const emit = defineEmits(['remove', 'update:row']);
 

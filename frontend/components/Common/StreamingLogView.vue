@@ -24,12 +24,9 @@ import {tryOnScopeDispose} from "@vueuse/core";
 import Loading from "~/components/Common/Loading.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 
-const props = defineProps({
-    logUrl: {
-        type: String,
-        required: true,
-    }
-});
+const props = defineProps<{
+    logUrl: string
+}>();
 
 const isLoading = ref(false);
 const logs = ref('');

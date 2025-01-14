@@ -32,19 +32,17 @@
 <script setup lang="ts">
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useLuxon} from "~/vendor/luxon";
+import {ApiNowPlayingSongHistory} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    history: {
-        type: Object,
-        default: () => {
-            return {};
-        }
-    },
-    showAlbumArt: {
-        type: Boolean,
-        default: true
+const props = withDefaults(
+    defineProps<{
+        history: ApiNowPlayingSongHistory[],
+        showAlbumArt?: boolean,
+    }>(),
+    {
+        showAlbumArt: true
     }
-});
+);
 
 const {timestampToRelative} = useLuxon();
 

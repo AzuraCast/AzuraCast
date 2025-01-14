@@ -138,29 +138,23 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed, toRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required, url} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    timezones: {
-        type: Object,
-        required: true
-    },
-});
+interface StationProfileFormProps extends FormTabProps {
+    timezones: object, // TODO
+}
+
+const props = defineProps<StationProfileFormProps>();
+const emit = defineEmits<FormTabEmits>();
 
 const {enableAdvancedFeatures} = useAzuraCast();
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
-
 const {v$, tabClass} = useVuelidateOnFormTab(
+    props,
+    emit,
     computed(() => {
         let validations: {
             [key: string | number]: any
@@ -185,7 +179,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
         return validations;
     }),
-    form,
     () => {
         let blankForm: {
             [key: string | number]: any

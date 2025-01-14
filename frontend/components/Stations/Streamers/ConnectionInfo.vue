@@ -90,10 +90,7 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-    connectionInfo: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    connectionInfo: object
+}>();
 </script>

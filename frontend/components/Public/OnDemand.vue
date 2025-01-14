@@ -62,26 +62,18 @@ import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {IconDownload} from "~/components/Common/icons";
 import FullHeightCard from "~/components/Public/FullHeightCard.vue";
 
-const props = defineProps({
-    listUrl: {
-        type: String,
-        required: true
-    },
-    stationName: {
-        type: String,
-        required: true
-    },
-    customFields: {
-        type: Array,
-        default: () => {
-            return [];
-        }
-    },
-    showDownloadButton: {
-        type: Boolean,
-        default: false
+const props = withDefaults(
+    defineProps<{
+        listUrl: string,
+        stationName: string,
+        customFields?: object,
+        showDownloadButton?: boolean
+    }>(),
+    {
+        customFields: () => ({}),
+        showDownloadButton: false,
     }
-});
+);
 
 const {$gettext} = useTranslate();
 

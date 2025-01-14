@@ -38,17 +38,12 @@ import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {forEach} from "lodash";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
+import {VuelidateRef} from "~/functions/useVuelidateOnForm.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    autoAssignTypes: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    form: VuelidateRef,
+    autoAssignTypes: object, // TODO
+}>();
 
 const {$gettext} = useTranslate();
 

@@ -66,12 +66,9 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 
-const props = defineProps({
-    autoAssignTypes: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    autoAssignTypes: object, // TODO
+}>();
 
 const listUrl = getApiUrl('/admin/custom_fields');
 

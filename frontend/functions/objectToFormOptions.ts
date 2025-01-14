@@ -1,5 +1,5 @@
 import {map} from 'lodash';
-import {computed, ComputedRef, toValue} from "vue";
+import {MaybeRefOrGetter, computed, ComputedRef, toValue} from "vue";
 
 export interface FormOption {
     value: any,

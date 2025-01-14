@@ -27,17 +27,12 @@ import {map} from 'lodash';
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Tab from "~/components/Common/Tab.vue";
+import {VuelidateObject} from "~/functions/useVuelidateOnForm.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    globalPermissions: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    form: VuelidateObject,
+    globalPermissions: object, // TODO
+}>();
 
 const globalPermissionOptions = computed(() => {
     return map(props.globalPermissions, (permissionName, permissionKey) => {

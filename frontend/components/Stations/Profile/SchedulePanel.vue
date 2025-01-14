@@ -53,12 +53,9 @@ defineOptions({
     inheritAttrs: false
 });
 
-const props = defineProps({
-    scheduleItems: {
-        type: Array<any>,
-        required: true
-    }
-});
+const props = defineProps<{
+    scheduleItems: Array<any>
+}>();
 
 const {DateTime} = useLuxon();
 const {

@@ -15,16 +15,10 @@ import {computed, toRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {IconVolumeDown, IconVolumeOff, IconVolumeUp} from "~/components/Common/icons";
 
-const props = defineProps({
-    volume: {
-        type: Number,
-        required: true
-    },
-    isMuted: {
-        type: Boolean,
-        required: true
-    }
-});
+const props = defineProps<{
+    volume: number,
+    isMuted: boolean,
+}>();
 
 const emit = defineEmits(['toggleMute']);
 

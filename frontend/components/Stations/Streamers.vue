@@ -125,12 +125,9 @@ import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 import ScheduleViewTab from "~/components/Stations/Common/ScheduleViewTab.vue";
 import {EventImpl} from "@fullcalendar/core/internal";
 
-const props = defineProps({
-    connectionInfo: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    connectionInfo: object, // TODO
+}>();
 
 const listUrl = getStationApiUrl('/streamers');
 const newArtUrl = getStationApiUrl('/streamers/art');

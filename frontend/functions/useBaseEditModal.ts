@@ -2,10 +2,11 @@ import {computed, ComputedRef, nextTick, Ref, ref, toRef} from "vue";
 import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import {useVuelidateOnForm, VuelidateRef, VuelidateValidations} from "~/functions/useVuelidateOnForm";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {AxiosRequestConfig} from "axios";
-import {GlobalConfig, Validation} from "@vuelidate/core";
+import {GlobalConfig} from "@vuelidate/core";
+import {GenericForm} from "~/entities/Forms.ts";
 
 export type ModalFormTemplateRef = InstanceType<typeof ModalForm> | null;
 
@@ -17,16 +18,14 @@ export interface BaseEditModalEmits {
     (e: 'relist'): void
 }
 
-export type Form = Ref<Record<string, any>>
-
 export interface BaseEditModalOptions extends GlobalConfig {
     resetForm?(originalResetForm: () => void): void,
 
     clearContents?(resetForm: () => void): void,
 
-    populateForm?(data: Record<string, any>, form: Form): void,
+    populateForm?(data: Record<string, any>, form: Ref<GenericForm>): void,
 
-    getSubmittableFormData?(form: Form, isEditMode: ComputedRef<boolean>): Record<string, any>,
+    getSubmittableFormData?(form: Ref<GenericForm>, isEditMode: ComputedRef<boolean>): Record<string, any>,
 
     buildSubmitRequest?(): AxiosRequestConfig,
 
@@ -35,20 +34,20 @@ export interface BaseEditModalOptions extends GlobalConfig {
     onSubmitError?(error: any): void,
 }
 
-export function useBaseEditModal(
+export function useBaseEditModal<T extends GenericForm = GenericForm>(
     props: BaseEditModalProps,
     emit: BaseEditModalEmits,
     $modal: Ref<ModalFormTemplateRef>,
-    validations = {},
-    blankForm = {},
-    userOptions: BaseEditModalOptions = {}
+    validations: VuelidateValidations<T> = {},
+    blankForm: T = {},
+    options: BaseEditModalOptions = {}
 ): {
     loading: Ref<boolean>,
     error: Ref<any | null>,
     editUrl: Ref<string>,
     isEditMode: ComputedRef<boolean>,
     form: Form,
-    v$: Ref<Validation>,
+    v$: VuelidateRef<T>,
     resetForm(): void,
     clearContents(): void,
     create(): void,
@@ -65,17 +64,6 @@ export function useBaseEditModal(
     const isEditMode: ComputedRef<boolean> = computed(() => {
         return editUrl.value !== null;
     });
-
-    const options: BaseEditModalOptions = {
-        resetForm: null,
-        clearContents: null,
-        populateForm: null,
-        getSubmittableFormData: null,
-        buildSubmitRequest: null,
-        onSubmitSuccess: null,
-        onSubmitError: null,
-        ...userOptions
-    };
 
     const {
         form,

@@ -72,40 +72,27 @@ import useSlotsExcept from "~/functions/useSlotsExcept";
 import Modal from "~/components/Common/Modal.vue";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
-const props = defineProps({
-    title: {
-        type: String,
-        required: true
-    },
-    size: {
-        type: String,
-        default: 'lg'
-    },
-    centered: {
-        type: Boolean,
-        default: false
-    },
-    id: {
-        type: String,
-        default: 'edit-modal'
-    },
-    loading: {
-        type: Boolean,
-        default: false
-    },
-    disableSaveButton: {
-        type: Boolean,
-        default: false
-    },
-    noEnforceFocus: {
-        type: Boolean,
-        default: false,
-    },
-    error: {
-        type: String,
-        default: null
+const props = withDefaults(
+    defineProps<{
+        title: string,
+        size?: string,
+        centered?: boolean,
+        id?: string,
+        loading?: boolean,
+        disableSaveButton?: boolean,
+        noEnforceFocus?: boolean,
+        error?: string,
+    }>(),
+    {
+        size: 'lg',
+        centered: false,
+        id: 'edit-modal',
+        loading: false,
+        disableSaveButton: false,
+        noEnforceFocus: false,
+        error: null
     }
-});
+);
 
 const emit = defineEmits(['submit', 'shown', 'hidden']);
 

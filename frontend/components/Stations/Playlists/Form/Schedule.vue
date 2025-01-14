@@ -45,14 +45,14 @@ import FormMarkup from "~/components/Form/FormMarkup.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {IconAdd} from "~/components/Common/icons";
 
-const props = defineProps({
-    scheduleItems: {
-        type: Array,
-        default: () => {
-            return [];
-        }
+const props = withDefaults(
+    defineProps<{
+        scheduleItems: Array<any>
+    }>(),
+    {
+        scheduleItems: () => []
     }
-});
+);
 
 const emit = defineEmits(['update:scheduleItems']);
 

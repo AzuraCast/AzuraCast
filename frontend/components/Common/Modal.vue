@@ -57,24 +57,20 @@ import {useEventListener} from "@vueuse/core";
 
 const slots = useSlots();
 
-const props = defineProps({
-    active: {
-        type: Boolean,
-        default: false
-    },
-    busy: {
-        type: Boolean,
-        default: false
-    },
-    size: {
-        type: String,
-        default: 'md'
-    },
-    title: {
-        type: String,
-        default: null
+const props = withDefaults(
+    defineProps<{
+        active?: boolean,
+        busy?: boolean,
+        size?: string,
+        title?: string,
+    }>(),
+    {
+        active: false,
+        busy: false,
+        size: 'md',
+        title: null
     }
-});
+);
 
 const emit = defineEmits([
     'shown',

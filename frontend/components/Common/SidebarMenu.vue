@@ -85,13 +85,11 @@ import Icon from "~/components/Common/Icon.vue";
 import {useRoute} from "vue-router";
 import {some} from "lodash";
 import {IconOpenInNew} from "~/components/Common/icons.ts";
+import {MenuCategory} from "~/functions/filterMenu.ts";
 
-const props = defineProps({
-    menu: {
-        type: Object,
-        required: true
-    },
-});
+const props = defineProps<{
+    menu: MenuCategory[]
+}>();
 
 const currentRoute = useRoute();
 

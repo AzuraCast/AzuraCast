@@ -113,16 +113,10 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 import {IconRemove} from "~/components/Common/icons";
 
-const props = defineProps({
-    index: {
-        type: Number,
-        required: true
-    },
-    row: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    index: number,
+    row: object,
+}>();
 
 const emit = defineEmits(['remove']);
 

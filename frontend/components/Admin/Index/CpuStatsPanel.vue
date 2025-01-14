@@ -140,12 +140,9 @@ import CpuStatsHelpModal from "~/components/Admin/Index/CpuStatsHelpModal.vue";
 import {upperFirst} from "lodash";
 import {IconInfo} from "~/components/Common/icons.ts";
 
-const props = defineProps({
-    stats: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    stats: object, // TODO
+}>();
 
 const $cpuStatsHelpModal = ref<InstanceType<typeof CpuStatsHelpModal> | null>(null);
 const showCpuStatsHelpModal = () => {

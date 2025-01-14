@@ -31,12 +31,9 @@ import Loading from "~/components/Common/Loading.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 
-const props = defineProps({
-    chartsUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    chartsUrl: string,
+}>();
 
 const {axios} = useAxios();
 

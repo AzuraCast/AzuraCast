@@ -13,22 +13,14 @@
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
-import useChart, {chartProps, ChartTemplateRef} from "~/functions/useChart";
+import useChart, {ChartProps, ChartTemplateRef} from "~/functions/useChart";
 
-const props = defineProps({
-    ...chartProps,
-    labels: {
-        type: Array,
-        default: () => {
-            return [];
-        }
-    }
-});
+const props = defineProps<ChartProps>();
 
 const $canvas = ref<ChartTemplateRef>(null);
 const {$gettext} = useTranslate();
 
-useChart(
+useChart<'bar'>(
     props,
     $canvas,
     {

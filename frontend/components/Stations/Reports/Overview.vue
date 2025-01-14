@@ -101,12 +101,9 @@ import Tab from "~/components/Common/Tab.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 
-const props = defineProps({
-    showFullAnalytics: {
-        type: Boolean,
-        required: true
-    }
-});
+const props = defineProps<{
+    showFullAnalytics: boolean
+}>();
 
 const listenersByTimePeriodUrl = getStationApiUrl('/reports/overview/charts');
 const bestAndWorstUrl = getStationApiUrl('/reports/overview/best-and-worst');

@@ -27,16 +27,15 @@ import {ref, toRef, watch} from "vue";
 import {useLuxon} from "~/vendor/luxon.ts";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 
-const props = defineProps({
-    id: {
-        type: String,
-        required: true,
-    },
-    modelValue: {
-        type: Number,
-        default: null
+const props = withDefaults(
+    defineProps<{
+        id: string,
+        modelValue?: number
+    }>(),
+    {
+        modelValue: null
     }
-});
+);
 
 const emit = defineEmits(['update:modelValue']);
 

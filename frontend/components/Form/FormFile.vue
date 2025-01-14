@@ -8,14 +8,14 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-    modelValue: {
-        type: [Object],
-        default: null
-    }
-});
+const props = defineProps<{
+    modelValue?: File | null
+}>();
 
-const emit = defineEmits(['update:modelValue', 'uploaded']);
+const emit = defineEmits<{
+    (e: 'update:modelValue', value: File): void,
+    (e: 'uploaded', value: File): void
+}>();
 
 const uploaded = (event) => {
     const file = event.target.files[0];

@@ -20,16 +20,15 @@ import {refAutoReset, useClipboard} from "@vueuse/core";
 import {useTranslate} from "~/vendor/gettext";
 import {IconCopy} from "~/components/Common/icons";
 
-const props = defineProps({
-    text: {
-        type: String,
-        required: true,
-    },
-    hideText: {
-        type: Boolean,
-        default: false
+const props = withDefaults(
+    defineProps<{
+        text: string,
+        hideText?: boolean
+    }>(),
+    {
+        hideText: false,
     }
-});
+);
 
 const {$gettext} = useTranslate();
 

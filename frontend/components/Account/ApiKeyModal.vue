@@ -75,12 +75,9 @@ import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
-const props = defineProps({
-    createUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    createUrl: string,
+}>();
 
 const emit = defineEmits(['relist']);
 

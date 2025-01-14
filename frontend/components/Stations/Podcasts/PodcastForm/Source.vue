@@ -58,8 +58,7 @@
 
 <script setup lang="ts">
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
@@ -71,23 +70,17 @@ import objectToFormOptions from "~/functions/objectToFormOptions.ts";
 import {getStationApiUrl} from "~/router.ts";
 import Loading from "~/components/Common/Loading.vue";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    }
-});
-
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const props = defineProps<FormTabProps>();
+const emit = defineEmits<FormTabEmits>();
 
 const {v$, tabClass} = useVuelidateOnFormTab(
+    props,
+    emit,
     {
         source: {required},
         playlist_id: {},
         playlist_auto_publish: {}
     },
-    form,
     {
         source: 'manual',
         playlist_id: null,

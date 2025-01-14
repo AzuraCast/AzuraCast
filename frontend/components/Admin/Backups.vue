@@ -169,16 +169,15 @@ import {getApiUrl} from "~/router";
 import {IconLogs, IconSend, IconSettings} from "~/components/Common/icons";
 import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 
-const props = defineProps({
-    storageLocations: {
-        type: Object,
-        required: true
-    },
-    isDocker: {
-        type: Boolean,
-        default: true
-    },
-});
+const props = withDefaults(
+    defineProps<{
+        storageLocations: object, // TODO,
+        isDocker: boolean,
+    }>(),
+    {
+        isDocker: true
+    }
+);
 
 const listUrl = getApiUrl('/admin/backups');
 const runBackupUrl = getApiUrl('/admin/backups/run');

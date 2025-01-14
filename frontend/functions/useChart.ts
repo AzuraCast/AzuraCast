@@ -6,6 +6,12 @@ import chartjsColorSchemes from "~/vendor/chartjs_colorschemes.ts";
 
 import 'chartjs-adapter-luxon';
 import '~/vendor/luxon';
+import {
+    ChartConfiguration,
+    ChartConfigurationCustomTypesPerDataset,
+    ChartType,
+    DefaultDataPoint
+} from "chart.js/dist/types";
 
 Chart.register(...registerables);
 
@@ -13,38 +19,55 @@ Chart.register(zoomPlugin);
 
 Chart.register(chartjsColorSchemes);
 
+interface ChartAltValue {
+    label: string,
+    type: string,
+    original: string | number,
+    value: string
+}
+
+export interface ChartAltData {
+    label: string,
+    values: ChartAltValue[]
+}
+
+export interface ChartProps<
+    TType extends ChartType = ChartType,
+    TData = DefaultDataPoint<TType>,
+    TLabel = unknown
+> {
+    options?: ChartConfiguration<TType, TData, TLabel> | ChartConfigurationCustomTypesPerDataset<TType, TData, TLabel>,
+    data?: any[],
+    aspectRatio?: number,
+    alt?: ChartAltData[]
+}
+
 export const chartProps = {
-    options: {
-        type: Object,
-        default: () => {
-            return {};
-        }
-    },
-    data: {
-        type: Array,
-        default: () => {
-            return [];
-        }
-    },
-    alt: {
-        type: Array,
-        default: () => {
-            return [];
-        }
-    },
-    aspectRatio: {
-        type: Number,
-        default: 2,
-    }
 };
 
 export type ChartTemplateRef = HTMLCanvasElement | null;
 
-export default function useChart(
-    props,
+export default function useChart<
+    TType extends ChartType = ChartType,
+    TData = DefaultDataPoint<TType>,
+    TLabel = unknown
+>(
+    initialProps: ChartProps,
     $canvas: Ref<ChartTemplateRef>,
-    defaultOptions: MaybeRef<object>
-) {
+    defaultOptions: MaybeRef<
+        ChartConfiguration<TType, TData, TLabel> | ChartConfigurationCustomTypesPerDataset<TType, TData, TLabel>
+    >
+): {
+    $chart: Chart<TType, TData, TLabel> | null
+} {
+    const props: ChartProps = {
+        options: {},
+        data: [],
+        alt: [],
+        aspectRatio: 2,
+        ...initialProps
+    };
+
     let $chart = null;
 
     const chartConfig = computed(() => {

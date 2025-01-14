@@ -76,26 +76,17 @@ import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {FormTabEmits, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
+import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
 
-const props = defineProps({
-    title: {
-        type: String,
-        required: true
-    },
-    form: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<WebhookComponentProps>();
+const emit = defineEmits<FormTabEmits>();
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
-
-const {v$, tabClass} = useVuelidateOnFormTab(
+const {form, v$, tabClass} = useVuelidateOnFormTab(
+    props,
+    emit,
     {
         config: {
             instance_url: {required},
@@ -103,7 +94,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             visibility: {required}
         }
     },
-    form,
     {
         config: {
             instance_url: '',

@@ -13,26 +13,24 @@ import {computed, nextTick, onMounted, onScopeDispose, ref, toRef, watch} from "
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {watchThrottled} from "@vueuse/core";
 
-const props = defineProps({
-    title: {
-        type: String,
-        default: null
-    },
-    volume: {
-        type: Number,
-        default: 55
-    },
-    isMuted: {
-        type: Boolean,
-        default: false
+const props = withDefaults(
+    defineProps<{
+        title?: string,
+        volume?: number,
+        isMuted?: boolean
+    }>(),
+    {
+        title: null,
+        volume: 55,
+        isMuted: false
     }
-});
+);
 
-const emit = defineEmits([
-  'update:duration',
-  'update:currentTime',
-  'update:progress'
-]);
+const emit = defineEmits<{
+    (e: 'update:duration', value: number): void,
+    (e: 'update:currentTime', value: number): void,
+    (e: 'update:progress', value: number): void
+}>();
 
 const $audio = ref(null);
 const hls = ref(null);

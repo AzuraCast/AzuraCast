@@ -62,23 +62,17 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonFormattingInfo from "./FormattingInfo.vue";
 import {includes} from 'lodash';
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {useTranslate} from "~/vendor/gettext";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    }
-});
-
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const props = defineProps<FormTabProps>();
+const emit = defineEmits<FormTabEmits>();
 
 const {$gettext} = useTranslate();
 
 const {v$} = useVuelidateOnFormTab(
+    props,
+    emit,
     {
         config: {
             message: {},
@@ -89,7 +83,6 @@ const {v$} = useVuelidateOnFormTab(
             message_station_online: {}
         }
     },
-    form,
     () => {
         return {
             config: {

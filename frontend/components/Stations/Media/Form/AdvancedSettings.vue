@@ -78,15 +78,10 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
+import {GenericForm} from "~/entities/Forms.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    songLength: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    form: GenericForm,
+    songLength: string,
+}>();
 </script>

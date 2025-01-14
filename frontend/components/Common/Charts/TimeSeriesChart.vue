@@ -13,23 +13,26 @@
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
-import useChart, {chartProps, ChartTemplateRef} from "~/functions/useChart";
+import useChart, {ChartProps, ChartTemplateRef} from "~/functions/useChart";
 import {useLuxon} from "~/vendor/luxon";
 
-const props = defineProps({
-    ...chartProps,
-    tz: {
-        type: String,
-        default: 'UTC'
+interface TimeSeriesChartProps extends ChartProps {
+    tz?: string,
+}
+
+const props = withDefaults(
+    defineProps<TimeSeriesChartProps>(),
+    {
+        tz: 'UTC'
     }
-});
+);
 
 const $canvas = ref<ChartTemplateRef>(null);
 
 const {$gettext} = useTranslate();
 const {DateTime} = useLuxon();
 
-useChart(
+useChart<'line'>(
     props,
     $canvas,
     computed(() => ({

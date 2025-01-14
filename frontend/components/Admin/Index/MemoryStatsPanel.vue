@@ -67,12 +67,9 @@ import {ref} from "vue";
 import MemoryStatsHelpModal from "~/components/Admin/Index/MemoryStatsHelpModal.vue";
 import {IconInfo} from "~/components/Common/icons.ts";
 
-const props = defineProps({
-    stats: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    stats: object, // TODO
+}>;
 
 const $memoryStatsHelpModal = ref<InstanceType<typeof MemoryStatsHelpModal> | null>(null);
 const showMemoryStatsHelpModal = () => {

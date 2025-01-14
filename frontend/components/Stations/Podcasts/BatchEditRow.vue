@@ -55,16 +55,10 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {useVModel} from "@vueuse/core";
 import PublishAtFields from "~/components/Stations/Podcasts/Common/PublishAtFields.vue";
 
-const props = defineProps({
-    index: {
-        type: Number,
-        required: true
-    },
-    row: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    index: number,
+    row: object
+}>();
 
 const emit = defineEmits(['update:row']);
 

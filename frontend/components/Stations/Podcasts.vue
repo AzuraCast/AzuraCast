@@ -118,16 +118,10 @@ import CardPage from "~/components/Common/CardPage.vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import useHasEditModal from "~/functions/useHasEditModal.ts";
 
-const props = defineProps({
-    languageOptions: {
-        type: Object,
-        required: true
-    },
-    categoriesOptions: {
-        type: Object,
-        required: true
-    },
-});
+const props = defineProps<{
+    languageOptions: object, // TODO
+    categoriesOptions: object, // TODO
+}>();
 
 const quotaUrl = getStationApiUrl('/quota/station_podcasts');
 const listUrl = getStationApiUrl('/podcasts');

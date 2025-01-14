@@ -47,20 +47,11 @@ import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
 import {useLightbox} from "~/vendor/lightbox";
 
-const props = defineProps({
-    id: {
-        type: String,
-        required: true
-    },
-    apiUrl: {
-        type: String,
-        required: true
-    },
-    caption: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    id: string,
+    apiUrl: string,
+    caption: string,
+}>();
 
 const isLoading = ref(true);
 const isUploaded = ref(false);

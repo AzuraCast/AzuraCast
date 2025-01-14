@@ -65,24 +65,12 @@ import FormGroup from "~/components/Form/FormGroup.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import Tab from "~/components/Common/Tab.vue";
 
-const props = defineProps({
-    modelValue: {
-        type: Object,
-        required: true
-    },
-    recordHasMedia: {
-        type: Boolean,
-        required: true
-    },
-    editMediaUrl: {
-        type: String,
-        required: true
-    },
-    newMediaUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    modelValue: object,
+    recordHasMedia: boolean,
+    editMediaUrl: string,
+    newMediaUrl: string,
+}>();
 
 const emit = defineEmits(['update:modelValue']);
 

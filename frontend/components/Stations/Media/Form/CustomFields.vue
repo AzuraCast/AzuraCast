@@ -13,15 +13,10 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
+import {VuelidateObject} from "~/functions/useVuelidateOnForm.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    customFields: {
-        type: Array,
-        required: true
-    }
-});
+const props = defineProps<{
+    form: VuelidateObject,
+    customFields: object, // TODO
+}>();
 </script>

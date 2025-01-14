@@ -206,12 +206,9 @@ import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter
 import {useLuxon} from "~/vendor/luxon.ts";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 
-const props = defineProps({
-    attribution: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    attribution: string
+}>();
 
 const apiUrl = getStationApiUrl('/listeners');
 

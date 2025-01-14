@@ -28,14 +28,13 @@ import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
 import {getApiUrl} from "~/router.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 
-const props = defineProps({
-    supportedLocales: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    supportedLocales: Record<string, string>
+}>();
 
-const emit = defineEmits(['reload']);
+const emit = defineEmits<{
+    (e: 'reload'): void
+}>();
 
 const userUrl = getApiUrl('/frontend/account/me');
 

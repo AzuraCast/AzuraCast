@@ -51,24 +51,12 @@ import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
 import Tab from "~/components/Common/Tab.vue";
 
-const props = defineProps({
-    modelValue: {
-        type: Object,
-        required: true
-    },
-    artworkSrc: {
-        type: String,
-        required: true
-    },
-    editArtUrl: {
-        type: String,
-        required: true
-    },
-    newArtUrl: {
-        type: String,
-        required: true
-    },
-});
+const props = defineProps<{
+    modelValue: object,
+    artworkSrc: string,
+    editArtUrl: string,
+    newArtUrl: string,
+}>();
 
 const emit = defineEmits(['update:modelValue']);
 

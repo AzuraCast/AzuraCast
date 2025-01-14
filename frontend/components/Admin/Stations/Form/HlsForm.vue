@@ -87,29 +87,23 @@ import {BackendAdapter} from "~/entities/RadioAdapters";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import BackendDisabled from "./Common/BackendDisabled.vue";
 import {computed} from "vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    station: {
-        type: Object,
-        required: true
-    }
-});
+interface StationHlsFormProps extends FormTabProps {
+    station: object, // TODO
+}
+
+const props = defineProps<StationHlsFormProps>();
+const emit = defineEmits<FormTabEmits>();
 
 const {enableAdvancedFeatures} = useAzuraCast();
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
-
-const {v$, tabClass} = useVuelidateOnFormTab(
+const {form, v$, tabClass} = useVuelidateOnFormTab(
+    props,
+    emit,
     computed(() => {
         let validations: {
             [key: string | number]: any
@@ -135,7 +129,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
         return validations;
     }),
-    form,
     () => {
         let blankForm: {
             [key: string | number]: any

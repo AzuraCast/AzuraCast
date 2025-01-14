@@ -145,24 +145,12 @@ import useWebAuthn from "~/functions/useWebAuthn.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import {nextTick, onMounted, ref} from "vue";
 
-const props = defineProps({
-    hideProductName: {
-        type: Boolean,
-        default: true
-    },
-    instanceName: {
-        type: String,
-        default: null
-    },
-    forgotPasswordUrl: {
-        type: String,
-        default: null
-    },
-    webAuthnUrl: {
-        type: String,
-        default: null
-    }
-});
+const props = defineProps<{
+    hideProductName: boolean,
+    instanceName: string,
+    forgotPasswordUrl: string,
+    webAuthnUrl: string,
+}>();
 
 const {
     isSupported: passkeySupported,

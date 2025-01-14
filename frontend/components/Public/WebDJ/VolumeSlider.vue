@@ -27,14 +27,14 @@ import {computed, onMounted, ref} from "vue";
 import {useVModel} from "@vueuse/core";
 import MuteButton from "~/components/Common/MuteButton.vue";
 
-const props = defineProps({
-    modelValue: {
-        type: Number,
-        required: true
-    }
-});
+const props = defineProps<{
+    modelValue: number
+}>();
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{
+    (e: 'update:modelValue', value: number): void
+}>();
+
 const volume = useVModel(props, 'modelValue', emit);
 
 const initial = ref(75);

@@ -47,12 +47,9 @@ import Modal from "~/components/Common/Modal.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
-const props = defineProps({
-    renameUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    renameUrl: string
+}>();
 
 const emit = defineEmits(['relist']);
 

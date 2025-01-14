@@ -50,6 +50,13 @@
     </loading>
 </template>
 
+<script lang="ts">
+export interface DateRange {
+    start: Date,
+    end: Date,
+}
+</script>
+
 <script setup lang="ts">
 import PieChart from "~/components/Common/Charts/PieChart.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
@@ -62,24 +69,12 @@ import Loading from "~/components/Common/Loading.vue";
 import {useLuxon} from "~/vendor/luxon";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
 
-const props = defineProps({
-    dateRange: {
-        type: Object,
-        required: true
-    },
-    apiUrl: {
-        type: String,
-        required: true
-    },
-    fieldKey: {
-        type: String,
-        required: true
-    },
-    fieldLabel: {
-        type: String,
-        required: true
-    },
-});
+const props = defineProps<{
+    dateRange: DateRange,
+    apiUrl: string,
+    fieldKey: string,
+    fieldLabel: string,
+}>();
 
 const {$gettext} = useTranslate();
 

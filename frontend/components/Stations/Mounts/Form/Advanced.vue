@@ -35,29 +35,23 @@
 import {FrontendAdapter} from '~/entities/RadioAdapters';
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {computed} from "vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import Tab from "~/components/Common/Tab.vue";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    stationFrontendType: {
-        type: String,
-        required: true
-    }
-});
+interface MountAdvancedFormProps extends FormTabProps {
+    stationFrontendType: FrontendAdapter
+}
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const props = defineProps<MountAdvancedFormProps>();
+const emit = defineEmits<FormTabEmits>();
 
 const isIcecast = computed(() => {
     return FrontendAdapter.Icecast === props.stationFrontendType;
 });
 
 const {v$, tabClass} = useVuelidateOnFormTab(
+    props,
+    emit,
     computed(() => {
         const validations: {
             [key: string | number]: any
@@ -71,7 +65,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
         return validations;
     }),
-    form,
     () => {
         const blankForm: {
             [key: string | number]: any

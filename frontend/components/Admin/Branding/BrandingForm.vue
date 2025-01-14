@@ -141,12 +141,9 @@ import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Loading from "~/components/Common/Loading.vue";
 
-const props = defineProps({
-    apiUrl: {
-        type: String,
-        required: true
-    },
-});
+const props = defineProps<{
+    apiUrl: string,
+}>();
 
 const isLoading = ref(true);
 const error = ref(null);

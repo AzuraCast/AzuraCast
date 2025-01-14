@@ -87,31 +87,25 @@ import {computed, onMounted, reactive, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 import {getApiUrl} from "~/router";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    isEditMode: {
-        type: Boolean,
-        required: true
-    }
-});
+interface StationsAdminFormProps extends FormTabProps {
+    isEditMode: boolean,
+}
+
+const props = defineProps<StationsAdminFormProps>();
+const emit = defineEmits<FormTabEmits>();
 
 const storageLocationApiUrl = getApiUrl('/admin/stations/storage-locations');
 
 const {enableAdvancedFeatures} = useAzuraCast();
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
-
 const {v$, tabClass} = useVuelidateOnFormTab(
+    props,
+    emit,
     computed(() => {
         let validations: {
             [key: string | number]: any
@@ -134,7 +128,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
         return validations;
     }),
-    form,
     () => {
         let blankForm: {
             [key: string]: any

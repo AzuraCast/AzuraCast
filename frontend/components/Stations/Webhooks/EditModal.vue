@@ -30,6 +30,14 @@
     </modal-form>
 </template>
 
+<script lang="ts">
+import {FormTabProps} from "~/functions/useVuelidateOnFormTab.ts";
+
+export interface WebhookComponentProps extends FormTabProps {
+    title: string
+}
+</script>
+
 <script setup lang="ts">
 import TypeSelect from "./Form/TypeSelect.vue";
 import BasicInfo from "./Form/BasicInfo.vue";

@@ -71,32 +71,21 @@ import {useTranslate} from "~/vendor/gettext";
 import {IconUpload} from "~/components/Common/icons";
 import {useEventListener} from "@vueuse/core";
 
-const props = defineProps({
-    targetUrl: {
-        type: String,
-        required: true
-    },
-    allowMultiple: {
-        type: Boolean,
-        default: false
-    },
-    directoryMode: {
-        type: Boolean,
-        default: false
-    },
-    validMimeTypes: {
-        type: Array,
-        default() {
-            return ['*'];
-        }
-    },
-    flowConfiguration: {
-        type: Object,
-        default() {
-            return {};
-        }
+const props = withDefaults(
+    defineProps<{
+        targetUrl: string,
+        allowMultiple?: boolean,
+        directoryMode?: boolean,
+        validMimeTypes?: string[],
+        flowConfiguration?: object,
+    }>(),
+    {
+        allowMultiple: false,
+        directoryMode: false,
+        validMimeTypes: () => ['*'],
+        flowConfiguration: () => ({}),
     }
-});
+);
 
 interface FlowFile {
     uniqueIdentifier: string,

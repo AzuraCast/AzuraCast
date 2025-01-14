@@ -81,25 +81,19 @@ import WaveformComponent from '~/components/Common/Waveform.vue';
 import Icon from '~/components/Common/Icon.vue';
 import {ref} from "vue";
 import {IconPlayCircle, IconStop} from "~/components/Common/icons";
+import {GenericForm} from "~/entities/Forms.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    audioUrl: {
-        type: String,
-        required: true
-    },
-    waveformUrl: {
-        type: String,
-        required: true
-    },
-    waveformCacheUrl: {
-        type: String,
-        default: null
+const props = withDefaults(
+    defineProps<{
+        form: GenericForm,
+        audioUrl: string,
+        waveformUrl: string,
+        waveformCacheUrl?: string,
+    }>(),
+    {
+        waveformCacheUrl: null
     }
-});
+);
 
 const $waveform = ref<InstanceType<typeof WaveformComponent> | null>(null);
 

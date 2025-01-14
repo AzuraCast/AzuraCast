@@ -31,14 +31,8 @@
 <script setup lang="ts">
 import {get} from "lodash";
 
-const props = defineProps({
-    fields: {
-        type: Object,
-        required: true
-    },
-    data: {
-        type: Array,
-        required: true
-    }
-});
+const props = defineProps<{
+    fields: object, // TODO,
+    data: Array<any>, // TODO
+}>();
 </script>

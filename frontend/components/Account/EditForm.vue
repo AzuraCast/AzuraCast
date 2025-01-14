@@ -48,17 +48,13 @@ import objectToFormOptions, {FormOption} from "~/functions/objectToFormOptions";
 import {computed, toRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import {HasGenericFormProps} from "~/entities/Forms.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    supportedLocales: {
-        type: Object,
-        required: true
-    }
-});
+interface AccountEditFormProps extends HasGenericFormProps {
+    supportedLocales: Record<string, string>
+}
+
+const props = defineProps<AccountEditFormProps>();
 
 const {$gettext} = useTranslate();
 

@@ -22,16 +22,15 @@
 import {computed} from "vue";
 import {useLightbox} from "~/vendor/lightbox";
 
-const props = defineProps({
-    src: {
-        type: String,
-        required: true
-    },
-    width: {
-        type: Number,
-        default: 40
+const props = withDefaults(
+    defineProps<{
+        src: string,
+        width: number
+    }>(),
+    {
+        width: 40
     }
-});
+);
 
 const widthPx = computed(() => {
     return props.width + 'px';

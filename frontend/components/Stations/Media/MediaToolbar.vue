@@ -220,30 +220,13 @@ import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchRe
 import {useNotify} from "~/functions/useNotify.ts";
 import {useDialog} from "~/functions/useDialog.ts";
 
-const props = defineProps({
-    currentDirectory: {
-        type: String,
-        required: true
-    },
-    selectedItems: {
-        type: Object,
-        required: true
-    },
-    playlists: {
-        type: Array,
-        default: () => {
-            return [];
-        }
-    },
-    batchUrl: {
-        type: String,
-        required: true
-    },
-    supportsImmediateQueue: {
-        type: Boolean,
-        required: true
-    }
-});
+const props = defineProps<{
+    currentDirectory: string,
+    selectedItems: object, // TODO
+    playlists?: any[], // TODO
+    batchUrl: string,
+    supportsImmediateQueue: boolean
+}>();
 
 const emit = defineEmits(['relist', 'add-playlist', 'move-files', 'create-directory']);
 

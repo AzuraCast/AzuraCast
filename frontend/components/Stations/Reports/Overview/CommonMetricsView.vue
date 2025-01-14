@@ -52,8 +52,8 @@
 
 <script lang="ts">
 export interface DateRange {
-    start: Date,
-    end: Date,
+    startDate: Date,
+    endDate: Date,
 }
 </script>
 

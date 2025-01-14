@@ -58,7 +58,7 @@ const emit = defineEmits<FormTabEmits>();
 
 const {maxBitrate} = useAzuraCastStation();
 
-const {v$, tabClass} = useVuelidateOnFormTab(
+const {form, v$, tabClass} = useVuelidateOnFormTab(
     props,
     emit,
     {
@@ -97,6 +97,6 @@ const formatOptions = [
 ];
 
 const formatSupportsBitrateOptions = computed(() => {
-    return (props.form.autodj_format !== 'flac');
+    return (form.value.autodj_format !== 'flac');
 });
 </script>

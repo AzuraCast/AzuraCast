@@ -279,31 +279,22 @@ import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter
 import {ApiFileList, CustomField, FileTypes} from "~/entities/ApiInterfaces.ts";
 import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 
-const props = defineProps({
-    initialPlaylists: {
-        type: Array,
-        required: false,
-        default: () => []
-    },
-    customFields: {
-        type: Array,
-        required: false,
-        default: () => []
-    },
-    validMimeTypes: {
-        type: Array,
-        required: false,
-        default: () => []
-    },
-    showSftp: {
-        type: Boolean,
-        default: true
-    },
-    supportsImmediateQueue: {
-        type: Boolean,
-        required: true
+const props = withDefaults(
+    defineProps<{
+        initialPlaylists?: any[], // TODO
+        customFields?: any[], // TODO
+        validMimeTypes?: string[],
+        showSftp?: boolean,
+        supportsImmediateQueue?: boolean,
+    }>(),
+    {
+        initialPlaylists: () => [],
+        customFields: () => [],
+        validMimeTypes: () => [],
+        showSftp: true,
+        supportsImmediateQueue: true
     }
-});
+);
 
 const listUrl = getStationApiUrl('/files/list');
 const batchUrl = getStationApiUrl('/files/batch');

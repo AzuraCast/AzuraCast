@@ -1,8 +1,8 @@
-import useVuelidate, {GlobalConfig} from "@vuelidate/core";
+import useVuelidate, {GlobalConfig, ValidationArgs} from "@vuelidate/core";
 import {computed, ComputedRef, WritableComputedRef} from "vue";
 import {useEventBus, useVModel} from "@vueuse/core";
 import {GenericForm} from "~/entities/Forms.ts";
-import {VuelidateRef, VuelidateValidations} from "~/functions/useVuelidateOnForm.ts";
+import {VuelidateRef} from "~/functions/useVuelidateOnForm.ts";
 
 export interface FormTabProps<T extends GenericForm = GenericForm> {
     form: T,
@@ -12,15 +12,17 @@ export interface FormTabEmits<T extends GenericForm = GenericForm> {
     (e: 'update-form', form: T)
 }
 
-export function useVuelidateOnFormTab<T extends GenericForm = GenericForm, K extends Partial<T>>(
+export function useVuelidateOnFormTab<
+    T extends GenericForm = GenericForm
+>(
     props: FormTabProps<T>,
     emit: FormTabEmits<T>,
-    validations: VuelidateValidations<K>,
-    blankForm: K = {},
+    validations: ValidationArgs<T>,
+    blankForm: Partial<T> = {},
     vuelidateOptions: GlobalConfig = {}
 ): {
     form: WritableComputedRef<T>,
-    v$: VuelidateRef<K>,
+    v$: VuelidateRef<T>,
     isValid: ComputedRef<boolean>,
     tabClass: ComputedRef<string | null>
 } {

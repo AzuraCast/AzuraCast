@@ -25,7 +25,7 @@ import {useLightbox} from "~/vendor/lightbox";
 const props = withDefaults(
     defineProps<{
         src: string,
-        width: number
+        width?: number
     }>(),
     {
         width: 40

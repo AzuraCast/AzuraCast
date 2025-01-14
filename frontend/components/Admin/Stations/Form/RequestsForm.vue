@@ -70,7 +70,7 @@ interface StationRequestsFormProps extends FormTabProps {
 const props = defineProps<StationRequestsFormProps>();
 const emit = defineEmits<FormTabEmits>();
 
-const {v$, tabClass} = useVuelidateOnFormTab(
+const {form, v$, tabClass} = useVuelidateOnFormTab(
     props,
     emit,
     {

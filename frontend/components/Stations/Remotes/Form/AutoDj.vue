@@ -99,7 +99,7 @@ const emit = defineEmits<FormTabEmits>();
 
 const {maxBitrate} = useAzuraCastStation();
 
-const {v$, tabClass} = useVuelidateOnFormTab(
+const {form, v$, tabClass} = useVuelidateOnFormTab(
     props,
     emit,
     {

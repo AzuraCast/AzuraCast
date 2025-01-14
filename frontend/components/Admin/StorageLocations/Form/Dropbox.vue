@@ -79,7 +79,7 @@ import Tab from "~/components/Common/Tab.vue";
 const props = defineProps<FormTabProps>();
 const emit = defineEmits<FormTabEmits>();
 
-const {v$, tabClass} = useVuelidateOnFormTab(
+const {form, v$, tabClass} = useVuelidateOnFormTab(
     props,
     emit,
     {

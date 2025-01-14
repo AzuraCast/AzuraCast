@@ -39,7 +39,8 @@ export interface ChartProps<
     options?: ChartConfiguration<TType, TData, TLabel> | ChartConfigurationCustomTypesPerDataset<TType, TData, TLabel>,
     data?: any[],
     aspectRatio?: number,
-    alt?: ChartAltData[]
+    alt?: ChartAltData[],
+    labels?: Array<any>
 }
 
 export const chartProps = {

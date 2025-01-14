@@ -96,24 +96,12 @@ import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchResponse.ts";
 import {useAsyncState} from "@vueuse/core";
 
-const props = defineProps({
-    selectedItems: {
-        type: Object,
-        required: true
-    },
-    currentDirectory: {
-        type: String,
-        required: true
-    },
-    batchUrl: {
-        type: String,
-        required: true
-    },
-    listDirectoriesUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    selectedItems: object, // TODO
+    currentDirectory: string,
+    batchUrl: string,
+    listDirectoriesUrl: string,
+}>();
 
 const emit = defineEmits(['relist']);
 

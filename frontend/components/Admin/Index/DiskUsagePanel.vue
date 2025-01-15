@@ -40,9 +40,11 @@
 </template>
 
 <script setup lang="ts">
+import {AdminStats} from "~/components/Admin/Index.vue";
+
 const props = defineProps<{
-    stats: object, // TODO
-}>;
+    stats: AdminStats,
+}>();
 
 const getPercent = (amount, total) => {
     return ((amount / total) * 100) + '%';

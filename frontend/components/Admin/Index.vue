@@ -91,6 +91,94 @@
     </div>
 </template>
 
+<script lang="ts">
+interface AdminCpuCore {
+    name: string,
+    usage: string,
+    idle: string,
+    io_wait: string,
+    steal: string,
+}
+
+interface AdminCpuStats {
+    total: AdminCpuCore,
+    cores: AdminCpuCore[],
+    load: number[],
+}
+
+interface AdminMemoryStats {
+    bytes: {
+        total: string,
+        free: string,
+        buffers: string,
+        cached: string,
+        sReclaimable: string,
+        shmem: string,
+        used: string,
+    },
+    readable: {
+        total: string,
+        free: string,
+        buffers: string,
+        cached: string,
+        sReclaimable: string,
+        shmem: string,
+        used: string,
+    }
+}
+
+interface AdminStorageStats {
+    bytes: {
+        total: string,
+        free: string,
+        used: string,
+    },
+    readable: {
+        total: string,
+        free: string,
+        used: string,
+    }
+}
+
+interface AdminNetworkInterfaceStats {
+    interface_name: string,
+    received: {
+        speed: {
+            bytes: string,
+            readable: string,
+        },
+        packets: string,
+        errs: string,
+        drop: string,
+        fifo: string,
+        frame: string,
+        compressed: string,
+        multicast: string,
+    },
+    transmitted: {
+        speed: {
+            bytes: string
+            readable: string
+        },
+        packets: string,
+        errs: string,
+        drop: string,
+        fifo: string,
+        frame: string,
+        carrier: string,
+        compressed: string,
+    }
+}
+
+export interface AdminStats {
+    cpu: AdminCpuStats,
+    memory: AdminMemoryStats,
+    swap: AdminStorageStats,
+    disk: AdminStorageStats,
+    network: AdminNetworkInterfaceStats[]
+}
+</script>
+
 <script setup lang="ts">
 import Icon from '~/components/Common/Icon.vue';
 import {useAxios} from "~/vendor/axios";
@@ -110,7 +198,7 @@ const menuItems = useAdminMenu();
 
 const {axiosSilent} = useAxios();
 
-const {state: stats, isLoading} = useAutoRefreshingAsyncState(
+const {state: stats, isLoading} = useAutoRefreshingAsyncState<AdminStats>(
     () => axiosSilent.get(statsUrl.value).then(r => r.data),
     {
         cpu: {
@@ -121,32 +209,42 @@ const {state: stats, isLoading} = useAutoRefreshingAsyncState(
                 usage: 0
             },
             cores: [],
-            load: [
-                0,
-                0,
-                0
-            ]
+            load: [0, 0, 0]
         },
         memory: {
             bytes: {
-                total: 0,
-                used: 0,
-                cached: 0
+                total: "0",
+                used: "0",
+                cached: "0"
             },
             readable: {
-                total: '',
-                used: '',
-                cached: ''
+                total: "",
+                used: "",
+                cached: ""
+            }
+        },
+        swap: {
+            bytes: {
+                total: "0",
+                free: "0",
+                used: "0",
+            },
+            readable: {
+                total: "",
+                free: "",
+                used: "",
             }
         },
         disk: {
             bytes: {
-                total: 0,
-                used: 0
+                total: "0",
+                free: "0",
+                used: "0",
             },
             readable: {
-                total: '',
-                used: ''
+                total: "",
+                free: "",
+                used: "",
             }
         },
         network: []

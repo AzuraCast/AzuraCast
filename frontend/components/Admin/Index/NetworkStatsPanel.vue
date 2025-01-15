@@ -46,9 +46,10 @@ import Tab from "~/components/Common/Tab.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import {isObject} from "lodash";
 import NetworkStatsTable from "~/components/Admin/Index/NetworkStatsTable.vue";
+import {AdminStats} from "~/components/Admin/Index.vue";
 
 const props = defineProps<{
-    stats: object
+    stats: AdminStats
 }>();
 
 const getNetworkInterfaceTableFields = (interfaceData) => Object.keys(interfaceData);

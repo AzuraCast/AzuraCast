@@ -32,7 +32,7 @@
 import {get} from "lodash";
 
 const props = defineProps<{
-    fields: object, // TODO,
-    data: Array<any>, // TODO
+    fields: string[],
+    data: Record<string, any>,
 }>();
 </script>

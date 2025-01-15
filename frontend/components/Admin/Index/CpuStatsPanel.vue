@@ -139,9 +139,10 @@ import {ref} from "vue";
 import CpuStatsHelpModal from "~/components/Admin/Index/CpuStatsHelpModal.vue";
 import {upperFirst} from "lodash";
 import {IconInfo} from "~/components/Common/icons.ts";
+import {AdminStats} from "~/components/Admin/Index.vue";
 
 const props = defineProps<{
-    stats: object, // TODO
+    stats: AdminStats,
 }>();
 
 const $cpuStatsHelpModal = ref<InstanceType<typeof CpuStatsHelpModal> | null>(null);

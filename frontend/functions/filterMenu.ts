@@ -1,7 +1,6 @@
 import {cloneDeep, filter, get, map} from "lodash";
 import {ComputedRef, Reactive, toRaw} from "vue";
 import {Icon} from "../components/Common/icons";
-import {RouteLocationAsPathGeneric, RouteLocationAsRelativeGeneric} from "vue-router";
 import {reactiveComputed} from "@vueuse/core";
 
 export type ReactiveMenu = Reactive<MenuCategory[]>;

@@ -1,18 +1,19 @@
 import isObject from "./isObject";
 import {toRaw} from "vue";
+import {cloneDeep} from "lodash";
 
 /*
  * A "deep" merge that only merges items from the source into the destination that already exist in the destination.
  * Useful for merging in form values with API returns.
  */
-export default function mergeExisting<T extends object>(
+export default function mergeExisting<T extends Record<any, any>>(
     destRaw: T,
     sourceRaw: Partial<T>
 ): T {
     const dest = toRaw(destRaw);
     const source = toRaw(sourceRaw);
 
-    const ret = {};
+    const ret: T = cloneDeep(dest);
     for (const destKey in dest) {
         if (destKey in source) {
             const destVal = dest[destKey];
@@ -23,8 +24,6 @@ export default function mergeExisting<T extends object>(
             } else {
                 ret[destKey] = sourceVal;
             }
-        } else {
-            ret[destKey] = dest[destKey];
         }
     }
 

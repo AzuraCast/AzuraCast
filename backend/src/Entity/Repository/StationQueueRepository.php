@@ -99,7 +99,6 @@ final class StationQueueRepository extends AbstractStationBasedRepository
                 SELECT sq.playlist_id
                 FROM App\Entity\StationQueue sq
                 WHERE sq.station = :station
-                AND sq.playlist_id IS NOT NULL
                 AND (sq.playlist = :playlist OR sq.is_visible = 1)
                 ORDER BY sq.id DESC
             DQL

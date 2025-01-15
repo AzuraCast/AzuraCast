@@ -5,15 +5,17 @@ import {reactiveComputed} from "@vueuse/core";
 
 export type ReactiveMenu = Reactive<MenuCategory[]>;
 
-interface RouteBasedUrl {
+export interface MenuRouteBasedUrl {
     name: string,
     params?: Record<string, any>
 }
 
+export type MenuRouteUrl = string | MenuRouteBasedUrl;
+
 export interface MenuSubCategory {
     key: string,
     label: ComputedRef<string>,
-    url?: string | RouteBasedUrl,
+    url?: MenuRouteUrl,
     icon?: Icon,
     visible?: boolean,
     external?: boolean,

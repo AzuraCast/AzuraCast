@@ -6,7 +6,7 @@
             class="nav-item"
         >
             <router-link
-                v-if="isRouteLink(category)"
+                v-if="isRouteLink(category.url)"
                 :class="getLinkClass(category)"
                 :to="category.url"
                 class="nav-link"
@@ -49,7 +49,7 @@
                         class="nav-item"
                     >
                         <router-link
-                            v-if="isRouteLink(item)"
+                            v-if="isRouteLink(item.url)"
                             :to="item.url"
                             class="nav-link ps-4 py-2"
                             :class="getLinkClass(item)"
@@ -85,25 +85,29 @@ import Icon from "~/components/Common/Icon.vue";
 import {useRoute} from "vue-router";
 import {some} from "lodash";
 import {IconOpenInNew} from "~/components/Common/icons.ts";
-import {MenuCategory, MenuSubCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
+import {MenuCategory, MenuRouteBasedUrl, MenuRouteUrl, MenuSubCategory} from "~/functions/filterMenu.ts";
 
 const props = defineProps<{
-    menu: ReactiveMenu
+    menu: MenuCategory[]
 }>();
 
 const currentRoute = useRoute();
 
-const isRouteLink = (item: MenuSubCategory) => {
-    return (typeof (item.url) !== 'undefined')
-        && (typeof (item.url) !== 'string');
+const isRouteLink = (url: MenuRouteUrl): url is MenuRouteBasedUrl => {
+    return (typeof (url) !== 'undefined')
+        && (typeof (url) !== 'string');
 };
 
+const isCategory = (item: MenuCategory | MenuSubCategory): item is MenuCategory => {
+    return 'items' in item;
+}
+
 const isActiveItem = (item: MenuCategory | MenuSubCategory) => {
-    if ('items' in item && some(item.items, isActiveItem)) {
+    if (isCategory(item) && some(item.items ?? [], isActiveItem)) {
         return true;
     }
 
-    return isRouteLink(item) && !('params' in item.url) && item.url.name === currentRoute.name;
+    return isRouteLink(item.url) && !('params' in item.url) && item.url.name === currentRoute.name;
 };
 
 const getLinkClass = (item: MenuSubCategory) => {

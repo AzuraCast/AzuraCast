@@ -1,9 +1,10 @@
-import {filter, get, map} from "lodash";
-import { ComputedRef, UnwrapNestedRefs } from "vue";
-import { Icon } from "../components/Common/icons";
-import { RouteLocationRaw } from "vue-router";
+import {cloneDeep, filter, get, map} from "lodash";
+import {ComputedRef, Reactive} from "vue";
+import {Icon} from "../components/Common/icons";
+import {RouteLocationRaw} from "vue-router";
+import {reactiveComputed} from "@vueuse/core";
 
-export type ReactiveMenu = UnwrapNestedRefs<Array<MenuCategory>>;
+export type ReactiveMenu = Reactive<Array<MenuCategory>>;
 
 export interface MenuSubCategory {
     key: string,
@@ -12,6 +13,8 @@ export interface MenuSubCategory {
     icon?: Icon | null,
     visible?: boolean | null,
     external?: boolean | null,
+    title?: string,
+    class?: string,
 }
 
 export interface MenuCategory extends MenuSubCategory {
@@ -19,25 +22,30 @@ export interface MenuCategory extends MenuSubCategory {
 }
 
 export default function filterMenu(menuItems: ReactiveMenu): ReactiveMenu {
-    return filter(map(
-        menuItems,
-        (menuRow: MenuCategory) => {
-            const itemIsVisible: boolean = get(menuRow, 'visible', true);
-            if (!itemIsVisible) {
-                return null;
-            }
+    return reactiveComputed(
+        () => filter(
+            map(
+                cloneDeep(menuItems),
+                (menuRow: MenuCategory): MenuCategory | null => {
+                    const itemIsVisible: boolean = get(menuRow, 'visible', true);
+                    if (!itemIsVisible) {
+                        return null;
+                    }
 
-            if ('items' in menuRow) {
-                menuRow.items = filter(menuRow.items, (item) => {
-                    return get(item, 'visible', true);
-                });
+                    if ('items' in menuRow) {
+                        menuRow.items = filter(menuRow.items, (item) => {
+                            return get(item, 'visible', true);
+                        });
 
-                if (menuRow.items.length === 0) {
-                    return null;
+                        if (menuRow.items.length === 0) {
+                            return null;
+                        }
+                    }
+
+                    return menuRow;
                 }
-            }
-
-            return menuRow;
-        }
-    ));
+            ),
+            (row: MenuCategory | null) => null !== row
+        )
+    );
 }

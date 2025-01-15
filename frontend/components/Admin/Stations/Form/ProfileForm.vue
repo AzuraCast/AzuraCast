@@ -45,7 +45,7 @@
                 id="edit_form_timezone"
                 class="col-md-12"
                 :field="v$.timezone"
-                :options="timezoneOptions"
+                :options="timezones"
                 :label="$gettext('Time Zone')"
                 :description="$gettext('Scheduled playlists and other timed items will be controlled by this time zone.')"
             />
@@ -133,9 +133,8 @@
 <script setup lang="ts">
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import objectToFormOptions from "~/functions/objectToFormOptions";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {computed, toRef} from "vue";
+import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
@@ -144,7 +143,7 @@ import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 
 interface StationProfileFormProps extends FormTabProps {
-    timezones: object, // TODO
+    timezones: Record<string, string>,
 }
 
 const props = defineProps<StationProfileFormProps>();
@@ -204,8 +203,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         return blankForm;
     }
 );
-
-const timezoneOptions = objectToFormOptions(toRef(props, 'timezones'));
 
 const {$gettext} = useTranslate();
 

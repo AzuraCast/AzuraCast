@@ -61,7 +61,7 @@
                     class="col-md-6"
                     :field="v$.backup_storage_location"
                     :label="$gettext('Storage Location')"
-                    :options="storageLocationOptions"
+                    :options="storageLocations"
                 />
 
                 <form-group-multi-check
@@ -85,8 +85,7 @@ import FormFieldset from "~/components/Form/FormFieldset.vue";
 import mergeExisting from "~/functions/mergeExisting";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import TimeCode from "~/components/Common/TimeCode.vue";
-import objectToFormOptions from "~/functions/objectToFormOptions";
-import {computed, ref, toRef} from "vue";
+import {computed, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
@@ -97,7 +96,7 @@ import {useHasModal} from "~/functions/useHasModal.ts";
 
 const props = defineProps<{
     settingsUrl: string,
-    storageLocations: object, // TODO
+    storageLocations: Record<number, string>,
 }>();
 
 const emit = defineEmits(['relist']);
@@ -122,8 +121,6 @@ const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
         backup_format: null,
     }
 );
-
-const storageLocationOptions = objectToFormOptions(toRef(props, 'storageLocations'));
 
 const formatOptions = computed(() => {
     return [

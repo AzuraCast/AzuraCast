@@ -81,7 +81,6 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import objectToFormOptions from "~/functions/objectToFormOptions";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed, onMounted, reactive, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
@@ -154,9 +153,9 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
 const storageLocationsLoading = ref(true);
 const storageLocationOptions = reactive({
-    media_storage_location: [],
-    recordings_storage_location: [],
-    podcasts_storage_location: []
+    media_storage_location: {},
+    recordings_storage_location: {},
+    podcasts_storage_location: {}
 });
 
 const filterLocations = (group) => {
@@ -177,15 +176,15 @@ const {axios} = useAxios();
 
 const loadLocations = () => {
     axios.get(storageLocationApiUrl.value).then((resp) => {
-        storageLocationOptions.media_storage_location = objectToFormOptions(
-            filterLocations(resp.data.media_storage_location)
-        ).value;
-        storageLocationOptions.recordings_storage_location = objectToFormOptions(
-            filterLocations(resp.data.recordings_storage_location)
-        ).value;
-        storageLocationOptions.podcasts_storage_location = objectToFormOptions(
-            filterLocations(resp.data.podcasts_storage_location)
-        ).value;
+        storageLocationOptions.media_storage_location = filterLocations(
+            resp.data.media_storage_location
+        );
+        storageLocationOptions.recordings_storage_location = filterLocations(
+            resp.data.recordings_storage_location
+        );
+        storageLocationOptions.podcasts_storage_location = filterLocations(
+            resp.data.podcasts_storage_location
+        );
     }).finally(() => {
         storageLocationsLoading.value = false;
     });

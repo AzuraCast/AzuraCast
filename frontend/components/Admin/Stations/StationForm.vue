@@ -72,12 +72,12 @@
 <script lang="ts">
 export interface StationFormParentProps {
     // Profile
-    timezones: object,
+    timezones: Record<string, string>,
     // Frontend
     isRsasInstalled?: boolean,
     isShoutcastInstalled?: boolean,
     isStereoToolInstalled?: boolean,
-    countries: object
+    countries: Record<string, string>
 }
 </script>
 

@@ -72,9 +72,9 @@ import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 import useSlotsExcept from "~/functions/useSlotsExcept";
-import {FormFieldProps, useFormField} from "~/components/Form/useFormField";
+import {FormFieldEmits, FormFieldProps, useFormField} from "~/components/Form/useFormField";
 import {useSlots} from "vue";
-import {FormOption} from "~/functions/objectToFormOptions.ts";
+import {FormOption} from "~/functions/objectToNestedFormOptions.ts";
 
 interface FormGroupMultiCheckProps extends FormFieldProps, FormLabelParentProps {
     id: string,
@@ -99,7 +99,7 @@ const props = withDefaults(
 
 const slots = useSlots();
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<FormFieldEmits>();
 
 const {model, isVuelidateField, isRequired} = useFormField(props, emit);
 </script>

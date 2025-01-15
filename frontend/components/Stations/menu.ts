@@ -1,5 +1,5 @@
 import {useTranslate} from "~/vendor/gettext.ts";
-import filterMenu, {MenuCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
+import filterMenu, {ReactiveMenu} from "~/functions/filterMenu.ts";
 import {StationPermission, userAllowedForStation} from "~/acl.ts";
 import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {computed, reactive} from "vue";
@@ -25,7 +25,7 @@ export function useStationsMenu(): ReactiveMenu {
     // Reuse this variable to avoid multiple calls.
     const userCanManageMedia = userAllowedForStation(StationPermission.Media);
 
-    const menu: ReactiveMenu = reactive<Array<MenuCategory>>([
+    const menu: ReactiveMenu = reactive([
         {
             key: 'profile',
             label: computed(() => $gettext('Profile')),

@@ -1,4 +1,7 @@
-import {Chart, registerables} from "chart.js";
+import {Chart, registerables, ChartConfiguration,
+    ChartConfigurationCustomTypesPerDataset,
+    ChartType,
+    DefaultDataPoint} from "chart.js";
 import {defaultsDeep} from "lodash";
 import {computed, isRef, MaybeRef, onMounted, onUnmounted, Ref, toRef, toValue, watch} from "vue";
 import zoomPlugin from 'chartjs-plugin-zoom';
@@ -6,12 +9,6 @@ import chartjsColorSchemes from "~/vendor/chartjs_colorschemes.ts";
 
 import 'chartjs-adapter-luxon';
 import '~/vendor/luxon';
-import {
-    ChartConfiguration,
-    ChartConfigurationCustomTypesPerDataset,
-    ChartType,
-    DefaultDataPoint
-} from "chart.js/dist/types";
 
 Chart.register(...registerables);
 
@@ -36,15 +33,12 @@ export interface ChartProps<
     TData = DefaultDataPoint<TType>,
     TLabel = unknown
 > {
-    options?: ChartConfiguration<TType, TData, TLabel> | ChartConfigurationCustomTypesPerDataset<TType, TData, TLabel>,
+    options?: Partial<ChartConfiguration<TType, TData, TLabel> | ChartConfigurationCustomTypesPerDataset<TType, TData, TLabel>>,
     data?: any[],
     aspectRatio?: number,
     alt?: ChartAltData[],
     labels?: Array<any>
 }
-
-export const chartProps = {
-};
 
 export type ChartTemplateRef = HTMLCanvasElement | null;
 
@@ -56,7 +50,7 @@ export default function useChart<
     initialProps: ChartProps,
     $canvas: Ref<ChartTemplateRef>,
     defaultOptions: MaybeRef<
-        ChartConfiguration<TType, TData, TLabel> | ChartConfigurationCustomTypesPerDataset<TType, TData, TLabel>
+        Partial<ChartConfiguration<TType, TData, TLabel> | ChartConfigurationCustomTypesPerDataset<TType, TData, TLabel>>
     >
 ): {
     $chart: Chart<TType, TData, TLabel> | null

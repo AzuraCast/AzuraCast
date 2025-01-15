@@ -1,7 +1,7 @@
 <template>
     <div>
         <div
-            v-for="option in options"
+            v-for="option in parsedOptions"
             :key="option.value"
             class="form-check"
             :class="!stacked ? 'form-check-inline' : ''"
@@ -36,19 +36,22 @@
 
 <script setup lang="ts">
 import {useVModel} from "@vueuse/core";
-import {FormOption} from "~/functions/objectToFormOptions.ts";
+import {objectToSimpleFormOptions, SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
+import {ModelFormField} from "~/components/Form/useFormField.ts";
+import {toRef} from "vue";
 
 const props = withDefaults(
     defineProps<{
-        modelValue: string | number | boolean | Array<any>,
+        modelValue?: ModelFormField,
         id: string,
         name: string,
         fieldClass?: string,
-        options: FormOption[],
+        options: SimpleFormOptionInput,
         radio?: boolean,
         stacked?: boolean
     }>(),
     {
+        modelValue: null,
         name: (props) => props.id,
         fieldClass: null,
         radio: false,
@@ -59,4 +62,6 @@ const props = withDefaults(
 const emit = defineEmits(['update:modelValue']);
 
 const value = useVModel(props, 'modelValue', emit);
+
+const parsedOptions = objectToSimpleFormOptions(toRef(props, 'options'));
 </script>

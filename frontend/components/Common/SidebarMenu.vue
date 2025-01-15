@@ -85,40 +85,40 @@ import Icon from "~/components/Common/Icon.vue";
 import {useRoute} from "vue-router";
 import {some} from "lodash";
 import {IconOpenInNew} from "~/components/Common/icons.ts";
-import {MenuCategory} from "~/functions/filterMenu.ts";
+import {MenuCategory, MenuSubCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
 
 const props = defineProps<{
-    menu: MenuCategory[]
+    menu: ReactiveMenu
 }>();
 
 const currentRoute = useRoute();
 
-const isRouteLink = (item) => {
+const isRouteLink = (item: MenuSubCategory) => {
     return (typeof (item.url) !== 'undefined')
         && (typeof (item.url) !== 'string');
 };
 
-const isActiveItem = (item) => {
-    if (item.items && some(item.items, isActiveItem)) {
+const isActiveItem = (item: MenuCategory | MenuSubCategory) => {
+    if ('items' in item && some(item.items, isActiveItem)) {
         return true;
     }
 
     return isRouteLink(item) && !('params' in item.url) && item.url.name === currentRoute.name;
 };
 
-const getLinkClass = (item) => {
+const getLinkClass = (item: MenuSubCategory) => {
     return [
         item.class ?? null,
         isActiveItem(item) ? 'active' : ''
     ];
 }
 
-const getCategoryLink = (item) => {
+const getCategoryLink = (item: MenuSubCategory) => {
     const linkAttrs: {
         [key: string]: any
     } = {};
 
-    if (item.items) {
+    if ('items' in item) {
         linkAttrs['data-bs-toggle'] = 'collapse';
         linkAttrs.href = '#sidebar-submenu-' + item.key;
     } else {

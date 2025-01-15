@@ -26,7 +26,7 @@
                             id="edit_form_storage_location"
                             class="col-md-12"
                             :field="v$.storage_location"
-                            :options="storageLocationOptions"
+                            :options="storageLocations"
                             :label="$gettext('Storage Location')"
                         />
 
@@ -106,9 +106,8 @@ import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import objectToFormOptions from "~/functions/objectToFormOptions";
 import StreamingLogView from "~/components/Common/StreamingLogView.vue";
-import {ref, toRef} from "vue";
+import {ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Modal from "~/components/Common/Modal.vue";
@@ -117,12 +116,10 @@ import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
 const props = defineProps<{
     runBackupUrl: string,
-    storageLocations: object, // TODO
+    storageLocations: Record<number, string>,
 }>();
 
 const emit = defineEmits(['relist']);
-
-const storageLocationOptions = objectToFormOptions(toRef(props, 'storageLocations'));
 
 const logUrl = ref(null);
 const error = ref(null);

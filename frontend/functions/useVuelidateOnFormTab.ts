@@ -44,7 +44,7 @@ export function useVuelidateOnFormTab<
     // Register event listener for blankForm building.
     const formEventBus = useEventBus('form_tabs');
 
-    formEventBus.on((addToForm) => {
+    formEventBus.on((addToForm: (blankForm: Partial<T>) => void) => {
         addToForm(blankForm);
     });
 

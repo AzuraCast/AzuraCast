@@ -34,7 +34,7 @@
             id="edit_form_roles"
             class="col-md-12"
             :field="v$.roles"
-            :options="roleOptions"
+            :options="roles"
             :label="$gettext('Roles')"
         />
     </div>
@@ -42,15 +42,14 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import objectToFormOptions from "~/functions/objectToFormOptions";
-import {computed, toRef} from "vue";
+import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {email, required} from "@vuelidate/validators";
 import validatePassword from "~/functions/validatePassword";
 
 interface AdminUsersFormProps extends FormTabProps {
-    roles: object,
+    roles: Record<number, string>,
     isEditMode: boolean,
 }
 
@@ -77,6 +76,4 @@ const {v$} = useVuelidateOnFormTab(
         roles: [],
     }
 );
-
-const roleOptions = objectToFormOptions(toRef(props, 'roles'));
 </script>

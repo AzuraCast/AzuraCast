@@ -116,7 +116,7 @@
                         <form-group-select
                             id="edit_form_frontend_banned_countries"
                             :field="v$.frontend_config.banned_countries"
-                            :options="countryOptions"
+                            :options="countries"
                             multiple
                             :label="$gettext('Banned Countries')"
                             :description="$gettext('Select the countries that are not allowed to connect to the streams.')"
@@ -169,8 +169,7 @@
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {FrontendAdapter} from "~/entities/RadioAdapters";
-import objectToFormOptions from "~/functions/objectToFormOptions";
-import {computed, toRef} from "vue";
+import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
@@ -182,7 +181,7 @@ import Tab from "~/components/Common/Tab.vue";
 interface StationFrontendFormProps extends FormTabProps {
     isRsasInstalled: boolean,
     isShoutcastInstalled: boolean,
-    countries: object, // TODO
+    countries: Record<string, string>,
 }
 
 const props = defineProps<StationFrontendFormProps>();
@@ -288,8 +287,6 @@ const frontendTypeOptions = computed(() => {
 
     return frontendOptions;
 });
-
-const countryOptions = objectToFormOptions(toRef(props, 'countries'));
 
 const isLocalFrontend = computed(() => {
     return form.value.frontend_type !== FrontendAdapter.Remote;

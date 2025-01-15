@@ -66,7 +66,6 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {useTranslate} from "~/vendor/gettext.ts";
 import {onMounted, ref, shallowRef} from "vue";
 import {useAxios} from "~/vendor/axios.ts";
-import objectToFormOptions from "~/functions/objectToFormOptions.ts";
 import {getStationApiUrl} from "~/router.ts";
 import Loading from "~/components/Common/Loading.vue";
 
@@ -111,7 +110,7 @@ const playlistsApiUrl = getStationApiUrl('/podcasts/playlists');
 
 const loadPlaylists = () => {
     axios.get(playlistsApiUrl.value).then((resp) => {
-        playlistOptions.value = objectToFormOptions(resp.data).value;
+        playlistOptions.value = resp.data;
     }).finally(() => {
         playlistsLoading.value = false;
     });

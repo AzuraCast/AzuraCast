@@ -44,11 +44,11 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import objectToFormOptions, {FormOption} from "~/functions/objectToFormOptions";
-import {computed, toRef} from "vue";
+import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {HasGenericFormProps} from "~/entities/Forms.ts";
+import {objectToSimpleFormOptions} from "~/functions/objectToFormOptions.ts";
 
 interface AccountEditFormProps extends HasGenericFormProps {
     supportedLocales: Record<string, string>
@@ -58,8 +58,8 @@ const props = defineProps<AccountEditFormProps>();
 
 const {$gettext} = useTranslate();
 
-const localeOptions = computed<FormOption[]>(() => {
-    const localeOptions = objectToFormOptions(toRef(props, 'supportedLocales')).value;
+const localeOptions = computed(() => {
+    const localeOptions = objectToSimpleFormOptions(props.supportedLocales).value;
 
     localeOptions.unshift({
         text: $gettext('Use Browser Default'),
@@ -69,7 +69,7 @@ const localeOptions = computed<FormOption[]>(() => {
     return localeOptions;
 });
 
-const show24hourOptions = computed<FormOption[]>(() => {
+const show24hourOptions = computed(() => {
     return [
         {
             text: $gettext('Prefer System Default'),

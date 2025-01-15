@@ -171,7 +171,7 @@ import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 
 const props = withDefaults(
     defineProps<{
-        storageLocations: object, // TODO,
+        storageLocations: Record<number, string>,
         isDocker: boolean,
     }>(),
     {

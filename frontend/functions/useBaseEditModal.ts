@@ -18,14 +18,14 @@ export interface BaseEditModalEmits {
     (e: 'relist'): void
 }
 
-export interface BaseEditModalOptions extends GlobalConfig {
+export interface BaseEditModalOptions<T extends GenericForm = GenericForm> extends GlobalConfig {
     resetForm?(originalResetForm: () => void): void,
 
     clearContents?(resetForm: () => void): void,
 
-    populateForm?(data: Record<string, any>, form: Ref<GenericForm>): void,
+    populateForm?(data: Partial<T>, form: Ref<T>): void,
 
-    getSubmittableFormData?(form: Ref<GenericForm>, isEditMode: ComputedRef<boolean>): Record<string, any>,
+    getSubmittableFormData?(form: Ref<T>, isEditMode: ComputedRef<boolean>): Record<string, any>,
 
     buildSubmitRequest?(): AxiosRequestConfig,
 
@@ -38,15 +38,15 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
     props: BaseEditModalProps,
     emit: BaseEditModalEmits,
     $modal: Ref<ModalFormTemplateRef>,
-    validations: VuelidateValidations<T> = {},
-    blankForm: T = {},
-    options: BaseEditModalOptions = {}
+    validations: VuelidateValidations<T>,
+    blankForm: T,
+    options: BaseEditModalOptions<T> = {}
 ): {
     loading: Ref<boolean>,
     error: Ref<any | null>,
     editUrl: Ref<string>,
     isEditMode: ComputedRef<boolean>,
-    form: Form,
+    form: Ref<T>,
     v$: VuelidateRef<T>,
     resetForm(): void,
     clearContents(): void,
@@ -107,7 +107,7 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
         });
     };
 
-    const populateForm = (data: Record<string, any>): void => {
+    const populateForm = (data: Partial<T>): void => {
         if (typeof options.populateForm === 'function') {
             options.populateForm(data, form);
             return;

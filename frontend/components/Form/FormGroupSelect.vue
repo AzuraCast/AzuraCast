@@ -64,14 +64,14 @@ import FormGroup from "~/components/Form/FormGroup.vue";
 import {FormFieldProps, useFormField} from "~/components/Form/useFormField";
 import SelectOptions from "~/components/Form/SelectOptions.vue";
 import {useSlots} from "vue";
-import {FormOptionInput} from "~/functions/objectToFormOptions.ts";
+import {NestedFormOptionInput} from "~/functions/objectToNestedFormOptions.ts";
 
 interface FormGroupSelectProps extends FormFieldProps, FormLabelParentProps {
     id: string,
     name?: string,
     label?: string,
     description?: string,
-    options: FormOptionInput,
+    options: NestedFormOptionInput,
     multiple?: boolean,
 }
 

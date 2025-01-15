@@ -1,10 +1,31 @@
 import {map} from 'lodash';
-import {MaybeRefOrGetter, computed, ComputedRef, toValue} from "vue";
+import {computed, ComputedRef, MaybeRefOrGetter, toValue} from "vue";
 
 export interface FormOption {
-    value: any,
+    value: string | number,
     text: string,
     description?: string
+}
+
+type SimpleFormOptionObject = Record<(string | number), string>
+
+export type SimpleFormOptionInput = FormOption[] | SimpleFormOptionObject
+
+export function objectToSimpleFormOptions(
+    initial: MaybeRefOrGetter<SimpleFormOptionInput>,
+): ComputedRef<FormOption[]> {
+    return computed(() => {
+        const array = toValue(initial);
+
+        if (Array.isArray(array)) {
+            return array;
+        }
+
+        return map(array, (outerValue, outerKey) => ({
+            text: outerValue,
+            value: outerKey
+        }));
+    });
 }
 
 export interface FormOptionGroup {
@@ -12,14 +33,16 @@ export interface FormOptionGroup {
     label: string,
 }
 
-export type FormOptionInput = (FormOption | FormOptionGroup)[] | Record<string, any>;
-export type FormOptionOutput = (FormOption | FormOptionGroup)[];
+type NestedFormOptionObject = SimpleFormOptionObject | Record<(string | number), SimpleFormOptionObject>
 
-export default function objectToFormOptions(
-    initial: MaybeRefOrGetter<FormOptionInput>
-): ComputedRef<FormOptionOutput> {
+export type NestedFormOptionInput = (FormOption | FormOptionGroup)[] | NestedFormOptionObject;
+export type NestedFormOptionOutput = (FormOption | FormOptionGroup)[];
+
+export function objectToNestedFormOptions(
+    initial: MaybeRefOrGetter<NestedFormOptionInput>
+): ComputedRef<NestedFormOptionOutput> {
     return computed(() => {
-        const array: FormOptionInput = toValue(initial);
+        const array = toValue(initial);
 
         if (Array.isArray(array)) {
             return array;

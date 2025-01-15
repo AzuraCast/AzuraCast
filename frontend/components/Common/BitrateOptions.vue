@@ -72,10 +72,10 @@
 
 <script setup lang="ts">
 import {FormFieldProps, useFormField} from "~/components/Form/useFormField";
-import {computed, ComputedRef, useSlots} from "vue";
+import {computed, useSlots, WritableComputedRef} from "vue";
 import {includes, map} from "lodash";
 import useSlotsExcept from "~/functions/useSlotsExcept.ts";
-import FormMultiCheck, {FormMultiCheckOption} from "~/components/Form/FormMultiCheck.vue";
+import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 
@@ -106,7 +106,7 @@ const radioBitrates = [
     32, 48, 64, 96, 128, 192, 256, 320
 ].filter((bitrate) => props.maxBitrate === 0 || bitrate <= props.maxBitrate);
 
-const customField: ComputedRef<number | null> = computed({
+const customField: WritableComputedRef<number | null> = computed({
     get() {
         return includes(radioBitrates, model.value)
             ? ''
@@ -117,7 +117,7 @@ const customField: ComputedRef<number | null> = computed({
     }
 });
 
-const radioField: ComputedRef<number | string | null> = computed({
+const radioField: WritableComputedRef<number | string | null> = computed({
     get() {
         return includes(radioBitrates, model.value)
             ? model.value
@@ -130,7 +130,7 @@ const radioField: ComputedRef<number | string | null> = computed({
     }
 });
 
-const bitrateOptions: FormMultiCheckOption[] = map(
+const bitrateOptions = map(
     radioBitrates,
     (val: number) => {
         return {

@@ -5,7 +5,10 @@ import {toRaw} from "vue";
  * A "deep" merge that only merges items from the source into the destination that already exist in the destination.
  * Useful for merging in form values with API returns.
  */
-export default function mergeExisting(destRaw, sourceRaw) {
+export default function mergeExisting<T extends object>(
+    destRaw: T,
+    sourceRaw: Partial<T>
+): T {
     const dest = toRaw(destRaw);
     const source = toRaw(sourceRaw);
 

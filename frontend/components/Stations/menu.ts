@@ -25,6 +25,7 @@ export function useStationsMenu(): ReactiveMenu {
     // Reuse this variable to avoid multiple calls.
     const userCanManageMedia = userAllowedForStation(StationPermission.Media);
 
+    // @ts-expect-error This is proper, TS just messes it up
     const menu: ReactiveMenu = reactive([
         {
             key: 'profile',

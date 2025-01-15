@@ -1,32 +1,37 @@
 import {cloneDeep, filter, get, map} from "lodash";
-import {ComputedRef, Reactive} from "vue";
+import {ComputedRef, Reactive, toRaw} from "vue";
 import {Icon} from "../components/Common/icons";
-import {RouteLocationRaw} from "vue-router";
+import {RouteLocationAsPathGeneric, RouteLocationAsRelativeGeneric} from "vue-router";
 import {reactiveComputed} from "@vueuse/core";
 
-export type ReactiveMenu = Reactive<Array<MenuCategory>>;
+export type ReactiveMenu = Reactive<MenuCategory[]>;
+
+interface RouteBasedUrl {
+    name: string,
+    params?: Record<string, any>
+}
 
 export interface MenuSubCategory {
     key: string,
     label: ComputedRef<string>,
-    url?: RouteLocationRaw | string | null,
-    icon?: Icon | null,
-    visible?: boolean | null,
-    external?: boolean | null,
+    url?: string | RouteBasedUrl,
+    icon?: Icon,
+    visible?: boolean,
+    external?: boolean,
     title?: string,
-    class?: string,
+    "class"?: string,
 }
 
 export interface MenuCategory extends MenuSubCategory {
-    items?: MenuSubCategory[] | null
+    items?: MenuSubCategory[]
 }
 
 export default function filterMenu(menuItems: ReactiveMenu): ReactiveMenu {
     return reactiveComputed(
         () => filter(
             map(
-                cloneDeep(menuItems),
-                (menuRow: MenuCategory): MenuCategory | null => {
+                cloneDeep(toRaw(menuItems as unknown as MenuCategory[])),
+                (menuRow): MenuCategory | null => {
                     const itemIsVisible: boolean = get(menuRow, 'visible', true);
                     if (!itemIsVisible) {
                         return null;

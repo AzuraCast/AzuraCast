@@ -1,5 +1,5 @@
 import {useTranslate} from "~/vendor/gettext.ts";
-import filterMenu, {ReactiveMenu} from "~/functions/filterMenu.ts";
+import filterMenu, {MenuCategory} from "~/functions/filterMenu.ts";
 import {StationPermission, userAllowedForStation} from "~/acl.ts";
 import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {computed, reactive} from "vue";
@@ -16,7 +16,7 @@ import {
     IconReport
 } from "~/components/Common/icons.ts";
 
-export function useStationsMenu(): ReactiveMenu {
+export function useStationsMenu(): MenuCategory[] {
     const {$gettext} = useTranslate();
 
     const {enableAdvancedFeatures} = useAzuraCast();
@@ -26,7 +26,7 @@ export function useStationsMenu(): ReactiveMenu {
     const userCanManageMedia = userAllowedForStation(StationPermission.Media);
 
     // @ts-expect-error This is proper, TS just messes it up
-    const menu: ReactiveMenu = reactive([
+    const menu: MenuCategory[] = reactive([
         {
             key: 'profile',
             label: computed(() => $gettext('Profile')),

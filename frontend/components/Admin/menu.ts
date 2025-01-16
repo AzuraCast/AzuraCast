@@ -1,13 +1,13 @@
 import {useTranslate} from "~/vendor/gettext.ts";
 import {GlobalPermission, userAllowed} from "~/acl.ts";
-import filterMenu, {MenuCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
+import filterMenu, {MenuCategory} from "~/functions/filterMenu.ts";
 import {computed, reactive} from "vue";
 import {IconGroups, IconRadio, IconRouter} from "~/components/Common/icons.ts";
 
-export function useAdminMenu(): ReactiveMenu {
+export function useAdminMenu(): MenuCategory[] {
     const {$gettext} = useTranslate();
 
-    const menu: ReactiveMenu = reactive<Array<MenuCategory>>([
+    const menu: MenuCategory[] = reactive([
         {
             key: 'maintenance',
             label: computed(() => $gettext('System Maintenance')),

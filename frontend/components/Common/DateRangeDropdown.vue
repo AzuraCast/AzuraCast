@@ -39,7 +39,7 @@ export interface DateRange {
 
 const props = defineProps<{
     options?: Partial<VueDatePickerProps>,
-    modelValue: DateRange
+    modelValue?: DateRange
 }>();
 
 const emit = defineEmits(['update:modelValue']);
@@ -69,11 +69,7 @@ const dateRange = computed({
 const {$gettext} = useTranslate();
 
 const ranges = computed(() => {
-    let nowTz = DateTime.now();
-    if (props.options?.timezone) {
-        nowTz = nowTz.setZone(props.options.timezone);
-    }
-
+    const nowTz = DateTime.now().setZone(props.options?.timezone ?? "UTC");
     const nowAtMidnightDate = nowTz.endOf('day').toJSDate();
 
     return [

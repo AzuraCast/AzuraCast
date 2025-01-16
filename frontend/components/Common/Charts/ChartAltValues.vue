@@ -26,9 +26,9 @@
 </template>
 
 <script setup lang="ts">
-import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
+import {ChartAltData} from "~/functions/useChart.ts";
 
 const props = defineProps<{
-    alt: ChartAltValues[]
+    alt: ChartAltData[]
 }>();
 </script>

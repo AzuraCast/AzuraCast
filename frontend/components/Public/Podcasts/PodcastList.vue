@@ -126,6 +126,7 @@ import {IconRss} from "~/components/Common/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
 import {usePodcastGroupLayout} from "~/components/Public/Podcasts/usePodcastGroupLayout.ts";
 import GridLayout from "~/components/Common/GridLayout.vue";
+import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
 
 const {groupLayout} = usePodcastGroupLayout();
 
@@ -133,7 +134,7 @@ const apiUrl = getStationApiUrl('/public/podcasts');
 
 const {$gettext} = useTranslate();
 
-const fields: DataTableField[] = [
+const fields: DataTableField<ApiPodcast>[] = [
     {key: 'art', label: '', sortable: false, class: 'shrink pe-0'},
     {key: 'title', label: $gettext('Podcast'), sortable: true},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}

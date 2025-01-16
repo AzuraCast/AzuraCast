@@ -52,13 +52,14 @@ import Icon from '~/components/Common/Icon.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
 import {StationPermission, userAllowedForStation} from "~/acl";
 import {IconEdit} from "~/components/Common/icons";
+import {ApiNowPlayingStation} from "~/entities/ApiInterfaces.ts";
 
 defineOptions({
     inheritAttrs: false
 });
 
 interface ProfileHeaderPanelProps extends ProfileHeaderPanelParentProps {
-    station: object
+    station: ApiNowPlayingStation
 }
 
 const props = defineProps<ProfileHeaderPanelProps>();

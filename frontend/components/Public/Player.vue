@@ -160,6 +160,7 @@ import usePlayerVolume from "~/functions/usePlayerVolume";
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {useEventListener} from "@vueuse/core";
 import useShowVolume from "~/functions/useShowVolume.ts";
+import {ApiNowPlaying} from "~/entities/ApiInterfaces.ts";
 
 defineOptions({
     inheritAttrs: false
@@ -174,7 +175,9 @@ const props = withDefaults(
     }
 );
 
-const emit = defineEmits(['np_updated']);
+const emit = defineEmits<{
+    (e: 'np_updated', np: ApiNowPlaying)
+}>();
 
 const {
     np,
@@ -274,7 +277,7 @@ onMounted(() => {
     document.dispatchEvent(new CustomEvent("player-ready"));
 });
 
-const onNowPlayingUpdated = (np_new) => {
+const onNowPlayingUpdated = (np_new: ApiNowPlaying) => {
     emit('np_updated', np_new);
 
     // Set a "default" current stream if none exists.

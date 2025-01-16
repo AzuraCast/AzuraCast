@@ -113,9 +113,17 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 import {IconRemove} from "~/components/Common/icons";
 
+interface PlaylistScheduleRow {
+    start_time: number,
+    end_time: number,
+    start_date: string,
+    end_date: string,
+    days: number[],
+}
+
 const props = defineProps<{
     index: number,
-    row: object,
+    row: PlaylistScheduleRow,
 }>();
 
 const emit = defineEmits(['remove']);

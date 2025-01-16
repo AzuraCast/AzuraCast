@@ -66,6 +66,7 @@ import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 import {getStationApiUrl} from "~/router.ts";
 import InfoCard from "~/components/Common/InfoCard.vue";
+import {ComponentExposed} from "vue-component-type-helpers";
 
 const updateMetadataUrl = getStationApiUrl('/nowplaying/update');
 
@@ -87,7 +88,7 @@ const onHidden = () => {
     resetForm();
 }
 
-const $field = ref<InstanceType<typeof FormGroupField> | null>(null);
+const $field = ref<ComponentExposed<typeof FormGroupField> | null>(null);
 
 const onShown = () => {
     nextTick(() => {

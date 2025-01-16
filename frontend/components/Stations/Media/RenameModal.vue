@@ -46,6 +46,7 @@ import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {ComponentExposed} from "vue-component-type-helpers";
 
 const props = defineProps<{
     renameUrl: string
@@ -74,7 +75,7 @@ const open = (filePath: string): void => {
     show();
 }
 
-const $field = ref<InstanceType<typeof FormGroupField> | null>(null);
+const $field = ref<ComponentExposed<typeof FormGroupField> | null>(null);
 
 const onShown = () => {
     nextTick(() => {

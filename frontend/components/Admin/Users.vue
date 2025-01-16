@@ -87,9 +87,10 @@ import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
+import {ComponentExposed} from "vue-component-type-helpers";
 
 const props = defineProps<{
-    roles: object, // TODO
+    roles: Record<number, string>,
 }>();
 
 const listUrl = getApiUrl('/admin/users');
@@ -105,7 +106,7 @@ const fields: DataTableField[] = [
 const $datatable = ref<DataTableTemplateRef>(null);
 const {relist} = useHasDatatable($datatable);
 
-const $editModal = ref<InstanceType<EditModal> | null>(null);
+const $editModal = ref<ComponentExposed<typeof EditModal> | null>(null);
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const {doDelete} = useConfirmAndDelete(

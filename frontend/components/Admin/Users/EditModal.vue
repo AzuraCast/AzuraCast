@@ -30,7 +30,7 @@ import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 
 interface UsersEditModalProps extends BaseEditModalProps {
-    roles: object
+    roles: Record<number, string>
 }
 
 const props = defineProps<UsersEditModalProps>();

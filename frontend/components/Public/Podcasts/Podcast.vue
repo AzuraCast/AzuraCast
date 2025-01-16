@@ -183,6 +183,7 @@ import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter
 import PodcastCommon from "./PodcastCommon.vue";
 import GridLayout from "~/components/Common/GridLayout.vue";
 import {usePodcastGroupLayout} from "~/components/Public/Podcasts/usePodcastGroupLayout.ts";
+import {ApiPodcast, ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
 
 const {groupLayout} = usePodcastGroupLayout();
 
@@ -191,7 +192,7 @@ const {params} = useRoute();
 const podcastUrl = getStationApiUrl(`/public/podcast/${params.podcast_id}`);
 
 const {axios} = useAxios();
-const {state: podcast, isLoading} = useRefreshableAsyncState(
+const {state: podcast, isLoading} = useRefreshableAsyncState<ApiPodcast>(
     () => axios.get(podcastUrl.value).then((r) => r.data),
     {},
 );
@@ -199,7 +200,7 @@ const {state: podcast, isLoading} = useRefreshableAsyncState(
 const episodesUrl = getStationApiUrl(`/public/podcast/${params.podcast_id}/episodes`);
 
 const {$gettext} = useTranslate();
-const fields: DataTableField[] = [
+const fields: DataTableField<ApiPodcastEpisode>[] = [
     {key: 'play_button', label: '', sortable: false, class: 'shrink pe-0'},
     {key: 'art', label: '', sortable: false, class: 'shrink pe-0'},
     {key: 'title', label: $gettext('Episode'), sortable: true},

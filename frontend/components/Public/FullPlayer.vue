@@ -66,12 +66,13 @@ import SongHistoryModal from './FullPlayer/SongHistoryModal.vue';
 import RequestModal from './FullPlayer/RequestModal.vue';
 import Icon from '~/components/Common/Icon.vue';
 import RadioPlayer from './Player.vue';
-import {ref} from "vue";
+import {ref, shallowRef} from "vue";
 import Lightbox from "~/components/Common/Lightbox.vue";
 import {LightboxTemplateRef, useProvideLightbox} from "~/vendor/lightbox";
 import {IconDownload, IconHelp, IconHistory} from "~/components/Common/icons";
 import {RequestsProps} from "~/components/Public/Requests.vue";
 import {PlayerProps} from "~/components/Public/Player.vue";
+import {ApiNowPlayingSongHistory} from "~/entities/ApiInterfaces.ts";
 
 interface FullPlayerProps extends PlayerProps, RequestsProps {
     stationName: string,
@@ -86,7 +87,7 @@ const props = withDefaults(
     }
 );
 
-const history = ref({});
+const history = shallowRef<ApiNowPlayingSongHistory[]>([]);
 
 const onNowPlayingUpdate = (newNowPlaying) => {
     history.value = newNowPlaying?.song_history;

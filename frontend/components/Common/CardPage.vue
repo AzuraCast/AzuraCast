@@ -47,7 +47,6 @@ const props = withDefaults(
         headerId?: string,
     }>(),
     {
-        title: null,
         headerId: 'card_hdr'
     }
 );

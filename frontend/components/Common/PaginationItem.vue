@@ -33,7 +33,6 @@ const props = withDefaults(
     }>(),
     {
         page: 1,
-        label: null,
         active: false,
         disabled: false,
     }

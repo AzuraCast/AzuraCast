@@ -219,11 +219,12 @@ import {IconClearAll, IconDelete, IconFolder, IconMoreHoriz, IconMove} from "~/c
 import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchResponse.ts";
 import {useNotify} from "~/functions/useNotify.ts";
 import {useDialog} from "~/functions/useDialog.ts";
+import {MediaInitialPlaylist, MediaSelectedItems} from "~/components/Stations/Media.vue";
 
 const props = defineProps<{
     currentDirectory: string,
-    selectedItems: object, // TODO
-    playlists?: any[], // TODO
+    selectedItems: MediaSelectedItems,
+    playlists?: MediaInitialPlaylist[],
     batchUrl: string,
     supportsImmediateQueue: boolean
 }>();
@@ -323,7 +324,7 @@ const doDelete = () => {
     const numFiles = selectedItems.value.all.length;
     const buttonConfirmText = $gettext(
         'Delete %{num} media files?',
-        {num: numFiles}
+        {num: String(numFiles)}
     );
 
     confirmDelete({

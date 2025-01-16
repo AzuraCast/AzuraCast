@@ -95,9 +95,10 @@ import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchResponse.ts";
 import {useAsyncState} from "@vueuse/core";
+import {MediaSelectedItems} from "~/components/Stations/Media.vue";
 
 const props = defineProps<{
-    selectedItems: object, // TODO
+    selectedItems: MediaSelectedItems,
     currentDirectory: string,
     batchUrl: string,
     listDirectoriesUrl: string,

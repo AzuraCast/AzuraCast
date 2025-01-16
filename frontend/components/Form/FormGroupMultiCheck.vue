@@ -66,22 +66,22 @@
     </form-group>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T = ModelFormField">
 import VuelidateError from "./VuelidateError.vue";
 import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 import useSlotsExcept from "~/functions/useSlotsExcept";
-import {FormFieldEmits, FormFieldProps, useFormField} from "~/components/Form/useFormField";
+import {FormFieldEmits, FormFieldProps, ModelFormField, useFormField} from "~/components/Form/useFormField";
 import {useSlots} from "vue";
-import {FormOption} from "~/functions/objectToNestedFormOptions.ts";
+import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 
-interface FormGroupMultiCheckProps extends FormFieldProps, FormLabelParentProps {
+interface FormGroupMultiCheckProps extends FormFieldProps<T>, FormLabelParentProps {
     id: string,
     name?: string,
     label?: string,
     description?: string,
-    options: FormOption[],
+    options: SimpleFormOptionInput,
     radio?: boolean,
     stacked?: boolean
 }
@@ -89,9 +89,6 @@ interface FormGroupMultiCheckProps extends FormFieldProps, FormLabelParentProps 
 const props = withDefaults(
     defineProps<FormGroupMultiCheckProps>(),
     {
-        name: null,
-        label: null,
-        description: null,
         radio: false,
         stacked: false
     }
@@ -99,7 +96,7 @@ const props = withDefaults(
 
 const slots = useSlots();
 
-const emit = defineEmits<FormFieldEmits>();
+const emit = defineEmits<FormFieldEmits<T>>();
 
-const {model, isVuelidateField, isRequired} = useFormField(props, emit);
+const {model, isVuelidateField, isRequired} = useFormField<T>(props, emit);
 </script>

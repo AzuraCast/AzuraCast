@@ -87,8 +87,14 @@ import {getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import EditModal from "~/components/Stations/HlsStreams/EditModal.vue";
 
+interface SftpUsersConnectionInfo {
+    url: string,
+    ip: string | null,
+    port: number
+}
+
 const props = defineProps<{
-    connectionInfo: object, // TODO
+    connectionInfo: SftpUsersConnectionInfo,
 }>();
 
 const listUrl = getStationApiUrl('/sftp-users');

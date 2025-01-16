@@ -67,8 +67,7 @@ const props = withDefaults(
     {
         active: false,
         busy: false,
-        size: 'md',
-        title: null
+        size: 'md'
     }
 );
 

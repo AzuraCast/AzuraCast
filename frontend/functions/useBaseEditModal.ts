@@ -11,7 +11,7 @@ import {GenericForm} from "~/entities/Forms.ts";
 export type ModalFormTemplateRef = InstanceType<typeof ModalForm> | null;
 
 export interface BaseEditModalProps {
-    createUrl: string
+    createUrl?: string
 }
 
 export interface BaseEditModalEmits {

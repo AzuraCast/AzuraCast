@@ -1,7 +1,11 @@
-import {Chart, registerables, ChartConfiguration,
+import {
+    Chart,
+    ChartConfiguration,
     ChartConfigurationCustomTypesPerDataset,
     ChartType,
-    DefaultDataPoint} from "chart.js";
+    DefaultDataPoint,
+    registerables
+} from "chart.js";
 import {defaultsDeep} from "lodash";
 import {computed, isRef, MaybeRef, onMounted, onUnmounted, Ref, toRef, toValue, watch} from "vue";
 import zoomPlugin from 'chartjs-plugin-zoom';
@@ -9,6 +13,7 @@ import chartjsColorSchemes from "~/vendor/chartjs_colorschemes.ts";
 
 import 'chartjs-adapter-luxon';
 import '~/vendor/luxon';
+import {reactiveComputed} from "@vueuse/core";
 
 Chart.register(...registerables);
 
@@ -55,13 +60,14 @@ export default function useChart<
 ): {
     $chart: Chart<TType, TData, TLabel> | null
 } {
-    const props: ChartProps = {
-        options: {},
-        data: [],
-        alt: [],
-        aspectRatio: 2,
-        ...initialProps
-    };
+    const props = reactiveComputed(() => (
+        {
+            data: [],
+            alt: [],
+            aspectRatio: 2,
+            ...initialProps
+        }
+    )) as ChartProps<TType, TData, TLabel>;
 
     let $chart = null;
 

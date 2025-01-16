@@ -5,17 +5,14 @@
     >
         <template
             v-if="label || slots.label"
-            #label="slotProps"
+            #label
         >
             <form-label
                 :is-required="isRequired"
                 :advanced="props.advanced"
                 :high-cpu="props.highCpu"
             >
-                <slot
-                    name="label"
-                    v-bind="slotProps"
-                >
+                <slot name="label">
                     {{ label }}
                 </slot>
             </form-label>
@@ -24,7 +21,7 @@
         <template #default>
             <slot
                 name="default"
-                v-bind="{ id, field, class: fieldClass }"
+                v-bind="{ id, field, model: filteredModelObject, class: fieldClass }"
             >
                 <textarea
                     v-if="inputType === 'textarea'"
@@ -59,7 +56,7 @@
 
         <template
             v-if="description || slots.description || clearable"
-            #description="slotProps"
+            #description
         >
             <div
                 v-if="clearable"
@@ -74,24 +71,27 @@
                 </button>
             </div>
 
-            <slot
-                v-bind="slotProps"
-                name="description"
-            >
+            <slot name="description">
                 {{ description }}
             </slot>
         </template>
     </form-group>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends any = ModelFormField">
 import VuelidateError from "./VuelidateError.vue";
-import {computed, nextTick, onMounted, ref, useSlots} from "vue";
+import {computed, ComputedRef, nextTick, onMounted, reactive, Reactive, ref} from "vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
-import {FormFieldProps, useFormField} from "~/components/Form/useFormField";
+import {
+    FormFieldEmits,
+    FormFieldProps,
+    ModelFormField,
+    useFormField,
+    VuelidateField
+} from "~/components/Form/useFormField";
 
-interface FormGroupFieldProps extends FormFieldProps, FormLabelParentProps {
+interface FormGroupFieldProps extends FormFieldProps<T>, FormLabelParentProps {
     id: string,
     name?: string,
     label?: string,
@@ -105,6 +105,10 @@ interface FormGroupFieldProps extends FormFieldProps, FormLabelParentProps {
     clearable?: boolean,
 }
 
+interface FilteredModelObject {
+    $model: T
+}
+
 const props = withDefaults(
     defineProps<FormGroupFieldProps>(),
     {
@@ -115,18 +119,26 @@ const props = withDefaults(
         inputNumber: false,
         inputTrim: false,
         inputEmptyIsNull: false,
-        inputAttrs: () => {
-        },
+        inputAttrs: () => ({}),
         autofocus: false,
         clearable: false
     }
 );
 
-const slots = useSlots();
+const slots = defineSlots<{
+    label?: () => any,
+    default?: (props: {
+        id: string,
+        field?: VuelidateField<T>,
+        model: FilteredModelObject,
+        class: ComputedRef<string | null>
+    }) => any,
+    description?: () => any,
+}>();
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<FormFieldEmits<T>>();
 
-const {model, isVuelidateField, fieldClass, isRequired} = useFormField(props, emit);
+const {model, isVuelidateField, fieldClass, isRequired} = useFormField<T>(props, emit);
 
 const isNumeric = computed(() => {
     return props.inputNumber || props.inputType === "number" || props.inputType === "range";
@@ -151,6 +163,11 @@ const filteredModel = computed({
             model.value = newValue;
         }
     }
+});
+
+// Work around a Vue v-model limitation by passing model as an object to child slots.
+const filteredModelObject: Reactive<FilteredModelObject> = reactive({
+    $model: filteredModel
 });
 
 const $input = ref<HTMLInputElement | HTMLTextAreaElement | null>(null);

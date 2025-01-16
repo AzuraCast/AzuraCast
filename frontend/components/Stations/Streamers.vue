@@ -124,9 +124,10 @@ import AddButton from "~/components/Common/AddButton.vue";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 import ScheduleViewTab from "~/components/Stations/Common/ScheduleViewTab.vue";
 import {EventImpl} from "@fullcalendar/core/internal";
+import {StreamerConnectionInfo} from "~/components/Stations/Streamers/ConnectionInfo.vue";
 
 const props = defineProps<{
-    connectionInfo: object, // TODO
+    connectionInfo: StreamerConnectionInfo,
 }>();
 
 const listUrl = getStationApiUrl('/streamers');

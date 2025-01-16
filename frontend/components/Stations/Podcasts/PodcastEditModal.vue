@@ -50,10 +50,11 @@ import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import {map} from "lodash";
+import {NestedFormOptionInput} from "~/functions/objectToFormOptions.ts";
 
 interface PodcastEditModalProps extends BaseEditModalProps {
-    languageOptions: object,
-    categoriesOptions: object,
+    languageOptions: NestedFormOptionInput,
+    categoriesOptions: NestedFormOptionInput,
     newArtUrl: string
 }
 

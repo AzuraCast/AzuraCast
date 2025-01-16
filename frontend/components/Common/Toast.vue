@@ -53,7 +53,6 @@ const props = withDefaults(
         variant?: string,
     }>(),
     {
-        title: null,
         variant: 'info',
     }
 );

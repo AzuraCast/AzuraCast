@@ -89,8 +89,7 @@ const props = withDefaults(
         id: 'edit-modal',
         loading: false,
         disableSaveButton: false,
-        noEnforceFocus: false,
-        error: null
+        noEnforceFocus: false
     }
 );
 

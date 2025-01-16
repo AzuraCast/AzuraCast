@@ -116,8 +116,6 @@ const props = withDefaults(
         isRsasInstalled: false,
         isShoutcastInstalled: false,
         isStereoToolInstalled: false,
-        createUrl: null,
-        editUrl: null,
         isModal: false
     }
 );

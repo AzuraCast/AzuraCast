@@ -24,7 +24,7 @@
             <component
                 :is="formComponent"
                 v-model:form="form"
-                :label="typeTitle"
+                :title="typeTitle"
             />
         </tabs>
     </modal-form>

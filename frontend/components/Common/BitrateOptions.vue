@@ -70,8 +70,8 @@
     </form-group>
 </template>
 
-<script setup lang="ts">
-import {FormFieldProps, useFormField} from "~/components/Form/useFormField";
+<script setup lang="ts" generic="T = string | number">
+import {FormFieldEmits, FormFieldProps, useFormField} from "~/components/Form/useFormField";
 import {computed, useSlots, WritableComputedRef} from "vue";
 import {includes, map} from "lodash";
 import useSlotsExcept from "~/functions/useSlotsExcept.ts";
@@ -79,7 +79,7 @@ import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 
-interface BitrateOptionsProps extends FormFieldProps, FormLabelParentProps {
+interface BitrateOptionsProps extends FormFieldProps<T>, FormLabelParentProps {
     id: string,
     maxBitrate: number,
     name?: string,
@@ -87,20 +87,13 @@ interface BitrateOptionsProps extends FormFieldProps, FormLabelParentProps {
     description?: string,
 }
 
-const props = withDefaults(
-    defineProps<BitrateOptionsProps>(),
-    {
-        name: null,
-        label: null,
-        description: null,
-    }
-);
+const props = defineProps<BitrateOptionsProps>();
 
 const slots = useSlots();
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<FormFieldEmits<T>>();
 
-const {model, isRequired} = useFormField(props, emit);
+const {model, isRequired} = useFormField<T>(props, emit);
 
 const radioBitrates = [
     32, 48, 64, 96, 128, 192, 256, 320

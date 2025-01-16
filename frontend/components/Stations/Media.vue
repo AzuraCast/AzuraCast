@@ -254,6 +254,21 @@
     />
 </template>
 
+<script lang="ts">
+import {ApiFileList} from "~/entities/ApiInterfaces.ts";
+
+export interface MediaSelectedItems {
+    all: ApiFileList[],
+    files: string[],
+    directories: string[]
+}
+
+export interface MediaInitialPlaylist {
+    id: number,
+    name: string
+}
+</script>
+
 <script setup lang="ts">
 import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import MediaToolbar from './Media/MediaToolbar.vue';
@@ -276,13 +291,13 @@ import {getStationApiUrl} from "~/router";
 import {useRoute, useRouter} from "vue-router";
 import {IconFile, IconFolder, IconImage} from "~/components/Common/icons";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
-import {ApiFileList, CustomField, FileTypes} from "~/entities/ApiInterfaces.ts";
+import {CustomField, FileTypes} from "~/entities/ApiInterfaces.ts";
 import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 
 const props = withDefaults(
     defineProps<{
-        initialPlaylists?: any[], // TODO
-        customFields?: any[], // TODO
+        initialPlaylists?: MediaInitialPlaylist[],
+        customFields?: CustomField[],
         validMimeTypes?: string[],
         showSftp?: boolean,
         supportsImmediateQueue?: boolean,
@@ -374,8 +389,8 @@ const fields = computed<DataTableField<ApiFileList>[]>(() => {
     return fields;
 });
 
-const playlists = ref(props.initialPlaylists);
-const selectedItems = ref({
+const playlists = ref<MediaInitialPlaylist[]>(props.initialPlaylists);
+const selectedItems = ref<MediaSelectedItems>({
     all: [],
     files: [],
     directories: []
@@ -383,8 +398,8 @@ const selectedItems = ref({
 const currentDirectory = ref('');
 const searchPhrase = ref('');
 
-const onRowSelected = (items) => {
-    const splitItems = partition(items, (row: ApiFileList) => row.type === FileTypes.Directory);
+const onRowSelected = (items: ApiFileList[]) => {
+    const splitItems = partition(items, (row) => row.type === FileTypes.Directory);
 
     selectedItems.value = {
         all: items,
@@ -410,7 +425,7 @@ const onTriggerRelist = () => {
     $datatable.value?.relist();
 };
 
-const onAddPlaylist = (row) => {
+const onAddPlaylist = (row: MediaInitialPlaylist) => {
     playlists.value.push(row);
 };
 

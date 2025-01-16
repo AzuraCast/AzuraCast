@@ -51,15 +51,15 @@
     </form-group>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T = boolean | null">
 import VuelidateError from "./VuelidateError.vue";
 import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
-import {FormFieldProps, useFormField} from "~/components/Form/useFormField";
+import {FormFieldEmits, FormFieldProps, useFormField} from "~/components/Form/useFormField";
 import {useSlots} from "vue";
 import FormCheckbox from "~/components/Form/FormCheckbox.vue";
 
-interface FormGroupCheckboxProps extends FormFieldProps, FormLabelParentProps {
+interface FormGroupCheckboxProps extends FormFieldProps<T>, FormLabelParentProps {
     id: string,
     name?: string,
     label?: string,
@@ -80,7 +80,7 @@ const props = withDefaults(
 
 const slots = useSlots();
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<FormFieldEmits<T>>();
 
-const {model, isVuelidateField, isRequired} = useFormField(props, emit);
+const {model, isVuelidateField, isRequired} = useFormField<T>(props, emit);
 </script>

@@ -42,7 +42,6 @@ import {TabParentProps, useTabParent} from "~/functions/tabs.ts";
 const props = withDefaults(
     defineProps<TabParentProps>(),
     {
-        modelValue: null,
         navTabsClass: 'nav-tabs',
         contentClass: 'mt-3',
         destroyOnHide: false,

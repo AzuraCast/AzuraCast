@@ -74,6 +74,7 @@ import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {ComponentExposed} from "vue-component-type-helpers";
 
 const props = defineProps<{
     createUrl: string,
@@ -107,7 +108,7 @@ const create = () => {
     show();
 };
 
-const $field = ref<InstanceType<typeof FormGroupField> | null>(null);
+const $field = ref<ComponentExposed<typeof FormGroupField> | null>(null);
 
 const onShown = () => {
     nextTick(() => {

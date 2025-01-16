@@ -16,7 +16,7 @@ import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
 import useChart, {ChartProps, ChartTemplateRef} from "~/functions/useChart";
 import {useLuxon} from "~/vendor/luxon";
 
-interface TimeSeriesChartProps extends ChartProps {
+interface TimeSeriesChartProps extends ChartProps<'line'> {
     tz?: string,
 }
 

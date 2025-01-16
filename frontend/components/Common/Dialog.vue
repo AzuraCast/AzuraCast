@@ -57,7 +57,7 @@ export interface DialogResponse {
 }
 
 export interface DialogComponentProps extends DialogOptions {
-    resolvePromise(body: DialogResponse)
+    resolvePromise(body: DialogResponse): void
 }
 </script>
 

@@ -16,8 +16,8 @@ export type VuelidateObject<T extends GenericForm = GenericForm> = Validation<Va
 export type VuelidateRef<T extends GenericForm = GenericForm> = Ref<VuelidateObject<T>>
 
 export function useVuelidateOnForm<T extends GenericForm = GenericForm>(
-    validations: VuelidateValidations<T> = {},
-    blankForm: VuelidateBlankForm<T> = {},
+    validations: VuelidateValidations<T> = {} as VuelidateValidations<T>,
+    blankForm: VuelidateBlankForm<T> = {} as VuelidateBlankForm<T>,
     options: GlobalConfig = {}
 ): {
     form: Ref<T>,

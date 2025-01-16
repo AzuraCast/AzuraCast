@@ -35,11 +35,11 @@
                 :label="$gettext('Publish At')"
                 :description="$gettext('The date and time when the episode should be published.')"
             >
-                <template #default="slotProps">
+                <template #default="{id, model, fieldClass}">
                     <publish-at-fields
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        :class="slotProps.class"
+                        :id="id"
+                        v-model="model.$model"
+                        :class="fieldClass"
                     />
                 </template>
             </form-group-field>

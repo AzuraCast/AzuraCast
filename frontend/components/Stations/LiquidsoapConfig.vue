@@ -47,10 +47,10 @@
                             :id="'form_edit_'+row.field_name"
                             :field="v$[row.field_name]"
                         >
-                            <template #default="slotProps">
+                            <template #default="{id, model}">
                                 <codemirror-textarea
-                                    :id="slotProps.id"
-                                    v-model="slotProps.field.$model"
+                                    :id="id"
+                                    v-model="model.$model"
                                     mode="liquidsoap"
                                 />
                             </template>

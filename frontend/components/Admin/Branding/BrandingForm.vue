@@ -74,10 +74,10 @@
                             :label="$gettext('Custom CSS for Public Pages')"
                             :description="$gettext('This CSS will be applied to the station public pages and login page.')"
                         >
-                            <template #default="slotProps">
+                            <template #default="{id, model}">
                                 <codemirror-textarea
-                                    :id="slotProps.id"
-                                    v-model="slotProps.field.$model"
+                                    :id="id"
+                                    v-model="model.$model"
                                     mode="css"
                                 />
                             </template>
@@ -90,10 +90,10 @@
                             :label="$gettext('Custom JS for Public Pages')"
                             :description="$gettext('This javascript code will be applied to the station public pages and login page.')"
                         >
-                            <template #default="slotProps">
+                            <template #default="{id, model}">
                                 <codemirror-textarea
-                                    :id="slotProps.id"
-                                    v-model="slotProps.field.$model"
+                                    :id="id"
+                                    v-model="model.$model"
                                     mode="javascript"
                                 />
                             </template>
@@ -106,10 +106,10 @@
                             :label="$gettext('Custom CSS for Internal Pages')"
                             :description="$gettext('This CSS will be applied to the main management pages, like this one.')"
                         >
-                            <template #default="slotProps">
+                            <template #default="{id, model}">
                                 <codemirror-textarea
-                                    :id="slotProps.id"
-                                    v-model="slotProps.field.$model"
+                                    :id="id"
+                                    v-model="model.$model"
                                     mode="css"
                                 />
                             </template>

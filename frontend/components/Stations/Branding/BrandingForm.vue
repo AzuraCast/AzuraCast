@@ -46,10 +46,10 @@
                             :label="$gettext('Custom CSS for Public Pages')"
                             :description="$gettext('This CSS will be applied to the station public pages.')"
                         >
-                            <template #default="slotProps">
+                            <template #default="{id, model}">
                                 <codemirror-textarea
-                                    :id="slotProps.id"
-                                    v-model="slotProps.field.$model"
+                                    :id="id"
+                                    v-model="model.$model"
                                     mode="css"
                                 />
                             </template>

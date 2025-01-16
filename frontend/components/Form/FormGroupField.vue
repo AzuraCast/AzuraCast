@@ -21,14 +21,14 @@
         <template #default>
             <slot
                 name="default"
-                v-bind="{ id, field, model: filteredModelObject, class: fieldClass }"
+                v-bind="{ id, field, model: modelObject, fieldClass }"
             >
                 <textarea
                     v-if="inputType === 'textarea'"
                     v-bind="inputAttrs"
                     :id="id"
                     ref="$input"
-                    v-model="filteredModel"
+                    v-model="model"
                     :name="name"
                     :required="isRequired"
                     class="form-control"
@@ -39,7 +39,7 @@
                     v-bind="inputAttrs"
                     :id="id"
                     ref="$input"
-                    v-model="filteredModel"
+                    v-model="model"
                     :type="inputType"
                     :name="name"
                     :required="isRequired"
@@ -112,9 +112,6 @@ interface FilteredModelObject {
 const props = withDefaults(
     defineProps<FormGroupFieldProps>(),
     {
-        name: null,
-        label: null,
-        description: null,
         inputType: 'text',
         inputNumber: false,
         inputTrim: false,
@@ -131,26 +128,26 @@ const slots = defineSlots<{
         id: string,
         field?: VuelidateField<T>,
         model: FilteredModelObject,
-        class: ComputedRef<string | null>
+        fieldClass: ComputedRef<string | null>
     }) => any,
     description?: () => any,
 }>();
 
 const emit = defineEmits<FormFieldEmits<T>>();
 
-const {model, isVuelidateField, fieldClass, isRequired} = useFormField<T>(props, emit);
+const {model: parentModel, isVuelidateField, fieldClass, isRequired} = useFormField<T>(props, emit);
 
 const isNumeric = computed(() => {
     return props.inputNumber || props.inputType === "number" || props.inputType === "range";
 });
 
-const filteredModel = computed({
+const model = computed({
     get() {
-        return model.value;
+        return parentModel.value;
     },
     set(newValue) {
         if ((isNumeric.value || props.inputEmptyIsNull) && '' === newValue) {
-            model.value = null;
+            parentModel.value = null;
         } else {
             if (props.inputTrim && null !== newValue) {
                 newValue = newValue.replace(/^\s+|\s+$/gm, '');
@@ -160,14 +157,14 @@ const filteredModel = computed({
                 newValue = Number(newValue);
             }
 
-            model.value = newValue;
+            parentModel.value = newValue;
         }
     }
 });
 
 // Work around a Vue v-model limitation by passing model as an object to child slots.
-const filteredModelObject: Reactive<FilteredModelObject> = reactive({
-    $model: filteredModel
+const modelObject: Reactive<FilteredModelObject> = reactive({
+    $model: model
 });
 
 const $input = ref<HTMLInputElement | HTMLTextAreaElement | null>(null);
@@ -177,7 +174,7 @@ const focus = () => {
 };
 
 const clear = () => {
-    filteredModel.value = '';
+    model.value = '';
 }
 
 onMounted(() => {

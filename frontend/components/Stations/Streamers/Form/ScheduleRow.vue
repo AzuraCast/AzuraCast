@@ -29,10 +29,10 @@
                     <template #label>
                         {{ $gettext('Start Time') }}
                     </template>
-                    <template #default="slotProps">
+                    <template #default="{id, model}">
                         <playlist-time
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
+                            :id="id"
+                            v-model="model.$model"
                         />
                     </template>
                 </form-group-field>
@@ -50,10 +50,10 @@
                             $gettext('If the end time is before the start time, the schedule entry will continue overnight.')
                         }}
                     </template>
-                    <template #default="slotProps">
+                    <template #default="{id, model}">
                         <playlist-time
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
+                            :id="id"
+                            v-model="model.$model"
                         />
                     </template>
                 </form-group-field>

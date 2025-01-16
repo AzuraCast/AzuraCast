@@ -44,7 +44,7 @@ const props = withDefaults(
     defineProps<{
         modelValue?: ModelFormField,
         id: string,
-        name: string,
+        name?: string,
         fieldClass?: string,
         options: SimpleFormOptionInput,
         radio?: boolean,

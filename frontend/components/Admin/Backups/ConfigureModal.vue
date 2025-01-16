@@ -29,11 +29,11 @@
                     :field="v$.backup_time_code"
                     :label="$gettext('Scheduled Backup Time')"
                 >
-                    <template #default="slotProps">
+                    <template #default="{id, model, fieldClass}">
                         <time-code
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            :class="slotProps.class"
+                            :id="id"
+                            v-model="model.$model"
+                            :class="fieldClass"
                         />
                     </template>
                 </form-group-field>

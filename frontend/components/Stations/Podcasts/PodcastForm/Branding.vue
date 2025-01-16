@@ -10,10 +10,10 @@
                 :field="v$.branding_config.public_custom_html"
                 :label="$gettext('Custom HTML for Public Pages')"
             >
-                <template #default="slotProps">
+                <template #default="{id, model}">
                     <codemirror-textarea
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
+                        :id="id"
+                        v-model="model.$model"
                         mode="html"
                     />
                 </template>

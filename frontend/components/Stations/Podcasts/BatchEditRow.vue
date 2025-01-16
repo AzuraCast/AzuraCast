@@ -11,11 +11,11 @@
                 :id="'form_edit_publish_at_'+index"
                 :field="v$.publish_at"
             >
-                <template #default="slotProps">
+                <template #default="{id, model, fieldClass}">
                     <publish-at-fields
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        :class="slotProps.class"
+                        :id="id"
+                        v-model="model.$model"
+                        :class="fieldClass"
                     />
                 </template>
             </form-group-field>

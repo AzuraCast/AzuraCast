@@ -1,7 +1,7 @@
 <template>
     <ul class="navdrawer-nav">
         <li
-            v-for="category in menu"
+            v-for="category in menu.categories"
             :key="category.key"
             class="nav-item"
         >
@@ -85,10 +85,10 @@ import Icon from "~/components/Common/Icon.vue";
 import {useRoute} from "vue-router";
 import {some} from "lodash";
 import {IconOpenInNew} from "~/components/Common/icons.ts";
-import {MenuCategory, MenuRouteBasedUrl, MenuRouteUrl, MenuSubCategory} from "~/functions/filterMenu.ts";
+import {MenuCategory, MenuRouteBasedUrl, MenuRouteUrl, MenuSubCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
 
 const props = defineProps<{
-    menu: MenuCategory[]
+    menu: ReactiveMenu
 }>();
 
 const currentRoute = useRoute();

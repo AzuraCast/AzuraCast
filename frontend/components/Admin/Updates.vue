@@ -162,14 +162,22 @@ import {getApiUrl} from "~/router";
 import {IconInfo, IconSync, IconUpdate, IconUpload} from "~/components/Common/icons";
 import {useDialog} from "~/functions/useDialog.ts";
 
+interface UpdateInfo {
+    needs_release_update?: boolean,
+    needs_rolling_update?: boolean,
+}
+
 const props = withDefaults(
     defineProps<{
         releaseChannel: string,
-        initialUpdateInfo?: object,
+        initialUpdateInfo?: UpdateInfo,
         enableWebUpdates: boolean,
     }>(),
     {
-        initialUpdateInfo: () => ({})
+        initialUpdateInfo: () => ({
+            needs_release_update: false,
+            needs_rolling_update: false,
+        })
     }
 );
 

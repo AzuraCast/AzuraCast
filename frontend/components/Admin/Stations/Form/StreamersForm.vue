@@ -137,13 +137,8 @@ import {numeric} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
-import {Station} from "~/entities/ApiInterfaces.ts";
 
-interface StationStreamersFormProps extends FormTabProps {
-    station: Station,
-}
-
-const props = defineProps<StationStreamersFormProps>();
+const props = defineProps<FormTabProps>();
 const emit = defineEmits<FormTabEmits>();
 
 const {enableAdvancedFeatures} = useAzuraCast();

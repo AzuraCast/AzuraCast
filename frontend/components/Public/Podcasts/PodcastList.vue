@@ -71,7 +71,7 @@
         paginated
         :api-url="apiUrl"
     >
-        <template #item="{item}">
+        <template #item="{item}: {item: ApiPodcast}">
             <div class="card mb-4">
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title m-0 flex-fill">

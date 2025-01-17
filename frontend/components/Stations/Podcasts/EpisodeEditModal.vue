@@ -46,9 +46,10 @@ import mergeExisting from "~/functions/mergeExisting";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
+import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
 
 interface EpisodeEditModalProps extends BaseEditModalProps {
-    podcast: object
+    podcast: ApiPodcast
 }
 
 const props = defineProps<EpisodeEditModalProps>();

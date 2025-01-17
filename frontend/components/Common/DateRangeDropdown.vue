@@ -71,7 +71,11 @@ const dateRange = computed({
 const {$gettext} = useTranslate();
 
 const ranges = computed(() => {
-    const nowTz = DateTime.now().setZone(props.options?.timezone ?? "UTC");
+    const tz: string = (props.options && "timezone" in props.options)
+        ? (typeof props.options.timezone === "string" ? props.options.timezone : props.options.timezone.timezone)
+        : 'UTC';
+
+    const nowTz = DateTime.now().setZone(tz);
     const nowAtMidnightDate = nowTz.endOf('day').toJSDate();
 
     return [

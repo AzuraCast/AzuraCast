@@ -78,18 +78,14 @@
     </form-group>
 </template>
 
-<script setup lang="ts" generic="T extends any = ModelFormField">
+<script setup lang="ts">
 import VuelidateError from "./VuelidateError.vue";
-import {computed, ComputedRef, nextTick, onMounted, reactive, Reactive, ref} from "vue";
+import {computed, nextTick, onMounted, reactive, Reactive, ref, WritableComputedRef} from "vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
-import {
-    FormFieldEmits,
-    FormFieldProps,
-    ModelFormField,
-    useFormField,
-    VuelidateField
-} from "~/components/Form/useFormField";
+import {FormFieldEmits, FormFieldProps, useFormField, VuelidateField} from "~/components/Form/useFormField";
+
+type T = string | number | null;
 
 interface FormGroupFieldProps extends FormFieldProps<T>, FormLabelParentProps {
     id: string,
@@ -106,7 +102,7 @@ interface FormGroupFieldProps extends FormFieldProps<T>, FormLabelParentProps {
 }
 
 interface FilteredModelObject {
-    $model: T
+    $model: WritableComputedRef<T>
 }
 
 const props = withDefaults(
@@ -127,8 +123,10 @@ const slots = defineSlots<{
     default?: (props: {
         id: string,
         field?: VuelidateField<T>,
-        model: FilteredModelObject,
-        fieldClass: ComputedRef<string | null>
+        model: {
+            $model: T
+        },
+        fieldClass: string | null
     }) => any,
     description?: () => any,
 }>();
@@ -150,7 +148,7 @@ const model = computed({
             parentModel.value = null;
         } else {
             if (props.inputTrim && null !== newValue) {
-                newValue = newValue.replace(/^\s+|\s+$/gm, '');
+                newValue = String(newValue).replace(/^\s+|\s+$/gm, '');
             }
 
             if (isNumeric.value) {

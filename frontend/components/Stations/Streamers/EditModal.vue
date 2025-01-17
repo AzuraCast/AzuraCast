@@ -56,7 +56,9 @@ const $modal = ref<ModalFormTemplateRef>(null);
 
 const {record, reset} = useResettableRef({
     has_custom_art: false,
-    links: {}
+    links: {
+        art: null,
+    }
 });
 
 const {

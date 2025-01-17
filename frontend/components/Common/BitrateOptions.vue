@@ -70,7 +70,7 @@
     </form-group>
 </template>
 
-<script setup lang="ts" generic="T = string | number">
+<script setup lang="ts">
 import {FormFieldEmits, FormFieldProps, useFormField} from "~/components/Form/useFormField";
 import {computed, useSlots, WritableComputedRef} from "vue";
 import {includes, map} from "lodash";
@@ -78,6 +78,9 @@ import useSlotsExcept from "~/functions/useSlotsExcept.ts";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
+import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
+
+type T = number | null
 
 interface BitrateOptionsProps extends FormFieldProps<T>, FormLabelParentProps {
     id: string,
@@ -99,10 +102,10 @@ const radioBitrates = [
     32, 48, 64, 96, 128, 192, 256, 320
 ].filter((bitrate) => props.maxBitrate === 0 || bitrate <= props.maxBitrate);
 
-const customField: WritableComputedRef<number | null> = computed({
+const customField: WritableComputedRef<T> = computed({
     get() {
-        return includes(radioBitrates, model.value)
-            ? ''
+        return includes(radioBitrates, Number(model.value))
+            ? null
             : model.value;
     },
     set(newValue) {
@@ -110,9 +113,9 @@ const customField: WritableComputedRef<number | null> = computed({
     }
 });
 
-const radioField: WritableComputedRef<number | string | null> = computed({
+const radioField: WritableComputedRef<"custom" | T> = computed({
     get() {
-        return includes(radioBitrates, model.value)
+        return includes(radioBitrates, Number(model.value))
             ? model.value
             : 'custom';
     },
@@ -123,7 +126,7 @@ const radioField: WritableComputedRef<number | string | null> = computed({
     }
 });
 
-const bitrateOptions = map(
+const bitrateOptions: SimpleFormOptionInput = map(
     radioBitrates,
     (val: number) => {
         return {

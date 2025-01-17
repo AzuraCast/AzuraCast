@@ -117,14 +117,11 @@ import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable
 import CardPage from "~/components/Common/CardPage.vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import useHasEditModal from "~/functions/useHasEditModal.ts";
-
-type CategoryOptions = {
-    [key: string]: string[]
-}
+import {NestedFormOptionInput} from "~/functions/objectToFormOptions.ts";
 
 const props = defineProps<{
     languageOptions: Record<string, string>,
-    categoriesOptions: CategoryOptions,
+    categoriesOptions: NestedFormOptionInput,
 }>();
 
 const quotaUrl = getStationApiUrl('/quota/station_podcasts');

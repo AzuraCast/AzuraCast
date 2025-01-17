@@ -51,13 +51,15 @@
     </form-group>
 </template>
 
-<script setup lang="ts" generic="T = boolean | null">
+<script setup lang="ts">
 import VuelidateError from "./VuelidateError.vue";
 import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import {FormFieldEmits, FormFieldProps, useFormField} from "~/components/Form/useFormField";
 import {useSlots} from "vue";
 import FormCheckbox from "~/components/Form/FormCheckbox.vue";
+
+type T = boolean | null
 
 interface FormGroupCheckboxProps extends FormFieldProps<T>, FormLabelParentProps {
     id: string,
@@ -73,8 +75,7 @@ const props = withDefaults(
         name: null,
         label: null,
         description: null,
-        inputAttrs: () => {
-        }
+        inputAttrs: () => ({})
     }
 );
 

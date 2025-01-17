@@ -37,12 +37,12 @@ export function useFormField<T = ModelFormField>(
 
     const model: WritableComputedRef<T, T> = computed({
         get() {
-            return (props.field !== undefined)
+            return (props.field)
                 ? props.field.$model
                 : props.modelValue;
         },
         set(newValue) {
-            if (props.field !== undefined) {
+            if (props.field) {
                 props.field.$model = newValue;
             } else {
                 emit('update:modelValue', newValue);
@@ -51,7 +51,7 @@ export function useFormField<T = ModelFormField>(
     });
 
     const fieldClass = computed(() => {
-        if (props.field !== undefined) {
+        if (!props.field) {
             return null;
         }
 

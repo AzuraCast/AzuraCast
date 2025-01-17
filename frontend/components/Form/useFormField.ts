@@ -5,7 +5,7 @@ import {reactiveComputed} from "@vueuse/core";
 
 export type ModelFormField = string | number | boolean | Array<any> | null
 
-export type VuelidateField<T> = BaseValidation<T, ValidationRuleCollection<T>>
+export type VuelidateField<T = ModelFormField> = BaseValidation<T, ValidationRuleCollection<T>>
 
 export interface FormFieldProps<T = ModelFormField> {
     modelValue?: T

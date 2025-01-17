@@ -137,9 +137,10 @@ import {numeric} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
+import {Station} from "~/entities/ApiInterfaces.ts";
 
 interface StationStreamersFormProps extends FormTabProps {
-    station: object, // TODO
+    station: Station,
 }
 
 const props = defineProps<StationStreamersFormProps>();

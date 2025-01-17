@@ -62,9 +62,10 @@ import {computed} from "vue";
 import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
+import {Station} from "~/entities/ApiInterfaces.ts";
 
 interface StationRequestsFormProps extends FormTabProps {
-    station: object, // TODO
+    station: Station,
 }
 
 const props = defineProps<StationRequestsFormProps>();

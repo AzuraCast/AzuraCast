@@ -31,7 +31,7 @@ import {VuelidateObject} from "~/functions/useVuelidateOnForm.ts";
 
 const props = defineProps<{
     form: VuelidateObject,
-    globalPermissions: object, // TODO
+    globalPermissions: Record<string, string>,
 }>();
 
 const globalPermissionOptions = computed(() => {

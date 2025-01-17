@@ -40,9 +40,9 @@ import {forEach, map} from 'lodash';
 import Tabs from "~/components/Common/Tabs.vue";
 
 interface PermissionsEditModalProps extends BaseEditModalProps {
-    stations: object,
-    globalPermissions: object,
-    stationPermissions: object
+    stations: Record<number, string>,
+    globalPermissions: Record<string, string>,
+    stationPermissions: Record<string, string>,
 }
 
 const props = defineProps<PermissionsEditModalProps>();

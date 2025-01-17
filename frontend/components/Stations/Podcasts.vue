@@ -118,9 +118,13 @@ import CardPage from "~/components/Common/CardPage.vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import useHasEditModal from "~/functions/useHasEditModal.ts";
 
+type CategoryOptions = {
+    [key: string]: string[]
+}
+
 const props = defineProps<{
-    languageOptions: object, // TODO
-    categoriesOptions: object, // TODO
+    languageOptions: Record<string, string>,
+    categoriesOptions: CategoryOptions,
 }>();
 
 const quotaUrl = getStationApiUrl('/quota/station_podcasts');

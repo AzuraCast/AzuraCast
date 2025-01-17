@@ -29,7 +29,7 @@ import {
 import {useTranslate} from "~/vendor/gettext";
 
 interface CustomFieldsEditModalProps extends BaseEditModalProps {
-    autoAssignTypes: object
+    autoAssignTypes: Record<string, string>
 }
 
 const props = defineProps<CustomFieldsEditModalProps>();

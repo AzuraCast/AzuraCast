@@ -308,9 +308,10 @@ import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/use
 import {decimal, numeric, required} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
+import {Station} from "~/entities/ApiInterfaces.ts";
 
 interface StationBackendFormProps extends FormTabProps {
-    station: object, // TODO
+    station: Station,
     isStereoToolInstalled: boolean
 }
 

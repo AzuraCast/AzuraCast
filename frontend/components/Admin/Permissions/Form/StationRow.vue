@@ -50,8 +50,8 @@ import {GenericForm} from "~/entities/Forms.ts";
 
 const props = defineProps<{
     row: GenericForm,
-    stations: object, // TODO,
-    stationPermissions: object, // TODO
+    stations: Record<number, string>,
+    stationPermissions: Record<string, string>,
 }>();
 
 const emit = defineEmits(['remove', 'update:row']);

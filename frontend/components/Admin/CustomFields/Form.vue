@@ -42,7 +42,7 @@ import {VuelidateRef} from "~/functions/useVuelidateOnForm.ts";
 
 const props = defineProps<{
     form: VuelidateRef,
-    autoAssignTypes: object, // TODO
+    autoAssignTypes: Record<string, string>
 }>();
 
 const {$gettext} = useTranslate();

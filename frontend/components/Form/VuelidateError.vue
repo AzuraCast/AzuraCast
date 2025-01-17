@@ -12,9 +12,10 @@
 import {useTranslate} from "~/vendor/gettext";
 import {get, map} from "lodash";
 import {computed} from "vue";
+import {VuelidateField} from "~/components/Form/useFormField.ts";
 
 const props = defineProps<{
-    field: object, // TODO
+    field: VuelidateField,
 }>();
 
 const {$gettext} = useTranslate();

@@ -84,9 +84,9 @@ import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 
 const props = defineProps<{
-    stations: Array<any>, // TODO
-    globalPermissions: Array<any>, // TODO
-    stationPermissions: Array<any>, // TODO
+    stations: Record<number, string>,
+    globalPermissions: Record<string, string>,
+    stationPermissions: Record<string, string>,
 }>();
 
 const listUrl = getApiUrl('/admin/roles');

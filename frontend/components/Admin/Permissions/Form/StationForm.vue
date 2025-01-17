@@ -51,8 +51,8 @@ import {VuelidateObject} from "~/functions/useVuelidateOnForm.ts";
 
 const props = defineProps<{
     form: VuelidateObject,
-    stations: object, // TODO
-    stationPermissions: object, // TODO
+    stations: Record<number, string>,
+    stationPermissions: Record<string, string>,
 }>();
 
 const remainingStations = computed(() => {

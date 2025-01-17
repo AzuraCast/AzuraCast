@@ -7,7 +7,7 @@ import {
     registerables
 } from "chart.js";
 import {defaultsDeep} from "lodash";
-import {computed, isRef, MaybeRef, onMounted, onUnmounted, Ref, toRef, toValue, watch} from "vue";
+import {computed, isRef, MaybeRefOrGetter, onMounted, onUnmounted, Ref, toRef, toValue, watch} from "vue";
 import zoomPlugin from 'chartjs-plugin-zoom';
 import chartjsColorSchemes from "~/vendor/chartjs_colorschemes.ts";
 
@@ -54,7 +54,7 @@ export default function useChart<
 >(
     initialProps: ChartProps,
     $canvas: Ref<ChartTemplateRef>,
-    defaultOptions: MaybeRef<
+    defaultOptions: MaybeRefOrGetter<
         Partial<ChartConfiguration<TType, TData, TLabel> | ChartConfigurationCustomTypesPerDataset<TType, TData, TLabel>>
     >
 ): {

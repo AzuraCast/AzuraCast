@@ -135,6 +135,7 @@ import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
+import {useDialog} from "~/functions/useDialog.ts";
 
 const apiUrl = getApiUrl('/admin/rsas');
 const licenseUrl = getApiUrl('/admin/rsas/license');
@@ -165,6 +166,8 @@ const relist = () => {
         isLoading.value = false;
     });
 };
+
+const {confirmDelete} = useDialog();
 
 const doRemoveLicense = () => {
     confirmDelete({

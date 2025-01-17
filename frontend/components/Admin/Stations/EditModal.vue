@@ -15,7 +15,7 @@
             :create-url="createUrl"
             :edit-url="editUrl"
             :is-edit-mode="isEditMode"
-            @error="close"
+            @error="hide"
             @submitted="onSubmit"
             @valid-update="onValidUpdate"
         >

@@ -29,19 +29,17 @@ useChart<'bar'>(
             aspectRatio: props.aspectRatio,
             scales: {
                 x: {
-                    scaleLabel: {
+                    title: {
                         display: true,
-                        labelString: $gettext('Hour')
+                        text: $gettext('Hour')
                     }
                 },
                 y: {
-                    scaleLabel: {
+                    title: {
                         display: true,
-                        labelString: $gettext('Listeners')
+                        text: $gettext('Listeners')
                     },
-                    ticks: {
-                        min: 0
-                    }
+                    min: 0
                 }
             }
         }

@@ -61,7 +61,7 @@ const getNetworkInterfaceTableItems = (interfaceData) => {
         const key = data[0];
         let value: any = data[1];
 
-        if (isObject(value)) {
+        if (isObject(value) && "readable" in value) {
             value = value.readable + '/s';
         }
 

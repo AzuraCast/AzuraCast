@@ -6,7 +6,7 @@
 
         <div class="row row-of-cards">
             <div
-                v-for="panel in menuItems"
+                v-for="panel in menuItems.categories"
                 :key="panel.key"
                 class="col-sm-12 col-lg-4"
             >

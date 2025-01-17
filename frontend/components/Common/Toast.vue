@@ -46,12 +46,10 @@
 </template>
 
 <script setup lang="ts">
+import {ToastProps} from "~/functions/useNotify.ts";
+
 const props = withDefaults(
-    defineProps<{
-        message: string,
-        title?: string,
-        variant?: string,
-    }>(),
+    defineProps<ToastProps>(),
     {
         variant: 'info',
     }

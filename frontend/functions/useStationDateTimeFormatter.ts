@@ -10,7 +10,7 @@ export default function useStationDateTimeFormatter() {
     const now = (): DateTimeMaybeValid =>
         DateTime.local({zone: timezone});
 
-    const timestampToDateTime = (value): DateTimeMaybeValid =>
+    const timestampToDateTime = (value: number): DateTimeMaybeValid =>
         DateTime.fromSeconds(value, {zone: timezone});
 
     const formatDateTime = (

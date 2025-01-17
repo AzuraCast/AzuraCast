@@ -5,7 +5,13 @@ import {default as BSToast} from 'bootstrap/js/src/toast';
 import Toast from '~/components/Common/Toast.vue';
 import {currentVueInstance} from "~/vendor/vueInstance";
 
-export function createToast(props) {
+export interface ToastProps {
+    message: string,
+    title?: string,
+    variant?: string,
+}
+
+export function createToast(props: ToastProps) {
     let slot;
     if (Array.isArray(props.message)) {
         slot = props.message
@@ -32,7 +38,10 @@ export function createToast(props) {
 export function useNotify() {
     const {$gettext} = useTranslate();
 
-    const notify = (message = null, options = {}) => {
+    const notify = (
+        message: string = null,
+        options: Partial<ToastProps> = {}
+    ): void => {
         if (document.hidden) {
             return;
         }
@@ -44,7 +53,10 @@ export function useNotify() {
         toast.show();
     };
 
-    const notifyError = (message = null, options = {}) => {
+    const notifyError = (
+        message: string = null,
+        options: Partial<ToastProps> = {}
+    ): void => {
         if (message === null) {
             message = $gettext('An error occurred and your request could not be completed.');
         }
@@ -58,7 +70,10 @@ export function useNotify() {
         return message;
     };
 
-    const notifySuccess = (message = null, options = {}) => {
+    const notifySuccess = (
+        message: string = null,
+        options: Partial<ToastProps> = {}
+    ) => {
         if (message === null) {
             message = $gettext('Changes saved.');
         }

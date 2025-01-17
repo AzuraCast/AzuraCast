@@ -47,12 +47,13 @@ import Modal from "~/components/Common/Modal.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 import {ComponentExposed} from "vue-component-type-helpers";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
 const props = defineProps<{
     renameUrl: string
 }>();
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const file = ref(null);
 

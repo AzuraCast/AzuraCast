@@ -113,13 +113,14 @@ import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Modal from "~/components/Common/Modal.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
 const props = defineProps<{
     runBackupUrl: string,
     storageLocations: Record<number, string>,
 }>();
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const logUrl = ref(null);
 const error = ref(null);

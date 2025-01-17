@@ -96,6 +96,7 @@ import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchResponse.ts";
 import {useAsyncState} from "@vueuse/core";
 import {MediaSelectedItems} from "~/components/Stations/Media.vue";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
 const props = defineProps<{
     selectedItems: MediaSelectedItems,
@@ -104,7 +105,7 @@ const props = defineProps<{
     listDirectoriesUrl: string,
 }>();
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const destinationDirectory = ref('');
 const dirHistory = ref([]);

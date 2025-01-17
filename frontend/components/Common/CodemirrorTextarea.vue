@@ -22,7 +22,9 @@ const props = defineProps<{
     mode: string
 }>();
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{
+    (e: 'update:modelValue', modelValue: string | null): void
+}>();
 
 const textValue = useVModel(props, 'modelValue', emit);
 

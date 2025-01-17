@@ -59,7 +59,9 @@ const props = withDefaults(
     }
 )
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{
+    (e: 'update:modelValue', modelValue: ModelFormField): void
+}>();
 
 const value = useVModel(props, 'modelValue', emit);
 

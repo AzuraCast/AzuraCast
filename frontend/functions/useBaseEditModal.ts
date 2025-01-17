@@ -14,9 +14,11 @@ export interface BaseEditModalProps {
     createUrl?: string
 }
 
-export interface BaseEditModalEmits {
+export interface HasRelistEmit {
     (e: 'relist'): void
 }
+
+export type BaseEditModalEmits = HasRelistEmit;
 
 export interface BaseEditModalOptions<T extends GenericForm = GenericForm> extends GlobalConfig {
     resetForm?(originalResetForm: () => void): void,

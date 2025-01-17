@@ -107,8 +107,9 @@ import FormGroup from "~/components/Form/FormGroup.vue";
 import Modal from "~/components/Common/Modal.vue";
 import FormFile from "~/components/Form/FormFile.vue";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const importPlaylistUrl = ref(null);
 const playlistFile = ref(null);

@@ -75,12 +75,13 @@ import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 import {ComponentExposed} from "vue-component-type-helpers";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
 const props = defineProps<{
     createUrl: string,
 }>();
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const error = ref(null);
 const newKey = ref(null);

@@ -54,7 +54,10 @@ const props = defineProps<{
     stationPermissions: Record<string, string>,
 }>();
 
-const emit = defineEmits(['remove', 'update:row']);
+const emit = defineEmits<{
+    (e: 'remove'): void,
+    (e: 'update:row', row: GenericForm): void
+}>();
 
 const form = useVModel(props, 'row', emit);
 

@@ -51,6 +51,7 @@ import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
 defineOptions({
     inheritAttrs: false
@@ -62,7 +63,7 @@ interface StationEditModalProps extends StationFormParentProps {
 
 const props = defineProps<StationEditModalProps>();
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const editUrl = ref(null);
 const disableSaveButton = ref(true);

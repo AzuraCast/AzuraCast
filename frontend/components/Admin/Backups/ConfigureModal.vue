@@ -91,7 +91,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
+import {HasRelistEmit, ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 
 const props = defineProps<{
@@ -99,7 +99,7 @@ const props = defineProps<{
     storageLocations: Record<number, string>,
 }>();
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const loading = ref(true);
 

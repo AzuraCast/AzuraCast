@@ -42,7 +42,9 @@ const props = defineProps<{
     modelValue?: DateRange
 }>();
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{
+    (e: 'update:modelValue', modelValue: DateRange): void
+}>();
 
 const {isDark} = useTheme();
 

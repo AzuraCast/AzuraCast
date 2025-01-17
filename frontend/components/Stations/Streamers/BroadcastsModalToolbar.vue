@@ -27,13 +27,14 @@ import {computed, h, toRef} from "vue";
 import {forEach, map} from "lodash";
 import {useNotify} from "~/functions/useNotify.ts";
 import {useDialog} from "~/functions/useDialog.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
 const props = defineProps<{
     batchUrl: string,
     selectedItems: Array<any>,
 }>();
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const {$gettext} = useTranslate();
 const {axios} = useAxios();

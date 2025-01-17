@@ -50,7 +50,7 @@ import Telegram from "./Form/Telegram.vue";
 import GoogleAnalyticsV4 from "./Form/GoogleAnalyticsV4.vue";
 import MatomoAnalytics from "./Form/MatomoAnalytics.vue";
 import Mastodon from "./Form/Mastodon.vue";
-import {BaseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {BaseEditModalProps, HasRelistEmit, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, nextTick, provide, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
@@ -72,7 +72,7 @@ const props = defineProps<WebhookEditModalProps>();
 
 provide('nowPlayingUrl', props.nowPlayingUrl);
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const type = ref<WebhookType | null>(null);
 

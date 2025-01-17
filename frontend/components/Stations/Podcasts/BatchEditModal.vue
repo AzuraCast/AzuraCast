@@ -75,13 +75,14 @@ import {map} from "lodash";
 import {useTranslate} from "~/vendor/gettext.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
 import BatchEditRow from "~/components/Stations/Podcasts/BatchEditRow.vue";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
 const props = defineProps<{
     batchUrl: string,
     selectedItems: Array<any>,
 }>();
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const {v$, resetForm, ifValid} = useVuelidateOnForm();
 

@@ -8,11 +8,11 @@ FROM golang:1.23-bookworm AS go-dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends openssl git
 
-RUN go install github.com/jwilder/dockerize@v0.9.1
+RUN go install github.com/jwilder/dockerize@v0.9.2
 
 RUN go install github.com/aptible/supercronic@v0.2.33
 
-RUN go install github.com/centrifugal/centrifugo/v5@v5.4.9
+RUN go install github.com/centrifugal/centrifugo/v6@v6.0.0
 
 RUN strip /go/bin/*
 

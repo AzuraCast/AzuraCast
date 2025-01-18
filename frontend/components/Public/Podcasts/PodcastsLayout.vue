@@ -26,18 +26,14 @@
 import FullHeightCard from "~/components/Public/FullHeightCard.vue";
 import InlinePlayer from "~/components/InlinePlayer.vue";
 import MinimalLayout from "~/components/MinimalLayout.vue";
-import {useProvidePodcastGroupLayout} from "~/components/Public/Podcasts/usePodcastGroupLayout.ts";
+import {PodcastLayoutProps, useProvidePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
 
 const props = withDefaults(
-    defineProps<{
-        stationName: string | null,
-        baseUrl: string,
-        groupLayout?: string,
-    }>(),
+    defineProps<PodcastLayoutProps>(),
     {
         groupLayout: 'table'
     }
 );
 
-useProvidePodcastGroupLayout(props.groupLayout);
+useProvidePodcastGlobals(props);
 </script>

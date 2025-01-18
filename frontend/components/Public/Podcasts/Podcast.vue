@@ -182,14 +182,16 @@ import PlayButton from "~/components/Common/PlayButton.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import PodcastCommon from "./PodcastCommon.vue";
 import GridLayout from "~/components/Common/GridLayout.vue";
-import {usePodcastGroupLayout} from "~/components/Public/Podcasts/usePodcastGroupLayout.ts";
 import {ApiPodcast, ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
+import {usePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
+import {computed} from "vue";
 
-const {groupLayout} = usePodcastGroupLayout();
+const {groupLayout, stationId, stationTz} = usePodcastGlobals();
 
-const {params} = useRoute();
-
-const podcastUrl = getStationApiUrl(`/public/podcast/${params.podcast_id}`);
+const podcastUrl = getStationApiUrl(computed(() => {
+    const {params} = useRoute();
+    return `/public/podcast/${params.podcast_id}`;
+}), stationId);
 
 const {axios} = useAxios();
 const {state: podcast, isLoading} = useRefreshableAsyncState<ApiPodcast>(
@@ -197,7 +199,10 @@ const {state: podcast, isLoading} = useRefreshableAsyncState<ApiPodcast>(
     {},
 );
 
-const episodesUrl = getStationApiUrl(`/public/podcast/${params.podcast_id}/episodes`);
+const episodesUrl = getStationApiUrl(computed(() => {
+    const {params} = useRoute();
+    return `/public/podcast/${params.podcast_id}/episodes`;
+}), stationId);
 
 const {$gettext} = useTranslate();
 const fields: DataTableField<ApiPodcastEpisode>[] = [
@@ -207,5 +212,5 @@ const fields: DataTableField<ApiPodcastEpisode>[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
+const {formatTimestampAsDateTime} = useStationDateTimeFormatter(stationTz);
 </script>

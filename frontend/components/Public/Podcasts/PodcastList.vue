@@ -124,13 +124,13 @@ import {getStationApiUrl} from "~/router.ts";
 import {useTranslate} from "~/vendor/gettext.ts";
 import {IconRss} from "~/components/Common/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
-import {usePodcastGroupLayout} from "~/components/Public/Podcasts/usePodcastGroupLayout.ts";
 import GridLayout from "~/components/Common/GridLayout.vue";
 import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
+import {usePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
 
-const {groupLayout} = usePodcastGroupLayout();
+const {groupLayout, stationId} = usePodcastGlobals();
 
-const apiUrl = getStationApiUrl('/public/podcasts');
+const apiUrl = getStationApiUrl('/public/podcasts', stationId);
 
 const {$gettext} = useTranslate();
 

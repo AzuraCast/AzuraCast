@@ -12,7 +12,7 @@ RUN go install github.com/jwilder/dockerize@v0.9.2
 
 RUN go install github.com/aptible/supercronic@v0.2.33
 
-RUN go install github.com/centrifugal/centrifugo/v6@v6.0.0
+RUN go install github.com/centrifugal/centrifugo/v5@v5.4.9
 
 RUN strip /go/bin/*
 

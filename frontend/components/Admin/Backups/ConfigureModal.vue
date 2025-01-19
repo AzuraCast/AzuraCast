@@ -20,7 +20,7 @@
             </div>
 
             <div
-                v-if="v$.backup_enabled.$model"
+                v-if="form.backup_enabled"
                 class="row g-3"
             >
                 <form-group-field

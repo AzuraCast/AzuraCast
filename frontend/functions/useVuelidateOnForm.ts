@@ -13,7 +13,7 @@ export type VuelidateValidations<T extends GenericForm = GenericForm> = Validati
 export type VuelidateBlankForm<T extends GenericForm = GenericForm> = MaybeRef<T> | BlankFormFunc<T>
 
 export type VuelidateObject<T extends GenericForm = GenericForm> = Validation<ValidationArgs<T>, T>
-export type VuelidateRef<T extends GenericForm = GenericForm> = Ref<VuelidateObject<T>>
+export type VuelidateRef<T extends GenericForm = GenericForm> = MaybeRef<VuelidateObject<T>>
 
 export function useVuelidateOnForm<T extends GenericForm = GenericForm>(
     validations: VuelidateValidations<T> = {} as VuelidateValidations<T>,

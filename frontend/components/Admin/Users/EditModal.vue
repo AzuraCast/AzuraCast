@@ -28,6 +28,7 @@ import {
 } from "~/functions/useBaseEditModal";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
+import mergeExisting from "~/functions/mergeExisting.ts";
 
 interface UsersEditModalProps extends BaseEditModalProps {
     roles: Record<number, string>
@@ -53,16 +54,24 @@ const {
     props,
     emit,
     $modal,
-    {},
-    {},
+    {
+        roles: {},
+        new_password: {}
+    },
+    {
+        roles: [],
+        new_password: null
+    },
     {
         populateForm: (data, formRef) => {
-            formRef.value = {
-                name: data.name,
-                email: data.email,
-                new_password: '',
-                roles: map(data.roles, 'id')
-            };
+            formRef.value = mergeExisting(
+                formRef.value,
+                {
+                    ...data,
+                    roles: map(data.roles, 'id'),
+                    new_password: ''
+                }
+            );
         },
     }
 );

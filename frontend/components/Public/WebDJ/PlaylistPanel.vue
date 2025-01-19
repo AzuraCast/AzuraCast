@@ -19,7 +19,7 @@
                         v-if="!isPlaying || isPaused"
                         type="button"
                         class="btn btn-sm btn-success"
-                        @click="play"
+                        @click="play()"
                     >
                         <icon :icon="IconPlayCircle" />
                     </button>

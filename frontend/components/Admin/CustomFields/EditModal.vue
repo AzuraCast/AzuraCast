@@ -9,14 +9,13 @@
         @hidden="clearContents"
     >
         <admin-custom-fields-form
-            :form="v$"
+            v-model:form="form"
             :auto-assign-types="autoAssignTypes"
         />
     </modal-form>
 </template>
 
 <script setup lang="ts">
-import {required} from '@vuelidate/validators';
 import ModalForm from "~/components/Common/ModalForm.vue";
 import AdminCustomFieldsForm from "~/components/Admin/CustomFields/Form.vue";
 import {computed, ref} from "vue";
@@ -41,6 +40,7 @@ const {
     loading,
     error,
     isEditMode,
+    form,
     v$,
     clearContents,
     create,
@@ -51,16 +51,8 @@ const {
     props,
     emit,
     $modal,
-    {
-        'name': {required},
-        'short_name': {},
-        'auto_assign': {}
-    },
-    {
-        'name': '',
-        'short_name': '',
-        'auto_assign': ''
-    },
+    {},
+    {},
 );
 
 const {$gettext} = useTranslate();

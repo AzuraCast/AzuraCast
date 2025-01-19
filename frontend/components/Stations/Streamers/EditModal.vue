@@ -76,7 +76,10 @@ const {
     props,
     emit,
     $modal,
-    {},
+    {
+        schedule_items: {},
+        artwork_file: {},
+    },
     {
         schedule_items: [],
         artwork_file: null
@@ -87,7 +90,7 @@ const {
             reset();
         },
         populateForm: (data, formRef) => {
-            record.value = data;
+            record.value = mergeExisting(record.value, data);
             formRef.value = mergeExisting(formRef.value, data);
         },
     },

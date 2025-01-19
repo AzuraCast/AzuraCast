@@ -94,7 +94,9 @@ const {
     props,
     emit,
     $modal,
-    {},
+    {
+        intro_file: {}
+    },
     {
         intro_file: null
     },

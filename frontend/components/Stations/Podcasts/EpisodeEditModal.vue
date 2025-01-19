@@ -91,7 +91,10 @@ const {
     props,
     emit,
     $modal,
-    {},
+    {
+        artwork_file: {},
+        media_file: {}
+    },
     {
         artwork_file: null,
         media_file: null
@@ -102,7 +105,7 @@ const {
             reset();
         },
         populateForm: (data, formRef) => {
-            record.value = mergeExisting(record.value, data);
+            record.value = mergeExisting(record.value, data as typeof record.value);
             formRef.value = mergeExisting(formRef.value, data);
         },
     },

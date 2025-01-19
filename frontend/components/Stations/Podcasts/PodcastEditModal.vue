@@ -87,7 +87,9 @@ const {
     props,
     emit,
     $modal,
-    {},
+    {
+        artwork_file: {},
+    },
     {
         artwork_file: null
     },

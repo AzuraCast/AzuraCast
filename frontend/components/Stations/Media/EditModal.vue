@@ -165,7 +165,7 @@ const {
             reset();
         },
         populateForm: (data, form) => {
-            record.value = mergeExisting(record.value, data);
+            record.value = mergeExisting(record.value, data as typeof record.value);
 
             const newForm = mergeExisting(form.value, data);
             newForm.playlists = map(data.playlists, 'id');

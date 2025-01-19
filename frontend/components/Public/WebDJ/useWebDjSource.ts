@@ -1,5 +1,9 @@
 import {useInjectWebDjNode} from "~/components/Public/WebDJ/useWebDjNode";
 
+interface StreamAudioSourceWithStop extends MediaStreamAudioSourceNode {
+    stop?(): void
+}
+
 export function useWebDjSource() {
     const {context} = useInjectWebDjNode();
 
@@ -50,7 +54,7 @@ export function useWebDjSource() {
                 deviceId: audioDeviceId
             }
         }).then((stream) => {
-            const source = context.value.createMediaStreamSource(stream);
+            const source: StreamAudioSourceWithStop = context.value.createMediaStreamSource(stream);
             source.stop = () => {
                 const ref = stream.getAudioTracks();
                 return (ref !== null)

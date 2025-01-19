@@ -39,10 +39,10 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             public_custom_html: {}
         },
     },
-    {
+    () => ({
         branding_config: {
             public_custom_html: ''
         }
-    }
+    })
 );
 </script>

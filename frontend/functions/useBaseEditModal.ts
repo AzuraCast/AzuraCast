@@ -2,7 +2,12 @@ import {computed, ComputedRef, nextTick, Ref, ref, toRef} from "vue";
 import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
-import {useVuelidateOnForm, VuelidateRef, VuelidateValidations} from "~/functions/useVuelidateOnForm";
+import {
+    useVuelidateOnForm,
+    VuelidateBlankForm,
+    VuelidateRef,
+    VuelidateValidations
+} from "~/functions/useVuelidateOnForm";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {AxiosRequestConfig} from "axios";
 import {GlobalConfig} from "@vuelidate/core";
@@ -40,8 +45,8 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
     props: BaseEditModalProps,
     emit: BaseEditModalEmits,
     $modal: Ref<ModalFormTemplateRef>,
-    validations: VuelidateValidations<T>,
-    blankForm: T,
+    validations?: VuelidateValidations<T>,
+    blankForm?: VuelidateBlankForm<T>,
     options: BaseEditModalOptions<T> = {}
 ): {
     loading: Ref<boolean>,

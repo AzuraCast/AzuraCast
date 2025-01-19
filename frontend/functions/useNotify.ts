@@ -5,17 +5,19 @@ import {default as BSToast} from 'bootstrap/js/src/toast';
 import Toast from '~/components/Common/Toast.vue';
 import {currentVueInstance} from "~/vendor/vueInstance";
 
+type ToastMessage = string | Array<any>
+
 export interface ToastProps {
-    message: string,
+    message: ToastMessage,
     title?: string,
     variant?: string,
 }
 
 export function createToast(props: ToastProps) {
-    let slot;
+    let slot: Array<any>;
     if (Array.isArray(props.message)) {
         slot = props.message
-        delete props.message
+        props.message = "";
     }
 
     const defaultSlot = () => {
@@ -39,9 +41,9 @@ export function useNotify() {
     const {$gettext} = useTranslate();
 
     const notify = (
-        message: string = null,
+        message: ToastMessage = null,
         options: Partial<ToastProps> = {}
-    ): void => {
+    ): ToastMessage => {
         if (document.hidden) {
             return;
         }
@@ -51,40 +53,34 @@ export function useNotify() {
             message
         });
         toast.show();
+
+        return message;
     };
 
     const notifyError = (
-        message: string = null,
+        message: ToastMessage = null,
         options: Partial<ToastProps> = {}
-    ): void => {
-        if (message === null) {
-            message = $gettext('An error occurred and your request could not be completed.');
-        }
+    ): ToastMessage => {
+        message ??= $gettext('An error occurred and your request could not be completed.');
 
         const defaults = {
             variant: 'danger'
         };
 
-        notify(message, {...defaults, ...options});
-
-        return message;
+        return notify(message, {...defaults, ...options});
     };
 
     const notifySuccess = (
-        message: string = null,
+        message: ToastMessage = null,
         options: Partial<ToastProps> = {}
-    ) => {
-        if (message === null) {
-            message = $gettext('Changes saved.');
-        }
+    ): ToastMessage => {
+        message ??= $gettext('Changes saved.');
 
         const defaults = {
             variant: 'success'
         };
 
-        notify(message, {...defaults, ...options});
-
-        return message;
+        return notify(message, {...defaults, ...options});
     };
 
     return {

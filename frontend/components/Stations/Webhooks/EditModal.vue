@@ -61,6 +61,7 @@ import GetMeRadio from "~/components/Stations/Webhooks/Form/GetMeRadio.vue";
 import RadioReg from "~/components/Stations/Webhooks/Form/RadioReg.vue";
 import GroupMe from "~/components/Stations/Webhooks/Form/GroupMe.vue";
 import Bluesky from "~/components/Stations/Webhooks/Form/Bluesky.vue";
+import mergeExisting from "~/functions/mergeExisting.ts";
 
 interface WebhookEditModalProps extends BaseEditModalProps {
     nowPlayingUrl: string,
@@ -118,16 +119,21 @@ const {
     props,
     emit,
     $modal,
-    {},
-    {},
+    {
+        type: {}
+    },
+    {
+        type: null
+    },
     {
         populateForm: (data, formRef) => {
             type.value = data.type;
-            formRef.value = {
-                name: data.name,
-                triggers: data.triggers,
-                config: data.config
-            };
+
+            // Wait for type-specific components to mount.
+            nextTick(() => {
+                resetForm();
+                formRef.value = mergeExisting(formRef.value, data);
+            });
         },
         getSubmittableFormData(formRef, isEditModeRef) {
             const formData = formRef.value;
@@ -156,7 +162,7 @@ const clearContents = () => {
     originalClearContents();
 };
 
-const setType = (newType) => {
+const setType = (newType: WebhookType) => {
     type.value = newType;
     nextTick(resetForm);
 };

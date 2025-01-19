@@ -102,22 +102,20 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             footer: {},
         }
     },
-    () => {
-        return {
-            config: {
-                webhook_url: '',
-                content: $gettext(
-                    'Now playing on %{station}:',
-                    {'station': '{{ station.name }}'}
-                ),
-                title: '{{ now_playing.song.title }}',
-                description: '{{ now_playing.song.artist }}',
-                url: '{{ station.listen_url }}',
-                author: '{{ live.streamer_name }}',
-                thumbnail: '{{ now_playing.song.art }}',
-                footer: $gettext('Powered by AzuraCast'),
-            }
+    () => ({
+        config: {
+            webhook_url: '',
+            content: $gettext(
+                'Now playing on %{station}:',
+                {'station': '{{ station.name }}'}
+            ),
+            title: '{{ now_playing.song.title }}',
+            description: '{{ now_playing.song.artist }}',
+            url: '{{ station.listen_url }}',
+            author: '{{ live.streamer_name }}',
+            thumbnail: '{{ now_playing.song.art }}',
+            footer: $gettext('Powered by AzuraCast'),
         }
-    }
+    })
 );
 </script>

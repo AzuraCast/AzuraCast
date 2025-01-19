@@ -42,11 +42,11 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             measurement_id: {required}
         }
     },
-    {
+    () => ({
         config: {
             api_secret: '',
             measurement_id: ''
         }
-    }
+    })
 );
 </script>

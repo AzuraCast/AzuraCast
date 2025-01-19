@@ -52,12 +52,12 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             token: {},
         }
     },
-    {
+    () => ({
         config: {
             matomo_url: '',
             site_id: '',
             token: ''
         }
-    }
+    })
 );
 </script>

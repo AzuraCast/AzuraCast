@@ -87,6 +87,11 @@ const {form, v$, tabClass} = useVuelidateOnFormTab(
         dropboxAppSecret: {},
         dropboxAuthToken: {required},
     },
+    {
+        dropboxAppKey: null,
+        dropboxAppSecret: null,
+        dropboxAuthToken: null,
+    }
 );
 
 const baseAuthUrl = 'https://www.dropbox.com/oauth2/authorize';

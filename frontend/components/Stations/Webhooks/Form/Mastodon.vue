@@ -94,13 +94,13 @@ const {form, v$, tabClass} = useVuelidateOnFormTab(
             visibility: {required}
         }
     },
-    {
+    () => ({
         config: {
             instance_url: '',
             access_token: '',
             visibility: 'public',
         }
-    }
+    })
 );
 
 const {$gettext} = useTranslate();

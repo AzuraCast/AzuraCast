@@ -89,9 +89,11 @@ const {
     $modal,
     {
         artwork_file: {},
+        categories: {}
     },
     {
-        artwork_file: null
+        artwork_file: null,
+        categories: []
     },
     {
         resetForm: (originalResetForm) => {
@@ -104,7 +106,7 @@ const {
                 (row) => row.category
             );
 
-            record.value = data;
+            record.value = mergeExisting(record.value, data as typeof record.value);
             formRef.value = mergeExisting(formRef.value, data);
         },
     },

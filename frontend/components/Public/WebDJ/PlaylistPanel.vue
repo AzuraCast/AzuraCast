@@ -286,6 +286,7 @@ const onFileSelected = (e: Event) => {
 
 interface PlayOptions {
     isAutoPlay?: boolean,
+    backward?: boolean,
     fileIndex?: number
 }
 

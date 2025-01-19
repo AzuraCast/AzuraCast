@@ -106,7 +106,7 @@ const {
             reset();
         },
         populateForm: (data, formRef) => {
-            record.value = data;
+            record.value = mergeExisting(record.value, data as typeof record.value);
             formRef.value = mergeExisting(formRef.value, data);
         },
         onSubmitSuccess: () => {

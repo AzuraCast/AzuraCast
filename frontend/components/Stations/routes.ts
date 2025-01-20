@@ -68,7 +68,8 @@ export default function useStationsRoutes(): RouteRecordRaw[] {
             component: () => import('~/components/Stations/PodcastEpisodes.vue'),
             name: 'stations:podcast:episodes',
             beforeEnter: async (to, _, next) => {
-                const apiUrl = getStationApiUrl(`/podcast/${to.params.podcast_id}`);
+                const podcastId = to.params.podcast_id as string;
+                const apiUrl = getStationApiUrl(`/podcast/${podcastId}`);
                 const {axios} = useAxios();
                 to.meta.state = {
                     podcast: await axios.get(apiUrl.value).then(r => r.data)

@@ -51,7 +51,7 @@ import GoogleAnalyticsV4 from "./Form/GoogleAnalyticsV4.vue";
 import MatomoAnalytics from "./Form/MatomoAnalytics.vue";
 import Mastodon from "./Form/Mastodon.vue";
 import {BaseEditModalProps, HasRelistEmit, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, nextTick, provide, ref} from "vue";
+import {computed, nextTick, provide, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {WebhookTriggerDetails, WebhookType, WebhookTypeDetails} from "~/entities/Webhooks";
@@ -77,7 +77,7 @@ const emit = defineEmits<HasRelistEmit>();
 
 const type = ref<WebhookType | null>(null);
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 
 const webhookComponents = {
     [WebhookType.Generic]: Generic,

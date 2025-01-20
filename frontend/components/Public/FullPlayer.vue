@@ -66,9 +66,9 @@ import SongHistoryModal from './FullPlayer/SongHistoryModal.vue';
 import RequestModal from './FullPlayer/RequestModal.vue';
 import Icon from '~/components/Common/Icon.vue';
 import RadioPlayer from './Player.vue';
-import {ref, shallowRef} from "vue";
+import {shallowRef, useTemplateRef} from "vue";
 import Lightbox from "~/components/Common/Lightbox.vue";
-import {LightboxTemplateRef, useProvideLightbox} from "~/vendor/lightbox";
+import {useProvideLightbox} from "~/vendor/lightbox";
 import {IconDownload, IconHelp, IconHistory} from "~/components/Common/icons";
 import {RequestsProps} from "~/components/Public/Requests.vue";
 import {PlayerProps} from "~/components/Public/Player.vue";
@@ -93,18 +93,19 @@ const onNowPlayingUpdate = (newNowPlaying) => {
     history.value = newNowPlaying?.song_history;
 }
 
-const $songHistoryModal = ref<InstanceType<typeof SongHistoryModal> | null>(null);
+const $songHistoryModal = useTemplateRef('$songHistoryModal');
 
 const openSongHistoryModal = () => {
     $songHistoryModal.value?.open();
 }
 
-const $requestModal = ref<InstanceType<typeof RequestModal> | null>(null);
+const $requestModal = useTemplateRef('$requestModal');
 
 const openRequestModal = () => {
     $requestModal.value?.open();
 }
 
-const $lightbox = ref<LightboxTemplateRef>(null);
+const $lightbox = useTemplateRef('$lightbox');
+
 useProvideLightbox($lightbox);
 </script>

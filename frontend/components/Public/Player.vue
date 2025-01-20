@@ -11,7 +11,7 @@
                 v-if="showAlbumArt && np.now_playing.song.art"
                 class="now-playing-art"
             >
-                <album-art :src="np.now_playing.song.art"/>
+                <album-art :src="np.now_playing.song.art" />
             </div>
             <div class="now-playing-main">
                 <h6
@@ -90,7 +90,7 @@
                         aria-expanded="false"
                     >
                         {{ currentStream.name }}
-                        <span class="caret"/>
+                        <span class="caret" />
                     </button>
                     <ul
                         class="dropdown-menu"
@@ -112,7 +112,10 @@
                 </div>
             </div>
 
-            <div v-if="showVolume" class="radio-control-volume d-flex align-items-center">
+            <div
+                v-if="showVolume"
+                class="radio-control-volume d-flex align-items-center"
+            >
                 <div class="flex-shrink-0 mx-2">
                     <mute-button
                         class="p-0 text-secondary"
@@ -265,11 +268,11 @@ const switchStream = (new_stream: CurrentStreamDescriptor) => {
 };
 
 if (props.autoplay) {
-    const stop = useEventListener(document, "now-playing", async () => {
-        await nextTick();
-
-        switchStream(currentStream.value);
-        stop();
+    const stop = useEventListener(document, "now-playing", () => {
+        nextTick(() => {
+            switchStream(currentStream.value);
+            stop();
+        });
     });
 }
 

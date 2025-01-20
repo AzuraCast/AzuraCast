@@ -41,14 +41,13 @@
 import {required} from '@vuelidate/validators';
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {nextTick, ref} from "vue";
+import {nextTick, useTemplateRef} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
-import {ComponentExposed} from "vue-component-type-helpers";
+import {useHasModal} from "~/functions/useHasModal.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
 const props = defineProps<{
@@ -67,14 +66,14 @@ const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
     }
 );
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {hide, show: open} = useHasModal($modal);
 
 const onHidden = () => {
     resetForm();
 }
 
-const $field = ref<ComponentExposed<typeof FormGroupField> | null>(null);
+const $field = useTemplateRef('$field');
 
 const onShown = () => {
     nextTick(() => {

@@ -18,7 +18,7 @@
 
             <data-table
                 id="station_streamer_broadcasts"
-                ref="$datatable"
+                ref="$dataTable"
                 selectable
                 paginated
                 :fields="fields"
@@ -70,14 +70,14 @@ import formatFileSize from '~/functions/formatFileSize';
 import InlinePlayer from '~/components/InlinePlayer.vue';
 import Icon from '~/components/Common/Icon.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
-import {ref, shallowRef} from "vue";
+import {ref, shallowRef, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {IconDownload} from "~/components/Common/icons";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import useHasDatatable from "~/functions/useHasDatatable.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 import {usePlayerStore, useProvidePlayerStore} from "~/functions/usePlayerStore.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import BroadcastsModalToolbar from "~/components/Stations/Streamers/BroadcastsModalToolbar.vue";
@@ -138,8 +138,8 @@ const {confirmDelete} = useDialog();
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {relist} = useHasDatatable($datatable);
+const $dataTable = useTemplateRef('$dataTable');
+const {relist} = useHasDatatable($dataTable);
 
 const selectedItems = shallowRef([]);
 
@@ -160,7 +160,7 @@ const doDelete = (url) => {
     });
 };
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
 const open = (newListUrl, newBatchUrl) => {

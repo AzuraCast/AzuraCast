@@ -58,18 +58,18 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {ref, useTemplateRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 
 const loading = ref(true);
 const queueUrl = ref(null);
 const media = ref([]);
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
 const {axios} = useAxios();

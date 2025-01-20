@@ -4,7 +4,7 @@
             v-if="!isHome"
             #sidebar
         >
-            <sidebar/>
+            <sidebar />
         </template>
         <template #default>
             <router-view />

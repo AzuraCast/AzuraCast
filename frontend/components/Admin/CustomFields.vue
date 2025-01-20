@@ -58,8 +58,8 @@ import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import EditModal from './CustomFields/EditModal.vue';
 import {get} from 'lodash';
 import {useTranslate} from "~/vendor/gettext";
-import {ref} from "vue";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
+import {useTemplateRef} from "vue";
+import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
@@ -97,10 +97,10 @@ const fields: DataTableField[] = [
     }
 ];
 
-const $dataTable = ref<DataTableTemplateRef>(null);
+const $dataTable = useTemplateRef('$dataTable');
 const {relist} = useHasDatatable($dataTable);
 
-const $editModal = ref<InstanceType<typeof EditModal> | null>(null);
+const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const {doDelete} = useConfirmAndDelete(

@@ -30,13 +30,8 @@
 </template>
 
 <script setup lang="ts">
-import {
-    BaseEditModalEmits,
-    BaseEditModalProps,
-    ModalFormTemplateRef,
-    useBaseEditModal
-} from "~/functions/useBaseEditModal";
-import {computed, nextTick, ref, watch} from "vue";
+import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, nextTick, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import StorageLocationForm from "./Form.vue";
@@ -53,7 +48,7 @@ interface StorageLocationsEditModalProps extends BaseEditModalProps {
 const props = defineProps<StorageLocationsEditModalProps>();
 const emit = defineEmits<BaseEditModalEmits>();
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 
 const {
     loading,

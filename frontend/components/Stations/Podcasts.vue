@@ -24,7 +24,7 @@
 
         <data-table
             id="station_podcasts"
-            ref="$datatable"
+            ref="$dataTable"
             paginated
             :fields="fields"
             :api-url="listUrl"
@@ -110,10 +110,10 @@ import EditModal from './Podcasts/PodcastEditModal.vue';
 import AlbumArt from '~/components/Common/AlbumArt.vue';
 import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import {getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import useHasDatatable from "~/functions/useHasDatatable.ts";
 import CardPage from "~/components/Common/CardPage.vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import useHasEditModal from "~/functions/useHasEditModal.ts";
@@ -141,17 +141,19 @@ const fields: DataTableField[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const $quota = ref<InstanceType<typeof StationsCommonQuota> | null>(null);
+const $quota = useTemplateRef('$quota');
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {refresh} = useHasDatatable($datatable);
+const $dataTable = useTemplateRef('$dataTable');
+
+const {refresh} = useHasDatatable($dataTable);
 
 const relist = () => {
     $quota.value?.update();
     refresh();
 };
 
-const $editPodcastModal = ref<InstanceType<typeof EditModal> | null>(null);
+const $editPodcastModal = useTemplateRef('$editPodcastModal');
+
 const {doCreate, doEdit} = useHasEditModal($editPodcastModal);
 
 const {doDelete} = useConfirmAndDelete(

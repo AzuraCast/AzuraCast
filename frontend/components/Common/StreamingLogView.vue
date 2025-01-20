@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import {nextTick, ref, toRef, watch} from "vue";
+import {nextTick, ref, toRef, useTemplateRef, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {tryOnScopeDispose} from "@vueuse/core";
 import Loading from "~/components/Common/Loading.vue";
@@ -35,7 +35,7 @@ const scrollToBottom = ref(true);
 
 const {axios} = useAxios();
 
-const $textarea = ref<HTMLTextAreaElement | null>(null);
+const $textarea = useTemplateRef('$textarea');
 
 let updateInterval = null;
 

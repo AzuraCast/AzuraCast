@@ -62,12 +62,12 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 import {useAsyncState} from "@vueuse/core";
 import Loading from "~/components/Common/Loading.vue";
 import useHandlePodcastBatchResponse from "~/components/Stations/Podcasts/useHandlePodcastBatchResponse.ts";
@@ -86,7 +86,7 @@ const emit = defineEmits<HasRelistEmit>();
 
 const {v$, resetForm, ifValid} = useVuelidateOnForm();
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show: showModal, hide} = useHasModal($modal);
 
 const {axios} = useAxios();

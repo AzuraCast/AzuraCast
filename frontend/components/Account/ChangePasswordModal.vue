@@ -42,10 +42,10 @@ import ModalForm from "~/components/Common/ModalForm.vue";
 import {helpers, required} from "@vuelidate/validators";
 import validatePassword from "~/functions/validatePassword";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {ref} from "vue";
+import {ref, useTemplateRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
-import {HasRelistEmit, ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {getApiUrl} from "~/router.ts";
 
 const emit = defineEmits<HasRelistEmit>();
@@ -81,7 +81,7 @@ const clearContents = () => {
     resetForm();
 };
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 
 const open = () => {
     clearContents();

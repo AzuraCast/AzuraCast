@@ -16,8 +16,8 @@
 <script setup lang="ts">
 import SongHistory from './SongHistory.vue';
 import Modal from "~/components/Common/Modal.vue";
-import {ref} from "vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useTemplateRef} from "vue";
+import {useHasModal} from "~/functions/useHasModal.ts";
 import {ApiNowPlayingSongHistory} from "~/entities/ApiInterfaces.ts";
 
 const props = withDefaults(
@@ -30,7 +30,7 @@ const props = withDefaults(
     }
 );
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show: open} = useHasModal($modal);
 
 defineExpose({

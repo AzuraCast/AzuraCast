@@ -103,8 +103,8 @@
                             <flow-upload
                                 :target-url="licenseUrl"
                                 :valid-mime-types="['.key']"
-                                @complete="relist"
                                 accept
+                                @complete="relist"
                             />
 
                             <div

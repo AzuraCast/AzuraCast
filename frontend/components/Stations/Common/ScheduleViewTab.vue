@@ -1,5 +1,8 @@
 <template>
-    <tab id="schedule_view" :label="$gettext('Schedule View')">
+    <tab
+        id="schedule_view"
+        :label="$gettext('Schedule View')"
+    >
         <div class="card-body-flush">
             <schedule
                 ref="$schedule"
@@ -24,7 +27,7 @@ import Schedule from "~/components/Common/ScheduleView.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {Calendar, EventClickArg} from "@fullcalendar/core";
 import {EventImpl} from "@fullcalendar/core/internal";
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 
 const props = defineProps<{
     scheduleUrl: string
@@ -40,8 +43,10 @@ const onClick = (arg: EventClickArg) => {
     emit('click', arg.event);
 }
 
-const $schedule = ref<InstanceType<typeof Schedule> | null>();
+const $schedule = useTemplateRef('$schedule');
+
 const getCalendarApi = (): Calendar => $schedule.value?.getCalendarApi();
+
 const refresh = () => getCalendarApi()?.refetchEvents();
 
 defineExpose({

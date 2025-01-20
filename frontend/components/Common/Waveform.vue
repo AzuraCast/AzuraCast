@@ -3,8 +3,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div id="waveform_container">
-                    <div id="waveform-timeline"/>
-                    <div id="waveform"/>
+                    <div id="waveform-timeline" />
+                    <div id="waveform" />
                 </div>
             </div>
         </div>
@@ -28,7 +28,10 @@
                     </div>
                 </div>
             </div>
-            <div v-if="showVolume" class="col-md-5">
+            <div
+                v-if="showVolume"
+                class="col-md-5"
+            >
                 <div class="inline-volume-controls d-flex align-items-center">
                     <div class="flex-shrink-0 mx-2">
                         <mute-button

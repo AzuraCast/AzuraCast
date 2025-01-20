@@ -253,7 +253,7 @@ export interface ProfileNowPlayingPanelProps extends NowPlayingProps {
 <script setup lang="ts">
 import {BackendAdapter} from '~/entities/RadioAdapters';
 import Icon from '~/components/Common/Icon.vue';
-import {computed, Ref, ref} from "vue";
+import {computed, Ref, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
 import CardPage from "~/components/Common/CardPage.vue";
@@ -321,7 +321,8 @@ const doDisconnectStreamer = useMakeApiCall(
     }
 );
 
-const $updateMetadataModal: Ref<InstanceType<typeof UpdateMetadataModal> | null> = ref(null);
+const $updateMetadataModal = useTemplateRef('$updateMetadataModal');
+
 const updateMetadata = () => {
     $updateMetadataModal.value?.open();
 }

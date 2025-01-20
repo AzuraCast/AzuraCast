@@ -111,7 +111,7 @@ export interface ProfileEmbedModalProps {
 
 <script setup lang="ts">
 import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton.vue';
-import {computed, ref} from "vue";
+import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
@@ -238,7 +238,7 @@ const embedCode = computed(() => {
     return '<iframe src="' + embedUrl.value + '" frameborder="0" allowtransparency="true" style="width: 100%; min-height: ' + embedHeight.value + '; border: 0;"></iframe>';
 });
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show: open} = useHasModal($modal);
 
 defineExpose({

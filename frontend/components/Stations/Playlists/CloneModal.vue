@@ -32,12 +32,11 @@ import {required} from '@vuelidate/validators';
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {ref} from "vue";
+import {ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
 
 const emit = defineEmits(['relist', 'needs-restart']);
 
@@ -72,7 +71,7 @@ const copyOptions = [
     }
 ];
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 
 const open = (name, newCloneUrl) => {
     clearContents();

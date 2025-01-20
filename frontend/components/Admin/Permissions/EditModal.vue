@@ -40,7 +40,7 @@ export interface Permission {
 
 <script setup lang="ts">
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {computed, ref} from "vue";
+import {computed, ref, useTemplateRef} from "vue";
 import {
     BaseEditModalEmits,
     BaseEditModalProps,
@@ -61,7 +61,7 @@ interface PermissionsEditModalProps extends BaseEditModalProps {
 const props = defineProps<PermissionsEditModalProps>();
 const emit = defineEmits<BaseEditModalEmits>();
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 
 const {
     loading,

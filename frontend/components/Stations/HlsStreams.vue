@@ -65,9 +65,9 @@
 import DataTable from '~/components/Common/DataTable.vue';
 import EditModal from './HlsStreams/EditModal.vue';
 import {useTranslate} from "~/vendor/gettext";
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
+import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
@@ -93,10 +93,10 @@ const upper = (data) => {
     return upper.join(' ');
 };
 
-const $dataTable = ref<DataTableTemplateRef>(null);
+const $dataTable = useTemplateRef('$dataTable');
 const {relist} = useHasDatatable($dataTable);
 
-const $editModal = ref<InstanceType<typeof EditModal> | null>(null);
+const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const {mayNeedRestart} = useMayNeedRestart();

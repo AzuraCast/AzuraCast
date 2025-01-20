@@ -142,7 +142,7 @@ export interface ProfilePublicPagesPanelProps extends ProfileEmbedModalProps {
 <script setup lang="ts">
 import Icon from '~/components/Common/Icon.vue';
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
-import {ref} from "vue";
+import {ref, useTemplateRef} from "vue";
 import EmbedModal from "~/components/Stations/Profile/EmbedModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {StationPermission, userAllowedForStation} from "~/acl";
@@ -155,7 +155,7 @@ defineOptions({
 
 const props = defineProps<ProfilePublicPagesPanelProps>();
 
-const $embedModal = ref<InstanceType<typeof EmbedModal> | null>(null);
+const $embedModal = useTemplateRef('$embedModal');
 
 const doOpenEmbed = () => {
     $embedModal.value?.open();

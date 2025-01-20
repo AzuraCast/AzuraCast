@@ -212,7 +212,7 @@
 import {Dropdown} from 'bootstrap';
 import {intersection, map} from 'lodash';
 import Icon from '~/components/Common/Icon.vue';
-import {computed, ref, toRef, watch} from "vue";
+import {computed, ref, toRef, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import {IconClearAll, IconDelete, IconFolder, IconMoreHoriz, IconMove} from "~/components/Common/icons";
@@ -341,7 +341,7 @@ const doDelete = () => {
     });
 };
 
-const $playlistDropdown = ref<InstanceType<typeof HTMLDivElement> | null>(null);
+const $playlistDropdown = useTemplateRef('$playlistDropdown');
 
 const setPlaylists = () => {
     if ($playlistDropdown.value) {

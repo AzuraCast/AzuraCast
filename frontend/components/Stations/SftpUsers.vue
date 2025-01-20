@@ -14,7 +14,7 @@
 
                 <data-table
                     id="station_sftp_users"
-                    ref="$datatable"
+                    ref="$dataTable"
                     :show-toolbar="false"
                     :fields="fields"
                     :api-url="listUrl"
@@ -78,14 +78,13 @@
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import SftpUsersEditModal from "./SftpUsers/EditModal.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {ref} from "vue";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
+import {useTemplateRef} from "vue";
+import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
-import EditModal from "~/components/Stations/HlsStreams/EditModal.vue";
 
 interface SftpUsersConnectionInfo {
     url: string,
@@ -106,10 +105,10 @@ const fields: DataTableField[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {relist} = useHasDatatable($datatable);
+const $dataTable = useTemplateRef('$dataTable');
+const {relist} = useHasDatatable($dataTable);
 
-const $editModal = ref<InstanceType<typeof EditModal> | null>(null);
+const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const {doDelete} = useConfirmAndDelete(

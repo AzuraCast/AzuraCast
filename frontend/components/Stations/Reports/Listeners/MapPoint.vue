@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import {inject, onUnmounted, ref, ShallowRef, watch} from 'vue';
+import {inject, onUnmounted, ShallowRef, useTemplateRef, watch} from 'vue';
 import {LatLngTuple, Map, marker, Popup} from 'leaflet';
 
 const props = defineProps<{
@@ -19,7 +19,7 @@ const mapMarker = marker(props.position);
 mapMarker.addTo(map);
 
 const popup = new Popup();
-const $content = ref<HTMLDivElement | null>(null);
+const $content = useTemplateRef('$content');
 
 watch(
     $content,

@@ -249,19 +249,19 @@ import PlayButton from "~/components/Common/PlayButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useAxios} from "~/vendor/axios";
 import {useAsyncState, useIntervalFn} from "@vueuse/core";
-import {computed, ref} from "vue";
+import {computed, useTemplateRef} from "vue";
 import DashboardCharts from "~/components/DashboardCharts.vue";
 import {useTranslate} from "~/vendor/gettext";
 import Lightbox from "~/components/Common/Lightbox.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import HeaderInlinePlayer from "~/components/HeaderInlinePlayer.vue";
-import {LightboxTemplateRef, useProvideLightbox} from "~/vendor/lightbox";
+import {useProvideLightbox} from "~/vendor/lightbox";
 import useOptionalStorage from "~/functions/useOptionalStorage";
 import {IconAccountCircle, IconHeadphones, IconInfo, IconSettings, IconWarning} from "~/components/Common/icons";
 import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
 import {getApiUrl} from "~/router.ts";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import useHasDatatable from "~/functions/useHasDatatable.ts";
 
 const props = defineProps<{
     profileUrl: string,
@@ -323,7 +323,7 @@ const stationFields: DataTableField[] = [
     }
 ];
 
-const $datatable = ref<DataTableTemplateRef>(null);
+const $datatable = useTemplateRef('$datatable');
 const {refresh} = useHasDatatable($datatable);
 
 useIntervalFn(
@@ -331,6 +331,6 @@ useIntervalFn(
     computed(() => (document.hidden) ? 30000 : 15000)
 );
 
-const $lightbox = ref<LightboxTemplateRef>(null);
+const $lightbox = useTemplateRef('$lightbox');
 useProvideLightbox($lightbox);
 </script>

@@ -36,7 +36,7 @@
 
         <data-table
             :id="fieldKey+'_table'"
-            ref="$datatable"
+            ref="$dataTable"
             paginated
             handle-client-side
             :fields="fields"
@@ -61,13 +61,13 @@ export interface DateRange {
 import PieChart from "~/components/Common/Charts/PieChart.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import formatTime from "~/functions/formatTime";
-import {ref, toRef, watch} from "vue";
+import {toRef, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAsyncState, useMounted} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import {useLuxon} from "~/vendor/luxon";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
+import useHasDatatable from "~/functions/useHasDatatable";
 
 const props = defineProps<{
     dateRange: DateRange,
@@ -111,8 +111,8 @@ const {state: stats, isLoading, execute: reloadData} = useAsyncState(
     }
 );
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {navigate} = useHasDatatable($datatable);
+const $dataTable = useTemplateRef('$dataTable');
+const {navigate} = useHasDatatable($dataTable);
 
 const isMounted = useMounted();
 

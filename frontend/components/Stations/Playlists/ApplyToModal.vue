@@ -63,7 +63,7 @@
 
 <script setup lang="ts">
 import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import {ref} from "vue";
+import {ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
@@ -73,12 +73,12 @@ import {map} from "lodash";
 import {useResettableRef} from "~/functions/useResettableRef";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import Modal from "~/components/Common/Modal.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
 const emit = defineEmits<HasRelistEmit>();
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
 const {$gettext} = useTranslate();

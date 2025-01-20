@@ -104,7 +104,7 @@
 
         <data-table
             id="api_keys"
-            ref="$datatable"
+            ref="$dataTable"
             :fields="fields"
             :api-url="listUrl"
         >
@@ -158,7 +158,7 @@ import AdminBackupsConfigureModal from "~/components/Admin/Backups/ConfigureModa
 import AdminBackupsRunBackupModal from "~/components/Admin/Backups/RunBackupModal.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import {useAzuraCast} from "~/vendor/azuracast";
-import {onMounted, ref} from "vue";
+import {onMounted, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
@@ -167,7 +167,6 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {getApiUrl} from "~/router";
 import {IconLogs, IconSend, IconSettings} from "~/components/Common/icons";
-import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 
 const props = withDefaults(
     defineProps<{
@@ -228,7 +227,7 @@ const fields: DataTableField[] = [
     }
 ];
 
-const $datatable = ref<DataTableTemplateRef>(null);
+const $dataTable = useTemplateRef('$dataTable');
 
 const {axios} = useAxios();
 
@@ -244,22 +243,22 @@ const relist = () => {
         settingsLoading.value = false;
     });
 
-    $datatable.value?.relist();
+    $dataTable.value?.relist();
 };
 
 onMounted(relist);
 
-const $lastOutputModal = ref<InstanceType<typeof AdminBackupsLastOutputModal> | null>(null);
+const $lastOutputModal = useTemplateRef('$lastOutputModal');
 const showLastOutput = () => {
     $lastOutputModal.value?.show();
 };
 
-const $configureModal = ref<InstanceType<typeof AdminBackupsConfigureModal> | null>(null);
+const $configureModal = useTemplateRef('$configureModal');
 const doConfigure = () => {
     $configureModal.value?.open();
 };
 
-const $runBackupModal = ref<InstanceType<typeof AdminBackupsRunBackupModal> | null>(null);
+const $runBackupModal = useTemplateRef('$runBackupModal');
 const doRunBackup = () => {
     $runBackupModal.value?.open();
 };

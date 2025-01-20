@@ -155,14 +155,14 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {ref, useTemplateRef} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
 import {getStationApiUrl} from "~/router";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 
 const apiUrl = getStationApiUrl('/files/bulk');
 
@@ -172,7 +172,7 @@ const importResults = ref(null);
 const {notifySuccess, notifyError} = useNotify();
 const {axios} = useAxios();
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
 const uploaded = (file) => {

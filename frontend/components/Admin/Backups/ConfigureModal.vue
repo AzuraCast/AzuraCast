@@ -85,13 +85,13 @@ import FormFieldset from "~/components/Form/FormFieldset.vue";
 import mergeExisting from "~/functions/mergeExisting";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import TimeCode from "~/components/Common/TimeCode.vue";
-import {computed, ref} from "vue";
+import {computed, ref, useTemplateRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {HasRelistEmit, ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 
 const props = defineProps<{
@@ -141,7 +141,7 @@ const formatOptions = computed(() => {
 
 const {axios} = useAxios();
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {hide, show} = useHasModal($modal);
 
 const close = () => {

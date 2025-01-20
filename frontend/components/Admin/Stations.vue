@@ -9,7 +9,7 @@
 
         <data-table
             id="stations"
-            ref="$datatable"
+            ref="$dataTable"
             paginated
             :fields="fields"
             :api-url="listUrl"
@@ -87,14 +87,13 @@ import AdminStationsEditModal from "./Stations/EditModal.vue";
 import {get} from "lodash";
 import AdminStationsCloneModal from "./Stations/CloneModal.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {ref} from "vue";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
+import {useTemplateRef} from "vue";
+import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
-import CloneModal from "~/components/Admin/Stations/CloneModal.vue";
 import {useNotify} from "~/functions/useNotify.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import {useDialog} from "~/functions/useDialog.ts";
@@ -142,13 +141,13 @@ const fields: DataTableField[] = [
     }
 ];
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {relist} = useHasDatatable($datatable);
+const $dataTable = useTemplateRef('$dataTable');
+const {relist} = useHasDatatable($dataTable);
 
-const $editModal = ref<InstanceType<typeof AdminStationsEditModal> | null>(null);
+const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const $cloneModal = ref<InstanceType<typeof CloneModal> | null>(null);
+const $cloneModal = useTemplateRef('$cloneModal');
 
 const doClone = (stationName, url) => {
     $cloneModal.value.create(stationName, url);

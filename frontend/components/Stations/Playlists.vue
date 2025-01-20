@@ -39,7 +39,7 @@
                         
                         <data-table
                             id="station_playlists"
-                            ref="$datatable"
+                            ref="$dataTable"
                             paginated
                             :fields="fields"
                             :api-url="listUrl"
@@ -305,7 +305,7 @@ import QueueModal from './Playlists/QueueModal.vue';
 import CloneModal from './Playlists/CloneModal.vue';
 import ApplyToModal from "./Playlists/ApplyToModal.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import useHasEditModal from "~/functions/useHasEditModal";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useNotify} from "~/functions/useNotify";
@@ -320,7 +320,7 @@ import AddButton from "~/components/Common/AddButton.vue";
 import {IconContract, IconExpand} from "~/components/Common/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
 import ScheduleViewTab from "~/components/Stations/Common/ScheduleViewTab.vue";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import useHasDatatable from "~/functions/useHasDatatable.ts";
 import {EventImpl} from "@fullcalendar/core/internal";
 
 const props = defineProps<{
@@ -350,48 +350,48 @@ const formatLength = (length) => {
     return duration.rescale().toHuman();
 };
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {refresh: refreshDatatable} = useHasDatatable($datatable);
+const $dataTable = useTemplateRef('$dataTable');
+const {refresh: refreshDatatable} = useHasDatatable($dataTable);
 
-const $scheduleTab = ref<InstanceType<typeof ScheduleViewTab> | null>(null);
+const $scheduleTab = useTemplateRef('$scheduleTab');
 
 const relist = () => {
     refreshDatatable();
     $scheduleTab.value?.refresh();
 }
 
-const $editModal = ref<InstanceType<typeof EditModal> | null>(null);
+const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const doCalendarClick = (event: EventImpl) => {
     doEdit(event.extendedProps.edit_url);
 };
 
-const $reorderModal = ref<InstanceType<typeof ReorderModal> | null>(null);
+const $reorderModal = useTemplateRef('$reorderModal');
 
 const doReorder = (url) => {
     $reorderModal.value?.open(url);
 };
 
-const $queueModal = ref<InstanceType<typeof QueueModal> | null>(null);
+const $queueModal = useTemplateRef('$queueModal');
 
 const doQueue = (url) => {
     $queueModal.value?.open(url);
 };
 
-const $importModal = ref<InstanceType<typeof ImportModal> | null>(null);
+const $importModal = useTemplateRef('$importModal');
 
 const doImport = (url) => {
     $importModal.value?.open(url);
 };
 
-const $cloneModal = ref<InstanceType<typeof CloneModal> | null>(null);
+const $cloneModal = useTemplateRef('$cloneModal');
 
 const doClone = (name, url) => {
     $cloneModal.value?.open(name, url);
 };
 
-const $applyToModal = ref<InstanceType<typeof ApplyToModal> | null>(null);
+const $applyToModal = useTemplateRef('$applyToModal');
 
 const doApplyTo = (url) => {
     $applyToModal.value?.open(url);

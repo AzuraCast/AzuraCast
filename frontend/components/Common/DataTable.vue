@@ -31,7 +31,7 @@
                     <div class="flex-fill">
                         <div class="input-group">
                             <span class="input-group-text">
-                                <icon :icon="IconSearch"/>
+                                <icon :icon="IconSearch" />
                             </span>
                             <input
                                 v-model="searchPhrase"
@@ -51,7 +51,7 @@
                                 :title="$gettext('Refresh rows')"
                                 @click="onClickRefresh"
                             >
-                                <icon :icon="IconRefresh"/>
+                                <icon :icon="IconRefresh" />
                             </button>
 
                             <div
@@ -71,7 +71,7 @@
                                     <span>
                                         {{ perPageLabel }}
                                     </span>
-                                    <span class="caret"/>
+                                    <span class="caret" />
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li
@@ -103,8 +103,8 @@
                                     data-bs-placement="left"
                                     :title="$gettext('Display fields')"
                                 >
-                                    <icon :icon="IconFilterList"/>
-                                    <span class="caret"/>
+                                    <icon :icon="IconFilterList" />
+                                    <span class="caret" />
                                 </button>
                                 <div class="dropdown-menu">
                                     <div class="px-3 py-1">
@@ -135,7 +135,7 @@
                 ]"
             >
                 <caption v-if="slots.caption">
-                    <slot name="caption"/>
+                    <slot name="caption" />
                 </caption>
                 <thead>
                     <tr>
@@ -179,7 +179,7 @@
                                     {{ column.label }}
 
                                     <template v-if="column.sortable && sortField?.key === column.key">
-                                        <icon :icon="(sortOrder === 'asc') ? IconArrowDropUp : IconArrowDropDown"/>
+                                        <icon :icon="(sortOrder === 'asc') ? IconArrowDropUp : IconArrowDropDown" />
                                     </template>
                                 </div>
                             </slot>

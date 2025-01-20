@@ -22,6 +22,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- API Change: The Permissions API endpoint will now return station permissions as an array (i.e.
+  `station: [{id: 1, permissions: ["foo"]]`) instead of an object (i.e. `station: { 1: ["foo"] }`). Please update any
+  calling code accordingly. You can still submit new permissions in either format and it will be accepted.
+
 - Backups to local filesystems will now back directly up to the destination file, instead of writing to a temp file and
   copying it; this avoids doubling up on disk space requirements, prevents temp files from remaining on the filesystem
   and allows you to mount a larger custom backup storage location without issues.

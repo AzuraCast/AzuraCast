@@ -153,7 +153,7 @@ const {$gettext} = useTranslate();
 
 const langInstalledVersion = computed(() => {
     return $gettext(
-        'Stereo Tool version %{ version } is currently installed.',
+        'Stereo Tool version %{version} is currently installed.',
         {
             version: version.value
         }

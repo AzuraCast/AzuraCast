@@ -5,11 +5,19 @@ import {default as BSToast} from 'bootstrap/js/src/toast';
 import Toast from '~/components/Common/Toast.vue';
 import {currentVueInstance} from "~/vendor/vueInstance";
 
-export function createToast(props) {
-    let slot;
+type ToastMessage = string | Array<any>
+
+export interface ToastProps {
+    message: ToastMessage,
+    title?: string,
+    variant?: string,
+}
+
+export function createToast(props: ToastProps) {
+    let slot: Array<any>;
     if (Array.isArray(props.message)) {
         slot = props.message
-        delete props.message
+        props.message = "";
     }
 
     const defaultSlot = () => {
@@ -32,7 +40,10 @@ export function createToast(props) {
 export function useNotify() {
     const {$gettext} = useTranslate();
 
-    const notify = (message = null, options = {}) => {
+    const notify = (
+        message: ToastMessage = null,
+        options: Partial<ToastProps> = {}
+    ): ToastMessage => {
         if (document.hidden) {
             return;
         }
@@ -42,34 +53,34 @@ export function useNotify() {
             message
         });
         toast.show();
+
+        return message;
     };
 
-    const notifyError = (message = null, options = {}) => {
-        if (message === null) {
-            message = $gettext('An error occurred and your request could not be completed.');
-        }
+    const notifyError = (
+        message: ToastMessage = null,
+        options: Partial<ToastProps> = {}
+    ): ToastMessage => {
+        message ??= $gettext('An error occurred and your request could not be completed.');
 
         const defaults = {
             variant: 'danger'
         };
 
-        notify(message, {...defaults, ...options});
-
-        return message;
+        return notify(message, {...defaults, ...options});
     };
 
-    const notifySuccess = (message = null, options = {}) => {
-        if (message === null) {
-            message = $gettext('Changes saved.');
-        }
+    const notifySuccess = (
+        message: ToastMessage = null,
+        options: Partial<ToastProps> = {}
+    ): ToastMessage => {
+        message ??= $gettext('Changes saved.');
 
         const defaults = {
             variant: 'success'
         };
 
-        notify(message, {...defaults, ...options});
-
-        return message;
+        return notify(message, {...defaults, ...options});
     };
 
     return {

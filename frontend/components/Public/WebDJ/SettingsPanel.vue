@@ -290,7 +290,11 @@ const langStreamButton = computed(() => {
         : $gettext('Start Streaming');
 });
 
-const shownMetadata = ref({});
+const shownMetadata = ref({
+    artist: '',
+    title: ''
+});
+
 watch(metadata, (newMeta) => {
     if (newMeta === null) {
         newMeta = {

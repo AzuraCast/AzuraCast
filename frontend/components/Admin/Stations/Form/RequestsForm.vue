@@ -63,11 +63,7 @@ import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/use
 import {numeric} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 
-interface StationRequestsFormProps extends FormTabProps {
-    station: object, // TODO
-}
-
-const props = defineProps<StationRequestsFormProps>();
+const props = defineProps<FormTabProps>();
 const emit = defineEmits<FormTabEmits>();
 
 const {form, v$, tabClass} = useVuelidateOnFormTab(

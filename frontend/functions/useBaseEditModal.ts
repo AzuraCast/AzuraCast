@@ -2,7 +2,12 @@ import {computed, ComputedRef, nextTick, Ref, ref, toRef} from "vue";
 import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
-import {useVuelidateOnForm, VuelidateRef, VuelidateValidations} from "~/functions/useVuelidateOnForm";
+import {
+    useVuelidateOnForm,
+    VuelidateBlankForm,
+    VuelidateRef,
+    VuelidateValidations
+} from "~/functions/useVuelidateOnForm";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {AxiosRequestConfig} from "axios";
 import {GlobalConfig} from "@vuelidate/core";
@@ -11,12 +16,14 @@ import {GenericForm} from "~/entities/Forms.ts";
 export type ModalFormTemplateRef = InstanceType<typeof ModalForm> | null;
 
 export interface BaseEditModalProps {
-    createUrl: string
+    createUrl?: string
 }
 
-export interface BaseEditModalEmits {
+export interface HasRelistEmit {
     (e: 'relist'): void
 }
+
+export type BaseEditModalEmits = HasRelistEmit;
 
 export interface BaseEditModalOptions<T extends GenericForm = GenericForm> extends GlobalConfig {
     resetForm?(originalResetForm: () => void): void,
@@ -38,8 +45,8 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
     props: BaseEditModalProps,
     emit: BaseEditModalEmits,
     $modal: Ref<ModalFormTemplateRef>,
-    validations: VuelidateValidations<T>,
-    blankForm: T,
+    validations?: VuelidateValidations<T>,
+    blankForm?: VuelidateBlankForm<T>,
     options: BaseEditModalOptions<T> = {}
 ): {
     loading: Ref<boolean>,

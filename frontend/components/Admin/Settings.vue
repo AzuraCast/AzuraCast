@@ -93,7 +93,9 @@ const props = withDefaults(
     }
 );
 
-const emit = defineEmits(['saved']);
+const emit = defineEmits<{
+    (e: 'saved'): void
+}>();
 
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm();
 

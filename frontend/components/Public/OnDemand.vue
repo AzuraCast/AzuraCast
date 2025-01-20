@@ -62,15 +62,21 @@ import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {IconDownload} from "~/components/Common/icons";
 import FullHeightCard from "~/components/Public/FullHeightCard.vue";
 
+interface OnDemandCustomField {
+    display_key: string,
+    key: string,
+    label: string,
+}
+
 const props = withDefaults(
     defineProps<{
         listUrl: string,
         stationName: string,
-        customFields?: object,
+        customFields?: OnDemandCustomField[],
         showDownloadButton?: boolean
     }>(),
     {
-        customFields: () => ({}),
+        customFields: () => ([]),
         showDownloadButton: false,
     }
 );

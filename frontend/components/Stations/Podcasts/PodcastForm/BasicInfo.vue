@@ -82,10 +82,11 @@ import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/use
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import {NestedFormOptionInput} from "~/functions/objectToFormOptions.ts";
 
 interface PodcastBasicInfoFormProps extends FormTabProps {
-    languageOptions: object, // TODO
-    categoriesOptions: object, // TODO
+    languageOptions: NestedFormOptionInput,
+    categoriesOptions: NestedFormOptionInput,
 }
 
 const props = defineProps<PodcastBasicInfoFormProps>();

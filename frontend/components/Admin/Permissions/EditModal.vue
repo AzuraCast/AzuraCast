@@ -10,18 +10,33 @@
     >
         <tabs content-class="mt-3">
             <admin-permissions-global-form
-                :form="v$"
+                v-model:form="form"
                 :global-permissions="globalPermissions"
             />
 
             <admin-permissions-station-form
-                :form="v$"
+                v-model:form="form"
                 :stations="stations"
                 :station-permissions="stationPermissions"
             />
         </tabs>
     </modal-form>
 </template>
+
+<script lang="ts">
+export interface PermissionStation {
+    id: number,
+    permissions: string[]
+}
+
+export interface Permission {
+    name: string,
+    permissions: {
+        global: string[],
+        station: PermissionStation[],
+    }
+}
+</script>
 
 <script setup lang="ts">
 import ModalForm from "~/components/Common/ModalForm.vue";
@@ -33,16 +48,14 @@ import {
     useBaseEditModal
 } from "~/functions/useBaseEditModal";
 import {useTranslate} from "~/vendor/gettext";
-import {required} from '@vuelidate/validators';
 import AdminPermissionsGlobalForm from "./Form/GlobalForm.vue";
 import AdminPermissionsStationForm from "./Form/StationForm.vue";
-import {forEach, map} from 'lodash';
 import Tabs from "~/components/Common/Tabs.vue";
 
 interface PermissionsEditModalProps extends BaseEditModalProps {
-    stations: object,
-    globalPermissions: object,
-    stationPermissions: object
+    stations: Record<string, string>,
+    globalPermissions: Record<string, string>,
+    stationPermissions: Record<string, string>,
 }
 
 const props = defineProps<PermissionsEditModalProps>();
@@ -55,62 +68,16 @@ const {
     error,
     isEditMode,
     v$,
+    form,
     clearContents,
     create,
     edit,
     doSubmit,
     close
-} = useBaseEditModal(
+} = useBaseEditModal<Permission>(
     props,
     emit,
-    $modal,
-    {
-        'name': {required},
-        'permissions': {
-            'global': {},
-            'station': {},
-        }
-    },
-    {
-        'name': '',
-        'permissions': {
-            'global': [],
-            'station': [],
-        }
-    },
-    {
-        populateForm(data, formRef) {
-            formRef.value = {
-                name: data.name,
-                permissions: {
-                    global: data.permissions.global,
-                    station: map(data.permissions.station, (permissions, stationId) => {
-                        return {
-                            'station_id': stationId,
-                            'permissions': permissions
-                        };
-                    })
-                }
-            };
-        },
-        getSubmittableFormData(formRef) {
-            const formValue = formRef.value;
-
-            const formReturn = {
-                name: formValue.name,
-                permissions: {
-                    global: formValue.permissions.global,
-                    station: {}
-                }
-            };
-
-            forEach(formValue.permissions.station, (row) => {
-                formReturn.permissions.station[row.station_id] = row.permissions;
-            });
-
-            return formReturn;
-        },
-    }
+    $modal
 );
 
 const {$gettext} = useTranslate();

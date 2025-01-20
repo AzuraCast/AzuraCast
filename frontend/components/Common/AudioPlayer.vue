@@ -20,7 +20,6 @@ const props = withDefaults(
         isMuted?: boolean
     }>(),
     {
-        title: null,
         volume: 55,
         isMuted: false
     }

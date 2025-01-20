@@ -58,7 +58,9 @@ final class PodcastsAction implements SingleActionInterface
                 'hide_footer' => $isEmbedded,
             ],
             props: [
+                'stationId' => $station->getIdRequired(),
                 'stationName' => $station->getName(),
+                'stationTz' => $station->getTimezone(),
                 'baseUrl' => $router->fromHere('public:index'),
                 'groupLayout' => $groupLayout,
             ],

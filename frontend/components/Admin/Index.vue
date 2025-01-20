@@ -6,7 +6,7 @@
 
         <div class="row row-of-cards">
             <div
-                v-for="panel in menuItems"
+                v-for="panel in menuItems.categories"
                 :key="panel.key"
                 class="col-sm-12 col-lg-4"
             >
@@ -203,10 +203,11 @@ const {state: stats, isLoading} = useAutoRefreshingAsyncState<AdminStats>(
     {
         cpu: {
             total: {
-                name: 'Total',
-                steal: 0,
-                io_wait: 0,
-                usage: 0
+                name: "Total",
+                usage: "",
+                idle: "",
+                io_wait: "",
+                steal: "",
             },
             cores: [],
             load: [0, 0, 0]
@@ -214,13 +215,21 @@ const {state: stats, isLoading} = useAutoRefreshingAsyncState<AdminStats>(
         memory: {
             bytes: {
                 total: "0",
+                free: "0",
+                buffers: "0",
+                cached: "0",
+                sReclaimable: "0",
+                shmem: "0",
                 used: "0",
-                cached: "0"
             },
             readable: {
                 total: "",
+                free: "",
+                buffers: "",
+                cached: "",
+                sReclaimable: "",
+                shmem: "",
                 used: "",
-                cached: ""
             }
         },
         swap: {

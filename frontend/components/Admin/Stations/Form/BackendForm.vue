@@ -310,7 +310,6 @@ import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 
 interface StationBackendFormProps extends FormTabProps {
-    station: object, // TODO
     isStereoToolInstalled: boolean
 }
 

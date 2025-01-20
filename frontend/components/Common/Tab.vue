@@ -11,13 +11,7 @@
 <script setup lang="ts">
 import {TabChildProps, useTabChild} from "~/functions/tabs.ts";
 
-const props = withDefaults(
-    defineProps<TabChildProps>(),
-    {
-        id: null,
-        itemHeaderClass: null,
-    }
-);
+const props = defineProps<TabChildProps>();
 
 const {computedId, isActive, isLazy} = useTabChild(props);
 </script>

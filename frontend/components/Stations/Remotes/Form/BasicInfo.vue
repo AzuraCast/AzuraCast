@@ -85,6 +85,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     {
         display_name: {},
         type: {required},
+        custom_listen_url: {},
         url: {required},
         mount: {},
         admin_password: {},

@@ -95,15 +95,17 @@ import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchResponse.ts";
 import {useAsyncState} from "@vueuse/core";
+import {MediaSelectedItems} from "~/components/Stations/Media.vue";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
 const props = defineProps<{
-    selectedItems: object, // TODO
+    selectedItems: MediaSelectedItems,
     currentDirectory: string,
     batchUrl: string,
     listDirectoriesUrl: string,
 }>();
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const destinationDirectory = ref('');
 const dirHistory = ref([]);
@@ -117,7 +119,7 @@ const fields: DataTableField[] = [
 const langHeader = computed(() => {
     return $gettext(
         'Move %{num} File(s) to',
-        {num: props.selectedItems.all.length}
+        {num: String(props.selectedItems.all.length)}
     );
 });
 

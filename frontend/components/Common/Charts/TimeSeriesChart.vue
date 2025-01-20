@@ -16,7 +16,7 @@ import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
 import useChart, {ChartProps, ChartTemplateRef} from "~/functions/useChart";
 import {useLuxon} from "~/vendor/luxon";
 
-interface TimeSeriesChartProps extends ChartProps {
+interface TimeSeriesChartProps extends ChartProps<'line'> {
     tz?: string,
 }
 
@@ -38,7 +38,7 @@ useChart<'line'>(
     computed(() => ({
         type: 'line',
         options: {
-            aspectRatio: props.aspectRatio,
+            aspectRatio: props.aspectRatio ?? 2,
             datasets: {
                 line: {
                     spanGaps: true,
@@ -52,15 +52,41 @@ useChart<'line'>(
                         enabled: true,
                         mode: 'x'
                     }
+                }, 
+                tooltip: {
+                    intersect: false,
+                    mode: 'index',
+                    callbacks: {
+                        title: function (ctx) {
+                            const title: string[] = [];
+
+                            ctx.forEach((ctxRow) => {
+                                title.push(
+                                    DateTime.fromMillis(ctxRow.parsed.x).setZone(props.tz)?.toLocaleString(DateTime.DATE_SHORT)
+                                );
+                            });
+
+                            return title.join(', ');
+                        },
+                        label: function (ctx) {
+                            let label = ctx.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+
+                            label += ctx.parsed.y.toFixed(2);
+
+                            return label;
+                        }
+                    }
                 }
             },
             scales: {
                 x: {
                     type: 'time',
-                    distribution: 'linear',
                     display: true,
-                    min: DateTime.local({zone: props.tz}).minus({days: 30}).toJSDate(),
-                    max: DateTime.local({zone: props.tz}).toJSDate(),
+                    min: Number(DateTime.local({ zone: props.tz }).minus({ days: 30 }).toMillis()),
+                    max: Number(DateTime.local({ zone: props.tz }).toMillis()),
                     adapters: {
                         date: {
                             setZone: true,
@@ -68,8 +94,7 @@ useChart<'line'>(
                         }
                     },
                     time: {
-                        unit: 'day',
-                        tooltipFormat: DateTime.DATE_SHORT,
+                        unit: 'day'
                     },
                     ticks: {
                         source: 'data',
@@ -78,27 +103,11 @@ useChart<'line'>(
                 },
                 y: {
                     display: true,
-                    scaleLabel: {
+                    title: {
                         display: true,
-                        labelString: $gettext('Listeners')
+                        text: $gettext('Listeners')
                     },
-                    ticks: {
-                        min: 0
-                    }
-                }
-            },
-            tooltips: {
-                intersect: false,
-                mode: 'index',
-                callbacks: {
-                    label: function (tooltipItem, myData) {
-                        let label = myData.datasets[tooltipItem.datasetIndex].label || '';
-                        if (label) {
-                            label += ': ';
-                        }
-                        label += parseFloat(tooltipItem.value).toFixed(2);
-                        return label;
-                    }
+                    min: 0
                 }
             }
         }

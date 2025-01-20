@@ -24,6 +24,7 @@
                 :description="$gettext('This web hook will only run when the selected event(s) occur on this specific station.')"
             />
 
+            <!-- @vue-expect-error Vuelidate mistyping -->
             <form-group-select
                 id="form_config_rate_limit"
                 class="col-md-5"

@@ -65,7 +65,9 @@ const {
     props,
     emit,
     $modal,
-    {},
+    {
+        schedule_items: {}
+    },
     {
         schedule_items: []
     },

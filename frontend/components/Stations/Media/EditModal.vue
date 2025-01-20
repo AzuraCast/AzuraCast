@@ -69,10 +69,12 @@ import {
 } from "~/functions/useBaseEditModal.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
+import {CustomField} from "~/entities/ApiInterfaces.ts";
+import {MediaInitialPlaylist} from "~/components/Stations/Media.vue";
 
 interface MediaEditModalProps extends BaseEditModalProps {
-    customFields: any[],
-    playlists: any[]
+    customFields: CustomField[],
+    playlists: MediaInitialPlaylist[]
 }
 
 const props = defineProps<MediaEditModalProps>();
@@ -163,7 +165,7 @@ const {
             reset();
         },
         populateForm: (data, form) => {
-            record.value = mergeExisting(record.value, data);
+            record.value = mergeExisting(record.value, data as typeof record.value);
 
             const newForm = mergeExisting(form.value, data);
             newForm.playlists = map(data.playlists, 'id');

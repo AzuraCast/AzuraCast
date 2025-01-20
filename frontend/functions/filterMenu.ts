@@ -1,21 +1,21 @@
 import {cloneDeep, filter, get, map} from "lodash";
-import {ComputedRef, Reactive, toRaw} from "vue";
+import {ComputedRef, toRaw} from "vue";
 import {Icon} from "../components/Common/icons";
 import {reactiveComputed} from "@vueuse/core";
 
-export type ReactiveMenu = Reactive<MenuCategory[]>;
-
-interface RouteBasedUrl {
+export interface MenuRouteBasedUrl {
     name: string,
     params?: Record<string, any>
 }
 
+export type MenuRouteUrl = string | MenuRouteBasedUrl;
+
 export interface MenuSubCategory {
     key: string,
     label: ComputedRef<string>,
-    url?: string | RouteBasedUrl,
     icon?: Icon,
     visible?: boolean,
+    url?: MenuRouteUrl,
     external?: boolean,
     title?: string,
     "class"?: string,
@@ -25,31 +25,37 @@ export interface MenuCategory extends MenuSubCategory {
     items?: MenuSubCategory[]
 }
 
-export default function filterMenu(menuItems: ReactiveMenu): ReactiveMenu {
+export interface ReactiveMenu {
+    categories: MenuCategory[]
+}
+
+export default function filterMenu(originalMenu: ReactiveMenu): ReactiveMenu {
     return reactiveComputed(
-        () => filter(
-            map(
-                cloneDeep(toRaw(menuItems as unknown as MenuCategory[])),
-                (menuRow): MenuCategory | null => {
-                    const itemIsVisible: boolean = get(menuRow, 'visible', true);
-                    if (!itemIsVisible) {
-                        return null;
-                    }
-
-                    if ('items' in menuRow) {
-                        menuRow.items = filter(menuRow.items, (item) => {
-                            return get(item, 'visible', true);
-                        });
-
-                        if (menuRow.items.length === 0) {
+        () => ({
+            categories: filter(
+                map(
+                    cloneDeep(toRaw(originalMenu.categories)),
+                    (menuRow: MenuCategory): MenuCategory | null => {
+                        const itemIsVisible: boolean = get(menuRow, 'visible', true);
+                        if (!itemIsVisible) {
                             return null;
                         }
-                    }
 
-                    return menuRow;
-                }
+                        if ('items' in menuRow) {
+                            menuRow.items = filter(menuRow.items, (item) => {
+                                return get(item, 'visible', true);
+                            });
+
+                            if (menuRow.items.length === 0) {
+                                return null;
+                            }
+                        }
+
+                        return menuRow;
+                    }
+                ),
+                (row: MenuCategory | null) => null !== row
             ),
-            (row: MenuCategory | null) => null !== row
-        )
-    );
+        })
+    ) as unknown as ReactiveMenu;
 }

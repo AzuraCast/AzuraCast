@@ -45,10 +45,10 @@ import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
-import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
+import {HasRelistEmit, ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
 import {getApiUrl} from "~/router.ts";
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const changePasswordUrl = getApiUrl('/frontend/account/password');
 

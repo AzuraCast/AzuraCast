@@ -56,7 +56,9 @@ const $modal = ref<ModalFormTemplateRef>(null);
 
 const {record, reset} = useResettableRef({
     has_custom_art: false,
-    links: {}
+    links: {
+        art: null,
+    }
 });
 
 const {
@@ -74,7 +76,10 @@ const {
     props,
     emit,
     $modal,
-    {},
+    {
+        schedule_items: {},
+        artwork_file: {},
+    },
     {
         schedule_items: [],
         artwork_file: null
@@ -85,7 +90,7 @@ const {
             reset();
         },
         populateForm: (data, formRef) => {
-            record.value = data;
+            record.value = mergeExisting(record.value, data as typeof record.value);
             formRef.value = mergeExisting(formRef.value, data);
         },
     },

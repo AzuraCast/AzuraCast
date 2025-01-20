@@ -7,17 +7,17 @@ import {Ref} from "vue-demi";
 import {GenericForm} from "~/entities/Forms.ts";
 
 type ValidationFunc<T extends GenericForm = GenericForm> = (options: GlobalConfig) => ValidationArgs<T>
-type BlankFormFunc<T extends GenericForm = GenericForm> = (options: GlobalConfig) => Partial<T>
+type BlankFormFunc<T extends GenericForm = GenericForm> = (options: GlobalConfig) => T
 
 export type VuelidateValidations<T extends GenericForm = GenericForm> = ValidationArgs<T> | ValidationFunc<T>
-export type VuelidateBlankForm<T extends GenericForm = GenericForm> = MaybeRef<Partial<T>> | BlankFormFunc<T>
+export type VuelidateBlankForm<T extends GenericForm = GenericForm> = MaybeRef<T> | BlankFormFunc<T>
 
 export type VuelidateObject<T extends GenericForm = GenericForm> = Validation<ValidationArgs<T>, T>
-export type VuelidateRef<T extends GenericForm = GenericForm> = Ref<VuelidateObject<T>>
+export type VuelidateRef<T extends GenericForm = GenericForm> = MaybeRef<VuelidateObject<T>>
 
 export function useVuelidateOnForm<T extends GenericForm = GenericForm>(
-    validations: Partial<VuelidateValidations<T>> = {},
-    blankForm: VuelidateBlankForm<T> = {},
+    validations: VuelidateValidations<T> = {} as VuelidateValidations<T>,
+    blankForm: VuelidateBlankForm<T> = {} as VuelidateBlankForm<T>,
     options: GlobalConfig = {}
 ): {
     form: Ref<T>,
@@ -56,7 +56,7 @@ export function useVuelidateOnForm<T extends GenericForm = GenericForm>(
         ? validations(options)
         : validations;
 
-    const v$ = useVuelidate(parsedValidations, form, options) as VuelidateRef<T>;
+    const v$ = useVuelidate(parsedValidations, form, options);
 
     const resetForm = () => {
         reset();

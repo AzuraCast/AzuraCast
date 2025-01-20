@@ -28,11 +28,11 @@
                     {{ getGlobalPermissionNames(row.item.permissions.global).join(', ') }}
                 </div>
                 <div
-                    v-for="(permissions, stationId) in row.item.permissions.station"
-                    :key="stationId"
+                    v-for="(stationRow) in row.item.permissions.station"
+                    :key="stationRow.id"
                 >
-                    <b>{{ getStationName(stationId) }}</b>:
-                    {{ getStationPermissionNames(permissions).join(', ') }}
+                    <b>{{ getStationName(stationRow.id) }}</b>:
+                    {{ getStationPermissionNames(stationRow.permissions).join(', ') }}
                 </div>
             </template>
             <template #cell(actions)="row">
@@ -84,9 +84,9 @@ import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 
 const props = defineProps<{
-    stations: Array<any>, // TODO
-    globalPermissions: Array<any>, // TODO
-    stationPermissions: Array<any>, // TODO
+    stations: Record<string, string>,
+    globalPermissions: Record<string, string>,
+    stationPermissions: Record<string, string>,
 }>();
 
 const listUrl = getApiUrl('/admin/roles');

@@ -47,11 +47,11 @@ const {form, v$, tabClass} = useVuelidateOnFormTab(
             app_password: {required}
         }
     },
-    {
+    () => ({
         config: {
             handle: '',
             app_password: ''
         }
-    }
+    })
 );
 </script>

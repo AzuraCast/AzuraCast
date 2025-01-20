@@ -92,11 +92,7 @@ import {numeric} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 
-interface StationHlsFormProps extends FormTabProps {
-    station: object, // TODO
-}
-
-const props = defineProps<StationHlsFormProps>();
+const props = defineProps<FormTabProps>();
 const emit = defineEmits<FormTabEmits>();
 
 const {enableAdvancedFeatures} = useAzuraCast();

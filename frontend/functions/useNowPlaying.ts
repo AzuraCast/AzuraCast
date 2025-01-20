@@ -1,6 +1,6 @@
 import NowPlaying from '~/entities/NowPlaying';
 import {computed, onMounted, Ref, ref, ShallowRef, shallowRef, watch} from "vue";
-import {useEventSource, useIntervalFn} from "@vueuse/core";
+import {reactiveComputed, useEventSource, useIntervalFn} from "@vueuse/core";
 import {ApiNowPlaying} from "~/entities/ApiInterfaces.ts";
 import {getApiUrl} from "~/router.ts";
 import {useAxios} from "~/vendor/axios.ts";
@@ -20,11 +20,11 @@ interface SsePayload {
 }
 
 export default function useNowPlaying(initialProps: NowPlayingProps) {
-    const props = {
+    const props = reactiveComputed(() => ({
         useStatic: false,
         useSse: false,
         ...initialProps
-    };
+    }));
 
     const np: ShallowRef<ApiNowPlaying> = shallowRef(NowPlaying);
     const npTimestamp: Ref<number> = ref(0);

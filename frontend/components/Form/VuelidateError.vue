@@ -8,13 +8,14 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T = ModelFormField">
 import {useTranslate} from "~/vendor/gettext";
 import {get, map} from "lodash";
 import {computed} from "vue";
+import {ModelFormField, VuelidateField} from "~/components/Form/useFormField.ts";
 
 const props = defineProps<{
-    field: object, // TODO
+    field: VuelidateField<T>,
 }>();
 
 const {$gettext} = useTranslate();

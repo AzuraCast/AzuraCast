@@ -1,8 +1,8 @@
 import {Ref} from "vue";
 
 interface EditModalCompatible {
-    create(),
-    edit(editUrl: string)
+    create(): void,
+    edit(editUrl: string): void
 }
 
 export default function useHasEditModal($modalRef: Ref<EditModalCompatible | null>) {

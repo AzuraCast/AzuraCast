@@ -67,7 +67,7 @@ import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 
 const props = defineProps<{
-    autoAssignTypes: object, // TODO
+    autoAssignTypes: Record<string, string>,
 }>();
 
 const listUrl = getApiUrl('/admin/custom_fields');

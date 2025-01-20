@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import {inject, onUnmounted, ref, ShallowRef, watch} from 'vue';
-import {LatLngTuple, Map, marker} from 'leaflet';
+import {LatLngTuple, Map, marker, Popup} from 'leaflet';
 
 const props = defineProps<{
     position: LatLngTuple
@@ -18,7 +18,7 @@ const map = $map.value;
 const mapMarker = marker(props.position);
 mapMarker.addTo(map);
 
-const popup = new L.Popup();
+const popup = new Popup();
 const $content = ref<HTMLDivElement | null>(null);
 
 watch(

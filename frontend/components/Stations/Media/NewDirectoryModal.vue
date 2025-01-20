@@ -48,13 +48,15 @@ import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {ComponentExposed} from "vue-component-type-helpers";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
 const props = defineProps<{
     currentDirectory: string,
     mkdirUrl: string
 }>();
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
     {
@@ -72,7 +74,7 @@ const onHidden = () => {
     resetForm();
 }
 
-const $field = ref<InstanceType<typeof FormGroupField> | null>(null);
+const $field = ref<ComponentExposed<typeof FormGroupField> | null>(null);
 
 const onShown = () => {
     nextTick(() => {

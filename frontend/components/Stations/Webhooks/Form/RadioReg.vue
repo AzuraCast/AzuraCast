@@ -42,11 +42,11 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             apikey: {required}
         }
     },
-    {
+    () => ({
         config: {
             webhookurl: '',
             apikey: ''
         }
-    }
+    })
 );
 </script>

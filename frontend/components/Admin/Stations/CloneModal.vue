@@ -21,10 +21,10 @@ import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
+import {HasRelistEmit, ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const loading = ref(true);
 const cloneUrl = ref(null);

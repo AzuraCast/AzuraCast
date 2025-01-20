@@ -107,8 +107,9 @@ import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {getApiUrl} from "~/router.ts";
 import useWebAuthn from "~/functions/useWebAuthn.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const registerWebAuthnUrl = getApiUrl('/frontend/account/webauthn/register');
 

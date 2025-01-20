@@ -20,7 +20,7 @@
             </div>
 
             <div
-                v-if="v$.backup_enabled.$model"
+                v-if="form.backup_enabled"
                 class="row g-3"
             >
                 <form-group-field
@@ -29,11 +29,11 @@
                     :field="v$.backup_time_code"
                     :label="$gettext('Scheduled Backup Time')"
                 >
-                    <template #default="slotProps">
+                    <template #default="{id, model, fieldClass}">
                         <time-code
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            :class="slotProps.class"
+                            :id="id"
+                            v-model="model.$model"
+                            :class="fieldClass"
                         />
                     </template>
                 </form-group-field>
@@ -91,7 +91,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
+import {HasRelistEmit, ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 
 const props = defineProps<{
@@ -99,7 +99,7 @@ const props = defineProps<{
     storageLocations: Record<number, string>,
 }>();
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const loading = ref(true);
 

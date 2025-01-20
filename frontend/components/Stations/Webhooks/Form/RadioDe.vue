@@ -40,11 +40,11 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             apikey: {required}
         }
     },
-    {
+    () => ({
         config: {
             broadcastsubdomain: '',
             apikey: ''
         }
-    }
+    })
 );
 </script>

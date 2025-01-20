@@ -24,7 +24,7 @@
             <component
                 :is="formComponent"
                 v-model:form="form"
-                :label="typeTitle"
+                :title="typeTitle"
             />
         </tabs>
     </modal-form>
@@ -50,7 +50,7 @@ import Telegram from "./Form/Telegram.vue";
 import GoogleAnalyticsV4 from "./Form/GoogleAnalyticsV4.vue";
 import MatomoAnalytics from "./Form/MatomoAnalytics.vue";
 import Mastodon from "./Form/Mastodon.vue";
-import {BaseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {BaseEditModalProps, HasRelistEmit, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, nextTick, provide, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
@@ -61,6 +61,7 @@ import GetMeRadio from "~/components/Stations/Webhooks/Form/GetMeRadio.vue";
 import RadioReg from "~/components/Stations/Webhooks/Form/RadioReg.vue";
 import GroupMe from "~/components/Stations/Webhooks/Form/GroupMe.vue";
 import Bluesky from "~/components/Stations/Webhooks/Form/Bluesky.vue";
+import mergeExisting from "~/functions/mergeExisting.ts";
 
 interface WebhookEditModalProps extends BaseEditModalProps {
     nowPlayingUrl: string,
@@ -72,7 +73,7 @@ const props = defineProps<WebhookEditModalProps>();
 
 provide('nowPlayingUrl', props.nowPlayingUrl);
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const type = ref<WebhookType | null>(null);
 
@@ -118,16 +119,21 @@ const {
     props,
     emit,
     $modal,
-    {},
-    {},
+    {
+        type: {}
+    },
+    {
+        type: null
+    },
     {
         populateForm: (data, formRef) => {
             type.value = data.type;
-            formRef.value = {
-                name: data.name,
-                triggers: data.triggers,
-                config: data.config
-            };
+
+            // Wait for type-specific components to mount.
+            nextTick(() => {
+                resetForm();
+                formRef.value = mergeExisting(formRef.value, data);
+            });
         },
         getSubmittableFormData(formRef, isEditModeRef) {
             const formData = formRef.value;
@@ -156,7 +162,7 @@ const clearContents = () => {
     originalClearContents();
 };
 
-const setType = (newType) => {
+const setType = (newType: WebhookType) => {
     type.value = newType;
     nextTick(resetForm);
 };

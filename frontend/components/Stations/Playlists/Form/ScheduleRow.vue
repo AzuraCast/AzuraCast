@@ -28,11 +28,11 @@
                     :label="$gettext('Start Time')"
                     :description="$gettext('To play once per day, set the start and end times to the same value.')"
                 >
-                    <template #default="slotProps">
+                    <template #default="{id, model, fieldClass}">
                         <playlist-time
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            :class="slotProps.class"
+                            :id="id"
+                            v-model="model.$model"
+                            :class="fieldClass"
                         />
                     </template>
                 </form-group-field>
@@ -44,11 +44,11 @@
                     :label="$gettext('End Time')"
                     :description="$gettext('If the end time is before the start time, the playlist will play overnight.')"
                 >
-                    <template #default="slotProps">
+                    <template #default="{id, model, fieldClass}">
                         <playlist-time
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            :class="slotProps.class"
+                            :id="id"
+                            v-model="model.$model"
+                            :class="fieldClass"
                         />
                     </template>
                 </form-group-field>
@@ -114,9 +114,18 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 import {IconRemove} from "~/components/Common/icons";
 
+interface PlaylistScheduleRow {
+    start_time: number,
+    end_time: number,
+    start_date: string,
+    end_date: string,
+    days: number[],
+    loop_once: boolean,
+}
+
 const props = defineProps<{
     index: number,
-    row: object
+    row: PlaylistScheduleRow
 }>();
 
 const emit = defineEmits(['remove']);

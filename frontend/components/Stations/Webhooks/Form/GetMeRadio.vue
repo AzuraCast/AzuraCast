@@ -42,11 +42,11 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             station_id: {required}
         }
     },
-    {
+    () => ({
         config: {
             token: '',
             station_id: '',
         }
-    }
+    })
 );
 </script>

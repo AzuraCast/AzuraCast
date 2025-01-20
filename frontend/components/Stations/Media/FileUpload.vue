@@ -11,6 +11,7 @@
 <script setup lang="ts">
 import FlowUpload from '~/components/Common/FlowUpload.vue';
 import {computed} from "vue";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
 const props = withDefaults(
     defineProps<{
@@ -24,7 +25,7 @@ const props = withDefaults(
     }
 );
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const targetUrl = computed(() => {
     const url = new URL(props.uploadUrl, document.location.href);

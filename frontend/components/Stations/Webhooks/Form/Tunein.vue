@@ -49,12 +49,12 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             partner_key: {required},
         }
     },
-    {
+    () => ({
         config: {
             station_id: '',
             partner_id: '',
             partner_key: ''
         }
-    }
+    })
 );
 </script>

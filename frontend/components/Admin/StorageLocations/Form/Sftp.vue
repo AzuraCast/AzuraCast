@@ -72,6 +72,14 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         sftpPassword: {},
         sftpPrivateKey: {},
         sftpPrivateKeyPassPhrase: {}
+    },
+    {
+        sftpHost: null,
+        sftpPort: '22',
+        sftpUsername: null,
+        sftpPassword: null,
+        sftpPrivateKey: null,
+        sftpPrivateKeyPassPhrase: null,
     }
 );
 </script>

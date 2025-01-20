@@ -26,12 +26,11 @@ const props = withDefaults(
         url: string,
         isStream?: boolean,
         isHls?: boolean,
-        iconClass?: stringm
+        iconClass?: string
     }>(),
     {
         isStream: false,
-        isHls: false,
-        iconClass: null
+        isHls: false
     }
 );
 

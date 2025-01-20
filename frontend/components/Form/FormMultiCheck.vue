@@ -44,7 +44,7 @@ const props = withDefaults(
     defineProps<{
         modelValue?: ModelFormField,
         id: string,
-        name: string,
+        name?: string,
         fieldClass?: string,
         options: SimpleFormOptionInput,
         radio?: boolean,
@@ -59,7 +59,9 @@ const props = withDefaults(
     }
 )
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{
+    (e: 'update:modelValue', modelValue: ModelFormField): void
+}>();
 
 const value = useVModel(props, 'modelValue', emit);
 

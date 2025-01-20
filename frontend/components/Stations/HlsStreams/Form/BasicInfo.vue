@@ -81,7 +81,7 @@ const bitrateOptions = map(
     (val) => {
         return {
             value: val,
-            text: val
+            text: String(val)
         }
     },
 );

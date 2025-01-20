@@ -27,8 +27,6 @@ const props = withDefaults(
         width?: number
     }>(),
     {
-        service: null,
-        serviceUrl: null,
         width: 64
     }
 );

@@ -77,8 +77,6 @@ export interface GridLayoutProps {
 }
 
 const props = withDefaults(defineProps<GridLayoutProps>(), {
-    id: null,
-    apiUrl: null,
     paginated: false,
     loading: false,
     hideOnLoading: true,

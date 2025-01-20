@@ -2,15 +2,25 @@ import {useLuxon} from "~/vendor/luxon.ts";
 import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {DateTimeMaybeValid} from "luxon";
 
-export default function useStationDateTimeFormatter() {
+export default function useStationDateTimeFormatter(
+    timezone?: string
+) {
     const {DateTime} = useLuxon();
     const {timeConfig} = useAzuraCast();
-    const {timezone} = useAzuraCastStation();
+
+    if (!timezone) {
+        const station = useAzuraCastStation();
+        if (station) {
+            timezone = station.timezone;
+        } else {
+            throw new Error("Cannot get timezone!");
+        }
+    }
 
     const now = (): DateTimeMaybeValid =>
         DateTime.local({zone: timezone});
 
-    const timestampToDateTime = (value): DateTimeMaybeValid =>
+    const timestampToDateTime = (value: number): DateTimeMaybeValid =>
         DateTime.fromSeconds(value, {zone: timezone});
 
     const formatDateTime = (

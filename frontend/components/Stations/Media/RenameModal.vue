@@ -46,12 +46,14 @@ import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {ComponentExposed} from "vue-component-type-helpers";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
 const props = defineProps<{
     renameUrl: string
 }>();
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const file = ref(null);
 
@@ -74,7 +76,7 @@ const open = (filePath: string): void => {
     show();
 }
 
-const $field = ref<InstanceType<typeof FormGroupField> | null>(null);
+const $field = ref<ComponentExposed<typeof FormGroupField> | null>(null);
 
 const onShown = () => {
     nextTick(() => {

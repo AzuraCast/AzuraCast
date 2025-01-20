@@ -19,6 +19,9 @@ const props = withDefaults(
     }
 );
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{
+    (e: 'update:modelValue', modelValue: boolean): void
+}>();
+
 const checkboxValue = useVModel(props, 'modelValue', emit);
 </script>

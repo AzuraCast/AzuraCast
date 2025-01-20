@@ -15,7 +15,7 @@ import {isEmpty, padStart} from 'lodash';
 
 const props = withDefaults(
     defineProps<{
-        modelValue?: string
+        modelValue?: string | number | null
     }>(),
     {
         modelValue: null,
@@ -23,19 +23,19 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-    (e: 'update:modelValue', value: string | null): void
+    (e: 'update:modelValue', value: number | null): void
 }>();
 
-const parseTimeCode = (timeCode) => {
+const parseTimeCode = (timeCode: string | number | null) => {
     if (timeCode !== '' && timeCode !== null) {
-        timeCode = padStart(timeCode, 4, '0');
+        timeCode = padStart(String(timeCode), 4, '0');
         return timeCode.substring(0, 2) + ':' + timeCode.substring(2);
     }
 
     return null;
 }
 
-const convertToTimeCode = (time) => {
+const convertToTimeCode = (time: string): number | null => {
     if (isEmpty(time)) {
         return null;
     }

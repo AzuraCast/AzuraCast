@@ -6,7 +6,7 @@
         <div class="card-header text-bg-primary d-flex align-items-center">
             <div class="flex-fill">
                 <h2 class="card-title">
-                    {{ getStationName(row.station_id) }}
+                    {{ getStationName(form.id) }}
                 </h2>
             </div>
             <div class="flex-shrink-0">
@@ -25,10 +25,10 @@
         <div class="card-body">
             <div class="row g-3">
                 <form-group-multi-check
-                    :id="'edit_form_station_permissions_'+row.station_id"
+                    :id="'edit_form_station_permissions_'+form.id"
                     class="col-md-12"
                     :field="v$.permissions"
-                    :options="stationPermissionOptions"
+                    :options="stationPermissions"
                     stacked
                     :label="$gettext('Station Permissions')"
                     :description="$gettext('Users with this role will have these permissions for this single station.')"
@@ -39,45 +39,41 @@
 </template>
 
 <script setup lang="ts">
-import useVuelidate from "@vuelidate/core";
-import {get, map} from "lodash";
+import {get} from "lodash";
 import Icon from "~/components/Common/Icon.vue";
-import {useVModel} from "@vueuse/core";
-import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {IconRemove} from "~/components/Common/icons";
-import {GenericForm} from "~/entities/Forms.ts";
+import {PermissionStation} from "~/components/Admin/Permissions/EditModal.vue";
+import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
+import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab.ts";
 
-const props = defineProps<{
-    row: GenericForm,
+type T = PermissionStation;
+
+interface PermissionsFormStationRowProps extends FormTabProps<T> {
     stations: Record<number, string>,
-    stationPermissions: Record<string, string>,
-}>();
+    stationPermissions: SimpleFormOptionInput,
+}
 
-const emit = defineEmits<{
-    (e: 'remove'): void,
-    (e: 'update:row', row: GenericForm): void
-}>();
+const props = defineProps<PermissionsFormStationRowProps>();
 
-const form = useVModel(props, 'row', emit);
+interface PermissionsFormStationRowEmits extends FormTabEmits<T> {
+    (e: 'remove'): void
+}
 
-const validations = {
-    'station_id': {},
-    'permissions': {},
-};
+const emit = defineEmits<PermissionsFormStationRowEmits>();
 
-const v$ = useVuelidate(validations, form);
+const {v$} = useVuelidateOnFormTab(
+    props,
+    emit,
+    {
+        permissions: {}
+    },
+    {
+        permissions: []
+    }
+);
 
-const stationPermissionOptions = computed(() => {
-    return map(props.stationPermissions, (permissionName, permissionKey) => {
-        return {
-            text: permissionName,
-            value: permissionKey
-        };
-    })
-});
-
-const getStationName = (stationId) => {
+const getStationName = (stationId: number) => {
     return get(props.stations, stationId, null);
 };
 </script>

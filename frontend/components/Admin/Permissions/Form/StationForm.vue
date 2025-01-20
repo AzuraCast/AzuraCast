@@ -1,9 +1,9 @@
 <template>
     <tab :label="$gettext('Station Permissions')">
         <permissions-form-station-row
-            v-for="(row, index) in form.permissions.$model.station"
+            v-for="(row, index) in form.permissions?.station ?? []"
             :key="index"
-            v-model:row="form.permissions.$model.station[index]"
+            v-model:form="form.permissions.station[index]"
             :stations="stations"
             :station-permissions="stationPermissions"
             @remove="remove(index)"
@@ -45,19 +45,42 @@
 <script setup lang="ts">
 import {find, isEmpty, pickBy} from 'lodash';
 import PermissionsFormStationRow from "~/components/Admin/Permissions/Form/StationRow.vue";
-import {computed} from "vue";
+import {computed, toRaw} from "vue";
 import Tab from "~/components/Common/Tab.vue";
-import {VuelidateObject} from "~/functions/useVuelidateOnForm.ts";
+import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab.ts";
+import {Permission} from "~/components/Admin/Permissions/EditModal.vue";
 
-const props = defineProps<{
-    form: VuelidateObject,
-    stations: Record<number, string>,
+type T = Permission;
+
+interface PermissionStationFormProps extends FormTabProps<T> {
+    stations: Record<string, string>,
     stationPermissions: Record<string, string>,
-}>();
+}
+
+const props = defineProps<PermissionStationFormProps>();
+
+const emit = defineEmits<FormTabEmits<T>>();
+
+const {form} = useVuelidateOnFormTab(
+    props,
+    emit,
+    {
+        permissions: {
+            station: {}
+        }
+    },
+    () => ({
+        permissions: {
+            station: []
+        }
+    })
+);
 
 const remainingStations = computed(() => {
-    return pickBy(props.stations, (_stationName, stationId) => {
-        return !find(props.form.permissions.$model.station, {'station_id': stationId});
+    const usedStations = form.value.permissions?.station ?? [];
+
+    return pickBy(toRaw(props.stations), (_stationName, stationId) => {
+        return !find(usedStations, (station) => station.id === Number(stationId));
     });
 });
 
@@ -65,14 +88,13 @@ const hasRemainingStations = computed(() => {
     return !isEmpty(remainingStations.value);
 });
 
-
-const remove = (index) => {
-    props.form.permissions.$model.station.splice(index, 1);
+const remove = (index: number) => {
+    form.value.permissions.station.splice(index, 1);
 };
 
-const add = (stationId) => {
-    props.form.permissions.$model.station.push({
-        'station_id': stationId,
+const add = (stationId: string | number) => {
+    form.value.permissions.station.push({
+        'id': Number(stationId),
         'permissions': []
     });
 };

@@ -9,7 +9,7 @@ export interface FormTabProps<T extends GenericForm = GenericForm> {
 }
 
 export interface FormTabEmits<T extends GenericForm = GenericForm> {
-    (e: 'update-form', form: T)
+    (e: 'update:form', form: T)
 }
 
 export function useVuelidateOnFormTab<

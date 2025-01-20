@@ -15,7 +15,6 @@ use App\Entity\Station;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
@@ -257,6 +256,12 @@ final class RolesController extends AbstractApiCrudController
 
         if (isset($newPermissions['station'])) {
             foreach ($newPermissions['station'] as $stationId => $stationPerms) {
+                // Accept both { id: perms[] } and [ { id: 1, perms: string[] } ] formats.
+                if (isset($stationPerms['id'])) {
+                    $stationId = $stationPerms['id'];
+                    $stationPerms = $stationPerms['permissions'] ?? [];
+                }
+
                 $station = $this->em->find(Station::class, $stationId);
 
                 if ($station instanceof Station) {

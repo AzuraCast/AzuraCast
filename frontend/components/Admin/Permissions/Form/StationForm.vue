@@ -3,7 +3,7 @@
         <permissions-form-station-row
             v-for="(row, index) in form.permissions?.station ?? []"
             :key="index"
-            v-model:form="form.permissions.station[index]"
+            v-model:row="form.permissions.station[index]"
             :stations="stations"
             :station-permissions="stationPermissions"
             @remove="remove(index)"

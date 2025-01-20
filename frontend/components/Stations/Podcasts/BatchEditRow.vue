@@ -55,16 +55,27 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {useVModel} from "@vueuse/core";
 import PublishAtFields from "~/components/Stations/Podcasts/Common/PublishAtFields.vue";
 
+type T = {
+    id: string,
+    title: string,
+    publish_at?: string,
+    explicit?: boolean,
+    season_number?: number,
+    episode_number?: number
+};
+
 const props = defineProps<{
     index: number,
-    row: object
+    row: T
 }>();
 
-const emit = defineEmits(['update:row']);
+const emit = defineEmits<{
+    (e: 'update:row', row: T): void
+}>();
 
 const row = useVModel(props, 'row', emit);
 
-const v$ = useVuelidate(
+const v$ = useVuelidate<T>(
     {
         id: {required},
         title: {required},

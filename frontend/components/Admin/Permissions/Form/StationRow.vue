@@ -6,7 +6,7 @@
         <div class="card-header text-bg-primary d-flex align-items-center">
             <div class="flex-fill">
                 <h2 class="card-title">
-                    {{ getStationName(form.id) }}
+                    {{ getStationName(row.id) }}
                 </h2>
             </div>
             <div class="flex-shrink-0">
@@ -25,7 +25,7 @@
         <div class="card-body">
             <div class="row g-3">
                 <form-group-multi-check
-                    :id="'edit_form_station_permissions_'+form.id"
+                    :id="'edit_form_station_permissions_'+row.id"
                     class="col-md-12"
                     :field="v$.permissions"
                     :options="stationPermissions"
@@ -45,32 +45,29 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {IconRemove} from "~/components/Common/icons";
 import {PermissionStation} from "~/components/Admin/Permissions/EditModal.vue";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
-import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab.ts";
+import useVuelidate from "@vuelidate/core";
+import {useVModel} from "@vueuse/core";
 
 type T = PermissionStation;
 
-interface PermissionsFormStationRowProps extends FormTabProps<T> {
+const props = defineProps<{
+    row: T,
     stations: Record<number, string>,
     stationPermissions: SimpleFormOptionInput,
-}
+}>();
 
-const props = defineProps<PermissionsFormStationRowProps>();
-
-interface PermissionsFormStationRowEmits extends FormTabEmits<T> {
+const emit = defineEmits<{
+    (e: 'update:row', row: T)
     (e: 'remove'): void
-}
+}>();
 
-const emit = defineEmits<PermissionsFormStationRowEmits>();
+const row = useVModel(props, 'row', emit);
 
-const {v$} = useVuelidateOnFormTab(
-    props,
-    emit,
+const v$ = useVuelidate<T>(
     {
         permissions: {}
     },
-    {
-        permissions: []
-    }
+    row
 );
 
 const getStationName = (stationId: number) => {

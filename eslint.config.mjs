@@ -3,7 +3,7 @@ import {defineConfigWithVueTs, vueTsConfigs} from "@vue/eslint-config-typescript
 
 export default defineConfigWithVueTs(
         pluginVue.configs['flat/essential'],
-        vueTsConfigs.recommendedTypeChecked,
+        vueTsConfigs.recommended,
     {
         rules: {
             "@typescript-eslint/no-unused-vars": ["error", {

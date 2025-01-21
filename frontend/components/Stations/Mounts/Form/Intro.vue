@@ -100,7 +100,7 @@ const {axios} = useAxios();
 
 const deleteIntro = () => {
     if (props.editIntroUrl) {
-        axios.delete(props.editIntroUrl).then(() => {
+        void axios.delete(props.editIntroUrl).then(() => {
             hasIntro.value = false;
         });
     } else {

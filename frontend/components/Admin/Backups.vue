@@ -234,7 +234,7 @@ const {axios} = useAxios();
 const relist = () => {
     settingsLoading.value = true;
 
-    axios.get(settingsUrl.value).then((resp) => {
+    void axios.get(settingsUrl.value).then((resp) => {
         settings.value = {
             backupEnabled: resp.data.backup_enabled,
             backupLastRun: resp.data.backup_last_run,

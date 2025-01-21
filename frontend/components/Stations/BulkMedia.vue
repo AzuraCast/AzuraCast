@@ -183,7 +183,7 @@ const doSubmit = () => {
     const formData = new FormData();
     formData.append('import_file', importFile.value);
 
-    axios.post(apiUrl.value, formData).then((resp) => {
+    void axios.post(apiUrl.value, formData).then((resp) => {
         importFile.value = null;
 
         if (resp.data.success) {

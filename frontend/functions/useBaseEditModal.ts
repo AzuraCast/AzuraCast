@@ -13,7 +13,7 @@ import {AxiosRequestConfig} from "axios";
 import {GlobalConfig} from "@vuelidate/core";
 import {GenericForm} from "~/entities/Forms.ts";
 
-export type ModalFormTemplateRef = InstanceType<typeof ModalForm> | null;
+export type ModalFormTemplateRef = InstanceType<typeof ModalForm>;
 
 export interface BaseEditModalProps {
     createUrl?: string
@@ -50,22 +50,22 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
     options: BaseEditModalOptions<T> = {}
 ): {
     loading: Ref<boolean>,
-    error: Ref<any | null>,
+    error: Ref<any>,
     editUrl: Ref<string>,
     isEditMode: ComputedRef<boolean>,
     form: Ref<T>,
     v$: VuelidateRef<T>,
-    resetForm(): void,
-    clearContents(): void,
-    create(): void,
-    edit(recordUrl: string): void,
-    doSubmit(): void,
-    close(): void
+    resetForm: () => void,
+    clearContents: () => void,
+    create: () => void,
+    edit: (recordUrl: string) => void,
+    doSubmit: () => void,
+    close: () => void
 } {
     const createUrl = toRef(props, 'createUrl');
 
     const loading: Ref<boolean> = ref<boolean>(false);
-    const error: Ref<any | null> = ref(null);
+    const error: Ref<any> = ref(null);
     const editUrl: Ref<string> = ref<string>(null);
 
     const isEditMode: ComputedRef<boolean> = computed(() => {
@@ -109,7 +109,7 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
 
         $modal.value.show();
 
-        nextTick(() => {
+        void nextTick(() => {
             resetForm();
         });
     };
@@ -144,7 +144,7 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
         editUrl.value = recordUrl;
         $modal.value.show();
 
-        nextTick(() => {
+        void nextTick(() => {
             resetForm();
             doLoad();
         })

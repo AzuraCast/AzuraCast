@@ -39,8 +39,8 @@ const copyText = refAutoReset(
 
 const clipboard = useClipboard({legacy: true});
 
-const doCopy = () => {
-    clipboard.copy(props.text);
+const doCopy = async () => {
+    await clipboard.copy(props.text);
     copyText.value = $gettext('Copied!');
 };
 </script>

@@ -35,7 +35,7 @@ watch(toRef(props, 'logUrl'), (newLogUrl) => {
     logs.value = '';
 
     if (null !== newLogUrl) {
-        axios({
+        void axios({
             method: 'GET',
             url: props.logUrl
         }).then((resp) => {

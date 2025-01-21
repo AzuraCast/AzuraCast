@@ -95,7 +95,7 @@ const {axios} = useAxios();
 
 const deleteMedia = () => {
     if (props.editMediaUrl) {
-        axios.delete(props.editMediaUrl).then(() => {
+        void axios.delete(props.editMediaUrl).then(() => {
             hasMedia.value = false;
         });
     } else {

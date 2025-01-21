@@ -90,7 +90,7 @@ const {axios} = useAxios();
 
 const doSubmit = () => {
     ifValid(() => {
-        axios({
+        void axios({
             method: 'POST',
             url: cloneUrl.value,
             data: form.value

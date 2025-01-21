@@ -130,7 +130,7 @@ const router = useRouter();
 const makeApiCall = (uri) => {
     isLoading.value = true;
 
-    axios.post(uri).then((resp) => {
+    void axios.post(uri).then((resp) => {
         notify(resp.data.formatted_message, {
             variant: (resp.data.success) ? 'success' : 'warning'
         });
@@ -151,7 +151,7 @@ const makeApiCall = (uri) => {
 };
 
 const doReload = () => {
-    showAlert({
+    void showAlert({
         title: $gettext('Are you sure?'),
         confirmButtonClass: 'btn-warning',
         confirmButtonText: $gettext('Reload Configuration')
@@ -165,7 +165,7 @@ const doReload = () => {
 }
 
 const doRestart = () => {
-    showAlert({
+    void showAlert({
         title: $gettext('Are you sure?'),
         confirmButtonClass: 'btn-warning',
         confirmButtonText: $gettext('Restart Broadcasting')

@@ -175,7 +175,7 @@ const filterLocations = (group) => {
 const {axios} = useAxios();
 
 const loadLocations = () => {
-    axios.get(storageLocationApiUrl.value).then((resp) => {
+    void axios.get(storageLocationApiUrl.value).then((resp) => {
         storageLocationOptions.media_storage_location = filterLocations(
             resp.data.media_storage_location
         );

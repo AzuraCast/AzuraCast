@@ -109,7 +109,7 @@ const {axios} = useAxios();
 const playlistsApiUrl = getStationApiUrl('/podcasts/playlists');
 
 const loadPlaylists = () => {
-    axios.get(playlistsApiUrl.value).then((resp) => {
+    void axios.get(playlistsApiUrl.value).then((resp) => {
         playlistOptions.value = resp.data;
     }).finally(() => {
         playlistsLoading.value = false;

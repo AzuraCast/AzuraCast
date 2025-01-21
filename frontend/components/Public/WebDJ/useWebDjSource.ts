@@ -36,7 +36,7 @@ export function useWebDjSource() {
                 el.pause();
                 return el.remove();
             };
-            source.pause = () => el.pause;
+            source.pause = () => el.pause();
             source.seek = (percent) => {
                 const time = percent * parseFloat(audio.length);
                 el.currentTime = time;
@@ -48,7 +48,7 @@ export function useWebDjSource() {
     };
 
     const createMicrophoneSource = (audioDeviceId, cb) => {
-        navigator.mediaDevices.getUserMedia({
+        void navigator.mediaDevices.getUserMedia({
             video: false,
             audio: {
                 deviceId: audioDeviceId

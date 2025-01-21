@@ -351,7 +351,7 @@ const $acmeModal = useTemplateRef('$acmeModal');
 const {axios} = useAxios();
 
 const generateAcmeCert = () => {
-    axios.put(props.acmeUrl).then((resp) => {
+    void axios.put(props.acmeUrl).then((resp) => {
         $acmeModal.value?.show(resp.data.links.log);
     });
 }

@@ -100,7 +100,7 @@ restartEventBus.on((forceRestart: boolean): void => {
     if (forceRestart) {
         needsRestart.value = true;
     } else {
-        axios.get(restartStatusUrl.value).then((resp) => {
+        void axios.get(restartStatusUrl.value).then((resp) => {
             needsRestart.value = resp.data.needs_restart;
         });
     }

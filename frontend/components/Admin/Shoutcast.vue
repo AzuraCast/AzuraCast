@@ -107,7 +107,7 @@ const {axios} = useAxios();
 
 const relist = () => {
     isLoading.value = true;
-    axios.get(apiUrl.value).then((resp) => {
+    void axios.get(apiUrl.value).then((resp) => {
         version.value = resp.data.version;
         isLoading.value = false;
     });

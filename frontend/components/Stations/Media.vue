@@ -254,21 +254,6 @@
     />
 </template>
 
-<script lang="ts">
-import {ApiFileList} from "~/entities/ApiInterfaces.ts";
-
-export interface MediaSelectedItems {
-    all: ApiFileList[],
-    files: string[],
-    directories: string[]
-}
-
-export interface MediaInitialPlaylist {
-    id: number,
-    name: string
-}
-</script>
-
 <script setup lang="ts">
 import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import MediaToolbar from './Media/MediaToolbar.vue';
@@ -291,8 +276,18 @@ import {getStationApiUrl} from "~/router";
 import {useRoute, useRouter} from "vue-router";
 import {IconFile, IconFolder, IconImage} from "~/components/Common/icons";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
-import {CustomField, FileTypes} from "~/entities/ApiInterfaces.ts";
-import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import {ApiFileList, CustomField, FileTypes} from "~/entities/ApiInterfaces.ts";
+
+export interface MediaSelectedItems {
+    all: ApiFileList[],
+    files: string[],
+    directories: string[]
+}
+
+export interface MediaInitialPlaylist {
+    id: number,
+    name: string
+}
 
 const props = withDefaults(
     defineProps<{
@@ -469,7 +464,7 @@ const router = useRouter();
 const route = useRoute();
 
 const changeDirectory = (newDir) => {
-    router.push({
+    void router.push({
         name: 'stations:files:index',
         params: {
             path: newDir

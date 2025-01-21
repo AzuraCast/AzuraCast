@@ -90,7 +90,7 @@ const onHidden = () => {
 const $field = useTemplateRef('$field');
 
 const onShown = () => {
-    nextTick(() => {
+    void nextTick(() => {
         $field.value?.focus();
     })
 };
@@ -101,7 +101,7 @@ const {$gettext} = useTranslate();
 
 const doUpdateMetadata = () => {
     ifValid(() => {
-        axios.post(updateMetadataUrl.value, form.value).then(() => {
+        void axios.post(updateMetadataUrl.value, form.value).then(() => {
             notifySuccess($gettext('Metadata updated.'));
         }).finally(() => {
             hide();

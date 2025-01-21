@@ -132,7 +132,7 @@ const open = (newApplyToUrl) => {
     loading.value = true;
     show();
 
-    axios.get(newApplyToUrl).then((resp) => {
+    void axios.get(newApplyToUrl).then((resp) => {
         applyToResults.value = resp.data;
         loading.value = false;
     });
@@ -142,7 +142,7 @@ const {notifySuccess} = useNotify();
 
 const save = () => {
     ifValid(() => {
-        axios.put(applyToUrl.value, {
+        void axios.put(applyToUrl.value, {
             ...form.value,
             directories: selectedDirs.value
         }).then(() => {

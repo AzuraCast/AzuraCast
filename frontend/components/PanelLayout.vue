@@ -173,20 +173,6 @@
     </div>
 </template>
 
-<script lang="ts">
-export interface PanelLayoutProps {
-    instanceName: string,
-    userDisplayName: string,
-    homeUrl: string,
-    profileUrl: string,
-    adminUrl: string,
-    logoutUrl: string,
-    showAdmin: boolean,
-    version: string,
-    platform: string
-}
-</script>
-
 <script setup lang="ts">
 import {nextTick, onMounted, useSlots, watch} from "vue";
 import Icon from "~/components/Common/Icon.vue";
@@ -203,6 +189,18 @@ import {
     IconSupport
 } from "~/components/Common/icons";
 import {useProvidePlayerStore} from "~/functions/usePlayerStore.ts";
+
+export interface PanelLayoutProps {
+    instanceName: string,
+    userDisplayName: string,
+    homeUrl: string,
+    profileUrl: string,
+    adminUrl: string,
+    logoutUrl: string,
+    showAdmin: boolean,
+    version: string,
+    platform: string
+}
 
 const props = defineProps<PanelLayoutProps>();
 
@@ -228,8 +226,9 @@ watch(
 
 useProvidePlayerStore('global');
 
-onMounted(async () => {
-    await nextTick();
-    document.dispatchEvent(new CustomEvent("vue-ready"));
+onMounted(() => {
+    void nextTick(() => {
+        document.dispatchEvent(new CustomEvent("vue-ready"));
+    });
 });
 </script>

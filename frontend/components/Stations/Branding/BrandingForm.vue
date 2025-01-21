@@ -129,7 +129,7 @@ const relist = () => {
 
     isLoading.value = true;
 
-    axios.get(props.profileEditUrl).then((resp) => {
+    void axios.get(props.profileEditUrl).then((resp) => {
         populateForm(resp.data.branding_config);
         isLoading.value = false;
     });
@@ -141,7 +141,7 @@ const {notifySuccess} = useNotify();
 
 const submit = () => {
     ifValid(() => {
-        axios({
+        void axios({
             method: 'PUT',
             url: props.profileEditUrl,
             data: {

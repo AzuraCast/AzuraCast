@@ -88,7 +88,7 @@ const downloadUrl = ref(null);
 const {axios} = useAxios();
 
 const relist = () => {
-    axios.get(apiUrl.value).then((resp) => {
+    void axios.get(apiUrl.value).then((resp) => {
         downloadUrl.value = resp.data.links.download;
     });
 };
@@ -98,7 +98,7 @@ onMounted(relist);
 const {notifySuccess} = useNotify();
 
 const deleteFallback = () => {
-    axios.delete(apiUrl.value).then(() => {
+    void axios.delete(apiUrl.value).then(() => {
         notifySuccess();
         relist();
     });

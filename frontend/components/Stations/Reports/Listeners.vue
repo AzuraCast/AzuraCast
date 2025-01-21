@@ -408,6 +408,6 @@ onMounted(updateListeners);
 
 const setIsLive = (newValue: boolean) => {
     isLive.value = newValue;
-    nextTick(updateListeners);
+    void nextTick(updateListeners);
 };
 </script>

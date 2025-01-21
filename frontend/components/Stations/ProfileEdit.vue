@@ -77,7 +77,7 @@ const error = ref(null);
 const retry = () => {
     error.value = null;
 
-    nextTick(() => {
+    void nextTick(() => {
         $form.value?.reset();
     });
 }

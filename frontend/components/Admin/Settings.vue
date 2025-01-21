@@ -60,15 +60,6 @@
     </form>
 </template>
 
-<script lang="ts">
-export interface SettingsProps {
-    apiUrl: string,
-    testMessageUrl: string,
-    acmeUrl: string,
-    releaseChannel?: string
-}
-</script>
-
 <script setup lang="ts">
 import SettingsGeneralTab from "./Settings/GeneralTab.vue";
 import SettingsServicesTab from "./Settings/ServicesTab.vue";
@@ -81,6 +72,13 @@ import {useTranslate} from "~/vendor/gettext";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Loading from "~/components/Common/Loading.vue";
 import Tabs from "~/components/Common/Tabs.vue";
+
+export interface SettingsProps {
+    apiUrl: string,
+    testMessageUrl: string,
+    acmeUrl: string,
+    releaseChannel?: string
+}
 
 defineOptions({
     inheritAttrs: false
@@ -113,7 +111,7 @@ const relist = () => {
     resetForm();
     isLoading.value = true;
 
-    axios.get(props.apiUrl).then((resp) => {
+    void axios.get(props.apiUrl).then((resp) => {
         populateForm(resp.data);
         isLoading.value = false;
     });
@@ -126,7 +124,7 @@ const {$gettext} = useTranslate();
 
 const submit = () => {
     ifValid(() => {
-        axios({
+        void axios({
             method: 'PUT',
             url: props.apiUrl,
             data: form.value

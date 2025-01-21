@@ -108,12 +108,17 @@ const {stationId, stationTz} = usePodcastGlobals();
 
 const podcastUrl = getStationApiUrl(computed(() => {
     const {params} = useRoute();
-    return `/public/podcast/${params.podcast_id}`;
+    const podcastId = params.podcast_id as string;
+
+    return `/public/podcast/${podcastId}`;
 }), stationId);
 
 const episodeUrl = getStationApiUrl(computed(() => {
     const {params} = useRoute();
-    return `/public/podcast/${params.podcast_id}/episode/${params.episode_id}`;
+    const podcastId = params.podcast_id as string;
+    const episodeId = params.episode_id as string;
+
+    return `/public/podcast/${podcastId}/episode/${episodeId}`;
 }), stationId);
 
 const {axios} = useAxios();

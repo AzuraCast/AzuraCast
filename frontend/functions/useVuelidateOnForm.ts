@@ -21,11 +21,11 @@ export function useVuelidateOnForm<T extends GenericForm = GenericForm>(
     options: GlobalConfig = {}
 ): {
     form: Ref<T>,
-    resetForm(): void,
+    resetForm: () => void,
     v$: VuelidateRef<T>,
     isValid: ComputedRef<boolean>,
-    validate(): Promise<boolean>,
-    ifValid(cb: () => void): void
+    validate: () => Promise<boolean>,
+    ifValid: (cb: () => void) => void
 } {
     const formEventBus = useEventBus('form_tabs');
 
@@ -47,7 +47,7 @@ export function useVuelidateOnForm<T extends GenericForm = GenericForm>(
             merge(parsedBlankForm, newForm);
         });
 
-        return parsedBlankForm as T;
+        return parsedBlankForm;
     }
 
     const {record: form, reset} = useResettableRef(buildBlankForm);
@@ -74,7 +74,7 @@ export function useVuelidateOnForm<T extends GenericForm = GenericForm>(
     }
 
     const ifValid = (cb: () => void) => {
-        validate().then((isValid) => {
+        void validate().then((isValid) => {
             if (!isValid) {
                 return;
             }

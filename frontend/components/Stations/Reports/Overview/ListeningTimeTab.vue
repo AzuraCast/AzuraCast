@@ -76,9 +76,9 @@ const {navigate} = useHasDatatable($dataTable);
 
 const isMounted = useMounted();
 
-watch(dateRange, () => {
+watch(dateRange, async () => {
     if (isMounted.value) {
-        reloadData();
+        await reloadData();
         navigate();
     }
 });

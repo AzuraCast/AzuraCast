@@ -147,7 +147,7 @@ const {state: directories, execute: reload, isLoading} = useAsyncState(
 );
 
 const doMove = () => {
-    axios.put(props.batchUrl, {
+    void axios.put(props.batchUrl, {
         'do': 'move',
         'currentDirectory': props.currentDirectory,
         'directory': destinationDirectory.value,
@@ -168,8 +168,9 @@ const doMove = () => {
 const $dataTable = useTemplateRef('$dataTable');
 
 const onDirChange = () => {
-    reload();
-    $dataTable.value?.refresh();
+    void reload().finally(() => {
+        $dataTable.value?.refresh();
+    });
 }
 
 const enterDirectory = (path) => {
@@ -191,7 +192,7 @@ const pageBack = () => {
 };
 
 const open = () => {
-    reload();
+    void reload();
     show();
 }
 

@@ -39,20 +39,18 @@
     </div>
 </template>
 
-<script lang="ts">
-export interface ProfileHeaderPanelParentProps {
-    stationName: string,
-    stationDescription: string,
-    hasStarted: boolean,
-}
-</script>
-
 <script setup lang="ts">
 import Icon from '~/components/Common/Icon.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
 import {StationPermission, userAllowedForStation} from "~/acl";
 import {IconEdit} from "~/components/Common/icons";
 import {ApiNowPlayingStation} from "~/entities/ApiInterfaces.ts";
+
+export interface ProfileHeaderPanelParentProps {
+    stationName: string,
+    stationDescription: string,
+    hasStarted: boolean,
+}
 
 defineOptions({
     inheritAttrs: false

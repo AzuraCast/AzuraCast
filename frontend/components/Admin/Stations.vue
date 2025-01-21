@@ -158,7 +158,7 @@ const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const doToggle = (station) => {
-    showAlert((station.is_enabled)
+    void showAlert((station.is_enabled)
         ? {
             title: $gettext('Disable station?'),
             confirmButtonText: $gettext('Disable'),
@@ -172,7 +172,7 @@ const doToggle = (station) => {
         }
     ).then((result) => {
         if (result.value) {
-            axios.put(station.links.self, {
+            void axios.put(station.links.self, {
                 is_enabled: !station.is_enabled
             }).then((resp) => {
                 notifySuccess(resp.data.message);

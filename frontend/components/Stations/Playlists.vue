@@ -411,7 +411,7 @@ const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const doModify = (url) => {
-    axios.put(url).then((resp) => {
+    void axios.put(url).then((resp) => {
         mayNeedRestart();
 
         notifySuccess(resp.data.message);

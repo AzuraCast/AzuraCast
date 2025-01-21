@@ -64,7 +64,7 @@ const show = (newLogUrl, newIsStreaming = true) => {
 const clipboard = useClipboard();
 
 const doCopy = () => {
-    clipboard.copy($logView.value?.getContents());
+    void clipboard.copy($logView.value?.getContents());
 };
 
 const clearContents = () => {

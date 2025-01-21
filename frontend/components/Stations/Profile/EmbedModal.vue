@@ -92,7 +92,14 @@
     </modal>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton.vue';
+import {computed, ref, useTemplateRef} from "vue";
+import {useTranslate} from "~/vendor/gettext";
+import Modal from "~/components/Common/Modal.vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import {useHasModal} from "~/functions/useHasModal.ts";
+
 export interface ProfileEmbedModalProps {
     stationSupportsStreamers: boolean,
     stationSupportsRequests: boolean,
@@ -107,15 +114,6 @@ export interface ProfileEmbedModalProps {
     publicScheduleEmbedUri: string,
     publicPodcastsEmbedUri: string
 }
-</script>
-
-<script setup lang="ts">
-import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton.vue';
-import {computed, ref, useTemplateRef} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import Modal from "~/components/Common/Modal.vue";
-import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
 defineOptions({
     inheritAttrs: false

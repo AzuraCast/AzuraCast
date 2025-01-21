@@ -139,7 +139,7 @@ const doSubmit = () => {
     const formData = new FormData();
     formData.append('playlist_file', playlistFile.value);
 
-    axios.post(importPlaylistUrl.value, formData).then((resp) => {
+    void axios.post(importPlaylistUrl.value, formData).then((resp) => {
         if (resp.data.success) {
             results.value = resp.data;
 

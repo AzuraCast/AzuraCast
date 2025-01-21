@@ -111,7 +111,7 @@ const create = () => {
 const $field = useTemplateRef('$field');
 
 const onShown = () => {
-    nextTick(() => {
+    void nextTick(() => {
         $field.value?.focus();
     })
 };

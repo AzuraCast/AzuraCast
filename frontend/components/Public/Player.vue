@@ -140,17 +140,6 @@
     </div>
 </template>
 
-<script lang="ts">
-import {NowPlayingProps} from "~/functions/useNowPlaying.ts";
-
-export interface PlayerProps extends NowPlayingProps {
-    offlineText?: string,
-    showHls?: boolean,
-    showAlbumArt?: boolean,
-    autoplay?: boolean
-}
-</script>
-
 <script setup lang="ts">
 import AudioPlayer from '~/components/Common/AudioPlayer.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
@@ -164,6 +153,14 @@ import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {useEventListener} from "@vueuse/core";
 import useShowVolume from "~/functions/useShowVolume.ts";
 import {ApiNowPlaying} from "~/entities/ApiInterfaces.ts";
+import {NowPlayingProps} from "~/functions/useNowPlaying.ts";
+
+export interface PlayerProps extends NowPlayingProps {
+    offlineText?: string,
+    showHls?: boolean,
+    showAlbumArt?: boolean,
+    autoplay?: boolean
+}
 
 defineOptions({
     inheritAttrs: false
@@ -269,7 +266,7 @@ const switchStream = (new_stream: CurrentStreamDescriptor) => {
 
 if (props.autoplay) {
     const stop = useEventListener(document, "now-playing", () => {
-        nextTick(() => {
+        void nextTick(() => {
             switchStream(currentStream.value);
             stop();
         });

@@ -55,7 +55,7 @@ const show = (newLogs) => {
 const clipboard = useClipboard();
 
 const doCopy = () => {
-    clipboard.copy(logs.value);
+    void clipboard.copy(logs.value);
 };
 
 defineExpose({

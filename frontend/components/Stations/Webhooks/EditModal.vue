@@ -30,14 +30,6 @@
     </modal-form>
 </template>
 
-<script lang="ts">
-import {FormTabProps} from "~/functions/useVuelidateOnFormTab.ts";
-
-export interface WebhookComponentProps extends FormTabProps {
-    title: string
-}
-</script>
-
 <script setup lang="ts">
 import TypeSelect from "./Form/TypeSelect.vue";
 import BasicInfo from "./Form/BasicInfo.vue";
@@ -50,7 +42,7 @@ import Telegram from "./Form/Telegram.vue";
 import GoogleAnalyticsV4 from "./Form/GoogleAnalyticsV4.vue";
 import MatomoAnalytics from "./Form/MatomoAnalytics.vue";
 import Mastodon from "./Form/Mastodon.vue";
-import {BaseEditModalProps, HasRelistEmit, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {BaseEditModalProps, HasRelistEmit, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, nextTick, provide, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
@@ -62,6 +54,11 @@ import RadioReg from "~/components/Stations/Webhooks/Form/RadioReg.vue";
 import GroupMe from "~/components/Stations/Webhooks/Form/GroupMe.vue";
 import Bluesky from "~/components/Stations/Webhooks/Form/Bluesky.vue";
 import mergeExisting from "~/functions/mergeExisting.ts";
+import {FormTabProps} from "~/functions/useVuelidateOnFormTab.ts";
+
+export interface WebhookComponentProps extends FormTabProps {
+    title: string
+}
 
 interface WebhookEditModalProps extends BaseEditModalProps {
     nowPlayingUrl: string,
@@ -130,7 +127,7 @@ const {
             type.value = data.type;
 
             // Wait for type-specific components to mount.
-            nextTick(() => {
+            void nextTick(() => {
                 resetForm();
                 formRef.value = mergeExisting(formRef.value, data);
             });
@@ -164,7 +161,7 @@ const clearContents = () => {
 
 const setType = (newType: WebhookType) => {
     type.value = newType;
-    nextTick(resetForm);
+    void nextTick(resetForm);
 };
 
 defineExpose({

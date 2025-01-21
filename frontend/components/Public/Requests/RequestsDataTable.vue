@@ -122,7 +122,7 @@ const {notifySuccess, notifyError} = useNotify();
 const {axios} = useAxios();
 
 const doSubmitRequest = (url) => {
-    axios.post(url).then((resp) => {
+    void axios.post(url).then((resp) => {
         if (resp.data.success) {
             notifySuccess(resp.data.message);
         } else {

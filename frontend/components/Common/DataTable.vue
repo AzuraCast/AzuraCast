@@ -289,8 +289,21 @@
     </div>
 </template>
 
-<script lang="ts">
-type DataTableRow = Record<string, any>
+<script setup lang="ts" generic="Row extends DataTableRow = DataTableRow">
+import {filter, forEach, get, includes, indexOf, isEmpty, map, reverse, slice, some} from 'lodash';
+import Icon from './Icon.vue';
+import {computed, onMounted, ref, shallowRef, toRaw, toRef, watch} from "vue";
+import {watchDebounced} from "@vueuse/core";
+import {useAxios} from "~/vendor/axios";
+import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
+import FormCheckbox from "~/components/Form/FormCheckbox.vue";
+import Pagination from "~/components/Common/Pagination.vue";
+import useOptionalStorage from "~/functions/useOptionalStorage";
+import {IconArrowDropDown, IconArrowDropUp, IconFilterList, IconRefresh, IconSearch} from "~/components/Common/icons";
+import {useAzuraCast} from "~/vendor/azuracast.ts";
+import {AxiosRequestConfig} from "axios";
+
+export type DataTableRow = Record<string, any>
 
 export interface DataTableField<Row extends DataTableRow = DataTableRow> {
     key: string,
@@ -325,21 +338,6 @@ export interface DataTableProps<Row extends DataTableRow = DataTableRow> {
     requestConfig?(config: AxiosRequestConfig): AxiosRequestConfig, // Custom server-side request configuration (pre-request)
     requestProcess?(rawData: object[]): Row[], // Custom server-side request result processing (post-request)
 }
-</script>
-
-<script setup lang="ts" generic="Row extends DataTableRow = DataTableRow">
-import {filter, forEach, get, includes, indexOf, isEmpty, map, reverse, slice, some} from 'lodash';
-import Icon from './Icon.vue';
-import {computed, onMounted, ref, shallowRef, toRaw, toRef, watch} from "vue";
-import {watchDebounced} from "@vueuse/core";
-import {useAxios} from "~/vendor/axios";
-import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
-import FormCheckbox from "~/components/Form/FormCheckbox.vue";
-import Pagination from "~/components/Common/Pagination.vue";
-import useOptionalStorage from "~/functions/useOptionalStorage";
-import {IconArrowDropDown, IconArrowDropUp, IconFilterList, IconRefresh, IconSearch} from "~/components/Common/icons";
-import {useAzuraCast} from "~/vendor/azuracast.ts";
-import {AxiosRequestConfig} from "axios";
 
 const props = withDefaults(defineProps<DataTableProps<Row>>(), {
     id: null,
@@ -610,7 +608,7 @@ const refreshServerSide = () => {
 
     isLoading.value = true;
 
-    return axios.get(props.apiUrl, requestConfig).then((resp) => {
+    axios.get(props.apiUrl, requestConfig).then((resp) => {
         totalRows.value = resp.data.total;
 
         let rows = resp.data.rows ?? [];

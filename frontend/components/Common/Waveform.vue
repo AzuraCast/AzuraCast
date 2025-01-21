@@ -127,7 +127,7 @@ const cacheWaveformRemotely = () => {
         data: peaks
     };
 
-    axiosSilent.post(props.waveformCacheUrl, dataToCache);
+    void axiosSilent.post(props.waveformCacheUrl, dataToCache);
 };
 
 onMounted(() => {

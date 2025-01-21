@@ -1,3 +1,5 @@
+// noinspection JSDeprecatedSymbols
+
 import {computed, ref, watch} from "vue";
 import {useInjectWebDjNode} from "~/components/Public/WebDJ/useWebDjNode";
 
@@ -95,7 +97,7 @@ export function useWebDjTrack() {
         passThroughNode.connect(context.value.destination);
         trackGainNode.connect(passThroughNode);
 
-        context.value.resume();
+        void context.value.resume();
 
         return trackGainNode;
     }

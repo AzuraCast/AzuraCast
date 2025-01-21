@@ -170,7 +170,7 @@ const {axios} = useAxios();
 
 const relist = () => {
     isLoading.value = true;
-    axios.get(apiUrl.value).then((resp) => {
+    void axios.get(apiUrl.value).then((resp) => {
         version.value = resp.data.version;
         isLoading.value = false;
     });
@@ -179,12 +179,12 @@ const relist = () => {
 const {confirmDelete} = useDialog();
 
 const doDelete = () => {
-    confirmDelete({
+    void confirmDelete({
         title: $gettext('Uninstall Stereo Tool?'),
         confirmButtonText: $gettext('Uninstall')
     }).then((result) => {
         if (result.value) {
-            axios.delete(apiUrl.value).then(relist);
+            void axios.delete(apiUrl.value).then(relist);
         }
     });
 }

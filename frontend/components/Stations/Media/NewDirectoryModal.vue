@@ -76,7 +76,7 @@ const onHidden = () => {
 const $field = useTemplateRef('$field');
 
 const onShown = () => {
-    nextTick(() => {
+    void nextTick(() => {
         $field.value?.focus();
     })
 };
@@ -87,7 +87,7 @@ const {$gettext} = useTranslate();
 
 const doMkdir = () => {
     ifValid(() => {
-        axios.post(props.mkdirUrl, {
+        void axios.post(props.mkdirUrl, {
             'currentDirectory': props.currentDirectory,
             'name': form.value.newDirectory
         }).then(() => {

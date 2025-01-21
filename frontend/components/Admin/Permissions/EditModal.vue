@@ -23,7 +23,15 @@
     </modal-form>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import ModalForm from "~/components/Common/ModalForm.vue";
+import {computed, useTemplateRef} from "vue";
+import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {useTranslate} from "~/vendor/gettext";
+import AdminPermissionsGlobalForm from "./Form/GlobalForm.vue";
+import AdminPermissionsStationForm from "./Form/StationForm.vue";
+import Tabs from "~/components/Common/Tabs.vue";
+
 export interface PermissionStation {
     id: number,
     permissions: string[]
@@ -36,21 +44,6 @@ export interface Permission {
         station: PermissionStation[],
     }
 }
-</script>
-
-<script setup lang="ts">
-import ModalForm from "~/components/Common/ModalForm.vue";
-import {computed, ref, useTemplateRef} from "vue";
-import {
-    BaseEditModalEmits,
-    BaseEditModalProps,
-    ModalFormTemplateRef,
-    useBaseEditModal
-} from "~/functions/useBaseEditModal";
-import {useTranslate} from "~/vendor/gettext";
-import AdminPermissionsGlobalForm from "./Form/GlobalForm.vue";
-import AdminPermissionsStationForm from "./Form/StationForm.vue";
-import Tabs from "~/components/Common/Tabs.vue";
 
 interface PermissionsEditModalProps extends BaseEditModalProps {
     stations: Record<string, string>,

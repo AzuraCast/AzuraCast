@@ -190,7 +190,9 @@ const {groupLayout, stationId, stationTz} = usePodcastGlobals();
 
 const podcastUrl = getStationApiUrl(computed(() => {
     const {params} = useRoute();
-    return `/public/podcast/${params.podcast_id}`;
+    const podcastId = params.podcast_id as string;
+
+    return `/public/podcast/${podcastId}`;
 }), stationId);
 
 const {axios} = useAxios();
@@ -201,7 +203,9 @@ const {state: podcast, isLoading} = useRefreshableAsyncState<ApiPodcast>(
 
 const episodesUrl = getStationApiUrl(computed(() => {
     const {params} = useRoute();
-    return `/public/podcast/${params.podcast_id}/episodes`;
+    const podcastId = params.podcast_id as string;
+
+    return `/public/podcast/${podcastId}/episodes`;
 }), stationId);
 
 const {$gettext} = useTranslate();

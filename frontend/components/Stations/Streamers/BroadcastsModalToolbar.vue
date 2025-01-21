@@ -85,7 +85,7 @@ const handleBatchResponse = (
 }
 
 const doBatch = (action, successMessage, errorMessage) => {
-    axios.put(props.batchUrl, {
+    void axios.put(props.batchUrl, {
         'do': action,
         'rows': map(props.selectedItems, 'id')
     }).then(({data}) => {
@@ -97,7 +97,7 @@ const doBatch = (action, successMessage, errorMessage) => {
 const {confirmDelete} = useDialog();
 
 const doDelete = () => {
-    confirmDelete({
+    void confirmDelete({
         title: $gettext(
             'Delete %{num} broadcasts?',
             {

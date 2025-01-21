@@ -48,7 +48,7 @@ const stop = () => {
 tryOnScopeDispose(stop);
 
 const updateLogs = () => {
-    axios({
+    void axios({
         method: 'GET',
         url: props.logUrl,
         params: {
@@ -58,7 +58,7 @@ const updateLogs = () => {
         if (resp.data.contents !== '') {
             logs.value = logs.value + resp.data.contents + "\n";
             if (scrollToBottom.value && $textarea.value) {
-                nextTick(() => {
+                void nextTick(() => {
                     $textarea.value.scrollTop = $textarea.value?.scrollHeight;
                 });
             }

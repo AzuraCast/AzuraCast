@@ -158,7 +158,7 @@ const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const setType = (type) => {
     activeType.value = type;
-    nextTick(relist);
+    void nextTick(relist);
 };
 
 const getAdapterName = (adapter) => {

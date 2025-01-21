@@ -25,14 +25,12 @@
     </span>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 export interface FormLabelParentProps {
     advanced?: boolean,
     highCpu?: boolean
 }
-</script>
 
-<script setup lang="ts">
 interface FormLabelProps extends FormLabelParentProps {
     isRequired?: boolean
 }

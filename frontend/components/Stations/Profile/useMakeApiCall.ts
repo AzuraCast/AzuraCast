@@ -12,12 +12,12 @@ export default function useMakeApiCall(
     const {notify} = useNotify();
 
     return () => {
-        showAlert(options).then((result) => {
+        void showAlert(options).then((result) => {
             if (!result.value) {
                 return;
             }
 
-            axios.post(uri).then(({data}) => {
+            void axios.post(uri).then(({data}) => {
                 notify(data.formatted_message, {
                     variant: (data.success) ? 'success' : 'warning'
                 });

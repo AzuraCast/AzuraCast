@@ -92,7 +92,7 @@ const {axios} = useAxios();
 
 const onSubmit = () => {
     ifValid(() => {
-        axios
+        void axios
             .put(changePasswordUrl.value, form.value)
             .finally(() => {
                 $modal.value?.hide();

@@ -272,7 +272,7 @@ const notifyNoFiles = () => {
 
 const doBatch = (action, successMessage, errorMessage) => {
     if (hasSelectedItems.value) {
-        axios.put(props.batchUrl, {
+        void axios.put(props.batchUrl, {
             'do': action,
             'current_directory': props.currentDirectory,
             'files': selectedItems.value.files,
@@ -327,7 +327,7 @@ const doDelete = () => {
         {num: String(numFiles)}
     );
 
-    confirmDelete({
+    void confirmDelete({
         title: buttonConfirmText,
         confirmButtonText: $gettext('Delete')
     }).then((result) => {
@@ -349,7 +349,7 @@ const setPlaylists = () => {
     }
 
     if (hasSelectedItems.value) {
-        axios.put(props.batchUrl, {
+        void axios.put(props.batchUrl, {
             'do': 'playlist',
             'playlists': checkedPlaylists.value,
             'new_playlist_name': newPlaylist.value,

@@ -50,13 +50,6 @@
     </loading>
 </template>
 
-<script lang="ts">
-export interface DateRange {
-    startDate: Date,
-    endDate: Date,
-}
-</script>
-
 <script setup lang="ts">
 import PieChart from "~/components/Common/Charts/PieChart.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
@@ -68,6 +61,11 @@ import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import {useLuxon} from "~/vendor/luxon";
 import useHasDatatable from "~/functions/useHasDatatable";
+
+export interface DateRange {
+    startDate: Date,
+    endDate: Date,
+}
 
 const props = defineProps<{
     dateRange: DateRange,
@@ -116,9 +114,9 @@ const {navigate} = useHasDatatable($dataTable);
 
 const isMounted = useMounted();
 
-watch(dateRange, () => {
+watch(dateRange, async () => {
     if (isMounted.value) {
-        reloadData();
+        await reloadData();
         navigate();
     }
 });

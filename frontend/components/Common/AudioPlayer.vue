@@ -72,7 +72,7 @@ const stop = () => {
 const play = () => {
     if (isPlaying.value) {
         stop();
-        nextTick(() => {
+        void nextTick(() => {
             play();
         });
         return;
@@ -80,7 +80,7 @@ const play = () => {
 
     isPlaying.value = true;
 
-    nextTick(() => {
+    void nextTick(() => {
         // Handle audio errors.
         $audio.value.onerror = (e) => {
             if (e.target.error.code === e.target.error.MEDIA_ERR_NETWORK && $audio.value.src !== '') {

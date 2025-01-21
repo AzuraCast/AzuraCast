@@ -78,7 +78,7 @@ const open = (newQueueUrl) => {
     queueUrl.value = newQueueUrl;
     loading.value = true;
 
-    axios.get(newQueueUrl).then((resp) => {
+    void axios.get(newQueueUrl).then((resp) => {
         media.value = resp.data;
         loading.value = false;
     });
@@ -95,7 +95,7 @@ const {notifySuccess} = useNotify();
 const {$gettext} = useTranslate();
 
 const doClear = () => {
-    axios.delete(queueUrl.value).then(() => {
+    void axios.delete(queueUrl.value).then(() => {
         notifySuccess($gettext('Playlist queue cleared.'));
         hide();
     });

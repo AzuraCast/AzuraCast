@@ -240,20 +240,10 @@
     </template>
 </template>
 
-<script lang="ts">
-import {NowPlayingProps} from "~/functions/useNowPlaying.ts";
-
-export interface ProfileNowPlayingPanelProps extends NowPlayingProps {
-    backendType: string,
-    backendSkipSongUri: string,
-    backendDisconnectStreamerUri: string
-}
-</script>
-
 <script setup lang="ts">
 import {BackendAdapter} from '~/entities/RadioAdapters';
 import Icon from '~/components/Common/Icon.vue';
-import {computed, Ref, ref, useTemplateRef} from "vue";
+import {computed, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
 import CardPage from "~/components/Common/CardPage.vue";
@@ -271,6 +261,13 @@ import {
 } from "~/components/Common/icons";
 import UpdateMetadataModal from "~/components/Stations/Profile/UpdateMetadataModal.vue";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
+import {NowPlayingProps} from "~/functions/useNowPlaying.ts";
+
+export interface ProfileNowPlayingPanelProps extends NowPlayingProps {
+    backendType: BackendAdapter,
+    backendSkipSongUri: string,
+    backendDisconnectStreamerUri: string
+}
 
 defineOptions({
     inheritAttrs: false

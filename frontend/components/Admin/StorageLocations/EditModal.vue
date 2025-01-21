@@ -76,7 +76,7 @@ const {
         populateForm: (data, formRef) => {
             formRef.value.adapter = data.adapter;
             
-            nextTick(() => {
+            void nextTick(() => {
                 resetForm();
                 formRef.value = mergeExisting(formRef.value, data);
             });
@@ -100,7 +100,7 @@ watch(
         if (!isEditMode.value) {
             const originalForm = form.value;
 
-            nextTick(() => {
+            void nextTick(() => {
                 resetForm();
                 form.value = mergeExisting(form.value, originalForm);
             });

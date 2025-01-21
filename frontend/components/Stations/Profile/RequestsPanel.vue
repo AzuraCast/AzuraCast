@@ -54,12 +54,6 @@
     </card-page>
 </template>
 
-<script lang="ts">
-export interface ProfileRequestPanelProps {
-    enableRequests: boolean,
-}
-</script>
-
 <script setup lang="ts">
 import Icon from '~/components/Common/Icon.vue';
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
@@ -67,6 +61,10 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {StationPermission, userAllowedForStation} from "~/acl";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
 import {IconCheck, IconClose, IconLogs} from "~/components/Common/icons";
+
+export interface ProfileRequestPanelProps {
+    enableRequests: boolean,
+}
 
 defineOptions({
     inheritAttrs: false

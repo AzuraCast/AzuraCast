@@ -121,8 +121,15 @@
     />
 </template>
 
-<script lang="ts">
-import {ProfileEmbedModalProps} from "~/components/Stations/Profile/EmbedModal.vue";
+<script setup lang="ts">
+import Icon from '~/components/Common/Icon.vue';
+import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
+import {useTemplateRef} from "vue";
+import EmbedModal, {ProfileEmbedModalProps} from "~/components/Stations/Profile/EmbedModal.vue";
+import CardPage from "~/components/Common/CardPage.vue";
+import {StationPermission, userAllowedForStation} from "~/acl";
+import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
+import {IconBranding, IconCheck, IconClose, IconCode} from "~/components/Common/icons";
 
 export interface ProfilePublicPagesPanelProps extends ProfileEmbedModalProps {
     stationSupportsStreamers: boolean,
@@ -137,17 +144,6 @@ export interface ProfilePublicPagesPanelProps extends ProfileEmbedModalProps {
     publicPodcastsUri: string,
     publicScheduleUri: string
 }
-</script>
-
-<script setup lang="ts">
-import Icon from '~/components/Common/Icon.vue';
-import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
-import {ref, useTemplateRef} from "vue";
-import EmbedModal from "~/components/Stations/Profile/EmbedModal.vue";
-import CardPage from "~/components/Common/CardPage.vue";
-import {StationPermission, userAllowedForStation} from "~/acl";
-import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
-import {IconBranding, IconCheck, IconClose, IconCode} from "~/components/Common/icons";
 
 defineOptions({
     inheritAttrs: false

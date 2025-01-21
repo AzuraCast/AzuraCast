@@ -78,7 +78,7 @@ const open = (filePath: string): void => {
 const $field = useTemplateRef('$field');
 
 const onShown = () => {
-    nextTick(() => {
+    void nextTick(() => {
         $field.value?.focus();
     });
 };
@@ -92,7 +92,7 @@ const {axios} = useAxios();
 
 const doRename = () => {
     ifValid(() => {
-        axios.put(props.renameUrl, {
+        void axios.put(props.renameUrl, {
             file: file.value,
             ...form.value
         }).finally(() => {

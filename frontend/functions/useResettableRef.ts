@@ -5,7 +5,7 @@ export function useResettableRef<T = any>(
     original: MaybeRefOrGetter<T>
 ): {
     record: Ref<T>,
-    reset(): void
+    reset: () => void
 } {
     const record = ref(cloneDeep(toValue(original))) as Ref<T>;
 

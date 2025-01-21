@@ -70,7 +70,7 @@ const {$gettext} = useTranslate();
 
 const doSendTest = () => {
     ifValid(() => {
-        axios.post(props.testMessageUrl, {
+        void axios.post(props.testMessageUrl, {
             'email': form.value.emailAddress
         }).then(() => {
             notifySuccess($gettext('Test message sent.'));

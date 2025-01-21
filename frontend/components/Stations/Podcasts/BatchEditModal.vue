@@ -113,7 +113,7 @@ const {state: rows, execute: loadRows, isLoading} = useAsyncState(
 );
 
 const show = () => {
-    loadRows();
+    void loadRows();
     showModal();
 };
 
@@ -127,7 +127,7 @@ const {handleBatchResponse} = useHandlePodcastBatchResponse();
 
 const doBatchEdit = () => {
     ifValid(() => {
-        axios.put(props.batchUrl, {
+        void axios.put(props.batchUrl, {
             'do': 'edit',
             'episodes': map(props.selectedItems, 'id'),
             'records': rows.value

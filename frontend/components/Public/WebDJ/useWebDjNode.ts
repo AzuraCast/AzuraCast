@@ -1,4 +1,6 @@
-import { createInjectionState } from "@vueuse/core";
+// noinspection JSDeprecatedSymbols
+
+import {createInjectionState} from "@vueuse/core";
 import {computed, ref} from "vue";
 
 export const [useProvideWebDjNode, useInjectWebDjNode] = createInjectionState(
@@ -78,7 +80,7 @@ export const [useProvideWebDjNode, useInjectWebDjNode] = createInjectionState(
         let mediaRecorder;
 
         const startStream = (username = null, password = null) => {
-            context.value.resume();
+            void context.value.resume();
 
             mediaRecorder = new MediaRecorder(
                 streamNode.value.stream,

@@ -32,11 +32,11 @@
                 </tr>
             </thead>
             <tbody ref="$tbody">
-            <tr
-                v-for="(element, index) in media"
-                :key="element.media.id"
-                class="align-middle"
-            >
+                <tr
+                    v-for="(element, index) in media"
+                    :key="element.media.id"
+                    class="align-middle"
+                >
                     <td class="pe-2">
                         <play-button
                             :url="element.media.links.play"
@@ -123,7 +123,7 @@ const open = (newReorderUrl) => {
     loading.value = true;
     show();
 
-    axios.get(newReorderUrl).then((resp) => {
+    void axios.get(newReorderUrl).then((resp) => {
         media.value = resp.data;
         loading.value = false;
     });
@@ -141,7 +141,7 @@ const save = () => {
         newOrder[row.id] = i;
     });
 
-    axios.put(reorderUrl.value, {'order': newOrder}).then(() => {
+    void axios.put(reorderUrl.value, {'order': newOrder}).then(() => {
         notifySuccess($gettext('Playlist order set.'));
     });
 };

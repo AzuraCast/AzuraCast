@@ -11,6 +11,9 @@ export default defineConfigWithVueTs(
             }],
 
             "@typescript-eslint/no-explicit-any": "off",
+            "@typescript-eslint/prefer-promise-reject-errors": "off",
+            "@typescript-eslint/no-unsafe-enum-comparison": "off",
+
             "vue/multi-word-component-names": "off",
             "vue/require-default-prop": "off",
 

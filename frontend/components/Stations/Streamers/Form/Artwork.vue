@@ -84,14 +84,14 @@ const uploadFile = (file) => {
     const formData = new FormData();
     formData.append('art', file);
 
-    axios.post(url, formData).then((resp) => {
+    void axios.post(url, formData).then((resp) => {
         emit('update:modelValue', resp.data);
     });
 };
 
 const deleteArt = () => {
     if (props.editArtUrl) {
-        axios.delete(props.editArtUrl).then(() => {
+        void axios.delete(props.editArtUrl).then(() => {
             localSrc.value = null;
         });
     } else {

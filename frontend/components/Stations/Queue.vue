@@ -129,12 +129,12 @@ const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const doClear = () => {
-    confirmDelete({
+    void confirmDelete({
         title: $gettext('Clear Upcoming Song Queue?'),
         confirmButtonText: $gettext('Clear'),
     }).then((result) => {
         if (result.value) {
-            axios.post(clearUrl.value).then((resp) => {
+            void axios.post(clearUrl.value).then((resp) => {
                 notifySuccess(resp.data.message);
                 relist();
             });

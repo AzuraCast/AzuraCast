@@ -173,7 +173,7 @@ const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const doToggle = (url) => {
-    axios.put(url).then((resp) => {
+    void axios.put(url).then((resp) => {
         notifySuccess(resp.data.message);
         relist();
     });
@@ -182,7 +182,7 @@ const doToggle = (url) => {
 const $logModal = useTemplateRef('$logModal');
 
 const doTest = (url) => {
-    axios.put(url).then((resp) => {
+    void axios.put(url).then((resp) => {
         $logModal.value?.show(resp.data.links.log);
     });
 };

@@ -152,7 +152,7 @@ export default function useNowPlaying(initialProps: NowPlayingProps) {
         };
 
         const checkTime = () => {
-            axiosSilent.get(timeUri.value, axiosNoCacheConfig).then((response) => {
+            void axiosSilent.get(timeUri.value, axiosNoCacheConfig).then((response) => {
                 currentTime.value = response.data.timestamp;
             }).finally(() => {
                 setTimeout(checkTime, (!document.hidden) ? 300000 : 600000);

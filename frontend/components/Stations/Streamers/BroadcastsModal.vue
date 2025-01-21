@@ -148,11 +148,11 @@ const onRowSelected = (items) => {
 };
 
 const doDelete = (url) => {
-    confirmDelete({
+    void confirmDelete({
         title: $gettext('Delete Broadcast?'),
     }).then((result) => {
         if (result.value) {
-            axios.delete(url).then((resp) => {
+            void axios.delete(url).then((resp) => {
                 notifySuccess(resp.data.message);
                 relist();
             });

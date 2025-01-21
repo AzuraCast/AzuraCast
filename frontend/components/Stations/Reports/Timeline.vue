@@ -197,5 +197,5 @@ const abs = (val) => {
 const $dataTable = useTemplateRef('$dataTable');
 const {navigate} = useHasDatatable($dataTable);
 
-watch(dateRange, () => nextTick(navigate));
+watch(dateRange, () => void nextTick(navigate));
 </script>

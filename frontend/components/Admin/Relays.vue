@@ -18,7 +18,7 @@
 
         <data-table
             id="relays"
-            ref="$datatable"
+            ref="$dataTable"
             paginated
             :fields="fields"
             :api-url="listUrl"
@@ -46,10 +46,10 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
+import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import {useTranslate} from "~/vendor/gettext";
-import {ref} from "vue";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
+import {useTemplateRef} from "vue";
+import useHasDatatable from "~/functions/useHasDatatable";
 import {useAzuraCast} from "~/vendor/azuracast";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
@@ -78,6 +78,6 @@ const fields: DataTableField[] = [
     {key: 'updated_at', label: $gettext('Latest Update'), formatter: dateTimeFormatter, sortable: true}
 ];
 
-const $datatable = ref<DataTableTemplateRef>(null);
-useHasDatatable($datatable);
+const $dataTable = useTemplateRef('$dataTable');
+useHasDatatable($dataTable);
 </script>

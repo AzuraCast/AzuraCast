@@ -66,7 +66,7 @@ const hasSelectedItems = computed(() => {
 const {handleBatchResponse} = useHandlePodcastBatchResponse();
 
 const doBatch = (action, successMessage, errorMessage) => {
-    axios.put(props.batchUrl, {
+    void axios.put(props.batchUrl, {
         'do': action,
         'episodes': map(props.selectedItems, 'id')
     }).then(({data}) => {
@@ -78,7 +78,7 @@ const doBatch = (action, successMessage, errorMessage) => {
 const {confirmDelete} = useDialog();
 
 const doDelete = () => {
-    confirmDelete({
+    void confirmDelete({
         title: $gettext(
             'Delete %{num} episodes?',
             {

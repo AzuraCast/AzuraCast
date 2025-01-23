@@ -94,7 +94,7 @@ const uploaded = (file) => {
     const formData = new FormData();
     formData.append('art', file);
 
-    axios.post(url, formData).then((resp) => {
+    void axios.post(url, formData).then((resp) => {
         emit('update:modelValue', resp.data);
         reloadArt();
     });
@@ -102,7 +102,7 @@ const uploaded = (file) => {
 
 const deleteArt = () => {
     if (props.artworkSrc) {
-        axios.delete(props.artworkSrc).then(() => {
+        void axios.delete(props.artworkSrc).then(() => {
             reloadArt();
             localSrc.value = null;
         });

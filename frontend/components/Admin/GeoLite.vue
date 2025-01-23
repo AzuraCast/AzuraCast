@@ -143,7 +143,7 @@ const {axios} = useAxios();
 const doFetch = () => {
     isLoading.value = true;
 
-    axios.get(apiUrl.value).then((resp) => {
+    void axios.get(apiUrl.value).then((resp) => {
         form.value.key = resp.data.key;
         version.value = resp.data.version;
         isLoading.value = false;
@@ -155,7 +155,7 @@ onMounted(doFetch);
 const doUpdate = () => {
     isLoading.value = true;
 
-    axios.post(apiUrl.value, {
+    void axios.post(apiUrl.value, {
         geolite_license_key: form.value.key
     }).then((resp) => {
         version.value = resp.data.version;
@@ -167,7 +167,7 @@ const doUpdate = () => {
 const {confirmDelete} = useDialog();
 
 const doDelete = () => {
-    confirmDelete({
+    void confirmDelete({
         title: $gettext('Remove GeoLite license key?'),
         confirmButtonText: $gettext('Remove Key')
     }).then((result) => {

@@ -103,7 +103,7 @@ const langSpaceUsed = computed(() => {
 const {axios} = useAxios();
 
 const update = () => {
-    axios.get(props.quotaUrl).then((resp) => {
+    void axios.get(props.quotaUrl).then((resp) => {
         quota.value = mergeExisting(quota.value, resp.data);
         loading.value = false;
 

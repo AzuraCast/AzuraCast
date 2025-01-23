@@ -53,12 +53,6 @@
     </card-page>
 </template>
 
-<script lang="ts">
-export interface ProfileStreamersPanelProps {
-    enableStreamers: boolean,
-}
-</script>
-
 <script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
@@ -66,6 +60,10 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {StationPermission, userAllowedForStation} from "~/acl";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
 import {IconCheck, IconClose, IconSettings} from "~/components/Common/icons";
+
+export interface ProfileStreamersPanelProps {
+    enableStreamers: boolean,
+}
 
 defineOptions({
     inheritAttrs: false

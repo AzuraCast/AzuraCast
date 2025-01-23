@@ -89,16 +89,14 @@
     </section>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 export interface StreamerConnectionInfo {
     serverUrl: string,
     streamPort: number,
     ip: string | null,
     djMountPoint: string,
 }
-</script>
 
-<script setup lang="ts">
 const props = defineProps<{
     connectionInfo: StreamerConnectionInfo
 }>();

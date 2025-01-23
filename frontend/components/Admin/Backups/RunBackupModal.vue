@@ -107,12 +107,12 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import StreamingLogView from "~/components/Common/StreamingLogView.vue";
-import {ref} from "vue";
+import {ref, useTemplateRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Modal from "~/components/Common/Modal.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
 const props = defineProps<{
@@ -125,7 +125,7 @@ const emit = defineEmits<HasRelistEmit>();
 const logUrl = ref(null);
 const error = ref(null);
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show: open, hide} = useHasModal($modal);
 
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm(

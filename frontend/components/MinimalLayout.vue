@@ -8,8 +8,9 @@ import {nextTick, onMounted} from "vue";
 
 useProvidePlayerStore('global');
 
-onMounted(async () => {
-    await nextTick();
-    document.dispatchEvent(new CustomEvent("vue-ready"));
+onMounted(() => {
+    void nextTick(() => {
+        document.dispatchEvent(new CustomEvent("vue-ready"));
+    });
 });
 </script>

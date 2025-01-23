@@ -11,11 +11,11 @@
 </template>
 <script setup lang="ts">
 import Modal from "~/components/Common/Modal.vue";
-import {ref, Ref} from "vue";
+import {ref, Ref, useTemplateRef} from "vue";
 import TaskOutput from "~/components/Admin/Debug/TaskOutput.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 
-const $modal: Ref<ModalTemplateRef> = ref(null);
+const $modal = useTemplateRef('$modal');
 const {show} = useHasModal($modal);
 
 const logOutput: Ref<Array<object>> = ref([]);

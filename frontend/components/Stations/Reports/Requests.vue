@@ -51,7 +51,7 @@
 
         <data-table
             id="station_queue"
-            ref="$datatable"
+            ref="$dataTable"
             :fields="fields"
             :api-url="listUrlForType"
         >
@@ -95,13 +95,12 @@
 <script setup lang="ts">
 import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import Icon from "~/components/Common/Icon.vue";
-import {computed, nextTick, ref} from "vue";
+import {computed, nextTick, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {getStationApiUrl} from "~/router";
 import {IconRemove} from "~/components/Common/icons";
-import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useDialog} from "~/functions/useDialog.ts";
 
@@ -135,15 +134,15 @@ const tabs = [
     }
 ];
 
-const $datatable = ref<DataTableTemplateRef>(null);
+const $dataTable = useTemplateRef('$dataTable');
 
 const relist = () => {
-    $datatable.value?.refresh();
+    $dataTable.value?.refresh();
 };
 
 const setType = (type) => {
     activeType.value = type;
-    nextTick(relist);
+    void nextTick(relist);
 };
 
 const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
@@ -153,11 +152,11 @@ const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const doDelete = (url) => {
-    confirmDelete({
+    void confirmDelete({
         title: $gettext('Delete Request?'),
     }).then((result) => {
         if (result.value) {
-            axios.delete(url).then((resp) => {
+            void axios.delete(url).then((resp) => {
                 notifySuccess(resp.data.message);
                 relist();
             });
@@ -166,12 +165,12 @@ const doDelete = (url) => {
 };
 
 const doClear = () => {
-    confirmDelete({
+    void confirmDelete({
         title: $gettext('Clear All Pending Requests?'),
         confirmButtonText: $gettext('Clear'),
     }).then((result) => {
         if (result.value) {
-            axios.post(clearUrl.value).then((resp) => {
+            void axios.post(clearUrl.value).then((resp) => {
                 notifySuccess(resp.data.message);
                 relist();
             });

@@ -17,13 +17,8 @@
 
 <script setup lang="ts">
 import SftpUsersForm from "./Form.vue";
-import {
-    BaseEditModalEmits,
-    BaseEditModalProps,
-    ModalFormTemplateRef,
-    useBaseEditModal
-} from "~/functions/useBaseEditModal";
-import {computed, ref} from "vue";
+import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 
@@ -31,7 +26,7 @@ const props = defineProps<BaseEditModalProps>();
 
 const emit = defineEmits<BaseEditModalEmits>();
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 
 const {
     loading,

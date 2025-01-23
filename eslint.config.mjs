@@ -1,11 +1,9 @@
-import js from "@eslint/js";
 import pluginVue from "eslint-plugin-vue";
-import vueTsEslintConfig from "@vue/eslint-config-typescript";
+import {defineConfigWithVueTs, vueTsConfigs} from "@vue/eslint-config-typescript";
 
-export default [
-    js.configs.recommended,
-    ...pluginVue.configs["flat/essential"],
-    ...vueTsEslintConfig({}),
+export default defineConfigWithVueTs(
+        pluginVue.configs['flat/essential'],
+        vueTsConfigs.recommended,
     {
         rules: {
             "@typescript-eslint/no-unused-vars": ["error", {
@@ -13,7 +11,11 @@ export default [
             }],
 
             "@typescript-eslint/no-explicit-any": "off",
+            "@typescript-eslint/prefer-promise-reject-errors": "off",
+            "@typescript-eslint/no-unsafe-enum-comparison": "off",
+
             "vue/multi-word-component-names": "off",
+            "vue/require-default-prop": "off",
 
             "vue/html-indent": ["error", 4, {
                 attribute: 1,
@@ -23,9 +25,6 @@ export default [
             }],
 
             "vue/no-v-html": "off",
-            "vue/no-mutating-props": "off",
-            "vue/no-multiple-template-root": "off",
-            "vue/no-setup-props-destructure": "off",
         },
     }
-];
+);

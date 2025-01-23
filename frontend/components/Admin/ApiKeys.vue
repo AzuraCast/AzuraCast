@@ -10,7 +10,7 @@
 
         <data-table
             id="api_keys"
-            ref="$datatable"
+            ref="$dataTable"
             :fields="fields"
             :api-url="apiUrl"
         >
@@ -30,11 +30,11 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
-import {ref} from "vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import {useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
+import useHasDatatable from "~/functions/useHasDatatable";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 
@@ -62,8 +62,8 @@ const fields: DataTableField[] = [
     }
 ];
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {relist} = useHasDatatable($datatable);
+const $dataTable = useTemplateRef('$dataTable');
+const {relist} = useHasDatatable($dataTable);
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete API Key?'),

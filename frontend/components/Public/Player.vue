@@ -11,7 +11,7 @@
                 v-if="showAlbumArt && np.now_playing.song.art"
                 class="now-playing-art"
             >
-                <album-art :src="np.now_playing.song.art"/>
+                <album-art :src="np.now_playing.song.art" />
             </div>
             <div class="now-playing-main">
                 <h6
@@ -90,7 +90,7 @@
                         aria-expanded="false"
                     >
                         {{ currentStream.name }}
-                        <span class="caret"/>
+                        <span class="caret" />
                     </button>
                     <ul
                         class="dropdown-menu"
@@ -112,7 +112,10 @@
                 </div>
             </div>
 
-            <div v-if="showVolume" class="radio-control-volume d-flex align-items-center">
+            <div
+                v-if="showVolume"
+                class="radio-control-volume d-flex align-items-center"
+            >
                 <div class="flex-shrink-0 mx-2">
                     <mute-button
                         class="p-0 text-secondary"
@@ -137,17 +140,6 @@
     </div>
 </template>
 
-<script lang="ts">
-import {NowPlayingProps} from "~/functions/useNowPlaying.ts";
-
-export interface PlayerProps extends NowPlayingProps {
-    offlineText?: string,
-    showHls?: boolean,
-    showAlbumArt?: boolean,
-    autoplay?: boolean
-}
-</script>
-
 <script setup lang="ts">
 import AudioPlayer from '~/components/Common/AudioPlayer.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
@@ -161,6 +153,14 @@ import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {useEventListener} from "@vueuse/core";
 import useShowVolume from "~/functions/useShowVolume.ts";
 import {ApiNowPlaying} from "~/entities/ApiInterfaces.ts";
+import {NowPlayingProps} from "~/functions/useNowPlaying.ts";
+
+export interface PlayerProps extends NowPlayingProps {
+    offlineText?: string,
+    showHls?: boolean,
+    showAlbumArt?: boolean,
+    autoplay?: boolean
+}
 
 defineOptions({
     inheritAttrs: false
@@ -265,11 +265,11 @@ const switchStream = (new_stream: CurrentStreamDescriptor) => {
 };
 
 if (props.autoplay) {
-    const stop = useEventListener(document, "now-playing", async () => {
-        await nextTick();
-
-        switchStream(currentStream.value);
-        stop();
+    const stop = useEventListener(document, "now-playing", () => {
+        void nextTick(() => {
+            switchStream(currentStream.value);
+            stop();
+        });
     });
 }
 

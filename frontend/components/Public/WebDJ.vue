@@ -7,7 +7,7 @@
         <div class="container pt-5">
             <div class="row g-3">
                 <div class="col-md-4 mb-sm-4">
-                    <settings-panel :station-name="stationName"/>
+                    <settings-panel :station-name="stationName" />
                 </div>
 
                 <div class="col-md-8">

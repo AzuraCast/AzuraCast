@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import getLogarithmicVolume from '~/functions/getLogarithmicVolume';
 import Hls from 'hls.js';
-import {computed, nextTick, onMounted, onScopeDispose, ref, toRef, watch} from "vue";
+import {computed, nextTick, onMounted, onScopeDispose, ref, toRef, useTemplateRef, watch} from "vue";
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {watchThrottled} from "@vueuse/core";
 
@@ -31,7 +31,8 @@ const emit = defineEmits<{
     (e: 'update:progress', value: number): void
 }>();
 
-const $audio = ref(null);
+const $audio = useTemplateRef('$audio');
+
 const hls = ref(null);
 const duration = ref(0);
 const currentTime = ref(0);
@@ -71,7 +72,7 @@ const stop = () => {
 const play = () => {
     if (isPlaying.value) {
         stop();
-        nextTick(() => {
+        void nextTick(() => {
             play();
         });
         return;
@@ -79,7 +80,7 @@ const play = () => {
 
     isPlaying.value = true;
 
-    nextTick(() => {
+    void nextTick(() => {
         // Handle audio errors.
         $audio.value.onerror = (e) => {
             if (e.target.error.code === e.target.error.MEDIA_ERR_NETWORK && $audio.value.src !== '') {

@@ -3,8 +3,14 @@
         ref="$calendar"
         :options="calendarOptions"
     >
-        <template v-for="(_, slot) of $slots" v-slot:[slot]="scope">
-            <slot :name="slot" v-bind="scope || {}"/>
+        <template
+            v-for="(_, slot) of $slots"
+            #[slot]="scope"
+        >
+            <slot
+                :name="slot"
+                v-bind="scope || {}"
+            />
         </template>
     </full-calendar>
 </template>
@@ -15,7 +21,7 @@ import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import allLocales from '@fullcalendar/core/locales-all';
 import luxon3Plugin from '@fullcalendar/luxon3';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import {computed, ref} from "vue";
+import {computed, useTemplateRef} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast";
 import {Calendar, CalendarOptions} from "@fullcalendar/core";
 
@@ -27,7 +33,8 @@ const props = defineProps<{
     options?: CalendarOptions
 }>();
 
-const $calendar = ref<InstanceType<typeof FullCalendar> | null>();
+const $calendar = useTemplateRef('$calendar');
+
 const getCalendarApi = (): Calendar => $calendar.value?.getApi();
 
 defineExpose({

@@ -201,7 +201,7 @@ const relist = () => {
 
     isLoading.value = true;
 
-    axios.get(props.apiUrl).then((resp) => {
+    void axios.get(props.apiUrl).then((resp) => {
         populateForm(resp.data);
         isLoading.value = false;
     });
@@ -213,7 +213,7 @@ const {notifySuccess} = useNotify();
 
 const submit = () => {
     ifValid(() => {
-        axios({
+        void axios({
             method: 'PUT',
             url: props.apiUrl,
             data: form.value

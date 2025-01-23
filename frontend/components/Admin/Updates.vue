@@ -205,7 +205,7 @@ const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const checkForUpdates = () => {
-    axios.get(updatesApiUrl.value).then((resp) => {
+    void axios.get(updatesApiUrl.value).then((resp) => {
         updateInfo.value = resp.data;
     });
 };
@@ -213,12 +213,12 @@ const checkForUpdates = () => {
 const {showAlert} = useDialog();
 
 const doUpdate = () => {
-    showAlert({
+    void showAlert({
         title: $gettext('Update AzuraCast? Your installation will restart.'),
         confirmButtonText: $gettext('Update via Web')
     }).then((result) => {
         if (result.value) {
-            axios.put(updatesApiUrl.value).then(() => {
+            void axios.put(updatesApiUrl.value).then(() => {
                 notifySuccess(
                     $gettext('Update started. Your installation will restart shortly.')
                 );

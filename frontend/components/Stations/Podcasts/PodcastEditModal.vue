@@ -38,13 +38,8 @@ import PodcastFormSource from './PodcastForm/Source.vue';
 import PodcastFormBranding from './PodcastForm/Branding.vue';
 import PodcastCommonArtwork from './Common/Artwork.vue';
 import mergeExisting from "~/functions/mergeExisting";
-import {
-    BaseEditModalEmits,
-    BaseEditModalProps,
-    ModalFormTemplateRef,
-    useBaseEditModal
-} from "~/functions/useBaseEditModal";
-import {computed, ref} from "vue";
+import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, useTemplateRef} from "vue";
 import {useResettableRef} from "~/functions/useResettableRef";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
@@ -62,7 +57,7 @@ const props = defineProps<PodcastEditModalProps>();
 
 const emit = defineEmits<BaseEditModalEmits>();
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 
 const {record, reset} = useResettableRef({
     has_custom_art: false,

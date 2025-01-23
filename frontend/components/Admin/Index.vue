@@ -91,7 +91,19 @@
     </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import Icon from '~/components/Common/Icon.vue';
+import {useAxios} from "~/vendor/axios";
+import {getApiUrl} from "~/router";
+import {useAdminMenu} from "~/components/Admin/menu";
+import CpuStatsPanel from "~/components/Admin/Index/CpuStatsPanel.vue";
+import MemoryStatsPanel from "~/components/Admin/Index/MemoryStatsPanel.vue";
+import DiskUsagePanel from "~/components/Admin/Index/DiskUsagePanel.vue";
+import ServicesPanel from "~/components/Admin/Index/ServicesPanel.vue";
+import NetworkStatsPanel from "~/components/Admin/Index/NetworkStatsPanel.vue";
+import Loading from "~/components/Common/Loading.vue";
+import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
+
 interface AdminCpuCore {
     name: string,
     usage: string,
@@ -177,20 +189,6 @@ export interface AdminStats {
     disk: AdminStorageStats,
     network: AdminNetworkInterfaceStats[]
 }
-</script>
-
-<script setup lang="ts">
-import Icon from '~/components/Common/Icon.vue';
-import {useAxios} from "~/vendor/axios";
-import {getApiUrl} from "~/router";
-import {useAdminMenu} from "~/components/Admin/menu";
-import CpuStatsPanel from "~/components/Admin/Index/CpuStatsPanel.vue";
-import MemoryStatsPanel from "~/components/Admin/Index/MemoryStatsPanel.vue";
-import DiskUsagePanel from "~/components/Admin/Index/DiskUsagePanel.vue";
-import ServicesPanel from "~/components/Admin/Index/ServicesPanel.vue";
-import NetworkStatsPanel from "~/components/Admin/Index/NetworkStatsPanel.vue";
-import Loading from "~/components/Common/Loading.vue";
-import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
 
 const statsUrl = getApiUrl('/admin/server/stats');
 

@@ -22,9 +22,10 @@
 
 <script setup lang="ts">
 import Lightbox from "~/components/Common/Lightbox.vue";
-import {ref} from "vue";
-import {LightboxTemplateRef, useProvideLightbox} from "~/vendor/lightbox.ts";
+import {useTemplateRef} from "vue";
+import {useProvideLightbox} from "~/vendor/lightbox.ts";
 
-const $lightbox = ref<LightboxTemplateRef>(null);
+const $lightbox = useTemplateRef('$lightbox');
+
 useProvideLightbox($lightbox);
 </script>

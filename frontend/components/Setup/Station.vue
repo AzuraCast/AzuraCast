@@ -41,7 +41,7 @@
 import AdminStationsForm, {StationFormParentProps} from "~/components/Admin/Stations/StationForm.vue";
 import SetupStep from "./SetupStep.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
-import {onMounted, ref} from "vue";
+import {onMounted, useTemplateRef} from "vue";
 
 interface SetupStationProps extends StationFormParentProps {
     createUrl: string,
@@ -50,7 +50,7 @@ interface SetupStationProps extends StationFormParentProps {
 
 const props = defineProps<SetupStationProps>();
 
-const $adminForm = ref<InstanceType<typeof AdminStationsForm> | null>(null);
+const $adminForm = useTemplateRef('$adminForm');
 
 onMounted(() => {
     $adminForm.value?.reset();

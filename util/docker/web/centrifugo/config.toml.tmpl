@@ -1,23 +1,39 @@
+[http_api]
+insecure = true
+
+[client]
+allowed_origins = ["*"]
 allow_anonymous_connect_without_token = true
-api_insecure = true
-admin = true
-admin_insecure = true
+connect_include_server_time = true
+
+[admin]
+enabled = true
+insecure = true
+
+[uni_websocket]
+enabled = true
+
+[uni_sse]
+enabled = true
+
+[uni_http_stream]
+enabled = true
+
+[http_server]
 port = 6_020
 internal_port = 6_025
-websocket_disable = true
-uni_websocket = true
-uni_sse = true
-uni_http_stream = true
-allowed_origins = ["*"]
-client_connect_include_server_time = true
 
-{{ if isTrue .Env.ENABLE_REDIS }}
-engine = "redis"
-redis_address = "{{ .Env.REDIS_HOST }}:{{ default .Env.REDIS_PORT "6379" }}"
-redis_db = {{ default .Env.REDIS_DB 0 }}
+[websocket]
+disabled = true
+
+{{ if isTrue .Env.ENABLE_REDIS  }}
+[engine]
+redis.address = "{{ .Env.REDIS_HOST }}:{{ default .Env.REDIS_PORT "6379" }}"
+redis.db = {{ default .Env.REDIS_DB 0 }}
+type = "redis"
 {{ end }}
 
-[[namespaces]]
+[[channel.namespaces]]
 name = "station"
 history_size = 1
 history_ttl = "30s"

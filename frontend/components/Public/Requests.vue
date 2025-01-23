@@ -4,16 +4,14 @@
     </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import RequestsDataTable from "~/components/Public/Requests/RequestsDataTable.vue";
+
 export interface RequestsProps {
     requestListUri: string,
     showAlbumArt?: boolean
     customFields?: Array<any>
 }
-</script>
-
-<script setup lang="ts">
-import RequestsDataTable from "~/components/Public/Requests/RequestsDataTable.vue";
 
 defineOptions({
     inheritAttrs: false

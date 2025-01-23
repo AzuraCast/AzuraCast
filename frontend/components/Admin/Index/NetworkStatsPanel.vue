@@ -62,6 +62,7 @@ const getNetworkInterfaceTableItems = (interfaceData) => {
         let value: any = data[1];
 
         if (isObject(value) && "readable" in value) {
+            // eslint-disable-next-line @typescript-eslint/no-base-to-string,@typescript-eslint/restrict-plus-operands
             value = value.readable + '/s';
         }
 

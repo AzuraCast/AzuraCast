@@ -32,13 +32,8 @@ import FormBasicInfo from './Form/BasicInfo.vue';
 import FormSchedule from './Form/Schedule.vue';
 import FormArtwork from './Form/Artwork.vue';
 import mergeExisting from "~/functions/mergeExisting";
-import {
-    BaseEditModalEmits,
-    BaseEditModalProps,
-    ModalFormTemplateRef,
-    useBaseEditModal
-} from "~/functions/useBaseEditModal";
-import {computed, ref} from "vue";
+import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useResettableRef} from "~/functions/useResettableRef";
 import ModalForm from "~/components/Common/ModalForm.vue";
@@ -52,7 +47,7 @@ const props = defineProps<StreamersEditModalProps>();
 
 const emit = defineEmits<BaseEditModalEmits>();
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 
 const {record, reset} = useResettableRef({
     has_custom_art: false,

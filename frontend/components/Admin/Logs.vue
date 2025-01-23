@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import LogList from "~/components/Common/LogList.vue";
 import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
-import {Ref, ref} from "vue";
+import {useTemplateRef} from "vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
@@ -56,7 +56,7 @@ defineProps<{
     stationLogs: StationLogsItem[]
 }>();
 
-const $modal: Ref<InstanceType<typeof StreamingLogModal> | null> = ref(null);
+const $modal = useTemplateRef('$modal');
 
 const viewLog = (url, isStreaming) => {
     $modal.value?.show(url, isStreaming);

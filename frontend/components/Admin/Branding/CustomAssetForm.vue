@@ -62,7 +62,7 @@ const {axios} = useAxios();
 const relist = () => {
     isLoading.value = true;
 
-    axios.get(props.apiUrl).then((resp) => {
+    void axios.get(props.apiUrl).then((resp) => {
         isUploaded.value = resp.data.is_uploaded;
         url.value = resp.data.url;
 
@@ -80,13 +80,13 @@ const uploaded = (newFile) => {
     const formData = new FormData();
     formData.append('file', newFile);
 
-    axios.post(props.apiUrl, formData).finally(() => {
+    void axios.post(props.apiUrl, formData).finally(() => {
         relist();
     });
 };
 
 const clear = () => {
-    axios.delete(props.apiUrl).finally(() => {
+    void axios.delete(props.apiUrl).finally(() => {
         relist();
     });
 };

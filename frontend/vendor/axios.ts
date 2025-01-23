@@ -1,4 +1,4 @@
-import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
+import axios, {AxiosInstance, AxiosRequestConfig, AxiosStatic} from "axios";
 import VueAxios from "vue-axios";
 import {App, inject, InjectionKey} from "vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -63,6 +63,7 @@ export default function installAxios(vueApp: App) {
     }, (error) => {
         setLoading(false);
         handleAxiosError(error);
+
         return Promise.reject(error);
     });
 
@@ -72,10 +73,11 @@ export default function installAxios(vueApp: App) {
     }, (error) => {
         setLoading(false);
         handleAxiosError(error);
+
         return Promise.reject(error);
     });
 
-    vueApp.use(VueAxios, axiosInstance);
+    vueApp.use(VueAxios, axiosInstance as AxiosStatic);
 
     vueApp.provide(injectKey, axiosInstance);
     vueApp.provide(injectKeySilent, axiosSilent);

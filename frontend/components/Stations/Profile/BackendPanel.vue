@@ -79,20 +79,7 @@
     </card-page>
 </template>
 
-<script lang="ts">
-export interface ProfileBackendPanelParentProps {
-    numSongs: number,
-    numPlaylists: number,
-    backendType: string,
-    hasStarted: boolean,
-    backendRestartUri: string,
-    backendStartUri: string,
-    backendStopUri: string,
-}
-</script>
-
 <script setup lang="ts">
-import {BackendAdapter} from '~/entities/RadioAdapters';
 import Icon from '~/components/Common/Icon.vue';
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -101,6 +88,18 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {StationPermission, userAllowedForStation} from "~/acl";
 import {IconPlay, IconStop, IconUpdate} from "~/components/Common/icons";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
+
+import {BackendAdapter} from '~/entities/RadioAdapters';
+
+export interface ProfileBackendPanelParentProps {
+    numSongs: number,
+    numPlaylists: number,
+    backendType: BackendAdapter,
+    hasStarted: boolean,
+    backendRestartUri: string,
+    backendStartUri: string,
+    backendStopUri: string,
+}
 
 defineOptions({
     inheritAttrs: false

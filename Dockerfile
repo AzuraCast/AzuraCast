@@ -1,22 +1,6 @@
 # syntax=docker/dockerfile:1
 
 #
-# Golang dependencies build step
-#
-FROM golang:1.23-bookworm AS go-dependencies
-
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends openssl git
-
-RUN go install github.com/jwilder/dockerize@v0.9.2
-
-RUN go install github.com/aptible/supercronic@v0.2.33
-
-RUN go install github.com/centrifugal/centrifugo/v5@v5.4.9
-
-RUN strip /go/bin/*
-
-#
 # MariaDB dependencies build step
 #
 FROM mariadb:lts-noble AS mariadb
@@ -42,11 +26,6 @@ FROM scratch AS dependencies
 
 # Add PHP extension installer tool
 COPY --from=php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
-
-# Add Go dependencies
-COPY --from=go-dependencies /go/bin/dockerize /usr/local/bin
-COPY --from=go-dependencies /go/bin/supercronic /usr/local/bin/supercronic
-COPY --from=go-dependencies /go/bin/centrifugo /usr/local/bin/centrifugo
 
 # Add MariaDB dependencies
 COPY --from=mariadb /usr/local/bin/healthcheck.sh /usr/local/bin/db_healthcheck.sh

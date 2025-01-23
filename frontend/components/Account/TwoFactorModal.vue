@@ -72,11 +72,11 @@ import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {minLength, required} from "@vuelidate/validators";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {ref} from "vue";
+import {ref, useTemplateRef} from "vue";
 import {useResettableRef} from "~/functions/useResettableRef";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
-import {HasRelistEmit, ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import QrCode from "~/components/Account/QrCode.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 
@@ -115,7 +115,7 @@ const clearContents = () => {
     error.value = null;
 };
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {hide, show} = useHasModal($modal);
 
 const {notifySuccess} = useNotify();

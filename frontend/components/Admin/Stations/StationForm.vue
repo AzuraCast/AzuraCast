@@ -65,18 +65,6 @@
     </loading>
 </template>
 
-<script lang="ts">
-export interface StationFormParentProps {
-    // Profile
-    timezones: Record<string, string>,
-    // Frontend
-    isRsasInstalled?: boolean,
-    isShoutcastInstalled?: boolean,
-    isStereoToolInstalled?: boolean,
-    countries: Record<string, string>
-}
-</script>
-
 <script setup lang="ts">
 import AdminStationsProfileForm from "./Form/ProfileForm.vue";
 import AdminStationsFrontendForm from "./Form/FrontendForm.vue";
@@ -97,6 +85,16 @@ import {GlobalPermission, userAllowed} from "~/acl";
 defineOptions({
     inheritAttrs: false
 });
+
+export interface StationFormParentProps {
+    // Profile
+    timezones: Record<string, string>,
+    // Frontend
+    isRsasInstalled?: boolean,
+    isShoutcastInstalled?: boolean,
+    isStereoToolInstalled?: boolean,
+    countries: Record<string, string>
+}
 
 interface StationFormProps extends StationFormParentProps {
     createUrl?: string,
@@ -165,7 +163,7 @@ const doLoad = () => {
 };
 
 const reset = () => {
-    nextTick(() => {
+    void nextTick(() => {
         clear();
         if (props.isEditMode) {
             doLoad();

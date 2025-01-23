@@ -37,7 +37,7 @@
             <div class="col-md-12">
                 <data-table
                     id="station_media"
-                    ref="$datatable"
+                    ref="$dataTable"
                     show-toolbar
                     paginated
                     :fields="fields"
@@ -74,8 +74,8 @@
             <button
                 type="button"
                 class="btn btn-primary"
-                @click="doMove"
                 :disabled="props.selectedItems.all.length === 0"
+                @click="doMove"
             >
                 {{ $gettext('Move to Directory') }}
             </button>
@@ -86,13 +86,12 @@
 <script setup lang="ts">
 import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import Icon from '~/components/Common/Icon.vue';
-import {computed, ref} from "vue";
+import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {IconChevronLeft, IconFolder} from "~/components/Common/icons";
-import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchResponse.ts";
 import {useAsyncState} from "@vueuse/core";
 import {MediaSelectedItems} from "~/components/Stations/Media.vue";
@@ -123,7 +122,7 @@ const langHeader = computed(() => {
     );
 });
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
 const onHidden = () => {
@@ -148,7 +147,7 @@ const {state: directories, execute: reload, isLoading} = useAsyncState(
 );
 
 const doMove = () => {
-    axios.put(props.batchUrl, {
+    void axios.put(props.batchUrl, {
         'do': 'move',
         'currentDirectory': props.currentDirectory,
         'directory': destinationDirectory.value,
@@ -166,11 +165,12 @@ const doMove = () => {
     });
 };
 
-const $datatable = ref<DataTableTemplateRef>(null);
+const $dataTable = useTemplateRef('$dataTable');
 
 const onDirChange = () => {
-    reload();
-    $datatable.value?.refresh();
+    void reload().finally(() => {
+        $dataTable.value?.refresh();
+    });
 }
 
 const enterDirectory = (path) => {
@@ -192,7 +192,7 @@ const pageBack = () => {
 };
 
 const open = () => {
-    reload();
+    void reload();
     show();
 }
 

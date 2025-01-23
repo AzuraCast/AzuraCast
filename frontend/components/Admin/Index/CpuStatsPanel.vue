@@ -135,7 +135,7 @@
 </template>
 <script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import CpuStatsHelpModal from "~/components/Admin/Index/CpuStatsHelpModal.vue";
 import {upperFirst} from "lodash";
 import {IconInfo} from "~/components/Common/icons.ts";
@@ -145,7 +145,7 @@ const props = defineProps<{
     stats: AdminStats,
 }>();
 
-const $cpuStatsHelpModal = ref<InstanceType<typeof CpuStatsHelpModal> | null>(null);
+const $cpuStatsHelpModal = useTemplateRef('$cpuStatsHelpModal');
 const showCpuStatsHelpModal = () => {
     $cpuStatsHelpModal.value?.create();
 };

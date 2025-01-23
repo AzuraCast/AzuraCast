@@ -1,6 +1,5 @@
 import {useAsyncState, UseAsyncStateOptions, UseAsyncStateReturn} from "@vueuse/core";
 import syncOnce from "~/functions/syncOnce";
-import {Ref} from "vue";
 
 /**
  * Just like useAsyncState, except with settings changed:
@@ -23,10 +22,8 @@ export default function useRefreshableAsyncState<Data, Params extends any[] = []
         }
     );
 
-    const isLoading: Ref<boolean> = syncOnce(parentState.isLoading);
+    const parentIsLoading = parentState.isLoading;
+    parentState.isLoading = syncOnce(parentIsLoading);
 
-    return {
-        ...parentState,
-        isLoading: isLoading
-    };
+    return parentState;
 }

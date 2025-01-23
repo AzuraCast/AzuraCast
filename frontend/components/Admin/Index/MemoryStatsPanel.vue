@@ -63,7 +63,7 @@
 
 <script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import MemoryStatsHelpModal from "~/components/Admin/Index/MemoryStatsHelpModal.vue";
 import {IconInfo} from "~/components/Common/icons.ts";
 import {AdminStats} from "~/components/Admin/Index.vue";
@@ -72,7 +72,8 @@ const props = defineProps<{
     stats: AdminStats,
 }>();
 
-const $memoryStatsHelpModal = ref<InstanceType<typeof MemoryStatsHelpModal> | null>(null);
+const $memoryStatsHelpModal = useTemplateRef('$memoryStatsHelpModal');
+
 const showMemoryStatsHelpModal = () => {
     $memoryStatsHelpModal.value?.create();
 };

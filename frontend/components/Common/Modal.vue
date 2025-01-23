@@ -32,7 +32,10 @@
                             @click.prevent="hide"
                         />
                     </div>
-                    <div class="modal-body" v-if="slots['default']">
+                    <div
+                        v-if="slots['default']"
+                        class="modal-body"
+                    >
                         <loading :loading="busy">
                             <slot name="default" />
                         </loading>
@@ -51,7 +54,7 @@
 
 <script setup lang="ts">
 import Modal from 'bootstrap/js/src/modal';
-import {onMounted, onUnmounted, ref, useSlots, watch} from 'vue';
+import {onMounted, onUnmounted, ref, useSlots, useTemplateRef, watch} from 'vue';
 import Loading from "~/components/Common/Loading.vue";
 import {useEventListener} from "@vueuse/core";
 
@@ -83,7 +86,7 @@ watch(isActive, (newActive) => {
 });
 
 let bsModal = null;
-const $modal = ref<HTMLDivElement | null>(null);
+const $modal = useTemplateRef('$modal');
 
 onMounted(() => {
     bsModal = new Modal($modal.value);

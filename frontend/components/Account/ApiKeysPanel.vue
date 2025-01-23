@@ -64,10 +64,10 @@ import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import Icon from "~/components/Common/Icon.vue";
 import AccountApiKeyModal from "~/components/Account/ApiKeyModal.vue";
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import {useTranslate} from "~/vendor/gettext.ts";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import useHasDatatable from "~/functions/useHasDatatable.ts";
 import {getApiUrl} from "~/router.ts";
 
 const apiKeysApiUrl = getApiUrl('/frontend/account/api-keys');
@@ -89,13 +89,13 @@ const apiKeyFields: DataTableField[] = [
     }
 ];
 
-const $apiKeyModal = ref<InstanceType<typeof AccountApiKeyModal> | null>(null);
+const $apiKeyModal = useTemplateRef('$apiKeyModal');
 
 const createApiKey = () => {
     $apiKeyModal.value?.create();
 };
 
-const $dataTable = ref<DataTableTemplateRef>(null);
+const $dataTable = useTemplateRef('$dataTable');
 const {relist} = useHasDatatable($dataTable);
 
 const {doDelete: deleteApiKey} = useConfirmAndDelete(

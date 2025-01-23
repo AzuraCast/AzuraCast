@@ -1,12 +1,12 @@
 <template>
     <div
+        v-if="isActive"
         v-bind="$attrs"
         ref="$modal"
         class="modal modal-md fade"
         tabindex="-1"
         :aria-label="title"
         aria-hidden="true"
-        v-if="isActive"
         role="dialog"
     >
         <div class="modal-dialog modal-dialog-centered">
@@ -42,7 +42,11 @@
     </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import Modal from 'bootstrap/js/src/modal';
+import {onMounted, ref, useTemplateRef} from "vue";
+import {useEventListener} from "@vueuse/core";
+
 export interface DialogOptions {
     title: string,
     confirmButtonText: string,
@@ -59,12 +63,6 @@ export interface DialogResponse {
 export interface DialogComponentProps extends DialogOptions {
     resolvePromise(body: DialogResponse): void
 }
-</script>
-
-<script setup lang="ts">
-import Modal from 'bootstrap/js/src/modal';
-import {onMounted, ref} from "vue";
-import {useEventListener} from "@vueuse/core";
 
 const props = withDefaults(defineProps<DialogComponentProps>(), {
     confirmButtonClass: 'btn-primary',
@@ -81,9 +79,9 @@ const sendResult = (value: boolean = true) => {
 }
 
 let bsModal = null;
-const $modal = ref<HTMLDivElement | null>(null);
-const $cancelButton = ref<HTMLButtonElement | null>(null);
-const $confirmButton = ref<HTMLButtonElement | null>(null);
+const $modal = useTemplateRef('$modal');
+const $cancelButton = useTemplateRef('$cancelButton');
+const $confirmButton = useTemplateRef('$confirmButton');
 
 useEventListener(
     $modal,

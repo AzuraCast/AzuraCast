@@ -1,10 +1,9 @@
 import Modal from "~/components/Common/Modal.vue";
 import {Ref} from "vue";
-import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
 
-export type ModalTemplateRef = InstanceType<typeof Modal> | null;
+export type ModalTemplateRef = InstanceType<typeof Modal>;
 
-export function useHasModal(modalRef: Ref<ModalTemplateRef | ModalFormTemplateRef>) {
+export function useHasModal(modalRef: Ref<ModalTemplateRef>) {
     const hide = () => {
         modalRef.value?.hide();
     };

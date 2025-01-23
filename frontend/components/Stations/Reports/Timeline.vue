@@ -31,7 +31,7 @@
             </div>
         </div>
         <data-table
-            ref="$datatable"
+            ref="$dataTable"
             paginated
             select-fields
             :fields="fields"
@@ -91,11 +91,11 @@
 import Icon from "~/components/Common/Icon.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
-import {computed, nextTick, ref, watch} from "vue";
+import {computed, nextTick, ref, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {getStationApiUrl} from "~/router";
 import {IconDownload, IconTrendingDown, IconTrendingUp} from "~/components/Common/icons";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import useHasDatatable from "~/functions/useHasDatatable.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
@@ -194,8 +194,8 @@ const abs = (val) => {
     return Math.abs(val);
 };
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {navigate} = useHasDatatable($datatable);
+const $dataTable = useTemplateRef('$dataTable');
+const {navigate} = useHasDatatable($dataTable);
 
-watch(dateRange, () => nextTick(navigate));
+watch(dateRange, () => void nextTick(navigate));
 </script>

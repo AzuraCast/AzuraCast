@@ -70,7 +70,7 @@ const {state: services, isLoading} = useAutoRefreshingAsyncState(
 const {notifySuccess} = useNotify();
 
 const doRestart = (serviceUrl: string) => {
-    axios.post(serviceUrl).then((resp) => {
+    void axios.post(serviceUrl).then((resp) => {
         notifySuccess(resp.data.message);
     });
 };

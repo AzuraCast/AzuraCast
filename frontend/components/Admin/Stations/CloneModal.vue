@@ -16,12 +16,12 @@
 import {required} from '@vuelidate/validators';
 import ModalForm from "~/components/Common/ModalForm.vue";
 import AdminStationsCloneModalForm from "~/components/Admin/Stations/CloneModalForm.vue";
-import {ref} from "vue";
+import {ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {HasRelistEmit, ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 
 const emit = defineEmits<HasRelistEmit>();
@@ -43,7 +43,7 @@ const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
     }
 );
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {hide, show} = useHasModal($modal);
 
 const {$gettext} = useTranslate();

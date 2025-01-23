@@ -100,7 +100,7 @@ const downloadUrl = ref(null);
 const {axios} = useAxios();
 
 const relist = () => {
-    axios.get(apiUrl.value).then((resp) => {
+    void axios.get(apiUrl.value).then((resp) => {
         downloadUrl.value = resp.data.links.download;
     });
 };
@@ -117,7 +117,7 @@ const onFileSuccess = () => {
 const {notifySuccess} = useNotify();
 
 const deleteConfigurationFile = () => {
-    axios.delete(apiUrl.value).then(() => {
+    void axios.delete(apiUrl.value).then(() => {
         mayNeedRestart();
         notifySuccess();
         relist();

@@ -16,7 +16,7 @@ export default function useToggleFeature(feature, newValue) {
     const profileEditUrl = getStationApiUrl('/profile/edit');
 
     return () => {
-        showAlert({
+        void showAlert({
             title: (newValue)
                 ? $gettext('Enable feature?')
                 : $gettext('Disable feature?'),
@@ -31,7 +31,7 @@ export default function useToggleFeature(feature, newValue) {
                 const remoteData = {};
                 set(remoteData, feature, newValue);
 
-                axios.put(
+                void axios.put(
                     profileEditUrl.value,
                     remoteData
                 ).then((resp) => {

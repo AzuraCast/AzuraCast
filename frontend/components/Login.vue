@@ -143,7 +143,7 @@ import Icon from "~/components/Common/Icon.vue";
 import {IconMail, IconVpnKey} from "~/components/Common/icons.ts";
 import useWebAuthn from "~/functions/useWebAuthn.ts";
 import {useAxios} from "~/vendor/axios.ts";
-import {nextTick, onMounted, ref} from "vue";
+import {nextTick, onMounted, ref, useTemplateRef} from "vue";
 
 const props = defineProps<{
     hideProductName: boolean,
@@ -160,7 +160,7 @@ const {
 
 const {axios} = useAxios();
 
-const $webAuthnForm = ref<HTMLFormElement | null>(null);
+const $webAuthnForm = useTemplateRef('$webAuthnForm');
 
 const validateArgs = ref<object | null>(null);
 const validateData = ref<string | null>(null);

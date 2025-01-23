@@ -61,13 +61,13 @@ const uploaded = (file) => {
     const formData = new FormData();
     formData.append('art', file);
 
-    axios.post(props.albumArtUrl, formData).finally(() => {
+    void axios.post(props.albumArtUrl, formData).finally(() => {
         reloadArt();
     });
 };
 
 const deleteArt = () => {
-    axios.delete(props.albumArtUrl).finally(() => {
+    void axios.delete(props.albumArtUrl).finally(() => {
         reloadArt();
     });
 };

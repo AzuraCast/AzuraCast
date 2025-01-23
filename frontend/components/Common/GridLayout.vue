@@ -145,7 +145,7 @@ const refresh = () => {
 
     isLoading.value = true;
 
-    return axios.get(props.apiUrl, {params: queryParams}).then((resp) => {
+    axios.get(props.apiUrl, {params: queryParams}).then((resp) => {
         totalRows.value = resp.data.total;
 
         const rows = resp.data.rows;

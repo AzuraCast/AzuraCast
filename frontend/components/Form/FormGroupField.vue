@@ -80,7 +80,7 @@
 
 <script setup lang="ts">
 import VuelidateError from "./VuelidateError.vue";
-import {computed, nextTick, onMounted, reactive, Reactive, ref, WritableComputedRef} from "vue";
+import {computed, nextTick, onMounted, reactive, Reactive, useTemplateRef, WritableComputedRef} from "vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
 import {FormFieldEmits, FormFieldProps, useFormField, VuelidateField} from "~/components/Form/useFormField";
@@ -165,7 +165,7 @@ const modelObject: Reactive<FilteredModelObject> = reactive({
     $model: model
 });
 
-const $input = ref<HTMLInputElement | HTMLTextAreaElement | null>(null);
+const $input = useTemplateRef<HTMLInputElement | HTMLTextAreaElement>('$input');
 
 const focus = () => {
     $input.value?.focus();
@@ -177,7 +177,7 @@ const clear = () => {
 
 onMounted(() => {
     if (props.autofocus) {
-        nextTick(() => {
+        void nextTick(() => {
             focus();
         });
     }

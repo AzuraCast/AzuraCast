@@ -11,11 +11,11 @@ export default function useConfirmAndDelete(
     const {axios} = useAxios();
 
     const doDelete = (deleteUrl: string) => {
-        confirmDelete({
+        void confirmDelete({
             title: confirmMessage
         }).then((result) => {
             if (result.value) {
-                axios.delete(deleteUrl).then((resp) => {
+                void axios.delete(deleteUrl).then((resp) => {
                     notifySuccess(resp.data.message);
 
                     if (typeof onSuccess === 'function') {

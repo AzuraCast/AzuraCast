@@ -10,10 +10,10 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from "vue";
+import {computed, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
-import useChart, {ChartProps, ChartTemplateRef} from "~/functions/useChart";
+import useChart, {ChartProps} from "~/functions/useChart";
 import {useLuxon} from "~/vendor/luxon";
 
 interface TimeSeriesChartProps extends ChartProps<'line'> {
@@ -27,7 +27,7 @@ const props = withDefaults(
     }
 );
 
-const $canvas = ref<ChartTemplateRef>(null);
+const $canvas = useTemplateRef('$canvas');
 
 const {$gettext} = useTranslate();
 const {DateTime} = useLuxon();

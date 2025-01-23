@@ -32,14 +32,14 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {ref, useTemplateRef} from "vue";
 import {useClipboard} from "@vueuse/core";
 import Modal from "~/components/Common/Modal.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 
 const logs = ref('Loading...');
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show: showModal, hide} = useHasModal($modal);
 
 const show = (newLogs) => {
@@ -55,7 +55,7 @@ const show = (newLogs) => {
 const clipboard = useClipboard();
 
 const doCopy = () => {
-    clipboard.copy(logs.value);
+    void clipboard.copy(logs.value);
 };
 
 defineExpose({

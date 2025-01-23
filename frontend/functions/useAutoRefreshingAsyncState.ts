@@ -1,5 +1,5 @@
 import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState.ts";
-import {Pausable, UseAsyncStateOptions, UseAsyncStateReturn, useIntervalFn} from "@vueuse/core";
+import {Pausable, UseAsyncStateOptions, UseAsyncStateReturnBase, useIntervalFn} from "@vueuse/core";
 import {computed} from "vue";
 
 interface AutoRefreshingAsyncStateOptions<Shallow extends boolean, D = any>
@@ -8,7 +8,7 @@ interface AutoRefreshingAsyncStateOptions<Shallow extends boolean, D = any>
 }
 
 interface AutoRefreshingAsyncStateReturn<Data, Params extends any[], Shallow extends boolean>
-    extends UseAsyncStateReturn<Data, Params, Shallow>, Pausable {
+    extends UseAsyncStateReturnBase<Data, Params, Shallow>, Pausable {
 }
 
 export default function useAutoRefreshingAsyncState<Data, Params extends any[] = [], Shallow extends boolean = true>(
@@ -34,19 +34,23 @@ export default function useAutoRefreshingAsyncState<Data, Params extends any[] =
     );
 
     const intervalFnReturn = useIntervalFn(
-        async () => {
-            try {
-                // @ts-expect-error Function call is accurate.
-                await asyncStateReturn.execute();
-            } catch {
+        () => {
+            // @ts-expect-error Function call is accurate.
+            asyncStateReturn.execute().catch(() => {
                 intervalFnReturn.pause();
-            }
+            });
         },
         intervalDelay
     );
 
     return {
-        ...asyncStateReturn,
-        ...intervalFnReturn
+        state: asyncStateReturn.state,
+        isReady: asyncStateReturn.isReady,
+        isLoading: asyncStateReturn.isLoading,
+        error: asyncStateReturn.error,
+        execute: asyncStateReturn.execute,
+        isActive: intervalFnReturn.isActive,
+        pause: intervalFnReturn.pause,
+        resume: intervalFnReturn.resume,
     };
 }

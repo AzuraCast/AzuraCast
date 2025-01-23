@@ -1,7 +1,7 @@
 import Lightbox from "~/components/Common/Lightbox.vue";
 import {Directive, inject, InjectionKey, provide, Ref} from "vue";
 
-export type LightboxTemplateRef = InstanceType<typeof Lightbox> | null;
+export type LightboxTemplateRef = InstanceType<typeof Lightbox>;
 
 const provideKey: InjectionKey<Ref<LightboxTemplateRef>> = Symbol() as InjectionKey<Ref<LightboxTemplateRef>>;
 

@@ -31,7 +31,7 @@
                     <div class="flex-fill">
                         <div class="input-group">
                             <span class="input-group-text">
-                                <icon :icon="IconSearch"/>
+                                <icon :icon="IconSearch" />
                             </span>
                             <input
                                 v-model="searchPhrase"
@@ -51,7 +51,7 @@
                                 :title="$gettext('Refresh rows')"
                                 @click="onClickRefresh"
                             >
-                                <icon :icon="IconRefresh"/>
+                                <icon :icon="IconRefresh" />
                             </button>
 
                             <div
@@ -71,7 +71,7 @@
                                     <span>
                                         {{ perPageLabel }}
                                     </span>
-                                    <span class="caret"/>
+                                    <span class="caret" />
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li
@@ -103,8 +103,8 @@
                                     data-bs-placement="left"
                                     :title="$gettext('Display fields')"
                                 >
-                                    <icon :icon="IconFilterList"/>
-                                    <span class="caret"/>
+                                    <icon :icon="IconFilterList" />
+                                    <span class="caret" />
                                 </button>
                                 <div class="dropdown-menu">
                                     <div class="px-3 py-1">
@@ -135,7 +135,7 @@
                 ]"
             >
                 <caption v-if="slots.caption">
-                    <slot name="caption"/>
+                    <slot name="caption" />
                 </caption>
                 <thead>
                     <tr>
@@ -179,7 +179,7 @@
                                     {{ column.label }}
 
                                     <template v-if="column.sortable && sortField?.key === column.key">
-                                        <icon :icon="(sortOrder === 'asc') ? IconArrowDropUp : IconArrowDropDown"/>
+                                        <icon :icon="(sortOrder === 'asc') ? IconArrowDropUp : IconArrowDropDown" />
                                     </template>
                                 </div>
                             </slot>
@@ -289,8 +289,21 @@
     </div>
 </template>
 
-<script lang="ts">
-type DataTableRow = Record<string, any>
+<script setup lang="ts" generic="Row extends DataTableRow = DataTableRow">
+import {filter, forEach, get, includes, indexOf, isEmpty, map, reverse, slice, some} from 'lodash';
+import Icon from './Icon.vue';
+import {computed, onMounted, ref, shallowRef, toRaw, toRef, watch} from "vue";
+import {watchDebounced} from "@vueuse/core";
+import {useAxios} from "~/vendor/axios";
+import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
+import FormCheckbox from "~/components/Form/FormCheckbox.vue";
+import Pagination from "~/components/Common/Pagination.vue";
+import useOptionalStorage from "~/functions/useOptionalStorage";
+import {IconArrowDropDown, IconArrowDropUp, IconFilterList, IconRefresh, IconSearch} from "~/components/Common/icons";
+import {useAzuraCast} from "~/vendor/azuracast.ts";
+import {AxiosRequestConfig} from "axios";
+
+export type DataTableRow = Record<string, any>
 
 export interface DataTableField<Row extends DataTableRow = DataTableRow> {
     key: string,
@@ -325,21 +338,6 @@ export interface DataTableProps<Row extends DataTableRow = DataTableRow> {
     requestConfig?(config: AxiosRequestConfig): AxiosRequestConfig, // Custom server-side request configuration (pre-request)
     requestProcess?(rawData: object[]): Row[], // Custom server-side request result processing (post-request)
 }
-</script>
-
-<script setup lang="ts" generic="Row extends DataTableRow = DataTableRow">
-import {filter, forEach, get, includes, indexOf, isEmpty, map, reverse, slice, some} from 'lodash';
-import Icon from './Icon.vue';
-import {computed, onMounted, ref, shallowRef, toRaw, toRef, watch} from "vue";
-import {watchDebounced} from "@vueuse/core";
-import {useAxios} from "~/vendor/axios";
-import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
-import FormCheckbox from "~/components/Form/FormCheckbox.vue";
-import Pagination from "~/components/Common/Pagination.vue";
-import useOptionalStorage from "~/functions/useOptionalStorage";
-import {IconArrowDropDown, IconArrowDropUp, IconFilterList, IconRefresh, IconSearch} from "~/components/Common/icons";
-import {useAzuraCast} from "~/vendor/azuracast.ts";
-import {AxiosRequestConfig} from "axios";
 
 const props = withDefaults(defineProps<DataTableProps<Row>>(), {
     id: null,
@@ -610,7 +608,7 @@ const refreshServerSide = () => {
 
     isLoading.value = true;
 
-    return axios.get(props.apiUrl, requestConfig).then((resp) => {
+    axios.get(props.apiUrl, requestConfig).then((resp) => {
         totalRows.value = resp.data.total;
 
         let rows = resp.data.rows ?? [];

@@ -166,7 +166,7 @@ const isMounted = useMounted();
 
 watch(dateRange, () => {
     if (isMounted.value) {
-        relist();
+        void relist();
     }
 });
 </script>

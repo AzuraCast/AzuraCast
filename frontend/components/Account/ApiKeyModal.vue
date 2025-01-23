@@ -69,12 +69,11 @@ import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue
 import AccountApiKeyNewKey from "./ApiKeyNewKey.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {required} from '@vuelidate/validators';
-import {nextTick, ref} from "vue";
+import {nextTick, ref, useTemplateRef} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
-import {ComponentExposed} from "vue-component-type-helpers";
+import {useHasModal} from "~/functions/useHasModal.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
 const props = defineProps<{
@@ -101,7 +100,7 @@ const clearContents = () => {
     newKey.value = null;
 };
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
 const create = () => {
@@ -109,10 +108,10 @@ const create = () => {
     show();
 };
 
-const $field = ref<ComponentExposed<typeof FormGroupField> | null>(null);
+const $field = useTemplateRef('$field');
 
 const onShown = () => {
-    nextTick(() => {
+    void nextTick(() => {
         $field.value?.focus();
     })
 };

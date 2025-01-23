@@ -58,18 +58,18 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {ref, useTemplateRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 
 const loading = ref(true);
 const queueUrl = ref(null);
 const media = ref([]);
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
 const {axios} = useAxios();
@@ -78,7 +78,7 @@ const open = (newQueueUrl) => {
     queueUrl.value = newQueueUrl;
     loading.value = true;
 
-    axios.get(newQueueUrl).then((resp) => {
+    void axios.get(newQueueUrl).then((resp) => {
         media.value = resp.data;
         loading.value = false;
     });
@@ -95,7 +95,7 @@ const {notifySuccess} = useNotify();
 const {$gettext} = useTranslate();
 
 const doClear = () => {
-    axios.delete(queueUrl.value).then(() => {
+    void axios.delete(queueUrl.value).then(() => {
         notifySuccess($gettext('Playlist queue cleared.'));
         hide();
     });

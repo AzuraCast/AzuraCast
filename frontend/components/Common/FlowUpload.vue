@@ -64,7 +64,7 @@
 import formatFileSize from '~/functions/formatFileSize';
 import Icon from './Icon.vue';
 import {defaultsDeep, forEach, toInteger} from 'lodash';
-import {onMounted, onUnmounted, reactive, ref} from "vue";
+import {onMounted, onUnmounted, reactive, useTemplateRef} from "vue";
 import Flow from "@flowjs/flow.js";
 import {useAzuraCast} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
@@ -145,8 +145,9 @@ const files = reactive<{
     }
 });
 
-const $fileBrowseTarget = ref<HTMLButtonElement | null>(null);
-const $fileDropTarget = ref<HTMLDivElement | null>(null);
+const $fileBrowseTarget = useTemplateRef('$fileBrowseTarget');
+
+const $fileDropTarget = useTemplateRef('$fileDropTarget');
 
 const {apiCsrf} = useAzuraCast();
 

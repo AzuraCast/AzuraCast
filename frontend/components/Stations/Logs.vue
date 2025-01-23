@@ -77,13 +77,13 @@
 import Icon from "~/components/Common/Icon.vue";
 import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
 import LogList from "~/components/Common/LogList.vue";
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import {getStationApiUrl} from "~/router";
 import {IconSupport} from "~/components/Common/icons.ts";
 
 const logsUrl = getStationApiUrl('/logs');
 
-const $modal = ref<InstanceType<typeof StreamingLogModal> | null>(null);
+const $modal = useTemplateRef('$modal');
 
 const viewLog = (url, isStreaming) => {
     $modal.value?.show(url, isStreaming);

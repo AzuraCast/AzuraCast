@@ -67,7 +67,7 @@
 
         <data-table
             id="station_media"
-            ref="$datatable"
+            ref="$dataTable"
             selectable
             paginated
             select-fields
@@ -254,21 +254,6 @@
     />
 </template>
 
-<script lang="ts">
-import {ApiFileList} from "~/entities/ApiInterfaces.ts";
-
-export interface MediaSelectedItems {
-    all: ApiFileList[],
-    files: string[],
-    directories: string[]
-}
-
-export interface MediaInitialPlaylist {
-    id: number,
-    name: string
-}
-</script>
-
 <script setup lang="ts">
 import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import MediaToolbar from './Media/MediaToolbar.vue';
@@ -283,7 +268,7 @@ import Icon from '~/components/Common/Icon.vue';
 import AlbumArt from '~/components/Common/AlbumArt.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {computed, ref, watch} from "vue";
+import {computed, ref, useTemplateRef, watch} from "vue";
 import {forEach, map, partition} from "lodash";
 import formatFileSize from "../../functions/formatFileSize";
 import InfoCard from "~/components/Common/InfoCard.vue";
@@ -291,8 +276,18 @@ import {getStationApiUrl} from "~/router";
 import {useRoute, useRouter} from "vue-router";
 import {IconFile, IconFolder, IconImage} from "~/components/Common/icons";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
-import {CustomField, FileTypes} from "~/entities/ApiInterfaces.ts";
-import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import {ApiFileList, CustomField, FileTypes} from "~/entities/ApiInterfaces.ts";
+
+export interface MediaSelectedItems {
+    all: ApiFileList[],
+    files: string[],
+    directories: string[]
+}
+
+export interface MediaInitialPlaylist {
+    id: number,
+    name: string
+}
 
 const props = withDefaults(
     defineProps<{
@@ -408,21 +403,21 @@ const onRowSelected = (items: ApiFileList[]) => {
     };
 };
 
-const $datatable = ref<DataTableTemplateRef>(null);
+const $dataTable = useTemplateRef('$dataTable');
 
 const onTriggerNavigate = () => {
-    $datatable.value?.navigate();
+    $dataTable.value?.navigate();
 };
 
 const filter = (newFilter) => {
-    $datatable.value?.setFilter(newFilter);
+    $dataTable.value?.setFilter(newFilter);
 };
 
-const $quota = ref<InstanceType<typeof StationsCommonQuota> | null>(null);
+const $quota = useTemplateRef('$quota');
 
 const onTriggerRelist = () => {
     $quota.value?.update();
-    $datatable.value?.relist();
+    $dataTable.value?.relist();
 };
 
 const onAddPlaylist = (row: MediaInitialPlaylist) => {
@@ -433,25 +428,25 @@ const onFiltered = (newFilter) => {
     searchPhrase.value = newFilter;
 };
 
-const $renameModal = ref<InstanceType<typeof RenameModal> | null>(null);
+const $renameModal = useTemplateRef('$renameModal');
 
 const rename = (path) => {
     $renameModal.value?.open(path);
 };
 
-const $editModal = ref<InstanceType<typeof EditModal> | null>(null);
+const $editModal = useTemplateRef('$editModal');
 
 const edit = (recordUrl: string) => {
     $editModal.value?.open(recordUrl);
 };
 
-const $newDirectoryModal = ref<InstanceType<typeof NewDirectoryModal> | null>(null);
+const $newDirectoryModal = useTemplateRef('$newDirectoryModal');
 
 const createDirectory = () => {
     $newDirectoryModal.value?.open();
 }
 
-const $moveFilesModal = ref<InstanceType<typeof MoveFilesModal> | null>(null);
+const $moveFilesModal = useTemplateRef('$moveFilesModal');
 
 const moveFiles = () => {
     $moveFilesModal.value?.open();
@@ -469,7 +464,7 @@ const router = useRouter();
 const route = useRoute();
 
 const changeDirectory = (newDir) => {
-    router.push({
+    void router.push({
         name: 'stations:files:index',
         params: {
             path: newDir

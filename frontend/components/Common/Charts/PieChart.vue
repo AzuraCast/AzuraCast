@@ -10,13 +10,13 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
-import useChart, {ChartProps, ChartTemplateRef} from "~/functions/useChart";
+import useChart, {ChartProps} from "~/functions/useChart";
 
 const props = defineProps<ChartProps>();
 
-const $canvas = ref<ChartTemplateRef>(null);
+const $canvas = useTemplateRef('$canvas');
 
 useChart<'pie'>(
     props,

@@ -46,22 +46,19 @@ import {IconRemove} from "~/components/Common/icons";
 import {PermissionStation} from "~/components/Admin/Permissions/EditModal.vue";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import useVuelidate from "@vuelidate/core";
-import {useVModel} from "@vueuse/core";
 
 type T = PermissionStation;
 
 const props = defineProps<{
-    row: T,
     stations: Record<number, string>,
     stationPermissions: SimpleFormOptionInput,
 }>();
 
-const emit = defineEmits<{
-    (e: 'update:row', row: T)
+defineEmits<{
     (e: 'remove'): void
 }>();
 
-const row = useVModel(props, 'row', emit);
+const row = defineModel<T>('row');
 
 const v$ = useVuelidate<T>(
     {

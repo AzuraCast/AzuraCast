@@ -52,7 +52,6 @@ import {required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {useVModel} from "@vueuse/core";
 import PublishAtFields from "~/components/Stations/Podcasts/Common/PublishAtFields.vue";
 
 type T = {
@@ -64,16 +63,11 @@ type T = {
     episode_number?: number
 };
 
-const props = defineProps<{
+defineProps<{
     index: number,
-    row: T
 }>();
 
-const emit = defineEmits<{
-    (e: 'update:row', row: T): void
-}>();
-
-const row = useVModel(props, 'row', emit);
+const row = defineModel<T>('row');
 
 const v$ = useVuelidate<T>(
     {

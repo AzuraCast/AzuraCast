@@ -82,11 +82,9 @@ import Icon from '~/components/Common/Icon.vue';
 import {useTemplateRef} from "vue";
 import {IconPlayCircle, IconStop} from "~/components/Common/icons";
 import {GenericForm} from "~/entities/Forms.ts";
-import {useVModel} from "@vueuse/core";
 
 const props = withDefaults(
     defineProps<{
-        form: GenericForm,
         audioUrl: string,
         waveformUrl: string,
         waveformCacheUrl?: string,
@@ -96,11 +94,7 @@ const props = withDefaults(
     }
 );
 
-const emit = defineEmits<{
-    (e: 'update:form', form: GenericForm): void
-}>();
-
-const form = useVModel(props, 'form', emit);
+const form = defineModel<GenericForm>('form');
 
 const $waveform = useTemplateRef('$waveform');
 

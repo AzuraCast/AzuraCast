@@ -35,14 +35,12 @@
 </template>
 
 <script setup lang="ts">
-import {useVModel} from "@vueuse/core";
 import {objectToSimpleFormOptions, SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import {ModelFormField} from "~/components/Form/useFormField.ts";
 import {toRef} from "vue";
 
 const props = withDefaults(
     defineProps<{
-        modelValue?: ModelFormField,
         id: string,
         name?: string,
         fieldClass?: string,
@@ -51,7 +49,6 @@ const props = withDefaults(
         stacked?: boolean
     }>(),
     {
-        modelValue: null,
         name: (props) => props.id,
         fieldClass: null,
         radio: false,
@@ -59,11 +56,9 @@ const props = withDefaults(
     }
 )
 
-const emit = defineEmits<{
-    (e: 'update:modelValue', modelValue: ModelFormField): void
-}>();
-
-const value = useVModel(props, 'modelValue', emit);
+const value = defineModel<ModelFormField>({
+    default: null
+});
 
 const parsedOptions = objectToSimpleFormOptions(toRef(props, 'options'));
 </script>

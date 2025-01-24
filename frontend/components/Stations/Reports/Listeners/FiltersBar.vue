@@ -65,17 +65,10 @@
 
 <script setup lang="ts">
 import {ListenerFilters, ListenerTypeFilter} from "./listenerFilters.ts";
-import {useVModel} from "@vueuse/core";
-import {WritableComputedRef} from "vue";
 import {IconClearAll} from "~/components/Common/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
 
-const props = defineProps<{
-    filters: ListenerFilters
-}>();
-
-const emit = defineEmits(['update:filters']);
-const filters: WritableComputedRef<ListenerFilters> = useVModel(props, 'filters', emit);
+const filters = defineModel<ListenerFilters>('filters');
 
 const clearFilters = () => {
     filters.value.minLength = null;

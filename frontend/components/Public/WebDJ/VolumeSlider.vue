@@ -24,25 +24,16 @@
 
 <script setup lang="ts">
 import {computed, onMounted, ref} from "vue";
-import {useVModel} from "@vueuse/core";
 import MuteButton from "~/components/Common/MuteButton.vue";
 
-const props = defineProps<{
-    modelValue: number
-}>();
-
-const emit = defineEmits<{
-    (e: 'update:modelValue', value: number): void
-}>();
-
-const volume = useVModel(props, 'modelValue', emit);
+const volume = defineModel<number>();
 
 const initial = ref(75);
 const preMute = ref(75);
 
 onMounted(() => {
-    initial.value = props.modelValue;
-    preMute.value = props.modelValue;
+    initial.value = volume.value;
+    preMute.value = volume.value;
 });
 
 const isMuted = computed(() => {

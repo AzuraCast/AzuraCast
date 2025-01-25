@@ -91,19 +91,6 @@ export default defineConfig({
     },
     plugins: [
         vue(),
-        {
-            ...eslint(),
-            apply: 'build',
-        },
-        {
-            ...eslint({
-                cache: true,
-                cacheLocation: '/var/azuracast/www_tmp/.eslintcache',
-                failOnWarning: false,
-                failOnError: false,
-            }),
-            apply: 'serve',
-            enforce: 'post'
-        }
+        eslint(),
     ],
 })

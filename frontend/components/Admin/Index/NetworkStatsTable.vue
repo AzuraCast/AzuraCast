@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import {get} from "lodash";
 
-const props = defineProps<{
+defineProps<{
     fields: string[],
     data: Record<string, any>,
 }>();

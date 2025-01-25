@@ -18,7 +18,7 @@ import {useTemplateRef} from "vue";
 import Modal from "~/components/Common/Modal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 
-const props = defineProps<{
+defineProps<{
     lastOutput: string,
 }>();
 

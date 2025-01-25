@@ -126,7 +126,7 @@ import ScheduleViewTab from "~/components/Stations/Common/ScheduleViewTab.vue";
 import {EventImpl} from "@fullcalendar/core/internal";
 import {StreamerConnectionInfo} from "~/components/Stations/Streamers/ConnectionInfo.vue";
 
-const props = defineProps<{
+defineProps<{
     connectionInfo: StreamerConnectionInfo,
 }>();
 

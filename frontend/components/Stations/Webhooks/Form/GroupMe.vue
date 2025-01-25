@@ -47,19 +47,20 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonFormattingInfo from "./Common/FormattingInfo.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {FormTabEmits, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
+import {GenericForm} from "~/entities/Forms.ts";
 
-const props = defineProps<WebhookComponentProps>();
-const emit = defineEmits<FormTabEmits>();
+defineProps<WebhookComponentProps>();
+
+const form = defineModel<GenericForm>('form');
 
 const { $gettext } = useTranslate();
 
 const { v$, tabClass } = useVuelidateOnFormTab(
-    props,
-    emit,
+    form,
     {
         config: {
             bot_id: { required },

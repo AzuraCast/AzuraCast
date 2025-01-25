@@ -1,7 +1,7 @@
 <template>
     <tab :label="$gettext('Station Permissions')">
         <permissions-form-station-row
-            v-for="(row, index) in form.permissions?.station ?? []"
+            v-for="(_, index) in form.permissions?.station ?? []"
             :key="index"
             v-model:row="form.permissions.station[index]"
             :stations="stations"
@@ -47,23 +47,18 @@ import {find, isEmpty, pickBy} from 'lodash';
 import PermissionsFormStationRow from "~/components/Admin/Permissions/Form/StationRow.vue";
 import {computed, toRaw} from "vue";
 import Tab from "~/components/Common/Tab.vue";
-import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab.ts";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab.ts";
 import {Permission} from "~/components/Admin/Permissions/EditModal.vue";
 
-type T = Permission;
-
-interface PermissionStationFormProps extends FormTabProps<T> {
+const props = defineProps<{
     stations: Record<string, string>,
     stationPermissions: Record<string, string>,
-}
+}>();
 
-const props = defineProps<PermissionStationFormProps>();
+const form = defineModel<Permission>('form');
 
-const emit = defineEmits<FormTabEmits<T>>();
-
-const {form} = useVuelidateOnFormTab(
-    props,
-    emit,
+useVuelidateOnFormTab(
+    form,
     {
         permissions: {
             station: {}

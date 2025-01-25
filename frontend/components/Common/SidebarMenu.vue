@@ -87,7 +87,7 @@ import {some} from "lodash";
 import {IconOpenInNew} from "~/components/Common/icons.ts";
 import {MenuCategory, MenuRouteBasedUrl, MenuRouteUrl, MenuSubCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
 
-const props = defineProps<{
+defineProps<{
     menu: ReactiveMenu
 }>();
 

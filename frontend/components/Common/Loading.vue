@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-const props = withDefaults(
+withDefaults(
     defineProps<{
         loading?: boolean,
         lazy?: boolean

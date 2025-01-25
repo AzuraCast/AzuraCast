@@ -23,17 +23,16 @@
 </template>
 
 <script setup lang="ts">
-import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import Tab from "~/components/Common/Tab.vue";
 import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
+import {GenericForm} from "~/entities/Forms.ts";
 
-const props = defineProps<FormTabProps>();
-const emit = defineEmits<FormTabEmits>();
+const form = defineModel<GenericForm>('form');
 
 const {v$, tabClass} = useVuelidateOnFormTab(
-    props,
-    emit,
+    form,
     {
         branding_config: {
             public_custom_html: {}

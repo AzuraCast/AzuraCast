@@ -51,7 +51,7 @@ import {WebhookType, WebhookTypeDetails} from "~/entities/Webhooks";
 import TypeSelectSection from "~/components/Stations/Webhooks/Form/TypeSelectSection.vue";
 import {reactivePick} from "@vueuse/core";
 
-const props = defineProps<{
+defineProps<{
     typeDetails: WebhookTypeDetails
 }>();
 

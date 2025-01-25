@@ -32,7 +32,7 @@ import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 
-const props = defineProps<{
+defineProps<{
     form: Record<string, any>
 }>();
 

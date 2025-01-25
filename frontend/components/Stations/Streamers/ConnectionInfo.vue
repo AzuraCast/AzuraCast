@@ -97,7 +97,7 @@ export interface StreamerConnectionInfo {
     djMountPoint: string,
 }
 
-const props = defineProps<{
+defineProps<{
     connectionInfo: StreamerConnectionInfo
 }>();
 </script>

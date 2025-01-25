@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import {Icon} from "~/components/Common/icons.ts";
 
-const props = defineProps<{
+defineProps<{
     icon: Icon
 }>();
 </script>

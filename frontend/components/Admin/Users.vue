@@ -88,7 +88,7 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 
-const props = defineProps<{
+defineProps<{
     roles: Record<number, string>,
 }>();
 

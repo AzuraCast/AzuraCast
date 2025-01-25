@@ -35,7 +35,7 @@ interface FormLabelProps extends FormLabelParentProps {
     isRequired?: boolean
 }
 
-const props = withDefaults(
+withDefaults(
     defineProps<FormLabelProps>(),
     {
         advanced: false,

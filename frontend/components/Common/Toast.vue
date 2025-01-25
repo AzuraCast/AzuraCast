@@ -48,7 +48,7 @@
 <script setup lang="ts">
 import {ToastProps} from "~/functions/useNotify.ts";
 
-const props = withDefaults(
+withDefaults(
     defineProps<ToastProps>(),
     {
         variant: 'info',

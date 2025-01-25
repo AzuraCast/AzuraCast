@@ -58,7 +58,7 @@
 
 <script setup lang="ts">
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
@@ -68,13 +68,12 @@ import {onMounted, ref, shallowRef} from "vue";
 import {useAxios} from "~/vendor/axios.ts";
 import {getStationApiUrl} from "~/router.ts";
 import Loading from "~/components/Common/Loading.vue";
+import {GenericForm} from "~/entities/Forms.ts";
 
-const props = defineProps<FormTabProps>();
-const emit = defineEmits<FormTabEmits>();
+const form = defineModel<GenericForm>('form');
 
 const {v$, tabClass} = useVuelidateOnFormTab(
-    props,
-    emit,
+    form,
     {
         source: {required},
         playlist_id: {},

@@ -18,7 +18,7 @@
 import CommonMetricsView from "./CommonMetricsView.vue";
 import {DateRange} from "~/components/Stations/Reports/Overview/CommonMetricsView.vue";
 
-const props = defineProps<{
+defineProps<{
     dateRange: DateRange,
     apiUrl: string,
 }>();

@@ -27,7 +27,7 @@ import {useAxios} from "~/vendor/axios";
 import {getApiUrl} from "~/router.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 
-const props = defineProps<{
+defineProps<{
     supportedLocales: Record<string, string>
 }>();
 

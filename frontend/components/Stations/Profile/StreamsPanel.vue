@@ -181,7 +181,7 @@ defineOptions({
     inheritAttrs: false
 });
 
-const props = defineProps<{
+defineProps<{
     station: ApiNowPlayingStation
 }>();
 </script>

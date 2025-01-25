@@ -34,7 +34,7 @@ import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {ApiNowPlayingSongHistory} from "~/entities/ApiInterfaces.ts";
 
-const props = withDefaults(
+withDefaults(
     defineProps<{
         history: ApiNowPlayingSongHistory[],
         showAlbumArt?: boolean,

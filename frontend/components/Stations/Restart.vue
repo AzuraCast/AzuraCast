@@ -111,7 +111,7 @@ import {getStationApiUrl} from "~/router";
 import {useRouter} from "vue-router";
 import {useDialog} from "~/functions/useDialog.ts";
 
-const props = defineProps<{
+defineProps<{
     canReload: boolean,
 }>();
 

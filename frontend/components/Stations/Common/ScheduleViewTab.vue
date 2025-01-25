@@ -29,7 +29,7 @@ import {Calendar, EventClickArg} from "@fullcalendar/core";
 import {EventImpl} from "@fullcalendar/core/internal";
 import {useTemplateRef} from "vue";
 
-const props = defineProps<{
+defineProps<{
     scheduleUrl: string
 }>();
 

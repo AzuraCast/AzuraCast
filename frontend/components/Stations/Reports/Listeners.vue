@@ -206,7 +206,7 @@ import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter
 import {useLuxon} from "~/vendor/luxon.ts";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 
-const props = defineProps<{
+defineProps<{
     attribution: string
 }>();
 

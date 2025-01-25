@@ -83,7 +83,7 @@ import {useTemplateRef} from "vue";
 import {IconPlayCircle, IconStop} from "~/components/Common/icons";
 import {GenericForm} from "~/entities/Forms.ts";
 
-const props = withDefaults(
+withDefaults(
     defineProps<{
         audioUrl: string,
         waveformUrl: string,

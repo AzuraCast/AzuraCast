@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import {ChartAltData} from "~/functions/useChart.ts";
 
-const props = defineProps<{
+defineProps<{
     alt: ChartAltData[]
 }>();
 </script>

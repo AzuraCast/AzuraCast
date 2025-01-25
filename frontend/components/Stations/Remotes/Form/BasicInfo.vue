@@ -72,16 +72,15 @@ import {RemoteAdapter} from '~/entities/RadioAdapters';
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
+import {GenericForm} from "~/entities/Forms.ts";
 
-const props = defineProps<FormTabProps>();
-const emit = defineEmits<FormTabEmits>();
+const form = defineModel<GenericForm>('form');
 
 const {v$, tabClass} = useVuelidateOnFormTab(
-    props,
-    emit,
+    form,
     {
         display_name: {},
         type: {required},

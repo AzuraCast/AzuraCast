@@ -267,22 +267,21 @@ import {computed, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import Tab from "~/components/Common/Tab.vue";
 import {IconBadge, IconSend} from "~/components/Common/icons";
+import {GenericForm} from "~/entities/Forms.ts";
 
-interface SettingsServiceTabProps extends FormTabProps {
+const props = defineProps<{
     releaseChannel: string,
     testMessageUrl: string,
     acmeUrl: string,
-}
+}>();
 
-const props = defineProps<SettingsServiceTabProps>();
-const emit = defineEmits<FormTabEmits>();
+const form = defineModel<GenericForm>('form');
 
 const {v$, tabClass} = useVuelidateOnFormTab(
-    props,
-    emit,
+    form,
     {
         check_for_updates: {},
         acme_email: {},

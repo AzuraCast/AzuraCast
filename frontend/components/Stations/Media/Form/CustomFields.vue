@@ -16,7 +16,7 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {VuelidateObject} from "~/functions/useVuelidateOnForm.ts";
 import {CustomField} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps<{
+defineProps<{
     form: VuelidateObject,
     customFields: CustomField[],
 }>();

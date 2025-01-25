@@ -72,7 +72,7 @@ import useSlotsExcept from "~/functions/useSlotsExcept";
 import Modal from "~/components/Common/Modal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 
-const props = withDefaults(
+withDefaults(
     defineProps<{
         title: string,
         size?: string,

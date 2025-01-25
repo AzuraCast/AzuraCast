@@ -132,20 +132,19 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import BackendDisabled from "./Common/BackendDisabled.vue";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
+import {GenericForm} from "~/entities/Forms.ts";
 
-const props = defineProps<FormTabProps>();
-const emit = defineEmits<FormTabEmits>();
+const form = defineModel<GenericForm>('form');
 
 const {enableAdvancedFeatures} = useAzuraCast();
 
-const {form, v$, tabClass} = useVuelidateOnFormTab(
-    props,
-    emit,
+const {v$, tabClass} = useVuelidateOnFormTab(
+    form,
     computed(() => {
         let validations: {
             [key: string | number]: any

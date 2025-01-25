@@ -48,7 +48,7 @@ import {isObject} from "lodash";
 import NetworkStatsTable from "~/components/Admin/Index/NetworkStatsTable.vue";
 import {AdminStats} from "~/components/Admin/Index.vue";
 
-const props = defineProps<{
+defineProps<{
     stats: AdminStats
 }>();
 

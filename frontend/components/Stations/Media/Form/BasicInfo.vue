@@ -58,7 +58,7 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {VuelidateObject} from "~/functions/useVuelidateOnForm.ts";
 
-const props = defineProps<{
+defineProps<{
     form: VuelidateObject
 }>();
 </script>

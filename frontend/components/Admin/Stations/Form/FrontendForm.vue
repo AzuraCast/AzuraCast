@@ -173,25 +173,24 @@ import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric, required} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
+import {GenericForm} from "~/entities/Forms.ts";
 
-interface StationFrontendFormProps extends FormTabProps {
+const props = defineProps<{
     isRsasInstalled: boolean,
     isShoutcastInstalled: boolean,
     countries: Record<string, string>,
-}
+}>();
 
-const props = defineProps<StationFrontendFormProps>();
-const emit = defineEmits<FormTabEmits>();
+const form = defineModel<GenericForm>('form');
 
 const {enableAdvancedFeatures} = useAzuraCast();
 
-const {form, v$, tabClass} = useVuelidateOnFormTab(
-    props,
-    emit,
+const {v$, tabClass} = useVuelidateOnFormTab(
+    form,
     computed(() => {
         let validations: {
             [key: string | number]: any

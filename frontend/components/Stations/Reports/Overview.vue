@@ -101,7 +101,7 @@ import Tab from "~/components/Common/Tab.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 
-const props = defineProps<{
+defineProps<{
     showFullAnalytics: boolean
 }>();
 

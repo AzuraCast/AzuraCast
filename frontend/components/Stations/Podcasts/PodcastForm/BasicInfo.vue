@@ -78,23 +78,22 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {NestedFormOptionInput} from "~/functions/objectToFormOptions.ts";
+import {GenericForm} from "~/entities/Forms.ts";
 
-interface PodcastBasicInfoFormProps extends FormTabProps {
+defineProps<{
     languageOptions: NestedFormOptionInput,
     categoriesOptions: NestedFormOptionInput,
-}
+}>();
 
-const props = defineProps<PodcastBasicInfoFormProps>();
-const emit = defineEmits<FormTabEmits>();
+const form = defineModel<GenericForm>('form');
 
 const {v$, tabClass} = useVuelidateOnFormTab(
-    props,
-    emit,
+    form,
     {
         title: {required},
         link: {},

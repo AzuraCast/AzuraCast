@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import {AdminStats} from "~/components/Admin/Index.vue";
 
-const props = defineProps<{
+defineProps<{
     stats: AdminStats,
 }>();
 

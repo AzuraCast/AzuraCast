@@ -26,7 +26,7 @@
 import ScheduleView from '~/components/Common/ScheduleView.vue';
 import FullHeightCard from "~/components/Public/FullHeightCard.vue";
 
-const props = defineProps<{
+defineProps<{
     scheduleUrl: string,
     stationName: string,
     stationTimeZone: string

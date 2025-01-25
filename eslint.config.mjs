@@ -7,7 +7,7 @@ export default defineConfigWithVueTs(
     {
         rules: {
             "@typescript-eslint/no-unused-vars": ["error", {
-                varsIgnorePattern: "^_|props",
+                varsIgnorePattern: "^_",
             }],
 
             "@typescript-eslint/no-explicit-any": "off",

@@ -259,7 +259,7 @@ import {useInjectWebDjNode} from "~/components/Public/WebDJ/useWebDjNode";
 import {usePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
 import {useInjectWebcaster} from "~/components/Public/WebDJ/useWebcaster";
 
-const props = defineProps<{
+defineProps<{
     stationName: string | null
 }>();
 

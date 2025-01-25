@@ -44,21 +44,20 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {email, required} from "@vuelidate/validators";
 import validatePassword from "~/functions/validatePassword";
+import {GenericForm} from "~/entities/Forms.ts";
 
-interface AdminUsersFormProps extends FormTabProps {
+const props = defineProps<{
     roles: Record<number, string>,
     isEditMode: boolean,
-}
+}>();
 
-const props = defineProps<AdminUsersFormProps>();
-const emit = defineEmits<FormTabEmits>();
+const form = defineModel<GenericForm>('form');
 
 const {v$} = useVuelidateOnFormTab(
-    props,
-    emit,
+    form,
     computed(() => {
         return {
             email: {required, email},

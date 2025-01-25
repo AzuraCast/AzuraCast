@@ -40,7 +40,7 @@
 import FormGroup from "~/components/Form/FormGroup.vue";
 import {useSlots} from "vue";
 
-const props = withDefaults(
+withDefaults(
     defineProps<{
         id: string,
         label?: string,

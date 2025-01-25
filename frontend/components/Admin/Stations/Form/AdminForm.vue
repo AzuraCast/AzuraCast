@@ -86,25 +86,24 @@ import {computed, onMounted, reactive, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 import {getApiUrl} from "~/router";
+import {GenericForm} from "~/entities/Forms.ts";
 
-interface StationsAdminFormProps extends FormTabProps {
+const props = defineProps<{
     isEditMode: boolean,
-}
+}>();
 
-const props = defineProps<StationsAdminFormProps>();
-const emit = defineEmits<FormTabEmits>();
+const form = defineModel<GenericForm>('form');
 
 const storageLocationApiUrl = getApiUrl('/admin/stations/storage-locations');
 
 const {enableAdvancedFeatures} = useAzuraCast();
 
 const {v$, tabClass} = useVuelidateOnFormTab(
-    props,
-    emit,
+    form,
     computed(() => {
         let validations: {
             [key: string | number]: any

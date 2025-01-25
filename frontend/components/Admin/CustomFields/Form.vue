@@ -39,21 +39,19 @@ import {useTranslate} from "~/vendor/gettext";
 import {forEach} from "lodash";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {required} from "@vuelidate/validators";
-import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab.ts";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab.ts";
+import {GenericForm} from "~/entities/Forms.ts";
 
-interface CustomFieldsProps extends FormTabProps {
+const props = defineProps<{
     autoAssignTypes: Record<string, string>
-}
+}>();
 
-const props = defineProps<CustomFieldsProps>();
-
-const emit = defineEmits<FormTabEmits>();
+const form = defineModel<GenericForm>('form');
 
 const {
     v$
 } = useVuelidateOnFormTab(
-    props,
-    emit,
+    form,
     {
         'name': {required},
         'short_name': {},
@@ -64,7 +62,7 @@ const {
         'short_name': '',
         'auto_assign': ''
     }
-)
+);
 
 const {$gettext} = useTranslate();
 

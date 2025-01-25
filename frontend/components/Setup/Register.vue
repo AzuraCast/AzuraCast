@@ -110,7 +110,7 @@ import validatePassword from "~/functions/validatePassword";
 import useVuelidate from "@vuelidate/core";
 import {IconMail, IconVpnKey} from "~/components/Common/icons";
 
-const props = withDefaults(
+withDefaults(
     defineProps<{
         csrf: string,
         error?: string

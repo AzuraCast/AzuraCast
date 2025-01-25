@@ -12,7 +12,7 @@
 import Icon from "~/components/Common/Icon.vue";
 import {IconAdd} from "~/components/Common/icons.ts";
 
-const props = defineProps<{
+defineProps<{
     text: string
 }>();
 

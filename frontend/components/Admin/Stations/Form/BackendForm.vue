@@ -304,23 +304,22 @@ import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {decimal, numeric, required} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
+import {GenericForm} from "~/entities/Forms.ts";
 
-interface StationBackendFormProps extends FormTabProps {
+const props = defineProps<{
     isStereoToolInstalled: boolean
-}
+}>();
 
-const props = defineProps<StationBackendFormProps>();
-const emit = defineEmits<FormTabEmits>();
+const form = defineModel<GenericForm>('form');
 
 const {enableAdvancedFeatures} = useAzuraCast();
 
-const {form, v$, tabClass} = useVuelidateOnFormTab(
-    props,
-    emit,
+const {v$, tabClass} = useVuelidateOnFormTab(
+    form,
     computed(() => {
         let validations: {
             [key: string | number]: any

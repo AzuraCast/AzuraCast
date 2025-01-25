@@ -44,19 +44,18 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {map} from "lodash";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
+import {GenericForm} from "~/entities/Forms.ts";
 
-const props = defineProps<FormTabProps>();
-const emit = defineEmits<FormTabEmits>();
+const form = defineModel<GenericForm>('form');
 
 const {maxBitrate} = useAzuraCastStation();
 
 const {v$, tabClass} = useVuelidateOnFormTab(
-    props,
-    emit,
+    form,
     {
         name: {required},
         format: {required},

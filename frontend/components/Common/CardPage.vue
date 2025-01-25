@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import InfoCard from "~/components/Common/InfoCard.vue";
 
-const props = withDefaults(
+withDefaults(
     defineProps<{
         title?: string,
         headerId?: string,

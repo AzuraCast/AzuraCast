@@ -80,7 +80,7 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {GenericForm} from "~/entities/Forms.ts";
 
-const props = defineProps<{
+defineProps<{
     form: GenericForm,
     songLength: string,
 }>();

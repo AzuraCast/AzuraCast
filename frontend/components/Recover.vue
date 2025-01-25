@@ -78,7 +78,7 @@ import {required} from '@vuelidate/validators';
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {IconVpnKey} from "~/components/Common/icons";
 
-const props = defineProps<{
+defineProps<{
     csrf: string,
     error?: string,
 }>();

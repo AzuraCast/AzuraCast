@@ -43,24 +43,23 @@
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {FrontendAdapter} from "~/entities/RadioAdapters.ts";
+import {GenericForm} from "~/entities/Forms.ts";
 
-interface MountAutoDjFormProps extends FormTabProps {
+defineProps<{
     stationFrontendType: FrontendAdapter
-}
+}>();
 
-const props = defineProps<MountAutoDjFormProps>();
-const emit = defineEmits<FormTabEmits>();
+const form = defineModel<GenericForm>('form');
 
 const {maxBitrate} = useAzuraCastStation();
 
-const {form, v$, tabClass} = useVuelidateOnFormTab(
-    props,
-    emit,
+const {v$, tabClass} = useVuelidateOnFormTab(
+    form,
     {
         enable_autodj: {},
         autodj_format: {},

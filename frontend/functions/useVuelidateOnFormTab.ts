@@ -1,35 +1,23 @@
 import useVuelidate, {GlobalConfig, ValidationArgs} from "@vuelidate/core";
-import {computed, ComputedRef, Ref, WritableComputedRef} from "vue";
-import {useEventBus, useVModel} from "@vueuse/core";
+import {computed, ComputedRef, ModelRef, Ref} from "vue";
+import {useEventBus} from "@vueuse/core";
 import {GenericForm} from "~/entities/Forms.ts";
 import {VuelidateRef} from "~/functions/useVuelidateOnForm.ts";
-
-export interface FormTabProps<T extends GenericForm = GenericForm> {
-    form: T,
-}
-
-export interface FormTabEmits<T extends GenericForm = GenericForm> {
-    (e: 'update:form', form: T)
-}
 
 export function useVuelidateOnFormTab<
     ParentForm extends GenericForm = GenericForm,
     TabForm extends GenericForm = GenericForm
 >(
-    props: FormTabProps<ParentForm>,
-    emit: FormTabEmits<ParentForm>,
+    form: ModelRef<ParentForm>,
     validations: Ref<ValidationArgs<TabForm>> | ValidationArgs<TabForm>,
     blankForm: TabForm,
     vuelidateOptions: GlobalConfig = {}
 ): {
-    form: WritableComputedRef<ParentForm>,
     v$: VuelidateRef<TabForm>,
     isValid: ComputedRef<boolean>,
     tabClass: ComputedRef<string | null>
 } {
-    const form = useVModel(props, 'form', emit);
-
-    const v$ = useVuelidate(validations, form as unknown as WritableComputedRef<TabForm>, vuelidateOptions);
+    const v$ = useVuelidate(validations, form as unknown as Ref<TabForm>, vuelidateOptions);
 
     const isValid = computed(() => {
         return !v$.value.$invalid;
@@ -50,7 +38,6 @@ export function useVuelidateOnFormTab<
     });
 
     return {
-        form,
         v$,
         isValid,
         tabClass

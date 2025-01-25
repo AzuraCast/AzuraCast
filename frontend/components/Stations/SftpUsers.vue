@@ -92,7 +92,7 @@ interface SftpUsersConnectionInfo {
     port: number
 }
 
-const props = defineProps<{
+defineProps<{
     connectionInfo: SftpUsersConnectionInfo,
 }>();
 

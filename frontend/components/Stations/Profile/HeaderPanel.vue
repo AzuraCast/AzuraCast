@@ -60,5 +60,5 @@ interface ProfileHeaderPanelProps extends ProfileHeaderPanelParentProps {
     station: ApiNowPlayingStation
 }
 
-const props = defineProps<ProfileHeaderPanelProps>();
+defineProps<ProfileHeaderPanelProps>();
 </script>

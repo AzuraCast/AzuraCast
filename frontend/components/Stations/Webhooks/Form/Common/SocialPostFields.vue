@@ -62,17 +62,16 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonFormattingInfo from "./FormattingInfo.vue";
 import {includes} from 'lodash';
-import {FormTabEmits, FormTabProps, useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {useTranslate} from "~/vendor/gettext";
+import {GenericForm} from "~/entities/Forms.ts";
 
-const props = defineProps<FormTabProps>();
-const emit = defineEmits<FormTabEmits>();
+const form = defineModel<GenericForm>('form');
 
 const {$gettext} = useTranslate();
 
 const {v$} = useVuelidateOnFormTab(
-    props,
-    emit,
+    form,
     {
         config: {
             message: {},
@@ -138,6 +137,6 @@ const {v$} = useVuelidateOnFormTab(
 );
 
 const hasTrigger = (trigger) => {
-    return includes(props.form.triggers, trigger);
+    return includes(form.value.triggers, trigger);
 };
 </script>

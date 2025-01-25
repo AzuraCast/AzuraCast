@@ -11,7 +11,7 @@
 <script setup lang="ts">
 import {ApiHasSongFields} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps<{
+defineProps<{
     song: ApiHasSongFields
 }>();
 </script>

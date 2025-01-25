@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import {WebhookType, WebhookTypeDetails} from "~/entities/Webhooks.ts";
 
-const props = defineProps<{
+defineProps<{
     title: string,
     types: Partial<WebhookTypeDetails>
 }>();

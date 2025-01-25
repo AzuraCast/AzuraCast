@@ -54,9 +54,8 @@ import RadioReg from "~/components/Stations/Webhooks/Form/RadioReg.vue";
 import GroupMe from "~/components/Stations/Webhooks/Form/GroupMe.vue";
 import Bluesky from "~/components/Stations/Webhooks/Form/Bluesky.vue";
 import mergeExisting from "~/functions/mergeExisting.ts";
-import {FormTabProps} from "~/functions/useVuelidateOnFormTab.ts";
 
-export interface WebhookComponentProps extends FormTabProps {
+export interface WebhookComponentProps {
     title: string
 }
 

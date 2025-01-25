@@ -263,7 +263,7 @@ import {getApiUrl} from "~/router.ts";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import useHasDatatable from "~/functions/useHasDatatable.ts";
 
-const props = defineProps<{
+defineProps<{
     profileUrl: string,
     adminUrl: string,
     showAdmin: boolean,

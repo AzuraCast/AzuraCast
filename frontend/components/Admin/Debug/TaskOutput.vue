@@ -66,7 +66,7 @@
 import {useTranslate} from "~/vendor/gettext.ts";
 import {get} from 'lodash';
 
-const props = defineProps<{
+defineProps<{
   logs: Array<any>
 }>();
 

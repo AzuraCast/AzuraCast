@@ -168,7 +168,7 @@ import {useLuxon} from "~/vendor/luxon";
 import {getApiUrl} from "~/router";
 import {IconLogs, IconSend, IconSettings} from "~/components/Common/icons";
 
-const props = withDefaults(
+withDefaults(
     defineProps<{
         storageLocations: Record<number, string>,
         isDocker: boolean,

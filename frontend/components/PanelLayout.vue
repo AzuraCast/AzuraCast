@@ -202,7 +202,7 @@ export interface PanelLayoutProps {
     platform: string
 }
 
-const props = defineProps<PanelLayoutProps>();
+defineProps<PanelLayoutProps>();
 
 const slots = useSlots();
 

@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps<{
+defineProps<{
     podcast: ApiPodcast
 }>();
 </script>

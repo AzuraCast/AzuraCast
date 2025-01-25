@@ -86,7 +86,7 @@ import {getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import {FrontendAdapter} from "~/entities/RadioAdapters.ts";
 
-const props = defineProps<{
+defineProps<{
     stationFrontendType: FrontendAdapter
 }>();
 

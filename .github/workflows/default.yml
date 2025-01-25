@@ -81,7 +81,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "lts"
+          node-version: "lts/jod"
           cache: "npm"
 
       - run: npm ci --include=dev
@@ -125,7 +125,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "lts"
+          node-version: "lts/jod"
           cache: "npm"
 
       - name: Set console permissions and clear static assets.

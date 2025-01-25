@@ -35,6 +35,7 @@ tmp/cache/*---*
 /web/static/vite_dist/**/*
 !/web/static/vite_dist/.gitkeep
 /translations/frontend.pot
+/eslint_report.json
 
 # Ansible deployment files
 /ansible/

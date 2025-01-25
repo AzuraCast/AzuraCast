@@ -2,7 +2,7 @@ import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import {glob} from "glob";
 import {resolve} from "path";
-import eslint from "vite-plugin-eslint";
+import eslintPlugin from "@nabla/vite-plugin-eslint";
 
 const inputs = glob.sync('./frontend/js/pages/**/*.js').reduce((acc, path) => {
     // vue/pages/Admin/Index becomes AdminIndex
@@ -74,6 +74,7 @@ export default defineConfig({
     server: {
         strictPort: true,
         host: true,
+        allowedHosts: true,
         fs: {
             allow: [
                 resolve(__dirname, './frontend/'),
@@ -91,6 +92,6 @@ export default defineConfig({
     },
     plugins: [
         vue(),
-        eslint(),
+        eslintPlugin(),
     ],
 })

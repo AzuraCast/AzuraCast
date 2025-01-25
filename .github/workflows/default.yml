@@ -26,8 +26,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
-    name: Test Suite
+  php-test:
+    name: PHP Test Suite
     runs-on: ubuntu-latest
     env:
       APPLICATION_ENV: testing
@@ -64,9 +64,43 @@ jobs:
         run: |
           vendor/bin/phpcs --report=checkstyle | cs2pr
 
+  node-test:
+    name: Node Test Suite
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+      pull-requests: read
+      checks: write
+    env:
+      APPLICATION_ENV: testing
+      NODE_ENV: production
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts"
+          cache: "npm"
+
+      - run: npm ci --include=dev
+
+      - name: Generate linting report
+        run: npm run lint-report
+        continue-on-error: true
+
+      - name: Annotate Code Linting Results
+        uses: ataylorme/eslint-annotate-action@v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          report-json: "eslint_report.json"
+  
   prepare:
     name: Prepare Codebase
-    needs: test
+    needs:
+      - php-test
+      - node-test
     runs-on: ubuntu-latest
     env:
       APPLICATION_ENV: testing
@@ -87,6 +121,12 @@ jobs:
         with:
           path: vendor
           key: ${{ runner.OS }}-build-${{ hashFiles('composer.lock') }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts"
+          cache: "npm"
 
       - name: Set console permissions and clear static assets.
         run: |

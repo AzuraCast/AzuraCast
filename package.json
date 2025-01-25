@@ -5,6 +5,8 @@
   "scripts": {
     "build": "vite build",
     "serve": "vite",
+    "lint": "eslint frontend",
+    "lint-report": "eslint --output-file eslint_report.json --format json frontend",
     "generate-icons": "node frontend/genicons.mjs",
     "generate-locales": "vue-gettext-extract",
     "generate-api": "swagger-typescript-api --path http://localhost/api/openapi.yml --output ./frontend/entities --name ApiInterfaces.ts --no-client"
@@ -53,6 +55,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
+    "@nabla/vite-plugin-eslint": "^2.0.5",
     "@types/bootstrap": "^5.2.6",
     "@types/eslint__js": "^8.42.3",
     "@types/leaflet": "^1.9.3",
@@ -72,7 +75,6 @@
     "swagger-typescript-api": "^13.0.3",
     "typescript-eslint": "^8",
     "vite": "^6",
-    "vite-plugin-eslint": "^1.8.1",
     "vue-eslint-parser": "^9.3.1",
     "vue-tsc": "^2"
   }

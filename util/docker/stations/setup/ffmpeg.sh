@@ -8,8 +8,8 @@ set -x
 mkdir -p /tmp/ffmpeg-keyring
 cd /tmp/ffmpeg-keyring
 
-wget https://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.8.1_all.deb
-dpkg -i ./deb-multimedia-keyring_2016.8.1_all.deb
+wget https://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2024.9.1_all.deb
+sudo dpkg -i deb-multimedia-keyring_2024.9.1_all.deb
 
 cd /tmp
 rm -rf /tmp/ffmpeg-keyring
@@ -19,7 +19,7 @@ echo "Types: deb
 URIs: https://www.deb-multimedia.org
 Suites: stable
 Components: main non-free
-Signed-By: /etc/apt/trusted.gpg.d/deb-multimedia-keyring.gpg" >> /etc/apt/sources.list.d/deb-multimedia.sources
+Signed-By: /usr/share/keyrings/deb-multimedia-keyring.pgp" >> /etc/apt/sources.list.d/deb-multimedia.sources
 
 echo "Package: *
 Pin: origin www.deb-multimedia.org

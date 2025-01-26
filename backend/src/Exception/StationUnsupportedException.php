@@ -13,7 +13,7 @@ final class StationUnsupportedException extends Exception
     public function __construct(
         string $message = 'This feature is not currently supported on this station.',
         int $code = 500,
-        Throwable $previous = null,
+        ?Throwable $previous = null,
         Level $loggerLevel = Level::Info
     ) {
         parent::__construct($message, $code, $previous, $loggerLevel);

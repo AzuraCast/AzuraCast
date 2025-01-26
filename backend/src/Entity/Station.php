@@ -627,7 +627,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->description;
     }
 
-    public function setDescription(string $description = null): void
+    public function setDescription(?string $description = null): void
     {
         $this->description = $description;
     }
@@ -637,7 +637,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->url;
     }
 
-    public function setUrl(string $url = null): void
+    public function setUrl(?string $url = null): void
     {
         $url = $this->truncateNullableString($url);
 
@@ -769,7 +769,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->request_delay;
     }
 
-    public function setRequestDelay(int $requestDelay = null): void
+    public function setRequestDelay(?int $requestDelay = null): void
     {
         $this->request_delay = $requestDelay;
     }
@@ -779,7 +779,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->request_threshold;
     }
 
-    public function setRequestThreshold(int $requestThreshold = null): void
+    public function setRequestThreshold(?int $requestThreshold = null): void
     {
         $this->request_threshold = $requestThreshold;
     }

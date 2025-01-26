@@ -101,12 +101,6 @@ final class StationFilesystems
     public static function isDotFile(string $path): bool
     {
         $pathParts = explode('/', $path);
-        foreach ($pathParts as $part) {
-            if (str_starts_with($part, '.')) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($pathParts, fn($part) => str_starts_with($part, '.'));
     }
 }

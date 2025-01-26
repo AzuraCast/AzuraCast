@@ -121,7 +121,7 @@ final class Acl
      */
     public function isAllowed(
         array|string|PermissionInterface $action,
-        Station|int $stationId = null
+        Station|int|null $stationId = null
     ): bool {
         if ($this->request instanceof ServerRequest) {
             try {
@@ -138,13 +138,13 @@ final class Acl
      * Check if a specified User entity is allowed to perform an action (or array of actions).
      *
      * @param User|null $user
-     * @param array<string|PermissionInterface>|string|PermissionInterface $action
+     * @param string|PermissionInterface|array<string|PermissionInterface>|null $action
      * @param int|Station|null $stationId
      */
     public function userAllowed(
         ?User $user = null,
-        array|string|PermissionInterface $action = null,
-        Station|int $stationId = null
+        array|string|PermissionInterface|null $action = null,
+        Station|int|null $stationId = null
     ): bool {
         if (null === $user || null === $action) {
             return false;
@@ -184,7 +184,7 @@ final class Acl
     public function roleAllowed(
         array|int $roleId,
         array|string|PermissionInterface $action,
-        Station|int $stationId = null
+        Station|int|null $stationId = null
     ): bool {
         if ($stationId instanceof Station) {
             $stationId = $stationId->getId();
@@ -196,24 +196,12 @@ final class Acl
 
         // Iterate through an array of roles and return with the first "true" response, or "false" otherwise.
         if (is_array($roleId)) {
-            foreach ($roleId as $r) {
-                if ($this->roleAllowed($r, $action, $stationId)) {
-                    return true;
-                }
-            }
-
-            return false;
+            return array_any($roleId, fn($r) => $this->roleAllowed($r, $action, $stationId));
         }
 
         // If multiple actions are supplied, treat the list as "x OR y OR z", returning if any action is allowed.
         if (is_array($action)) {
-            foreach ($action as $a) {
-                if ($this->roleAllowed($roleId, $a, $stationId)) {
-                    return true;
-                }
-            }
-
-            return false;
+            return array_any($action, fn($a) => $this->roleAllowed($roleId, $a, $stationId));
         }
 
         if (!empty($this->actions[$roleId])) {

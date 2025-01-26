@@ -499,7 +499,7 @@ return [
                 new GuzzleHttp\Psr7\HttpFactory(),
                 new GuzzleHttp\Client([
                     'curl' => [
-                        \CURLOPT_UNIX_SOCKET_PATH => '/var/run/supervisor.sock',
+                        CURLOPT_UNIX_SOCKET_PATH => '/var/run/supervisor.sock',
                     ],
                 ])
             )

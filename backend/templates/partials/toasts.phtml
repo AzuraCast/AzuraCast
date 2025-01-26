@@ -1,9 +1,9 @@
 <?php
 
-/** @var \App\Http\ServerRequest $request */
+/** @var App\Http\ServerRequest $request */
 try {
     $flashObj = $request->getFlash();
-} catch (\App\Exception\Http\InvalidRequestAttribute) {
+} catch (App\Exception\Http\InvalidRequestAttribute) {
     $flashObj = null;
 }
 

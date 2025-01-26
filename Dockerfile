@@ -38,7 +38,7 @@ COPY --from=icecast /usr/local/share/icecast /usr/local/share/icecast
 #
 # Final build image
 #
-FROM php:8.3-fpm-bookworm AS pre-final
+FROM php:8.4-fpm-bookworm AS pre-final
 
 ENV TZ="UTC" \
     LANGUAGE="en_US.UTF-8" \

@@ -286,7 +286,7 @@ final class Configuration
     /**
      * Determine the first available 10-port block that has no stations occupying it.
      */
-    public function getFirstAvailableRadioPort(Station $station = null): int
+    public function getFirstAvailableRadioPort(?Station $station = null): int
     {
         $usedPorts = $this->getUsedPorts($station);
 
@@ -325,7 +325,7 @@ final class Configuration
      *   name: string
      * }>
      */
-    public function getUsedPorts(Station $exceptStation = null): array
+    public function getUsedPorts(?Station $exceptStation = null): array
     {
         static $usedPorts;
 

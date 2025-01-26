@@ -45,7 +45,7 @@
                     <bitrate-options
                         id="edit_form_backend_record_streams_bitrate"
                         class="col-md-6"
-                        :max-bitrate="props.form.max_bitrate"
+                        :max-bitrate="form.max_bitrate"
                         :field="v$.backend_config.record_streams_bitrate"
                         :label="$gettext('Live Broadcast Recording Bitrate (kbps)')"
                     />

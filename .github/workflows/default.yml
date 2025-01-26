@@ -67,11 +67,6 @@ jobs:
   node-test:
     name: Node Test Suite
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: read
-      pull-requests: read
-      checks: write
     env:
       APPLICATION_ENV: testing
       NODE_ENV: production
@@ -86,15 +81,11 @@ jobs:
 
       - run: npm ci --include=dev
 
-      - name: Generate linting report
-        run: npm run lint-report
-        continue-on-error: true
+      - name: Check TypeScript types
+        run: npm run tsc
 
-      - name: Annotate Code Linting Results
-        uses: ataylorme/eslint-annotate-action@v3
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          report-json: "eslint_report.json"
+      - name: Generate linting report
+        run: npm run lint
   
   prepare:
     name: Prepare Codebase

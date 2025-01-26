@@ -6,7 +6,7 @@
     "build": "vite build",
     "serve": "vite",
     "lint": "eslint frontend",
-    "lint-report": "eslint --output-file eslint_report.json --format json frontend",
+    "tsc": "vue-tsc",
     "generate-icons": "node frontend/genicons.mjs",
     "generate-locales": "vue-gettext-extract",
     "generate-api": "swagger-typescript-api --path http://localhost/api/openapi.yml --output ./frontend/entities --name ApiInterfaces.ts --no-client"

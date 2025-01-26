@@ -80,7 +80,7 @@ import {computed} from "vue";
 import {useAxios} from "~/vendor/axios";
 import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
 
-interface EnabledProfileProps extends ProfileBackendPanelParentProps,
+export interface EnabledProfileProps extends ProfileBackendPanelParentProps,
     ProfileFrontendPanelParentProps,
     ProfileHeaderPanelParentProps,
     ProfileNowPlayingPanelProps,

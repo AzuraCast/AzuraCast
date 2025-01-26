@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Utilities;
 
+use InvalidArgumentException;
+use Normalizer;
 use RuntimeException;
-use voku\helper\UTF8;
 
 final class Strings
 {
@@ -130,19 +131,41 @@ final class Strings
         return mb_strtolower($result);
     }
 
+    protected static function fixWordQuotes(string $original): string
+    {
+        $quotes = [
+            "\xC2\xAB" => '"', // « (U+00AB) in UTF-8
+            "\xC2\xBB" => '"', // » (U+00BB) in UTF-8
+            "\xE2\x80\x98" => "'", // ‘ (U+2018) in UTF-8
+            "\xE2\x80\x99" => "'", // ’ (U+2019) in UTF-8
+            "\xE2\x80\x9A" => "'", // ‚ (U+201A) in UTF-8
+            "\xE2\x80\x9B" => "'", // ‛ (U+201B) in UTF-8
+            "\xE2\x80\x9C" => '"', // “ (U+201C) in UTF-8
+            "\xE2\x80\x9D" => '"', // ” (U+201D) in UTF-8
+            "\xE2\x80\x9E" => '"', // „ (U+201E) in UTF-8
+            "\xE2\x80\x9F" => '"', // ‟ (U+201F) in UTF-8
+            "\xE2\x80\xB9" => "'", // ‹ (U+2039) in UTF-8
+            "\xE2\x80\xBA" => "'", // › (U+203A) in UTF-8
+        ];
+
+        return strtr($original, $quotes);
+    }
+
     public static function stringToUtf8(?string $original): string
     {
         $original ??= '';
 
-        $string = UTF8::encode('UTF-8', $original);
-        $string = UTF8::fix_simple_utf8($string);
-        return UTF8::clean(
-            $string,
-            true,
-            true,
-            true,
-            true,
-            true
-        );
+        $encoding = mb_detect_encoding($original, ['auto']);
+        if ($encoding !== false && $encoding !== 'UTF-8') {
+            $original = mb_convert_encoding($original, 'UTF-8', $encoding);
+        }
+
+        if (!Normalizer::isNormalized($original)) {
+            if (false === $original = Normalizer::normalize($original)) {
+                throw new InvalidArgumentException('Invalid UTF-8 string.');
+            }
+        }
+
+        return self::fixWordQuotes($original);
     }
 }

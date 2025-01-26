@@ -42,7 +42,7 @@ final class UniqueEntity extends Constraint
         public ?string $repositoryMethod = 'findBy',
         public ?string $errorPath = null,
         public ?bool $ignoreNull = null,
-        array $groups = null,
+        ?array $groups = null,
         $payload = null,
         array $options = []
     ) {

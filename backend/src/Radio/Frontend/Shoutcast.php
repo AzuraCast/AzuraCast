@@ -214,7 +214,7 @@ final class Shoutcast extends AbstractFrontend
         return null;
     }
 
-    public function getAdminUrl(Station $station, UriInterface $baseUrl = null): UriInterface
+    public function getAdminUrl(Station $station, ?UriInterface $baseUrl = null): UriInterface
     {
         $publicUrl = $this->getPublicUrl($station, $baseUrl);
         return $publicUrl

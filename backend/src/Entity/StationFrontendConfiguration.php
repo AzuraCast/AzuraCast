@@ -100,7 +100,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
         return Types::intOrNull($this->get(self::PORT));
     }
 
-    public function setPort(int|string $port = null): void
+    public function setPort(int|string|null $port = null): void
     {
         $this->set(self::PORT, $port);
     }
@@ -112,7 +112,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
         return Types::intOrNull($this->get(self::MAX_LISTENERS));
     }
 
-    public function setMaxListeners(int|string $listeners = null): void
+    public function setMaxListeners(int|string|null $listeners = null): void
     {
         $this->set(self::MAX_LISTENERS, $listeners);
     }

@@ -161,7 +161,7 @@ final class Liquidsoap extends AbstractLocalAdapter
             : null;
     }
 
-    public function getHlsUrl(Station $station, UriInterface $baseUrl = null): UriInterface
+    public function getHlsUrl(Station $station, ?UriInterface $baseUrl = null): UriInterface
     {
         $baseUrl ??= $this->router->getBaseUrl();
         return $baseUrl->withPath(

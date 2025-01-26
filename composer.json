@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "php": "^8.3",
+    "php": "^8.4",
     "ext-PDO": "*",
     "ext-curl": "*",
     "ext-ffi": "*",
@@ -91,7 +91,6 @@
     "symfony/validator": "^7",
     "symfony/yaml": "^7",
     "vlucas/phpdotenv": "^5.3",
-    "voku/portable-utf8": "^6.0",
     "wikimedia/composer-merge-plugin": "dev-master",
     "zircote/swagger-php": "^5"
   },

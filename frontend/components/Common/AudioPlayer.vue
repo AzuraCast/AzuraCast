@@ -83,7 +83,7 @@ const play = () => {
     void nextTick(() => {
         // Handle audio errors.
         $audio.value.onerror = (e: Event) => {
-            const eventTarget = e.target; // as HTMLAudioElement;
+            const eventTarget = e.target as HTMLAudioElement;
 
             if (eventTarget.error?.code === MediaError.MEDIA_ERR_NETWORK && $audio.value.src !== '') {
                 console.log('Network interrupted stream. Automatically reconnecting shortly...');

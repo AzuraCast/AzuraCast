@@ -39,7 +39,7 @@ class RolePermission implements
 
     public function __construct(
         Role $role,
-        ?Station $station = null,
+        Station $station = null,
         string|PermissionInterface|null $actionName = null
     ) {
         $this->role = $role;

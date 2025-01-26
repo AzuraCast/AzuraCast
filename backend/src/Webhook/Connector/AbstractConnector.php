@@ -67,7 +67,13 @@ abstract class AbstractConnector implements ConnectorInterface
             return true;
         }
 
-        return array_any($triggers, fn($trigger) => $webhook->hasTrigger($trigger));
+        foreach ($triggers as $trigger) {
+            if ($webhook->hasTrigger($trigger)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected function getRateLimitTime(StationWebhook $webhook): ?int
@@ -87,10 +93,11 @@ abstract class AbstractConnector implements ConnectorInterface
     public function replaceVariables(array $rawVars, NowPlaying $np): array
     {
         $values = Arrays::flattenArray($np);
+        $vars = [];
 
-        // Replaces {{ var.name }} with the flattened $values['var.name']
-        return array_map(function ($varValue) use ($values) {
-            return preg_replace_callback(
+        foreach ($rawVars as $varKey => $varValue) {
+            // Replaces {{ var.name }} with the flattened $values['var.name']
+            $vars[$varKey] = preg_replace_callback(
                 "/\{\{(\s*)([a-zA-Z\d\-_.]+)(\s*)}}/",
                 static function (array $matches) use ($values): string {
                     $innerValue = strtolower(trim($matches[2]));
@@ -98,7 +105,9 @@ abstract class AbstractConnector implements ConnectorInterface
                 },
                 $varValue
             );
-        }, $rawVars);
+        }
+
+        return $vars;
     }
 
     /**

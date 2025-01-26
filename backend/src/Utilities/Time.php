@@ -6,7 +6,7 @@ namespace App\Utilities;
 
 final class Time
 {
-    public static function displayTimeToSeconds(string|float|int|null $seconds = null): ?float
+    public static function displayTimeToSeconds(string|float|int $seconds = null): ?float
     {
         if (null === $seconds || '' === $seconds) {
             return null;

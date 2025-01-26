@@ -95,11 +95,14 @@ final class StationRequestRepository extends AbstractStationBasedRepository
         )->setParameter('station', $station)
             ->execute();
 
-        return array_find(
-            $requests,
-            fn(StationRequest $request) => $request->shouldPlayNow($now)
-                && !$this->hasPlayedRecently($request->getTrack(), $station)
-        );
+        foreach ($requests as $request) {
+            /** @var StationRequest $request */
+            if ($request->shouldPlayNow($now) && !$this->hasPlayedRecently($request->getTrack(), $station)) {
+                return $request;
+            }
+        }
+
+        return null;
     }
 
     /**

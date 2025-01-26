@@ -16,7 +16,7 @@ final class ValidationException extends Exception
     public function __construct(
         string $message = 'Validation error.',
         int $code = 400,
-        ?Throwable $previous = null,
+        Throwable $previous = null,
         Level $loggerLevel = Level::Info
     ) {
         parent::__construct($message, $code, $previous, $loggerLevel);

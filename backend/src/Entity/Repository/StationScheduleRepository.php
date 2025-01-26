@@ -108,10 +108,8 @@ final class StationScheduleRepository extends Repository
      *
      * @return ApiStationSchedule[]
      */
-    public function getUpcomingSchedule(
-        Station $station,
-        ?CarbonInterface $now = null
-    ): array {
+    public function getUpcomingSchedule(Station $station, CarbonInterface $now = null): array
+    {
         if (null === $now) {
             $now = CarbonImmutable::now($station->getTimezoneObject());
         }

@@ -36,7 +36,7 @@ final class ConfigWriter implements EventSubscriberInterface
         }
 
         $listenBaseUrl = CustomUrls::getListenUrl($station);
-        $listenBaseUrlForRegex = preg_quote($listenBaseUrl);
+        $listenBaseUrlForRegex = preg_quote($listenBaseUrl, null);
         $port = $station->getFrontendConfig()->getPort();
 
         $event->appendBlock(
@@ -71,7 +71,7 @@ final class ConfigWriter implements EventSubscriberInterface
             return;
         }
 
-        $webDjBaseUrl = preg_quote(CustomUrls::getWebDjUrl($station));
+        $webDjBaseUrl = preg_quote(CustomUrls::getWebDjUrl($station), null);
         $autoDjPort = $station->getBackendConfig()->getDjPort();
 
         $event->appendBlock(

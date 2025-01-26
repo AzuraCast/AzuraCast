@@ -54,7 +54,7 @@ abstract class AbstractApiCrudController
         ServerRequest $request,
         Response $response,
         Query $query,
-        ?callable $postProcessor = null
+        callable $postProcessor = null
     ): ResponseInterface {
         $paginator = Paginator::fromQuery($query, $request);
 

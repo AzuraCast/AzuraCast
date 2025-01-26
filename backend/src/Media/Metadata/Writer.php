@@ -54,9 +54,10 @@ final class Writer
         }
 
         // All ID3 tags have to be written as ['key' => ['value']] (i.e. with "value" at position 0).
-        $tagData = array_map(function ($tagValue) {
-            return [$tagValue];
-        }, $writeTags);
+        $tagData = [];
+        foreach ($writeTags as $tagKey => $tagValue) {
+            $tagData[$tagKey] = [$tagValue];
+        }
 
         $tagwriter->tag_data = $tagData;
         $tagwriter->WriteTags();

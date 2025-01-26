@@ -25,8 +25,8 @@ final class AwsS3Adapter extends AwsS3V3Adapter implements ExtendedAdapterInterf
         private readonly S3ClientInterface $client,
         private readonly string $bucket,
         string $prefix = '',
-        ?VisibilityConverter $visibility = null,
-        ?MimeTypeDetector $mimeTypeDetector = null,
+        VisibilityConverter $visibility = null,
+        MimeTypeDetector $mimeTypeDetector = null,
         array $options = [],
         bool $streamReads = true
     ) {

@@ -1030,7 +1030,8 @@ class Settings implements Stringable
                     static function ($str) {
                         $str = trim($str);
                         $str = trim($str, '/');
-                        return str_replace(['http://', 'https://'], '', $str);
+                        $str = str_replace(['http://', 'https://'], '', $str);
+                        return $str;
                     },
                     explode(',', $acmeDomains)
                 )

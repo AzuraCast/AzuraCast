@@ -405,7 +405,8 @@ final class Environment
                 6379
             ),
             'db' => Types::int(
-                $this->data[self::REDIS_DB] ?? null
+                $this->data[self::REDIS_DB] ?? null,
+                0
             ),
         ];
 

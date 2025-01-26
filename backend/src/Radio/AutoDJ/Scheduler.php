@@ -31,7 +31,7 @@ final class Scheduler
 
     public function shouldPlaylistPlayNow(
         StationPlaylist $playlist,
-        ?CarbonInterface $now = null
+        CarbonInterface $now = null
     ): bool {
         $this->logger->pushProcessor(
             function (LogRecord $record) use ($playlist) {
@@ -135,7 +135,7 @@ final class Scheduler
             $targetTime = $now->minute($targetMinute);
         }
 
-        $playlistDiff = $targetTime->diffInMinutes($now);
+        $playlistDiff = $targetTime->diffInMinutes($now, false);
 
         if ($playlistDiff < 0 || $playlistDiff > 15) {
             return false;
@@ -180,7 +180,7 @@ final class Scheduler
 
     public function canStreamerStreamNow(
         StationStreamer $streamer,
-        ?CarbonInterface $now = null
+        CarbonInterface $now = null
     ): bool {
         if (!$streamer->enforceSchedule()) {
             return true;
@@ -283,10 +283,13 @@ final class Scheduler
             );
         }
 
-        return array_any(
-            $comparePeriods,
-            fn($dateRange) => $this->shouldPlayInSchedulePeriod($schedule, $dateRange, $now, $excludeSpecialRules)
-        );
+        foreach ($comparePeriods as $dateRange) {
+            if ($this->shouldPlayInSchedulePeriod($schedule, $dateRange, $now, $excludeSpecialRules)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function shouldPlayInSchedulePeriod(

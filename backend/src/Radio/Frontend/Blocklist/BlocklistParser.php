@@ -138,9 +138,12 @@ final class BlocklistParser
             return false;
         }
 
-        return array_any(
-            array_filter(array_map('trim', explode("\n", $bannedUserAgents))),
-            fn($userAgent) => fnmatch($userAgent, $listenerUserAgent)
-        );
+        foreach (array_filter(array_map('trim', explode("\n", $bannedUserAgents))) as $userAgent) {
+            if (fnmatch($userAgent, $listenerUserAgent)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

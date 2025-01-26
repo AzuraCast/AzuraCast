@@ -94,7 +94,7 @@ class StationQueue implements
         return $this->playlist;
     }
 
-    public function setPlaylist(?StationPlaylist $playlist = null): void
+    public function setPlaylist(StationPlaylist $playlist = null): void
     {
         $this->playlist = $playlist;
     }

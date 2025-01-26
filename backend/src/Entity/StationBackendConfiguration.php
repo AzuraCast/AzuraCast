@@ -33,7 +33,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::intOrNull($this->get(self::DJ_PORT));
     }
 
-    public function setDjPort(int|string|null $port = null): void
+    public function setDjPort(int|string $port = null): void
     {
         $this->set(self::DJ_PORT, $port);
     }
@@ -45,7 +45,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::intOrNull($this->get(self::TELNET_PORT));
     }
 
-    public function setTelnetPort(int|string|null $port = null): void
+    public function setTelnetPort(int|string $port = null): void
     {
         $this->set(self::TELNET_PORT, $port);
     }
@@ -97,7 +97,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::intOrNull($this->get(self::RECORD_STREAMS_BITRATE)) ?? 128;
     }
 
-    public function setRecordStreamsBitrate(int|string|null $bitrate = null): void
+    public function setRecordStreamsBitrate(int|string $bitrate = null): void
     {
         $this->set(self::RECORD_STREAMS_BITRATE, $bitrate);
     }
@@ -123,7 +123,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::intOrNull($this->get(self::AUTODJ_QUEUE_LENGTH)) ?? self::DEFAULT_QUEUE_LENGTH;
     }
 
-    public function setAutoDjQueueLength(int|string|null $queueLength = null): void
+    public function setAutoDjQueueLength(int|string $queueLength = null): void
     {
         $this->set(self::AUTODJ_QUEUE_LENGTH, $queueLength);
     }
@@ -149,7 +149,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::intOrNull($this->get(self::DJ_BUFFER)) ?? self::DEFAULT_DJ_BUFFER;
     }
 
-    public function setDjBuffer(int|string|null $buffer = null): void
+    public function setDjBuffer(int|string $buffer = null): void
     {
         $this->set(self::DJ_BUFFER, $buffer);
     }
@@ -193,7 +193,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::boolOrNull($this->get(self::POST_PROCESSING_INCLUDE_LIVE)) ?? false;
     }
 
-    public function setPostProcessingIncludeLive(bool|string|null $postProcessingIncludeLive = null): void
+    public function setPostProcessingIncludeLive(bool|string $postProcessingIncludeLive = null): void
     {
         $this->set(self::POST_PROCESSING_INCLUDE_LIVE, $postProcessingIncludeLive);
     }
@@ -258,7 +258,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
             ?? self::MASTER_ME_DEFAULT_LOUDNESS_TARGET;
     }
 
-    public function setMasterMeLoudnessTarget(int|string|null $masterMeLoudnessTarget = null): void
+    public function setMasterMeLoudnessTarget(int|string $masterMeLoudnessTarget = null): void
     {
         $this->set(self::MASTER_ME_LOUDNESS_TARGET, $masterMeLoudnessTarget);
     }
@@ -316,7 +316,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         );
     }
 
-    public function setCrossfade(float|string|null $crossfade = null): void
+    public function setCrossfade(float|string $crossfade = null): void
     {
         $this->set(self::CROSSFADE, $crossfade);
     }
@@ -348,7 +348,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
             ?? self::DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE;
     }
 
-    public function setDuplicatePreventionTimeRange(int|string|null $duplicatePreventionTimeRange = null): void
+    public function setDuplicatePreventionTimeRange(int|string $duplicatePreventionTimeRange = null): void
     {
         $this->set(self::DUPLICATE_PREVENTION_TIME_RANGE, $duplicatePreventionTimeRange);
     }
@@ -384,7 +384,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::intOrNull($this->get(self::HLS_SEGMENT_LENGTH)) ?? 4;
     }
 
-    public function setHlsSegmentLength(int|string|null $length = null): void
+    public function setHlsSegmentLength(int|string $length = null): void
     {
         $this->set(self::HLS_SEGMENT_LENGTH, $length);
     }
@@ -396,7 +396,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::intOrNull($this->get(self::HLS_SEGMENTS_IN_PLAYLIST)) ?? 5;
     }
 
-    public function setHlsSegmentsInPlaylist(int|string|null $value = null): void
+    public function setHlsSegmentsInPlaylist(int|string $value = null): void
     {
         $this->set(self::HLS_SEGMENTS_IN_PLAYLIST, $value);
     }
@@ -408,7 +408,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::intOrNull($this->get(self::HLS_SEGMENTS_OVERHEAD)) ?? 2;
     }
 
-    public function setHlsSegmentsOverhead(int|string|null $value = null): void
+    public function setHlsSegmentsOverhead(int|string $value = null): void
     {
         $this->set(self::HLS_SEGMENTS_OVERHEAD, $value);
     }

@@ -35,7 +35,7 @@ final class Mail implements MailerInterface
         return $email;
     }
 
-    public function send(RawMessage $message, ?Envelope $envelope = null): void
+    public function send(RawMessage $message, Envelope $envelope = null): void
     {
         $this->mailer->send($message, $envelope);
     }

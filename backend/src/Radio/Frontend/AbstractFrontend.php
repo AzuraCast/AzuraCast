@@ -51,7 +51,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
      * @param Station $station
      * @param UriInterface|null $baseUrl
      */
-    public function getStreamUrl(Station $station, ?UriInterface $baseUrl = null): UriInterface
+    public function getStreamUrl(Station $station, UriInterface $baseUrl = null): UriInterface
     {
         $defaultMount = $this->stationMountRepo->getDefaultMount($station);
 
@@ -99,7 +99,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
             ->withPath('');
     }
 
-    abstract public function getAdminUrl(Station $station, ?UriInterface $baseUrl = null): UriInterface;
+    abstract public function getAdminUrl(Station $station, UriInterface $baseUrl = null): UriInterface;
 
     public function getNowPlaying(Station $station, bool $includeClients = true): Result
     {

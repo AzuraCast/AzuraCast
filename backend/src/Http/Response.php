@@ -61,7 +61,7 @@ final class Response extends SlimResponse
     public function streamFilesystemFile(
         ExtendedFilesystemInterface $filesystem,
         string $path,
-        ?string $fileName = null,
+        string $fileName = null,
         string $disposition = 'attachment',
         bool $useXAccelRedirect = true
     ): ResponseInterface {

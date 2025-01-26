@@ -20,13 +20,14 @@ final class StorageLocationsAction extends StationsController implements SingleA
     ): ResponseInterface {
         $newStorageLocationMessage = __('Create a new storage location based on the base directory.');
 
-        $storageLocations = array_map(function ($locationType) use ($newStorageLocationMessage) {
-            return $this->storageLocationRepo->fetchSelectByType(
+        $storageLocations = [];
+        foreach (Station::getStorageLocationTypes() as $locationKey => $locationType) {
+            $storageLocations[$locationKey] = $this->storageLocationRepo->fetchSelectByType(
                 $locationType,
                 true,
                 $newStorageLocationMessage
             );
-        }, Station::getStorageLocationTypes());
+        }
 
         return $response->withJson($storageLocations);
     }

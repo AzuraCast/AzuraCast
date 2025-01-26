@@ -439,7 +439,7 @@ final class QueueBuilder implements EventSubscriberInterface
         $this->spmRepo->resetQueue($playlist);
         $mediaQueue = $this->spmRepo->getQueue($playlist);
 
-        return $this->duplicatePrevention->preventDuplicates($mediaQueue, $recentSongHistory);
+        return $this->duplicatePrevention->preventDuplicates($mediaQueue, $recentSongHistory, false);
     }
 
     public function getNextSongFromRequests(BuildQueue $event): void

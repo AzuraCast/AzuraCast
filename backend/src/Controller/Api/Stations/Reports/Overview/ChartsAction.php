@@ -166,7 +166,10 @@ final class ChartsAction extends AbstractReportAction
         $totalsByHour = [];
 
         foreach ($hourlyTotalCategories as $category) {
-            $categoryHours = array_fill(0, 24, []);
+            $categoryHours = [];
+            for ($i = 0; $i < 24; $i++) {
+                $categoryHours[$i] = [];
+            }
             $totalsByHour[$category] = $categoryHours;
         }
 

@@ -432,7 +432,7 @@ class StationMount implements
      */
     public function api(
         AbstractFrontend $fa,
-        ?UriInterface $baseUrl = null
+        UriInterface $baseUrl = null
     ): Api\NowPlaying\StationMount {
         $response = new Api\NowPlaying\StationMount();
 

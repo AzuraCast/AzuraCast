@@ -97,7 +97,7 @@ class Repository
      */
     public function fetchSelect(
         bool|string $addBlank = false,
-        ?Closure $display = null,
+        Closure $display = null,
         string $pk = 'id',
         string $orderBy = 'name'
     ): array {

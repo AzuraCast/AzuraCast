@@ -23,10 +23,10 @@ final class LocalFilesystemAdapter extends LeagueLocalFilesystemAdapter implemen
 
     public function __construct(
         string $location,
-        ?VisibilityConverter $visibility = null,
+        VisibilityConverter $visibility = null,
         int $writeFlags = LOCK_EX,
         int $linkHandling = self::DISALLOW_LINKS,
-        ?MimeTypeDetector $mimeTypeDetector = null
+        MimeTypeDetector $mimeTypeDetector = null
     ) {
         $this->pathPrefixer = new PathPrefixer($location, DIRECTORY_SEPARATOR);
 

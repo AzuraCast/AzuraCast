@@ -126,7 +126,7 @@ final class Acl
         if ($this->request instanceof ServerRequest) {
             try {
                 $user = $this->request->getUser();
-                return $this->userAllowed($user, $action, $stationId);
+                return $this->userAllowed($action, $user, $stationId);
             } catch (InvalidRequestAttribute) {
             }
         }
@@ -137,16 +137,16 @@ final class Acl
     /**
      * Check if a specified User entity is allowed to perform an action (or array of actions).
      *
+     * @param array<string|PermissionInterface>|string|PermissionInterface $action
      * @param User|null $user
-     * @param string|PermissionInterface|array<string|PermissionInterface>|null $action
      * @param int|Station|null $stationId
      */
     public function userAllowed(
+        array|string|PermissionInterface $action,
         ?User $user = null,
-        array|string|PermissionInterface|null $action = null,
         Station|int|null $stationId = null
     ): bool {
-        if (null === $user || null === $action) {
+        if (null === $user) {
             return false;
         }
 

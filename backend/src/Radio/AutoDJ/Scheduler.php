@@ -180,7 +180,7 @@ final class Scheduler
 
     public function canStreamerStreamNow(
         StationStreamer $streamer,
-        CarbonInterface $now = null
+        ?CarbonInterface $now = null
     ): bool {
         if (!$streamer->enforceSchedule()) {
             return true;

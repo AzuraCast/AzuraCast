@@ -396,7 +396,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::intOrNull($this->get(self::HLS_SEGMENTS_IN_PLAYLIST)) ?? 5;
     }
 
-    public function setHlsSegmentsInPlaylist(int|string $value = null): void
+    public function setHlsSegmentsInPlaylist(int|string|null $value = null): void
     {
         $this->set(self::HLS_SEGMENTS_IN_PLAYLIST, $value);
     }

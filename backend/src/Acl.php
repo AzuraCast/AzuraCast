@@ -121,7 +121,7 @@ final class Acl
      */
     public function isAllowed(
         array|string|PermissionInterface $action,
-        Station|int $stationId = null
+        Station|int|null $stationId = null
     ): bool {
         if ($this->request instanceof ServerRequest) {
             try {

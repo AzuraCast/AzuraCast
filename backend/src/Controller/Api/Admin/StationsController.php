@@ -268,7 +268,7 @@ class StationsController extends AbstractApiCrudController
      *
      * @return Station
      */
-    protected function editRecord(?array $data, object $record = null, array $context = []): object
+    protected function editRecord(?array $data, ?object $record = null, array $context = []): object
     {
         $createMode = (null === $record);
 

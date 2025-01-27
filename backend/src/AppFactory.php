@@ -22,6 +22,9 @@ use Slim\Handlers\Strategies\RequestResponse;
  */
 final class AppFactory
 {
+    public const int ERROR_REPORTING_DEVELOPMENT = E_ALL & ~E_DEPRECATED;
+    public const int ERROR_REPORTING_PRODUCTION = self::ERROR_REPORTING_DEVELOPMENT & ~E_NOTICE & ~E_WARNING;
+
     /**
      * @return AppWithContainer
      */
@@ -151,8 +154,8 @@ final class AppFactory
     {
         error_reporting(
             $environment->isProduction()
-                ? E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT & ~E_DEPRECATED
-                : E_ALL & ~E_NOTICE
+                ? self::ERROR_REPORTING_PRODUCTION
+                : self::ERROR_REPORTING_DEVELOPMENT
         );
 
         $displayStartupErrors = (!$environment->isProduction() || $environment->isCli())

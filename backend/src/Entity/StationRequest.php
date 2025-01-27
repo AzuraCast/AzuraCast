@@ -48,7 +48,7 @@ class StationRequest implements
     public function __construct(
         Station $station,
         StationMedia $track,
-        string $ip = null,
+        ?string $ip = null,
         bool $skipDelay = false
     ) {
         $this->station = $station;
@@ -94,7 +94,7 @@ class StationRequest implements
         return $this->ip;
     }
 
-    public function shouldPlayNow(CarbonInterface $now = null): bool
+    public function shouldPlayNow(?CarbonInterface $now = null): bool
     {
         if ($this->skip_delay) {
             return true;

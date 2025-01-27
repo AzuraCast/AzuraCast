@@ -89,7 +89,7 @@ class Repository
      * Generic dropdown builder function (can be overridden for specialized use cases).
      *
      * @param bool|string $addBlank
-     * @param Closure|NULL $display
+     * @param Closure|null $display
      * @param string $pk
      * @param string $orderBy
      *
@@ -97,7 +97,7 @@ class Repository
      */
     public function fetchSelect(
         bool|string $addBlank = false,
-        Closure $display = null,
+        ?Closure $display = null,
         string $pk = 'id',
         string $orderBy = 'name'
     ): array {

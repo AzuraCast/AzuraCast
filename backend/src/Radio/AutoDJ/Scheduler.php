@@ -31,7 +31,7 @@ final class Scheduler
 
     public function shouldPlaylistPlayNow(
         StationPlaylist $playlist,
-        CarbonInterface $now = null
+        ?CarbonInterface $now = null
     ): bool {
         $this->logger->pushProcessor(
             function (LogRecord $record) use ($playlist) {
@@ -135,7 +135,7 @@ final class Scheduler
             $targetTime = $now->minute($targetMinute);
         }
 
-        $playlistDiff = $targetTime->diffInMinutes($now, false);
+        $playlistDiff = $targetTime->diffInMinutes($now);
 
         if ($playlistDiff < 0 || $playlistDiff > 15) {
             return false;

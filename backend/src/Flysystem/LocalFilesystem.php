@@ -20,8 +20,8 @@ final class LocalFilesystem extends AbstractFilesystem
     public function __construct(
         LocalAdapterInterface $adapter,
         array $config = [],
-        PathNormalizer $pathNormalizer = null,
-        VisibilityConverter $visibilityConverter = null
+        ?PathNormalizer $pathNormalizer = null,
+        ?VisibilityConverter $visibilityConverter = null
     ) {
         $this->localAdapter = $adapter;
         $this->visibilityConverter = $visibilityConverter ?? new PortableVisibilityConverter();

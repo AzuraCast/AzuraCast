@@ -159,7 +159,7 @@ class StationRemote implements
         return $this->autodj_bitrate;
     }
 
-    public function setAutodjBitrate(int $autodjBitrate = null): void
+    public function setAutodjBitrate(?int $autodjBitrate = null): void
     {
         $this->autodj_bitrate = $autodjBitrate;
     }

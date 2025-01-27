@@ -53,7 +53,7 @@ final class GenerateApiDocsCommand extends CommandAbstract
     }
 
     public function generate(
-        string $version = null,
+        ?string $version = null,
         string $apiBaseUrl = 'https://demo.azuracast.com/api'
     ): ?OpenApi {
         define('AZURACAST_API_URL', $apiBaseUrl);

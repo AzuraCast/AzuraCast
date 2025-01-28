@@ -33,6 +33,7 @@
             <tab :label="$gettext('Visual Cue Editor')">
                 <media-form-waveform-editor
                     v-model:form="form"
+                    :duration="record.length"
                     :audio-url="record.links.play"
                     :waveform-url="record.links.waveform"
                     :waveform-cache-url="record.links.waveform_cache"
@@ -76,6 +77,7 @@ const props = defineProps<MediaEditModalProps>();
 const emit = defineEmits<BaseEditModalEmits>();
 
 const {record, reset} = useResettableRef({
+    length: null,
     length_text: null,
     links: {
         art: null,

@@ -196,24 +196,12 @@ final class Acl
 
         // Iterate through an array of roles and return with the first "true" response, or "false" otherwise.
         if (is_array($roleId)) {
-            foreach ($roleId as $r) {
-                if ($this->roleAllowed($r, $action, $stationId)) {
-                    return true;
-                }
-            }
-
-            return false;
+            return array_any($roleId, fn($r) => $this->roleAllowed($r, $action, $stationId));
         }
 
         // If multiple actions are supplied, treat the list as "x OR y OR z", returning if any action is allowed.
         if (is_array($action)) {
-            foreach ($action as $a) {
-                if ($this->roleAllowed($roleId, $a, $stationId)) {
-                    return true;
-                }
-            }
-
-            return false;
+            return array_any($action, fn($a) => $this->roleAllowed($roleId, $a, $stationId));
         }
 
         if (!empty($this->actions[$roleId])) {

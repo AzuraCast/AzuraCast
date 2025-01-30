@@ -283,13 +283,10 @@ final class Scheduler
             );
         }
 
-        foreach ($comparePeriods as $dateRange) {
-            if ($this->shouldPlayInSchedulePeriod($schedule, $dateRange, $now, $excludeSpecialRules)) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any(
+            $comparePeriods,
+            fn($dateRange) => $this->shouldPlayInSchedulePeriod($schedule, $dateRange, $now, $excludeSpecialRules)
+        );
     }
 
     private function shouldPlayInSchedulePeriod(

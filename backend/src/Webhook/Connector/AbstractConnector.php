@@ -67,13 +67,7 @@ abstract class AbstractConnector implements ConnectorInterface
             return true;
         }
 
-        foreach ($triggers as $trigger) {
-            if ($webhook->hasTrigger($trigger)) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($triggers, fn($trigger) => $webhook->hasTrigger($trigger));
     }
 
     protected function getRateLimitTime(StationWebhook $webhook): ?int

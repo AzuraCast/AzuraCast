@@ -7,10 +7,11 @@
 
     <waveform-component
         ref="$waveform"
+        :regions="regions"
         :audio-url="audioUrl"
         :waveform-url="waveformUrl"
         :waveform-cache-url="waveformCacheUrl"
-        @ready="updateRegions"
+        @ready="onReady"
     />
 
     <div class="buttons mt-3">
@@ -79,12 +80,15 @@
 <script setup lang="ts">
 import WaveformComponent from '~/components/Common/Waveform.vue';
 import Icon from '~/components/Common/Icon.vue';
-import {useTemplateRef} from "vue";
+import {ref, shallowRef, useTemplateRef, watch} from "vue";
 import {IconPlayCircle, IconStop} from "~/components/Common/icons";
 import {GenericForm} from "~/entities/Forms.ts";
+import {reactiveComputed} from "@vueuse/core";
+import {RegionParams} from "wavesurfer.js/dist/plugins/regions.js";
 
-withDefaults(
+const props = withDefaults(
     defineProps<{
+        duration: number,
         audioUrl: string,
         waveformUrl: string,
         waveformCacheUrl?: string,
@@ -98,6 +102,27 @@ const form = defineModel<GenericForm>('form');
 
 const $waveform = useTemplateRef('$waveform');
 
+const durationRef = ref<number | null>(null);
+
+const regions = shallowRef<RegionParams[]>([]);
+
+const onReady = (duration: number) => {
+    durationRef.value = duration;
+};
+
+const cueValues = reactiveComputed(() => {
+    const formValue = form.value?.extra_metadata ?? {};
+    const duration = durationRef.value ?? props.duration ?? 0;
+
+    return {
+        cue_in: formValue.cue_in ?? 0,
+        cue_out: formValue.cue_out ?? duration,
+        cross_start_next: formValue.cross_start_next ?? 0,
+        fade_in: formValue.fade_in ?? 0,
+        fade_out: formValue.fade_out ?? 0,
+    };
+});
+
 const playAudio = () => {
     $waveform.value?.play();
 };
@@ -107,50 +132,63 @@ const stopAudio = () => {
 };
 
 const updateRegions = () => {
-    const duration = $waveform.value?.getDuration();
-
-    const {
-        cue_in = 0,
-        cue_out = duration,
-        cross_start_next: fade_start_next = 0,
-        fade_in = 0,
-        fade_out = 0,
-    } = form.value;
-
-    $waveform.value?.clearRegions();
+    const {cue_in, cue_out, cross_start_next, fade_in, fade_out} = cueValues;
+    const newRegions: RegionParams[] = [];
 
     // Create cue region
-    $waveform.value?.addRegion(cue_in, cue_out, 'hsla(207,90%,54%,0.4)');
+    newRegions.push({
+        start: cue_in,
+        end: cue_out,
+        color: 'hsla(207,90%,54%,0.4)'
+    });
 
     // Create fade start next region
-    if (fade_start_next > cue_in) {
-        $waveform.value?.addRegion(fade_start_next, cue_out, 'hsla(29,100%,48%,0.4)');
+    if (cross_start_next > cue_in) {
+        newRegions.push({
+            start: cross_start_next,
+            end: cue_out,
+            color: 'hsla(29,100%,48%,0.4)'
+        });
     }
 
     // Create fade regions
     if (fade_in) {
-        $waveform.value?.addRegion(cue_in, fade_in + cue_in, 'hsla(351,100%,48%,0.4)');
+        newRegions.push({
+            start: cue_in,
+            end: fade_in + cue_in,
+            color: 'hsla(351,100%,48%,0.4)'
+        });
     }
+
     if (fade_out) {
-        $waveform.value?.addRegion(cue_out - fade_out, cue_out, 'hsla(351,100%,48%,0.4)');
+        newRegions.push({
+            start: cue_out - fade_out,
+            end: cue_out,
+            color: 'hsla(351,100%,48%,0.4)'
+        });
     }
+
+    regions.value = newRegions;
 };
+
+watch(cueValues, () => {
+    updateRegions()
+}, {
+    immediate: true
+});
 
 const waveformToFloat = (value) => Math.round((value) * 10) / 10;
 
 const setCueIn = () => {
     form.value.extra_metadata.cue_in = waveformToFloat($waveform.value?.getCurrentTime());
-    updateRegions();
 };
 
 const setCueOut = () => {
     form.value.extra_metadata.cue_out = waveformToFloat($waveform.value?.getCurrentTime());
-    updateRegions();
 };
 
 const setFadeStartNext = () => {
     form.value.extra_metadata.cross_start_next = waveformToFloat($waveform.value?.getCurrentTime());
-    updateRegions();
 };
 
 const setFadeIn = () => {
@@ -158,7 +196,6 @@ const setFadeIn = () => {
     const cue_in = form.value.extra_metadata.cue_in ?? 0;
 
     form.value.extra_metadata.fade_in = waveformToFloat(currentTime - cue_in);
-    updateRegions();
 }
 
 const setFadeOut = () => {
@@ -167,6 +204,5 @@ const setFadeOut = () => {
     const cue_out = form.value.extra_metadata.cue_out ?? duration;
 
     form.value.extra_metadata.fade_out = waveformToFloat(cue_out - currentTime);
-    updateRegions();
 };
 </script>

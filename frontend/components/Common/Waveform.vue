@@ -60,22 +60,30 @@
 
 <script setup lang="ts">
 import WS from 'wavesurfer.js';
-import timeline from 'wavesurfer.js/dist/plugins/timeline.js';
-import regions from 'wavesurfer.js/dist/plugins/regions.js';
+import timelinePlugin from 'wavesurfer.js/dist/plugins/timeline.js';
+import regionsPlugin, {RegionParams} from 'wavesurfer.js/dist/plugins/regions.js';
 import getLogarithmicVolume from '~/functions/getLogarithmicVolume';
-import {onMounted, onUnmounted, ref, watch} from "vue";
+import {onMounted, onUnmounted, ref, toRef, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
 import usePlayerVolume from "~/functions/usePlayerVolume";
 import useShowVolume from "~/functions/useShowVolume.ts";
 import MuteButton from "~/components/Common/MuteButton.vue";
 
-const props = defineProps<{
-    audioUrl: string,
-    waveformUrl: string,
-    waveformCacheUrl?: string,
-}>();
+const props = withDefaults(
+    defineProps<{
+        regions?: RegionParams[],
+        audioUrl: string,
+        waveformUrl: string,
+        waveformCacheUrl?: string,
+    }>(),
+    {
+        regions: () => [],
+    }
+);
 
-const emit = defineEmits(['ready']);
+const emit = defineEmits<{
+    (e: 'ready', duration: number): void
+}>();
 
 let wavesurfer = null;
 let wsRegions = null;
@@ -137,18 +145,18 @@ onMounted(() => {
         progressColor: '#4081CF',
     });
 
-    wavesurfer.registerPlugin(timeline.create());
+    wavesurfer.registerPlugin(timelinePlugin.create());
 
-    wsRegions = wavesurfer.registerPlugin(regions.create());
+    wsRegions = wavesurfer.registerPlugin(regionsPlugin.create());
 
-    wavesurfer.on('ready', () => {
+    wavesurfer.on('ready', (duration: number) => {
         wavesurfer.setVolume(getLogarithmicVolume(volume.value));
 
         if (!isExternalJson.value) {
             cacheWaveformRemotely();
         }
 
-        emit('ready');
+        emit('ready', duration);
     });
 
     axiosSilent.get(props.waveformUrl).then((resp) => {
@@ -166,6 +174,23 @@ onMounted(() => {
         wavesurfer.load(props.audioUrl);
     });
 });
+
+watch(
+    toRef(props, 'regions'),
+    (regions: RegionParams[]) => {
+        wsRegions?.clearRegions();
+
+        regions.forEach((region) => {
+            wsRegions?.addRegion(
+                {
+                    resize: false,
+                    drag: false,
+                    ...region,
+                }
+            );
+        });
+    },
+);
 
 onUnmounted(() => {
     wavesurfer = null;
@@ -187,29 +212,11 @@ const getDuration = () => {
     return wavesurfer?.getDuration();
 }
 
-const addRegion = (start, end, color) => {
-    wsRegions?.addRegion(
-        {
-            start: start,
-            end: end,
-            resize: false,
-            drag: false,
-            color: color
-        }
-    );
-};
-
-const clearRegions = () => {
-    wsRegions?.clearRegions();
-}
-
 defineExpose({
     play,
     stop,
     getCurrentTime,
     getDuration,
-    addRegion,
-    clearRegions
 })
 </script>
 

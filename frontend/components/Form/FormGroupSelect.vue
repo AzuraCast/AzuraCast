@@ -24,17 +24,22 @@
         <template #default>
             <slot
                 name="default"
-                v-bind="{ id, field, model, class: fieldClass }"
+                v-bind="{ id, field, model, options, multiple, class: fieldClass }"
             >
-                <select
+                <form-multi-select
+                    v-if="multiple"
                     :id="id"
                     v-model="model"
-                    class="form-select"
                     :class="fieldClass"
-                    :multiple="multiple"
-                >
-                    <select-options :options="options" />
-                </select>
+                    :options="options"
+                />
+                <form-select
+                    v-else
+                    :id="id"
+                    v-model="model"
+                    :class="fieldClass"
+                    :options="options"
+                />
             </slot>
 
             <vuelidate-error
@@ -62,9 +67,10 @@ import VuelidateError from "./VuelidateError.vue";
 import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import {FormFieldEmits, FormFieldProps, ModelFormField, useFormField} from "~/components/Form/useFormField";
-import SelectOptions from "~/components/Form/SelectOptions.vue";
 import {useSlots} from "vue";
 import {NestedFormOptionInput} from "~/functions/objectToFormOptions.ts";
+import FormSelect from "~/components/Form/FormSelect.vue";
+import FormMultiSelect from "~/components/Form/FormMultiSelect.vue";
 
 interface FormGroupSelectProps extends FormFieldProps<T>, FormLabelParentProps {
     id: string,

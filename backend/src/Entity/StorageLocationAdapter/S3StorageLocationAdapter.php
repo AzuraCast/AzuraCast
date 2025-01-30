@@ -60,6 +60,7 @@ final class S3StorageLocationAdapter extends AbstractStorageLocationLocationAdap
                 'version' => $this->storageLocation->getS3Version(),
                 'endpoint' => $this->storageLocation->getS3Endpoint(),
                 'use_path_style_endpoint' => $this->storageLocation->getS3UsePathStyle(),
+                'request_checksum_calculation' => 'when_required',
                 'options' => [
                     'ACL' => '',
                 ],

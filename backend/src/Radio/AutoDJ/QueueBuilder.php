@@ -451,7 +451,27 @@ final class QueueBuilder implements EventSubscriberInterface
 
         $expectedPlayTime = $event->getExpectedPlayTime();
 
-        $request = $this->requestRepo->getNextPlayableRequest($event->getStation(), $expectedPlayTime);
+        // Check if a "Once per x Songs" playlist in "Jinge Mode" is due RIGHT NOW.
+        $station = $event->getStation();
+        foreach ($station->getPlaylists() as $playlist) {
+            // Only consider playlists that are playable.
+            if (!$playlist->isPlayable($event->isInterrupting())) {
+                continue;
+            }
+
+            if (
+                PlaylistTypes::OncePerXSongs === $playlist->getType()
+                && $playlist->getIsJingle()
+            ) {
+                if ($this->scheduler->shouldPlaylistPlayNow($playlist, $expectedPlayTime)) {
+                    // Jingle is due RIGHT NOW, so skip listener requests here.
+                    return;
+                }
+            }
+        }
+
+        // No Jingle is due now, so proceed with normal request logic
+        $request = $this->requestRepo->getNextPlayableRequest($station, $expectedPlayTime);
         if (null === $request) {
             return;
         }
@@ -464,6 +484,7 @@ final class QueueBuilder implements EventSubscriberInterface
         $request->setPlayedAt($expectedPlayTime->getTimestamp());
         $this->em->persist($request);
 
+        // Register this request as the next song(s).
         $event->setNextSongs($stationQueueEntry);
     }
 }

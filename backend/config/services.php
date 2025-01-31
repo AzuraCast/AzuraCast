@@ -140,6 +140,8 @@ return [
         $config->addCustomNumericFunction('RAND', DoctrineExtensions\Query\Mysql\Rand::class);
         $config->addCustomStringFunction('FIELD', DoctrineExtensions\Query\Mysql\Field::class);
 
+        Doctrine\DBAL\Types\Type::overrideType('datetime_immutable', Carbon\Doctrine\DateTimeImmutableType::class);
+
         $eventManager = new Doctrine\Common\EventManager();
         $eventManager->addEventSubscriber($eventRequiresRestart);
         $eventManager->addEventSubscriber($eventAuditLog);

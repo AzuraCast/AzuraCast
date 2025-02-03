@@ -9,6 +9,7 @@ use App\Entity\StationStreamer;
 use App\Entity\StationStreamerBroadcast;
 use App\Flysystem\StationFilesystems;
 use App\Media\AlbumArt;
+use App\Utilities\Time;
 
 /**
  * @extends AbstractStationBasedRepository<StationStreamer>
@@ -46,7 +47,7 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
     public function onDisconnect(Station $station): bool
     {
         foreach ($this->broadcastRepo->getActiveBroadcasts($station) as $broadcast) {
-            $broadcast->setTimestampEnd(time());
+            $broadcast->setTimestampEnd(Time::nowUtc());
             $this->em->persist($broadcast);
         }
 

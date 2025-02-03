@@ -100,8 +100,8 @@ final class HistoryAction implements SingleActionInterface
             ->andWhere('sh.timestamp_start >= :start AND sh.timestamp_start <= :end')
             ->andWhere('sh.listeners_start IS NOT NULL')
             ->setParameter('station_id', $station->getId())
-            ->setParameter('start', $start->getTimestamp())
-            ->setParameter('end', $end->getTimestamp());
+            ->setParameter('start', $start)
+            ->setParameter('end', $end);
 
         $format = $request->getQueryParam('format', 'json');
 

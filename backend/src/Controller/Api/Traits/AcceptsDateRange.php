@@ -6,6 +6,7 @@ namespace App\Controller\Api\Traits;
 
 use App\Http\ServerRequest;
 use App\Utilities\DateRange;
+use App\Utilities\Time;
 use App\Utilities\Types;
 use Carbon\CarbonImmutable;
 use DateTimeZone;
@@ -19,7 +20,7 @@ trait AcceptsDateRange
         string $startParam = 'start',
         string $endParam = 'end'
     ): DateRange {
-        $tz ??= new DateTimeZone('UTC');
+        $tz ??= Time::getUtc();
 
         $default ??= new DateRange(
             (new CarbonImmutable('-2 weeks', $tz))->startOf('day'),

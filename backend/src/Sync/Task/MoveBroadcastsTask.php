@@ -9,6 +9,8 @@ use App\Entity\Repository\StationStreamerBroadcastRepository;
 use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\StationStreamerBroadcast;
 use App\Entity\StorageLocation;
+use App\Utilities\Time;
+use Carbon\CarbonImmutable;
 use Symfony\Component\Finder\Finder;
 use Throwable;
 
@@ -85,7 +87,10 @@ final class MoveBroadcastsTask extends AbstractTask
                 $broadcast = $this->broadcastRepo->getOrCreateFromPath($station, $recordingPath);
                 if (null !== $broadcast) {
                     if (null === $broadcast->getTimestampEnd()) {
-                        $broadcast->setTimestampEnd($file->getMTime() ?: time());
+                        $mtime = $file->getMTime();
+                        $broadcast->setTimestampEnd(
+                            $mtime ? CarbonImmutable::createFromTimestampUTC($mtime) : Time::nowUtc()
+                        );
                     }
 
                     $this->em->persist($broadcast);

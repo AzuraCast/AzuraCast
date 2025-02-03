@@ -63,7 +63,7 @@ final class StationStreamerBroadcastRepository extends Repository
     {
         return $this->repository->findBy([
             'station' => $station,
-            'timestampEnd' => 0,
+            'timestampEnd' => null,
         ]);
     }
 
@@ -129,7 +129,7 @@ final class StationStreamerBroadcastRepository extends Repository
 
         assert($record instanceof StationStreamerBroadcast);
 
-        $record->setTimestampStart($startTime->getTimestamp());
+        $record->setTimestampStart($startTime);
         $record->setRecordingPath($recordingPath);
         return $record;
     }

@@ -6,10 +6,13 @@ namespace App\Utilities;
 
 use Carbon\CarbonImmutable;
 use Carbon\CarbonTimeZone;
+use DateTimeInterface;
 use DateTimeZone;
 
 final class Time
 {
+    public const string DB_DATETIME_FORMAT = 'Y-m-d\TH:i:s.uP';
+
     public static function getUtc(): CarbonTimeZone
     {
         static $utc;
@@ -24,6 +27,11 @@ final class Time
     public static function nowUtc(): CarbonImmutable
     {
         return CarbonImmutable::now(self::getUtc());
+    }
+
+    public static function toDatabaseDateTime(DateTimeInterface $dateTime): string
+    {
+        return $dateTime->format(self::DB_DATETIME_FORMAT);
     }
 
     public static function displayTimeToSeconds(string|float|int|null $seconds = null): ?float

@@ -9,7 +9,7 @@ use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Entity\StationQueue;
-use Carbon\CarbonImmutable;
+use App\Utilities\Time;
 use Carbon\CarbonInterface;
 use Doctrine\ORM\QueryBuilder;
 
@@ -120,7 +120,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
         CarbonInterface $now,
         int $minutes
     ): array {
-        $threshold = $now->subMinutes($minutes)->getTimestamp();
+        $threshold = $now->subMinutes($minutes);
 
         return $this->em->createQuery(
             <<<'DQL'
@@ -228,9 +228,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
 
     public function cleanup(int $daysToKeep): void
     {
-        $threshold = CarbonImmutable::now()
-            ->subDays($daysToKeep)
-            ->getTimestamp();
+        $threshold = Time::nowUtc()->subDays($daysToKeep);
 
         $this->em->createQuery(
             <<<'DQL'

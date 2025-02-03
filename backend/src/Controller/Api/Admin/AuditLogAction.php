@@ -33,8 +33,8 @@ final class AuditLogAction
         $qb->select('a')
             ->from(AuditLog::class, 'a')
             ->andWhere('a.timestamp >= :start AND a.timestamp <= :end')
-            ->setParameter('start', $start->getTimestamp())
-            ->setParameter('end', $end->getTimestamp());
+            ->setParameter('start', $start)
+            ->setParameter('end', $end);
 
         $searchPhrase = trim(
             Types::string($request->getQueryParam('searchPhrase'))

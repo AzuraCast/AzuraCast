@@ -7,6 +7,7 @@ namespace App\Entity\Repository;
 use App\Entity\Interfaces\SongInterface;
 use App\Entity\SongHistory;
 use App\Entity\Station;
+use App\Utilities\Time;
 use Carbon\CarbonImmutable;
 use RuntimeException;
 
@@ -108,7 +109,7 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
                 $this->listenerRepository->getUniqueListeners(
                     $station,
                     $previousCurrentSong->getTimestampStart(),
-                    time()
+                    Time::nowUtc()
                 )
             );
 

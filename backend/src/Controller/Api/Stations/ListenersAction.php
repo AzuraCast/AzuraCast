@@ -17,6 +17,7 @@ use App\Entity\Station;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
+use App\Utilities\Types;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\AbstractQuery;
 use League\Csv\Writer;
@@ -74,11 +75,11 @@ final class ListenersAction implements SingleActionInterface
 
         $isLive = empty($queryParams['start']);
         $now = CarbonImmutable::now($stationTz);
+        $nowTimestamp = $now->getTimestamp();
 
         if ($isLive) {
             $range = 'live';
-            $startTimestamp = $now->getTimestamp();
-            $endTimestamp = $now->getTimestamp();
+            $startTimestamp = $endTimestamp = $nowTimestamp;
 
             $listenersIterator = $this->listenerRepo->iterateLiveListenersArray($station);
         } else {
@@ -98,12 +99,12 @@ final class ListenersAction implements SingleActionInterface
                     FROM App\Entity\Listener l
                     WHERE l.station = :station
                     AND l.timestamp_start < :time_end
-                    AND (l.timestamp_end = 0 OR l.timestamp_end > :time_start)
+                    AND (l.timestamp_end IS NULL OR l.timestamp_end > :time_start)
                     ORDER BY l.timestamp_start ASC
                 DQL
             )->setParameter('station', $station)
-                ->setParameter('time_start', $startTimestamp)
-                ->setParameter('time_end', $endTimestamp)
+                ->setParameter('time_start', $start)
+                ->setParameter('time_end', $end)
                 ->toIterable([], AbstractQuery::HYDRATE_ARRAY);
         }
 
@@ -115,11 +116,12 @@ final class ListenersAction implements SingleActionInterface
         $listeners = [];
         $listenersByHash = [];
 
-        $groupByUnique = ('false' !== ($queryParams['unique'] ?? 'true'));
-        $nowTimestamp = $now->getTimestamp();
+        $groupByUnique = Types::bool($queryParams['unique'] ?? null, true, true);
 
         foreach ($listenersIterator as $listener) {
-            $listenerStart = $listener['timestamp_start'];
+            /** @var CarbonImmutable $listenerStartObj */
+            $listenerStartObj = $listener['timestamp_start'];
+            $listenerStart = $listenerStartObj->getTimestamp();
 
             if ($isLive) {
                 $listenerEnd = $nowTimestamp;
@@ -128,8 +130,11 @@ final class ListenersAction implements SingleActionInterface
                     $listenerStart = $startTimestamp;
                 }
 
-                $listenerEnd = $listener['timestamp_end'];
-                if (0 === $listenerEnd || $listenerEnd > $endTimestamp) {
+                /** @var CarbonImmutable|null $listenerEndObj */
+                $listenerEndObj = $listener['timestamp_end'];
+                $listenerEnd = $listenerEndObj?->getTimestamp() ?? null;
+
+                if (null === $listenerEnd || $listenerEnd > $endTimestamp) {
                     $listenerEnd = $endTimestamp;
                 }
             }

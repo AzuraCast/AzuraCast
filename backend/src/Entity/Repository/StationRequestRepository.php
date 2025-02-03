@@ -9,6 +9,7 @@ use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationRequest;
 use App\Radio\AutoDJ;
+use App\Utilities\Time;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Exception as PhpException;
@@ -42,7 +43,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
             <<<'DQL'
                 DELETE FROM App\Entity\StationRequest sr
                 WHERE sr.station = :station
-                AND sr.played_at = 0
+                AND sr.played_at IS NULL
             DQL
         )->setParameter('station', $station)
             ->execute();
@@ -53,7 +54,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
      */
     public function isTrackPending(StationMedia $media, Station $station): bool
     {
-        $pendingRequestThreshold = time() - (60 * 10);
+        $pendingRequestThreshold = Time::nowUtc()->subMinutes(10);
 
         try {
             $pendingRequest = $this->em->createQuery(
@@ -62,7 +63,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
                     FROM App\Entity\StationRequest sr
                     WHERE sr.track_id = :track_id
                     AND sr.station_id = :station_id
-                    AND (sr.timestamp >= :threshold OR sr.played_at = 0)
+                    AND (sr.timestamp >= :threshold OR sr.played_at IS NULL)
                     ORDER BY sr.timestamp DESC
                 DQL
             )->setParameter('track_id', $media->getId())
@@ -88,7 +89,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
             <<<'DQL'
                 SELECT sr, sm
                 FROM App\Entity\StationRequest sr JOIN sr.track sm
-                WHERE sr.played_at = 0
+                WHERE sr.played_at IS NULL
                 AND sr.station = :station
                 ORDER BY sr.skip_delay DESC, sr.id ASC
             DQL
@@ -113,7 +114,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
             return false;
         }
 
-        $lastPlayThreshold = time() - ($lastPlayThresholdMins * 60);
+        $lastPlayThreshold = Time::nowUtc()->subMinutes($lastPlayThresholdMins);
 
         $recentTracks = $this->em->createQuery(
             <<<'DQL'

@@ -88,7 +88,7 @@ const batchUrl = ref(null);
 
 const {$gettext} = useTranslate();
 
-const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
+const {formatIsoAsDateTime} = useStationDateTimeFormatter();
 
 const fields: DataTableField[] = [
     {
@@ -101,7 +101,7 @@ const fields: DataTableField[] = [
         key: 'timestampStart',
         label: $gettext('Start Time'),
         sortable: false,
-        formatter: (value) => formatTimestampAsDateTime(value),
+        formatter: (value) => formatIsoAsDateTime(value),
         class: 'ps-3'
     },
     {
@@ -109,9 +109,9 @@ const fields: DataTableField[] = [
         label: $gettext('End Time'),
         sortable: false,
         formatter: (value) => {
-            return value === 0
+            return value === null
                 ? $gettext('Live')
-                : formatTimestampAsDateTime(value);
+                : formatIsoAsDateTime(value);
         }
     },
     {

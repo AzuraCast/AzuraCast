@@ -56,14 +56,14 @@
             :api-url="listUrlForType"
         >
             <template #cell(timestamp)="row">
-                {{ formatTimestampAsDateTime(row.item.timestamp) }}
+                {{ formatIsoAsDateTime(row.item.timestamp) }}
             </template>
             <template #cell(played_at)="row">
-                <span v-if="row.item.played_at === 0">
+                <span v-if="row.item.played_at === null">
                     {{ $gettext('Not Played') }}
                 </span>
                 <span v-else>
-                    {{ formatTimestampAsDateTime(row.item.played_at) }}
+                    {{ formatIsoAsDateTime(row.item.played_at) }}
                 </span>
             </template>
             <template #cell(song_title)="row">
@@ -145,7 +145,7 @@ const setType = (type) => {
     void nextTick(relist);
 };
 
-const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
+const {formatIsoAsDateTime} = useStationDateTimeFormatter();
 
 const {confirmDelete} = useDialog();
 const {notifySuccess} = useNotify();

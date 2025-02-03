@@ -26,9 +26,10 @@ final class SongHistoryApiGenerator
     ): SongHistory {
         $response = new SongHistory();
         $response->sh_id = $record->getIdRequired();
-        $response->played_at = (0 === $record->getTimestampStart())
-            ? 0
-            : $record->getTimestampStart() + SongHistoryEntity::PLAYBACK_DELAY_SECONDS;
+
+        $response->played_at = $record->getTimestampStart()
+            ->addSeconds(SongHistoryEntity::PLAYBACK_DELAY_SECONDS)->getTimestamp();
+
         $response->duration = (int)$record->getDuration();
         $response->is_request = ($record->getRequest() !== null);
         if ($record->getPlaylist() instanceof StationPlaylist) {

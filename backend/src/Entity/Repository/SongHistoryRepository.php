@@ -116,7 +116,6 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
         }
 
         $newCurrentSong->setListenersFromLastSong($previousCurrentSong);
-        $newCurrentSong->setTimestampStart(time());
         $newCurrentSong->updateVisibility();
 
         $currentStreamer = $station->getCurrentStreamer();

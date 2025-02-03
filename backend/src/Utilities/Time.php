@@ -4,8 +4,28 @@ declare(strict_types=1);
 
 namespace App\Utilities;
 
+use Carbon\CarbonImmutable;
+use Carbon\CarbonTimeZone;
+use DateTimeZone;
+
 final class Time
 {
+    public static function getUtc(): CarbonTimeZone
+    {
+        static $utc;
+
+        if (!$utc) {
+            $utc = CarbonTimeZone::create(new DateTimeZone('UTC'));
+        }
+
+        return $utc;
+    }
+
+    public static function nowUtc(): CarbonImmutable
+    {
+        return CarbonImmutable::now(self::getUtc());
+    }
+
     public static function displayTimeToSeconds(string|float|int|null $seconds = null): ?float
     {
         if (null === $seconds || '' === $seconds) {

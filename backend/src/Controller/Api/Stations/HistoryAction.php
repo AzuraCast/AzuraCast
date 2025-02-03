@@ -17,7 +17,6 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Paginator;
 use App\Utilities\Types;
-use Carbon\CarbonImmutable;
 use Doctrine\ORM\Query;
 use League\Csv\Writer;
 use OpenApi\Attributes as OA;
@@ -169,12 +168,11 @@ final class HistoryAction implements SingleActionInterface
             'Streamer',
         ]);
 
+        $stationTz = $station->getTimezoneObject();
+
         /** @var SongHistory $sh */
         foreach (ReadOnlyBatchIteratorAggregate::fromQuery($query, 100) as $sh) {
-            $datetime = CarbonImmutable::createFromTimestamp(
-                $sh->getTimestampStart(),
-                $station->getTimezoneObject()
-            );
+            $datetime = $sh->getTimestampStart()->shiftTimezone($stationTz);
 
             $playlist = $sh->getPlaylist();
             $playlistName = (null !== $playlist)

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
-use Carbon\CarbonImmutable;
+use App\Utilities\Time as TimeUtilities;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -33,7 +33,7 @@ final class Time
 
     public function __construct()
     {
-        $now = CarbonImmutable::now('UTC');
+        $now = TimeUtilities::nowUtc();
 
         $this->timestamp = $now->getTimestamp();
         $this->utc_datetime = $now->format('Y-m-d g:i:s');

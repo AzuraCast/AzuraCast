@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Utilities\Time;
+use Carbon\CarbonImmutable;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[
@@ -22,6 +25,7 @@ class StationQueue implements
     use Traits\HasAutoIncrementId;
     use Traits\TruncateInts;
     use Traits\HasSongFields;
+    use Traits\HandleDateTimes;
 
     public const int DAYS_TO_KEEP = 7;
     public const int QUEUE_LOG_TTL = 86400;
@@ -66,22 +70,21 @@ class StationQueue implements
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $autodj_custom_uri = null;
 
-    #[ORM\Column]
-    protected int $timestamp_cued;
+    #[ORM\Column(type: 'datetime_immutable', precision: 6)]
+    protected CarbonImmutable $timestamp_cued;
 
-    #[ORM\Column]
-    protected int $timestamp_played;
+    #[ORM\Column(type: 'datetime_immutable', precision: 6, nullable: true)]
+    protected ?CarbonImmutable $timestamp_played = null;
 
-    #[ORM\Column(nullable: true)]
-    protected ?int $duration = null;
+    #[ORM\Column(type: 'float', nullable: true)]
+    protected ?float $duration = null;
 
     public function __construct(Station $station, Interfaces\SongInterface $song)
     {
         $this->setSong($song);
         $this->station = $station;
 
-        $this->timestamp_cued = time();
-        $this->timestamp_played = time();
+        $this->timestamp_cued = Time::nowUtc();
     }
 
     public function getStation(): Station
@@ -133,22 +136,22 @@ class StationQueue implements
         $this->autodj_custom_uri = $autodjCustomUri;
     }
 
-    public function getTimestampCued(): int
+    public function getTimestampCued(): CarbonImmutable
     {
         return $this->timestamp_cued;
     }
 
-    public function setTimestampCued(int $timestampCued): void
+    public function setTimestampCued(string|int|float|DateTimeInterface $timestampCued): void
     {
-        $this->timestamp_cued = $timestampCued;
+        $this->timestamp_cued = $this->toUtcCarbonImmutable($timestampCued);
     }
 
-    public function getDuration(): ?int
+    public function getDuration(): ?float
     {
         return $this->duration;
     }
 
-    public function setDuration(?int $duration): void
+    public function setDuration(?float $duration): void
     {
         $this->duration = $duration;
     }
@@ -192,14 +195,14 @@ class StationQueue implements
         $this->is_visible = !($this->playlist instanceof StationPlaylist) || !$this->playlist->getIsJingle();
     }
 
-    public function getTimestampPlayed(): int
+    public function getTimestampPlayed(): ?CarbonImmutable
     {
         return $this->timestamp_played;
     }
 
-    public function setTimestampPlayed(int $timestampPlayed): void
+    public function setTimestampPlayed(string|int|float|DateTimeInterface|null $timestampPlayed): void
     {
-        $this->timestamp_played = $timestampPlayed;
+        $this->timestamp_played = $this->toNullableUtcCarbonImmutable($timestampPlayed);
     }
 
     public function __toString(): string

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Interfaces\IdentifiableEntityInterface;
+use App\Utilities\Time;
 use Carbon\CarbonImmutable;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use Stringable;
@@ -22,6 +24,7 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface, Stringabl
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
+    use Traits\HandleDateTimes;
 
     public const string PATH_PREFIX = 'stream';
 
@@ -37,11 +40,11 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface, Stringabl
     ]
     protected StationStreamer $streamer;
 
-    #[ORM\Column(name: 'timestamp_start')]
-    protected int $timestampStart = 0;
+    #[ORM\Column(name: 'timestamp_start', type: 'datetime_immutable', precision: 6)]
+    protected CarbonImmutable $timestampStart;
 
-    #[ORM\Column(name: 'timestamp_end')]
-    protected int $timestampEnd = 0;
+    #[ORM\Column(name: 'timestamp_end', type: 'datetime_immutable', precision: 6, nullable: true)]
+    protected ?CarbonImmutable $timestampEnd = null;
 
     #[ORM\Column(name: 'recording_path', length: 255, nullable: true)]
     protected ?string $recordingPath = null;
@@ -51,7 +54,7 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface, Stringabl
         $this->streamer = $streamer;
         $this->station = $streamer->getStation();
 
-        $this->timestampStart = time();
+        $this->timestampStart = Time::nowUtc();
     }
 
     public function getStation(): Station
@@ -64,24 +67,24 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface, Stringabl
         return $this->streamer;
     }
 
-    public function getTimestampStart(): int
+    public function getTimestampStart(): CarbonImmutable
     {
         return $this->timestampStart;
     }
 
-    public function setTimestampStart(int $timestampStart): void
+    public function setTimestampStart(string|int|float|DateTimeInterface $timestampStart): void
     {
-        $this->timestampStart = $timestampStart;
+        $this->timestampStart = $this->toUtcCarbonImmutable($timestampStart);
     }
 
-    public function getTimestampEnd(): int
+    public function getTimestampEnd(): ?CarbonImmutable
     {
         return $this->timestampEnd;
     }
 
-    public function setTimestampEnd(int $timestampEnd): void
+    public function setTimestampEnd(string|int|float|DateTimeInterface|null $timestampEnd): void
     {
-        $this->timestampEnd = $timestampEnd;
+        $this->timestampEnd = $this->toNullableUtcCarbonImmutable($timestampEnd);
     }
 
     public function getRecordingPath(): ?string
@@ -96,11 +99,12 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface, Stringabl
 
     public function __toString(): string
     {
-        return (CarbonImmutable::createFromTimestamp($this->timestampStart, 'UTC'))->toAtomString()
-            . '-'
-            . (0 !== $this->timestampEnd
-                ? (CarbonImmutable::createFromTimestamp($this->timestampEnd, 'UTC'))->toAtomString()
+        return sprintf(
+            "%s-%s",
+            $this->timestampStart->toAtomString(),
+            (null !== $this->timestampEnd)
+                ? $this->timestampEnd->toAtomString()
                 : 'Now'
-            );
+        );
     }
 }

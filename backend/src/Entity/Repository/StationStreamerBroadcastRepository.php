@@ -118,8 +118,8 @@ final class StationStreamerBroadcastRepository extends Repository
             AND ssb.recordingPath IS NULL  
             DQL
         )->setParameter('streamer', $streamer)
-            ->setParameter('start', $startTime->subMinute()->getTimestamp())
-            ->setParameter('end', $startTime->addMinute()->getTimestamp())
+            ->setParameter('start', $startTime->subMinute())
+            ->setParameter('end', $startTime->addMinute())
             ->setMaxResults(1)
             ->getOneOrNullResult();
 

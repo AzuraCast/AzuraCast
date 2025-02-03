@@ -8,7 +8,7 @@ use App\Console\Application;
 use App\Container\SettingsAwareTrait;
 use App\Entity\StationSchedule;
 use App\Message;
-use Carbon\CarbonImmutable;
+use App\Utilities\Time;
 use Carbon\CarbonInterface;
 use Symfony\Component\Messenger\MessageBus;
 
@@ -95,7 +95,7 @@ final class RunBackupTask extends AbstractTask
             return;
         }
 
-        $nowUtc = CarbonImmutable::now('UTC');
+        $nowUtc = Time::nowUtc();
 
         $threshold = $nowUtc->subDay()->getTimestamp();
         $lastRun = $settings->getBackupLastRun();

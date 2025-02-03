@@ -84,7 +84,7 @@ final class MoveBroadcastsTask extends AbstractTask
 
                 $broadcast = $this->broadcastRepo->getOrCreateFromPath($station, $recordingPath);
                 if (null !== $broadcast) {
-                    if (0 === $broadcast->getTimestampEnd()) {
+                    if (null === $broadcast->getTimestampEnd()) {
                         $broadcast->setTimestampEnd($file->getMTime() ?: time());
                     }
 

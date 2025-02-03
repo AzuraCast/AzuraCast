@@ -52,7 +52,7 @@ final class Queue
         if (null !== $currentSong) {
             $expectedPlayTime = $this->addDurationToTime(
                 $station,
-                CarbonImmutable::createFromTimestamp($currentSong->getTimestampStart(), $tzObject),
+                $currentSong->getTimestampStart()->shiftTimezone($tzObject),
                 $currentSong->getDuration()
             );
 
@@ -77,7 +77,7 @@ final class Queue
             if ($queueRow->getSentToAutodj()) {
                 $expectedCueTime = $this->addDurationToTime(
                     $station,
-                    CarbonImmutable::createFromTimestamp($queueRow->getTimestampCued(), $tzObject),
+                    $queueRow->getTimestampCued()->shiftTimezone($tzObject),
                     $queueRow->getDuration()
                 );
 
@@ -90,7 +90,7 @@ final class Queue
                     continue;
                 }
 
-                $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
+                $queueRow->setTimestampCued($expectedCueTime);
                 $expectedCueTime = $this->addDurationToTime($station, $expectedCueTime, $queueRow->getDuration());
 
                 // Only append to queue length for uncued songs.
@@ -141,8 +141,8 @@ final class Queue
             }
 
             foreach ($nextSongs as $queueRow) {
-                $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
-                $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
+                $queueRow->setTimestampCued($expectedCueTime);
+                $queueRow->setTimestampPlayed($expectedPlayTime);
                 $queueRow->updateVisibility();
                 $this->em->persist($queueRow);
                 $this->em->flush();
@@ -216,8 +216,8 @@ final class Queue
 
         foreach ($nextSongs as $queueRow) {
             $queueRow->setIsPlayed();
-            $queueRow->setTimestampCued($expectedPlayTime->getTimestamp());
-            $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
+            $queueRow->setTimestampCued($expectedPlayTime);
+            $queueRow->setTimestampPlayed($expectedPlayTime);
             $queueRow->updateVisibility();
 
             $this->em->persist($queueRow);
@@ -238,7 +238,7 @@ final class Queue
     private function addDurationToTime(
         Station $station,
         CarbonInterface $now,
-        ?int $duration
+        ?float $duration
     ): CarbonInterface {
         $duration ??= 1;
 

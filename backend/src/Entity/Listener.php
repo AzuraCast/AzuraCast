@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Carbon\CarbonImmutable;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use NowPlaying\Result\Client;
 
@@ -21,6 +23,7 @@ class Listener implements
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
+    use Traits\HandleDateTimes;
 
     #[ORM\ManyToOne(inversedBy: 'history')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
@@ -62,11 +65,11 @@ class Listener implements
     #[ORM\Column(length: 32)]
     protected string $listener_hash;
 
-    #[ORM\Column]
-    protected int $timestamp_start;
+    #[ORM\Column(type: 'datetime_immutable', precision: 6)]
+    protected CarbonImmutable $timestamp_start;
 
-    #[ORM\Column]
-    protected int $timestamp_end;
+    #[ORM\Column(type: 'datetime_immutable', precision: 6, nullable: true)]
+    protected ?CarbonImmutable $timestamp_end = null;
 
     #[ORM\Embedded(class: ListenerLocation::class, columnPrefix: 'location_')]
     protected ListenerLocation $location;
@@ -78,8 +81,7 @@ class Listener implements
     {
         $this->station = $station;
 
-        $this->timestamp_start = time();
-        $this->timestamp_end = 0;
+        $this->timestamp_start = CarbonImmutable::now('UTC');
 
         $this->listener_uid = (int)$client->uid;
         $this->listener_user_agent = $this->truncateString($client->userAgent);
@@ -160,29 +162,33 @@ class Listener implements
         return $this->listener_hash;
     }
 
-    public function getTimestampStart(): int
+    public function getTimestampStart(): CarbonImmutable
     {
         return $this->timestamp_start;
     }
 
-    public function getTimestamp(): int
+    public function getTimestamp(): CarbonImmutable
     {
         return $this->timestamp_start;
     }
 
-    public function getTimestampEnd(): int
+    public function getTimestampEnd(): ?CarbonImmutable
     {
         return $this->timestamp_end;
     }
 
-    public function setTimestampEnd(int $timestampEnd): void
+    public function setTimestampEnd(string|int|float|DateTimeInterface|null $timestampEnd): void
     {
-        $this->timestamp_end = $timestampEnd;
+        $this->timestamp_end = $this->toNullableUtcCarbonImmutable($timestampEnd);
     }
 
     public function getConnectedSeconds(): int
     {
-        return $this->timestamp_end - $this->timestamp_start;
+        if (null === $this->timestamp_end) {
+            return 0;
+        }
+
+        return (int)$this->timestamp_start->diffInSeconds($this->timestamp_end, true);
     }
 
     public function getLocation(): ListenerLocation

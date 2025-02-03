@@ -461,7 +461,7 @@ final class QueueBuilder implements EventSubscriberInterface
         $stationQueueEntry = StationQueue::fromRequest($request);
         $this->em->persist($stationQueueEntry);
 
-        $request->setPlayedAt($expectedPlayTime->getTimestamp());
+        $request->setPlayedAt($expectedPlayTime);
         $this->em->persist($request);
 
         $event->setNextSongs($stationQueueEntry);

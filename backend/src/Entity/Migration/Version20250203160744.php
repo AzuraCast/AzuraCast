@@ -47,6 +47,12 @@ final class Version20250203160744 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
+        $this->addSql('DROP INDEX IF EXISTS idx_timestamp_start ON song_history');
+        $this->addSql('DROP INDEX IF EXISTS idx_timestamp_end ON song_history');
+        $this->addSql('DROP INDEX IF EXISTS idx_timestamp_played ON station_queue');
+        $this->addSql('DROP INDEX IF EXISTS idx_timestamp_cued ON station_queue');
+        $this->addSql('DROP INDEX IF EXISTS idx_timestamps ON listener');
+
         $this->migrateForwardsToDateTime('audit_log', 'timestamp', false);
         $this->migrateForwardsToDateTime('listener', 'timestamp_start', false);
         $this->migrateForwardsToDateTime('listener', 'timestamp_end', true);
@@ -60,6 +66,12 @@ final class Version20250203160744 extends AbstractMigration
         $this->migrateForwardsToDateTime('station_requests', 'played_at', true);
         $this->migrateForwardsToDateTime('station_streamer_broadcasts', 'timestamp_start', false);
         $this->migrateForwardsToDateTime('station_streamer_broadcasts', 'timestamp_end', true);
+
+        $this->addSql('CREATE INDEX idx_timestamps ON listener (timestamp_end, timestamp_start)');
+        $this->addSql('CREATE INDEX idx_timestamp_start ON song_history (timestamp_start)');
+        $this->addSql('CREATE INDEX idx_timestamp_end ON song_history (timestamp_end)');
+        $this->addSql('CREATE INDEX idx_timestamp_played ON station_queue (timestamp_played)');
+        $this->addSql('CREATE INDEX idx_timestamp_cued ON station_queue (timestamp_cued)');
 
         $this->addSql('ALTER TABLE song_history CHANGE duration duration DOUBLE PRECISION DEFAULT NULL');
         $this->addSql('ALTER TABLE station_media CHANGE length length DOUBLE PRECISION NOT NULL');
@@ -98,6 +110,12 @@ final class Version20250203160744 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
+        $this->addSql('DROP INDEX IF EXISTS idx_timestamp_start ON song_history');
+        $this->addSql('DROP INDEX IF EXISTS idx_timestamp_end ON song_history');
+        $this->addSql('DROP INDEX IF EXISTS idx_timestamp_played ON station_queue');
+        $this->addSql('DROP INDEX IF EXISTS idx_timestamp_cued ON station_queue');
+        $this->addSql('DROP INDEX IF EXISTS idx_timestamps ON listener');
+
         $this->migrateBackFromDateTime('song_history', 'timestamp_start');
         $this->migrateBackFromDateTime('song_history', 'timestamp_end');
         $this->migrateBackFromDateTime('audit_log', 'timestamp');
@@ -111,6 +129,12 @@ final class Version20250203160744 extends AbstractMigration
         $this->migrateBackFromDateTime('listener', 'timestamp_end');
         $this->migrateBackFromDateTime('relays', 'created_at');
         $this->migrateBackFromDateTime('relays', 'updated_at');
+
+        $this->addSql('CREATE INDEX idx_timestamps ON listener (timestamp_end, timestamp_start)');
+        $this->addSql('CREATE INDEX idx_timestamp_start ON song_history (timestamp_start)');
+        $this->addSql('CREATE INDEX idx_timestamp_end ON song_history (timestamp_end)');
+        $this->addSql('CREATE INDEX idx_timestamp_played ON station_queue (timestamp_played)');
+        $this->addSql('CREATE INDEX idx_timestamp_cued ON station_queue (timestamp_cued)');
 
         $this->addSql('ALTER TABLE song_history CHANGE duration duration INT DEFAULT NULL');
         $this->addSql('ALTER TABLE station_media CHANGE length length NUMERIC(7, 2) NOT NULL');

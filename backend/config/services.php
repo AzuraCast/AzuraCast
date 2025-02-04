@@ -77,6 +77,7 @@ return [
                 'charset' => 'utf8mb4',
                 'collate' => 'utf8mb4_general_ci',
             ],
+            'platform' => App\Doctrine\Platform\MariaDbPlatform::class,
             'driverOptions' => [
                 PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4 COLLATE utf8mb4_general_ci; '
                     . 'SET sql_mode=(SELECT REPLACE(@@sql_mode, "ONLY_FULL_GROUP_BY", ""))',
@@ -140,7 +141,10 @@ return [
         $config->addCustomNumericFunction('RAND', DoctrineExtensions\Query\Mysql\Rand::class);
         $config->addCustomStringFunction('FIELD', DoctrineExtensions\Query\Mysql\Field::class);
 
-        Doctrine\DBAL\Types\Type::overrideType('datetime_immutable', Carbon\Doctrine\DateTimeImmutableType::class);
+        Doctrine\DBAL\Types\Type::overrideType(
+            'datetime_immutable',
+            App\Doctrine\Types\UtcCarbonImmutableType::class
+        );
 
         $eventManager = new Doctrine\Common\EventManager();
         $eventManager->addEventSubscriber($eventRequiresRestart);

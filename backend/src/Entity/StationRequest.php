@@ -7,7 +7,6 @@ namespace App\Entity;
 use App\Utilities\Time;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[
@@ -19,7 +18,6 @@ class StationRequest implements
     Interfaces\StationAwareInterface
 {
     use Traits\HasAutoIncrementId;
-    use Traits\HandleDateTimes;
 
     #[ORM\ManyToOne(inversedBy: 'requests')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
@@ -86,9 +84,9 @@ class StationRequest implements
         return $this->played_at;
     }
 
-    public function setPlayedAt(string|int|float|DateTimeInterface|null $playedAt): void
+    public function setPlayedAt(mixed $playedAt): void
     {
-        $this->played_at = $this->toNullableUtcCarbonImmutable($playedAt);
+        $this->played_at = Time::toNullableUtcCarbonImmutable($playedAt);
     }
 
     public function getIp(): string

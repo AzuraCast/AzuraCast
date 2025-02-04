@@ -6,8 +6,8 @@ namespace App\Entity;
 
 use App\Entity\Enums\AnalyticsIntervals;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
+use App\Utilities\Time;
 use Carbon\CarbonImmutable;
-use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use RuntimeException;
 
@@ -20,7 +20,6 @@ use RuntimeException;
 class Analytics implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
-    use Traits\HandleDateTimes;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
@@ -48,7 +47,7 @@ class Analytics implements IdentifiableEntityInterface
     protected ?int $number_unique = null;
 
     public function __construct(
-        string|int|float|DateTimeInterface $moment,
+        mixed $moment,
         ?Station $station = null,
         AnalyticsIntervals $type = AnalyticsIntervals::Daily,
         int $numberMin = 0,
@@ -56,7 +55,7 @@ class Analytics implements IdentifiableEntityInterface
         float $numberAvg = 0,
         ?int $numberUnique = null
     ) {
-        $this->moment = $this->toUtcCarbonImmutable($moment);
+        $this->moment = Time::toUtcCarbonImmutable($moment);
 
         $this->station = $station;
         $this->type = $type;

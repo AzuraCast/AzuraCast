@@ -7,7 +7,6 @@ namespace App\Entity;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Utilities\Time;
 use Carbon\CarbonImmutable;
-use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use Stringable;
@@ -24,7 +23,6 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface, Stringabl
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
-    use Traits\HandleDateTimes;
 
     public const string PATH_PREFIX = 'stream';
 
@@ -72,9 +70,9 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface, Stringabl
         return $this->timestampStart;
     }
 
-    public function setTimestampStart(string|int|float|DateTimeInterface $timestampStart): void
+    public function setTimestampStart(mixed $timestampStart): void
     {
-        $this->timestampStart = $this->toUtcCarbonImmutable($timestampStart);
+        $this->timestampStart = Time::toUtcCarbonImmutable($timestampStart);
     }
 
     public function getTimestampEnd(): ?CarbonImmutable
@@ -82,9 +80,9 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface, Stringabl
         return $this->timestampEnd;
     }
 
-    public function setTimestampEnd(string|int|float|DateTimeInterface|null $timestampEnd): void
+    public function setTimestampEnd(mixed $timestampEnd): void
     {
-        $this->timestampEnd = $this->toNullableUtcCarbonImmutable($timestampEnd);
+        $this->timestampEnd = Time::toNullableUtcCarbonImmutable($timestampEnd);
     }
 
     public function getRecordingPath(): ?string
@@ -102,9 +100,7 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface, Stringabl
         return sprintf(
             "%s-%s",
             $this->timestampStart->toAtomString(),
-            (null !== $this->timestampEnd)
-                ? $this->timestampEnd->toAtomString()
-                : 'Now'
+            $this->timestampEnd?->toAtomString() ?? 'Now'
         );
     }
 }

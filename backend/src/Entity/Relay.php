@@ -23,7 +23,6 @@ class Relay implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
-    use Traits\HandleDateTimes;
 
     #[
         OA\Property(example: "https://custom-url.example.com"),
@@ -45,13 +44,13 @@ class Relay implements IdentifiableEntityInterface
 
     #[
         OA\Property(example: OpenApi::SAMPLE_DATETIME),
-        ORM\Column(type: 'datetime_immutable')
+        ORM\Column(type: 'datetime_immutable', precision: 6)
     ]
     protected CarbonImmutable $created_at;
 
     #[
         OA\Property(example: OpenApi::SAMPLE_DATETIME),
-        ORM\Column(type: 'datetime_immutable')
+        ORM\Column(type: 'datetime_immutable', precision: 6)
     ]
     protected CarbonImmutable $updated_at;
 

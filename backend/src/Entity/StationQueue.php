@@ -6,7 +6,6 @@ namespace App\Entity;
 
 use App\Utilities\Time;
 use Carbon\CarbonImmutable;
-use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[
@@ -25,7 +24,6 @@ class StationQueue implements
     use Traits\HasAutoIncrementId;
     use Traits\TruncateInts;
     use Traits\HasSongFields;
-    use Traits\HandleDateTimes;
 
     public const int DAYS_TO_KEEP = 7;
     public const int QUEUE_LOG_TTL = 86400;
@@ -141,9 +139,9 @@ class StationQueue implements
         return $this->timestamp_cued;
     }
 
-    public function setTimestampCued(string|int|float|DateTimeInterface $timestampCued): void
+    public function setTimestampCued(mixed $timestampCued): void
     {
-        $this->timestamp_cued = $this->toUtcCarbonImmutable($timestampCued);
+        $this->timestamp_cued = Time::toUtcCarbonImmutable($timestampCued);
     }
 
     public function getDuration(): ?float
@@ -200,9 +198,9 @@ class StationQueue implements
         return $this->timestamp_played;
     }
 
-    public function setTimestampPlayed(string|int|float|DateTimeInterface|null $timestampPlayed): void
+    public function setTimestampPlayed(mixed $timestampPlayed): void
     {
-        $this->timestamp_played = $this->toNullableUtcCarbonImmutable($timestampPlayed);
+        $this->timestamp_played = Time::toNullableUtcCarbonImmutable($timestampPlayed);
     }
 
     public function __toString(): string

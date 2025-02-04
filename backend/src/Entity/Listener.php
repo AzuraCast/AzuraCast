@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Utilities\Time;
 use Carbon\CarbonImmutable;
-use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use NowPlaying\Result\Client;
 
@@ -23,7 +23,6 @@ class Listener implements
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
-    use Traits\HandleDateTimes;
 
     #[ORM\ManyToOne(inversedBy: 'history')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
@@ -177,9 +176,9 @@ class Listener implements
         return $this->timestamp_end;
     }
 
-    public function setTimestampEnd(string|int|float|DateTimeInterface|null $timestampEnd): void
+    public function setTimestampEnd(mixed $timestampEnd): void
     {
-        $this->timestamp_end = $this->toNullableUtcCarbonImmutable($timestampEnd);
+        $this->timestamp_end = Time::toNullableUtcCarbonImmutable($timestampEnd);
     }
 
     public function getConnectedSeconds(): int

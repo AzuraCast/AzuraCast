@@ -7,6 +7,7 @@ namespace App\Entity\Repository;
 use App\Container\LoggerAwareTrait;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
+use App\Doctrine\Types\UtcCarbonImmutableType;
 use App\Entity\Listener;
 use App\Entity\Station;
 use App\Entity\Traits\TruncateStrings;
@@ -163,7 +164,7 @@ final class ListenerRepository extends Repository
         });
 
         $csvColumns = null;
-        $now = Time::toDatabaseDateTime(Time::nowUtc());
+        $now = Time::nowUtc()->format(UtcCarbonImmutableType::DB_DATETIME_FORMAT);
 
         foreach ($clients as $client) {
             $identifier = Listener::calculateListenerHash($client);

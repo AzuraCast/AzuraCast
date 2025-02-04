@@ -25,7 +25,6 @@ class SongHistory implements
     use Traits\HasAutoIncrementId;
     use Traits\TruncateInts;
     use Traits\HasSongFields;
-    use Traits\HandleDateTimes;
 
     /** @var int The expected delay between when a song history record is registered and when listeners hear it. */
     public const int PLAYBACK_DELAY_SECONDS = 5;

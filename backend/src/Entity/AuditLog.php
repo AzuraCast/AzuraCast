@@ -19,7 +19,6 @@ class AuditLog implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
-    use Traits\HandleDateTimes;
 
     protected static ?string $currentUser = null;
 

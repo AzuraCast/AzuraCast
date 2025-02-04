@@ -39,8 +39,8 @@ final class ByListeningTime extends AbstractReportAction
             SQL,
             [
                 'station_id' => $station->getIdRequired(),
-                'start' => $dateRange->getStart(),
-                'end' => $dateRange->getEnd(),
+                'start' => $dateRange->start,
+                'end' => $dateRange->end,
             ]
         );
 

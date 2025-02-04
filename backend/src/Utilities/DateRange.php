@@ -6,32 +6,12 @@ namespace App\Utilities;
 
 use Carbon\CarbonInterface;
 
-final class DateRange
+final readonly class DateRange
 {
     public function __construct(
-        private readonly CarbonInterface $start,
-        private readonly CarbonInterface $end,
+        public CarbonInterface $start,
+        public CarbonInterface $end,
     ) {
-    }
-
-    public function getStart(): CarbonInterface
-    {
-        return $this->start;
-    }
-
-    public function getStartTimestamp(): int
-    {
-        return $this->start->getTimestamp();
-    }
-
-    public function getEnd(): CarbonInterface
-    {
-        return $this->end;
-    }
-
-    public function getEndTimestamp(): int
-    {
-        return $this->end->getTimestamp();
     }
 
     public function contains(?CarbonInterface $time): bool
@@ -45,7 +25,19 @@ final class DateRange
 
     public function isWithin(self $toCompare): bool
     {
-        return $this->getEnd() >= $toCompare->getStart()
-            && $this->getStart() <= $toCompare->getEnd();
+        return $this->end >= $toCompare->start
+            && $this->start <= $toCompare->end;
+    }
+
+    public function format(
+        string $format = 'Y-m-d H:i:s',
+        string $separator = ' to '
+    ): string {
+        return $this->start->format($format) . $separator . $this->end->format($format);
+    }
+
+    public function __toString(): string
+    {
+        return $this->format();
     }
 }

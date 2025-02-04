@@ -85,13 +85,13 @@ final class ListenersAction implements SingleActionInterface
         } else {
             $dateRange = $this->getDateRange($request, $stationTz);
 
-            $start = $dateRange->getStart();
+            $start = $dateRange->start;
             $startTimestamp = $start->getTimestamp();
 
-            $end = $dateRange->getEnd();
+            $end = $dateRange->end;
             $endTimestamp = $end->getTimestamp();
 
-            $range = $start->format('Y-m-d_H-i-s') . '_to_' . $end->format('Y-m-d_H-i-s');
+            $range = $dateRange->format('Y-m-d_H-i-s', '_to_');
 
             $listenersIterator = $this->em->createQuery(
                 <<<'DQL'

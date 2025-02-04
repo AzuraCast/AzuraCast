@@ -300,7 +300,7 @@ final class Scheduler
         }
 
         // Check day-of-week limitations.
-        $dayToCheck = $dateRange->getStart()->dayOfWeekIso;
+        $dayToCheck = $dateRange->start->dayOfWeekIso;
         if (!$this->isScheduleScheduledToPlayToday($schedule, $dayToCheck)) {
             return false;
         }
@@ -319,7 +319,7 @@ final class Scheduler
         // Handle "Play Single Track" advanced setting.
         if ($playlist->backendPlaySingleTrack()) {
             $playedAt = $playlist->getPlayedAt();
-            if (null !== $playedAt && $playedAt->gt($dateRange->getStart())) {
+            if (null !== $playedAt && $playedAt->gt($dateRange->start)) {
                 return false;
             }
         }
@@ -360,7 +360,7 @@ final class Scheduler
             $isQueueFilled = $this->spmRepo->isQueueCompletelyFilled($playlist);
 
             if ((!$isQueueFilled || $isQueueEmpty) && !$hasCuedPlaylistMedia) {
-                $now = $dateRange->getStart()->subSecond();
+                $now = $dateRange->start->subSecond();
 
                 $this->logger->debug('Resetting playlist queue with now override', [$now]);
 

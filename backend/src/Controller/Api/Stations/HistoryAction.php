@@ -86,8 +86,8 @@ final class HistoryAction implements SingleActionInterface
         $stationTz = $station->getTimezoneObject();
 
         $dateRange = $this->getDateRange($request, $stationTz);
-        $start = $dateRange->getStart();
-        $end = $dateRange->getEnd();
+        $start = $dateRange->start;
+        $end = $dateRange->end;
 
         $qb = $this->em->createQueryBuilder();
 

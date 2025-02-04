@@ -25,16 +25,13 @@ final class AuditLogAction
         Response $response
     ): ResponseInterface {
         $dateRange = $this->getDateRange($request);
-        $start = $dateRange->getStart();
-        $end = $dateRange->getEnd();
-
         $qb = $this->em->createQueryBuilder();
 
         $qb->select('a')
             ->from(AuditLog::class, 'a')
             ->andWhere('a.timestamp >= :start AND a.timestamp <= :end')
-            ->setParameter('start', $start)
-            ->setParameter('end', $end);
+            ->setParameter('start', $dateRange->start)
+            ->setParameter('end', $dateRange->end);
 
         $searchPhrase = trim(
             Types::string($request->getQueryParam('searchPhrase'))

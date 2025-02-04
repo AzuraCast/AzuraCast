@@ -34,8 +34,8 @@ final class AnalyticsRepository extends Repository
             DQL
         )->setParameter('station', $station)
             ->setParameter('type', $type)
-            ->setParameter('start', $dateRange->getStart())
-            ->setParameter('end', $dateRange->getEnd())
+            ->setParameter('start', $dateRange->start)
+            ->setParameter('end', $dateRange->end)
             ->getArrayResult();
     }
 
@@ -50,8 +50,7 @@ final class AnalyticsRepository extends Repository
 
     public function cleanup(): void
     {
-        $hourlyRetention = CarbonImmutable::now()
-            ->subDays(14);
+        $hourlyRetention = CarbonImmutable::now()->subDays(14);
 
         $this->em->createQuery(
             <<<'DQL'

@@ -20,6 +20,7 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Radio\Frontend\Blocklist\BlocklistParser;
 use App\Service\DeviceDetector;
+use App\Utilities\Time;
 use App\Utilities\Types;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -144,7 +145,7 @@ final class SubmitAction implements SingleActionInterface
                     AND sr.timestamp >= :threshold
                 DQL
             )->setParameter('user_ip', $ip)
-                ->setParameter('threshold', time() - $thresholdSeconds)
+                ->setParameter('threshold', Time::nowUtc()->subSeconds($thresholdSeconds))
                 ->getSingleScalarResult();
 
             if ($recentRequests > 0) {

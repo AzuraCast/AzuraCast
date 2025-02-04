@@ -30,8 +30,6 @@ use App\Radio\Enums\LiquidsoapQueues;
 use App\Utilities\File;
 use App\Utilities\Time;
 use App\Utilities\Types;
-use Carbon\CarbonImmutable;
-use DateTimeZone;
 use Exception;
 use InvalidArgumentException;
 use League\Flysystem\StorageAttributes;
@@ -304,7 +302,7 @@ final class BatchAction implements SingleActionInterface
             $nextCuedItem = $this->queueRepo->getNextToSendToAutoDj($station);
             $cuedTimestamp = (null !== $nextCuedItem)
                 ? $nextCuedItem->getTimestampCued()->subSeconds(10)
-                : CarbonImmutable::now(new DateTimeZone('UTC'));
+                : Time::nowUtc();
 
             foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
                 try {

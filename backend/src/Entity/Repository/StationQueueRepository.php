@@ -69,7 +69,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
             WHERE sq.station = :station
             AND sq.id = :id
             DQL
-        )->setParameter('timestamp', time())
+        )->setParameter('timestamp', Time::nowUtc())
             ->setParameter('station', $station)
             ->setParameter('id', $row->getIdRequired())
             ->execute();

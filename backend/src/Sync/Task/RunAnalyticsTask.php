@@ -12,6 +12,7 @@ use App\Entity\Repository\AnalyticsRepository;
 use App\Entity\Repository\ListenerRepository;
 use App\Entity\Repository\SongHistoryRepository;
 use App\Entity\Station;
+use App\Utilities\Time;
 use Carbon\CarbonImmutable;
 
 final class RunAnalyticsTask extends AbstractTask
@@ -66,7 +67,7 @@ final class RunAnalyticsTask extends AbstractTask
             $stations[$station->getId()] = $station;
         }
 
-        $now = CarbonImmutable::now('UTC');
+        $now = Time::nowUtc();
         $day = $now->subDays(5)->startOfDay();// Clear existing analytics in this segment
 
         $this->analyticsRepo->cleanup();
@@ -108,8 +109,8 @@ final class RunAnalyticsTask extends AbstractTask
 
                 [$min, $max, $avg] = $this->historyRepo->getStatsByTimeRange(
                     $station,
-                    $start->getTimestamp(),
-                    $end->getTimestamp()
+                    $start,
+                    $end
                 );
 
                 $unique = null;
@@ -185,8 +186,8 @@ final class RunAnalyticsTask extends AbstractTask
 
             [$dailyStationMin, $dailyStationMax, $dailyStationAverage] = $this->historyRepo->getStatsByTimeRange(
                 $station,
-                $stationDayStart->getTimestamp(),
-                $stationDayEnd->getTimestamp()
+                $stationDayStart,
+                $stationDayEnd
             );
 
             if (null === $dailyMin) {

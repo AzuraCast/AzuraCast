@@ -80,7 +80,7 @@ class Listener implements
     {
         $this->station = $station;
 
-        $this->timestamp_start = CarbonImmutable::now('UTC');
+        $this->timestamp_start = Time::nowUtc();
 
         $this->listener_uid = (int)$client->uid;
         $this->listener_user_agent = $this->truncateString($client->userAgent);

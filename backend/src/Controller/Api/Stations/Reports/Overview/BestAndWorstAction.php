@@ -52,11 +52,11 @@ final class BestAndWorstAction extends AbstractReportAction
             ->where('sh.station = :station')
             ->setParameter('station', $station)
             ->andWhere('sh.timestamp_start <= :end AND sh.timestamp_end >= :start')
-            ->setParameter('start', $dateRange->getStartTimestamp())
-            ->setParameter('end', $dateRange->getEndTimestamp())
+            ->setParameter('start', $dateRange->getStart())
+            ->setParameter('end', $dateRange->getEnd())
             ->andWhere('sh.is_visible = 1')
             ->andWhere('sh.listeners_start IS NOT NULL')
-            ->andWhere('sh.timestamp_end != 0')
+            ->andWhere('sh.timestamp_end IS NOT NULL')
             ->setMaxResults(5);
 
         $rawStats = [
@@ -107,8 +107,8 @@ final class BestAndWorstAction extends AbstractReportAction
                 ORDER BY records DESC
             DQL
         )->setParameter('station', $request->getStation())
-            ->setParameter('start', $dateRange->getStartTimestamp())
-            ->setParameter('end', $dateRange->getEndTimestamp())
+            ->setParameter('start', $dateRange->getStart())
+            ->setParameter('end', $dateRange->getEnd())
             ->setMaxResults(10)
             ->getArrayResult();
 

@@ -8,6 +8,7 @@ use App\Doctrine\Repository;
 use App\Entity\Station;
 use App\Entity\StationStreamer;
 use App\Entity\StationStreamerBroadcast;
+use App\Utilities\Time;
 use Carbon\CarbonImmutable;
 
 /**
@@ -47,9 +48,9 @@ final class StationStreamerBroadcastRepository extends Repository
                 UPDATE App\Entity\StationStreamerBroadcast ssb
                 SET ssb.timestampEnd = :time
                 WHERE ssb.station = :station
-                AND ssb.timestampEnd = 0
+                AND ssb.timestampEnd IS NULL
             DQL
-        )->setParameter('time', time())
+        )->setParameter('time', Time::nowUtc())
             ->setParameter('station', $station)
             ->execute();
     }

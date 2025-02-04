@@ -134,12 +134,12 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
 
     /**
      * @param Station $station
-     * @param int $start
-     * @param int $end
+     * @param CarbonImmutable $start
+     * @param CarbonImmutable $end
      *
      * @return array{int, int, float}
      */
-    public function getStatsByTimeRange(Station $station, int $start, int $end): array
+    public function getStatsByTimeRange(Station $station, CarbonImmutable $start, CarbonImmutable $end): array
     {
         $historyTotals = $this->em->createQuery(
             <<<'DQL'
@@ -164,15 +164,12 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
 
     public function cleanup(int $daysToKeep): void
     {
-        $threshold = CarbonImmutable::now()
-            ->subDays($daysToKeep)
-            ->getTimestamp();
+        $threshold = Time::nowUtc()->subDays($daysToKeep);
 
         $this->em->createQuery(
             <<<'DQL'
                 DELETE FROM App\Entity\SongHistory sh
-                WHERE sh.timestamp_start != 0
-                AND sh.timestamp_start <= :threshold
+                WHERE sh.timestamp_start <= :threshold
             DQL
         )->setParameter('threshold', $threshold)
             ->execute();

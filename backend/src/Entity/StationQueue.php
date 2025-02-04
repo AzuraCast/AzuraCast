@@ -173,8 +173,9 @@ class StationQueue implements
     {
         if ($newValue) {
             $this->sent_to_autodj = true;
-            $this->setTimestampPlayed(time());
+            $this->setTimestampPlayed(Time::nowUtc());
         }
+
         $this->is_played = $newValue;
     }
 

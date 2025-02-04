@@ -8,6 +8,28 @@ use Doctrine\DBAL\Schema\Schema;
 
 final class Version20250203160744 extends AbstractMigration
 {
+    /**
+     * Columns that migrate to high-precision DateTimes:
+     * [ table_name, column_name, is_nullable ]
+     */
+    private array $dateTimeMigrations = [
+        ['audit_log', 'timestamp', false],
+        ['listener', 'timestamp_start', false],
+        ['listener', 'timestamp_end', true],
+        ['relays', 'created_at', false],
+        ['relays', 'updated_at', false],
+        ['song_history', 'timestamp_start', false],
+        ['song_history', 'timestamp_end', true],
+        ['station_queue', 'timestamp_cued', false],
+        ['station_queue', 'timestamp_played', true],
+        ['station_requests', 'timestamp', false],
+        ['station_requests', 'played_at', true],
+        ['station_streamer_broadcasts', 'timestamp_start', false],
+        ['station_streamer_broadcasts', 'timestamp_end', true],
+        ['station_playlists', 'played_at', true],
+        ['station_playlists', 'queue_reset_at', true],
+    ];
+
     public function getDescription(): string
     {
         return 'Improve precision of several date/duration fields.';
@@ -53,19 +75,9 @@ final class Version20250203160744 extends AbstractMigration
         $this->addSql('DROP INDEX IF EXISTS idx_timestamp_cued ON station_queue');
         $this->addSql('DROP INDEX IF EXISTS idx_timestamps ON listener');
 
-        $this->migrateForwardsToDateTime('audit_log', 'timestamp', false);
-        $this->migrateForwardsToDateTime('listener', 'timestamp_start', false);
-        $this->migrateForwardsToDateTime('listener', 'timestamp_end', true);
-        $this->migrateForwardsToDateTime('relays', 'created_at', false);
-        $this->migrateForwardsToDateTime('relays', 'updated_at', false);
-        $this->migrateForwardsToDateTime('song_history', 'timestamp_start', false);
-        $this->migrateForwardsToDateTime('song_history', 'timestamp_end', true);
-        $this->migrateForwardsToDateTime('station_queue', 'timestamp_cued', false);
-        $this->migrateForwardsToDateTime('station_queue', 'timestamp_played', true);
-        $this->migrateForwardsToDateTime('station_requests', 'timestamp', false);
-        $this->migrateForwardsToDateTime('station_requests', 'played_at', true);
-        $this->migrateForwardsToDateTime('station_streamer_broadcasts', 'timestamp_start', false);
-        $this->migrateForwardsToDateTime('station_streamer_broadcasts', 'timestamp_end', true);
+        foreach ($this->dateTimeMigrations as $migration) {
+            $this->migrateForwardsToDateTime(...$migration);
+        }
 
         $this->addSql('CREATE INDEX idx_timestamps ON listener (timestamp_end, timestamp_start)');
         $this->addSql('CREATE INDEX idx_timestamp_start ON song_history (timestamp_start)');
@@ -116,19 +128,9 @@ final class Version20250203160744 extends AbstractMigration
         $this->addSql('DROP INDEX IF EXISTS idx_timestamp_cued ON station_queue');
         $this->addSql('DROP INDEX IF EXISTS idx_timestamps ON listener');
 
-        $this->migrateBackFromDateTime('song_history', 'timestamp_start');
-        $this->migrateBackFromDateTime('song_history', 'timestamp_end');
-        $this->migrateBackFromDateTime('audit_log', 'timestamp');
-        $this->migrateBackFromDateTime('station_requests', 'timestamp');
-        $this->migrateBackFromDateTime('station_requests', 'played_at');
-        $this->migrateBackFromDateTime('station_streamer_broadcasts', 'timestamp_start');
-        $this->migrateBackFromDateTime('station_streamer_broadcasts', 'timestamp_end');
-        $this->migrateBackFromDateTime('station_queue', 'timestamp_cued');
-        $this->migrateBackFromDateTime('station_queue', 'timestamp_played');
-        $this->migrateBackFromDateTime('listener', 'timestamp_start');
-        $this->migrateBackFromDateTime('listener', 'timestamp_end');
-        $this->migrateBackFromDateTime('relays', 'created_at');
-        $this->migrateBackFromDateTime('relays', 'updated_at');
+        foreach ($this->dateTimeMigrations as $migration) {
+            $this->migrateBackFromDateTime(...$migration);
+        }
 
         $this->addSql('CREATE INDEX idx_timestamps ON listener (timestamp_end, timestamp_start)');
         $this->addSql('CREATE INDEX idx_timestamp_start ON song_history (timestamp_start)');

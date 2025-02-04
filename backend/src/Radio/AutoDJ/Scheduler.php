@@ -150,12 +150,12 @@ final class Scheduler
         int $minutes
     ): bool {
         $playedAt = $playlist->getPlayedAt();
-        if (0 === $playedAt) {
+        if (null === $playedAt) {
             return false;
         }
 
-        $threshold = $now->subMinutes($minutes)->getTimestamp();
-        return ($playedAt > $threshold);
+        $threshold = $now->subMinutes($minutes);
+        return $playedAt->gt($threshold);
     }
 
     /**
@@ -317,11 +317,11 @@ final class Scheduler
         }
 
         // Handle "Play Single Track" advanced setting.
-        if (
-            $playlist->backendPlaySingleTrack()
-            && $playlist->getPlayedAt() >= $dateRange->getStartTimestamp()
-        ) {
-            return false;
+        if ($playlist->backendPlaySingleTrack()) {
+            $playedAt = $playlist->getPlayedAt();
+            if (null !== $playedAt && $playedAt->gt($dateRange->getStart())) {
+                return false;
+            }
         }
 
         // Handle "Loop Once" schedule specification.
@@ -349,10 +349,7 @@ final class Scheduler
             return false;
         }
 
-        $playlistPlayedAt = CarbonImmutable::createFromTimestamp(
-            $playlist->getPlayedAt(),
-            $now->getTimezone()
-        );
+        $playlistPlayedAt = $playlist->getPlayedAt()?->shiftTimezone($now->getTimezone());
 
         $isQueueEmpty = $this->spmRepo->isQueueEmpty($playlist);
         $hasCuedPlaylistMedia = $this->queueRepo->hasCuedPlaylistMedia($playlist);
@@ -379,10 +376,7 @@ final class Scheduler
 
         $playlist = $this->em->refetch($playlist);
 
-        $playlistQueueResetAt = CarbonImmutable::createFromTimestamp(
-            $playlist->getQueueResetAt(),
-            $now->getTimezone()
-        );
+        $playlistQueueResetAt = $playlist->getQueueResetAt()?->shiftTimezone($now->getTimezone());
 
         if (!$isQueueEmpty && !$dateRange->contains($playlistQueueResetAt)) {
             $this->logger->debug('Playlist should loop.');

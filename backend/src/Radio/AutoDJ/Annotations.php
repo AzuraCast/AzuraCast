@@ -12,6 +12,7 @@ use App\Entity\StationMediaMetadata;
 use App\Entity\StationQueue;
 use App\Entity\StationRequest;
 use App\Event\Radio\AnnotateNextSong;
+use App\Utilities\Time;
 use App\Utilities\Types;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use RuntimeException;
@@ -231,7 +232,7 @@ final class Annotations implements EventSubscriberInterface
         $queueRow = $event->getQueue();
         if ($queueRow instanceof StationQueue) {
             $queueRow->setSentToAutodj();
-            $queueRow->setTimestampCued(time());
+            $queueRow->setTimestampCued(Time::nowUtc());
             $this->em->persist($queueRow);
             $this->em->flush();
         }

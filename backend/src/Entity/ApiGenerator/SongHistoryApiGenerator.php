@@ -28,7 +28,8 @@ final class SongHistoryApiGenerator
         $response->sh_id = $record->getIdRequired();
 
         $response->played_at = $record->getTimestampStart()
-            ->addSeconds(SongHistoryEntity::PLAYBACK_DELAY_SECONDS)->getTimestamp();
+            ->addSeconds(SongHistoryEntity::PLAYBACK_DELAY_SECONDS)
+            ->getTimestamp();
 
         $response->duration = (int)$record->getDuration();
         $response->is_request = ($record->getRequest() !== null);

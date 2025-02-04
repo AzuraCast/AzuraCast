@@ -77,7 +77,6 @@ return [
                 'charset' => 'utf8mb4',
                 'collate' => 'utf8mb4_general_ci',
             ],
-            'platform' => App\Doctrine\Platform\MariaDbPlatform::class,
             'driverOptions' => [
                 PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4 COLLATE utf8mb4_general_ci; '
                     . 'SET sql_mode=(SELECT REPLACE(@@sql_mode, "ONLY_FULL_GROUP_BY", ""))',
@@ -92,6 +91,22 @@ return [
 
         $config = new Doctrine\DBAL\Configuration();
         $config->setResultCache($psr6Cache);
+
+        // Add middleware that forces a custom platform, for high-precision DATETIMEs.
+        $config->setMiddlewares([
+            new class implements Doctrine\DBAL\Driver\Middleware {
+                public function wrap(Doctrine\DBAL\Driver $driver): Doctrine\DBAL\Driver
+                {
+                    return new class ($driver) extends Doctrine\DBAL\Driver\Middleware\AbstractDriverMiddleware {
+                        public function getDatabasePlatform(
+                            Doctrine\DBAL\ServerVersionProvider $versionProvider
+                        ): Doctrine\DBAL\Platforms\AbstractPlatform {
+                            return new App\Doctrine\Platform\MariaDbPlatform();
+                        }
+                    };
+                }
+            },
+        ]);
 
         /** @phpstan-ignore-next-line */
         return Doctrine\DBAL\DriverManager::getConnection($connectionOptions, $config);

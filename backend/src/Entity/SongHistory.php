@@ -163,11 +163,6 @@ class SongHistory implements
         return $this->timestamp_start;
     }
 
-    public function getTimestamp(): CarbonImmutable
-    {
-        return $this->timestamp_start;
-    }
-
     public function getDuration(): ?float
     {
         return $this->duration;

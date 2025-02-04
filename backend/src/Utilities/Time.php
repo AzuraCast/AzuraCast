@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Utilities;
 
 use Carbon\CarbonImmutable;
-use Carbon\CarbonTimeZone;
 use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
@@ -13,12 +12,12 @@ use Exception;
 
 final class Time
 {
-    public static function getUtc(): CarbonTimeZone
+    public static function getUtc(): DateTimeZone
     {
         static $utc;
 
         if (!$utc) {
-            $utc = CarbonTimeZone::create(new DateTimeZone('UTC'));
+            $utc = new DateTimeZone('UTC');
         }
 
         return $utc;

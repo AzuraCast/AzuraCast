@@ -34,8 +34,12 @@ final class DateRange
         return $this->end->getTimestamp();
     }
 
-    public function contains(CarbonInterface $time): bool
+    public function contains(?CarbonInterface $time): bool
     {
+        if (null === $time) {
+            return false;
+        }
+
         return $time->between($this->start, $this->end);
     }
 

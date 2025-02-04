@@ -84,13 +84,13 @@ class StationPlaylistTest extends Unit
 
         // Last played 20 minutes ago, SHOULD NOT play again.
         $lastPlayed = $testDay->addMinutes(0 - 20);
-        $playlist->setPlayedAt($lastPlayed->getTimestamp());
+        $playlist->setPlayedAt($lastPlayed);
 
         self::assertFalse($this->scheduler->shouldPlaylistPlayNow($playlist, $testDay));
 
         // Last played 40 minutes ago, SHOULD play again.
         $lastPlayed = $testDay->addMinutes(0 - 40);
-        $playlist->setPlayedAt($lastPlayed->getTimestamp());
+        $playlist->setPlayedAt($lastPlayed);
 
         self::assertTrue($this->scheduler->shouldPlaylistPlayNow($playlist, $testDay));
     }

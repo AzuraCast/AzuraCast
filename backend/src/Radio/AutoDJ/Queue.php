@@ -97,7 +97,7 @@ final class Queue
                 $queueLength++;
             }
 
-            $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
+            $queueRow->setTimestampPlayed($expectedPlayTime);
             $this->em->persist($queueRow);
 
             $expectedPlayTime = $this->addDurationToTime($station, $expectedPlayTime, $queueRow->getDuration());

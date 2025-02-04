@@ -8,11 +8,9 @@ use Doctrine\DBAL\Platforms\MariaDB1010Platform;
 
 class MariaDbPlatform extends MariaDB1010Platform
 {
-    public const int DEFAULT_DATETIME_PRECISION = 6;
-
     public function getDateTimeTypeDeclarationSQL(array $column): string
     {
-        $precision = $column['precision'] ?? self::DEFAULT_DATETIME_PRECISION;
+        $precision = $column['precision'] ?? 0;
 
         if (isset($column['version']) && $column['version'] === true) {
             if ($precision) {

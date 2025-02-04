@@ -166,11 +166,6 @@ class Listener implements
         return $this->timestamp_start;
     }
 
-    public function getTimestamp(): CarbonImmutable
-    {
-        return $this->timestamp_start;
-    }
-
     public function getTimestampEnd(): ?CarbonImmutable
     {
         return $this->timestamp_end;

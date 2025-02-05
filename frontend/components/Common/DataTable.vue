@@ -537,8 +537,8 @@ const refreshClientSide = () => {
 
         itemsOnPage = itemsOnPage.sort(
             (a, b) => collator.compare(
-                sortField.value!.sorter(a),
-                sortField.value!.sorter(b)
+                sortField.value.sorter(a),
+                sortField.value.sorter(b)
             )
         );
 

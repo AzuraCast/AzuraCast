@@ -1,4 +1,4 @@
-import {createInjectionState} from "@vueuse/shared";
+import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
 
 export interface PodcastLayoutProps {
     stationId: string | number,
@@ -8,8 +8,6 @@ export interface PodcastLayoutProps {
     groupLayout?: string,
 }
 
-const [useProvidePodcastGlobals, usePodcastGlobals] = createInjectionState(
+export const [useProvidePodcastGlobals, usePodcastGlobals] = createRequiredInjectionState(
     (props: PodcastLayoutProps) => props,
 );
-
-export {useProvidePodcastGlobals, usePodcastGlobals};

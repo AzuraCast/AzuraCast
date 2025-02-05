@@ -2,7 +2,7 @@ import {createGettext, Language} from "vue3-gettext";
 import {App} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
 
-let gettext;
+let gettext: Language;
 
 export function useTranslate(): Language {
     return gettext;

@@ -6,7 +6,7 @@ interface ModalCompatible {
     hide(): void,
 }
 
-export function useHasModal(modalRef: ShallowRef<ModalCompatible>) {
+export function useHasModal(modalRef: Readonly<ShallowRef<ModalCompatible | null>>) {
     const hide = () => {
         modalRef.value?.hide();
     };

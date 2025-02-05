@@ -1,9 +1,9 @@
 // noinspection JSDeprecatedSymbols
 
-import {createInjectionState} from "@vueuse/core";
 import {computed, ref} from "vue";
+import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
 
-const [useProvideWebDjNode, useInjectWebDjNodeOriginal] = createInjectionState(
+export const [useProvideWebDjNode, useInjectWebDjNode] = createRequiredInjectionState(
     (webcaster) => {
         const { connect: connectSocket } = webcaster;
 
@@ -114,13 +114,3 @@ const [useProvideWebDjNode, useInjectWebDjNodeOriginal] = createInjectionState(
         };
     }
 );
-
-function useInjectWebDjNode() {
-    const node = useInjectWebDjNodeOriginal();
-    if (!node) {
-        throw new Error("WebDJ did not properly initialize.");
-    }
-    return node;
-}
-
-export {useProvideWebDjNode, useInjectWebDjNode}

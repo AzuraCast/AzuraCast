@@ -108,7 +108,7 @@ import {usePlayerStore, useProvidePlayerStore} from "~/functions/usePlayerStore.
 import {useDraggable} from "vue-draggable-plus";
 
 const loading = ref(true);
-const reorderUrl = ref(null);
+const reorderUrl = ref<string | null>(null);
 
 const $tbody = useTemplateRef('$tbody');
 const media = ref([]);
@@ -118,7 +118,7 @@ const {show} = useHasModal($modal);
 
 const {axios} = useAxios();
 
-const open = (newReorderUrl) => {
+const open = (newReorderUrl: string) => {
     reorderUrl.value = newReorderUrl;
     loading.value = true;
     show();
@@ -133,7 +133,7 @@ const {notifySuccess} = useNotify();
 const {$gettext} = useTranslate();
 
 const save = () => {
-    const newOrder = {};
+    const newOrder: Record<number, number> = {};
     let i = 0;
 
     media.value.forEach((row) => {
@@ -146,25 +146,25 @@ const save = () => {
     });
 };
 
-const moveDown = (index) => {
+const moveDown = (index: number) => {
     const currentItem = media.value.splice(index, 1)[0];
     media.value.splice(index + 1, 0, currentItem);
     save();
 };
 
-const moveToBottom = (index) => {
+const moveToBottom = (index: number) => {
     const currentItem = media.value.splice(index, 1)[0];
     media.value.splice(media.value.length, 0, currentItem);
     save();
 };
 
-const moveUp = (index) => {
+const moveUp = (index: number) => {
     const currentItem = media.value.splice(index, 1)[0];
     media.value.splice(index - 1, 0, currentItem);
     save();
 };
 
-const moveToTop = (index) => {
+const moveToTop = (index: number) => {
     const currentItem = media.value.splice(index, 1)[0];
     media.value.splice(0, 0, currentItem);
     save();

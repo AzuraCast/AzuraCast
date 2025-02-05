@@ -409,7 +409,7 @@ const onTriggerNavigate = () => {
     $dataTable.value?.navigate();
 };
 
-const filter = (newFilter) => {
+const filter = (newFilter: string) => {
     $dataTable.value?.setFilter(newFilter);
 };
 
@@ -424,7 +424,7 @@ const onAddPlaylist = (row: MediaInitialPlaylist) => {
     playlists.value.push(row);
 };
 
-const onFiltered = (newFilter) => {
+const onFiltered = (newFilter: string) => {
     searchPhrase.value = newFilter;
 };
 
@@ -457,13 +457,13 @@ const requestConfig = (config) => {
     return config;
 };
 
-const isFilterString = (str) =>
+const isFilterString = (str: string) =>
     (str.substring(0, 9) === 'playlist:' || str.substring(0, 8) === 'special:');
 
 const router = useRouter();
 const route = useRoute();
 
-const changeDirectory = (newDir) => {
+const changeDirectory = (newDir: string) => {
     void router.push({
         name: 'stations:files:index',
         params: {

@@ -51,7 +51,7 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
 ): {
     loading: Ref<boolean>,
     error: Ref<any>,
-    editUrl: Ref<string>,
+    editUrl: Ref<string | null>,
     isEditMode: ComputedRef<boolean>,
     form: Ref<T>,
     v$: VuelidateRef<T>,
@@ -64,9 +64,9 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
 } {
     const createUrl = toRef(props, 'createUrl');
 
-    const loading: Ref<boolean> = ref<boolean>(false);
-    const error: Ref<any> = ref(null);
-    const editUrl: Ref<string> = ref<string>(null);
+    const loading = ref<boolean>(false);
+    const error = ref<any>(null);
+    const editUrl = ref<string | null>(null);
 
     const isEditMode: ComputedRef<boolean> = computed(() => {
         return editUrl.value !== null;
@@ -129,6 +129,10 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
     const doLoad = (): void => {
         loading.value = true;
 
+        if (!editUrl.value) {
+            throw new Error("No edit URL!");
+        }
+
         axios.get(editUrl.value).then((resp) => {
             populateForm(resp.data);
         }).catch(() => {
@@ -167,7 +171,7 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
             method: (isEditMode.value)
                 ? 'PUT'
                 : 'POST',
-            url: (isEditMode.value)
+            url: (isEditMode.value && editUrl.value)
                 ? editUrl.value
                 : createUrl.value,
             data: getSubmittableFormData()
@@ -200,7 +204,7 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
 
     const doSubmit = (): void => {
         v$.value.$touch();
-        v$.value.$validate().then((isValid) => {
+        v$.value.$validate().then((isValid: boolean) => {
             if (!isValid) {
                 return;
             }

@@ -1,7 +1,7 @@
-import { createInjectionState } from "@vueuse/core";
 import {Ref, ref, watch} from "vue";
+import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
 
-const [useProvidePassthroughSync, useInjectPassthroughSync] = createInjectionState(
+const [useProvidePassthroughSync, useInjectPassthroughSync] = createRequiredInjectionState(
     (initialValue: string) => {
         const passThroughSync = ref<string>(initialValue);
         return {passThroughSync};

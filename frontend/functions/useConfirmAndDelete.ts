@@ -4,7 +4,7 @@ import {useDialog} from "~/functions/useDialog.ts";
 
 export default function useConfirmAndDelete(
     confirmMessage: string,
-    onSuccess = null
+    onSuccess?: (data: any) => void
 ) {
     const {confirmDelete} = useDialog();
     const {notifySuccess} = useNotify();

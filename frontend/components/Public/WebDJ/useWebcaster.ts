@@ -1,13 +1,13 @@
-import {createInjectionState} from "@vueuse/core";
 import {ref, shallowRef} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
+import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
 
 export interface WebcasterProps {
     baseUri: string
 }
 
-export const [useProvideWebcaster, useInjectWebcaster] = createInjectionState(
+export const [useProvideWebcaster, useInjectWebcaster] = createRequiredInjectionState(
     (props: WebcasterProps) => {
         const { baseUri } = props;
 

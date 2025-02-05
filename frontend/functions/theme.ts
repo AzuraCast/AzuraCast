@@ -13,7 +13,7 @@ export default createGlobalState(
             currentTheme.value = page.getAttribute('data-bs-theme') as Theme;
         });
 
-        const storedTheme = useOptionalStorage('theme', null);
+        const storedTheme = useOptionalStorage<Theme | null>('theme', null);
 
         const getPreferredTheme = (): Theme => {
             return (storedTheme.value)

@@ -341,7 +341,7 @@ const fields: DataTableField[] = [
 
 const {Duration} = useLuxon();
 
-const formatLength = (length) => {
+const formatLength = (length: number) => {
     if (0 === length) {
         return $gettext('None');
     }
@@ -369,31 +369,31 @@ const doCalendarClick = (event: EventImpl) => {
 
 const $reorderModal = useTemplateRef('$reorderModal');
 
-const doReorder = (url) => {
+const doReorder = (url: string) => {
     $reorderModal.value?.open(url);
 };
 
 const $queueModal = useTemplateRef('$queueModal');
 
-const doQueue = (url) => {
+const doQueue = (url: string) => {
     $queueModal.value?.open(url);
 };
 
 const $importModal = useTemplateRef('$importModal');
 
-const doImport = (url) => {
+const doImport = (url: string) => {
     $importModal.value?.open(url);
 };
 
 const $cloneModal = useTemplateRef('$cloneModal');
 
-const doClone = (name, url) => {
+const doClone = (name: string, url: string) => {
     $cloneModal.value?.open(name, url);
 };
 
 const $applyToModal = useTemplateRef('$applyToModal');
 
-const doApplyTo = (url) => {
+const doApplyTo = (url: string) => {
     $applyToModal.value?.open(url);
 }
 
@@ -410,7 +410,7 @@ const mayNeedRestart = () => {
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const doModify = (url) => {
+const doModify = (url: string) => {
     void axios.put(url).then((resp) => {
         mayNeedRestart();
 

@@ -1,14 +1,6 @@
-import {
-    computed,
-    inject,
-    InjectionKey,
-    onBeforeMount,
-    onBeforeUnmount,
-    provide,
-    reactive,
-    UnwrapNestedRefs,
-    watch
-} from "vue";
+import {computed, InjectionKey, onBeforeMount, onBeforeUnmount, provide, reactive, UnwrapNestedRefs, watch} from "vue";
+import injectRequired from "~/functions/injectRequired.ts";
+import {reactiveComputed} from "@vueuse/core";
 
 type VueClass = string | Record<string, boolean> | VueClass[];
 
@@ -32,20 +24,22 @@ interface TabChild {
 
 interface TabParent {
     lazy: boolean,
-    active: string,
+    active: string | null,
     tabs: TabChild[],
     add (tab: TabChild): void,
     update(computedId: string, data: TabChild): void,
     delete(computedId: string): void
 }
 
+type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] }
+
 const tabStateKey: InjectionKey<UnwrapNestedRefs<TabParent>> = Symbol() as InjectionKey<UnwrapNestedRefs<TabParent>>;
 
 export function useTabParent(originalProps: TabParentProps) {
-    const props: TabParentProps = {
+    const props = reactiveComputed<WithRequired<TabParentProps, 'destroyOnHide'>>(() => ({
         destroyOnHide: false,
         ...originalProps,
-    }
+    }));
 
     const state = reactive<TabParent>({
         lazy: props.destroyOnHide,
@@ -69,7 +63,7 @@ export function useTabParent(originalProps: TabParentProps) {
 }
 
 export function useTabChild(props: TabChildProps) {
-    const tabState = inject(tabStateKey);
+    const tabState = injectRequired(tabStateKey);
 
     const computedId = computed(() => {
         return String(

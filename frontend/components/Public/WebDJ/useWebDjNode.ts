@@ -3,7 +3,7 @@
 import {createInjectionState} from "@vueuse/core";
 import {computed, ref} from "vue";
 
-export const [useProvideWebDjNode, useInjectWebDjNode] = createInjectionState(
+const [useProvideWebDjNode, useInjectWebDjNodeOriginal] = createInjectionState(
     (webcaster) => {
         const { connect: connectSocket } = webcaster;
 
@@ -114,3 +114,13 @@ export const [useProvideWebDjNode, useInjectWebDjNode] = createInjectionState(
         };
     }
 );
+
+function useInjectWebDjNode() {
+    const node = useInjectWebDjNodeOriginal();
+    if (!node) {
+        throw new Error("WebDJ did not properly initialize.");
+    }
+    return node;
+}
+
+export {useProvideWebDjNode, useInjectWebDjNode}

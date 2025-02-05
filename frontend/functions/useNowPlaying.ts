@@ -1,5 +1,5 @@
 import NowPlaying from '~/entities/NowPlaying';
-import {computed, onMounted, Ref, ref, ShallowRef, shallowRef, watch} from "vue";
+import {computed, onMounted, ref, shallowRef, watch} from "vue";
 import {reactiveComputed, useEventSource, useIntervalFn} from "@vueuse/core";
 import {ApiNowPlaying} from "~/entities/ApiInterfaces.ts";
 import {getApiUrl} from "~/router.ts";
@@ -26,14 +26,18 @@ export default function useNowPlaying(initialProps: NowPlayingProps) {
         ...initialProps
     }));
 
-    const np: ShallowRef<ApiNowPlaying> = shallowRef(NowPlaying);
-    const npTimestamp: Ref<number> = ref(0);
+    const np = shallowRef<ApiNowPlaying>(NowPlaying);
+    const npTimestamp = ref<number>(0);
 
-    const currentTime: Ref<number> = ref(Math.floor(Date.now() / 1000));
-    const currentTrackDuration: Ref<number> = ref(0);
-    const currentTrackElapsed: Ref<number> = ref(0);
+    const currentTime = ref<number>(Math.floor(Date.now() / 1000));
+    const currentTrackDuration = ref<number>(0);
+    const currentTrackElapsed = ref<number>(0);
 
     const setNowPlaying = (np_new: ApiNowPlaying) => {
+        if (!np_new.now_playing) {
+            return;
+        }
+
         np.value = np_new;
         npTimestamp.value = Date.now();
 
@@ -42,10 +46,10 @@ export default function useNowPlaying(initialProps: NowPlayingProps) {
         // Update the browser metadata for browsers that support it (i.e. Mobile Chrome)
         if ('mediaSession' in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
-                title: np_new.now_playing.song.title,
-                artist: np_new.now_playing.song.artist,
+                title: np_new.now_playing.song?.title ?? undefined,
+                artist: np_new.now_playing.song?.artist ?? undefined,
                 artwork: [
-                    {src: np_new.now_playing.song.art}
+                    {src: np_new.now_playing.song?.art ?? undefined}
                 ]
             });
 
@@ -61,6 +65,10 @@ export default function useNowPlaying(initialProps: NowPlayingProps) {
             setPositionState(np_new.now_playing.duration ?? 0, np_new.now_playing.elapsed ?? 0);
 
             navigator.mediaSession.setActionHandler("seekto", () => {
+                if (!np_new.now_playing) {
+                    return;
+                }
+
                 setPositionState(np_new.now_playing.duration ?? 0, np_new.now_playing.elapsed ?? 0);
             });
         }
@@ -86,7 +94,7 @@ export default function useNowPlaying(initialProps: NowPlayingProps) {
         const handleSseData = (ssePayload: SsePayload, useTime: boolean = true) => {
             const jsonData = ssePayload.data;
 
-            if (useTime && 'current_time' in jsonData) {
+            if (useTime && jsonData.current_time) {
                 currentTime.value = jsonData.current_time;
             }
 
@@ -103,7 +111,11 @@ export default function useNowPlaying(initialProps: NowPlayingProps) {
         }
 
         const {data} = useEventSource(sseUri);
-        watch(data, (dataRaw: string) => {
+        watch(data, (dataRaw: string | null) => {
+            if (!dataRaw) {
+                return;
+            }
+
             const jsonData = JSON.parse(dataRaw);
 
             if ('connect' in jsonData) {
@@ -118,7 +130,7 @@ export default function useNowPlaying(initialProps: NowPlayingProps) {
                 for (const subName in connectData.subs) {
                     const sub = connectData.subs[subName];
                     if ('publications' in sub && sub.publications.length > 0) {
-                        sub.publications.forEach((initialRow) => handleSseData(initialRow, false));
+                        sub.publications.forEach((initialRow: SsePayload) => handleSseData(initialRow, false));
                     }
                 }
             } else if ('pub' in jsonData) {

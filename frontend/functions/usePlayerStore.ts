@@ -8,7 +8,7 @@ export interface StreamDescriptor {
     isStream: boolean
 }
 
-const [useProvidePlayerStore, usePlayerStore] = createInjectionState(
+const [useProvidePlayerStore, usePlayerStoreOriginal] = createInjectionState(
     (initialChannel: string) => {
         const channel = ref<string>(initialChannel);
 
@@ -52,5 +52,13 @@ const [useProvidePlayerStore, usePlayerStore] = createInjectionState(
         };
     }
 );
+
+function usePlayerStore() {
+    const playerStore = usePlayerStoreOriginal();
+    if (!playerStore) {
+        throw new Error("Player store not defined!");
+    }
+    return playerStore;
+}
 
 export {useProvidePlayerStore, usePlayerStore};

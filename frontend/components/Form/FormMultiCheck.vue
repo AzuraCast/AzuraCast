@@ -50,7 +50,6 @@ const props = withDefaults(
     }>(),
     {
         name: (props) => props.id,
-        fieldClass: null,
         radio: false,
         stacked: false,
     }

@@ -128,7 +128,6 @@ const files = reactive<{
             isVisible: true,
             isCompleted: false,
             progressPercent: 0,
-            error: null,
             targetUrl: props.targetUrl
         };
     },

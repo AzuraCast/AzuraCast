@@ -86,19 +86,16 @@ import {GenericForm} from "~/entities/Forms.ts";
 import {reactiveComputed} from "@vueuse/core";
 import {RegionParams} from "wavesurfer.js/dist/plugins/regions.js";
 
-const props = withDefaults(
-    defineProps<{
-        duration: number,
-        audioUrl: string,
-        waveformUrl: string,
-        waveformCacheUrl?: string,
-    }>(),
-    {
-        waveformCacheUrl: null
-    }
-);
+const props = defineProps<{
+    duration: number,
+    audioUrl: string,
+    waveformUrl: string,
+    waveformCacheUrl?: string,
+}>();
 
-const form = defineModel<GenericForm>('form');
+const form = defineModel<GenericForm>('form', {
+    required: true
+});
 
 const $waveform = useTemplateRef('$waveform');
 
@@ -192,16 +189,16 @@ const setFadeStartNext = () => {
 };
 
 const setFadeIn = () => {
-    const currentTime = $waveform.value?.getCurrentTime();
+    const currentTime = $waveform.value?.getCurrentTime() ?? 0;
     const cue_in = form.value.extra_metadata.cue_in ?? 0;
 
     form.value.extra_metadata.fade_in = waveformToFloat(currentTime - cue_in);
 }
 
 const setFadeOut = () => {
-    const currentTime = $waveform.value?.getCurrentTime();
+    const currentTime = $waveform.value?.getCurrentTime() ?? 0;
     const duration = $waveform.value?.getDuration();
-    const cue_out = form.value.extra_metadata.cue_out ?? duration;
+    const cue_out = form.value.extra_metadata.cue_out ?? duration ?? 0;
 
     form.value.extra_metadata.fade_out = waveformToFloat(cue_out - currentTime);
 };

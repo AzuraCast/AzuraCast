@@ -11,12 +11,12 @@
         </template>
 
         <template
-            v-if="userAllowedForStation(StationPermission.Broadcasting) || userAllowedForStation(StationPermission.Profile)"
+            v-if="userAllowedForStation(StationPermissions.Broadcasting) || userAllowedForStation(StationPermissions.Profile)"
             #footer_actions
         >
             <template v-if="enableRequests">
                 <router-link
-                    v-if="userAllowedForStation(StationPermission.Broadcasting)"
+                    v-if="userAllowedForStation(StationPermissions.Broadcasting)"
                     class="btn btn-link text-primary"
                     :to="{name: 'stations:reports:requests'}"
                 >
@@ -26,7 +26,7 @@
                     </span>
                 </router-link>
                 <button
-                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    v-if="userAllowedForStation(StationPermissions.Profile)"
                     type="button"
                     class="btn btn-link text-danger"
                     @click="toggleRequests"
@@ -39,7 +39,7 @@
             </template>
             <template v-else>
                 <button
-                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    v-if="userAllowedForStation(StationPermissions.Profile)"
                     type="button"
                     class="btn btn-link text-success"
                     @click="toggleRequests"
@@ -58,7 +58,7 @@
 import Icon from '~/components/Common/Icon.vue';
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {StationPermission, userAllowedForStation} from "~/acl";
+import {StationPermissions, userAllowedForStation} from "~/acl";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
 import {IconCheck, IconClose, IconLogs} from "~/components/Common/icons";
 

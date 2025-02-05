@@ -85,7 +85,7 @@ import {GenericForm} from "~/entities/Forms.ts";
 
 defineProps<WebhookComponentProps>();
 
-const form = defineModel<GenericForm>('form');
+const form = defineModel<GenericForm>('form', {required: true});
 
 const {$gettext} = useTranslate();
 

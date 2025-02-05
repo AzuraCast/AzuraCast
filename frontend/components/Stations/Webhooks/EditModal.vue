@@ -46,7 +46,7 @@ import {BaseEditModalProps, HasRelistEmit, useBaseEditModal} from "~/functions/u
 import {computed, nextTick, provide, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {WebhookTriggerDetails, WebhookType, WebhookTypeDetails} from "~/entities/Webhooks";
+import {WebhookTriggerDetails, WebhookType, WebhookTypeDetails, WebhookTypes} from "~/entities/Webhooks";
 import Tabs from "~/components/Common/Tabs.vue";
 import RadioDe from "~/components/Stations/Webhooks/Form/RadioDe.vue";
 import GetMeRadio from "~/components/Stations/Webhooks/Form/GetMeRadio.vue";
@@ -76,19 +76,19 @@ const type = ref<WebhookType | null>(null);
 const $modal = useTemplateRef('$modal');
 
 const webhookComponents = {
-    [WebhookType.Generic]: Generic,
-    [WebhookType.Email]: Email,
-    [WebhookType.TuneIn]: Tunein,
-    [WebhookType.RadioDe]: RadioDe,
-    [WebhookType.RadioReg]: RadioReg,
-    [WebhookType.GetMeRadio]: GetMeRadio,
-    [WebhookType.Discord]: Discord,
-    [WebhookType.Telegram]: Telegram,
-    [WebhookType.GroupMe]: GroupMe,
-    [WebhookType.Mastodon]: Mastodon,
-    [WebhookType.Bluesky]: Bluesky,
-    [WebhookType.GoogleAnalyticsV4]: GoogleAnalyticsV4,
-    [WebhookType.MatomoAnalytics]: MatomoAnalytics,
+    [WebhookTypes.Generic]: Generic,
+    [WebhookTypes.Email]: Email,
+    [WebhookTypes.TuneIn]: Tunein,
+    [WebhookTypes.RadioDe]: RadioDe,
+    [WebhookTypes.RadioReg]: RadioReg,
+    [WebhookTypes.GetMeRadio]: GetMeRadio,
+    [WebhookTypes.Discord]: Discord,
+    [WebhookTypes.Telegram]: Telegram,
+    [WebhookTypes.GroupMe]: GroupMe,
+    [WebhookTypes.Mastodon]: Mastodon,
+    [WebhookTypes.Bluesky]: Bluesky,
+    [WebhookTypes.GoogleAnalyticsV4]: GoogleAnalyticsV4,
+    [WebhookTypes.MatomoAnalytics]: MatomoAnalytics,
 };
 
 const typeTitle = computed(() => {

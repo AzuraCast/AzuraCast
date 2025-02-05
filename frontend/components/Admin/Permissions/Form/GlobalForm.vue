@@ -34,7 +34,7 @@ defineProps<{
     globalPermissions: SimpleFormOptionInput,
 }>();
 
-const form = defineModel<Permission>('form');
+const form = defineModel<Permission>('form', {required: true});
 
 const {v$} = useVuelidateOnFormTab(
     form,

@@ -1,21 +1,21 @@
 <template>
     <div class="radio-player-widget">
         <audio-player
-            :title="np.now_playing.song.text"
+            :title="np.now_playing?.song?.text"
             :volume="volume"
             :is-muted="isMuted"
         />
 
         <div class="now-playing-details">
             <div
-                v-if="showAlbumArt && np.now_playing.song.art"
+                v-if="showAlbumArt && np.now_playing?.song?.art"
                 class="now-playing-art"
             >
                 <album-art :src="np.now_playing.song.art" />
             </div>
             <div class="now-playing-main">
                 <h6
-                    v-if="np.live.is_live"
+                    v-if="np.live?.is_live"
                     class="now-playing-live"
                 >
                     <span class="badge text-bg-primary me-2">
@@ -29,7 +29,7 @@
                         {{ offlineText ?? $gettext('Station Offline') }}
                     </h4>
                 </div>
-                <div v-else-if="np.now_playing.song.title !== ''">
+                <div v-else-if="np.now_playing?.song?.title">
                     <h4 class="now-playing-title">
                         {{ np.now_playing.song.title }}
                     </h4>
@@ -39,7 +39,7 @@
                 </div>
                 <div v-else>
                     <h4 class="now-playing-title">
-                        {{ np.now_playing.song.text }}
+                        {{ np.now_playing?.song?.text }}
                     </h4>
                 </div>
 
@@ -209,7 +209,7 @@ const hlsIsDefault = computed(() => {
 const {$gettext} = useTranslate();
 
 const streams = computed<CurrentStreamDescriptor[]>(() => {
-    const allStreams = [];
+    const allStreams: CurrentStreamDescriptor[] = [];
 
     if (enableHls.value) {
         allStreams.push({
@@ -219,17 +219,17 @@ const streams = computed<CurrentStreamDescriptor[]>(() => {
         });
     }
 
-    np.value?.station?.mounts.forEach(function (mount) {
+    np.value?.station?.mounts?.forEach(function (mount) {
         allStreams.push({
-            name: mount.name,
+            name: mount.name ?? mount.url,
             url: mount.url,
             hls: false,
         });
     });
 
-    np.value?.station?.remotes.forEach(function (remote) {
+    np.value?.station?.remotes?.forEach(function (remote) {
         allStreams.push({
-            name: remote.name,
+            name: remote.name ?? remote.url,
             url: remote.url,
             hls: false,
         });
@@ -282,7 +282,7 @@ const onNowPlayingUpdated = (np_new: ApiNowPlaying) => {
 
     // Set a "default" current stream if none exists.
     const $streams = streams.value;
-    let $currentStream = currentStream.value;
+    let $currentStream: CurrentStreamDescriptor | null = currentStream.value;
 
     if ($currentStream.url === '' && $streams.length > 0) {
         if (hlsIsDefault.value) {
@@ -290,9 +290,9 @@ const onNowPlayingUpdated = (np_new: ApiNowPlaying) => {
         } else {
             $currentStream = null;
 
-            if (np_new.station.listen_url !== '') {
+            if (np_new.station?.listen_url) {
                 $streams.forEach(function (stream) {
-                    if (stream.url === np_new.station.listen_url) {
+                    if (stream.url === np_new.station?.listen_url) {
                         $currentStream = stream;
                     }
                 });

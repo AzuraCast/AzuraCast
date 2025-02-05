@@ -2,18 +2,15 @@ import {computed, ComputedRef, onMounted, ref} from "vue";
 import useOptionalStorage from "~/functions/useOptionalStorage.ts";
 import {createGlobalState} from "@vueuse/core";
 
-export enum Theme {
-    Light = 'light',
-    Dark = 'dark'
-}
+type Theme = 'light' | 'dark'
 
 export default createGlobalState(
     () => {
         const page: HTMLElement = document.documentElement;
-        const currentTheme = ref<Theme | string | null>(null);
+        const currentTheme = ref<Theme | null>(null);
 
         onMounted((): void => {
-            currentTheme.value = page.getAttribute('data-bs-theme');
+            currentTheme.value = page.getAttribute('data-bs-theme') as Theme;
         });
 
         const storedTheme = useOptionalStorage('theme', null);
@@ -21,7 +18,7 @@ export default createGlobalState(
         const getPreferredTheme = (): Theme => {
             return (storedTheme.value)
                 ? storedTheme.value
-                : window.matchMedia('(prefers-color-scheme: dark)').matches ? Theme.Dark : Theme.Light;
+                : window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         }
 
         const setTheme = (newTheme: Theme): void => {
@@ -33,17 +30,17 @@ export default createGlobalState(
         const toggleTheme = (): void => {
             const preferredTheme: Theme = getPreferredTheme();
 
-            if (preferredTheme === Theme.Light) {
-                setTheme(Theme.Dark);
+            if (preferredTheme === 'light') {
+                setTheme('dark');
             } else {
-                setTheme(Theme.Light);
+                setTheme('light');
             }
         };
 
-         
-        const isDark: ComputedRef<boolean> = computed((): boolean => currentTheme.value === Theme.Dark);
-         
-        const isLight: ComputedRef<boolean> = computed((): boolean => currentTheme.value === Theme.Light);
+
+        const isDark: ComputedRef<boolean> = computed((): boolean => currentTheme.value === 'dark');
+
+        const isLight: ComputedRef<boolean> = computed((): boolean => currentTheme.value === 'light');
 
         return {
             currentTheme,

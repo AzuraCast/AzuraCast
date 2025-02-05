@@ -80,7 +80,7 @@ import mergeExisting from "~/functions/mergeExisting";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Loading from '~/components/Common/Loading.vue';
 import Tabs from "~/components/Common/Tabs.vue";
-import {GlobalPermission, userAllowed} from "~/acl";
+import {GlobalPermissions, userAllowed} from "~/acl";
 
 defineOptions({
     inheritAttrs: false
@@ -120,7 +120,7 @@ const emit = defineEmits<{
     (e: 'validUpdate', valid: boolean): void
 }>();
 
-const showAdminTab = userAllowed(GlobalPermission.Stations);
+const showAdminTab = userAllowed(GlobalPermissions.Stations);
 
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm();
 

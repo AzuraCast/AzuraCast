@@ -17,7 +17,7 @@
             </h3>
         </template>
 
-        <template v-if="userAllowedForStation(StationPermission.Broadcasting)">
+        <template v-if="userAllowedForStation(StationPermissions.Broadcasting)">
             <div
                 class="collapse"
                 :class="(credentialsVisible) ? 'show' : ''"
@@ -117,7 +117,7 @@
         </template>
 
         <template
-            v-if="userAllowedForStation(StationPermission.Broadcasting)"
+            v-if="userAllowedForStation(StationPermissions.Broadcasting)"
             #footer_actions
         >
             <a
@@ -174,12 +174,12 @@ import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
-import {StationPermission, userAllowedForStation} from "~/acl";
+import {StationPermissions, userAllowedForStation} from "~/acl";
 import useOptionalStorage from "~/functions/useOptionalStorage";
 import {IconMoreHoriz, IconPlay, IconStop, IconUpdate} from "~/components/Common/icons";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 
-import {FrontendAdapter} from "~/entities/RadioAdapters.ts";
+import {FrontendAdapter, FrontendAdapters} from "~/entities/RadioAdapters.ts";
 
 export interface ProfileFrontendPanelParentProps {
     frontendType: FrontendAdapter,
@@ -216,13 +216,13 @@ const langShowHideCredentials = computed(() => {
 
 const frontendName = computed(() => {
     switch (props.frontendType) {
-        case FrontendAdapter.Icecast:
+        case FrontendAdapters.Icecast:
             return 'Icecast';
 
-        case FrontendAdapter.Rsas:
+        case FrontendAdapters.Rsas:
             return 'Rocket Streaming Audio Server (RSAS)';
 
-        case FrontendAdapter.Shoutcast:
+        case FrontendAdapters.Shoutcast:
             return 'Shoutcast';
 
         default:
@@ -231,7 +231,7 @@ const frontendName = computed(() => {
 });
 
 const isShoutcast = computed(() => {
-    return props.frontendType === FrontendAdapter.Shoutcast;
+    return props.frontendType === FrontendAdapters.Shoutcast;
 });
 
 const doRestart = useMakeApiCall(

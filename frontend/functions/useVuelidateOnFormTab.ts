@@ -15,7 +15,7 @@ export function useVuelidateOnFormTab<
 ): {
     v$: VuelidateRef<TabForm>,
     isValid: ComputedRef<boolean>,
-    tabClass: ComputedRef<string | null>
+    tabClass: ComputedRef<string>
 } {
     const v$ = useVuelidate(validations, form as unknown as Ref<TabForm>, vuelidateOptions);
 
@@ -27,7 +27,7 @@ export function useVuelidateOnFormTab<
         if (v$.value.$anyDirty && v$.value.$invalid) {
             return 'text-danger';
         }
-        return null;
+        return '';
     });
 
     // Register event listener for blankForm building.

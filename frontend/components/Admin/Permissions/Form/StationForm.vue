@@ -55,7 +55,7 @@ const props = defineProps<{
     stationPermissions: Record<string, string>,
 }>();
 
-const form = defineModel<Permission>('form');
+const form = defineModel<Permission>('form', {required: true});
 
 useVuelidateOnFormTab(
     form,

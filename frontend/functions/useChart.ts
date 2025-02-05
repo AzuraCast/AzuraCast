@@ -2,6 +2,7 @@ import {
     Chart,
     ChartConfiguration,
     ChartConfigurationCustomTypesPerDataset,
+    ChartDataset,
     ChartType,
     DefaultDataPoint,
     registerables
@@ -39,7 +40,7 @@ export interface ChartProps<
     TLabel = unknown
 > {
     options?: Partial<ChartConfiguration<TType, TData, TLabel> | ChartConfigurationCustomTypesPerDataset<TType, TData, TLabel>>,
-    data?: any[],
+    data?: ChartDataset<TType, TData>[],
     aspectRatio?: number,
     alt?: ChartAltData[],
     labels?: Array<any>
@@ -69,7 +70,7 @@ export default function useChart<
         }
     )) as ChartProps<TType, TData, TLabel>;
 
-    let $chart = null;
+    let $chart: Chart<TType, TData, TLabel> | null = null;
 
     const chartConfig = computed(() => {
         const config = defaultsDeep({
@@ -87,10 +88,12 @@ export default function useChart<
     const rebuildChart = () => {
         $chart?.destroy();
 
-        $chart = new Chart(
-            $canvas.value.getContext('2d'),
-            chartConfig.value
-        );
+        if ($canvas.value) {
+            $chart = new Chart(
+                $canvas.value.getContext('2d'),
+                chartConfig.value
+            );
+        }
     }
 
     onMounted(rebuildChart);
@@ -102,7 +105,7 @@ export default function useChart<
     watch(toRef(props, 'options'), rebuildChart);
 
     watch(toRef(props, 'data'), (newData) => {
-        if ($chart) {
+        if ($chart && newData) {
             $chart.data.datasets = newData;
             $chart.update();
         }

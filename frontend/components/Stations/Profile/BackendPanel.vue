@@ -21,7 +21,7 @@
             </p>
 
             <div
-                v-if="userAllowedForStation(StationPermission.Media)"
+                v-if="userAllowedForStation(StationPermissions.Media)"
                 class="buttons"
             >
                 <router-link
@@ -40,7 +40,7 @@
         </div>
 
         <template
-            v-if="userAllowedForStation(StationPermission.Broadcasting) && hasStarted"
+            v-if="userAllowedForStation(StationPermissions.Broadcasting) && hasStarted"
             #footer_actions
         >
             <button
@@ -85,11 +85,11 @@ import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {StationPermission, userAllowedForStation} from "~/acl";
+import {StationPermissions, userAllowedForStation} from "~/acl";
 import {IconPlay, IconStop, IconUpdate} from "~/components/Common/icons";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 
-import {BackendAdapter} from '~/entities/RadioAdapters';
+import {BackendAdapter, BackendAdapters} from '~/entities/RadioAdapters';
 
 export interface ProfileBackendPanelParentProps {
     numSongs: number,
@@ -142,7 +142,7 @@ const langTotalTracks = computed(() => {
 });
 
 const backendName = computed(() => {
-    if (props.backendType === BackendAdapter.Liquidsoap) {
+    if (props.backendType === BackendAdapters.Liquidsoap) {
         return 'Liquidsoap';
     }
     return '';

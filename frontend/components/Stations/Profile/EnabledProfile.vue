@@ -74,7 +74,7 @@ import ProfileFrontend, {ProfileFrontendPanelParentProps} from './FrontendPanel.
 import ProfileBackendNone from './BackendNonePanel.vue';
 import ProfileBackend, {ProfileBackendPanelParentProps} from './BackendPanel.vue';
 import NowPlayingNotStartedPanel from "./NowPlayingNotStartedPanel.vue";
-import {BackendAdapter, FrontendAdapter} from '~/entities/RadioAdapters';
+import {BackendAdapters, FrontendAdapters} from '~/entities/RadioAdapters';
 import NowPlaying from '~/entities/NowPlaying';
 import {computed} from "vue";
 import {useAxios} from "~/vendor/axios";
@@ -95,11 +95,11 @@ export interface EnabledProfileProps extends ProfileBackendPanelParentProps,
 const props = defineProps<EnabledProfileProps>();
 
 const hasActiveFrontend = computed(() => {
-    return props.frontendType !== FrontendAdapter.Remote;
+    return props.frontendType !== FrontendAdapters.Remote;
 });
 
 const hasActiveBackend = computed(() => {
-    return props.backendType !== BackendAdapter.None;
+    return props.backendType !== BackendAdapters.None;
 });
 
 const {axiosSilent} = useAxios();

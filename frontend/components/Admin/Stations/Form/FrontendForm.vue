@@ -168,7 +168,7 @@
 <script setup lang="ts">
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {FrontendAdapter} from "~/entities/RadioAdapters";
+import {FrontendAdapters} from "~/entities/RadioAdapters";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
@@ -178,6 +178,7 @@ import {numeric, required} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 import {GenericForm} from "~/entities/Forms.ts";
+import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 
 const props = defineProps<{
     isRsasInstalled: boolean,
@@ -185,7 +186,7 @@ const props = defineProps<{
     countries: Record<string, string>,
 }>();
 
-const form = defineModel<GenericForm>('form');
+const form = defineModel<GenericForm>('form', {required: true});
 
 const {enableAdvancedFeatures} = useAzuraCast();
 
@@ -226,7 +227,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         let blankForm: {
             [key: string | number]: any
         } = {
-            frontend_type: FrontendAdapter.Icecast,
+            frontend_type: FrontendAdapters.Icecast,
             frontend_config: {
                 sc_license_id: '',
                 sc_user_id: '',
@@ -257,42 +258,42 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
 const {$gettext} = useTranslate();
 
-const frontendTypeOptions = computed(() => {
-    const frontendOptions = [
+const frontendTypeOptions = computed<SimpleFormOptionInput>(() => {
+    const frontendOptions: SimpleFormOptionInput = [
         {
             text: $gettext('Use Icecast 2.4 on this server.'),
-            value: FrontendAdapter.Icecast
+            value: FrontendAdapters.Icecast
         },
     ];
 
     if (props.isRsasInstalled) {
         frontendOptions.push({
             text: $gettext('Use Rocket Streaming Audio Server (RSAS) on this server.'),
-            value: FrontendAdapter.Rsas
+            value: FrontendAdapters.Rsas
         });
     }
 
     if (props.isShoutcastInstalled) {
         frontendOptions.push({
             text: $gettext('Use Shoutcast DNAS 2 on this server.'),
-            value: FrontendAdapter.Shoutcast
+            value: FrontendAdapters.Shoutcast
         });
     }
 
     frontendOptions.push({
         text: $gettext('Do not use a local broadcasting service.'),
-        value: FrontendAdapter.Remote
+        value: FrontendAdapters.Remote
     });
 
     return frontendOptions;
 });
 
 const isLocalFrontend = computed(() => {
-    return form.value.frontend_type !== FrontendAdapter.Remote;
+    return form.value.frontend_type !== FrontendAdapters.Remote;
 });
 
 const isShoutcastFrontend = computed(() => {
-    return form.value.frontend_type === FrontendAdapter.Shoutcast;
+    return form.value.frontend_type === FrontendAdapters.Shoutcast;
 });
 
 const clearCountries = () => {

@@ -95,7 +95,7 @@ import BitrateOptions from "~/components/Common/BitrateOptions.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {GenericForm} from "~/entities/Forms.ts";
 
-const form = defineModel<GenericForm>('form');
+const form = defineModel<GenericForm>('form', {required: true});
 
 const {maxBitrate} = useAzuraCastStation();
 

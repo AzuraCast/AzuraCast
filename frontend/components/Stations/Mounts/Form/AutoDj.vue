@@ -54,7 +54,7 @@ defineProps<{
     stationFrontendType: FrontendAdapter
 }>();
 
-const form = defineModel<GenericForm>('form');
+const form = defineModel<GenericForm>('form', {required: true});
 
 const {maxBitrate} = useAzuraCastStation();
 

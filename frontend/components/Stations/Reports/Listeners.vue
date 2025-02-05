@@ -197,7 +197,7 @@ import {useAxios} from "~/vendor/axios";
 import {getStationApiUrl} from "~/router";
 import {IconDesktopWindows, IconDownload, IconRouter, IconSmartphone} from "~/components/Common/icons";
 import useHasDatatable from "~/functions/useHasDatatable";
-import {ListenerFilters, ListenerTypeFilter} from "~/components/Stations/Reports/Listeners/listenerFilters.ts";
+import {ListenerFilters, ListenerTypeFilters} from "~/components/Stations/Reports/Listeners/listenerFilters.ts";
 import {filter} from "lodash";
 import formatTime from "~/functions/formatTime.ts";
 import ListenerFiltersBar from "./Listeners/FiltersBar.vue";
@@ -236,7 +236,7 @@ const dateRange = ref({
 const filters: Ref<ListenerFilters> = ref({
     minLength: null,
     maxLength: null,
-    type: ListenerTypeFilter.All,
+    type: ListenerTypeFilters.All,
 });
 
 const {$gettext} = useTranslate();
@@ -347,7 +347,7 @@ const {navigate} = useHasDatatable($dataTable);
 const hasFilters: ComputedRef<boolean> = computed(() => {
     return null !== filters.value.minLength
         || null !== filters.value.maxLength
-        || ListenerTypeFilter.All !== filters.value.type;
+        || ListenerTypeFilters.All !== filters.value.type;
 });
 
 const filteredListeners: ComputedRef<ApiListener[]> = computed(() => {
@@ -365,10 +365,10 @@ const filteredListeners: ComputedRef<ApiListener[]> = computed(() => {
             if (null !== filters.value.maxLength && connectedTime > filters.value.maxLength) {
                 return false;
             }
-            if (ListenerTypeFilter.All !== filters.value.type) {
-                if (ListenerTypeFilter.Mobile === filters.value.type && !row.device.is_mobile) {
+            if (ListenerTypeFilters.All !== filters.value.type) {
+                if (ListenerTypeFilters.Mobile === filters.value.type && !row.device.is_mobile) {
                     return false;
-                } else if (ListenerTypeFilter.Desktop === filters.value.type && row.device.is_mobile) {
+                } else if (ListenerTypeFilters.Desktop === filters.value.type && row.device.is_mobile) {
                     return false;
                 }
             }

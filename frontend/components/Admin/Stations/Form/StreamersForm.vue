@@ -127,7 +127,7 @@
 <script setup lang="ts">
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {BackendAdapter} from "~/entities/RadioAdapters";
+import {BackendAdapters} from "~/entities/RadioAdapters";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import BackendDisabled from "./Common/BackendDisabled.vue";
 import {computed} from "vue";
@@ -139,7 +139,7 @@ import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
 import {GenericForm} from "~/entities/Forms.ts";
 
-const form = defineModel<GenericForm>('form');
+const form = defineModel<GenericForm>('form', {required: true});
 
 const {enableAdvancedFeatures} = useAzuraCast();
 
@@ -204,7 +204,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 );
 
 const isBackendEnabled = computed(() => {
-    return form.value.backend_type !== BackendAdapter.None;
+    return form.value.backend_type !== BackendAdapters.None;
 });
 
 const tabClassWithBackend = computed(() => {

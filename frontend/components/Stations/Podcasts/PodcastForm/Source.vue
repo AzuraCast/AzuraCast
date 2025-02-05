@@ -70,7 +70,7 @@ import {getStationApiUrl} from "~/router.ts";
 import Loading from "~/components/Common/Loading.vue";
 import {GenericForm} from "~/entities/Forms.ts";
 
-const form = defineModel<GenericForm>('form');
+const form = defineModel<GenericForm>('form', {required: true});
 
 const {v$, tabClass} = useVuelidateOnFormTab(
     form,

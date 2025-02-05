@@ -1,33 +1,33 @@
-export enum FrontendAdapter {
-    Icecast = 'icecast',
-    Shoutcast = 'shoutcast2',
-    Rsas = 'rsas',
-    Remote = 'remote'
-}
+export const FrontendAdapters = Object.freeze({
+    Icecast: 'icecast',
+    Shoutcast: 'shoutcast2',
+    Rsas: 'rsas',
+    Remote: 'remote'
+} as const);
 
-export enum BackendAdapter {
-    Liquidsoap = 'liquidsoap',
-    None = 'none'
-}
+export type FrontendAdapter = typeof FrontendAdapters[keyof typeof FrontendAdapters];
 
-export enum RemoteAdapter {
-    Shoutcast1 = 'shoutcast1',
-    Shoutcast2 = 'shoutcast2',
-    Icecast = 'icecast',
-    AzuraRelay = 'azurarelay'
-}
+export const BackendAdapters = Object.freeze({
+    Liquidsoap: 'liquidsoap',
+    None: 'none'
+} as const);
 
-export enum AudioProcessingMethod {
-    None = 'none',
-    Liquidsoap = 'nrj',
-    MasterMe = 'master_me',
-    StereoTool = 'stereo_tool'
-}
+export type BackendAdapter = typeof BackendAdapters[keyof typeof BackendAdapters];
 
-export enum MasterMePreset {
-    MusicGeneral = 'music_general',
-    SpeechGeneral = 'speech_general',
-    EbuR128 = 'ebu_r128',
-    ApplePodcasts = 'apple_podcasts',
-    YouTube = 'youtube'
-}
+export const RemoteAdapters = Object.freeze({
+    Shoutcast1: 'shoutcast1',
+    Shoutcast2: 'shoutcast2',
+    Icecast: 'icecast',
+    AzuraRelay: 'azurarelay'
+} as const);
+
+export type RemoteAdapter = typeof RemoteAdapters[keyof typeof RemoteAdapters];
+
+export const AudioProcessingMethods = Object.freeze({
+    None: 'none',
+    Liquidsoap: 'nrj',
+    MasterMe: 'master_me',
+    StereoTool: 'stereo_tool'
+} as const);
+
+export type AudioProcessingMethod = typeof AudioProcessingMethods[keyof typeof AudioProcessingMethods];

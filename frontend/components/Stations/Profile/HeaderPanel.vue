@@ -22,7 +22,7 @@
             </h2>
         </div>
         <div
-            v-if="userAllowedForStation(StationPermission.Profile)"
+            v-if="userAllowedForStation(StationPermissions.Profile)"
             class="flex-shrink-0 ms-3"
         >
             <router-link
@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import Icon from '~/components/Common/Icon.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
-import {StationPermission, userAllowedForStation} from "~/acl";
+import {StationPermissions, userAllowedForStation} from "~/acl";
 import {IconEdit} from "~/components/Common/icons";
 import {ApiNowPlayingStation} from "~/entities/ApiInterfaces.ts";
 

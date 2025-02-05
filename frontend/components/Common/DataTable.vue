@@ -168,7 +168,7 @@
                             ]"
                             :aria-sort="(column.sortable && sortField?.key === column.key)
                                 ? ((sortOrder === 'asc') ? 'ascending' : 'descending')
-                                : null"
+                                : undefined"
                             @click.stop="sort(column)"
                         >
                             <slot
@@ -302,6 +302,7 @@ import useOptionalStorage from "~/functions/useOptionalStorage";
 import {IconArrowDropDown, IconArrowDropUp, IconFilterList, IconRefresh, IconSearch} from "~/components/Common/icons";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
 import {AxiosRequestConfig} from "axios";
+import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 
 export type DataTableRow = Record<string, any>
 
@@ -340,9 +341,6 @@ export interface DataTableProps<Row extends DataTableRow = DataTableRow> {
 }
 
 const props = withDefaults(defineProps<DataTableProps<Row>>(), {
-    id: null,
-    apiUrl: null,
-    items: null,
     responsive: () => true,
     paginated: false,
     loading: false,
@@ -405,10 +403,12 @@ const totalRows = ref(0);
 
 const activeDetailsRow = shallowRef<Row>(null);
 
-const allFields = computed<DataTableField<Row>[]>(() => {
-    return map(props.fields, (field: DataTableField<Row>) => {
+type RowField = DataTableField<Row>
+type RowFields = RowField[]
+
+const allFields = computed<RowFields>(() => {
+    return map(props.fields, (field: RowField) => {
         return {
-            label: '',
             isRowHeader: false,
             sortable: false,
             selectable: false,
@@ -421,22 +421,22 @@ const allFields = computed<DataTableField<Row>[]>(() => {
     });
 });
 
-const selectableFields = computed<DataTableField<Row>[]>(() => {
-    return filter({...allFields.value}, (field) => {
-        return field.selectable;
+const selectableFields = computed<RowFields>(() => {
+    return filter({...allFields.value}, (field: RowField) => {
+        return field.selectable ?? false;
     });
 });
 
-const selectableFieldOptions = computed(() => map(selectableFields.value, (field) => {
+const selectableFieldOptions = computed<SimpleFormOptionInput>(() => map(selectableFields.value, (field) => {
     return {
         value: field.key,
         text: field.label
     };
 }));
 
-const defaultSelectableFields = computed(() => {
-    return filter({...selectableFields.value}, (field) => {
-        return field.visible;
+const defaultSelectableFields = computed<RowFields>(() => {
+    return filter({...selectableFields.value}, (field: RowField) => {
+        return field.visible ?? true;
     });
 });
 
@@ -537,8 +537,8 @@ const refreshClientSide = () => {
 
         itemsOnPage = itemsOnPage.sort(
             (a, b) => collator.compare(
-                sortField.value.sorter(a),
-                sortField.value.sorter(b)
+                sortField.value!.sorter(a),
+                sortField.value!.sorter(b)
             )
         );
 

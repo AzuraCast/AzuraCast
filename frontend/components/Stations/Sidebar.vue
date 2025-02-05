@@ -16,7 +16,7 @@
             </router-link>
 
             <router-link
-                v-if="userAllowedForStation(StationPermission.Profile)"
+                v-if="userAllowedForStation(StationPermissions.Profile)"
                 :to="{ name: 'stations:profile:edit' }"
                 class="navbar-brand ms-0 flex-shrink-0"
             >
@@ -26,7 +26,7 @@
         </div>
     </div>
 
-    <template v-if="userAllowedForStation(StationPermission.Broadcasting)">
+    <template v-if="userAllowedForStation(StationPermissions.Broadcasting)">
         <div
             v-if="!hasStarted"
             class="navdrawer-alert bg-success-subtle text-success-emphasis"
@@ -67,7 +67,7 @@ import SidebarMenu from "~/components/Common/SidebarMenu.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import {useIntervalFn} from "@vueuse/core";
 import {useStationsMenu} from "~/components/Stations/menu";
-import {StationPermission, userAllowedForStation} from "~/acl";
+import {StationPermissions, userAllowedForStation} from "~/acl";
 import {useAxios} from "~/vendor/axios.ts";
 import {getStationApiUrl} from "~/router.ts";
 import {IconEdit} from "~/components/Common/icons.ts";

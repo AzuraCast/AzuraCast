@@ -79,8 +79,7 @@ final class ScheduleAction implements SingleActionInterface
             $dateRange = $this->getDateRange($request, $tz);
 
             $cacheKey = 'api_station_' . $station->getId() . '_schedule_'
-                . $dateRange->getStart()->format('Ymd') . '-'
-                . $dateRange->getEnd()->format('Ymd');
+                . $dateRange->format('Ymd', '-');
 
             $cacheItem = $this->psr6Cache->getItem(urlencode($cacheKey));
 

@@ -108,6 +108,7 @@ use OpenApi\Attributes as OA;
 final class OpenApi
 {
     public const int SAMPLE_TIMESTAMP = 1609480800;
+    public const string SAMPLE_DATETIME = '2025-01-31T21:31:58+00:00';
 
     public const array API_KEY_SECURITY = [['ApiKey' => []]];
 

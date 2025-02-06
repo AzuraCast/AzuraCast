@@ -28,6 +28,7 @@ use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\LiquidsoapQueues;
 use App\Utilities\File;
+use App\Utilities\Time;
 use App\Utilities\Types;
 use Exception;
 use InvalidArgumentException;
@@ -300,8 +301,8 @@ final class BatchAction implements SingleActionInterface
         } else {
             $nextCuedItem = $this->queueRepo->getNextToSendToAutoDj($station);
             $cuedTimestamp = (null !== $nextCuedItem)
-                ? $nextCuedItem->getTimestampCued() - 10
-                : time();
+                ? $nextCuedItem->getTimestampCued()->subSeconds(10)
+                : Time::nowUtc();
 
             foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
                 try {
@@ -315,7 +316,7 @@ final class BatchAction implements SingleActionInterface
                     $result->errors[] = sprintf('%s: %s', $media->getPath(), $e->getMessage());
                 }
 
-                $cuedTimestamp -= 10;
+                $cuedTimestamp = $cuedTimestamp->subSeconds(10);
             }
         }
 
@@ -352,7 +353,7 @@ final class BatchAction implements SingleActionInterface
                 );
             }
         } else {
-            $cuedTimestamp = time();
+            $cuedTimestamp = Time::nowUtc();
 
             foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
                 try {
@@ -377,7 +378,7 @@ final class BatchAction implements SingleActionInterface
                     $result->errors[] = sprintf('%s: %s', $media->getPath(), $e->getMessage());
                 }
 
-                $cuedTimestamp += 10;
+                $cuedTimestamp = $cuedTimestamp->addSeconds(10);
             }
         }
 

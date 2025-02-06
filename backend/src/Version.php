@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App;
 
 use App\Enums\ReleaseChannel;
-use DateTime;
-use DateTimeZone;
+use App\Utilities\Time;
+use Carbon\CarbonImmutable;
 use Dotenv\Dotenv;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Process\Process;
@@ -71,8 +71,7 @@ final class Version
                 ];
 
                 if (!empty($rawDetails['commit_date_raw'])) {
-                    $commitDate = new DateTime($rawDetails['commit_date_raw']);
-                    $commitDate->setTimezone(new DateTimeZone('UTC'));
+                    $commitDate = CarbonImmutable::parse($rawDetails['commit_date_raw'], Time::getUtc());
 
                     $details['commit_timestamp'] = $commitDate->getTimestamp();
                     $details['commit_date'] = $commitDate->format('Y-m-d G:i');

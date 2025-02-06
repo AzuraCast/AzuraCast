@@ -44,8 +44,8 @@ final class RequestsController
 
         $type = Types::string($request->getParam('type', 'recent'));
         $qb = match ($type) {
-            'history' => $qb->andWhere('sr.played_at != 0'),
-            default => $qb->andWhere('sr.played_at = 0'),
+            'history' => $qb->andWhere('sr.played_at IS NOT NULL'),
+            default => $qb->andWhere('sr.played_at IS NULL'),
         };
 
         $qb = $this->sortQueryBuilder(

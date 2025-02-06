@@ -7,8 +7,7 @@ namespace App\Console\Command\Sync;
 use App\Container\SettingsAwareTrait;
 use App\Event\GetSyncTasks;
 use App\Lock\LockFactory;
-use Carbon\CarbonImmutable;
-use DateTimeZone;
+use App\Utilities\Time;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -49,7 +48,7 @@ final class RunnerCommand extends AbstractSyncRunnerCommand
         $syncTasksEvent = new GetSyncTasks();
         $this->dispatcher->dispatch($syncTasksEvent);
 
-        $now = CarbonImmutable::now(new DateTimeZone('UTC'));
+        $now = Time::nowUtc();
 
         foreach ($syncTasksEvent->getTasks() as $taskClass) {
             if ($taskClass::isDue($now, $this->environment, $settings)) {

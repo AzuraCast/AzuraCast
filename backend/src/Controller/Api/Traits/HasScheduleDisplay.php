@@ -22,8 +22,8 @@ trait HasScheduleDisplay
     ): array {
         $events = [];
 
-        $loopStartDate = $dateRange->getStart()->subDay()->startOf('day');
-        $loopEndDate = $dateRange->getEnd()->endOf('day');
+        $loopStartDate = $dateRange->start->subDay()->startOf('day');
+        $loopEndDate = $dateRange->end->endOf('day');
 
         foreach ($scheduleItems as $scheduleItem) {
             /** @var StationSchedule $scheduleItem */

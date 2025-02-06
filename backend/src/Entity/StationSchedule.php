@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Interfaces\IdentifiableEntityInterface;
-use Carbon\CarbonImmutable;
+use App\Utilities\Time;
 use Carbon\CarbonInterface;
-use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 
@@ -122,7 +121,7 @@ class StationSchedule implements IdentifiableEntityInterface
      */
     public function getDuration(): int
     {
-        $now = CarbonImmutable::now(new DateTimeZone('UTC'));
+        $now = Time::nowUtc();
 
         $startTime = self::getDateTime($this->start_time, $now)
             ->getTimestamp();

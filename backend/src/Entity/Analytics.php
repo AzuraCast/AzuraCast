@@ -6,10 +6,8 @@ namespace App\Entity;
 
 use App\Entity\Enums\AnalyticsIntervals;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
+use App\Utilities\Time;
 use Carbon\CarbonImmutable;
-use DateTimeImmutable;
-use DateTimeInterface;
-use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 use RuntimeException;
 
@@ -33,8 +31,8 @@ class Analytics implements IdentifiableEntityInterface
     #[ORM\Column(type: 'string', length: 15, enumType: AnalyticsIntervals::class)]
     protected AnalyticsIntervals $type;
 
-    #[ORM\Column(type: 'datetime_immutable')]
-    protected DateTimeImmutable $moment;
+    #[ORM\Column(type: 'datetime_immutable', precision: 0)]
+    protected CarbonImmutable $moment;
 
     #[ORM\Column]
     protected int $number_min;
@@ -49,7 +47,7 @@ class Analytics implements IdentifiableEntityInterface
     protected ?int $number_unique = null;
 
     public function __construct(
-        DateTimeInterface $moment,
+        mixed $moment,
         ?Station $station = null,
         AnalyticsIntervals $type = AnalyticsIntervals::Daily,
         int $numberMin = 0,
@@ -57,9 +55,7 @@ class Analytics implements IdentifiableEntityInterface
         float $numberAvg = 0,
         ?int $numberUnique = null
     ) {
-        $utc = new DateTimeZone('UTC');
-
-        $this->moment = CarbonImmutable::parse($moment, $utc)->shiftTimezone($utc);
+        $this->moment = Time::toUtcCarbonImmutable($moment);
 
         $this->station = $station;
         $this->type = $type;
@@ -82,7 +78,7 @@ class Analytics implements IdentifiableEntityInterface
 
     public function getMoment(): CarbonImmutable
     {
-        return CarbonImmutable::instance($this->moment);
+        return $this->moment;
     }
 
     public function getMomentInStationTimeZone(): CarbonImmutable
@@ -92,7 +88,7 @@ class Analytics implements IdentifiableEntityInterface
         }
 
         $tz = $this->station->getTimezoneObject();
-        return CarbonImmutable::instance($this->moment)->shiftTimezone($tz);
+        return $this->moment->shiftTimezone($tz);
     }
 
     public function getNumberMin(): int

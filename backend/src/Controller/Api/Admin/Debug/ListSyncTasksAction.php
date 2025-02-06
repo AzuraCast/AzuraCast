@@ -11,8 +11,7 @@ use App\Controller\SingleActionInterface;
 use App\Event\GetSyncTasks;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Carbon\CarbonImmutable;
-use DateTimeZone;
+use App\Utilities\Time;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -34,7 +33,7 @@ final class ListSyncTasksAction implements SingleActionInterface
 
         $syncTasks = [];
 
-        $now = CarbonImmutable::now(new DateTimeZone('UTC'));
+        $now = Time::nowUtc();
         $syncTasksEvent = new GetSyncTasks();
         $this->dispatcher->dispatch($syncTasksEvent);
 

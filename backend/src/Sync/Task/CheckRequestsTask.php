@@ -12,6 +12,7 @@ use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\LiquidsoapQueues;
+use App\Utilities\Time;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 final class CheckRequestsTask extends AbstractTask
@@ -70,7 +71,7 @@ final class CheckRequestsTask extends AbstractTask
             // Log the item in SongHistory.
             $sq = StationQueue::fromRequest($request);
             $sq->setSentToAutodj();
-            $sq->setTimestampCued(time());
+            $sq->setTimestampCued(Time::nowUtc());
 
             $this->em->persist($sq);
             $this->em->flush();
@@ -96,7 +97,7 @@ final class CheckRequestsTask extends AbstractTask
         $this->logger->debug('AutoDJ request response', ['response' => $response]);
 
         // Log the request as played.
-        $request->setPlayedAt(time());
+        $request->setPlayedAt(Time::nowUtc());
 
         $this->em->persist($request);
         $this->em->flush();

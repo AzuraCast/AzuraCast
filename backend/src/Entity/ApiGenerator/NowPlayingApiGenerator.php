@@ -131,12 +131,11 @@ final class NowPlayingApiGenerator
         $currentStreamer = $station->getCurrentStreamer();
 
         if (null !== $currentStreamer) {
-            $broadcastStart = $this->broadcastRepo->getLatestBroadcast($station)?->getTimestampStart();
-
             $live = new Live();
             $live->is_live = true;
             $live->streamer_name = $currentStreamer->getDisplayName();
-            $live->broadcast_start = $broadcastStart;
+            $live->broadcast_start = $this->broadcastRepo->getLatestBroadcast($station)
+                ?->getTimestampStart()?->getTimestamp();
 
             if (0 !== $currentStreamer->getArtUpdatedAt()) {
                 $live->art = $this->router->namedAsUri(

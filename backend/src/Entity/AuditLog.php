@@ -6,6 +6,8 @@ namespace App\Entity;
 
 use App\Entity\Enums\AuditLogOperations;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
+use App\Utilities\Time;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[
@@ -20,8 +22,8 @@ class AuditLog implements IdentifiableEntityInterface
 
     protected static ?string $currentUser = null;
 
-    #[ORM\Column]
-    protected int $timestamp;
+    #[ORM\Column(type: 'datetime_immutable', precision: 6)]
+    protected CarbonImmutable $timestamp;
 
     #[ORM\Column(type: 'smallint', enumType: AuditLogOperations::class)]
     protected AuditLogOperations $operation;
@@ -52,7 +54,7 @@ class AuditLog implements IdentifiableEntityInterface
         ?string $target,
         array $changes
     ) {
-        $this->timestamp = time();
+        $this->timestamp = Time::nowUtc();
         $this->user = self::$currentUser;
 
         $this->operation = $operation;
@@ -90,7 +92,7 @@ class AuditLog implements IdentifiableEntityInterface
             : null;
     }
 
-    public function getTimestamp(): int
+    public function getTimestamp(): CarbonImmutable
     {
         return $this->timestamp;
     }

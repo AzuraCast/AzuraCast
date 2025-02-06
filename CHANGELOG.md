@@ -22,6 +22,12 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- Schema/API Change: Several date/time fields have been made more precise to allow for storing higher-precision
+  timestamps. Tables affected include `AuditLog`, `Listener`, `Relay`, `SongHistory`, `StationQueue`, `StationRequest`
+  and `StationStreamerBroadcast`. Public-facing APIs still use UNIX timestamps in seconds for backward compatibility,
+  but several internal APIs have updated to use the ISO 8601 datetime format. When submitting changes to these entities,
+  you can still submit UNIX timestamps and they will be accepted as well as the ISO 8601 format.
+
 - API Change: The Permissions API endpoint will now return station permissions as an array (i.e.
   `station: [{id: 1, permissions: ["foo"]]`) instead of an object (i.e. `station: { 1: ["foo"] }`). Please update any
   calling code accordingly. You can still submit new permissions in either format and it will be accepted.

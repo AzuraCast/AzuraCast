@@ -22,9 +22,9 @@ final class StationQueueApiGenerator
         bool $allowRemoteArt = false
     ): NowPlayingStationQueue {
         $response = new NowPlayingStationQueue();
-        $response->cued_at = $record->getTimestampCued();
-        $response->played_at = $record->getTimestampPlayed();
-        $response->duration = (int)$record->getDuration();
+        $response->cued_at = $record->getTimestampCued()->getTimestamp();
+        $response->played_at = $record->getTimestampPlayed()?->getTimestamp() ?? null;
+        $response->duration = $record->getDuration() ?? 0.0;
         $response->is_request = $record->getRequest() !== null;
 
         if ($record->getPlaylist() instanceof StationPlaylist) {

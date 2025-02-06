@@ -23,6 +23,9 @@ export default function useStationDateTimeFormatter(
     const timestampToDateTime = (value: number): DateTimeMaybeValid =>
         DateTime.fromSeconds(value, {zone: timezone});
 
+    const isoToDateTime = (value: string): DateTimeMaybeValid =>
+        DateTime.fromISO(value, {zone: timezone});
+
     const formatDateTime = (
         value: DateTimeMaybeValid,
         format: Intl.DateTimeFormatOptions
@@ -65,15 +68,38 @@ export default function useStationDateTimeFormatter(
             ? formatDateTimeAsRelative(timestampToDateTime(value))
             : '';
 
+    const formatIsoAsDateTime = (
+        value: any,
+        format: Intl.DateTimeFormatOptions | null = null
+    ) => (value)
+        ? formatDateTimeAsDateTime(isoToDateTime(value), format)
+        : '';
+
+    const formatIsoAsTime = (
+        value: any,
+        format: Intl.DateTimeFormatOptions | null = null
+    ) => (value)
+        ? formatDateTimeAsTime(isoToDateTime(value), format)
+        : '';
+
+    const formatIsoAsRelative = (value) =>
+        (value)
+            ? formatDateTimeAsRelative(isoToDateTime(value))
+            : '';
+
     return {
         now,
         timestampToDateTime,
+        isoToDateTime,
         formatDateTime,
         formatDateTimeAsDateTime,
         formatDateTimeAsTime,
         formatDateTimeAsRelative,
         formatTimestampAsDateTime,
         formatTimestampAsTime,
-        formatTimestampAsRelative
+        formatTimestampAsRelative,
+        formatIsoAsDateTime,
+        formatIsoAsTime,
+        formatIsoAsRelative
     };
 }

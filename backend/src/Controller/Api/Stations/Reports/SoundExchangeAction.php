@@ -93,8 +93,8 @@ final class SoundExchangeAction implements SingleActionInterface
                 GROUP BY sh.song_id
             DQL
         )->setParameter('station', $station)
-            ->setParameter('time_start', $startDate->getTimestamp())
-            ->setParameter('time_end', $endDate->getTimestamp())
+            ->setParameter('time_start', $startDate)
+            ->setParameter('time_end', $endDate)
             ->getArrayResult();
 
         // TODO: Fix this (not all song rows have a media_id)

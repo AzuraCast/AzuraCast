@@ -307,7 +307,7 @@ const $modal = useTemplateRef('$modal');
 
 const {notifySuccess} = useNotify();
 
-const makeDebugCall = (url) => {
+const makeDebugCall = (url: string) => {
     void axios.put(url).then((resp) => {
         if (resp.data.logs) {
             $modal.value?.open(resp.data.logs);

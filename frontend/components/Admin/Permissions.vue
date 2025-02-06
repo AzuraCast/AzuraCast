@@ -82,11 +82,12 @@ import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
+import {GlobalPermission, StationPermission} from "~/acl.ts";
 
 const props = defineProps<{
-    stations: Record<string, string>,
-    globalPermissions: Record<string, string>,
-    stationPermissions: Record<string, string>,
+    stations: Record<number, string>,
+    globalPermissions: Record<GlobalPermission, string>,
+    stationPermissions: Record<StationPermission, string>,
 }>();
 
 const listUrl = getApiUrl('/admin/roles');
@@ -99,19 +100,19 @@ const fields: DataTableField[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const getGlobalPermissionNames = (permissions) => {
+const getGlobalPermissionNames = (permissions: GlobalPermission[]) => {
     return filter(map(permissions, (permission) => {
         return get(props.globalPermissions, permission, null);
     }));
 };
 
-const getStationPermissionNames = (permissions) => {
+const getStationPermissionNames = (permissions: StationPermission[]) => {
     return filter(map(permissions, (permission) => {
         return get(props.stationPermissions, permission, null);
     }));
 };
 
-const getStationName = (stationId) => {
+const getStationName = (stationId: number) => {
     return get(props.stations, stationId, null);
 };
 

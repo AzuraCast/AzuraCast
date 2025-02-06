@@ -80,7 +80,8 @@ const badgeClasses = {
     550: 'text-bg-danger',
     600: 'text-bg-danger'
 };
-const getBadgeClass = (logLevel) => {
+
+const getBadgeClass = (logLevel: keyof typeof badgeClasses) => {
     return get(badgeClasses, logLevel, badgeClasses[100]);
 };
 
@@ -96,7 +97,8 @@ const badgeLabels = {
     550: $gettext('Alert'),
     600: $gettext('Emergency')
 };
-const getBadgeLabel = (logLevel) => {
+
+const getBadgeLabel = (logLevel: keyof typeof badgeLabels) => {
     return get(badgeLabels, logLevel, badgeLabels[100]);
 };
 

@@ -98,6 +98,7 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {getApiUrl} from "~/router";
 import {IconAddCircle, IconRemoveCircle, IconSwapHorizontalCircle} from "~/components/Common/icons";
+import {AuditLogChanges} from "~/components/Admin/AuditLog/DetailsModal.vue";
 
 const baseApiUrl = getApiUrl('/admin/auditlog');
 
@@ -148,7 +149,7 @@ watch(dateRange, navigate);
 
 const $detailsModal = useTemplateRef('$detailsModal');
 
-const showDetails = (changes) => {
+const showDetails = (changes: AuditLogChanges[]) => {
     $detailsModal.value?.open(changes);
 }
 </script>

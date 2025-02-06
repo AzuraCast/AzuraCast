@@ -192,7 +192,7 @@ const publicThemeOptions = computed(() => {
 
 const {axios} = useAxios();
 
-const populateForm = (data) => {
+const populateForm = (data: typeof form.value) => {
     form.value = mergeExisting(form.value, data);
 };
 

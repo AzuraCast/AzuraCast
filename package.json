@@ -57,7 +57,7 @@
     "@nabla/vite-plugin-eslint": "^2.0.5",
     "@types/bootstrap": "^5.2.6",
     "@types/eslint__js": "^8.42.3",
-    "@types/flowjs": "^2.13.14",
+    "@types/flowjs__flow.js": "^2.13.3",
     "@types/leaflet": "^1.9.3",
     "@types/lodash": "^4.14.196",
     "@types/luxon": "^3.3.1",

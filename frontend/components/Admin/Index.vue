@@ -152,34 +152,38 @@ interface AdminStorageStats {
     }
 }
 
+interface AdminNetworkInterfaceReceived {
+    speed: {
+        bytes: string,
+        readable: string,
+    },
+    packets: string,
+    errs: string,
+    drop: string,
+    fifo: string,
+    frame: string,
+    compressed: string,
+    multicast: string,
+}
+
+interface AdminNetworkInterfaceTransmitted {
+    speed: {
+        bytes: string
+        readable: string
+    },
+    packets: string,
+    errs: string,
+    drop: string,
+    fifo: string,
+    frame: string,
+    carrier: string,
+    compressed: string,
+}
+
 interface AdminNetworkInterfaceStats {
     interface_name: string,
-    received: {
-        speed: {
-            bytes: string,
-            readable: string,
-        },
-        packets: string,
-        errs: string,
-        drop: string,
-        fifo: string,
-        frame: string,
-        compressed: string,
-        multicast: string,
-    },
-    transmitted: {
-        speed: {
-            bytes: string
-            readable: string
-        },
-        packets: string,
-        errs: string,
-        drop: string,
-        fifo: string,
-        frame: string,
-        carrier: string,
-        compressed: string,
-    }
+    received: AdminNetworkInterfaceReceived,
+    transmitted: AdminNetworkInterfaceTransmitted
 }
 
 export interface AdminStats {

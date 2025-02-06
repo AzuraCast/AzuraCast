@@ -31,6 +31,7 @@ import {useTranslate} from "~/vendor/gettext";
 import AdminPermissionsGlobalForm from "./Form/GlobalForm.vue";
 import AdminPermissionsStationForm from "./Form/StationForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
+import {GlobalPermission, StationPermission} from "~/acl.ts";
 
 export interface PermissionStation {
     id: number,
@@ -46,9 +47,9 @@ export interface Permission {
 }
 
 interface PermissionsEditModalProps extends BaseEditModalProps {
-    stations: Record<string, string>,
-    globalPermissions: Record<string, string>,
-    stationPermissions: Record<string, string>,
+    stations: Record<number, string>,
+    globalPermissions: Record<GlobalPermission, string>,
+    stationPermissions: Record<StationPermission, string>,
 }
 
 const props = defineProps<PermissionsEditModalProps>();

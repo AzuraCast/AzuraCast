@@ -183,7 +183,7 @@ const getSpaceUsed = (item) => {
         : item.storageUsed;
 };
 
-const getProgressVariant = (percent) => {
+const getProgressVariant = (percent: number) => {
     if (percent > 85) {
         return 'text-bg-danger';
     } else if (percent > 65) {

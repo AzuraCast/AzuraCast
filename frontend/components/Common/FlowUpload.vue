@@ -108,7 +108,7 @@ interface OriginalFlowFile {
 
 const emit = defineEmits(['complete', 'success', 'error']);
 
-let flow = null;
+let flow: Flow | null = null;
 
 const files = reactive<{
     value: {
@@ -189,6 +189,7 @@ onMounted(() => {
 
     flow = new Flow(config);
 
+    // @ts-expect-error FlowJS accepts non-array value but typing doesn't.
     flow.assignBrowse($fileBrowseTarget.value, props.directoryMode, !props.allowMultiple, {
         accept: props.validMimeTypes.join(',')
     });

@@ -48,7 +48,7 @@ const {hide, show} = useHasModal($modal);
 
 const {$gettext} = useTranslate();
 
-const create = (stationName, stationCloneUrl) => {
+const create = (stationName: string, stationCloneUrl: string) => {
     resetForm();
 
     form.value.name = $gettext(

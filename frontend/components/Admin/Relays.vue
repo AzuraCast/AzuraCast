@@ -63,7 +63,7 @@ const {timeConfig} = useAzuraCast();
 
 const {DateTime} = useLuxon();
 
-const dateTimeFormatter = (value) => {
+const dateTimeFormatter = (value: number) => {
     return DateTime.fromSeconds(value).toLocaleString(
         {
             ...DateTime.DATETIME_SHORT, ...timeConfig

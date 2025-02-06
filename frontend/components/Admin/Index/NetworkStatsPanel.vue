@@ -52,9 +52,9 @@ defineProps<{
     stats: AdminStats
 }>();
 
-const getNetworkInterfaceTableFields = (interfaceData) => Object.keys(interfaceData);
+const getNetworkInterfaceTableFields = (interfaceData: object) => Object.keys(interfaceData);
 
-const getNetworkInterfaceTableItems = (interfaceData) => {
+const getNetworkInterfaceTableItems = (interfaceData: object) => {
     const item = {};
 
     Object.entries(interfaceData).forEach((data) => {

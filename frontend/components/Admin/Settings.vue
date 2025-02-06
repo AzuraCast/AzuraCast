@@ -102,7 +102,7 @@ const error = ref(null);
 
 const {axios} = useAxios();
 
-const populateForm = (data) => {
+const populateForm = (data: typeof form.value) => {
     resetForm();
     form.value = mergeExisting(form.value, data);
 };

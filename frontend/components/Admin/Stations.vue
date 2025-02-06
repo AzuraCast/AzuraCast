@@ -149,7 +149,7 @@ const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const $cloneModal = useTemplateRef('$cloneModal');
 
-const doClone = (stationName, url) => {
+const doClone = (stationName: string, url: string) => {
     $cloneModal.value.create(stationName, url);
 };
 

@@ -1,6 +1,6 @@
 import {useTranslate} from "~/vendor/gettext";
 import {h, render} from "vue";
-import {default as BSToast} from 'bootstrap/js/src/toast';
+import {Toast as BSToast} from 'bootstrap';
 
 import Toast from '~/components/Common/Toast.vue';
 import {currentVueInstance} from "~/vendor/vueInstance";
@@ -33,7 +33,7 @@ export function createToast(props: ToastProps) {
 
     render(vNode, newDiv);
 
-    return new BSToast(vNode.el);
+    return new BSToast(vNode.el as unknown as HTMLElement);
 }
 
 /* Composition API BootstrapVue utilities */

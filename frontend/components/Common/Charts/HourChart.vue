@@ -27,7 +27,6 @@ useChart<'bar'>(
     {
         type: 'bar',
         options: {
-            aspectRatio: props.aspectRatio,
             scales: {
                 x: {
                     title: {

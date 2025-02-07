@@ -38,7 +38,6 @@ useChart<'line'>(
     computed(() => ({
         type: 'line',
         options: {
-            aspectRatio: props.aspectRatio ?? 2,
             datasets: {
                 line: {
                     spanGaps: true,

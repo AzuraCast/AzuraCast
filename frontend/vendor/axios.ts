@@ -64,6 +64,7 @@ export default function installAxios(vueApp: App) {
         setLoading(false);
         handleAxiosError(error);
 
+        // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
         return Promise.reject(error);
     });
 
@@ -74,6 +75,7 @@ export default function installAxios(vueApp: App) {
         setLoading(false);
         handleAxiosError(error);
 
+        // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
         return Promise.reject(error);
     });
 

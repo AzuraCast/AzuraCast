@@ -34,10 +34,17 @@ const props = defineProps<{
     currentDirectory: string,
 }>();
 
-const emit = defineEmits(['change-directory']);
+const emit = defineEmits<{
+    (e: 'change-directory', newDir: string): void
+}>();
 
-const directoryParts = computed(() => {
-    const dirParts = [];
+interface DirPart {
+    dir: string,
+    display: string
+}
+
+const directoryParts = computed<DirPart[]>(() => {
+    const dirParts: DirPart[] = [];
 
     if (props.currentDirectory === '') {
         return dirParts;
@@ -59,7 +66,7 @@ const directoryParts = computed(() => {
     return dirParts;
 });
 
-const changeDirectory = (newDir) => {
+const changeDirectory = (newDir: string) => {
     emit('change-directory', newDir);
 }
 </script>

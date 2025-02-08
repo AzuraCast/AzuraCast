@@ -71,21 +71,10 @@ import {useTranslate} from "~/vendor/gettext";
 import {IconUpload} from "~/components/Common/icons";
 import {useEventListener} from "@vueuse/core";
 
-const props = withDefaults(
-    defineProps<{
-        targetUrl: string,
-        allowMultiple?: boolean,
-        directoryMode?: boolean,
-        validMimeTypes?: string[],
-        flowConfiguration?: object,
-    }>(),
-    {
-        allowMultiple: false,
-        directoryMode: false,
-        validMimeTypes: () => ['*'],
-        flowConfiguration: () => ({}),
-    }
-);
+export interface UploadResponseBody {
+    originalFilename: string,
+    uploadedPath: string
+}
 
 interface FlowFile {
     uniqueIdentifier: string,
@@ -106,7 +95,27 @@ interface OriginalFlowFile {
     progress(): number
 }
 
-const emit = defineEmits(['complete', 'success', 'error']);
+const props = withDefaults(
+    defineProps<{
+        targetUrl: string,
+        allowMultiple?: boolean,
+        directoryMode?: boolean,
+        validMimeTypes?: string[],
+        flowConfiguration?: object,
+    }>(),
+    {
+        allowMultiple: false,
+        directoryMode: false,
+        validMimeTypes: () => ['*'],
+        flowConfiguration: () => ({}),
+    }
+);
+
+const emit = defineEmits<{
+    (e: 'complete'): void,
+    (e: 'success', file: OriginalFlowFile, message: UploadResponseBody | null): void,
+    (e: 'error', file: OriginalFlowFile, message: string | null): void,
+}>();
 
 let flow: Flow | null = null;
 
@@ -208,10 +217,16 @@ onMounted(() => {
         files.get(file).progressPercent = toInteger(file.progress() * 100);
     });
 
-    flow.on('fileSuccess', (file: OriginalFlowFile, message) => {
+    flow.on('fileSuccess', (file: OriginalFlowFile, message: string) => {
         files.get(file).isCompleted = true;
 
-        const messageJson = JSON.parse(message);
+        let messageJson: UploadResponseBody | null;
+        try {
+            messageJson = JSON.parse(message) as UploadResponseBody;
+        } catch {
+            messageJson = null;
+        }
+
         emit('success', file, messageJson);
     });
 

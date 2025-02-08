@@ -117,7 +117,7 @@ watch(audioInputs, (inputs) => {
     }
 });
 
-let destination = null;
+let destination: AudioNode | null = null;
 
 const createSource = () => {
     if (source.value != null) {

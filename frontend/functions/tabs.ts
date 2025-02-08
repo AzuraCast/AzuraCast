@@ -1,6 +1,7 @@
 import {computed, InjectionKey, onBeforeMount, onBeforeUnmount, provide, reactive, UnwrapNestedRefs, watch} from "vue";
 import injectRequired from "~/functions/injectRequired.ts";
 import {reactiveComputed} from "@vueuse/core";
+import {Required} from "utility-types";
 
 type VueClass = string | Record<string, boolean> | VueClass[];
 
@@ -31,12 +32,10 @@ interface TabParent {
     delete(computedId: string): void
 }
 
-type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] }
-
 const tabStateKey: InjectionKey<UnwrapNestedRefs<TabParent>> = Symbol() as InjectionKey<UnwrapNestedRefs<TabParent>>;
 
 export function useTabParent(originalProps: TabParentProps) {
-    const props = reactiveComputed<WithRequired<TabParentProps, 'destroyOnHide'>>(() => ({
+    const props = reactiveComputed<Required<TabParentProps, 'destroyOnHide'>>(() => ({
         destroyOnHide: false,
         ...originalProps,
     }));
@@ -49,11 +48,11 @@ export function useTabParent(originalProps: TabParentProps) {
             this.tabs.push(tab)
         },
         update(computedId: string, data: TabChild): void {
-            const tabIndex = this.tabs.findIndex((tab) => tab.computedId === computedId);
+            const tabIndex = this.tabs.findIndex((tab: TabChild) => tab.computedId === computedId);
             this.tabs[tabIndex] = data;
         },
         delete(computedId: string): void {
-            const tabIndex = this.tabs.findIndex((tab) => tab.computedId === computedId)
+            const tabIndex = this.tabs.findIndex((tab: TabChild) => tab.computedId === computedId)
             this.tabs.splice(tabIndex, 1)
         }
     });

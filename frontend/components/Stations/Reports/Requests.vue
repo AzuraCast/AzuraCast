@@ -104,10 +104,17 @@ import {IconRemove} from "~/components/Common/icons";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useDialog} from "~/functions/useDialog.ts";
 
+type RequestType = "pending" | "history";
+
+interface TypeTabs {
+    type: RequestType,
+    title: string
+}
+
 const listUrl = getStationApiUrl('/reports/requests');
 const clearUrl = getStationApiUrl('/reports/requests/clear');
 
-const activeType = ref('pending');
+const activeType = ref<RequestType>('pending');
 
 const listUrlForType = computed(() => {
     return listUrl.value + '?type=' + activeType.value;
@@ -123,7 +130,7 @@ const fields: DataTableField[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false}
 ];
 
-const tabs = [
+const tabs: TypeTabs[] = [
     {
         type: 'pending',
         title: $gettext('Pending Requests')
@@ -140,7 +147,7 @@ const relist = () => {
     $dataTable.value?.refresh();
 };
 
-const setType = (type) => {
+const setType = (type: RequestType) => {
     activeType.value = type;
     void nextTick(relist);
 };
@@ -151,7 +158,7 @@ const {confirmDelete} = useDialog();
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const doDelete = (url) => {
+const doDelete = (url: string) => {
     void confirmDelete({
         title: $gettext('Delete Request?'),
     }).then((result) => {

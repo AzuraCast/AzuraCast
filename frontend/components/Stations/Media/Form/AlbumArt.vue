@@ -53,7 +53,7 @@ watch(toRef(props, 'albumArtUrl'), reloadArt);
 
 const {axios} = useAxios();
 
-const uploaded = (file) => {
+const uploaded = (file: File | null) => {
     if (null === file) {
         return;
     }

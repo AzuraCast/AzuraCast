@@ -50,20 +50,14 @@ import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
 import Tab from "~/components/Common/Tab.vue";
+import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
 
-const props = withDefaults(
-    defineProps<{
-        modelValue?: object,
-        artworkSrc?: string,
-        newArtUrl: string
-    }>(),
-    {
-        modelValue: null,
-        artworkSrc: null,
-    }
-);
+const props = defineProps<{
+    artworkSrc?: string,
+    newArtUrl: string
+}>();
 
-const emit = defineEmits(['update:modelValue']);
+const model = defineModel<UploadResponseBody | null>();
 
 const artworkSrc = ref(props.artworkSrc);
 const reloadArt = () => {
@@ -79,7 +73,7 @@ const src = computed(() => {
 
 const {axios} = useAxios();
 
-const uploaded = (file) => {
+const uploaded = (file: File | null) => {
     if (null === file) {
         return;
     }
@@ -95,7 +89,7 @@ const uploaded = (file) => {
     formData.append('art', file);
 
     void axios.post(url, formData).then((resp) => {
-        emit('update:modelValue', resp.data);
+        model.value = resp.data;
         reloadArt();
     });
 };

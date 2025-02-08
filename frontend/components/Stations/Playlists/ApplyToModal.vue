@@ -91,8 +91,9 @@ const fields: DataTableField[] = [
     }
 ];
 
-const loading = ref(true);
-const applyToUrl = ref(null);
+const loading = ref<boolean>(true);
+const applyToUrl = ref<string | null>(null);
+
 const {record: applyToResults, reset: resetApplyToResults} = useResettableRef({
     playlist: {
         id: null,
@@ -125,7 +126,7 @@ const clearContents = () => {
 
 const {axios} = useAxios();
 
-const open = (newApplyToUrl) => {
+const open = (newApplyToUrl: string) => {
     clearContents();
 
     applyToUrl.value = newApplyToUrl;

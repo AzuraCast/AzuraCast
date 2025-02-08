@@ -14,8 +14,8 @@ const emit = defineEmits<{
 
 const fileModel = defineModel<File>();
 
-const uploaded = (event) => {
-    const file = event.target.files[0];
+const uploaded = (event: Event) => {
+    const file = (event.target as HTMLInputElement).files[0];
 
     fileModel.value = file;
     emit('uploaded', file);

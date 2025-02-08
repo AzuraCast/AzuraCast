@@ -85,7 +85,7 @@ const fields = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const upper = (data) => {
+const upper = (data: string) => {
     const upper = [];
     data.split(' ').forEach((word) => {
         upper.push(word.toUpperCase());

@@ -121,7 +121,7 @@ const pageOptions = [10, 25];
 const {notifySuccess, notifyError} = useNotify();
 const {axios} = useAxios();
 
-const doSubmitRequest = (url) => {
+const doSubmitRequest = (url: string) => {
     void axios.post(url).then((resp) => {
         if (resp.data.success) {
             notifySuccess(resp.data.message);

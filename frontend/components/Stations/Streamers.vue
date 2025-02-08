@@ -163,7 +163,7 @@ const doCalendarClick = (event: EventImpl) => {
 
 const $broadcastsModal = useTemplateRef('$broadcastsModal');
 
-const doShowBroadcasts = (listUrl, batchUrl) => {
+const doShowBroadcasts = (listUrl: string, batchUrl: string) => {
     $broadcastsModal.value?.open(listUrl, batchUrl);
 };
 

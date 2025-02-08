@@ -13,7 +13,7 @@
         </form-markup>
 
         <streamers-form-schedule-row
-            v-for="(row, index) in scheduleItems"
+            v-for="(_row, index) in scheduleItems"
             :key="index"
             v-model:row="scheduleItems[index]"
             :index="index"

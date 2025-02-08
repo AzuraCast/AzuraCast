@@ -102,7 +102,7 @@ const getBadgeLabel = (logLevel: keyof typeof badgeLabels) => {
     return get(badgeLabels, logLevel, badgeLabels[100]);
 };
 
-const dump = (value) => {
+const dump = (value: any) => {
     return JSON.stringify(value);
 }
 </script>

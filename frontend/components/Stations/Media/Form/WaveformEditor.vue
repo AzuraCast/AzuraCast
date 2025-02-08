@@ -174,7 +174,7 @@ watch(cueValues, () => {
     immediate: true
 });
 
-const waveformToFloat = (value) => Math.round((value) * 10) / 10;
+const waveformToFloat = (value: number) => Math.round((value) * 10) / 10;
 
 const setCueIn = () => {
     form.value.extra_metadata.cue_in = waveformToFloat($waveform.value?.getCurrentTime());

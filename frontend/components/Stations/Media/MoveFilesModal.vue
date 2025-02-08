@@ -106,8 +106,8 @@ const props = defineProps<{
 
 const emit = defineEmits<HasRelistEmit>();
 
-const destinationDirectory = ref('');
-const dirHistory = ref([]);
+const destinationDirectory = ref<string>('');
+const dirHistory = ref<string[]>([]);
 
 const {$gettext} = useTranslate();
 
@@ -173,7 +173,7 @@ const onDirChange = () => {
     });
 }
 
-const enterDirectory = (path) => {
+const enterDirectory = (path: string) => {
     dirHistory.value.push(path);
     destinationDirectory.value = path;
     onDirChange();

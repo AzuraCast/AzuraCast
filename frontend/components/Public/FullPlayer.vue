@@ -72,7 +72,7 @@ import {useProvideLightbox} from "~/vendor/lightbox";
 import {IconDownload, IconHelp, IconHistory} from "~/components/Common/icons";
 import {RequestsProps} from "~/components/Public/Requests.vue";
 import {PlayerProps} from "~/components/Public/Player.vue";
-import {ApiNowPlayingSongHistory} from "~/entities/ApiInterfaces.ts";
+import {ApiNowPlaying, ApiNowPlayingSongHistory} from "~/entities/ApiInterfaces.ts";
 
 interface FullPlayerProps extends PlayerProps, RequestsProps {
     stationName: string,
@@ -89,7 +89,7 @@ const props = withDefaults(
 
 const history = shallowRef<ApiNowPlayingSongHistory[]>([]);
 
-const onNowPlayingUpdate = (newNowPlaying) => {
+const onNowPlayingUpdate = (newNowPlaying: ApiNowPlaying) => {
     history.value = newNowPlaying?.song_history;
 }
 

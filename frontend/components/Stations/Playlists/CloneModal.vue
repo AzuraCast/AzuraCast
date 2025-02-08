@@ -40,7 +40,7 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 
 const emit = defineEmits(['relist', 'needs-restart']);
 
-const cloneUrl = ref(null);
+const cloneUrl = ref<string | null>(null);
 
 const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
     {
@@ -73,7 +73,7 @@ const copyOptions = [
 
 const $modal = useTemplateRef('$modal');
 
-const open = (name, newCloneUrl) => {
+const open = (name: string, newCloneUrl: string) => {
     clearContents();
 
     cloneUrl.value = newCloneUrl;

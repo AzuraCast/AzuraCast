@@ -7,6 +7,11 @@ export interface WebcasterProps {
     baseUri: string
 }
 
+export interface WebcasterMetadata {
+    title: string,
+    artist: string
+}
+
 export const [useProvideWebcaster, useInjectWebcaster] = createRequiredInjectionState(
     (props: WebcasterProps) => {
         const { baseUri } = props;
@@ -14,15 +19,15 @@ export const [useProvideWebcaster, useInjectWebcaster] = createRequiredInjection
         const { notifySuccess, notifyError } = useNotify();
         const { $gettext } = useTranslate();
 
-        const metadata = shallowRef(null);
+        const metadata = shallowRef<WebcasterMetadata | null>(null);
         const isConnected = ref(false);
 
-        let socket = null;
+        let socket: WebSocket | null = null;
 
-        const sendMetadata = (data) => {
+        const sendMetadata = (data: WebcasterMetadata) => {
             metadata.value = data;
 
-            if (isConnected.value) {
+            if (isConnected.value && socket) {
                 socket.send(JSON.stringify({
                     type: "metadata",
                     data,
@@ -30,7 +35,11 @@ export const [useProvideWebcaster, useInjectWebcaster] = createRequiredInjection
             }
         }
 
-        const connect = (mediaRecorder, username = null, password = null) => {
+        const connect = (
+            mediaRecorder: MediaRecorder,
+            username: string | null = null,
+            password: string | null = null
+        ) => {
             socket = new WebSocket(baseUri, "webcast");
 
             const hello: {
@@ -78,7 +87,7 @@ export const [useProvideWebcaster, useInjectWebcaster] = createRequiredInjection
                 isConnected.value = false;
             };
 
-            mediaRecorder.ondataavailable = async (e) => {
+            mediaRecorder.ondataavailable = async (e: BlobEvent) => {
                 const data = await e.data.arrayBuffer();
                 if (isConnected.value) {
                     socket.send(data);

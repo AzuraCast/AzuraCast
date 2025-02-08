@@ -10,10 +10,18 @@
 import VueEasyLightbox from "vue-easy-lightbox";
 import {ref} from "vue";
 
-const visible = ref(false);
-const imgs = ref([]);
+interface Img {
+    src?: string
+    title?: string
+    alt?: string
+}
 
-const show = (imageOrImages) => {
+type PropsImgs = Img | string | (Img | string)[]
+
+const visible = ref(false);
+const imgs = ref<PropsImgs>([]);
+
+const show = (imageOrImages: PropsImgs) => {
     imgs.value = imageOrImages;
     visible.value = true;
 }

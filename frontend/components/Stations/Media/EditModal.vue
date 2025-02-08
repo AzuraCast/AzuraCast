@@ -65,7 +65,7 @@ import Tab from "~/components/Common/Tab.vue";
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
-import {CustomField} from "~/entities/ApiInterfaces.ts";
+import {ApiStationMedia, CustomField} from "~/entities/ApiInterfaces.ts";
 import {MediaInitialPlaylist} from "~/components/Stations/Media.vue";
 
 interface MediaEditModalProps extends BaseEditModalProps {
@@ -89,6 +89,18 @@ const {record, reset} = useResettableRef({
 
 const $modal = useTemplateRef('$modal');
 
+type StationMedia = Omit<ApiStationMedia, 'custom_fields' | 'extra_metadata'> & {
+    custom_fields: Record<string, any>,
+    extra_metadata?: {
+        amplify?: number,
+        cross_start_next?: number,
+        fade_in?: number,
+        fade_out?: number,
+        cue_in?: number,
+        cue_out?: number
+    }
+}
+
 const {
     loading,
     error,
@@ -97,7 +109,7 @@ const {
     clearContents,
     edit,
     doSubmit
-} = useBaseEditModal(
+} = useBaseEditModal<StationMedia>(
     props,
     emit,
     $modal,
@@ -123,14 +135,16 @@ const {
             playlists: {},
         };
 
-        forEach(props.customFields.slice(), (field) => {
-            validations.custom_fields[field.short_name] = {};
+        forEach(props.customFields.slice(), (field: CustomField) => {
+            if (field.short_name) {
+                validations.custom_fields[field.short_name] = {};
+            }
         });
 
         return validations;
     },
     () => {
-        const blankForm = {
+        const blankForm: StationMedia = {
             path: null,
             title: null,
             artist: null,
@@ -150,8 +164,10 @@ const {
             playlists: [],
         };
 
-        forEach(props.customFields.slice(), (field) => {
-            blankForm.custom_fields[field.short_name] = null;
+        forEach(props.customFields.slice(), (field: CustomField) => {
+            if (field.short_name) {
+                blankForm.custom_fields[field.short_name] = null;
+            }
         });
 
         return blankForm;
@@ -180,7 +196,7 @@ const {
     }
 );
 
-const open = (editRecordUrl) => {
+const open = (editRecordUrl: string) => {
     edit(editRecordUrl);
 };
 

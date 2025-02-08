@@ -371,13 +371,13 @@ const slots = defineSlots<{
     'empty'?: () => any,
 }>()
 
-const emit = defineEmits([
-    'refresh-clicked',
-    'refreshed',
-    'row-selected',
-    'filtered',
-    'data-loaded'
-]);
+const emit = defineEmits<{
+    (e: 'refresh-clicked', event: MouseEvent): void,
+    (e: 'refreshed'): void,
+    (e: 'row-selected', rows: Row[]): void,
+    (e: 'filtered', newPhrase: string): void,
+    (e: 'data-loaded', data: Row[]): void,
+}>();
 
 const selectedRows = shallowRef<Row[]>([]);
 
@@ -407,7 +407,7 @@ type RowField = DataTableField<Row>
 type RowFields = RowField[]
 
 const allFields = computed<RowFields>(() => {
-    return map(props.fields, (field: RowField) => {
+    return map(props.fields, (field: RowField): RowField => {
         return {
             isRowHeader: false,
             sortable: false,
@@ -497,7 +497,7 @@ const visibleFields = computed<DataTableField<Row>[]>(() => {
     });
 });
 
-const getPerPageLabel = (num): string => {
+const getPerPageLabel = (num: number): string => {
     return (num === 0) ? 'All' : num.toString();
 };
 
@@ -640,7 +640,7 @@ const refresh = () => {
     }
 };
 
-const onPageChange = (p) => {
+const onPageChange = (p: number) => {
     currentPage.value = p;
     refresh();
 }
@@ -650,7 +650,7 @@ const relist = () => {
     refresh();
 };
 
-const onClickRefresh = (e) => {
+const onClickRefresh = (e: MouseEvent) => {
     emit('refresh-clicked', e);
 
     if (e.shiftKey) {
@@ -666,7 +666,7 @@ const navigate = () => {
     relist();
 };
 
-const setFilter = (newTerm) => {
+const setFilter = (newTerm: string) => {
     searchPhrase.value = newTerm;
 };
 
@@ -741,7 +741,7 @@ const checkRow = (row: Row) => {
 }
 
 const checkAll = () => {
-    const newSelectedRows = [];
+    const newSelectedRows: Row[] = [];
 
     if (!isAllChecked.value) {
         forEach(visibleItems.value, (currentRow) => {

@@ -186,7 +186,7 @@ const settingsLoading = ref(false);
 
 const blankSettings = {
     backupEnabled: false,
-    backupLastRun: null,
+    backupLastRun: 0,
     backupLastOutput: '',
 };
 

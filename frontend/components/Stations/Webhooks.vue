@@ -120,6 +120,7 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import {getApiUrl, getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
+import {HasLinks, StationWebhook} from "~/entities/ApiInterfaces.ts";
 
 const listUrl = getStationApiUrl('/webhooks');
 
@@ -128,7 +129,9 @@ const nowPlayingUrl = getApiUrl(`/nowplaying/${id}`);
 
 const {$gettext} = useTranslate();
 
-const fields: DataTableField[] = [
+type Row = StationWebhook & HasLinks;
+
+const fields: DataTableField<Row>[] = [
     {key: 'name', isRowHeader: true, label: $gettext('Name/Type'), sortable: true},
     {key: 'triggers', label: $gettext('Triggers'), sortable: false},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
@@ -137,13 +140,13 @@ const fields: DataTableField[] = [
 const langTypeDetails = useTypeDetails();
 const langTriggerDetails = useTriggerDetails();
 
-const langToggleButton = (record) => {
+const langToggleButton = (record: Row) => {
     return (record.is_enabled)
         ? $gettext('Disable')
         : $gettext('Enable');
 };
 
-const getToggleVariant = (record) => {
+const getToggleVariant = (record: Row) => {
     return (record.is_enabled)
         ? 'btn-warning'
         : 'btn-success';
@@ -172,7 +175,7 @@ const {doCreate, doEdit} = useHasEditModal($editModal);
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const doToggle = (url) => {
+const doToggle = (url: string) => {
     void axios.put(url).then((resp) => {
         notifySuccess(resp.data.message);
         relist();
@@ -181,7 +184,7 @@ const doToggle = (url) => {
 
 const $logModal = useTemplateRef('$logModal');
 
-const doTest = (url) => {
+const doTest = (url: string) => {
     void axios.put(url).then((resp) => {
         $logModal.value?.show(resp.data.links.log);
     });

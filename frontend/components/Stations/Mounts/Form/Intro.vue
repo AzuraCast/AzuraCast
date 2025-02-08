@@ -57,28 +57,20 @@
 </template>
 
 <script setup lang="ts">
-import FlowUpload from '~/components/Common/FlowUpload.vue';
-
+import FlowUpload, {UploadResponseBody} from '~/components/Common/FlowUpload.vue';
 import {computed, toRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import Tab from "~/components/Common/Tab.vue";
 
-const props = withDefaults(
-    defineProps<{
-        modelValue?: object,
-        recordHasIntro: boolean,
-        editIntroUrl?: string,
-        newIntroUrl: string,
-    }>(),
-    {
-        modelValue: null,
-        editIntroUrl: null,
-    }
-);
+const props = defineProps<{
+    recordHasIntro: boolean,
+    editIntroUrl?: string,
+    newIntroUrl: string,
+}>();
 
-const emit = defineEmits(['update:modelValue']);
+const model = defineModel<UploadResponseBody | null>();
 
 const hasIntro = toRef(props, 'recordHasIntro');
 
@@ -88,11 +80,11 @@ const targetUrl = computed(() => {
         : props.newIntroUrl;
 });
 
-const onFileSuccess = (_file, message) => {
+const onFileSuccess = (_file, message: UploadResponseBody | null) => {
     hasIntro.value = true;
 
-    if (!props.editIntroUrl) {
-        emit('update:modelValue', message);
+    if (!props.editIntroUrl && message) {
+        model.value = message;
     }
 };
 
@@ -105,8 +97,7 @@ const deleteIntro = () => {
         });
     } else {
         hasIntro.value = false;
-
-        emit('update:modelValue', null);
+        model.value = null;
     }
 };
 </script>

@@ -257,14 +257,14 @@ import {computed, ref, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useInjectWebDjNode} from "~/components/Public/WebDJ/useWebDjNode";
 import {usePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
-import {useInjectWebcaster} from "~/components/Public/WebDJ/useWebcaster";
+import {useInjectWebcaster, WebcasterMetadata} from "~/components/Public/WebDJ/useWebcaster";
 
 defineProps<{
     stationName: string | null
 }>();
 
-const djUsername = ref(null);
-const djPassword = ref(null);
+const djUsername = ref<string | null>(null);
+const djPassword = ref<string | null>(null);
 
 const {
     doPassThrough,
@@ -290,12 +290,12 @@ const langStreamButton = computed(() => {
         : $gettext('Start Streaming');
 });
 
-const shownMetadata = ref({
+const shownMetadata = ref<WebcasterMetadata>({
     artist: '',
     title: ''
 });
 
-watch(metadata, (newMeta) => {
+watch(metadata, (newMeta: WebcasterMetadata | null) => {
     if (newMeta === null) {
         newMeta = {
             artist: '',

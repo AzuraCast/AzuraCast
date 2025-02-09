@@ -818,7 +818,7 @@ export interface ApiStationQuota {
   quota?: string | null;
   quota_bytes?: string | null;
   is_full?: boolean;
-  num_files?: number;
+  num_files?: number | null;
 }
 
 export type ApiStationRemote = HasLinks & {

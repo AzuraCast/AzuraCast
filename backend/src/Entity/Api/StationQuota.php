@@ -38,13 +38,12 @@ final class StationQuota
     public bool $is_full;
 
     #[OA\Property]
-    public int $num_files;
+    public ?int $num_files = null;
 
     public static function fromStorageLocation(
         StorageLocation $storageLocation,
-        int $numFiles = 0
+        int|null $numFiles = null
     ): self {
-
         $record = new self();
         $record->used = $storageLocation->getStorageUsed();
         $record->used_bytes = (string)$storageLocation->getStorageUsedBytes();

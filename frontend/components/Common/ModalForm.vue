@@ -93,7 +93,11 @@ withDefaults(
     }
 );
 
-const emit = defineEmits(['submit', 'shown', 'hidden']);
+const emit = defineEmits<{
+    (e: 'submit'): void,
+    (e: 'shown'): void,
+    (e: 'hidden'): void
+}>();
 
 const doSubmit = () => {
     emit('submit');

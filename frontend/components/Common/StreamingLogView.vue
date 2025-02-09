@@ -28,16 +28,16 @@ const props = defineProps<{
     logUrl: string
 }>();
 
-const isLoading = ref(false);
-const logs = ref('');
-const currentLogPosition = ref(null);
-const scrollToBottom = ref(true);
+const isLoading = ref<boolean>(false);
+const logs = ref<string>('');
+const currentLogPosition = ref<number | null>(null);
+const scrollToBottom = ref<boolean>(true);
 
 const {axios} = useAxios();
 
 const $textarea = useTemplateRef('$textarea');
 
-let updateInterval = null;
+let updateInterval: ReturnType<typeof setInterval> | null = null;
 
 const stop = () => {
     if (updateInterval) {
@@ -80,7 +80,7 @@ watch(toRef(props, 'logUrl'), (newLogUrl) => {
     currentLogPosition.value = 0;
     stop();
 
-    if (null !== newLogUrl) {
+    if ('' !== newLogUrl) {
         updateInterval = setInterval(updateLogs, 2500);
         updateLogs();
     }

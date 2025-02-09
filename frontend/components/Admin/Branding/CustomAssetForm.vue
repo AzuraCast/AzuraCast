@@ -72,7 +72,7 @@ const relist = () => {
 
 onMounted(relist);
 
-const uploaded = (newFile) => {
+const uploaded = (newFile: File | null) => {
     if (null === newFile) {
         return;
     }

@@ -6,7 +6,7 @@
             </h2>
         </div>
         <div
-            v-if="userAllowedForStation(StationPermission.Profile)"
+            v-if="userAllowedForStation(StationPermissions.Profile)"
             class="flex-shrink-0 ms-3"
         >
             <router-link
@@ -34,7 +34,7 @@
     </card-page>
 </template>
 <script setup lang="ts">
-import {StationPermission, userAllowedForStation} from "~/acl.ts";
+import {StationPermissions, userAllowedForStation} from "~/acl.ts";
 import {IconEdit} from "~/components/Common/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
 import CardPage from "~/components/Common/CardPage.vue";

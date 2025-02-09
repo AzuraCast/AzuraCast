@@ -1,6 +1,6 @@
-import '~/scss/style.scss';
+import "~/scss/style.scss";
 
-import * as bootstrap from 'bootstrap';
+import * as bootstrap from "bootstrap";
 
 const ready = (callback) => {
     if (document.readyState !== "loading") callback();

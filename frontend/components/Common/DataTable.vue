@@ -168,7 +168,7 @@
                             ]"
                             :aria-sort="(column.sortable && sortField?.key === column.key)
                                 ? ((sortOrder === 'asc') ? 'ascending' : 'descending')
-                                : null"
+                                : undefined"
                             @click.stop="sort(column)"
                         >
                             <slot
@@ -290,8 +290,8 @@
 </template>
 
 <script setup lang="ts" generic="Row extends DataTableRow = DataTableRow">
-import {filter, forEach, get, includes, indexOf, isEmpty, map, reverse, slice, some} from 'lodash';
-import Icon from './Icon.vue';
+import {filter, forEach, get, includes, indexOf, isEmpty, map, reverse, slice, some} from "lodash";
+import Icon from "~/components/Common/Icon.vue";
 import {computed, onMounted, ref, shallowRef, toRaw, toRef, watch} from "vue";
 import {watchDebounced} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
@@ -302,6 +302,7 @@ import useOptionalStorage from "~/functions/useOptionalStorage";
 import {IconArrowDropDown, IconArrowDropUp, IconFilterList, IconRefresh, IconSearch} from "~/components/Common/icons";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
 import {AxiosRequestConfig} from "axios";
+import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 
 export type DataTableRow = Record<string, any>
 
@@ -340,9 +341,6 @@ export interface DataTableProps<Row extends DataTableRow = DataTableRow> {
 }
 
 const props = withDefaults(defineProps<DataTableProps<Row>>(), {
-    id: null,
-    apiUrl: null,
-    items: null,
     responsive: () => true,
     paginated: false,
     loading: false,
@@ -373,13 +371,13 @@ const slots = defineSlots<{
     'empty'?: () => any,
 }>()
 
-const emit = defineEmits([
-    'refresh-clicked',
-    'refreshed',
-    'row-selected',
-    'filtered',
-    'data-loaded'
-]);
+const emit = defineEmits<{
+    (e: 'refresh-clicked', event: MouseEvent): void,
+    (e: 'refreshed'): void,
+    (e: 'row-selected', rows: Row[]): void,
+    (e: 'filtered', newPhrase: string): void,
+    (e: 'data-loaded', data: Row[]): void,
+}>();
 
 const selectedRows = shallowRef<Row[]>([]);
 
@@ -405,10 +403,12 @@ const totalRows = ref(0);
 
 const activeDetailsRow = shallowRef<Row>(null);
 
-const allFields = computed<DataTableField<Row>[]>(() => {
-    return map(props.fields, (field: DataTableField<Row>) => {
+type RowField = DataTableField<Row>
+type RowFields = RowField[]
+
+const allFields = computed<RowFields>(() => {
+    return map(props.fields, (field: RowField): RowField => {
         return {
-            label: '',
             isRowHeader: false,
             sortable: false,
             selectable: false,
@@ -421,22 +421,22 @@ const allFields = computed<DataTableField<Row>[]>(() => {
     });
 });
 
-const selectableFields = computed<DataTableField<Row>[]>(() => {
-    return filter({...allFields.value}, (field) => {
-        return field.selectable;
+const selectableFields = computed<RowFields>(() => {
+    return filter({...allFields.value}, (field: RowField) => {
+        return field.selectable ?? false;
     });
 });
 
-const selectableFieldOptions = computed(() => map(selectableFields.value, (field) => {
+const selectableFieldOptions = computed<SimpleFormOptionInput>(() => map(selectableFields.value, (field) => {
     return {
         value: field.key,
         text: field.label
     };
 }));
 
-const defaultSelectableFields = computed(() => {
-    return filter({...selectableFields.value}, (field) => {
-        return field.visible;
+const defaultSelectableFields = computed<RowFields>(() => {
+    return filter({...selectableFields.value}, (field: RowField) => {
+        return field.visible ?? true;
     });
 });
 
@@ -497,7 +497,7 @@ const visibleFields = computed<DataTableField<Row>[]>(() => {
     });
 });
 
-const getPerPageLabel = (num): string => {
+const getPerPageLabel = (num: number): string => {
     return (num === 0) ? 'All' : num.toString();
 };
 
@@ -640,7 +640,7 @@ const refresh = () => {
     }
 };
 
-const onPageChange = (p) => {
+const onPageChange = (p: number) => {
     currentPage.value = p;
     refresh();
 }
@@ -650,7 +650,7 @@ const relist = () => {
     refresh();
 };
 
-const onClickRefresh = (e) => {
+const onClickRefresh = (e: MouseEvent) => {
     emit('refresh-clicked', e);
 
     if (e.shiftKey) {
@@ -666,7 +666,7 @@ const navigate = () => {
     relist();
 };
 
-const setFilter = (newTerm) => {
+const setFilter = (newTerm: string) => {
     searchPhrase.value = newTerm;
 };
 
@@ -741,7 +741,7 @@ const checkRow = (row: Row) => {
 }
 
 const checkAll = () => {
-    const newSelectedRows = [];
+    const newSelectedRows: Row[] = [];
 
     if (!isAllChecked.value) {
         forEach(visibleItems.value, (currentRow) => {

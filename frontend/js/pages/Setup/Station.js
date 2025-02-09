@@ -1,4 +1,4 @@
-import SetupStation from '~/components/Setup/Station.vue';
+import SetupStation from "~/components/Setup/Station.vue";
 import initApp from "~/layout";
 import usePanelLayout from "~/layouts/PanelLayout";
 

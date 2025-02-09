@@ -10,9 +10,8 @@ export default defineConfigWithVueTs(
                 varsIgnorePattern: "^_",
             }],
 
+            "@typescript-eslint/no-redundant-type-constituents": "off",
             "@typescript-eslint/no-explicit-any": "off",
-            "@typescript-eslint/prefer-promise-reject-errors": "off",
-            "@typescript-eslint/no-unsafe-enum-comparison": "off",
 
             "vue/multi-word-component-names": "off",
             "vue/require-default-prop": "off",

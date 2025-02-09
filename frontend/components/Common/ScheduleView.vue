@@ -16,11 +16,11 @@
 </template>
 
 <script setup lang="ts">
-import FullCalendar from '@fullcalendar/vue3';
-import bootstrap5Plugin from '@fullcalendar/bootstrap5';
-import allLocales from '@fullcalendar/core/locales-all';
-import luxon3Plugin from '@fullcalendar/luxon3';
-import timeGridPlugin from '@fullcalendar/timegrid';
+import FullCalendar from "@fullcalendar/vue3";
+import bootstrap5Plugin from "@fullcalendar/bootstrap5";
+import allLocales from "@fullcalendar/core/locales-all";
+import luxon3Plugin from "@fullcalendar/luxon3";
+import timeGridPlugin from "@fullcalendar/timegrid";
 import {computed, useTemplateRef} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast";
 import {Calendar, CalendarOptions} from "@fullcalendar/core";

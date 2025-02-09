@@ -65,10 +65,10 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import formatFileSize from '~/functions/formatFileSize';
-import InlinePlayer from '~/components/InlinePlayer.vue';
-import Icon from '~/components/Common/Icon.vue';
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import formatFileSize from "~/functions/formatFileSize";
+import InlinePlayer from "~/components/InlinePlayer.vue";
+import Icon from "~/components/Common/Icon.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import {ref, shallowRef, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -83,14 +83,16 @@ import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter
 import BroadcastsModalToolbar from "~/components/Stations/Streamers/BroadcastsModalToolbar.vue";
 import {useDialog} from "~/functions/useDialog.ts";
 
-const listUrl = ref(null);
-const batchUrl = ref(null);
+const listUrl = ref<string | null>(null);
+const batchUrl = ref<string | null>(null);
 
 const {$gettext} = useTranslate();
 
 const {formatIsoAsDateTime} = useStationDateTimeFormatter();
 
-const fields: DataTableField[] = [
+type Row = Record<string, any>
+
+const fields: DataTableField<Row>[] = [
     {
         key: 'download',
         label: ' ',
@@ -143,11 +145,11 @@ const {relist} = useHasDatatable($dataTable);
 
 const selectedItems = shallowRef([]);
 
-const onRowSelected = (items) => {
+const onRowSelected = (items: Row[]) => {
     selectedItems.value = items;
 };
 
-const doDelete = (url) => {
+const doDelete = (url: string) => {
     void confirmDelete({
         title: $gettext('Delete Broadcast?'),
     }).then((result) => {
@@ -163,7 +165,7 @@ const doDelete = (url) => {
 const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
-const open = (newListUrl, newBatchUrl) => {
+const open = (newListUrl: string, newBatchUrl: string) => {
     listUrl.value = newListUrl;
     batchUrl.value = newBatchUrl;
 

@@ -22,10 +22,7 @@ useChart<'pie'>(
     props,
     $canvas,
     {
-        type: 'pie',
-        options: {
-            aspectRatio: props.aspectRatio,
-        }
+        type: 'pie'
     }
 );
 </script>

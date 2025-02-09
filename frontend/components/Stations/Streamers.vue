@@ -106,10 +106,10 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import EditModal from './Streamers/EditModal.vue';
-import BroadcastsModal from './Streamers/BroadcastsModal.vue';
-import ConnectionInfo from "./Streamers/ConnectionInfo.vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import EditModal from "~/components/Stations/Streamers/EditModal.vue";
+import BroadcastsModal from "~/components/Stations/Streamers/BroadcastsModal.vue";
+import ConnectionInfo, {StreamerConnectionInfo} from "~/components/Stations/Streamers/ConnectionInfo.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useTemplateRef} from "vue";
@@ -124,7 +124,6 @@ import AddButton from "~/components/Common/AddButton.vue";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 import ScheduleViewTab from "~/components/Stations/Common/ScheduleViewTab.vue";
 import {EventImpl} from "@fullcalendar/core/internal";
-import {StreamerConnectionInfo} from "~/components/Stations/Streamers/ConnectionInfo.vue";
 
 defineProps<{
     connectionInfo: StreamerConnectionInfo,
@@ -163,7 +162,7 @@ const doCalendarClick = (event: EventImpl) => {
 
 const $broadcastsModal = useTemplateRef('$broadcastsModal');
 
-const doShowBroadcasts = (listUrl, batchUrl) => {
+const doShowBroadcasts = (listUrl: string, batchUrl: string) => {
     $broadcastsModal.value?.open(listUrl, batchUrl);
 };
 

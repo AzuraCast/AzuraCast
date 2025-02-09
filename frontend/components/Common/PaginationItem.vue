@@ -38,7 +38,9 @@ const props = withDefaults(
     }
 );
 
-const emit = defineEmits(['click']);
+const emit = defineEmits<{
+    (e: 'click', page: number): void
+}>();
 
 const onClick = () => {
     emit('click', props.page);

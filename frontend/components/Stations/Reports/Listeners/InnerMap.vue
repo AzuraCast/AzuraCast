@@ -12,9 +12,9 @@
 
 <script setup lang="ts">
 import {onMounted, provide, ShallowRef, shallowRef, useTemplateRef, watch} from "vue";
-import {Control, Icon, Map, map, tileLayer} from 'leaflet';
+import {Control, Icon, Map, map, tileLayer} from "leaflet";
 import useTheme from "~/functions/theme";
-import 'leaflet-fullscreen';
+import "leaflet-fullscreen";
 import {useTranslate} from "~/vendor/gettext";
 
 const $container = useTemplateRef('$container');
@@ -68,8 +68,8 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
-@import 'leaflet/dist/leaflet.css';
-@import 'leaflet-fullscreen/dist/leaflet.fullscreen.css';
+@import "leaflet/dist/leaflet.css";
+@import "leaflet-fullscreen/dist/leaflet.fullscreen.css";
 
 .leaflet-container {
     height: 300px;

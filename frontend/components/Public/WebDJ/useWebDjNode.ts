@@ -1,9 +1,9 @@
 // noinspection JSDeprecatedSymbols
 
-import {createInjectionState} from "@vueuse/core";
 import {computed, ref} from "vue";
+import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
 
-export const [useProvideWebDjNode, useInjectWebDjNode] = createInjectionState(
+export const [useProvideWebDjNode, useInjectWebDjNode] = createRequiredInjectionState(
     (webcaster) => {
         const { connect: connectSocket } = webcaster;
 

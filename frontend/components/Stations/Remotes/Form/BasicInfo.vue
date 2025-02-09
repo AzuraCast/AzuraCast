@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import {RemoteAdapter} from '~/entities/RadioAdapters';
+import {RemoteAdapters} from "~/entities/RadioAdapters";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
@@ -77,7 +77,7 @@ import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import {GenericForm} from "~/entities/Forms.ts";
 
-const form = defineModel<GenericForm>('form');
+const form = defineModel<GenericForm>('form', {required: true});
 
 const {v$, tabClass} = useVuelidateOnFormTab(
     form,
@@ -92,7 +92,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     },
     {
         display_name: null,
-        type: RemoteAdapter.Icecast,
+        type: RemoteAdapters.Icecast,
         custom_listen_url: null,
         url: null,
         mount: null,
@@ -103,15 +103,15 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
 const typeOptions = [
     {
-        value: RemoteAdapter.Icecast,
+        value: RemoteAdapters.Icecast,
         text: 'Icecast v2.4+',
     },
     {
-        value: RemoteAdapter.Shoutcast1,
+        value: RemoteAdapters.Shoutcast1,
         text: 'Shoutcast v1',
     },
     {
-        value: RemoteAdapter.Shoutcast2,
+        value: RemoteAdapters.Shoutcast2,
         text: 'Shoutcast v2',
     }
 ];

@@ -24,19 +24,19 @@ const messages = {
     required: () => {
         return $gettext('This field is required.');
     },
-    minLength: (params) => {
+    minLength: (params: any) => {
         return $gettext(
             'This field must have at least %{min} letters.',
             params
         );
     },
-    maxLength: (params) => {
+    maxLength: (params: any) => {
         return $gettext(
             'This field must have at most %{max} letters.',
             params
         );
     },
-    between: (params) => {
+    between: (params: any) => {
         return $gettext(
             'This field must be between %{min} and %{max}.',
             params

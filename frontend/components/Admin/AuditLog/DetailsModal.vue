@@ -44,9 +44,15 @@ import {useHasModal} from "~/functions/useHasModal.ts";
 const $modal = useTemplateRef('$modal');
 const {show} = useHasModal($modal);
 
-const changes = ref(null);
+export interface AuditLogChanges {
+    field: string,
+    from: string,
+    to: string
+}
 
-const open = (newChanges) => {
+const changes = ref<AuditLogChanges[] | null>(null);
+
+const open = (newChanges: AuditLogChanges[]) => {
     changes.value = newChanges;
     show();
 };

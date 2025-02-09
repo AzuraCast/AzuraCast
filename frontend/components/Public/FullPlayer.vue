@@ -62,17 +62,16 @@
 </template>
 
 <script setup lang="ts">
-import SongHistoryModal from './FullPlayer/SongHistoryModal.vue';
-import RequestModal from './FullPlayer/RequestModal.vue';
-import Icon from '~/components/Common/Icon.vue';
-import RadioPlayer from './Player.vue';
+import SongHistoryModal from "~/components/Public/FullPlayer/SongHistoryModal.vue";
+import RequestModal from "~/components/Public/FullPlayer/RequestModal.vue";
+import Icon from "~/components/Common/Icon.vue";
+import RadioPlayer, {PlayerProps} from "~/components/Public/Player.vue";
 import {shallowRef, useTemplateRef} from "vue";
 import Lightbox from "~/components/Common/Lightbox.vue";
 import {useProvideLightbox} from "~/vendor/lightbox";
 import {IconDownload, IconHelp, IconHistory} from "~/components/Common/icons";
 import {RequestsProps} from "~/components/Public/Requests.vue";
-import {PlayerProps} from "~/components/Public/Player.vue";
-import {ApiNowPlayingSongHistory} from "~/entities/ApiInterfaces.ts";
+import {ApiNowPlaying, ApiNowPlayingSongHistory} from "~/entities/ApiInterfaces.ts";
 
 interface FullPlayerProps extends PlayerProps, RequestsProps {
     stationName: string,
@@ -89,7 +88,7 @@ const props = withDefaults(
 
 const history = shallowRef<ApiNowPlayingSongHistory[]>([]);
 
-const onNowPlayingUpdate = (newNowPlaying) => {
+const onNowPlayingUpdate = (newNowPlaying: ApiNowPlaying) => {
     history.value = newNowPlaying?.song_history;
 }
 

@@ -34,7 +34,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T = ModelFormField">
 import {objectToSimpleFormOptions, SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import {ModelFormField} from "~/components/Form/useFormField.ts";
 import {toRef} from "vue";
@@ -50,13 +50,12 @@ const props = withDefaults(
     }>(),
     {
         name: (props) => props.id,
-        fieldClass: null,
         radio: false,
         stacked: false,
     }
 )
 
-const value = defineModel<ModelFormField>({
+const value = defineModel<T>({
     default: null
 });
 

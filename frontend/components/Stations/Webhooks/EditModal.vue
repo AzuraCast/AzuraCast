@@ -31,22 +31,23 @@
 </template>
 
 <script setup lang="ts">
-import TypeSelect from "./Form/TypeSelect.vue";
-import BasicInfo from "./Form/BasicInfo.vue";
+import TypeSelect from "~/components/Stations/Webhooks/Form/TypeSelect.vue";
+import BasicInfo from "~/components/Stations/Webhooks/Form/BasicInfo.vue";
 import {get} from "lodash";
-import Generic from "./Form/Generic.vue";
-import Email from "./Form/Email.vue";
-import Tunein from "./Form/Tunein.vue";
-import Discord from "./Form/Discord.vue";
-import Telegram from "./Form/Telegram.vue";
-import GoogleAnalyticsV4 from "./Form/GoogleAnalyticsV4.vue";
-import MatomoAnalytics from "./Form/MatomoAnalytics.vue";
-import Mastodon from "./Form/Mastodon.vue";
+import Generic from "~/components/Stations/Webhooks/Form/Generic.vue";
+import Email from "~/components/Stations/Webhooks/Form/Email.vue";
+import Tunein from "~/components/Stations/Webhooks/Form/Tunein.vue";
+import Discord from "~/components/Stations/Webhooks/Form/Discord.vue";
+import Telegram from "~/components/Stations/Webhooks/Form/Telegram.vue";
+import GoogleAnalyticsV4 from "~/components/Stations/Webhooks/Form/GoogleAnalyticsV4.vue";
+import MatomoAnalytics from "~/components/Stations/Webhooks/Form/MatomoAnalytics.vue";
+import Mastodon from "~/components/Stations/Webhooks/Form/Mastodon.vue";
 import {BaseEditModalProps, HasRelistEmit, useBaseEditModal} from "~/functions/useBaseEditModal";
+import type {Component} from "vue";
 import {computed, nextTick, provide, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {WebhookTriggerDetails, WebhookType, WebhookTypeDetails} from "~/entities/Webhooks";
+import {WebhookTriggerDetails, WebhookType, WebhookTypeDetails, WebhookTypes} from "~/entities/Webhooks";
 import Tabs from "~/components/Common/Tabs.vue";
 import RadioDe from "~/components/Stations/Webhooks/Form/RadioDe.vue";
 import GetMeRadio from "~/components/Stations/Webhooks/Form/GetMeRadio.vue";
@@ -75,28 +76,38 @@ const type = ref<WebhookType | null>(null);
 
 const $modal = useTemplateRef('$modal');
 
-const webhookComponents = {
-    [WebhookType.Generic]: Generic,
-    [WebhookType.Email]: Email,
-    [WebhookType.TuneIn]: Tunein,
-    [WebhookType.RadioDe]: RadioDe,
-    [WebhookType.RadioReg]: RadioReg,
-    [WebhookType.GetMeRadio]: GetMeRadio,
-    [WebhookType.Discord]: Discord,
-    [WebhookType.Telegram]: Telegram,
-    [WebhookType.GroupMe]: GroupMe,
-    [WebhookType.Mastodon]: Mastodon,
-    [WebhookType.Bluesky]: Bluesky,
-    [WebhookType.GoogleAnalyticsV4]: GoogleAnalyticsV4,
-    [WebhookType.MatomoAnalytics]: MatomoAnalytics,
+const webhookComponents: {
+    [key in WebhookType]: Component
+} = {
+    [WebhookTypes.Generic]: Generic,
+    [WebhookTypes.Email]: Email,
+    [WebhookTypes.TuneIn]: Tunein,
+    [WebhookTypes.RadioDe]: RadioDe,
+    [WebhookTypes.RadioReg]: RadioReg,
+    [WebhookTypes.GetMeRadio]: GetMeRadio,
+    [WebhookTypes.Discord]: Discord,
+    [WebhookTypes.Telegram]: Telegram,
+    [WebhookTypes.GroupMe]: GroupMe,
+    [WebhookTypes.Mastodon]: Mastodon,
+    [WebhookTypes.Bluesky]: Bluesky,
+    [WebhookTypes.GoogleAnalyticsV4]: GoogleAnalyticsV4,
+    [WebhookTypes.MatomoAnalytics]: MatomoAnalytics,
 };
 
-const typeTitle = computed(() => {
-    return get(props.typeDetails, [type.value, 'title'], '');
+const typeTitle = computed<string | null>(() => {
+    if (type.value === null) {
+        return null;
+    }
+
+    return get(props.typeDetails, [type.value as string, 'title'], '');
 });
 
-const formComponent = computed(() => {
-    return get(webhookComponents, type.value, Generic);
+const formComponent = computed<Component>(() => {
+    if (type.value === null) {
+        return Generic;
+    }
+
+    return get(webhookComponents, type.value as string, Generic);
 });
 
 const {
@@ -119,11 +130,11 @@ const {
         type: {}
     },
     {
-        type: null
+        type: WebhookTypes.Generic as string
     },
     {
         populateForm: (data, formRef) => {
-            type.value = data.type;
+            type.value = data.type as WebhookType | null;
 
             // Wait for type-specific components to mount.
             void nextTick(() => {
@@ -134,7 +145,7 @@ const {
         getSubmittableFormData(formRef, isEditModeRef) {
             const formData = formRef.value;
             if (!isEditModeRef.value) {
-                formData.type = type.value;
+                formData.type = type.value as string | null;
             }
             return formData;
         },

@@ -63,19 +63,19 @@
 </template>
 
 <script setup lang="ts">
-import ProfileStreams from './StreamsPanel.vue';
-import ProfileHeader, {ProfileHeaderPanelParentProps} from './HeaderPanel.vue';
-import ProfileNowPlaying, {ProfileNowPlayingPanelProps} from './NowPlayingPanel.vue';
-import ProfileSchedule from './SchedulePanel.vue';
-import ProfileRequests, {ProfileRequestPanelProps} from './RequestsPanel.vue';
-import ProfileStreamers, {ProfileStreamersPanelProps} from './StreamersPanel.vue';
-import ProfilePublicPages, {ProfilePublicPagesPanelProps} from './PublicPagesPanel.vue';
-import ProfileFrontend, {ProfileFrontendPanelParentProps} from './FrontendPanel.vue';
-import ProfileBackendNone from './BackendNonePanel.vue';
-import ProfileBackend, {ProfileBackendPanelParentProps} from './BackendPanel.vue';
-import NowPlayingNotStartedPanel from "./NowPlayingNotStartedPanel.vue";
-import {BackendAdapter, FrontendAdapter} from '~/entities/RadioAdapters';
-import NowPlaying from '~/entities/NowPlaying';
+import ProfileStreams from "~/components/Stations/Profile/StreamsPanel.vue";
+import ProfileHeader, {ProfileHeaderPanelParentProps} from "~/components/Stations/Profile/HeaderPanel.vue";
+import ProfileNowPlaying, {ProfileNowPlayingPanelProps} from "~/components/Stations/Profile/NowPlayingPanel.vue";
+import ProfileSchedule from "~/components/Stations/Profile/SchedulePanel.vue";
+import ProfileRequests, {ProfileRequestPanelProps} from "~/components/Stations/Profile/RequestsPanel.vue";
+import ProfileStreamers, {ProfileStreamersPanelProps} from "~/components/Stations/Profile/StreamersPanel.vue";
+import ProfilePublicPages, {ProfilePublicPagesPanelProps} from "~/components/Stations/Profile/PublicPagesPanel.vue";
+import ProfileFrontend, {ProfileFrontendPanelParentProps} from "~/components/Stations/Profile/FrontendPanel.vue";
+import ProfileBackendNone from "~/components/Stations/Profile/BackendNonePanel.vue";
+import ProfileBackend, {ProfileBackendPanelParentProps} from "~/components/Stations/Profile/BackendPanel.vue";
+import NowPlayingNotStartedPanel from "~/components/Stations/Profile/NowPlayingNotStartedPanel.vue";
+import {BackendAdapters, FrontendAdapters} from "~/entities/RadioAdapters";
+import NowPlaying from "~/entities/NowPlaying";
 import {computed} from "vue";
 import {useAxios} from "~/vendor/axios";
 import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
@@ -95,11 +95,11 @@ export interface EnabledProfileProps extends ProfileBackendPanelParentProps,
 const props = defineProps<EnabledProfileProps>();
 
 const hasActiveFrontend = computed(() => {
-    return props.frontendType !== FrontendAdapter.Remote;
+    return props.frontendType !== FrontendAdapters.Remote;
 });
 
 const hasActiveBackend = computed(() => {
-    return props.backendType !== BackendAdapter.None;
+    return props.backendType !== BackendAdapters.None;
 });
 
 const {axiosSilent} = useAxios();

@@ -33,10 +33,10 @@
 </template>
 
 <script setup lang="ts">
-import PodcastFormBasicInfo from './PodcastForm/BasicInfo.vue';
-import PodcastFormSource from './PodcastForm/Source.vue';
-import PodcastFormBranding from './PodcastForm/Branding.vue';
-import PodcastCommonArtwork from './Common/Artwork.vue';
+import PodcastFormBasicInfo from "~/components/Stations/Podcasts/PodcastForm/BasicInfo.vue";
+import PodcastFormSource from "~/components/Stations/Podcasts/PodcastForm/Source.vue";
+import PodcastFormBranding from "~/components/Stations/Podcasts/PodcastForm/Branding.vue";
+import PodcastCommonArtwork from "~/components/Stations/Podcasts/Common/Artwork.vue";
 import mergeExisting from "~/functions/mergeExisting";
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, useTemplateRef} from "vue";

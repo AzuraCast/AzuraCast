@@ -1,4 +1,4 @@
-import isObject from "./isObject";
+import isObject from "~/functions/isObject";
 import {toRaw} from "vue";
 import {cloneDeep} from "lodash";
 
@@ -15,7 +15,7 @@ export default function mergeExisting<T extends Record<any, any>>(
 
     const ret: T = cloneDeep(dest);
     for (const destKey in dest) {
-        if (destKey in source) {
+        if (destKey in source && dest[destKey] !== undefined && source[destKey] !== undefined) {
             const destVal = dest[destKey];
             const sourceVal = source[destKey];
 

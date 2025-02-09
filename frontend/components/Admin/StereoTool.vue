@@ -162,7 +162,7 @@ const langInstalledVersion = computed(() => {
 
 const {notifyError} = useNotify();
 
-const onError = (_file, message) => {
+const onError = (_: unknown, message: string) => {
     notifyError(message);
 };
 

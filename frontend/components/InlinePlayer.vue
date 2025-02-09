@@ -72,9 +72,9 @@
 </template>
 
 <script setup lang="ts">
-import AudioPlayer from '~/components/Common/AudioPlayer.vue';
-import formatTime from '~/functions/formatTime';
-import Icon from '~/components/Common/Icon.vue';
+import AudioPlayer from "~/components/Common/AudioPlayer.vue";
+import formatTime from "~/functions/formatTime";
+import Icon from "~/components/Common/Icon.vue";
 import {computed, Ref, ref, useTemplateRef} from "vue";
 import MuteButton from "~/components/Common/MuteButton.vue";
 import usePlayerVolume from "~/functions/usePlayerVolume";

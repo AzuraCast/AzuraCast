@@ -55,18 +55,32 @@ export function useAzuraCast(): AzuraCastConstants {
     return globalProps;
 }
 
+export function useAzuraCastPanelProps(): PanelLayoutProps {
+    const {panelProps} = useAzuraCast();
+
+    if (!panelProps) {
+        throw new Error("Panel properties are undefined in this request.");
+    }
+
+    return panelProps;
+}
+
 export function useAzuraCastUser(): AzuraCastUserConstants {
     const {user} = useAzuraCast();
 
-    return user ?? {
-        id: null,
-        displayName: null,
-        globalPermissions: [],
-        stationPermissions: {}
-    };
+    if (!user) {
+        throw Error("User is not logged in.");
+    }
+
+    return user;
 }
 
-export function useAzuraCastStation(): AzuraCastStationConstants | null {
+export function useAzuraCastStation(): AzuraCastStationConstants {
     const {station} = useAzuraCast();
-    return station ?? null;
+
+    if (!station) {
+        throw Error("Station data is not provided in this request.");
+    }
+
+    return station;
 }

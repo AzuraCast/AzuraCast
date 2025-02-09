@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import {find, isEmpty, pickBy} from 'lodash';
+import {find, isEmpty, pickBy} from "lodash";
 import PermissionsFormStationRow from "~/components/Admin/Permissions/Form/StationRow.vue";
 import {computed, toRaw} from "vue";
 import Tab from "~/components/Common/Tab.vue";
@@ -55,7 +55,7 @@ const props = defineProps<{
     stationPermissions: Record<string, string>,
 }>();
 
-const form = defineModel<Permission>('form');
+const form = defineModel<Permission>('form', {required: true});
 
 useVuelidateOnFormTab(
     form,

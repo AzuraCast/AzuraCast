@@ -80,7 +80,10 @@ const props = withDefaults(
     }
 );
 
-const emit = defineEmits(['update:currentPage', 'change']);
+const emit = defineEmits<{
+    (e: 'update:currentPage', value: number): void,
+    (e: 'change', value: number): void
+}>();
 
 const pageCount = computed(() => Math.max(
     1,

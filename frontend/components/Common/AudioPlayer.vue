@@ -7,8 +7,8 @@
 </template>
 
 <script setup lang="ts">
-import getLogarithmicVolume from '~/functions/getLogarithmicVolume';
-import Hls from 'hls.js';
+import getLogarithmicVolume from "~/functions/getLogarithmicVolume";
+import Hls from "hls.js";
 import {computed, nextTick, onMounted, onScopeDispose, ref, toRef, useTemplateRef, watch} from "vue";
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {watchThrottled} from "@vueuse/core";
@@ -33,9 +33,9 @@ const emit = defineEmits<{
 
 const $audio = useTemplateRef('$audio');
 
-const hls = ref(null);
-const duration = ref(0);
-const currentTime = ref(0);
+const hls = ref<Hls | null>(null);
+const duration = ref<number>(0);
+const currentTime = ref<number>(0);
 
 const {isPlaying, current, stop: storeStop} = usePlayerStore();
 
@@ -81,11 +81,15 @@ const play = () => {
     isPlaying.value = true;
 
     void nextTick(() => {
+        if (!$audio.value) {
+            return;
+        }
+
         // Handle audio errors.
         $audio.value.onerror = (e: Event) => {
             const eventTarget = e.target as HTMLAudioElement;
 
-            if (eventTarget.error?.code === MediaError.MEDIA_ERR_NETWORK && $audio.value.src !== '') {
+            if (eventTarget.error?.code === MediaError.MEDIA_ERR_NETWORK && $audio.value?.src) {
                 console.log('Network interrupted stream. Automatically reconnecting shortly...');
                 setTimeout(() => {
                     play();
@@ -101,7 +105,7 @@ const play = () => {
             const audioDuration = $audio.value?.duration ?? 0;
             duration.value = (audioDuration !== Infinity && !isNaN(audioDuration)) ? audioDuration : 0;
 
-            currentTime.value = $audio.value?.currentTime ?? null;
+            currentTime.value = $audio.value?.currentTime ?? 0;
         };
 
         $audio.value.volume = getLogarithmicVolume(props.volume);

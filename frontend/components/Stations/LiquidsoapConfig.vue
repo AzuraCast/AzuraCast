@@ -59,7 +59,7 @@
                             v-else
                             :id="'form_section_'+index"
                         >
-                            <pre class="typography-body-1">{{ row.markup }}</pre>
+                            <pre class="typography-body-1">{{ row.markup ?? "" }}</pre>
                         </form-markup>
                     </form-fieldset>
 
@@ -94,8 +94,14 @@ import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";
 
 const settingsUrl = getStationApiUrl('/liquidsoap-config');
 
-const config = ref([]);
-const sections = ref([]);
+interface ConfigRow {
+    is_field: boolean,
+    field_name: string,
+    markup?: string
+}
+
+const sections = ref<string[]>([]);
+const config = ref<ConfigRow[]>([]);
 
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
     computed(() => {

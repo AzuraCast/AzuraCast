@@ -60,13 +60,13 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import CommonFormattingInfo from "./FormattingInfo.vue";
-import {includes} from 'lodash';
+import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/FormattingInfo.vue";
+import {includes} from "lodash";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {useTranslate} from "~/vendor/gettext";
 import {GenericForm} from "~/entities/Forms.ts";
 
-const form = defineModel<GenericForm>('form');
+const form = defineModel<GenericForm>('form', {required: true});
 
 const {$gettext} = useTranslate();
 

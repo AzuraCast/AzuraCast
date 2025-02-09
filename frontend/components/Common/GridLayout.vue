@@ -85,10 +85,10 @@ const props = withDefaults(defineProps<GridLayoutProps>(), {
     defaultPerPage: 10,
 });
 
-const emit = defineEmits([
-    'refreshed',
-    'data-loaded'
-]);
+const emit = defineEmits<{
+    (e: 'refreshed'): void,
+    (e: 'data-loaded', data: Row[]): void
+}>();
 
 const currentPage = ref<number>(1);
 const flushCache = ref<boolean>(false);
@@ -162,7 +162,7 @@ const refresh = () => {
     });
 }
 
-const onPageChange = (p) => {
+const onPageChange = (p: number) => {
     currentPage.value = p;
     refresh();
 }

@@ -1,10 +1,10 @@
-import axios, {AxiosInstance, AxiosRequestConfig, AxiosStatic} from "axios";
-import VueAxios from "vue-axios";
-import {App, inject, InjectionKey} from "vue";
+import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
+import {App, InjectionKey} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
 import {useNProgress} from "~/vendor/nprogress.ts";
+import injectRequired from "~/functions/injectRequired.ts";
 
 const injectKey: InjectionKey<AxiosInstance> = Symbol() as InjectionKey<AxiosInstance>;
 const injectKeySilent: InjectionKey<AxiosInstance> = Symbol() as InjectionKey<AxiosInstance>;
@@ -16,8 +16,8 @@ interface UseAxios {
 }
 
 export const useAxios = (): UseAxios => ({
-    axios: inject<AxiosInstance>(injectKey),
-    axiosSilent: inject<AxiosInstance>(injectKeySilent)
+    axios: injectRequired<AxiosInstance>(injectKey),
+    axiosSilent: injectRequired<AxiosInstance>(injectKeySilent)
 });
 
 export default function installAxios(vueApp: App) {
@@ -34,7 +34,7 @@ export default function installAxios(vueApp: App) {
     const axiosSilent = axios.create(config);
 
     // Configure some Axios settings that depend on the BootstrapVue $bvToast superglobal.
-    const handleAxiosError = (error) => {
+    const handleAxiosError = (error: any) => {
         const {$gettext} = useTranslate();
 
         let notifyMessage = $gettext('An error occurred and your request could not be completed.');
@@ -64,6 +64,7 @@ export default function installAxios(vueApp: App) {
         setLoading(false);
         handleAxiosError(error);
 
+        // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
         return Promise.reject(error);
     });
 
@@ -74,10 +75,9 @@ export default function installAxios(vueApp: App) {
         setLoading(false);
         handleAxiosError(error);
 
+        // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
         return Promise.reject(error);
     });
-
-    vueApp.use(VueAxios, axiosInstance as AxiosStatic);
 
     vueApp.provide(injectKey, axiosInstance);
     vueApp.provide(injectKeySilent, axiosSilent);

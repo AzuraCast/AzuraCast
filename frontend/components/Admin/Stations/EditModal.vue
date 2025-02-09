@@ -65,7 +65,7 @@ const props = defineProps<StationEditModalProps>();
 
 const emit = defineEmits<HasRelistEmit>();
 
-const editUrl = ref(null);
+const editUrl = ref<string | null>(null);
 const disableSaveButton = ref(true);
 
 const isEditMode = computed(() => {
@@ -83,7 +83,7 @@ const langTitle = computed(() => {
 const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
-const onValidUpdate = (newValue) => {
+const onValidUpdate = (newValue: boolean) => {
     disableSaveButton.value = !newValue;
 };
 
@@ -92,7 +92,7 @@ const create = () => {
     show();
 };
 
-const edit = (recordUrl) => {
+const edit = (recordUrl: string) => {
     editUrl.value = recordUrl;
     show();
 };

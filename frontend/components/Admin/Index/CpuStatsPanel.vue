@@ -150,8 +150,8 @@ const showCpuStatsHelpModal = () => {
     $cpuStatsHelpModal.value?.create();
 };
 
-const formatCpuName = (cpuName) => upperFirst(cpuName);
+const formatCpuName = (cpuName: string) => upperFirst(cpuName);
 
-const formatPercentageString = (value) => value + '%';
+const formatPercentageString = (value: string | number) => value + '%';
 
 </script>

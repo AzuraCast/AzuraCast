@@ -66,9 +66,9 @@
 
 <script setup lang="ts">
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
-import AccountApiKeyNewKey from "./ApiKeyNewKey.vue";
+import AccountApiKeyNewKey from "~/components/Account/ApiKeyNewKey.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {required} from '@vuelidate/validators';
+import {required} from "@vuelidate/validators";
 import {nextTick, ref, useTemplateRef} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useAxios} from "~/vendor/axios";

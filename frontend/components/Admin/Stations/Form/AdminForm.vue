@@ -91,12 +91,14 @@ import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 import {getApiUrl} from "~/router";
 import {GenericForm} from "~/entities/Forms.ts";
+import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
+import {omit} from "lodash";
 
 const props = defineProps<{
     isEditMode: boolean,
 }>();
 
-const form = defineModel<GenericForm>('form');
+const form = defineModel<GenericForm>('form', {required: true});
 
 const storageLocationApiUrl = getApiUrl('/admin/stations/storage-locations');
 
@@ -157,18 +159,12 @@ const storageLocationOptions = reactive({
     podcasts_storage_location: {}
 });
 
-const filterLocations = (group) => {
+const filterLocations = (group: SimpleFormOptionInput): SimpleFormOptionInput => {
     if (!props.isEditMode) {
         return group;
     }
 
-    const newGroup = {};
-    for (const oldKey in group) {
-        if (oldKey !== "") {
-            newGroup[oldKey] = group[oldKey];
-        }
-    }
-    return newGroup;
+    return omit(group, [""]);
 }
 
 const {axios} = useAxios();

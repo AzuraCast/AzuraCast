@@ -58,7 +58,7 @@ defineEmits<{
     (e: 'remove'): void
 }>();
 
-const row = defineModel<T>('row');
+const row = defineModel<T>('row', {required: true});
 
 const v$ = useVuelidate<T>(
     {

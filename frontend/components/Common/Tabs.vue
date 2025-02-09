@@ -48,7 +48,9 @@ const props = withDefaults(
     }
 );
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{
+    (e: 'update:modelValue', value: string): void
+}>();
 
 const activeId = ref(props.modelValue);
 

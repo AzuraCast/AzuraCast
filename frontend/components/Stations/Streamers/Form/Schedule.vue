@@ -13,7 +13,7 @@
         </form-markup>
 
         <streamers-form-schedule-row
-            v-for="(row, index) in scheduleItems"
+            v-for="(_row, index) in scheduleItems"
             :key="index"
             v-model:row="scheduleItems[index]"
             :index="index"
@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/Common/Icon.vue';
+import Icon from "~/components/Common/Icon.vue";
 import StreamersFormScheduleRow from "~/components/Stations/Streamers/Form/ScheduleRow.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import Tab from "~/components/Common/Tab.vue";
@@ -56,7 +56,7 @@ const add = () => {
     });
 };
 
-const remove = (index) => {
+const remove = (index: number) => {
     scheduleItems.value.splice(index, 1);
 };
 </script>

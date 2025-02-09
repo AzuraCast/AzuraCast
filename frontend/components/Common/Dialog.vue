@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import Modal from 'bootstrap/js/src/modal';
+import {Modal} from "bootstrap";
 import {onMounted, ref, useTemplateRef} from "vue";
 import {useEventListener} from "@vueuse/core";
 
@@ -78,7 +78,7 @@ const sendResult = (value: boolean = true) => {
     });
 }
 
-let bsModal = null;
+let bsModal: Modal | null = null;
 const $modal = useTemplateRef('$modal');
 const $cancelButton = useTemplateRef('$cancelButton');
 const $confirmButton = useTemplateRef('$confirmButton');

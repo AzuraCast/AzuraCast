@@ -100,7 +100,7 @@ import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState.ts";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
-import PodcastCommon from "./PodcastCommon.vue";
+import PodcastCommon from "~/components/Public/Podcasts/PodcastCommon.vue";
 import {usePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
 import {computed} from "vue";
 

@@ -35,9 +35,9 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import {forEach} from 'lodash';
-import AlbumArt from '~/components/Common/AlbumArt.vue';
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import {forEach} from "lodash";
+import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
@@ -46,7 +46,9 @@ import {RequestsProps} from "~/components/Public/Requests.vue";
 
 const props = defineProps<RequestsProps>();
 
-const emit = defineEmits(['submitted']);
+const emit = defineEmits<{
+    (e: 'submitted'): void
+}>();
 
 const {$gettext} = useTranslate();
 
@@ -121,7 +123,7 @@ const pageOptions = [10, 25];
 const {notifySuccess, notifyError} = useNotify();
 const {axios} = useAxios();
 
-const doSubmitRequest = (url) => {
+const doSubmitRequest = (url: string) => {
     void axios.post(url).then((resp) => {
         if (resp.data.success) {
             notifySuccess(resp.data.message);

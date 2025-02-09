@@ -14,11 +14,10 @@
 </template>
 
 <script setup lang="ts">
-import SongRequest from '../Requests.vue';
+import SongRequest, {RequestsProps} from "~/components/Public/Requests.vue";
 import {useTemplateRef} from "vue";
 import Modal from "~/components/Common/Modal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
-import {RequestsProps} from "~/components/Public/Requests.vue";
 
 defineOptions({
     inheritAttrs: false

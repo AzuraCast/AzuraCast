@@ -84,8 +84,8 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import Icon from '~/components/Common/Icon.vue';
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import Icon from "~/components/Common/Icon.vue";
 import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
@@ -106,8 +106,8 @@ const props = defineProps<{
 
 const emit = defineEmits<HasRelistEmit>();
 
-const destinationDirectory = ref('');
-const dirHistory = ref([]);
+const destinationDirectory = ref<string>('');
+const dirHistory = ref<string[]>([]);
 
 const {$gettext} = useTranslate();
 
@@ -173,7 +173,7 @@ const onDirChange = () => {
     });
 }
 
-const enterDirectory = (path) => {
+const enterDirectory = (path: string) => {
     dirHistory.value.push(path);
     destinationDirectory.value = path;
     onDirChange();

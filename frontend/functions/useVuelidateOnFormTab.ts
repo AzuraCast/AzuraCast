@@ -1,8 +1,7 @@
 import useVuelidate, {GlobalConfig, ValidationArgs} from "@vuelidate/core";
 import {computed, ComputedRef, ModelRef, Ref} from "vue";
-import {useEventBus} from "@vueuse/core";
 import {GenericForm} from "~/entities/Forms.ts";
-import {VuelidateRef} from "~/functions/useVuelidateOnForm.ts";
+import {useFormTabEventBus, VuelidateRef} from "~/functions/useVuelidateOnForm.ts";
 
 export function useVuelidateOnFormTab<
     ParentForm extends GenericForm = GenericForm,
@@ -15,7 +14,7 @@ export function useVuelidateOnFormTab<
 ): {
     v$: VuelidateRef<TabForm>,
     isValid: ComputedRef<boolean>,
-    tabClass: ComputedRef<string | null>
+    tabClass: ComputedRef<string>
 } {
     const v$ = useVuelidate(validations, form as unknown as Ref<TabForm>, vuelidateOptions);
 
@@ -27,13 +26,13 @@ export function useVuelidateOnFormTab<
         if (v$.value.$anyDirty && v$.value.$invalid) {
             return 'text-danger';
         }
-        return null;
+        return '';
     });
 
     // Register event listener for blankForm building.
-    const formEventBus = useEventBus('form_tabs');
+    const formEventBus = useFormTabEventBus<TabForm>();
 
-    formEventBus.on((addToForm: (blankForm: TabForm) => void) => {
+    formEventBus.on((_event, addToForm) => {
         addToForm(blankForm);
     });
 

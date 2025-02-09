@@ -20,9 +20,9 @@
 </template>
 
 <script setup lang="ts">
-import FormBasicInfo from './Form/BasicInfo.vue';
-import FormSchedule from './Form/Schedule.vue';
-import FormAdvanced from './Form/Advanced.vue';
+import FormBasicInfo from "~/components/Stations/Playlists/Form/BasicInfo.vue";
+import FormSchedule from "~/components/Stations/Playlists/Form/Schedule.vue";
+import FormAdvanced from "~/components/Stations/Playlists/Form/Advanced.vue";
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";

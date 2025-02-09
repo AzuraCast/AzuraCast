@@ -1,4 +1,4 @@
-import {computed, ComputedRef, nextTick, Ref, ref, toRef} from "vue";
+import {computed, ComputedRef, nextTick, Ref, ref, ShallowRef, toRef} from "vue";
 import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
@@ -44,14 +44,14 @@ export interface BaseEditModalOptions<T extends GenericForm = GenericForm> exten
 export function useBaseEditModal<T extends GenericForm = GenericForm>(
     props: BaseEditModalProps,
     emit: BaseEditModalEmits,
-    $modal: Ref<ModalFormTemplateRef>,
+    $modal: Readonly<ShallowRef<ModalFormTemplateRef | null>>,
     validations?: VuelidateValidations<T>,
     blankForm?: VuelidateBlankForm<T>,
     options: BaseEditModalOptions<T> = {}
 ): {
     loading: Ref<boolean>,
     error: Ref<any>,
-    editUrl: Ref<string>,
+    editUrl: Ref<string | null>,
     isEditMode: ComputedRef<boolean>,
     form: Ref<T>,
     v$: VuelidateRef<T>,
@@ -64,9 +64,9 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
 } {
     const createUrl = toRef(props, 'createUrl');
 
-    const loading: Ref<boolean> = ref<boolean>(false);
-    const error: Ref<any> = ref(null);
-    const editUrl: Ref<string> = ref<string>(null);
+    const loading = ref<boolean>(false);
+    const error = ref<any>(null);
+    const editUrl = ref<string | null>(null);
 
     const isEditMode: ComputedRef<boolean> = computed(() => {
         return editUrl.value !== null;
@@ -107,7 +107,7 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
     const create = (): void => {
         clearContents();
 
-        $modal.value.show();
+        $modal.value?.show();
 
         void nextTick(() => {
             resetForm();
@@ -129,6 +129,10 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
     const doLoad = (): void => {
         loading.value = true;
 
+        if (!editUrl.value) {
+            throw new Error("No edit URL!");
+        }
+
         axios.get(editUrl.value).then((resp) => {
             populateForm(resp.data);
         }).catch(() => {
@@ -142,7 +146,7 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
         clearContents();
 
         editUrl.value = recordUrl;
-        $modal.value.show();
+        $modal.value?.show();
 
         void nextTick(() => {
             resetForm();
@@ -167,7 +171,7 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
             method: (isEditMode.value)
                 ? 'PUT'
                 : 'POST',
-            url: (isEditMode.value)
+            url: (isEditMode.value && editUrl.value)
                 ? editUrl.value
                 : createUrl.value,
             data: getSubmittableFormData()
@@ -175,7 +179,7 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
     };
 
     const close = (): void => {
-        $modal.value.hide();
+        $modal.value?.hide();
     };
 
     const onSubmitSuccess = (): void => {
@@ -200,7 +204,7 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
 
     const doSubmit = (): void => {
         v$.value.$touch();
-        v$.value.$validate().then((isValid) => {
+        v$.value.$validate().then((isValid: boolean) => {
             if (!isValid) {
                 return;
             }

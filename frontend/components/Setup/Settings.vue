@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import AdminSettings, {SettingsProps} from "~/components/Admin/Settings.vue";
-import SetupStep from "./SetupStep.vue";
+import SetupStep from "~/components/Setup/SetupStep.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
 
 interface SetupSettingsProps extends SettingsProps {

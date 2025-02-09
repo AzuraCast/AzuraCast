@@ -19,11 +19,11 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/Common/Icon.vue';
+import Icon from "~/components/Common/Icon.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import {IconDelete} from "~/components/Common/icons";
-import {computed, h, toRef} from "vue";
+import {computed, h, toRef, VNode} from "vue";
 import {forEach, map} from "lodash";
 import {useNotify} from "~/functions/useNotify.ts";
 import {useDialog} from "~/functions/useDialog.ts";
@@ -56,6 +56,8 @@ interface BatchResponse {
     errors: string[],
 }
 
+type BatchAction = "delete";
+
 const {notifySuccess, notifyError} = useNotify();
 
 const handleBatchResponse = (
@@ -64,7 +66,7 @@ const handleBatchResponse = (
     errorMessage: string
 ): void => {
     if (data.success) {
-        const itemNameNodes = [];
+        const itemNameNodes: VNode[] = [];
         forEach(data.records, (item) => {
             itemNameNodes.push(h('div', {}, item.title));
         });
@@ -73,7 +75,7 @@ const handleBatchResponse = (
             title: successMessage
         });
     } else {
-        const itemErrorNodes = [];
+        const itemErrorNodes: VNode[] = [];
         forEach(data.errors, (err) => {
             itemErrorNodes.push(h('div', {}, err));
         })
@@ -84,7 +86,11 @@ const handleBatchResponse = (
     }
 }
 
-const doBatch = (action, successMessage, errorMessage) => {
+const doBatch = (
+    action: BatchAction,
+    successMessage: string,
+    errorMessage: string
+) => {
     void axios.put(props.batchUrl, {
         'do': action,
         'rows': map(props.selectedItems, 'id')

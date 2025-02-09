@@ -166,8 +166,8 @@ import {useHasModal} from "~/functions/useHasModal.ts";
 
 const apiUrl = getStationApiUrl('/files/bulk');
 
-const importFile = ref(null);
-const importResults = ref(null);
+const importFile = ref<File | null>(null);
+const importResults = ref<any>(null);
 
 const {notifySuccess, notifyError} = useNotify();
 const {axios} = useAxios();
@@ -175,7 +175,7 @@ const {axios} = useAxios();
 const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
-const uploaded = (file) => {
+const uploaded = (file: File) => {
     importFile.value = file;
 };
 

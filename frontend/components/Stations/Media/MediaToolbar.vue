@@ -209,9 +209,9 @@
 </template>
 
 <script setup lang="ts">
-import {Dropdown} from 'bootstrap';
-import {intersection, map} from 'lodash';
-import Icon from '~/components/Common/Icon.vue';
+import {Dropdown} from "bootstrap";
+import {intersection, map} from "lodash";
+import Icon from "~/components/Common/Icon.vue";
 import {computed, ref, toRef, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
@@ -229,7 +229,12 @@ const props = defineProps<{
     supportsImmediateQueue: boolean
 }>();
 
-const emit = defineEmits(['relist', 'add-playlist', 'move-files', 'create-directory']);
+const emit = defineEmits<{
+    (e: 'relist'): void,
+    (e: 'add-playlist', playlist: any): void,
+    (e: 'move-files'): void,
+    (e: 'create-directory'): void
+}>();
 
 const selectedItems = toRef(props, 'selectedItems');
 
@@ -251,7 +256,7 @@ watch(selectedItems, (items) => {
     checkedPlaylists.value = intersection(...playlistsForItems);
 });
 
-watch(newPlaylist, (text) => {
+watch(newPlaylist, (text: string) => {
     if (text !== '') {
         if (!checkedPlaylists.value.includes('new')) {
             checkedPlaylists.value.push('new');
@@ -270,7 +275,7 @@ const notifyNoFiles = () => {
     notifyError($gettext('No files selected.'));
 }
 
-const doBatch = (action, successMessage, errorMessage) => {
+const doBatch = (action: string, successMessage: string, errorMessage: string) => {
     if (hasSelectedItems.value) {
         void axios.put(props.batchUrl, {
             'do': action,

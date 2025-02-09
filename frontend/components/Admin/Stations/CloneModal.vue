@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import {required} from '@vuelidate/validators';
+import {required} from "@vuelidate/validators";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import AdminStationsCloneModalForm from "~/components/Admin/Stations/CloneModalForm.vue";
 import {ref, useTemplateRef} from "vue";
@@ -48,7 +48,7 @@ const {hide, show} = useHasModal($modal);
 
 const {$gettext} = useTranslate();
 
-const create = (stationName, stationCloneUrl) => {
+const create = (stationName: string, stationCloneUrl: string) => {
     resetForm();
 
     form.value.name = $gettext(

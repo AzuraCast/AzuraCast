@@ -59,10 +59,10 @@
 </template>
 
 <script setup lang="ts">
-import WS from 'wavesurfer.js';
-import timelinePlugin from 'wavesurfer.js/dist/plugins/timeline.js';
-import regionsPlugin, {RegionParams} from 'wavesurfer.js/dist/plugins/regions.js';
-import getLogarithmicVolume from '~/functions/getLogarithmicVolume';
+import WaveSurfer from "wavesurfer.js";
+import timelinePlugin from "wavesurfer.js/dist/plugins/timeline.js";
+import regionsPlugin, {RegionParams} from "wavesurfer.js/dist/plugins/regions.js";
+import getLogarithmicVolume from "~/functions/getLogarithmicVolume";
 import {onMounted, onUnmounted, ref, toRef, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
 import usePlayerVolume from "~/functions/usePlayerVolume";
@@ -85,8 +85,8 @@ const emit = defineEmits<{
     (e: 'ready', duration: number): void
 }>();
 
-let wavesurfer = null;
-let wsRegions = null;
+let wavesurfer: WaveSurfer | null = null;
+let wsRegions: regionsPlugin | null = null;
 
 const volume = usePlayerVolume();
 const showVolume = useShowVolume();
@@ -116,7 +116,7 @@ const isExternalJson = ref(false);
 const {axiosSilent} = useAxios();
 
 const cacheWaveformRemotely = () => {
-    if (props.waveformCacheUrl === null) {
+    if (!props.waveformCacheUrl) {
         return;
     }
 
@@ -139,7 +139,7 @@ const cacheWaveformRemotely = () => {
 };
 
 onMounted(() => {
-    wavesurfer = WS.create({
+    wavesurfer = WaveSurfer.create({
         container: '#waveform_container',
         waveColor: '#2196f3',
         progressColor: '#4081CF',
@@ -164,14 +164,14 @@ onMounted(() => {
 
         if (waveformJson) {
             isExternalJson.value = true;
-            wavesurfer.load(props.audioUrl, waveformJson);
+            void wavesurfer.load(props.audioUrl, waveformJson);
         } else {
             isExternalJson.value = false;
-            wavesurfer.load(props.audioUrl);
+            void wavesurfer.load(props.audioUrl);
         }
     }).catch(() => {
         isExternalJson.value = false;
-        wavesurfer.load(props.audioUrl);
+        void wavesurfer.load(props.audioUrl);
     });
 });
 
@@ -197,7 +197,7 @@ onUnmounted(() => {
 });
 
 const play = () => {
-    wavesurfer?.play();
+    void wavesurfer?.play();
 };
 
 const stop = () => {

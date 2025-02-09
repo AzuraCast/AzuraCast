@@ -1,5 +1,5 @@
 import {forEach} from "lodash";
-import {h} from "vue";
+import {h, VNode} from "vue";
 import {useNotify} from "~/functions/useNotify.ts";
 
 interface BatchResponse {
@@ -18,7 +18,7 @@ export default function useHandleBatchResponse() {
         errorMessage: string
     ): void => {
         if (data.success) {
-            const itemNameNodes = [];
+            const itemNameNodes: VNode[] = [];
             forEach(data.dirs, (item) => {
                 itemNameNodes.push(h('div', {}, item));
             });
@@ -30,7 +30,7 @@ export default function useHandleBatchResponse() {
                 title: successMessage
             });
         } else {
-            const itemErrorNodes = [];
+            const itemErrorNodes: VNode[] = [];
             forEach(data.errors, (err) => {
                 itemErrorNodes.push(h('div', {}, err));
             })

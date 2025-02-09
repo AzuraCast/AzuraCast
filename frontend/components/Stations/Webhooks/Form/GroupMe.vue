@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import CommonFormattingInfo from "./Common/FormattingInfo.vue";
+import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/FormattingInfo.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
@@ -55,7 +55,7 @@ import {GenericForm} from "~/entities/Forms.ts";
 
 defineProps<WebhookComponentProps>();
 
-const form = defineModel<GenericForm>('form');
+const form = defineModel<GenericForm>('form', {required: true});
 
 const { $gettext } = useTranslate();
 

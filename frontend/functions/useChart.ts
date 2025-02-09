@@ -2,18 +2,18 @@ import {
     Chart,
     ChartConfiguration,
     ChartConfigurationCustomTypesPerDataset,
+    ChartDataset,
     ChartType,
     DefaultDataPoint,
     registerables
 } from "chart.js";
 import {defaultsDeep} from "lodash";
-import {computed, isRef, MaybeRefOrGetter, onMounted, onUnmounted, Ref, toRef, toValue, watch} from "vue";
-import zoomPlugin from 'chartjs-plugin-zoom';
+import {computed, MaybeRefOrGetter, onMounted, onUnmounted, Ref, toValue, watch} from "vue";
+import zoomPlugin from "chartjs-plugin-zoom";
 import chartjsColorSchemes from "~/vendor/chartjs_colorschemes.ts";
 
-import 'chartjs-adapter-luxon';
-import '~/vendor/luxon';
-import {reactiveComputed} from "@vueuse/core";
+import "chartjs-adapter-luxon";
+import "~/vendor/luxon";
 
 Chart.register(...registerables);
 
@@ -39,7 +39,7 @@ export interface ChartProps<
     TLabel = unknown
 > {
     options?: Partial<ChartConfiguration<TType, TData, TLabel> | ChartConfigurationCustomTypesPerDataset<TType, TData, TLabel>>,
-    data?: any[],
+    data?: ChartDataset<TType, TData>[],
     aspectRatio?: number,
     alt?: ChartAltData[],
     labels?: Array<any>
@@ -52,7 +52,7 @@ export default function useChart<
     TData = DefaultDataPoint<TType>,
     TLabel = unknown
 >(
-    initialProps: ChartProps,
+    props: ChartProps,
     $canvas: Ref<ChartTemplateRef>,
     defaultOptions: MaybeRefOrGetter<
         Partial<ChartConfiguration<TType, TData, TLabel> | ChartConfigurationCustomTypesPerDataset<TType, TData, TLabel>>
@@ -60,66 +60,47 @@ export default function useChart<
 ): {
     $chart: Chart<TType, TData, TLabel> | null
 } {
-    const props = reactiveComputed(() => (
-        {
-            data: [],
-            alt: [],
-            aspectRatio: 2,
-            ...initialProps
-        }
-    )) as ChartProps<TType, TData, TLabel>;
-
-    let $chart = null;
+    let $chart: Chart<TType, TData, TLabel> | null = null;
 
     const chartConfig = computed(() => {
-        const config = defaultsDeep({
-            data: {}
-        }, props.options, toValue(defaultOptions));
-
-        config.data.datasets = props.data;
-        if (props.labels) {
-            config.data.labels = props.labels;
-        }
-
-        return config;
+        return defaultsDeep({
+            options: {
+                aspectRatio: props.aspectRatio ?? 2,
+            },
+            data: {
+                datasets: props.data,
+                labels: props.labels
+            }
+        }, toValue(defaultOptions), props.options);
     });
 
     const rebuildChart = () => {
         $chart?.destroy();
 
+        const chartContext = $canvas.value?.getContext('2d');
+        if (!chartContext) {
+            throw new Error("Cannot find chart context!");
+        }
+
         $chart = new Chart(
-            $canvas.value.getContext('2d'),
+            chartContext,
             chartConfig.value
         );
     }
 
     onMounted(rebuildChart);
 
+    watch(
+        () => chartConfig,
+        () => {
+            rebuildChart();
+        },
+        {deep: true}
+    );
+
     onUnmounted(() => {
         $chart?.destroy();
     });
-
-    watch(toRef(props, 'options'), rebuildChart);
-
-    watch(toRef(props, 'data'), (newData) => {
-        if ($chart) {
-            $chart.data.datasets = newData;
-            $chart.update();
-        }
-    });
-
-    if (isRef(defaultOptions)) {
-        watch(defaultOptions, rebuildChart);
-    }
-
-    if (props.labels) {
-        watch(toRef(props, 'labels'), (newLabels) => {
-            if ($chart) {
-                $chart.data.labels = newLabels;
-                $chart.update();
-            }
-        });
-    }
 
     return {
         $chart,

@@ -29,12 +29,13 @@ import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab.ts";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import {Permission} from "~/components/Admin/Permissions/EditModal.vue";
 import {required} from "@vuelidate/validators";
+import {DeepPartial} from "utility-types";
 
 defineProps<{
     globalPermissions: SimpleFormOptionInput,
 }>();
 
-const form = defineModel<Permission>('form');
+const form = defineModel<Permission>('form', {required: true});
 
 const {v$} = useVuelidateOnFormTab(
     form,
@@ -44,7 +45,7 @@ const {v$} = useVuelidateOnFormTab(
             'global': {},
         }
     },
-    () => ({
+    (): DeepPartial<Permission> => ({
         'name': '',
         'permissions': {
             'global': [],

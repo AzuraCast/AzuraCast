@@ -15,6 +15,10 @@ export type VuelidateBlankForm<T extends GenericForm = GenericForm> = MaybeRef<T
 export type VuelidateObject<T extends GenericForm = GenericForm> = Validation<ValidationArgs<T>, T>
 export type VuelidateRef<T extends GenericForm = GenericForm> = MaybeRef<VuelidateObject<T>>
 
+export function useFormTabEventBus<T extends GenericForm = GenericForm>() {
+    return useEventBus<'build', (formPiece: VuelidateBlankForm<Partial<T>>) => void>('form_tabs');
+}
+
 export function useVuelidateOnForm<T extends GenericForm = GenericForm>(
     validations: VuelidateValidations<T> = {} as VuelidateValidations<T>,
     blankForm: VuelidateBlankForm<T> = {} as VuelidateBlankForm<T>,
@@ -27,7 +31,7 @@ export function useVuelidateOnForm<T extends GenericForm = GenericForm>(
     validate: () => Promise<boolean>,
     ifValid: (cb: () => void) => void
 } {
-    const formEventBus = useEventBus('form_tabs');
+    const formEventBus = useFormTabEventBus<T>();
 
     // Build the blank form from any children elements to the one using this function.
     const buildBlankForm = () => {
@@ -38,7 +42,7 @@ export function useVuelidateOnForm<T extends GenericForm = GenericForm>(
 
         parsedBlankForm = cloneDeep(parsedBlankForm);
 
-        formEventBus.emit((originalNewForm) => {
+        formEventBus.emit('build', (originalNewForm) => {
             let newForm = unref(originalNewForm);
             if (typeof newForm === 'function') {
                 newForm = newForm(options);

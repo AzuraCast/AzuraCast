@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useTemplateRef} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";
@@ -63,7 +63,7 @@ const {timeConfig} = useAzuraCast();
 
 const {DateTime} = useLuxon();
 
-const dateTimeFormatter = (value) => {
+const dateTimeFormatter = (value: number) => {
     return DateTime.fromSeconds(value).toLocaleString(
         {
             ...DateTime.DATETIME_SHORT, ...timeConfig

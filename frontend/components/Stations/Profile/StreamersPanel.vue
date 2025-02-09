@@ -10,12 +10,12 @@
             </h3>
         </template>
         <template
-            v-if="userAllowedForStation(StationPermission.Streamers) || userAllowedForStation(StationPermission.Profile)"
+            v-if="userAllowedForStation(StationPermissions.Streamers) || userAllowedForStation(StationPermissions.Profile)"
             #footer_actions
         >
             <template v-if="enableStreamers">
                 <router-link
-                    v-if="userAllowedForStation(StationPermission.Streamers)"
+                    v-if="userAllowedForStation(StationPermissions.Streamers)"
                     class="btn btn-link text-primary"
                     :to="{name: 'stations:streamers:index'}"
                 >
@@ -25,7 +25,7 @@
                     </span>
                 </router-link>
                 <button
-                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    v-if="userAllowedForStation(StationPermissions.Profile)"
                     type="button"
                     class="btn btn-link text-danger"
                     @click="toggleStreamers"
@@ -38,7 +38,7 @@
             </template>
             <template v-else>
                 <button
-                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    v-if="userAllowedForStation(StationPermissions.Profile)"
                     type="button"
                     class="btn btn-link text-success"
                     @click="toggleStreamers"
@@ -57,9 +57,10 @@
 import Icon from "~/components/Common/Icon.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {StationPermission, userAllowedForStation} from "~/acl";
+import {StationPermissions, userAllowedForStation} from "~/acl";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
 import {IconCheck, IconClose, IconSettings} from "~/components/Common/icons";
+import {toRef} from "vue";
 
 export interface ProfileStreamersPanelProps {
     enableStreamers: boolean,
@@ -71,5 +72,8 @@ defineOptions({
 
 const props = defineProps<ProfileStreamersPanelProps>();
 
-const toggleStreamers = useToggleFeature('enable_streamers', !props.enableStreamers);
+const toggleStreamers = useToggleFeature(
+    'enable_streamers',
+    toRef(props, 'enableStreamers')
+);
 </script>

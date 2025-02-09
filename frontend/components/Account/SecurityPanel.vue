@@ -175,7 +175,9 @@ const {$gettext} = useTranslate();
 
 const {doDelete: doDisableTwoFactor} = useConfirmAndDelete(
     $gettext('Disable two-factor authentication?'),
-    reloadSecurity
+    () => {
+        void reloadSecurity();
+    }
 );
 const disableTwoFactor = () => doDisableTwoFactor(twoFactorUrl.value);
 

@@ -37,8 +37,8 @@
 </template>
 
 <script setup lang="ts">
-import CustomAssetForm from "./Branding/CustomAssetForm.vue";
-import BrandingForm from "./Branding/BrandingForm.vue";
+import CustomAssetForm from "~/components/Admin/Branding/CustomAssetForm.vue";
+import BrandingForm from "~/components/Admin/Branding/BrandingForm.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import Lightbox from "~/components/Common/Lightbox.vue";
 import {useTemplateRef} from "vue";

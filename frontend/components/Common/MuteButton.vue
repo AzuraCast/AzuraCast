@@ -20,7 +20,9 @@ const props = defineProps<{
     isMuted: boolean,
 }>();
 
-const emit = defineEmits(['toggleMute']);
+const emit = defineEmits<{
+    (e: 'toggleMute'): void
+}>();
 
 watch(toRef(props, 'volume'), (newVol) => {
     const newMuted = (newVol === 0);

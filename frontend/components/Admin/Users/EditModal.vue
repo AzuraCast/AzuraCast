@@ -17,8 +17,8 @@
 </template>
 
 <script setup lang="ts">
-import AdminUsersForm from './Form.vue';
-import {map} from 'lodash';
+import AdminUsersForm from "~/components/Admin/Users/Form.vue";
+import {map} from "lodash";
 import {computed, useTemplateRef} from "vue";
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {useTranslate} from "~/vendor/gettext";

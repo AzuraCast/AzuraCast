@@ -1,6 +1,6 @@
-import {createInjectionState} from '@vueuse/shared';
 import {ref, shallowRef} from "vue";
 import getUrlWithoutQuery from "~/functions/getUrlWithoutQuery.ts";
+import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
 
 export interface StreamDescriptor {
     url: string | null,
@@ -8,7 +8,7 @@ export interface StreamDescriptor {
     isStream: boolean
 }
 
-const [useProvidePlayerStore, usePlayerStore] = createInjectionState(
+export const [useProvidePlayerStore, usePlayerStore] = createRequiredInjectionState(
     (initialChannel: string) => {
         const channel = ref<string>(initialChannel);
 
@@ -52,5 +52,3 @@ const [useProvidePlayerStore, usePlayerStore] = createInjectionState(
         };
     }
 );
-
-export {useProvidePlayerStore, usePlayerStore};

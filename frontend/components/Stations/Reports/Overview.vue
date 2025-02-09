@@ -87,12 +87,12 @@
 
 <script setup lang="ts">
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
-import ListenersByTimePeriodTab from "./Overview/ListenersByTimePeriodTab.vue";
-import BestAndWorstTab from "./Overview/BestAndWorstTab.vue";
-import BrowsersTab from "./Overview/BrowsersTab.vue";
-import CountriesTab from "./Overview/CountriesTab.vue";
-import StreamsTab from "./Overview/StreamsTab.vue";
-import ClientsTab from "./Overview/ClientsTab.vue";
+import ListenersByTimePeriodTab from "~/components/Stations/Reports/Overview/ListenersByTimePeriodTab.vue";
+import BestAndWorstTab from "~/components/Stations/Reports/Overview/BestAndWorstTab.vue";
+import BrowsersTab from "~/components/Stations/Reports/Overview/BrowsersTab.vue";
+import CountriesTab from "~/components/Stations/Reports/Overview/CountriesTab.vue";
+import StreamsTab from "~/components/Stations/Reports/Overview/StreamsTab.vue";
+import ClientsTab from "~/components/Stations/Reports/Overview/ClientsTab.vue";
 import ListeningTimeTab from "~/components/Stations/Reports/Overview/ListeningTimeTab.vue";
 import {ref} from "vue";
 import {getStationApiUrl} from "~/router";

@@ -21,7 +21,9 @@ const props = defineProps<{
     url: string
 }>();
 
-const emit = defineEmits(['view']);
+const emit = defineEmits<{
+    (e: 'view', url: string, isStreaming: boolean): void
+}>();
 
 const {axios} = useAxios();
 
@@ -30,7 +32,7 @@ const {state: logs} = useAsyncState(
     []
 );
 
-const viewLog = (url, isStreaming) => {
+const viewLog = (url: string, isStreaming: boolean) => {
     emit('view', url, isStreaming);
 };
 </script>

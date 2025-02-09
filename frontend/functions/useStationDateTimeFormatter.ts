@@ -48,7 +48,7 @@ export default function useStationDateTimeFormatter(
     ) => value.toRelative();
 
     const formatTimestampAsDateTime = (
-        value: any,
+        value: number | null,
         format: Intl.DateTimeFormatOptions | null = null
     ) =>
         (value)
@@ -56,14 +56,14 @@ export default function useStationDateTimeFormatter(
             : ''
 
     const formatTimestampAsTime = (
-        value: any,
+        value: number | null,
         format: Intl.DateTimeFormatOptions | null = null
     ) =>
         (value)
             ? formatDateTimeAsTime(timestampToDateTime(value), format)
             : ''
 
-    const formatTimestampAsRelative = (value) =>
+    const formatTimestampAsRelative = (value: number | null) =>
         (value)
             ? formatDateTimeAsRelative(timestampToDateTime(value))
             : '';

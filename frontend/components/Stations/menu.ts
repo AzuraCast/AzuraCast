@@ -1,6 +1,6 @@
 import {useTranslate} from "~/vendor/gettext.ts";
 import filterMenu, {MenuCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
-import {StationPermission, userAllowedForStation} from "~/acl.ts";
+import {StationPermissions, userAllowedForStation} from "~/acl.ts";
 import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {computed} from "vue";
 import {
@@ -24,7 +24,7 @@ export function useStationsMenu(): ReactiveMenu {
     const stationProps = useAzuraCastStation();
 
     // Reuse this variable to avoid multiple calls.
-    const userCanManageMedia = userAllowedForStation(StationPermission.Media);
+    const userCanManageMedia = userAllowedForStation(StationPermissions.Media);
 
     const menu: ReactiveMenu = reactiveComputed(
         () => {
@@ -46,7 +46,7 @@ export function useStationsMenu(): ReactiveMenu {
                         url: {
                             name: 'stations:profile:edit'
                         },
-                        visible: userAllowedForStation(StationPermission.Profile)
+                        visible: userAllowedForStation(StationPermissions.Profile)
                     },
                     {
                         key: 'branding',
@@ -54,7 +54,7 @@ export function useStationsMenu(): ReactiveMenu {
                         url: {
                             name: 'stations:branding'
                         },
-                        visible: userAllowedForStation(StationPermission.Profile)
+                        visible: userAllowedForStation(StationPermissions.Profile)
                     }
                 ]
             };
@@ -158,14 +158,14 @@ export function useStationsMenu(): ReactiveMenu {
                 url: {
                     name: 'stations:podcasts:index'
                 },
-                visible: userAllowedForStation(StationPermission.Podcasts) && stationProps.features.podcasts,
+                visible: userAllowedForStation(StationPermissions.Podcasts) && stationProps.features.podcasts,
             };
 
             const streamingMenu: MenuCategory = {
                 key: 'streaming',
                 label: computed(() => $gettext('Live Streaming')),
                 icon: IconMic,
-                visible: userAllowedForStation(StationPermission.Streamers) && stationProps.features.streamers,
+                visible: userAllowedForStation(StationPermissions.Streamers) && stationProps.features.streamers,
                 items: [
                     {
                         key: 'streamers',
@@ -173,7 +173,7 @@ export function useStationsMenu(): ReactiveMenu {
                         url: {
                             name: 'stations:streamers:index',
                         },
-                        visible: userAllowedForStation(StationPermission.Streamers)
+                        visible: userAllowedForStation(StationPermissions.Streamers)
                     },
                     {
                         key: 'webdj',
@@ -192,14 +192,14 @@ export function useStationsMenu(): ReactiveMenu {
                 url: {
                     name: 'stations:webhooks:index'
                 },
-                visible: userAllowedForStation(StationPermission.WebHooks) && stationProps.features.webhooks,
+                visible: userAllowedForStation(StationPermissions.WebHooks) && stationProps.features.webhooks,
             };
 
             const reportsMenu: MenuCategory = {
                 key: 'reports',
                 label: computed(() => $gettext('Reports')),
                 icon: IconReport,
-                visible: userAllowedForStation(StationPermission.Reports),
+                visible: userAllowedForStation(StationPermissions.Reports),
                 items: [
                     {
                         key: 'reports_overview',
@@ -221,7 +221,7 @@ export function useStationsMenu(): ReactiveMenu {
                         url: {
                             name: 'stations:reports:requests'
                         },
-                        visible: userAllowedForStation(StationPermission.Broadcasting) && stationProps.enableRequests
+                        visible: userAllowedForStation(StationPermissions.Broadcasting) && stationProps.enableRequests
                     },
                     {
                         key: 'reports_timeline',
@@ -251,7 +251,7 @@ export function useStationsMenu(): ReactiveMenu {
                         url: {
                             name: 'stations:mounts:index',
                         },
-                        visible: userAllowedForStation(StationPermission.MountPoints) && stationProps.features.mountPoints
+                        visible: userAllowedForStation(StationPermissions.MountPoints) && stationProps.features.mountPoints
                     },
                     {
                         key: 'hls_streams',
@@ -259,7 +259,7 @@ export function useStationsMenu(): ReactiveMenu {
                         url: {
                             name: 'stations:hls_streams:index',
                         },
-                        visible: userAllowedForStation(StationPermission.MountPoints) && stationProps.features.hlsStreams
+                        visible: userAllowedForStation(StationPermissions.MountPoints) && stationProps.features.hlsStreams
                     },
                     {
                         key: 'remotes',
@@ -267,7 +267,7 @@ export function useStationsMenu(): ReactiveMenu {
                         url: {
                             name: 'stations:remotes:index',
                         },
-                        visible: userAllowedForStation(StationPermission.RemoteRelays) && stationProps.features.remoteRelays
+                        visible: userAllowedForStation(StationPermissions.RemoteRelays) && stationProps.features.remoteRelays
                     },
                     {
                         key: 'fallback',
@@ -275,7 +275,7 @@ export function useStationsMenu(): ReactiveMenu {
                         url: {
                             name: 'stations:fallback'
                         },
-                        visible: userAllowedForStation(StationPermission.Broadcasting) && stationProps.features.media
+                        visible: userAllowedForStation(StationPermissions.Broadcasting) && stationProps.features.media
                     },
                     {
                         key: 'ls_config',
@@ -283,7 +283,7 @@ export function useStationsMenu(): ReactiveMenu {
                         url: {
                             name: 'stations:util:ls_config'
                         },
-                        visible: userAllowedForStation(StationPermission.Broadcasting)
+                        visible: userAllowedForStation(StationPermissions.Broadcasting)
                             && stationProps.features.customLiquidsoapConfig
                     },
                     {
@@ -293,7 +293,7 @@ export function useStationsMenu(): ReactiveMenu {
                             name: 'stations:stereo_tool_config'
                         },
                         visible: stationProps.features.media && enableAdvancedFeatures
-                            && userAllowedForStation(StationPermission.Broadcasting)
+                            && userAllowedForStation(StationPermissions.Broadcasting)
                     },
                     {
                         key: 'queue',
@@ -301,7 +301,7 @@ export function useStationsMenu(): ReactiveMenu {
                         url: {
                             name: 'stations:queue:index',
                         },
-                        visible: userAllowedForStation(StationPermission.Broadcasting) && stationProps.features.autoDjQueue
+                        visible: userAllowedForStation(StationPermissions.Broadcasting) && stationProps.features.autoDjQueue
                     },
                     {
                         key: 'restart',
@@ -309,7 +309,7 @@ export function useStationsMenu(): ReactiveMenu {
                         url: {
                             name: 'stations:restart:index',
                         },
-                        visible: userAllowedForStation(StationPermission.Broadcasting)
+                        visible: userAllowedForStation(StationPermissions.Broadcasting)
                     }
                 ]
             };
@@ -321,7 +321,7 @@ export function useStationsMenu(): ReactiveMenu {
                 url: {
                     name: 'stations:logs'
                 },
-                visible: userAllowedForStation(StationPermission.Logs)
+                visible: userAllowedForStation(StationPermissions.Logs)
             };
 
             return {

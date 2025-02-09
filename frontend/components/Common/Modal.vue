@@ -53,8 +53,8 @@
 </template>
 
 <script setup lang="ts">
-import Modal from 'bootstrap/js/src/modal';
-import {onMounted, onUnmounted, ref, useSlots, useTemplateRef, watch} from 'vue';
+import {Modal} from "bootstrap";
+import {onMounted, onUnmounted, ref, useSlots, useTemplateRef, watch} from "vue";
 import Loading from "~/components/Common/Loading.vue";
 import {useEventListener} from "@vueuse/core";
 
@@ -74,18 +74,18 @@ const props = withDefaults(
     }
 );
 
-const emit = defineEmits([
-    'shown',
-    'hidden',
-    'update:active'
-]);
+const emit = defineEmits<{
+    (e: 'shown'): void,
+    (e: 'hidden'): void,
+    (e: 'update:active', active: boolean): void
+}>();
 
-const isActive = ref(props.active);
+const isActive = ref<boolean>(props.active);
 watch(isActive, (newActive) => {
     emit('update:active', newActive);
 });
 
-let bsModal = null;
+let bsModal: Modal | null = null;
 const $modal = useTemplateRef('$modal');
 
 onMounted(() => {

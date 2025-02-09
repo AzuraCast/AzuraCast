@@ -78,7 +78,7 @@
                     </span>
                 </a>
                 <router-link
-                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    v-if="userAllowedForStation(StationPermissions.Profile)"
                     class="btn btn-link text-secondary"
                     :to="{name: 'stations:branding'}"
                 >
@@ -88,7 +88,7 @@
                     </span>
                 </router-link>
                 <button
-                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    v-if="userAllowedForStation(StationPermissions.Profile)"
                     type="button"
                     class="btn btn-link text-danger"
                     @click="togglePublicPages"
@@ -101,7 +101,7 @@
             </template>
             <template v-else>
                 <button
-                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    v-if="userAllowedForStation(StationPermissions.Profile)"
                     type="button"
                     class="btn btn-link text-success"
                     @click="togglePublicPages"
@@ -122,12 +122,12 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/Common/Icon.vue';
+import Icon from "~/components/Common/Icon.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
-import {useTemplateRef} from "vue";
+import {toRef, useTemplateRef} from "vue";
 import EmbedModal, {ProfileEmbedModalProps} from "~/components/Stations/Profile/EmbedModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {StationPermission, userAllowedForStation} from "~/acl";
+import {StationPermissions, userAllowedForStation} from "~/acl";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
 import {IconBranding, IconCheck, IconClose, IconCode} from "~/components/Common/icons";
 
@@ -157,5 +157,8 @@ const doOpenEmbed = () => {
     $embedModal.value?.open();
 };
 
-const togglePublicPages = useToggleFeature('enable_public_page', !props.enablePublicPage);
+const togglePublicPages = useToggleFeature(
+    'enable_public_page',
+    toRef(props, 'enablePublicPage')
+);
 </script>

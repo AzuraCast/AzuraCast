@@ -49,7 +49,7 @@ const props = withDefaults(
     }
 );
 
-const getStepperClass = (currentStep) => {
+const getStepperClass = (currentStep: number) => {
     if (props.step === currentStep) {
         return ['text-primary-emphasis', 'bg-primary-subtle', 'border-primary-subtle'];
     } else {

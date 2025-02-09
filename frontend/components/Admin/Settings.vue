@@ -61,8 +61,8 @@
 </template>
 
 <script setup lang="ts">
-import SettingsGeneralTab from "./Settings/GeneralTab.vue";
-import SettingsServicesTab from "./Settings/ServicesTab.vue";
+import SettingsGeneralTab from "~/components/Admin/Settings/GeneralTab.vue";
+import SettingsServicesTab from "~/components/Admin/Settings/ServicesTab.vue";
 import SettingsSecurityPrivacyTab from "~/components/Admin/Settings/SecurityPrivacyTab.vue";
 import {onMounted, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
@@ -102,7 +102,7 @@ const error = ref(null);
 
 const {axios} = useAxios();
 
-const populateForm = (data) => {
+const populateForm = (data: typeof form.value) => {
     resetForm();
     form.value = mergeExisting(form.value, data);
 };

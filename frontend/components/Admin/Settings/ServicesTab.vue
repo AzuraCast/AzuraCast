@@ -278,7 +278,7 @@ const props = defineProps<{
     acmeUrl: string,
 }>();
 
-const form = defineModel<GenericForm>('form');
+const form = defineModel<GenericForm>('form', {required: true});
 
 const {v$, tabClass} = useVuelidateOnFormTab(
     form,

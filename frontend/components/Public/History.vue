@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import useNowPlaying from '~/functions/useNowPlaying';
+import useNowPlaying from "~/functions/useNowPlaying";
 import {computed} from "vue";
 import SongHistory from "~/components/Public/FullPlayer/SongHistory.vue";
 

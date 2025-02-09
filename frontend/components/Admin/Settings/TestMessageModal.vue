@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import {email, required} from '@vuelidate/validators';
+import {email, required} from "@vuelidate/validators";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {useTemplateRef} from "vue";
 import {useNotify} from "~/functions/useNotify";

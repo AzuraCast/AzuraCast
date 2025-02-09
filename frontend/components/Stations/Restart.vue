@@ -127,7 +127,7 @@ const {$gettext} = useTranslate();
 
 const router = useRouter();
 
-const makeApiCall = (uri) => {
+const makeApiCall = (uri: string) => {
     isLoading.value = true;
 
     void axios.post(uri).then((resp) => {

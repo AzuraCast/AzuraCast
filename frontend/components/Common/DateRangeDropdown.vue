@@ -19,8 +19,8 @@
 </template>
 
 <script setup lang="ts">
-import VueDatePicker, {VueDatePickerProps} from '@vuepic/vue-datepicker';
-import Icon from "./Icon.vue";
+import VueDatePicker, {VueDatePickerProps} from "@vuepic/vue-datepicker";
+import Icon from "~/components/Common/Icon.vue";
 import useTheme from "~/functions/theme";
 import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";

@@ -64,7 +64,7 @@
 
 <script setup lang="ts">
 import {useTranslate} from "~/vendor/gettext.ts";
-import {get} from 'lodash';
+import {get} from "lodash";
 
 defineProps<{
   logs: Array<any>

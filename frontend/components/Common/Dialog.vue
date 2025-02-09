@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import {Modal} from 'bootstrap';
+import {Modal} from "bootstrap";
 import {onMounted, ref, useTemplateRef} from "vue";
 import {useEventListener} from "@vueuse/core";
 

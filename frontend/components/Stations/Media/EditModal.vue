@@ -50,14 +50,14 @@
 </template>
 
 <script setup lang="ts">
-import {required} from '@vuelidate/validators';
-import {defaultTo, forEach, map} from 'lodash';
-import MediaFormBasicInfo from './Form/BasicInfo.vue';
-import MediaFormAlbumArt from './Form/AlbumArt.vue';
-import MediaFormCustomFields from './Form/CustomFields.vue';
-import MediaFormAdvancedSettings from './Form/AdvancedSettings.vue';
-import MediaFormPlaylists from './Form/Playlists.vue';
-import MediaFormWaveformEditor from './Form/WaveformEditor.vue';
+import {required} from "@vuelidate/validators";
+import {defaultTo, forEach, map} from "lodash";
+import MediaFormBasicInfo from "~/components/Stations/Media/Form/BasicInfo.vue";
+import MediaFormAlbumArt from "~/components/Stations/Media/Form/AlbumArt.vue";
+import MediaFormCustomFields from "~/components/Stations/Media/Form/CustomFields.vue";
+import MediaFormAdvancedSettings from "~/components/Stations/Media/Form/AdvancedSettings.vue";
+import MediaFormPlaylists from "~/components/Stations/Media/Form/Playlists.vue";
+import MediaFormWaveformEditor from "~/components/Stations/Media/Form/WaveformEditor.vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {useTemplateRef} from "vue";
 import Tabs from "~/components/Common/Tabs.vue";

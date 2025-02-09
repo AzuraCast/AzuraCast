@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "./Icon.vue";
+import Icon from "~/components/Common/Icon.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {IconPlayCircle, IconStopCircle} from "~/components/Common/icons";

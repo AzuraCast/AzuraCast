@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import FlowUpload from '~/components/Common/FlowUpload.vue';
+import FlowUpload from "~/components/Common/FlowUpload.vue";
 import {computed} from "vue";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 

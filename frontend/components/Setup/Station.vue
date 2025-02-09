@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 import AdminStationsForm, {StationFormParentProps} from "~/components/Admin/Stations/StationForm.vue";
-import SetupStep from "./SetupStep.vue";
+import SetupStep from "~/components/Setup/SetupStep.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
 import {onMounted, useTemplateRef} from "vue";
 

@@ -28,9 +28,9 @@
 </template>
 
 <script setup lang="ts">
-import FormBasicInfo from './Form/BasicInfo.vue';
-import FormSchedule from './Form/Schedule.vue';
-import FormArtwork from './Form/Artwork.vue';
+import FormBasicInfo from "~/components/Stations/Streamers/Form/BasicInfo.vue";
+import FormSchedule from "~/components/Stations/Streamers/Form/Schedule.vue";
+import FormArtwork from "~/components/Stations/Streamers/Form/Artwork.vue";
 import mergeExisting from "~/functions/mergeExisting";
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, useTemplateRef} from "vue";

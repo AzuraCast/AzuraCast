@@ -1,8 +1,7 @@
 import {useTranslate} from "~/vendor/gettext";
 import {h, render, VNode} from "vue";
-import {Toast as BSToast} from 'bootstrap';
-
-import Toast from '~/components/Common/Toast.vue';
+import {Toast as BSToast} from "bootstrap";
+import Toast from "~/components/Common/Toast.vue";
 import {currentVueInstance} from "~/vendor/vueInstance";
 
 type ToastMessage = string | VNode[]

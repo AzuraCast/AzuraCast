@@ -1,4 +1,4 @@
-import isObject from "./isObject";
+import isObject from "~/functions/isObject";
 import {toRaw} from "vue";
 import {cloneDeep} from "lodash";
 

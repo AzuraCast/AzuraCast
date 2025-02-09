@@ -37,10 +37,10 @@
 </template>
 
 <script setup lang="ts">
-import MixerPanel from './WebDJ/MixerPanel.vue';
-import MicrophonePanel from './WebDJ/MicrophonePanel.vue';
-import PlaylistPanel from './WebDJ/PlaylistPanel.vue';
-import SettingsPanel from './WebDJ/SettingsPanel.vue';
+import MixerPanel from "~/components/Public/WebDJ/MixerPanel.vue";
+import MicrophonePanel from "~/components/Public/WebDJ/MicrophonePanel.vue";
+import PlaylistPanel from "~/components/Public/WebDJ/PlaylistPanel.vue";
+import SettingsPanel from "~/components/Public/WebDJ/SettingsPanel.vue";
 import {useProvideWebDjNode} from "~/components/Public/WebDJ/useWebDjNode";
 import {useProvideWebcaster, WebcasterProps} from "~/components/Public/WebDJ/useWebcaster";
 import {useProvideMixer} from "~/components/Public/WebDJ/useMixerValue";

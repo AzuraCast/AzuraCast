@@ -94,9 +94,9 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/Common/Icon.vue';
+import Icon from "~/components/Common/Icon.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
-import InlinePlayer from '~/components/InlinePlayer.vue';
+import InlinePlayer from "~/components/InlinePlayer.vue";
 import {ref, useTemplateRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";

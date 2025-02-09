@@ -255,22 +255,22 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import MediaToolbar from './Media/MediaToolbar.vue';
-import Breadcrumb from './Media/Breadcrumb.vue';
-import FileUpload from './Media/FileUpload.vue';
-import NewDirectoryModal from './Media/NewDirectoryModal.vue';
-import MoveFilesModal from './Media/MoveFilesModal.vue';
-import RenameModal from './Media/RenameModal.vue';
-import EditModal from './Media/EditModal.vue';
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import MediaToolbar from "~/components/Stations/Media/MediaToolbar.vue";
+import Breadcrumb from "~/components/Stations/Media/Breadcrumb.vue";
+import FileUpload from "~/components/Stations/Media/FileUpload.vue";
+import NewDirectoryModal from "~/components/Stations/Media/NewDirectoryModal.vue";
+import MoveFilesModal from "~/components/Stations/Media/MoveFilesModal.vue";
+import RenameModal from "~/components/Stations/Media/RenameModal.vue";
+import EditModal from "~/components/Stations/Media/EditModal.vue";
 import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
-import Icon from '~/components/Common/Icon.vue';
-import AlbumArt from '~/components/Common/AlbumArt.vue';
+import Icon from "~/components/Common/Icon.vue";
+import AlbumArt from "~/components/Common/AlbumArt.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed, ref, useTemplateRef, watch} from "vue";
 import {forEach, map, partition} from "lodash";
-import formatFileSize from "../../functions/formatFileSize";
+import formatFileSize from "~/functions/formatFileSize";
 import InfoCard from "~/components/Common/InfoCard.vue";
 import {getStationApiUrl} from "~/router";
 import {useRoute, useRouter} from "vue-router";

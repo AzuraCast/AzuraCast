@@ -71,8 +71,8 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '../Common/DataTable.vue';
-import QueueLogsModal from './Queue/LogsModal.vue';
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import QueueLogsModal from "~/components/Stations/Queue/LogsModal.vue";
 import Icon from "~/components/Common/Icon.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed, useTemplateRef} from "vue";

@@ -1,4 +1,4 @@
-import {ApiNowPlaying} from "./ApiInterfaces";
+import {ApiNowPlaying} from "~/entities/ApiInterfaces";
 
 const npEmpty: ApiNowPlaying = {
     station: {

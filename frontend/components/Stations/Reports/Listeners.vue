@@ -187,7 +187,7 @@
 </template>
 
 <script setup lang="ts">
-import StationReportsListenersMap from "./Listeners/Map.vue";
+import StationReportsListenersMap from "~/components/Stations/Reports/Listeners/Map.vue";
 import Icon from "~/components/Common/Icon.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
@@ -200,7 +200,7 @@ import useHasDatatable from "~/functions/useHasDatatable";
 import {ListenerFilters, ListenerTypeFilters} from "~/components/Stations/Reports/Listeners/listenerFilters.ts";
 import {filter} from "lodash";
 import formatTime from "~/functions/formatTime.ts";
-import ListenerFiltersBar from "./Listeners/FiltersBar.vue";
+import ListenerFiltersBar from "~/components/Stations/Reports/Listeners/FiltersBar.vue";
 import {ApiListener} from "~/entities/ApiInterfaces.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";

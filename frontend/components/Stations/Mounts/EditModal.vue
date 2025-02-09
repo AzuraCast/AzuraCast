@@ -33,10 +33,10 @@
 </template>
 
 <script setup lang="ts">
-import MountFormBasicInfo from './Form/BasicInfo.vue';
-import MountFormAutoDj from './Form/AutoDj.vue';
-import MountFormAdvanced from './Form/Advanced.vue';
-import MountFormIntro from "./Form/Intro.vue";
+import MountFormBasicInfo from "~/components/Stations/Mounts/Form/BasicInfo.vue";
+import MountFormAutoDj from "~/components/Stations/Mounts/Form/AutoDj.vue";
+import MountFormAdvanced from "~/components/Stations/Mounts/Form/Advanced.vue";
+import MountFormIntro from "~/components/Stations/Mounts/Form/Intro.vue";
 import mergeExisting from "~/functions/mergeExisting";
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, useTemplateRef} from "vue";

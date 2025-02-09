@@ -1,4 +1,4 @@
-import Recover from '~/components/Recover.vue';
+import Recover from "~/components/Recover.vue";
 import initApp from "~/layout";
 import useMinimalLayout from "~/layouts/MinimalLayout";
 

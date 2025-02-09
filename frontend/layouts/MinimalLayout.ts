@@ -1,5 +1,6 @@
 import {useAzuraCast} from "~/vendor/azuracast";
-import {Component, defineComponent, h} from "vue";
+import type {Component} from "vue";
+import {defineComponent, h} from "vue";
 import MinimalLayoutComponent from "~/components/MinimalLayout.vue";
 
 export default function useMinimalLayout(component: Component) {

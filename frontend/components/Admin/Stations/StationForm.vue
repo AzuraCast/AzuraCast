@@ -66,19 +66,19 @@
 </template>
 
 <script setup lang="ts">
-import AdminStationsProfileForm from "./Form/ProfileForm.vue";
-import AdminStationsFrontendForm from "./Form/FrontendForm.vue";
-import AdminStationsBackendForm from "./Form/BackendForm.vue";
-import AdminStationsAdminForm from "./Form/AdminForm.vue";
-import AdminStationsHlsForm from "./Form/HlsForm.vue";
-import AdminStationsRequestsForm from "./Form/RequestsForm.vue";
-import AdminStationsStreamersForm from "./Form/StreamersForm.vue";
+import AdminStationsProfileForm from "~/components/Admin/Stations/Form/ProfileForm.vue";
+import AdminStationsFrontendForm from "~/components/Admin/Stations/Form/FrontendForm.vue";
+import AdminStationsBackendForm from "~/components/Admin/Stations/Form/BackendForm.vue";
+import AdminStationsAdminForm from "~/components/Admin/Stations/Form/AdminForm.vue";
+import AdminStationsHlsForm from "~/components/Admin/Stations/Form/HlsForm.vue";
+import AdminStationsRequestsForm from "~/components/Admin/Stations/Form/RequestsForm.vue";
+import AdminStationsStreamersForm from "~/components/Admin/Stations/Form/StreamersForm.vue";
 import {computed, nextTick, ref, watch} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import Loading from '~/components/Common/Loading.vue';
+import Loading from "~/components/Common/Loading.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import {GlobalPermissions, userAllowed} from "~/acl";
 

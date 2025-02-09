@@ -28,8 +28,8 @@ import ModalForm from "~/components/Common/ModalForm.vue";
 import {computed, useTemplateRef} from "vue";
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {useTranslate} from "~/vendor/gettext";
-import AdminPermissionsGlobalForm from "./Form/GlobalForm.vue";
-import AdminPermissionsStationForm from "./Form/StationForm.vue";
+import AdminPermissionsGlobalForm from "~/components/Admin/Permissions/Form/GlobalForm.vue";
+import AdminPermissionsStationForm from "~/components/Admin/Permissions/Form/StationForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import {GlobalPermission, StationPermission} from "~/acl.ts";
 

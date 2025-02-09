@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import FormBasicInfo from './Form/BasicInfo.vue';
+import FormBasicInfo from "~/components/Stations/HlsStreams/Form/BasicInfo.vue";
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, useTemplateRef} from "vue";
 import {useNotify} from "~/functions/useNotify";

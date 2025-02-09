@@ -99,7 +99,7 @@
 </template>
 
 <script setup lang="ts">
-import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton.vue';
+import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {ref, useTemplateRef} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";

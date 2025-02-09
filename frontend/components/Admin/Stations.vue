@@ -82,10 +82,10 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import AdminStationsEditModal from "./Stations/EditModal.vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import AdminStationsEditModal from "~/components/Admin/Stations/EditModal.vue";
 import {get} from "lodash";
-import AdminStationsCloneModal from "./Stations/CloneModal.vue";
+import AdminStationsCloneModal from "~/components/Admin/Stations/CloneModal.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useTemplateRef} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";

@@ -9,11 +9,11 @@ import {
 } from "chart.js";
 import {defaultsDeep} from "lodash";
 import {computed, MaybeRefOrGetter, onMounted, onUnmounted, Ref, toValue, watch} from "vue";
-import zoomPlugin from 'chartjs-plugin-zoom';
+import zoomPlugin from "chartjs-plugin-zoom";
 import chartjsColorSchemes from "~/vendor/chartjs_colorschemes.ts";
 
-import 'chartjs-adapter-luxon';
-import '~/vendor/luxon';
+import "chartjs-adapter-luxon";
+import "~/vendor/luxon";
 
 Chart.register(...registerables);
 

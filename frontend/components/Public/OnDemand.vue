@@ -52,10 +52,10 @@
 </template>
 
 <script setup lang="ts">
-import InlinePlayer from '../InlinePlayer.vue';
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import {forEach} from 'lodash';
-import Icon from '~/components/Common/Icon.vue';
+import InlinePlayer from "~/components/InlinePlayer.vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import {forEach} from "lodash";
+import Icon from "~/components/Common/Icon.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import {useTranslate} from "~/vendor/gettext";
 import AlbumArt from "~/components/Common/AlbumArt.vue";

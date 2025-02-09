@@ -65,10 +65,10 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import formatFileSize from '~/functions/formatFileSize';
-import InlinePlayer from '~/components/InlinePlayer.vue';
-import Icon from '~/components/Common/Icon.vue';
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import formatFileSize from "~/functions/formatFileSize";
+import InlinePlayer from "~/components/InlinePlayer.vue";
+import Icon from "~/components/Common/Icon.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import {ref, shallowRef, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";

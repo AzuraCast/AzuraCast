@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import {FrontendAdapter, FrontendAdapters} from '~/entities/RadioAdapters';
+import {FrontendAdapter, FrontendAdapters} from "~/entities/RadioAdapters";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {computed} from "vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";

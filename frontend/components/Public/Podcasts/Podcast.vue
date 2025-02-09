@@ -180,7 +180,7 @@ import {IconRss} from "~/components/Common/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
-import PodcastCommon from "./PodcastCommon.vue";
+import PodcastCommon from "~/components/Public/Podcasts/PodcastCommon.vue";
 import GridLayout from "~/components/Common/GridLayout.vue";
 import {ApiPodcast, ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
 import {usePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";

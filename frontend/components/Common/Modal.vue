@@ -53,8 +53,8 @@
 </template>
 
 <script setup lang="ts">
-import {Modal} from 'bootstrap';
-import {onMounted, onUnmounted, ref, useSlots, useTemplateRef, watch} from 'vue';
+import {Modal} from "bootstrap";
+import {onMounted, onUnmounted, ref, useSlots, useTemplateRef, watch} from "vue";
 import Loading from "~/components/Common/Loading.vue";
 import {useEventListener} from "@vueuse/core";
 

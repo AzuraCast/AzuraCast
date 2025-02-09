@@ -297,13 +297,13 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import EditModal from './Playlists/EditModal.vue';
-import ReorderModal from './Playlists/ReorderModal.vue';
-import ImportModal from './Playlists/ImportModal.vue';
-import QueueModal from './Playlists/QueueModal.vue';
-import CloneModal from './Playlists/CloneModal.vue';
-import ApplyToModal from "./Playlists/ApplyToModal.vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import EditModal from "~/components/Stations/Playlists/EditModal.vue";
+import ReorderModal from "~/components/Stations/Playlists/ReorderModal.vue";
+import ImportModal from "~/components/Stations/Playlists/ImportModal.vue";
+import QueueModal from "~/components/Stations/Playlists/QueueModal.vue";
+import CloneModal from "~/components/Stations/Playlists/CloneModal.vue";
+import ApplyToModal from "~/components/Stations/Playlists/ApplyToModal.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useTemplateRef} from "vue";
 import useHasEditModal from "~/functions/useHasEditModal";

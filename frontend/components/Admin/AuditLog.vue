@@ -93,12 +93,11 @@ import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import Icon from "~/components/Common/Icon.vue";
 import useHasDatatable from "~/functions/useHasDatatable";
-import DetailsModal from "./AuditLog/DetailsModal.vue";
+import DetailsModal, {AuditLogChanges} from "~/components/Admin/AuditLog/DetailsModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {getApiUrl} from "~/router";
 import {IconAddCircle, IconRemoveCircle, IconSwapHorizontalCircle} from "~/components/Common/icons";
-import {AuditLogChanges} from "~/components/Admin/AuditLog/DetailsModal.vue";
 
 const baseApiUrl = getApiUrl('/admin/auditlog');
 

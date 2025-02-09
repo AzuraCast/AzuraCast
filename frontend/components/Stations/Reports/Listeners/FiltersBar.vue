@@ -64,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import {ListenerFilters, ListenerTypeFilters} from "./listenerFilters.ts";
+import {ListenerFilters, ListenerTypeFilters} from "~/components/Stations/Reports/Listeners/listenerFilters.ts";
 import {IconClearAll} from "~/components/Common/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
 

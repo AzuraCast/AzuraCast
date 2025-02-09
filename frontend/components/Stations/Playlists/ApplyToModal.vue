@@ -62,13 +62,13 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import {ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
-import {useVuelidateOnForm} from '~/functions/useVuelidateOnForm';
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {map} from "lodash";
 import {useResettableRef} from "~/functions/useResettableRef";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";

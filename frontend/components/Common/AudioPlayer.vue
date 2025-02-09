@@ -7,8 +7,8 @@
 </template>
 
 <script setup lang="ts">
-import getLogarithmicVolume from '~/functions/getLogarithmicVolume';
-import Hls from 'hls.js';
+import getLogarithmicVolume from "~/functions/getLogarithmicVolume";
+import Hls from "hls.js";
 import {computed, nextTick, onMounted, onScopeDispose, ref, toRef, useTemplateRef, watch} from "vue";
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {watchThrottled} from "@vueuse/core";

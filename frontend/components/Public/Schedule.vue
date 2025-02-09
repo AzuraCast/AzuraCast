@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import ScheduleView from '~/components/Common/ScheduleView.vue';
+import ScheduleView from "~/components/Common/ScheduleView.vue";
 import FullHeightCard from "~/components/Public/FullHeightCard.vue";
 
 defineProps<{

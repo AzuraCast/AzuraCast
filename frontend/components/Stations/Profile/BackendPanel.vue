@@ -80,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/Common/Icon.vue';
+import Icon from "~/components/Common/Icon.vue";
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";
@@ -88,8 +88,7 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {StationPermissions, userAllowedForStation} from "~/acl";
 import {IconPlay, IconStop, IconUpdate} from "~/components/Common/icons";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
-
-import {BackendAdapter, BackendAdapters} from '~/entities/RadioAdapters';
+import {BackendAdapter, BackendAdapters} from "~/entities/RadioAdapters";
 
 export interface ProfileBackendPanelParentProps {
     numSongs: number,

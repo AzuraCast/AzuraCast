@@ -174,7 +174,7 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/Common/Icon.vue';
+import Icon from "~/components/Common/Icon.vue";
 import VolumeSlider from "~/components/Public/WebDJ/VolumeSlider.vue";
 import formatTime from "~/functions/formatTime";
 import {computed, ref, watch} from "vue";

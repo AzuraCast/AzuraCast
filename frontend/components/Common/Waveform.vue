@@ -59,12 +59,10 @@
 </template>
 
 <script setup lang="ts">
-import WS from 'wavesurfer.js';
-import WaveSurfer from 'wavesurfer.js';
-import timelinePlugin from 'wavesurfer.js/dist/plugins/timeline.js';
-import regionsPlugin from 'wavesurfer.js/dist/plugins/regions.js';
-import RegionsPlugin, {RegionParams} from 'wavesurfer.js/dist/plugins/regions.js';
-import getLogarithmicVolume from '~/functions/getLogarithmicVolume';
+import WaveSurfer from "wavesurfer.js";
+import timelinePlugin from "wavesurfer.js/dist/plugins/timeline.js";
+import regionsPlugin, {RegionParams} from "wavesurfer.js/dist/plugins/regions.js";
+import getLogarithmicVolume from "~/functions/getLogarithmicVolume";
 import {onMounted, onUnmounted, ref, toRef, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
 import usePlayerVolume from "~/functions/usePlayerVolume";
@@ -88,7 +86,7 @@ const emit = defineEmits<{
 }>();
 
 let wavesurfer: WaveSurfer | null = null;
-let wsRegions: RegionsPlugin | null = null;
+let wsRegions: regionsPlugin | null = null;
 
 const volume = usePlayerVolume();
 const showVolume = useShowVolume();
@@ -141,7 +139,7 @@ const cacheWaveformRemotely = () => {
 };
 
 onMounted(() => {
-    wavesurfer = WS.create({
+    wavesurfer = WaveSurfer.create({
         container: '#waveform_container',
         waveColor: '#2196f3',
         progressColor: '#4081CF',

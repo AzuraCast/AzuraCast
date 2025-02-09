@@ -101,7 +101,7 @@
 </template>
 
 <script setup lang="ts">
-import PlaylistTime from '~/components/Common/TimeCode.vue';
+import PlaylistTime from "~/components/Common/TimeCode.vue";
 import Icon from "~/components/Common/Icon.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {required} from "@vuelidate/validators";

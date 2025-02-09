@@ -1,4 +1,4 @@
-import {inject, InjectionKey} from 'vue';
+import {inject, InjectionKey} from "vue";
 
 export default function injectRequired<T>(key: InjectionKey<T>, defaultValue?: T): T {
     const resolved = inject(key, defaultValue);

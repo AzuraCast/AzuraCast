@@ -61,9 +61,9 @@
 </template>
 
 <script setup lang="ts">
-import formatFileSize from '~/functions/formatFileSize';
-import Icon from './Icon.vue';
-import {defaultsDeep, forEach, toInteger} from 'lodash';
+import formatFileSize from "~/functions/formatFileSize";
+import Icon from "~/components/Common/Icon.vue";
+import {defaultsDeep, forEach, toInteger} from "lodash";
 import {onMounted, onUnmounted, reactive, useTemplateRef} from "vue";
 import Flow from "@flowjs/flow.js";
 import {useAzuraCast} from "~/vendor/azuracast";

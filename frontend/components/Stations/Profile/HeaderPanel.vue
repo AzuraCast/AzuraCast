@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/Common/Icon.vue';
+import Icon from "~/components/Common/Icon.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import {StationPermissions, userAllowedForStation} from "~/acl";
 import {IconEdit} from "~/components/Common/icons";

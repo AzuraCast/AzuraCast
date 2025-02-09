@@ -1,4 +1,4 @@
-import NowPlaying from '~/entities/NowPlaying';
+import NowPlaying from "~/entities/NowPlaying";
 import {computed, onMounted, ref, shallowRef, watch} from "vue";
 import {reactiveComputed, useEventSource, useIntervalFn} from "@vueuse/core";
 import {ApiNowPlaying} from "~/entities/ApiInterfaces.ts";

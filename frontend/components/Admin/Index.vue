@@ -92,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/Common/Icon.vue';
+import Icon from "~/components/Common/Icon.vue";
 import {useAxios} from "~/vendor/axios";
 import {getApiUrl} from "~/router";
 import {useAdminMenu} from "~/components/Admin/menu";

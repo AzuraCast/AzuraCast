@@ -31,19 +31,20 @@
 </template>
 
 <script setup lang="ts">
-import TypeSelect from "./Form/TypeSelect.vue";
-import BasicInfo from "./Form/BasicInfo.vue";
+import TypeSelect from "~/components/Stations/Webhooks/Form/TypeSelect.vue";
+import BasicInfo from "~/components/Stations/Webhooks/Form/BasicInfo.vue";
 import {get} from "lodash";
-import Generic from "./Form/Generic.vue";
-import Email from "./Form/Email.vue";
-import Tunein from "./Form/Tunein.vue";
-import Discord from "./Form/Discord.vue";
-import Telegram from "./Form/Telegram.vue";
-import GoogleAnalyticsV4 from "./Form/GoogleAnalyticsV4.vue";
-import MatomoAnalytics from "./Form/MatomoAnalytics.vue";
-import Mastodon from "./Form/Mastodon.vue";
+import Generic from "~/components/Stations/Webhooks/Form/Generic.vue";
+import Email from "~/components/Stations/Webhooks/Form/Email.vue";
+import Tunein from "~/components/Stations/Webhooks/Form/Tunein.vue";
+import Discord from "~/components/Stations/Webhooks/Form/Discord.vue";
+import Telegram from "~/components/Stations/Webhooks/Form/Telegram.vue";
+import GoogleAnalyticsV4 from "~/components/Stations/Webhooks/Form/GoogleAnalyticsV4.vue";
+import MatomoAnalytics from "~/components/Stations/Webhooks/Form/MatomoAnalytics.vue";
+import Mastodon from "~/components/Stations/Webhooks/Form/Mastodon.vue";
 import {BaseEditModalProps, HasRelistEmit, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {Component, computed, nextTick, provide, ref, useTemplateRef} from "vue";
+import type {Component} from "vue";
+import {computed, nextTick, provide, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {WebhookTriggerDetails, WebhookType, WebhookTypeDetails, WebhookTypes} from "~/entities/Webhooks";

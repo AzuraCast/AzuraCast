@@ -290,8 +290,8 @@
 </template>
 
 <script setup lang="ts" generic="Row extends DataTableRow = DataTableRow">
-import {filter, forEach, get, includes, indexOf, isEmpty, map, reverse, slice, some} from 'lodash';
-import Icon from './Icon.vue';
+import {filter, forEach, get, includes, indexOf, isEmpty, map, reverse, slice, some} from "lodash";
+import Icon from "~/components/Common/Icon.vue";
 import {computed, onMounted, ref, shallowRef, toRaw, toRef, watch} from "vue";
 import {watchDebounced} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";

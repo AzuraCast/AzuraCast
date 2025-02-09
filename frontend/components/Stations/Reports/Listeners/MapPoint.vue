@@ -5,8 +5,8 @@
 </template>
 
 <script setup lang="ts">
-import {inject, onUnmounted, ShallowRef, useTemplateRef, watch} from 'vue';
-import {LatLngTuple, Map, marker, Popup} from 'leaflet';
+import {inject, onUnmounted, ShallowRef, useTemplateRef, watch} from "vue";
+import {LatLngTuple, Map, marker, Popup} from "leaflet";
 
 const props = defineProps<{
     position: LatLngTuple

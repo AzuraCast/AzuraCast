@@ -78,8 +78,8 @@
 </template>
 
 <script setup lang="ts">
-import WaveformComponent from '~/components/Common/Waveform.vue';
-import Icon from '~/components/Common/Icon.vue';
+import WaveformComponent from "~/components/Common/Waveform.vue";
+import Icon from "~/components/Common/Icon.vue";
 import {ref, shallowRef, useTemplateRef, watch} from "vue";
 import {IconPlayCircle, IconStop} from "~/components/Common/icons";
 import {GenericForm} from "~/entities/Forms.ts";

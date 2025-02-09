@@ -34,7 +34,7 @@ import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functi
 import {computed, nextTick, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import StorageLocationForm from "./Form.vue";
+import StorageLocationForm from "~/components/Admin/StorageLocations/Form.vue";
 import Sftp from "~/components/Admin/StorageLocations/Form/Sftp.vue";
 import S3 from "~/components/Admin/StorageLocations/Form/S3.vue";
 import Dropbox from "~/components/Admin/StorageLocations/Form/Dropbox.vue";

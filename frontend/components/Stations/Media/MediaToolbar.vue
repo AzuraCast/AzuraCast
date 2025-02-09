@@ -209,9 +209,9 @@
 </template>
 
 <script setup lang="ts">
-import {Dropdown} from 'bootstrap';
-import {intersection, map} from 'lodash';
-import Icon from '~/components/Common/Icon.vue';
+import {Dropdown} from "bootstrap";
+import {intersection, map} from "lodash";
+import Icon from "~/components/Common/Icon.vue";
 import {computed, ref, toRef, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";

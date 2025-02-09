@@ -1,6 +1,6 @@
 import {cloneDeep, filter, get, map} from "lodash";
 import {ComputedRef, toRaw} from "vue";
-import {Icon} from "../components/Common/icons";
+import {Icon} from "~/components/Common/icons";
 import {reactiveComputed} from "@vueuse/core";
 
 export interface MenuRouteBasedUrl {

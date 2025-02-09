@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import FlowUpload, {UploadResponseBody} from '~/components/Common/FlowUpload.vue';
+import FlowUpload, {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
 import {computed, ref, toRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {syncRef} from "@vueuse/core";

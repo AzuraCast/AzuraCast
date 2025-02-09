@@ -141,7 +141,7 @@
 </template>
 
 <script setup lang="ts">
-import AudioPlayer from '~/components/Common/AudioPlayer.vue';
+import AudioPlayer from "~/components/Common/AudioPlayer.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import {computed, nextTick, onMounted, ref, shallowRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";

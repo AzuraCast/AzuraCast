@@ -241,8 +241,8 @@
 </template>
 
 <script setup lang="ts">
-import {BackendAdapter, BackendAdapters} from '~/entities/RadioAdapters';
-import Icon from '~/components/Common/Icon.vue';
+import {BackendAdapter, BackendAdapters} from "~/entities/RadioAdapters";
+import Icon from "~/components/Common/Icon.vue";
 import {computed, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";

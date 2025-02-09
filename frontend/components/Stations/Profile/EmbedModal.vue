@@ -93,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton.vue';
+import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton.vue";
 import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";

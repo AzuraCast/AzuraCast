@@ -30,19 +30,23 @@
 </template>
 
 <script setup lang="ts">
-import mergeExisting from "~/functions/mergeExisting";
 import {computed, onMounted, ref, shallowRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
+import {ApiStationQuota} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     quotaUrl: string,
 }>();
 
-const emit = defineEmits(['updated']);
+type Quota = Required<ApiStationQuota>;
+
+const emit = defineEmits<{
+    (e: 'updated', quota: Quota): void
+}>();
 
 const loading = ref(true);
-const quota = shallowRef({
+const quota = shallowRef<Quota>({
     used: null,
     used_bytes: null,
     used_percent: null,
@@ -67,7 +71,7 @@ const progressVariant = computed(() => {
 const {$gettext, $ngettext} = useTranslate();
 
 const langSpaceUsed = computed(() => {
-    let langSpaceUsed;
+    let langSpaceUsed: string;
 
     if (quota.value.available) {
         langSpaceUsed = $gettext(
@@ -91,7 +95,7 @@ const langSpaceUsed = computed(() => {
             '%{filesCount} File',
             '%{filesCount} Files',
             quota.value.num_files,
-            {filesCount: quota.value.num_files}
+            {filesCount: String(quota.value.num_files)}
         );
 
         return langSpaceUsed + ' (' + langNumFiles + ')';
@@ -103,8 +107,8 @@ const langSpaceUsed = computed(() => {
 const {axios} = useAxios();
 
 const update = () => {
-    void axios.get(props.quotaUrl).then((resp) => {
-        quota.value = mergeExisting(quota.value, resp.data);
+    void axios.get<Quota>(props.quotaUrl).then((resp) => {
+        quota.value = resp.data;
         loading.value = false;
 
         emit('updated', quota.value);

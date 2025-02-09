@@ -56,7 +56,7 @@ const add = () => {
     });
 };
 
-const remove = (index) => {
+const remove = (index: number) => {
     scheduleItems.value.splice(index, 1);
 };
 </script>

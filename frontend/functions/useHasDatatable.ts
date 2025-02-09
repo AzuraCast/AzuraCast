@@ -4,7 +4,7 @@ import {ComponentExposed} from "vue-component-type-helpers";
 
 export type DataTableTemplateRef = ComponentExposed<typeof DataTable>;
 
-export default function useHasDatatable($datatableRef: Readonly<ShallowRef<DataTableTemplateRef>>) {
+export default function useHasDatatable($datatableRef: Readonly<ShallowRef<DataTableTemplateRef | null>>) {
     /**
      * Reset selected rows, active row, and trigger data reload.
      */

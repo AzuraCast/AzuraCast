@@ -1,9 +1,9 @@
 import {useAzuraCast} from "~/vendor/azuracast";
-import {Component, h} from "vue";
+import {Component, defineComponent, h} from "vue";
 import PanelLayoutComponent from "~/components/PanelLayout.vue";
 
 export default function usePanelLayout(component: Component) {
-    return {
+    return defineComponent({
         setup() {
             const {panelProps, componentProps} = useAzuraCast();
 
@@ -21,5 +21,5 @@ export default function usePanelLayout(component: Component) {
                 }
             );
         }
-    }
+    });
 }

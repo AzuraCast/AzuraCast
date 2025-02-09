@@ -61,6 +61,7 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {StationPermissions, userAllowedForStation} from "~/acl";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
 import {IconCheck, IconClose, IconLogs} from "~/components/Common/icons";
+import {toRef} from "vue";
 
 export interface ProfileRequestPanelProps {
     enableRequests: boolean,
@@ -72,5 +73,8 @@ defineOptions({
 
 const props = defineProps<ProfileRequestPanelProps>();
 
-const toggleRequests = useToggleFeature('enable_requests', !props.enableRequests);
+const toggleRequests = useToggleFeature(
+    'enable_requests',
+    toRef(props, 'enableRequests')
+);
 </script>

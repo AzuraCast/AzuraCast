@@ -124,7 +124,7 @@
 <script setup lang="ts">
 import Icon from '~/components/Common/Icon.vue';
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
-import {useTemplateRef} from "vue";
+import {toRef, useTemplateRef} from "vue";
 import EmbedModal, {ProfileEmbedModalProps} from "~/components/Stations/Profile/EmbedModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {StationPermissions, userAllowedForStation} from "~/acl";
@@ -157,5 +157,8 @@ const doOpenEmbed = () => {
     $embedModal.value?.open();
 };
 
-const togglePublicPages = useToggleFeature('enable_public_page', !props.enablePublicPage);
+const togglePublicPages = useToggleFeature(
+    'enable_public_page',
+    toRef(props, 'enablePublicPage')
+);
 </script>

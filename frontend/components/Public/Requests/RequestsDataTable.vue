@@ -46,7 +46,9 @@ import {RequestsProps} from "~/components/Public/Requests.vue";
 
 const props = defineProps<RequestsProps>();
 
-const emit = defineEmits(['submitted']);
+const emit = defineEmits<{
+    (e: 'submitted'): void
+}>();
 
 const {$gettext} = useTranslate();
 

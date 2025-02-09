@@ -1,9 +1,9 @@
 import {useAzuraCast} from "~/vendor/azuracast";
-import {Component, h} from "vue";
+import {Component, defineComponent, h} from "vue";
 import MinimalLayoutComponent from "~/components/MinimalLayout.vue";
 
 export default function useMinimalLayout(component: Component) {
-    return {
+    return defineComponent({
         setup() {
             const {componentProps} = useAzuraCast();
 
@@ -20,5 +20,5 @@ export default function useMinimalLayout(component: Component) {
                 }
             );
         }
-    }
+    });
 }

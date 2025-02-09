@@ -72,7 +72,7 @@ onMounted(() => {
     $form.value?.reset();
 });
 
-const error = ref(null);
+const error = ref<string | null>(null);
 
 const retry = () => {
     error.value = null;
@@ -82,7 +82,7 @@ const retry = () => {
     });
 }
 
-const onError = (err) => {
+const onError = (err: string | null) => {
     error.value = err;
 }
 

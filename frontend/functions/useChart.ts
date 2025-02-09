@@ -77,12 +77,15 @@ export default function useChart<
     const rebuildChart = () => {
         $chart?.destroy();
 
-        if ($canvas.value) {
-            $chart = new Chart(
-                $canvas.value.getContext('2d'),
-                chartConfig.value
-            );
+        const chartContext = $canvas.value?.getContext('2d');
+        if (!chartContext) {
+            throw new Error("Cannot find chart context!");
         }
+
+        $chart = new Chart(
+            chartContext,
+            chartConfig.value
+        );
     }
 
     onMounted(rebuildChart);

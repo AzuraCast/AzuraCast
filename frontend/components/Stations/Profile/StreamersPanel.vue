@@ -60,6 +60,7 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {StationPermissions, userAllowedForStation} from "~/acl";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
 import {IconCheck, IconClose, IconSettings} from "~/components/Common/icons";
+import {toRef} from "vue";
 
 export interface ProfileStreamersPanelProps {
     enableStreamers: boolean,
@@ -71,5 +72,8 @@ defineOptions({
 
 const props = defineProps<ProfileStreamersPanelProps>();
 
-const toggleStreamers = useToggleFeature('enable_streamers', !props.enableStreamers);
+const toggleStreamers = useToggleFeature(
+    'enable_streamers',
+    toRef(props, 'enableStreamers')
+);
 </script>

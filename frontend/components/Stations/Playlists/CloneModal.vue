@@ -38,7 +38,10 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 
-const emit = defineEmits(['relist', 'needs-restart']);
+const emit = defineEmits<{
+    (e: 'relist'): void,
+    (e: 'needs-restart'): void
+}>();
 
 const cloneUrl = ref<string | null>(null);
 

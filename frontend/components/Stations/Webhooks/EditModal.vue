@@ -43,7 +43,7 @@ import GoogleAnalyticsV4 from "./Form/GoogleAnalyticsV4.vue";
 import MatomoAnalytics from "./Form/MatomoAnalytics.vue";
 import Mastodon from "./Form/Mastodon.vue";
 import {BaseEditModalProps, HasRelistEmit, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, nextTick, provide, ref, useTemplateRef} from "vue";
+import {Component, computed, nextTick, provide, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {WebhookTriggerDetails, WebhookType, WebhookTypeDetails, WebhookTypes} from "~/entities/Webhooks";
@@ -75,7 +75,9 @@ const type = ref<WebhookType | null>(null);
 
 const $modal = useTemplateRef('$modal');
 
-const webhookComponents = {
+const webhookComponents: {
+    [key in WebhookType]: Component
+} = {
     [WebhookTypes.Generic]: Generic,
     [WebhookTypes.Email]: Email,
     [WebhookTypes.TuneIn]: Tunein,
@@ -91,12 +93,20 @@ const webhookComponents = {
     [WebhookTypes.MatomoAnalytics]: MatomoAnalytics,
 };
 
-const typeTitle = computed(() => {
-    return get(props.typeDetails, [type.value, 'title'], '');
+const typeTitle = computed<string | null>(() => {
+    if (type.value === null) {
+        return null;
+    }
+
+    return get(props.typeDetails, [type.value as string, 'title'], '');
 });
 
-const formComponent = computed(() => {
-    return get(webhookComponents, type.value, Generic);
+const formComponent = computed<Component>(() => {
+    if (type.value === null) {
+        return Generic;
+    }
+
+    return get(webhookComponents, type.value as string, Generic);
 });
 
 const {
@@ -119,11 +129,11 @@ const {
         type: {}
     },
     {
-        type: null
+        type: WebhookTypes.Generic as string
     },
     {
         populateForm: (data, formRef) => {
-            type.value = data.type;
+            type.value = data.type as WebhookType | null;
 
             // Wait for type-specific components to mount.
             void nextTick(() => {
@@ -134,7 +144,7 @@ const {
         getSubmittableFormData(formRef, isEditModeRef) {
             const formData = formRef.value;
             if (!isEditModeRef.value) {
-                formData.type = type.value;
+                formData.type = type.value as string | null;
             }
             return formData;
         },

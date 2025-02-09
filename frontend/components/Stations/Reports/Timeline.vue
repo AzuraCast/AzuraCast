@@ -190,7 +190,7 @@ const exportUrl = computed(() => {
     return exportUrl.toString();
 });
 
-const abs = (val) => {
+const abs = (val: number) => {
     return Math.abs(val);
 };
 

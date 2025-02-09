@@ -1,4 +1,4 @@
- 
+/* eslint-disable */
 /* tslint:disable */
 /*
  * ---------------------------------------------------------------
@@ -725,6 +725,11 @@ export type ApiStationMedia = ApiHasSongFields &
      */
     mtime?: number;
     /**
+     * The UNIX timestamp when the item was first imported into the database.
+     * @example 1609480800
+     */
+    uploaded_at?: number;
+    /**
      * The latest time (UNIX timestamp) when album art was updated.
      * @example 1609480800
      */
@@ -740,7 +745,8 @@ export type ApiStationMedia = ApiHasSongFields &
      * @example "4:00"
      */
     length_text?: string;
-    custom_fields?: string[];
+    /** An object containing all custom fields, with the key being the value name. */
+    custom_fields?: object;
     extra_metadata?: any[];
     playlists?: any[];
   };
@@ -802,6 +808,18 @@ export type ApiStationQueueDetailed = ApiNowPlayingStationQueue &
     /** Log entries on how the specific queue item was picked by the AutoDJ. */
     log?: any[] | null;
   };
+
+export interface ApiStationQuota {
+  used?: string;
+  used_bytes?: string;
+  used_percent?: number;
+  available?: string;
+  available_bytes?: string;
+  quota?: string | null;
+  quota_bytes?: string | null;
+  is_full?: boolean;
+  num_files?: number;
+}
 
 export type ApiStationRemote = HasLinks & {
   id?: number | null;
@@ -1334,14 +1352,14 @@ export type Station = HasAutoIncrementId & {
    */
   frontend_type?: any;
   /** An array containing station-specific frontend configuration */
-  frontend_config?: any[];
+  frontend_config?: object;
   /**
    * The backend adapter (liquidsoap,etc)
    * @example "liquidsoap"
    */
   backend_type?: any;
   /** An array containing station-specific backend configuration */
-  backend_config?: any[];
+  backend_config?: object;
   /** @example "A sample radio station." */
   description?: string | null;
   /** @example "https://demo.azuracast.com/" */
@@ -1402,22 +1420,22 @@ export type Station = HasAutoIncrementId & {
    */
   timezone?: string | null;
   /**
-   * The maximum bitrate at which a station may broadcast, in Kbps, 0 for unlimited.
+   * The maximum bitrate at which a station may broadcast, in Kbps. 0 for unlimited
    * @example 128
    */
   max_bitrate?: number;
   /**
-   * The maximum number of mounts a station may have, 0 for unlimited.
+   * The maximum number of mount points the station can have, 0 for unlimited
    * @example 3
    */
   max_mounts?: number;
   /**
-   * The maximum number of hls streams a station may have, 0 for unlimited.
+   * The maximum number of HLS streams the station can have, 0 for unlimited
    * @example 3
    */
   max_hls_streams?: number;
   /** An array containing station-specific branding configuration */
-  branding_config?: any[];
+  branding_config?: object;
 };
 
 export type StationHlsStream = HasAutoIncrementId & {

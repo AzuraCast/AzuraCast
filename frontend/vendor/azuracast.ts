@@ -55,6 +55,16 @@ export function useAzuraCast(): AzuraCastConstants {
     return globalProps;
 }
 
+export function useAzuraCastPanelProps(): PanelLayoutProps {
+    const {panelProps} = useAzuraCast();
+
+    if (!panelProps) {
+        throw new Error("Panel properties are undefined in this request.");
+    }
+
+    return panelProps;
+}
+
 export function useAzuraCastUser(): AzuraCastUserConstants {
     const {user} = useAzuraCast();
 

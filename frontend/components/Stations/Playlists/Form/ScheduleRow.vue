@@ -128,7 +128,9 @@ const props = defineProps<{
     row: PlaylistScheduleRow
 }>();
 
-const emit = defineEmits(['remove']);
+const emit = defineEmits<{
+    (e: 'remove'): void
+}>();
 
 const v$ = useVuelidate(
     {

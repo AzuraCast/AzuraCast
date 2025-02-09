@@ -1,4 +1,4 @@
-import {computed, ComputedRef, nextTick, Ref, ref, toRef} from "vue";
+import {computed, ComputedRef, nextTick, Ref, ref, ShallowRef, toRef} from "vue";
 import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
@@ -44,7 +44,7 @@ export interface BaseEditModalOptions<T extends GenericForm = GenericForm> exten
 export function useBaseEditModal<T extends GenericForm = GenericForm>(
     props: BaseEditModalProps,
     emit: BaseEditModalEmits,
-    $modal: Ref<ModalFormTemplateRef>,
+    $modal: Readonly<ShallowRef<ModalFormTemplateRef | null>>,
     validations?: VuelidateValidations<T>,
     blankForm?: VuelidateBlankForm<T>,
     options: BaseEditModalOptions<T> = {}
@@ -107,7 +107,7 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
     const create = (): void => {
         clearContents();
 
-        $modal.value.show();
+        $modal.value?.show();
 
         void nextTick(() => {
             resetForm();
@@ -146,7 +146,7 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
         clearContents();
 
         editUrl.value = recordUrl;
-        $modal.value.show();
+        $modal.value?.show();
 
         void nextTick(() => {
             resetForm();
@@ -179,7 +179,7 @@ export function useBaseEditModal<T extends GenericForm = GenericForm>(
     };
 
     const close = (): void => {
-        $modal.value.hide();
+        $modal.value?.hide();
     };
 
     const onSubmitSuccess = (): void => {

@@ -176,7 +176,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-    (e: 'np_updated', np: ApiNowPlaying)
+    (e: 'np_updated', np: ApiNowPlaying): void
 }>();
 
 const {

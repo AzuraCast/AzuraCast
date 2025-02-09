@@ -24,6 +24,6 @@ export default function useOptionalStorage<T extends (string | number | boolean 
         return useLocalStorage(key, defaults, options);
     }
 
-    const {shallow} = options;
+    const {shallow} = options ?? {};
     return (shallow ? shallowRef : ref)(defaults) as RemovableRef<T>;
 }

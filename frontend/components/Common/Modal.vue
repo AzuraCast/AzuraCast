@@ -74,13 +74,13 @@ const props = withDefaults(
     }
 );
 
-const emit = defineEmits([
-    'shown',
-    'hidden',
-    'update:active'
-]);
+const emit = defineEmits<{
+    (e: 'shown'): void,
+    (e: 'hidden'): void,
+    (e: 'update:active', active: boolean): void
+}>();
 
-const isActive = ref(props.active);
+const isActive = ref<boolean>(props.active);
 watch(isActive, (newActive) => {
     emit('update:active', newActive);
 });

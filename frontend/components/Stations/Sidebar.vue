@@ -74,6 +74,7 @@ import {IconEdit} from "~/components/Common/icons.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
 import {useRestartEventBus} from "~/functions/useMayNeedRestart.ts";
+import {ApiStationRestartStatus} from "~/entities/ApiInterfaces.ts";
 
 const menuItems = useStationsMenu();
 
@@ -100,9 +101,11 @@ restartEventBus.on((forceRestart: boolean): void => {
     if (forceRestart) {
         needsRestart.value = true;
     } else {
-        void axios.get(restartStatusUrl.value).then((resp) => {
-            needsRestart.value = resp.data.needs_restart;
-        });
+        void axios.get<Required<ApiStationRestartStatus>>(restartStatusUrl.value).then(
+            ({data}) => {
+                needsRestart.value = data.needs_restart;
+            }
+        );
     }
 });
 </script>

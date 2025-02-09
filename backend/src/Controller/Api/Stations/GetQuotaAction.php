@@ -19,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/station/{station_id}/quota/{type}',
         operationId: 'getQuota',
-        description: 'Get the station.',
+        description: 'Get the current usage and quota for a given station storage location.',
         security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: General'],
         parameters: [

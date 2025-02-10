@@ -61,8 +61,8 @@ final class ByStream extends AbstractReportAction
             SQL,
             [
                 'station_id' => $station->getIdRequired(),
-                'start' => $dateRange->getStartTimestamp(),
-                'end' => $dateRange->getEndTimestamp(),
+                'start' => $dateRange->start,
+                'end' => $dateRange->end,
             ]
         );
 

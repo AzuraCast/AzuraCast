@@ -329,16 +329,6 @@ const exportUrl = computed(() => {
     return exportUrl.toString();
 });
 
-const totalListenerHours = computed(() => {
-    let tlh_seconds = 0;
-    filteredListeners.value.forEach(function (listener) {
-        tlh_seconds += listener.connected_time;
-    });
-
-    const tlh_hours = tlh_seconds / 3600;
-    return Math.round((tlh_hours + 0.00001) * 100) / 100;
-});
-
 const {axios} = useAxios();
 
 const $dataTable = useTemplateRef('$dataTable');
@@ -350,9 +340,9 @@ const hasFilters: ComputedRef<boolean> = computed(() => {
         || ListenerTypeFilters.All !== filters.value.type;
 });
 
-const filteredListeners: ComputedRef<ApiListener[]> = computed(() => {
+const filteredListeners = computed<ApiListener[]>(() => {
     if (!hasFilters.value) {
-        return listeners.value;
+        return listeners.value ?? [];
     }
 
     return filter(
@@ -376,6 +366,17 @@ const filteredListeners: ComputedRef<ApiListener[]> = computed(() => {
             return true;
         }
     );
+});
+
+const totalListenerHours = computed(() => {
+    let tlh_seconds = 0;
+
+    filteredListeners.value.forEach(function (listener) {
+        tlh_seconds += listener.connected_time;
+    });
+
+    const tlh_hours = tlh_seconds / 3600;
+    return Math.round((tlh_hours + 0.00001) * 100) / 100;
 });
 
 const updateListeners = () => {

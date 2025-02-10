@@ -86,7 +86,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref, useTemplateRef, watch} from "vue";
+import {computed, nextTick, ref, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAzuraCast} from "~/vendor/azuracast";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
@@ -117,7 +117,7 @@ const fields: DataTableField[] = [
         label: $gettext('Date/Time'),
         sortable: false,
         formatter: (value) => {
-            return DateTime.fromSeconds(value).toLocaleString(
+            return DateTime.fromISO(value).toLocaleString(
                 {
                     ...DateTime.DATETIME_SHORT, ...timeConfig
                 }
@@ -144,7 +144,11 @@ const apiUrl = computed(() => {
 const $dataTable = useTemplateRef('$dataTable');
 const {navigate} = useHasDatatable($dataTable);
 
-watch(dateRange, navigate);
+watch(dateRange, () => {
+    void nextTick(() => {
+        navigate();
+    });
+});
 
 const $detailsModal = useTemplateRef('$detailsModal');
 

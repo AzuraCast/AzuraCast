@@ -246,7 +246,7 @@ final class QueueBuilder implements EventSubscriberInterface
             );
 
             if (!empty($queueEntries)) {
-                $playlist->setPlayedAt($expectedPlayTime->getTimestamp());
+                $playlist->setPlayedAt($expectedPlayTime);
                 $this->em->persist($playlist);
                 return $queueEntries;
             }
@@ -269,7 +269,7 @@ final class QueueBuilder implements EventSubscriberInterface
                 $queueEntry = $this->makeQueueFromApi($validTrack, $playlist, $expectedPlayTime);
 
                 if (null !== $queueEntry) {
-                    $playlist->setPlayedAt($expectedPlayTime->getTimestamp());
+                    $playlist->setPlayedAt($expectedPlayTime);
                     $this->em->persist($playlist);
                     return $queueEntry;
                 }
@@ -319,7 +319,7 @@ final class QueueBuilder implements EventSubscriberInterface
         if (is_array($mediaToPlay)) {
             [$mediaUri, $mediaDuration] = $mediaToPlay;
 
-            $playlist->setPlayedAt($expectedPlayTime->getTimestamp());
+            $playlist->setPlayedAt($expectedPlayTime);
             $this->em->persist($playlist);
 
             $stationQueueEntry = new StationQueue(
@@ -461,7 +461,7 @@ final class QueueBuilder implements EventSubscriberInterface
         $stationQueueEntry = StationQueue::fromRequest($request);
         $this->em->persist($stationQueueEntry);
 
-        $request->setPlayedAt($expectedPlayTime->getTimestamp());
+        $request->setPlayedAt($expectedPlayTime);
         $this->em->persist($request);
 
         $event->setNextSongs($stationQueueEntry);

@@ -26,13 +26,13 @@ class StationQueue implements ResolvableUrlInterface
         description: 'UNIX timestamp when playback is expected to start.',
         example: OpenApi::SAMPLE_TIMESTAMP
     )]
-    public int $played_at = 0;
+    public ?int $played_at = null;
 
     #[OA\Property(
         description: 'Duration of the song in seconds',
         example: 180
     )]
-    public int $duration = 0;
+    public float $duration = 0.0;
 
     #[OA\Property(
         description: 'Indicates the playlist that the song was played from, if available, or empty string if not.',

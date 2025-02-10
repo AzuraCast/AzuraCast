@@ -315,7 +315,7 @@ final class StationPlaylistMediaRepository extends Repository
 
         $now = $now ?? CarbonImmutable::now($playlist->getStation()->getTimezoneObject());
 
-        $playlist->setQueueResetAt($now->getTimestamp());
+        $playlist->setQueueResetAt($now);
         $this->em->persist($playlist);
         $this->em->flush();
     }

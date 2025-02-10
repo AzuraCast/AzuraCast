@@ -86,13 +86,16 @@ import {IconRemove} from "~/components/Common/icons";
 import {useIntervalFn} from "@vueuse/core";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useDialog} from "~/functions/useDialog.ts";
+import {ApiStationQueueDetailed, ApiStatus} from "~/entities/ApiInterfaces.ts";
 
 const listUrl = getStationApiUrl('/queue');
 const clearUrl = getStationApiUrl('/queue/clear');
 
 const {$gettext} = useTranslate();
 
-const fields: DataTableField[] = [
+type Row = Required<ApiStationQueueDetailed>;
+
+const fields: DataTableField<Row>[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false},
     {key: 'song_title', isRowHeader: true, label: $gettext('Song Title'), sortable: false},
     {key: 'played_at', label: $gettext('Expected to Play at'), sortable: false},
@@ -115,7 +118,7 @@ useIntervalFn(
 
 const $logsModal = useTemplateRef('$logsModal');
 
-const doShowLogs = (logs) => {
+const doShowLogs = (logs: string[]) => {
     $logsModal.value?.show(logs);
 };
 
@@ -128,17 +131,17 @@ const {confirmDelete} = useDialog();
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const doClear = () => {
-    void confirmDelete({
+const doClear = async () => {
+    const {value} = await confirmDelete({
         title: $gettext('Clear Upcoming Song Queue?'),
         confirmButtonText: $gettext('Clear'),
-    }).then((result) => {
-        if (result.value) {
-            void axios.post(clearUrl.value).then((resp) => {
-                notifySuccess(resp.data.message);
-                relist();
-            });
-        }
     });
+
+    if (value) {
+        const {data} = await axios.post<ApiStatus>(clearUrl.value);
+
+        notifySuccess(data.message);
+        relist();
+    }
 }
 </script>

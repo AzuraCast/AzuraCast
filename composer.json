@@ -106,7 +106,8 @@
     "symfony/polyfill-php80": "1.99",
     "symfony/polyfill-php81": "1.99",
     "symfony/polyfill-php82": "1.99",
-    "symfony/polyfill-php83": "1.99"
+    "symfony/polyfill-php83": "1.99",
+    "symfony/polyfill-php84": "1.99"
   },
   "require-dev": {
     "codeception/codeception": "^5.0.0-RC1",

@@ -191,6 +191,7 @@ services:
         soft: 65536
         hard: 65536
     logging:
+      driver: "json-file"
       options:
         max-size: "1m"
         max-file: "5"

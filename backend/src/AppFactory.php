@@ -108,10 +108,6 @@ final class AppFactory
         $containerBuilder->useAutowiring(true);
         $containerBuilder->useAttributes(true);
 
-        if ($environment->isProduction()) {
-            $containerBuilder->enableCompilation($environment->getTempDirectory());
-        }
-
         $containerBuilder->addDefinitions($diDefinitions);
 
         $containerBuilder->addDefinitions(dirname(__DIR__) . '/config/services.php');

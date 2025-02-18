@@ -23,7 +23,7 @@ trait AcceptsDateRange
         $tz ??= Time::getUtc();
 
         $default ??= new DateRange(
-            (new CarbonImmutable('-2 weeks', $tz))->startOf('day'),
+            new CarbonImmutable('-2 weeks', $tz)->startOf('day'),
             CarbonImmutable::now($tz)->endOf('day')
         );
 

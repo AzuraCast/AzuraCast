@@ -13,7 +13,6 @@ use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Entity\StationPlaylistMedia;
 use Carbon\CarbonImmutable;
-use Carbon\CarbonInterface;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use InvalidArgumentException;
@@ -264,7 +263,7 @@ final class StationPlaylistMediaRepository extends Repository
 
     public function resetQueue(
         StationPlaylist $playlist,
-        ?CarbonInterface $now = null
+        ?CarbonImmutable $now = null
     ): void {
         if (PlaylistSources::Songs !== $playlist->getSource()) {
             throw new InvalidArgumentException('Playlist must contain songs.');

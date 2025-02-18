@@ -69,7 +69,7 @@ final class Time
         }
 
         if (!$time->isUtc()) {
-            $time = $time->shiftTimezone($utc);
+            $time = self::nowInTimezone($utc, $time);
         }
 
         return $time;
@@ -88,6 +88,19 @@ final class Time
         }
 
         return self::toUtcCarbonImmutable($input);
+    }
+
+    public static function nowInTimezone(
+        DateTimeZone $tz,
+        ?CarbonImmutable $now = null
+    ): CarbonImmutable {
+        /**
+         * Developer note: `setTimezone` is the one that adjusts the time.
+         * Not `shiftTimezone`, which doesn't.
+         */
+        return (null === $now)
+            ? CarbonImmutable::now($tz)
+            : $now->setTimezone($tz);
     }
 
     public static function displayTimeToSeconds(string|float|int|null $seconds = null): ?float

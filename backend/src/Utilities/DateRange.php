@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Utilities;
 
+use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 
 final readonly class DateRange
 {
     public function __construct(
-        public CarbonInterface $start,
-        public CarbonInterface $end,
+        public CarbonImmutable $start,
+        public CarbonImmutable $end,
     ) {
     }
 

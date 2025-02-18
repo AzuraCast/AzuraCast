@@ -21,7 +21,7 @@ use App\Entity\StationPlaylistMedia;
 use App\Entity\StationQueue;
 use App\Event\Radio\BuildQueue;
 use App\Radio\PlaylistParser;
-use Carbon\CarbonInterface;
+use Carbon\CarbonImmutable;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -219,14 +219,14 @@ final class QueueBuilder implements EventSubscriberInterface
      *
      * @param StationPlaylist $playlist
      * @param array $recentSongHistory
-     * @param CarbonInterface $expectedPlayTime
+     * @param CarbonImmutable $expectedPlayTime
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      * @return StationQueue|StationQueue[]|null
      */
     private function playSongFromPlaylist(
         StationPlaylist $playlist,
         array $recentSongHistory,
-        CarbonInterface $expectedPlayTime,
+        CarbonImmutable $expectedPlayTime,
         bool $allowDuplicates = false
     ): StationQueue|array|null {
         if (PlaylistSources::RemoteUrl === $playlist->getSource()) {
@@ -290,7 +290,7 @@ final class QueueBuilder implements EventSubscriberInterface
     private function makeQueueFromApi(
         StationPlaylistQueue $validTrack,
         StationPlaylist $playlist,
-        CarbonInterface $expectedPlayTime,
+        CarbonImmutable $expectedPlayTime,
     ): ?StationQueue {
         $mediaToPlay = $this->em->find(StationMedia::class, $validTrack->media_id);
         if (!$mediaToPlay instanceof StationMedia) {
@@ -312,7 +312,7 @@ final class QueueBuilder implements EventSubscriberInterface
 
     private function getSongFromRemotePlaylist(
         StationPlaylist $playlist,
-        CarbonInterface $expectedPlayTime
+        CarbonImmutable $expectedPlayTime
     ): ?StationQueue {
         $mediaToPlay = $this->getMediaFromRemoteUrl($playlist);
 

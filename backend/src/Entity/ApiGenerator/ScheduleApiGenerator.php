@@ -5,38 +5,31 @@ declare(strict_types=1);
 namespace App\Entity\ApiGenerator;
 
 use App\Entity\Api\StationSchedule as StationScheduleApi;
+use App\Entity\Station;
 use App\Entity\StationPlaylist;
 use App\Entity\StationSchedule;
 use App\Entity\StationStreamer;
+use App\Utilities\Time;
 use Carbon\CarbonImmutable;
-use Carbon\CarbonInterface;
 
 final class ScheduleApiGenerator
 {
     public function __invoke(
+        Station $station,
         StationSchedule $scheduleItem,
-        ?CarbonInterface $start,
-        ?CarbonInterface $end,
-        ?CarbonInterface $now
+        ?CarbonImmutable $start = null,
+        ?CarbonImmutable $end = null,
+        ?CarbonImmutable $now = null
     ): StationScheduleApi {
         $playlist = $scheduleItem->getPlaylist();
         $streamer = $scheduleItem->getStreamer();
 
-        if (null === $now) {
-            if (null !== $playlist) {
-                $station = $playlist->getStation();
-            } elseif (null !== $streamer) {
-                $station = $streamer->getStation();
-            } else {
-                $station = null;
-            }
-
-            $now = CarbonImmutable::now($station?->getTimezoneObject());
-        }
+        $stationTz = $station->getTimezoneObject();
+        $now = Time::nowInTimezone($stationTz, $now);
 
         if (null === $start || null === $end) {
-            $start = StationSchedule::getDateTime($scheduleItem->getStartTime(), $now);
-            $end = StationSchedule::getDateTime($scheduleItem->getEndTime(), $now);
+            $start = StationSchedule::getDateTime($scheduleItem->getStartTime(), $stationTz, $now);
+            $end = StationSchedule::getDateTime($scheduleItem->getEndTime(), $stationTz, $now);
 
             // Handle overnight schedule items
             if ($end < $start) {

@@ -11,7 +11,6 @@ use App\Entity\StationRequest;
 use App\Radio\AutoDJ;
 use App\Utilities\Time;
 use Carbon\CarbonImmutable;
-use Carbon\CarbonInterface;
 use Exception as PhpException;
 
 /**
@@ -80,9 +79,10 @@ final class StationRequestRepository extends AbstractStationBasedRepository
 
     public function getNextPlayableRequest(
         Station $station,
-        ?CarbonInterface $now = null
+        ?CarbonImmutable $now = null
     ): ?StationRequest {
-        $now ??= CarbonImmutable::now($station->getTimezoneObject());
+        $tz = $station->getTimezoneObject();
+        $now = Time::nowInTimezone($tz, $now);
 
         // Look up all requests that have at least waited as long as the threshold.
         $requests = $this->em->createQuery(

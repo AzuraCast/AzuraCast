@@ -6,7 +6,6 @@ namespace App\Entity;
 
 use App\Utilities\Time;
 use Carbon\CarbonImmutable;
-use Carbon\CarbonInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[
@@ -94,7 +93,7 @@ class StationRequest implements
         return $this->ip;
     }
 
-    public function shouldPlayNow(?CarbonInterface $now = null): bool
+    public function shouldPlayNow(?CarbonImmutable $now = null): bool
     {
         if ($this->skip_delay) {
             return true;
@@ -102,10 +101,7 @@ class StationRequest implements
 
         $station = $this->station;
         $stationTz = $station->getTimezoneObject();
-
-        if (null === $now) {
-            $now = CarbonImmutable::now($stationTz);
-        }
+        $now = Time::nowInTimezone($stationTz, $now);
 
         $thresholdMins = (int)$station->getRequestDelay();
         $thresholdMins += random_int(0, $thresholdMins);

@@ -6,8 +6,8 @@ namespace App\Event\Radio;
 
 use App\Entity\Station;
 use App\Entity\StationQueue;
+use App\Utilities\Time;
 use Carbon\CarbonImmutable;
-use Carbon\CarbonInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 final class BuildQueue extends Event
@@ -15,19 +15,19 @@ final class BuildQueue extends Event
     /** @var StationQueue[] */
     private array $nextSongs = [];
 
-    private CarbonInterface $expectedCueTime;
+    private CarbonImmutable $expectedCueTime;
 
-    private CarbonInterface $expectedPlayTime;
+    private CarbonImmutable $expectedPlayTime;
 
     public function __construct(
         private readonly Station $station,
-        ?CarbonInterface $expectedCueTime = null,
-        ?CarbonInterface $expectedPlayTime = null,
+        ?CarbonImmutable $expectedCueTime = null,
+        ?CarbonImmutable $expectedPlayTime = null,
         private readonly ?string $lastPlayedSongId = null,
         private readonly bool $isInterrupting = false
     ) {
-        $this->expectedCueTime = $expectedCueTime ?? CarbonImmutable::now($station->getTimezoneObject());
-        $this->expectedPlayTime = $expectedPlayTime ?? CarbonImmutable::now($station->getTimezoneObject());
+        $this->expectedCueTime = $expectedCueTime ?? Time::nowUtc();
+        $this->expectedPlayTime = $expectedPlayTime ?? Time::nowUtc();
     }
 
     public function getStation(): Station
@@ -35,12 +35,12 @@ final class BuildQueue extends Event
         return $this->station;
     }
 
-    public function getExpectedCueTime(): CarbonInterface
+    public function getExpectedCueTime(): CarbonImmutable
     {
         return $this->expectedCueTime;
     }
 
-    public function getExpectedPlayTime(): CarbonInterface
+    public function getExpectedPlayTime(): CarbonImmutable
     {
         return $this->expectedPlayTime;
     }

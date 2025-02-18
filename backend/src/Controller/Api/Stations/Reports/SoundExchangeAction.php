@@ -45,6 +45,7 @@ final class SoundExchangeAction implements SingleActionInterface
         $data['start_date'] ??= $defaultStartDate;
         $data['end_date'] ??= $defaultEndDate;
 
+        // NOTE: These are valid uses of shiftTimezone.
         $startDate = CarbonImmutable::parse($data['start_date'] . ' 00:00:00', $tzObject)
             ->shiftTimezone($tzObject);
 

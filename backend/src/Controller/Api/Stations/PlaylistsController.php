@@ -8,12 +8,13 @@ use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Enums\PlaylistSources;
+use App\Entity\Station;
 use App\Entity\StationPlaylist;
 use App\Entity\StationSchedule;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use Carbon\CarbonInterface;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\AbstractQuery;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -211,12 +212,12 @@ final class PlaylistsController extends AbstractScheduledEntityController
             $response,
             $scheduleItems,
             function (
+                Station $station,
                 StationSchedule $scheduleItem,
-                CarbonInterface $start,
-                CarbonInterface $end
+                CarbonImmutable $start,
+                CarbonImmutable $end
             ) use (
-                $request,
-                $station
+                $request
             ) {
                 /** @var StationPlaylist $playlist */
                 $playlist = $scheduleItem->getPlaylist();

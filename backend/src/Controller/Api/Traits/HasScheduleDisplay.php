@@ -4,22 +4,24 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Traits;
 
+use App\Entity\Station;
 use App\Entity\StationSchedule;
 use App\Radio\AutoDJ\Scheduler;
 use App\Utilities\DateRange;
-use Carbon\CarbonInterface;
 
 trait HasScheduleDisplay
 {
     use AcceptsDateRange;
 
     protected function getEvents(
+        Station $station,
         DateRange $dateRange,
-        CarbonInterface $now,
         Scheduler $scheduler,
         array $scheduleItems,
         callable $rowRender
     ): array {
+        $tz = $station->getTimezoneObject();
+
         $events = [];
 
         $loopStartDate = $dateRange->start->subDay()->startOf('day');
@@ -33,11 +35,11 @@ trait HasScheduleDisplay
                 $dayOfWeek = $i->dayOfWeekIso;
 
                 if (
-                    $scheduler->shouldSchedulePlayOnCurrentDate($scheduleItem, $i)
+                    $scheduler->shouldSchedulePlayOnCurrentDate($scheduleItem, $tz, $i)
                     && $scheduler->isScheduleScheduledToPlayToday($scheduleItem, $dayOfWeek)
                 ) {
-                    $rowStart = StationSchedule::getDateTime($scheduleItem->getStartTime(), $i);
-                    $rowEnd = StationSchedule::getDateTime($scheduleItem->getEndTime(), $i);
+                    $rowStart = StationSchedule::getDateTime($scheduleItem->getStartTime(), $tz, $i);
+                    $rowEnd = StationSchedule::getDateTime($scheduleItem->getEndTime(), $tz, $i);
 
                     // Handle overnight schedule items
                     if ($rowEnd < $rowStart) {
@@ -46,7 +48,7 @@ trait HasScheduleDisplay
 
                     $itemDateRange = new DateRange($rowStart, $rowEnd);
                     if ($itemDateRange->isWithin($dateRange)) {
-                        $events[] = $rowRender($scheduleItem, $rowStart, $rowEnd, $now);
+                        $events[] = $rowRender($station, $scheduleItem, $rowStart, $rowEnd);
                     }
                 }
 

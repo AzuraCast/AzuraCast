@@ -172,7 +172,7 @@ final class HistoryAction implements SingleActionInterface
 
         /** @var SongHistory $sh */
         foreach (ReadOnlyBatchIteratorAggregate::fromQuery($query, 100) as $sh) {
-            $datetime = $sh->getTimestampStart()->shiftTimezone($stationTz);
+            $datetime = $sh->getTimestampStart()->setTimezone($stationTz);
 
             $playlist = $sh->getPlaylist();
             $playlistName = (null !== $playlist)

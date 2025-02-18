@@ -8,6 +8,7 @@ use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Repository\StationScheduleRepository;
 use App\Entity\Repository\StationStreamerRepository;
+use App\Entity\Station;
 use App\Entity\StationSchedule;
 use App\Entity\StationStreamer;
 use App\Http\Response;
@@ -15,8 +16,7 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Radio\AutoDJ\Scheduler;
 use App\Service\Flow\UploadedFile;
-use Carbon\CarbonInterface;
-use InvalidArgumentException;
+use Carbon\CarbonImmutable;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -245,12 +245,12 @@ final class StreamersController extends AbstractScheduledEntityController
             $response,
             $scheduleItems,
             function (
+                Station $station,
                 StationSchedule $scheduleItem,
-                CarbonInterface $start,
-                CarbonInterface $end
+                CarbonImmutable $start,
+                CarbonImmutable $end
             ) use (
-                $request,
-                $station
+                $request
             ) {
                 /** @var StationStreamer $streamer */
                 $streamer = $scheduleItem->getStreamer();

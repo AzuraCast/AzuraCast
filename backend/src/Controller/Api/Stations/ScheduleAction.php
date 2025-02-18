@@ -89,8 +89,8 @@ final class ScheduleAction implements SingleActionInterface
 
                 $cacheItem->set(
                     $this->getEvents(
+                        $station,
                         $dateRange,
-                        $nowTz,
                         $this->scheduler,
                         $events,
                         [$this->scheduleApiGenerator, '__invoke']

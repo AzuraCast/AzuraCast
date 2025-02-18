@@ -6,7 +6,8 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Utilities\Time;
-use Carbon\CarbonInterface;
+use Carbon\CarbonImmutable;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 
@@ -119,14 +120,14 @@ class StationSchedule implements IdentifiableEntityInterface
     /**
      * @return int Get the duration of scheduled play time in seconds (used for remote URLs of indeterminate length).
      */
-    public function getDuration(): int
+    public function getDuration(DateTimeZone $tz): int
     {
-        $now = Time::nowUtc();
+        $now = CarbonImmutable::now($tz);
 
-        $startTime = self::getDateTime($this->start_time, $now)
+        $startTime = self::getDateTime($this->start_time, $tz, $now)
             ->getTimestamp();
 
-        $endTime = self::getDateTime($this->end_time, $now)
+        $endTime = self::getDateTime($this->end_time, $tz, $now)
             ->getTimestamp();
 
         if ($startTime > $endTime) {
@@ -240,12 +241,17 @@ class StationSchedule implements IdentifiableEntityInterface
      * Return a \DateTime object (or null) for a given time code, by default in the UTC time zone.
      *
      * @param int|string $timeCode
-     * @param CarbonInterface $now The current date/time. Note that this time MUST be using the station's timezone
-     *   for this function to be accurate.
-     * @return CarbonInterface The current date/time, with the time set to the time code specified.
+     * @param DateTimeZone $tz The station's time zone.
+     * @param CarbonImmutable|null $now The current date/time.
+     * @return CarbonImmutable The current date/time, with the time set to the time code specified.
      */
-    public static function getDateTime(int|string $timeCode, CarbonInterface $now): CarbonInterface
-    {
+    public static function getDateTime(
+        int|string $timeCode,
+        DateTimeZone $tz,
+        ?CarbonImmutable $now = null,
+    ): CarbonImmutable {
+        $now = Time::nowInTimezone($tz, $now);
+
         $timeCode = str_pad((string)$timeCode, 4, '0', STR_PAD_LEFT);
 
         return $now->setTime(

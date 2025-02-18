@@ -10,7 +10,6 @@ use App\Entity\Enums\AnalyticsIntervals;
 use App\Entity\Station;
 use App\Utilities\DateRange;
 use Carbon\CarbonImmutable;
-use Carbon\CarbonInterface;
 
 /**
  * @extends Repository<Analytics>
@@ -64,7 +63,7 @@ final class AnalyticsRepository extends Repository
 
     public function clearSingleMetric(
         AnalyticsIntervals $type,
-        CarbonInterface $moment,
+        CarbonImmutable $moment,
         ?Station $station = null
     ): void {
         if (null === $station) {

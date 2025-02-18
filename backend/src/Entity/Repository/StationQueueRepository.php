@@ -10,7 +10,7 @@ use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Entity\StationQueue;
 use App\Utilities\Time;
-use Carbon\CarbonInterface;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -117,7 +117,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
      */
     public function getRecentlyPlayedByTimeRange(
         Station $station,
-        CarbonInterface $now,
+        CarbonImmutable $now,
         int $minutes
     ): array {
         $threshold = $now->subMinutes($minutes);

@@ -10,6 +10,7 @@ use App\Entity\AuditLog;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
+use App\Utilities\Time;
 use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
 
@@ -68,7 +69,7 @@ final class AuditLogAction
 
                 return [
                     'id' => $row->getId(),
-                    'timestamp' => $row->getTimestamp(),
+                    'timestamp' => $row->getTimestamp()->format(Time::JS_ISO8601_FORMAT),
                     'operation' => $operation->value,
                     'operation_text' => $operation->getName(),
                     'class' => $row->getClass(),

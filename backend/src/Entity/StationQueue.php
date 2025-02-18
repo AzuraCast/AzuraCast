@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Utilities\Time;
-use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[
@@ -69,10 +69,10 @@ class StationQueue implements
     protected ?string $autodj_custom_uri = null;
 
     #[ORM\Column(type: 'datetime_immutable', precision: 6)]
-    protected CarbonImmutable $timestamp_cued;
+    protected DateTimeImmutable $timestamp_cued;
 
     #[ORM\Column(type: 'datetime_immutable', precision: 6, nullable: true)]
-    protected ?CarbonImmutable $timestamp_played = null;
+    protected ?DateTimeImmutable $timestamp_played = null;
 
     #[ORM\Column(type: 'float', nullable: true)]
     protected ?float $duration = null;
@@ -134,7 +134,7 @@ class StationQueue implements
         $this->autodj_custom_uri = $autodjCustomUri;
     }
 
-    public function getTimestampCued(): CarbonImmutable
+    public function getTimestampCued(): DateTimeImmutable
     {
         return $this->timestamp_cued;
     }
@@ -194,7 +194,7 @@ class StationQueue implements
         $this->is_visible = !($this->playlist instanceof StationPlaylist) || !$this->playlist->getIsJingle();
     }
 
-    public function getTimestampPlayed(): ?CarbonImmutable
+    public function getTimestampPlayed(): ?DateTimeImmutable
     {
         return $this->timestamp_played;
     }

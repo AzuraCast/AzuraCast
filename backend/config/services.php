@@ -158,7 +158,7 @@ return [
 
         Doctrine\DBAL\Types\Type::overrideType(
             'datetime_immutable',
-            App\Doctrine\Types\UtcCarbonImmutableType::class
+            App\Doctrine\Types\UtcDateTimeImmutableType::class
         );
 
         $eventManager = new Doctrine\Common\EventManager();
@@ -348,6 +348,7 @@ return [
 
         $normalizers = [
             new Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer(),
+            new App\Normalizer\DateTimeNormalizer(),
             new Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer(),
             new Azura\Normalizer\DoctrineEntityNormalizer(
                 $em,

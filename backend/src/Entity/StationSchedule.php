@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Utilities\Time;
 use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
@@ -242,15 +243,15 @@ class StationSchedule implements IdentifiableEntityInterface
      *
      * @param int|string $timeCode
      * @param DateTimeZone $tz The station's time zone.
-     * @param CarbonImmutable|null $now The current date/time.
+     * @param DateTimeImmutable|null $now The current date/time.
      * @return CarbonImmutable The current date/time, with the time set to the time code specified.
      */
     public static function getDateTime(
         int|string $timeCode,
         DateTimeZone $tz,
-        ?CarbonImmutable $now = null,
+        ?DateTimeImmutable $now = null,
     ): CarbonImmutable {
-        $now = Time::nowInTimezone($tz, $now);
+        $now = CarbonImmutable::instance(Time::nowInTimezone($tz, $now));
 
         $timeCode = str_pad((string)$timeCode, 4, '0', STR_PAD_LEFT);
 

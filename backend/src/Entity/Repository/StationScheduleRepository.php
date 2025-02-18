@@ -12,8 +12,10 @@ use App\Entity\StationPlaylist;
 use App\Entity\StationSchedule;
 use App\Entity\StationStreamer;
 use App\Radio\AutoDJ\Scheduler;
+use App\Utilities\DateRange;
 use App\Utilities\Time;
 use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 
 /**
  * @extends Repository<StationSchedule>
@@ -104,16 +106,16 @@ final class StationScheduleRepository extends Repository
 
     /**
      * @param Station $station
-     * @param CarbonImmutable|null $now
+     * @param DateTimeImmutable|null $now
      *
      * @return ApiStationSchedule[]
      */
     public function getUpcomingSchedule(
         Station $station,
-        ?CarbonImmutable $now = null
+        ?DateTimeImmutable $now = null
     ): array {
         $stationTz = $station->getTimezoneObject();
-        $now = Time::nowInTimezone($stationTz, $now);
+        $now = CarbonImmutable::instance(Time::nowInTimezone($stationTz, $now));
 
         $startDate = $now->subDay();
         $endDate = $now->addDay()->addHour();
@@ -148,8 +150,7 @@ final class StationScheduleRepository extends Repository
                     $events[] = ($this->scheduleApiGenerator)(
                         $station,
                         $scheduleItem,
-                        $start,
-                        $end,
+                        new DateRange($start, $end),
                         $now
                     );
                 }

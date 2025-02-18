@@ -6,7 +6,7 @@ namespace App\Entity\Api;
 
 use App\OpenApi;
 use App\Utilities\Types;
-use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -81,10 +81,10 @@ final class Listener
         $api->user_agent = Types::string($row['listener_user_agent'] ?? null);
         $api->hash = Types::string($row['listener_hash'] ?? null);
 
-        /** @var CarbonImmutable|null $timestampStart */
+        /** @var DateTimeImmutable|null $timestampStart */
         $timestampStart = $row['timestamp_start'] ?? null;
 
-        /** @var CarbonImmutable|null $timestampEnd */
+        /** @var DateTimeImmutable|null $timestampEnd */
         $timestampEnd = $row['timestamp_end'] ?? null;
 
         $api->connected_on = $timestampStart?->getTimestamp() ?? 0;

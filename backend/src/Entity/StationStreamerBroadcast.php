@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Utilities\Time;
 use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use Stringable;
@@ -39,10 +40,10 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface, Stringabl
     protected StationStreamer $streamer;
 
     #[ORM\Column(name: 'timestamp_start', type: 'datetime_immutable', precision: 6)]
-    protected CarbonImmutable $timestampStart;
+    protected DateTimeImmutable $timestampStart;
 
     #[ORM\Column(name: 'timestamp_end', type: 'datetime_immutable', precision: 6, nullable: true)]
-    protected ?CarbonImmutable $timestampEnd = null;
+    protected ?DateTimeImmutable $timestampEnd = null;
 
     #[ORM\Column(name: 'recording_path', length: 255, nullable: true)]
     protected ?string $recordingPath = null;
@@ -65,7 +66,7 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface, Stringabl
         return $this->streamer;
     }
 
-    public function getTimestampStart(): CarbonImmutable
+    public function getTimestampStart(): DateTimeImmutable
     {
         return $this->timestampStart;
     }
@@ -75,7 +76,7 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface, Stringabl
         $this->timestampStart = Time::toUtcCarbonImmutable($timestampStart);
     }
 
-    public function getTimestampEnd(): ?CarbonImmutable
+    public function getTimestampEnd(): ?DateTimeImmutable
     {
         return $this->timestampEnd;
     }
@@ -97,10 +98,14 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface, Stringabl
 
     public function __toString(): string
     {
+        $timestampEnd = (null !== $this->timestampEnd)
+            ? CarbonImmutable::instance($this->timestampEnd)
+            : null;
+
         return sprintf(
             "%s-%s",
-            $this->timestampStart->toAtomString(),
-            $this->timestampEnd?->toAtomString() ?? 'Now'
+            CarbonImmutable::instance($this->timestampStart)->toAtomString(),
+            $timestampEnd?->toAtomString() ?? 'Now'
         );
     }
 }

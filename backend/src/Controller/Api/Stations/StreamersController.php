@@ -16,7 +16,7 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Radio\AutoDJ\Scheduler;
 use App\Service\Flow\UploadedFile;
-use Carbon\CarbonImmutable;
+use App\Utilities\DateRange;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -247,8 +247,7 @@ final class StreamersController extends AbstractScheduledEntityController
             function (
                 Station $station,
                 StationSchedule $scheduleItem,
-                CarbonImmutable $start,
-                CarbonImmutable $end
+                DateRange $dateRange
             ) use (
                 $request
             ) {
@@ -258,8 +257,8 @@ final class StreamersController extends AbstractScheduledEntityController
                 return [
                     'id' => $streamer->getId(),
                     'title' => $streamer->getDisplayName(),
-                    'start' => $start->toIso8601String(),
-                    'end' => $end->toIso8601String(),
+                    'start' => $dateRange->start->toIso8601String(),
+                    'end' => $dateRange->end->toIso8601String(),
                     'edit_url' => $request->getRouter()->named(
                         'api:stations:streamer',
                         ['station_id' => $station->getId(), 'id' => $streamer->getId()]

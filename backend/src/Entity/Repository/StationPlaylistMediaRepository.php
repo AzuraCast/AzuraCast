@@ -12,6 +12,7 @@ use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Entity\StationPlaylistMedia;
+use App\Utilities\Time;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
@@ -312,7 +313,7 @@ final class StationPlaylistMediaRepository extends Repository
             );
         }
 
-        $now = $now ?? CarbonImmutable::now($playlist->getStation()->getTimezoneObject());
+        $now ??= Time::nowUtc();
 
         $playlist->setQueueResetAt($now);
         $this->em->persist($playlist);
@@ -321,7 +322,7 @@ final class StationPlaylistMediaRepository extends Repository
 
     public function resetAllQueues(Station $station): void
     {
-        $now = CarbonImmutable::now($station->getTimezoneObject());
+        $now = Time::nowUtc();
 
         foreach ($station->getPlaylists() as $playlist) {
             if (PlaylistSources::Songs !== $playlist->getSource()) {

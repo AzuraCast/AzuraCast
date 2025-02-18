@@ -7,7 +7,7 @@ namespace App\Entity;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\OpenApi;
 use App\Utilities\Time;
-use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -46,13 +46,13 @@ class Relay implements IdentifiableEntityInterface
         OA\Property(example: OpenApi::SAMPLE_DATETIME),
         ORM\Column(type: 'datetime_immutable', precision: 6)
     ]
-    protected CarbonImmutable $created_at;
+    protected DateTimeImmutable $created_at;
 
     #[
         OA\Property(example: OpenApi::SAMPLE_DATETIME),
         ORM\Column(type: 'datetime_immutable', precision: 6)
     ]
-    protected CarbonImmutable $updated_at;
+    protected DateTimeImmutable $updated_at;
 
     /** @var Collection<int, StationRemote> */
     #[ORM\OneToMany(targetEntity: StationRemote::class, mappedBy: 'relay')]
@@ -100,12 +100,12 @@ class Relay implements IdentifiableEntityInterface
         $this->is_visible_on_public_pages = $isVisibleOnPublicPages;
     }
 
-    public function getCreatedAt(): CarbonImmutable
+    public function getCreatedAt(): DateTimeImmutable
     {
         return $this->created_at;
     }
 
-    public function getUpdatedAt(): CarbonImmutable
+    public function getUpdatedAt(): DateTimeImmutable
     {
         return $this->updated_at;
     }

@@ -7,7 +7,7 @@ namespace App\Event\Radio;
 use App\Entity\Station;
 use App\Entity\StationQueue;
 use App\Utilities\Time;
-use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use Symfony\Contracts\EventDispatcher\Event;
 
 final class BuildQueue extends Event
@@ -15,14 +15,14 @@ final class BuildQueue extends Event
     /** @var StationQueue[] */
     private array $nextSongs = [];
 
-    private CarbonImmutable $expectedCueTime;
+    private DateTimeImmutable $expectedCueTime;
 
-    private CarbonImmutable $expectedPlayTime;
+    private DateTimeImmutable $expectedPlayTime;
 
     public function __construct(
         private readonly Station $station,
-        ?CarbonImmutable $expectedCueTime = null,
-        ?CarbonImmutable $expectedPlayTime = null,
+        ?DateTimeImmutable $expectedCueTime = null,
+        ?DateTimeImmutable $expectedPlayTime = null,
         private readonly ?string $lastPlayedSongId = null,
         private readonly bool $isInterrupting = false
     ) {
@@ -35,12 +35,12 @@ final class BuildQueue extends Event
         return $this->station;
     }
 
-    public function getExpectedCueTime(): CarbonImmutable
+    public function getExpectedCueTime(): DateTimeImmutable
     {
         return $this->expectedCueTime;
     }
 
-    public function getExpectedPlayTime(): CarbonImmutable
+    public function getExpectedPlayTime(): DateTimeImmutable
     {
         return $this->expectedPlayTime;
     }

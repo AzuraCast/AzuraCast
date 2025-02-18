@@ -7,6 +7,7 @@ namespace App\Radio\AutoDJ;
 use App\Container\LoggerAwareTrait;
 use App\Entity\Api\StationPlaylistQueue;
 use Carbon\CarbonImmutable;
+use DateTimeInterface;
 
 /**
  * @phpstan-type PlayedTrack array{
@@ -54,7 +55,7 @@ final class DuplicatePrevention
 
             if (!isset($latestSongIdsPlayed[$songId])) {
                 $timestampPlayed = $playedTrack['timestamp_played'];
-                if ($timestampPlayed instanceof CarbonImmutable) {
+                if ($timestampPlayed instanceof DateTimeInterface) {
                     $timestampPlayed = $timestampPlayed->getTimestamp();
                 }
 

@@ -14,7 +14,7 @@ use App\Entity\StationSchedule;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use Carbon\CarbonImmutable;
+use App\Utilities\DateRange;
 use Doctrine\ORM\AbstractQuery;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -214,8 +214,7 @@ final class PlaylistsController extends AbstractScheduledEntityController
             function (
                 Station $station,
                 StationSchedule $scheduleItem,
-                CarbonImmutable $start,
-                CarbonImmutable $end
+                DateRange $dateRange
             ) use (
                 $request
             ) {
@@ -225,8 +224,8 @@ final class PlaylistsController extends AbstractScheduledEntityController
                 return [
                     'id' => $playlist->getId(),
                     'title' => $playlist->getName(),
-                    'start' => $start->toIso8601String(),
-                    'end' => $end->toIso8601String(),
+                    'start' => $dateRange->start->toIso8601String(),
+                    'end' => $dateRange->end->toIso8601String(),
                     'edit_url' => $request->getRouter()->named(
                         'api:stations:playlist',
                         ['station_id' => $station->getId(), 'id' => $playlist->getId()]

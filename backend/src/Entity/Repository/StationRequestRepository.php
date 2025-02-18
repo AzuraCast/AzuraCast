@@ -10,7 +10,7 @@ use App\Entity\StationMedia;
 use App\Entity\StationRequest;
 use App\Radio\AutoDJ;
 use App\Utilities\Time;
-use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use Exception as PhpException;
 
 /**
@@ -79,7 +79,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
 
     public function getNextPlayableRequest(
         Station $station,
-        ?CarbonImmutable $now = null
+        ?DateTimeImmutable $now = null
     ): ?StationRequest {
         $tz = $station->getTimezoneObject();
         $now = Time::nowInTimezone($tz, $now);

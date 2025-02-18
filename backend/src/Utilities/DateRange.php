@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Utilities;
 
 use Carbon\CarbonImmutable;
-use Carbon\CarbonInterface;
+use DateTimeImmutable;
 
 final readonly class DateRange
 {
@@ -15,13 +15,13 @@ final readonly class DateRange
     ) {
     }
 
-    public function contains(?CarbonInterface $time): bool
+    public function contains(?DateTimeImmutable $time): bool
     {
         if (null === $time) {
             return false;
         }
 
-        return $time->between($this->start, $this->end);
+        return CarbonImmutable::instance($time)->between($this->start, $this->end);
     }
 
     public function isWithin(self $toCompare): bool

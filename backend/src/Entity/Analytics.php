@@ -7,9 +7,8 @@ namespace App\Entity;
 use App\Entity\Enums\AnalyticsIntervals;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Utilities\Time;
-use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
-use RuntimeException;
 
 #[
     ORM\Entity(readOnly: true),
@@ -32,7 +31,7 @@ class Analytics implements IdentifiableEntityInterface
     protected AnalyticsIntervals $type;
 
     #[ORM\Column(type: 'datetime_immutable', precision: 0)]
-    protected CarbonImmutable $moment;
+    protected DateTimeImmutable $moment;
 
     #[ORM\Column]
     protected int $number_min;
@@ -76,19 +75,9 @@ class Analytics implements IdentifiableEntityInterface
         return $this->type;
     }
 
-    public function getMoment(): CarbonImmutable
+    public function getMoment(): DateTimeImmutable
     {
         return $this->moment;
-    }
-
-    public function getMomentInStationTimeZone(): CarbonImmutable
-    {
-        if (null === $this->station) {
-            throw new RuntimeException('Cannot get moment in station timezone; no station associated.');
-        }
-
-        $tz = $this->station->getTimezoneObject();
-        return $this->moment->shiftTimezone($tz);
     }
 
     public function getNumberMin(): int

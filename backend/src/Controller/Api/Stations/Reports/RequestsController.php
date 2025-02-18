@@ -17,6 +17,7 @@ use App\Utilities\Types;
 use Doctrine\Common\Collections\Order;
 use Doctrine\ORM\AbstractQuery;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Serializer\Serializer;
 
 final class RequestsController
 {
@@ -25,6 +26,7 @@ final class RequestsController
     use CanSearchResults;
 
     public function __construct(
+        private readonly Serializer $serializer,
         private readonly StationRequestRepository $requestRepo
     ) {
     }
@@ -89,7 +91,7 @@ final class RequestsController
                 );
             }
 
-            return $row;
+            return $this->serializer->normalize($row);
         });
 
         return $paginator->write($response);

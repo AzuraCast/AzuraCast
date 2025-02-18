@@ -5,19 +5,18 @@ declare(strict_types=1);
 namespace App\Doctrine\Types;
 
 use App\Utilities\Time;
-use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Exception\InvalidType;
 use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
 use Doctrine\DBAL\Types\VarDateTimeImmutableType;
 
-class UtcCarbonImmutableType extends VarDateTimeImmutableType
+class UtcDateTimeImmutableType extends VarDateTimeImmutableType
 {
-    public const string DB_DATETIME_FORMAT = 'Y-m-d H:i:s.u';
-
-    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?CarbonImmutable
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?DateTimeImmutable
     {
-        return Time::toNullableUtcCarbonImmutable($value);
+        $value = parent::convertToPHPValue($value, $platform);
+        return $value?->setTimezone(Time::getUtc());
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
@@ -32,8 +31,6 @@ class UtcCarbonImmutableType extends VarDateTimeImmutableType
             );
         }
 
-        return (null === $value)
-            ? $value
-            : $value->format(self::DB_DATETIME_FORMAT);
+        return parent::convertToDatabaseValue($value, $platform);
     }
 }

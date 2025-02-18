@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Utilities\Time;
 use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[
@@ -33,13 +34,13 @@ class StationRequest implements
     protected int $track_id;
 
     #[ORM\Column(type: 'datetime_immutable', precision: 6)]
-    protected CarbonImmutable $timestamp;
+    protected DateTimeImmutable $timestamp;
 
     #[ORM\Column]
     protected bool $skip_delay = false;
 
     #[ORM\Column(type: 'datetime_immutable', precision: 6, nullable: true)]
-    protected ?CarbonImmutable $played_at = null;
+    protected ?DateTimeImmutable $played_at = null;
 
     #[ORM\Column(length: 40)]
     protected string $ip;
@@ -68,7 +69,7 @@ class StationRequest implements
         return $this->track;
     }
 
-    public function getTimestamp(): CarbonImmutable
+    public function getTimestamp(): DateTimeImmutable
     {
         return $this->timestamp;
     }
@@ -78,7 +79,7 @@ class StationRequest implements
         return $this->skip_delay;
     }
 
-    public function getPlayedAt(): ?CarbonImmutable
+    public function getPlayedAt(): ?DateTimeImmutable
     {
         return $this->played_at;
     }
@@ -93,18 +94,20 @@ class StationRequest implements
         return $this->ip;
     }
 
-    public function shouldPlayNow(?CarbonImmutable $now = null): bool
+    public function shouldPlayNow(?DateTimeImmutable $now = null): bool
     {
         if ($this->skip_delay) {
             return true;
         }
 
         $station = $this->station;
-        $stationTz = $station->getTimezoneObject();
-        $now = Time::nowInTimezone($stationTz, $now);
 
         $thresholdMins = (int)$station->getRequestDelay();
         $thresholdMins += random_int(0, $thresholdMins);
+
+        $now = (null !== $now)
+            ? CarbonImmutable::instance($now)
+            : Time::nowUtc();
 
         return $now->subMinutes($thresholdMins)->gt($this->timestamp);
     }

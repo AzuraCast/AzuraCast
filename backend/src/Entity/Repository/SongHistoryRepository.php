@@ -8,7 +8,7 @@ use App\Entity\Interfaces\SongInterface;
 use App\Entity\SongHistory;
 use App\Entity\Station;
 use App\Utilities\Time;
-use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use RuntimeException;
 
 /**
@@ -134,12 +134,12 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
 
     /**
      * @param Station $station
-     * @param CarbonImmutable $start
-     * @param CarbonImmutable $end
+     * @param DateTimeImmutable $start
+     * @param DateTimeImmutable $end
      *
      * @return array{int, int, float}
      */
-    public function getStatsByTimeRange(Station $station, CarbonImmutable $start, CarbonImmutable $end): array
+    public function getStatsByTimeRange(Station $station, DateTimeImmutable $start, DateTimeImmutable $end): array
     {
         $historyTotals = $this->em->createQuery(
             <<<'DQL'

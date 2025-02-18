@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Utilities;
 
 use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
@@ -12,6 +13,8 @@ use Exception;
 
 final class Time
 {
+    public const string JS_ISO8601_FORMAT = "Y-m-d\\TH:i:s.up";
+
     public static function getUtc(): DateTimeZone
     {
         static $utc;
@@ -69,7 +72,7 @@ final class Time
         }
 
         if (!$time->isUtc()) {
-            $time = self::nowInTimezone($utc, $time);
+            $time = $time->setTimezone($utc);
         }
 
         return $time;
@@ -92,8 +95,8 @@ final class Time
 
     public static function nowInTimezone(
         DateTimeZone $tz,
-        ?CarbonImmutable $now = null
-    ): CarbonImmutable {
+        ?DateTimeImmutable $now = null
+    ): DateTimeImmutable {
         /**
          * Developer note: `setTimezone` is the one that adjusts the time.
          * Not `shiftTimezone`, which doesn't.

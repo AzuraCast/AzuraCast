@@ -9,6 +9,7 @@ use App\Entity\Api\NowPlaying\SongHistory;
 use App\Entity\SongHistory as SongHistoryEntity;
 use App\Entity\StationPlaylist;
 use App\Entity\StationStreamer;
+use Carbon\CarbonImmutable;
 use Psr\Http\Message\UriInterface;
 
 final class SongHistoryApiGenerator
@@ -27,7 +28,7 @@ final class SongHistoryApiGenerator
         $response = new SongHistory();
         $response->sh_id = $record->getIdRequired();
 
-        $response->played_at = $record->getTimestampStart()
+        $response->played_at = CarbonImmutable::instance($record->getTimestampStart())
             ->addSeconds(SongHistoryEntity::PLAYBACK_DELAY_SECONDS)
             ->getTimestamp();
 

@@ -48,7 +48,7 @@ trait HasScheduleDisplay
 
                     $itemDateRange = new DateRange($rowStart, $rowEnd);
                     if ($itemDateRange->isWithin($dateRange)) {
-                        $events[] = $rowRender($station, $scheduleItem, $rowStart, $rowEnd);
+                        $events[] = $rowRender($station, $scheduleItem, $itemDateRange);
                     }
                 }
 

@@ -7,7 +7,7 @@ namespace App\Entity;
 use App\Entity\Interfaces\SongInterface;
 use App\Utilities\Time;
 use App\Utilities\Types;
-use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[
@@ -68,7 +68,7 @@ class SongHistory implements
     protected ?int $request_id = null;
 
     #[ORM\Column(type: 'datetime_immutable', precision: 6)]
-    protected CarbonImmutable $timestamp_start;
+    protected DateTimeImmutable $timestamp_start;
 
     #[ORM\Column(type: 'float', nullable: true)]
     protected ?float $duration = null;
@@ -77,7 +77,7 @@ class SongHistory implements
     protected ?int $listeners_start = null;
 
     #[ORM\Column(type: 'datetime_immutable', precision: 6, nullable: true)]
-    protected ?CarbonImmutable $timestamp_end = null;
+    protected ?DateTimeImmutable $timestamp_end = null;
 
     #[ORM\Column(nullable: true)]
     protected ?int $listeners_end = 0;
@@ -158,7 +158,7 @@ class SongHistory implements
         $this->request = $request;
     }
 
-    public function getTimestampStart(): CarbonImmutable
+    public function getTimestampStart(): DateTimeImmutable
     {
         return $this->timestamp_start;
     }
@@ -183,7 +183,7 @@ class SongHistory implements
         $this->listeners_start = $listenersStart;
     }
 
-    public function getTimestampEnd(): ?CarbonImmutable
+    public function getTimestampEnd(): ?DateTimeImmutable
     {
         return $this->timestamp_end;
     }

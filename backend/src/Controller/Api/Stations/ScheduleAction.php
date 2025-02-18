@@ -84,7 +84,6 @@ final class ScheduleAction implements SingleActionInterface
             $cacheItem = $this->psr6Cache->getItem(urlencode($cacheKey));
 
             if (!$cacheItem->isHit()) {
-                $nowTz = CarbonImmutable::now($station->getTimezoneObject());
                 $events = $this->scheduleRepo->getAllScheduledItemsForStation($station);
 
                 $cacheItem->set(

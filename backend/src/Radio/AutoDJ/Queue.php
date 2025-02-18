@@ -13,6 +13,8 @@ use App\Event\Radio\BuildQueue;
 use App\Utilities\Time;
 use App\Utilities\Types;
 use Carbon\CarbonImmutable;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Monolog\Handler\TestHandler;
 use Monolog\LogRecord;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -236,14 +238,14 @@ final class Queue
 
     private function addDurationToTime(
         Station $station,
-        CarbonImmutable $now,
+        DateTimeInterface $now,
         ?float $duration
     ): CarbonImmutable {
         $duration ??= 1;
 
         $startNext = $station->getBackendConfig()->getCrossfadeDuration();
 
-        $now = $now->addSeconds($duration);
+        $now = CarbonImmutable::instance($now)->addSeconds($duration);
         return ($duration >= $startNext)
             ? $now->subMilliseconds((int)($startNext * 1000))
             : $now;
@@ -251,7 +253,7 @@ final class Queue
 
     private function isQueueRowStillValid(
         StationQueue $queueRow,
-        CarbonImmutable $expectedPlayTime
+        DateTimeImmutable $expectedPlayTime
     ): bool {
         $playlist = $queueRow->getPlaylist();
         if (null === $playlist) {

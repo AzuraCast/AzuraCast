@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Container\LoggerAwareTrait;
+use App\Doctrine\Platform\MariaDbPlatform;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
-use App\Doctrine\Types\UtcCarbonImmutableType;
 use App\Entity\Listener;
 use App\Entity\Station;
 use App\Entity\Traits\TruncateStrings;
@@ -15,7 +15,7 @@ use App\Service\DeviceDetector;
 use App\Service\IpGeolocation;
 use App\Utilities\File;
 use App\Utilities\Time;
-use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use DI\Attribute\Inject;
 use Doctrine\DBAL\Connection;
 use League\Csv\Writer;
@@ -56,14 +56,14 @@ final class ListenerRepository extends Repository
      * Get the number of unique listeners for a station during a specified time period.
      *
      * @param Station $station
-     * @param CarbonImmutable $start
-     * @param CarbonImmutable $end
+     * @param DateTimeImmutable $start
+     * @param DateTimeImmutable $end
      * @return int
      */
     public function getUniqueListeners(
         Station $station,
-        CarbonImmutable $start,
-        CarbonImmutable $end
+        DateTimeImmutable $start,
+        DateTimeImmutable $end
     ): int {
         return (int)$this->em->createQuery(
             <<<'DQL'
@@ -164,7 +164,7 @@ final class ListenerRepository extends Repository
         });
 
         $csvColumns = null;
-        $now = Time::nowUtc()->format(UtcCarbonImmutableType::DB_DATETIME_FORMAT);
+        $now = Time::nowUtc()->format(MariaDbPlatform::DB_DATETIME_FORMAT);
 
         foreach ($clients as $client) {
             $identifier = Listener::calculateListenerHash($client);
@@ -319,8 +319,7 @@ final class ListenerRepository extends Repository
 
     public function cleanup(int $daysToKeep): void
     {
-        $threshold = CarbonImmutable::now()
-            ->subDays($daysToKeep);
+        $threshold = Time::nowUtc()->subDays($daysToKeep);
 
         $this->em->createQuery(
             <<<'DQL'

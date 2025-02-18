@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Utilities\Time;
 use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use NowPlaying\Result\Client;
 
@@ -65,10 +66,10 @@ class Listener implements
     protected string $listener_hash;
 
     #[ORM\Column(type: 'datetime_immutable', precision: 6)]
-    protected CarbonImmutable $timestamp_start;
+    protected DateTimeImmutable $timestamp_start;
 
     #[ORM\Column(type: 'datetime_immutable', precision: 6, nullable: true)]
-    protected ?CarbonImmutable $timestamp_end = null;
+    protected ?DateTimeImmutable $timestamp_end = null;
 
     #[ORM\Embedded(class: ListenerLocation::class, columnPrefix: 'location_')]
     protected ListenerLocation $location;
@@ -161,12 +162,12 @@ class Listener implements
         return $this->listener_hash;
     }
 
-    public function getTimestampStart(): CarbonImmutable
+    public function getTimestampStart(): DateTimeImmutable
     {
         return $this->timestamp_start;
     }
 
-    public function getTimestampEnd(): ?CarbonImmutable
+    public function getTimestampEnd(): ?DateTimeImmutable
     {
         return $this->timestamp_end;
     }
@@ -182,7 +183,9 @@ class Listener implements
             return 0;
         }
 
-        return (int)$this->timestamp_start->diffInSeconds($this->timestamp_end, true);
+        return (int)CarbonImmutable::instance(
+            $this->timestamp_start
+        )->diffInSeconds($this->timestamp_end, true);
     }
 
     public function getLocation(): ListenerLocation

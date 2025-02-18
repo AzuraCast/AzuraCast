@@ -11,7 +11,7 @@ use App\Entity\Enums\PlaylistTypes;
 use App\Utilities\File;
 use App\Utilities\Time;
 use Azura\Normalizer\Attributes\DeepNormalize;
-use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -167,13 +167,13 @@ class StationPlaylist implements
         ORM\Column(type: 'datetime_immutable', precision: 6, nullable: true),
         Attributes\AuditIgnore
     ]
-    protected ?CarbonImmutable $played_at = null;
+    protected ?DateTimeImmutable $played_at = null;
 
     #[
         ORM\Column(type: 'datetime_immutable', precision: 6, nullable: true),
         Attributes\AuditIgnore
     ]
-    protected ?CarbonImmutable $queue_reset_at = null;
+    protected ?DateTimeImmutable $queue_reset_at = null;
 
     /** @var Collection<int, StationPlaylistMedia> */
     #[
@@ -382,7 +382,7 @@ class StationPlaylist implements
         $this->avoid_duplicates = $avoidDuplicates;
     }
 
-    public function getPlayedAt(): ?CarbonImmutable
+    public function getPlayedAt(): ?DateTimeImmutable
     {
         return $this->played_at;
     }
@@ -392,7 +392,7 @@ class StationPlaylist implements
         $this->played_at = Time::toNullableUtcCarbonImmutable($playedAt);
     }
 
-    public function getQueueResetAt(): ?CarbonImmutable
+    public function getQueueResetAt(): ?DateTimeImmutable
     {
         return $this->queue_reset_at;
     }

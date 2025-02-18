@@ -15,6 +15,7 @@ use App\Entity\StationStreamer;
 use App\Utilities\DateRange;
 use App\Utilities\Time;
 use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use DateTimeZone;
 use Doctrine\Common\Collections\Collection;
 use Monolog\LogRecord;
@@ -32,7 +33,7 @@ final class Scheduler
 
     public function shouldPlaylistPlayNow(
         StationPlaylist $playlist,
-        ?CarbonImmutable $now = null
+        ?DateTimeImmutable $now = null
     ): bool {
         $this->logger->pushProcessor(
             function (LogRecord $record) use ($playlist) {
@@ -44,9 +45,7 @@ final class Scheduler
             }
         );
 
-        if (null === $now) {
-            $now = CarbonImmutable::now($playlist->getStation()->getTimezoneObject());
-        }
+        $now ??= Time::nowUtc();
 
         if (!$this->isPlaylistScheduledToPlayNow($playlist, $now)) {
             $this->logger->debug('Playlist is not scheduled to play now.');
@@ -109,7 +108,7 @@ final class Scheduler
 
     public function isPlaylistScheduledToPlayNow(
         StationPlaylist $playlist,
-        CarbonImmutable $now,
+        DateTimeImmutable $now,
         bool $excludeSpecialRules = false
     ): bool {
         $scheduleItems = $playlist->getScheduleItems();
@@ -133,8 +132,10 @@ final class Scheduler
 
     private function shouldPlaylistPlayNowPerHour(
         StationPlaylist $playlist,
-        CarbonImmutable $now
+        DateTimeImmutable $now
     ): bool {
+        $now = CarbonImmutable::instance($now);
+
         $currentMinute = $now->minute;
         $targetMinute = $playlist->getPlayPerHourMinute();
 
@@ -155,7 +156,7 @@ final class Scheduler
 
     private function wasPlaylistPlayedInLastXMinutes(
         StationPlaylist $playlist,
-        CarbonImmutable $now,
+        DateTimeImmutable $now,
         int $minutes
     ): bool {
         $playedAt = $playlist->getPlayedAt();
@@ -163,8 +164,9 @@ final class Scheduler
             return false;
         }
 
-        $threshold = $now->subMinutes($minutes);
-        return $playedAt->gt($threshold);
+        return CarbonImmutable::instance($now)
+            ->subMinutes($minutes)
+            ->isBefore($playedAt);
     }
 
     /**
@@ -190,7 +192,7 @@ final class Scheduler
 
     public function canStreamerStreamNow(
         StationStreamer $streamer,
-        ?CarbonImmutable $now = null
+        ?DateTimeImmutable $now = null
     ): bool {
         if (!$streamer->enforceSchedule()) {
             return true;
@@ -210,14 +212,14 @@ final class Scheduler
     /**
      * @param Collection<int, StationSchedule> $scheduleItems
      * @param DateTimeZone $tz
-     * @param CarbonImmutable|null $now
+     * @param DateTimeImmutable|null $now
      * @param bool $excludeSpecialRules
      * @return StationSchedule|null
      */
     private function getActiveScheduleFromCollection(
         Collection $scheduleItems,
         DateTimeZone $tz,
-        ?CarbonImmutable $now = null,
+        ?DateTimeImmutable $now = null,
         bool $excludeSpecialRules = false
     ): ?StationSchedule {
         $now = Time::nowInTimezone($tz, $now);
@@ -250,7 +252,7 @@ final class Scheduler
     public function shouldSchedulePlayNow(
         StationSchedule $schedule,
         DateTimeZone $tz,
-        ?CarbonImmutable $now = null,
+        ?DateTimeImmutable $now = null,
         bool $excludeSpecialRules = false
     ): bool {
         $now = Time::nowInTimezone($tz, $now);
@@ -311,7 +313,7 @@ final class Scheduler
     private function shouldPlayInSchedulePeriod(
         StationSchedule $schedule,
         DateRange $dateRange,
-        CarbonImmutable $now,
+        DateTimeImmutable $now,
         bool $excludeSpecialRules = false
     ): bool {
         if (!$dateRange->contains($now)) {
@@ -338,7 +340,8 @@ final class Scheduler
         // Handle "Play Single Track" advanced setting.
         if ($playlist->backendPlaySingleTrack()) {
             $playedAt = $playlist->getPlayedAt();
-            if (null !== $playedAt && $playedAt->gt($dateRange->start)) {
+
+            if (null !== $playedAt && $dateRange->start->isBefore($playedAt)) {
                 return false;
             }
         }
@@ -413,15 +416,15 @@ final class Scheduler
      *
      * @param StationSchedule $schedule
      * @param DateTimeZone $tz
-     * @param CarbonImmutable|null $now
+     * @param DateTimeImmutable|null $now
      * @return bool
      */
     public function shouldSchedulePlayOnCurrentDate(
         StationSchedule $schedule,
         DateTimeZone $tz,
-        ?CarbonImmutable $now = null
+        ?DateTimeImmutable $now = null
     ): bool {
-        $now = Time::nowInTimezone($tz, $now);
+        $now = CarbonImmutable::instance(Time::nowInTimezone($tz, $now));
 
         $startDate = $schedule->getStartDate();
         $endDate = $schedule->getEndDate();

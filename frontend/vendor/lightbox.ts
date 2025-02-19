@@ -1,6 +1,5 @@
 import Lightbox from "~/components/Common/Lightbox.vue";
-import {Directive, InjectionKey, provide, ShallowRef} from "vue";
-import injectRequired from "~/functions/injectRequired.ts";
+import {Directive, inject, InjectionKey, provide, ShallowRef} from "vue";
 
 export type LightboxTemplateRef = InstanceType<typeof Lightbox>;
 type LightboxTemplateRefFull = Readonly<ShallowRef<LightboxTemplateRef | null>>;
@@ -12,7 +11,7 @@ export function useProvideLightbox(lightboxRef: LightboxTemplateRefFull): void {
 }
 
 export function useLightbox() {
-    const lightbox: LightboxTemplateRefFull = injectRequired(provideKey);
+    const lightbox: LightboxTemplateRefFull = inject(provideKey);
 
     const vLightbox: Directive<HTMLElement, string> = (el: HTMLElement): void => {
         el.addEventListener('click', (e: MouseEvent): void => {

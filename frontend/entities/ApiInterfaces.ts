@@ -571,9 +571,10 @@ export interface ApiNowPlayingStationQueue {
    * UNIX timestamp when playback is expected to start.
    * @example 1609480800
    */
-  played_at?: number;
+  played_at?: number | null;
   /**
    * Duration of the song in seconds
+   * @format float
    * @example 180
    */
   duration?: number;
@@ -1066,10 +1067,16 @@ export type Relay = HasAutoIncrementId & {
   name?: string | null;
   /** @example true */
   is_visible_on_public_pages?: boolean;
-  /** @example 1609480800 */
-  created_at?: number;
-  /** @example 1609480800 */
-  updated_at?: number;
+  /**
+   * @format date-time
+   * @example "2025-01-31T21:31:58+00:00"
+   */
+  created_at?: string;
+  /**
+   * @format date-time
+   * @example "2025-01-31T21:31:58+00:00"
+   */
+  updated_at?: string;
 };
 
 export type Role = HasAutoIncrementId & {

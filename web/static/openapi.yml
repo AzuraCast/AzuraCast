@@ -1123,6 +1123,60 @@ paths:
       security:
         -
           ApiKey: []
+  '/station/{station_id}/quota/{type}':
+    get:
+      tags:
+        - 'Stations: General'
+      description: 'Get the current usage and quota for a given station storage location.'
+      operationId: getQuota
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: type
+          in: path
+          description: 'The storage location type (i.e. station_media, station_recordings, station_podcasts)'
+          required: false
+          schema:
+            type: string
+            default: station_media
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_StationQuota'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+  '/station/{station_id}/restart-status':
+    get:
+      tags:
+        - 'Stations: General'
+      description: 'Get the pending restart status for a station.'
+      operationId: getRestartStatus
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_StationRestartStatus'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
   '/station/{station_id}/history':
     get:
       tags:
@@ -1519,7 +1573,7 @@ paths:
         -
           name: id
           in: path
-          description: 'Streamer ID'
+          description: 'Mount Point ID'
           required: true
           schema:
             type: integer
@@ -1551,7 +1605,7 @@ paths:
         -
           name: id
           in: path
-          description: 'Streamer ID'
+          description: 'Mount Point ID'
           required: true
           schema:
             type: integer
@@ -1584,7 +1638,7 @@ paths:
         -
           name: id
           in: path
-          description: 'StationMount ID'
+          description: 'Mount Point ID'
           required: true
           schema:
             type: integer
@@ -3929,9 +3983,11 @@ components:
           description: 'UNIX timestamp when playback is expected to start.'
           type: integer
           example: 1609480800
+          nullable: true
         duration:
           description: 'Duration of the song in seconds'
-          type: integer
+          type: number
+          format: float
           example: 180
         playlist:
           description: 'Indicates the playlist that the song was played from, if available, or empty string if not.'
@@ -4256,6 +4312,30 @@ components:
               items: {  }
               nullable: true
           type: object
+    Api_StationQuota:
+      properties:
+        used:
+          type: string
+        used_bytes:
+          type: string
+        used_percent:
+          type: integer
+        available:
+          type: string
+        available_bytes:
+          type: string
+        quota:
+          type: string
+          nullable: true
+        quota_bytes:
+          type: string
+          nullable: true
+        is_full:
+          type: boolean
+        num_files:
+          type: integer
+          nullable: true
+      type: object
     Api_StationRemote:
       type: object
       allOf:
@@ -4345,6 +4425,13 @@ components:
           example: /api/station/1/request/1
         song:
           $ref: '#/components/schemas/Api_Song'
+      type: object
+    Api_StationRestartStatus:
+      properties:
+        has_started:
+          type: boolean
+        needs_restart:
+          type: boolean
       type: object
     Api_StationSchedule:
       properties:
@@ -4547,11 +4634,13 @@ components:
               type: boolean
               example: true
             created_at:
-              type: integer
-              example: 1609480800
+              type: string
+              format: date-time
+              example: '2025-01-31T21:31:58+00:00'
             updated_at:
-              type: integer
-              example: 1609480800
+              type: string
+              format: date-time
+              example: '2025-01-31T21:31:58+00:00'
           type: object
     Role:
       type: object

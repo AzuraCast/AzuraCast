@@ -76,7 +76,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
-                description: 'Streamer ID',
+                description: 'Mount Point ID',
                 in: 'path',
                 required: true,
                 schema: new OA\Schema(type: 'integer', format: 'int64')
@@ -106,7 +106,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
-                description: 'Streamer ID',
+                description: 'Mount Point ID',
                 in: 'path',
                 required: true,
                 schema: new OA\Schema(type: 'integer', format: 'int64')
@@ -129,7 +129,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
-                description: 'StationMount ID',
+                description: 'Mount Point ID',
                 in: 'path',
                 required: true,
                 schema: new OA\Schema(type: 'integer', format: 'int64')

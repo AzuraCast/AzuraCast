@@ -651,6 +651,7 @@ update-self() {
   chmod a+x docker.sh
 
   echo "New Docker utility script downloaded."
+  echo "You can now re-run any previous command with the updated utility script."
   exit
 }
 

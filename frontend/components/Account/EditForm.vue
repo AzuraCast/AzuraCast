@@ -17,15 +17,11 @@
                 :label="$gettext('E-mail Address')"
             />
 
-            <form-group-multi-check
+            <time-radios
                 id="edit_form_show_24_hour_time"
                 class="mb-3"
                 tabindex="3"
                 :field="form.show_24_hour_time"
-                :options="show24hourOptions"
-                stacked
-                radio
-                :label="$gettext('Time Display')"
             />
         </div>
         <div class="col-md-6">
@@ -49,6 +45,7 @@ import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {HasGenericFormProps} from "~/entities/Forms.ts";
 import {objectToSimpleFormOptions} from "~/functions/objectToFormOptions.ts";
+import TimeRadios from "~/components/Account/TimeRadios.vue";
 
 interface AccountEditFormProps extends HasGenericFormProps {
     supportedLocales: Record<string, string>
@@ -67,22 +64,5 @@ const localeOptions = computed(() => {
     });
 
     return localeOptions;
-});
-
-const show24hourOptions = computed(() => {
-    return [
-        {
-            text: $gettext('Prefer System Default'),
-            value: null
-        },
-        {
-            text: $gettext('12 Hour'),
-            value: false
-        },
-        {
-            text: $gettext('24 Hour'),
-            value: true
-        }
-    ];
 });
 </script>

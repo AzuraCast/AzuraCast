@@ -9,7 +9,7 @@
         <div class="card-body">
             <tabs>
                 <tab
-                    v-for="netInterface in stats.network"
+                    v-for="netInterface in networkStats"
                     :key="netInterface.interface_name"
                     :label="netInterface.interface_name"
                 >
@@ -39,9 +39,12 @@
 import Tab from "~/components/Common/Tab.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import NetworkStatsTable from "~/components/Admin/Index/NetworkStatsTable.vue";
-import {AdminStats} from "~/components/Admin/Index.vue";
+import {DeepRequired} from "utility-types";
+import {ApiAdminServerStatsNetworkInterfaceStats} from "~/entities/ApiInterfaces.ts";
+
+type NetworkStats = DeepRequired<ApiAdminServerStatsNetworkInterfaceStats>
 
 defineProps<{
-    stats: AdminStats
+    networkStats: NetworkStats[]
 }>();
 </script>

@@ -29,31 +29,33 @@
 </template>
 
 <script setup lang="ts">
-import {get, isObject, mapValues} from "lodash";
+import {get, omit} from "lodash";
 import {computed} from "vue";
+import {DeepRequired} from "utility-types";
+import {
+    ApiAdminServerStatsNetworkInterfaceReceived,
+    ApiAdminServerStatsNetworkInterfaceTransmitted
+} from "~/entities/ApiInterfaces.ts";
+
+type StatsSection = DeepRequired<ApiAdminServerStatsNetworkInterfaceReceived>
+    | DeepRequired<ApiAdminServerStatsNetworkInterfaceTransmitted>
 
 const props = defineProps<{
-    row: object,
+    row: StatsSection,
 }>();
 
-const fields = computed<string[]>(() => {
-    return Object.keys(props.row);
+const visibleData = computed(() => {
+    return {
+        'speed': props.row.speed_readable,
+        ...omit(props.row, 'speed_readable', 'speed_bytes')
+    };
 });
 
-interface HasReadable {
-    readable: string
-}
+const fields = computed<string[]>(() => Object.keys(visibleData.value));
 
 const data = computed(() => {
-    const items = mapValues(
-        props.row,
-        (value: HasReadable | string) => {
-            return (isObject(value) && value.readable)
-                ? value.readable + '/s'
-                : value;
-        }
-    );
-
-    return [items];
+    return [
+        visibleData.value
+    ];
 });
 </script>

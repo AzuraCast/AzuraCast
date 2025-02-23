@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace App\Service\NetworkStats;
+namespace App\Service\ServerStats;
 
-use App\Service\NetworkStats\NetworkData\Received;
-use App\Service\NetworkStats\NetworkData\Transmitted;
+use App\Service\ServerStats\NetworkData\Received;
+use App\Service\ServerStats\NetworkData\Transmitted;
 use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
 
-final class NetworkData
+final readonly class NetworkData
 {
     public function __construct(
-        public readonly string $interfaceName,
-        public readonly BigDecimal $time,
-        public readonly Received $received,
-        public readonly Transmitted $transmitted,
-        public readonly bool $isDelta = false
+        public string $interfaceName,
+        public BigDecimal $time,
+        public Received $received,
+        public Transmitted $transmitted,
+        public bool $isDelta = false
     ) {
     }
 

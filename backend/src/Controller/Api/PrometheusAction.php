@@ -9,7 +9,7 @@ use App\Container\EnvironmentAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Service\MemoryStats;
+use App\Service\ServerStats;
 use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
 use Brick\Math\RoundingMode;
@@ -68,7 +68,7 @@ final class PrometheusAction implements SingleActionInterface
 
     private function addRamMeasurements(CollectorRegistry $registry): void
     {
-        $memoryStats = MemoryStats::getMemoryUsage();
+        $memoryStats = ServerStats::getMemoryUsage();
 
         $registry->getOrRegisterGauge(
             self::APP_NAMESPACE,

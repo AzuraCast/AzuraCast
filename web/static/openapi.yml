@@ -67,7 +67,7 @@ paths:
         -
           name: id
           in: path
-          description: ID
+          description: 'Custom Field ID'
           required: true
           schema:
             type: integer
@@ -97,7 +97,7 @@ paths:
         -
           name: id
           in: path
-          description: ID
+          description: 'Custom Field ID'
           required: true
           schema:
             type: integer
@@ -128,7 +128,7 @@ paths:
         -
           name: id
           in: path
-          description: ID
+          description: 'Custom Field ID'
           required: true
           schema:
             type: integer
@@ -306,6 +306,10 @@ paths:
       responses:
         '200':
           description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Admin_ServerStats'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -1255,14 +1259,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StationMount'
+              $ref: '#/components/schemas/StationHlsStream'
       responses:
         '200':
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StationMount'
+                $ref: '#/components/schemas/StationHlsStream'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -1293,7 +1297,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StationMount'
+                $ref: '#/components/schemas/StationHlsStream'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -1323,7 +1327,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StationMount'
+              $ref: '#/components/schemas/StationHlsStream'
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -2838,7 +2842,7 @@ paths:
         -
           name: action
           in: path
-          description: 'The action to perform (for all: start, stop, restart, skip, disconnect)'
+          description: 'The action to perform (start, stop, restart, skip, disconnect)'
           required: true
           schema:
             type: string
@@ -2955,7 +2959,7 @@ paths:
         -
           name: id
           in: path
-          description: 'Remote Relay ID'
+          description: 'SFTP User ID'
           required: true
           schema:
             type: integer
@@ -2980,7 +2984,7 @@ paths:
     delete:
       tags:
         - 'Stations: SFTP Users'
-      description: 'Delete a single remote relay.'
+      description: 'Delete a single SFTP user.'
       operationId: deleteSftpUser
       parameters:
         -
@@ -2988,7 +2992,7 @@ paths:
         -
           name: id
           in: path
-          description: 'Remote Relay ID'
+          description: 'SFTP User ID'
           required: true
           schema:
             type: integer
@@ -3421,6 +3425,145 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Api_NowPlaying_StationMount'
+      type: object
+    Api_Admin_ServerStats_CpuStats:
+      properties:
+        total:
+          $ref: '#/components/schemas/Api_Admin_ServerStats_CpuStatsSection'
+        cores:
+          type: array
+          items:
+            $ref: '#/components/schemas/Api_Admin_ServerStats_CpuStatsSection'
+        load:
+          type: array
+          items:
+            type: integer
+            format: int64
+      type: object
+    Api_Admin_ServerStats_CpuStatsSection:
+      properties:
+        name:
+          type: string
+        usage:
+          type: string
+        idle:
+          type: string
+        io_wait:
+          type: string
+        steal:
+          type: string
+      type: object
+    Api_Admin_ServerStats_MemoryStats:
+      properties:
+        total_bytes:
+          type: string
+        total_readable:
+          type: string
+        free_bytes:
+          type: string
+        free_readable:
+          type: string
+        buffers_bytes:
+          type: string
+        buffers_readable:
+          type: string
+        cached_bytes:
+          type: string
+        cached_readable:
+          type: string
+        sReclaimable_bytes:
+          type: string
+        sReclaimable_readable:
+          type: string
+        shmem_bytes:
+          type: string
+        shmem_readable:
+          type: string
+        used_bytes:
+          type: string
+        used_readable:
+          type: string
+      type: object
+    Api_Admin_ServerStats_NetworkInterfaceReceived:
+      properties:
+        speed_bytes:
+          type: string
+        speed_readable:
+          type: string
+        packets:
+          type: string
+        errs:
+          type: string
+        drop:
+          type: string
+        fifo:
+          type: string
+        frame:
+          type: string
+        compressed:
+          type: string
+        multicast:
+          type: string
+      type: object
+    Api_Admin_ServerStats_NetworkInterfaceStats:
+      properties:
+        interface_name:
+          type: string
+        received:
+          $ref: '#/components/schemas/Api_Admin_ServerStats_NetworkInterfaceReceived'
+        transmitted:
+          $ref: '#/components/schemas/Api_Admin_ServerStats_NetworkInterfaceTransmitted'
+      type: object
+    Api_Admin_ServerStats_NetworkInterfaceTransmitted:
+      properties:
+        speed_bytes:
+          type: string
+        speed_readable:
+          type: string
+        packets:
+          type: string
+        errs:
+          type: string
+        drop:
+          type: string
+        fifo:
+          type: string
+        frame:
+          type: string
+        carrier:
+          type: string
+        compressed:
+          type: string
+      type: object
+    Api_Admin_ServerStats:
+      properties:
+        cpu:
+          $ref: '#/components/schemas/Api_Admin_ServerStats_CpuStats'
+        memory:
+          $ref: '#/components/schemas/Api_Admin_ServerStats_MemoryStats'
+        swap:
+          $ref: '#/components/schemas/Api_Admin_ServerStats_StorageStats'
+        disk:
+          $ref: '#/components/schemas/Api_Admin_ServerStats_StorageStats'
+        network:
+          type: array
+          items:
+            $ref: '#/components/schemas/Api_Admin_ServerStats_NetworkInterfaceStats'
+      type: object
+    Api_Admin_ServerStats_StorageStats:
+      properties:
+        total_bytes:
+          type: string
+        total_readable:
+          type: string
+        free_bytes:
+          type: string
+        free_readable:
+          type: string
+        used_bytes:
+          type: string
+        used_readable:
+          type: string
       type: object
     Api_Admin_StorageLocation:
       type: object

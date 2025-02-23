@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace App\Service\MemoryStats;
+namespace App\Service\ServerStats;
 
 use App\Radio\Quota;
 use Brick\Math\BigInteger;
 
-final class MemoryData
+final readonly class MemoryData
 {
     public function __construct(
-        public readonly BigInteger $memTotal,
-        public readonly BigInteger $memFree,
-        public readonly BigInteger $buffers,
-        public readonly BigInteger $cached,
-        public readonly BigInteger $sReclaimable,
-        public readonly BigInteger $shmem,
-        public readonly BigInteger $swapTotal,
-        public readonly BigInteger $swapFree,
+        public BigInteger $memTotal,
+        public BigInteger $memFree,
+        public BigInteger $buffers,
+        public BigInteger $cached,
+        public BigInteger $sReclaimable,
+        public BigInteger $shmem,
+        public BigInteger $swapTotal,
+        public BigInteger $swapFree,
     ) {
     }
 

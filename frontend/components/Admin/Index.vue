@@ -49,7 +49,7 @@
                     :loading="isLoading"
                     lazy
                 >
-                    <memory-stats-panel :stats="stats" />
+                    <memory-stats-panel :memory-stats="stats.memory"/>
                 </loading>
             </div>
 
@@ -58,7 +58,7 @@
                     :loading="isLoading"
                     lazy
                 >
-                    <disk-usage-panel :stats="stats" />
+                    <disk-usage-panel :disk-stats="stats.disk"/>
                 </loading>
             </div>
         </div>
@@ -69,7 +69,7 @@
                     :loading="isLoading"
                     lazy
                 >
-                    <cpu-stats-panel :stats="stats" />
+                    <cpu-stats-panel :cpu-stats="stats.cpu"/>
                 </loading>
             </div>
 
@@ -84,7 +84,7 @@
                     :loading="isLoading"
                     lazy
                 >
-                    <network-stats-panel :stats="stats" />
+                    <network-stats-panel :network-stats="stats.network"/>
                 </loading>
             </div>
         </div>
@@ -103,96 +103,8 @@ import ServicesPanel from "~/components/Admin/Index/ServicesPanel.vue";
 import NetworkStatsPanel from "~/components/Admin/Index/NetworkStatsPanel.vue";
 import Loading from "~/components/Common/Loading.vue";
 import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
-
-interface AdminCpuCore {
-    name: string,
-    usage: string,
-    idle: string,
-    io_wait: string,
-    steal: string,
-}
-
-interface AdminCpuStats {
-    total: AdminCpuCore,
-    cores: AdminCpuCore[],
-    load: number[],
-}
-
-interface AdminMemoryStats {
-    bytes: {
-        total: string,
-        free: string,
-        buffers: string,
-        cached: string,
-        sReclaimable: string,
-        shmem: string,
-        used: string,
-    },
-    readable: {
-        total: string,
-        free: string,
-        buffers: string,
-        cached: string,
-        sReclaimable: string,
-        shmem: string,
-        used: string,
-    }
-}
-
-interface AdminStorageStats {
-    bytes: {
-        total: string,
-        free: string,
-        used: string,
-    },
-    readable: {
-        total: string,
-        free: string,
-        used: string,
-    }
-}
-
-interface AdminNetworkInterfaceReceived {
-    speed: {
-        bytes: string,
-        readable: string,
-    },
-    packets: string,
-    errs: string,
-    drop: string,
-    fifo: string,
-    frame: string,
-    compressed: string,
-    multicast: string,
-}
-
-interface AdminNetworkInterfaceTransmitted {
-    speed: {
-        bytes: string
-        readable: string
-    },
-    packets: string,
-    errs: string,
-    drop: string,
-    fifo: string,
-    frame: string,
-    carrier: string,
-    compressed: string,
-}
-
-interface AdminNetworkInterfaceStats {
-    interface_name: string,
-    received: AdminNetworkInterfaceReceived,
-    transmitted: AdminNetworkInterfaceTransmitted
-}
-
-export interface AdminStats {
-    cpu: AdminCpuStats,
-    memory: AdminMemoryStats,
-    swap: AdminStorageStats,
-    disk: AdminStorageStats,
-    network: AdminNetworkInterfaceStats[]
-}
+import {DeepRequired} from "utility-types";
+import {ApiAdminServerStats} from "~/entities/ApiInterfaces.ts";
 
 const statsUrl = getApiUrl('/admin/server/stats');
 
@@ -200,7 +112,9 @@ const menuItems = useAdminMenu();
 
 const {axiosSilent} = useAxios();
 
-const {state: stats, isLoading} = useAutoRefreshingAsyncState<AdminStats>(
+type ServerStats = DeepRequired<ApiAdminServerStats>
+
+const {state: stats, isLoading} = useAutoRefreshingAsyncState<ServerStats>(
     () => axiosSilent.get(statsUrl.value).then(r => r.data),
     {
         cpu: {
@@ -215,48 +129,36 @@ const {state: stats, isLoading} = useAutoRefreshingAsyncState<AdminStats>(
             load: [0, 0, 0]
         },
         memory: {
-            bytes: {
-                total: "0",
-                free: "0",
-                buffers: "0",
-                cached: "0",
-                sReclaimable: "0",
-                shmem: "0",
-                used: "0",
-            },
-            readable: {
-                total: "",
-                free: "",
-                buffers: "",
-                cached: "",
-                sReclaimable: "",
-                shmem: "",
-                used: "",
-            }
+            total_bytes: "0",
+            total_readable: "",
+            free_bytes: "0",
+            free_readable: "",
+            buffers_bytes: "0",
+            buffers_readable: "",
+            cached_bytes: "0",
+            cached_readable: "",
+            sReclaimable_bytes: "0",
+            sReclaimable_readable: "",
+            shmem_bytes: "0",
+            shmem_readable: "",
+            used_bytes: "0",
+            used_readable: ""
         },
         swap: {
-            bytes: {
-                total: "0",
-                free: "0",
-                used: "0",
-            },
-            readable: {
-                total: "",
-                free: "",
-                used: "",
-            }
+            total_bytes: "0",
+            total_readable: "",
+            free_bytes: "0",
+            free_readable: "",
+            used_bytes: "0",
+            used_readable: ""
         },
         disk: {
-            bytes: {
-                total: "0",
-                free: "0",
-                used: "0",
-            },
-            readable: {
-                total: "",
-                free: "",
-                used: "",
-            }
+            total_bytes: "0",
+            total_readable: "",
+            free_bytes: "0",
+            free_readable: "",
+            used_bytes: "0",
+            used_readable: ""
         },
         network: []
     },

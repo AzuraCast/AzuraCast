@@ -40,7 +40,7 @@ use OpenApi\Attributes as OA;
         description: 'Create a new HLS stream.',
         security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/StationMount')
+            content: new OA\JsonContent(ref: '#/components/schemas/StationHlsStream')
         ),
         tags: ['Stations: HLS Streams'],
         parameters: [
@@ -50,7 +50,7 @@ use OpenApi\Attributes as OA;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/StationMount')
+                content: new OA\JsonContent(ref: '#/components/schemas/StationHlsStream')
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
@@ -76,7 +76,7 @@ use OpenApi\Attributes as OA;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/StationMount')
+                content: new OA\JsonContent(ref: '#/components/schemas/StationHlsStream')
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
@@ -89,7 +89,7 @@ use OpenApi\Attributes as OA;
         description: 'Update details of a single HLS stream.',
         security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/StationMount')
+            content: new OA\JsonContent(ref: '#/components/schemas/StationHlsStream')
         ),
         tags: ['Stations: HLS Streams'],
         parameters: [

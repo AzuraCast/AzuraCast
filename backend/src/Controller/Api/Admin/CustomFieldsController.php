@@ -55,7 +55,7 @@ use OpenApi\Attributes as OA;
         parameters: [
             new OA\Parameter(
                 name: 'id',
-                description: 'ID',
+                description: 'Custom Field ID',
                 in: 'path',
                 required: true,
                 schema: new OA\Schema(type: 'integer', format: 'int64')
@@ -84,7 +84,7 @@ use OpenApi\Attributes as OA;
         parameters: [
             new OA\Parameter(
                 name: 'id',
-                description: 'ID',
+                description: 'Custom Field ID',
                 in: 'path',
                 required: true,
                 schema: new OA\Schema(type: 'integer', format: 'int64')
@@ -106,7 +106,7 @@ use OpenApi\Attributes as OA;
         parameters: [
             new OA\Parameter(
                 name: 'id',
-                description: 'ID',
+                description: 'Custom Field ID',
                 in: 'path',
                 required: true,
                 schema: new OA\Schema(type: 'integer', format: 'int64')

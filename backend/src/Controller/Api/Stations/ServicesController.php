@@ -90,7 +90,7 @@ use Psr\Http\Message\ResponseInterface;
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'action',
-                description: 'The action to perform (for all: start, stop, restart, skip, disconnect)',
+                description: 'The action to perform (start, stop, restart, skip, disconnect)',
                 in: 'path',
                 required: true,
                 schema: new OA\Schema(type: 'string', default: 'restart')

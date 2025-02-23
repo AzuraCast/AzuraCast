@@ -96,7 +96,7 @@ use OpenApi\Attributes as OA;
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
-                description: 'Remote Relay ID',
+                description: 'SFTP User ID',
                 in: 'path',
                 required: true,
                 schema: new OA\Schema(type: 'integer', format: 'int64')
@@ -112,14 +112,14 @@ use OpenApi\Attributes as OA;
     OA\Delete(
         path: '/station/{station_id}/sftp-user/{id}',
         operationId: 'deleteSftpUser',
-        description: 'Delete a single remote relay.',
+        description: 'Delete a single SFTP user.',
         security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: SFTP Users'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
-                description: 'Remote Relay ID',
+                description: 'SFTP User ID',
                 in: 'path',
                 required: true,
                 schema: new OA\Schema(type: 'integer', format: 'int64')

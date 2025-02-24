@@ -11,6 +11,30 @@ servers:
     url: 'https://demo.azuracast.com/api'
     description: 'AzuraCast Public Demo Server'
 paths:
+  /admin/auditlog:
+    get:
+      tags:
+        - 'Administration: General'
+      description: 'Return a list of all available permissions.'
+      operationId: getAuditlog
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_Admin_AuditLog'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
   /admin/custom_fields:
     get:
       tags:
@@ -3372,6 +3396,47 @@ paths:
           ApiKey: []
 components:
   schemas:
+    Api_Admin_AuditLog:
+      properties:
+        id:
+          type: integer
+        timestamp:
+          type: string
+        operation:
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+        operation_text:
+          type: string
+        class:
+          type: string
+        identifier:
+          type: string
+        target_class:
+          type: string
+          nullable: true
+        target:
+          type: string
+          nullable: true
+        user:
+          type: string
+          nullable: true
+        changes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Api_Admin_AuditLogChangeset'
+      type: object
+    Api_Admin_AuditLogChangeset:
+      properties:
+        field:
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+      type: object
     Api_Admin_Relay:
       properties:
         id:
@@ -5554,6 +5619,8 @@ tags:
     name: 'Stations: Streamers/DJs'
   -
     name: 'Stations: Web Hooks'
+  -
+    name: 'Administration: General'
   -
     name: 'Administration: Custom Fields'
   -

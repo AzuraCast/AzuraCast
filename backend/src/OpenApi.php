@@ -51,6 +51,7 @@ use OpenApi\Attributes as OA;
             new OA\Tag(name: "Stations: Streamers/DJs"),
             new OA\Tag(name: "Stations: Web Hooks"),
 
+            new OA\Tag(name: "Administration: General"),
             new OA\Tag(name: "Administration: Custom Fields"),
             new OA\Tag(name: "Administration: Users"),
             new OA\Tag(name: "Administration: Relays"),

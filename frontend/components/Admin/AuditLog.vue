@@ -93,11 +93,13 @@ import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import Icon from "~/components/Common/Icon.vue";
 import useHasDatatable from "~/functions/useHasDatatable";
-import DetailsModal, {AuditLogChanges} from "~/components/Admin/AuditLog/DetailsModal.vue";
+import DetailsModal from "~/components/Admin/AuditLog/DetailsModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {getApiUrl} from "~/router";
 import {IconAddCircle, IconRemoveCircle, IconSwapHorizontalCircle} from "~/components/Common/icons";
+import {ApiAdminAuditLog, ApiAdminAuditLogChangeset} from "~/entities/ApiInterfaces.ts";
+import {DeepRequired} from "utility-types";
 
 const baseApiUrl = getApiUrl('/admin/auditlog');
 
@@ -111,7 +113,9 @@ const dateRange = ref({
 const {$gettext} = useTranslate();
 const {timeConfig} = useAzuraCast();
 
-const fields: DataTableField[] = [
+type Row = DeepRequired<ApiAdminAuditLog>
+
+const fields: DataTableField<Row>[] = [
     {
         key: 'timestamp',
         label: $gettext('Date/Time'),
@@ -151,6 +155,8 @@ watch(dateRange, () => {
 });
 
 const $detailsModal = useTemplateRef('$detailsModal');
+
+type AuditLogChanges = DeepRequired<ApiAdminAuditLogChangeset>
 
 const showDetails = (changes: AuditLogChanges[]) => {
     $detailsModal.value?.open(changes);

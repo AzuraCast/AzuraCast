@@ -9,6 +9,25 @@
  * ---------------------------------------------------------------
  */
 
+export interface ApiAdminAuditLog {
+  id?: number;
+  timestamp?: string;
+  operation?: 1 | 2 | 3;
+  operation_text?: string;
+  class?: string;
+  identifier?: string;
+  target_class?: string | null;
+  target?: string | null;
+  user?: string | null;
+  changes?: ApiAdminAuditLogChangeset[];
+}
+
+export interface ApiAdminAuditLogChangeset {
+  field?: string;
+  from?: string;
+  to?: string;
+}
+
 export interface ApiAdminRelay {
   /**
    * Station ID

@@ -26,7 +26,6 @@ use Symfony\Component\Serializer\Annotation as Serializer;
 ]
 class StationMedia implements
     SongInterface,
-    ProcessableMediaInterface,
     PathAwareInterface,
     IdentifiableEntityInterface
 {
@@ -364,11 +363,6 @@ class StationMedia implements
     public function __toString(): string
     {
         return 'StationMedia ' . $this->id . ': ' . $this->artist . ' - ' . $this->title;
-    }
-
-    public static function needsReprocessing(int $fileModifiedTime = 0, int $dbModifiedTime = 0): bool
-    {
-        return $fileModifiedTime > $dbModifiedTime;
     }
 
     public static function getArtPath(string $uniqueId): string

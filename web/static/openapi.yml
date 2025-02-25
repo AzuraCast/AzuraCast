@@ -943,6 +943,43 @@ paths:
       security:
         -
           ApiKey: []
+  /frontend/account/two-factor:
+    get:
+      tags:
+        - Accounts
+      description: 'Get the current two-factor authentication status of your account.'
+      operationId: getMyTwoFactor
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Account_TwoFactorStatus'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+    delete:
+      tags:
+        - Accounts
+      description: 'Remove two-factor authentication from your account.'
+      operationId: deleteMyTwoFactor
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
   /status:
     get:
       tags:
@@ -3561,6 +3598,14 @@ components:
         key:
           description: 'The newly generated API key.'
           type: string
+      type: object
+    Api_Account_TwoFactorStatus:
+      required:
+        - two_factor_enabled
+      properties:
+        two_factor_enabled:
+          description: 'The current two-factor status for this account.'
+          type: boolean
       type: object
     Api_Admin_AuditLog:
       required:

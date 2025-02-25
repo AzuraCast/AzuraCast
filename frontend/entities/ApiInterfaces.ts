@@ -14,6 +14,11 @@ export interface ApiAccountNewApiKey {
   key: string;
 }
 
+export interface ApiAccountTwoFactorStatus {
+  /** The current two-factor status for this account. */
+  two_factor_enabled: boolean;
+}
+
 export interface ApiAdminAuditLog {
   id: number;
   timestamp: string;

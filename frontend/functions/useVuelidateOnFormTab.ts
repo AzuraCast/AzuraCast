@@ -5,7 +5,7 @@ import {useFormTabEventBus, VuelidateRef} from "~/functions/useVuelidateOnForm.t
 
 export function useVuelidateOnFormTab<
     ParentForm extends GenericForm = GenericForm,
-    TabForm extends GenericForm = GenericForm
+    TabForm extends GenericForm = Partial<ParentForm>
 >(
     form: ModelRef<ParentForm>,
     validations: Ref<ValidationArgs<TabForm>> | ValidationArgs<TabForm>,

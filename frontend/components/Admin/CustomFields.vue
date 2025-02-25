@@ -21,22 +21,22 @@
             :show-toolbar="false"
             :api-url="listUrl"
         >
-            <template #cell(name)="row">
-                {{ row.item.name }} <code>{{ row.item.short_name }}</code>
+            <template #cell(name)="{ item }">
+                {{ item.name }} <code>{{ item.short_name }}</code>
             </template>
-            <template #cell(actions)="row">
+            <template #cell(actions)="{ item }">
                 <div class="btn-group btn-group-sm">
                     <button
                         type="button"
                         class="btn btn-primary"
-                        @click="doEdit(row.item.links.self)"
+                        @click="doEdit(item.links.self)"
                     >
                         {{ $gettext('Edit') }}
                     </button>
                     <button
                         type="button"
                         class="btn btn-danger"
-                        @click="doDelete(row.item.links.self)"
+                        @click="doDelete(item.links.self)"
                     >
                         {{ $gettext('Delete') }}
                     </button>
@@ -65,6 +65,8 @@ import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
+import {DeepRequired} from "utility-types";
+import {CustomField, HasLinks} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     autoAssignTypes: Record<string, string>,
@@ -74,7 +76,9 @@ const listUrl = getApiUrl('/admin/custom_fields');
 
 const {$gettext} = useTranslate();
 
-const fields: DataTableField[] = [
+type Row = DeepRequired<CustomField & HasLinks>
+
+const fields: DataTableField<Row>[] = [
     {
         key: 'name',
         isRowHeader: true,

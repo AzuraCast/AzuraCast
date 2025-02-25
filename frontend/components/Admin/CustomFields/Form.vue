@@ -40,13 +40,13 @@ import {forEach} from "lodash";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {required} from "@vuelidate/validators";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab.ts";
-import {GenericForm} from "~/entities/Forms.ts";
+import {CustomField} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     autoAssignTypes: Record<string, string>
 }>();
 
-const form = defineModel<GenericForm>('form', {required: true});
+const form = defineModel<CustomField>('form', {required: true});
 
 const {
     v$

@@ -49,7 +49,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CustomField'
+                  allOf: [{ $ref: '#/components/schemas/CustomField' }, { $ref: '#/components/schemas/HasLinks' }]
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -73,7 +73,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomField'
+                allOf:
+                  - { $ref: '#/components/schemas/CustomField' }
+                  - { $ref: '#/components/schemas/HasLinks' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -102,7 +104,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomField'
+                allOf:
+                  - { $ref: '#/components/schemas/CustomField' }
+                  - { $ref: '#/components/schemas/HasLinks' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4900,6 +4904,8 @@ components:
           example: ''
       type: object
     CustomField:
+      required:
+        - name
       type: object
       allOf:
         -

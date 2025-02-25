@@ -14,7 +14,12 @@ use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[
-    OA\Schema(type: 'object'),
+    OA\Schema(
+        required: [
+            'name',
+        ],
+        type: 'object'
+    ),
     ORM\Entity,
     ORM\Table(name: 'custom_field'),
     Attributes\Auditable

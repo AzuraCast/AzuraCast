@@ -113,9 +113,7 @@ const dateRange = ref({
 const {$gettext} = useTranslate();
 const {timeConfig} = useAzuraCast();
 
-type Row = DeepRequired<ApiAdminAuditLog>
-
-const fields: DataTableField<Row>[] = [
+const fields: DataTableField<ApiAdminAuditLog>[] = [
     {
         key: 'timestamp',
         label: $gettext('Date/Time'),

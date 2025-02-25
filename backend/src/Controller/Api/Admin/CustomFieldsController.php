@@ -21,7 +21,15 @@ use OpenApi\Attributes as OA;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(type: 'array', items: new OA\Items(ref: '#/components/schemas/CustomField'))
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(
+                        allOf: [
+                            new OA\Schema(ref: '#/components/schemas/CustomField'),
+                            new OA\Schema(ref: '#/components/schemas/HasLinks'),
+                        ]
+                    )
+                )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
@@ -40,7 +48,12 @@ use OpenApi\Attributes as OA;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/CustomField')
+                content: new OA\JsonContent(
+                    allOf: [
+                        new OA\Schema(ref: '#/components/schemas/CustomField'),
+                        new OA\Schema(ref: '#/components/schemas/HasLinks'),
+                    ]
+                )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
@@ -65,7 +78,12 @@ use OpenApi\Attributes as OA;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/CustomField')
+                content: new OA\JsonContent(
+                    allOf: [
+                        new OA\Schema(ref: '#/components/schemas/CustomField'),
+                        new OA\Schema(ref: '#/components/schemas/HasLinks'),
+                    ]
+                )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),

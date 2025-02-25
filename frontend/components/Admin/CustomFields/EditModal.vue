@@ -21,6 +21,7 @@ import AdminCustomFieldsForm from "~/components/Admin/CustomFields/Form.vue";
 import {computed, useTemplateRef} from "vue";
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {useTranslate} from "~/vendor/gettext";
+import {CustomField} from "~/entities/ApiInterfaces.ts";
 
 interface CustomFieldsEditModalProps extends BaseEditModalProps {
     autoAssignTypes: Record<string, string>
@@ -42,12 +43,10 @@ const {
     edit,
     doSubmit,
     close
-} = useBaseEditModal(
+} = useBaseEditModal<CustomField>(
     props,
     emit,
-    $modal,
-    {},
-    {},
+    $modal
 );
 
 const {$gettext} = useTranslate();

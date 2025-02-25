@@ -23,6 +23,7 @@ import {useAxios} from "~/vendor/axios";
 import {tryOnScopeDispose} from "@vueuse/core";
 import Loading from "~/components/Common/Loading.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import {ApiLogContents} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     logUrl: string
@@ -48,15 +49,15 @@ const stop = () => {
 tryOnScopeDispose(stop);
 
 const updateLogs = () => {
-    void axios({
+    void axios.request<ApiLogContents>({
         method: 'GET',
         url: props.logUrl,
         params: {
             position: currentLogPosition.value
         }
-    }).then((resp) => {
-        if (resp.data.contents !== '') {
-            logs.value = logs.value + resp.data.contents + "\n";
+    }).then(({data}) => {
+        if (data.contents !== '') {
+            logs.value = logs.value + data.contents + "\n";
             if (scrollToBottom.value && $textarea.value) {
                 void nextTick(() => {
                     $textarea.value.scrollTop = $textarea.value?.scrollHeight;
@@ -64,9 +65,9 @@ const updateLogs = () => {
             }
         }
 
-        currentLogPosition.value = resp.data.position;
+        currentLogPosition.value = data.position;
 
-        if (resp.data.eof) {
+        if (data.eof) {
             stop();
         }
     }).finally(() => {

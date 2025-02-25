@@ -11,9 +11,64 @@ use App\Entity\Station;
 use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Radio\Adapters;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[
+    OA\Get(
+        path: '/station/{station_id}/logs',
+        operationId: 'getStationLogs',
+        description: 'Return a list of available logs for the given station.',
+        security: OpenApi::API_KEY_SECURITY,
+        tags: ['Stations: General'],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: '#/components/schemas/Api_LogType')
+                )
+            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    ),
+    OA\Get(
+        path: '/station/{station_id}/log/{key}',
+        operationId: 'getStationLog',
+        description: 'View a specific log contents for the given station.',
+        security: OpenApi::API_KEY_SECURITY,
+        tags: ['Stations: General'],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+            new OA\Parameter(
+                name: 'key',
+                description: 'Log Key from listing return.',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    ref: '#/components/schemas/Api_LogContents'
+                )
+            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    )
+]
 final class LogsAction implements SingleActionInterface
 {
     use HasLogViewer;
@@ -38,23 +93,21 @@ final class LogsAction implements SingleActionInterface
         if (null === $log) {
             $router = $request->getRouter();
             return $response->withJson(
-                [
-                    'logs' => array_map(
-                        function (LogType $row) use ($router, $station): LogType {
-                            $row->links = [
-                                'self' => $router->named(
-                                    'api:stations:log',
-                                    [
-                                        'station_id' => $station->getIdRequired(),
-                                        'log' => $row->key,
-                                    ]
-                                ),
-                            ];
-                            return $row;
-                        },
-                        $logTypes
-                    ),
-                ]
+                array_map(
+                    function (LogType $row) use ($router, $station): LogType {
+                        $row->links = [
+                            'self' => $router->named(
+                                'api:stations:log',
+                                [
+                                    'station_id' => $station->getIdRequired(),
+                                    'log' => $row->key,
+                                ]
+                            ),
+                        ];
+                        return $row;
+                    },
+                    $logTypes
+                ),
             );
         }
 

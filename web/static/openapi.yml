@@ -221,6 +221,54 @@ paths:
       security:
         -
           ApiKey: []
+  /admin/logs:
+    get:
+      tags:
+        - 'Administration: General'
+      description: 'List all available log types for viewing.'
+      operationId: adminListLogs
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_LogType'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+  '/admin/log/{key}':
+    get:
+      tags:
+        - 'Administration: General'
+      description: 'View a specific log contents.'
+      operationId: adminViewLog
+      parameters:
+        -
+          name: key
+          in: path
+          description: 'Log Key from listing return.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_LogContents'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
   /admin/permissions:
     get:
       tags:
@@ -1665,6 +1713,63 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '404':
           $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+  '/station/{station_id}/logs':
+    get:
+      tags:
+        - 'Stations: General'
+      description: 'Return a list of available logs for the given station.'
+      operationId: getStationLogs
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_LogType'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+  '/station/{station_id}/log/{key}':
+    get:
+      tags:
+        - 'Stations: General'
+      description: 'View a specific log contents for the given station.'
+      operationId: getStationLog
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: key
+          in: path
+          description: 'Log Key from listing return.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_LogContents'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
       security:
@@ -4291,6 +4396,45 @@ components:
           example: '-97.000000'
           nullable: true
       type: object
+    Api_LogContents:
+      required:
+        - contents
+        - eof
+        - position
+      properties:
+        contents:
+          type: string
+        eof:
+          description: 'Whether the log file has ended at this point or has additional data.'
+          type: boolean
+        position:
+          type: integer
+          nullable: true
+      type: object
+      readOnly: true
+    Api_LogType:
+      required:
+        - key
+        - name
+        - path
+        - tail
+        - links
+      type: object
+      readOnly: true
+      allOf:
+        -
+          $ref: '#/components/schemas/HasLinks'
+        -
+          properties:
+            key:
+              type: string
+            name:
+              type: string
+            path:
+              type: string
+            tail:
+              type: boolean
+          type: object
     Api_NewRecord:
       type: object
       allOf:

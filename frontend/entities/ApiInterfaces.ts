@@ -9,6 +9,8 @@
  * ---------------------------------------------------------------
  */
 
+type UtilRequiredKeys<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
+
 export interface ApiAccountChangePassword {
   /** The current account password. */
   current_password: string;
@@ -469,6 +471,20 @@ export interface ApiListenerLocation {
    */
   lon?: number | null;
 }
+
+export interface ApiLogContents {
+  contents: string;
+  /** Whether the log file has ended at this point or has additional data. */
+  eof: boolean;
+  position: number | null;
+}
+
+export type ApiLogType = UtilRequiredKeys<HasLinks, "links"> & {
+  key: string;
+  name: string;
+  path: string;
+  tail: boolean;
+};
 
 export type ApiNewRecord = ApiStatus & {
   links?: string[];

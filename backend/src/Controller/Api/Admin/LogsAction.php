@@ -10,9 +10,58 @@ use App\Entity\Api\LogType;
 use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Service\ServiceControl;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[
+    OA\Get(
+        path: '/admin/logs',
+        operationId: 'adminListLogs',
+        description: 'List all available log types for viewing.',
+        security: OpenApi::API_KEY_SECURITY,
+        tags: ['Administration: General'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    ref: '#/components/schemas/Api_LogType'
+                )
+            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    ),
+    OA\Get(
+        path: '/admin/log/{key}',
+        operationId: 'adminViewLog',
+        description: 'View a specific log contents.',
+        security: OpenApi::API_KEY_SECURITY,
+        tags: ['Administration: General'],
+        parameters: [
+            new OA\Parameter(
+                name: 'key',
+                description: 'Log Key from listing return.',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    ref: '#/components/schemas/Api_LogContents'
+                )
+            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    ),
+]
 final class LogsAction
 {
     use HasLogViewer;
@@ -36,22 +85,20 @@ final class LogsAction
         if (null === $log) {
             $router = $request->getRouter();
             return $response->withJson(
-                [
-                    'logs' => array_map(
-                        function (LogType $row) use ($router): LogType {
-                            $row->links = [
-                                'self' => $router->named(
-                                    'api:admin:log',
-                                    [
-                                        'log' => $row->key,
-                                    ]
-                                ),
-                            ];
-                            return $row;
-                        },
-                        $logTypes
-                    ),
-                ]
+                array_map(
+                    function (LogType $row) use ($router): LogType {
+                        $row->links = [
+                            'self' => $router->named(
+                                'api:admin:log',
+                                [
+                                    'log' => $row->key,
+                                ]
+                            ),
+                        ];
+                        return $row;
+                    },
+                    $logTypes
+                )
             );
         }
 

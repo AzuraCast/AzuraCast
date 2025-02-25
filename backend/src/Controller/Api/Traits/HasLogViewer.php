@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Traits;
 
+use App\Entity\Api\LogContents;
 use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -35,17 +36,17 @@ trait HasLogViewer
             );
 
             return $response->withJson(
-                [
-                    'contents' => $logContents,
-                    'eof' => true,
-                ]
+                new LogContents(
+                    $logContents,
+                    true
+                )
             );
         }
 
         $params = $request->getQueryParams();
         $lastViewedSize = (int)($params['position'] ?? 0);
 
-        $logSize = filesize($logPath);
+        $logSize = filesize($logPath) ?: 0;
         if ($lastViewedSize > $logSize) {
             $lastViewedSize = $logSize;
         }
@@ -79,11 +80,11 @@ trait HasLogViewer
         }
 
         return $response->withJson(
-            [
-                'contents' => $logContents,
-                'position' => $logSize,
-                'eof' => false,
-            ]
+            new LogContents(
+                $logContents,
+                false,
+                $logSize
+            )
         );
     }
 

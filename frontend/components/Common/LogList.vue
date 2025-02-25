@@ -16,6 +16,7 @@
 <script setup lang="ts">
 import {useAsyncState} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
+import {ApiLogType} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     url: string
@@ -27,8 +28,8 @@ const emit = defineEmits<{
 
 const {axios} = useAxios();
 
-const {state: logs} = useAsyncState(
-    () => axios.get(props.url).then((r) => r.data.logs),
+const {state: logs} = useAsyncState<ApiLogType[]>(
+    async () => (await axios.get<ApiLogType[]>(props.url)).data,
     []
 );
 

@@ -3397,6 +3397,17 @@ paths:
 components:
   schemas:
     Api_Admin_AuditLog:
+      required:
+        - id
+        - timestamp
+        - operation
+        - operation_text
+        - class
+        - identifier
+        - target_class
+        - target
+        - user
+        - changes
       properties:
         id:
           type: integer
@@ -3429,6 +3440,10 @@ components:
             $ref: '#/components/schemas/Api_Admin_AuditLogChangeset'
       type: object
     Api_Admin_AuditLogChangeset:
+      required:
+        - field
+        - from
+        - to
       properties:
         field:
           type: string
@@ -3492,6 +3507,10 @@ components:
             $ref: '#/components/schemas/Api_NowPlaying_StationMount'
       type: object
     Api_Admin_ServerStats_CpuStats:
+      required:
+        - total
+        - cores
+        - load
       properties:
         total:
           $ref: '#/components/schemas/Api_Admin_ServerStats_CpuStatsSection'
@@ -3506,6 +3525,12 @@ components:
             format: int64
       type: object
     Api_Admin_ServerStats_CpuStatsSection:
+      required:
+        - name
+        - usage
+        - idle
+        - io_wait
+        - steal
       properties:
         name:
           type: string
@@ -3519,6 +3544,21 @@ components:
           type: string
       type: object
     Api_Admin_ServerStats_MemoryStats:
+      required:
+        - total_bytes
+        - total_readable
+        - free_bytes
+        - free_readable
+        - buffers_bytes
+        - buffers_readable
+        - cached_bytes
+        - cached_readable
+        - sReclaimable_bytes
+        - sReclaimable_readable
+        - shmem_bytes
+        - shmem_readable
+        - used_bytes
+        - used_readable
       properties:
         total_bytes:
           type: string
@@ -3550,6 +3590,16 @@ components:
           type: string
       type: object
     Api_Admin_ServerStats_NetworkInterfaceReceived:
+      required:
+        - speed_bytes
+        - speed_readable
+        - packets
+        - errs
+        - drop
+        - fifo
+        - frame
+        - compressed
+        - multicast
       properties:
         speed_bytes:
           type: string
@@ -3571,6 +3621,10 @@ components:
           type: string
       type: object
     Api_Admin_ServerStats_NetworkInterfaceStats:
+      required:
+        - interface_name
+        - received
+        - transmitted
       properties:
         interface_name:
           type: string
@@ -3580,6 +3634,16 @@ components:
           $ref: '#/components/schemas/Api_Admin_ServerStats_NetworkInterfaceTransmitted'
       type: object
     Api_Admin_ServerStats_NetworkInterfaceTransmitted:
+      required:
+        - speed_bytes
+        - speed_readable
+        - packets
+        - errs
+        - drop
+        - fifo
+        - frame
+        - carrier
+        - compressed
       properties:
         speed_bytes:
           type: string
@@ -3601,6 +3665,12 @@ components:
           type: string
       type: object
     Api_Admin_ServerStats:
+      required:
+        - cpu
+        - memory
+        - swap
+        - disk
+        - network
       properties:
         cpu:
           $ref: '#/components/schemas/Api_Admin_ServerStats_CpuStats'
@@ -3616,6 +3686,13 @@ components:
             $ref: '#/components/schemas/Api_Admin_ServerStats_NetworkInterfaceStats'
       type: object
     Api_Admin_ServerStats_StorageStats:
+      required:
+        - total_bytes
+        - total_readable
+        - free_bytes
+        - free_readable
+        - used_bytes
+        - used_readable
       properties:
         total_bytes:
           type: string

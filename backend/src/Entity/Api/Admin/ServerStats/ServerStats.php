@@ -8,6 +8,13 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_Admin_ServerStats',
+    required: [
+        'cpu',
+        'memory',
+        'swap',
+        'disk',
+        'network',
+    ],
     type: 'object'
 )]
 final readonly class ServerStats

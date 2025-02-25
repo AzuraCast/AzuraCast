@@ -31,14 +31,13 @@
 <script setup lang="ts">
 import {get, omit} from "lodash";
 import {computed} from "vue";
-import {DeepRequired} from "utility-types";
 import {
     ApiAdminServerStatsNetworkInterfaceReceived,
     ApiAdminServerStatsNetworkInterfaceTransmitted
 } from "~/entities/ApiInterfaces.ts";
 
-type StatsSection = DeepRequired<ApiAdminServerStatsNetworkInterfaceReceived>
-    | DeepRequired<ApiAdminServerStatsNetworkInterfaceTransmitted>
+type StatsSection = ApiAdminServerStatsNetworkInterfaceReceived
+    | ApiAdminServerStatsNetworkInterfaceTransmitted
 
 const props = defineProps<{
     row: StatsSection,

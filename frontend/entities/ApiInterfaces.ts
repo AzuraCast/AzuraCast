@@ -10,22 +10,22 @@
  */
 
 export interface ApiAdminAuditLog {
-  id?: number;
-  timestamp?: string;
-  operation?: 1 | 2 | 3;
-  operation_text?: string;
-  class?: string;
-  identifier?: string;
-  target_class?: string | null;
-  target?: string | null;
-  user?: string | null;
-  changes?: ApiAdminAuditLogChangeset[];
+  id: number;
+  timestamp: string;
+  operation: 1 | 2 | 3;
+  operation_text: string;
+  class: string;
+  identifier: string;
+  target_class: string | null;
+  target: string | null;
+  user: string | null;
+  changes: ApiAdminAuditLogChangeset[];
 }
 
 export interface ApiAdminAuditLogChangeset {
-  field?: string;
-  from?: string;
-  to?: string;
+  field: string;
+  from: string;
+  to: string;
 }
 
 export interface ApiAdminRelay {
@@ -83,81 +83,81 @@ export interface ApiAdminRelay {
 }
 
 export interface ApiAdminServerStatsCpuStats {
-  total?: ApiAdminServerStatsCpuStatsSection;
-  cores?: ApiAdminServerStatsCpuStatsSection[];
-  load?: number[];
+  total: ApiAdminServerStatsCpuStatsSection;
+  cores: ApiAdminServerStatsCpuStatsSection[];
+  load: number[];
 }
 
 export interface ApiAdminServerStatsCpuStatsSection {
-  name?: string;
-  usage?: string;
-  idle?: string;
-  io_wait?: string;
-  steal?: string;
+  name: string;
+  usage: string;
+  idle: string;
+  io_wait: string;
+  steal: string;
 }
 
 export interface ApiAdminServerStatsMemoryStats {
-  total_bytes?: string;
-  total_readable?: string;
-  free_bytes?: string;
-  free_readable?: string;
-  buffers_bytes?: string;
-  buffers_readable?: string;
-  cached_bytes?: string;
-  cached_readable?: string;
-  sReclaimable_bytes?: string;
-  sReclaimable_readable?: string;
-  shmem_bytes?: string;
-  shmem_readable?: string;
-  used_bytes?: string;
-  used_readable?: string;
+  total_bytes: string;
+  total_readable: string;
+  free_bytes: string;
+  free_readable: string;
+  buffers_bytes: string;
+  buffers_readable: string;
+  cached_bytes: string;
+  cached_readable: string;
+  sReclaimable_bytes: string;
+  sReclaimable_readable: string;
+  shmem_bytes: string;
+  shmem_readable: string;
+  used_bytes: string;
+  used_readable: string;
 }
 
 export interface ApiAdminServerStatsNetworkInterfaceReceived {
-  speed_bytes?: string;
-  speed_readable?: string;
-  packets?: string;
-  errs?: string;
-  drop?: string;
-  fifo?: string;
-  frame?: string;
-  compressed?: string;
-  multicast?: string;
+  speed_bytes: string;
+  speed_readable: string;
+  packets: string;
+  errs: string;
+  drop: string;
+  fifo: string;
+  frame: string;
+  compressed: string;
+  multicast: string;
 }
 
 export interface ApiAdminServerStatsNetworkInterfaceStats {
-  interface_name?: string;
-  received?: ApiAdminServerStatsNetworkInterfaceReceived;
-  transmitted?: ApiAdminServerStatsNetworkInterfaceTransmitted;
+  interface_name: string;
+  received: ApiAdminServerStatsNetworkInterfaceReceived;
+  transmitted: ApiAdminServerStatsNetworkInterfaceTransmitted;
 }
 
 export interface ApiAdminServerStatsNetworkInterfaceTransmitted {
-  speed_bytes?: string;
-  speed_readable?: string;
-  packets?: string;
-  errs?: string;
-  drop?: string;
-  fifo?: string;
-  frame?: string;
-  carrier?: string;
-  compressed?: string;
+  speed_bytes: string;
+  speed_readable: string;
+  packets: string;
+  errs: string;
+  drop: string;
+  fifo: string;
+  frame: string;
+  carrier: string;
+  compressed: string;
 }
 
 export interface ApiAdminServerStats {
-  cpu?: ApiAdminServerStatsCpuStats;
-  memory?: ApiAdminServerStatsMemoryStats;
-  swap?: ApiAdminServerStatsStorageStats;
-  disk?: ApiAdminServerStatsStorageStats;
-  network?: ApiAdminServerStatsNetworkInterfaceStats[];
+  cpu: ApiAdminServerStatsCpuStats;
+  memory: ApiAdminServerStatsMemoryStats;
+  swap: ApiAdminServerStatsStorageStats;
+  disk: ApiAdminServerStatsStorageStats;
+  network: ApiAdminServerStatsNetworkInterfaceStats[];
 }
 
 export interface ApiAdminServerStatsStorageStats {
-  total_bytes?: string;
-  total_readable?: string;
-  free_bytes?: string;
-  free_readable?: string;
-  used_bytes?: string;
-  used_readable?: string;
+  total_bytes: string;
+  total_readable: string;
+  free_bytes: string;
+  free_readable: string;
+  used_bytes: string;
+  used_readable: string;
 }
 
 export type ApiAdminStorageLocation = HasLinks & {

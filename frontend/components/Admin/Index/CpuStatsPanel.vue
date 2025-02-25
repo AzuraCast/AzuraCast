@@ -139,13 +139,10 @@ import {useTemplateRef} from "vue";
 import CpuStatsHelpModal from "~/components/Admin/Index/CpuStatsHelpModal.vue";
 import {upperFirst} from "lodash";
 import {IconInfo} from "~/components/Common/icons.ts";
-import {DeepRequired} from "utility-types";
 import {ApiAdminServerStatsCpuStats} from "~/entities/ApiInterfaces.ts";
 
-type CpuStats = DeepRequired<ApiAdminServerStatsCpuStats>
-
 defineProps<{
-    cpuStats: CpuStats
+    cpuStats: ApiAdminServerStatsCpuStats
 }>();
 
 const $cpuStatsHelpModal = useTemplateRef('$cpuStatsHelpModal');

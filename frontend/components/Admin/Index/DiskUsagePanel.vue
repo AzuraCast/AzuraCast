@@ -40,13 +40,10 @@
 </template>
 
 <script setup lang="ts">
-import {DeepRequired} from "utility-types";
 import {ApiAdminServerStatsStorageStats} from "~/entities/ApiInterfaces.ts";
 
-type DiskStats = DeepRequired<ApiAdminServerStatsStorageStats>
-
 defineProps<{
-    diskStats: DiskStats
+    diskStats: ApiAdminServerStatsStorageStats
 }>();
 
 const getPercent = (amount: string | number, total: string | number) => {

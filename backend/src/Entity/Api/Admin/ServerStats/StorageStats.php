@@ -10,41 +10,46 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_Admin_ServerStats_StorageStats',
+    required: [
+        'total_bytes',
+        'total_readable',
+        'free_bytes',
+        'free_readable',
+        'used_bytes',
+        'used_readable',
+    ],
     type: 'object'
 )]
 final class StorageStats
 {
-    #[OA\Property]
-    public string $total_bytes;
-
-    #[OA\Property]
-    public string $total_readable;
-
-    #[OA\Property]
-    public string $free_bytes;
-
-    #[OA\Property]
-    public string $free_readable;
-
-    #[OA\Property]
-    public string $used_bytes;
-
-    #[OA\Property]
-    public string $used_readable;
+    public function __construct(
+        #[OA\Property]
+        public string $total_bytes,
+        #[OA\Property]
+        public string $total_readable,
+        #[OA\Property]
+        public string $free_bytes,
+        #[OA\Property]
+        public string $free_readable,
+        #[OA\Property]
+        public string $used_bytes,
+        #[OA\Property]
+        public string $used_readable,
+    ) {
+    }
 
     public static function fromStorage(
         BigInteger $total,
         BigInteger $free,
         BigInteger $used
     ): self {
-        $record = new self();
-        $record->total_bytes = (string)$total;
-        $record->total_readable = Quota::getReadableSize($total, 2);
-        $record->free_bytes = (string)$free;
-        $record->free_readable = Quota::getReadableSize($free, 2);
-        $record->used_bytes = (string)$used;
-        $record->used_readable = Quota::getReadableSize($used, 2);
-
-        return $record;
+        return new self(
+            (string)$total,
+            Quota::getReadableSize($total, 2),
+            (string)$free,
+            Quota::getReadableSize($free, 2),
+            (string)$used,
+            Quota::getReadableSize($used, 2)
+        );
     }
 }

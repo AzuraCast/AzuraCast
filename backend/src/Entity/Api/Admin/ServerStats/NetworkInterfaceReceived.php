@@ -11,53 +11,57 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_Admin_ServerStats_NetworkInterfaceReceived',
+    required: [
+        'speed_bytes',
+        'speed_readable',
+        'packets',
+        'errs',
+        'drop',
+        'fifo',
+        'frame',
+        'compressed',
+        'multicast',
+    ],
     type: 'object'
 )]
-final class NetworkInterfaceReceived
+final readonly class NetworkInterfaceReceived
 {
-    #[OA\Property]
-    public string $speed_bytes;
-
-    #[OA\Property]
-    public string $speed_readable;
-
-    #[OA\Property]
-    public string $packets;
-
-    #[OA\Property]
-    public string $errs;
-
-    #[OA\Property]
-    public string $drop;
-
-    #[OA\Property]
-    public string $fifo;
-
-    #[OA\Property]
-    public string $frame;
-
-    #[OA\Property]
-    public string $compressed;
-
-    #[OA\Property]
-    public string $multicast;
+    public function __construct(
+        #[OA\Property]
+        public string $speed_bytes,
+        #[OA\Property]
+        public string $speed_readable,
+        #[OA\Property]
+        public string $packets,
+        #[OA\Property]
+        public string $errs,
+        #[OA\Property]
+        public string $drop,
+        #[OA\Property]
+        public string $fifo,
+        #[OA\Property]
+        public string $frame,
+        #[OA\Property]
+        public string $compressed,
+        #[OA\Property]
+        public string $multicast
+    ) {
+    }
 
     public static function fromReceived(
         Received $received,
         BigInteger $speed
     ): self {
-        $return = new self();
-
-        $return->speed_bytes = (string)$speed;
-        $return->speed_readable = Quota::getReadableSize($speed);
-
-        $return->packets = (string)$received->packets;
-        $return->errs = (string)$received->errs;
-        $return->drop = (string)$received->drop;
-        $return->fifo = (string)$received->fifo;
-        $return->frame = (string)$received->frame;
-        $return->compressed = (string)$received->compressed;
-        $return->multicast = (string)$received->multicast;
-        return $return;
+        return new self(
+            (string)$speed,
+            Quota::getReadableSize($speed),
+            (string)$received->packets,
+            (string)$received->errs,
+            (string)$received->drop,
+            (string)$received->fifo,
+            (string)$received->frame,
+            (string)$received->compressed,
+            (string)$received->multicast
+        );
     }
 }

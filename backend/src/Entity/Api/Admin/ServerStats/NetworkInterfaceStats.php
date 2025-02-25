@@ -8,6 +8,11 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_Admin_ServerStats_NetworkInterfaceStats',
+    required: [
+        'interface_name',
+        'received',
+        'transmitted',
+    ],
     type: 'object'
 )]
 final readonly class NetworkInterfaceStats

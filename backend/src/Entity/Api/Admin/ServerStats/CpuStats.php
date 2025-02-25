@@ -8,6 +8,11 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_Admin_ServerStats_CpuStats',
+    required: [
+        'total',
+        'cores',
+        'load',
+    ],
     type: 'object'
 )]
 final class CpuStats

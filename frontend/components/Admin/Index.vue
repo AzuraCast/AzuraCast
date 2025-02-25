@@ -103,7 +103,6 @@ import ServicesPanel from "~/components/Admin/Index/ServicesPanel.vue";
 import NetworkStatsPanel from "~/components/Admin/Index/NetworkStatsPanel.vue";
 import Loading from "~/components/Common/Loading.vue";
 import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
-import {DeepRequired} from "utility-types";
 import {ApiAdminServerStats} from "~/entities/ApiInterfaces.ts";
 
 const statsUrl = getApiUrl('/admin/server/stats');
@@ -112,9 +111,7 @@ const menuItems = useAdminMenu();
 
 const {axiosSilent} = useAxios();
 
-type ServerStats = DeepRequired<ApiAdminServerStats>
-
-const {state: stats, isLoading} = useAutoRefreshingAsyncState<ServerStats>(
+const {state: stats, isLoading} = useAutoRefreshingAsyncState<ApiAdminServerStats>(
     () => axiosSilent.get(statsUrl.value).then(r => r.data),
     {
         cpu: {

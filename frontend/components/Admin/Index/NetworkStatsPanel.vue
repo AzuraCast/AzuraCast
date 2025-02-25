@@ -39,12 +39,9 @@
 import Tab from "~/components/Common/Tab.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import NetworkStatsTable from "~/components/Admin/Index/NetworkStatsTable.vue";
-import {DeepRequired} from "utility-types";
 import {ApiAdminServerStatsNetworkInterfaceStats} from "~/entities/ApiInterfaces.ts";
 
-type NetworkStats = DeepRequired<ApiAdminServerStatsNetworkInterfaceStats>
-
 defineProps<{
-    networkStats: NetworkStats[]
+    networkStats: ApiAdminServerStatsNetworkInterfaceStats[]
 }>();
 </script>

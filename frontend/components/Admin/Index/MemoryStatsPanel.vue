@@ -67,12 +67,9 @@ import {useTemplateRef} from "vue";
 import MemoryStatsHelpModal from "~/components/Admin/Index/MemoryStatsHelpModal.vue";
 import {IconInfo} from "~/components/Common/icons.ts";
 import {ApiAdminServerStatsMemoryStats} from "~/entities/ApiInterfaces.ts";
-import {DeepRequired} from "utility-types";
-
-type MemoryStats = DeepRequired<ApiAdminServerStatsMemoryStats>
 
 defineProps<{
-    memoryStats: MemoryStats
+    memoryStats: ApiAdminServerStatsMemoryStats
 }>();
 
 const $memoryStatsHelpModal = useTemplateRef('$memoryStatsHelpModal');

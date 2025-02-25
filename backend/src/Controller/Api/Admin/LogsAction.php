@@ -27,7 +27,8 @@ use Psr\Http\Message\ResponseInterface;
                 response: 200,
                 description: 'Success',
                 content: new OA\JsonContent(
-                    ref: '#/components/schemas/Api_LogType'
+                    type: 'array',
+                    items: new OA\Items(ref: '#/components/schemas/Api_LogType')
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),

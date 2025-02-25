@@ -300,29 +300,29 @@ export interface ApiError {
    * The numeric code of the error.
    * @example 500
    */
-  code?: number;
+  code: number;
   /**
    * The programmatic class of error.
    * @example "NotLoggedInException"
    */
-  type?: string;
+  type: string;
   /**
    * The text description of the error.
    * @example "Error description."
    */
-  message?: string;
+  message: string;
   /**
    * The HTML-formatted text description of the error.
    * @example "<b>Error description.</b><br>Detailed error text."
    */
-  formatted_message?: string | null;
+  formatted_message: string | null;
   /** Stack traces and other supplemental data. */
-  extra_data?: any[];
+  extra_data: any[];
   /**
    * Used for API calls that expect an \Entity\Api\Status type response.
    * @example false
    */
-  success?: boolean;
+  success: boolean;
 }
 
 export type ApiFileList = HasLinks & {
@@ -1050,11 +1050,11 @@ export interface ApiStationServiceStatus {
 
 export interface ApiStatus {
   /** @example true */
-  success?: boolean;
+  success: boolean;
   /** @example "Changes saved successfully." */
-  message?: string;
+  message: string;
   /** @example "<b>Changes saved successfully.</b>" */
-  formatted_message?: string;
+  formatted_message: string;
 }
 
 export interface ApiSystemStatus {
@@ -1062,12 +1062,12 @@ export interface ApiSystemStatus {
    * Whether the service is online or not (should always be true)
    * @example true
    */
-  online?: boolean;
+  online: boolean;
   /**
    * The current UNIX timestamp
    * @example 1609480800
    */
-  timestamp?: number;
+  timestamp: number;
 }
 
 export interface ApiTime {
@@ -1075,15 +1075,15 @@ export interface ApiTime {
    * The current UNIX timestamp
    * @example 1497652397
    */
-  timestamp?: number;
+  timestamp: number;
   /** @example "2017-06-16 10:33:17" */
-  utc_datetime?: string;
+  utc_datetime: string;
   /** @example "June 16, 2017" */
-  utc_date?: string;
+  utc_date: string;
   /** @example "10:33pm" */
-  utc_time?: string;
+  utc_time: string;
   /** @example "2012-12-25T16:30:00.000000Z" */
-  utc_json?: string;
+  utc_json: string;
 }
 
 export interface HasLinks {
@@ -1133,12 +1133,12 @@ export interface ApiUploadFile {
    * The destination path of the uploaded file.
    * @example "relative/path/to/file.mp3"
    */
-  path?: string;
+  path: string;
   /**
    * The base64-encoded contents of the file to upload.
    * @example ""
    */
-  file?: string;
+  file: string;
 }
 
 export type CustomField = HasAutoIncrementId & {

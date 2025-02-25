@@ -27,6 +27,7 @@ use App\Radio\Backend\Liquidsoap;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -309,7 +310,7 @@ final class FilesController extends AbstractStationApiCrudController
 
         // Write file to temp path.
         $tempPath = $station->getRadioTempDir() . '/' . $apiRecord->getSanitizedFilename();
-        file_put_contents($tempPath, $apiRecord->getFileContents());
+        new Filesystem()->dumpFile($tempPath, $apiRecord->getFileContents());
 
         // Process temp path as regular media record.
         $record = $this->mediaProcessor->processAndUpload(

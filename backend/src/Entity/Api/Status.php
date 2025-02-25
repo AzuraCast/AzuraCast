@@ -6,8 +6,16 @@ namespace App\Entity\Api;
 
 use OpenApi\Attributes as OA;
 
-#[OA\Schema(schema: 'Api_Status', type: 'object')]
-class Status
+#[OA\Schema(
+    schema: 'Api_Status',
+    required: [
+        'success',
+        'message',
+        'formatted_message',
+    ],
+    type: 'object'
+)]
+readonly class Status
 {
     #[OA\Property(example: true)]
     public bool $success;

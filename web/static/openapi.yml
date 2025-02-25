@@ -3871,6 +3871,13 @@ components:
               example: true
           type: object
     Api_Error:
+      required:
+        - code
+        - type
+        - message
+        - formatted_message
+        - extra_data
+        - success
       properties:
         code:
           description: 'The numeric code of the error.'
@@ -4780,6 +4787,10 @@ components:
           example: true
       type: object
     Api_Status:
+      required:
+        - success
+        - message
+        - formatted_message
       properties:
         success:
           type: boolean
@@ -4792,6 +4803,9 @@ components:
           example: '<b>Changes saved successfully.</b>'
       type: object
     Api_SystemStatus:
+      required:
+        - online
+        - timestamp
       properties:
         online:
           description: 'Whether the service is online or not (should always be true)'
@@ -4803,6 +4817,12 @@ components:
           example: 1609480800
       type: object
     Api_Time:
+      required:
+        - timestamp
+        - utc_datetime
+        - utc_date
+        - utc_time
+        - utc_json
       properties:
         timestamp:
           description: 'The current UNIX timestamp'
@@ -4866,6 +4886,9 @@ components:
           nullable: true
       type: object
     Api_UploadFile:
+      required:
+        - path
+        - file
       properties:
         path:
           description: 'The destination path of the uploaded file.'

@@ -36,12 +36,12 @@
             :fields="apiKeyFields"
             :api-url="apiKeysApiUrl"
         >
-            <template #cell(actions)="row">
+            <template #cell(actions)="{ item }">
                 <div class="btn-group btn-group-sm">
                     <button
                         type="button"
                         class="btn btn-danger"
-                        @click="deleteApiKey(row.item.links.self)"
+                        @click="deleteApiKey(item.links.self)"
                     >
                         {{ $gettext('Delete') }}
                     </button>
@@ -69,12 +69,16 @@ import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import {useTranslate} from "~/vendor/gettext.ts";
 import useHasDatatable from "~/functions/useHasDatatable.ts";
 import {getApiUrl} from "~/router.ts";
+import {DeepRequired} from "utility-types";
+import {ApiKey, HasLinks} from "~/entities/ApiInterfaces.ts";
 
 const apiKeysApiUrl = getApiUrl('/frontend/account/api-keys');
 
 const {$gettext} = useTranslate();
 
-const apiKeyFields: DataTableField[] = [
+type Row = DeepRequired<ApiKey & HasLinks>
+
+const apiKeyFields: DataTableField<Row>[] = [
     {
         key: 'comment',
         isRowHeader: true,

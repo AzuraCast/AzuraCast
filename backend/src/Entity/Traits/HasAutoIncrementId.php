@@ -10,7 +10,10 @@ use OpenApi\Attributes as OA;
 use RuntimeException;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[OA\Schema(type: 'object')]
+#[OA\Schema(
+    type: 'object',
+    readOnly: true
+)]
 trait HasAutoIncrementId
 {
     #[

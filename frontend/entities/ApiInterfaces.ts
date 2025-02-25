@@ -9,6 +9,11 @@
  * ---------------------------------------------------------------
  */
 
+export interface ApiAccountNewApiKey {
+  /** The newly generated API key. */
+  key: string;
+}
+
 export interface ApiAdminAuditLog {
   id: number;
   timestamp: string;
@@ -1141,6 +1146,11 @@ export interface ApiUploadFile {
   file: string;
 }
 
+export type ApiKey = HasSplitTokenFields & {
+  user?: User;
+  comment?: string;
+};
+
 export type CustomField = HasAutoIncrementId & {
   name: string;
   /** The programmatic name for the field. Can be auto-generated from the full name. */
@@ -1713,6 +1723,11 @@ export interface HasSongFields {
   text?: string | null;
   artist?: string | null;
   title?: string | null;
+}
+
+export interface HasSplitTokenFields {
+  id?: string;
+  verifier?: string;
 }
 
 export interface HasUniqueId {

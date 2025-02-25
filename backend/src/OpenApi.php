@@ -60,6 +60,8 @@ use OpenApi\Attributes as OA;
             new OA\Tag(name: "Administration: Stations"),
             new OA\Tag(name: "Administration: Storage Locations"),
 
+            new OA\Tag(name: "Accounts"),
+
             new OA\Tag(name: "Miscellaneous"),
         ],
         externalDocs: new OA\ExternalDocumentation(

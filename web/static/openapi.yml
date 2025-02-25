@@ -11,6 +11,54 @@ servers:
     url: 'https://demo.azuracast.com/api'
     description: 'AzuraCast Public Demo Server'
 paths:
+  /admin/api-keys:
+    get:
+      tags:
+        - 'Administration: General'
+      description: 'List all current API keys across the system.'
+      operationId: adminListApiKeys
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf: [{ $ref: '#/components/schemas/ApiKey' }, { $ref: '#/components/schemas/HasLinks' }]
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+  '/admin/api-key/{id}':
+    delete:
+      tags:
+        - 'Administration: General'
+      description: 'Delete a single API key.'
+      operationId: adminDeleteApiKey
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'API Key ID'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
   /admin/auditlog:
     get:
       tags:
@@ -777,6 +825,112 @@ paths:
           schema:
             type: integer
             format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+  /frontend/account/api-keys:
+    get:
+      tags:
+        - Accounts
+      description: 'List all API keys associated with your account.'
+      operationId: getMyApiKeys
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf: [{ $ref: '#/components/schemas/ApiKey' }, { $ref: '#/components/schemas/HasLinks' }]
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+    post:
+      tags:
+        - Accounts
+      description: 'Create a new API key associated with your account.'
+      operationId: addMyApiKey
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiKey'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - { $ref: '#/components/schemas/Api_Account_NewApiKey' }
+                  - { $ref: '#/components/schemas/ApiKey' }
+                  - { $ref: '#/components/schemas/HasLinks' }
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+  '/frontend/account/api-key/{id}':
+    get:
+      tags:
+        - Accounts
+      description: 'Retrieve details for a single API key.'
+      operationId: getMyApiKey
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'API Key ID'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - { $ref: '#/components/schemas/ApiKey' }
+                  - { $ref: '#/components/schemas/HasLinks' }
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+    delete:
+      tags:
+        - Accounts
+      description: 'Delete a single API key associated with your account.'
+      operationId: deleteMyApiKey
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'API Key ID'
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -3400,6 +3554,14 @@ paths:
           ApiKey: []
 components:
   schemas:
+    Api_Account_NewApiKey:
+      required:
+        - key
+      properties:
+        key:
+          description: 'The newly generated API key.'
+          type: string
+      type: object
     Api_Admin_AuditLog:
       required:
         - id
@@ -4903,6 +5065,18 @@ components:
           type: string
           example: ''
       type: object
+    ApiKey:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasSplitTokenFields'
+        -
+          properties:
+            user:
+              $ref: '#/components/schemas/User'
+            comment:
+              type: string
+          type: object
     CustomField:
       required:
         - name
@@ -5583,6 +5757,7 @@ components:
           type: integer
           nullable: true
       type: object
+      readOnly: true
     HasSongFields:
       properties:
         song_id:
@@ -5597,12 +5772,21 @@ components:
           type: string
           nullable: true
       type: object
+    HasSplitTokenFields:
+      properties:
+        id:
+          type: string
+        verifier:
+          type: string
+      type: object
+      readOnly: true
     HasUniqueId:
       properties:
         id:
           type: string
           nullable: true
       type: object
+      readOnly: true
     User:
       type: object
       allOf:
@@ -5741,6 +5925,8 @@ tags:
     name: 'Administration: Stations'
   -
     name: 'Administration: Storage Locations'
+  -
+    name: Accounts
   -
     name: Miscellaneous
   -

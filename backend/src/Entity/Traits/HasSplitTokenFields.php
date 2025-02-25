@@ -8,10 +8,16 @@ use App\Entity\Attributes\AuditIgnore;
 use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Security\SplitToken;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Attributes as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+#[OA\Schema(
+    type: 'object',
+    readOnly: true
+)]
 trait HasSplitTokenFields
 {
+    #[OA\Property]
     #[ORM\Column(length: 16)]
     #[ORM\Id]
     #[Groups([
@@ -20,6 +26,7 @@ trait HasSplitTokenFields
     ])]
     protected string $id;
 
+    #[OA\Property]
     #[ORM\Column(length: 128)]
     #[AuditIgnore]
     protected string $verifier;

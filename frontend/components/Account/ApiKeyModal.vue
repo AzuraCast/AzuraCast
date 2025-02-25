@@ -75,6 +75,7 @@ import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import {ApiAccountNewApiKey} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     createUrl: string,
@@ -126,16 +127,18 @@ const doSubmit = async () => {
 
     error.value = null;
 
-    axios({
-        method: 'POST',
-        url: props.createUrl,
-        data: form.value
-    }).then((resp) => {
-        newKey.value = resp.data.key;
-        emit('relist');
-    }).catch((error) => {
+    try {
+        const {data} = await axios.post<ApiAccountNewApiKey>(
+            props.createUrl,
+            form.value
+        );
+
+        newKey.value = data.key;
+    } catch (error) {
         error.value = error.response.data.message;
-    });
+    }
+
+    emit('relist');
 };
 
 defineExpose({

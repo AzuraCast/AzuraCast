@@ -980,6 +980,29 @@ paths:
       security:
         -
           ApiKey: []
+  /frontend/account/password:
+    put:
+      tags:
+        - Accounts
+      description: 'Change the password of your account.'
+      operationId: changeMyPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Api_Account_ChangePassword'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
   /status:
     get:
       tags:
@@ -3591,6 +3614,18 @@ paths:
           ApiKey: []
 components:
   schemas:
+    Api_Account_ChangePassword:
+      required:
+        - current_password
+        - new_password
+      properties:
+        current_password:
+          description: 'The current account password.'
+          type: string
+        new_password:
+          description: 'The new account password.'
+          type: string
+      type: object
     Api_Account_NewApiKey:
       required:
         - key

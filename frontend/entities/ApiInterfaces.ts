@@ -9,6 +9,13 @@
  * ---------------------------------------------------------------
  */
 
+export interface ApiAccountChangePassword {
+  /** The current account password. */
+  current_password: string;
+  /** The new account password. */
+  new_password: string;
+}
+
 export interface ApiAccountNewApiKey {
   /** The newly generated API key. */
   key: string;

@@ -11,18 +11,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_Admin_AuditLog',
-    required: [
-        'id',
-        'timestamp',
-        'operation',
-        'operation_text',
-        'class',
-        'identifier',
-        'target_class',
-        'target',
-        'user',
-        'changes',
-    ],
+    required: ['*'],
     type: 'object'
 )]
 final readonly class AuditLog

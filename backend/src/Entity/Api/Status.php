@@ -8,11 +8,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_Status',
-    required: [
-        'success',
-        'message',
-        'formatted_message',
-    ],
+    required: ['*'],
     type: 'object'
 )]
 readonly class Status

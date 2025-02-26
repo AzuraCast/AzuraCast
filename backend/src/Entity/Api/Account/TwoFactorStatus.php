@@ -8,9 +8,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_Account_TwoFactorStatus',
-    required: [
-        'two_factor_enabled',
-    ],
+    required: ['*'],
     type: 'object'
 )]
 final readonly class TwoFactorStatus

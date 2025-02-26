@@ -9,10 +9,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_SystemStatus',
-    required: [
-        'online',
-        'timestamp',
-    ],
+    required: ['*'],
     type: 'object'
 )]
 final readonly class SystemStatus

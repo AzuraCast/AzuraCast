@@ -8,6 +8,7 @@ use App\Console\Command\CommandAbstract;
 use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\OpenApi\AddXEnumNames;
+use App\OpenApi\MakeAllFieldsRequired;
 use App\Utilities\Types;
 use App\Version;
 use OpenApi\Annotations\OpenApi;
@@ -78,6 +79,7 @@ final class GenerateApiDocsCommand extends CommandAbstract
 
         $pipeline = $generator->getProcessorPipeline();
         $pipeline->add(new AddXEnumNames());
+        $pipeline->add(new MakeAllFieldsRequired());
 
         return $generator->generate($finder);
     }

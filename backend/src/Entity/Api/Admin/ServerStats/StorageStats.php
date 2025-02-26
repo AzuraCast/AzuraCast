@@ -10,14 +10,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_Admin_ServerStats_StorageStats',
-    required: [
-        'total_bytes',
-        'total_readable',
-        'free_bytes',
-        'free_readable',
-        'used_bytes',
-        'used_readable',
-    ],
+    required: ['*'],
     type: 'object'
 )]
 final class StorageStats

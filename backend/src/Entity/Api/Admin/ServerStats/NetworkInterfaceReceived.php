@@ -11,17 +11,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_Admin_ServerStats_NetworkInterfaceReceived',
-    required: [
-        'speed_bytes',
-        'speed_readable',
-        'packets',
-        'errs',
-        'drop',
-        'fifo',
-        'frame',
-        'compressed',
-        'multicast',
-    ],
+    required: ['*'],
     type: 'object'
 )]
 final readonly class NetworkInterfaceReceived

@@ -8,9 +8,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_Account_NewApiKey',
-    required: [
-        'key',
-    ],
+    required: ['*'],
     type: 'object'
 )]
 final readonly class NewApiKey

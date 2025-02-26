@@ -9,13 +9,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_LogType',
-    required: [
-        'key',
-        'name',
-        'path',
-        'tail',
-        'links',
-    ],
+    required: ['*'],
     type: 'object',
     readOnly: true
 )]

@@ -8,10 +8,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_Admin_Permissions',
-    required: [
-        'global',
-        'station',
-    ],
+    required: ['*'],
     type: 'object'
 )]
 final readonly class Permissions

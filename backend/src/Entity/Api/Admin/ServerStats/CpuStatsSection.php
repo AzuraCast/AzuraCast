@@ -9,13 +9,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_Admin_ServerStats_CpuStatsSection',
-    required: [
-        'name',
-        'usage',
-        'idle',
-        'io_wait',
-        'steal',
-    ],
+    required: ['*'],
     type: 'object'
 )]
 final readonly class CpuStatsSection

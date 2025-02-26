@@ -8,11 +8,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_Admin_AuditLogChangeset',
-    required: [
-        'field',
-        'from',
-        'to',
-    ],
+    required: ['*'],
     type: 'object'
 )]
 final readonly class AuditLogChangeset

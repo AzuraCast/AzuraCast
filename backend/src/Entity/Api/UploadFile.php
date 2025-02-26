@@ -10,10 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[OA\Schema(
     schema: 'Api_UploadFile',
-    required: [
-        'path',
-        'file',
-    ],
+    required: ['*'],
     type: 'object'
 )]
 final readonly class UploadFile

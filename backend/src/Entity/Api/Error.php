@@ -11,14 +11,7 @@ use Throwable;
 
 #[OA\Schema(
     schema: 'Api_Error',
-    required: [
-        'code',
-        'type',
-        'message',
-        'formatted_message',
-        'extra_data',
-        'success',
-    ],
+    required: ['*'],
     type: 'object'
 )]
 final readonly class Error

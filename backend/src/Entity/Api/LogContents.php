@@ -8,11 +8,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_LogContents',
-    required: [
-        'contents',
-        'eof',
-        'position',
-    ],
+    required: ['*'],
     type: 'object',
     readOnly: true
 )]

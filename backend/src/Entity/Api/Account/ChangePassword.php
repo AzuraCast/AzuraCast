@@ -9,10 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[OA\Schema(
     schema: 'Api_Account_ChangePassword',
-    required: [
-        'current_password',
-        'new_password',
-    ],
+    required: ['*'],
     type: 'object'
 )]
 final readonly class ChangePassword

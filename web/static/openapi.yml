@@ -4472,7 +4472,6 @@ components:
         - name
         - path
         - tail
-        - links
       type: object
       readOnly: true
       allOf:

@@ -47,6 +47,16 @@ export interface ApiAdminAuditLogChangeset {
   to: string;
 }
 
+export interface ApiAdminPermission {
+  id: string;
+  name: string;
+}
+
+export interface ApiAdminPermissions {
+  global: ApiAdminPermission[];
+  station: ApiAdminPermission[];
+}
+
 export interface ApiAdminRelay {
   /**
    * Station ID

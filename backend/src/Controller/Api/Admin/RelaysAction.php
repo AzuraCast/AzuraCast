@@ -9,9 +9,35 @@ use App\Controller\SingleActionInterface;
 use App\Entity\Relay;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Paginator;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[
+    OA\Get(
+        path: '/admin/relays',
+        operationId: 'adminGetRelays',
+        description: 'Return a list of all currently active AzuraRelay instances.',
+        security: OpenApi::API_KEY_SECURITY,
+        tags: ['Administration: General'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(
+                        ref: '#/components/schemas/Relay'
+                    )
+                )
+            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    )
+]
 final class RelaysAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;

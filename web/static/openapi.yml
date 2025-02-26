@@ -233,7 +233,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Api_LogType'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_LogType'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -278,6 +280,34 @@ paths:
       responses:
         '200':
           description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Admin_Permissions'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+  /admin/relays:
+    get:
+      tags:
+        - 'Administration: General'
+      description: 'Return a list of all currently active AzuraRelay instances.'
+      operationId: adminGetRelays
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Relay'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -3802,6 +3832,30 @@ components:
           type: string
         to:
           type: string
+      type: object
+    Api_Admin_Permission:
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      type: object
+    Api_Admin_Permissions:
+      required:
+        - global
+        - station
+      properties:
+        global:
+          type: array
+          items:
+            $ref: '#/components/schemas/Api_Admin_Permission'
+        station:
+          type: array
+          items:
+            $ref: '#/components/schemas/Api_Admin_Permission'
       type: object
     Api_Admin_Relay:
       properties:

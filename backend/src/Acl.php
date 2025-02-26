@@ -87,7 +87,7 @@ final class Acl
     }
 
     /**
-     * @return array
+     * @return PermissionsArray
      */
     public function listPermissions(): array
     {

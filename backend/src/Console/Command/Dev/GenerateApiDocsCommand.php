@@ -7,6 +7,7 @@ namespace App\Console\Command\Dev;
 use App\Console\Command\CommandAbstract;
 use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\OpenApi\AddXEnumNames;
 use App\Utilities\Types;
 use App\Version;
 use OpenApi\Annotations\OpenApi;
@@ -73,8 +74,11 @@ final class GenerateApiDocsCommand extends CommandAbstract
             ]
         );
 
-        return Generator::scan($finder, [
-            'logger' => $this->logger,
-        ]);
+        $generator = new Generator($this->logger);
+
+        $pipeline = $generator->getProcessorPipeline();
+        $pipeline->add(new AddXEnumNames());
+
+        return $generator->generate($finder);
     }
 }

@@ -5382,6 +5382,12 @@ components:
         - cover_art
         - unprocessable_file
         - other
+      x-enumNames:
+        - Directory
+        - Media
+        - CoverArt
+        - UnprocessableFile
+        - Other
     Relay:
       type: object
       allOf:

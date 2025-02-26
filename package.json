@@ -9,7 +9,7 @@
     "tsc": "vue-tsc",
     "generate-icons": "node frontend/genicons.mjs",
     "generate-locales": "vue-gettext-extract",
-    "generate-api": "swagger-typescript-api --path http://localhost/api/openapi.yml --output ./frontend/entities --name ApiInterfaces.ts --no-client"
+    "generate-api": "node frontend/genapi.mjs"
   },
   "dependencies": {
     "@codemirror/lang-css": "^6.0.1",

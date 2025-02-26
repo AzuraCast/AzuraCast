@@ -46,10 +46,10 @@ import {useResettableRef} from "~/functions/useResettableRef";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tabs from "~/components/Common/Tabs.vue";
-import {FrontendAdapter} from "~/entities/RadioAdapters.ts";
+import {FrontendAdaptersEnum} from "~/entities/PhpClasses.ts";
 
 const props = defineProps<BaseEditModalProps & {
-    stationFrontendType: FrontendAdapter,
+    stationFrontendType: FrontendAdaptersEnum,
     newIntroUrl: string
 }>();
 

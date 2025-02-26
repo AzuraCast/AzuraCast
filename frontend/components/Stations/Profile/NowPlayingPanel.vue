@@ -241,7 +241,7 @@
 </template>
 
 <script setup lang="ts">
-import {BackendAdapter, BackendAdapters} from "~/entities/RadioAdapters";
+import {BackendAdapters, BackendAdaptersEnum} from "~/entities/PhpClasses";
 import Icon from "~/components/Common/Icon.vue";
 import {computed, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -264,7 +264,7 @@ import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 import {NowPlayingProps} from "~/functions/useNowPlaying.ts";
 
 export interface ProfileNowPlayingPanelProps extends NowPlayingProps {
-    backendType: BackendAdapter,
+    backendType: BackendAdaptersEnum,
     backendSkipSongUri: string,
     backendDisconnectStreamerUri: string
 }

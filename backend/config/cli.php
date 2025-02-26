@@ -45,6 +45,7 @@ return function (App\Event\BuildConsoleCommands $event) {
             'azuracast:api:docs' => Command\Dev\GenerateApiDocsCommand::class,
             'azuracast:new-version' => Command\Dev\NewVersionCommand::class,
             'azuracast:dev:generate-db-fixture' => Command\Dev\GenerateDbFixtureCommand::class,
+            'azuracast:dev:ts' => Command\Dev\GenerateTypescriptClassesCommand::class,
             'azuracast:locale:generate' => Command\Locale\GenerateCommand::class,
             'azuracast:locale:import' => Command\Locale\ImportCommand::class,
             'locale:generate' => Command\Locale\GenerateCommand::class,

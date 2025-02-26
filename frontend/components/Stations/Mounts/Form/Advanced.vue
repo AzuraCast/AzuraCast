@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import {FrontendAdapter, FrontendAdapters} from "~/entities/RadioAdapters";
+import {FrontendAdapters, FrontendAdaptersEnum} from "~/entities/PhpClasses";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {computed} from "vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
@@ -40,7 +40,7 @@ import Tab from "~/components/Common/Tab.vue";
 import {GenericForm} from "~/entities/Forms.ts";
 
 const props = defineProps<{
-    stationFrontendType: FrontendAdapter
+    stationFrontendType: FrontendAdaptersEnum
 }>();
 
 const form = defineModel<GenericForm>('form', {required: true});

@@ -47,7 +47,7 @@ import type {Component} from "vue";
 import {computed, nextTick, provide, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {WebhookTriggerDetails, WebhookType, WebhookTypeDetails, WebhookTypes} from "~/entities/Webhooks";
+import {WebhookTriggerDetails, WebhookTypeDetails} from "~/entities/Webhooks";
 import Tabs from "~/components/Common/Tabs.vue";
 import RadioDe from "~/components/Stations/Webhooks/Form/RadioDe.vue";
 import GetMeRadio from "~/components/Stations/Webhooks/Form/GetMeRadio.vue";
@@ -55,6 +55,7 @@ import RadioReg from "~/components/Stations/Webhooks/Form/RadioReg.vue";
 import GroupMe from "~/components/Stations/Webhooks/Form/GroupMe.vue";
 import Bluesky from "~/components/Stations/Webhooks/Form/Bluesky.vue";
 import mergeExisting from "~/functions/mergeExisting.ts";
+import {WebhookTypes, WebhookTypesEnum} from "~/entities/PhpClasses.ts";
 
 export interface WebhookComponentProps {
     title: string
@@ -72,12 +73,12 @@ provide('nowPlayingUrl', props.nowPlayingUrl);
 
 const emit = defineEmits<HasRelistEmit>();
 
-const type = ref<WebhookType | null>(null);
+const type = ref<WebhookTypesEnum | null>(null);
 
 const $modal = useTemplateRef('$modal');
 
 const webhookComponents: {
-    [key in WebhookType]: Component
+    [key in WebhookTypesEnum]?: Component
 } = {
     [WebhookTypes.Generic]: Generic,
     [WebhookTypes.Email]: Email,
@@ -134,7 +135,7 @@ const {
     },
     {
         populateForm: (data, formRef) => {
-            type.value = data.type as WebhookType | null;
+            type.value = data.type as WebhookTypesEnum | null;
 
             // Wait for type-specific components to mount.
             void nextTick(() => {
@@ -169,7 +170,7 @@ const clearContents = () => {
     originalClearContents();
 };
 
-const setType = (newType: WebhookType) => {
+const setType = (newType: WebhookTypesEnum) => {
     type.value = newType;
     void nextTick(resetForm);
 };

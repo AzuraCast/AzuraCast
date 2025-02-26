@@ -1,17 +1,5 @@
 import {useTranslate} from "~/vendor/gettext";
-
-export const WebhookTriggers = Object.freeze({
-    SongChanged: 'song_changed',
-    SongChangedLive: 'song_changed_live',
-    ListenerGained: 'listener_gained',
-    ListenerLost: 'listener_lost',
-    LiveConnect: 'live_connect',
-    LiveDisconnect: 'live_disconnect',
-    StationOffline: 'station_offline',
-    StationOnline: 'station_online'
-} as const);
-
-export type WebhookTrigger = typeof WebhookTriggers[keyof typeof WebhookTriggers];
+import {WebhookTriggers, WebhookTriggersEnum, WebhookTypes, WebhookTypesEnum} from "~/entities/PhpClasses.ts";
 
 const allTriggers = [
     WebhookTriggers.SongChanged,
@@ -38,7 +26,7 @@ export interface WebhookTriggerDetail {
     description: string,
 }
 
-export type WebhookTriggerDetails = { [key in WebhookTrigger]: WebhookTriggerDetail }
+export type WebhookTriggerDetails = { [key in WebhookTriggersEnum]: WebhookTriggerDetail }
 
 export function useTriggerDetails(): WebhookTriggerDetails {
     const {$gettext} = useTranslate();
@@ -79,30 +67,12 @@ export function useTriggerDetails(): WebhookTriggerDetails {
     };
 }
 
-export const WebhookTypes = Object.freeze({
-    Generic: 'generic',
-    Email: 'email',
-    TuneIn: 'tunein',
-    RadioDe: 'radiode',
-    RadioReg: 'radioreg',
-    GetMeRadio: 'getmeradio',
-    Discord: 'discord',
-    Telegram: 'telegram',
-    GroupMe: 'groupme',
-    Mastodon: 'mastodon',
-    Bluesky: 'bluesky',
-    GoogleAnalyticsV4: 'google_analytics_v4',
-    MatomoAnalytics: 'matomo_analytics'
-} as const);
-
-export type WebhookType = typeof WebhookTypes[keyof typeof WebhookTypes];
-
 export interface WebhookTypeDetail {
     title: string,
     description: string,
 }
 
-export type WebhookTypeDetails = { [key in WebhookType]: WebhookTypeDetail }
+export type WebhookTypeDetails = { [key in WebhookTypesEnum]?: WebhookTypeDetail }
 
 export function useTypeDetails(): WebhookTypeDetails {
     const {$gettext} = useTranslate();
@@ -163,7 +133,7 @@ export function useTypeDetails(): WebhookTypeDetails {
     };
 }
 
-export function getTriggers(type: WebhookType): WebhookTrigger[] {
+export function getTriggers(type: WebhookTypesEnum): WebhookTriggersEnum[] {
     switch (type) {
         case WebhookTypes.TuneIn:
         case WebhookTypes.RadioDe:

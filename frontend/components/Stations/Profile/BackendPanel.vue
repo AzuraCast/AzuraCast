@@ -88,12 +88,12 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {StationPermissions, userAllowedForStation} from "~/acl";
 import {IconPlay, IconStop, IconUpdate} from "~/components/Common/icons";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
-import {BackendAdapter, BackendAdapters} from "~/entities/RadioAdapters";
+import {BackendAdapters, BackendAdaptersEnum} from "~/entities/PhpClasses";
 
 export interface ProfileBackendPanelParentProps {
     numSongs: number,
     numPlaylists: number,
-    backendType: BackendAdapter,
+    backendType: BackendAdaptersEnum,
     hasStarted: boolean,
     backendRestartUri: string,
     backendStartUri: string,

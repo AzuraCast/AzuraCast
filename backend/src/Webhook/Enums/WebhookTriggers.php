@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Webhook\Enums;
 
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
+
+#[TypeScript]
 enum WebhookTriggers: string
 {
     case SongChanged = 'song_changed';

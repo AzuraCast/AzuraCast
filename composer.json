@@ -72,6 +72,7 @@
     "slim/http": "^1.1",
     "slim/slim": "^4.2",
     "spatie/flysystem-dropbox": "^3",
+    "spatie/typescript-transformer": "*",
     "spomky-labs/otphp": "^11",
     "supervisorphp/supervisor": "dev-main",
     "symfony/cache": "^7",

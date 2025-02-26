@@ -179,10 +179,10 @@ import useOptionalStorage from "~/functions/useOptionalStorage";
 import {IconMoreHoriz, IconPlay, IconStop, IconUpdate} from "~/components/Common/icons";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 
-import {FrontendAdapter, FrontendAdapters} from "~/entities/RadioAdapters.ts";
+import {FrontendAdapters, FrontendAdaptersEnum} from "~/entities/PhpClasses.ts";
 
 export interface ProfileFrontendPanelParentProps {
-    frontendType: FrontendAdapter,
+    frontendType: FrontendAdaptersEnum,
     frontendAdminUri: string,
     frontendAdminPassword: string,
     frontendSourcePassword: string,

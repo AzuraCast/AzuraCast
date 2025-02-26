@@ -115,12 +115,13 @@ import useHasEditModal from "~/functions/useHasEditModal";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-import {useTriggerDetails, useTypeDetails, WebhookTrigger, WebhookType} from "~/entities/Webhooks";
+import {useTriggerDetails, useTypeDetails} from "~/entities/Webhooks";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import {getApiUrl, getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import {HasLinks, StationWebhook} from "~/entities/ApiInterfaces.ts";
+import {WebhookTriggersEnum, WebhookTypesEnum} from "~/entities/PhpClasses.ts";
 
 const listUrl = getStationApiUrl('/webhooks');
 
@@ -152,15 +153,15 @@ const getToggleVariant = (record: Row) => {
         : 'btn-success';
 };
 
-const isWebhookSupported = (key: WebhookType) => {
+const isWebhookSupported = (key: WebhookTypesEnum) => {
     return (key in langTypeDetails);
 }
 
-const getWebhookName = (key: WebhookType) => {
+const getWebhookName = (key: WebhookTypesEnum) => {
     return get(langTypeDetails, [key, 'title'], '');
 };
 
-const getTriggerNames = (triggers: WebhookTrigger[]) => {
+const getTriggerNames = (triggers: WebhookTriggersEnum[]) => {
     return map(triggers, (trigger) => {
         return get(langTriggerDetails, [trigger, 'title'], '');
     });

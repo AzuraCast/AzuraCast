@@ -26,7 +26,8 @@
 </template>
 
 <script setup lang="ts">
-import {WebhookType, WebhookTypeDetails} from "~/entities/Webhooks.ts";
+import {WebhookTypeDetails} from "~/entities/Webhooks.ts";
+import {WebhookTypesEnum} from "~/entities/PhpClasses.ts";
 
 defineProps<{
     title: string,
@@ -34,10 +35,10 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-    (e: 'select', type: WebhookType): void
+    (e: 'select', type: WebhookTypesEnum): void
 }>();
 
-const selectType = (type: WebhookType) => {
+const selectType = (type: WebhookTypesEnum) => {
     emit('select', type);
 }
 </script>

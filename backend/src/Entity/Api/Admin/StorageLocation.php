@@ -159,7 +159,6 @@ final class StorageLocation
     #[OA\Property(
         description: 'The stations using this storage location, if any.',
         items: new OA\Items(type: 'string', example: 'AzuraTest Radio')
-    )
-    ]
+    )]
     public ?array $stations = [];
 }

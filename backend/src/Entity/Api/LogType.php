@@ -10,21 +10,20 @@ use OpenApi\Attributes as OA;
 #[OA\Schema(
     schema: 'Api_LogType',
     required: ['*'],
-    type: 'object',
-    readOnly: true
+    type: 'object'
 )]
 final class LogType
 {
     use HasLinks;
 
     public function __construct(
-        #[OA\Property]
+        #[OA\Property(readOnly: true)]
         public string $key,
-        #[OA\Property]
+        #[OA\Property(readOnly: true)]
         public string $name,
-        #[OA\Property]
+        #[OA\Property(readOnly: true)]
         public string $path,
-        #[OA\Property]
+        #[OA\Property(readOnly: true)]
         public bool $tail = false
     ) {
     }

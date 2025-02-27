@@ -16,6 +16,7 @@ final readonly class NewApiKey
     public function __construct(
         #[OA\Property(
             description: 'The newly generated API key.',
+            readOnly: true,
         )]
         public string $key
     ) {

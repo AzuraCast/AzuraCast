@@ -9,4 +9,5 @@ generateApi({
     url: "http://localhost/api/openapi.yml",
     generateClient: false,
     generateUnionEnums: false,
+    addReadonly: true
 });

@@ -16,6 +16,7 @@ final readonly class TwoFactorStatus
     public function __construct(
         #[OA\Property(
             description: 'The current two-factor status for this account.',
+            readOnly: true
         )]
         public bool $two_factor_enabled,
     ) {

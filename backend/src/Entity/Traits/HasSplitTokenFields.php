@@ -12,12 +12,13 @@ use OpenApi\Attributes as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[OA\Schema(
-    type: 'object',
-    readOnly: true
+    type: 'object'
 )]
 trait HasSplitTokenFields
 {
-    #[OA\Property]
+    #[OA\Property(
+        readOnly: true
+    )]
     #[ORM\Column(length: 16)]
     #[ORM\Id]
     #[Groups([
@@ -26,7 +27,9 @@ trait HasSplitTokenFields
     ])]
     protected string $id;
 
-    #[OA\Property]
+    #[OA\Property(
+        readOnly: true
+    )]
     #[ORM\Column(length: 128)]
     #[AuditIgnore]
     protected string $verifier;

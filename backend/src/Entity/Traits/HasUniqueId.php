@@ -11,14 +11,13 @@ use OpenApi\Attributes as OA;
 use RuntimeException;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[OA\Schema(
-    type: 'object',
-    readOnly: true
-)]
+#[OA\Schema(type: 'object')]
 trait HasUniqueId
 {
     #[
-        OA\Property,
+        OA\Property(
+            readOnly: true
+        ),
         ORM\Column(type: 'guid', unique: true, nullable: false),
         ORM\Id, ORM\GeneratedValue(strategy: 'CUSTOM'), ORM\CustomIdGenerator(UuidV6Generator::class),
         Groups([EntityGroupsInterface::GROUP_ID, EntityGroupsInterface::GROUP_ALL])

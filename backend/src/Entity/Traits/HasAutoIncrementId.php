@@ -11,13 +11,12 @@ use RuntimeException;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[OA\Schema(
-    type: 'object',
-    readOnly: true
+    type: 'object'
 )]
 trait HasAutoIncrementId
 {
     #[
-        OA\Property,
+        OA\Property(readOnly: true),
         ORM\Column(nullable: false),
         ORM\Id,
         ORM\GeneratedValue,

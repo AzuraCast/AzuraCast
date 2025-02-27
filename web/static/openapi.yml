@@ -3757,9 +3757,11 @@ components:
         current_password:
           description: 'The current account password.'
           type: string
+          writeOnly: true
         new_password:
           description: 'The new account password.'
           type: string
+          writeOnly: true
       type: object
     Api_Account_NewApiKey:
       required:
@@ -3768,6 +3770,7 @@ components:
         key:
           description: 'The newly generated API key.'
           type: string
+          readOnly: true
       type: object
     Api_Account_TwoFactorStatus:
       required:
@@ -3776,6 +3779,7 @@ components:
         two_factor_enabled:
           description: 'The current two-factor status for this account.'
           type: boolean
+          readOnly: true
       type: object
     Api_Admin_AuditLog:
       required:
@@ -4458,14 +4462,16 @@ components:
       properties:
         contents:
           type: string
+          readOnly: true
         eof:
           description: 'Whether the log file has ended at this point or has additional data.'
           type: boolean
+          readOnly: true
         position:
           type: integer
+          readOnly: true
           nullable: true
       type: object
-      readOnly: true
     Api_LogType:
       required:
         - key
@@ -4473,7 +4479,6 @@ components:
         - path
         - tail
       type: object
-      readOnly: true
       allOf:
         -
           $ref: '#/components/schemas/HasLinks'
@@ -4481,12 +4486,16 @@ components:
           properties:
             key:
               type: string
+              readOnly: true
             name:
               type: string
+              readOnly: true
             path:
               type: string
+              readOnly: true
             tail:
               type: boolean
+              readOnly: true
           type: object
     Api_NewRecord:
       type: object
@@ -5291,6 +5300,11 @@ components:
           example: true
       type: object
     Api_StationServiceStatus:
+      required:
+        - backend_running
+        - frontend_running
+        - station_has_started
+        - station_needs_restart
       properties:
         backend_running:
           type: boolean
@@ -5364,6 +5378,7 @@ components:
       properties:
         links:
           type: object
+          readOnly: true
           additionalProperties:
             type: string
       type: object
@@ -6111,9 +6126,9 @@ components:
       properties:
         id:
           type: integer
+          readOnly: true
           nullable: true
       type: object
-      readOnly: true
     HasSongFields:
       properties:
         song_id:
@@ -6132,17 +6147,18 @@ components:
       properties:
         id:
           type: string
+          readOnly: true
         verifier:
           type: string
+          readOnly: true
       type: object
-      readOnly: true
     HasUniqueId:
       properties:
         id:
           type: string
+          readOnly: true
           nullable: true
       type: object
-      readOnly: true
     User:
       type: object
       allOf:

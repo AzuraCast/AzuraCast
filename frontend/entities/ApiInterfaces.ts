@@ -18,12 +18,12 @@ export interface ApiAccountChangePassword {
 
 export interface ApiAccountNewApiKey {
   /** The newly generated API key. */
-  key: string;
+  readonly key: string;
 }
 
 export interface ApiAccountTwoFactorStatus {
   /** The current two-factor status for this account. */
-  two_factor_enabled: boolean;
+  readonly two_factor_enabled: boolean;
 }
 
 export interface ApiAdminAuditLog {
@@ -481,17 +481,17 @@ export interface ApiListenerLocation {
 }
 
 export interface ApiLogContents {
-  contents: string;
+  readonly contents: string;
   /** Whether the log file has ended at this point or has additional data. */
-  eof: boolean;
-  position: number | null;
+  readonly eof: boolean;
+  readonly position: number | null;
 }
 
 export type ApiLogType = HasLinks & {
-  key: string;
-  name: string;
-  path: string;
-  tail: boolean;
+  readonly key: string;
+  readonly name: string;
+  readonly path: string;
+  readonly tail: boolean;
 };
 
 export type ApiNewRecord = ApiStatus & {
@@ -1082,13 +1082,13 @@ export interface ApiStationSchedule {
 
 export interface ApiStationServiceStatus {
   /** @example true */
-  backend_running?: boolean;
+  backend_running: boolean;
   /** @example true */
-  frontend_running?: boolean;
+  frontend_running: boolean;
   /** @example true */
-  station_has_started?: boolean;
+  station_has_started: boolean;
   /** @example true */
-  station_needs_restart?: boolean;
+  station_needs_restart: boolean;
 }
 
 export interface ApiStatus {
@@ -1130,7 +1130,7 @@ export interface ApiTime {
 }
 
 export interface HasLinks {
-  links?: Record<string, string>;
+  readonly links?: Record<string, string>;
 }
 
 export interface ApiHasSongFields {
@@ -1741,7 +1741,7 @@ export type StationWebhook = HasAutoIncrementId & {
 };
 
 export interface HasAutoIncrementId {
-  id?: number | null;
+  readonly id?: number | null;
 }
 
 export interface HasSongFields {
@@ -1752,12 +1752,12 @@ export interface HasSongFields {
 }
 
 export interface HasSplitTokenFields {
-  id?: string;
-  verifier?: string;
+  readonly id?: string;
+  readonly verifier?: string;
 }
 
 export interface HasUniqueId {
-  id?: string | null;
+  readonly id?: string | null;
 }
 
 export type User = HasAutoIncrementId & {

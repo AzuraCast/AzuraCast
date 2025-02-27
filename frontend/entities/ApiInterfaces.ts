@@ -28,6 +28,7 @@ export interface ApiAccountTwoFactorStatus {
 
 export interface ApiAdminAuditLog {
   id: number;
+  /** @format date-time */
   timestamp: string;
   operation: 1 | 2 | 3;
   operation_text: string;

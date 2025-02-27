@@ -19,7 +19,7 @@ final readonly class AuditLog
     public function __construct(
         #[OA\Property]
         public int $id,
-        #[OA\Property]
+        #[OA\Property(type: 'string', format: 'date-time')]
         public string $timestamp,
         #[OA\Property(enum: AuditLogOperations::class)]
         public int $operation,

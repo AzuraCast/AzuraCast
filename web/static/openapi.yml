@@ -3798,6 +3798,7 @@ components:
           type: integer
         timestamp:
           type: string
+          format: date-time
         operation:
           type: integer
           enum:

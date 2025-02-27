@@ -74,11 +74,11 @@ import ProfileFrontend, {ProfileFrontendPanelParentProps} from "~/components/Sta
 import ProfileBackendNone from "~/components/Stations/Profile/BackendNonePanel.vue";
 import ProfileBackend, {ProfileBackendPanelParentProps} from "~/components/Stations/Profile/BackendPanel.vue";
 import NowPlayingNotStartedPanel from "~/components/Stations/Profile/NowPlayingNotStartedPanel.vue";
-import {BackendAdapters, FrontendAdapters} from "~/entities/PhpClasses";
 import NowPlaying from "~/entities/NowPlaying";
 import {computed} from "vue";
 import {useAxios} from "~/vendor/axios";
 import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
+import {BackendAdapters, FrontendAdapters} from "~/entities/ApiInterfaces.ts";
 
 export interface EnabledProfileProps extends ProfileBackendPanelParentProps,
     ProfileFrontendPanelParentProps,

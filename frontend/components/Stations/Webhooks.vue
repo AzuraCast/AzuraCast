@@ -120,8 +120,7 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import {getApiUrl, getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
-import {HasLinks, StationWebhook} from "~/entities/ApiInterfaces.ts";
-import {WebhookTriggersEnum, WebhookTypesEnum} from "~/entities/PhpClasses.ts";
+import {HasLinks, StationWebhook, WebhookTriggers, WebhookTypes} from "~/entities/ApiInterfaces.ts";
 
 const listUrl = getStationApiUrl('/webhooks');
 
@@ -153,15 +152,15 @@ const getToggleVariant = (record: Row) => {
         : 'btn-success';
 };
 
-const isWebhookSupported = (key: WebhookTypesEnum) => {
+const isWebhookSupported = (key: WebhookTypes) => {
     return (key in langTypeDetails);
 }
 
-const getWebhookName = (key: WebhookTypesEnum) => {
+const getWebhookName = (key: WebhookTypes) => {
     return get(langTypeDetails, [key, 'title'], '');
 };
 
-const getTriggerNames = (triggers: WebhookTriggersEnum[]) => {
+const getTriggerNames = (triggers: WebhookTriggers[]) => {
     return map(triggers, (trigger) => {
         return get(langTriggerDetails, [trigger, 'title'], '');
     });

@@ -1,5 +1,5 @@
 import {useTranslate} from "~/vendor/gettext";
-import {WebhookTriggers, WebhookTriggersEnum, WebhookTypes, WebhookTypesEnum} from "~/entities/PhpClasses.ts";
+import {WebhookTriggers, WebhookTypes} from "~/entities/ApiInterfaces.ts";
 
 const allTriggers = [
     WebhookTriggers.SongChanged,
@@ -26,7 +26,7 @@ export interface WebhookTriggerDetail {
     description: string,
 }
 
-export type WebhookTriggerDetails = { [key in WebhookTriggersEnum]: WebhookTriggerDetail }
+export type WebhookTriggerDetails = { [key in WebhookTriggers]: WebhookTriggerDetail }
 
 export function useTriggerDetails(): WebhookTriggerDetails {
     const {$gettext} = useTranslate();
@@ -72,7 +72,12 @@ export interface WebhookTypeDetail {
     description: string,
 }
 
-export type WebhookTypeDetails = { [key in WebhookTypesEnum]?: WebhookTypeDetail }
+export type ActiveWebhookTypes = Exclude<
+    WebhookTypes,
+    WebhookTypes.Twitter | WebhookTypes.GoogleAnalyticsV3
+>;
+
+export type WebhookTypeDetails = { [key in ActiveWebhookTypes]: WebhookTypeDetail }
 
 export function useTypeDetails(): WebhookTypeDetails {
     const {$gettext} = useTranslate();
@@ -133,7 +138,7 @@ export function useTypeDetails(): WebhookTypeDetails {
     };
 }
 
-export function getTriggers(type: WebhookTypesEnum): WebhookTriggersEnum[] {
+export function getTriggers(type: WebhookTypes): WebhookTriggers[] {
     switch (type) {
         case WebhookTypes.TuneIn:
         case WebhookTypes.RadioDe:

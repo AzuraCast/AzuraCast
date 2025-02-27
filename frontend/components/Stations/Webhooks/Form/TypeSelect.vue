@@ -50,17 +50,17 @@
 import {WebhookTypeDetails} from "~/entities/Webhooks";
 import TypeSelectSection from "~/components/Stations/Webhooks/Form/TypeSelectSection.vue";
 import {reactivePick} from "@vueuse/core";
-import {WebhookTypes, WebhookTypesEnum} from "~/entities/PhpClasses.ts";
+import {WebhookTypes} from "~/entities/ApiInterfaces.ts";
 
 defineProps<{
     typeDetails: WebhookTypeDetails
 }>();
 
 const emit = defineEmits<{
-    (e: 'select', type: WebhookTypesEnum): void
+    (e: 'select', type: WebhookTypes): void
 }>();
 
-const selectType = (type: WebhookTypesEnum) => {
+const selectType = (type: WebhookTypes) => {
     emit('select', type);
 }
 </script>

@@ -8,9 +8,9 @@ use App\Radio\Frontend\AbstractFrontend;
 use App\Radio\Frontend\Icecast;
 use App\Radio\Frontend\Rsas;
 use App\Radio\Frontend\Shoutcast;
-use Spatie\TypeScriptTransformer\Attributes\TypeScript;
+use OpenApi\Attributes as OA;
 
-#[TypeScript]
+#[OA\Schema(type: 'string')]
 enum FrontendAdapters: string implements AdapterTypeInterface
 {
     case Icecast = 'icecast';

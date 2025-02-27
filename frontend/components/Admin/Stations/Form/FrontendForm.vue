@@ -168,7 +168,6 @@
 <script setup lang="ts">
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {FrontendAdapters} from "~/entities/PhpClasses";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
@@ -179,6 +178,7 @@ import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 import {GenericForm} from "~/entities/Forms.ts";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
+import {FrontendAdapters} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     isRsasInstalled: boolean,

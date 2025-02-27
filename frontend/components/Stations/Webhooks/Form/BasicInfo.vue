@@ -49,10 +49,10 @@ import {useTranslate} from "~/vendor/gettext.ts";
 import {getTriggers, WebhookTriggerDetails} from "~/entities/Webhooks.ts";
 import {computed} from "vue";
 import {GenericForm} from "~/entities/Forms.ts";
-import {WebhookTypesEnum} from "~/entities/PhpClasses.ts";
+import {WebhookTypes} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
-    type: WebhookTypesEnum | null
+    type: WebhookTypes | null
     triggerDetails: WebhookTriggerDetails
 }>();
 

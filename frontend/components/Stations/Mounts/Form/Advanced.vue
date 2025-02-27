@@ -32,15 +32,15 @@
 </template>
 
 <script setup lang="ts">
-import {FrontendAdapters, FrontendAdaptersEnum} from "~/entities/PhpClasses";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {computed} from "vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import Tab from "~/components/Common/Tab.vue";
 import {GenericForm} from "~/entities/Forms.ts";
+import {FrontendAdapters} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
-    stationFrontendType: FrontendAdaptersEnum
+    stationFrontendType: FrontendAdapters
 }>();
 
 const form = defineModel<GenericForm>('form', {required: true});

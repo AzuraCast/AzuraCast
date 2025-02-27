@@ -84,10 +84,10 @@ import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
-import {FrontendAdaptersEnum} from "~/entities/PhpClasses.ts";
+import {FrontendAdapters} from "~/entities/ApiInterfaces.ts";
 
 defineProps<{
-    stationFrontendType: FrontendAdaptersEnum
+    stationFrontendType: FrontendAdapters
 }>();
 
 const listUrl = getStationApiUrl('/mounts');

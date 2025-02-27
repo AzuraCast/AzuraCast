@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Radio\Enums;
 
 use App\Radio\Backend\Liquidsoap;
-use Spatie\TypeScriptTransformer\Attributes\TypeScript;
+use OpenApi\Attributes as OA;
 
-#[TypeScript]
+#[OA\Schema(type: 'string')]
 enum BackendAdapters: string implements AdapterTypeInterface
 {
     case Liquidsoap = 'liquidsoap';

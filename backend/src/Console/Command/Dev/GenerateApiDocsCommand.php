@@ -62,18 +62,7 @@ final class GenerateApiDocsCommand extends CommandAbstract
         define('AZURACAST_API_NAME', 'AzuraCast Public Demo Server');
         define('AZURACAST_VERSION', $version ?? Version::STABLE_VERSION);
 
-        $finder = Util::finder(
-            [
-                $this->environment->getBackendDirectory() . '/src/OpenApi.php',
-                $this->environment->getBackendDirectory() . '/src/Entity',
-                $this->environment->getBackendDirectory() . '/src/Controller/Api',
-            ],
-            [
-                'bootstrap',
-                'locale',
-                'templates',
-            ]
-        );
+        $finder = Util::finder($this->environment->getBackendDirectory() . '/src');
 
         $generator = new Generator($this->logger);
 

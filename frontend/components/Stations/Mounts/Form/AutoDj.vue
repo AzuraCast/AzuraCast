@@ -47,11 +47,11 @@ import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
-import {FrontendAdaptersEnum} from "~/entities/PhpClasses.ts";
 import {GenericForm} from "~/entities/Forms.ts";
+import {FrontendAdapters} from "~/entities/ApiInterfaces.ts";
 
 defineProps<{
-    stationFrontendType: FrontendAdaptersEnum
+    stationFrontendType: FrontendAdapters
 }>();
 
 const form = defineModel<GenericForm>('form', {required: true});

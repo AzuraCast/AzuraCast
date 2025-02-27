@@ -178,11 +178,10 @@ import {StationPermissions, userAllowedForStation} from "~/acl";
 import useOptionalStorage from "~/functions/useOptionalStorage";
 import {IconMoreHoriz, IconPlay, IconStop, IconUpdate} from "~/components/Common/icons";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
-
-import {FrontendAdapters, FrontendAdaptersEnum} from "~/entities/PhpClasses.ts";
+import {FrontendAdapters} from "~/entities/ApiInterfaces.ts";
 
 export interface ProfileFrontendPanelParentProps {
-    frontendType: FrontendAdaptersEnum,
+    frontendType: FrontendAdapters,
     frontendAdminUri: string,
     frontendAdminPassword: string,
     frontendSourcePassword: string,

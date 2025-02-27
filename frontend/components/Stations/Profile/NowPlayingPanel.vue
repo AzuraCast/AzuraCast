@@ -241,7 +241,6 @@
 </template>
 
 <script setup lang="ts">
-import {BackendAdapters, BackendAdaptersEnum} from "~/entities/PhpClasses";
 import Icon from "~/components/Common/Icon.vue";
 import {computed, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -262,9 +261,10 @@ import {
 import UpdateMetadataModal from "~/components/Stations/Profile/UpdateMetadataModal.vue";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 import {NowPlayingProps} from "~/functions/useNowPlaying.ts";
+import {BackendAdapters} from "~/entities/ApiInterfaces.ts";
 
 export interface ProfileNowPlayingPanelProps extends NowPlayingProps {
-    backendType: BackendAdaptersEnum,
+    backendType: BackendAdapters,
     backendSkipSongUri: string,
     backendDisconnectStreamerUri: string
 }

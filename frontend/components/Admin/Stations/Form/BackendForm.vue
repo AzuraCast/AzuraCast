@@ -298,7 +298,6 @@
 <script setup lang="ts">
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {AudioProcessingMethods, BackendAdapters} from "~/entities/PhpClasses";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {computed} from "vue";
@@ -310,6 +309,7 @@ import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 import {GenericForm} from "~/entities/Forms.ts";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
+import {AudioProcessingMethods, BackendAdapters} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     isStereoToolInstalled: boolean

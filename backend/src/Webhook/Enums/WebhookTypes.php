@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Webhook\Enums;
 
-use App\TypeScript\IgnoreCase;
 use App\Webhook\Connector\Bluesky;
 use App\Webhook\Connector\Discord;
 use App\Webhook\Connector\Email;
@@ -18,9 +17,9 @@ use App\Webhook\Connector\RadioDe;
 use App\Webhook\Connector\RadioReg;
 use App\Webhook\Connector\Telegram;
 use App\Webhook\Connector\TuneIn;
-use Spatie\TypeScriptTransformer\Attributes\TypeScript;
+use OpenApi\Attributes as OA;
 
-#[TypeScript]
+#[OA\Schema(type: 'string')]
 enum WebhookTypes: string
 {
     case Generic = 'generic';
@@ -41,10 +40,7 @@ enum WebhookTypes: string
     case MatomoAnalytics = 'matomo_analytics';
 
     // Retired connectors
-    #[IgnoreCase]
     case Twitter = 'twitter';
-
-    #[IgnoreCase]
     case GoogleAnalyticsV3 = 'google_analytics';
 
     /**

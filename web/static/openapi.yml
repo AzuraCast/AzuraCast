@@ -5695,14 +5695,12 @@ components:
               type: boolean
               example: true
             frontend_type:
-              description: 'The frontend adapter (icecast,shoutcast,remote,etc)'
-              example: icecast
+              $ref: '#/components/schemas/FrontendAdapters'
             frontend_config:
               description: 'An array containing station-specific frontend configuration'
               type: object
             backend_type:
-              description: 'The backend adapter (liquidsoap,etc)'
-              example: liquidsoap
+              $ref: '#/components/schemas/BackendAdapters'
             backend_config:
               description: 'An array containing station-specific backend configuration'
               type: object
@@ -6016,8 +6014,7 @@ components:
               example: 'Twitter Post'
               nullable: true
             type:
-              description: 'The type of webhook connector to use.'
-              example: twitter
+              $ref: '#/components/schemas/WebhookTypes'
             is_enabled:
               type: boolean
               example: true
@@ -6111,6 +6108,118 @@ components:
               type: array
               items: {  }
           type: object
+    AudioProcessingMethods:
+      type: string
+      enum:
+        - none
+        - nrj
+        - master_me
+        - stereo_tool
+      x-enumNames:
+        - None
+        - Liquidsoap
+        - MasterMe
+        - StereoTool
+    BackendAdapters:
+      type: string
+      enum:
+        - liquidsoap
+        - none
+      x-enumNames:
+        - Liquidsoap
+        - None
+    FrontendAdapters:
+      type: string
+      enum:
+        - icecast
+        - shoutcast2
+        - rsas
+        - remote
+      x-enumNames:
+        - Icecast
+        - Shoutcast
+        - Rsas
+        - Remote
+    MasterMePresets:
+      type: string
+      enum:
+        - music_general
+        - speech_general
+        - ebu_r128
+        - apple_podcasts
+        - youtube
+      x-enumNames:
+        - MusicGeneral
+        - SpeechGeneral
+        - EbuR128
+        - ApplePodcasts
+        - YouTube
+    RemoteAdapters:
+      type: string
+      enum:
+        - shoutcast1
+        - shoutcast2
+        - icecast
+        - azurarelay
+      x-enumNames:
+        - Shoutcast1
+        - Shoutcast2
+        - Icecast
+        - AzuraRelay
+    WebhookTriggers:
+      type: string
+      enum:
+        - song_changed
+        - song_changed_live
+        - listener_gained
+        - listener_lost
+        - live_connect
+        - live_disconnect
+        - station_offline
+        - station_online
+      x-enumNames:
+        - SongChanged
+        - SongChangedLive
+        - ListenerGained
+        - ListenerLost
+        - LiveConnect
+        - LiveDisconnect
+        - StationOffline
+        - StationOnline
+    WebhookTypes:
+      type: string
+      enum:
+        - generic
+        - email
+        - tunein
+        - radiode
+        - radioreg
+        - getmeradio
+        - discord
+        - telegram
+        - groupme
+        - mastodon
+        - bluesky
+        - google_analytics_v4
+        - matomo_analytics
+        - twitter
+        - google_analytics
+      x-enumNames:
+        - Generic
+        - Email
+        - TuneIn
+        - RadioDe
+        - RadioReg
+        - GetMeRadio
+        - Discord
+        - Telegram
+        - GroupMe
+        - Mastodon
+        - Bluesky
+        - GoogleAnalyticsV4
+        - MatomoAnalytics
+        - Twitter
+        - GoogleAnalyticsV3
   responses:
     Success:
       description: Success

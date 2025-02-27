@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Radio\Enums;
 
-use Spatie\TypeScriptTransformer\Attributes\TypeScript;
+use OpenApi\Attributes as OA;
 
-#[TypeScript]
+#[OA\Schema(type: 'string')]
 enum AudioProcessingMethods: string
 {
     case None = 'none';

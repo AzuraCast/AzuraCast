@@ -9,8 +9,6 @@
  * ---------------------------------------------------------------
  */
 
-type UtilRequiredKeys<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
-
 export interface ApiAccountChangePassword {
   /** The current account password. */
   current_password: string;
@@ -489,7 +487,7 @@ export interface ApiLogContents {
   position: number | null;
 }
 
-export type ApiLogType = UtilRequiredKeys<HasLinks, "links"> & {
+export type ApiLogType = HasLinks & {
   key: string;
   name: string;
   path: string;
@@ -1503,18 +1501,10 @@ export type Station = HasAutoIncrementId & {
    * @example true
    */
   is_enabled?: boolean;
-  /**
-   * The frontend adapter (icecast,shoutcast,remote,etc)
-   * @example "icecast"
-   */
-  frontend_type?: any;
+  frontend_type?: FrontendAdapters;
   /** An array containing station-specific frontend configuration */
   frontend_config?: object;
-  /**
-   * The backend adapter (liquidsoap,etc)
-   * @example "liquidsoap"
-   */
-  backend_type?: any;
+  backend_type?: BackendAdapters;
   /** An array containing station-specific backend configuration */
   backend_config?: object;
   /** @example "A sample radio station." */
@@ -1737,11 +1727,7 @@ export type StationWebhook = HasAutoIncrementId & {
    * @example "Twitter Post"
    */
   name?: string | null;
-  /**
-   * The type of webhook connector to use.
-   * @example "twitter"
-   */
-  type?: any;
+  type?: WebhookTypes;
   /** @example true */
   is_enabled?: boolean;
   /** List of events that should trigger the webhook notification. */
@@ -1792,3 +1778,66 @@ export type User = HasAutoIncrementId & {
   /** Role> */
   roles?: any[];
 };
+
+export enum AudioProcessingMethods {
+  None = "none",
+  Liquidsoap = "nrj",
+  MasterMe = "master_me",
+  StereoTool = "stereo_tool",
+}
+
+export enum BackendAdapters {
+  Liquidsoap = "liquidsoap",
+  None = "none",
+}
+
+export enum FrontendAdapters {
+  Icecast = "icecast",
+  Shoutcast = "shoutcast2",
+  Rsas = "rsas",
+  Remote = "remote",
+}
+
+export enum MasterMePresets {
+  MusicGeneral = "music_general",
+  SpeechGeneral = "speech_general",
+  EbuR128 = "ebu_r128",
+  ApplePodcasts = "apple_podcasts",
+  YouTube = "youtube",
+}
+
+export enum RemoteAdapters {
+  Shoutcast1 = "shoutcast1",
+  Shoutcast2 = "shoutcast2",
+  Icecast = "icecast",
+  AzuraRelay = "azurarelay",
+}
+
+export enum WebhookTriggers {
+  SongChanged = "song_changed",
+  SongChangedLive = "song_changed_live",
+  ListenerGained = "listener_gained",
+  ListenerLost = "listener_lost",
+  LiveConnect = "live_connect",
+  LiveDisconnect = "live_disconnect",
+  StationOffline = "station_offline",
+  StationOnline = "station_online",
+}
+
+export enum WebhookTypes {
+  Generic = "generic",
+  Email = "email",
+  TuneIn = "tunein",
+  RadioDe = "radiode",
+  RadioReg = "radioreg",
+  GetMeRadio = "getmeradio",
+  Discord = "discord",
+  Telegram = "telegram",
+  GroupMe = "groupme",
+  Mastodon = "mastodon",
+  Bluesky = "bluesky",
+  GoogleAnalyticsV4 = "google_analytics_v4",
+  MatomoAnalytics = "matomo_analytics",
+  Twitter = "twitter",
+  GoogleAnalyticsV3 = "google_analytics",
+}

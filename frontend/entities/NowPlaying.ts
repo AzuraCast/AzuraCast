@@ -49,6 +49,7 @@ const npEmpty: ApiNowPlaying = {
     },
     playing_next: {
         cued_at: 0,
+        played_at: 0,
         duration: 0,
         playlist: 'default',
         is_request: false,

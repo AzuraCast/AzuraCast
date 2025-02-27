@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\ApiGenerator;
 
 use App\Entity\Api\NowPlaying\Station as NowPlayingStation;
+use App\Entity\Api\ResolvableUrl;
 use App\Entity\Station;
 use App\Http\Router;
 use App\Radio\Adapters;
@@ -37,17 +38,23 @@ final class StationApiGenerator
         $response->url = $station->getUrl();
         $response->is_public = $station->getEnablePublicPage();
 
-        $response->public_player_url = $this->router->named(
-            'public:index',
-            ['station_id' => $station->getShortName()]
+        $response->public_player_url = new ResolvableUrl(
+            $this->router->namedAsUri(
+                'public:index',
+                ['station_id' => $station->getShortName()]
+            )
         );
-        $response->playlist_pls_url = $this->router->named(
-            'public:playlist',
-            ['station_id' => $station->getShortName(), 'format' => 'pls']
+        $response->playlist_pls_url = new ResolvableUrl(
+            $this->router->namedAsUri(
+                'public:playlist',
+                ['station_id' => $station->getShortName(), 'format' => 'pls']
+            )
         );
-        $response->playlist_m3u_url = $this->router->named(
-            'public:playlist',
-            ['station_id' => $station->getShortName(), 'format' => 'm3u']
+        $response->playlist_m3u_url = new ResolvableUrl(
+            $this->router->namedAsUri(
+                'public:playlist',
+                ['station_id' => $station->getShortName(), 'format' => 'm3u']
+            )
         );
 
         $mounts = [];
@@ -77,7 +84,7 @@ final class StationApiGenerator
 
         // Pull the "listen URL" from the best available source for the station.
         $response->listen_url = match (true) {
-            (null !== $frontend) => $frontend->getStreamUrl($station, $baseUri),
+            (null !== $frontend) => new ResolvableUrl($frontend->getStreamUrl($station, $baseUri)),
             (count($remotes) > 0) => $remotes[0]->url,
             default => null
         };
@@ -86,7 +93,7 @@ final class StationApiGenerator
         $response->hls_is_default = $response->hls_enabled && $station->getBackendConfig()->getHlsIsDefault();
 
         $response->hls_url = (null !== $backend && $response->hls_enabled)
-            ? $backend->getHlsUrl($station, $baseUri)
+            ? new ResolvableUrl($backend->getHlsUrl($station, $baseUri))
             : null;
 
         $hlsListeners = 0;

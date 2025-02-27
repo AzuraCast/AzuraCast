@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Api\ResolvableUrl;
 use App\Radio\Enums\AdapterTypeInterface;
 use App\Radio\Enums\RemoteAdapters;
 use App\Radio\Enums\StreamFormats;
@@ -399,7 +400,7 @@ class StationRemote implements
 
         $response->id = $this->getIdRequired();
         $response->name = $this->getDisplayName();
-        $response->url = $adapter->getPublicUrl($this);
+        $response->url = new ResolvableUrl($adapter->getPublicUrl($this));
 
         $response->listeners = new Api\NowPlaying\Listeners(
             total: $this->listeners_total,

@@ -131,15 +131,10 @@ final class HistoryAction implements SingleActionInterface
 
         $paginator = Paginator::fromQueryBuilder($qb, $request);
 
-        $router = $request->getRouter();
-
         $paginator->setPostprocessor(
-            function ($shRow) use ($router) {
+            function ($shRow) {
                 /** @var SongHistory $shRow */
-                $row = $this->songHistoryApiGenerator->detailed($shRow);
-                $row->resolveUrls($router->getBaseUrl());
-
-                return $row;
+                return $this->songHistoryApiGenerator->detailed($shRow);
             }
         );
 

@@ -58,8 +58,6 @@ final class RelaysController
     ): ResponseInterface {
         $stations = $this->getManageableStations($request);
 
-        $router = $request->getRouter();
-
         $return = [];
         foreach ($stations as $station) {
             $row = new ApiRelay();
@@ -88,7 +86,6 @@ final class RelaysController
             }
 
             $row->mounts = $mounts;
-            $row->resolveUrls($router->getBaseUrl());
 
             $return[] = $row;
         }

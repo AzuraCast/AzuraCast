@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\NowPlaying;
 
-use App\Entity\Api\ResolvableUrlInterface;
 use App\Entity\Api\Song;
 use App\OpenApi;
 use OpenApi\Attributes as OA;
-use Psr\Http\Message\UriInterface;
 
 #[OA\Schema(
     schema: 'Api_NowPlaying_StationQueue',
+    required: ['*'],
     type: 'object'
 )]
-class StationQueue implements ResolvableUrlInterface
+class StationQueue
 {
     #[OA\Property(
         description: 'UNIX timestamp when the AutoDJ is expected to queue the song for playback.',
@@ -47,14 +46,4 @@ class StationQueue implements ResolvableUrlInterface
 
     #[OA\Property]
     public Song $song;
-
-    /**
-     * Re-resolve any Uri instances to reflect base URL changes.
-     *
-     * @param UriInterface $base
-     */
-    public function resolveUrls(UriInterface $base): void
-    {
-        $this->song->resolveUrls($base);
-    }
 }

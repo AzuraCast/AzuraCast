@@ -4502,6 +4502,9 @@ components:
                 example: 'http://localhost/api/record/1'
           type: object
     Api_NowPlaying_CurrentSong:
+      required:
+        - elapsed
+        - remaining
       type: object
       allOf:
         -
@@ -4518,6 +4521,10 @@ components:
               example: 155
           type: object
     Api_NowPlaying_Listeners:
+      required:
+        - total
+        - unique
+        - current
       properties:
         total:
           description: 'Total non-unique current listeners'
@@ -4533,6 +4540,11 @@ components:
           example: 20
       type: object
     Api_NowPlaying_Live:
+      required:
+        - is_live
+        - streamer_name
+        - broadcast_start
+        - art
       properties:
         is_live:
           description: 'Whether the stream is known to currently have a live DJ.'
@@ -4549,10 +4561,20 @@ components:
           nullable: true
         art:
           description: 'URL to the streamer artwork (if available).'
+          type: string
           example: 'https://picsum.photos/1200/1200'
           nullable: true
       type: object
     Api_NowPlaying:
+      required:
+        - station
+        - listeners
+        - live
+        - now_playing
+        - playing_next
+        - song_history
+        - is_online
+        - cache
       properties:
         station:
           $ref: '#/components/schemas/Api_NowPlaying_Station'
@@ -4588,6 +4610,14 @@ components:
           nullable: true
       type: object
     Api_NowPlaying_SongHistory:
+      required:
+        - sh_id
+        - played_at
+        - duration
+        - playlist
+        - streamer
+        - is_request
+        - song
       properties:
         sh_id:
           description: 'Song history unique identifier'
@@ -4617,6 +4647,26 @@ components:
           $ref: '#/components/schemas/Api_Song'
       type: object
     Api_NowPlaying_Station:
+      required:
+        - id
+        - name
+        - shortcode
+        - description
+        - frontend
+        - backend
+        - timezone
+        - listen_url
+        - url
+        - public_player_url
+        - playlist_pls_url
+        - playlist_m3u_url
+        - is_public
+        - mounts
+        - remotes
+        - hls_enabled
+        - hls_is_default
+        - hls_url
+        - hls_listeners
       properties:
         id:
           description: 'Station ID'
@@ -4648,6 +4698,7 @@ components:
           example: America/Chicago
         listen_url:
           description: 'The full URL to listen to the default mount of the station'
+          type: string
           example: 'http://localhost:8000/radio.mp3'
         url:
           description: 'The public URL of the station.'
@@ -4656,12 +4707,15 @@ components:
           nullable: true
         public_player_url:
           description: 'The public player URL for the station.'
+          type: string
           example: 'https://example.com/public/example_station'
         playlist_pls_url:
           description: 'The playlist download URL in PLS format.'
+          type: string
           example: 'https://example.com/public/example_station/playlist.pls'
         playlist_m3u_url:
           description: 'The playlist download URL in M3U format.'
+          type: string
           example: 'https://example.com/public/example_station/playlist.m3u'
         is_public:
           description: 'If the station is public (i.e. should be shown in listings of all stations)'
@@ -4685,6 +4739,7 @@ components:
           example: true
         hls_url:
           description: 'The full URL to listen to the HLS stream for the station.'
+          type: string
           example: 'https://example.com/hls/azuratest_radio/live.m3u8'
           nullable: true
         hls_listeners:
@@ -4693,6 +4748,9 @@ components:
           example: 1
       type: object
     Api_NowPlaying_StationMount:
+      required:
+        - path
+        - is_default
       type: object
       allOf:
         -
@@ -4709,6 +4767,13 @@ components:
               example: true
           type: object
     Api_NowPlaying_StationQueue:
+      required:
+        - cued_at
+        - played_at
+        - duration
+        - playlist
+        - is_request
+        - song
       properties:
         cued_at:
           description: 'UNIX timestamp when the AutoDJ is expected to queue the song for playback.'
@@ -4736,6 +4801,13 @@ components:
           $ref: '#/components/schemas/Api_Song'
       type: object
     Api_NowPlaying_StationRemote:
+      required:
+        - id
+        - name
+        - url
+        - bitrate
+        - format
+        - listeners
       properties:
         id:
           description: 'Mount/Remote ID number.'
@@ -4747,6 +4819,7 @@ components:
           example: /radio.mp3
         url:
           description: 'Full listening URL specific to this mount'
+          type: string
           example: 'http://localhost:8000/radio.mp3'
         bitrate:
           description: 'Bitrate (kbps) of the broadcasted audio (if known)'
@@ -4902,6 +4975,8 @@ components:
           type: string
           nullable: true
       type: object
+    Api_ResolvableUrl:
+      type: string
     Api_Song:
       type: object
       allOf:
@@ -4915,6 +4990,7 @@ components:
               example: 9f33bbc912c19603e51be8e0987d076b
             art:
               description: 'URL to the album artwork (if available).'
+              type: string
               example: 'https://picsum.photos/1200/1200'
             custom_fields:
               type: array

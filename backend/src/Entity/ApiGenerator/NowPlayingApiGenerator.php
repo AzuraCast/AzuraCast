@@ -10,6 +10,7 @@ use App\Entity\Api\NowPlaying\CurrentSong;
 use App\Entity\Api\NowPlaying\Listeners;
 use App\Entity\Api\NowPlaying\Live;
 use App\Entity\Api\NowPlaying\NowPlaying;
+use App\Entity\Api\ResolvableUrl;
 use App\Entity\Repository\SongHistoryRepository;
 use App\Entity\Repository\StationQueueRepository;
 use App\Entity\Repository\StationStreamerBroadcastRepository;
@@ -138,13 +139,15 @@ final class NowPlayingApiGenerator
                 ?->getTimestampStart()?->getTimestamp();
 
             if (0 !== $currentStreamer->getArtUpdatedAt()) {
-                $live->art = $this->router->namedAsUri(
-                    routeName: 'api:stations:streamer:art',
-                    routeParams: [
-                        'station_id' => $station->getShortName(),
-                        'id' => $currentStreamer->getIdRequired(),
-                        'timestamp' => $currentStreamer->getArtUpdatedAt(),
-                    ],
+                $live->art = new ResolvableUrl(
+                    $this->router->namedAsUri(
+                        routeName: 'api:stations:streamer:art',
+                        routeParams: [
+                            'station_id' => $station->getShortName(),
+                            'id' => $currentStreamer->getIdRequired(),
+                            'timestamp' => $currentStreamer->getArtUpdatedAt(),
+                        ],
+                    )
                 );
             }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Api\ResolvableUrl;
 use App\Radio\Enums\AdapterTypeInterface;
 use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\StreamFormats;
@@ -440,7 +441,9 @@ class StationMount implements
         $response->name = $this->getDisplayName();
         $response->path = $this->getName();
         $response->is_default = $this->is_default;
-        $response->url = $fa->getUrlForMount($this->station, $this, $baseUrl);
+        $response->url = new ResolvableUrl(
+            $fa->getUrlForMount($this->station, $this, $baseUrl)
+        );
 
         $response->listeners = new Api\NowPlaying\Listeners(
             total: $this->listeners_total,

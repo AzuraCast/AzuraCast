@@ -503,12 +503,12 @@ export type ApiNowPlayingCurrentSong = ApiNowPlayingSongHistory & {
    * Elapsed time of the song's playback since it started.
    * @example 25
    */
-  elapsed?: number;
+  elapsed: number;
   /**
    * Remaining time in the song, in seconds.
    * @example 155
    */
-  remaining?: number;
+  remaining: number;
 };
 
 export interface ApiNowPlayingListeners {
@@ -516,17 +516,17 @@ export interface ApiNowPlayingListeners {
    * Total non-unique current listeners
    * @example 20
    */
-  total?: number;
+  total: number;
   /**
    * Total unique current listeners
    * @example 15
    */
-  unique?: number;
+  unique: number;
   /**
    * Total non-unique current listeners (Legacy field, may be retired in the future.)
    * @example 20
    */
-  current?: number;
+  current: number;
 }
 
 export interface ApiNowPlayingLive {
@@ -534,66 +534,66 @@ export interface ApiNowPlayingLive {
    * Whether the stream is known to currently have a live DJ.
    * @example false
    */
-  is_live?: boolean;
+  is_live: boolean;
   /**
    * The current active streamer/DJ, if one is available.
    * @example "DJ Jazzy Jeff"
    */
-  streamer_name?: string;
+  streamer_name: string;
   /**
    * The start timestamp of the current broadcast, if one is available.
    * @example "1591548318"
    */
-  broadcast_start?: number | null;
+  broadcast_start: number | null;
   /**
    * URL to the streamer artwork (if available).
    * @example "https://picsum.photos/1200/1200"
    */
-  art?: any;
+  art: string | null;
 }
 
 export interface ApiNowPlaying {
-  station?: ApiNowPlayingStation;
-  listeners?: ApiNowPlayingListeners;
-  live?: ApiNowPlayingLive;
-  now_playing?: ApiNowPlayingCurrentSong | null;
-  playing_next?: ApiNowPlayingStationQueue | null;
-  song_history?: ApiNowPlayingSongHistory[];
+  station: ApiNowPlayingStation;
+  listeners: ApiNowPlayingListeners;
+  live: ApiNowPlayingLive;
+  now_playing: ApiNowPlayingCurrentSong | null;
+  playing_next: ApiNowPlayingStationQueue | null;
+  song_history: ApiNowPlayingSongHistory[];
   /**
    * Whether the stream is currently online.
    * @example true
    */
-  is_online?: boolean;
+  is_online: boolean;
   /** Debugging information about where the now playing data comes from. */
-  cache?: "hit" | "database" | "station" | null;
+  cache: "hit" | "database" | "station" | null;
 }
 
 export interface ApiNowPlayingSongHistory {
   /** Song history unique identifier */
-  sh_id?: number;
+  sh_id: number;
   /**
    * UNIX timestamp when playback started.
    * @example 1609480800
    */
-  played_at?: number;
+  played_at: number;
   /**
    * Duration of the song in seconds
    * @example 180
    */
-  duration?: number;
+  duration: number;
   /**
    * Indicates the playlist that the song was played from, if available, or empty string if not.
    * @example "Top 100"
    */
-  playlist?: string | null;
+  playlist: string | null;
   /**
    * Indicates the current streamer that was connected, if available, or empty string if not.
    * @example "Test DJ"
    */
-  streamer?: string | null;
+  streamer: string | null;
   /** Indicates whether the song is a listener request. */
-  is_request?: boolean;
-  song?: ApiSong;
+  is_request: boolean;
+  song: ApiSong;
 }
 
 export interface ApiNowPlayingStation {
@@ -601,89 +601,89 @@ export interface ApiNowPlayingStation {
    * Station ID
    * @example 1
    */
-  id?: number;
+  id: number;
   /**
    * Station name
    * @example "AzuraTest Radio"
    */
-  name?: string;
+  name: string;
   /**
    * Station "short code", used for URL and folder paths
    * @example "azuratest_radio"
    */
-  shortcode?: string;
+  shortcode: string;
   /**
    * Station description
    * @example "An AzuraCast station!"
    */
-  description?: string;
+  description: string;
   /**
    * Which broadcasting software (frontend) the station uses
    * @example "shoutcast2"
    */
-  frontend?: string;
+  frontend: string;
   /**
    * Which AutoDJ software (backend) the station uses
    * @example "liquidsoap"
    */
-  backend?: string;
+  backend: string;
   /**
    * The station's IANA time zone
    * @example "America/Chicago"
    */
-  timezone?: string;
+  timezone: string;
   /**
    * The full URL to listen to the default mount of the station
    * @example "http://localhost:8000/radio.mp3"
    */
-  listen_url?: any;
+  listen_url: string;
   /**
    * The public URL of the station.
    * @example "https://example.com/"
    */
-  url?: string | null;
+  url: string | null;
   /**
    * The public player URL for the station.
    * @example "https://example.com/public/example_station"
    */
-  public_player_url?: any;
+  public_player_url: string;
   /**
    * The playlist download URL in PLS format.
    * @example "https://example.com/public/example_station/playlist.pls"
    */
-  playlist_pls_url?: any;
+  playlist_pls_url: string;
   /**
    * The playlist download URL in M3U format.
    * @example "https://example.com/public/example_station/playlist.m3u"
    */
-  playlist_m3u_url?: any;
+  playlist_m3u_url: string;
   /**
    * If the station is public (i.e. should be shown in listings of all stations)
    * @example true
    */
-  is_public?: boolean;
-  mounts?: ApiNowPlayingStationMount[];
-  remotes?: ApiNowPlayingStationRemote[];
+  is_public: boolean;
+  mounts: ApiNowPlayingStationMount[];
+  remotes: ApiNowPlayingStationRemote[];
   /**
    * If the station has HLS streaming enabled.
    * @example true
    */
-  hls_enabled?: boolean;
+  hls_enabled: boolean;
   /**
    * If the HLS stream should be the default one for the station.
    * @example true
    */
-  hls_is_default?: boolean;
+  hls_is_default: boolean;
   /**
    * The full URL to listen to the HLS stream for the station.
    * @example "https://example.com/hls/azuratest_radio/live.m3u8"
    */
-  hls_url?: any;
+  hls_url: string | null;
   /**
    * HLS Listeners
    * @example 1
    */
-  hls_listeners?: number;
+  hls_listeners: number;
 }
 
 export type ApiNowPlayingStationMount = ApiNowPlayingStationRemote & {
@@ -691,12 +691,12 @@ export type ApiNowPlayingStationMount = ApiNowPlayingStationRemote & {
    * The relative path that corresponds to this mount point
    * @example "/radio.mp3"
    */
-  path?: string;
+  path: string;
   /**
    * If the mount is the default mount for the parent station
    * @example true
    */
-  is_default?: boolean;
+  is_default: boolean;
 };
 
 export interface ApiNowPlayingStationQueue {
@@ -704,26 +704,26 @@ export interface ApiNowPlayingStationQueue {
    * UNIX timestamp when the AutoDJ is expected to queue the song for playback.
    * @example 1609480800
    */
-  cued_at?: number;
+  cued_at: number;
   /**
    * UNIX timestamp when playback is expected to start.
    * @example 1609480800
    */
-  played_at?: number | null;
+  played_at: number | null;
   /**
    * Duration of the song in seconds
    * @format float
    * @example 180
    */
-  duration?: number;
+  duration: number;
   /**
    * Indicates the playlist that the song was played from, if available, or empty string if not.
    * @example "Top 100"
    */
-  playlist?: string | null;
+  playlist: string | null;
   /** Indicates whether the song is a listener request. */
-  is_request?: boolean;
-  song?: ApiSong;
+  is_request: boolean;
+  song: ApiSong;
 }
 
 export interface ApiNowPlayingStationRemote {
@@ -731,28 +731,28 @@ export interface ApiNowPlayingStationRemote {
    * Mount/Remote ID number.
    * @example 1
    */
-  id?: number;
+  id: number;
   /**
    * Mount point name/URL
    * @example "/radio.mp3"
    */
-  name?: string;
+  name: string;
   /**
    * Full listening URL specific to this mount
    * @example "http://localhost:8000/radio.mp3"
    */
-  url?: any;
+  url: string;
   /**
    * Bitrate (kbps) of the broadcasted audio (if known)
    * @example 128
    */
-  bitrate?: number | null;
+  bitrate: number | null;
   /**
    * Audio encoding format of broadcasted audio (if known)
    * @example "mp3"
    */
-  format?: string | null;
-  listeners?: ApiNowPlayingListeners;
+  format: string | null;
+  listeners: ApiNowPlayingListeners;
 }
 
 export type ApiPodcast = HasLinks & {
@@ -817,6 +817,8 @@ export interface ApiPodcastMedia {
   path?: string | null;
 }
 
+export type ApiResolvableUrl = string;
+
 export type ApiSong = ApiHasSongFields & {
   /**
    * The song's 32-character unique identifier hash
@@ -827,7 +829,7 @@ export type ApiSong = ApiHasSongFields & {
    * URL to the album artwork (if available).
    * @example "https://picsum.photos/1200/1200"
    */
-  art?: any;
+  art?: string;
   custom_fields?: string[];
 };
 

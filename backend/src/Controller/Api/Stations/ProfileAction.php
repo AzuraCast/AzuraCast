@@ -37,7 +37,7 @@ final class ProfileAction implements SingleActionInterface
 
         $apiResponse = new StationProfile();
 
-        $apiResponse->station = ($this->stationApiGenerator)($station, $baseUri, true);
+        $apiResponse->station = $this->stationApiGenerator->__invoke($station, $baseUri, true);
 
         $apiResponse->services = new StationServiceStatus(
             null !== $backend && $backend->isRunning($station),
@@ -47,8 +47,6 @@ final class ProfileAction implements SingleActionInterface
         );
 
         $apiResponse->schedule = $this->scheduleRepo->getUpcomingSchedule($station);
-
-        $apiResponse->resolveUrls($request->getRouter()->getBaseUrl());
 
         return $response->withJson($apiResponse);
     }

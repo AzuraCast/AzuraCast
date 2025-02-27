@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\NowPlaying;
 
-use App\Entity\Api\ResolvableUrlInterface;
+use App\Entity\Api\ResolvableUrl;
+use DeepCopy\DeepCopy;
+use DeepCopy\Filter\ReplaceFilter;
+use DeepCopy\Matcher\PropertyTypeMatcher;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 
-#[OA\Schema(schema: 'Api_NowPlaying', type: 'object')]
-class NowPlaying implements ResolvableUrlInterface
+#[OA\Schema(
+    schema: 'Api_NowPlaying',
+    required: ['*'],
+    type: 'object'
+)]
+class NowPlaying
 {
     #[OA\Property]
     public Station $station;
@@ -50,33 +57,17 @@ class NowPlaying implements ResolvableUrlInterface
         $this->now_playing?->recalculate();
     }
 
-    /**
-     * Return an array representation of this object.
-     *
-     * @return mixed[]
-     */
-    public function toArray(): array
+    public function withResolvedUrls(?UriInterface $base = null): static
     {
-        return json_decode(json_encode($this, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
-    }
+        $copier = new DeepCopy();
 
-    /**
-     * Iterate through sub-items and re-resolve any Uri instances to reflect base URL changes.
-     *
-     * @param UriInterface $base
-     */
-    public function resolveUrls(UriInterface $base): void
-    {
-        $this->station->resolveUrls($base);
+        $copier->addFilter(
+            new ReplaceFilter(
+                fn(ResolvableUrl $url) => new ResolvableUrl($url->resolveUrl($base)),
+            ),
+            new PropertyTypeMatcher(ResolvableUrl::class)
+        );
 
-        $this->live->resolveUrls($base);
-
-        $this->now_playing?->resolveUrls($base);
-
-        $this->playing_next?->resolveUrls($base);
-
-        foreach ($this->song_history as $historyObj) {
-            $historyObj->resolveUrls($base);
-        }
+        return $copier->copy($this);
     }
 }

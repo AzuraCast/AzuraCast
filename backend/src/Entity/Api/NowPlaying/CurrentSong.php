@@ -10,6 +10,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_NowPlaying_CurrentSong',
+    required: ['*'],
     type: 'object'
 )]
 final class CurrentSong extends SongHistory

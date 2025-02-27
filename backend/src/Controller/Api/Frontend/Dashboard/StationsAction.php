@@ -76,13 +76,10 @@ final class StationsAction implements SingleActionInterface
         $paginator = Paginator::fromArray($viewStations, $request);
 
         $router = $request->getRouter();
-        $baseUrl = $router->getBaseUrl();
         $listenersEnabled = $this->readSettings()->isAnalyticsEnabled();
 
         $paginator->setPostprocessor(
-            function (NowPlaying $np) use ($router, $baseUrl, $listenersEnabled, $acl) {
-                $np->resolveUrls($baseUrl);
-
+            function (NowPlaying $np) use ($router, $listenersEnabled, $acl) {
                 $row = new Dashboard();
                 $row->fromParentObject($np);
 

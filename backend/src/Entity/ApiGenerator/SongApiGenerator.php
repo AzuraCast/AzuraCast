@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\ApiGenerator;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Entity\Api\ResolvableUrl;
 use App\Entity\Api\Song;
 use App\Entity\Interfaces\SongInterface;
 use App\Entity\Repository\CustomFieldRepository;
@@ -53,9 +54,11 @@ final class SongApiGenerator
             $response->custom_fields = $this->getCustomFields();
         }
 
-        $response->art = UriResolver::resolve(
-            $baseUri ?? $this->router->getBaseUrl(),
-            $this->getAlbumArtUrl($song, $station, $allowRemoteArt, $isNowPlaying)
+        $response->art = new ResolvableUrl(
+            UriResolver::resolve(
+                $baseUri ?? $this->router->getBaseUrl(),
+                $this->getAlbumArtUrl($song, $station, $allowRemoteArt, $isNowPlaying)
+            )
         );
 
         return $response;

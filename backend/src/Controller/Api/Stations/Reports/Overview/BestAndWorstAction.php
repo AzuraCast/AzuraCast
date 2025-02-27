@@ -67,13 +67,11 @@ final class BestAndWorstAction extends AbstractReportAction
         ];
 
         $stats = [];
-        $baseUrl = $request->getRouter()->getBaseUrl();
 
         foreach ($rawStats as $category => $rawRows) {
             $stats[$category] = array_map(
-                function ($row) use ($station, $baseUrl) {
-                    $song = ($this->songApiGenerator)(Song::createFromArray($row), $station);
-                    $song->resolveUrls($baseUrl);
+                function ($row) use ($station) {
+                    $song = $this->songApiGenerator->__invoke(Song::createFromArray($row), $station);
 
                     return [
                         'song' => $song,
@@ -112,12 +110,9 @@ final class BestAndWorstAction extends AbstractReportAction
             ->setMaxResults(10)
             ->getArrayResult();
 
-        $baseUrl = $request->getRouter()->getBaseUrl();
-
         return array_map(
-            function ($row) use ($station, $baseUrl) {
-                $song = ($this->songApiGenerator)(Song::createFromArray($row), $station);
-                $song->resolveUrls($baseUrl);
+            function ($row) use ($station) {
+                $song = $this->songApiGenerator->__invoke(Song::createFromArray($row), $station);
 
                 return [
                     'song' => $song,

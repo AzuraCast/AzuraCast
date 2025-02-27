@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\NowPlaying;
 
+use App\Entity\Api\ResolvableUrl;
 use OpenApi\Attributes as OA;
-use Psr\Http\Message\UriInterface;
 
 #[OA\Schema(
     schema: 'Api_NowPlaying_StationRemote',
+    required: ['*'],
     type: 'object'
 )]
 class StationRemote
@@ -27,9 +28,10 @@ class StationRemote
 
     #[OA\Property(
         description: 'Full listening URL specific to this mount',
+        type: 'string',
         example: 'http://localhost:8000/radio.mp3'
     )]
-    public string|UriInterface $url;
+    public ResolvableUrl $url;
 
     #[OA\Property(
         description: 'Bitrate (kbps) of the broadcasted audio (if known)',

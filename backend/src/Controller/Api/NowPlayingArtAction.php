@@ -29,7 +29,6 @@ final class NowPlayingArtAction implements SingleActionInterface
         $np = $this->nowPlayingCache->getForStation($station);
 
         if ($np instanceof NowPlaying) {
-            $np->resolveUrls($request->getRouter()->getBaseUrl());
             $np->update();
 
             $currentArt = $np->now_playing?->song?->art;

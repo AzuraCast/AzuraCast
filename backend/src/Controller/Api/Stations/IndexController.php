@@ -64,10 +64,9 @@ final class IndexController
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $apiResponse = ($this->stationApiGenerator)($station);
-        $apiResponse->resolveUrls($request->getRouter()->getBaseUrl());
-
-        return $response->withJson($apiResponse);
+        return $response->withJson(
+            $this->stationApiGenerator->__invoke($station)
+        );
     }
 
     public function listAction(
@@ -80,8 +79,7 @@ final class IndexController
         $stations = [];
         foreach ($stationsRaw as $row) {
             /** @var Station $row */
-            $apiRow = ($this->stationApiGenerator)($row);
-            $apiRow->resolveUrls($request->getRouter()->getBaseUrl());
+            $apiRow = $this->stationApiGenerator->__invoke($row);
 
             if ($apiRow->is_public) {
                 $stations[] = $apiRow;

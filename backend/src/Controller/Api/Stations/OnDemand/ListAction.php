@@ -49,8 +49,6 @@ final class ListAction extends AbstractSearchableListAction
                     ]
                 );
 
-                $row->resolveUrls($router->getBaseUrl());
-
                 return $row;
             }
         );

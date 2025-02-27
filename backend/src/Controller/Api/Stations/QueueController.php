@@ -14,7 +14,6 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Radio\AutoDJ\Queue;
 use App\Utilities\Types;
-use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -143,8 +142,7 @@ final class QueueController extends AbstractStationApiCrudController
         $isInternal = $request->isInternal();
         $router = $request->getRouter();
 
-        $row = ($this->queueApiGenerator)($record);
-        $row->resolveUrls($router->getBaseUrl());
+        $row = $this->queueApiGenerator->__invoke($record);
 
         $apiResponse = new StationQueueDetailed();
         $apiResponse->fromParentObject($row);

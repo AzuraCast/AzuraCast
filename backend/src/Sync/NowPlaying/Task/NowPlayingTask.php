@@ -19,7 +19,6 @@ use App\Message;
 use App\Nginx\HlsListeners;
 use App\Radio\Adapters;
 use App\Webhook\Enums\WebhookTriggers;
-use DeepCopy\DeepCopy;
 use Exception;
 use GuzzleHttp\Promise\Utils;
 use NowPlaying\Result\Result;
@@ -184,9 +183,7 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
         NowPlaying $npOriginal,
         ?NowPlaying $npOld
     ): void {
-        /** @var NowPlaying $np */
-        $np = (new DeepCopy())->copy($npOriginal);
-        $np->resolveUrls($this->router->getBaseUrl());
+        $np = $npOriginal->withResolvedUrls($this->router->getBaseUrl());
         $np->cache = 'event';
 
         $triggers = [];

@@ -8,6 +8,7 @@ use App\Enums\ApplicationEnvironment;
 use App\Enums\ReleaseChannel;
 use App\Installer\EnvFiles\AzuraCastEnvFile;
 use App\Radio\Configuration;
+use App\Traits\AvailableStaticallyTrait;
 use App\Utilities\File;
 use App\Utilities\Types;
 use Exception;
@@ -17,7 +18,7 @@ use Psr\Log\LogLevel;
 
 final class Environment
 {
-    private static Environment $instance;
+    use AvailableStaticallyTrait;
 
     // Cached immutable values that are frequently used.
     private readonly string $baseDir;
@@ -467,15 +468,5 @@ final class Environment
             self::IS_CLI => $existingEnv->isCli(),
             self::IS_DOCKER => $existingEnv->isDocker(),
         ]);
-    }
-
-    public static function getInstance(): Environment
-    {
-        return self::$instance;
-    }
-
-    public static function setInstance(Environment $instance): void
-    {
-        self::$instance = $instance;
     }
 }

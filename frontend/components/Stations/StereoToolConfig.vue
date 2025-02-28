@@ -43,7 +43,7 @@
 
                     <flow-upload
                         :target-url="apiUrl"
-                        :valid-mime-types="['text/plain']"
+                        :valid-mime-types="['.sts']"
                         @success="onFileSuccess"
                     />
                 </form-group>

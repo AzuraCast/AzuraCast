@@ -15,8 +15,9 @@ use OpenApi\Attributes as OA;
             . " AzuraCast expose a public API for viewing now playing data, making requests and more.",
             title: 'AzuraCast',
             license: new OA\License(
-                name: 'Apache 2.0',
-                url: "https://www.apache.org/licenses/LICENSE-2.0.html"
+                name: 'GNU Affero General Public License v3.0 or later',
+                identifier: 'AGPL-3.0-or-later',
+                url: 'https://www.gnu.org/licenses/agpl-3.0.txt'
             ),
         ),
         servers: [

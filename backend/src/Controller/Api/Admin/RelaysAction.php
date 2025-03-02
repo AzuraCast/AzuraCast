@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 
 #[
     OA\Get(
-        path: '/admin/relays',
+        path: '/admin/relays/list',
         operationId: 'adminGetRelays',
         description: 'Return a list of all currently active AzuraRelay instances.',
         security: OpenApi::API_KEY_SECURITY,

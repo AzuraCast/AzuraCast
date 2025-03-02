@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/prefer-promise-reject-errors */
+
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
 import {App, InjectionKey} from "vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -30,9 +32,6 @@ export default function installAxios(vueApp: App) {
         }
     }
 
-    const axiosInstance = axios.create(config);
-    const axiosSilent = axios.create(config);
-
     // Configure some Axios settings that depend on the BootstrapVue $bvToast superglobal.
     const handleAxiosError = (error: any) => {
         const {$gettext} = useTranslate();
@@ -41,6 +40,13 @@ export default function installAxios(vueApp: App) {
         if (error.response) {
             // Request made and server responded
             const responseJson = error.response.data ?? {};
+
+            // Immediately redirect back to login page if the HTTP request returns a 403 NotLoggedIn error.
+            if (responseJson.type === "NotLoggedInException") {
+                window.location.href = "/login";
+                return;
+            }
+
             notifyMessage = responseJson.message ?? notifyMessage;
             console.error(responseJson);
         } else if (error.request) {
@@ -57,6 +63,8 @@ export default function installAxios(vueApp: App) {
 
     const {setLoading} = useNProgress();
 
+    const axiosInstance = axios.create(config);
+
     axiosInstance.interceptors.request.use((config) => {
         setLoading(true);
         return config;
@@ -64,7 +72,6 @@ export default function installAxios(vueApp: App) {
         setLoading(false);
         handleAxiosError(error);
 
-        // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
         return Promise.reject(error);
     });
 
@@ -75,9 +82,29 @@ export default function installAxios(vueApp: App) {
         setLoading(false);
         handleAxiosError(error);
 
-        // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
         return Promise.reject(error);
     });
+
+    const axiosSilent = axios.create(config);
+
+    axiosSilent.interceptors.request.use(
+        (config) => (config),
+        (error) => {
+            handleAxiosError(error);
+
+            return Promise.reject(error);
+        }
+    );
+
+    axiosSilent.interceptors.response.use(
+        (response) => (response),
+        (error) => {
+            handleAxiosError(error);
+
+
+            return Promise.reject(error);
+        }
+    );
 
     vueApp.provide(injectKey, axiosInstance);
     vueApp.provide(injectKeySilent, axiosSilent);

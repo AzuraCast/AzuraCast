@@ -9,6 +9,11 @@
  * ---------------------------------------------------------------
  */
 
+export interface ApiAbstractStatus {
+  /** @example true */
+  success: boolean;
+}
+
 export interface ApiAccountChangePassword {
   /** The current account password. */
   current_password: string;
@@ -130,6 +135,11 @@ export interface ApiAdminRoleStationPermission {
   permissions: StationPermissions[];
 }
 
+export type ApiAdminRsasStatus = ApiAbstractStatus & {
+  version: string | null;
+  hasLicense: boolean;
+};
+
 export interface ApiAdminServerStatsCpuStats {
   total: ApiAdminServerStatsCpuStatsSection;
   cores: ApiAdminServerStatsCpuStatsSection[];
@@ -207,6 +217,14 @@ export interface ApiAdminServerStatsStorageStats {
   used_bytes: string;
   used_readable: string;
 }
+
+export type ApiAdminShoutcastStatus = ApiAbstractStatus & {
+  version: string | null;
+};
+
+export type ApiAdminStereoToolStatus = ApiAbstractStatus & {
+  version: string | null;
+};
 
 export type ApiAdminStorageLocation = HasLinks & {
   /** @example 1 */
@@ -318,6 +336,11 @@ export type ApiAdminStorageLocation = HasLinks & {
   uri?: string;
   /** The stations using this storage location, if any. */
   stations?: string[] | null;
+};
+
+export type ApiCustomAsset = ApiAbstractStatus & {
+  is_uploaded: boolean;
+  url: string;
 };
 
 export type ApiDetailedSongHistory = ApiNowPlayingSongHistory & {
@@ -1112,14 +1135,12 @@ export interface ApiStationServiceStatus {
   station_needs_restart: boolean;
 }
 
-export interface ApiStatus {
-  /** @example true */
-  success: boolean;
+export type ApiStatus = ApiAbstractStatus & {
   /** @example "Changes saved successfully." */
   message: string;
   /** @example "<b>Changes saved successfully.</b>" */
   formatted_message: string;
-}
+};
 
 export interface ApiSystemStatus {
   /**

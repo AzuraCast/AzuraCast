@@ -11,11 +11,8 @@ use OpenApi\Attributes as OA;
     required: ['*'],
     type: 'object'
 )]
-readonly class Status
+readonly class Status extends AbstractStatus
 {
-    #[OA\Property(example: true)]
-    public bool $success;
-
     #[OA\Property(example: 'Changes saved successfully.')]
     public string $message;
 
@@ -27,7 +24,8 @@ readonly class Status
         string $message = 'Changes saved successfully.',
         ?string $formattedMessage = null
     ) {
-        $this->success = $success;
+        parent::__construct($success);
+
         $this->message = $message;
         $this->formatted_message = $formattedMessage ?? $message;
     }

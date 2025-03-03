@@ -46,6 +46,7 @@ import Loading from "~/components/Common/Loading.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
 import {useLightbox} from "~/vendor/lightbox";
+import {ApiCustomAsset} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     id: string,
@@ -62,9 +63,9 @@ const {axios} = useAxios();
 const relist = () => {
     isLoading.value = true;
 
-    void axios.get(props.apiUrl).then((resp) => {
-        isUploaded.value = resp.data.is_uploaded;
-        url.value = resp.data.url;
+    void axios.get<ApiCustomAsset>(props.apiUrl).then(({data}) => {
+        isUploaded.value = data.is_uploaded;
+        url.value = data.url;
 
         isLoading.value = false;
     });

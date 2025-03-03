@@ -136,6 +136,7 @@ import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import {useDialog} from "~/functions/useDialog.ts";
+import {ApiAdminRsasStatus} from "~/entities/ApiInterfaces.ts";
 
 const apiUrl = getApiUrl('/admin/rsas');
 const licenseUrl = getApiUrl('/admin/rsas/license');
@@ -159,7 +160,8 @@ const {axios} = useAxios();
 
 const relist = () => {
     isLoading.value = true;
-    void axios.get(apiUrl.value).then(({data}) => {
+
+    void axios.get<ApiAdminRsasStatus>(apiUrl.value).then(({data}) => {
         version.value = data.version;
         hasLicense.value = data.hasLicense;
 

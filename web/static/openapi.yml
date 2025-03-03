@@ -83,6 +83,100 @@ paths:
       security:
         -
           ApiKey: []
+  '/admin/custom_assets/{type}':
+    get:
+      tags:
+        - 'Administration: General'
+      description: 'Get the details of the custom asset of the specified type.'
+      operationId: getAdminCustomAsset
+      parameters:
+        -
+          name: type
+          in: path
+          description: 'Asset Type'
+          required: true
+          schema:
+            type: string
+            enum:
+              - album_art
+              - background
+              - browser_icon
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_CustomAsset'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+    post:
+      tags:
+        - 'Administration: General'
+      description: 'Upload a new custom asset of the specified type.'
+      operationId: postAdminCustomAsset
+      parameters:
+        -
+          name: type
+          in: path
+          description: 'Asset Type'
+          required: true
+          schema:
+            type: string
+            enum:
+              - album_art
+              - background
+              - browser_icon
+      requestBody:
+        $ref: '#/components/requestBodies/FlowFileUpload'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+    delete:
+      tags:
+        - 'Administration: General'
+      description: 'Removes the custom asset of the specified type.'
+      operationId: deleteAdminCustomAsset
+      parameters:
+        -
+          name: type
+          in: path
+          description: 'Asset Type'
+          required: true
+          schema:
+            type: string
+            enum:
+              - album_art
+              - background
+              - browser_icon
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
   /admin/custom_fields:
     get:
       tags:
@@ -451,6 +545,84 @@ paths:
       security:
         -
           ApiKey: []
+  /admin/rsas/license:
+    post:
+      tags:
+        - 'Administration: General'
+      description: 'Upload a new Rocket Streaming Audio Server (RSAS) license key.'
+      operationId: postRsasLicense
+      requestBody:
+        $ref: '#/components/requestBodies/FlowFileUpload'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+    delete:
+      tags:
+        - 'Administration: General'
+      description: 'Removes the Rocket Streaming Audio Server (RSAS) license.'
+      operationId: deleteRsasLicense
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+  /admin/rsas:
+    get:
+      tags:
+        - 'Administration: General'
+      description: 'Get the current Rocket Streaming Audio Server (RSAS) status.'
+      operationId: getRsas
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Admin_RsasStatus'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+    post:
+      tags:
+        - 'Administration: General'
+      description: 'Upload a new Rocket Streaming Audio Server (RSAS) binary.'
+      operationId: postRsas
+      requestBody:
+        $ref: '#/components/requestBodies/FlowFileUpload'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
   /admin/server/stats:
     get:
       tags:
@@ -508,6 +680,47 @@ paths:
           $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+  /admin/shoutcast:
+    get:
+      tags:
+        - 'Administration: General'
+      description: 'Get details about the Shoutcast installation.'
+      operationId: getShoutcast
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Admin_ShoutcastStatus'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+    post:
+      tags:
+        - 'Administration: General'
+      description: 'Upload a new Shoutcast binary.'
+      operationId: postShoutcast
+      requestBody:
+        $ref: '#/components/requestBodies/FlowFileUpload'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
       security:
@@ -635,6 +848,64 @@ paths:
           schema:
             type: integer
             format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+  /admin/stereo_tool:
+    get:
+      tags:
+        - 'Administration: General'
+      description: 'Get information about the Stereo Tool installation.'
+      operationId: getStereoTool
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Admin_StereoToolStatus'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+    post:
+      tags:
+        - 'Administration: General'
+      description: 'Upload a new Stereo Tool binary.'
+      operationId: postStereoTool
+      requestBody:
+        $ref: '#/components/requestBodies/FlowFileUpload'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+    delete:
+      tags:
+        - 'Administration: General'
+      description: 'Removes the installed Stereo Tool binary.'
+      operationId: deleteStereoTool
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -3749,6 +4020,14 @@ paths:
           ApiKey: []
 components:
   schemas:
+    Api_AbstractStatus:
+      required:
+        - success
+      properties:
+        success:
+          type: boolean
+          example: true
+      type: object
     Api_Account_ChangePassword:
       required:
         - current_password
@@ -3962,6 +4241,22 @@ components:
           items:
             $ref: '#/components/schemas/StationPermissions'
       type: object
+    Api_Admin_RsasStatus:
+      required:
+        - version
+        - hasLicense
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_AbstractStatus'
+        -
+          properties:
+            version:
+              type: string
+              nullable: true
+            hasLicense:
+              type: boolean
+          type: object
     Api_Admin_ServerStats_CpuStats:
       required:
         - total
@@ -4163,6 +4458,32 @@ components:
         used_readable:
           type: string
       type: object
+    Api_Admin_ShoutcastStatus:
+      required:
+        - version
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_AbstractStatus'
+        -
+          properties:
+            version:
+              type: string
+              nullable: true
+          type: object
+    Api_Admin_StereoToolStatus:
+      required:
+        - version
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_AbstractStatus'
+        -
+          properties:
+            version:
+              type: string
+              nullable: true
+          type: object
     Api_Admin_StorageLocation:
       type: object
       allOf:
@@ -4301,6 +4622,21 @@ components:
                 type: string
                 example: 'AzuraTest Radio'
               nullable: true
+          type: object
+    Api_CustomAsset:
+      required:
+        - is_uploaded
+        - url
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_AbstractStatus'
+        -
+          properties:
+            is_uploaded:
+              type: boolean
+            url:
+              type: string
           type: object
     Api_DetailedSongHistory:
       type: object
@@ -5368,20 +5704,21 @@ components:
       type: object
     Api_Status:
       required:
-        - success
         - message
         - formatted_message
-      properties:
-        success:
-          type: boolean
-          example: true
-        message:
-          type: string
-          example: 'Changes saved successfully.'
-        formatted_message:
-          type: string
-          example: '<b>Changes saved successfully.</b>'
       type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_AbstractStatus'
+        -
+          properties:
+            message:
+              type: string
+              example: 'Changes saved successfully.'
+            formatted_message:
+              type: string
+              example: '<b>Changes saved successfully.</b>'
+          type: object
     Api_SystemStatus:
       required:
         - online
@@ -6588,6 +6925,17 @@ components:
           -
             type: string
             format: string
+  requestBodies:
+    FlowFileUpload:
+      content:
+        multipart/form-data:
+          schema:
+            properties:
+              file:
+                description: 'The body of the file to upload.'
+                type: string
+                format: binary
+            type: object
   securitySchemes:
     ApiKey:
       type: apiKey

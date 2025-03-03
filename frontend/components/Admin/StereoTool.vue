@@ -143,6 +143,7 @@ import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import {useDialog} from "~/functions/useDialog.ts";
+import {ApiAdminStereoToolStatus} from "~/entities/ApiInterfaces.ts";
 
 const apiUrl = getApiUrl('/admin/stereo_tool');
 
@@ -170,7 +171,8 @@ const {axios} = useAxios();
 
 const relist = () => {
     isLoading.value = true;
-    void axios.get(apiUrl.value).then((resp) => {
+
+    void axios.get<ApiAdminStereoToolStatus>(apiUrl.value).then((resp) => {
         version.value = resp.data.version;
         isLoading.value = false;
     });

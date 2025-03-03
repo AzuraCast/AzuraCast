@@ -68,7 +68,7 @@ use OpenApi\Attributes as OA;
         externalDocs: new OA\ExternalDocumentation(
             description: "AzuraCast on GitHub",
             url: "https://github.com/AzuraCast/AzuraCast"
-        )
+        ),
     ),
     OA\Parameter(
         parameter: "StationIdRequired",
@@ -81,6 +81,22 @@ use OpenApi\Attributes as OA;
                 new OA\Schema(type: "string", format: "string"),
             ]
         ),
+    ),
+    OA\RequestBody(
+        request: 'FlowFileUpload',
+        content: new OA\MediaType(
+            mediaType: 'multipart/form-data',
+            schema: new OA\Schema(
+                properties: [
+                    new OA\Property(
+                        property: 'file',
+                        description: 'The body of the file to upload.',
+                        type: 'string',
+                        format: 'binary'
+                    ),
+                ]
+            )
+        )
     ),
     OA\Response(
         response: 'Success',
@@ -122,4 +138,6 @@ final class OpenApi
     public const string REF_RESPONSE_ACCESS_DENIED = '#/components/responses/AccessDenied';
     public const string REF_RESPONSE_NOT_FOUND = '#/components/responses/RecordNotFound';
     public const string REF_RESPONSE_GENERIC_ERROR = '#/components/responses/GenericError';
+
+    public const string REF_REQUEST_BODY_FLOW_FILE_UPLOAD = '#/components/requestBodies/FlowFileUpload';
 }

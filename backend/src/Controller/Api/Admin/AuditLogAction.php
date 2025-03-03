@@ -29,7 +29,7 @@ use Psr\Http\Message\ResponseInterface;
                 content: new OA\JsonContent(
                     type: 'array',
                     items: new OA\Items(
-                        ref: '#/components/schemas/Api_Admin_AuditLog'
+                        ref: ApiAuditLog::class
                     )
                 )
             ),

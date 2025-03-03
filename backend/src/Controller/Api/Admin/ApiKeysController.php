@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin;
 
 use App\Controller\Api\AbstractApiCrudController;
+use App\Entity\Api\Traits\HasLinks;
 use App\Entity\ApiKey;
 use App\OpenApi;
 use OpenApi\Attributes as OA;
@@ -26,8 +27,8 @@ use OpenApi\Attributes as OA;
                     type: 'array',
                     items: new OA\Items(
                         allOf: [
-                            new OA\Schema(ref: '#/components/schemas/ApiKey'),
-                            new OA\Schema(ref: '#/components/schemas/HasLinks'),
+                            new OA\Schema(ref: ApiKey::class),
+                            new OA\Schema(ref: HasLinks::class),
                         ]
                     )
                 )

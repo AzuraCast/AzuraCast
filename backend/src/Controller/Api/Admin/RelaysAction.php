@@ -27,7 +27,7 @@ use Psr\Http\Message\ResponseInterface;
                 content: new OA\JsonContent(
                     type: 'array',
                     items: new OA\Items(
-                        ref: '#/components/schemas/Relay'
+                        ref: Relay::class
                     )
                 )
             ),

@@ -6,6 +6,7 @@ namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\HasLogViewer;
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\LogContents;
 use App\Entity\Api\LogType;
 use App\Entity\Station;
 use App\Exception;
@@ -31,7 +32,7 @@ use Psr\Http\Message\ResponseInterface;
                 description: 'Success',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_LogType')
+                    items: new OA\Items(ref: LogType::class)
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
@@ -59,7 +60,7 @@ use Psr\Http\Message\ResponseInterface;
                 response: 200,
                 description: 'Success',
                 content: new OA\JsonContent(
-                    ref: '#/components/schemas/Api_LogContents'
+                    ref: LogContents::class
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),

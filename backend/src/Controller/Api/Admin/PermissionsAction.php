@@ -25,7 +25,7 @@ use Psr\Http\Message\ResponseInterface;
                 response: 200,
                 description: 'Success',
                 content: new OA\JsonContent(
-                    ref: '#/components/schemas/Api_Admin_Permissions'
+                    ref: Permissions::class
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),

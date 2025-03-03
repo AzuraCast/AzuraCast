@@ -35,7 +35,7 @@ use Psr\Http\Message\ResponseInterface;
                 description: 'Success',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_StationRequest')
+                    items: new OA\Items(ref: StationRequest::class)
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),

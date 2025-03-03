@@ -36,7 +36,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
                 description: 'Success',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/StationPlaylist')
+                    items: new OA\Items(ref: StationPlaylist::class)
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
@@ -48,7 +48,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         operationId: 'addPlaylist',
         description: 'Create a new playlist.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/StationPlaylist')
+            content: new OA\JsonContent(ref: StationPlaylist::class)
         ),
         tags: ['Stations: Playlists'],
         parameters: [
@@ -58,7 +58,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/StationPlaylist')
+                content: new OA\JsonContent(ref: StationPlaylist::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
@@ -83,7 +83,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/StationPlaylist')
+                content: new OA\JsonContent(ref: StationPlaylist::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
@@ -95,7 +95,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         operationId: 'editPlaylist',
         description: 'Update details of a single playlist.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/StationPlaylist')
+            content: new OA\JsonContent(ref: StationPlaylist::class)
         ),
         tags: ['Stations: Playlists'],
         parameters: [

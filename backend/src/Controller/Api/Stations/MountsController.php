@@ -36,7 +36,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
                 description: 'Success',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/StationMount')
+                    items: new OA\Items(ref: StationMount::class)
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
@@ -48,7 +48,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         operationId: 'addMount',
         description: 'Create a new mount point.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/StationMount')
+            content: new OA\JsonContent(ref: StationMount::class)
         ),
         tags: ['Stations: Mount Points'],
         parameters: [
@@ -58,7 +58,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/StationMount')
+                content: new OA\JsonContent(ref: StationMount::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
@@ -83,7 +83,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/StationMount')
+                content: new OA\JsonContent(ref: StationMount::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
@@ -95,7 +95,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         operationId: 'editMount',
         description: 'Update details of a single mount point.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/StationMount')
+            content: new OA\JsonContent(ref: StationMount::class)
         ),
         tags: ['Stations: Mount Points'],
         parameters: [

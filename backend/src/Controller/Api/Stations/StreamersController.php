@@ -38,7 +38,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
                 description: 'Success',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/StationStreamer')
+                    items: new OA\Items(ref: StationStreamer::class)
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
@@ -51,7 +51,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         operationId: 'addStreamer',
         description: 'Create a new Streamer/DJ account.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/StationStreamer')
+            content: new OA\JsonContent(ref: StationStreamer::class)
         ),
         tags: ['Stations: Streamers/DJs'],
         parameters: [
@@ -61,7 +61,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/StationStreamer')
+                content: new OA\JsonContent(ref: StationStreamer::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
@@ -87,7 +87,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/StationStreamer')
+                content: new OA\JsonContent(ref: StationStreamer::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
@@ -99,7 +99,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         operationId: 'editStreamer',
         description: 'Update details of a single Streamer/DJ account.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/StationStreamer')
+            content: new OA\JsonContent(ref: StationStreamer::class)
         ),
         tags: ['Stations: Streamers/DJs'],
         parameters: [

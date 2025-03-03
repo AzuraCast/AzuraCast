@@ -43,7 +43,7 @@ use Throwable;
                 description: 'Success',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Station')
+                    items: new OA\Items(ref: Station::class)
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
@@ -55,14 +55,14 @@ use Throwable;
         operationId: 'adminAddStation',
         description: 'Create a new station.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Station')
+            content: new OA\JsonContent(ref: Station::class)
         ),
         tags: ['Administration: Stations'],
         responses: [
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Station')
+                content: new OA\JsonContent(ref: Station::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
@@ -86,7 +86,7 @@ use Throwable;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Station')
+                content: new OA\JsonContent(ref: Station::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
@@ -98,7 +98,7 @@ use Throwable;
         operationId: 'adminEditStation',
         description: 'Update details of a single station.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Station')
+            content: new OA\JsonContent(ref: Station::class)
         ),
         tags: ['Administration: Stations'],
         parameters: [

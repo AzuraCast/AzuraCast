@@ -24,7 +24,7 @@ use OpenApi\Attributes as OA;
                 description: 'Success',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/SftpUser')
+                    items: new OA\Items(ref: SftpUser::class)
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
@@ -37,7 +37,7 @@ use OpenApi\Attributes as OA;
         operationId: 'addSftpUser',
         description: 'Create a new SFTP user.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/SftpUser')
+            content: new OA\JsonContent(ref: SftpUser::class)
         ),
         tags: ['Stations: SFTP Users'],
         parameters: [
@@ -47,7 +47,7 @@ use OpenApi\Attributes as OA;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/SftpUser')
+                content: new OA\JsonContent(ref: SftpUser::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
@@ -73,7 +73,7 @@ use OpenApi\Attributes as OA;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/SftpUser')
+                content: new OA\JsonContent(ref: SftpUser::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
@@ -85,7 +85,7 @@ use OpenApi\Attributes as OA;
         operationId: 'editSftpUser',
         description: 'Update details of a single SFTP user.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/SftpUser')
+            content: new OA\JsonContent(ref: SftpUser::class)
         ),
         tags: ['Stations: SFTP Users'],
         parameters: [

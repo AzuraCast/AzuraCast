@@ -24,7 +24,7 @@ final class IndexController
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_SystemStatus')
+                content: new OA\JsonContent(ref: SystemStatus::class)
             ),
         ]
     )]
@@ -46,7 +46,7 @@ final class IndexController
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_Time')
+                content: new OA\JsonContent(ref: Time::class)
             ),
         ]
     )]

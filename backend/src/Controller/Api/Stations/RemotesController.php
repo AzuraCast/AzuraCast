@@ -31,7 +31,7 @@ use Psr\Http\Message\ResponseInterface;
                 description: 'Success',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_StationRemote')
+                    items: new OA\Items(ref: ApiStationRemote::class)
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
@@ -44,7 +44,7 @@ use Psr\Http\Message\ResponseInterface;
         operationId: 'addRelay',
         description: 'Create a new remote relay.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_StationRemote')
+            content: new OA\JsonContent(ref: ApiStationRemote::class)
         ),
         tags: ['Stations: Remote Relays'],
         parameters: [
@@ -54,7 +54,7 @@ use Psr\Http\Message\ResponseInterface;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_StationRemote')
+                content: new OA\JsonContent(ref: ApiStationRemote::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
@@ -80,7 +80,7 @@ use Psr\Http\Message\ResponseInterface;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_StationRemote')
+                content: new OA\JsonContent(ref: ApiStationRemote::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
@@ -92,7 +92,7 @@ use Psr\Http\Message\ResponseInterface;
         operationId: 'editRelay',
         description: 'Update details of a single remote relay.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_StationRemote')
+            content: new OA\JsonContent(ref: ApiStationRemote::class)
         ),
         tags: ['Stations: Remote Relays'],
         parameters: [

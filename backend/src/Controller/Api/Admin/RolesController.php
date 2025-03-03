@@ -36,7 +36,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
                 content: new OA\JsonContent(
                     type: 'array',
                     items: new OA\Items(
-                        ref: '#/components/schemas/Api_Admin_Role'
+                        ref: ApiRole::class
                     )
                 )
             ),
@@ -49,7 +49,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         operationId: 'addRole',
         description: 'Create a new role.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_Admin_Role')
+            content: new OA\JsonContent(ref: ApiRole::class)
         ),
         tags: ['Administration: Roles'],
         responses: [
@@ -57,7 +57,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
                 response: 200,
                 description: 'Success',
                 content: new OA\JsonContent(
-                    ref: '#/components/schemas/Api_Admin_Role'
+                    ref: ApiRole::class
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
@@ -83,7 +83,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
                 response: 200,
                 description: 'Success',
                 content: new OA\JsonContent(
-                    ref: '#/components/schemas/Api_Admin_Role'
+                    ref: ApiRole::class
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
@@ -96,7 +96,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         operationId: 'editRole',
         description: 'Update details of a single role.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_Admin_Role')
+            content: new OA\JsonContent(ref: ApiRole::class)
         ),
         tags: ['Administration: Roles'],
         parameters: [

@@ -42,18 +42,11 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(
             response: 200,
             description: 'Success',
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_Status')
+            content: new OA\JsonContent(ref: Status::class)
         ),
-        new OA\Response(
-            response: 404,
-            description: 'Record not found',
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_Error')
-        ),
-        new OA\Response(
-            response: 403,
-            description: 'Access denied',
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_Error')
-        ),
+        new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+        new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+        new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
 final class DeleteArtAction implements SingleActionInterface

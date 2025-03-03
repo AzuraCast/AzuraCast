@@ -44,7 +44,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
                 description: 'Success',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_PodcastEpisode')
+                    items: new OA\Items(ref: ApiPodcastEpisode::class)
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
@@ -57,7 +57,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         operationId: 'addEpisode',
         description: 'Create a new podcast episode.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_PodcastEpisode')
+            content: new OA\JsonContent(ref: ApiPodcastEpisode::class)
         ),
         tags: ['Stations: Podcasts'],
         parameters: [
@@ -74,7 +74,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_PodcastEpisode')
+                content: new OA\JsonContent(ref: ApiPodcastEpisode::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
@@ -107,7 +107,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_PodcastEpisode')
+                content: new OA\JsonContent(ref: ApiPodcastEpisode::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
@@ -119,7 +119,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         operationId: 'editEpisode',
         description: 'Update details of a single podcast episode.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_PodcastEpisode')
+            content: new OA\JsonContent(ref: ApiPodcastEpisode::class)
         ),
         tags: ['Stations: Podcasts'],
         parameters: [

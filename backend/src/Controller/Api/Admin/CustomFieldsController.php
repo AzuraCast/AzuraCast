@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin;
 
 use App\Controller\Api\AbstractApiCrudController;
+use App\Entity\Api\Traits\HasLinks;
 use App\Entity\CustomField;
 use App\OpenApi;
 use OpenApi\Attributes as OA;
@@ -24,8 +25,8 @@ use OpenApi\Attributes as OA;
                     type: 'array',
                     items: new OA\Items(
                         allOf: [
-                            new OA\Schema(ref: '#/components/schemas/CustomField'),
-                            new OA\Schema(ref: '#/components/schemas/HasLinks'),
+                            new OA\Schema(ref: CustomField::class),
+                            new OA\Schema(ref: HasLinks::class),
                         ]
                     )
                 )
@@ -39,7 +40,7 @@ use OpenApi\Attributes as OA;
         operationId: 'addCustomField',
         description: 'Create a new custom field.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/CustomField')
+            content: new OA\JsonContent(ref: CustomField::class)
         ),
         tags: ['Administration: Custom Fields'],
         responses: [
@@ -48,8 +49,8 @@ use OpenApi\Attributes as OA;
                 description: 'Success',
                 content: new OA\JsonContent(
                     allOf: [
-                        new OA\Schema(ref: '#/components/schemas/CustomField'),
-                        new OA\Schema(ref: '#/components/schemas/HasLinks'),
+                        new OA\Schema(ref: CustomField::class),
+                        new OA\Schema(ref: HasLinks::class),
                     ]
                 )
             ),
@@ -77,8 +78,8 @@ use OpenApi\Attributes as OA;
                 description: 'Success',
                 content: new OA\JsonContent(
                     allOf: [
-                        new OA\Schema(ref: '#/components/schemas/CustomField'),
-                        new OA\Schema(ref: '#/components/schemas/HasLinks'),
+                        new OA\Schema(ref: CustomField::class),
+                        new OA\Schema(ref: HasLinks::class),
                     ]
                 )
             ),
@@ -92,7 +93,7 @@ use OpenApi\Attributes as OA;
         operationId: 'editCustomField',
         description: 'Update details of a single custom field.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/CustomField')
+            content: new OA\JsonContent(ref: CustomField::class)
         ),
         tags: ['Administration: Custom Fields'],
         parameters: [

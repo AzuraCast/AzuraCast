@@ -29,7 +29,7 @@ use Psr\Http\Message\ResponseInterface;
                 description: 'Success',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_NowPlaying')
+                    items: new OA\Items(ref: NowPlaying::class)
                 )
             ),
         ]
@@ -47,7 +47,7 @@ use Psr\Http\Message\ResponseInterface;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_NowPlaying')
+                content: new OA\JsonContent(ref: NowPlaying::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
         ]

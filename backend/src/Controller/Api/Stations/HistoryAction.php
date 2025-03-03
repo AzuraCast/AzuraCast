@@ -9,6 +9,7 @@ use App\Container\EnvironmentAwareTrait;
 use App\Controller\Api\Traits\AcceptsDateRange;
 use App\Controller\SingleActionInterface;
 use App\Doctrine\ReadOnlyBatchIteratorAggregate;
+use App\Entity\Api\DetailedSongHistory;
 use App\Entity\ApiGenerator\SongHistoryApiGenerator;
 use App\Entity\SongHistory;
 use App\Entity\Station;
@@ -54,7 +55,7 @@ use RuntimeException;
                 description: 'Success',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_DetailedSongHistory')
+                    items: new OA\Items(ref: DetailedSongHistory::class)
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),

@@ -33,7 +33,7 @@ use Psr\Http\Message\ResponseInterface;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_Admin_ServerStats')
+                content: new OA\JsonContent(ref: ApiServerStats::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),

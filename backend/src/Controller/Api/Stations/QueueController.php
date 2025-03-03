@@ -35,7 +35,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
                 description: 'Success',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_StationQueueDetailed')
+                    items: new OA\Items(ref: StationQueueDetailed::class)
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
@@ -62,7 +62,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_StationQueueDetailed')
+                content: new OA\JsonContent(ref: StationQueueDetailed::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),

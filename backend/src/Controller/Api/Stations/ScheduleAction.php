@@ -6,6 +6,7 @@ namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\HasScheduleDisplay;
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\StationSchedule;
 use App\Entity\ApiGenerator\ScheduleApiGenerator;
 use App\Entity\Repository\StationScheduleRepository;
 use App\Http\Response;
@@ -46,7 +47,7 @@ use Psr\Http\Message\ResponseInterface;
             description: 'Success',
             content: new OA\JsonContent(
                 type: 'array',
-                items: new OA\Items(ref: '#/components/schemas/Api_StationSchedule')
+                items: new OA\Items(ref: StationSchedule::class)
             )
         ),
         new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),

@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
                 description: 'Success',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_Admin_StorageLocation')
+                    items: new OA\Items(ref: ApiStorageLocation::class)
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
@@ -42,14 +42,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         operationId: 'addStorageLocation',
         description: 'Create a new storage location.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_Admin_StorageLocation')
+            content: new OA\JsonContent(ref: ApiStorageLocation::class)
         ),
         tags: ['Administration: Storage Locations'],
         responses: [
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_Admin_StorageLocation')
+                content: new OA\JsonContent(ref: ApiStorageLocation::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
@@ -73,7 +73,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_Admin_StorageLocation')
+                content: new OA\JsonContent(ref: ApiStorageLocation::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
@@ -85,7 +85,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         operationId: 'editStorageLocation',
         description: 'Update details of a single storage location.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_Admin_StorageLocation')
+            content: new OA\JsonContent(ref: ApiStorageLocation::class)
         ),
         tags: ['Administration: Storage Locations'],
         parameters: [

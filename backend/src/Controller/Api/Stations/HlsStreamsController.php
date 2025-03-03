@@ -26,7 +26,7 @@ use OpenApi\Attributes as OA;
                 description: 'Success',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/StationMount')
+                    items: new OA\Items(ref: StationHlsStream::class)
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
@@ -38,7 +38,7 @@ use OpenApi\Attributes as OA;
         operationId: 'addHlsStream',
         description: 'Create a new HLS stream.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/StationHlsStream')
+            content: new OA\JsonContent(ref: StationHlsStream::class)
         ),
         tags: ['Stations: HLS Streams'],
         parameters: [
@@ -48,7 +48,7 @@ use OpenApi\Attributes as OA;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/StationHlsStream')
+                content: new OA\JsonContent(ref: StationHlsStream::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
@@ -73,7 +73,7 @@ use OpenApi\Attributes as OA;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/StationHlsStream')
+                content: new OA\JsonContent(ref: StationHlsStream::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
@@ -85,7 +85,7 @@ use OpenApi\Attributes as OA;
         operationId: 'editHlsStream',
         description: 'Update details of a single HLS stream.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/StationHlsStream')
+            content: new OA\JsonContent(ref: StationHlsStream::class)
         ),
         tags: ['Stations: HLS Streams'],
         parameters: [

@@ -35,7 +35,7 @@ use Psr\Http\Message\ResponseInterface;
                 description: 'Success',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_Admin_Relay')
+                    items: new OA\Items(ref: ApiRelay::class)
                 )
             ),
         ]

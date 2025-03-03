@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Entity\Api\NowPlaying\Station as NowPlayingStation;
 use App\Entity\ApiGenerator\StationApiGenerator;
 use App\Entity\Station;
 use App\Http\Response;
@@ -27,7 +28,7 @@ use Psr\Http\Message\ResponseInterface;
                 description: 'Success',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_NowPlaying_Station')
+                    items: new OA\Items(ref: NowPlayingStation::class)
                 )
             ),
         ]
@@ -45,7 +46,7 @@ use Psr\Http\Message\ResponseInterface;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_NowPlaying_Station')
+                content: new OA\JsonContent(ref: NowPlayingStation::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
         ]

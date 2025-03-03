@@ -29,7 +29,7 @@ use Psr\Http\Message\ResponseInterface;
                 description: 'Success',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/StationWebhook')
+                    items: new OA\Items(ref: StationWebhook::class)
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
@@ -42,7 +42,7 @@ use Psr\Http\Message\ResponseInterface;
         operationId: 'addWebhook',
         description: 'Create a new web hook.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/StationWebhook')
+            content: new OA\JsonContent(ref: StationWebhook::class)
         ),
         tags: ['Stations: Web Hooks'],
         parameters: [
@@ -52,7 +52,7 @@ use Psr\Http\Message\ResponseInterface;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/StationWebhook')
+                content: new OA\JsonContent(ref: StationWebhook::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
@@ -78,7 +78,7 @@ use Psr\Http\Message\ResponseInterface;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/StationWebhook')
+                content: new OA\JsonContent(ref: StationWebhook::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
@@ -90,7 +90,7 @@ use Psr\Http\Message\ResponseInterface;
         operationId: 'editWebhook',
         description: 'Update details of a single web hook.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/StationWebhook')
+            content: new OA\JsonContent(ref: StationWebhook::class)
         ),
         tags: ['Stations: Web Hooks'],
         parameters: [

@@ -49,7 +49,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
                 description: 'Success',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_StationMedia')
+                    items: new OA\Items(ref: ApiStationMedia::class)
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
@@ -61,7 +61,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         operationId: 'addFile',
         description: 'Upload a new file.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_UploadFile')
+            content: new OA\JsonContent(ref: UploadFile::class)
         ),
         tags: ['Stations: Media'],
         parameters: [
@@ -71,7 +71,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_StationMedia')
+                content: new OA\JsonContent(ref: ApiStationMedia::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
@@ -96,7 +96,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_StationMedia')
+                content: new OA\JsonContent(ref: ApiStationMedia::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
@@ -108,7 +108,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         operationId: 'editFile',
         description: 'Update details of a single file.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_StationMedia')
+            content: new OA\JsonContent(ref: ApiStationMedia::class)
         ),
         tags: ['Stations: Media'],
         parameters: [

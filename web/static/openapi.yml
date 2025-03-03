@@ -1634,7 +1634,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/StationMount'
+                  $ref: '#/components/schemas/StationHlsStream'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -2530,18 +2530,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Api_Status'
-        '404':
-          description: 'Record not found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
         '403':
-          description: 'Access denied'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/media':
     get:
       tags:

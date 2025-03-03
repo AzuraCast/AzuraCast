@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         operationId: 'changeMyPassword',
         description: 'Change the password of your account.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_Account_ChangePassword')
+            content: new OA\JsonContent(ref: ChangePassword::class)
         ),
         tags: ['Accounts'],
         responses: [

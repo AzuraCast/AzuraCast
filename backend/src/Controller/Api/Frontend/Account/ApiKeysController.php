@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Api\Frontend\Account;
 
 use App\Controller\Api\AbstractApiCrudController;
+use App\Entity\Api\Account\NewApiKey;
+use App\Entity\Api\Traits\HasLinks;
 use App\Entity\ApiKey;
 use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Http\Response;
@@ -33,8 +35,8 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
                     type: 'array',
                     items: new OA\Items(
                         allOf: [
-                            new OA\Schema(ref: '#/components/schemas/ApiKey'),
-                            new OA\Schema(ref: '#/components/schemas/HasLinks'),
+                            new OA\Schema(ref: ApiKey::class),
+                            new OA\Schema(ref: HasLinks::class),
                         ]
                     )
                 )
@@ -48,7 +50,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         operationId: 'addMyApiKey',
         description: 'Create a new API key associated with your account.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/ApiKey')
+            content: new OA\JsonContent(ref: ApiKey::class)
         ),
         tags: ['Accounts'],
         responses: [
@@ -57,9 +59,9 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
                 description: 'Success',
                 content: new OA\JsonContent(
                     allOf: [
-                        new OA\Schema(ref: '#/components/schemas/Api_Account_NewApiKey'),
-                        new OA\Schema(ref: '#/components/schemas/ApiKey'),
-                        new OA\Schema(ref: '#/components/schemas/HasLinks'),
+                        new OA\Schema(ref: NewApiKey::class),
+                        new OA\Schema(ref: ApiKey::class),
+                        new OA\Schema(ref: HasLinks::class),
                     ]
                 )
             ),
@@ -87,8 +89,8 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
                 description: 'Success',
                 content: new OA\JsonContent(
                     allOf: [
-                        new OA\Schema(ref: '#/components/schemas/ApiKey'),
-                        new OA\Schema(ref: '#/components/schemas/HasLinks'),
+                        new OA\Schema(ref: ApiKey::class),
+                        new OA\Schema(ref: HasLinks::class),
                     ]
                 )
             ),

@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Settings')
+                content: new OA\JsonContent(ref: Settings::class)
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
@@ -39,7 +39,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         operationId: 'editSettings',
         description: 'Update settings to modify any settings provided.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Settings')
+            content: new OA\JsonContent(ref: Settings::class)
         ),
         tags: ['Administration: Settings'],
         responses: [

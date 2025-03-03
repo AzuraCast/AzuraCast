@@ -1218,12 +1218,61 @@ export type CustomField = HasAutoIncrementId & {
   auto_assign?: string | null;
 };
 
+export enum AnalyticsLevel {
+  All = "all",
+  NoIp = "no_ip",
+  None = "none",
+}
+
 export enum FileTypes {
   Directory = "directory",
   Media = "media",
   CoverArt = "cover_art",
   UnprocessableFile = "unprocessable_file",
   Other = "other",
+}
+
+export enum IpSources {
+  Local = "local",
+  XForwardedFor = "xff",
+  Cloudflare = "cloudflare",
+}
+
+export enum PlaylistOrders {
+  Random = "random",
+  Shuffle = "shuffle",
+  Sequential = "sequential",
+}
+
+export enum PlaylistRemoteTypes {
+  Stream = "stream",
+  Playlist = "playlist",
+  Other = "other",
+}
+
+export enum PlaylistSources {
+  Songs = "songs",
+  RemoteUrl = "remote_url",
+}
+
+export enum PlaylistTypes {
+  Standard = "default",
+  OncePerXSongs = "once_per_x_songs",
+  OncePerXMinutes = "once_per_x_minutes",
+  OncePerHour = "once_per_hour",
+  Advanced = "custom",
+}
+
+export enum PodcastSources {
+  Manual = "manual",
+  Playlist = "playlist",
+}
+
+export enum StationBackendPerformanceModes {
+  LessMemory = "less_memory",
+  LessCpu = "less_cpu",
+  Balanced = "balanced",
+  Disabled = "disabled",
 }
 
 export type Relay = HasAutoIncrementId & {
@@ -1285,7 +1334,7 @@ export interface Settings {
    */
   enable_static_nowplaying?: boolean;
   /** Listener Analytics Collection */
-  analytics?: any;
+  analytics?: AnalyticsLevel | null;
   /**
    * Check for Updates and Announcements
    * @example "true"
@@ -1305,7 +1354,7 @@ export interface Settings {
    * Base Theme for Public Pages
    * @example "light"
    */
-  public_theme?: any;
+  public_theme?: SupportedThemes | null;
   /**
    * Hide Album Art on Public Pages
    * @example "false"
@@ -1492,7 +1541,7 @@ export interface Settings {
    */
   acme_domains?: string | null;
   /** IP Address Source */
-  ip_source?: any;
+  ip_source?: IpSources | null;
 }
 
 export type SftpUser = HasAutoIncrementId & {
@@ -1653,16 +1702,13 @@ export type StationMount = HasAutoIncrementId & {
 export type StationPlaylist = HasAutoIncrementId & {
   /** @example "Test Playlist" */
   name?: string;
-  /** @example "default" */
-  type?: any;
-  /** @example "songs" */
-  source?: any;
-  /** @example "shuffle" */
-  order?: any;
+  type?: PlaylistTypes;
+  source?: PlaylistSources;
+  order?: PlaylistOrders;
   /** @example "https://remote-url.example.com/stream.mp3" */
   remote_url?: string | null;
   /** @example "stream" */
-  remote_type?: any;
+  remote_type?: PlaylistRemoteTypes | null;
   /**
    * The total time (in seconds) that Liquidsoap should buffer remote URL streams.
    * @example 0
@@ -1807,6 +1853,11 @@ export enum GlobalPermissions {
   StorageLocations = "administer storage locations",
 }
 
+export enum ReleaseChannel {
+  RollingRelease = "latest",
+  Stable = "stable",
+}
+
 export enum StationPermissions {
   All = "administer all",
   View = "view station management",
@@ -1821,6 +1872,34 @@ export enum StationPermissions {
   Automation = "manage station automation",
   WebHooks = "manage station web hooks",
   Podcasts = "manage station podcasts",
+}
+
+export enum SupportedLocales {
+  English = "en_US.UTF-8",
+  Czech = "cs_CZ.UTF-8",
+  Dutch = "nl_NL.UTF-8",
+  French = "fr_FR.UTF-8",
+  German = "de_DE.UTF-8",
+  Greek = "el_GR.UTF-8",
+  Italian = "it_IT.UTF-8",
+  Japanese = "ja_JP.UTF-8",
+  Korean = "ko_KR.UTF-8",
+  Norwegian = "nb_NO.UTF-8",
+  Polish = "pl_PL.UTF-8",
+  Portuguese = "pt_PT.UTF-8",
+  PortugueseBrazilian = "pt_BR.UTF-8",
+  Russian = "ru_RU.UTF-8",
+  SimplifiedChinese = "zh_CN.UTF-8",
+  Spanish = "es_ES.UTF-8",
+  Swedish = "sv_SE.UTF-8",
+  Turkish = "tr_TR.UTF-8",
+  Ukrainian = "uk_UA.UTF-8",
+}
+
+export enum SupportedThemes {
+  Browser = "browser",
+  Light = "light",
+  Dark = "dark",
 }
 
 export enum AudioProcessingMethods {

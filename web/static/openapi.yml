@@ -5511,6 +5511,16 @@ components:
               type: string
               nullable: true
           type: object
+    AnalyticsLevel:
+      type: string
+      enum:
+        - all
+        - no_ip
+        - none
+      x-enumNames:
+        - All
+        - NoIp
+        - None
     FileTypes:
       type: string
       enum:
@@ -5525,6 +5535,78 @@ components:
         - CoverArt
         - UnprocessableFile
         - Other
+    IpSources:
+      type: string
+      enum:
+        - local
+        - xff
+        - cloudflare
+      x-enumNames:
+        - Local
+        - XForwardedFor
+        - Cloudflare
+    PlaylistOrders:
+      type: string
+      enum:
+        - random
+        - shuffle
+        - sequential
+      x-enumNames:
+        - Random
+        - Shuffle
+        - Sequential
+    PlaylistRemoteTypes:
+      type: string
+      enum:
+        - stream
+        - playlist
+        - other
+      x-enumNames:
+        - Stream
+        - Playlist
+        - Other
+    PlaylistSources:
+      type: string
+      enum:
+        - songs
+        - remote_url
+      x-enumNames:
+        - Songs
+        - RemoteUrl
+    PlaylistTypes:
+      type: string
+      enum:
+        - default
+        - once_per_x_songs
+        - once_per_x_minutes
+        - once_per_hour
+        - custom
+      x-enumNames:
+        - Standard
+        - OncePerXSongs
+        - OncePerXMinutes
+        - OncePerHour
+        - Advanced
+    PodcastSources:
+      type: string
+      enum:
+        - manual
+        - playlist
+      x-enumNames:
+        - Manual
+        - Playlist
+    StationBackendPerformanceModes:
+      type: string
+      enum:
+        - less_memory
+        - less_cpu
+        - balanced
+        - disabled
+      x-enumNames:
+        - LessMemory
+        - LessCpu
+        - Balanced
+        - Disabled
     Relay:
       type: object
       allOf:
@@ -5590,8 +5672,11 @@ components:
           type: boolean
           example: 'false'
         analytics:
-          description: 'Listener Analytics Collection'
+          oneOf:
+            -
+              $ref: '#/components/schemas/AnalyticsLevel'
           nullable: true
+          description: 'Listener Analytics Collection'
         check_for_updates:
           description: 'Check for Updates and Announcements'
           type: boolean
@@ -5607,9 +5692,12 @@ components:
           type: integer
           example: 1609480800
         public_theme:
+          oneOf:
+            -
+              $ref: '#/components/schemas/SupportedThemes'
+          nullable: true
           description: 'Base Theme for Public Pages'
           example: light
-          nullable: true
         hide_album_art:
           description: 'Hide Album Art on Public Pages'
           type: boolean
@@ -5780,8 +5868,11 @@ components:
           example: ''
           nullable: true
         ip_source:
-          description: 'IP Address Source'
+          oneOf:
+            -
+              $ref: '#/components/schemas/IpSources'
           nullable: true
+          description: 'IP Address Source'
       type: object
     SftpUser:
       type: object
@@ -6001,18 +6092,21 @@ components:
               type: string
               example: 'Test Playlist'
             type:
-              example: default
+              $ref: '#/components/schemas/PlaylistTypes'
             source:
-              example: songs
+              $ref: '#/components/schemas/PlaylistSources'
             order:
-              example: shuffle
+              $ref: '#/components/schemas/PlaylistOrders'
             remote_url:
               type: string
               example: 'https://remote-url.example.com/stream.mp3'
               nullable: true
             remote_type:
-              example: stream
+              oneOf:
+                -
+                  $ref: '#/components/schemas/PlaylistRemoteTypes'
               nullable: true
+              example: stream
             remote_buffer:
               description: 'The total time (in seconds) that Liquidsoap should buffer remote URL streams.'
               type: integer
@@ -6254,6 +6348,14 @@ components:
         - CustomFields
         - Backups
         - StorageLocations
+    ReleaseChannel:
+      type: string
+      enum:
+        - latest
+        - stable
+      x-enumNames:
+        - RollingRelease
+        - Stable
     StationPermissions:
       type: string
       enum:
@@ -6284,6 +6386,58 @@ components:
         - Automation
         - WebHooks
         - Podcasts
+    SupportedLocales:
+      type: string
+      enum:
+        - en_US.UTF-8
+        - cs_CZ.UTF-8
+        - nl_NL.UTF-8
+        - fr_FR.UTF-8
+        - de_DE.UTF-8
+        - el_GR.UTF-8
+        - it_IT.UTF-8
+        - ja_JP.UTF-8
+        - ko_KR.UTF-8
+        - nb_NO.UTF-8
+        - pl_PL.UTF-8
+        - pt_PT.UTF-8
+        - pt_BR.UTF-8
+        - ru_RU.UTF-8
+        - zh_CN.UTF-8
+        - es_ES.UTF-8
+        - sv_SE.UTF-8
+        - tr_TR.UTF-8
+        - uk_UA.UTF-8
+      x-enumNames:
+        - English
+        - Czech
+        - Dutch
+        - French
+        - German
+        - Greek
+        - Italian
+        - Japanese
+        - Korean
+        - Norwegian
+        - Polish
+        - Portuguese
+        - PortugueseBrazilian
+        - Russian
+        - SimplifiedChinese
+        - Spanish
+        - Swedish
+        - Turkish
+        - Ukrainian
+    SupportedThemes:
+      type: string
+      enum:
+        - browser
+        - light
+        - dark
+      x-enumNames:
+        - Browser
+        - Light
+        - Dark
     AudioProcessingMethods:
       type: string
       enum:

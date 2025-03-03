@@ -17,7 +17,6 @@ use OpenApi\Attributes as OA;
         path: '/admin/api-keys',
         operationId: 'adminListApiKeys',
         description: 'List all current API keys across the system.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: General'],
         responses: [
             new OA\Response(
@@ -41,7 +40,6 @@ use OpenApi\Attributes as OA;
         path: '/admin/api-key/{id}',
         operationId: 'adminDeleteApiKey',
         description: 'Delete a single API key.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: General'],
         parameters: [
             new OA\Parameter(

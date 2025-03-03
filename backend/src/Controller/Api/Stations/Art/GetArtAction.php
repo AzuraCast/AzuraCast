@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
     path: '/station/{station_id}/art/{media_id}',
     operationId: 'getMediaArt',
     description: 'Returns the album art for a song, or a generic image.',
+    security: [],
     tags: ['Stations: Media'],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

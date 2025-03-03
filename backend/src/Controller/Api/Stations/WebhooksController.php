@@ -19,7 +19,6 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/webhooks',
         operationId: 'getWebhooks',
         description: 'List all current web hooks.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Web Hooks'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -42,7 +41,6 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/webhooks',
         operationId: 'addWebhook',
         description: 'Create a new web hook.',
-        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/StationWebhook')
         ),
@@ -65,7 +63,6 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/webhook/{id}',
         operationId: 'getWebhook',
         description: 'Retrieve details for a single web hook.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Web Hooks'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -92,7 +89,6 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/webhook/{id}',
         operationId: 'editWebhook',
         description: 'Update details of a single web hook.',
-        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/StationWebhook')
         ),
@@ -118,7 +114,6 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/webhook/{id}',
         operationId: 'deleteWebhook',
         description: 'Delete a single web hook relay.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Web Hooks'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

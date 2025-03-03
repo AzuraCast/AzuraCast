@@ -21,7 +21,6 @@ use Psr\Http\Message\ResponseInterface;
     path: '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/art',
     operationId: 'postPodcastEpisodeArt',
     description: 'Sets the album art for a podcast episode.',
-    security: OpenApi::API_KEY_SECURITY,
     tags: ['Stations: Podcasts'],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

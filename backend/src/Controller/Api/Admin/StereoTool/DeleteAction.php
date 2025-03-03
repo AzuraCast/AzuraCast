@@ -18,7 +18,6 @@ use Psr\Http\Message\ResponseInterface;
     path: '/admin/stereo_tool',
     operationId: 'deleteStereoTool',
     description: 'Removes the installed Stereo Tool binary.',
-    security: OpenApi::API_KEY_SECURITY,
     tags: ['Administration: General'],
     responses: [
         new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),

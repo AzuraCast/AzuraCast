@@ -17,7 +17,6 @@ use Psr\Http\Message\ResponseInterface;
     path: '/station/{station_id}/art/{media_id}',
     operationId: 'deleteMediaArt',
     description: 'Removes the album art for a track.',
-    security: OpenApi::API_KEY_SECURITY,
     tags: ['Stations: Media'],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

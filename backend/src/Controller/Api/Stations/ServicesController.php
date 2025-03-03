@@ -23,7 +23,6 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/status',
         operationId: 'getServiceStatus',
         description: 'Retrieve the current status of all serivces associated with the radio broadcast.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Service Control'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -45,7 +44,6 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/restart',
         operationId: 'restartServices',
         description: 'Restart all services associated with the radio broadcast.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Service Control'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -61,7 +59,6 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/frontend/{action}',
         operationId: 'doFrontendServiceAction',
         description: 'Perform service control actions on the radio frontend (Icecast, Shoutcast, etc.)',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Service Control'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -84,7 +81,6 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/backend/{action}',
         operationId: 'doBackendServiceAction',
         description: 'Perform service control actions on the radio backend (Liquidsoap)',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Service Control'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

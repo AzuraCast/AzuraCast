@@ -21,7 +21,6 @@ use Psr\Http\Message\ResponseInterface;
     path: '/admin/custom_assets/{type}',
     operationId: 'postAdminCustomAsset',
     description: 'Upload a new custom asset of the specified type.',
-    security: OpenApi::API_KEY_SECURITY,
     requestBody: new OA\RequestBody(ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD),
     tags: ['Administration: General'],
     parameters: [

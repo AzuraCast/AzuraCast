@@ -26,7 +26,6 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         path: '/station/{station_id}/playlists',
         operationId: 'getPlaylists',
         description: 'List all current playlists.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Playlists'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -48,7 +47,6 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         path: '/station/{station_id}/playlists',
         operationId: 'addPlaylist',
         description: 'Create a new playlist.',
-        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/StationPlaylist')
         ),
@@ -70,7 +68,6 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         path: '/station/{station_id}/playlist/{id}',
         operationId: 'getPlaylist',
         description: 'Retrieve details for a single playlist.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Playlists'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -97,7 +94,6 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         path: '/station/{station_id}/playlist/{id}',
         operationId: 'editPlaylist',
         description: 'Update details of a single playlist.',
-        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/StationPlaylist')
         ),
@@ -123,7 +119,6 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         path: '/station/{station_id}/playlist/{id}',
         operationId: 'deletePlaylist',
         description: 'Delete a single playlist relay.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Playlists'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

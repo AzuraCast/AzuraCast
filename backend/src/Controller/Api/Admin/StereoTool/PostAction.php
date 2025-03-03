@@ -27,7 +27,6 @@ use Symfony\Component\Process\Process;
     path: '/admin/stereo_tool',
     operationId: 'postStereoTool',
     description: 'Upload a new Stereo Tool binary.',
-    security: OpenApi::API_KEY_SECURITY,
     requestBody: new OA\RequestBody(ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD),
     tags: ['Administration: General'],
     responses: [

@@ -14,7 +14,6 @@ use OpenApi\Attributes as OA;
         path: '/station/{station_id}/sftp-users',
         operationId: 'getSftpUsers',
         description: 'List all current SFTP users.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: SFTP Users'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -37,7 +36,6 @@ use OpenApi\Attributes as OA;
         path: '/station/{station_id}/sftp-users',
         operationId: 'addSftpUser',
         description: 'Create a new SFTP user.',
-        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/SftpUser')
         ),
@@ -60,7 +58,6 @@ use OpenApi\Attributes as OA;
         path: '/station/{station_id}/sftp-user/{id}',
         operationId: 'getSftpUser',
         description: 'Retrieve details for a single SFTP user.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: SFTP Users'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -87,7 +84,6 @@ use OpenApi\Attributes as OA;
         path: '/station/{station_id}/sftp-user/{id}',
         operationId: 'editSftpUser',
         description: 'Update details of a single SFTP user.',
-        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/SftpUser')
         ),
@@ -113,7 +109,6 @@ use OpenApi\Attributes as OA;
         path: '/station/{station_id}/sftp-user/{id}',
         operationId: 'deleteSftpUser',
         description: 'Delete a single SFTP user.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: SFTP Users'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

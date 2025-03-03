@@ -23,7 +23,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/frontend/account/password',
         operationId: 'changeMyPassword',
         description: 'Change the password of your account.',
-        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/Api_Account_ChangePassword')
         ),

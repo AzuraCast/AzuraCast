@@ -18,7 +18,6 @@ use Psr\Http\Message\ResponseInterface;
     path: '/station/{station_id}/fallback',
     operationId: 'postStationFallback',
     description: 'Update the custom fallback track for the station.',
-    security: OpenApi::API_KEY_SECURITY,
     tags: ['Stations: General'],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

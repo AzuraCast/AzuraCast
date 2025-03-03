@@ -21,7 +21,6 @@ use Symfony\Component\Process\Process;
     path: '/admin/shoutcast',
     operationId: 'postShoutcast',
     description: 'Upload a new Shoutcast binary.',
-    security: OpenApi::API_KEY_SECURITY,
     requestBody: new OA\RequestBody(ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD),
     tags: ['Administration: General'],
     responses: [

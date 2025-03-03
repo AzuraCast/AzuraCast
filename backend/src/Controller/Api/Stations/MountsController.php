@@ -26,7 +26,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/mounts',
         operationId: 'getStationMounts',
         description: 'List all current mount points.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Mount Points'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -48,7 +47,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/mounts',
         operationId: 'addMount',
         description: 'Create a new mount point.',
-        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/StationMount')
         ),
@@ -70,7 +68,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/mount/{id}',
         operationId: 'getMount',
         description: 'Retrieve details for a single mount point.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Mount Points'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -97,7 +94,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/mount/{id}',
         operationId: 'editMount',
         description: 'Update details of a single mount point.',
-        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/StationMount')
         ),
@@ -123,7 +119,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/mount/{id}',
         operationId: 'deleteMount',
         description: 'Delete a single mount point.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Mount Points'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

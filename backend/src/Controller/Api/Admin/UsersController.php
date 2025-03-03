@@ -24,7 +24,6 @@ use Psr\Http\Message\ResponseInterface;
         path: '/admin/users',
         operationId: 'getUsers',
         description: 'List all current users in the system.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Users'],
         responses: [
             new OA\Response(
@@ -43,7 +42,6 @@ use Psr\Http\Message\ResponseInterface;
         path: '/admin/users',
         operationId: 'addUser',
         description: 'Create a new user.',
-        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/User')
         ),
@@ -62,7 +60,6 @@ use Psr\Http\Message\ResponseInterface;
         path: '/admin/user/{id}',
         operationId: 'getUser',
         description: 'Retrieve details for a single current user.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Users'],
         parameters: [
             new OA\Parameter(
@@ -88,7 +85,6 @@ use Psr\Http\Message\ResponseInterface;
         path: '/admin/user/{id}',
         operationId: 'editUser',
         description: 'Update details of a single user.',
-        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/User')
         ),
@@ -113,7 +109,6 @@ use Psr\Http\Message\ResponseInterface;
         path: '/admin/user/{id}',
         operationId: 'deleteUser',
         description: 'Delete a single user.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Users'],
         parameters: [
             new OA\Parameter(

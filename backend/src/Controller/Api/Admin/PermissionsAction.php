@@ -19,7 +19,6 @@ use Psr\Http\Message\ResponseInterface;
         path: '/admin/permissions',
         operationId: 'getPermissions',
         description: 'Return a list of all available permissions.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Roles'],
         responses: [
             new OA\Response(

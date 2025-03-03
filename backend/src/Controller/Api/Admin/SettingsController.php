@@ -23,7 +23,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/settings',
         operationId: 'getSettings',
         description: 'List the current values of all editable system settings.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Settings'],
         responses: [
             new OA\Response(
@@ -39,7 +38,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/settings',
         operationId: 'editSettings',
         description: 'Update settings to modify any settings provided.',
-        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/Settings')
         ),

@@ -17,7 +17,6 @@ use Psr\Http\Message\ResponseInterface;
     path: '/admin/stereo_tool',
     operationId: 'getStereoTool',
     description: 'Get information about the Stereo Tool installation.',
-    security: OpenApi::API_KEY_SECURITY,
     tags: ['Administration: General'],
     responses: [
         new OA\Response(

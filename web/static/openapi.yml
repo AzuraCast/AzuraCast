@@ -30,9 +30,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/admin/api-key/{id}':
     delete:
       tags:
@@ -56,9 +53,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   /admin/auditlog:
     get:
       tags:
@@ -80,9 +74,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/admin/custom_assets/{type}':
     get:
       tags:
@@ -114,9 +105,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Administration: General'
@@ -145,9 +133,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Administration: General'
@@ -174,9 +159,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   /admin/custom_fields:
     get:
       tags:
@@ -196,9 +178,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Administration: Custom Fields'
@@ -222,9 +201,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/admin/custom_field/{id}':
     get:
       tags:
@@ -255,9 +231,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     put:
       tags:
         - 'Administration: Custom Fields'
@@ -286,9 +259,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Administration: Custom Fields'
@@ -312,9 +282,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   /admin/logs:
     get:
       tags:
@@ -334,9 +301,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/admin/log/{key}':
     get:
       tags:
@@ -362,9 +326,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   /admin/permissions:
     get:
       tags:
@@ -384,9 +345,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   /admin/relays/list:
     get:
       tags:
@@ -408,9 +366,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   /admin/roles:
     get:
       tags:
@@ -430,9 +385,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Administration: Roles'
@@ -454,9 +406,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/admin/role/{id}':
     get:
       tags:
@@ -485,9 +434,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     put:
       tags:
         - 'Administration: Roles'
@@ -516,9 +462,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Administration: Roles'
@@ -542,9 +485,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   /admin/rsas/license:
     post:
       tags:
@@ -562,9 +502,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Administration: General'
@@ -579,9 +516,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   /admin/rsas:
     get:
       tags:
@@ -601,9 +535,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Administration: General'
@@ -620,9 +551,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   /admin/server/stats:
     get:
       tags:
@@ -642,9 +570,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   /admin/settings:
     get:
       tags:
@@ -662,9 +587,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     put:
       tags:
         - 'Administration: Settings'
@@ -682,9 +604,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   /admin/shoutcast:
     get:
       tags:
@@ -704,9 +623,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Administration: General'
@@ -723,9 +639,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   /admin/stations:
     get:
       tags:
@@ -745,9 +658,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Administration: Stations'
@@ -769,9 +679,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/admin/station/{id}':
     get:
       tags:
@@ -800,9 +707,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     put:
       tags:
         - 'Administration: Stations'
@@ -831,9 +735,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Administration: Stations'
@@ -857,9 +758,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   /admin/stereo_tool:
     get:
       tags:
@@ -879,9 +777,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Administration: General'
@@ -898,9 +793,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Administration: General'
@@ -915,9 +807,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   /admin/storage_locations:
     get:
       tags:
@@ -937,9 +826,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Administration: Storage Locations'
@@ -961,9 +847,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/admin/storage_location/{id}':
     get:
       tags:
@@ -992,9 +875,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     put:
       tags:
         - 'Administration: Storage Locations'
@@ -1023,9 +903,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Administration: Storage Locations'
@@ -1049,9 +926,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   /admin/users:
     get:
       tags:
@@ -1071,9 +945,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Administration: Users'
@@ -1095,9 +966,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/admin/user/{id}':
     get:
       tags:
@@ -1126,9 +994,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     put:
       tags:
         - 'Administration: Users'
@@ -1157,9 +1022,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Administration: Users'
@@ -1183,9 +1045,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   /frontend/account/api-keys:
     get:
       tags:
@@ -1205,9 +1064,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - Accounts
@@ -1232,9 +1088,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/frontend/account/api-key/{id}':
     get:
       tags:
@@ -1264,9 +1117,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - Accounts
@@ -1289,9 +1139,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   /frontend/account/two-factor:
     get:
       tags:
@@ -1309,9 +1156,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - Accounts
@@ -1326,9 +1170,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   /frontend/account/password:
     put:
       tags:
@@ -1349,9 +1190,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   /status:
     get:
       tags:
@@ -1365,6 +1203,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Api_SystemStatus'
+      security: []
   /time:
     get:
       tags:
@@ -1378,6 +1217,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Api_Time'
+      security: []
   /internal/relays:
     get:
       tags:
@@ -1408,6 +1248,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Api_NowPlaying'
+      security: []
   '/nowplaying/{station_id}':
     get:
       tags:
@@ -1426,6 +1267,7 @@ paths:
                 $ref: '#/components/schemas/Api_NowPlaying'
         '404':
           $ref: '#/components/responses/RecordNotFound'
+      security: []
   '/station/{station_id}/art/{media_id}':
     get:
       tags:
@@ -1447,6 +1289,7 @@ paths:
           description: 'The requested album artwork'
         '404':
           description: 'Image not found; generic filler image.'
+      security: []
     post:
       tags:
         - 'Stations: Media'
@@ -1476,9 +1319,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Stations: Media'
@@ -1508,9 +1348,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/fallback':
     get:
       tags:
@@ -1529,9 +1366,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Stations: General'
@@ -1549,9 +1383,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Stations: General'
@@ -1569,9 +1400,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/files':
     get:
       tags:
@@ -1594,9 +1422,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Stations: Media'
@@ -1621,9 +1446,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/file/{id}':
     get:
       tags:
@@ -1654,9 +1476,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     put:
       tags:
         - 'Stations: Media'
@@ -1687,9 +1506,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Stations: Media'
@@ -1715,9 +1531,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/quota/{type}':
     get:
       tags:
@@ -1746,9 +1559,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/restart-status':
     get:
       tags:
@@ -1769,9 +1579,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/history':
     get:
       tags:
@@ -1810,9 +1617,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/hls_streams':
     get:
       tags:
@@ -1835,9 +1639,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Stations: HLS Streams'
@@ -1862,9 +1663,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/hls_stream/{id}':
     get:
       tags:
@@ -1895,9 +1693,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     put:
       tags:
         - 'Stations: HLS Streams'
@@ -1928,9 +1723,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Stations: HLS Streams'
@@ -1956,9 +1748,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   /stations:
     get:
       tags:
@@ -1974,6 +1763,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Api_NowPlaying_Station'
+      security: []
   '/station/{station_id}':
     get:
       tags:
@@ -1992,6 +1782,7 @@ paths:
                 $ref: '#/components/schemas/Api_NowPlaying_Station'
         '404':
           $ref: '#/components/responses/RecordNotFound'
+      security: []
   '/station/{station_id}/listeners':
     get:
       tags:
@@ -2016,9 +1807,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/logs':
     get:
       tags:
@@ -2043,9 +1831,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/log/{key}':
     get:
       tags:
@@ -2073,9 +1858,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/mount/{id}/intro':
     get:
       tags:
@@ -2102,9 +1884,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Stations: Mount Points'
@@ -2130,9 +1909,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Stations: Mount Points'
@@ -2158,9 +1934,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/mounts':
     get:
       tags:
@@ -2183,9 +1956,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Stations: Mount Points'
@@ -2210,9 +1980,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/mount/{id}':
     get:
       tags:
@@ -2243,9 +2010,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     put:
       tags:
         - 'Stations: Mount Points'
@@ -2276,9 +2040,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Stations: Mount Points'
@@ -2304,9 +2065,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/playlists':
     get:
       tags:
@@ -2329,9 +2087,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Stations: Playlists'
@@ -2356,9 +2111,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/playlist/{id}':
     get:
       tags:
@@ -2389,9 +2141,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     put:
       tags:
         - 'Stations: Playlists'
@@ -2422,9 +2171,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Stations: Playlists'
@@ -2450,9 +2196,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/podcast/{podcast_id}/episodes':
     get:
       tags:
@@ -2484,9 +2227,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Stations: Podcasts'
@@ -2520,9 +2260,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/podcast/{podcast_id}/episode/{id}':
     get:
       tags:
@@ -2559,9 +2296,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     put:
       tags:
         - 'Stations: Podcasts'
@@ -2598,9 +2332,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Stations: Podcasts'
@@ -2632,9 +2363,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/podcast/{podcast_id}/art':
     get:
       tags:
@@ -2660,9 +2388,7 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
+      security: []
     post:
       tags:
         - 'Stations: Podcasts'
@@ -2687,9 +2413,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Stations: Podcasts'
@@ -2714,9 +2437,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/art':
     get:
       tags:
@@ -2749,9 +2469,7 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
+      security: []
     post:
       tags:
         - 'Stations: Podcasts'
@@ -2783,9 +2501,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Stations: Podcasts'
@@ -2827,9 +2542,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Api_Error'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/media':
     get:
       tags:
@@ -2862,9 +2574,7 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
+      security: []
     post:
       tags:
         - 'Stations: Podcasts'
@@ -2896,9 +2606,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Stations: Podcasts'
@@ -2930,9 +2637,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/podcasts':
     get:
       tags:
@@ -2957,9 +2661,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Stations: Podcasts'
@@ -2986,9 +2687,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/podcast/{id}':
     get:
       tags:
@@ -3018,9 +2716,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     put:
       tags:
         - 'Stations: Podcasts'
@@ -3050,9 +2745,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Stations: Podcasts'
@@ -3077,9 +2769,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/queue':
     get:
       tags:
@@ -3104,9 +2793,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/queue/{id}':
     get:
       tags:
@@ -3137,9 +2823,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Stations: Queue'
@@ -3165,9 +2848,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/remotes':
     get:
       tags:
@@ -3192,9 +2872,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Stations: Remote Relays'
@@ -3221,9 +2898,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/remote/{id}':
     get:
       tags:
@@ -3254,9 +2928,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     put:
       tags:
         - 'Stations: Remote Relays'
@@ -3287,9 +2958,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Stations: Remote Relays'
@@ -3315,9 +2983,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/requests':
     get:
       tags:
@@ -3425,9 +3090,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/restart':
     post:
       tags:
@@ -3446,9 +3108,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/frontend/{action}':
     post:
       tags:
@@ -3475,9 +3134,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/backend/{action}':
     post:
       tags:
@@ -3504,9 +3160,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/sftp-users':
     get:
       tags:
@@ -3531,9 +3184,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Stations: SFTP Users'
@@ -3560,9 +3210,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/sftp-user/{id}':
     get:
       tags:
@@ -3593,9 +3240,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     put:
       tags:
         - 'Stations: SFTP Users'
@@ -3626,9 +3270,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Stations: SFTP Users'
@@ -3654,9 +3295,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/stereo-tool-configuration':
     get:
       tags:
@@ -3675,9 +3313,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Stations: Broadcasting'
@@ -3695,9 +3330,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Stations: Broadcasting'
@@ -3715,9 +3347,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/streamers':
     get:
       tags:
@@ -3742,9 +3371,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Stations: Streamers/DJs'
@@ -3771,9 +3397,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/streamer/{id}':
     get:
       tags:
@@ -3804,9 +3427,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     put:
       tags:
         - 'Stations: Streamers/DJs'
@@ -3837,9 +3457,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Stations: Streamers/DJs'
@@ -3865,9 +3482,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/webhooks':
     get:
       tags:
@@ -3892,9 +3506,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     post:
       tags:
         - 'Stations: Web Hooks'
@@ -3921,9 +3532,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
   '/station/{station_id}/webhook/{id}':
     get:
       tags:
@@ -3954,9 +3562,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     put:
       tags:
         - 'Stations: Web Hooks'
@@ -3987,9 +3592,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
     delete:
       tags:
         - 'Stations: Web Hooks'
@@ -4015,9 +3617,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
 components:
   schemas:
     Api_AbstractStatus:
@@ -6941,6 +6540,9 @@ components:
       type: apiKey
       name: X-API-Key
       in: header
+security:
+  -
+    ApiKey: []
 tags:
   -
     name: 'Now Playing'

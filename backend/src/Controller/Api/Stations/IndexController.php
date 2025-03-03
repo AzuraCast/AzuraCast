@@ -18,6 +18,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/stations',
         operationId: 'getStations',
         description: 'Returns a list of stations.',
+        security: [],
         tags: ['Stations: General'],
         parameters: [],
         responses: [
@@ -35,6 +36,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}',
         operationId: 'getStation',
         description: 'Return information about a single station.',
+        security: [],
         tags: ['Stations: General'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

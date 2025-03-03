@@ -36,7 +36,6 @@ use Throwable;
         path: '/admin/stations',
         operationId: 'adminGetStations',
         description: 'List all current stations in the system.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Stations'],
         responses: [
             new OA\Response(
@@ -55,7 +54,6 @@ use Throwable;
         path: '/admin/stations',
         operationId: 'adminAddStation',
         description: 'Create a new station.',
-        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/Station')
         ),
@@ -74,7 +72,6 @@ use Throwable;
         path: '/admin/station/{id}',
         operationId: 'adminGetStation',
         description: 'Retrieve details for a single station.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Stations'],
         parameters: [
             new OA\Parameter(
@@ -100,7 +97,6 @@ use Throwable;
         path: '/admin/station/{id}',
         operationId: 'adminEditStation',
         description: 'Update details of a single station.',
-        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/Station')
         ),
@@ -125,7 +121,6 @@ use Throwable;
         path: '/admin/station/{id}',
         operationId: 'adminDeleteStation',
         description: 'Delete a single station.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Stations'],
         parameters: [
             new OA\Parameter(

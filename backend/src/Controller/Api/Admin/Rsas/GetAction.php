@@ -17,7 +17,6 @@ use Psr\Http\Message\ResponseInterface;
     path: '/admin/rsas',
     operationId: 'getRsas',
     description: 'Get the current Rocket Streaming Audio Server (RSAS) status.',
-    security: OpenApi::API_KEY_SECURITY,
     tags: ['Administration: General'],
     responses: [
         new OA\Response(

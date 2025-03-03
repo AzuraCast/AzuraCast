@@ -17,6 +17,7 @@ final class IndexController
         path: '/status',
         operationId: 'getStatus',
         description: 'Returns an affirmative response if the API is active.',
+        security: [],
         tags: ['Miscellaneous'],
         parameters: [],
         responses: [
@@ -38,6 +39,7 @@ final class IndexController
         path: '/time',
         operationId: 'getTime',
         description: "Returns the time (with formatting) in GMT and the user's local time zone, if logged in.",
+        security: [],
         tags: ['Miscellaneous'],
         parameters: [],
         responses: [

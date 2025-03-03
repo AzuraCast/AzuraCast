@@ -18,7 +18,6 @@ use Psr\Http\Message\ResponseInterface;
     path: '/admin/rsas/license',
     operationId: 'postRsasLicense',
     description: 'Upload a new Rocket Streaming Audio Server (RSAS) license key.',
-    security: OpenApi::API_KEY_SECURITY,
     requestBody: new OA\RequestBody(ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD),
     tags: ['Administration: General'],
     responses: [

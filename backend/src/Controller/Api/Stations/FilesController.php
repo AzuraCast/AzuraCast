@@ -39,7 +39,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/files',
         operationId: 'getFiles',
         description: 'List all current uploaded files.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Media'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -61,7 +60,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/files',
         operationId: 'addFile',
         description: 'Upload a new file.',
-        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/Api_UploadFile')
         ),
@@ -83,7 +81,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/file/{id}',
         operationId: 'getFile',
         description: 'Retrieve details for a single file.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Media'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -110,7 +107,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/file/{id}',
         operationId: 'editFile',
         description: 'Update details of a single file.',
-        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/Api_StationMedia')
         ),
@@ -136,7 +132,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/file/{id}',
         operationId: 'deleteFile',
         description: 'Delete a single file.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Media'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

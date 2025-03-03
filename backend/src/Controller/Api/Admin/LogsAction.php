@@ -20,7 +20,6 @@ use Psr\Http\Message\ResponseInterface;
         path: '/admin/logs',
         operationId: 'adminListLogs',
         description: 'List all available log types for viewing.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: General'],
         responses: [
             new OA\Response(
@@ -39,7 +38,6 @@ use Psr\Http\Message\ResponseInterface;
         path: '/admin/log/{key}',
         operationId: 'adminViewLog',
         description: 'View a specific log contents.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: General'],
         parameters: [
             new OA\Parameter(

@@ -27,7 +27,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/podcasts',
         operationId: 'getPodcasts',
         description: 'List all current podcasts.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Podcasts'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -50,7 +49,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/podcasts',
         operationId: 'addPodcast',
         description: 'Create a new podcast.',
-        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/Api_Podcast')
         ),
@@ -73,7 +71,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/podcast/{id}',
         operationId: 'getPodcast',
         description: 'Retrieve details for a single podcast.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Podcasts'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -100,7 +97,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/podcast/{id}',
         operationId: 'editPodcast',
         description: 'Update details of a single podcast.',
-        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/Api_Podcast')
         ),
@@ -126,7 +122,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/podcast/{id}',
         operationId: 'deletePodcast',
         description: 'Delete a single podcast.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Podcasts'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

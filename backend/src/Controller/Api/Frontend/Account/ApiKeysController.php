@@ -24,7 +24,6 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         path: '/frontend/account/api-keys',
         operationId: 'getMyApiKeys',
         description: 'List all API keys associated with your account.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Accounts'],
         responses: [
             new OA\Response(
@@ -48,7 +47,6 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         path: '/frontend/account/api-keys',
         operationId: 'addMyApiKey',
         description: 'Create a new API key associated with your account.',
-        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/ApiKey')
         ),
@@ -73,7 +71,6 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         path: '/frontend/account/api-key/{id}',
         operationId: 'getMyApiKey',
         description: 'Retrieve details for a single API key.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Accounts'],
         parameters: [
             new OA\Parameter(
@@ -104,7 +101,6 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         path: '/frontend/account/api-key/{id}',
         operationId: 'deleteMyApiKey',
         description: 'Delete a single API key associated with your account.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Accounts'],
         parameters: [
             new OA\Parameter(

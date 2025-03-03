@@ -16,7 +16,6 @@ use OpenApi\Attributes as OA;
         path: '/station/{station_id}/hls_streams',
         operationId: 'getHlsStreams',
         description: 'List all current HLS streams.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: HLS Streams'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -38,7 +37,6 @@ use OpenApi\Attributes as OA;
         path: '/station/{station_id}/hls_streams',
         operationId: 'addHlsStream',
         description: 'Create a new HLS stream.',
-        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/StationHlsStream')
         ),
@@ -60,7 +58,6 @@ use OpenApi\Attributes as OA;
         path: '/station/{station_id}/hls_stream/{id}',
         operationId: 'getHlsStream',
         description: 'Retrieve details for a single HLS stream.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: HLS Streams'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -87,7 +84,6 @@ use OpenApi\Attributes as OA;
         path: '/station/{station_id}/hls_stream/{id}',
         operationId: 'editHlsStream',
         description: 'Update details of a single HLS stream.',
-        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/StationHlsStream')
         ),
@@ -113,7 +109,6 @@ use OpenApi\Attributes as OA;
         path: '/station/{station_id}/hls_stream/{id}',
         operationId: 'deleteHlsStream',
         description: 'Delete a single HLS stream.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: HLS Streams'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

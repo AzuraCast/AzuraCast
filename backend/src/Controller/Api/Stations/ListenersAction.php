@@ -30,7 +30,6 @@ use RuntimeException;
         path: '/station/{station_id}/listeners',
         operationId: 'getStationListeners',
         description: 'Return detailed information about current listeners.',
-        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Listeners'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

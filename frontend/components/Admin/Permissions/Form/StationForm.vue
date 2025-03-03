@@ -48,14 +48,14 @@ import PermissionsFormStationRow from "~/components/Admin/Permissions/Form/Stati
 import {computed, toRaw} from "vue";
 import Tab from "~/components/Common/Tab.vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab.ts";
-import {Permission} from "~/components/Admin/Permissions/EditModal.vue";
+import {ApiAdminRole} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     stations: Record<string, string>,
     stationPermissions: Record<string, string>,
 }>();
 
-const form = defineModel<Permission>('form', {required: true});
+const form = defineModel<ApiAdminRole>('form', {required: true});
 
 useVuelidateOnFormTab(
     form,

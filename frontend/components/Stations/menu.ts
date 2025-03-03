@@ -1,6 +1,6 @@
 import {useTranslate} from "~/vendor/gettext.ts";
 import filterMenu, {MenuCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
-import {StationPermissions, userAllowedForStation} from "~/acl.ts";
+import {userAllowedForStation} from "~/acl.ts";
 import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {computed} from "vue";
 import {
@@ -16,6 +16,7 @@ import {
     IconReport
 } from "~/components/Common/icons.ts";
 import {reactiveComputed} from "@vueuse/core";
+import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 
 export function useStationsMenu(): ReactiveMenu {
     const {$gettext} = useTranslate();

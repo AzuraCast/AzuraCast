@@ -68,6 +68,7 @@ final class GenerateApiDocsCommand extends CommandAbstract
             $srcDir . '/OpenApi.php', // OpenAPI Core Spec
             $srcDir . '/Controller', // API Routes
             $srcDir . '/Entity', // API Interfaces
+            $srcDir . '/Enums', // Enums
             $srcDir . '/Radio/Enums', // Enums
             $srcDir . '/Webhook/Enums', // Enums
         ], [

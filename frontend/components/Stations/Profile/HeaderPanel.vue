@@ -42,9 +42,9 @@
 <script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
-import {StationPermissions, userAllowedForStation} from "~/acl";
+import {userAllowedForStation} from "~/acl";
 import {IconEdit} from "~/components/Common/icons";
-import {ApiNowPlayingStation} from "~/entities/ApiInterfaces.ts";
+import {ApiNowPlayingStation, StationPermissions} from "~/entities/ApiInterfaces.ts";
 
 export interface ProfileHeaderPanelParentProps {
     stationName: string,

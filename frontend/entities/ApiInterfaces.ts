@@ -110,6 +110,26 @@ export interface ApiAdminRelay {
   mounts?: ApiNowPlayingStationMount[];
 }
 
+export type ApiAdminRole = HasLinks & {
+  readonly id?: number;
+  /** @example "Super Administrator" */
+  name: string;
+  permissions?: ApiAdminRolePermissions;
+  /** Whether this role is the protected "Super Administrator" role. */
+  readonly is_super_admin?: boolean;
+};
+
+export interface ApiAdminRolePermissions {
+  global?: GlobalPermissions[];
+  station?: ApiAdminRoleStationPermission[];
+}
+
+export interface ApiAdminRoleStationPermission {
+  /** The station ID. */
+  id: number;
+  permissions: StationPermissions[];
+}
+
 export interface ApiAdminServerStatsCpuStats {
   total: ApiAdminServerStatsCpuStatsSection;
   cores: ApiAdminServerStatsCpuStatsSection[];
@@ -1225,13 +1245,6 @@ export type Relay = HasAutoIncrementId & {
   updated_at?: string;
 };
 
-export type Role = HasAutoIncrementId & {
-  /** @example "Super Administrator" */
-  name?: string;
-  /** RolePermission> */
-  permissions?: any[];
-};
-
 export interface Settings {
   app_unique_identifier?: string;
   /**
@@ -1781,6 +1794,34 @@ export type User = HasAutoIncrementId & {
   /** Role> */
   roles?: any[];
 };
+
+export enum GlobalPermissions {
+  All = "administer all",
+  View = "view administration",
+  Logs = "view system logs",
+  Settings = "administer settings",
+  ApiKeys = "administer api keys",
+  Stations = "administer stations",
+  CustomFields = "administer custom fields",
+  Backups = "administer backups",
+  StorageLocations = "administer storage locations",
+}
+
+export enum StationPermissions {
+  All = "administer all",
+  View = "view station management",
+  Reports = "view station reports",
+  Logs = "view station logs",
+  Profile = "manage station profile",
+  Broadcasting = "manage station broadcasting",
+  Streamers = "manage station streamers",
+  MountPoints = "manage station mounts",
+  RemoteRelays = "manage station remotes",
+  Media = "manage station media",
+  Automation = "manage station automation",
+  WebHooks = "manage station web hooks",
+  Podcasts = "manage station podcasts",
+}
 
 export enum AudioProcessingMethods {
   None = "none",

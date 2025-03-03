@@ -1,5 +1,5 @@
-import {GlobalPermission, StationPermission} from "~/acl.ts";
 import {PanelLayoutProps} from "~/components/PanelLayout.vue";
+import {GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
 
 export interface AzuraCastStationConstants {
     id: number,
@@ -25,9 +25,9 @@ export interface AzuraCastStationConstants {
 export interface AzuraCastUserConstants {
     id: number | null,
     displayName: string | null,
-    globalPermissions: GlobalPermission[],
+    globalPermissions: GlobalPermissions[],
     stationPermissions: {
-        [key: number]: StationPermission[]
+        [key: number]: StationPermissions[]
     }
 }
 

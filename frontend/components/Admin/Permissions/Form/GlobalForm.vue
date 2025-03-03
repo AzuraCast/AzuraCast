@@ -27,15 +27,15 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab.ts";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
-import {Permission} from "~/components/Admin/Permissions/EditModal.vue";
 import {required} from "@vuelidate/validators";
 import {DeepPartial} from "utility-types";
+import {ApiAdminRole} from "~/entities/ApiInterfaces.ts";
 
 defineProps<{
     globalPermissions: SimpleFormOptionInput,
 }>();
 
-const form = defineModel<Permission>('form', {required: true});
+const form = defineModel<ApiAdminRole>('form', {required: true});
 
 const {v$} = useVuelidateOnFormTab(
     form,
@@ -45,7 +45,7 @@ const {v$} = useVuelidateOnFormTab(
             'global': {},
         }
     },
-    (): DeepPartial<Permission> => ({
+    (): DeepPartial<ApiAdminRole> => ({
         'name': '',
         'permissions': {
             'global': [],

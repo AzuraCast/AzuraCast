@@ -8,6 +8,7 @@ use App\Acl;
 use App\Controller\Api\AbstractApiCrudController;
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
+use App\Entity\Api\Admin\Role as ApiRole;
 use App\Entity\Repository\RolePermissionRepository;
 use App\Entity\Role;
 use App\Entity\RolePermission;
@@ -35,7 +36,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
                 description: 'Success',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Role')
+                    items: new OA\Items(
+                        ref: '#/components/schemas/Api_Admin_Role'
+                    )
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
@@ -48,14 +51,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         description: 'Create a new role.',
         security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Role')
+            content: new OA\JsonContent(ref: '#/components/schemas/Api_Admin_Role')
         ),
         tags: ['Administration: Roles'],
         responses: [
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Role')
+                content: new OA\JsonContent(
+                    ref: '#/components/schemas/Api_Admin_Role'
+                )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
             new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
@@ -80,7 +85,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Role')
+                content: new OA\JsonContent(
+                    ref: '#/components/schemas/Api_Admin_Role'
+                )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
@@ -93,7 +100,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         description: 'Update details of a single role.',
         security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Role')
+            content: new OA\JsonContent(ref: '#/components/schemas/Api_Admin_Role')
         ),
         tags: ['Administration: Roles'],
         parameters: [
@@ -186,14 +193,22 @@ final class RolesController extends AbstractApiCrudController
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
 
-    protected function viewRecord(object $record, ServerRequest $request): array
+    protected function viewRecord(object $record, ServerRequest $request): ApiRole
     {
-        /** @var array<array-key, mixed> $result */
-        $result = parent::viewRecord($record, $request);
+        $isInternal = $request->isInternal();
+        $router = $request->getRouter();
 
-        $result['is_super_admin'] = $record->getIdRequired() === $this->superAdminRole->getIdRequired();
+        $apiRole = ApiRole::fromRole($record);
+        $apiRole->is_super_admin = $record->getIdRequired() === $this->superAdminRole->getIdRequired();
+        $apiRole->links = [
+            'self' => $router->fromHere(
+                routeName: $this->resourceRouteName,
+                routeParams: ['id' => $record->getIdRequired()],
+                absolute: !$isInternal
+            ),
+        ];
 
-        return $result;
+        return $apiRole;
     }
 
     protected function editRecord(?array $data, ?object $record = null, array $context = []): object

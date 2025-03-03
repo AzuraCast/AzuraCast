@@ -57,10 +57,11 @@
 import Icon from "~/components/Common/Icon.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {StationPermissions, userAllowedForStation} from "~/acl";
+import {userAllowedForStation} from "~/acl";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
 import {IconCheck, IconClose, IconSettings} from "~/components/Common/icons";
 import {toRef} from "vue";
+import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 
 export interface ProfileStreamersPanelProps {
     enableStreamers: boolean,

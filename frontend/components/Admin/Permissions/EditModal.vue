@@ -31,7 +31,7 @@ import {useTranslate} from "~/vendor/gettext";
 import AdminPermissionsGlobalForm from "~/components/Admin/Permissions/Form/GlobalForm.vue";
 import AdminPermissionsStationForm from "~/components/Admin/Permissions/Form/StationForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
-import {GlobalPermission, StationPermission} from "~/acl.ts";
+import {ApiAdminRole, GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
 
 export interface PermissionStation {
     id: number,
@@ -48,8 +48,8 @@ export interface Permission {
 
 interface PermissionsEditModalProps extends BaseEditModalProps {
     stations: Record<number, string>,
-    globalPermissions: Record<GlobalPermission, string>,
-    stationPermissions: Record<StationPermission, string>,
+    globalPermissions: Record<GlobalPermissions, string>,
+    stationPermissions: Record<StationPermissions, string>,
 }
 
 const props = defineProps<PermissionsEditModalProps>();
@@ -68,7 +68,7 @@ const {
     edit,
     doSubmit,
     close
-} = useBaseEditModal<Permission>(
+} = useBaseEditModal<ApiAdminRole>(
     props,
     emit,
     $modal

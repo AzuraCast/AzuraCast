@@ -67,14 +67,14 @@ import SidebarMenu from "~/components/Common/SidebarMenu.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import {useIntervalFn} from "@vueuse/core";
 import {useStationsMenu} from "~/components/Stations/menu";
-import {StationPermissions, userAllowedForStation} from "~/acl";
+import {userAllowedForStation} from "~/acl";
 import {useAxios} from "~/vendor/axios.ts";
 import {getStationApiUrl} from "~/router.ts";
 import {IconEdit} from "~/components/Common/icons.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
 import {useRestartEventBus} from "~/functions/useMayNeedRestart.ts";
-import {ApiStationRestartStatus} from "~/entities/ApiInterfaces.ts";
+import {ApiStationRestartStatus, StationPermissions} from "~/entities/ApiInterfaces.ts";
 
 const menuItems = useStationsMenu();
 

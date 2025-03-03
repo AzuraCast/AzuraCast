@@ -34,11 +34,12 @@
     </card-page>
 </template>
 <script setup lang="ts">
-import {StationPermissions, userAllowedForStation} from "~/acl.ts";
+import {userAllowedForStation} from "~/acl.ts";
 import {IconEdit} from "~/components/Common/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
+import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 
 const {name} = useAzuraCastStation();
 </script>

@@ -21,37 +21,39 @@
             :fields="fields"
             :api-url="listUrl"
         >
-            <template #cell(permissions)="row">
-                <div v-if="row.item.permissions.global.length > 0">
-                    {{ $gettext('Global') }}
-                    :
-                    {{ getGlobalPermissionNames(row.item.permissions.global).join(', ') }}
+            <template #cell(permissions)="{item}">
+                <div v-if="item.permissions.global.length > 0">
+                    <b>{{ $gettext('Global') }}:</b>
+                    {{ getGlobalPermissionNames(item.permissions.global).join(', ') }}
                 </div>
                 <div
-                    v-for="(stationRow) in row.item.permissions.station"
+                    v-for="(stationRow) in item.permissions.station"
                     :key="stationRow.id"
                 >
-                    <b>{{ getStationName(stationRow.id) }}</b>:
+                    <b>{{ getStationName(stationRow.id) }}:</b>
                     {{ getStationPermissionNames(stationRow.permissions).join(', ') }}
                 </div>
+                <div v-if="item.permissions.global.length === 0 && item.permissions.station.length === 0">
+                    &nbsp;
+                </div>
             </template>
-            <template #cell(actions)="row">
+            <template #cell(actions)="{item}">
                 <div
-                    v-if="!row.item.is_super_admin"
+                    v-if="!item.is_super_admin"
                     class="btn-group btn-group-sm"
                 >
                     <button
                         type="button"
                         class="btn btn-primary"
-                        @click="doEdit(row.item.links.self)"
+                        @click="doEdit(item.links.self)"
                     >
                         {{ $gettext('Edit') }}
                     </button>
                     <button
-                        v-if="row.item.id !== 1"
+                        v-if="item.id !== 1"
                         type="button"
                         class="btn btn-danger"
-                        @click="doDelete(row.item.links.self)"
+                        @click="doDelete(item.links.self)"
                     >
                         {{ $gettext('Delete') }}
                     </button>
@@ -82,31 +84,34 @@ import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
-import {GlobalPermission, StationPermission} from "~/acl.ts";
+import {DeepRequired} from "utility-types";
+import {ApiAdminRole, GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     stations: Record<number, string>,
-    globalPermissions: Record<GlobalPermission, string>,
-    stationPermissions: Record<StationPermission, string>,
+    globalPermissions: Record<GlobalPermissions, string>,
+    stationPermissions: Record<StationPermissions, string>,
 }>();
 
 const listUrl = getApiUrl('/admin/roles');
 
 const {$gettext} = useTranslate();
 
-const fields: DataTableField[] = [
+type Row = DeepRequired<ApiAdminRole>
+
+const fields: DataTableField<Row>[] = [
     {key: 'name', isRowHeader: true, label: $gettext('Role Name'), sortable: true},
     {key: 'permissions', label: $gettext('Permissions'), sortable: false},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const getGlobalPermissionNames = (permissions: GlobalPermission[]) => {
+const getGlobalPermissionNames = (permissions: GlobalPermissions[]) => {
     return filter(map(permissions, (permission) => {
         return get(props.globalPermissions, permission, null);
     }));
 };
 
-const getStationPermissionNames = (permissions: StationPermission[]) => {
+const getStationPermissionNames = (permissions: StationPermissions[]) => {
     return filter(map(permissions, (permission) => {
         return get(props.stationPermissions, permission, null);
     }));

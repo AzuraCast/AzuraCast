@@ -80,7 +80,8 @@ import mergeExisting from "~/functions/mergeExisting";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Loading from "~/components/Common/Loading.vue";
 import Tabs from "~/components/Common/Tabs.vue";
-import {GlobalPermissions, userAllowed} from "~/acl";
+import {userAllowed} from "~/acl";
+import {GlobalPermissions} from "~/entities/ApiInterfaces.ts";
 
 defineOptions({
     inheritAttrs: false

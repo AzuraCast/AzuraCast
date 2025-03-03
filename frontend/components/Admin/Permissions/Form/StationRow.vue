@@ -43,11 +43,11 @@ import {get} from "lodash";
 import Icon from "~/components/Common/Icon.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {IconRemove} from "~/components/Common/icons";
-import {PermissionStation} from "~/components/Admin/Permissions/EditModal.vue";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import useVuelidate from "@vuelidate/core";
+import {ApiAdminRoleStationPermission} from "~/entities/ApiInterfaces.ts";
 
-type T = PermissionStation;
+type T = ApiAdminRoleStationPermission;
 
 const props = defineProps<{
     stations: Record<number, string>,

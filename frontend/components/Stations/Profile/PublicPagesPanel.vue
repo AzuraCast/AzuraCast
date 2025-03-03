@@ -127,9 +127,10 @@ import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import {toRef, useTemplateRef} from "vue";
 import EmbedModal, {ProfileEmbedModalProps} from "~/components/Stations/Profile/EmbedModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {StationPermissions, userAllowedForStation} from "~/acl";
+import {userAllowedForStation} from "~/acl";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
 import {IconBranding, IconCheck, IconClose, IconCode} from "~/components/Common/icons";
+import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 
 export interface ProfilePublicPagesPanelProps extends ProfileEmbedModalProps {
     stationSupportsStreamers: boolean,

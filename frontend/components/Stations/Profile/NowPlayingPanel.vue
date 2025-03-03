@@ -247,7 +247,7 @@ import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLightbox} from "~/vendor/lightbox";
-import {StationPermissions, userAllowedForStation} from "~/acl";
+import {userAllowedForStation} from "~/acl";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import {
     IconHeadphones,
@@ -261,7 +261,7 @@ import {
 import UpdateMetadataModal from "~/components/Stations/Profile/UpdateMetadataModal.vue";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 import {NowPlayingProps} from "~/functions/useNowPlaying.ts";
-import {BackendAdapters} from "~/entities/ApiInterfaces.ts";
+import {BackendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
 
 export interface ProfileNowPlayingPanelProps extends NowPlayingProps {
     backendType: BackendAdapters,

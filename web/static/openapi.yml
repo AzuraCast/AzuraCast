@@ -293,7 +293,7 @@ paths:
       security:
         -
           ApiKey: []
-  /admin/relays:
+  /admin/relays/list:
     get:
       tags:
         - 'Administration: General'
@@ -331,7 +331,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Role'
+                  $ref: '#/components/schemas/Api_Admin_Role'
         '404':
           $ref: '#/components/responses/RecordNotFound'
         '500':
@@ -348,14 +348,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Role'
+              $ref: '#/components/schemas/Api_Admin_Role'
       responses:
         '200':
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Role'
+                $ref: '#/components/schemas/Api_Admin_Role'
         '404':
           $ref: '#/components/responses/RecordNotFound'
         '500':
@@ -384,7 +384,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Role'
+                $ref: '#/components/schemas/Api_Admin_Role'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -412,7 +412,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Role'
+              $ref: '#/components/schemas/Api_Admin_Role'
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -3916,6 +3916,52 @@ components:
           items:
             $ref: '#/components/schemas/Api_NowPlaying_StationMount'
       type: object
+    Api_Admin_Role:
+      required:
+        - name
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasLinks'
+        -
+          properties:
+            id:
+              type: integer
+              readOnly: true
+            name:
+              type: string
+              example: 'Super Administrator'
+            permissions:
+              $ref: '#/components/schemas/Api_Admin_RolePermissions'
+            is_super_admin:
+              description: 'Whether this role is the protected "Super Administrator" role.'
+              type: boolean
+              readOnly: true
+          type: object
+    Api_Admin_RolePermissions:
+      properties:
+        global:
+          type: array
+          items:
+            $ref: '#/components/schemas/GlobalPermissions'
+        station:
+          type: array
+          items:
+            $ref: '#/components/schemas/Api_Admin_RoleStationPermission'
+      type: object
+    Api_Admin_RoleStationPermission:
+      required:
+        - id
+        - permissions
+      properties:
+        id:
+          description: 'The station ID.'
+          type: integer
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/StationPermissions'
+      type: object
     Api_Admin_ServerStats_CpuStats:
       required:
         - total
@@ -5505,21 +5551,6 @@ components:
               format: date-time
               example: '2025-01-31T21:31:58+00:00'
           type: object
-    Role:
-      type: object
-      allOf:
-        -
-          $ref: '#/components/schemas/HasAutoIncrementId'
-        -
-          properties:
-            name:
-              type: string
-              example: 'Super Administrator'
-            permissions:
-              description: RolePermission>
-              type: array
-              items: {  }
-          type: object
     Settings:
       properties:
         app_unique_identifier:
@@ -6201,6 +6232,58 @@ components:
               type: array
               items: {  }
           type: object
+    GlobalPermissions:
+      type: string
+      enum:
+        - 'administer all'
+        - 'view administration'
+        - 'view system logs'
+        - 'administer settings'
+        - 'administer api keys'
+        - 'administer stations'
+        - 'administer custom fields'
+        - 'administer backups'
+        - 'administer storage locations'
+      x-enumNames:
+        - All
+        - View
+        - Logs
+        - Settings
+        - ApiKeys
+        - Stations
+        - CustomFields
+        - Backups
+        - StorageLocations
+    StationPermissions:
+      type: string
+      enum:
+        - 'administer all'
+        - 'view station management'
+        - 'view station reports'
+        - 'view station logs'
+        - 'manage station profile'
+        - 'manage station broadcasting'
+        - 'manage station streamers'
+        - 'manage station mounts'
+        - 'manage station remotes'
+        - 'manage station media'
+        - 'manage station automation'
+        - 'manage station web hooks'
+        - 'manage station podcasts'
+      x-enumNames:
+        - All
+        - View
+        - Reports
+        - Logs
+        - Profile
+        - Broadcasting
+        - Streamers
+        - MountPoints
+        - RemoteRelays
+        - Media
+        - Automation
+        - WebHooks
+        - Podcasts
     AudioProcessingMethods:
       type: string
       enum:

@@ -85,10 +85,10 @@ import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {StationPermissions, userAllowedForStation} from "~/acl";
+import {userAllowedForStation} from "~/acl";
 import {IconPlay, IconStop, IconUpdate} from "~/components/Common/icons";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
-import {BackendAdapters} from "~/entities/ApiInterfaces.ts";
+import {BackendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
 
 export interface ProfileBackendPanelParentProps {
     numSongs: number,

@@ -8,24 +8,20 @@ use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JsonSerializable;
-use OpenApi\Attributes as OA;
 use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[
-    OA\Schema(type: "object"),
     ORM\Entity,
     ORM\Table(name: 'role'),
     Attributes\Auditable
 ]
-class Role implements JsonSerializable, Stringable, IdentifiableEntityInterface
+class Role implements Stringable, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
     #[
-        OA\Property(example: "Super Administrator"),
         ORM\Column(length: 100),
         Assert\NotBlank
     ]
@@ -36,10 +32,7 @@ class Role implements JsonSerializable, Stringable, IdentifiableEntityInterface
     protected Collection $users;
 
     /** @var Collection<int, RolePermission> */
-    #[
-        OA\Property(type: "array", items: new OA\Items()),
-        ORM\OneToMany(targetEntity: RolePermission::class, mappedBy: 'role')
-    ]
+    #[ORM\OneToMany(targetEntity: RolePermission::class, mappedBy: 'role')]
     protected Collection $permissions;
 
     public function __construct()
@@ -72,42 +65,6 @@ class Role implements JsonSerializable, Stringable, IdentifiableEntityInterface
     public function getPermissions(): Collection
     {
         return $this->permissions;
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function jsonSerialize(): array
-    {
-        $return = [
-            'id' => $this->id,
-            'name' => $this->name,
-            'permissions' => [
-                'global' => [],
-                'station' => [],
-            ],
-        ];
-
-        $permissionsByStation = [];
-
-        foreach ($this->permissions as $permission) {
-            /** @var RolePermission $permission */
-            $station = $permission->getStation();
-            if (null !== $station) {
-                $permissionsByStation[$station->getIdRequired()][] = $permission->getActionName();
-            } else {
-                $return['permissions']['global'][] = $permission->getActionName();
-            }
-        }
-
-        foreach ($permissionsByStation as $stationId => $stationPerms) {
-            $return['permissions']['station'][] = [
-                'id' => $stationId,
-                'permissions' => $stationPerms,
-            ];
-        }
-
-        return $return;
     }
 
     public function __toString(): string

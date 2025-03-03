@@ -174,11 +174,11 @@ import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
-import {StationPermissions, userAllowedForStation} from "~/acl";
+import {userAllowedForStation} from "~/acl";
 import useOptionalStorage from "~/functions/useOptionalStorage";
 import {IconMoreHoriz, IconPlay, IconStop, IconUpdate} from "~/components/Common/icons";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
-import {FrontendAdapters} from "~/entities/ApiInterfaces.ts";
+import {FrontendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
 
 export interface ProfileFrontendPanelParentProps {
     frontendType: FrontendAdapters,

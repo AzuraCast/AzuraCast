@@ -6179,11 +6179,12 @@ components:
               items: {  }
           type: object
     HasAutoIncrementId:
+      required:
+        - id
       properties:
         id:
           type: integer
           readOnly: true
-          nullable: true
       type: object
     HasSongFields:
       properties:
@@ -6209,11 +6210,12 @@ components:
           readOnly: true
       type: object
     HasUniqueId:
+      required:
+        - id
       properties:
         id:
           type: string
           readOnly: true
-          nullable: true
       type: object
     User:
       type: object

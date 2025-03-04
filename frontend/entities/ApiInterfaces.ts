@@ -1822,7 +1822,7 @@ export type StationWebhook = HasAutoIncrementId & {
 };
 
 export interface HasAutoIncrementId {
-  readonly id?: number | null;
+  readonly id?: number;
 }
 
 export interface HasSongFields {
@@ -1838,7 +1838,7 @@ export interface HasSplitTokenFields {
 }
 
 export interface HasUniqueId {
-  readonly id?: string | null;
+  readonly id?: string;
 }
 
 export type User = HasAutoIncrementId & {

@@ -112,6 +112,7 @@ import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import {useDialog} from "~/functions/useDialog.ts";
+import {ApiAdminGeoLiteStatus} from "~/entities/ApiInterfaces.ts";
 
 const apiUrl = getApiUrl('/admin/geolite');
 
@@ -143,9 +144,9 @@ const {axios} = useAxios();
 const doFetch = () => {
     isLoading.value = true;
 
-    void axios.get(apiUrl.value).then((resp) => {
-        form.value.key = resp.data.key;
-        version.value = resp.data.version;
+    void axios.get<ApiAdminGeoLiteStatus>(apiUrl.value).then(({data}) => {
+        form.value.key = data.key;
+        version.value = data.version;
         isLoading.value = false;
     });
 };
@@ -155,10 +156,10 @@ onMounted(doFetch);
 const doUpdate = () => {
     isLoading.value = true;
 
-    void axios.post(apiUrl.value, {
+    void axios.post<ApiAdminGeoLiteStatus>(apiUrl.value, {
         geolite_license_key: form.value.key
-    }).then((resp) => {
-        version.value = resp.data.version;
+    }).then(({data}) => {
+        version.value = data.version;
     }).finally(() => {
         isLoading.value = false;
     });

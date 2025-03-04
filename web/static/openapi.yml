@@ -282,6 +282,48 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  /admin/geolite:
+    get:
+      tags:
+        - 'Administration: General'
+      description: 'Get the current MaxMindDB GeoLite Database status.'
+      operationId: getGeoLite
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Admin_GeoLiteStatus'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    post:
+      tags:
+        - 'Administration: General'
+      description: 'Set the GeoLite MaxMindDB Database license key.'
+      operationId: postGeoLite
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                geolite_license_key:
+                  type: string
+                  nullable: true
+              type: object
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Admin_GeoLiteStatus'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
   /admin/logs:
     get:
       tags:
@@ -3710,6 +3752,23 @@ components:
         to:
           type: string
       type: object
+    Api_Admin_GeoLiteStatus:
+      required:
+        - version
+        - key
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_AbstractStatus'
+        -
+          properties:
+            version:
+              type: string
+              nullable: true
+            key:
+              type: string
+              nullable: true
+          type: object
     Api_Admin_Permission:
       required:
         - id

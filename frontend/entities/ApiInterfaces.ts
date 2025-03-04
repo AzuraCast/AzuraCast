@@ -51,6 +51,11 @@ export interface ApiAdminAuditLogChangeset {
   to: string;
 }
 
+export type ApiAdminGeoLiteStatus = ApiAbstractStatus & {
+  version: string | null;
+  key: string | null;
+};
+
 export interface ApiAdminPermission {
   id: string;
   name: string;
@@ -1822,7 +1827,7 @@ export type StationWebhook = HasAutoIncrementId & {
 };
 
 export interface HasAutoIncrementId {
-  readonly id?: number;
+  readonly id: number;
 }
 
 export interface HasSongFields {
@@ -1838,7 +1843,7 @@ export interface HasSplitTokenFields {
 }
 
 export interface HasUniqueId {
-  readonly id?: string;
+  readonly id: string;
 }
 
 export type User = HasAutoIncrementId & {

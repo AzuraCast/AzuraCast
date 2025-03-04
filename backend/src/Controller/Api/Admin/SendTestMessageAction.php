@@ -18,6 +18,9 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Required;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/*
+ * TODO API
+ */
 final class SendTestMessageAction implements SingleActionInterface
 {
     public function __construct(

@@ -18,6 +18,9 @@ use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
+/*
+ * TODO API
+ */
 final class BatchAction extends BroadcastsController implements SingleActionInterface
 {
     private const int BATCH_SIZE = 50;

@@ -10,6 +10,9 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
+/*
+ * TODO API
+ */
 final class DeleteAction extends AbstractFileAction
 {
     public function __invoke(

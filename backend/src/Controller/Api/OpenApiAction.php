@@ -11,6 +11,9 @@ use App\Http\ServerRequest;
 use App\Version;
 use Psr\Http\Message\ResponseInterface;
 
+/*
+ * TODO API
+ */
 final class OpenApiAction implements SingleActionInterface
 {
     public function __construct(

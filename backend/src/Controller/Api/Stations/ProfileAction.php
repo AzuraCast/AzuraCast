@@ -15,6 +15,9 @@ use App\Radio\Adapters;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ResponseInterface;
 
+/*
+ * TODO API
+ */
 final class ProfileAction implements SingleActionInterface
 {
     public function __construct(

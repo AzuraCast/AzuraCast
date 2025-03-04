@@ -11,6 +11,9 @@ use App\Http\ServerRequest;
 use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
 
+/*
+ * TODO API
+ */
 final class GetLogAction implements SingleActionInterface
 {
     use HasLogViewer;

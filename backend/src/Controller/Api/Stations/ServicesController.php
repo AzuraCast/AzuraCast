@@ -64,10 +64,19 @@ use Psr\Http\Message\ResponseInterface;
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'action',
-                description: 'The action to perform (start, stop, restart)',
+                description: 'The action to perform.',
                 in: 'path',
                 required: true,
-                schema: new OA\Schema(type: 'string', default: 'restart')
+                schema: new OA\Schema(
+                    type: 'string',
+                    default: 'restart',
+                    enum: [
+                        'start',
+                        'stop',
+                        'reload',
+                        'restart',
+                    ]
+                )
             ),
         ],
         responses: [
@@ -86,10 +95,21 @@ use Psr\Http\Message\ResponseInterface;
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'action',
-                description: 'The action to perform (start, stop, restart, skip, disconnect)',
+                description: 'The action to perform.',
                 in: 'path',
                 required: true,
-                schema: new OA\Schema(type: 'string', default: 'restart')
+                schema: new OA\Schema(
+                    type: 'string',
+                    default: 'restart',
+                    enum: [
+                        'skip',
+                        'disconnect',
+                        'start',
+                        'stop',
+                        'reload',
+                        'restart',
+                    ]
+                )
             ),
         ],
         responses: [

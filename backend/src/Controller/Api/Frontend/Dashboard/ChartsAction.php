@@ -18,6 +18,9 @@ use Carbon\CarbonImmutable;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
 
+/*
+ * TODO API
+ */
 final class ChartsAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;

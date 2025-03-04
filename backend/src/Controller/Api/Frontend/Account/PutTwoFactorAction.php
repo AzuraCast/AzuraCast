@@ -17,6 +17,9 @@ use ParagonIE\ConstantTime\Base32;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
+/*
+ * TODO API
+ */
 final class PutTwoFactorAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;

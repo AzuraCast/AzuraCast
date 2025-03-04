@@ -70,8 +70,6 @@ paths:
                   $ref: '#/components/schemas/Api_Admin_AuditLog'
         '403':
           $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
   '/admin/custom_assets/{type}':
@@ -129,8 +127,6 @@ paths:
           $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
     delete:
@@ -155,8 +151,6 @@ paths:
           $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
   /admin/custom_fields:
@@ -383,8 +377,6 @@ paths:
                 $ref: '#/components/schemas/Api_Admin_Permissions'
         '403':
           $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
   /admin/relays/list:
@@ -404,8 +396,6 @@ paths:
                   $ref: '#/components/schemas/Relay'
         '403':
           $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
   /admin/roles:
@@ -540,8 +530,6 @@ paths:
           $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
     delete:
@@ -554,8 +542,6 @@ paths:
           $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
   /admin/rsas:
@@ -573,8 +559,6 @@ paths:
                 $ref: '#/components/schemas/Api_Admin_RsasStatus'
         '403':
           $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
     post:
@@ -589,8 +573,6 @@ paths:
           $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
   /admin/server/stats:
@@ -608,8 +590,6 @@ paths:
                 $ref: '#/components/schemas/Api_Admin_ServerStats'
         '403':
           $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
   /admin/settings:
@@ -661,8 +641,6 @@ paths:
                 $ref: '#/components/schemas/Api_Admin_ShoutcastStatus'
         '403':
           $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
     post:
@@ -677,8 +655,6 @@ paths:
           $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
   /admin/stations:
@@ -815,8 +791,6 @@ paths:
                 $ref: '#/components/schemas/Api_Admin_StereoToolStatus'
         '403':
           $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
     post:
@@ -831,8 +805,6 @@ paths:
           $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
     delete:
@@ -845,8 +817,6 @@ paths:
           $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
   /admin/storage_locations:
@@ -1228,8 +1198,6 @@ paths:
           $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
   /status:
@@ -1381,6 +1349,97 @@ paths:
                 format: int64
               -
                 type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/custom_assets/{type}':
+    get:
+      tags:
+        - 'Stations: General'
+      description: 'Get the details of the custom asset of the specified type.'
+      operationId: getStationCustomAsset
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: type
+          in: path
+          description: 'Asset Type'
+          required: true
+          schema:
+            type: string
+            enum:
+              - album_art
+              - background
+              - browser_icon
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_CustomAsset'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    post:
+      tags:
+        - 'Stations: General'
+      description: 'Upload a new custom asset of the specified type.'
+      operationId: postStationCustomAsset
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: type
+          in: path
+          description: 'Asset Type'
+          required: true
+          schema:
+            type: string
+            enum:
+              - album_art
+              - background
+              - browser_icon
+      requestBody:
+        $ref: '#/components/requestBodies/FlowFileUpload'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    delete:
+      tags:
+        - 'Stations: General'
+      description: 'Removes the custom asset of the specified type.'
+      operationId: deleteStationCustomAsset
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: type
+          in: path
+          description: 'Asset Type'
+          required: true
+          schema:
+            type: string
+            enum:
+              - album_art
+              - background
+              - browser_icon
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -3043,6 +3102,7 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+      security: []
   '/station/{station_id}/request/{request_id}':
     post:
       tags:
@@ -3068,6 +3128,7 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+      security: []
   '/station/{station_id}/schedule':
     get:
       tags:
@@ -3104,6 +3165,7 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+      security: []
   '/station/{station_id}/status':
     get:
       tags:
@@ -3156,11 +3218,16 @@ paths:
         -
           name: action
           in: path
-          description: 'The action to perform (start, stop, restart)'
+          description: 'The action to perform.'
           required: true
           schema:
             type: string
             default: restart
+            enum:
+              - start
+              - stop
+              - reload
+              - restart
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -3182,11 +3249,18 @@ paths:
         -
           name: action
           in: path
-          description: 'The action to perform (start, stop, restart, skip, disconnect)'
+          description: 'The action to perform.'
           required: true
           schema:
             type: string
             default: restart
+            enum:
+              - skip
+              - disconnect
+              - start
+              - stop
+              - reload
+              - restart
       responses:
         '200':
           $ref: '#/components/responses/Success'

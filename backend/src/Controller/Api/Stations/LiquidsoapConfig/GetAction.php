@@ -13,6 +13,9 @@ use App\Radio\Backend\Liquidsoap\ConfigWriter;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/*
+ * TODO API
+ */
 final class GetAction implements SingleActionInterface
 {
     public function __construct(

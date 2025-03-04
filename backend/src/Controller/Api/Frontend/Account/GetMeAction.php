@@ -16,6 +16,9 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/*
+ * TODO API
+ */
 final class GetMeAction extends UsersController implements SingleActionInterface
 {
     use EntityManagerAwareTrait;

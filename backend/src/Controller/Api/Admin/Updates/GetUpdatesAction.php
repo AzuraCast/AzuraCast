@@ -13,6 +13,9 @@ use GuzzleHttp\Exception\TransferException;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 
+/*
+ * TODO API
+ */
 final class GetUpdatesAction implements SingleActionInterface
 {
     use SettingsAwareTrait;

@@ -14,6 +14,9 @@ use Monolog\Handler\TestHandler;
 use Monolog\Level;
 use Psr\Http\Message\ResponseInterface;
 
+/*
+ * TODO API
+ */
 final class TelnetAction implements SingleActionInterface
 {
     use LoggerAwareTrait;

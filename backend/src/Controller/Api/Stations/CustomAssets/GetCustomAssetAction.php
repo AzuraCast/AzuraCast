@@ -7,10 +7,44 @@ namespace App\Controller\Api\Stations\CustomAssets;
 use App\Assets\AssetTypes;
 use App\Container\EnvironmentAwareTrait;
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\CustomAsset;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[OA\Get(
+    path: '/station/{station_id}/custom_assets/{type}',
+    operationId: 'getStationCustomAsset',
+    description: 'Get the details of the custom asset of the specified type.',
+    tags: ['Stations: General'],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        new OA\Parameter(
+            name: 'type',
+            description: 'Asset Type',
+            in: 'path',
+            required: true,
+            schema: new OA\Schema(
+                type: 'string',
+                enum: AssetTypes::class
+            )
+        ),
+    ],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: 'Success',
+            content: new OA\JsonContent(
+                ref: CustomAsset::class
+            )
+        ),
+        new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+        new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+        new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+    ]
+)]
 final class GetCustomAssetAction implements SingleActionInterface
 {
     use EnvironmentAwareTrait;
@@ -29,10 +63,10 @@ final class GetCustomAssetAction implements SingleActionInterface
         );
 
         return $response->withJson(
-            [
-                'is_uploaded' => $customAsset->isUploaded(),
-                'url' => $customAsset->getUrl(),
-            ]
+            new CustomAsset(
+                $customAsset->isUploaded(),
+                $customAsset->getUrl(),
+            )
         );
     }
 }

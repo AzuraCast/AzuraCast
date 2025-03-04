@@ -42,6 +42,9 @@ use RuntimeException;
 use Symfony\Component\Messenger\MessageBus;
 use Throwable;
 
+/*
+ * TODO API
+ */
 final class BatchAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;

@@ -16,6 +16,7 @@ use Throwable;
 
 /**
  * Produce a report in SoundExchange (the US webcaster licensing agency) format.
+ * TODO API
  */
 final class SoundExchangeAction implements SingleActionInterface
 {

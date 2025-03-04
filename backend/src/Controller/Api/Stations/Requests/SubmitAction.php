@@ -30,6 +30,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/request/{request_id}',
         operationId: 'submitSongRequest',
         description: 'Submit a song request.',
+        security: [],
         tags: ['Stations: Song Requests'],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

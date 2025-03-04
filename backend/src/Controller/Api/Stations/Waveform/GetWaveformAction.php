@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Waveform;
 
 use App\Controller\SingleActionInterface;
-use App\Controller\Traits\ResponseHasCacheLifetime;
 use App\Entity\Repository\StationMediaRepository;
 use App\Entity\StationMedia;
 use App\Flysystem\StationFilesystems;
@@ -13,6 +12,9 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
+/*
+ * TODO API
+ */
 final class GetWaveformAction implements SingleActionInterface
 {
     public function __construct(

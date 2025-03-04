@@ -15,6 +15,9 @@ use Monolog\Level;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/*
+ * TODO API
+ */
 final class SyncAction implements SingleActionInterface
 {
     use LoggerAwareTrait;

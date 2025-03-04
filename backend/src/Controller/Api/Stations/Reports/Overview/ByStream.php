@@ -12,6 +12,9 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
+/*
+ * TODO API
+ */
 final class ByStream extends AbstractReportAction
 {
     public function __construct(

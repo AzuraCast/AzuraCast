@@ -12,6 +12,9 @@ use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
 
+/*
+ * TODO API
+ */
 final class GenerateCertificateAction implements SingleActionInterface
 {
     public function __construct(

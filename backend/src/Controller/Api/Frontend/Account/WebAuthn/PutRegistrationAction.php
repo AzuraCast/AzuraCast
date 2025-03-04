@@ -14,6 +14,9 @@ use App\Security\WebAuthnPasskey;
 use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
 
+/*
+ * TODO API
+ */
 final class PutRegistrationAction
 {
     use UsesWebAuthnTrait;

@@ -16,6 +16,8 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 /**
  * @template TEntity as UserPasskey
  * @extends AbstractApiCrudController<TEntity>
+ *
+ * TODO API
  */
 final class PasskeysController extends AbstractApiCrudController
 {

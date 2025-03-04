@@ -18,6 +18,9 @@ use Prometheus\RenderTextFormat;
 use Prometheus\Storage\InMemory;
 use Psr\Http\Message\ResponseInterface;
 
+/*
+ * TODO API
+ */
 final class PrometheusAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;

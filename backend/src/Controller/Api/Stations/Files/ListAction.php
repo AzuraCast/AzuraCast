@@ -29,6 +29,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
+/*
+ * TODO API
+ */
 final class ListAction implements SingleActionInterface
 {
     use CanSortResults;

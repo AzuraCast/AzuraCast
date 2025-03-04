@@ -18,6 +18,7 @@ use Psr\Http\Message\ResponseInterface;
     path: '/station/{station_id}/mount/{id}/intro',
     operationId: 'postMountIntro',
     description: 'Update the intro track for a mount point.',
+    requestBody: new OA\RequestBody(ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD),
     tags: ['Stations: Mount Points'],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

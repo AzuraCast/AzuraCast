@@ -1320,6 +1320,8 @@ paths:
                 format: int64
               -
                 type: string
+      requestBody:
+        $ref: '#/components/requestBodies/FlowFileUpload'
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -1475,6 +1477,8 @@ paths:
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
+      requestBody:
+        $ref: '#/components/requestBodies/FlowFileUpload'
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -2001,6 +2005,8 @@ paths:
           schema:
             type: integer
             format: int64
+      requestBody:
+        $ref: '#/components/requestBodies/FlowFileUpload'
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -2505,6 +2511,8 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        $ref: '#/components/requestBodies/FlowFileUpload'
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -2593,6 +2601,8 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        $ref: '#/components/requestBodies/FlowFileUpload'
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -2692,6 +2702,8 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        $ref: '#/components/requestBodies/FlowFileUpload'
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -3431,6 +3443,8 @@ paths:
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
+      requestBody:
+        $ref: '#/components/requestBodies/FlowFileUpload'
       responses:
         '200':
           $ref: '#/components/responses/Success'

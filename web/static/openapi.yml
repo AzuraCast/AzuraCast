@@ -938,6 +938,35 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  /admin/updates:
+    get:
+      tags:
+        - 'Administration: General'
+      description: 'Show information about this installation and its update status.'
+      operationId: getUpdateStatus
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Admin_UpdateDetails'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    put:
+      tags:
+        - 'Administration: General'
+      description: 'Attempts to trigger a web-based update.'
+      operationId: putWebUpdate
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
   /admin/users:
     get:
       tags:
@@ -1196,6 +1225,25 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  /dashboard/notifications:
+    get:
+      tags:
+        - Miscellaneous
+      description: 'Show all notifications your current account should see.'
+      operationId: getNotifications
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_Notification'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -4363,6 +4411,29 @@ components:
                 example: 'AzuraTest Radio'
               nullable: true
           type: object
+    Api_Admin_UpdateDetails:
+      properties:
+        current_release:
+          description: 'The stable-equivalent branch your installation currently appears to be on.'
+          type: string
+          example: 0.20.3
+        latest_release:
+          description: 'The current latest stable release of the software.'
+          type: string
+          example: 0.20.4
+        needs_rolling_update:
+          description: 'If you are on the Rolling Release, whether your installation needs to be updated.'
+          type: boolean
+        needs_release_update:
+          description: 'Whether a newer stable release is available than the version you are currently using.'
+          type: boolean
+        rolling_updates_available:
+          description: 'If you are on the Rolling Release, the number of updates that have released since your version.'
+          type: integer
+        can_switch_to_stable:
+          description: 'Whether you can seamlessly move from the Rolling Release channel to Stable without issues.'
+          type: boolean
+      type: object
     Api_CustomAsset:
       required:
         - is_uploaded
@@ -4633,6 +4704,27 @@ components:
                 type: string
                 example: 'http://localhost/api/record/1'
           type: object
+    Api_Notification:
+      required:
+        - title
+        - body
+        - type
+        - actionLabel
+        - actionUrl
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+        type:
+          $ref: '#/components/schemas/FlashLevels'
+        actionLabel:
+          type: string
+          nullable: true
+        actionUrl:
+          type: string
+          nullable: true
+      type: object
     Api_NowPlaying_CurrentSong:
       required:
         - elapsed
@@ -6405,6 +6497,18 @@ components:
               type: array
               items: {  }
           type: object
+    FlashLevels:
+      type: string
+      enum:
+        - success
+        - warning
+        - danger
+        - info
+      x-enumNames:
+        - Success
+        - Warning
+        - Error
+        - Info
     GlobalPermissions:
       type: string
       enum:

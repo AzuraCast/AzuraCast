@@ -4,25 +4,22 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
+use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
+
 trait LoadFromParentObject
 {
     /**
-     * @param object|array<mixed> $obj
+     * @param object|array<mixed> $parent
      */
-    public function fromParentObject(object|array $obj): void
+    public static function fromParent(array|object $parent): self
     {
-        if (is_object($obj)) {
-            foreach (get_object_vars($obj) as $key => $value) {
-                if (property_exists($this, $key)) {
-                    $this->$key = $value;
-                }
-            }
-        } elseif (is_array($obj)) {
-            foreach ($obj as $key => $value) {
-                if (property_exists($this, $key)) {
-                    $this->$key = $value;
-                }
-            }
+        if (is_object($parent)) {
+            $parent = get_object_vars($parent);
         }
+
+        return new PropertyNormalizer()->denormalize(
+            $parent,
+            self::class
+        );
     }
 }

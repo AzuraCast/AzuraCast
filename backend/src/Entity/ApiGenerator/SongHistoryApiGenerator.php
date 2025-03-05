@@ -91,8 +91,7 @@ final class SongHistoryApiGenerator
         ?UriInterface $baseUri = null
     ): DetailedSongHistory {
         $apiHistory = ($this)($record, $baseUri);
-        $response = new DetailedSongHistory();
-        $response->fromParentObject($apiHistory);
+        $response = DetailedSongHistory::fromParent($apiHistory);
         $response->listeners_start = (int)$record->getListenersStart();
         $response->listeners_end = (int)$record->getListenersEnd();
         $response->delta_total = $record->getDeltaTotal();

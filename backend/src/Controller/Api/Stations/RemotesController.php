@@ -181,8 +181,7 @@ final class RemotesController extends AbstractStationApiCrudController
     {
         $returnArray = $this->toArray($record);
 
-        $return = new ApiStationRemote();
-        $return->fromParentObject($returnArray);
+        $return = ApiStationRemote::fromParent($returnArray);
 
         $isInternal = $request->isInternal();
         $router = $request->getRouter();

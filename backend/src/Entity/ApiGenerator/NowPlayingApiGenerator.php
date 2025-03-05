@@ -107,8 +107,7 @@ final class NowPlayingApiGenerator
             isNowPlaying: true
         );
 
-        $apiCurrentSong = new CurrentSong();
-        $apiCurrentSong->fromParentObject($apiSongHistory);
+        $apiCurrentSong = CurrentSong::fromParent($apiSongHistory);
         $np->now_playing = $apiCurrentSong;
 
         $np->song_history = $this->songHistoryApiGenerator->fromArray(

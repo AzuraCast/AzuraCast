@@ -83,9 +83,7 @@ final class StationsAction implements SingleActionInterface
 
         $paginator->setPostprocessor(
             function (NowPlaying $np) use ($router, $listenersEnabled, $acl) {
-                $row = new Dashboard();
-                $row->fromParentObject($np);
-
+                $row = Dashboard::fromParent($np);
                 $row->links = [
                     'public' => $router->named('public:index', ['station_id' => $np->station->shortcode]),
                     'manage' => $router->named('stations:index:index', ['station_id' => $np->station->id]),

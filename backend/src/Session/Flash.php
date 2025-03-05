@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Session;
 
+use App\Enums\FlashLevels;
 use Mezzio\Session\SessionInterface;
 
 /**

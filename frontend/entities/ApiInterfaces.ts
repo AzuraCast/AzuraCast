@@ -343,6 +343,27 @@ export type ApiAdminStorageLocation = HasLinks & {
   stations?: string[] | null;
 };
 
+export interface ApiAdminUpdateDetails {
+  /**
+   * The stable-equivalent branch your installation currently appears to be on.
+   * @example "0.20.3"
+   */
+  current_release?: string;
+  /**
+   * The current latest stable release of the software.
+   * @example "0.20.4"
+   */
+  latest_release?: string;
+  /** If you are on the Rolling Release, whether your installation needs to be updated. */
+  needs_rolling_update?: boolean;
+  /** Whether a newer stable release is available than the version you are currently using. */
+  needs_release_update?: boolean;
+  /** If you are on the Rolling Release, the number of updates that have released since your version. */
+  rolling_updates_available?: number;
+  /** Whether you can seamlessly move from the Rolling Release channel to Stable without issues. */
+  can_switch_to_stable?: boolean;
+}
+
 export type ApiCustomAsset = ApiAbstractStatus & {
   is_uploaded: boolean;
   url: string;
@@ -546,6 +567,14 @@ export type ApiLogType = HasLinks & {
 export type ApiNewRecord = ApiStatus & {
   links?: string[];
 };
+
+export interface ApiNotification {
+  title: string;
+  body: string;
+  type: FlashLevels;
+  actionLabel: string | null;
+  actionUrl: string | null;
+}
 
 export type ApiNowPlayingCurrentSong = ApiNowPlayingSongHistory & {
   /**
@@ -1866,6 +1895,13 @@ export type User = HasAutoIncrementId & {
   /** Role> */
   roles?: any[];
 };
+
+export enum FlashLevels {
+  Success = "success",
+  Warning = "warning",
+  Error = "danger",
+  Info = "info",
+}
 
 export enum GlobalPermissions {
   All = "administer all",

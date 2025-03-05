@@ -7,9 +7,9 @@ namespace App\Notification\Check;
 use App\Container\EnvironmentAwareTrait;
 use App\Container\SettingsAwareTrait;
 use App\Entity\Api\Notification;
+use App\Enums\FlashLevels;
 use App\Enums\GlobalPermissions;
 use App\Event\GetNotifications;
-use App\Session\FlashLevels;
 use Carbon\CarbonImmutable;
 
 final class RecentBackupCheck
@@ -43,16 +43,16 @@ final class RecentBackupCheck
         $backupLastRun = $settings->getBackupLastRun();
 
         if ($backupLastRun < $threshold) {
-            $notification = new Notification();
-            $notification->title = __('Installation Not Recently Backed Up');
-            $notification->body = __('This installation has not been backed up in the last two weeks.');
-            $notification->type = FlashLevels::Info->value;
-
             $router = $request->getRouter();
-            $notification->actionLabel = __('Backups');
-            $notification->actionUrl = $router->named('admin:backups:index');
-
-            $event->addNotification($notification);
+            $event->addNotification(
+                new Notification(
+                    __('Installation Not Recently Backed Up'),
+                    __('This installation has not been backed up in the last two weeks.'),
+                    FlashLevels::Info,
+                    __('Backups'),
+                    $router->named('admin:backups:index')
+                )
+            );
         }
     }
 }

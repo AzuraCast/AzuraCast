@@ -6,16 +6,33 @@ namespace App\Controller\Api\Admin\Updates;
 
 use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Admin\UpdateDetails;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Service\AzuraCastCentral;
 use GuzzleHttp\Exception\TransferException;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 
-/*
- * TODO API
- */
+#[OA\Get(
+    path: '/admin/updates',
+    operationId: 'getUpdateStatus',
+    description: 'Show information about this installation and its update status.',
+    tags: ['Administration: General'],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: 'Success',
+            content: new OA\JsonContent(
+                ref: UpdateDetails::class
+            )
+        ),
+        new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+        new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+    ]
+)]
 final class GetUpdatesAction implements SingleActionInterface
 {
     use SettingsAwareTrait;
@@ -40,7 +57,7 @@ final class GetUpdatesAction implements SingleActionInterface
                 $settings->updateUpdateLastRun();
                 $this->writeSettings($settings);
 
-                return $response->withJson($updates);
+                return $response->withJson(UpdateDetails::fromParent($updates));
             }
 
             throw new RuntimeException('Error parsing update data response from AzuraCast central.');

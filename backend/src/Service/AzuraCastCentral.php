@@ -67,6 +67,7 @@ final class AzuraCastCentral
             ]);
 
             $updateData = json_decode($updateDataRaw, true, 512, JSON_THROW_ON_ERROR);
+
             return $updateData['updates'] ?? null;
         } catch (Exception $e) {
             $this->logger->error('Error checking for updates: ' . $e->getMessage());

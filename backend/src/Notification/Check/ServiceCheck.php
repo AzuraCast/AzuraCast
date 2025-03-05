@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Notification\Check;
 
 use App\Entity\Api\Notification;
+use App\Enums\FlashLevels;
 use App\Enums\GlobalPermissions;
 use App\Event\GetNotifications;
 use App\Service\ServiceControl;
-use App\Session\FlashLevels;
 
 final class ServiceCheck
 {
@@ -29,21 +29,21 @@ final class ServiceCheck
         $services = $this->serviceControl->getServices();
         foreach ($services as $service) {
             if (!$service->running) {
-                // phpcs:disable Generic.Files.LineLength
-                $notification = new Notification();
-                $notification->title = sprintf(__('Service Not Running: %s'), $service->name);
-                $notification->body = __(
-                    'One of the essential services on this installation is not currently running. Visit the system administration and check the system logs to find the cause of this issue.'
-                );
-                $notification->type = FlashLevels::Error->value;
-
                 $router = $request->getRouter();
 
-                $notification->actionLabel = __('Administration');
-                $notification->actionUrl = $router->named('admin:index:index');
+                // phpcs:disable Generic.Files.LineLength
+                $event->addNotification(
+                    new Notification(
+                        sprintf(__('Service Not Running: %s'), $service->name),
+                        __(
+                            'One of the essential services on this installation is not currently running. Visit the system administration and check the system logs to find the cause of this issue.'
+                        ),
+                        FlashLevels::Error,
+                        __('Administration'),
+                        $router->named('admin:index:index')
+                    )
+                );
                 // phpcs:enable
-
-                $event->addNotification($notification);
             }
         }
     }

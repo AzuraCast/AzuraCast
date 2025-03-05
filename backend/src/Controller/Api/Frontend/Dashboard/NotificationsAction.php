@@ -6,14 +6,34 @@ namespace App\Controller\Api\Frontend\Dashboard;
 
 use App\CallableEventDispatcherInterface;
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Notification;
 use App\Event;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/*
- * TODO API
- */
+#[OA\Get(
+    path: '/dashboard/notifications',
+    operationId: 'getNotifications',
+    description: 'Show all notifications your current account should see.',
+    tags: ['Miscellaneous'],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: 'Success',
+            content: new OA\JsonContent(
+                type: 'array',
+                items: new OA\Items(
+                    ref: Notification::class
+                )
+            )
+        ),
+        new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+        new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+    ]
+)]
 final class NotificationsAction implements SingleActionInterface
 {
     public function __construct(

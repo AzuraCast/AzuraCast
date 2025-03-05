@@ -262,6 +262,7 @@ import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
 import {getApiUrl} from "~/router.ts";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import useHasDatatable from "~/functions/useHasDatatable.ts";
+import {ApiNotification} from "~/entities/ApiInterfaces.ts";
 
 defineProps<{
     profileUrl: string,
@@ -288,8 +289,8 @@ const langShowHideCharts = computed(() => {
 
 const {axios} = useAxios();
 
-const {state: notifications, isLoading: notificationsLoading} = useAsyncState(
-    () => axios.get(notificationsUrl.value).then((r) => r.data),
+const {state: notifications, isLoading: notificationsLoading} = useAsyncState<ApiNotification[]>(
+    async () => (await axios.get<ApiNotification[]>(notificationsUrl.value)).data,
     []
 );
 

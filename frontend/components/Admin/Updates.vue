@@ -161,16 +161,12 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import {IconInfo, IconSync, IconUpdate, IconUpload} from "~/components/Common/icons";
 import {useDialog} from "~/functions/useDialog.ts";
-
-interface UpdateInfo {
-    needs_release_update?: boolean,
-    needs_rolling_update?: boolean,
-}
+import {ApiAdminUpdateDetails} from "~/entities/ApiInterfaces.ts";
 
 const props = withDefaults(
     defineProps<{
         releaseChannel: string,
-        initialUpdateInfo?: UpdateInfo,
+        initialUpdateInfo?: ApiAdminUpdateDetails,
         enableWebUpdates: boolean,
     }>(),
     {
@@ -183,7 +179,7 @@ const props = withDefaults(
 
 const updatesApiUrl = getApiUrl('/admin/updates');
 
-const updateInfo = ref(props.initialUpdateInfo);
+const updateInfo = ref<ApiAdminUpdateDetails>(props.initialUpdateInfo);
 
 const {$gettext} = useTranslate();
 
@@ -205,8 +201,8 @@ const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const checkForUpdates = () => {
-    void axios.get(updatesApiUrl.value).then((resp) => {
-        updateInfo.value = resp.data;
+    void axios.get<ApiAdminUpdateDetails>(updatesApiUrl.value).then(({data}) => {
+        updateInfo.value = data;
     });
 };
 

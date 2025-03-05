@@ -141,9 +141,7 @@ final class QueueController extends AbstractStationApiCrudController
 
         $row = $this->queueApiGenerator->__invoke($record);
 
-        $apiResponse = new StationQueueDetailed();
-        $apiResponse->fromParentObject($row);
-
+        $apiResponse = StationQueueDetailed::fromParent($row);
         $apiResponse->sent_to_autodj = $record->getSentToAutodj();
         $apiResponse->is_played = $record->getIsPlayed();
         $apiResponse->autodj_custom_uri = $record->getAutodjCustomUri();

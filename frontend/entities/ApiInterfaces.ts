@@ -51,6 +51,15 @@ export interface ApiAdminAuditLogChangeset {
   to: string;
 }
 
+export type ApiAdminBackup = HasLinks & {
+  path: string;
+  basename: string;
+  pathEncoded: string;
+  timestamp: number;
+  size: number;
+  storageLocationId: number;
+};
+
 export type ApiAdminGeoLiteStatus = ApiAbstractStatus & {
   version: string | null;
   key: string | null;

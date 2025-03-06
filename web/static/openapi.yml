@@ -72,6 +72,25 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
+  /admin/backups:
+    get:
+      tags:
+        - 'Administration: General'
+      description: 'Return a list of all current backups.'
+      operationId: getBackups
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_Admin_Backup'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/admin/custom_assets/{type}':
     get:
       tags:
@@ -3933,6 +3952,33 @@ components:
         to:
           type: string
       type: object
+    Api_Admin_Backup:
+      required:
+        - path
+        - basename
+        - pathEncoded
+        - timestamp
+        - size
+        - storageLocationId
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasLinks'
+        -
+          properties:
+            path:
+              type: string
+            basename:
+              type: string
+            pathEncoded:
+              type: string
+            timestamp:
+              type: integer
+            size:
+              type: integer
+            storageLocationId:
+              type: integer
+          type: object
     Api_Admin_GeoLiteStatus:
       required:
         - version

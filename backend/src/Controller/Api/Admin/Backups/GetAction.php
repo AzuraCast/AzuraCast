@@ -5,18 +5,40 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin\Backups;
 
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Admin\Backup;
 use App\Entity\Enums\StorageLocationTypes;
 use App\Entity\Repository\StorageLocationRepository;
 use App\Flysystem\Attributes\FileAttributes;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Paginator;
 use League\Flysystem\StorageAttributes;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/*
- * TODO API
- */
+#[
+    OA\Get(
+        path: '/admin/backups',
+        operationId: 'getBackups',
+        description: 'Return a list of all current backups.',
+        tags: ['Administration: General'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(
+                        ref: Backup::class
+                    )
+                )
+            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    )
+]
 final class GetAction implements SingleActionInterface
 {
     public function __construct(
@@ -49,34 +71,34 @@ final class GetAction implements SingleActionInterface
 
                 $pathEncoded = base64_encode($storageLocation->getId() . '|' . $filename);
 
-                $backups[] = [
-                    'path' => $filename,
-                    'basename' => basename($filename),
-                    'pathEncoded' => $pathEncoded,
-                    'timestamp' => $file->lastModified(),
-                    'size' => $file->fileSize(),
-                    'storageLocationId' => $storageLocation->getId(),
-                ];
+                $backups[] = new Backup(
+                    $filename,
+                    basename($filename),
+                    $pathEncoded,
+                    $file->lastModified() ?? 0,
+                    $file->fileSize(),
+                    $storageLocation->getIdRequired()
+                );
             }
         }
 
         uasort(
             $backups,
-            static function ($a, $b) {
-                return $b['timestamp'] <=> $a['timestamp'];
+            static function (Backup $a, Backup $b) {
+                return $b->timestamp <=> $a->timestamp;
             }
         );
 
         $paginator = Paginator::fromArray($backups, $request);
-        $paginator->setPostprocessor(function ($row) use ($router) {
-            $row['links'] = [
+        $paginator->setPostprocessor(function (Backup $row) use ($router) {
+            $row->links = [
                 'download' => $router->fromHere(
                     'api:admin:backups:download',
-                    ['path' => $row['pathEncoded']]
+                    ['path' => $row->pathEncoded]
                 ),
                 'delete' => $router->fromHere(
                     'api:admin:backups:delete',
-                    ['path' => $row['pathEncoded']]
+                    ['path' => $row->pathEncoded]
                 ),
             ];
             return $row;

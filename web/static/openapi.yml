@@ -592,6 +592,51 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
+  /admin/services:
+    get:
+      tags:
+        - 'Administration: General'
+      description: 'List the status of essential system services.'
+      operationId: getServiceDetails
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_Admin_ServiceData'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/admin/services/restart/{service}':
+    post:
+      tags:
+        - 'Administration: General'
+      description: 'Restart the specified service.'
+      operationId: restartService
+      parameters:
+        -
+          name: service
+          in: path
+          description: 'Service name.'
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomField'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
   /admin/settings:
     get:
       tags:
@@ -4246,6 +4291,24 @@ components:
         used_readable:
           type: string
       type: object
+    Api_Admin_ServiceData:
+      required:
+        - name
+        - description
+        - running
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasLinks'
+        -
+          properties:
+            name:
+              type: string
+            description:
+              type: string
+            running:
+              type: boolean
+          type: object
     Api_Admin_ShoutcastStatus:
       required:
         - version
@@ -4428,7 +4491,7 @@ components:
           description: 'Whether a newer stable release is available than the version you are currently using.'
           type: boolean
         rolling_updates_available:
-          description: 'If you are on the Rolling Release, the number of updates that have released since your version.'
+          description: 'If you are on the Rolling Release, the number of updates released since your version.'
           type: integer
         can_switch_to_stable:
           description: 'Whether you can seamlessly move from the Rolling Release channel to Stable without issues.'
@@ -4544,6 +4607,9 @@ components:
         playlists:
           type: array
           items: {  }
+      type: object
+    HashMap:
+      description: 'A hash-map array represented as an object.'
       type: object
     Api_Listener:
       properties:
@@ -4690,19 +4756,6 @@ components:
             tail:
               type: boolean
               readOnly: true
-          type: object
-    Api_NewRecord:
-      type: object
-      allOf:
-        -
-          $ref: '#/components/schemas/Api_Status'
-        -
-          properties:
-            links:
-              type: array
-              items:
-                type: string
-                example: 'http://localhost/api/record/1'
           type: object
     Api_Notification:
       required:
@@ -5273,15 +5326,32 @@ components:
               type: string
               example: '4:00'
             custom_fields:
-              description: 'An object containing all custom fields, with the key being the value name.'
-              type: object
+              $ref: '#/components/schemas/HashMap'
             extra_metadata:
-              type: array
-              items: {  }
+              $ref: '#/components/schemas/HashMap'
             playlists:
               type: array
-              items: {  }
+              items:
+                oneOf:
+                  - { $ref: '#/components/schemas/Api_StationMediaPlaylist' }
+                  - { type: integer, writeOnly: true }
           type: object
+    Api_StationMediaPlaylist:
+      properties:
+        id:
+          description: 'The playlist identifier.'
+          type: integer
+          example: 1
+        name:
+          type: string
+          readOnly: true
+        short_name:
+          type: string
+          readOnly: true
+        count:
+          type: integer
+          readOnly: true
+      type: object
     Api_StationOnDemand:
       properties:
         track_id:

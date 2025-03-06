@@ -171,7 +171,7 @@
             <template #cell(playlists)="{ item }">
                 <template v-if="item.media?.playlists?.length > 0">
                     <template
-                        v-for="(playlist, index) in item.media.playlists"
+                        v-for="(playlist, index) in item.media.playlists as ApiStationMediaPlaylist[]"
                         :key="playlist.id"
                     >
                         <a
@@ -276,7 +276,7 @@ import {getStationApiUrl} from "~/router";
 import {useRoute, useRouter} from "vue-router";
 import {IconFile, IconFolder, IconImage} from "~/components/Common/icons";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
-import {ApiFileList, CustomField, FileTypes} from "~/entities/ApiInterfaces.ts";
+import {ApiFileList, ApiStationMediaPlaylist, CustomField, FileTypes} from "~/entities/ApiInterfaces.ts";
 
 export interface MediaSelectedItems {
     all: ApiFileList[],
@@ -318,8 +318,10 @@ const {$gettext} = useTranslate();
 
 const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
 
-const fields = computed<DataTableField<ApiFileList>[]>(() => {
-    const fields: DataTableField<ApiFileList>[] = [
+type Row = ApiFileList;
+
+const fields = computed<DataTableField<Row>[]>(() => {
+    const fields: DataTableField<Row>[] = [
         {key: 'path', isRowHeader: true, label: $gettext('Name'), sortable: true},
         {key: 'media.title', label: $gettext('Title'), sortable: true, selectable: true, visible: false},
         {

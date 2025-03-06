@@ -53,13 +53,14 @@ import {useAxios} from "~/vendor/axios.ts";
 import {useNotify} from "~/functions/useNotify";
 import Loading from "~/components/Common/Loading.vue";
 import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
+import {ApiAdminServiceData} from "~/entities/ApiInterfaces.ts";
 
 const servicesUrl = getApiUrl('/admin/services');
 
 const {axios, axiosSilent} = useAxios();
 
-const {state: services, isLoading} = useAutoRefreshingAsyncState(
-    () => axiosSilent.get(servicesUrl.value).then(r => r.data),
+const {state: services, isLoading} = useAutoRefreshingAsyncState<ApiAdminServiceData[]>(
+    async () => (await axiosSilent.get<ApiAdminServiceData[]>(servicesUrl.value)).data,
     [],
     {
         timeout: 5000,

@@ -223,6 +223,12 @@ export interface ApiAdminServerStatsStorageStats {
   used_readable: string;
 }
 
+export type ApiAdminServiceData = HasLinks & {
+  name: string;
+  description: string;
+  running: boolean;
+};
+
 export type ApiAdminShoutcastStatus = ApiAbstractStatus & {
   version: string | null;
 };
@@ -358,7 +364,7 @@ export interface ApiAdminUpdateDetails {
   needs_rolling_update?: boolean;
   /** Whether a newer stable release is available than the version you are currently using. */
   needs_release_update?: boolean;
-  /** If you are on the Rolling Release, the number of updates that have released since your version. */
+  /** If you are on the Rolling Release, the number of updates released since your version. */
   rolling_updates_available?: number;
   /** Whether you can seamlessly move from the Rolling Release channel to Stable without issues. */
   can_switch_to_stable?: boolean;
@@ -436,6 +442,9 @@ export type ApiFileList = HasLinks & {
 export interface ApiFileListDir {
   playlists?: any[];
 }
+
+/** A hash-map array represented as an object. */
+export type HashMap = object;
 
 export interface ApiListener {
   /**
@@ -562,10 +571,6 @@ export type ApiLogType = HasLinks & {
   readonly name: string;
   readonly path: string;
   readonly tail: boolean;
-};
-
-export type ApiNewRecord = ApiStatus & {
-  links?: string[];
 };
 
 export interface ApiNotification {
@@ -964,11 +969,23 @@ export type ApiStationMedia = ApiHasSongFields &
      * @example "4:00"
      */
     length_text?: string;
-    /** An object containing all custom fields, with the key being the value name. */
-    custom_fields?: object;
-    extra_metadata?: any[];
-    playlists?: any[];
+    /** A hash-map array represented as an object. */
+    custom_fields?: HashMap;
+    /** A hash-map array represented as an object. */
+    extra_metadata?: HashMap;
+    playlists?: (ApiStationMediaPlaylist | number)[];
   };
+
+export interface ApiStationMediaPlaylist {
+  /**
+   * The playlist identifier.
+   * @example 1
+   */
+  id?: number;
+  readonly name?: string;
+  readonly short_name?: string;
+  readonly count?: number;
+}
 
 export interface ApiStationOnDemand {
   /**

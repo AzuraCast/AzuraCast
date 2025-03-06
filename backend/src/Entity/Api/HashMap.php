@@ -7,6 +7,7 @@ namespace App\Entity\Api;
 use ArrayAccess;
 use JsonSerializable;
 use LogicException;
+use OpenApi\Attributes as OA;
 
 /**
  * A utility class ensuring that JSON will correctly represent
@@ -15,6 +16,10 @@ use LogicException;
  *
  * @implements ArrayAccess<array-key, mixed>
  */
+#[OA\Schema(
+    description: 'A hash-map array represented as an object.',
+    type: 'object'
+)]
 final readonly class HashMap implements JsonSerializable, ArrayAccess
 {
     public function __construct(

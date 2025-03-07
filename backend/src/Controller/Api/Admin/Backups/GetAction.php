@@ -22,7 +22,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/admin/backups',
         operationId: 'getBackups',
         description: 'Return a list of all current backups.',
-        tags: [OpenApi::TAG_ADMIN],
+        tags: [OpenApi::TAG_ADMIN_BACKUPS],
         responses: [
             new OpenApi\Response\Success(
                 content: new OA\JsonContent(

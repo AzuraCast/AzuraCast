@@ -11,6 +11,31 @@ servers:
     url: 'https://demo.azuracast.com/api'
     description: 'AzuraCast Public Demo Server'
 paths:
+  '/admin/acme-log/{path}':
+    get:
+      tags:
+        - 'Administration: General'
+      description: 'View the logs of a manually run ACME certificate renewal.'
+      operationId: adminAcmeViewLog
+      parameters:
+        -
+          name: path
+          in: path
+          description: 'Log path as returned by the Run action.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_LogContents'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
   /admin/api-keys:
     get:
       tags:
@@ -72,10 +97,52 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/admin/backups/delete/{path}':
+    delete:
+      tags:
+        - 'Administration: Backups'
+      description: 'Delete a given backup.'
+      operationId: deleteBackup
+      parameters:
+        -
+          name: path
+          in: path
+          description: 'Download path (base64-encoded "StorageLocationID | Path")'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/admin/backups/download/{path}':
+    get:
+      tags:
+        - 'Administration: Backups'
+      description: 'Download a given backup.'
+      operationId: downloadBackup
+      parameters:
+        -
+          name: path
+          in: path
+          description: 'Download path (base64-encoded "StorageLocationID | Path")'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessWithDownload'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
   /admin/backups:
     get:
       tags:
-        - 'Administration: General'
+        - 'Administration: Backups'
       description: 'Return a list of all current backups.'
       operationId: getBackups
       responses:
@@ -87,6 +154,31 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Api_Admin_Backup'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/admin/backups/log/{path}':
+    get:
+      tags:
+        - 'Administration: Backups'
+      description: 'View a specific backup log contents.'
+      operationId: adminBackupsViewLog
+      parameters:
+        -
+          name: path
+          in: path
+          description: 'Log path as returned by the Run action.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_LogContents'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -1408,9 +1500,14 @@ paths:
             type: string
       responses:
         '200':
-          $ref: '#/components/responses/Success'
-        '404':
-          $ref: '#/components/responses/RecordNotFound'
+          $ref: '#/components/responses/SuccessWithImage'
+        '302':
+          description: 'Image not found; generic filler image.'
+          headers:
+            location:
+              description: 'The current URL of the resource.'
+              schema:
+                type: string
       security: []
     post:
       tags:
@@ -3605,6 +3702,92 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/streamer/{id}/art':
+    get:
+      tags:
+        - 'Stations: Streamers/DJs'
+      description: 'Gets the default album art for a streamer.'
+      operationId: getStreamerArt
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Streamer ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessWithImage'
+        '302':
+          description: 'A temporary redirect to the correct resource.'
+          headers:
+            location:
+              description: 'The current URL of the resource.'
+              schema:
+                type: string
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security: []
+    post:
+      tags:
+        - 'Stations: Streamers/DJs'
+      description: 'Sets the default album art for a streamer.'
+      operationId: postStreamerArt
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Streamer ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        $ref: '#/components/requestBodies/FlowFileUpload'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    delete:
+      tags:
+        - 'Stations: Streamers/DJs'
+      description: 'Removes the default album art for a streamer.'
+      operationId: deleteStreamerArt
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Streamer ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/streamers':
     get:
       tags:
@@ -3738,6 +3921,41 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '404':
           $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/webhooks/{id}/test-log/{path}':
+    get:
+      tags:
+        - 'Stations: Web Hooks'
+      description: 'View a specific webhook test dispatch log contents.'
+      operationId: getWebhookTestLog
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Web Hook ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+        -
+          name: path
+          in: path
+          description: 'Log path as returned by the Test action.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_LogContents'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
   '/station/{station_id}/webhooks':
@@ -6986,6 +7204,8 @@ tags:
   -
     name: 'Administration: General'
   -
+    name: 'Administration: Backups'
+  -
     name: 'Administration: Custom Fields'
   -
     name: 'Administration: Users'
@@ -7029,6 +7249,7 @@ x-tagGroups:
     name: Administration
     tags:
       - 'Administration: General'
+      - 'Administration: Backups'
       - 'Administration: Custom Fields'
       - 'Administration: Users'
       - 'Administration: Roles'

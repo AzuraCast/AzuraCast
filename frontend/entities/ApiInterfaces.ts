@@ -379,11 +379,6 @@ export interface ApiAdminUpdateDetails {
   can_switch_to_stable?: boolean;
 }
 
-export type ApiCustomAsset = ApiAbstractStatus & {
-  is_uploaded: boolean;
-  url: string;
-};
-
 export type ApiDetailedSongHistory = ApiNowPlayingSongHistory & {
   /**
    * Number of listeners when the song playback started.
@@ -1285,6 +1280,11 @@ export interface ApiUploadFile {
    */
   file: string;
 }
+
+export type ApiUploadedRecordStatus = ApiAbstractStatus & {
+  hasRecord: boolean;
+  url: string | null;
+};
 
 export type ApiKey = HasSplitTokenFields & {
   user?: User;

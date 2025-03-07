@@ -7,17 +7,17 @@ namespace App\Entity\Api;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: 'Api_CustomAsset',
+    schema: 'Api_UploadedRecordStatus',
     required: ['*'],
     type: 'object'
 )]
-final readonly class CustomAsset extends AbstractStatus
+final readonly class UploadedRecordStatus extends AbstractStatus
 {
     public function __construct(
         #[OA\Property]
-        public bool $is_uploaded,
+        public bool $hasRecord,
         #[OA\Property]
-        public string $url
+        public ?string $url = null
     ) {
         parent::__construct(true);
     }

@@ -6,6 +6,7 @@ namespace App\Controller\Api\Stations\Fallback;
 
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
+use App\Entity\Api\UploadedRecordStatus;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -23,7 +24,9 @@ use Psr\Http\Message\ResponseInterface;
     ],
     responses: [
         new OpenApi\Response\Success(
-        /* TODO API Body */
+            content: new OA\JsonContent(
+                ref: UploadedRecordStatus::class
+            )
         ),
         new OpenApi\Response\AccessDenied(),
         new OpenApi\Response\NotFound(),
@@ -56,14 +59,14 @@ final class GetFallbackAction implements SingleActionInterface
                     );
                 }
 
-                return $response->withJson([
-                    'hasRecord' => true,
-                    'links' => [
-                        'download' => $router->fromHere(
+                return $response->withJson(
+                    new UploadedRecordStatus(
+                        true,
+                        $router->fromHere(
                             routeParams: ['do' => 'download']
-                        ),
-                    ],
-                ]);
+                        )
+                    )
+                );
             }
         }
 
@@ -72,11 +75,11 @@ final class GetFallbackAction implements SingleActionInterface
                 ->withJson(Error::notFound());
         }
 
-        return $response->withJson([
-            'hasRecord' => false,
-            'links' => [
-                'download' => null,
-            ],
-        ]);
+        return $response->withJson(
+            new UploadedRecordStatus(
+                false,
+                null,
+            )
+        );
     }
 }

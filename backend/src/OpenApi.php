@@ -110,6 +110,30 @@ use OpenApi\Attributes as OA;
         )
     ),
     OA\Response(
+        response: 'SuccessWithImage',
+        description: 'A successful response with a binary image download.',
+        content: new OA\MediaType(
+            mediaType: 'image/*',
+            schema: new OA\Schema(
+                description: 'An image (album art, background, etc) in binary format.',
+                type: 'string',
+                format: 'binary'
+            )
+        )
+    ),
+    OA\Response(
+        response: 'SuccessWithDownload',
+        description: 'A successful response with a binary file download.',
+        content: new OA\MediaType(
+            mediaType: 'application/octet-stream',
+            schema: new OA\Schema(
+                description: 'A media (music, podcast, etc) download in binary format.',
+                type: 'string',
+                format: 'binary'
+            )
+        )
+    ),
+    OA\Response(
         response: 'Success',
         description: 'Success',
         content: new OA\JsonContent(ref: '#/components/schemas/Api_Status')
@@ -203,6 +227,14 @@ final class OpenApi
 
     public const int SAMPLE_TIMESTAMP = 1609480800;
     public const string SAMPLE_DATETIME = '2025-01-31T21:31:58+00:00';
+
+    public const string REF_RESPONSE_SUCCESS = '#/components/responses/Success';
+    public const string REF_RESPONSE_SUCCESS_WITH_DOWNLOAD = '#/components/responses/SuccessWithDownload';
+    public const string REF_RESPONSE_SUCCESS_WITH_IMAGE = '#/components/responses/SuccessWithImage';
+
+    public const string REF_RESPONSE_NOT_FOUND = '#/components/responses/RecordNotFound';
+    public const string REF_RESPONSE_ACCESS_DENIED = '#/components/responses/AccessDenied';
+    public const string REF_RESPONSE_GENERIC_ERROR = '#/components/responses/GenericError';
 
     public const string REF_STATION_ID_REQUIRED = '#/components/parameters/StationIdRequired';
 

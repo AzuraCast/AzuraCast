@@ -7,7 +7,7 @@ namespace App\Controller\Api\Admin\CustomAssets;
 use App\Assets\AssetTypes;
 use App\Container\EnvironmentAwareTrait;
 use App\Controller\SingleActionInterface;
-use App\Entity\Api\CustomAsset;
+use App\Entity\Api\UploadedRecordStatus;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -34,7 +34,7 @@ use Psr\Http\Message\ResponseInterface;
     responses: [
         new OpenApi\Response\Success(
             content: new OA\JsonContent(
-                ref: CustomAsset::class
+                ref: UploadedRecordStatus::class
             )
         ),
         new OpenApi\Response\AccessDenied(),
@@ -57,7 +57,7 @@ final class GetCustomAssetAction implements SingleActionInterface
         $customAsset = AssetTypes::from($type)->createObject($this->environment);
 
         return $response->withJson(
-            new CustomAsset(
+            new UploadedRecordStatus(
                 $customAsset->isUploaded(),
                 $customAsset->getUrl()
             )

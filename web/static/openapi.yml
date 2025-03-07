@@ -115,7 +115,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Api_CustomAsset'
+                $ref: '#/components/schemas/Api_UploadedRecordStatus'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -1498,7 +1498,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Api_CustomAsset'
+                $ref: '#/components/schemas/Api_UploadedRecordStatus'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -1574,7 +1574,11 @@ paths:
           $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_UploadedRecordStatus'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -2094,7 +2098,7 @@ paths:
             format: int64
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          $ref: '#/components/responses/SuccessWithDownload'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -2600,7 +2604,14 @@ paths:
             type: string
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          $ref: '#/components/responses/SuccessWithImage'
+        '302':
+          description: 'A temporary redirect to the correct resource.'
+          headers:
+            location:
+              description: 'The current URL of the resource.'
+              schema:
+                type: string
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -2683,7 +2694,14 @@ paths:
             type: string
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          $ref: '#/components/responses/SuccessWithImage'
+        '302':
+          description: 'A temporary redirect to the correct resource.'
+          headers:
+            location:
+              description: 'The current URL of the resource.'
+              schema:
+                type: string
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -2784,7 +2802,7 @@ paths:
             type: string
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          $ref: '#/components/responses/SuccessWithDownload'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -3540,7 +3558,11 @@ paths:
           $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_UploadedRecordStatus'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4543,21 +4565,6 @@ components:
           description: 'Whether you can seamlessly move from the Rolling Release channel to Stable without issues.'
           type: boolean
       type: object
-    Api_CustomAsset:
-      required:
-        - is_uploaded
-        - url
-      type: object
-      allOf:
-        -
-          $ref: '#/components/schemas/Api_AbstractStatus'
-        -
-          properties:
-            is_uploaded:
-              type: boolean
-            url:
-              type: string
-          type: object
     Api_DetailedSongHistory:
       type: object
       allOf:
@@ -5765,6 +5772,22 @@ components:
           type: string
           example: ''
       type: object
+    Api_UploadedRecordStatus:
+      required:
+        - hasRecord
+        - url
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_AbstractStatus'
+        -
+          properties:
+            hasRecord:
+              type: boolean
+            url:
+              type: string
+              nullable: true
+          type: object
     ApiKey:
       type: object
       allOf:
@@ -6850,6 +6873,22 @@ components:
         - Twitter
         - GoogleAnalyticsV3
   responses:
+    SuccessWithImage:
+      description: 'A successful response with a binary image download.'
+      content:
+        'image/*':
+          schema:
+            description: 'An image (album art, background, etc) in binary format.'
+            type: string
+            format: binary
+    SuccessWithDownload:
+      description: 'A successful response with a binary file download.'
+      content:
+        application/octet-stream:
+          schema:
+            description: 'A media (music, podcast, etc) download in binary format.'
+            type: string
+            format: binary
     Success:
       description: Success
       content:

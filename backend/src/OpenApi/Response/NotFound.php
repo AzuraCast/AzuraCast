@@ -4,30 +4,24 @@ declare(strict_types=1);
 
 namespace App\OpenApi\Response;
 
+use App\OpenApi;
 use Attribute;
-use OpenApi\Attributes\Attachable;
-use OpenApi\Attributes\JsonContent;
-use OpenApi\Attributes\MediaType;
-use OpenApi\Attributes\Response;
-use OpenApi\Attributes\XmlContent;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final class NotFound extends Response
+final class NotFound extends AbstractResponse
 {
-    public function __construct(
-        object|string|null $ref = null,
-        int|string|null $response = 404,
-        ?string $description = 'The resource specified was not found (check ID parameters).',
-        ?array $headers = null,
-        MediaType|JsonContent|array|Attachable|XmlContent|null $content = null,
-        ?array $links = null,
-        ?array $x = null,
-        ?array $attachables = null
-    ) {
-        if (null === $content && null === $ref) {
-            $ref = '#/components/responses/RecordNotFound';
-        }
+    protected function getDefaultRef(): string
+    {
+        return OpenApi::REF_RESPONSE_NOT_FOUND;
+    }
 
-        parent::__construct($ref, $response, $description, $headers, $content, $links, $x, $attachables);
+    protected function getDefaultResponse(): int
+    {
+        return 404;
+    }
+
+    protected function getDefaultDescription(): string
+    {
+        return 'The resource specified was not found (check ID parameters).';
     }
 }

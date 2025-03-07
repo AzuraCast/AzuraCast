@@ -34,10 +34,10 @@ use Psr\Http\Message\ResponseInterface;
         ),
     ],
     responses: [
-        new OpenApi\Response\Success(
+        new OpenApi\Response\SuccessWithImage(
             description: 'The requested album artwork'
         ),
-        new OpenApi\Response\NotFound(
+        new OpenApi\Response\Redirect(
             description: 'Image not found; generic filler image.'
         ),
     ]

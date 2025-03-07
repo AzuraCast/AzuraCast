@@ -72,7 +72,7 @@ final class GenerateApiDocsCommand extends CommandAbstract
             $srcDir . '/Radio/Enums', // Enums
             $srcDir . '/Webhook/Enums', // Enums
         ], [
-            'Migrations',
+            'Migration',
         ]);
 
         $generator = new Generator($this->logger);

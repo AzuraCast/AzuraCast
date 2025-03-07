@@ -92,16 +92,17 @@ import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {getStationApiUrl} from "~/router";
+import {ApiUploadedRecordStatus} from "~/entities/ApiInterfaces.ts";
 
 const apiUrl = getStationApiUrl('/stereo_tool_config');
 
-const downloadUrl = ref(null);
+const downloadUrl = ref<string | null>(null);
 
 const {axios} = useAxios();
 
 const relist = () => {
-    void axios.get(apiUrl.value).then((resp) => {
-        downloadUrl.value = resp.data.links.download;
+    void axios.get<ApiUploadedRecordStatus>(apiUrl.value).then(({data}) => {
+        downloadUrl.value = data.url;
     });
 };
 

@@ -28,9 +28,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         description: 'List all API keys associated with your account.',
         tags: [OpenApi::TAG_ACCOUNTS],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
                     items: new OA\Items(
@@ -41,8 +39,8 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
                     )
                 )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Post(
@@ -54,9 +52,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         ),
         tags: [OpenApi::TAG_ACCOUNTS],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     allOf: [
                         new OA\Schema(ref: NewApiKey::class),
@@ -65,8 +61,8 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
                     ]
                 )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Get(
@@ -84,9 +80,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     allOf: [
                         new OA\Schema(ref: ApiKey::class),
@@ -94,9 +88,9 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
                     ]
                 )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Delete(
@@ -114,10 +108,10 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]

@@ -206,10 +206,5 @@ final class OpenApi
 
     public const string REF_STATION_ID_REQUIRED = '#/components/parameters/StationIdRequired';
 
-    public const string REF_RESPONSE_SUCCESS = '#/components/responses/Success';
-    public const string REF_RESPONSE_ACCESS_DENIED = '#/components/responses/AccessDenied';
-    public const string REF_RESPONSE_NOT_FOUND = '#/components/responses/RecordNotFound';
-    public const string REF_RESPONSE_GENERIC_ERROR = '#/components/responses/GenericError';
-
     public const string REF_REQUEST_BODY_FLOW_FILE_UPLOAD = '#/components/requestBodies/FlowFileUpload';
 }

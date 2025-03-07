@@ -1408,9 +1408,9 @@ paths:
             type: string
       responses:
         '200':
-          description: 'The requested album artwork'
+          $ref: '#/components/responses/Success'
         '404':
-          description: 'Image not found; generic filler image.'
+          $ref: '#/components/responses/RecordNotFound'
       security: []
     post:
       tags:
@@ -1574,7 +1574,7 @@ paths:
           $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
-          description: Success
+          $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -2094,7 +2094,7 @@ paths:
             format: int64
       responses:
         '200':
-          description: Success
+          $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -2600,7 +2600,7 @@ paths:
             type: string
       responses:
         '200':
-          description: Success
+          $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -2683,7 +2683,7 @@ paths:
             type: string
       responses:
         '200':
-          description: Success
+          $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -2784,7 +2784,7 @@ paths:
             type: string
       responses:
         '200':
-          description: Success
+          $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -3540,7 +3540,7 @@ paths:
           $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
-          description: Success
+          $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':

@@ -22,13 +22,12 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
     ],
     responses: [
-        new OA\Response(
-            response: 200,
-            description: 'Success'
+        new OpenApi\Response\Success(
+        /* TODO API Body */
         ),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
     ]
 )]
 final class GetStereoToolConfigurationAction implements SingleActionInterface

@@ -23,9 +23,7 @@ use Psr\Http\Message\ResponseInterface;
         tags: [OpenApi::TAG_STATIONS],
         parameters: [],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
                     items: new OA\Items(ref: NowPlayingStation::class)
@@ -43,12 +41,10 @@ use Psr\Http\Message\ResponseInterface;
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(ref: NowPlayingStation::class)
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OpenApi\Response\NotFound(),
         ]
     )
 ]

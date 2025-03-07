@@ -22,9 +22,7 @@ final class IndexController
         tags: [OpenApi::TAG_MISC],
         parameters: [],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(ref: SystemStatus::class)
             ),
         ]
@@ -44,9 +42,7 @@ final class IndexController
         tags: [OpenApi::TAG_MISC],
         parameters: [],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(ref: Time::class)
             ),
         ]

@@ -20,15 +20,13 @@ use Psr\Http\Message\ResponseInterface;
         description: 'Get the current two-factor authentication status of your account.',
         tags: [OpenApi::TAG_ACCOUNTS],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     ref: TwoFactorStatus::class
                 )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]

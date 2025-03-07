@@ -31,9 +31,7 @@ use Psr\Http\Message\ResponseInterface;
         tags: [OpenApi::TAG_ADMIN],
         parameters: [],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
                     items: new OA\Items(ref: ApiRelay::class)

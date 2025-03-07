@@ -24,9 +24,7 @@ use Psr\Http\Message\ResponseInterface;
         description: 'Return a list of all current backups.',
         tags: [OpenApi::TAG_ADMIN],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
                     items: new OA\Items(
@@ -34,8 +32,8 @@ use Psr\Http\Message\ResponseInterface;
                     )
                 )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]

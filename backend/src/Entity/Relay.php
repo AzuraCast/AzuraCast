@@ -43,13 +43,21 @@ class Relay implements IdentifiableEntityInterface
     protected bool $is_visible_on_public_pages = true;
 
     #[
-        OA\Property(example: OpenApi::SAMPLE_DATETIME),
+        OA\Property(
+            type: 'string',
+            format: 'date-time',
+            example: OpenApi::SAMPLE_DATETIME
+        ),
         ORM\Column(type: 'datetime_immutable', precision: 6)
     ]
     protected DateTimeImmutable $created_at;
 
     #[
-        OA\Property(example: OpenApi::SAMPLE_DATETIME),
+        OA\Property(
+            type: 'string',
+            format: 'date-time',
+            example: OpenApi::SAMPLE_DATETIME
+        ),
         ORM\Column(type: 'datetime_immutable', precision: 6)
     ]
     protected DateTimeImmutable $updated_at;

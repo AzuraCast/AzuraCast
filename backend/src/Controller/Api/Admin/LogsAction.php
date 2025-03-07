@@ -21,7 +21,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/admin/logs',
         operationId: 'adminListLogs',
         description: 'List all available log types for viewing.',
-        tags: ['Administration: General'],
+        tags: [OpenApi::TAG_ADMIN],
         responses: [
             new OA\Response(
                 response: 200,
@@ -39,7 +39,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/admin/log/{key}',
         operationId: 'adminViewLog',
         description: 'View a specific log contents.',
-        tags: ['Administration: General'],
+        tags: [OpenApi::TAG_ADMIN],
         parameters: [
             new OA\Parameter(
                 name: 'key',

@@ -28,7 +28,7 @@ use Symfony\Component\Process\Process;
     operationId: 'postStereoTool',
     description: 'Upload a new Stereo Tool binary.',
     requestBody: new OA\RequestBody(ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD),
-    tags: ['Administration: General'],
+    tags: [OpenApi::TAG_ADMIN],
     responses: [
         new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
         new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),

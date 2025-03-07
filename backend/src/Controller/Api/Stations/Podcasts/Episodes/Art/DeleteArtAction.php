@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
     path: '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/art',
     operationId: 'deletePodcastEpisodeArt',
     description: 'Removes the album art for a podcast episode.',
-    tags: ['Stations: Podcasts'],
+    tags: [OpenApi::TAG_STATIONS_PODCASTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(

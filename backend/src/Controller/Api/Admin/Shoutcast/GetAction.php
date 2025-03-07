@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
     path: '/admin/shoutcast',
     operationId: 'getShoutcast',
     description: 'Get details about the Shoutcast installation.',
-    tags: ['Administration: General'],
+    tags: [OpenApi::TAG_ADMIN],
     responses: [
         new OA\Response(
             response: 200,

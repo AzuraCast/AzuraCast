@@ -8,6 +8,7 @@ use App\Entity\Api\SystemStatus;
 use App\Entity\Api\Time;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -18,7 +19,7 @@ final class IndexController
         operationId: 'getStatus',
         description: 'Returns an affirmative response if the API is active.',
         security: [],
-        tags: ['Miscellaneous'],
+        tags: [OpenApi::TAG_MISC],
         parameters: [],
         responses: [
             new OA\Response(
@@ -40,7 +41,7 @@ final class IndexController
         operationId: 'getTime',
         description: "Returns the time (with formatting) in GMT and the user's local time zone, if logged in.",
         security: [],
-        tags: ['Miscellaneous'],
+        tags: [OpenApi::TAG_MISC],
         parameters: [],
         responses: [
             new OA\Response(

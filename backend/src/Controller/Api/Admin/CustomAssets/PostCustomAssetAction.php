@@ -22,7 +22,7 @@ use Psr\Http\Message\ResponseInterface;
     operationId: 'postAdminCustomAsset',
     description: 'Upload a new custom asset of the specified type.',
     requestBody: new OA\RequestBody(ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD),
-    tags: ['Administration: General'],
+    tags: [OpenApi::TAG_ADMIN],
     parameters: [
         new OA\Parameter(
             name: 'type',

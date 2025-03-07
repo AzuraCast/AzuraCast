@@ -21,7 +21,7 @@ use Psr\Http\Message\ResponseInterface;
     operationId: 'getPodcastEpisodeArt',
     description: 'Gets the album art for a podcast episode.',
     security: [],
-    tags: ['Stations: Podcasts'],
+    tags: [OpenApi::TAG_STATIONS_PODCASTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(

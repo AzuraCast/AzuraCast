@@ -18,7 +18,7 @@ use OpenApi\Attributes as OA;
         path: '/admin/api-keys',
         operationId: 'adminListApiKeys',
         description: 'List all current API keys across the system.',
-        tags: ['Administration: General'],
+        tags: [OpenApi::TAG_ADMIN],
         responses: [
             new OA\Response(
                 response: 200,
@@ -41,7 +41,7 @@ use OpenApi\Attributes as OA;
         path: '/admin/api-key/{id}',
         operationId: 'adminDeleteApiKey',
         description: 'Delete a single API key.',
-        tags: ['Administration: General'],
+        tags: [OpenApi::TAG_ADMIN],
         parameters: [
             new OA\Parameter(
                 name: 'id',

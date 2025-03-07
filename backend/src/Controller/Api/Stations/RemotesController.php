@@ -21,7 +21,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/remotes',
         operationId: 'getRelays',
         description: 'List all current remote relays.',
-        tags: ['Stations: Remote Relays'],
+        tags: [OpenApi::TAG_STATIONS_REMOTE_RELAYS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
@@ -46,7 +46,7 @@ use Psr\Http\Message\ResponseInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ApiStationRemote::class)
         ),
-        tags: ['Stations: Remote Relays'],
+        tags: [OpenApi::TAG_STATIONS_REMOTE_RELAYS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
@@ -65,7 +65,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/remote/{id}',
         operationId: 'getRelay',
         description: 'Retrieve details for a single remote relay.',
-        tags: ['Stations: Remote Relays'],
+        tags: [OpenApi::TAG_STATIONS_REMOTE_RELAYS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -94,7 +94,7 @@ use Psr\Http\Message\ResponseInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ApiStationRemote::class)
         ),
-        tags: ['Stations: Remote Relays'],
+        tags: [OpenApi::TAG_STATIONS_REMOTE_RELAYS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -116,7 +116,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/remote/{id}',
         operationId: 'deleteRelay',
         description: 'Delete a single remote relay.',
-        tags: ['Stations: Remote Relays'],
+        tags: [OpenApi::TAG_STATIONS_REMOTE_RELAYS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(

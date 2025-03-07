@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/podcast/{podcast_id}/episodes',
         operationId: 'getEpisodes',
         description: 'List all current episodes for a given podcast ID.',
-        tags: ['Stations: Podcasts'],
+        tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -59,7 +59,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ApiPodcastEpisode::class)
         ),
-        tags: ['Stations: Podcasts'],
+        tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -85,7 +85,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/podcast/{podcast_id}/episode/{id}',
         operationId: 'getEpisode',
         description: 'Retrieve details for a single podcast episode.',
-        tags: ['Stations: Podcasts'],
+        tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -121,7 +121,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ApiPodcastEpisode::class)
         ),
-        tags: ['Stations: Podcasts'],
+        tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -150,7 +150,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/podcast/{podcast_id}/episode/{id}',
         operationId: 'deleteEpisode',
         description: 'Delete a single podcast episode.',
-        tags: ['Stations: Podcasts'],
+        tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(

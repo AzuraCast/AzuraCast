@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/queue',
         operationId: 'getQueue',
         description: 'Return information about the upcoming song playback queue.',
-        tags: ['Stations: Queue'],
+        tags: [OpenApi::TAG_STATIONS_QUEUE],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
@@ -47,7 +47,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/queue/{id}',
         operationId: 'getQueueItem',
         description: 'Retrieve details of a single queued item.',
-        tags: ['Stations: Queue'],
+        tags: [OpenApi::TAG_STATIONS_QUEUE],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -73,7 +73,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/queue/{id}',
         operationId: 'deleteQueueItem',
         description: 'Delete a single queued item.',
-        tags: ['Stations: Queue'],
+        tags: [OpenApi::TAG_STATIONS_QUEUE],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(

@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/roles',
         operationId: 'getRoles',
         description: 'List all current roles in the system.',
-        tags: ['Administration: Roles'],
+        tags: [OpenApi::TAG_ADMIN_ROLES],
         responses: [
             new OA\Response(
                 response: 200,
@@ -51,7 +51,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ApiRole::class)
         ),
-        tags: ['Administration: Roles'],
+        tags: [OpenApi::TAG_ADMIN_ROLES],
         responses: [
             new OA\Response(
                 response: 200,
@@ -68,7 +68,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/role/{id}',
         operationId: 'getRole',
         description: 'Retrieve details for a single current role.',
-        tags: ['Administration: Roles'],
+        tags: [OpenApi::TAG_ADMIN_ROLES],
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -98,7 +98,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ApiRole::class)
         ),
-        tags: ['Administration: Roles'],
+        tags: [OpenApi::TAG_ADMIN_ROLES],
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -119,7 +119,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/role/{id}',
         operationId: 'deleteRole',
         description: 'Delete a single role.',
-        tags: ['Administration: Roles'],
+        tags: [OpenApi::TAG_ADMIN_ROLES],
         parameters: [
             new OA\Parameter(
                 name: 'id',

@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/settings',
         operationId: 'getSettings',
         description: 'List the current values of all editable system settings.',
-        tags: ['Administration: Settings'],
+        tags: [OpenApi::TAG_ADMIN_SETTINGS],
         responses: [
             new OA\Response(
                 response: 200,
@@ -41,7 +41,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: Settings::class)
         ),
-        tags: ['Administration: Settings'],
+        tags: [OpenApi::TAG_ADMIN_SETTINGS],
         responses: [
             new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),

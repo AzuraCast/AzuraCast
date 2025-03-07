@@ -14,7 +14,7 @@ use OpenApi\Attributes as OA;
         path: '/station/{station_id}/sftp-users',
         operationId: 'getSftpUsers',
         description: 'List all current SFTP users.',
-        tags: ['Stations: SFTP Users'],
+        tags: [OpenApi::TAG_STATIONS_SFTP_USERS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
@@ -39,7 +39,7 @@ use OpenApi\Attributes as OA;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: SftpUser::class)
         ),
-        tags: ['Stations: SFTP Users'],
+        tags: [OpenApi::TAG_STATIONS_SFTP_USERS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
@@ -58,7 +58,7 @@ use OpenApi\Attributes as OA;
         path: '/station/{station_id}/sftp-user/{id}',
         operationId: 'getSftpUser',
         description: 'Retrieve details for a single SFTP user.',
-        tags: ['Stations: SFTP Users'],
+        tags: [OpenApi::TAG_STATIONS_SFTP_USERS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -87,7 +87,7 @@ use OpenApi\Attributes as OA;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: SftpUser::class)
         ),
-        tags: ['Stations: SFTP Users'],
+        tags: [OpenApi::TAG_STATIONS_SFTP_USERS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -109,7 +109,7 @@ use OpenApi\Attributes as OA;
         path: '/station/{station_id}/sftp-user/{id}',
         operationId: 'deleteSftpUser',
         description: 'Delete a single SFTP user.',
-        tags: ['Stations: SFTP Users'],
+        tags: [OpenApi::TAG_STATIONS_SFTP_USERS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(

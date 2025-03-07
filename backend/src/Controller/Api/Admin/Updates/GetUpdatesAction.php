@@ -20,7 +20,7 @@ use RuntimeException;
     path: '/admin/updates',
     operationId: 'getUpdateStatus',
     description: 'Show information about this installation and its update status.',
-    tags: ['Administration: General'],
+    tags: [OpenApi::TAG_ADMIN],
     responses: [
         new OA\Response(
             response: 200,

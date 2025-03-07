@@ -26,7 +26,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         path: '/station/{station_id}/playlists',
         operationId: 'getPlaylists',
         description: 'List all current playlists.',
-        tags: ['Stations: Playlists'],
+        tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
@@ -50,7 +50,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: StationPlaylist::class)
         ),
-        tags: ['Stations: Playlists'],
+        tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
@@ -68,7 +68,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         path: '/station/{station_id}/playlist/{id}',
         operationId: 'getPlaylist',
         description: 'Retrieve details for a single playlist.',
-        tags: ['Stations: Playlists'],
+        tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -97,7 +97,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: StationPlaylist::class)
         ),
-        tags: ['Stations: Playlists'],
+        tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -119,7 +119,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         path: '/station/{station_id}/playlist/{id}',
         operationId: 'deletePlaylist',
         description: 'Delete a single playlist relay.',
-        tags: ['Stations: Playlists'],
+        tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(

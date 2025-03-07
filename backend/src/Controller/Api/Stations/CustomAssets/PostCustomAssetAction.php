@@ -22,7 +22,7 @@ use Psr\Http\Message\ResponseInterface;
     operationId: 'postStationCustomAsset',
     description: 'Upload a new custom asset of the specified type.',
     requestBody: new OA\RequestBody(ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD),
-    tags: ['Stations: General'],
+    tags: [OpenApi::TAG_STATIONS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(

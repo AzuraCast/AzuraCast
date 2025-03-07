@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
     operationId: 'postMediaArt',
     description: 'Sets the album art for a track.',
     requestBody: new OA\RequestBody(ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD),
-    tags: ['Stations: Media'],
+    tags: [OpenApi::TAG_STATIONS_MEDIA],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(

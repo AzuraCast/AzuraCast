@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
     path: '/station/{station_id}/fallback',
     operationId: 'getStationFallback',
     description: 'Get the custom fallback track for a station.',
-    tags: ['Stations: General'],
+    tags: [OpenApi::TAG_STATIONS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
     ],

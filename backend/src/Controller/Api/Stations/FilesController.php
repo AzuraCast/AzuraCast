@@ -39,7 +39,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/files',
         operationId: 'getFiles',
         description: 'List all current uploaded files.',
-        tags: ['Stations: Media'],
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
@@ -63,7 +63,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: UploadFile::class)
         ),
-        tags: ['Stations: Media'],
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
@@ -81,7 +81,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/file/{id}',
         operationId: 'getFile',
         description: 'Retrieve details for a single file.',
-        tags: ['Stations: Media'],
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -110,7 +110,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ApiStationMedia::class)
         ),
-        tags: ['Stations: Media'],
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -132,7 +132,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/file/{id}',
         operationId: 'deleteFile',
         description: 'Delete a single file.',
-        tags: ['Stations: Media'],
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(

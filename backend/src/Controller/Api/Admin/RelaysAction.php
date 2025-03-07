@@ -19,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/admin/relays/list',
         operationId: 'adminGetRelays',
         description: 'Return a list of all currently active AzuraRelay instances.',
-        tags: ['Administration: General'],
+        tags: [OpenApi::TAG_ADMIN],
         responses: [
             new OA\Response(
                 response: 200,

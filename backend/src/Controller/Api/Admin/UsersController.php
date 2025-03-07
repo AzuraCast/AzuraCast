@@ -24,7 +24,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/admin/users',
         operationId: 'getUsers',
         description: 'List all current users in the system.',
-        tags: ['Administration: Users'],
+        tags: [OpenApi::TAG_ADMIN_USERS],
         responses: [
             new OA\Response(
                 response: 200,
@@ -45,7 +45,7 @@ use Psr\Http\Message\ResponseInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: User::class)
         ),
-        tags: ['Administration: Users'],
+        tags: [OpenApi::TAG_ADMIN_USERS],
         responses: [
             new OA\Response(
                 response: 200,
@@ -60,7 +60,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/admin/user/{id}',
         operationId: 'getUser',
         description: 'Retrieve details for a single current user.',
-        tags: ['Administration: Users'],
+        tags: [OpenApi::TAG_ADMIN_USERS],
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -88,7 +88,7 @@ use Psr\Http\Message\ResponseInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: User::class)
         ),
-        tags: ['Administration: Users'],
+        tags: [OpenApi::TAG_ADMIN_USERS],
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -109,7 +109,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/admin/user/{id}',
         operationId: 'deleteUser',
         description: 'Delete a single user.',
-        tags: ['Administration: Users'],
+        tags: [OpenApi::TAG_ADMIN_USERS],
         parameters: [
             new OA\Parameter(
                 name: 'id',

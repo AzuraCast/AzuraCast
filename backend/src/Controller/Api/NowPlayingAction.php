@@ -21,7 +21,7 @@ use Psr\Http\Message\ResponseInterface;
         operationId: 'getAllNowPlaying',
         description: "Returns a full summary of all stations' current state.",
         security: [],
-        tags: ['Now Playing'],
+        tags: [OpenApi::TAG_NOW_PLAYING],
         parameters: [],
         responses: [
             new OA\Response(
@@ -39,7 +39,7 @@ use Psr\Http\Message\ResponseInterface;
         operationId: 'getStationNowPlaying',
         description: "Returns a full summary of the specified station's current state.",
         security: [],
-        tags: ['Now Playing'],
+        tags: [OpenApi::TAG_NOW_PLAYING],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],

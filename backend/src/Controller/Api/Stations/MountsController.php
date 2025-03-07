@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/mounts',
         operationId: 'getStationMounts',
         description: 'List all current mount points.',
-        tags: ['Stations: Mount Points'],
+        tags: [OpenApi::TAG_STATIONS_MOUNT_POINTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
@@ -50,7 +50,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: StationMount::class)
         ),
-        tags: ['Stations: Mount Points'],
+        tags: [OpenApi::TAG_STATIONS_MOUNT_POINTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
@@ -68,7 +68,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/mount/{id}',
         operationId: 'getMount',
         description: 'Retrieve details for a single mount point.',
-        tags: ['Stations: Mount Points'],
+        tags: [OpenApi::TAG_STATIONS_MOUNT_POINTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -97,7 +97,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: StationMount::class)
         ),
-        tags: ['Stations: Mount Points'],
+        tags: [OpenApi::TAG_STATIONS_MOUNT_POINTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -119,7 +119,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/mount/{id}',
         operationId: 'deleteMount',
         description: 'Delete a single mount point.',
-        tags: ['Stations: Mount Points'],
+        tags: [OpenApi::TAG_STATIONS_MOUNT_POINTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(

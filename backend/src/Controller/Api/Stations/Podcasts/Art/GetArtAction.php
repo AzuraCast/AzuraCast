@@ -19,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
     operationId: 'getPodcastArt',
     description: 'Gets the album art for a podcast.',
     security: [],
-    tags: ['Stations: Podcasts'],
+    tags: [OpenApi::TAG_STATIONS_PODCASTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(

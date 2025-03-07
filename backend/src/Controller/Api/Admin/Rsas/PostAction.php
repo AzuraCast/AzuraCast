@@ -22,7 +22,7 @@ use Symfony\Component\Process\Process;
     operationId: 'postRsas',
     description: 'Upload a new Rocket Streaming Audio Server (RSAS) binary.',
     requestBody: new OA\RequestBody(ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD),
-    tags: ['Administration: General'],
+    tags: [OpenApi::TAG_ADMIN],
     responses: [
         new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
         new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),

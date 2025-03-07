@@ -16,7 +16,7 @@ use OpenApi\Attributes as OA;
         path: '/admin/custom_fields',
         operationId: 'getCustomFields',
         description: 'List all current custom fields in the system.',
-        tags: ['Administration: Custom Fields'],
+        tags: [OpenApi::TAG_ADMIN_CUSTOM_FIELDS],
         responses: [
             new OA\Response(
                 response: 200,
@@ -42,7 +42,7 @@ use OpenApi\Attributes as OA;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: CustomField::class)
         ),
-        tags: ['Administration: Custom Fields'],
+        tags: [OpenApi::TAG_ADMIN_CUSTOM_FIELDS],
         responses: [
             new OA\Response(
                 response: 200,
@@ -62,7 +62,7 @@ use OpenApi\Attributes as OA;
         path: '/admin/custom_field/{id}',
         operationId: 'getCustomField',
         description: 'Retrieve details for a single custom field.',
-        tags: ['Administration: Custom Fields'],
+        tags: [OpenApi::TAG_ADMIN_CUSTOM_FIELDS],
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -95,7 +95,7 @@ use OpenApi\Attributes as OA;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: CustomField::class)
         ),
-        tags: ['Administration: Custom Fields'],
+        tags: [OpenApi::TAG_ADMIN_CUSTOM_FIELDS],
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -116,7 +116,7 @@ use OpenApi\Attributes as OA;
         path: '/admin/custom_field/{id}',
         operationId: 'deleteCustomField',
         description: 'Delete a single custom field.',
-        tags: ['Administration: Custom Fields'],
+        tags: [OpenApi::TAG_ADMIN_CUSTOM_FIELDS],
         parameters: [
             new OA\Parameter(
                 name: 'id',

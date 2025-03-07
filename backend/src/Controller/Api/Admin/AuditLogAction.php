@@ -21,7 +21,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/admin/auditlog',
         operationId: 'getAuditlog',
         description: 'Return a list of all available permissions.',
-        tags: ['Administration: General'],
+        tags: [OpenApi::TAG_ADMIN],
         responses: [
             new OA\Response(
                 response: 200,

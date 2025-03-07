@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
     path: '/station/{station_id}/stereo-tool-configuration',
     operationId: 'getStereoToolConfiguration',
     description: 'Get the Stereo Tool configuration file for a station.',
-    tags: ['Stations: Broadcasting'],
+    tags: [OpenApi::TAG_STATIONS_BROADCASTING],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
     ],

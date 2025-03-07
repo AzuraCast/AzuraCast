@@ -16,6 +16,7 @@ use App\Entity\StationRemote;
 use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Radio\Adapters;
 use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\RemoteAdapters;
@@ -27,7 +28,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/internal/relays',
         operationId: 'internalGetRelayDetails',
         description: "Returns all necessary information to relay all 'relayable' stations.",
-        tags: ['Administration: Relays'],
+        tags: [OpenApi::TAG_ADMIN],
         parameters: [],
         responses: [
             new OA\Response(

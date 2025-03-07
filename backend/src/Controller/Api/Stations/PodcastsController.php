@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/podcasts',
         operationId: 'getPodcasts',
         description: 'List all current podcasts.',
-        tags: ['Stations: Podcasts'],
+        tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
@@ -52,7 +52,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ApiPodcast::class)
         ),
-        tags: ['Stations: Podcasts'],
+        tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
@@ -71,7 +71,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/podcast/{id}',
         operationId: 'getPodcast',
         description: 'Retrieve details for a single podcast.',
-        tags: ['Stations: Podcasts'],
+        tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -100,7 +100,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ApiPodcast::class)
         ),
-        tags: ['Stations: Podcasts'],
+        tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -122,7 +122,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/podcast/{id}',
         operationId: 'deletePodcast',
         description: 'Delete a single podcast.',
-        tags: ['Stations: Podcasts'],
+        tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(

@@ -19,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
     operationId: 'postStereoToolConfiguration',
     description: 'Update the Stereo Tool configuration file for a station.',
     requestBody: new OA\RequestBody(ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD),
-    tags: ['Stations: Broadcasting'],
+    tags: [OpenApi::TAG_STATIONS_BROADCASTING],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
     ],

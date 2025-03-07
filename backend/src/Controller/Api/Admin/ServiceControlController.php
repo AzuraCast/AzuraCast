@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/admin/services',
         operationId: 'getServiceDetails',
         description: 'List the status of essential system services.',
-        tags: ['Administration: General'],
+        tags: [OpenApi::TAG_ADMIN],
         responses: [
             new OA\Response(
                 response: 200,
@@ -43,7 +43,7 @@ use Psr\Http\Message\ResponseInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: CustomField::class)
         ),
-        tags: ['Administration: General'],
+        tags: [OpenApi::TAG_ADMIN],
         parameters: [
             new OA\Parameter(
                 name: 'service',

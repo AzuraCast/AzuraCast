@@ -19,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/webhooks',
         operationId: 'getWebhooks',
         description: 'List all current web hooks.',
-        tags: ['Stations: Web Hooks'],
+        tags: [OpenApi::TAG_STATIONS_WEBHOOKS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
@@ -44,7 +44,7 @@ use Psr\Http\Message\ResponseInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: StationWebhook::class)
         ),
-        tags: ['Stations: Web Hooks'],
+        tags: [OpenApi::TAG_STATIONS_WEBHOOKS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
@@ -63,7 +63,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/webhook/{id}',
         operationId: 'getWebhook',
         description: 'Retrieve details for a single web hook.',
-        tags: ['Stations: Web Hooks'],
+        tags: [OpenApi::TAG_STATIONS_WEBHOOKS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -92,7 +92,7 @@ use Psr\Http\Message\ResponseInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: StationWebhook::class)
         ),
-        tags: ['Stations: Web Hooks'],
+        tags: [OpenApi::TAG_STATIONS_WEBHOOKS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -114,7 +114,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/webhook/{id}',
         operationId: 'deleteWebhook',
         description: 'Delete a single web hook relay.',
-        tags: ['Stations: Web Hooks'],
+        tags: [OpenApi::TAG_STATIONS_WEBHOOKS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(

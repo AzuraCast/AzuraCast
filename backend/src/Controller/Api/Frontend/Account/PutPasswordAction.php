@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ChangePassword::class)
         ),
-        tags: ['Accounts'],
+        tags: [OpenApi::TAG_ACCOUNTS],
         responses: [
             new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),

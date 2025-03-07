@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/restart-status',
         operationId: 'getRestartStatus',
         description: 'Get the pending restart status for a station.',
-        tags: ['Stations: General'],
+        tags: [OpenApi::TAG_STATIONS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],

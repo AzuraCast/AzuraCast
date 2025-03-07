@@ -597,7 +597,7 @@ paths:
   /admin/server/stats:
     get:
       tags:
-        - 'Administration: CPU stats'
+        - 'Administration: General'
       description: 'Return a list of all CPU usage stats.'
       operationId: getServerStats
       responses:
@@ -1343,7 +1343,7 @@ paths:
   /internal/relays:
     get:
       tags:
-        - 'Administration: Relays'
+        - 'Administration: General'
       description: "Returns all necessary information to relay all 'relayable' stations."
       operationId: internalGetRelayDetails
       responses:
@@ -6951,8 +6951,6 @@ tags:
   -
     name: 'Administration: Users'
   -
-    name: 'Administration: Relays'
-  -
     name: 'Administration: Roles'
   -
     name: 'Administration: Settings'
@@ -6964,9 +6962,37 @@ tags:
     name: Accounts
   -
     name: Miscellaneous
-  -
-    name: 'Administration: CPU stats'
-    description: 'Administration: CPU stats'
 externalDocs:
   description: 'AzuraCast on GitHub'
   url: 'https://github.com/AzuraCast/AzuraCast'
+x-tagGroups:
+  -
+    name: 'Station Management'
+    tags:
+      - 'Stations: General'
+      - 'Stations: Broadcasting'
+      - 'Stations: Song Requests'
+      - 'Stations: Service Control'
+      - 'Stations: History'
+      - 'Stations: HLS Streams'
+      - 'Stations: Listeners'
+      - 'Stations: Schedules'
+      - 'Stations: Media'
+      - 'Stations: Mount Points'
+      - 'Stations: Playlists'
+      - 'Stations: Podcasts'
+      - 'Stations: Queue'
+      - 'Stations: Remote Relays'
+      - 'Stations: SFTP Users'
+      - 'Stations: Streamers/DJs'
+      - 'Stations: Web Hooks'
+  -
+    name: Administration
+    tags:
+      - 'Administration: General'
+      - 'Administration: Custom Fields'
+      - 'Administration: Users'
+      - 'Administration: Roles'
+      - 'Administration: Settings'
+      - 'Administration: Stations'
+      - 'Administration: Storage Locations'

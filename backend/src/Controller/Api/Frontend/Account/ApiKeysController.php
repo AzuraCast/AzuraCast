@@ -26,7 +26,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         path: '/frontend/account/api-keys',
         operationId: 'getMyApiKeys',
         description: 'List all API keys associated with your account.',
-        tags: ['Accounts'],
+        tags: [OpenApi::TAG_ACCOUNTS],
         responses: [
             new OA\Response(
                 response: 200,
@@ -52,7 +52,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ApiKey::class)
         ),
-        tags: ['Accounts'],
+        tags: [OpenApi::TAG_ACCOUNTS],
         responses: [
             new OA\Response(
                 response: 200,
@@ -73,7 +73,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         path: '/frontend/account/api-key/{id}',
         operationId: 'getMyApiKey',
         description: 'Retrieve details for a single API key.',
-        tags: ['Accounts'],
+        tags: [OpenApi::TAG_ACCOUNTS],
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -103,7 +103,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         path: '/frontend/account/api-key/{id}',
         operationId: 'deleteMyApiKey',
         description: 'Delete a single API key associated with your account.',
-        tags: ['Accounts'],
+        tags: [OpenApi::TAG_ACCOUNTS],
         parameters: [
             new OA\Parameter(
                 name: 'id',

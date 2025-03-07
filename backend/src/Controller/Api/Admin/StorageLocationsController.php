@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/storage_locations',
         operationId: 'getStorageLocations',
         description: 'List all current storage locations in the system.',
-        tags: ['Administration: Storage Locations'],
+        tags: [OpenApi::TAG_ADMIN_STORAGE_LOCATIONS],
         responses: [
             new OA\Response(
                 response: 200,
@@ -44,7 +44,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ApiStorageLocation::class)
         ),
-        tags: ['Administration: Storage Locations'],
+        tags: [OpenApi::TAG_ADMIN_STORAGE_LOCATIONS],
         responses: [
             new OA\Response(
                 response: 200,
@@ -59,7 +59,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/storage_location/{id}',
         operationId: 'getStorageLocation',
         description: 'Retrieve details for a single storage location.',
-        tags: ['Administration: Storage Locations'],
+        tags: [OpenApi::TAG_ADMIN_STORAGE_LOCATIONS],
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -87,7 +87,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ApiStorageLocation::class)
         ),
-        tags: ['Administration: Storage Locations'],
+        tags: [OpenApi::TAG_ADMIN_STORAGE_LOCATIONS],
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -108,7 +108,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/storage_location/{id}',
         operationId: 'deleteStorageLocation',
         description: 'Delete a single storage location.',
-        tags: ['Administration: Storage Locations'],
+        tags: [OpenApi::TAG_ADMIN_STORAGE_LOCATIONS],
         parameters: [
             new OA\Parameter(
                 name: 'id',

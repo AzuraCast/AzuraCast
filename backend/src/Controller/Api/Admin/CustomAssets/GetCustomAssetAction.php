@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
     path: '/admin/custom_assets/{type}',
     operationId: 'getAdminCustomAsset',
     description: 'Get the details of the custom asset of the specified type.',
-    tags: ['Administration: General'],
+    tags: [OpenApi::TAG_ADMIN],
     parameters: [
         new OA\Parameter(
             name: 'type',

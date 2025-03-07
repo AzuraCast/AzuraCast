@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
     path: '/admin/rsas/license',
     operationId: 'deleteRsasLicense',
     description: 'Removes the Rocket Streaming Audio Server (RSAS) license.',
-    tags: ['Administration: General'],
+    tags: [OpenApi::TAG_ADMIN],
     responses: [
         new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
         new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),

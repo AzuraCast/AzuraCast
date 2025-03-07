@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/frontend/account/two-factor',
         operationId: 'deleteMyTwoFactor',
         description: 'Remove two-factor authentication from your account.',
-        tags: ['Accounts'],
+        tags: [OpenApi::TAG_ACCOUNTS],
         responses: [
             new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),

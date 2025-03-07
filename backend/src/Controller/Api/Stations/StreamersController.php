@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/streamers',
         operationId: 'getStreamers',
         description: 'List all current Streamer/DJ accounts for the specified station.',
-        tags: ['Stations: Streamers/DJs'],
+        tags: [OpenApi::TAG_STATIONS_STREAMERS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
@@ -53,7 +53,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: StationStreamer::class)
         ),
-        tags: ['Stations: Streamers/DJs'],
+        tags: [OpenApi::TAG_STATIONS_STREAMERS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
@@ -72,7 +72,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/streamer/{id}',
         operationId: 'getStreamer',
         description: 'Retrieve details for a single Streamer/DJ account.',
-        tags: ['Stations: Streamers/DJs'],
+        tags: [OpenApi::TAG_STATIONS_STREAMERS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -101,7 +101,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: StationStreamer::class)
         ),
-        tags: ['Stations: Streamers/DJs'],
+        tags: [OpenApi::TAG_STATIONS_STREAMERS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -123,7 +123,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/streamer/{id}',
         operationId: 'deleteStreamer',
         description: 'Delete a single Streamer/DJ account.',
-        tags: ['Stations: Streamers/DJs'],
+        tags: [OpenApi::TAG_STATIONS_STREAMERS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(

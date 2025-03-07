@@ -31,7 +31,7 @@ use Psr\Http\Message\ResponseInterface;
             ]
         )
     ),
-    tags: ['Administration: General'],
+    tags: [OpenApi::TAG_ADMIN],
     responses: [
         new OA\Response(
             response: 200,

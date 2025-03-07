@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
     path: '/station/{station_id}/custom_assets/{type}',
     operationId: 'getStationCustomAsset',
     description: 'Get the details of the custom asset of the specified type.',
-    tags: ['Stations: General'],
+    tags: [OpenApi::TAG_STATIONS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(

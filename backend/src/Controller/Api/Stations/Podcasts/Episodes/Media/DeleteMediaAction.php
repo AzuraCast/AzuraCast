@@ -23,7 +23,7 @@ use Psr\Http\Message\ResponseInterface;
     path: '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/media',
     operationId: 'deletePodcastEpisodeMedia',
     description: 'Removes the media for a podcast episode.',
-    tags: ['Stations: Podcasts'],
+    tags: [OpenApi::TAG_STATIONS_PODCASTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(

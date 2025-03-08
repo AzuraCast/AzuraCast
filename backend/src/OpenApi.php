@@ -54,6 +54,7 @@ use OpenApi\Attributes as OA;
             new OA\Tag(name: OpenApi::TAG_STATIONS_WEBHOOKS),
 
             new OA\Tag(name: OpenApi::TAG_ADMIN),
+            new OA\Tag(name: OpenApi::TAG_ADMIN_DEBUG),
             new OA\Tag(name: OpenApi::TAG_ADMIN_BACKUPS),
             new OA\Tag(name: OpenApi::TAG_ADMIN_CUSTOM_FIELDS),
             new OA\Tag(name: OpenApi::TAG_ADMIN_USERS),
@@ -205,6 +206,7 @@ final class OpenApi
     ];
 
     public const string TAG_ADMIN = 'Administration: General';
+    public const string TAG_ADMIN_DEBUG = 'Administration: Debugging';
     public const string TAG_ADMIN_BACKUPS = 'Administration: Backups';
     public const string TAG_ADMIN_CUSTOM_FIELDS = 'Administration: Custom Fields';
     public const string TAG_ADMIN_USERS = 'Administration: Users';
@@ -215,6 +217,7 @@ final class OpenApi
 
     public const array TAG_GROUP_ADMIN = [
         self::TAG_ADMIN,
+        self::TAG_ADMIN_DEBUG,
         self::TAG_ADMIN_BACKUPS,
         self::TAG_ADMIN_CUSTOM_FIELDS,
         self::TAG_ADMIN_USERS,

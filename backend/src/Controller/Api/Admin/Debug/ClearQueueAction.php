@@ -10,11 +10,35 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\MessageQueue\QueueManagerInterface;
 use App\MessageQueue\QueueNames;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/*
- * TODO API
- */
+#[
+    OA\Put(
+        path: '/admin/debug/clear-queue/{queue}',
+        operationId: 'adminDebugClearQueue',
+        description: 'Clear the specified message queue.',
+        tags: [OpenApi::TAG_ADMIN_DEBUG],
+        parameters: [
+            new OA\Parameter(
+                name: 'queue',
+                description: 'Message queue type.',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(
+                    type: 'string',
+                    enum: QueueNames::class
+                )
+            ),
+        ],
+        responses: [
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
+        ]
+    ),
+]
 final class ClearQueueAction implements SingleActionInterface
 {
     public function __construct(

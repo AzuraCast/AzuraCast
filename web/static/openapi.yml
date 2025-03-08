@@ -387,6 +387,47 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  /admin/debug/clear-cache:
+    put:
+      tags:
+        - 'Administration: Debugging'
+      description: 'Clear the application cache (Redis).'
+      operationId: adminDebugClearCache
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/admin/debug/clear-queue/{queue}':
+    put:
+      tags:
+        - 'Administration: Debugging'
+      description: 'Clear the specified message queue.'
+      operationId: adminDebugClearQueue
+      parameters:
+        -
+          name: queue
+          in: path
+          description: 'Message queue type.'
+          required: true
+          schema:
+            type: string
+            enum:
+              - high_priority
+              - normal_priority
+              - low_priority
+              - search_index
+              - media
+              - podcast_media
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
   /admin/geolite:
     get:
       tags:
@@ -2517,6 +2558,29 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/ondemand/download/{media_id}':
+    get:
+      tags:
+        - 'Stations: Media'
+      description: 'Download an on-demand playlist file by media unique ID.'
+      operationId: getStationOnDemandDownload
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: media_id
+          in: path
+          description: 'The media unique ID to download.'
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessWithDownload'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security: []
   '/station/{station_id}/playlist/{id}/queue':
     delete:
       tags:
@@ -7499,6 +7563,8 @@ tags:
   -
     name: 'Administration: General'
   -
+    name: 'Administration: Debugging'
+  -
     name: 'Administration: Backups'
   -
     name: 'Administration: Custom Fields'
@@ -7544,6 +7610,7 @@ x-tagGroups:
     name: Administration
     tags:
       - 'Administration: General'
+      - 'Administration: Debugging'
       - 'Administration: Backups'
       - 'Administration: Custom Fields'
       - 'Administration: Users'

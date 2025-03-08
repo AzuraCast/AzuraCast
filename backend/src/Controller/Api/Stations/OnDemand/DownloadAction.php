@@ -9,11 +9,31 @@ use App\Entity\Repository\StationMediaRepository;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/*
- * TODO API
- */
+#[OA\Get(
+    path: '/station/{station_id}/ondemand/download/{media_id}',
+    operationId: 'getStationOnDemandDownload',
+    description: 'Download an on-demand playlist file by media unique ID.',
+    security: [],
+    tags: [OpenApi::TAG_STATIONS_MEDIA],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        new OA\Parameter(
+            name: 'media_id',
+            description: 'The media unique ID to download.',
+            in: 'path',
+            schema: new OA\Schema(type: 'string'),
+        ),
+    ],
+    responses: [
+        new OpenApi\Response\SuccessWithDownload(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class DownloadAction implements SingleActionInterface
 {
     public function __construct(

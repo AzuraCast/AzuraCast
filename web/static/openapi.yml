@@ -2385,6 +2385,147 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/playlist/{id}/queue':
+    delete:
+      tags:
+        - 'Stations: Playlists'
+      description: 'Reset the internal playback queue of a shuffled, song-based playlist.'
+      operationId: deletePlaylistQueue
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Playlist ID'
+          required: true
+          schema:
+            type: int
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/playlist/{id}/empty':
+    delete:
+      tags:
+        - 'Stations: Playlists'
+      description: 'Empty the contents of a song-based playlist.'
+      operationId: deleteEmptyPlaylist
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Playlist ID'
+          required: true
+          schema:
+            type: int
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/playlist/{id}/export/{format}':
+    get:
+      tags:
+        - 'Stations: Playlists'
+      description: 'Export a playlist contents in standard media player playlist format.'
+      operationId: getExportPlaylist
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Playlist ID'
+          required: true
+          schema:
+            type: int
+            format: int64
+        -
+          name: format
+          in: path
+          description: 'Export Playlist Format'
+          required: true
+          schema:
+            type: string
+            default: pls
+            enum:
+              - pls
+              - m3u
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessWithDownload'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/playlist/{id}/reshuffle':
+    put:
+      tags:
+        - 'Stations: Playlists'
+      description: 'Re-shuffle a playlist whose playback order is "shuffled".'
+      operationId: putReshufflePlaylist
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Playlist ID'
+          required: true
+          schema:
+            type: int
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/playlist/{id}/toggle':
+    put:
+      tags:
+        - 'Stations: Playlists'
+      description: 'Toggle a playlist between enabled and disabled status.'
+      operationId: putTogglePlaylist
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Playlist ID'
+          required: true
+          schema:
+            type: int
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/playlists':
     get:
       tags:
@@ -3097,6 +3238,28 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/profile':
+    get:
+      tags:
+        - 'Stations: General'
+      description: 'Retrieve the profile of the given station.'
+      operationId: getStationProfile
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: App\Entity\Api\StationProfile
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':

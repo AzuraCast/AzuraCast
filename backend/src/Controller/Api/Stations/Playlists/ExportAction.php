@@ -8,12 +8,44 @@ use App\Controller\SingleActionInterface;
 use App\Entity\Repository\StationPlaylistRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use InvalidArgumentException;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/*
- * TODO API
- */
+#[OA\Get(
+    path: '/station/{station_id}/playlist/{id}/export/{format}',
+    operationId: 'getExportPlaylist',
+    description: 'Export a playlist contents in standard media player playlist format.',
+    tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        new OA\Parameter(
+            name: 'id',
+            description: 'Playlist ID',
+            in: 'path',
+            required: true,
+            schema: new OA\Schema(type: 'int', format: 'int64')
+        ),
+        new OA\Parameter(
+            name: 'format',
+            description: 'Export Playlist Format',
+            in: 'path',
+            required: true,
+            schema: new OA\Schema(
+                type: 'string',
+                default: 'pls',
+                enum: ['pls', 'm3u']
+            )
+        ),
+    ],
+    responses: [
+        new OpenApi\Response\SuccessWithDownload(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class ExportAction implements SingleActionInterface
 {
     public function __construct(

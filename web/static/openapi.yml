@@ -686,6 +686,19 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
+  /admin/send-test-message:
+    post:
+      tags:
+        - 'Administration: General'
+      description: 'Send a test e-mail to confirm mail delivery settings.'
+      operationId: adminSendTestEmail
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
   /admin/server/stats:
     get:
       tags:
@@ -1482,6 +1495,57 @@ paths:
         '404':
           $ref: '#/components/responses/RecordNotFound'
       security: []
+  '/nowplaying/{station_id}/art':
+    get:
+      tags:
+        - 'Now Playing'
+      description: 'Always redirects to the current art for the given station.'
+      operationId: getStationNowPlayingArt
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '302':
+          description: 'A temporary redirect to the correct resource.'
+          headers:
+            location:
+              description: 'The current URL of the resource.'
+              schema:
+                type: string
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+      security: []
+  /openapi.yml:
+    get:
+      tags:
+        - Miscellaneous
+      description: 'Returns the OpenAPI specification document for this installation.'
+      operationId: getOpenApiSpec
+      responses:
+        '200':
+          description: Success
+          content:
+            text/x-yaml:
+              schema:
+                description: 'The OpenAPI specification document for this installation.'
+                type: string
+                format: binary
+      security: []
+  /prometheus:
+    get:
+      tags:
+        - Miscellaneous
+      description: 'Returns the Prometheus measurements for this installation.'
+      operationId: getPrometheus
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                description: 'The Prometheus measurements for this installation.'
+                type: string
+                format: binary
   '/station/{station_id}/art/{media_id}':
     get:
       tags:
@@ -1569,6 +1633,24 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/files/bulk':
+    get:
+      tags:
+        - 'Stations: Media'
+      description: 'Download a CSV containing details about all station media.'
+      operationId: getStationBulkMediaDownload
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/csv:
+              schema:
+                description: 'A CSV file containing bulk media details.'
+                type: string
+                format: binary
   '/station/{station_id}/custom_assets/{type}':
     get:
       tags:
@@ -1712,6 +1794,56 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/files/download':
+    get:
+      tags:
+        - 'Stations: Media'
+      description: 'Download a file by relative path.'
+      operationId: getStationFileDownload
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: file
+          in: query
+          description: 'The relative path of the file in the Media filesystem.'
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessWithDownload'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/file/{id}/play':
+    get:
+      tags:
+        - 'Stations: Media'
+      description: 'Download or play a given file by ID.'
+      operationId: getPlayFile
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Media ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessWithDownload'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':

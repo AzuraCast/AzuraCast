@@ -9,12 +9,32 @@ use App\Entity\Api\Error;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Utilities\Types;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/*
- * TODO API
- */
+#[OA\Get(
+    path: '/station/{station_id}/files/download',
+    operationId: 'getStationFileDownload',
+    description: 'Download a file by relative path.',
+    tags: [OpenApi::TAG_STATIONS_MEDIA],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        new OA\Parameter(
+            name: 'file',
+            description: 'The relative path of the file in the Media filesystem.',
+            in: 'query',
+            schema: new OA\Schema(type: 'string'),
+        ),
+    ],
+    responses: [
+        new OpenApi\Response\SuccessWithDownload(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class DownloadAction implements SingleActionInterface
 {
     public function __construct(

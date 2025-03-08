@@ -9,11 +9,34 @@ use App\Entity\Repository\StationMediaRepository;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/*
- * TODO API
- */
+#[
+    OA\Get(
+        path: '/station/{station_id}/file/{id}/play',
+        operationId: 'getPlayFile',
+        description: 'Download or play a given file by ID.',
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+            new OA\Parameter(
+                name: 'id',
+                description: 'Media ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OpenApi\Response\SuccessWithDownload(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class PlayAction implements SingleActionInterface
 {
     public function __construct(

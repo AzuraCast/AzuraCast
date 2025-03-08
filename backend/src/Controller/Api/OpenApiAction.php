@@ -8,12 +8,33 @@ use App\Console\Command\Dev\GenerateApiDocsCommand;
 use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Version;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/*
- * TODO API
- */
+#[
+    OA\Get(
+        path: '/openapi.yml',
+        operationId: 'getOpenApiSpec',
+        description: 'Returns the OpenAPI specification document for this installation.',
+        security: [],
+        tags: [OpenApi::TAG_MISC],
+        responses: [
+            new OpenApi\Response\SuccessWithDownload(
+                description: 'Success',
+                content: new OA\MediaType(
+                    mediaType: 'text/x-yaml',
+                    schema: new OA\Schema(
+                        description: 'The OpenAPI specification document for this installation.',
+                        type: 'string',
+                        format: 'binary'
+                    )
+                )
+            ),
+        ]
+    )
+]
 final class OpenApiAction implements SingleActionInterface
 {
     public function __construct(

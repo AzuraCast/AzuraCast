@@ -11,13 +11,36 @@ use App\Entity\Repository\StationPlaylistRepository;
 use App\Entity\StationMediaMetadata;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use League\Csv\Writer;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 
-/*
- * TODO API
- */
+#[
+    OA\Get(
+        path: '/station/{station_id}/files/bulk',
+        operationId: 'getStationBulkMediaDownload',
+        description: 'Download a CSV containing details about all station media.',
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            new OpenApi\Response\SuccessWithDownload(
+                description: 'Success',
+                content: new OA\MediaType(
+                    mediaType: 'text/csv',
+                    schema: new OA\Schema(
+                        description: 'A CSV file containing bulk media details.',
+                        type: 'string',
+                        format: 'binary'
+                    )
+                )
+            ),
+        ]
+    )
+]
 final class DownloadAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;

@@ -36,7 +36,7 @@ final readonly class AuditLog
         #[OA\Property]
         public ?string $user,
         #[OA\Property(
-            items: new OA\Items(ref: '#/components/schemas/Api_Admin_AuditLogChangeset')
+            items: new OA\Items(ref: AuditLogChangeset::class)
         )]
         public array $changes
     ) {

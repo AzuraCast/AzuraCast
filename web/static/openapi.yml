@@ -428,6 +428,66 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/admin/debug/station/{station_id}/clearqueue':
+    put:
+      tags:
+        - 'Administration: Debugging'
+      description: 'Clear the upcoming song queue and generate a new one.'
+      operationId: adminDebugClearStationQueue
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Admin_Debug_LogResult'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/admin/debug/station/{station_id}/nextsong':
+    put:
+      tags:
+        - 'Administration: Debugging'
+      description: 'Get the next song to be played by the AutoDJ for a given station.'
+      operationId: adminDebugStationNextSong
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Admin_Debug_LogResult'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/admin/debug/station/{station_id}/nowplaying':
+    put:
+      tags:
+        - 'Administration: Debugging'
+      description: 'Generate the raw Now Playing data for a given station.'
+      operationId: adminDebugStationNowPlaying
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Admin_Debug_LogResult'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
   /admin/geolite:
     get:
       tags:
@@ -1859,6 +1919,26 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/SuccessWithDownload'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/files/upload':
+    post:
+      tags:
+        - 'Stations: Media'
+      description: 'Upload and process a new media file.'
+      operationId: postUploadFile
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      requestBody:
+        $ref: '#/components/requestBodies/FlowFileUpload'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4578,6 +4658,53 @@ components:
             storageLocationId:
               type: integer
           type: object
+    Api_Admin_Debug_LogEntry:
+      required:
+        - datetime
+        - channel
+        - level
+        - message
+        - context
+        - extra
+        - formatted
+      properties:
+        datetime:
+          type: string
+          format: date-time
+        channel:
+          type: string
+        level:
+          type: integer
+          enum:
+            - 100
+            - 200
+            - 250
+            - 300
+            - 400
+            - 500
+            - 550
+            - 600
+        message:
+          type: string
+        context:
+          type: array
+          items: {  }
+        extra:
+          type: array
+          items: {  }
+        formatted:
+          type: '{}'
+          nullable: true
+      type: object
+    Api_Admin_Debug_LogResult:
+      required:
+        - logs
+      properties:
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Api_Admin_Debug_LogEntry'
+      type: object
     Api_Admin_GeoLiteStatus:
       required:
         - version

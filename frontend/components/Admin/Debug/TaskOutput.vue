@@ -65,9 +65,10 @@
 <script setup lang="ts">
 import {useTranslate} from "~/vendor/gettext.ts";
 import {get} from "lodash";
+import {ApiAdminDebugLogEntry} from "~/entities/ApiInterfaces.ts";
 
 defineProps<{
-  logs: Array<any>
+    logs: ApiAdminDebugLogEntry[]
 }>();
 
 const badgeClasses = {

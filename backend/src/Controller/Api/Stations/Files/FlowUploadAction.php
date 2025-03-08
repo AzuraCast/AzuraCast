@@ -19,13 +19,32 @@ use App\Exception\StorageLocationFullException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\MediaProcessor;
+use App\OpenApi;
 use App\Service\Flow;
 use App\Utilities\Types;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/*
- * TODO API
- */
+#[
+    OA\Post(
+        path: '/station/{station_id}/files/upload',
+        operationId: 'postUploadFile',
+        description: 'Upload and process a new media file.',
+        requestBody: new OA\RequestBody(
+            ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD
+        ),
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class FlowUploadAction implements SingleActionInterface
 {
     use LoggerAwareTrait;

@@ -60,6 +60,21 @@ export type ApiAdminBackup = HasLinks & {
   storageLocationId: number;
 };
 
+export interface ApiAdminDebugLogEntry {
+  /** @format date-time */
+  datetime: string;
+  channel: string;
+  level: 100 | 200 | 250 | 300 | 400 | 500 | 550 | 600;
+  message: string;
+  context: any[];
+  extra: any[];
+  formatted: any;
+}
+
+export interface ApiAdminDebugLogResult {
+  logs: ApiAdminDebugLogEntry[];
+}
+
 export type ApiAdminGeoLiteStatus = ApiAbstractStatus & {
   version: string | null;
   key: string | null;

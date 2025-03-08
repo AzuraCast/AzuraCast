@@ -488,6 +488,31 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/admin/debug/sync/{task}':
+    put:
+      tags:
+        - 'Administration: Debugging'
+      description: 'Manually run a scheduled synchronized task by name.'
+      operationId: adminDebugRunSyncTask
+      parameters:
+        -
+          name: task
+          in: path
+          description: 'Synchronized task (either class name or "all").'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Admin_Debug_LogResult'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
   /admin/geolite:
     get:
       tags:
@@ -1939,6 +1964,49 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/files/list':
+    get:
+      tags:
+        - 'Stations: Media'
+      description: 'List files in the media directory by path.'
+      operationId: getStationFileList
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: currentDirectory
+          in: query
+          required: true
+          schema:
+            type: string
+        -
+          name: searchPhrase
+          in: query
+          schema:
+            type: string
+            nullable: true
+        -
+          name: flushCache
+          in: query
+          schema:
+            type: boolean
+            default: false
+            nullable: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_FileList'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':

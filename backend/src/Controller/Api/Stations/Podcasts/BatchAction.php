@@ -16,17 +16,39 @@ use App\Exception\ValidationException;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Utilities\Types;
 use Doctrine\ORM\Query;
 use InvalidArgumentException;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
 
-/*
- * TODO API
- */
+#[OA\Post(
+    path: '/station/{station_id}/podcast/{podcast_id}/batch',
+    operationId: 'postStationPodcastBatch',
+    description: 'Import the contents of an uploaded playlist (PLS/M3U) file into the specified playlist.',
+    tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        new OA\Parameter(
+            name: 'podcast_id',
+            description: 'Podcast ID',
+            in: 'path',
+            required: true,
+            schema: new OA\Schema(type: 'string')
+        ),
+    ],
+    responses: [
+        // TODO API Response
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class BatchAction extends PodcastEpisodesController implements SingleActionInterface
 {
     private const int BATCH_SIZE = 50;

@@ -36,6 +36,21 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
+  /admin/acme:
+    put:
+      tags:
+        - 'Administration: General'
+      description: 'Generate or renew ACME certificate.'
+      operationId: putAdminGenerateAcmeCert
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   /admin/api-keys:
     get:
       tags:
@@ -181,6 +196,21 @@ paths:
                 $ref: '#/components/schemas/Api_LogContents'
         '403':
           $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  /admin/backups/run:
+    post:
+      tags:
+        - 'Administration: Backups'
+      description: 'Initialize a manual backup.'
+      operationId: postAdminDoBackup
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
   '/admin/custom_assets/{type}':
@@ -448,6 +478,51 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
+  /admin/debug/queues:
+    get:
+      tags:
+        - 'Administration: Debugging'
+      description: 'List all message queues.'
+      operationId: getAdminDebugQueues
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  /admin/debug/stations:
+    get:
+      tags:
+        - 'Administration: Debugging'
+      description: 'List all stations with their debug links.'
+      operationId: getAdminDebugStations
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  /admin/debug/sync-tasks:
+    get:
+      tags:
+        - 'Administration: Debugging'
+      description: 'List all sync tasks and details about their run times.'
+      operationId: getAdminDebugSyncTasks
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/admin/debug/station/{station_id}/nextsong':
     put:
       tags:
@@ -511,6 +586,21 @@ paths:
                 $ref: '#/components/schemas/Api_Admin_Debug_LogResult'
         '403':
           $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/admin/debug/station/{station_id}/telnet':
+    put:
+      tags:
+        - 'Administration: Debugging'
+      description: 'Manually run a Telnet command on a station backend.'
+      operationId: putAdminDebugTelnetCommand
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
   /admin/geolite:
@@ -950,6 +1040,36 @@ paths:
           $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/admin/station/{id}/clone':
+    post:
+      tags:
+        - 'Administration: Stations'
+      description: 'Clone a station, preserving certain settings.'
+      operationId: postAdminStationsClone
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  /admin/stations/storage-locations:
+    get:
+      tags:
+        - 'Administration: Stations'
+      description: 'List storage locations available for assignment to a station.'
+      operationId: getAdminStationStorageLocations
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
   /admin/stations:
@@ -1492,11 +1612,98 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
+    put:
+      tags:
+        - Accounts
+      description: 'Register a new two-factor authentication method.'
+      operationId: putAccountTwoFactor
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
     delete:
       tags:
         - Accounts
       description: 'Remove two-factor authentication from your account.'
       operationId: deleteMyTwoFactor
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  /frontend/account/me:
+    get:
+      tags:
+        - Accounts
+      description: 'Show the details for your current logged-in account.'
+      operationId: getMe
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    put:
+      tags:
+        - Accounts
+      description: 'Save changes to your logged in account.'
+      operationId: putMe
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  /frontend/account/passkeys:
+    get:
+      tags:
+        - Accounts
+      description: 'List currently registered passkeys.'
+      operationId: getAccountListPasskeys
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/frontend/account/passkey/{id}':
+    get:
+      tags:
+        - Accounts
+      description: 'Get the details of a single passkey.'
+      operationId: getAccountGetPasskey
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    delete:
+      tags:
+        - Accounts
+      description: 'Delete a specified passkey by ID.'
+      operationId: deleteAccountPasskey
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -1524,6 +1731,50 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
+  /frontend/account/webauthn/register:
+    get:
+      tags:
+        - Accounts
+      description: 'Get registration details for WebAuthn registration.'
+      operationId: getAccountWebAuthnRegister
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    put:
+      tags:
+        - Accounts
+      description: 'Submit a new registration request for WebAuthn.'
+      operationId: putAccountWebAuthnRegister
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  /dashboard/charts:
+    put:
+      tags:
+        - Miscellaneous
+      description: 'Get the measurements for the dashboard charts.'
+      operationId: getDashboardCharts
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   /dashboard/notifications:
     get:
       tags:
@@ -1541,6 +1792,21 @@ paths:
                   $ref: '#/components/schemas/Api_Notification'
         '403':
           $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  /dashboard/stations:
+    get:
+      tags:
+        - Miscellaneous
+      description: 'List stations that can be managed by the current user account on the dashboard.'
+      operationId: getDashboardStations
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
   /status:
@@ -1777,6 +2043,29 @@ paths:
                 description: 'A CSV file containing bulk media details.'
                 type: string
                 format: binary
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    post:
+      tags:
+        - 'Stations: Media'
+      description: 'Upload a CSV containing details about all station media.'
+      operationId: postStationBulkMediaUpload
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/custom_assets/{type}':
     get:
       tags:
@@ -1926,6 +2215,24 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/files/batch':
+    put:
+      tags:
+        - 'Stations: Media'
+      description: 'Perform a batch action on a collection of files/directories.'
+      operationId: putStationFileBatchAction
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/files/download':
     get:
       tags:
@@ -2013,6 +2320,42 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/files/directories':
+    get:
+      tags:
+        - 'Stations: Media'
+      description: 'List directories in a station media library for moving/renaming.'
+      operationId: getStationFileDirectories
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/files/mkdir':
+    post:
+      tags:
+        - 'Stations: Media'
+      description: 'Create a directory in a station media directory.'
+      operationId: postStationFilesMkdir
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/file/{id}/play':
     get:
       tags:
@@ -2033,6 +2376,24 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/SuccessWithDownload'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/files/rename':
+    put:
+      tags:
+        - 'Stations: Media'
+      description: 'Rename the specified files in the station media directory.'
+      operationId: postStationFilesRename
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -2422,6 +2783,41 @@ paths:
         '404':
           $ref: '#/components/responses/RecordNotFound'
       security: []
+  '/station/{station_id}/liquidsoap-config':
+    get:
+      tags:
+        - 'Stations: Broadcasting'
+      description: 'Get the generated and editable sections of the station Liquidsoap configuration.'
+      operationId: getStationLiquidsoapConfig
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    put:
+      tags:
+        - 'Stations: Broadcasting'
+      description: 'Save the editable sections of the station Liquidsoap configuration.'
+      operationId: putStationLiquidsoapConfig
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/listeners':
     get:
       tags:
@@ -2729,7 +3125,75 @@ paths:
         '500':
           $ref: '#/components/responses/GenericError'
       security: []
+  '/station/{station_id}/ondemand':
+    get:
+      tags:
+        - 'Stations: Media'
+      description: 'List all tracks available on-demand for this station.'
+      operationId: getStationOnDemand
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security: []
+  '/station/{station_id}/playlist/{id}/clone':
+    post:
+      tags:
+        - 'Stations: Playlists'
+      description: 'Create a copy of the specified station.'
+      operationId: postStationPlaylistClone
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Playlist ID'
+          required: true
+          schema:
+            type: int
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/playlist/{id}/queue':
+    get:
+      tags:
+        - 'Stations: Playlists'
+      description: 'Get the current playback queue for the specified playlist.'
+      operationId: getStationPlaylistQueue
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Playlist ID'
+          required: true
+          schema:
+            type: int
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
     delete:
       tags:
         - 'Stations: Playlists'
@@ -2812,6 +3276,134 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/SuccessWithDownload'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/playlist/{id}/apply-to':
+    get:
+      tags:
+        - 'Stations: Playlists'
+      description: 'Get a list of directories that the given playlist can apply to.'
+      operationId: getStationPlaylistApplyTo
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Playlist ID'
+          required: true
+          schema:
+            type: int
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    put:
+      tags:
+        - 'Stations: Playlists'
+      description: 'Apply the specified playlist to the specified directories.'
+      operationId: putStationPlaylistApplyTo
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Playlist ID'
+          required: true
+          schema:
+            type: int
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/playlist/{id}/order':
+    get:
+      tags:
+        - 'Stations: Playlists'
+      description: 'Get the current order of sequential tracks in the specified playlist.'
+      operationId: getStationPlaylistOrder
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Playlist ID'
+          required: true
+          schema:
+            type: int
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    put:
+      tags:
+        - 'Stations: Playlists'
+      description: 'Set the order of sequential tracks in the specified playlist.'
+      operationId: putStationPlaylistOrder
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Playlist ID'
+          required: true
+          schema:
+            type: int
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/playlist/{id}/import':
+    post:
+      tags:
+        - 'Stations: Playlists'
+      description: 'Import the contents of an uploaded playlist (PLS/M3U) file into the specified playlist.'
+      operationId: getStationPlaylistImport
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Playlist ID'
+          required: true
+          schema:
+            type: int
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -3251,6 +3843,31 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/podcast/{podcast_id}/batch':
+    post:
+      tags:
+        - 'Stations: Playlists'
+      description: 'Import the contents of an uploaded playlist (PLS/M3U) file into the specified playlist.'
+      operationId: postStationPodcastBatch
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: podcast_id
+          in: path
+          description: 'Podcast ID'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/art':
     get:
       tags:
@@ -3456,6 +4073,79 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/public/podcast/{podcast_id}':
+    get:
+      tags:
+        - 'Stations: Podcasts'
+      description: 'Get the public information for a given podcast.'
+      operationId: getStationPublicPodcast
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: podcast_id
+          in: path
+          description: 'Podcast ID'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security: []
+  '/station/{station_id}/public/podcasts':
+    get:
+      tags:
+        - 'Stations: Podcasts'
+      description: 'List all visible public playlists.'
+      operationId: getStationPublicPodcasts
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: podcast_id
+          in: path
+          description: 'Podcast ID'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security: []
+  '/station/{station_id}/podcast/{podcast_id}/playlists':
+    get:
+      tags:
+        - 'Stations: Podcasts'
+      description: 'Get a list of playlists that can be associated with a podcast.'
+      operationId: getStationPodcastPlaylists
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: podcast_id
+          in: path
+          description: 'Podcast ID'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/podcasts':
     get:
       tags:
@@ -3604,6 +4294,36 @@ paths:
             application/json:
               schema:
                 $ref: App\Entity\Api\StationProfile
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/profile/edit':
+    get:
+      tags:
+        - 'Stations: General'
+      summary: "This controller handles the specific \"Edit Profile\" function on a station's profile, which has different permissions\nand possible actions than the Admin Station Edit function."
+      description: 'Get the editable profile for the current station.'
+      operationId: getStationProfileEdit
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    put:
+      tags:
+        - 'Stations: General'
+      description: 'Save the station profile for the current station.'
+      operationId: putStationProfileEdit
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4421,6 +5141,21 @@ paths:
           schema:
             type: integer
             format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/nowplaying/update':
+    post:
+      tags:
+        - 'Stations: General'
+      description: 'Manually update the Now Playing metadata for the station.'
+      operationId: postStationNowPlayingUpdate
       responses:
         '200':
           $ref: '#/components/responses/Success'

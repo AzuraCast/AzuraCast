@@ -23,6 +23,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\BatchUtilities;
 use App\Message;
+use App\OpenApi;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\BackendAdapters;
@@ -36,15 +37,31 @@ use InvalidArgumentException;
 use League\Flysystem\StorageAttributes;
 use League\Flysystem\UnableToDeleteDirectory;
 use League\Flysystem\UnableToDeleteFile;
+use OpenApi\Attributes as OA;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 use Symfony\Component\Messenger\MessageBus;
 use Throwable;
 
-/*
- * TODO API
- */
+#[
+    OA\Put(
+        path: '/station/{station_id}/files/batch',
+        operationId: 'putStationFileBatchAction',
+        description: 'Perform a batch action on a collection of files/directories.',
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            // TODO: API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class BatchAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;

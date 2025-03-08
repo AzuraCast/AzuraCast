@@ -16,12 +16,26 @@ use App\Entity\Station;
 use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Paginator;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/*
- * TODO API
- */
+#[
+    OA\Get(
+        path: '/dashboard/stations',
+        operationId: 'getDashboardStations',
+        description: 'List stations that can be managed by the current user account on the dashboard.',
+        tags: [OpenApi::TAG_MISC],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class StationsAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;

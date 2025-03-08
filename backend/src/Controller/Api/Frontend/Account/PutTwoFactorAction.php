@@ -11,15 +11,29 @@ use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use InvalidArgumentException;
+use OpenApi\Attributes as OA;
 use OTPHP\TOTP;
 use ParagonIE\ConstantTime\Base32;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
-/*
- * TODO API
- */
+#[
+    OA\Put(
+        path: '/frontend/account/two-factor',
+        operationId: 'putAccountTwoFactor',
+        description: 'Register a new two-factor authentication method.',
+        tags: [OpenApi::TAG_ACCOUNTS],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class PutTwoFactorAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;

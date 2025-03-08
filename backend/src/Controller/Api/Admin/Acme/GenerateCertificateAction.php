@@ -8,13 +8,27 @@ use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\GenerateAcmeCertificate;
+use App\OpenApi;
 use App\Utilities\File;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
 
-/*
- * TODO API
- */
+#[
+    OA\Put(
+        path: '/admin/acme',
+        operationId: 'putAdminGenerateAcmeCert',
+        description: 'Generate or renew ACME certificate.',
+        tags: [OpenApi::TAG_ADMIN],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class GenerateCertificateAction implements SingleActionInterface
 {
     public function __construct(

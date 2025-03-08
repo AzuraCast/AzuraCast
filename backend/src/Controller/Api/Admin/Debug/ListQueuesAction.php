@@ -9,11 +9,25 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\MessageQueue\QueueManagerInterface;
 use App\MessageQueue\QueueNames;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/*
- * TODO API
- */
+#[
+    OA\Get(
+        path: '/admin/debug/queues',
+        operationId: 'getAdminDebugQueues',
+        description: 'List all message queues.',
+        tags: [OpenApi::TAG_ADMIN_DEBUG],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class ListQueuesAction implements SingleActionInterface
 {
     public function __construct(

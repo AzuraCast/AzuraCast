@@ -8,11 +8,25 @@ use App\Controller\SingleActionInterface;
 use App\Entity\Repository\StationRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/*
- * TODO API
- */
+#[
+    OA\Get(
+        path: '/admin/debug/stations',
+        operationId: 'getAdminDebugStations',
+        description: 'List all stations with their debug links.',
+        tags: [OpenApi::TAG_ADMIN_DEBUG],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class ListStationsAction implements SingleActionInterface
 {
     public function __construct(

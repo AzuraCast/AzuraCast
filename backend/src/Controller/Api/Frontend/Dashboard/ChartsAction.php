@@ -14,13 +14,27 @@ use App\Enums\GlobalPermissions;
 use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use Carbon\CarbonImmutable;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
 
-/*
- * TODO API
- */
+#[
+    OA\Put(
+        path: '/dashboard/charts',
+        operationId: 'getDashboardCharts',
+        description: 'Get the measurements for the dashboard charts.',
+        tags: [OpenApi::TAG_MISC],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class ChartsAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;

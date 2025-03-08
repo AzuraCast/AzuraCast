@@ -9,6 +9,8 @@ use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Entity\UserPasskey;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -16,9 +18,48 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 /**
  * @template TEntity as UserPasskey
  * @extends AbstractApiCrudController<TEntity>
- *
- * TODO API
  */
+#[
+    OA\Get(
+        path: '/frontend/account/passkeys',
+        operationId: 'getAccountListPasskeys',
+        description: 'List currently registered passkeys.',
+        tags: [OpenApi::TAG_ACCOUNTS],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    ),
+    OA\Get(
+        path: '/frontend/account/passkey/{id}',
+        operationId: 'getAccountGetPasskey',
+        description: 'Get the details of a single passkey.',
+        tags: [OpenApi::TAG_ACCOUNTS],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    ),
+    OA\Delete(
+        path: '/frontend/account/passkey/{id}',
+        operationId: 'deleteAccountPasskey',
+        description: 'Delete a specified passkey by ID.',
+        tags: [OpenApi::TAG_ACCOUNTS],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class PasskeysController extends AbstractApiCrudController
 {
     protected string $entityClass = UserPasskey::class;

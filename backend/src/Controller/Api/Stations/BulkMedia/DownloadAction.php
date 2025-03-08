@@ -38,6 +38,9 @@ use RuntimeException;
                     )
                 )
             ),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]

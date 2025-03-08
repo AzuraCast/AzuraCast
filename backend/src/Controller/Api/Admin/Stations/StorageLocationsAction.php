@@ -9,11 +9,25 @@ use App\Controller\SingleActionInterface;
 use App\Entity\Station;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/*
- * TODO API
- */
+#[
+    OA\Get(
+        path: '/admin/stations/storage-locations',
+        operationId: 'getAdminStationStorageLocations',
+        description: 'List storage locations available for assignment to a station.',
+        tags: [OpenApi::TAG_ADMIN_STATIONS],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class StorageLocationsAction extends StationsController implements SingleActionInterface
 {
     public function __invoke(

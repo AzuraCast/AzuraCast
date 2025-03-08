@@ -8,12 +8,26 @@ use App\Controller\SingleActionInterface;
 use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Radio\Adapters;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/*
- * TODO API
- */
+#[
+    OA\Post(
+        path: '/station/{station_id}/nowplaying/update',
+        operationId: 'postStationNowPlayingUpdate',
+        description: 'Manually update the Now Playing metadata for the station.',
+        tags: [OpenApi::TAG_STATIONS],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class UpdateMetadataAction implements SingleActionInterface
 {
     public function __construct(

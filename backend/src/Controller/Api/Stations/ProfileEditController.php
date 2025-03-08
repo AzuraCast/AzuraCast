@@ -10,15 +10,43 @@ use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Enums\GlobalPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 /**
  * This controller handles the specific "Edit Profile" function on a station's profile, which has different permissions
  * and possible actions than the Admin Station Edit function.
- *
- * TODO API
  */
+#[
+    OA\Get(
+        path: '/station/{station_id}/profile/edit',
+        operationId: 'getStationProfileEdit',
+        description: 'Get the editable profile for the current station.',
+        tags: [OpenApi::TAG_STATIONS],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    ),
+    OA\Put(
+        path: '/station/{station_id}/profile/edit',
+        operationId: 'putStationProfileEdit',
+        description: 'Save the station profile for the current station.',
+        tags: [OpenApi::TAG_STATIONS],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class ProfileEditController extends StationsController
 {
     public function getProfileAction(

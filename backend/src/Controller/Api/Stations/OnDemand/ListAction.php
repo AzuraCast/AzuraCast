@@ -11,11 +11,26 @@ use App\Entity\StationMedia;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/*
- * TODO API
- */
+#[OA\Get(
+    path: '/station/{station_id}/ondemand',
+    operationId: 'getStationOnDemand',
+    description: 'List all tracks available on-demand for this station.',
+    security: [],
+    tags: [OpenApi::TAG_STATIONS_MEDIA],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+    ],
+    responses: [
+        // TODO API Response
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class ListAction extends AbstractSearchableListAction
 {
     public function __invoke(

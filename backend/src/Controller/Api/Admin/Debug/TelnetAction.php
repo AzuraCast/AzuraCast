@@ -8,15 +8,29 @@ use App\Container\LoggerAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Radio\Adapters;
 use App\Utilities\Types;
 use Monolog\Handler\TestHandler;
 use Monolog\Level;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/*
- * TODO API
- */
+#[
+    OA\Put(
+        path: '/admin/debug/station/{station_id}/telnet',
+        operationId: 'putAdminDebugTelnetCommand',
+        description: 'Manually run a Telnet command on a station backend.',
+        tags: [OpenApi::TAG_ADMIN_DEBUG],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class TelnetAction implements SingleActionInterface
 {
     use LoggerAwareTrait;

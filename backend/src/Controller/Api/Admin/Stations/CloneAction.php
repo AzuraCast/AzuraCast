@@ -18,14 +18,28 @@ use App\Entity\StationSchedule;
 use App\Entity\StationStreamer;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use DeepCopy;
 use Doctrine\Common\Collections\Collection;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
-/*
- * TODO API
- */
+#[
+    OA\Post(
+        path: '/admin/station/{id}/clone',
+        operationId: 'postAdminStationsClone',
+        description: 'Clone a station, preserving certain settings.',
+        tags: [OpenApi::TAG_ADMIN_STATIONS],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class CloneAction extends StationsController implements SingleActionInterface
 {
     use EnvironmentAwareTrait;

@@ -11,14 +11,28 @@ use App\Controller\SingleActionInterface;
 use App\Event\GetSyncTasks;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Utilities\Time;
+use OpenApi\Attributes as OA;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 
-/*
- * TODO API
- */
+#[
+    OA\Get(
+        path: '/admin/debug/sync-tasks',
+        operationId: 'getAdminDebugSyncTasks',
+        description: 'List all sync tasks and details about their run times.',
+        tags: [OpenApi::TAG_ADMIN_DEBUG],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class ListSyncTasksAction implements SingleActionInterface
 {
     use EnvironmentAwareTrait;

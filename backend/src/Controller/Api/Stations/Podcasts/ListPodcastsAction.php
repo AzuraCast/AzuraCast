@@ -12,12 +12,34 @@ use App\Entity\Podcast;
 use App\Entity\Repository\PodcastRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Paginator;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/*
- * TODO API
- */
+#[OA\Get(
+    path: '/station/{station_id}/public/podcasts',
+    operationId: 'getStationPublicPodcasts',
+    description: 'List all visible public playlists.',
+    security: [],
+    tags: [OpenApi::TAG_STATIONS_PODCASTS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        new OA\Parameter(
+            name: 'podcast_id',
+            description: 'Podcast ID',
+            in: 'path',
+            required: true,
+            schema: new OA\Schema(type: 'string')
+        ),
+    ],
+    responses: [
+        // TODO API Response
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class ListPodcastsAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;

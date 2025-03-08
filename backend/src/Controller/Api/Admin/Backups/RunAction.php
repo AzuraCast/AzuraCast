@@ -8,13 +8,27 @@ use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\BackupMessage;
+use App\OpenApi;
 use App\Utilities\File;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
 
-/*
- * TODO API
- */
+#[
+    OA\Post(
+        path: '/admin/backups/run',
+        operationId: 'postAdminDoBackup',
+        description: 'Initialize a manual backup.',
+        tags: [OpenApi::TAG_ADMIN_BACKUPS],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class RunAction implements SingleActionInterface
 {
     public function __construct(

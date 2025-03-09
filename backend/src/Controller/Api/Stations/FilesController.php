@@ -38,7 +38,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/station/{station_id}/files',
         operationId: 'getFiles',
-        description: 'List all current uploaded files.',
+        summary: 'List all current uploaded files.',
         tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -57,7 +57,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Post(
         path: '/station/{station_id}/files',
         operationId: 'addFile',
-        description: 'Upload a new file.',
+        summary: 'Upload a new file.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: UploadFile::class)
         ),
@@ -76,7 +76,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/station/{station_id}/file/{id}',
         operationId: 'getFile',
-        description: 'Retrieve details for a single file.',
+        summary: 'Retrieve details for a single file.',
         tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -100,7 +100,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Put(
         path: '/station/{station_id}/file/{id}',
         operationId: 'editFile',
-        description: 'Update details of a single file.',
+        summary: 'Update details of a single file.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ApiStationMedia::class)
         ),
@@ -125,7 +125,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Delete(
         path: '/station/{station_id}/file/{id}',
         operationId: 'deleteFile',
-        description: 'Delete a single file.',
+        summary: 'Delete a single file.',
         tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

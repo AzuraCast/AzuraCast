@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/frontend/account/webauthn/register',
         operationId: 'getAccountWebAuthnRegister',
-        description: 'Get registration details for WebAuthn registration.',
+        summary: 'Get registration details for WebAuthn registration.',
         tags: [OpenApi::TAG_ACCOUNTS],
         responses: [
             // TODO API Response Body

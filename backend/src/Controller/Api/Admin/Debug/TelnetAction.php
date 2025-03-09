@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Put(
         path: '/admin/debug/station/{station_id}/telnet',
         operationId: 'putAdminDebugTelnetCommand',
-        description: 'Manually run a Telnet command on a station backend.',
+        summary: 'Manually run a Telnet command on a station backend.',
         tags: [OpenApi::TAG_ADMIN_DEBUG],
         responses: [
             // TODO API Response Body

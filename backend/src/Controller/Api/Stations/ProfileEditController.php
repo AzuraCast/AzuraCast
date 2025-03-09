@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     OA\Get(
         path: '/station/{station_id}/profile/edit',
         operationId: 'getStationProfileEdit',
-        description: 'Get the editable profile for the current station.',
+        summary: 'Get the editable profile for the current station.',
         tags: [OpenApi::TAG_STATIONS],
         responses: [
             // TODO API Response Body
@@ -36,7 +36,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     OA\Put(
         path: '/station/{station_id}/profile/edit',
         operationId: 'putStationProfileEdit',
-        description: 'Save the station profile for the current station.',
+        summary: 'Save the station profile for the current station.',
         tags: [OpenApi::TAG_STATIONS],
         responses: [
             // TODO API Response Body

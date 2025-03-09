@@ -29,7 +29,7 @@ use Throwable;
     OA\Post(
         path: '/admin/station/{id}/clone',
         operationId: 'postAdminStationsClone',
-        description: 'Clone a station, preserving certain settings.',
+        summary: 'Clone a station, preserving certain settings.',
         tags: [OpenApi::TAG_ADMIN_STATIONS],
         responses: [
             // TODO API Response Body

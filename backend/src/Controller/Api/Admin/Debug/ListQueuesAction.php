@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/admin/debug/queues',
         operationId: 'getAdminDebugQueues',
-        description: 'List all message queues.',
+        summary: 'List all message queues.',
         tags: [OpenApi::TAG_ADMIN_DEBUG],
         responses: [
             // TODO API Response Body

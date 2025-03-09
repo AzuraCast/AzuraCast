@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Put(
         path: '/admin/debug/clear-cache',
         operationId: 'adminDebugClearCache',
-        description: 'Clear the application cache (Redis).',
+        summary: 'Clear the application cache (Redis).',
         tags: [OpenApi::TAG_ADMIN_DEBUG],
         responses: [
             new OpenApi\Response\Success(),

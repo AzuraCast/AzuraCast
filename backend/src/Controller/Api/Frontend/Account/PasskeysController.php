@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     OA\Get(
         path: '/frontend/account/passkeys',
         operationId: 'getAccountListPasskeys',
-        description: 'List currently registered passkeys.',
+        summary: 'List currently registered passkeys.',
         tags: [OpenApi::TAG_ACCOUNTS],
         responses: [
             // TODO API Response Body
@@ -36,7 +36,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     OA\Get(
         path: '/frontend/account/passkey/{id}',
         operationId: 'getAccountGetPasskey',
-        description: 'Get the details of a single passkey.',
+        summary: 'Get the details of a single passkey.',
         tags: [OpenApi::TAG_ACCOUNTS],
         responses: [
             // TODO API Response Body
@@ -49,7 +49,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     OA\Delete(
         path: '/frontend/account/passkey/{id}',
         operationId: 'deleteAccountPasskey',
-        description: 'Delete a specified passkey by ID.',
+        summary: 'Delete a specified passkey by ID.',
         tags: [OpenApi::TAG_ACCOUNTS],
         responses: [
             // TODO API Response Body

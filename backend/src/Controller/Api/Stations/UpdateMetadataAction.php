@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Post(
         path: '/station/{station_id}/nowplaying/update',
         operationId: 'postStationNowPlayingUpdate',
-        description: 'Manually update the Now Playing metadata for the station.',
+        summary: 'Manually update the Now Playing metadata for the station.',
         tags: [OpenApi::TAG_STATIONS],
         responses: [
             // TODO API Response Body

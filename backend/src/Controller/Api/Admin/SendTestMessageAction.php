@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Post(
         path: '/admin/send-test-message',
         operationId: 'adminSendTestEmail',
-        description: 'Send a test e-mail to confirm mail delivery settings.',
+        summary: 'Send a test e-mail to confirm mail delivery settings.',
         tags: [OpenApi::TAG_ADMIN],
         responses: [
             new OpenApi\Response\Success(),

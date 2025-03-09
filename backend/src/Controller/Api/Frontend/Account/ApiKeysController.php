@@ -25,7 +25,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     OA\Get(
         path: '/frontend/account/api-keys',
         operationId: 'getMyApiKeys',
-        description: 'List all API keys associated with your account.',
+        summary: 'List all API keys associated with your account.',
         tags: [OpenApi::TAG_ACCOUNTS],
         responses: [
             new OpenApi\Response\Success(
@@ -46,7 +46,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     OA\Post(
         path: '/frontend/account/api-keys',
         operationId: 'addMyApiKey',
-        description: 'Create a new API key associated with your account.',
+        summary: 'Create a new API key associated with your account.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ApiKey::class)
         ),
@@ -68,7 +68,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     OA\Get(
         path: '/frontend/account/api-key/{id}',
         operationId: 'getMyApiKey',
-        description: 'Retrieve details for a single API key.',
+        summary: 'Retrieve details for a single API key.',
         tags: [OpenApi::TAG_ACCOUNTS],
         parameters: [
             new OA\Parameter(
@@ -96,7 +96,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     OA\Delete(
         path: '/frontend/account/api-key/{id}',
         operationId: 'deleteMyApiKey',
-        description: 'Delete a single API key associated with your account.',
+        summary: 'Delete a single API key associated with your account.',
         tags: [OpenApi::TAG_ACCOUNTS],
         parameters: [
             new OA\Parameter(

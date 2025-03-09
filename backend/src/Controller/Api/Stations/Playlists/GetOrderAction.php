@@ -19,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/playlist/{id}/order',
     operationId: 'getStationPlaylistOrder',
-    description: 'Get the current order of sequential tracks in the specified playlist.',
+    summary: 'Get the current order of sequential tracks in the specified playlist.',
     tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

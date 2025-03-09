@@ -19,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Post(
     path: '/admin/geolite',
     operationId: 'postGeoLite',
-    description: 'Set the GeoLite MaxMindDB Database license key.',
+    summary: 'Set the GeoLite MaxMindDB Database license key.',
     requestBody: new OA\RequestBody(
         content: new OA\JsonContent(
             properties: [

@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/podcast/{podcast_id}/playlists',
     operationId: 'getStationPodcastPlaylists',
-    description: 'Get a list of playlists that can be associated with a podcast.',
+    summary: 'Get a list of playlists that can be associated with a podcast.',
     tags: [OpenApi::TAG_STATIONS_PODCASTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

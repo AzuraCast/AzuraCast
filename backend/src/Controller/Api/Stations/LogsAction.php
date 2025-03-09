@@ -21,7 +21,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/station/{station_id}/logs',
         operationId: 'getStationLogs',
-        description: 'Return a list of available logs for the given station.',
+        summary: 'Return a list of available logs for the given station.',
         tags: [OpenApi::TAG_STATIONS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -41,7 +41,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/station/{station_id}/log/{key}',
         operationId: 'getStationLog',
-        description: 'View a specific log contents for the given station.',
+        summary: 'View a specific log contents for the given station.',
         tags: [OpenApi::TAG_STATIONS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

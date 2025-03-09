@@ -28,7 +28,7 @@ use RuntimeException;
     OA\Get(
         path: '/station/{station_id}/history',
         operationId: 'getStationHistory',
-        description: 'Return song playback history items for a given station.',
+        summary: 'Return song playback history items for a given station.',
         tags: [OpenApi::TAG_STATIONS_HISTORY],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

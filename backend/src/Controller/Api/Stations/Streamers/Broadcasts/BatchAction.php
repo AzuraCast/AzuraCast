@@ -23,7 +23,7 @@ use Throwable;
 #[OA\Post(
     path: '/station/{station_id}/streamer/{id}/broadcasts/batch',
     operationId: 'postStationStreamerBroadcastsBatch',
-    description: 'Perform batch actions on the specified broadcasts.',
+    summary: 'Perform batch actions on the specified broadcasts.',
     tags: [OpenApi::TAG_STATIONS_STREAMERS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

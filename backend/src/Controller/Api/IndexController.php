@@ -17,7 +17,7 @@ final class IndexController
     #[OA\Get(
         path: '/status',
         operationId: 'getStatus',
-        description: 'Returns an affirmative response if the API is active.',
+        summary: 'Returns an affirmative response if the API is active.',
         security: [],
         tags: [OpenApi::TAG_MISC],
         parameters: [],

@@ -26,7 +26,7 @@ use Symfony\Component\Process\Process;
 #[OA\Post(
     path: '/admin/stereo_tool',
     operationId: 'postStereoTool',
-    description: 'Upload a new Stereo Tool binary.',
+    summary: 'Upload a new Stereo Tool binary.',
     requestBody: new OA\RequestBody(ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD),
     tags: [OpenApi::TAG_ADMIN],
     responses: [

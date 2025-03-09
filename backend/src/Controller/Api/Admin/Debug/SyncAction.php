@@ -22,7 +22,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Put(
         path: '/admin/debug/sync/{task}',
         operationId: 'adminDebugRunSyncTask',
-        description: 'Manually run a scheduled synchronized task by name.',
+        summary: 'Manually run a scheduled synchronized task by name.',
         tags: [OpenApi::TAG_ADMIN_DEBUG],
         parameters: [
             new OA\Parameter(

@@ -18,7 +18,7 @@ use Symfony\Component\Messenger\MessageBus;
     OA\Post(
         path: '/admin/backups/run',
         operationId: 'postAdminDoBackup',
-        description: 'Initialize a manual backup.',
+        summary: 'Initialize a manual backup.',
         tags: [OpenApi::TAG_ADMIN_BACKUPS],
         responses: [
             // TODO API Response Body

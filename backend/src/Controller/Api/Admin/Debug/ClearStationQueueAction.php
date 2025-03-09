@@ -21,7 +21,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Put(
         path: '/admin/debug/station/{station_id}/clearqueue',
         operationId: 'adminDebugClearStationQueue',
-        description: 'Clear the upcoming song queue and generate a new one.',
+        summary: 'Clear the upcoming song queue and generate a new one.',
         tags: [OpenApi::TAG_ADMIN_DEBUG],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

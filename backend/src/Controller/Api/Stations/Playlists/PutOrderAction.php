@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Put(
     path: '/station/{station_id}/playlist/{id}/order',
     operationId: 'putStationPlaylistOrder',
-    description: 'Set the order of sequential tracks in the specified playlist.',
+    summary: 'Set the order of sequential tracks in the specified playlist.',
     tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

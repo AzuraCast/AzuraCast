@@ -23,7 +23,7 @@ use Throwable;
     OA\Put(
         path: '/station/{station_id}/liquidsoap-config',
         operationId: 'putStationLiquidsoapConfig',
-        description: 'Save the editable sections of the station Liquidsoap configuration.',
+        summary: 'Save the editable sections of the station Liquidsoap configuration.',
         tags: [OpenApi::TAG_STATIONS_BROADCASTING],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

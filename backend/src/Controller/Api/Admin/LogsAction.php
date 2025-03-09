@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/admin/logs',
         operationId: 'adminListLogs',
-        description: 'List all available log types for viewing.',
+        summary: 'List all available log types for viewing.',
         tags: [OpenApi::TAG_ADMIN],
         responses: [
             new OpenApi\Response\Success(
@@ -36,7 +36,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/admin/log/{key}',
         operationId: 'adminViewLog',
-        description: 'View a specific log contents.',
+        summary: 'View a specific log contents.',
         tags: [OpenApi::TAG_ADMIN],
         parameters: [
             new OA\Parameter(

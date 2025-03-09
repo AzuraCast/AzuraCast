@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/admin/rsas',
     operationId: 'getRsas',
-    description: 'Get the current Rocket Streaming Audio Server (RSAS) status.',
+    summary: 'Get the current Rocket Streaming Audio Server (RSAS) status.',
     tags: [OpenApi::TAG_ADMIN],
     responses: [
         new OpenApi\Response\Success(

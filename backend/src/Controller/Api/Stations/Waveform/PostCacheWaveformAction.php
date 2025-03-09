@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Post(
     path: '/station/{station_id}/waveform/{media_id}',
     operationId: 'postStationMediaWaveform',
-    description: 'Save cached waveform data for a media ID (for the Visual Cue Editor).',
+    summary: 'Save cached waveform data for a media ID (for the Visual Cue Editor).',
     tags: [OpenApi::TAG_STATIONS_MEDIA],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

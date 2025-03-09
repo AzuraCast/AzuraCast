@@ -19,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Delete(
     path: '/station/{station_id}/playlist/{id}/empty',
     operationId: 'deleteEmptyPlaylist',
-    description: 'Empty the contents of a song-based playlist.',
+    summary: 'Empty the contents of a song-based playlist.',
     tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

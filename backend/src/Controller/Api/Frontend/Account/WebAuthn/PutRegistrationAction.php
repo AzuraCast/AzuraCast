@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Put(
         path: '/frontend/account/webauthn/register',
         operationId: 'putAccountWebAuthnRegister',
-        description: 'Submit a new registration request for WebAuthn.',
+        summary: 'Submit a new registration request for WebAuthn.',
         tags: [OpenApi::TAG_ACCOUNTS],
         responses: [
             // TODO API Response Body

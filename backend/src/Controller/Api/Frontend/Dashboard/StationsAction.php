@@ -25,7 +25,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/dashboard/stations',
         operationId: 'getDashboardStations',
-        description: 'List stations that can be managed by the current user account on the dashboard.',
+        summary: 'List stations that can be managed by the current user account on the dashboard.',
         tags: [OpenApi::TAG_MISC],
         responses: [
             // TODO API Response Body

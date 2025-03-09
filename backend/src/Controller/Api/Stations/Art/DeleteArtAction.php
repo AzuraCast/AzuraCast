@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Delete(
     path: '/station/{station_id}/art/{media_id}',
     operationId: 'deleteMediaArt',
-    description: 'Removes the album art for a track.',
+    summary: 'Removes the album art for a track.',
     tags: [OpenApi::TAG_STATIONS_MEDIA],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

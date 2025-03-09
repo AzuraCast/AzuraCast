@@ -22,7 +22,7 @@ use Throwable;
 #[OA\Get(
     path: '/station/{station_id}/reports/soundexchange',
     operationId: 'getStationSoundExchangeReport',
-    description: 'Generate a SoundExchange royalty report.',
+    summary: 'Generate a SoundExchange royalty report.',
     tags: [OpenApi::TAG_STATIONS_REPORTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

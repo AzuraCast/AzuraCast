@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/admin/acme-log/{path}',
         operationId: 'adminAcmeViewLog',
-        description: 'View the logs of a manually run ACME certificate renewal.',
+        summary: 'View the logs of a manually run ACME certificate renewal.',
         tags: [OpenApi::TAG_ADMIN],
         parameters: [
             new OA\Parameter(

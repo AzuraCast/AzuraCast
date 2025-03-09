@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Put(
     path: '/station/{station_id}/playlist/{id}/apply-to',
     operationId: 'putStationPlaylistApplyTo',
-    description: 'Apply the specified playlist to the specified directories.',
+    summary: 'Apply the specified playlist to the specified directories.',
     tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

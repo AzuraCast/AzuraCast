@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/waveform/{media_id}',
     operationId: 'getStationMediaWaveform',
-    description: 'Get waveform data for a media ID (for the Visual Cue Editor).',
+    summary: 'Get waveform data for a media ID (for the Visual Cue Editor).',
     tags: [OpenApi::TAG_STATIONS_MEDIA],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

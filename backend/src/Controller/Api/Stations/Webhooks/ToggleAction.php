@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Put(
     path: '/station/{station_id}/webhook/{id}/toggle',
     operationId: 'putStationWebhookToggle',
-    description: 'Toggle the enabled/disabled status of a webhook.',
+    summary: 'Toggle the enabled/disabled status of a webhook.',
     tags: [OpenApi::TAG_STATIONS_WEBHOOKS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

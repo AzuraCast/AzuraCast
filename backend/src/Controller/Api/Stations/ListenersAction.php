@@ -29,7 +29,7 @@ use RuntimeException;
     OA\Get(
         path: '/station/{station_id}/listeners',
         operationId: 'getStationListeners',
-        description: 'Return detailed information about current listeners.',
+        summary: 'Return detailed information about current listeners.',
         tags: [OpenApi::TAG_STATIONS_LISTENERS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

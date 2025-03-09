@@ -35,7 +35,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
     OA\Get(
         path: '/station/{station_id}/files/list',
         operationId: 'getStationFileList',
-        description: 'List files in the media directory by path.',
+        summary: 'List files in the media directory by path.',
         tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

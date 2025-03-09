@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/station/{station_id}/webhooks/{id}/test-log/{path}',
         operationId: 'getWebhookTestLog',
-        description: 'View a specific webhook test dispatch log contents.',
+        summary: 'View a specific webhook test dispatch log contents.',
         tags: [OpenApi::TAG_STATIONS_WEBHOOKS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

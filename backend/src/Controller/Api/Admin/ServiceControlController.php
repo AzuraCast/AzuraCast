@@ -19,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/admin/services',
         operationId: 'getServiceDetails',
-        description: 'List the status of essential system services.',
+        summary: 'List the status of essential system services.',
         tags: [OpenApi::TAG_ADMIN],
         responses: [
             new OpenApi\Response\Success(
@@ -37,7 +37,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Post(
         path: '/admin/services/restart/{service}',
         operationId: 'restartService',
-        description: 'Restart the specified service.',
+        summary: 'Restart the specified service.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: CustomField::class)
         ),

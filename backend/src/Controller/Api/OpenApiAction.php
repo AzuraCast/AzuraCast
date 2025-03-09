@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/openapi.yml',
         operationId: 'getOpenApiSpec',
-        description: 'Returns the OpenAPI specification document for this installation.',
+        summary: 'Returns the OpenAPI specification document for this installation.',
         security: [],
         tags: [OpenApi::TAG_MISC],
         responses: [

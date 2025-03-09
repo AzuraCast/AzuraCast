@@ -29,7 +29,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/station/{station_id}/streamers/broadcasts',
         operationId: 'getStationAllBroadcasts',
-        description: 'List all broadcasts associated with the station.',
+        summary: 'List all broadcasts associated with the station.',
         tags: [OpenApi::TAG_STATIONS_STREAMERS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -45,7 +45,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/station/{station_id}/streamer/{id}/broadcasts',
         operationId: 'getStationStreamerBroadcasts',
-        description: 'List all broadcasts associated with the specified streamer.',
+        summary: 'List all broadcasts associated with the specified streamer.',
         tags: [OpenApi::TAG_STATIONS_STREAMERS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -68,7 +68,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/station/{station_id}/streamer/{id}/broadcast/{broadcast_id}/download',
         operationId: 'getStationStreamerDownloadBroadcast',
-        description: 'Download a single broadcast from a streamer.',
+        summary: 'Download a single broadcast from a streamer.',
         tags: [OpenApi::TAG_STATIONS_STREAMERS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -97,7 +97,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Delete(
         path: '/station/{station_id}/streamer/{id}/broadcast/{broadcast_id}',
         operationId: 'getStationStreamerDeleteBroadcast',
-        description: 'Remove a single broadcast from a streamer.',
+        summary: 'Remove a single broadcast from a streamer.',
         tags: [OpenApi::TAG_STATIONS_REPORTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

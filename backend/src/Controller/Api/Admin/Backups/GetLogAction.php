@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/admin/backups/log/{path}',
         operationId: 'adminBackupsViewLog',
-        description: 'View a specific backup log contents.',
+        summary: 'View a specific backup log contents.',
         tags: [OpenApi::TAG_ADMIN_BACKUPS],
         parameters: [
             new OA\Parameter(

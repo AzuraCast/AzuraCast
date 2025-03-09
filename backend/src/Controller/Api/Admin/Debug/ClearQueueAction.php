@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Put(
         path: '/admin/debug/clear-queue/{queue}',
         operationId: 'adminDebugClearQueue',
-        description: 'Clear the specified message queue.',
+        summary: 'Clear the specified message queue.',
         tags: [OpenApi::TAG_ADMIN_DEBUG],
         parameters: [
             new OA\Parameter(

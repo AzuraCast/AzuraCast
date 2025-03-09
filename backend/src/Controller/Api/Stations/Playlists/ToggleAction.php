@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Put(
     path: '/station/{station_id}/playlist/{id}/toggle',
     operationId: 'putTogglePlaylist',
-    description: 'Toggle a playlist between enabled and disabled status.',
+    summary: 'Toggle a playlist between enabled and disabled status.',
     tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

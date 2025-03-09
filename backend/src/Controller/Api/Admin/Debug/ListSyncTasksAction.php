@@ -22,7 +22,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/admin/debug/sync-tasks',
         operationId: 'getAdminDebugSyncTasks',
-        description: 'List all sync tasks and details about their run times.',
+        summary: 'List all sync tasks and details about their run times.',
         tags: [OpenApi::TAG_ADMIN_DEBUG],
         responses: [
             // TODO API Response Body

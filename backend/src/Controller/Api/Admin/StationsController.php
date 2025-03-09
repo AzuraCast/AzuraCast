@@ -35,7 +35,7 @@ use Throwable;
     OA\Get(
         path: '/admin/stations',
         operationId: 'adminGetStations',
-        description: 'List all current stations in the system.',
+        summary: 'List all current stations in the system.',
         tags: [OpenApi::TAG_ADMIN_STATIONS],
         responses: [
             new OpenApi\Response\Success(
@@ -51,7 +51,7 @@ use Throwable;
     OA\Post(
         path: '/admin/stations',
         operationId: 'adminAddStation',
-        description: 'Create a new station.',
+        summary: 'Create a new station.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: Station::class)
         ),
@@ -67,7 +67,7 @@ use Throwable;
     OA\Get(
         path: '/admin/station/{id}',
         operationId: 'adminGetStation',
-        description: 'Retrieve details for a single station.',
+        summary: 'Retrieve details for a single station.',
         tags: [OpenApi::TAG_ADMIN_STATIONS],
         parameters: [
             new OA\Parameter(
@@ -90,7 +90,7 @@ use Throwable;
     OA\Put(
         path: '/admin/station/{id}',
         operationId: 'adminEditStation',
-        description: 'Update details of a single station.',
+        summary: 'Update details of a single station.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: Station::class)
         ),
@@ -114,7 +114,7 @@ use Throwable;
     OA\Delete(
         path: '/admin/station/{id}',
         operationId: 'adminDeleteStation',
-        description: 'Delete a single station.',
+        summary: 'Delete a single station.',
         tags: [OpenApi::TAG_ADMIN_STATIONS],
         parameters: [
             new OA\Parameter(

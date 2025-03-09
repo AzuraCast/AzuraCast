@@ -29,7 +29,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Post(
         path: '/station/{station_id}/request/{request_id}',
         operationId: 'submitSongRequest',
-        description: 'Submit a song request.',
+        summary: 'Submit a song request.',
         security: [],
         tags: [OpenApi::TAG_STATIONS_SONG_REQUESTS],
         parameters: [

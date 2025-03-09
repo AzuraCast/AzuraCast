@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/station/{station_id}/file/{id}/play',
         operationId: 'getPlayFile',
-        description: 'Download or play a given file by ID.',
+        summary: 'Download or play a given file by ID.',
         tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

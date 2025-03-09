@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/stations',
         operationId: 'getStations',
-        description: 'Returns a list of stations.',
+        summary: 'Returns a list of stations.',
         security: [],
         tags: [OpenApi::TAG_STATIONS],
         parameters: [],
@@ -34,7 +34,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/station/{station_id}',
         operationId: 'getStation',
-        description: 'Return information about a single station.',
+        summary: 'Return information about a single station.',
         security: [],
         tags: [OpenApi::TAG_STATIONS],
         parameters: [

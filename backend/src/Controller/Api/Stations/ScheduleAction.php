@@ -22,7 +22,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/schedule',
     operationId: 'getSchedule',
-    description: 'Return upcoming and currently ongoing schedule entries.',
+    summary: 'Return upcoming and currently ongoing schedule entries.',
     security: [],
     tags: [OpenApi::TAG_STATIONS_SCHEDULES],
     parameters: [

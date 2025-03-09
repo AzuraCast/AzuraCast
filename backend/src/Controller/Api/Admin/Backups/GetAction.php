@@ -21,7 +21,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/admin/backups',
         operationId: 'getBackups',
-        description: 'Return a list of all current backups.',
+        summary: 'Return a list of all current backups.',
         tags: [OpenApi::TAG_ADMIN_BACKUPS],
         responses: [
             new OpenApi\Response\Success(

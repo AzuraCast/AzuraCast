@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/admin/settings',
         operationId: 'getSettings',
-        description: 'List the current values of all editable system settings.',
+        summary: 'List the current values of all editable system settings.',
         tags: [OpenApi::TAG_ADMIN_SETTINGS],
         responses: [
             new OpenApi\Response\Success(
@@ -35,7 +35,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Put(
         path: '/admin/settings',
         operationId: 'editSettings',
-        description: 'Update settings to modify any settings provided.',
+        summary: 'Update settings to modify any settings provided.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: Settings::class)
         ),

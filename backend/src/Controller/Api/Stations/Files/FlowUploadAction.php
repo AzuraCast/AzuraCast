@@ -29,7 +29,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Post(
         path: '/station/{station_id}/files/upload',
         operationId: 'postUploadFile',
-        description: 'Upload and process a new media file.',
+        summary: 'Upload and process a new media file.',
         requestBody: new OA\RequestBody(
             ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD
         ),

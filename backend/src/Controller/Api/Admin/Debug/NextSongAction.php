@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Put(
         path: '/admin/debug/station/{station_id}/nextsong',
         operationId: 'adminDebugStationNextSong',
-        description: 'Get the next song to be played by the AutoDJ for a given station.',
+        summary: 'Get the next song to be played by the AutoDJ for a given station.',
         tags: [OpenApi::TAG_ADMIN_DEBUG],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

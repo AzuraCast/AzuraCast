@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/station/{station_id}/podcast/{podcast_id}/episodes',
         operationId: 'getEpisodes',
-        description: 'List all current episodes for a given podcast ID.',
+        summary: 'List all current episodes for a given podcast ID.',
         tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -53,7 +53,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Post(
         path: '/station/{station_id}/podcast/{podcast_id}/episodes',
         operationId: 'addEpisode',
-        description: 'Create a new podcast episode.',
+        summary: 'Create a new podcast episode.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ApiPodcastEpisode::class)
         ),
@@ -80,7 +80,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/station/{station_id}/podcast/{podcast_id}/episode/{id}',
         operationId: 'getEpisode',
-        description: 'Retrieve details for a single podcast episode.',
+        summary: 'Retrieve details for a single podcast episode.',
         tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -111,7 +111,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Put(
         path: '/station/{station_id}/podcast/{podcast_id}/episode/{id}',
         operationId: 'editEpisode',
-        description: 'Update details of a single podcast episode.',
+        summary: 'Update details of a single podcast episode.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ApiPodcastEpisode::class)
         ),
@@ -143,7 +143,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Delete(
         path: '/station/{station_id}/podcast/{podcast_id}/episode/{id}',
         operationId: 'deleteEpisode',
-        description: 'Delete a single podcast episode.',
+        summary: 'Delete a single podcast episode.',
         tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

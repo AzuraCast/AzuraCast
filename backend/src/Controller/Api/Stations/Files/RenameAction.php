@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Put(
         path: '/station/{station_id}/files/rename',
         operationId: 'postStationFilesRename',
-        description: 'Rename the specified files in the station media directory.',
+        summary: 'Rename the specified files in the station media directory.',
         tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

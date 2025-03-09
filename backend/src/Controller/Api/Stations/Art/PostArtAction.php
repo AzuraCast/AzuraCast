@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Post(
     path: '/station/{station_id}/art/{media_id}',
     operationId: 'postMediaArt',
-    description: 'Sets the album art for a track.',
+    summary: 'Sets the album art for a track.',
     requestBody: new OA\RequestBody(ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD),
     tags: [OpenApi::TAG_STATIONS_MEDIA],
     parameters: [

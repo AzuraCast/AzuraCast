@@ -21,7 +21,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/station/{station_id}/profile',
         operationId: 'getStationProfile',
-        description: 'Retrieve the profile of the given station.',
+        summary: 'Retrieve the profile of the given station.',
         tags: [OpenApi::TAG_STATIONS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

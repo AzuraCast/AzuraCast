@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/public/podcast/{podcast_id}/episodes',
     operationId: 'getStationPublicPodcastEpisodes',
-    description: 'List all visible episodes for a given podcast.',
+    summary: 'List all visible episodes for a given podcast.',
     security: [],
     tags: [OpenApi::TAG_STATIONS_PODCASTS],
     parameters: [

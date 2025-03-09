@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/admin/stations/storage-locations',
         operationId: 'getAdminStationStorageLocations',
-        description: 'List storage locations available for assignment to a station.',
+        summary: 'List storage locations available for assignment to a station.',
         tags: [OpenApi::TAG_ADMIN_STATIONS],
         responses: [
             // TODO API Response Body

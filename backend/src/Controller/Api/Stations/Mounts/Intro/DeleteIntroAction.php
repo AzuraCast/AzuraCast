@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Delete(
     path: '/station/{station_id}/mount/{id}/intro',
     operationId: 'deleteMountIntro',
-    description: 'Removes the intro track for a mount point.',
+    summary: 'Removes the intro track for a mount point.',
     tags: [OpenApi::TAG_STATIONS_MOUNT_POINTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

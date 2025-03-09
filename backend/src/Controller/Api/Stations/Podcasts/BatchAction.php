@@ -29,7 +29,7 @@ use Throwable;
 #[OA\Post(
     path: '/station/{station_id}/podcast/{podcast_id}/batch',
     operationId: 'postStationPodcastBatch',
-    description: 'Import the contents of an uploaded playlist (PLS/M3U) file into the specified playlist.',
+    summary: 'Import the contents of an uploaded playlist (PLS/M3U) file into the specified playlist.',
     tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

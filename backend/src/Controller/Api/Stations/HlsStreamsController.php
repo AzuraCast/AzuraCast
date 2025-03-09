@@ -15,7 +15,7 @@ use OpenApi\Attributes as OA;
     OA\Get(
         path: '/station/{station_id}/hls_streams',
         operationId: 'getHlsStreams',
-        description: 'List all current HLS streams.',
+        summary: 'List all current HLS streams.',
         tags: [OpenApi::TAG_STATIONS_HLS_STREAMS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -34,7 +34,7 @@ use OpenApi\Attributes as OA;
     OA\Post(
         path: '/station/{station_id}/hls_streams',
         operationId: 'addHlsStream',
-        description: 'Create a new HLS stream.',
+        summary: 'Create a new HLS stream.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: StationHlsStream::class)
         ),
@@ -53,7 +53,7 @@ use OpenApi\Attributes as OA;
     OA\Get(
         path: '/station/{station_id}/hls_stream/{id}',
         operationId: 'getHlsStream',
-        description: 'Retrieve details for a single HLS stream.',
+        summary: 'Retrieve details for a single HLS stream.',
         tags: [OpenApi::TAG_STATIONS_HLS_STREAMS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -77,7 +77,7 @@ use OpenApi\Attributes as OA;
     OA\Put(
         path: '/station/{station_id}/hls_stream/{id}',
         operationId: 'editHlsStream',
-        description: 'Update details of a single HLS stream.',
+        summary: 'Update details of a single HLS stream.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: StationHlsStream::class)
         ),
@@ -102,7 +102,7 @@ use OpenApi\Attributes as OA;
     OA\Delete(
         path: '/station/{station_id}/hls_stream/{id}',
         operationId: 'deleteHlsStream',
-        description: 'Delete a single HLS stream.',
+        summary: 'Delete a single HLS stream.',
         tags: [OpenApi::TAG_STATIONS_HLS_STREAMS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

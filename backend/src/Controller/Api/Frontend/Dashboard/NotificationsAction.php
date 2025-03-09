@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/dashboard/notifications',
     operationId: 'getNotifications',
-    description: 'Show all notifications your current account should see.',
+    summary: 'Show all notifications your current account should see.',
     tags: [OpenApi::TAG_MISC],
     responses: [
         new OpenApi\Response\Success(

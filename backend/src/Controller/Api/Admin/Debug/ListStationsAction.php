@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/admin/debug/stations',
         operationId: 'getAdminDebugStations',
-        description: 'List all stations with their debug links.',
+        summary: 'List all stations with their debug links.',
         tags: [OpenApi::TAG_ADMIN_DEBUG],
         responses: [
             // TODO API Response Body

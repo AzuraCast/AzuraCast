@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/frontend/account/two-factor',
         operationId: 'getMyTwoFactor',
-        description: 'Get the current two-factor authentication status of your account.',
+        summary: 'Get the current two-factor authentication status of your account.',
         tags: [OpenApi::TAG_ACCOUNTS],
         responses: [
             new OpenApi\Response\Success(

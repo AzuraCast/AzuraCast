@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Delete(
     path: '/station/{station_id}/fallback',
     operationId: 'deleteStationFallback',
-    description: 'Removes the custom fallback track for a station.',
+    summary: 'Removes the custom fallback track for a station.',
     tags: [OpenApi::TAG_STATIONS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

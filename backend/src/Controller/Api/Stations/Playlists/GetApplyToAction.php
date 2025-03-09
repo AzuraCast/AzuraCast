@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/playlist/{id}/apply-to',
     operationId: 'getStationPlaylistApplyTo',
-    description: 'Get a list of directories that the given playlist can apply to.',
+    summary: 'Get a list of directories that the given playlist can apply to.',
     tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

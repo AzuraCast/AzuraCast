@@ -15,7 +15,7 @@ paths:
     get:
       tags:
         - 'Administration: General'
-      description: 'View the logs of a manually run ACME certificate renewal.'
+      summary: 'View the logs of a manually run ACME certificate renewal.'
       operationId: adminAcmeViewLog
       parameters:
         -
@@ -40,7 +40,7 @@ paths:
     put:
       tags:
         - 'Administration: General'
-      description: 'Generate or renew ACME certificate.'
+      summary: 'Generate or renew ACME certificate.'
       operationId: putAdminGenerateAcmeCert
       responses:
         '200':
@@ -55,7 +55,7 @@ paths:
     get:
       tags:
         - 'Administration: General'
-      description: 'List all current API keys across the system.'
+      summary: 'List all current API keys across the system.'
       operationId: adminListApiKeys
       responses:
         '200':
@@ -74,7 +74,7 @@ paths:
     delete:
       tags:
         - 'Administration: General'
-      description: 'Delete a single API key.'
+      summary: 'Delete a single API key.'
       operationId: adminDeleteApiKey
       parameters:
         -
@@ -97,7 +97,7 @@ paths:
     get:
       tags:
         - 'Administration: General'
-      description: 'Return a list of all available permissions.'
+      summary: 'Return a list of all available permissions.'
       operationId: getAuditlog
       responses:
         '200':
@@ -116,7 +116,7 @@ paths:
     delete:
       tags:
         - 'Administration: Backups'
-      description: 'Delete a given backup.'
+      summary: 'Delete a given backup.'
       operationId: deleteBackup
       parameters:
         -
@@ -137,7 +137,7 @@ paths:
     get:
       tags:
         - 'Administration: Backups'
-      description: 'Download a given backup.'
+      summary: 'Download a given backup.'
       operationId: downloadBackup
       parameters:
         -
@@ -158,7 +158,7 @@ paths:
     get:
       tags:
         - 'Administration: Backups'
-      description: 'Return a list of all current backups.'
+      summary: 'Return a list of all current backups.'
       operationId: getBackups
       responses:
         '200':
@@ -177,7 +177,7 @@ paths:
     get:
       tags:
         - 'Administration: Backups'
-      description: 'View a specific backup log contents.'
+      summary: 'View a specific backup log contents.'
       operationId: adminBackupsViewLog
       parameters:
         -
@@ -202,7 +202,7 @@ paths:
     post:
       tags:
         - 'Administration: Backups'
-      description: 'Initialize a manual backup.'
+      summary: 'Initialize a manual backup.'
       operationId: postAdminDoBackup
       responses:
         '200':
@@ -217,7 +217,7 @@ paths:
     get:
       tags:
         - 'Administration: General'
-      description: 'Get the details of the custom asset of the specified type.'
+      summary: 'Get the details of the custom asset of the specified type.'
       operationId: getAdminCustomAsset
       parameters:
         -
@@ -247,7 +247,7 @@ paths:
     post:
       tags:
         - 'Administration: General'
-      description: 'Upload a new custom asset of the specified type.'
+      summary: 'Upload a new custom asset of the specified type.'
       operationId: postAdminCustomAsset
       parameters:
         -
@@ -273,7 +273,7 @@ paths:
     delete:
       tags:
         - 'Administration: General'
-      description: 'Removes the custom asset of the specified type.'
+      summary: 'Removes the custom asset of the specified type.'
       operationId: deleteAdminCustomAsset
       parameters:
         -
@@ -298,7 +298,7 @@ paths:
     get:
       tags:
         - 'Administration: Custom Fields'
-      description: 'List all current custom fields in the system.'
+      summary: 'List all current custom fields in the system.'
       operationId: getCustomFields
       responses:
         '200':
@@ -316,7 +316,7 @@ paths:
     post:
       tags:
         - 'Administration: Custom Fields'
-      description: 'Create a new custom field.'
+      summary: 'Create a new custom field.'
       operationId: addCustomField
       requestBody:
         content:
@@ -340,7 +340,7 @@ paths:
     get:
       tags:
         - 'Administration: Custom Fields'
-      description: 'Retrieve details for a single custom field.'
+      summary: 'Retrieve details for a single custom field.'
       operationId: getCustomField
       parameters:
         -
@@ -369,7 +369,7 @@ paths:
     put:
       tags:
         - 'Administration: Custom Fields'
-      description: 'Update details of a single custom field.'
+      summary: 'Update details of a single custom field.'
       operationId: editCustomField
       parameters:
         -
@@ -397,7 +397,7 @@ paths:
     delete:
       tags:
         - 'Administration: Custom Fields'
-      description: 'Delete a single custom field.'
+      summary: 'Delete a single custom field.'
       operationId: deleteCustomField
       parameters:
         -
@@ -421,7 +421,7 @@ paths:
     put:
       tags:
         - 'Administration: Debugging'
-      description: 'Clear the application cache (Redis).'
+      summary: 'Clear the application cache (Redis).'
       operationId: adminDebugClearCache
       responses:
         '200':
@@ -434,7 +434,7 @@ paths:
     put:
       tags:
         - 'Administration: Debugging'
-      description: 'Clear the specified message queue.'
+      summary: 'Clear the specified message queue.'
       operationId: adminDebugClearQueue
       parameters:
         -
@@ -462,7 +462,7 @@ paths:
     put:
       tags:
         - 'Administration: Debugging'
-      description: 'Clear the upcoming song queue and generate a new one.'
+      summary: 'Clear the upcoming song queue and generate a new one.'
       operationId: adminDebugClearStationQueue
       parameters:
         -
@@ -482,7 +482,7 @@ paths:
     get:
       tags:
         - 'Administration: Debugging'
-      description: 'List all message queues.'
+      summary: 'List all message queues.'
       operationId: getAdminDebugQueues
       responses:
         '200':
@@ -497,7 +497,7 @@ paths:
     get:
       tags:
         - 'Administration: Debugging'
-      description: 'List all stations with their debug links.'
+      summary: 'List all stations with their debug links.'
       operationId: getAdminDebugStations
       responses:
         '200':
@@ -512,7 +512,7 @@ paths:
     get:
       tags:
         - 'Administration: Debugging'
-      description: 'List all sync tasks and details about their run times.'
+      summary: 'List all sync tasks and details about their run times.'
       operationId: getAdminDebugSyncTasks
       responses:
         '200':
@@ -527,7 +527,7 @@ paths:
     put:
       tags:
         - 'Administration: Debugging'
-      description: 'Get the next song to be played by the AutoDJ for a given station.'
+      summary: 'Get the next song to be played by the AutoDJ for a given station.'
       operationId: adminDebugStationNextSong
       parameters:
         -
@@ -547,7 +547,7 @@ paths:
     put:
       tags:
         - 'Administration: Debugging'
-      description: 'Generate the raw Now Playing data for a given station.'
+      summary: 'Generate the raw Now Playing data for a given station.'
       operationId: adminDebugStationNowPlaying
       parameters:
         -
@@ -567,7 +567,7 @@ paths:
     put:
       tags:
         - 'Administration: Debugging'
-      description: 'Manually run a scheduled synchronized task by name.'
+      summary: 'Manually run a scheduled synchronized task by name.'
       operationId: adminDebugRunSyncTask
       parameters:
         -
@@ -592,7 +592,7 @@ paths:
     put:
       tags:
         - 'Administration: Debugging'
-      description: 'Manually run a Telnet command on a station backend.'
+      summary: 'Manually run a Telnet command on a station backend.'
       operationId: putAdminDebugTelnetCommand
       responses:
         '200':
@@ -607,7 +607,7 @@ paths:
     get:
       tags:
         - 'Administration: General'
-      description: 'Get the current MaxMindDB GeoLite Database status.'
+      summary: 'Get the current MaxMindDB GeoLite Database status.'
       operationId: getGeoLite
       responses:
         '200':
@@ -623,7 +623,7 @@ paths:
     post:
       tags:
         - 'Administration: General'
-      description: 'Set the GeoLite MaxMindDB Database license key.'
+      summary: 'Set the GeoLite MaxMindDB Database license key.'
       operationId: postGeoLite
       requestBody:
         content:
@@ -649,7 +649,7 @@ paths:
     get:
       tags:
         - 'Administration: General'
-      description: 'List all available log types for viewing.'
+      summary: 'List all available log types for viewing.'
       operationId: adminListLogs
       responses:
         '200':
@@ -668,7 +668,7 @@ paths:
     get:
       tags:
         - 'Administration: General'
-      description: 'View a specific log contents.'
+      summary: 'View a specific log contents.'
       operationId: adminViewLog
       parameters:
         -
@@ -693,7 +693,7 @@ paths:
     get:
       tags:
         - 'Administration: Roles'
-      description: 'Return a list of all available permissions.'
+      summary: 'Return a list of all available permissions.'
       operationId: getPermissions
       responses:
         '200':
@@ -710,7 +710,7 @@ paths:
     get:
       tags:
         - 'Administration: General'
-      description: 'Return a list of all currently active AzuraRelay instances.'
+      summary: 'Return a list of all currently active AzuraRelay instances.'
       operationId: adminGetRelays
       responses:
         '200':
@@ -729,7 +729,7 @@ paths:
     get:
       tags:
         - 'Administration: Roles'
-      description: 'List all current roles in the system.'
+      summary: 'List all current roles in the system.'
       operationId: getRoles
       responses:
         '200':
@@ -747,7 +747,7 @@ paths:
     post:
       tags:
         - 'Administration: Roles'
-      description: 'Create a new role.'
+      summary: 'Create a new role.'
       operationId: addRole
       requestBody:
         content:
@@ -769,7 +769,7 @@ paths:
     get:
       tags:
         - 'Administration: Roles'
-      description: 'Retrieve details for a single current role.'
+      summary: 'Retrieve details for a single current role.'
       operationId: getRole
       parameters:
         -
@@ -796,7 +796,7 @@ paths:
     put:
       tags:
         - 'Administration: Roles'
-      description: 'Update details of a single role.'
+      summary: 'Update details of a single role.'
       operationId: editRole
       parameters:
         -
@@ -824,7 +824,7 @@ paths:
     delete:
       tags:
         - 'Administration: Roles'
-      description: 'Delete a single role.'
+      summary: 'Delete a single role.'
       operationId: deleteRole
       parameters:
         -
@@ -848,7 +848,7 @@ paths:
     post:
       tags:
         - 'Administration: General'
-      description: 'Upload a new Rocket Streaming Audio Server (RSAS) license key.'
+      summary: 'Upload a new Rocket Streaming Audio Server (RSAS) license key.'
       operationId: postRsasLicense
       requestBody:
         $ref: '#/components/requestBodies/FlowFileUpload'
@@ -862,7 +862,7 @@ paths:
     delete:
       tags:
         - 'Administration: General'
-      description: 'Removes the Rocket Streaming Audio Server (RSAS) license.'
+      summary: 'Removes the Rocket Streaming Audio Server (RSAS) license.'
       operationId: deleteRsasLicense
       responses:
         '200':
@@ -875,7 +875,7 @@ paths:
     get:
       tags:
         - 'Administration: General'
-      description: 'Get the current Rocket Streaming Audio Server (RSAS) status.'
+      summary: 'Get the current Rocket Streaming Audio Server (RSAS) status.'
       operationId: getRsas
       responses:
         '200':
@@ -891,7 +891,7 @@ paths:
     post:
       tags:
         - 'Administration: General'
-      description: 'Upload a new Rocket Streaming Audio Server (RSAS) binary.'
+      summary: 'Upload a new Rocket Streaming Audio Server (RSAS) binary.'
       operationId: postRsas
       requestBody:
         $ref: '#/components/requestBodies/FlowFileUpload'
@@ -906,7 +906,7 @@ paths:
     post:
       tags:
         - 'Administration: General'
-      description: 'Send a test e-mail to confirm mail delivery settings.'
+      summary: 'Send a test e-mail to confirm mail delivery settings.'
       operationId: adminSendTestEmail
       responses:
         '200':
@@ -919,7 +919,7 @@ paths:
     get:
       tags:
         - 'Administration: General'
-      description: 'Return a list of all CPU usage stats.'
+      summary: 'Return a list of all CPU usage stats.'
       operationId: getServerStats
       responses:
         '200':
@@ -936,7 +936,7 @@ paths:
     get:
       tags:
         - 'Administration: General'
-      description: 'List the status of essential system services.'
+      summary: 'List the status of essential system services.'
       operationId: getServiceDetails
       responses:
         '200':
@@ -955,7 +955,7 @@ paths:
     post:
       tags:
         - 'Administration: General'
-      description: 'Restart the specified service.'
+      summary: 'Restart the specified service.'
       operationId: restartService
       parameters:
         -
@@ -981,7 +981,7 @@ paths:
     get:
       tags:
         - 'Administration: Settings'
-      description: 'List the current values of all editable system settings.'
+      summary: 'List the current values of all editable system settings.'
       operationId: getSettings
       responses:
         '200':
@@ -997,7 +997,7 @@ paths:
     put:
       tags:
         - 'Administration: Settings'
-      description: 'Update settings to modify any settings provided.'
+      summary: 'Update settings to modify any settings provided.'
       operationId: editSettings
       requestBody:
         content:
@@ -1015,7 +1015,7 @@ paths:
     get:
       tags:
         - 'Administration: General'
-      description: 'Get details about the Shoutcast installation.'
+      summary: 'Get details about the Shoutcast installation.'
       operationId: getShoutcast
       responses:
         '200':
@@ -1031,7 +1031,7 @@ paths:
     post:
       tags:
         - 'Administration: General'
-      description: 'Upload a new Shoutcast binary.'
+      summary: 'Upload a new Shoutcast binary.'
       operationId: postShoutcast
       requestBody:
         $ref: '#/components/requestBodies/FlowFileUpload'
@@ -1046,7 +1046,7 @@ paths:
     post:
       tags:
         - 'Administration: Stations'
-      description: 'Clone a station, preserving certain settings.'
+      summary: 'Clone a station, preserving certain settings.'
       operationId: postAdminStationsClone
       responses:
         '200':
@@ -1061,7 +1061,7 @@ paths:
     get:
       tags:
         - 'Administration: Stations'
-      description: 'List storage locations available for assignment to a station.'
+      summary: 'List storage locations available for assignment to a station.'
       operationId: getAdminStationStorageLocations
       responses:
         '200':
@@ -1076,7 +1076,7 @@ paths:
     get:
       tags:
         - 'Administration: Stations'
-      description: 'List all current stations in the system.'
+      summary: 'List all current stations in the system.'
       operationId: adminGetStations
       responses:
         '200':
@@ -1094,7 +1094,7 @@ paths:
     post:
       tags:
         - 'Administration: Stations'
-      description: 'Create a new station.'
+      summary: 'Create a new station.'
       operationId: adminAddStation
       requestBody:
         content:
@@ -1116,7 +1116,7 @@ paths:
     get:
       tags:
         - 'Administration: Stations'
-      description: 'Retrieve details for a single station.'
+      summary: 'Retrieve details for a single station.'
       operationId: adminGetStation
       parameters:
         -
@@ -1143,7 +1143,7 @@ paths:
     put:
       tags:
         - 'Administration: Stations'
-      description: 'Update details of a single station.'
+      summary: 'Update details of a single station.'
       operationId: adminEditStation
       parameters:
         -
@@ -1171,7 +1171,7 @@ paths:
     delete:
       tags:
         - 'Administration: Stations'
-      description: 'Delete a single station.'
+      summary: 'Delete a single station.'
       operationId: adminDeleteStation
       parameters:
         -
@@ -1195,7 +1195,7 @@ paths:
     get:
       tags:
         - 'Administration: General'
-      description: 'Get information about the Stereo Tool installation.'
+      summary: 'Get information about the Stereo Tool installation.'
       operationId: getStereoTool
       responses:
         '200':
@@ -1211,7 +1211,7 @@ paths:
     post:
       tags:
         - 'Administration: General'
-      description: 'Upload a new Stereo Tool binary.'
+      summary: 'Upload a new Stereo Tool binary.'
       operationId: postStereoTool
       requestBody:
         $ref: '#/components/requestBodies/FlowFileUpload'
@@ -1225,7 +1225,7 @@ paths:
     delete:
       tags:
         - 'Administration: General'
-      description: 'Removes the installed Stereo Tool binary.'
+      summary: 'Removes the installed Stereo Tool binary.'
       operationId: deleteStereoTool
       responses:
         '200':
@@ -1238,7 +1238,7 @@ paths:
     get:
       tags:
         - 'Administration: Storage Locations'
-      description: 'List all current storage locations in the system.'
+      summary: 'List all current storage locations in the system.'
       operationId: getStorageLocations
       responses:
         '200':
@@ -1256,7 +1256,7 @@ paths:
     post:
       tags:
         - 'Administration: Storage Locations'
-      description: 'Create a new storage location.'
+      summary: 'Create a new storage location.'
       operationId: addStorageLocation
       requestBody:
         content:
@@ -1278,7 +1278,7 @@ paths:
     get:
       tags:
         - 'Administration: Storage Locations'
-      description: 'Retrieve details for a single storage location.'
+      summary: 'Retrieve details for a single storage location.'
       operationId: getStorageLocation
       parameters:
         -
@@ -1305,7 +1305,7 @@ paths:
     put:
       tags:
         - 'Administration: Storage Locations'
-      description: 'Update details of a single storage location.'
+      summary: 'Update details of a single storage location.'
       operationId: editStorageLocation
       parameters:
         -
@@ -1333,7 +1333,7 @@ paths:
     delete:
       tags:
         - 'Administration: Storage Locations'
-      description: 'Delete a single storage location.'
+      summary: 'Delete a single storage location.'
       operationId: deleteStorageLocation
       parameters:
         -
@@ -1357,7 +1357,7 @@ paths:
     get:
       tags:
         - 'Administration: General'
-      description: 'Show information about this installation and its update status.'
+      summary: 'Show information about this installation and its update status.'
       operationId: getUpdateStatus
       responses:
         '200':
@@ -1373,7 +1373,7 @@ paths:
     put:
       tags:
         - 'Administration: General'
-      description: 'Attempts to trigger a web-based update.'
+      summary: 'Attempts to trigger a web-based update.'
       operationId: putWebUpdate
       responses:
         '200':
@@ -1386,7 +1386,7 @@ paths:
     get:
       tags:
         - 'Administration: Users'
-      description: 'List all current users in the system.'
+      summary: 'List all current users in the system.'
       operationId: getUsers
       responses:
         '200':
@@ -1404,7 +1404,7 @@ paths:
     post:
       tags:
         - 'Administration: Users'
-      description: 'Create a new user.'
+      summary: 'Create a new user.'
       operationId: addUser
       requestBody:
         content:
@@ -1426,7 +1426,7 @@ paths:
     get:
       tags:
         - 'Administration: Users'
-      description: 'Retrieve details for a single current user.'
+      summary: 'Retrieve details for a single current user.'
       operationId: getUser
       parameters:
         -
@@ -1453,7 +1453,7 @@ paths:
     put:
       tags:
         - 'Administration: Users'
-      description: 'Update details of a single user.'
+      summary: 'Update details of a single user.'
       operationId: editUser
       parameters:
         -
@@ -1481,7 +1481,7 @@ paths:
     delete:
       tags:
         - 'Administration: Users'
-      description: 'Delete a single user.'
+      summary: 'Delete a single user.'
       operationId: deleteUser
       parameters:
         -
@@ -1505,7 +1505,7 @@ paths:
     get:
       tags:
         - Accounts
-      description: 'List all API keys associated with your account.'
+      summary: 'List all API keys associated with your account.'
       operationId: getMyApiKeys
       responses:
         '200':
@@ -1523,7 +1523,7 @@ paths:
     post:
       tags:
         - Accounts
-      description: 'Create a new API key associated with your account.'
+      summary: 'Create a new API key associated with your account.'
       operationId: addMyApiKey
       requestBody:
         content:
@@ -1548,7 +1548,7 @@ paths:
     get:
       tags:
         - Accounts
-      description: 'Retrieve details for a single API key.'
+      summary: 'Retrieve details for a single API key.'
       operationId: getMyApiKey
       parameters:
         -
@@ -1576,7 +1576,7 @@ paths:
     delete:
       tags:
         - Accounts
-      description: 'Delete a single API key associated with your account.'
+      summary: 'Delete a single API key associated with your account.'
       operationId: deleteMyApiKey
       parameters:
         -
@@ -1599,7 +1599,7 @@ paths:
     get:
       tags:
         - Accounts
-      description: 'Get the current two-factor authentication status of your account.'
+      summary: 'Get the current two-factor authentication status of your account.'
       operationId: getMyTwoFactor
       responses:
         '200':
@@ -1615,7 +1615,7 @@ paths:
     put:
       tags:
         - Accounts
-      description: 'Register a new two-factor authentication method.'
+      summary: 'Register a new two-factor authentication method.'
       operationId: putAccountTwoFactor
       responses:
         '200':
@@ -1629,7 +1629,7 @@ paths:
     delete:
       tags:
         - Accounts
-      description: 'Remove two-factor authentication from your account.'
+      summary: 'Remove two-factor authentication from your account.'
       operationId: deleteMyTwoFactor
       responses:
         '200':
@@ -1644,7 +1644,7 @@ paths:
     get:
       tags:
         - Accounts
-      description: 'Show the details for your current logged-in account.'
+      summary: 'Show the details for your current logged-in account.'
       operationId: getMe
       responses:
         '200':
@@ -1658,7 +1658,7 @@ paths:
     put:
       tags:
         - Accounts
-      description: 'Save changes to your logged in account.'
+      summary: 'Save changes to your logged in account.'
       operationId: putMe
       responses:
         '200':
@@ -1673,7 +1673,7 @@ paths:
     get:
       tags:
         - Accounts
-      description: 'List currently registered passkeys.'
+      summary: 'List currently registered passkeys.'
       operationId: getAccountListPasskeys
       responses:
         '200':
@@ -1688,7 +1688,7 @@ paths:
     get:
       tags:
         - Accounts
-      description: 'Get the details of a single passkey.'
+      summary: 'Get the details of a single passkey.'
       operationId: getAccountGetPasskey
       responses:
         '200':
@@ -1702,7 +1702,7 @@ paths:
     delete:
       tags:
         - Accounts
-      description: 'Delete a specified passkey by ID.'
+      summary: 'Delete a specified passkey by ID.'
       operationId: deleteAccountPasskey
       responses:
         '200':
@@ -1717,7 +1717,7 @@ paths:
     put:
       tags:
         - Accounts
-      description: 'Change the password of your account.'
+      summary: 'Change the password of your account.'
       operationId: changeMyPassword
       requestBody:
         content:
@@ -1735,7 +1735,7 @@ paths:
     get:
       tags:
         - Accounts
-      description: 'Get registration details for WebAuthn registration.'
+      summary: 'Get registration details for WebAuthn registration.'
       operationId: getAccountWebAuthnRegister
       responses:
         '200':
@@ -1749,7 +1749,7 @@ paths:
     put:
       tags:
         - Accounts
-      description: 'Submit a new registration request for WebAuthn.'
+      summary: 'Submit a new registration request for WebAuthn.'
       operationId: putAccountWebAuthnRegister
       responses:
         '200':
@@ -1764,7 +1764,7 @@ paths:
     put:
       tags:
         - Miscellaneous
-      description: 'Get the measurements for the dashboard charts.'
+      summary: 'Get the measurements for the dashboard charts.'
       operationId: getDashboardCharts
       responses:
         '200':
@@ -1779,7 +1779,7 @@ paths:
     get:
       tags:
         - Miscellaneous
-      description: 'Show all notifications your current account should see.'
+      summary: 'Show all notifications your current account should see.'
       operationId: getNotifications
       responses:
         '200':
@@ -1798,7 +1798,7 @@ paths:
     get:
       tags:
         - Miscellaneous
-      description: 'List stations that can be managed by the current user account on the dashboard.'
+      summary: 'List stations that can be managed by the current user account on the dashboard.'
       operationId: getDashboardStations
       responses:
         '200':
@@ -1813,7 +1813,7 @@ paths:
     get:
       tags:
         - Miscellaneous
-      description: 'Returns an affirmative response if the API is active.'
+      summary: 'Returns an affirmative response if the API is active.'
       operationId: getStatus
       responses:
         '200':
@@ -1891,7 +1891,7 @@ paths:
     get:
       tags:
         - 'Now Playing'
-      description: 'Always redirects to the current art for the given station.'
+      summary: 'Always redirects to the current art for the given station.'
       operationId: getStationNowPlayingArt
       parameters:
         -
@@ -1911,7 +1911,7 @@ paths:
     get:
       tags:
         - Miscellaneous
-      description: 'Returns the OpenAPI specification document for this installation.'
+      summary: 'Returns the OpenAPI specification document for this installation.'
       operationId: getOpenApiSpec
       responses:
         '200':
@@ -1927,7 +1927,7 @@ paths:
     get:
       tags:
         - Miscellaneous
-      description: 'Returns the Prometheus measurements for this installation.'
+      summary: 'Returns the Prometheus measurements for this installation.'
       operationId: getPrometheus
       responses:
         '200':
@@ -1942,7 +1942,7 @@ paths:
     get:
       tags:
         - 'Stations: Media'
-      description: 'Returns the album art for a song, or a generic image.'
+      summary: 'Returns the album art for a song, or a generic image.'
       operationId: getMediaArt
       parameters:
         -
@@ -1968,7 +1968,7 @@ paths:
     post:
       tags:
         - 'Stations: Media'
-      description: 'Sets the album art for a track.'
+      summary: 'Sets the album art for a track.'
       operationId: postMediaArt
       parameters:
         -
@@ -1999,7 +1999,7 @@ paths:
     delete:
       tags:
         - 'Stations: Media'
-      description: 'Removes the album art for a track.'
+      summary: 'Removes the album art for a track.'
       operationId: deleteMediaArt
       parameters:
         -
@@ -2029,7 +2029,7 @@ paths:
     get:
       tags:
         - 'Stations: Media'
-      description: 'Download a CSV containing details about all station media.'
+      summary: 'Download a CSV containing details about all station media.'
       operationId: getStationBulkMediaDownload
       parameters:
         -
@@ -2052,7 +2052,7 @@ paths:
     post:
       tags:
         - 'Stations: Media'
-      description: 'Upload a CSV containing details about all station media.'
+      summary: 'Upload a CSV containing details about all station media.'
       operationId: postStationBulkMediaUpload
       parameters:
         -
@@ -2070,7 +2070,7 @@ paths:
     get:
       tags:
         - 'Stations: General'
-      description: 'Get the details of the custom asset of the specified type.'
+      summary: 'Get the details of the custom asset of the specified type.'
       operationId: getStationCustomAsset
       parameters:
         -
@@ -2102,7 +2102,7 @@ paths:
     post:
       tags:
         - 'Stations: General'
-      description: 'Upload a new custom asset of the specified type.'
+      summary: 'Upload a new custom asset of the specified type.'
       operationId: postStationCustomAsset
       parameters:
         -
@@ -2132,7 +2132,7 @@ paths:
     delete:
       tags:
         - 'Stations: General'
-      description: 'Removes the custom asset of the specified type.'
+      summary: 'Removes the custom asset of the specified type.'
       operationId: deleteStationCustomAsset
       parameters:
         -
@@ -2161,7 +2161,7 @@ paths:
     get:
       tags:
         - 'Stations: General'
-      description: 'Get the custom fallback track for a station.'
+      summary: 'Get the custom fallback track for a station.'
       operationId: getStationFallback
       parameters:
         -
@@ -2182,7 +2182,7 @@ paths:
     post:
       tags:
         - 'Stations: General'
-      description: 'Update the custom fallback track for the station.'
+      summary: 'Update the custom fallback track for the station.'
       operationId: postStationFallback
       parameters:
         -
@@ -2201,7 +2201,7 @@ paths:
     delete:
       tags:
         - 'Stations: General'
-      description: 'Removes the custom fallback track for a station.'
+      summary: 'Removes the custom fallback track for a station.'
       operationId: deleteStationFallback
       parameters:
         -
@@ -2219,7 +2219,7 @@ paths:
     put:
       tags:
         - 'Stations: Media'
-      description: 'Perform a batch action on a collection of files/directories.'
+      summary: 'Perform a batch action on a collection of files/directories.'
       operationId: putStationFileBatchAction
       parameters:
         -
@@ -2237,7 +2237,7 @@ paths:
     get:
       tags:
         - 'Stations: Media'
-      description: 'Download a file by relative path.'
+      summary: 'Download a file by relative path.'
       operationId: getStationFileDownload
       parameters:
         -
@@ -2261,7 +2261,7 @@ paths:
     post:
       tags:
         - 'Stations: Media'
-      description: 'Upload and process a new media file.'
+      summary: 'Upload and process a new media file.'
       operationId: postUploadFile
       parameters:
         -
@@ -2281,7 +2281,7 @@ paths:
     get:
       tags:
         - 'Stations: Media'
-      description: 'List files in the media directory by path.'
+      summary: 'List files in the media directory by path.'
       operationId: getStationFileList
       parameters:
         -
@@ -2324,7 +2324,7 @@ paths:
     get:
       tags:
         - 'Stations: Media'
-      description: 'List directories in a station media library for moving/renaming.'
+      summary: 'List directories in a station media library for moving/renaming.'
       operationId: getStationFileDirectories
       parameters:
         -
@@ -2342,7 +2342,7 @@ paths:
     post:
       tags:
         - 'Stations: Media'
-      description: 'Create a directory in a station media directory.'
+      summary: 'Create a directory in a station media directory.'
       operationId: postStationFilesMkdir
       parameters:
         -
@@ -2360,7 +2360,7 @@ paths:
     get:
       tags:
         - 'Stations: Media'
-      description: 'Download or play a given file by ID.'
+      summary: 'Download or play a given file by ID.'
       operationId: getPlayFile
       parameters:
         -
@@ -2386,7 +2386,7 @@ paths:
     put:
       tags:
         - 'Stations: Media'
-      description: 'Rename the specified files in the station media directory.'
+      summary: 'Rename the specified files in the station media directory.'
       operationId: postStationFilesRename
       parameters:
         -
@@ -2404,7 +2404,7 @@ paths:
     get:
       tags:
         - 'Stations: Media'
-      description: 'List all current uploaded files.'
+      summary: 'List all current uploaded files.'
       operationId: getFiles
       parameters:
         -
@@ -2425,7 +2425,7 @@ paths:
     post:
       tags:
         - 'Stations: Media'
-      description: 'Upload a new file.'
+      summary: 'Upload a new file.'
       operationId: addFile
       parameters:
         -
@@ -2450,7 +2450,7 @@ paths:
     get:
       tags:
         - 'Stations: Media'
-      description: 'Retrieve details for a single file.'
+      summary: 'Retrieve details for a single file.'
       operationId: getFile
       parameters:
         -
@@ -2479,7 +2479,7 @@ paths:
     put:
       tags:
         - 'Stations: Media'
-      description: 'Update details of a single file.'
+      summary: 'Update details of a single file.'
       operationId: editFile
       parameters:
         -
@@ -2509,7 +2509,7 @@ paths:
     delete:
       tags:
         - 'Stations: Media'
-      description: 'Delete a single file.'
+      summary: 'Delete a single file.'
       operationId: deleteFile
       parameters:
         -
@@ -2535,7 +2535,7 @@ paths:
     get:
       tags:
         - 'Stations: General'
-      description: 'Get the current usage and quota for a given station storage location.'
+      summary: 'Get the current usage and quota for a given station storage location.'
       operationId: getQuota
       parameters:
         -
@@ -2563,7 +2563,7 @@ paths:
     get:
       tags:
         - 'Stations: General'
-      description: 'Get the pending restart status for a station.'
+      summary: 'Get the pending restart status for a station.'
       operationId: getRestartStatus
       parameters:
         -
@@ -2583,7 +2583,7 @@ paths:
     get:
       tags:
         - 'Stations: History'
-      description: 'Return song playback history items for a given station.'
+      summary: 'Return song playback history items for a given station.'
       operationId: getStationHistory
       parameters:
         -
@@ -2621,7 +2621,7 @@ paths:
     get:
       tags:
         - 'Stations: HLS Streams'
-      description: 'List all current HLS streams.'
+      summary: 'List all current HLS streams.'
       operationId: getHlsStreams
       parameters:
         -
@@ -2642,7 +2642,7 @@ paths:
     post:
       tags:
         - 'Stations: HLS Streams'
-      description: 'Create a new HLS stream.'
+      summary: 'Create a new HLS stream.'
       operationId: addHlsStream
       parameters:
         -
@@ -2667,7 +2667,7 @@ paths:
     get:
       tags:
         - 'Stations: HLS Streams'
-      description: 'Retrieve details for a single HLS stream.'
+      summary: 'Retrieve details for a single HLS stream.'
       operationId: getHlsStream
       parameters:
         -
@@ -2696,7 +2696,7 @@ paths:
     put:
       tags:
         - 'Stations: HLS Streams'
-      description: 'Update details of a single HLS stream.'
+      summary: 'Update details of a single HLS stream.'
       operationId: editHlsStream
       parameters:
         -
@@ -2726,7 +2726,7 @@ paths:
     delete:
       tags:
         - 'Stations: HLS Streams'
-      description: 'Delete a single HLS stream.'
+      summary: 'Delete a single HLS stream.'
       operationId: deleteHlsStream
       parameters:
         -
@@ -2752,7 +2752,7 @@ paths:
     get:
       tags:
         - 'Stations: General'
-      description: 'Returns a list of stations.'
+      summary: 'Returns a list of stations.'
       operationId: getStations
       responses:
         '200':
@@ -2768,7 +2768,7 @@ paths:
     get:
       tags:
         - 'Stations: General'
-      description: 'Return information about a single station.'
+      summary: 'Return information about a single station.'
       operationId: getStation
       parameters:
         -
@@ -2787,7 +2787,7 @@ paths:
     get:
       tags:
         - 'Stations: Broadcasting'
-      description: 'Get the generated and editable sections of the station Liquidsoap configuration.'
+      summary: 'Get the generated and editable sections of the station Liquidsoap configuration.'
       operationId: getStationLiquidsoapConfig
       parameters:
         -
@@ -2804,7 +2804,7 @@ paths:
     put:
       tags:
         - 'Stations: Broadcasting'
-      description: 'Save the editable sections of the station Liquidsoap configuration.'
+      summary: 'Save the editable sections of the station Liquidsoap configuration.'
       operationId: putStationLiquidsoapConfig
       parameters:
         -
@@ -2822,7 +2822,7 @@ paths:
     get:
       tags:
         - 'Stations: Listeners'
-      description: 'Return detailed information about current listeners.'
+      summary: 'Return detailed information about current listeners.'
       operationId: getStationListeners
       parameters:
         -
@@ -2846,7 +2846,7 @@ paths:
     get:
       tags:
         - 'Stations: General'
-      description: 'Return a list of available logs for the given station.'
+      summary: 'Return a list of available logs for the given station.'
       operationId: getStationLogs
       parameters:
         -
@@ -2870,7 +2870,7 @@ paths:
     get:
       tags:
         - 'Stations: General'
-      description: 'View a specific log contents for the given station.'
+      summary: 'View a specific log contents for the given station.'
       operationId: getStationLog
       parameters:
         -
@@ -2897,7 +2897,7 @@ paths:
     get:
       tags:
         - 'Stations: Mount Points'
-      description: 'Get the intro track for a mount point.'
+      summary: 'Get the intro track for a mount point.'
       operationId: getMountIntro
       parameters:
         -
@@ -2922,7 +2922,7 @@ paths:
     post:
       tags:
         - 'Stations: Mount Points'
-      description: 'Update the intro track for a mount point.'
+      summary: 'Update the intro track for a mount point.'
       operationId: postMountIntro
       parameters:
         -
@@ -2949,7 +2949,7 @@ paths:
     delete:
       tags:
         - 'Stations: Mount Points'
-      description: 'Removes the intro track for a mount point.'
+      summary: 'Removes the intro track for a mount point.'
       operationId: deleteMountIntro
       parameters:
         -
@@ -2975,7 +2975,7 @@ paths:
     get:
       tags:
         - 'Stations: Mount Points'
-      description: 'List all current mount points.'
+      summary: 'List all current mount points.'
       operationId: getStationMounts
       parameters:
         -
@@ -2996,7 +2996,7 @@ paths:
     post:
       tags:
         - 'Stations: Mount Points'
-      description: 'Create a new mount point.'
+      summary: 'Create a new mount point.'
       operationId: addMount
       parameters:
         -
@@ -3021,7 +3021,7 @@ paths:
     get:
       tags:
         - 'Stations: Mount Points'
-      description: 'Retrieve details for a single mount point.'
+      summary: 'Retrieve details for a single mount point.'
       operationId: getMount
       parameters:
         -
@@ -3050,7 +3050,7 @@ paths:
     put:
       tags:
         - 'Stations: Mount Points'
-      description: 'Update details of a single mount point.'
+      summary: 'Update details of a single mount point.'
       operationId: editMount
       parameters:
         -
@@ -3080,7 +3080,7 @@ paths:
     delete:
       tags:
         - 'Stations: Mount Points'
-      description: 'Delete a single mount point.'
+      summary: 'Delete a single mount point.'
       operationId: deleteMount
       parameters:
         -
@@ -3106,7 +3106,7 @@ paths:
     get:
       tags:
         - 'Stations: Media'
-      description: 'Download an on-demand playlist file by media unique ID.'
+      summary: 'Download an on-demand playlist file by media unique ID.'
       operationId: getStationOnDemandDownload
       parameters:
         -
@@ -3129,7 +3129,7 @@ paths:
     get:
       tags:
         - 'Stations: Media'
-      description: 'List all tracks available on-demand for this station.'
+      summary: 'List all tracks available on-demand for this station.'
       operationId: getStationOnDemand
       parameters:
         -
@@ -3146,7 +3146,7 @@ paths:
     post:
       tags:
         - 'Stations: Playlists'
-      description: 'Create a copy of the specified station.'
+      summary: 'Create a copy of the specified station.'
       operationId: postStationPlaylistClone
       parameters:
         -
@@ -3172,7 +3172,7 @@ paths:
     get:
       tags:
         - 'Stations: Playlists'
-      description: 'Get the current playback queue for the specified playlist.'
+      summary: 'Get the current playback queue for the specified playlist.'
       operationId: getStationPlaylistQueue
       parameters:
         -
@@ -3197,7 +3197,7 @@ paths:
     delete:
       tags:
         - 'Stations: Playlists'
-      description: 'Reset the internal playback queue of a shuffled, song-based playlist.'
+      summary: 'Reset the internal playback queue of a shuffled, song-based playlist.'
       operationId: deletePlaylistQueue
       parameters:
         -
@@ -3223,7 +3223,7 @@ paths:
     delete:
       tags:
         - 'Stations: Playlists'
-      description: 'Empty the contents of a song-based playlist.'
+      summary: 'Empty the contents of a song-based playlist.'
       operationId: deleteEmptyPlaylist
       parameters:
         -
@@ -3249,7 +3249,7 @@ paths:
     get:
       tags:
         - 'Stations: Playlists'
-      description: 'Export a playlist contents in standard media player playlist format.'
+      summary: 'Export a playlist contents in standard media player playlist format.'
       operationId: getExportPlaylist
       parameters:
         -
@@ -3286,7 +3286,7 @@ paths:
     get:
       tags:
         - 'Stations: Playlists'
-      description: 'Get a list of directories that the given playlist can apply to.'
+      summary: 'Get a list of directories that the given playlist can apply to.'
       operationId: getStationPlaylistApplyTo
       parameters:
         -
@@ -3311,7 +3311,7 @@ paths:
     put:
       tags:
         - 'Stations: Playlists'
-      description: 'Apply the specified playlist to the specified directories.'
+      summary: 'Apply the specified playlist to the specified directories.'
       operationId: putStationPlaylistApplyTo
       parameters:
         -
@@ -3337,7 +3337,7 @@ paths:
     get:
       tags:
         - 'Stations: Playlists'
-      description: 'Get the current order of sequential tracks in the specified playlist.'
+      summary: 'Get the current order of sequential tracks in the specified playlist.'
       operationId: getStationPlaylistOrder
       parameters:
         -
@@ -3362,7 +3362,7 @@ paths:
     put:
       tags:
         - 'Stations: Playlists'
-      description: 'Set the order of sequential tracks in the specified playlist.'
+      summary: 'Set the order of sequential tracks in the specified playlist.'
       operationId: putStationPlaylistOrder
       parameters:
         -
@@ -3388,7 +3388,7 @@ paths:
     post:
       tags:
         - 'Stations: Playlists'
-      description: 'Import the contents of an uploaded playlist (PLS/M3U) file into the specified playlist.'
+      summary: 'Import the contents of an uploaded playlist (PLS/M3U) file into the specified playlist.'
       operationId: getStationPlaylistImport
       parameters:
         -
@@ -3414,7 +3414,7 @@ paths:
     put:
       tags:
         - 'Stations: Playlists'
-      description: 'Re-shuffle a playlist whose playback order is "shuffled".'
+      summary: 'Re-shuffle a playlist whose playback order is "shuffled".'
       operationId: putReshufflePlaylist
       parameters:
         -
@@ -3440,7 +3440,7 @@ paths:
     put:
       tags:
         - 'Stations: Playlists'
-      description: 'Toggle a playlist between enabled and disabled status.'
+      summary: 'Toggle a playlist between enabled and disabled status.'
       operationId: putTogglePlaylist
       parameters:
         -
@@ -3466,7 +3466,7 @@ paths:
     get:
       tags:
         - 'Stations: Playlists'
-      description: 'List all current playlists.'
+      summary: 'List all current playlists.'
       operationId: getPlaylists
       parameters:
         -
@@ -3487,7 +3487,7 @@ paths:
     post:
       tags:
         - 'Stations: Playlists'
-      description: 'Create a new playlist.'
+      summary: 'Create a new playlist.'
       operationId: addPlaylist
       parameters:
         -
@@ -3512,7 +3512,7 @@ paths:
     get:
       tags:
         - 'Stations: Playlists'
-      description: 'Retrieve details for a single playlist.'
+      summary: 'Retrieve details for a single playlist.'
       operationId: getPlaylist
       parameters:
         -
@@ -3541,7 +3541,7 @@ paths:
     put:
       tags:
         - 'Stations: Playlists'
-      description: 'Update details of a single playlist.'
+      summary: 'Update details of a single playlist.'
       operationId: editPlaylist
       parameters:
         -
@@ -3571,7 +3571,7 @@ paths:
     delete:
       tags:
         - 'Stations: Playlists'
-      description: 'Delete a single playlist relay.'
+      summary: 'Delete a single playlist relay.'
       operationId: deletePlaylist
       parameters:
         -
@@ -3597,7 +3597,7 @@ paths:
     get:
       tags:
         - 'Stations: Podcasts'
-      description: 'List all current episodes for a given podcast ID.'
+      summary: 'List all current episodes for a given podcast ID.'
       operationId: getEpisodes
       parameters:
         -
@@ -3627,7 +3627,7 @@ paths:
     post:
       tags:
         - 'Stations: Podcasts'
-      description: 'Create a new podcast episode.'
+      summary: 'Create a new podcast episode.'
       operationId: addEpisode
       parameters:
         -
@@ -3661,7 +3661,7 @@ paths:
     get:
       tags:
         - 'Stations: Podcasts'
-      description: 'Retrieve details for a single podcast episode.'
+      summary: 'Retrieve details for a single podcast episode.'
       operationId: getEpisode
       parameters:
         -
@@ -3696,7 +3696,7 @@ paths:
     put:
       tags:
         - 'Stations: Podcasts'
-      description: 'Update details of a single podcast episode.'
+      summary: 'Update details of a single podcast episode.'
       operationId: editEpisode
       parameters:
         -
@@ -3732,7 +3732,7 @@ paths:
     delete:
       tags:
         - 'Stations: Podcasts'
-      description: 'Delete a single podcast episode.'
+      summary: 'Delete a single podcast episode.'
       operationId: deleteEpisode
       parameters:
         -
@@ -3764,7 +3764,7 @@ paths:
     get:
       tags:
         - 'Stations: Podcasts'
-      description: 'Gets the album art for a podcast.'
+      summary: 'Gets the album art for a podcast.'
       operationId: getPodcastArt
       parameters:
         -
@@ -3796,7 +3796,7 @@ paths:
     post:
       tags:
         - 'Stations: Podcasts'
-      description: 'Sets the album art for a podcast.'
+      summary: 'Sets the album art for a podcast.'
       operationId: postPodcastArt
       parameters:
         -
@@ -3822,7 +3822,7 @@ paths:
     delete:
       tags:
         - 'Stations: Podcasts'
-      description: 'Removes the album art for a podcast.'
+      summary: 'Removes the album art for a podcast.'
       operationId: deletePodcastArt
       parameters:
         -
@@ -3847,7 +3847,7 @@ paths:
     post:
       tags:
         - 'Stations: Playlists'
-      description: 'Import the contents of an uploaded playlist (PLS/M3U) file into the specified playlist.'
+      summary: 'Import the contents of an uploaded playlist (PLS/M3U) file into the specified playlist.'
       operationId: postStationPodcastBatch
       parameters:
         -
@@ -3872,7 +3872,7 @@ paths:
     get:
       tags:
         - 'Stations: Podcasts'
-      description: 'Gets the album art for a podcast episode.'
+      summary: 'Gets the album art for a podcast episode.'
       operationId: getPodcastEpisodeArt
       parameters:
         -
@@ -3911,7 +3911,7 @@ paths:
     post:
       tags:
         - 'Stations: Podcasts'
-      description: 'Sets the album art for a podcast episode.'
+      summary: 'Sets the album art for a podcast episode.'
       operationId: postPodcastEpisodeArt
       parameters:
         -
@@ -3944,7 +3944,7 @@ paths:
     delete:
       tags:
         - 'Stations: Podcasts'
-      description: 'Removes the album art for a podcast episode.'
+      summary: 'Removes the album art for a podcast episode.'
       operationId: deletePodcastEpisodeArt
       parameters:
         -
@@ -3980,7 +3980,7 @@ paths:
     get:
       tags:
         - 'Stations: Podcasts'
-      description: 'Get information for a public episode of a public podcast.'
+      summary: 'Get information for a public episode of a public podcast.'
       operationId: getStationPublicPodcastEpisode
       parameters:
         -
@@ -4011,7 +4011,7 @@ paths:
     get:
       tags:
         - 'Stations: Podcasts'
-      description: 'List all visible episodes for a given podcast.'
+      summary: 'List all visible episodes for a given podcast.'
       operationId: getStationPublicPodcastEpisodes
       parameters:
         -
@@ -4035,7 +4035,7 @@ paths:
     get:
       tags:
         - 'Stations: Podcasts'
-      description: 'Gets the media for a podcast episode.'
+      summary: 'Gets the media for a podcast episode.'
       operationId: getPodcastEpisodeMedia
       parameters:
         -
@@ -4067,7 +4067,7 @@ paths:
     post:
       tags:
         - 'Stations: Podcasts'
-      description: 'Sets the media for a podcast episode.'
+      summary: 'Sets the media for a podcast episode.'
       operationId: postPodcastEpisodeMedia
       parameters:
         -
@@ -4100,7 +4100,7 @@ paths:
     delete:
       tags:
         - 'Stations: Podcasts'
-      description: 'Removes the media for a podcast episode.'
+      summary: 'Removes the media for a podcast episode.'
       operationId: deletePodcastEpisodeMedia
       parameters:
         -
@@ -4132,7 +4132,7 @@ paths:
     get:
       tags:
         - 'Stations: Podcasts'
-      description: 'Get the public information for a given podcast.'
+      summary: 'Get the public information for a given podcast.'
       operationId: getStationPublicPodcast
       parameters:
         -
@@ -4156,7 +4156,7 @@ paths:
     get:
       tags:
         - 'Stations: Podcasts'
-      description: 'List all visible public podcasts.'
+      summary: 'List all visible public podcasts.'
       operationId: getStationPublicPodcasts
       parameters:
         -
@@ -4180,7 +4180,7 @@ paths:
     get:
       tags:
         - 'Stations: Podcasts'
-      description: 'Get a list of playlists that can be associated with a podcast.'
+      summary: 'Get a list of playlists that can be associated with a podcast.'
       operationId: getStationPodcastPlaylists
       parameters:
         -
@@ -4205,7 +4205,7 @@ paths:
     get:
       tags:
         - 'Stations: Podcasts'
-      description: 'List all current podcasts.'
+      summary: 'List all current podcasts.'
       operationId: getPodcasts
       parameters:
         -
@@ -4228,7 +4228,7 @@ paths:
     post:
       tags:
         - 'Stations: Podcasts'
-      description: 'Create a new podcast.'
+      summary: 'Create a new podcast.'
       operationId: addPodcast
       parameters:
         -
@@ -4255,7 +4255,7 @@ paths:
     get:
       tags:
         - 'Stations: Podcasts'
-      description: 'Retrieve details for a single podcast.'
+      summary: 'Retrieve details for a single podcast.'
       operationId: getPodcast
       parameters:
         -
@@ -4283,7 +4283,7 @@ paths:
     put:
       tags:
         - 'Stations: Podcasts'
-      description: 'Update details of a single podcast.'
+      summary: 'Update details of a single podcast.'
       operationId: editPodcast
       parameters:
         -
@@ -4312,7 +4312,7 @@ paths:
     delete:
       tags:
         - 'Stations: Podcasts'
-      description: 'Delete a single podcast.'
+      summary: 'Delete a single podcast.'
       operationId: deletePodcast
       parameters:
         -
@@ -4337,7 +4337,7 @@ paths:
     get:
       tags:
         - 'Stations: General'
-      description: 'Retrieve the profile of the given station.'
+      summary: 'Retrieve the profile of the given station.'
       operationId: getStationProfile
       parameters:
         -
@@ -4359,8 +4359,8 @@ paths:
     get:
       tags:
         - 'Stations: General'
-      summary: "This controller handles the specific \"Edit Profile\" function on a station's profile, which has different permissions\nand possible actions than the Admin Station Edit function."
-      description: 'Get the editable profile for the current station.'
+      summary: 'Get the editable profile for the current station.'
+      description: "This controller handles the specific \"Edit Profile\" function on a station's profile, which has different permissions\nand possible actions than the Admin Station Edit function."
       operationId: getStationProfileEdit
       responses:
         '200':
@@ -4374,7 +4374,7 @@ paths:
     put:
       tags:
         - 'Stations: General'
-      description: 'Save the station profile for the current station.'
+      summary: 'Save the station profile for the current station.'
       operationId: putStationProfileEdit
       responses:
         '200':
@@ -4389,7 +4389,7 @@ paths:
     get:
       tags:
         - 'Stations: Queue'
-      description: 'Return information about the upcoming song playback queue.'
+      summary: 'Return information about the upcoming song playback queue.'
       operationId: getQueue
       parameters:
         -
@@ -4413,7 +4413,7 @@ paths:
     get:
       tags:
         - 'Stations: Queue'
-      description: 'Retrieve details of a single queued item.'
+      summary: 'Retrieve details of a single queued item.'
       operationId: getQueueItem
       parameters:
         -
@@ -4442,7 +4442,7 @@ paths:
     delete:
       tags:
         - 'Stations: Queue'
-      description: 'Delete a single queued item.'
+      summary: 'Delete a single queued item.'
       operationId: deleteQueueItem
       parameters:
         -
@@ -4468,7 +4468,7 @@ paths:
     get:
       tags:
         - 'Stations: Remote Relays'
-      description: 'List all current remote relays.'
+      summary: 'List all current remote relays.'
       operationId: getRelays
       parameters:
         -
@@ -4491,7 +4491,7 @@ paths:
     post:
       tags:
         - 'Stations: Remote Relays'
-      description: 'Create a new remote relay.'
+      summary: 'Create a new remote relay.'
       operationId: addRelay
       parameters:
         -
@@ -4518,7 +4518,7 @@ paths:
     get:
       tags:
         - 'Stations: Remote Relays'
-      description: 'Retrieve details for a single remote relay.'
+      summary: 'Retrieve details for a single remote relay.'
       operationId: getRelay
       parameters:
         -
@@ -4547,7 +4547,7 @@ paths:
     put:
       tags:
         - 'Stations: Remote Relays'
-      description: 'Update details of a single remote relay.'
+      summary: 'Update details of a single remote relay.'
       operationId: editRelay
       parameters:
         -
@@ -4577,7 +4577,7 @@ paths:
     delete:
       tags:
         - 'Stations: Remote Relays'
-      description: 'Delete a single remote relay.'
+      summary: 'Delete a single remote relay.'
       operationId: deleteRelay
       parameters:
         -
@@ -4603,7 +4603,7 @@ paths:
     get:
       tags:
         - 'Stations: Reports'
-      description: 'Get the "Best and Worst Performing Songs" report for a station.'
+      summary: 'Get the "Best and Worst Performing Songs" report for a station.'
       operationId: getStationReportBestAndWorst
       parameters:
         -
@@ -4621,7 +4621,7 @@ paths:
     get:
       tags:
         - 'Stations: Reports'
-      description: 'Get the "Listeners by Browser" report for a station.'
+      summary: 'Get the "Listeners by Browser" report for a station.'
       operationId: getStationReportByBrowser
       parameters:
         -
@@ -4639,7 +4639,7 @@ paths:
     get:
       tags:
         - 'Stations: Reports'
-      description: 'Get the "Listeners by Client" report for a station.'
+      summary: 'Get the "Listeners by Client" report for a station.'
       operationId: getStationReportByClient
       parameters:
         -
@@ -4657,7 +4657,7 @@ paths:
     get:
       tags:
         - 'Stations: Reports'
-      description: 'Get the "Listeners by Country" report for a station.'
+      summary: 'Get the "Listeners by Country" report for a station.'
       operationId: getStationReportByCountry
       parameters:
         -
@@ -4675,7 +4675,7 @@ paths:
     get:
       tags:
         - 'Stations: Reports'
-      description: 'Get the "Listeners by Listening Time" report for a station.'
+      summary: 'Get the "Listeners by Listening Time" report for a station.'
       operationId: getStationReportByListeningTime
       parameters:
         -
@@ -4693,7 +4693,7 @@ paths:
     get:
       tags:
         - 'Stations: Reports'
-      description: 'Get the "Listeners by Stream" report for a station.'
+      summary: 'Get the "Listeners by Stream" report for a station.'
       operationId: getStationReportByStream
       parameters:
         -
@@ -4711,7 +4711,7 @@ paths:
     get:
       tags:
         - 'Stations: Reports'
-      description: 'Get chart data for the station reports.'
+      summary: 'Get chart data for the station reports.'
       operationId: getStationReportCharts
       parameters:
         -
@@ -4729,7 +4729,7 @@ paths:
     get:
       tags:
         - 'Stations: Reports'
-      description: 'List station requests.'
+      summary: 'List station requests.'
       operationId: getStationRequestsReport
       parameters:
         -
@@ -4747,7 +4747,7 @@ paths:
     post:
       tags:
         - 'Stations: Reports'
-      description: 'Clear all unplayed station requests.'
+      summary: 'Clear all unplayed station requests.'
       operationId: postStationRequestsClear
       parameters:
         -
@@ -4765,7 +4765,7 @@ paths:
     delete:
       tags:
         - 'Stations: Reports'
-      description: 'Delete an individual station request.'
+      summary: 'Delete an individual station request.'
       operationId: deleteStationRequest
       parameters:
         -
@@ -4791,8 +4791,8 @@ paths:
     get:
       tags:
         - 'Stations: Reports'
-      summary: 'Produce a report in SoundExchange (the US webcaster licensing agency) format.'
-      description: 'Generate a SoundExchange royalty report.'
+      summary: 'Generate a SoundExchange royalty report.'
+      description: 'Produce a report in SoundExchange (the US webcaster licensing agency) format.'
       operationId: getStationSoundExchangeReport
       parameters:
         -
@@ -4810,7 +4810,7 @@ paths:
     get:
       tags:
         - 'Stations: Song Requests'
-      description: 'Return a list of requestable songs.'
+      summary: 'Return a list of requestable songs.'
       operationId: getRequestableSongs
       parameters:
         -
@@ -4835,7 +4835,7 @@ paths:
     post:
       tags:
         - 'Stations: Song Requests'
-      description: 'Submit a song request.'
+      summary: 'Submit a song request.'
       operationId: submitSongRequest
       parameters:
         -
@@ -4861,7 +4861,7 @@ paths:
     get:
       tags:
         - 'Stations: Schedules'
-      description: 'Return upcoming and currently ongoing schedule entries.'
+      summary: 'Return upcoming and currently ongoing schedule entries.'
       operationId: getSchedule
       parameters:
         -
@@ -4898,7 +4898,7 @@ paths:
     get:
       tags:
         - 'Stations: Service Control'
-      description: 'Retrieve the current status of all serivces associated with the radio broadcast.'
+      summary: 'Retrieve the current status of all serivces associated with the radio broadcast.'
       operationId: getServiceStatus
       parameters:
         -
@@ -4920,7 +4920,7 @@ paths:
     post:
       tags:
         - 'Stations: Service Control'
-      description: 'Restart all services associated with the radio broadcast.'
+      summary: 'Restart all services associated with the radio broadcast.'
       operationId: restartServices
       parameters:
         -
@@ -4938,7 +4938,7 @@ paths:
     post:
       tags:
         - 'Stations: Service Control'
-      description: 'Perform service control actions on the radio frontend (Icecast, Shoutcast, etc.)'
+      summary: 'Perform service control actions on the radio frontend (Icecast, Shoutcast, etc.)'
       operationId: doFrontendServiceAction
       parameters:
         -
@@ -4969,7 +4969,7 @@ paths:
     post:
       tags:
         - 'Stations: Service Control'
-      description: 'Perform service control actions on the radio backend (Liquidsoap)'
+      summary: 'Perform service control actions on the radio backend (Liquidsoap)'
       operationId: doBackendServiceAction
       parameters:
         -
@@ -5002,7 +5002,7 @@ paths:
     get:
       tags:
         - 'Stations: SFTP Users'
-      description: 'List all current SFTP users.'
+      summary: 'List all current SFTP users.'
       operationId: getSftpUsers
       parameters:
         -
@@ -5025,7 +5025,7 @@ paths:
     post:
       tags:
         - 'Stations: SFTP Users'
-      description: 'Create a new SFTP user.'
+      summary: 'Create a new SFTP user.'
       operationId: addSftpUser
       parameters:
         -
@@ -5052,7 +5052,7 @@ paths:
     get:
       tags:
         - 'Stations: SFTP Users'
-      description: 'Retrieve details for a single SFTP user.'
+      summary: 'Retrieve details for a single SFTP user.'
       operationId: getSftpUser
       parameters:
         -
@@ -5081,7 +5081,7 @@ paths:
     put:
       tags:
         - 'Stations: SFTP Users'
-      description: 'Update details of a single SFTP user.'
+      summary: 'Update details of a single SFTP user.'
       operationId: editSftpUser
       parameters:
         -
@@ -5111,7 +5111,7 @@ paths:
     delete:
       tags:
         - 'Stations: SFTP Users'
-      description: 'Delete a single SFTP user.'
+      summary: 'Delete a single SFTP user.'
       operationId: deleteSftpUser
       parameters:
         -
@@ -5137,7 +5137,7 @@ paths:
     get:
       tags:
         - 'Stations: Broadcasting'
-      description: 'Get the Stereo Tool configuration file for a station.'
+      summary: 'Get the Stereo Tool configuration file for a station.'
       operationId: getStereoToolConfiguration
       parameters:
         -
@@ -5158,7 +5158,7 @@ paths:
     post:
       tags:
         - 'Stations: Broadcasting'
-      description: 'Update the Stereo Tool configuration file for a station.'
+      summary: 'Update the Stereo Tool configuration file for a station.'
       operationId: postStereoToolConfiguration
       parameters:
         -
@@ -5177,7 +5177,7 @@ paths:
     delete:
       tags:
         - 'Stations: Broadcasting'
-      description: 'Removes the Stereo Tool configuration file for a station.'
+      summary: 'Removes the Stereo Tool configuration file for a station.'
       operationId: deleteStereoToolConfiguration
       parameters:
         -
@@ -5195,7 +5195,7 @@ paths:
     get:
       tags:
         - 'Stations: Streamers/DJs'
-      description: 'Gets the default album art for a streamer.'
+      summary: 'Gets the default album art for a streamer.'
       operationId: getStreamerArt
       parameters:
         -
@@ -5228,7 +5228,7 @@ paths:
     post:
       tags:
         - 'Stations: Streamers/DJs'
-      description: 'Sets the default album art for a streamer.'
+      summary: 'Sets the default album art for a streamer.'
       operationId: postStreamerArt
       parameters:
         -
@@ -5255,7 +5255,7 @@ paths:
     delete:
       tags:
         - 'Stations: Streamers/DJs'
-      description: 'Removes the default album art for a streamer.'
+      summary: 'Removes the default album art for a streamer.'
       operationId: deleteStreamerArt
       parameters:
         -
@@ -5281,7 +5281,7 @@ paths:
     post:
       tags:
         - 'Stations: Streamers/DJs'
-      description: 'Perform batch actions on the specified broadcasts.'
+      summary: 'Perform batch actions on the specified broadcasts.'
       operationId: postStationStreamerBroadcastsBatch
       parameters:
         -
@@ -5307,7 +5307,7 @@ paths:
     get:
       tags:
         - 'Stations: Streamers/DJs'
-      description: 'List all broadcasts associated with the station.'
+      summary: 'List all broadcasts associated with the station.'
       operationId: getStationAllBroadcasts
       parameters:
         -
@@ -5325,7 +5325,7 @@ paths:
     get:
       tags:
         - 'Stations: Streamers/DJs'
-      description: 'List all broadcasts associated with the specified streamer.'
+      summary: 'List all broadcasts associated with the specified streamer.'
       operationId: getStationStreamerBroadcasts
       parameters:
         -
@@ -5351,7 +5351,7 @@ paths:
     get:
       tags:
         - 'Stations: Streamers/DJs'
-      description: 'Download a single broadcast from a streamer.'
+      summary: 'Download a single broadcast from a streamer.'
       operationId: getStationStreamerDownloadBroadcast
       parameters:
         -
@@ -5385,7 +5385,7 @@ paths:
     delete:
       tags:
         - 'Stations: Reports'
-      description: 'Remove a single broadcast from a streamer.'
+      summary: 'Remove a single broadcast from a streamer.'
       operationId: getStationStreamerDeleteBroadcast
       parameters:
         -
@@ -5419,7 +5419,7 @@ paths:
     get:
       tags:
         - 'Stations: Streamers/DJs'
-      description: 'List all current Streamer/DJ accounts for the specified station.'
+      summary: 'List all current Streamer/DJ accounts for the specified station.'
       operationId: getStreamers
       parameters:
         -
@@ -5442,7 +5442,7 @@ paths:
     post:
       tags:
         - 'Stations: Streamers/DJs'
-      description: 'Create a new Streamer/DJ account.'
+      summary: 'Create a new Streamer/DJ account.'
       operationId: addStreamer
       parameters:
         -
@@ -5469,7 +5469,7 @@ paths:
     get:
       tags:
         - 'Stations: Streamers/DJs'
-      description: 'Retrieve details for a single Streamer/DJ account.'
+      summary: 'Retrieve details for a single Streamer/DJ account.'
       operationId: getStreamer
       parameters:
         -
@@ -5498,7 +5498,7 @@ paths:
     put:
       tags:
         - 'Stations: Streamers/DJs'
-      description: 'Update details of a single Streamer/DJ account.'
+      summary: 'Update details of a single Streamer/DJ account.'
       operationId: editStreamer
       parameters:
         -
@@ -5528,7 +5528,7 @@ paths:
     delete:
       tags:
         - 'Stations: Streamers/DJs'
-      description: 'Delete a single Streamer/DJ account.'
+      summary: 'Delete a single Streamer/DJ account.'
       operationId: deleteStreamer
       parameters:
         -
@@ -5554,7 +5554,7 @@ paths:
     post:
       tags:
         - 'Stations: General'
-      description: 'Manually update the Now Playing metadata for the station.'
+      summary: 'Manually update the Now Playing metadata for the station.'
       operationId: postStationNowPlayingUpdate
       responses:
         '200':
@@ -5569,7 +5569,7 @@ paths:
     get:
       tags:
         - 'Stations: Media'
-      description: 'Get waveform data for a media ID (for the Visual Cue Editor).'
+      summary: 'Get waveform data for a media ID (for the Visual Cue Editor).'
       operationId: getStationMediaWaveform
       parameters:
         -
@@ -5594,7 +5594,7 @@ paths:
     post:
       tags:
         - 'Stations: Media'
-      description: 'Save cached waveform data for a media ID (for the Visual Cue Editor).'
+      summary: 'Save cached waveform data for a media ID (for the Visual Cue Editor).'
       operationId: postStationMediaWaveform
       parameters:
         -
@@ -5620,7 +5620,7 @@ paths:
     put:
       tags:
         - 'Stations: Web Hooks'
-      description: 'Send a test dispatch of a webhook with the current Now Playing data for the station.'
+      summary: 'Send a test dispatch of a webhook with the current Now Playing data for the station.'
       operationId: putStationWebhookTest
       parameters:
         -
@@ -5646,7 +5646,7 @@ paths:
     get:
       tags:
         - 'Stations: Web Hooks'
-      description: 'View a specific webhook test dispatch log contents.'
+      summary: 'View a specific webhook test dispatch log contents.'
       operationId: getWebhookTestLog
       parameters:
         -
@@ -5681,7 +5681,7 @@ paths:
     put:
       tags:
         - 'Stations: Web Hooks'
-      description: 'Toggle the enabled/disabled status of a webhook.'
+      summary: 'Toggle the enabled/disabled status of a webhook.'
       operationId: putStationWebhookToggle
       parameters:
         -
@@ -5707,7 +5707,7 @@ paths:
     get:
       tags:
         - 'Stations: Web Hooks'
-      description: 'List all current web hooks.'
+      summary: 'List all current web hooks.'
       operationId: getWebhooks
       parameters:
         -
@@ -5730,7 +5730,7 @@ paths:
     post:
       tags:
         - 'Stations: Web Hooks'
-      description: 'Create a new web hook.'
+      summary: 'Create a new web hook.'
       operationId: addWebhook
       parameters:
         -
@@ -5757,7 +5757,7 @@ paths:
     get:
       tags:
         - 'Stations: Web Hooks'
-      description: 'Retrieve details for a single web hook.'
+      summary: 'Retrieve details for a single web hook.'
       operationId: getWebhook
       parameters:
         -
@@ -5786,7 +5786,7 @@ paths:
     put:
       tags:
         - 'Stations: Web Hooks'
-      description: 'Update details of a single web hook.'
+      summary: 'Update details of a single web hook.'
       operationId: editWebhook
       parameters:
         -
@@ -5816,7 +5816,7 @@ paths:
     delete:
       tags:
         - 'Stations: Web Hooks'
-      description: 'Delete a single web hook relay.'
+      summary: 'Delete a single web hook relay.'
       operationId: deleteWebhook
       parameters:
         -

@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/station/{station_id}/remotes',
         operationId: 'getRelays',
-        description: 'List all current remote relays.',
+        summary: 'List all current remote relays.',
         tags: [OpenApi::TAG_STATIONS_REMOTE_RELAYS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -40,7 +40,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Post(
         path: '/station/{station_id}/remotes',
         operationId: 'addRelay',
-        description: 'Create a new remote relay.',
+        summary: 'Create a new remote relay.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ApiStationRemote::class)
         ),
@@ -60,7 +60,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/station/{station_id}/remote/{id}',
         operationId: 'getRelay',
-        description: 'Retrieve details for a single remote relay.',
+        summary: 'Retrieve details for a single remote relay.',
         tags: [OpenApi::TAG_STATIONS_REMOTE_RELAYS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -84,7 +84,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Put(
         path: '/station/{station_id}/remote/{id}',
         operationId: 'editRelay',
-        description: 'Update details of a single remote relay.',
+        summary: 'Update details of a single remote relay.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ApiStationRemote::class)
         ),
@@ -109,7 +109,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Delete(
         path: '/station/{station_id}/remote/{id}',
         operationId: 'deleteRelay',
-        description: 'Delete a single remote relay.',
+        summary: 'Delete a single remote relay.',
         tags: [OpenApi::TAG_STATIONS_REMOTE_RELAYS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

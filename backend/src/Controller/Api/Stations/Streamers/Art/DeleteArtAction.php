@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Delete(
     path: '/station/{station_id}/streamer/{id}/art',
     operationId: 'deleteStreamerArt',
-    description: 'Removes the default album art for a streamer.',
+    summary: 'Removes the default album art for a streamer.',
     tags: [OpenApi::TAG_STATIONS_STREAMERS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

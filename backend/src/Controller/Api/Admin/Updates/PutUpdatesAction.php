@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Put(
     path: '/admin/updates',
     operationId: 'putWebUpdate',
-    description: 'Attempts to trigger a web-based update.',
+    summary: 'Attempts to trigger a web-based update.',
     tags: [OpenApi::TAG_ADMIN],
     responses: [
         new OpenApi\Response\Success(),

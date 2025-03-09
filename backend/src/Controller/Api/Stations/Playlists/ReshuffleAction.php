@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Put(
     path: '/station/{station_id}/playlist/{id}/reshuffle',
     operationId: 'putReshufflePlaylist',
-    description: 'Re-shuffle a playlist whose playback order is "shuffled".',
+    summary: 'Re-shuffle a playlist whose playback order is "shuffled".',
     tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

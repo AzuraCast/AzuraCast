@@ -25,7 +25,7 @@ use Symfony\Component\Serializer\Serializer;
     OA\Get(
         path: '/station/{station_id}/reports/requests',
         operationId: 'getStationRequestsReport',
-        description: 'List station requests.',
+        summary: 'List station requests.',
         tags: [OpenApi::TAG_STATIONS_REPORTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -41,7 +41,7 @@ use Symfony\Component\Serializer\Serializer;
     OA\Post(
         path: '/station/{station_id}/reports/requests/clear',
         operationId: 'postStationRequestsClear',
-        description: 'Clear all unplayed station requests.',
+        summary: 'Clear all unplayed station requests.',
         tags: [OpenApi::TAG_STATIONS_REPORTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -57,7 +57,7 @@ use Symfony\Component\Serializer\Serializer;
     OA\Delete(
         path: '/station/{station_id}/reports/requests/{request_id}',
         operationId: 'deleteStationRequest',
-        description: 'Delete an individual station request.',
+        summary: 'Delete an individual station request.',
         tags: [OpenApi::TAG_STATIONS_REPORTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

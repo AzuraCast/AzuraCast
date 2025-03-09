@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Post(
     path: '/admin/custom_assets/{type}',
     operationId: 'postAdminCustomAsset',
-    description: 'Upload a new custom asset of the specified type.',
+    summary: 'Upload a new custom asset of the specified type.',
     requestBody: new OA\RequestBody(ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD),
     tags: [OpenApi::TAG_ADMIN],
     parameters: [

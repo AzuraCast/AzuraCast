@@ -24,7 +24,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/station/{station_id}/requests',
         operationId: 'getRequestableSongs',
-        description: 'Return a list of requestable songs.',
+        summary: 'Return a list of requestable songs.',
         security: [],
         tags: [OpenApi::TAG_STATIONS_SONG_REQUESTS],
         parameters: [

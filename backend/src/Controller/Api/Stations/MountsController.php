@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/station/{station_id}/mounts',
         operationId: 'getStationMounts',
-        description: 'List all current mount points.',
+        summary: 'List all current mount points.',
         tags: [OpenApi::TAG_STATIONS_MOUNT_POINTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -44,7 +44,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Post(
         path: '/station/{station_id}/mounts',
         operationId: 'addMount',
-        description: 'Create a new mount point.',
+        summary: 'Create a new mount point.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: StationMount::class)
         ),
@@ -63,7 +63,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/station/{station_id}/mount/{id}',
         operationId: 'getMount',
-        description: 'Retrieve details for a single mount point.',
+        summary: 'Retrieve details for a single mount point.',
         tags: [OpenApi::TAG_STATIONS_MOUNT_POINTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -87,7 +87,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Put(
         path: '/station/{station_id}/mount/{id}',
         operationId: 'editMount',
-        description: 'Update details of a single mount point.',
+        summary: 'Update details of a single mount point.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: StationMount::class)
         ),
@@ -112,7 +112,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Delete(
         path: '/station/{station_id}/mount/{id}',
         operationId: 'deleteMount',
-        description: 'Delete a single mount point.',
+        summary: 'Delete a single mount point.',
         tags: [OpenApi::TAG_STATIONS_MOUNT_POINTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

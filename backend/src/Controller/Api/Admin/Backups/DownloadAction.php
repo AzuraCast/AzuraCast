@@ -15,7 +15,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/admin/backups/download/{path}',
         operationId: 'downloadBackup',
-        description: 'Download a given backup.',
+        summary: 'Download a given backup.',
         tags: [OpenApi::TAG_ADMIN_BACKUPS],
         parameters: [
             new OA\Parameter(

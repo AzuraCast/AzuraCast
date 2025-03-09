@@ -48,7 +48,7 @@ use Throwable;
     OA\Put(
         path: '/station/{station_id}/files/batch',
         operationId: 'putStationFileBatchAction',
-        description: 'Perform a batch action on a collection of files/directories.',
+        summary: 'Perform a batch action on a collection of files/directories.',
         tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

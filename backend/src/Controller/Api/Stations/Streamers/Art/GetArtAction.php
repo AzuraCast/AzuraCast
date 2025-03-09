@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/streamer/{id}/art',
     operationId: 'getStreamerArt',
-    description: 'Gets the default album art for a streamer.',
+    summary: 'Gets the default album art for a streamer.',
     security: [],
     tags: [OpenApi::TAG_STATIONS_STREAMERS],
     parameters: [

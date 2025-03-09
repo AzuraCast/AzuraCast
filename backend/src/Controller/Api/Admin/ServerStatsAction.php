@@ -27,7 +27,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/admin/server/stats',
         operationId: 'getServerStats',
-        description: 'Return a list of all CPU usage stats.',
+        summary: 'Return a list of all CPU usage stats.',
         tags: [OpenApi::TAG_ADMIN],
         responses: [
             new OpenApi\Response\Success(

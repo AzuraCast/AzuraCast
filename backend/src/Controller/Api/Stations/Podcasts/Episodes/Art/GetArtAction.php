@@ -19,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/art',
     operationId: 'getPodcastEpisodeArt',
-    description: 'Gets the album art for a podcast episode.',
+    summary: 'Gets the album art for a podcast episode.',
     security: [],
     tags: [OpenApi::TAG_STATIONS_PODCASTS],
     parameters: [

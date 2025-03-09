@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Delete(
         path: '/admin/backups/delete/{path}',
         operationId: 'deleteBackup',
-        description: 'Delete a given backup.',
+        summary: 'Delete a given backup.',
         tags: [OpenApi::TAG_ADMIN_BACKUPS],
         parameters: [
             new OA\Parameter(

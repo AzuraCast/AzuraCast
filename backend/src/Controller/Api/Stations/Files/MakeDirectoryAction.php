@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Post(
         path: '/station/{station_id}/files/mkdir',
         operationId: 'postStationFilesMkdir',
-        description: 'Create a directory in a station media directory.',
+        summary: 'Create a directory in a station media directory.',
         tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

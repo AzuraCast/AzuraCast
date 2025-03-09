@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/admin/geolite',
     operationId: 'getGeoLite',
-    description: 'Get the current MaxMindDB GeoLite Database status.',
+    summary: 'Get the current MaxMindDB GeoLite Database status.',
     tags: [OpenApi::TAG_ADMIN],
     responses: [
         new OpenApi\Response\Success(

@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/admin/auditlog',
         operationId: 'getAuditlog',
-        description: 'Return a list of all available permissions.',
+        summary: 'Return a list of all available permissions.',
         tags: [OpenApi::TAG_ADMIN],
         responses: [
             new OpenApi\Response\Success(

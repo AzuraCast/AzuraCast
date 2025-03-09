@@ -18,7 +18,7 @@ use stdClass;
 #[OA\Get(
     path: '/station/{station_id}/reports/overview/charts',
     operationId: 'getStationReportCharts',
-    description: 'Get chart data for the station reports.',
+    summary: 'Get chart data for the station reports.',
     tags: [OpenApi::TAG_STATIONS_REPORTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

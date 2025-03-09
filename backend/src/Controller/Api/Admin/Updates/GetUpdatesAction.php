@@ -19,7 +19,7 @@ use RuntimeException;
 #[OA\Get(
     path: '/admin/updates',
     operationId: 'getUpdateStatus',
-    description: 'Show information about this installation and its update status.',
+    summary: 'Show information about this installation and its update status.',
     tags: [OpenApi::TAG_ADMIN],
     responses: [
         new OpenApi\Response\Success(

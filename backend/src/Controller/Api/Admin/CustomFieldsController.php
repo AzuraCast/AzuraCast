@@ -15,7 +15,7 @@ use OpenApi\Attributes as OA;
     OA\Get(
         path: '/admin/custom_fields',
         operationId: 'getCustomFields',
-        description: 'List all current custom fields in the system.',
+        summary: 'List all current custom fields in the system.',
         tags: [OpenApi::TAG_ADMIN_CUSTOM_FIELDS],
         responses: [
             new OpenApi\Response\Success(
@@ -36,7 +36,7 @@ use OpenApi\Attributes as OA;
     OA\Post(
         path: '/admin/custom_fields',
         operationId: 'addCustomField',
-        description: 'Create a new custom field.',
+        summary: 'Create a new custom field.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: CustomField::class)
         ),
@@ -57,7 +57,7 @@ use OpenApi\Attributes as OA;
     OA\Get(
         path: '/admin/custom_field/{id}',
         operationId: 'getCustomField',
-        description: 'Retrieve details for a single custom field.',
+        summary: 'Retrieve details for a single custom field.',
         tags: [OpenApi::TAG_ADMIN_CUSTOM_FIELDS],
         parameters: [
             new OA\Parameter(
@@ -85,7 +85,7 @@ use OpenApi\Attributes as OA;
     OA\Put(
         path: '/admin/custom_field/{id}',
         operationId: 'editCustomField',
-        description: 'Update details of a single custom field.',
+        summary: 'Update details of a single custom field.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: CustomField::class)
         ),
@@ -109,7 +109,7 @@ use OpenApi\Attributes as OA;
     OA\Delete(
         path: '/admin/custom_field/{id}',
         operationId: 'deleteCustomField',
-        description: 'Delete a single custom field.',
+        summary: 'Delete a single custom field.',
         tags: [OpenApi::TAG_ADMIN_CUSTOM_FIELDS],
         parameters: [
             new OA\Parameter(

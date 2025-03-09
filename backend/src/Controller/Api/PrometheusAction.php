@@ -24,7 +24,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/prometheus',
         operationId: 'getPrometheus',
-        description: 'Returns the Prometheus measurements for this installation.',
+        summary: 'Returns the Prometheus measurements for this installation.',
         tags: [OpenApi::TAG_MISC],
         responses: [
             new OpenApi\Response\SuccessWithDownload(

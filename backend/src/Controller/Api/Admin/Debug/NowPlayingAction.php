@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Put(
         path: '/admin/debug/station/{station_id}/nowplaying',
         operationId: 'adminDebugStationNowPlaying',
-        description: 'Generate the raw Now Playing data for a given station.',
+        summary: 'Generate the raw Now Playing data for a given station.',
         tags: [OpenApi::TAG_ADMIN_DEBUG],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

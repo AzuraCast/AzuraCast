@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Post(
     path: '/station/{station_id}/stereo-tool-configuration',
     operationId: 'postStereoToolConfiguration',
-    description: 'Update the Stereo Tool configuration file for a station.',
+    summary: 'Update the Stereo Tool configuration file for a station.',
     requestBody: new OA\RequestBody(ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD),
     tags: [OpenApi::TAG_STATIONS_BROADCASTING],
     parameters: [

@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Post(
     path: '/station/{station_id}/streamer/{id}/art',
     operationId: 'postStreamerArt',
-    description: 'Sets the default album art for a streamer.',
+    summary: 'Sets the default album art for a streamer.',
     requestBody: new OA\RequestBody(ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD),
     tags: [OpenApi::TAG_STATIONS_STREAMERS],
     parameters: [

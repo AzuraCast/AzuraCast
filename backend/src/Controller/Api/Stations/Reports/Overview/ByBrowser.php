@@ -14,7 +14,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/reports/overview/by-browser',
     operationId: 'getStationReportByBrowser',
-    description: 'Get the "Listeners by Browser" report for a station.',
+    summary: 'Get the "Listeners by Browser" report for a station.',
     tags: [OpenApi::TAG_STATIONS_REPORTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

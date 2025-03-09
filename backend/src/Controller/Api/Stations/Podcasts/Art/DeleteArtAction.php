@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Delete(
     path: '/station/{station_id}/podcast/{podcast_id}/art',
     operationId: 'deletePodcastArt',
-    description: 'Removes the album art for a podcast.',
+    summary: 'Removes the album art for a podcast.',
     tags: [OpenApi::TAG_STATIONS_PODCASTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

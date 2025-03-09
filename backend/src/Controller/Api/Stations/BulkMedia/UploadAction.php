@@ -34,7 +34,7 @@ use function str_starts_with;
     OA\Post(
         path: '/station/{station_id}/files/bulk',
         operationId: 'postStationBulkMediaUpload',
-        description: 'Upload a CSV containing details about all station media.',
+        summary: 'Upload a CSV containing details about all station media.',
         tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

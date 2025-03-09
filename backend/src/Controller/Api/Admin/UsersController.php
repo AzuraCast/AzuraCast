@@ -23,7 +23,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/admin/users',
         operationId: 'getUsers',
-        description: 'List all current users in the system.',
+        summary: 'List all current users in the system.',
         tags: [OpenApi::TAG_ADMIN_USERS],
         responses: [
             new OpenApi\Response\Success(
@@ -39,7 +39,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Post(
         path: '/admin/users',
         operationId: 'addUser',
-        description: 'Create a new user.',
+        summary: 'Create a new user.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: User::class)
         ),
@@ -55,7 +55,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/admin/user/{id}',
         operationId: 'getUser',
-        description: 'Retrieve details for a single current user.',
+        summary: 'Retrieve details for a single current user.',
         tags: [OpenApi::TAG_ADMIN_USERS],
         parameters: [
             new OA\Parameter(
@@ -78,7 +78,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Put(
         path: '/admin/user/{id}',
         operationId: 'editUser',
-        description: 'Update details of a single user.',
+        summary: 'Update details of a single user.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: User::class)
         ),
@@ -102,7 +102,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Delete(
         path: '/admin/user/{id}',
         operationId: 'deleteUser',
-        description: 'Delete a single user.',
+        summary: 'Delete a single user.',
         tags: [OpenApi::TAG_ADMIN_USERS],
         parameters: [
             new OA\Parameter(

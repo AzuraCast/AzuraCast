@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Delete(
     path: '/admin/custom_assets/{type}',
     operationId: 'deleteAdminCustomAsset',
-    description: 'Removes the custom asset of the specified type.',
+    summary: 'Removes the custom asset of the specified type.',
     tags: [OpenApi::TAG_ADMIN],
     parameters: [
         new OA\Parameter(

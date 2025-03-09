@@ -21,7 +21,7 @@ use Symfony\Component\Messenger\MessageBus;
 #[OA\Put(
     path: '/station/{station_id}/webhook/{id}/test',
     operationId: 'putStationWebhookTest',
-    description: 'Send a test dispatch of a webhook with the current Now Playing data for the station.',
+    summary: 'Send a test dispatch of a webhook with the current Now Playing data for the station.',
     tags: [OpenApi::TAG_STATIONS_WEBHOOKS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

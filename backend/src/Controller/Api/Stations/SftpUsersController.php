@@ -13,7 +13,7 @@ use OpenApi\Attributes as OA;
     OA\Get(
         path: '/station/{station_id}/sftp-users',
         operationId: 'getSftpUsers',
-        description: 'List all current SFTP users.',
+        summary: 'List all current SFTP users.',
         tags: [OpenApi::TAG_STATIONS_SFTP_USERS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -33,7 +33,7 @@ use OpenApi\Attributes as OA;
     OA\Post(
         path: '/station/{station_id}/sftp-users',
         operationId: 'addSftpUser',
-        description: 'Create a new SFTP user.',
+        summary: 'Create a new SFTP user.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: SftpUser::class)
         ),
@@ -53,7 +53,7 @@ use OpenApi\Attributes as OA;
     OA\Get(
         path: '/station/{station_id}/sftp-user/{id}',
         operationId: 'getSftpUser',
-        description: 'Retrieve details for a single SFTP user.',
+        summary: 'Retrieve details for a single SFTP user.',
         tags: [OpenApi::TAG_STATIONS_SFTP_USERS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -77,7 +77,7 @@ use OpenApi\Attributes as OA;
     OA\Put(
         path: '/station/{station_id}/sftp-user/{id}',
         operationId: 'editSftpUser',
-        description: 'Update details of a single SFTP user.',
+        summary: 'Update details of a single SFTP user.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: SftpUser::class)
         ),
@@ -102,7 +102,7 @@ use OpenApi\Attributes as OA;
     OA\Delete(
         path: '/station/{station_id}/sftp-user/{id}',
         operationId: 'deleteSftpUser',
-        description: 'Delete a single SFTP user.',
+        summary: 'Delete a single SFTP user.',
         tags: [OpenApi::TAG_STATIONS_SFTP_USERS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

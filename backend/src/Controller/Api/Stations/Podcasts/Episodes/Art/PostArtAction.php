@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Post(
     path: '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/art',
     operationId: 'postPodcastEpisodeArt',
-    description: 'Sets the album art for a podcast episode.',
+    summary: 'Sets the album art for a podcast episode.',
     requestBody: new OA\RequestBody(ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD),
     tags: [OpenApi::TAG_STATIONS_PODCASTS],
     parameters: [

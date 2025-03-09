@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Put(
         path: '/frontend/account/password',
         operationId: 'changeMyPassword',
-        description: 'Change the password of your account.',
+        summary: 'Change the password of your account.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ChangePassword::class)
         ),

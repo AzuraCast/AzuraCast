@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/files/download',
     operationId: 'getStationFileDownload',
-    description: 'Download a file by relative path.',
+    summary: 'Download a file by relative path.',
     tags: [OpenApi::TAG_STATIONS_MEDIA],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

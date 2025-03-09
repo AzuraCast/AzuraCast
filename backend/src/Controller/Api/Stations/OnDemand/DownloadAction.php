@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/ondemand/download/{media_id}',
     operationId: 'getStationOnDemandDownload',
-    description: 'Download an on-demand playlist file by media unique ID.',
+    summary: 'Download an on-demand playlist file by media unique ID.',
     security: [],
     tags: [OpenApi::TAG_STATIONS_MEDIA],
     parameters: [

@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     OA\Put(
         path: '/frontend/account/me',
         operationId: 'putMe',
-        description: 'Save changes to your logged in account.',
+        summary: 'Save changes to your logged in account.',
         tags: [OpenApi::TAG_ACCOUNTS],
         responses: [
             // TODO API Response Body

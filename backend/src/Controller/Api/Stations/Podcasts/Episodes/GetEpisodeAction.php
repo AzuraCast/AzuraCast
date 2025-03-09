@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/public/podcast/{podcast_id}/episode/{episode_id}',
     operationId: 'getStationPublicPodcastEpisode',
-    description: 'Get information for a public episode of a public podcast.',
+    summary: 'Get information for a public episode of a public podcast.',
     security: [],
     tags: [OpenApi::TAG_STATIONS_PODCASTS],
     parameters: [

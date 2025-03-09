@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/admin/shoutcast',
     operationId: 'getShoutcast',
-    description: 'Get details about the Shoutcast installation.',
+    summary: 'Get details about the Shoutcast installation.',
     tags: [OpenApi::TAG_ADMIN],
     responses: [
         new OpenApi\Response\Success(

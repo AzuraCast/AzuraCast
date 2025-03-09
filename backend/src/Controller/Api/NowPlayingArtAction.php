@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/nowplaying/{station_id}/art',
         operationId: 'getStationNowPlayingArt',
-        description: 'Always redirects to the current art for the given station.',
+        summary: 'Always redirects to the current art for the given station.',
         security: [],
         tags: [OpenApi::TAG_NOW_PLAYING],
         parameters: [

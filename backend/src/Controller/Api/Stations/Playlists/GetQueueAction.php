@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/playlist/{id}/queue',
     operationId: 'getStationPlaylistQueue',
-    description: 'Get the current playback queue for the specified playlist.',
+    summary: 'Get the current playback queue for the specified playlist.',
     tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

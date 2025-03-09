@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/admin/stereo_tool',
     operationId: 'getStereoTool',
-    description: 'Get information about the Stereo Tool installation.',
+    summary: 'Get information about the Stereo Tool installation.',
     tags: [OpenApi::TAG_ADMIN],
     responses: [
         new OpenApi\Response\Success(

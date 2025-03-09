@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/ondemand',
     operationId: 'getStationOnDemand',
-    description: 'List all tracks available on-demand for this station.',
+    summary: 'List all tracks available on-demand for this station.',
     security: [],
     tags: [OpenApi::TAG_STATIONS_MEDIA],
     parameters: [

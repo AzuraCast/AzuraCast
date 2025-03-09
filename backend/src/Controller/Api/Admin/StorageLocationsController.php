@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/admin/storage_locations',
         operationId: 'getStorageLocations',
-        description: 'List all current storage locations in the system.',
+        summary: 'List all current storage locations in the system.',
         tags: [OpenApi::TAG_ADMIN_STORAGE_LOCATIONS],
         responses: [
             new OpenApi\Response\Success(
@@ -38,7 +38,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Post(
         path: '/admin/storage_locations',
         operationId: 'addStorageLocation',
-        description: 'Create a new storage location.',
+        summary: 'Create a new storage location.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ApiStorageLocation::class)
         ),
@@ -54,7 +54,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/admin/storage_location/{id}',
         operationId: 'getStorageLocation',
-        description: 'Retrieve details for a single storage location.',
+        summary: 'Retrieve details for a single storage location.',
         tags: [OpenApi::TAG_ADMIN_STORAGE_LOCATIONS],
         parameters: [
             new OA\Parameter(
@@ -77,7 +77,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Put(
         path: '/admin/storage_location/{id}',
         operationId: 'editStorageLocation',
-        description: 'Update details of a single storage location.',
+        summary: 'Update details of a single storage location.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: ApiStorageLocation::class)
         ),
@@ -101,7 +101,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Delete(
         path: '/admin/storage_location/{id}',
         operationId: 'deleteStorageLocation',
-        description: 'Delete a single storage location.',
+        summary: 'Delete a single storage location.',
         tags: [OpenApi::TAG_ADMIN_STORAGE_LOCATIONS],
         parameters: [
             new OA\Parameter(

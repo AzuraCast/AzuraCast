@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/frontend/account/me',
         operationId: 'getMe',
-        description: 'Show the details for your current logged-in account.',
+        summary: 'Show the details for your current logged-in account.',
         tags: [OpenApi::TAG_ACCOUNTS],
         responses: [
             // TODO API Response Body

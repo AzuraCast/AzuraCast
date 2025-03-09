@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/playlist/{id}/export/{format}',
     operationId: 'getExportPlaylist',
-    description: 'Export a playlist contents in standard media player playlist format.',
+    summary: 'Export a playlist contents in standard media player playlist format.',
     tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

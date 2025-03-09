@@ -21,7 +21,7 @@ use RuntimeException;
     OA\Get(
         path: '/station/{station_id}/files/bulk',
         operationId: 'getStationBulkMediaDownload',
-        description: 'Download a CSV containing details about all station media.',
+        summary: 'Download a CSV containing details about all station media.',
         tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

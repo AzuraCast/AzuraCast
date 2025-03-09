@@ -20,7 +20,7 @@ use Symfony\Component\Process\Process;
 #[OA\Post(
     path: '/admin/shoutcast',
     operationId: 'postShoutcast',
-    description: 'Upload a new Shoutcast binary.',
+    summary: 'Upload a new Shoutcast binary.',
     requestBody: new OA\RequestBody(ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD),
     tags: [OpenApi::TAG_ADMIN],
     responses: [

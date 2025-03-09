@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/reports/overview/best-and-worst',
     operationId: 'getStationReportBestAndWorst',
-    description: 'Get the "Best and Worst Performing Songs" report for a station.',
+    summary: 'Get the "Best and Worst Performing Songs" report for a station.',
     tags: [OpenApi::TAG_STATIONS_REPORTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

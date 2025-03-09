@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/station/{station_id}/files/directories',
         operationId: 'getStationFileDirectories',
-        description: 'List directories in a station media library for moving/renaming.',
+        summary: 'List directories in a station media library for moving/renaming.',
         tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

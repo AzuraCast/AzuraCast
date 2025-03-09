@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Delete(
     path: '/station/{station_id}/playlist/{id}/queue',
     operationId: 'deletePlaylistQueue',
-    description: 'Reset the internal playback queue of a shuffled, song-based playlist.',
+    summary: 'Reset the internal playback queue of a shuffled, song-based playlist.',
     tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/station/{station_id}/streamers',
         operationId: 'getStreamers',
-        description: 'List all current Streamer/DJ accounts for the specified station.',
+        summary: 'List all current Streamer/DJ accounts for the specified station.',
         tags: [OpenApi::TAG_STATIONS_STREAMERS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -47,7 +47,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Post(
         path: '/station/{station_id}/streamers',
         operationId: 'addStreamer',
-        description: 'Create a new Streamer/DJ account.',
+        summary: 'Create a new Streamer/DJ account.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: StationStreamer::class)
         ),
@@ -67,7 +67,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/station/{station_id}/streamer/{id}',
         operationId: 'getStreamer',
-        description: 'Retrieve details for a single Streamer/DJ account.',
+        summary: 'Retrieve details for a single Streamer/DJ account.',
         tags: [OpenApi::TAG_STATIONS_STREAMERS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -91,7 +91,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Put(
         path: '/station/{station_id}/streamer/{id}',
         operationId: 'editStreamer',
-        description: 'Update details of a single Streamer/DJ account.',
+        summary: 'Update details of a single Streamer/DJ account.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: StationStreamer::class)
         ),
@@ -116,7 +116,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Delete(
         path: '/station/{station_id}/streamer/{id}',
         operationId: 'deleteStreamer',
-        description: 'Delete a single Streamer/DJ account.',
+        summary: 'Delete a single Streamer/DJ account.',
         tags: [OpenApi::TAG_STATIONS_STREAMERS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

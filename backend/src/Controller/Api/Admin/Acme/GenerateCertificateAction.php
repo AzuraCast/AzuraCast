@@ -18,7 +18,7 @@ use Symfony\Component\Messenger\MessageBus;
     OA\Put(
         path: '/admin/acme',
         operationId: 'putAdminGenerateAcmeCert',
-        description: 'Generate or renew ACME certificate.',
+        summary: 'Generate or renew ACME certificate.',
         tags: [OpenApi::TAG_ADMIN],
         responses: [
             // TODO API Response Body

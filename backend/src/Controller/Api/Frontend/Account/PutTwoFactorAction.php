@@ -23,7 +23,7 @@ use Throwable;
     OA\Put(
         path: '/frontend/account/two-factor',
         operationId: 'putAccountTwoFactor',
-        description: 'Register a new two-factor authentication method.',
+        summary: 'Register a new two-factor authentication method.',
         tags: [OpenApi::TAG_ACCOUNTS],
         responses: [
             // TODO API Response Body

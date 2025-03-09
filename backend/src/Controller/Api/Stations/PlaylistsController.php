@@ -25,7 +25,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     OA\Get(
         path: '/station/{station_id}/playlists',
         operationId: 'getPlaylists',
-        description: 'List all current playlists.',
+        summary: 'List all current playlists.',
         tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -44,7 +44,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     OA\Post(
         path: '/station/{station_id}/playlists',
         operationId: 'addPlaylist',
-        description: 'Create a new playlist.',
+        summary: 'Create a new playlist.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: StationPlaylist::class)
         ),
@@ -63,7 +63,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     OA\Get(
         path: '/station/{station_id}/playlist/{id}',
         operationId: 'getPlaylist',
-        description: 'Retrieve details for a single playlist.',
+        summary: 'Retrieve details for a single playlist.',
         tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -87,7 +87,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     OA\Put(
         path: '/station/{station_id}/playlist/{id}',
         operationId: 'editPlaylist',
-        description: 'Update details of a single playlist.',
+        summary: 'Update details of a single playlist.',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: StationPlaylist::class)
         ),
@@ -112,7 +112,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     OA\Delete(
         path: '/station/{station_id}/playlist/{id}',
         operationId: 'deletePlaylist',
-        description: 'Delete a single playlist relay.',
+        summary: 'Delete a single playlist relay.',
         tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

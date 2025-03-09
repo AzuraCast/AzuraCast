@@ -25,6 +25,9 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         operationId: 'getStationProfileEdit',
         summary: 'Get the editable profile for the current station.',
         tags: [OpenApi::TAG_STATIONS],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
         responses: [
             // TODO API Response Body
             new OpenApi\Response\Success(),
@@ -38,6 +41,9 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         operationId: 'putStationProfileEdit',
         summary: 'Save the station profile for the current station.',
         tags: [OpenApi::TAG_STATIONS],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
         responses: [
             // TODO API Response Body
             new OpenApi\Response\Success(),

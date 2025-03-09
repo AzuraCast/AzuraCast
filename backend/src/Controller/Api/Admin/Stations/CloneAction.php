@@ -31,6 +31,15 @@ use Throwable;
         operationId: 'postAdminStationsClone',
         summary: 'Clone a station, preserving certain settings.',
         tags: [OpenApi::TAG_ADMIN_STATIONS],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'Station ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'int', format: 'int64')
+            ),
+        ],
         responses: [
             // TODO API Response Body
             new OpenApi\Response\Success(),

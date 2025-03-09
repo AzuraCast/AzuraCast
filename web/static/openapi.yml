@@ -594,6 +594,9 @@ paths:
         - 'Administration: Debugging'
       summary: 'Manually run a Telnet command on a station backend.'
       operationId: putAdminDebugTelnetCommand
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -1048,6 +1051,15 @@ paths:
         - 'Administration: Stations'
       summary: 'Clone a station, preserving certain settings.'
       operationId: postAdminStationsClone
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Station ID'
+          required: true
+          schema:
+            type: int
+            format: int64
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -1690,6 +1702,14 @@ paths:
         - 'My Account'
       summary: 'Get the details of a single passkey.'
       operationId: getAccountGetPasskey
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Passkey ID'
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -1704,6 +1724,14 @@ paths:
         - 'My Account'
       summary: 'Delete a specified passkey by ID.'
       operationId: deleteAccountPasskey
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Passkey ID'
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -2531,7 +2559,7 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-  '/station/{station_id}/quota/{type}':
+  '/station/{station_id}/quota':
     get:
       tags:
         - 'Stations: General'
@@ -2540,14 +2568,33 @@ paths:
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_StationQuota'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/quota/{type}':
+    get:
+      tags:
+        - 'Stations: General'
+      summary: 'Get the current usage and quota for a given station storage location.'
+      operationId: getQuotaOfType
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: type
           in: path
           description: 'The storage location type (i.e. station_media, station_recordings, station_podcasts)'
-          required: false
+          required: true
           schema:
             type: string
-            default: station_media
       responses:
         '200':
           description: Success
@@ -3115,6 +3162,7 @@ paths:
           name: media_id
           in: path
           description: 'The media unique ID to download.'
+          required: true
           schema:
             type: string
       responses:
@@ -4362,6 +4410,9 @@ paths:
       summary: 'Get the editable profile for the current station.'
       description: "This controller handles the specific \"Edit Profile\" function on a station's profile, which has different permissions\nand possible actions than the Admin Station Edit function."
       operationId: getStationProfileEdit
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -4376,6 +4427,9 @@ paths:
         - 'Stations: General'
       summary: 'Save the station profile for the current station.'
       operationId: putStationProfileEdit
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -5556,6 +5610,9 @@ paths:
         - 'Stations: General'
       summary: 'Manually update the Now Playing metadata for the station.'
       operationId: postStationNowPlayingUpdate
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
           $ref: '#/components/responses/Success'

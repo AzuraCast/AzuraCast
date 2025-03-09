@@ -38,6 +38,15 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         operationId: 'getAccountGetPasskey',
         summary: 'Get the details of a single passkey.',
         tags: [OpenApi::TAG_ACCOUNTS],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'Passkey ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string')
+            ),
+        ],
         responses: [
             // TODO API Response Body
             new OpenApi\Response\Success(),
@@ -51,6 +60,15 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         operationId: 'deleteAccountPasskey',
         summary: 'Delete a specified passkey by ID.',
         tags: [OpenApi::TAG_ACCOUNTS],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'Passkey ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string')
+            ),
+        ],
         responses: [
             // TODO API Response Body
             new OpenApi\Response\Success(),

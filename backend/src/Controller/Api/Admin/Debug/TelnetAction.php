@@ -22,6 +22,9 @@ use Psr\Http\Message\ResponseInterface;
         operationId: 'putAdminDebugTelnetCommand',
         summary: 'Manually run a Telnet command on a station backend.',
         tags: [OpenApi::TAG_ADMIN_DEBUG],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
         responses: [
             // TODO API Response Body
             new OpenApi\Response\Success(),

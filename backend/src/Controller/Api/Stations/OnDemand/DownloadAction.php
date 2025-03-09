@@ -25,6 +25,7 @@ use Psr\Http\Message\ResponseInterface;
             name: 'media_id',
             description: 'The media unique ID to download.',
             in: 'path',
+            required: true,
             schema: new OA\Schema(type: 'string'),
         ),
     ],

@@ -19,6 +19,9 @@ use Psr\Http\Message\ResponseInterface;
         operationId: 'postStationNowPlayingUpdate',
         summary: 'Manually update the Now Playing metadata for the station.',
         tags: [OpenApi::TAG_STATIONS],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
         responses: [
             // TODO API Response Body
             new OpenApi\Response\Success(),

@@ -17,8 +17,26 @@ use Psr\Http\Message\ResponseInterface;
 
 #[
     OA\Get(
-        path: '/station/{station_id}/quota/{type}',
+        path: '/station/{station_id}/quota',
         operationId: 'getQuota',
+        summary: 'Get the current usage and quota for a given station storage location.',
+        tags: [OpenApi::TAG_STATIONS],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    ref: StationQuota::class,
+                )
+            ),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
+        ]
+    ),
+    OA\Get(
+        path: '/station/{station_id}/quota/{type}',
+        operationId: 'getQuotaOfType',
         summary: 'Get the current usage and quota for a given station storage location.',
         tags: [OpenApi::TAG_STATIONS],
         parameters: [
@@ -27,8 +45,8 @@ use Psr\Http\Message\ResponseInterface;
                 name: 'type',
                 description: 'The storage location type (i.e. station_media, station_recordings, station_podcasts)',
                 in: 'path',
-                required: false,
-                schema: new OA\Schema(type: 'string', default: 'station_media')
+                required: true,
+                schema: new OA\Schema(type: 'string')
             ),
         ],
         responses: [

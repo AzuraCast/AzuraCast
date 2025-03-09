@@ -11,14 +11,36 @@ use App\Enums\GlobalPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\TestWebhookMessage;
+use App\OpenApi;
 use App\Utilities\File;
 use Monolog\Level;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
 
-/*
- * TODO API
- */
+#[OA\Put(
+    path: '/station/{station_id}/webhook/{id}/test',
+    operationId: 'putStationWebhookTest',
+    description: 'Send a test dispatch of a webhook with the current Now Playing data for the station.',
+    tags: [OpenApi::TAG_STATIONS_WEBHOOKS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        new OA\Parameter(
+            name: 'id',
+            description: 'Web Hook ID',
+            in: 'path',
+            required: true,
+            schema: new OA\Schema(type: 'integer', format: 'int64')
+        ),
+    ],
+    responses: [
+        // TODO API Response
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class TestAction implements SingleActionInterface
 {
     use EnvironmentAwareTrait;

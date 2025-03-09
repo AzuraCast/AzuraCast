@@ -13,18 +13,117 @@ use App\Entity\StationStreamerBroadcast;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Paginator;
 use App\Utilities\File;
 use App\Utilities\Types;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @extends AbstractApiCrudController<StationStreamerBroadcast>
- *
- * TODO API
  */
+#[
+    OA\Get(
+        path: '/station/{station_id}/streamers/broadcasts',
+        operationId: 'getStationAllBroadcasts',
+        description: 'List all broadcasts associated with the station.',
+        tags: [OpenApi::TAG_STATIONS_STREAMERS],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            // TODO API Response
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    ),
+    OA\Get(
+        path: '/station/{station_id}/streamer/{id}/broadcasts',
+        operationId: 'getStationStreamerBroadcasts',
+        description: 'List all broadcasts associated with the specified streamer.',
+        tags: [OpenApi::TAG_STATIONS_STREAMERS],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+            new OA\Parameter(
+                name: 'id',
+                description: 'Streamer ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            // TODO API Response
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    ),
+    OA\Get(
+        path: '/station/{station_id}/streamer/{id}/broadcast/{broadcast_id}/download',
+        operationId: 'getStationStreamerDownloadBroadcast',
+        description: 'Download a single broadcast from a streamer.',
+        tags: [OpenApi::TAG_STATIONS_STREAMERS],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+            new OA\Parameter(
+                name: 'id',
+                description: 'Streamer ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+            new OA\Parameter(
+                name: 'broadcast_id',
+                description: 'Broadcast ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OpenApi\Response\SuccessWithDownload(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    ),
+    OA\Delete(
+        path: '/station/{station_id}/streamer/{id}/broadcast/{broadcast_id}',
+        operationId: 'getStationStreamerDeleteBroadcast',
+        description: 'Remove a single broadcast from a streamer.',
+        tags: [OpenApi::TAG_STATIONS_REPORTS],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+            new OA\Parameter(
+                name: 'id',
+                description: 'Streamer ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+            new OA\Parameter(
+                name: 'broadcast_id',
+                description: 'Broadcast ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 class BroadcastsController extends AbstractApiCrudController
 {
     protected string $entityClass = StationStreamerBroadcast::class;

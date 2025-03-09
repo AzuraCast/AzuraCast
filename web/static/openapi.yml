@@ -5277,6 +5277,144 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/streamer/{id}/broadcasts/batch':
+    post:
+      tags:
+        - 'Stations: Streamers/DJs'
+      description: 'Perform batch actions on the specified broadcasts.'
+      operationId: postStationStreamerBroadcastsBatch
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Streamer ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/streamers/broadcasts':
+    get:
+      tags:
+        - 'Stations: Streamers/DJs'
+      description: 'List all broadcasts associated with the station.'
+      operationId: getStationAllBroadcasts
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/streamer/{id}/broadcasts':
+    get:
+      tags:
+        - 'Stations: Streamers/DJs'
+      description: 'List all broadcasts associated with the specified streamer.'
+      operationId: getStationStreamerBroadcasts
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Streamer ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/streamer/{id}/broadcast/{broadcast_id}/download':
+    get:
+      tags:
+        - 'Stations: Streamers/DJs'
+      description: 'Download a single broadcast from a streamer.'
+      operationId: getStationStreamerDownloadBroadcast
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Streamer ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+        -
+          name: broadcast_id
+          in: path
+          description: 'Broadcast ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessWithDownload'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/streamer/{id}/broadcast/{broadcast_id}':
+    delete:
+      tags:
+        - 'Stations: Reports'
+      description: 'Remove a single broadcast from a streamer.'
+      operationId: getStationStreamerDeleteBroadcast
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Streamer ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+        -
+          name: broadcast_id
+          in: path
+          description: 'Broadcast ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/streamers':
     get:
       tags:
@@ -5427,6 +5565,83 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/waveform/{media_id}':
+    get:
+      tags:
+        - 'Stations: Media'
+      description: 'Get waveform data for a media ID (for the Visual Cue Editor).'
+      operationId: getStationMediaWaveform
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Media ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    post:
+      tags:
+        - 'Stations: Media'
+      description: 'Save cached waveform data for a media ID (for the Visual Cue Editor).'
+      operationId: postStationMediaWaveform
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Media ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/webhook/{id}/test':
+    put:
+      tags:
+        - 'Stations: Web Hooks'
+      description: 'Send a test dispatch of a webhook with the current Now Playing data for the station.'
+      operationId: putStationWebhookTest
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Web Hook ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/webhooks/{id}/test-log/{path}':
     get:
       tags:
@@ -5460,6 +5675,32 @@ paths:
                 $ref: '#/components/schemas/Api_LogContents'
         '403':
           $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/webhook/{id}/toggle':
+    put:
+      tags:
+        - 'Stations: Web Hooks'
+      description: 'Toggle the enabled/disabled status of a webhook.'
+      operationId: putStationWebhookToggle
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Web Hook ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
   '/station/{station_id}/webhooks':

@@ -12,15 +12,37 @@ use App\Entity\StationStreamerBroadcast;
 use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Utilities\Types;
 use Doctrine\ORM\Query;
 use InvalidArgumentException;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
-/*
- * TODO API
- */
+#[OA\Post(
+    path: '/station/{station_id}/streamer/{id}/broadcasts/batch',
+    operationId: 'postStationStreamerBroadcastsBatch',
+    description: 'Perform batch actions on the specified broadcasts.',
+    tags: [OpenApi::TAG_STATIONS_STREAMERS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        new OA\Parameter(
+            name: 'id',
+            description: 'Streamer ID',
+            in: 'path',
+            required: true,
+            schema: new OA\Schema(type: 'integer', format: 'int64')
+        ),
+    ],
+    responses: [
+        // TODO API Response
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class BatchAction extends BroadcastsController implements SingleActionInterface
 {
     private const int BATCH_SIZE = 50;

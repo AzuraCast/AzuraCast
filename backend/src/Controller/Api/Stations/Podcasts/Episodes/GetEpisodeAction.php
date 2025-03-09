@@ -10,12 +10,41 @@ use App\Entity\Repository\PodcastEpisodeRepository;
 use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Utilities\Types;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/*
- * TODO API
- */
+#[OA\Get(
+    path: '/station/{station_id}/public/podcast/{podcast_id}/episode/{episode_id}',
+    operationId: 'getStationPublicPodcastEpisode',
+    description: 'Get information for a public episode of a public podcast.',
+    security: [],
+    tags: [OpenApi::TAG_STATIONS_PODCASTS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        new OA\Parameter(
+            name: 'podcast_id',
+            description: 'Podcast ID',
+            in: 'path',
+            required: true,
+            schema: new OA\Schema(type: 'string')
+        ),
+        new OA\Parameter(
+            name: 'episode_id',
+            description: 'Podcast Episode ID',
+            in: 'path',
+            required: true,
+            schema: new OA\Schema(type: 'string')
+        ),
+    ],
+    responses: [
+        // TODO API Response
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class GetEpisodeAction implements SingleActionInterface
 {
     public function __construct(

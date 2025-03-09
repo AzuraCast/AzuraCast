@@ -3976,6 +3976,61 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/public/podcast/{podcast_id}/episode/{episode_id}':
+    get:
+      tags:
+        - 'Stations: Podcasts'
+      description: 'Get information for a public episode of a public podcast.'
+      operationId: getStationPublicPodcastEpisode
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: podcast_id
+          in: path
+          description: 'Podcast ID'
+          required: true
+          schema:
+            type: string
+        -
+          name: episode_id
+          in: path
+          description: 'Podcast Episode ID'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security: []
+  '/station/{station_id}/public/podcast/{podcast_id}/episodes':
+    get:
+      tags:
+        - 'Stations: Podcasts'
+      description: 'List all visible episodes for a given podcast.'
+      operationId: getStationPublicPodcastEpisodes
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: podcast_id
+          in: path
+          description: 'Podcast ID'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security: []
   '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/media':
     get:
       tags:
@@ -4101,7 +4156,7 @@ paths:
     get:
       tags:
         - 'Stations: Podcasts'
-      description: 'List all visible public playlists.'
+      description: 'List all visible public podcasts.'
       operationId: getStationPublicPodcasts
       parameters:
         -
@@ -4535,6 +4590,213 @@ paths:
           schema:
             type: integer
             format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/reports/overview/best-and-worst':
+    get:
+      tags:
+        - 'Stations: Reports'
+      description: 'Get the "Best and Worst Performing Songs" report for a station.'
+      operationId: getStationReportBestAndWorst
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/reports/overview/by-browser':
+    get:
+      tags:
+        - 'Stations: Reports'
+      description: 'Get the "Listeners by Browser" report for a station.'
+      operationId: getStationReportByBrowser
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/reports/overview/by-client':
+    get:
+      tags:
+        - 'Stations: Reports'
+      description: 'Get the "Listeners by Client" report for a station.'
+      operationId: getStationReportByClient
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/reports/overview/by-country':
+    get:
+      tags:
+        - 'Stations: Reports'
+      description: 'Get the "Listeners by Country" report for a station.'
+      operationId: getStationReportByCountry
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/reports/overview/by-listening-time':
+    get:
+      tags:
+        - 'Stations: Reports'
+      description: 'Get the "Listeners by Listening Time" report for a station.'
+      operationId: getStationReportByListeningTime
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/reports/overview/by-stream':
+    get:
+      tags:
+        - 'Stations: Reports'
+      description: 'Get the "Listeners by Stream" report for a station.'
+      operationId: getStationReportByStream
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/reports/overview/charts':
+    get:
+      tags:
+        - 'Stations: Reports'
+      description: 'Get chart data for the station reports.'
+      operationId: getStationReportCharts
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/reports/requests':
+    get:
+      tags:
+        - 'Stations: Reports'
+      description: 'List station requests.'
+      operationId: getStationRequestsReport
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/reports/requests/clear':
+    post:
+      tags:
+        - 'Stations: Reports'
+      description: 'Clear all unplayed station requests.'
+      operationId: postStationRequestsClear
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/reports/requests/{request_id}':
+    delete:
+      tags:
+        - 'Stations: Reports'
+      description: 'Delete an individual station request.'
+      operationId: deleteStationRequest
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: request_id
+          in: path
+          description: 'Request ID'
+          required: true
+          schema:
+            type: int
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/reports/soundexchange':
+    get:
+      tags:
+        - 'Stations: Reports'
+      summary: 'Produce a report in SoundExchange (the US webcaster licensing agency) format.'
+      description: 'Generate a SoundExchange royalty report.'
+      operationId: getStationSoundExchangeReport
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -8485,6 +8747,8 @@ tags:
   -
     name: 'Stations: Remote Relays'
   -
+    name: 'Stations: Reports'
+  -
     name: 'Stations: SFTP Users'
   -
     name: 'Stations: Streamers/DJs'
@@ -8533,6 +8797,7 @@ x-tagGroups:
       - 'Stations: Podcasts'
       - 'Stations: Queue'
       - 'Stations: Remote Relays'
+      - 'Stations: Reports'
       - 'Stations: SFTP Users'
       - 'Stations: Streamers/DJs'
       - 'Stations: Web Hooks'

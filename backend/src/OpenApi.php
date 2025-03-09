@@ -49,6 +49,7 @@ use OpenApi\Attributes as OA;
             new OA\Tag(name: OpenApi::TAG_STATIONS_PODCASTS),
             new OA\Tag(name: OpenApi::TAG_STATIONS_QUEUE),
             new OA\Tag(name: OpenApi::TAG_STATIONS_REMOTE_RELAYS),
+            new OA\Tag(name: OpenApi::TAG_STATIONS_REPORTS),
             new OA\Tag(name: OpenApi::TAG_STATIONS_SFTP_USERS),
             new OA\Tag(name: OpenApi::TAG_STATIONS_STREAMERS),
             new OA\Tag(name: OpenApi::TAG_STATIONS_WEBHOOKS),
@@ -170,7 +171,6 @@ final class OpenApi
     public const string TAG_STATIONS_BROADCASTING = 'Stations: Broadcasting';
     public const string TAG_STATIONS_SONG_REQUESTS = 'Stations: Song Requests';
     public const string TAG_STATIONS_SERVICE_CONTROL = 'Stations: Service Control';
-
     public const string TAG_STATIONS_HISTORY = 'Stations: History';
     public const string TAG_STATIONS_HLS_STREAMS = 'Stations: HLS Streams';
     public const string TAG_STATIONS_LISTENERS = 'Stations: Listeners';
@@ -181,6 +181,7 @@ final class OpenApi
     public const string TAG_STATIONS_PODCASTS = 'Stations: Podcasts';
     public const string TAG_STATIONS_QUEUE = 'Stations: Queue';
     public const string TAG_STATIONS_REMOTE_RELAYS = 'Stations: Remote Relays';
+    public const string TAG_STATIONS_REPORTS = 'Stations: Reports';
     public const string TAG_STATIONS_SFTP_USERS = 'Stations: SFTP Users';
     public const string TAG_STATIONS_STREAMERS = 'Stations: Streamers/DJs';
     public const string TAG_STATIONS_WEBHOOKS = 'Stations: Web Hooks';
@@ -200,6 +201,7 @@ final class OpenApi
         self::TAG_STATIONS_PODCASTS,
         self::TAG_STATIONS_QUEUE,
         self::TAG_STATIONS_REMOTE_RELAYS,
+        self::TAG_STATIONS_REPORTS,
         self::TAG_STATIONS_SFTP_USERS,
         self::TAG_STATIONS_STREAMERS,
         self::TAG_STATIONS_WEBHOOKS,

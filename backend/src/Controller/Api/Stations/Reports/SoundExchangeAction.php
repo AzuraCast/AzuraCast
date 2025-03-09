@@ -9,15 +9,32 @@ use App\Controller\SingleActionInterface;
 use App\Entity\Song;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Service\MusicBrainz;
 use Carbon\CarbonImmutable;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
 /**
  * Produce a report in SoundExchange (the US webcaster licensing agency) format.
- * TODO API
  */
+#[OA\Get(
+    path: '/station/{station_id}/reports/soundexchange',
+    operationId: 'getStationSoundExchangeReport',
+    description: 'Generate a SoundExchange royalty report.',
+    tags: [OpenApi::TAG_STATIONS_REPORTS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+    ],
+    responses: [
+        // TODO API Response
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class SoundExchangeAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;

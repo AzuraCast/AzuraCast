@@ -12,16 +12,72 @@ use App\Entity\Repository\StationRequestRepository;
 use App\Entity\StationRequest;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Paginator;
 use App\Utilities\Types;
 use Doctrine\Common\Collections\Order;
 use Doctrine\ORM\AbstractQuery;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 
-/*
- * TODO API
- */
+#[
+    OA\Get(
+        path: '/station/{station_id}/reports/requests',
+        operationId: 'getStationRequestsReport',
+        description: 'List station requests.',
+        tags: [OpenApi::TAG_STATIONS_REPORTS],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            // TODO API Response
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    ),
+    OA\Post(
+        path: '/station/{station_id}/reports/requests/clear',
+        operationId: 'postStationRequestsClear',
+        description: 'Clear all unplayed station requests.',
+        tags: [OpenApi::TAG_STATIONS_REPORTS],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            // TODO API Response
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    ),
+    OA\Delete(
+        path: '/station/{station_id}/reports/requests/{request_id}',
+        operationId: 'deleteStationRequest',
+        description: 'Delete an individual station request.',
+        tags: [OpenApi::TAG_STATIONS_REPORTS],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+            new OA\Parameter(
+                name: 'request_id',
+                description: 'Request ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'int', format: 'int64')
+            ),
+        ],
+        responses: [
+            // TODO API Response
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class RequestsController
 {
     use EntityManagerAwareTrait;

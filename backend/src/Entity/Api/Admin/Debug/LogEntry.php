@@ -31,11 +31,15 @@ final readonly class LogEntry
         #[OA\Property]
         public string $message,
         #[OA\Property(
-            items: new OA\Items()
+            items: new OA\Items(
+                type: '{}'
+            )
         )]
         public array $context = [],
         #[OA\Property(
-            items: new OA\Items()
+            items: new OA\Items(
+                type: '{}'
+            )
         )]
         public array $extra = [],
         #[OA\Property(

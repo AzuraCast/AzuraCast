@@ -6051,10 +6051,12 @@ components:
           type: string
         context:
           type: array
-          items: {  }
+          items:
+            type: '{}'
         extra:
           type: array
-          items: {  }
+          items:
+            type: '{}'
         formatted:
           type: '{}'
           nullable: true

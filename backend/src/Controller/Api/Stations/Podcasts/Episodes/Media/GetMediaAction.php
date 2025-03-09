@@ -24,7 +24,7 @@ use Psr\Http\Message\ResponseInterface;
     operationId: 'getPodcastEpisodeMedia',
     summary: 'Gets the media for a podcast episode.',
     security: [],
-    tags: [OpenApi::TAG_STATIONS_PODCASTS],
+    tags: [OpenApi::TAG_PUBLIC_STATIONS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(

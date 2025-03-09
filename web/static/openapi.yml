@@ -97,7 +97,7 @@ paths:
     get:
       tags:
         - 'Administration: General'
-      summary: 'Return a list of all available permissions.'
+      summary: 'List all Audit Log actions that have taken place on the installation.'
       operationId: getAuditlog
       responses:
         '200':
@@ -1504,7 +1504,7 @@ paths:
   /frontend/account/api-keys:
     get:
       tags:
-        - Accounts
+        - 'My Account'
       summary: 'List all API keys associated with your account.'
       operationId: getMyApiKeys
       responses:
@@ -1522,7 +1522,7 @@ paths:
           $ref: '#/components/responses/GenericError'
     post:
       tags:
-        - Accounts
+        - 'My Account'
       summary: 'Create a new API key associated with your account.'
       operationId: addMyApiKey
       requestBody:
@@ -1547,7 +1547,7 @@ paths:
   '/frontend/account/api-key/{id}':
     get:
       tags:
-        - Accounts
+        - 'My Account'
       summary: 'Retrieve details for a single API key.'
       operationId: getMyApiKey
       parameters:
@@ -1575,7 +1575,7 @@ paths:
           $ref: '#/components/responses/GenericError'
     delete:
       tags:
-        - Accounts
+        - 'My Account'
       summary: 'Delete a single API key associated with your account.'
       operationId: deleteMyApiKey
       parameters:
@@ -1598,7 +1598,7 @@ paths:
   /frontend/account/two-factor:
     get:
       tags:
-        - Accounts
+        - 'My Account'
       summary: 'Get the current two-factor authentication status of your account.'
       operationId: getMyTwoFactor
       responses:
@@ -1614,7 +1614,7 @@ paths:
           $ref: '#/components/responses/GenericError'
     put:
       tags:
-        - Accounts
+        - 'My Account'
       summary: 'Register a new two-factor authentication method.'
       operationId: putAccountTwoFactor
       responses:
@@ -1628,7 +1628,7 @@ paths:
           $ref: '#/components/responses/GenericError'
     delete:
       tags:
-        - Accounts
+        - 'My Account'
       summary: 'Remove two-factor authentication from your account.'
       operationId: deleteMyTwoFactor
       responses:
@@ -1643,7 +1643,7 @@ paths:
   /frontend/account/me:
     get:
       tags:
-        - Accounts
+        - 'My Account'
       summary: 'Show the details for your current logged-in account.'
       operationId: getMe
       responses:
@@ -1657,7 +1657,7 @@ paths:
           $ref: '#/components/responses/GenericError'
     put:
       tags:
-        - Accounts
+        - 'My Account'
       summary: 'Save changes to your logged in account.'
       operationId: putMe
       responses:
@@ -1672,7 +1672,7 @@ paths:
   /frontend/account/passkeys:
     get:
       tags:
-        - Accounts
+        - 'My Account'
       summary: 'List currently registered passkeys.'
       operationId: getAccountListPasskeys
       responses:
@@ -1687,7 +1687,7 @@ paths:
   '/frontend/account/passkey/{id}':
     get:
       tags:
-        - Accounts
+        - 'My Account'
       summary: 'Get the details of a single passkey.'
       operationId: getAccountGetPasskey
       responses:
@@ -1701,7 +1701,7 @@ paths:
           $ref: '#/components/responses/GenericError'
     delete:
       tags:
-        - Accounts
+        - 'My Account'
       summary: 'Delete a specified passkey by ID.'
       operationId: deleteAccountPasskey
       responses:
@@ -1716,7 +1716,7 @@ paths:
   /frontend/account/password:
     put:
       tags:
-        - Accounts
+        - 'My Account'
       summary: 'Change the password of your account.'
       operationId: changeMyPassword
       requestBody:
@@ -1734,7 +1734,7 @@ paths:
   /frontend/account/webauthn/register:
     get:
       tags:
-        - Accounts
+        - 'My Account'
       summary: 'Get registration details for WebAuthn registration.'
       operationId: getAccountWebAuthnRegister
       responses:
@@ -1748,7 +1748,7 @@ paths:
           $ref: '#/components/responses/GenericError'
     put:
       tags:
-        - Accounts
+        - 'My Account'
       summary: 'Submit a new registration request for WebAuthn.'
       operationId: putAccountWebAuthnRegister
       responses:
@@ -1812,7 +1812,7 @@ paths:
   /status:
     get:
       tags:
-        - Miscellaneous
+        - 'Public: Miscellaneous'
       summary: 'Returns an affirmative response if the API is active.'
       operationId: getStatus
       responses:
@@ -1826,7 +1826,7 @@ paths:
   /time:
     get:
       tags:
-        - Miscellaneous
+        - 'Public: Miscellaneous'
       description: "Returns the time (with formatting) in GMT and the user's local time zone, if logged in."
       operationId: getTime
       responses:
@@ -1855,7 +1855,7 @@ paths:
   /nowplaying:
     get:
       tags:
-        - 'Now Playing'
+        - 'Public: Now Playing'
       description: "Returns a full summary of all stations' current state."
       operationId: getAllNowPlaying
       responses:
@@ -1871,7 +1871,7 @@ paths:
   '/nowplaying/{station_id}':
     get:
       tags:
-        - 'Now Playing'
+        - 'Public: Now Playing'
       description: "Returns a full summary of the specified station's current state."
       operationId: getStationNowPlaying
       parameters:
@@ -1890,7 +1890,7 @@ paths:
   '/nowplaying/{station_id}/art':
     get:
       tags:
-        - 'Now Playing'
+        - 'Public: Now Playing'
       summary: 'Always redirects to the current art for the given station.'
       operationId: getStationNowPlayingArt
       parameters:
@@ -1910,7 +1910,7 @@ paths:
   /openapi.yml:
     get:
       tags:
-        - Miscellaneous
+        - 'Public: Miscellaneous'
       summary: 'Returns the OpenAPI specification document for this installation.'
       operationId: getOpenApiSpec
       responses:
@@ -1941,7 +1941,7 @@ paths:
   '/station/{station_id}/art/{media_id}':
     get:
       tags:
-        - 'Stations: Media'
+        - 'Public: Stations'
       summary: 'Returns the album art for a song, or a generic image.'
       operationId: getMediaArt
       parameters:
@@ -2582,7 +2582,7 @@ paths:
   '/station/{station_id}/history':
     get:
       tags:
-        - 'Stations: History'
+        - 'Stations: Reports'
       summary: 'Return song playback history items for a given station.'
       operationId: getStationHistory
       parameters:
@@ -2751,7 +2751,7 @@ paths:
   /stations:
     get:
       tags:
-        - 'Stations: General'
+        - 'Public: Stations'
       summary: 'Returns a list of stations.'
       operationId: getStations
       responses:
@@ -2767,7 +2767,7 @@ paths:
   '/station/{station_id}':
     get:
       tags:
-        - 'Stations: General'
+        - 'Public: Stations'
       summary: 'Return information about a single station.'
       operationId: getStation
       parameters:
@@ -2821,7 +2821,7 @@ paths:
   '/station/{station_id}/listeners':
     get:
       tags:
-        - 'Stations: Listeners'
+        - 'Stations: Reports'
       summary: 'Return detailed information about current listeners.'
       operationId: getStationListeners
       parameters:
@@ -3105,7 +3105,7 @@ paths:
   '/station/{station_id}/ondemand/download/{media_id}':
     get:
       tags:
-        - 'Stations: Media'
+        - 'Public: Stations'
       summary: 'Download an on-demand playlist file by media unique ID.'
       operationId: getStationOnDemandDownload
       parameters:
@@ -3128,7 +3128,7 @@ paths:
   '/station/{station_id}/ondemand':
     get:
       tags:
-        - 'Stations: Media'
+        - 'Public: Stations'
       summary: 'List all tracks available on-demand for this station.'
       operationId: getStationOnDemand
       parameters:
@@ -3146,7 +3146,7 @@ paths:
     post:
       tags:
         - 'Stations: Playlists'
-      summary: 'Create a copy of the specified station.'
+      summary: 'Create a copy of the specified playlist.'
       operationId: postStationPlaylistClone
       parameters:
         -
@@ -3763,7 +3763,7 @@ paths:
   '/station/{station_id}/podcast/{podcast_id}/art':
     get:
       tags:
-        - 'Stations: Podcasts'
+        - 'Public: Stations'
       summary: 'Gets the album art for a podcast.'
       operationId: getPodcastArt
       parameters:
@@ -3871,7 +3871,7 @@ paths:
   '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/art':
     get:
       tags:
-        - 'Stations: Podcasts'
+        - 'Public: Stations'
       summary: 'Gets the album art for a podcast episode.'
       operationId: getPodcastEpisodeArt
       parameters:
@@ -3979,7 +3979,7 @@ paths:
   '/station/{station_id}/public/podcast/{podcast_id}/episode/{episode_id}':
     get:
       tags:
-        - 'Stations: Podcasts'
+        - 'Public: Stations'
       summary: 'Get information for a public episode of a public podcast.'
       operationId: getStationPublicPodcastEpisode
       parameters:
@@ -4010,7 +4010,7 @@ paths:
   '/station/{station_id}/public/podcast/{podcast_id}/episodes':
     get:
       tags:
-        - 'Stations: Podcasts'
+        - 'Public: Stations'
       summary: 'List all visible episodes for a given podcast.'
       operationId: getStationPublicPodcastEpisodes
       parameters:
@@ -4034,7 +4034,7 @@ paths:
   '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/media':
     get:
       tags:
-        - 'Stations: Podcasts'
+        - 'Public: Stations'
       summary: 'Gets the media for a podcast episode.'
       operationId: getPodcastEpisodeMedia
       parameters:
@@ -4131,7 +4131,7 @@ paths:
   '/station/{station_id}/public/podcast/{podcast_id}':
     get:
       tags:
-        - 'Stations: Podcasts'
+        - 'Public: Stations'
       summary: 'Get the public information for a given podcast.'
       operationId: getStationPublicPodcast
       parameters:
@@ -4155,7 +4155,7 @@ paths:
   '/station/{station_id}/public/podcasts':
     get:
       tags:
-        - 'Stations: Podcasts'
+        - 'Public: Stations'
       summary: 'List all visible public podcasts.'
       operationId: getStationPublicPodcasts
       parameters:
@@ -4809,7 +4809,7 @@ paths:
   '/station/{station_id}/requests':
     get:
       tags:
-        - 'Stations: Song Requests'
+        - 'Public: Stations'
       summary: 'Return a list of requestable songs.'
       operationId: getRequestableSongs
       parameters:
@@ -4834,7 +4834,7 @@ paths:
   '/station/{station_id}/request/{request_id}':
     post:
       tags:
-        - 'Stations: Song Requests'
+        - 'Public: Stations'
       summary: 'Submit a song request.'
       operationId: submitSongRequest
       parameters:
@@ -4860,7 +4860,7 @@ paths:
   '/station/{station_id}/schedule':
     get:
       tags:
-        - 'Stations: Schedules'
+        - 'Public: Stations'
       summary: 'Return upcoming and currently ongoing schedule entries.'
       operationId: getSchedule
       parameters:
@@ -4897,7 +4897,7 @@ paths:
   '/station/{station_id}/status':
     get:
       tags:
-        - 'Stations: Service Control'
+        - 'Stations: Broadcasting'
       summary: 'Retrieve the current status of all serivces associated with the radio broadcast.'
       operationId: getServiceStatus
       parameters:
@@ -4919,7 +4919,7 @@ paths:
   '/station/{station_id}/restart':
     post:
       tags:
-        - 'Stations: Service Control'
+        - 'Stations: Broadcasting'
       summary: 'Restart all services associated with the radio broadcast.'
       operationId: restartServices
       parameters:
@@ -4937,7 +4937,7 @@ paths:
   '/station/{station_id}/frontend/{action}':
     post:
       tags:
-        - 'Stations: Service Control'
+        - 'Stations: Broadcasting'
       summary: 'Perform service control actions on the radio frontend (Icecast, Shoutcast, etc.)'
       operationId: doFrontendServiceAction
       parameters:
@@ -4968,7 +4968,7 @@ paths:
   '/station/{station_id}/backend/{action}':
     post:
       tags:
-        - 'Stations: Service Control'
+        - 'Stations: Broadcasting'
       summary: 'Perform service control actions on the radio backend (Liquidsoap)'
       operationId: doBackendServiceAction
       parameters:
@@ -5194,7 +5194,7 @@ paths:
   '/station/{station_id}/streamer/{id}/art':
     get:
       tags:
-        - 'Stations: Streamers/DJs'
+        - 'Public: Stations'
       summary: 'Gets the default album art for a streamer.'
       operationId: getStreamerArt
       parameters:
@@ -5384,7 +5384,7 @@ paths:
   '/station/{station_id}/streamer/{id}/broadcast/{broadcast_id}':
     delete:
       tags:
-        - 'Stations: Reports'
+        - 'Stations: Streamers/DJs'
       summary: 'Remove a single broadcast from a streamer.'
       operationId: getStationStreamerDeleteBroadcast
       parameters:
@@ -5816,7 +5816,7 @@ paths:
     delete:
       tags:
         - 'Stations: Web Hooks'
-      summary: 'Delete a single web hook relay.'
+      summary: 'Delete a single web hook.'
       operationId: deleteWebhook
       parameters:
         -
@@ -8957,24 +8957,18 @@ security:
     ApiKey: []
 tags:
   -
-    name: 'Now Playing'
+    name: 'Public: Now Playing'
     description: 'Endpoints that provide full summaries of the current state of stations.'
+  -
+    name: 'Public: Stations'
+  -
+    name: 'Public: Miscellaneous'
   -
     name: 'Stations: General'
   -
     name: 'Stations: Broadcasting'
   -
-    name: 'Stations: Song Requests'
-  -
-    name: 'Stations: Service Control'
-  -
-    name: 'Stations: History'
-  -
     name: 'Stations: HLS Streams'
-  -
-    name: 'Stations: Listeners'
-  -
-    name: 'Stations: Schedules'
   -
     name: 'Stations: Media'
   -
@@ -9014,7 +9008,7 @@ tags:
   -
     name: 'Administration: Storage Locations'
   -
-    name: Accounts
+    name: 'My Account'
   -
     name: Miscellaneous
 externalDocs:
@@ -9022,16 +9016,18 @@ externalDocs:
   url: 'https://github.com/AzuraCast/AzuraCast'
 x-tagGroups:
   -
+    name: 'Public Endpoints'
+    tags:
+      - 'Public: Now Playing'
+      - 'Public: Stations'
+      - 'Public: Miscellaneous'
+  -
     name: 'Station Management'
     tags:
       - 'Stations: General'
       - 'Stations: Broadcasting'
       - 'Stations: Song Requests'
-      - 'Stations: Service Control'
-      - 'Stations: History'
       - 'Stations: HLS Streams'
-      - 'Stations: Listeners'
-      - 'Stations: Schedules'
       - 'Stations: Media'
       - 'Stations: Mount Points'
       - 'Stations: Playlists'

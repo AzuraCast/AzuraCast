@@ -22,7 +22,7 @@ use Psr\Http\Message\ResponseInterface;
     operationId: 'getStationPublicPodcasts',
     summary: 'List all visible public podcasts.',
     security: [],
-    tags: [OpenApi::TAG_STATIONS_PODCASTS],
+    tags: [OpenApi::TAG_PUBLIC_STATIONS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(

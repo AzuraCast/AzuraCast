@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
     operationId: 'getStationPublicPodcastEpisode',
     summary: 'Get information for a public episode of a public podcast.',
     security: [],
-    tags: [OpenApi::TAG_STATIONS_PODCASTS],
+    tags: [OpenApi::TAG_PUBLIC_STATIONS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(

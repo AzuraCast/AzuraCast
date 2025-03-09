@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
     operationId: 'getStationOnDemand',
     summary: 'List all tracks available on-demand for this station.',
     security: [],
-    tags: [OpenApi::TAG_STATIONS_MEDIA],
+    tags: [OpenApi::TAG_PUBLIC_STATIONS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
     ],

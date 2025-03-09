@@ -29,7 +29,7 @@ use RuntimeException;
         path: '/station/{station_id}/history',
         operationId: 'getStationHistory',
         summary: 'Return song playback history items for a given station.',
-        tags: [OpenApi::TAG_STATIONS_HISTORY],
+        tags: [OpenApi::TAG_STATIONS_REPORTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(

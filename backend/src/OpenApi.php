@@ -31,18 +31,16 @@ use OpenApi\Attributes as OA;
         ],
         tags: [
             new OA\Tag(
-                name: OpenApi::TAG_NOW_PLAYING,
+                name: OpenApi::TAG_PUBLIC_NOW_PLAYING,
                 description: "Endpoints that provide full summaries of the current state of stations.",
             ),
+            new OA\Tag(name: OpenApi::TAG_PUBLIC_STATIONS),
+            new OA\Tag(name: OpenApi::TAG_PUBLIC_MISC),
 
             new OA\Tag(name: OpenApi::TAG_STATIONS),
             new OA\Tag(name: OpenApi::TAG_STATIONS_BROADCASTING),
             new OA\Tag(name: OpenApi::TAG_STATIONS_SONG_REQUESTS),
-            new OA\Tag(name: OpenApi::TAG_STATIONS_SERVICE_CONTROL),
-            new OA\Tag(name: OpenApi::TAG_STATIONS_HISTORY),
             new OA\Tag(name: OpenApi::TAG_STATIONS_HLS_STREAMS),
-            new OA\Tag(name: OpenApi::TAG_STATIONS_LISTENERS),
-            new OA\Tag(name: OpenApi::TAG_STATIONS_SCHEDULES),
             new OA\Tag(name: OpenApi::TAG_STATIONS_MEDIA),
             new OA\Tag(name: OpenApi::TAG_STATIONS_MOUNT_POINTS),
             new OA\Tag(name: OpenApi::TAG_STATIONS_PLAYLISTS),
@@ -73,6 +71,10 @@ use OpenApi\Attributes as OA;
         ),
         x: [
             'tagGroups' => [
+                [
+                    'name' => 'Public Endpoints',
+                    'tags' => self::TAG_GROUP_PUBLIC,
+                ],
                 [
                     'name' => 'Station Management',
                     'tags' => self::TAG_GROUP_STATIONS,
@@ -165,16 +167,20 @@ use OpenApi\Attributes as OA;
 ]
 final class OpenApi
 {
-    public const string TAG_NOW_PLAYING = 'Now Playing';
+    public const string TAG_PUBLIC_NOW_PLAYING = 'Public: Now Playing';
+    public const string TAG_PUBLIC_STATIONS = 'Public: Stations';
+    public const string TAG_PUBLIC_MISC = 'Public: Miscellaneous';
+
+    public const array TAG_GROUP_PUBLIC = [
+        self::TAG_PUBLIC_NOW_PLAYING,
+        self::TAG_PUBLIC_STATIONS,
+        self::TAG_PUBLIC_MISC,
+    ];
 
     public const string TAG_STATIONS = 'Stations: General';
     public const string TAG_STATIONS_BROADCASTING = 'Stations: Broadcasting';
     public const string TAG_STATIONS_SONG_REQUESTS = 'Stations: Song Requests';
-    public const string TAG_STATIONS_SERVICE_CONTROL = 'Stations: Service Control';
-    public const string TAG_STATIONS_HISTORY = 'Stations: History';
     public const string TAG_STATIONS_HLS_STREAMS = 'Stations: HLS Streams';
-    public const string TAG_STATIONS_LISTENERS = 'Stations: Listeners';
-    public const string TAG_STATIONS_SCHEDULES = 'Stations: Schedules';
     public const string TAG_STATIONS_MEDIA = 'Stations: Media';
     public const string TAG_STATIONS_MOUNT_POINTS = 'Stations: Mount Points';
     public const string TAG_STATIONS_PLAYLISTS = 'Stations: Playlists';
@@ -190,11 +196,7 @@ final class OpenApi
         self::TAG_STATIONS,
         self::TAG_STATIONS_BROADCASTING,
         self::TAG_STATIONS_SONG_REQUESTS,
-        self::TAG_STATIONS_SERVICE_CONTROL,
-        self::TAG_STATIONS_HISTORY,
         self::TAG_STATIONS_HLS_STREAMS,
-        self::TAG_STATIONS_LISTENERS,
-        self::TAG_STATIONS_SCHEDULES,
         self::TAG_STATIONS_MEDIA,
         self::TAG_STATIONS_MOUNT_POINTS,
         self::TAG_STATIONS_PLAYLISTS,
@@ -229,7 +231,7 @@ final class OpenApi
         self::TAG_ADMIN_STORAGE_LOCATIONS,
     ];
 
-    public const string TAG_ACCOUNTS = 'Accounts';
+    public const string TAG_ACCOUNTS = 'My Account';
 
     public const string TAG_MISC = 'Miscellaneous';
 

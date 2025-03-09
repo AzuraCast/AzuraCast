@@ -15,7 +15,7 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Post(
     path: '/station/{station_id}/playlist/{id}/clone',
     operationId: 'postStationPlaylistClone',
-    summary: 'Create a copy of the specified station.',
+    summary: 'Create a copy of the specified playlist.',
     tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

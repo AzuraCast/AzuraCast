@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
     operationId: 'getStationPublicPodcast',
     summary: 'Get the public information for a given podcast.',
     security: [],
-    tags: [OpenApi::TAG_STATIONS_PODCASTS],
+    tags: [OpenApi::TAG_PUBLIC_STATIONS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(

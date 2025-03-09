@@ -19,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
         operationId: 'getOpenApiSpec',
         summary: 'Returns the OpenAPI specification document for this installation.',
         security: [],
-        tags: [OpenApi::TAG_MISC],
+        tags: [OpenApi::TAG_PUBLIC_MISC],
         responses: [
             new OpenApi\Response\SuccessWithDownload(
                 description: 'Success',

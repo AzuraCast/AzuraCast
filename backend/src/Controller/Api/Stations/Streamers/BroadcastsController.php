@@ -98,7 +98,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/streamer/{id}/broadcast/{broadcast_id}',
         operationId: 'getStationStreamerDeleteBroadcast',
         summary: 'Remove a single broadcast from a streamer.',
-        tags: [OpenApi::TAG_STATIONS_REPORTS],
+        tags: [OpenApi::TAG_STATIONS_STREAMERS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(

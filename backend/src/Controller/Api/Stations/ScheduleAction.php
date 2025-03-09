@@ -24,7 +24,7 @@ use Psr\Http\Message\ResponseInterface;
     operationId: 'getSchedule',
     summary: 'Return upcoming and currently ongoing schedule entries.',
     security: [],
-    tags: [OpenApi::TAG_STATIONS_SCHEDULES],
+    tags: [OpenApi::TAG_PUBLIC_STATIONS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(

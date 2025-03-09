@@ -19,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
     operationId: 'getStreamerArt',
     summary: 'Gets the default album art for a streamer.',
     security: [],
-    tags: [OpenApi::TAG_STATIONS_STREAMERS],
+    tags: [OpenApi::TAG_PUBLIC_STATIONS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(

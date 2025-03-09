@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
         operationId: 'getStationNowPlayingArt',
         summary: 'Always redirects to the current art for the given station.',
         security: [],
-        tags: [OpenApi::TAG_NOW_PLAYING],
+        tags: [OpenApi::TAG_PUBLIC_NOW_PLAYING],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],

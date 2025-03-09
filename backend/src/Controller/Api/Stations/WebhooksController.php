@@ -107,7 +107,7 @@ use Psr\Http\Message\ResponseInterface;
     OA\Delete(
         path: '/station/{station_id}/webhook/{id}',
         operationId: 'deleteWebhook',
-        summary: 'Delete a single web hook relay.',
+        summary: 'Delete a single web hook.',
         tags: [OpenApi::TAG_STATIONS_WEBHOOKS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

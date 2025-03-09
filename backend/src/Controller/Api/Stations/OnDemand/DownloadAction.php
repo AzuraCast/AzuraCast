@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
     operationId: 'getStationOnDemandDownload',
     summary: 'Download an on-demand playlist file by media unique ID.',
     security: [],
-    tags: [OpenApi::TAG_STATIONS_MEDIA],
+    tags: [OpenApi::TAG_PUBLIC_STATIONS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(

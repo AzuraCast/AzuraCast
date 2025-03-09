@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
         operationId: 'getStations',
         summary: 'Returns a list of stations.',
         security: [],
-        tags: [OpenApi::TAG_STATIONS],
+        tags: [OpenApi::TAG_PUBLIC_STATIONS],
         parameters: [],
         responses: [
             new OpenApi\Response\Success(
@@ -36,7 +36,7 @@ use Psr\Http\Message\ResponseInterface;
         operationId: 'getStation',
         summary: 'Return information about a single station.',
         security: [],
-        tags: [OpenApi::TAG_STATIONS],
+        tags: [OpenApi::TAG_PUBLIC_STATIONS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],

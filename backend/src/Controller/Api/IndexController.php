@@ -19,7 +19,7 @@ final class IndexController
         operationId: 'getStatus',
         summary: 'Returns an affirmative response if the API is active.',
         security: [],
-        tags: [OpenApi::TAG_MISC],
+        tags: [OpenApi::TAG_PUBLIC_MISC],
         parameters: [],
         responses: [
             new OpenApi\Response\Success(
@@ -39,7 +39,7 @@ final class IndexController
         operationId: 'getTime',
         description: "Returns the time (with formatting) in GMT and the user's local time zone, if logged in.",
         security: [],
-        tags: [OpenApi::TAG_MISC],
+        tags: [OpenApi::TAG_PUBLIC_MISC],
         parameters: [],
         responses: [
             new OpenApi\Response\Success(

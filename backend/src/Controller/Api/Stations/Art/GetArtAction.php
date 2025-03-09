@@ -22,7 +22,7 @@ use Psr\Http\Message\ResponseInterface;
     operationId: 'getMediaArt',
     summary: 'Returns the album art for a song, or a generic image.',
     security: [],
-    tags: [OpenApi::TAG_STATIONS_MEDIA],
+    tags: [OpenApi::TAG_PUBLIC_STATIONS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(

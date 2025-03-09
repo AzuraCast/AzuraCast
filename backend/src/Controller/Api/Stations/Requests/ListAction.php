@@ -26,7 +26,7 @@ use Psr\Http\Message\ResponseInterface;
         operationId: 'getRequestableSongs',
         summary: 'Return a list of requestable songs.',
         security: [],
-        tags: [OpenApi::TAG_STATIONS_SONG_REQUESTS],
+        tags: [OpenApi::TAG_PUBLIC_STATIONS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\Admin;
 
-use App\Entity\Api\AbstractStatus;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -12,7 +11,7 @@ use OpenApi\Attributes as OA;
     required: ['*'],
     type: 'object'
 )]
-final readonly class RsasStatus extends AbstractStatus
+final readonly class RsasStatus
 {
     public function __construct(
         #[OA\Property]
@@ -20,6 +19,5 @@ final readonly class RsasStatus extends AbstractStatus
         #[OA\Property]
         public bool $hasLicense
     ) {
-        parent::__construct(true);
     }
 }

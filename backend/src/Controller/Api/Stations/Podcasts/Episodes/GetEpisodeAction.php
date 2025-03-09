@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Podcasts\Episodes;
 
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\PodcastEpisode as ApiPodcastEpisode;
 use App\Entity\ApiGenerator\PodcastEpisodeApiGenerator;
 use App\Entity\Repository\PodcastEpisodeRepository;
 use App\Exception\NotFoundException;
@@ -39,8 +40,11 @@ use Psr\Http\Message\ResponseInterface;
         ),
     ],
     responses: [
-        // TODO API Response
-        new OpenApi\Response\Success(),
+        new OpenApi\Response\Success(
+            content: new OA\JsonContent(
+                ref: ApiPodcastEpisode::class
+            )
+        ),
         new OpenApi\Response\NotFound(),
         new OpenApi\Response\GenericError(),
     ]

@@ -11,7 +11,7 @@ use OpenApi\Attributes as OA;
     required: ['*'],
     type: 'object'
 )]
-final readonly class UploadedRecordStatus extends AbstractStatus
+final readonly class UploadedRecordStatus
 {
     public function __construct(
         #[OA\Property]
@@ -19,6 +19,5 @@ final readonly class UploadedRecordStatus extends AbstractStatus
         #[OA\Property]
         public ?string $url = null
     ) {
-        parent::__construct(true);
     }
 }

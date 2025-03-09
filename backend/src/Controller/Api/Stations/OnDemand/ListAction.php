@@ -25,8 +25,13 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
     ],
     responses: [
-        // TODO API Response
-        new OpenApi\Response\Success(),
+        new OpenApi\Response\Success(
+            content: new OA\JsonContent(
+                items: new OA\Items(
+                    ref: StationOnDemand::class
+                )
+            )
+        ),
         new OpenApi\Response\NotFound(),
         new OpenApi\Response\GenericError(),
     ]

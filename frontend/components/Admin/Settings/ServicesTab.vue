@@ -271,6 +271,7 @@ import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import Tab from "~/components/Common/Tab.vue";
 import {IconBadge, IconSend} from "~/components/Common/icons";
 import {GenericForm} from "~/entities/Forms.ts";
+import {ApiTaskWithLog} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     releaseChannel: string,
@@ -349,10 +350,9 @@ const $acmeModal = useTemplateRef('$acmeModal');
 
 const {axios} = useAxios();
 
-const generateAcmeCert = () => {
-    void axios.put(props.acmeUrl).then((resp) => {
-        $acmeModal.value?.show(resp.data.links.log);
-    });
+const generateAcmeCert = async () => {
+    const {data} = await axios.put<ApiTaskWithLog>(props.acmeUrl);
+    $acmeModal.value?.show(data.logUrl);
 }
 
 const $testMessageModal = useTemplateRef('$testMessageModal');

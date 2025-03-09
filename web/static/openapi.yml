@@ -44,7 +44,11 @@ paths:
       operationId: putAdminGenerateAcmeCert
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_TaskWithLog'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -1830,7 +1834,12 @@ paths:
       operationId: getDashboardStations
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: App\Entity\Api\Dashboard
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -3184,7 +3193,12 @@ paths:
           $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Api_StationOnDemand'
         '404':
           $ref: '#/components/responses/RecordNotFound'
         '500':
@@ -4049,7 +4063,11 @@ paths:
             type: string
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_PodcastEpisode'
         '404':
           $ref: '#/components/responses/RecordNotFound'
         '500':
@@ -4073,7 +4091,12 @@ paths:
             type: string
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Api_PodcastEpisode'
         '404':
           $ref: '#/components/responses/RecordNotFound'
         '500':
@@ -4194,7 +4217,11 @@ paths:
             type: string
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Podcast'
         '404':
           $ref: '#/components/responses/RecordNotFound'
         '500':
@@ -4218,7 +4245,12 @@ paths:
             type: string
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Api_Podcast'
         '404':
           $ref: '#/components/responses/RecordNotFound'
         '500':
@@ -5692,7 +5724,11 @@ paths:
             format: int64
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_TaskWithLog'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -5897,14 +5933,6 @@ paths:
           $ref: '#/components/responses/GenericError'
 components:
   schemas:
-    Api_AbstractStatus:
-      required:
-        - success
-      properties:
-        success:
-          type: boolean
-          example: true
-      type: object
     Api_Account_ChangePassword:
       required:
         - current_password
@@ -6074,19 +6102,14 @@ components:
       required:
         - version
         - key
+      properties:
+        version:
+          type: string
+          nullable: true
+        key:
+          type: string
+          nullable: true
       type: object
-      allOf:
-        -
-          $ref: '#/components/schemas/Api_AbstractStatus'
-        -
-          properties:
-            version:
-              type: string
-              nullable: true
-            key:
-              type: string
-              nullable: true
-          type: object
     Api_Admin_Permission:
       required:
         - id
@@ -6215,18 +6238,13 @@ components:
       required:
         - version
         - hasLicense
+      properties:
+        version:
+          type: string
+          nullable: true
+        hasLicense:
+          type: boolean
       type: object
-      allOf:
-        -
-          $ref: '#/components/schemas/Api_AbstractStatus'
-        -
-          properties:
-            version:
-              type: string
-              nullable: true
-            hasLicense:
-              type: boolean
-          type: object
     Api_Admin_ServerStats_CpuStats:
       required:
         - total
@@ -6449,29 +6467,19 @@ components:
     Api_Admin_ShoutcastStatus:
       required:
         - version
+      properties:
+        version:
+          type: string
+          nullable: true
       type: object
-      allOf:
-        -
-          $ref: '#/components/schemas/Api_AbstractStatus'
-        -
-          properties:
-            version:
-              type: string
-              nullable: true
-          type: object
     Api_Admin_StereoToolStatus:
       required:
         - version
+      properties:
+        version:
+          type: string
+          nullable: true
       type: object
-      allOf:
-        -
-          $ref: '#/components/schemas/Api_AbstractStatus'
-        -
-          properties:
-            version:
-              type: string
-              nullable: true
-          type: object
     Api_Admin_StorageLocation:
       type: object
       allOf:
@@ -7728,21 +7736,20 @@ components:
       type: object
     Api_Status:
       required:
+        - success
         - message
         - formatted_message
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: 'Changes saved successfully.'
+        formatted_message:
+          type: string
+          example: '<b>Changes saved successfully.</b>'
       type: object
-      allOf:
-        -
-          $ref: '#/components/schemas/Api_AbstractStatus'
-        -
-          properties:
-            message:
-              type: string
-              example: 'Changes saved successfully.'
-            formatted_message:
-              type: string
-              example: '<b>Changes saved successfully.</b>'
-          type: object
     Api_SystemStatus:
       required:
         - online
@@ -7756,6 +7763,15 @@ components:
           description: 'The current UNIX timestamp'
           type: integer
           example: 1609480800
+      type: object
+    Api_TaskWithLog:
+      required:
+        - logUrl
+      properties:
+        logUrl:
+          description: 'The URL to view logs of the ongoing background task.'
+          type: string
+          format: uri
       type: object
     Api_Time:
       required:
@@ -7845,18 +7861,13 @@ components:
       required:
         - hasRecord
         - url
+      properties:
+        hasRecord:
+          type: boolean
+        url:
+          type: string
+          nullable: true
       type: object
-      allOf:
-        -
-          $ref: '#/components/schemas/Api_AbstractStatus'
-        -
-          properties:
-            hasRecord:
-              type: boolean
-            url:
-              type: string
-              nullable: true
-          type: object
     ApiKey:
       type: object
       allOf:

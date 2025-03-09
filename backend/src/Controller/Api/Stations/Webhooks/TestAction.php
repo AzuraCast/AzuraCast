@@ -6,6 +6,7 @@ namespace App\Controller\Api\Stations\Webhooks;
 
 use App\Container\EnvironmentAwareTrait;
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\TaskWithLog;
 use App\Entity\Repository\StationWebhookRepository;
 use App\Enums\GlobalPermissions;
 use App\Http\Response;
@@ -34,8 +35,11 @@ use Symfony\Component\Messenger\MessageBus;
         ),
     ],
     responses: [
-        // TODO API Response
-        new OpenApi\Response\Success(),
+        new OpenApi\Response\Success(
+            content: new OA\JsonContent(
+                ref: TaskWithLog::class
+            )
+        ),
         new OpenApi\Response\AccessDenied(),
         new OpenApi\Response\NotFound(),
         new OpenApi\Response\GenericError(),
@@ -80,14 +84,11 @@ final class TestAction implements SingleActionInterface
 
         $router = $request->getRouter();
         return $response->withJson(
-            [
-                'success' => true,
-                'links' => [
-                    'log' => $router->fromHere('api:stations:webhook:test-log', [
-                        'path' => basename($tempFile),
-                    ]),
-                ],
-            ]
+            new TaskWithLog(
+                $router->fromHere('api:stations:webhook:test-log', [
+                    'path' => basename($tempFile),
+                ])
+            )
         );
     }
 }

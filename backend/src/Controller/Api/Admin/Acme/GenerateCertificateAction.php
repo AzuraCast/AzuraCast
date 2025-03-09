@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin\Acme;
 
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\TaskWithLog;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\GenerateAcmeCertificate;
@@ -21,8 +22,11 @@ use Symfony\Component\Messenger\MessageBus;
         summary: 'Generate or renew ACME certificate.',
         tags: [OpenApi::TAG_ADMIN],
         responses: [
-            // TODO API Response Body
-            new OpenApi\Response\Success(),
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    ref: TaskWithLog::class
+                )
+            ),
             new OpenApi\Response\AccessDenied(),
             new OpenApi\Response\NotFound(),
             new OpenApi\Response\GenericError(),
@@ -50,14 +54,9 @@ final class GenerateCertificateAction implements SingleActionInterface
 
         $router = $request->getRouter();
         return $response->withJson(
-            [
-                'success' => true,
-                'links' => [
-                    'log' => $router->fromHere('api:admin:acme-log', [
-                        'path' => basename($tempFile),
-                    ]),
-                ],
-            ]
+            new TaskWithLog($router->fromHere('api:admin:acme-log', [
+                'path' => basename($tempFile),
+            ]))
         );
     }
 }

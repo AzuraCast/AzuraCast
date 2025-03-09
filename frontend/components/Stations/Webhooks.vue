@@ -120,7 +120,7 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import {getApiUrl, getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
-import {HasLinks, StationWebhook, WebhookTriggers, WebhookTypes} from "~/entities/ApiInterfaces.ts";
+import {ApiTaskWithLog, HasLinks, StationWebhook, WebhookTriggers, WebhookTypes} from "~/entities/ApiInterfaces.ts";
 
 const listUrl = getStationApiUrl('/webhooks');
 
@@ -184,10 +184,9 @@ const doToggle = (url: string) => {
 
 const $logModal = useTemplateRef('$logModal');
 
-const doTest = (url: string) => {
-    void axios.put(url).then((resp) => {
-        $logModal.value?.show(resp.data.links.log);
-    });
+const doTest = async (url: string) => {
+    const {data} = await axios.put<ApiTaskWithLog>(url);
+    $logModal.value?.show(data.logUrl);
 };
 
 const {doDelete} = useConfirmAndDelete(

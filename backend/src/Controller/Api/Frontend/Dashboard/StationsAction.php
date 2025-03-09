@@ -28,8 +28,13 @@ use Psr\Http\Message\ResponseInterface;
         summary: 'List stations that can be managed by the current user account on the dashboard.',
         tags: [OpenApi::TAG_MISC],
         responses: [
-            // TODO API Response Body
-            new OpenApi\Response\Success(),
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    items: new OA\Items(
+                        ref: Dashboard::class
+                    )
+                )
+            ),
             new OpenApi\Response\AccessDenied(),
             new OpenApi\Response\NotFound(),
             new OpenApi\Response\GenericError(),

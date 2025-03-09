@@ -9,11 +9,6 @@
  * ---------------------------------------------------------------
  */
 
-export interface ApiAbstractStatus {
-  /** @example true */
-  success: boolean;
-}
-
 export interface ApiAccountChangePassword {
   /** The current account password. */
   current_password: string;
@@ -75,10 +70,10 @@ export interface ApiAdminDebugLogResult {
   logs: ApiAdminDebugLogEntry[];
 }
 
-export type ApiAdminGeoLiteStatus = ApiAbstractStatus & {
+export interface ApiAdminGeoLiteStatus {
   version: string | null;
   key: string | null;
-};
+}
 
 export interface ApiAdminPermission {
   id: string;
@@ -164,10 +159,10 @@ export interface ApiAdminRoleStationPermission {
   permissions: StationPermissions[];
 }
 
-export type ApiAdminRsasStatus = ApiAbstractStatus & {
+export interface ApiAdminRsasStatus {
   version: string | null;
   hasLicense: boolean;
-};
+}
 
 export interface ApiAdminServerStatsCpuStats {
   total: ApiAdminServerStatsCpuStatsSection;
@@ -253,13 +248,13 @@ export type ApiAdminServiceData = HasLinks & {
   running: boolean;
 };
 
-export type ApiAdminShoutcastStatus = ApiAbstractStatus & {
+export interface ApiAdminShoutcastStatus {
   version: string | null;
-};
+}
 
-export type ApiAdminStereoToolStatus = ApiAbstractStatus & {
+export interface ApiAdminStereoToolStatus {
   version: string | null;
-};
+}
 
 export type ApiAdminStorageLocation = HasLinks & {
   /** @example 1 */
@@ -1205,12 +1200,14 @@ export interface ApiStationServiceStatus {
   station_needs_restart: boolean;
 }
 
-export type ApiStatus = ApiAbstractStatus & {
+export interface ApiStatus {
+  /** @example true */
+  success: boolean;
   /** @example "Changes saved successfully." */
   message: string;
   /** @example "<b>Changes saved successfully.</b>" */
   formatted_message: string;
-};
+}
 
 export interface ApiSystemStatus {
   /**
@@ -1223,6 +1220,14 @@ export interface ApiSystemStatus {
    * @example 1609480800
    */
   timestamp: number;
+}
+
+export interface ApiTaskWithLog {
+  /**
+   * The URL to view logs of the ongoing background task.
+   * @format uri
+   */
+  logUrl: string;
 }
 
 export interface ApiTime {
@@ -1296,10 +1301,10 @@ export interface ApiUploadFile {
   file: string;
 }
 
-export type ApiUploadedRecordStatus = ApiAbstractStatus & {
+export interface ApiUploadedRecordStatus {
   hasRecord: boolean;
   url: string | null;
-};
+}
 
 export type ApiKey = HasSplitTokenFields & {
   user?: User;

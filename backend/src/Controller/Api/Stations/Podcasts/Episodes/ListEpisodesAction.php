@@ -7,6 +7,7 @@ namespace App\Controller\Api\Stations\Podcasts\Episodes;
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\PodcastEpisode as ApiPodcastEpisode;
 use App\Entity\ApiGenerator\PodcastEpisodeApiGenerator;
 use App\Entity\Enums\PodcastSources;
 use App\Entity\PodcastEpisode;
@@ -34,8 +35,13 @@ use Psr\Http\Message\ResponseInterface;
         ),
     ],
     responses: [
-        // TODO API Response
-        new OpenApi\Response\Success(),
+        new OpenApi\Response\Success(
+            content: new OA\JsonContent(
+                items: new OA\Items(
+                    ref: ApiPodcastEpisode::class
+                )
+            )
+        ),
         new OpenApi\Response\NotFound(),
         new OpenApi\Response\GenericError(),
     ]

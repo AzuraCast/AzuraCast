@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin\Backups;
 
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\TaskWithLog;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\BackupMessage;
@@ -21,8 +22,11 @@ use Symfony\Component\Messenger\MessageBus;
         summary: 'Initialize a manual backup.',
         tags: [OpenApi::TAG_ADMIN_BACKUPS],
         responses: [
-            // TODO API Response Body
-            new OpenApi\Response\Success(),
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    ref: TaskWithLog::class
+                )
+            ),
             new OpenApi\Response\AccessDenied(),
             new OpenApi\Response\NotFound(),
             new OpenApi\Response\GenericError(),
@@ -59,17 +63,13 @@ final class RunAction implements SingleActionInterface
         $this->messageBus->dispatch($message);
 
         $router = $request->getRouter();
-        return $response->withJson([
-            'storageLocationId' => $message->storageLocationId,
-            'path' => $message->path,
-            'excludeMedia' => $message->excludeMedia,
-            'outputPath' => $message->outputPath,
-            'links' => [
-                'log' => $router->named(
+        return $response->withJson(
+            new TaskWithLog(
+                $router->named(
                     'api:admin:backups:log',
                     ['path' => basename($tempFile)]
-                ),
-            ],
-        ]);
+                )
+            )
+        );
     }
 }

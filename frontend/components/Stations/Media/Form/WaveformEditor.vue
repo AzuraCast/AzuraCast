@@ -82,9 +82,9 @@ import WaveformComponent from "~/components/Common/Waveform.vue";
 import Icon from "~/components/Common/Icon.vue";
 import {ref, shallowRef, useTemplateRef, watch} from "vue";
 import {IconPlayCircle, IconStop} from "~/components/Common/icons";
-import {GenericForm} from "~/entities/Forms.ts";
 import {reactiveComputed} from "@vueuse/core";
 import {RegionParams} from "wavesurfer.js/dist/plugins/regions.js";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     duration: number,
@@ -93,7 +93,7 @@ const props = defineProps<{
     waveformCacheUrl?: string,
 }>();
 
-const form = defineModel<GenericForm>('form', {
+const form = defineModel<ApiGenericForm>('form', {
     required: true
 });
 

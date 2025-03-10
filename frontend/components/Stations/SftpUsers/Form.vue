@@ -60,13 +60,13 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {computed} from "vue";
 import {required} from "@vuelidate/validators";
-import {GenericForm} from "~/entities/Forms.ts";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     isEditMode: boolean
 }>();
 
-const form = defineModel<GenericForm>('form', {required: true});
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {v$} = useVuelidateOnFormTab(
     form,

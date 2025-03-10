@@ -43,11 +43,12 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {HasGenericFormProps} from "~/entities/Forms.ts";
 import {objectToSimpleFormOptions} from "~/functions/objectToFormOptions.ts";
 import TimeRadios from "~/components/Account/TimeRadios.vue";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
-interface AccountEditFormProps extends HasGenericFormProps {
+interface AccountEditFormProps {
+    form: ApiGenericForm,
     supportedLocales: Record<string, string>
 }
 

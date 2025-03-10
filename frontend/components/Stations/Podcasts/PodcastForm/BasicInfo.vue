@@ -83,14 +83,14 @@ import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {NestedFormOptionInput} from "~/functions/objectToFormOptions.ts";
-import {GenericForm} from "~/entities/Forms.ts";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
 defineProps<{
     languageOptions: NestedFormOptionInput,
     categoriesOptions: NestedFormOptionInput,
 }>();
 
-const form = defineModel<GenericForm>('form', {required: true});
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {v$, tabClass} = useVuelidateOnFormTab(
     form,

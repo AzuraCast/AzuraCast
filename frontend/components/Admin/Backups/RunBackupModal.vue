@@ -114,6 +114,7 @@ import Modal from "~/components/Common/Modal.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import {ApiTaskWithLog} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     runBackupUrl: string,
@@ -128,7 +129,7 @@ const error = ref(null);
 const $modal = useTemplateRef('$modal');
 const {show: open, hide} = useHasModal($modal);
 
-const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
+const {form, resetForm, v$, validate} = useVuelidateOnForm(
     {
         'storage_location': {},
         'path': {},
@@ -143,20 +144,18 @@ const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
 
 const {axios} = useAxios();
 
-const submit = () => {
-    ifValid(() => {
-        error.value = null;
+const submit = async () => {
+    const isValid = await validate();
+    if (!isValid) {
+        return;
+    }
 
-        axios({
-            method: 'POST',
-            url: props.runBackupUrl,
-            data: form.value
-        }).then((resp) => {
-            logUrl.value = resp.data.links.log;
-        }).catch((error) => {
-            error.value = error.response.data.message;
-        });
-    });
+    try {
+        const {data} = await axios.post<ApiTaskWithLog>(props.runBackupUrl, form.value);
+        logUrl.value = data.logUrl;
+    } catch (error) {
+        error.value = error.response.data.message
+    }
 };
 
 const clearContents = () => {

@@ -236,9 +236,9 @@ import {useTranslate} from "~/vendor/gettext";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
-import {GenericForm} from "~/entities/Forms.ts";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
-const form = defineModel<GenericForm>('form', {required: true});
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {v$, tabClass} = useVuelidateOnFormTab(
     form,

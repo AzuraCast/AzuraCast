@@ -78,10 +78,10 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
-import {GenericForm} from "~/entities/Forms.ts";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
 defineProps<{
-    form: GenericForm,
+    form: ApiGenericForm,
     songLength: string,
 }>();
 </script>

@@ -270,8 +270,7 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import Tab from "~/components/Common/Tab.vue";
 import {IconBadge, IconSend} from "~/components/Common/icons";
-import {GenericForm} from "~/entities/Forms.ts";
-import {ApiTaskWithLog} from "~/entities/ApiInterfaces.ts";
+import {ApiGenericForm, ApiTaskWithLog} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     releaseChannel: string,
@@ -279,7 +278,7 @@ const props = defineProps<{
     acmeUrl: string,
 }>();
 
-const form = defineModel<GenericForm>('form', {required: true});
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {v$, tabClass} = useVuelidateOnFormTab(
     form,

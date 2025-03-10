@@ -4,22 +4,24 @@ import {computed, ComputedRef, MaybeRef, unref} from "vue";
 import {useEventBus} from "@vueuse/core";
 import {cloneDeep, merge} from "lodash";
 import {Ref} from "vue-demi";
-import {GenericForm} from "~/entities/Forms.ts";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
-type ValidationFunc<T extends GenericForm = GenericForm> = (options: GlobalConfig) => ValidationArgs<T>
-type BlankFormFunc<T extends GenericForm = GenericForm> = (options: GlobalConfig) => T
+type Form = ApiGenericForm
 
-export type VuelidateValidations<T extends GenericForm = GenericForm> = ValidationArgs<T> | ValidationFunc<T>
-export type VuelidateBlankForm<T extends GenericForm = GenericForm> = MaybeRef<T> | BlankFormFunc<T>
+type ValidationFunc<T extends Form = Form> = (options: GlobalConfig) => ValidationArgs<T>
+type BlankFormFunc<T extends Form = Form> = (options: GlobalConfig) => T
 
-export type VuelidateObject<T extends GenericForm = GenericForm> = Validation<ValidationArgs<T>, T>
-export type VuelidateRef<T extends GenericForm = GenericForm> = MaybeRef<VuelidateObject<T>>
+export type VuelidateValidations<T extends Form = Form> = ValidationArgs<T> | ValidationFunc<T>
+export type VuelidateBlankForm<T extends Form = Form> = MaybeRef<T> | BlankFormFunc<T>
 
-export function useFormTabEventBus<T extends GenericForm = GenericForm>() {
+export type VuelidateObject<T extends Form = Form> = Validation<ValidationArgs<T>, T>
+export type VuelidateRef<T extends Form = Form> = MaybeRef<VuelidateObject<T>>
+
+export function useFormTabEventBus<T extends Form = Form>() {
     return useEventBus<'build', (formPiece: VuelidateBlankForm<Partial<T>>) => void>('form_tabs');
 }
 
-export function useVuelidateOnForm<T extends GenericForm = GenericForm>(
+export function useVuelidateOnForm<T extends Form = Form>(
     validations: VuelidateValidations<T> = {} as VuelidateValidations<T>,
     blankForm: VuelidateBlankForm<T> = {} as VuelidateBlankForm<T>,
     options: GlobalConfig = {}

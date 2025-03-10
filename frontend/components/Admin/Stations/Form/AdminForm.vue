@@ -90,15 +90,15 @@ import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 import {getApiUrl} from "~/router";
-import {GenericForm} from "~/entities/Forms.ts";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import {omit} from "lodash";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     isEditMode: boolean,
 }>();
 
-const form = defineModel<GenericForm>('form', {required: true});
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const storageLocationApiUrl = getApiUrl('/admin/stations/storage-locations');
 

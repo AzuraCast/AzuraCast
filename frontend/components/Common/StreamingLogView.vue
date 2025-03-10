@@ -34,7 +34,7 @@ const logs = ref<string>('');
 const currentLogPosition = ref<number | null>(null);
 const scrollToBottom = ref<boolean>(true);
 
-const {axios} = useAxios();
+const {axiosSilent} = useAxios();
 
 const $textarea = useTemplateRef('$textarea');
 
@@ -49,7 +49,7 @@ const stop = () => {
 tryOnScopeDispose(stop);
 
 const updateLogs = () => {
-    void axios.request<ApiLogContents>({
+    void axiosSilent.request<ApiLogContents>({
         method: 'GET',
         url: props.logUrl,
         params: {

@@ -1838,6 +1838,7 @@ paths:
           content:
             application/json:
               schema:
+                type: array
                 items:
                   $ref: App\Entity\Api\Dashboard
         '403':
@@ -3197,6 +3198,7 @@ paths:
           content:
             application/json:
               schema:
+                type: array
                 items:
                   $ref: '#/components/schemas/Api_StationOnDemand'
         '404':
@@ -4095,6 +4097,7 @@ paths:
           content:
             application/json:
               schema:
+                type: array
                 items:
                   $ref: '#/components/schemas/Api_PodcastEpisode'
         '404':
@@ -4249,6 +4252,7 @@ paths:
           content:
             application/json:
               schema:
+                type: array
                 items:
                   $ref: '#/components/schemas/Api_Podcast'
         '404':
@@ -4256,7 +4260,7 @@ paths:
         '500':
           $ref: '#/components/responses/GenericError'
       security: []
-  '/station/{station_id}/podcast/{podcast_id}/playlists':
+  '/station/{station_id}/podcasts/playlists':
     get:
       tags:
         - 'Stations: Podcasts'
@@ -4265,16 +4269,15 @@ paths:
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
-        -
-          name: podcast_id
-          in: path
-          description: 'Podcast ID'
-          required: true
-          schema:
-            type: string
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_Form_Option'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -6738,6 +6741,42 @@ components:
           type: array
           items: {  }
       type: object
+    Api_Form_Option:
+      required:
+        - value
+        - text
+      properties:
+        value: {  }
+        text:
+          type: string
+        description:
+          type: string
+          nullable: true
+      type: object
+    Api_Form_OptionGroup:
+      required:
+        - options
+        - label
+      properties:
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/Api_Form_Option'
+        label:
+          type: string
+      type: object
+    Api_Form_Select:
+      type: array
+      items:
+        anyOf:
+          -
+            $ref: '#/components/schemas/Api_Form_Option'
+          -
+            $ref: '#/components/schemas/Api_Form_OptionGroup'
+    Api_GenericForm:
+      type: object
+      additionalProperties:
+        type: '{}'
     HashMap:
       description: 'A hash-map array represented as an object.'
       type: object

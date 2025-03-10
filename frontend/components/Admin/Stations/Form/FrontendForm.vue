@@ -176,9 +176,8 @@ import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric, required} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
-import {GenericForm} from "~/entities/Forms.ts";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
-import {FrontendAdapters} from "~/entities/ApiInterfaces.ts";
+import {ApiGenericForm, FrontendAdapters} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     isRsasInstalled: boolean,
@@ -186,7 +185,7 @@ const props = defineProps<{
     countries: Record<string, string>,
 }>();
 
-const form = defineModel<GenericForm>('form', {required: true});
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {enableAdvancedFeatures} = useAzuraCast();
 

@@ -457,6 +457,21 @@ export interface ApiFileListDir {
   playlists?: any[];
 }
 
+export interface ApiFormOption {
+  value: any;
+  text: string;
+  description?: string | null;
+}
+
+export interface ApiFormOptionGroup {
+  options: ApiFormOption[];
+  label: string;
+}
+
+export type ApiFormSelect = (ApiFormOption | ApiFormOptionGroup)[];
+
+export type ApiGenericForm = Record<string, any>;
+
 /** A hash-map array represented as an object. */
 export type HashMap = object;
 

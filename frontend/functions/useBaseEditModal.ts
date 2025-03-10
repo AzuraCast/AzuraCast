@@ -11,7 +11,7 @@ import {
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {AxiosRequestConfig} from "axios";
 import {GlobalConfig} from "@vuelidate/core";
-import {GenericForm} from "~/entities/Forms.ts";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
 export type ModalFormTemplateRef = InstanceType<typeof ModalForm>;
 
@@ -25,7 +25,7 @@ export interface HasRelistEmit {
 
 export type BaseEditModalEmits = HasRelistEmit;
 
-export interface BaseEditModalOptions<T extends GenericForm = GenericForm> extends GlobalConfig {
+export interface BaseEditModalOptions<T extends ApiGenericForm = ApiGenericForm> extends GlobalConfig {
     resetForm?(originalResetForm: () => void): void,
 
     clearContents?(resetForm: () => void): void,
@@ -41,7 +41,7 @@ export interface BaseEditModalOptions<T extends GenericForm = GenericForm> exten
     onSubmitError?(error: any): void,
 }
 
-export function useBaseEditModal<T extends GenericForm = GenericForm>(
+export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
     props: BaseEditModalProps,
     emit: BaseEditModalEmits,
     $modal: Readonly<ShallowRef<ModalFormTemplateRef | null>>,

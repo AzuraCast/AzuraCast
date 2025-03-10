@@ -47,14 +47,14 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {email, required} from "@vuelidate/validators";
 import validatePassword from "~/functions/validatePassword";
-import {GenericForm} from "~/entities/Forms.ts";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     roles: Record<number, string>,
     isEditMode: boolean,
 }>();
 
-const form = defineModel<GenericForm>('form', {required: true});
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {v$} = useVuelidateOnFormTab(
     form,

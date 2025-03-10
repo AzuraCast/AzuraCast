@@ -30,6 +30,7 @@ use Psr\Http\Message\ResponseInterface;
         responses: [
             new OpenApi\Response\Success(
                 content: new OA\JsonContent(
+                    type: 'array',
                     items: new OA\Items(
                         ref: Dashboard::class
                     )

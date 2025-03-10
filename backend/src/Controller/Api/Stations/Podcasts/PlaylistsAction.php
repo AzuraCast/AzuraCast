@@ -6,6 +6,8 @@ namespace App\Controller\Api\Stations\Podcasts;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Form\FormOption;
+use App\Entity\Api\Form\FormSelect;
 use App\Entity\Enums\PlaylistSources;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -14,23 +16,22 @@ use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
 #[OA\Get(
-    path: '/station/{station_id}/podcast/{podcast_id}/playlists',
+    path: '/station/{station_id}/podcasts/playlists',
     operationId: 'getStationPodcastPlaylists',
     summary: 'Get a list of playlists that can be associated with a podcast.',
     tags: [OpenApi::TAG_STATIONS_PODCASTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
-        new OA\Parameter(
-            name: 'podcast_id',
-            description: 'Podcast ID',
-            in: 'path',
-            required: true,
-            schema: new OA\Schema(type: 'string')
-        ),
     ],
     responses: [
-        // TODO API Response
-        new OpenApi\Response\Success(),
+        new OpenApi\Response\Success(
+            content: new OA\JsonContent(
+                type: 'array',
+                items: new OA\Items(
+                    ref: FormOption::class
+                )
+            )
+        ),
         new OpenApi\Response\AccessDenied(),
         new OpenApi\Response\NotFound(),
         new OpenApi\Response\GenericError(),
@@ -57,7 +58,9 @@ final class PlaylistsAction implements SingleActionInterface
             ->getArrayResult();
 
         return $response->withJson(
-            array_column($playlistsRaw, 'name', 'id')
+            FormSelect::fromArray(
+                array_column($playlistsRaw, 'name', 'id')
+            )
         );
     }
 }

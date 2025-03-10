@@ -68,9 +68,9 @@ import {onMounted, ref, shallowRef} from "vue";
 import {useAxios} from "~/vendor/axios.ts";
 import {getStationApiUrl} from "~/router.ts";
 import Loading from "~/components/Common/Loading.vue";
-import {GenericForm} from "~/entities/Forms.ts";
+import {ApiFormOption, ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
-const form = defineModel<GenericForm>('form', {required: true});
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {v$, tabClass} = useVuelidateOnFormTab(
     form,
@@ -107,12 +107,13 @@ const playlistOptions = shallowRef([]);
 const {axios} = useAxios();
 const playlistsApiUrl = getStationApiUrl('/podcasts/playlists');
 
-const loadPlaylists = () => {
-    void axios.get(playlistsApiUrl.value).then((resp) => {
-        playlistOptions.value = resp.data;
-    }).finally(() => {
+const loadPlaylists = async () => {
+    try {
+        const {data} = await axios.get<ApiFormOption[]>(playlistsApiUrl.value);
+        playlistOptions.value = data;
+    } finally {
         playlistsLoading.value = false;
-    });
+    }
 };
 
 onMounted(loadPlaylists);

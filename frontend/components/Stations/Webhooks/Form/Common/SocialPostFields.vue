@@ -64,9 +64,9 @@ import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/For
 import {includes} from "lodash";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {useTranslate} from "~/vendor/gettext";
-import {GenericForm} from "~/entities/Forms.ts";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
-const form = defineModel<GenericForm>('form', {required: true});
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {$gettext} = useTranslate();
 

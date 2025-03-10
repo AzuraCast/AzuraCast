@@ -307,15 +307,14 @@ import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {decimal, numeric, required} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
-import {GenericForm} from "~/entities/Forms.ts";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
-import {AudioProcessingMethods, BackendAdapters} from "~/entities/ApiInterfaces.ts";
+import {ApiGenericForm, AudioProcessingMethods, BackendAdapters} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     isStereoToolInstalled: boolean
 }>();
 
-const form = defineModel<GenericForm>('form', {required: true});
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {enableAdvancedFeatures} = useAzuraCast();
 

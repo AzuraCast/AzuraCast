@@ -16,6 +16,29 @@ use Psr\Http\Message\ResponseInterface;
     path: '/station/{station_id}/playlist/{id}/clone',
     operationId: 'postStationPlaylistClone',
     summary: 'Create a copy of the specified playlist.',
+    requestBody: new OA\RequestBody(
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(
+                    property: 'name',
+                    description: 'The name of the newly cloned playlist.',
+                    type: 'string'
+                ),
+                new OA\Property(
+                    property: 'clone',
+                    description: 'Which parts of the original playlist to clone.',
+                    type: 'array',
+                    items: new OA\Items(
+                        type: 'string',
+                        enum: [
+                            'schedule',
+                            'media',
+                        ]
+                    ),
+                ),
+            ]
+        )
+    ),
     tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -28,7 +51,6 @@ use Psr\Http\Message\ResponseInterface;
         ),
     ],
     responses: [
-        // TODO API Response
         new OpenApi\Response\Success(),
         new OpenApi\Response\AccessDenied(),
         new OpenApi\Response\NotFound(),

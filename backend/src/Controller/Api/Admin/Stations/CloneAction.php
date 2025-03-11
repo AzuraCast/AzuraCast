@@ -30,6 +30,41 @@ use Throwable;
         path: '/admin/station/{id}/clone',
         operationId: 'postAdminStationsClone',
         summary: 'Clone a station, preserving certain settings.',
+        requestBody: new OA\RequestBody(
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(
+                        property: 'name',
+                        description: 'The name of the newly cloned station.',
+                        type: 'string'
+                    ),
+                    new OA\Property(
+                        property: 'description',
+                        description: 'The description of the newly cloned station.',
+                        type: 'string'
+                    ),
+                    new OA\Property(
+                        property: 'clone',
+                        description: 'Which parts of the original station to clone.',
+                        type: 'array',
+                        items: new OA\Items(
+                            type: 'string',
+                            enum: [
+                                CloneAction::CLONE_MEDIA_STORAGE,
+                                CloneAction::CLONE_RECORDINGS_STORAGE,
+                                CloneAction::CLONE_PODCASTS_STORAGE,
+                                CloneAction::CLONE_PLAYLISTS,
+                                CloneAction::CLONE_MOUNTS,
+                                CloneAction::CLONE_REMOTES,
+                                CloneAction::CLONE_STREAMERS,
+                                CloneAction::CLONE_PERMISSIONS,
+                                CloneAction::CLONE_WEBHOOKS,
+                            ]
+                        ),
+                    ),
+                ]
+            )
+        ),
         tags: [OpenApi::TAG_ADMIN_STATIONS],
         parameters: [
             new OA\Parameter(
@@ -41,7 +76,6 @@ use Throwable;
             ),
         ],
         responses: [
-            // TODO API Response Body
             new OpenApi\Response\Success(),
             new OpenApi\Response\AccessDenied(),
             new OpenApi\Response\NotFound(),

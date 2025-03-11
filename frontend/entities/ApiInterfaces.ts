@@ -1250,7 +1250,7 @@ export type ApiStationStreamerBroadcast = HasLinks & {
   /** @format date-time */
   timestampStart: string;
   /** @format date-time */
-  timestampEnd: string;
+  timestampEnd: string | null;
   streamer: ApiStationStreamer | null;
   recording: ApiStationStreamerBroadcastRecording | null;
 };

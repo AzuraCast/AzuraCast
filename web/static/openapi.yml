@@ -1090,6 +1090,22 @@ paths:
           schema:
             type: int
             format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  description: 'The name of the newly cloned station.'
+                  type: string
+                description:
+                  description: 'The description of the newly cloned station.'
+                  type: string
+                clone:
+                  description: 'Which parts of the original station to clone.'
+                  type: array
+                  items: { type: string, enum: [media_storage, recordings_storage, podcasts_storage, playlists, mounts, remotes, streamers, permissions, webhooks] }
+              type: object
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -3249,6 +3265,19 @@ paths:
           schema:
             type: int
             format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  description: 'The name of the newly cloned playlist.'
+                  type: string
+                clone:
+                  description: 'Which parts of the original playlist to clone.'
+                  type: array
+                  items: { type: string, enum: [schedule, media] }
+              type: object
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -7906,6 +7935,7 @@ components:
             timestampEnd:
               type: string
               format: date-time
+              nullable: true
             streamer:
               oneOf:
                 -

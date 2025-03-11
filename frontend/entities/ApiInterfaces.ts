@@ -1239,6 +1239,28 @@ export interface ApiStationServiceStatus {
   station_needs_restart: boolean;
 }
 
+export interface ApiStationStreamer {
+  id: number;
+  streamer_username: string;
+  display_name: string;
+}
+
+export type ApiStationStreamerBroadcast = HasLinks & {
+  id: number;
+  /** @format date-time */
+  timestampStart: string;
+  /** @format date-time */
+  timestampEnd: string;
+  streamer: ApiStationStreamer | null;
+  recording: ApiStationStreamerBroadcastRecording | null;
+};
+
+export interface ApiStationStreamerBroadcastRecording {
+  path: string;
+  size: number;
+  downloadUrl: string;
+}
+
 export interface ApiStatus {
   /** @example true */
   success: boolean;

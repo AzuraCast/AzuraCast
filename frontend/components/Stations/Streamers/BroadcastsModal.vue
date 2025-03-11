@@ -26,11 +26,11 @@
                 @row-selected="onRowSelected"
             >
                 <template #cell(download)="row">
-                    <template v-if="row.item.recording?.links?.download">
-                        <play-button :url="row.item.recording?.links?.download" />
+                    <template v-if="row.item.recording?.downloadUrl">
+                        <play-button :url="row.item.recording?.downloadUrl"/>
                         <a
                             class="name btn p-0 ms-2"
-                            :href="row.item.recording?.links?.download"
+                            :href="row.item.recording?.downloadUrl"
                             target="_blank"
                             :title="$gettext('Download')"
                         >
@@ -82,6 +82,7 @@ import {usePlayerStore, useProvidePlayerStore} from "~/functions/usePlayerStore.
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import BroadcastsModalToolbar from "~/components/Stations/Streamers/BroadcastsModalToolbar.vue";
 import {useDialog} from "~/functions/useDialog.ts";
+import {ApiStationStreamerBroadcast} from "~/entities/ApiInterfaces.ts";
 
 const listUrl = ref<string | null>(null);
 const batchUrl = ref<string | null>(null);
@@ -90,7 +91,7 @@ const {$gettext} = useTranslate();
 
 const {formatIsoAsDateTime} = useStationDateTimeFormatter();
 
-type Row = Record<string, any>
+type Row = ApiStationStreamerBroadcast;
 
 const fields: DataTableField<Row>[] = [
     {

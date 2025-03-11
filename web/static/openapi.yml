@@ -5427,7 +5427,13 @@ paths:
           $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_StationStreamerBroadcast'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -5453,7 +5459,13 @@ paths:
             format: int64
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_StationStreamerBroadcast'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -7859,6 +7871,64 @@ components:
         station_needs_restart:
           type: boolean
           example: true
+      type: object
+    Api_StationStreamer:
+      required:
+        - id
+        - streamer_username
+        - display_name
+      properties:
+        id:
+          type: integer
+        streamer_username:
+          type: string
+        display_name:
+          type: string
+      type: object
+    Api_StationStreamerBroadcast:
+      required:
+        - id
+        - timestampStart
+        - timestampEnd
+        - streamer
+        - recording
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasLinks'
+        -
+          properties:
+            id:
+              type: integer
+            timestampStart:
+              type: string
+              format: date-time
+            timestampEnd:
+              type: string
+              format: date-time
+            streamer:
+              oneOf:
+                -
+                  $ref: '#/components/schemas/Api_StationStreamer'
+              nullable: true
+            recording:
+              oneOf:
+                -
+                  $ref: '#/components/schemas/Api_StationStreamerBroadcastRecording'
+              nullable: true
+          type: object
+    Api_StationStreamerBroadcastRecording:
+      required:
+        - path
+        - size
+        - downloadUrl
+      properties:
+        path:
+          type: string
+        size:
+          type: integer
+        downloadUrl:
+          type: string
       type: object
     Api_Status:
       required:

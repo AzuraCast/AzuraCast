@@ -6,6 +6,9 @@ namespace App\Controller\Api\Stations\Streamers;
 
 use App\Controller\Api\AbstractApiCrudController;
 use App\Entity\Api\Error;
+use App\Entity\Api\StationStreamer as ApiStationStreamer;
+use App\Entity\Api\StationStreamerBroadcast as ApiStationStreamerBroadcast;
+use App\Entity\Api\StationStreamerBroadcastRecording;
 use App\Entity\Api\Status;
 use App\Entity\Station;
 use App\Entity\StationStreamer;
@@ -35,8 +38,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            // TODO API Response
-            new OpenApi\Response\Success(),
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(
+                        ref: ApiStationStreamerBroadcast::class
+                    )
+                )
+            ),
             new OpenApi\Response\AccessDenied(),
             new OpenApi\Response\NotFound(),
             new OpenApi\Response\GenericError(),
@@ -58,8 +67,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            // TODO API Response
-            new OpenApi\Response\Success(),
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(
+                        ref: ApiStationStreamerBroadcast::class
+                    )
+                )
+            ),
             new OpenApi\Response\AccessDenied(),
             new OpenApi\Response\NotFound(),
             new OpenApi\Response\GenericError(),
@@ -181,45 +196,45 @@ class BroadcastsController extends AbstractApiCrudController
         $fsRecordings = $this->stationFilesystems->getRecordingsFilesystem($station);
 
         $paginator->setPostprocessor(
-            function ($row) use ($id, $router, $isInternal, $fsRecordings) {
-                $return = $this->toArray($row);
+            function (StationStreamerBroadcast $row) use ($id, $router, $isInternal, $fsRecordings) {
+                $return = new ApiStationStreamerBroadcast(
+                    $row->getIdRequired(),
+                    $row->getTimestampStart(),
+                    $row->getTimestampEnd()
+                );
 
-                unset($return['recordingPath']);
-                $recordingPath = $row->getRecordingPath();
 
                 if (null === $id) {
                     $streamer = $row->getStreamer();
-                    $return['streamer'] = [
-                        'id' => $streamer->getId(),
-                        'streamer_username' => $streamer->getStreamerUsername(),
-                        'display_name' => $streamer->getDisplayName(),
-                    ];
+                    $return->streamer = new ApiStationStreamer(
+                        $streamer->getIdRequired(),
+                        $streamer->getStreamerUsername(),
+                        $streamer->getDisplayName()
+                    );
                 }
 
                 $routeParams = [
-                    'broadcast_id' => $row->getId(),
+                    'broadcast_id' => $row->getIdRequired(),
                 ];
                 if (null === $id) {
-                    $routeParams['id'] = $row->getStreamer()->getId();
+                    $routeParams['id'] = $row->getStreamer()->getIdRequired();
                 }
+
+                $recordingPath = $row->getRecordingPath();
 
                 if (!empty($recordingPath) && $fsRecordings->fileExists($recordingPath)) {
-                    $return['recording'] = [
-                        'path' => $recordingPath,
-                        'size' => $fsRecordings->fileSize($recordingPath),
-                        'links' => [
-                            'download' => $router->fromHere(
-                                routeName: 'api:stations:streamer:broadcast:download',
-                                routeParams: $routeParams,
-                                absolute: !$isInternal
-                            ),
-                        ],
-                    ];
-                } else {
-                    $return['recording'] = [];
+                    $return->recording = new StationStreamerBroadcastRecording(
+                        $recordingPath,
+                        $fsRecordings->fileSize($recordingPath),
+                        $router->fromHere(
+                            routeName: 'api:stations:streamer:broadcast:download',
+                            routeParams: $routeParams,
+                            absolute: !$isInternal
+                        )
+                    );
                 }
 
-                $return['links'] = [
+                $return->links = [
                     'delete' => $router->fromHere(
                         routeName: 'api:stations:streamer:broadcast:delete',
                         routeParams: $routeParams,

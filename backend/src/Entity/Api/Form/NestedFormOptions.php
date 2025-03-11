@@ -7,7 +7,7 @@ namespace App\Entity\Api\Form;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: 'Api_Form_Select',
+    schema: 'Api_Form_NestedOptions',
     type: 'array',
     items: new OA\Items(
         anyOf: [
@@ -20,28 +20,19 @@ use OpenApi\Attributes as OA;
         ]
     )
 )]
-final class FormSelect
+final readonly class NestedFormOptions extends AbstractOptions
 {
     /**
      * @param array<string|int, string|array<string|int, string>> $input
-     * @return (FormOption|FormOptionGroup)[]
      */
-    public static function fromArray(array $input): array
+    public static function fromArray(array $input): self
     {
         $return = [];
 
         foreach ($input as $outerKey => $outerValue) {
             if (is_array($outerValue)) {
-                $options = [];
-                foreach ($outerValue as $innerKey => $innerValue) {
-                    $options[] = new FormOption(
-                        $innerKey,
-                        $innerValue
-                    );
-                }
-
                 $return[] = new FormOptionGroup(
-                    $options,
+                    SimpleFormOptions::fromArray($outerValue)->toArray(),
                     (string)$outerKey
                 );
             } else {
@@ -52,6 +43,6 @@ final class FormSelect
             }
         }
 
-        return $return;
+        return new self($return);
     }
 }

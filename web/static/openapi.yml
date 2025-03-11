@@ -210,7 +210,11 @@ paths:
       operationId: postAdminDoBackup
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_TaskWithLog'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -6765,7 +6769,11 @@ components:
         label:
           type: string
       type: object
-    Api_Form_Select:
+    Api_GenericForm:
+      type: object
+      additionalProperties:
+        type: '{}'
+    Api_Form_NestedOptions:
       type: array
       items:
         anyOf:
@@ -6773,10 +6781,10 @@ components:
             $ref: '#/components/schemas/Api_Form_Option'
           -
             $ref: '#/components/schemas/Api_Form_OptionGroup'
-    Api_GenericForm:
-      type: object
-      additionalProperties:
-        type: '{}'
+    Api_Form_SimpleOptions:
+      type: array
+      items:
+        $ref: '#/components/schemas/Api_Form_Option'
     HashMap:
       description: 'A hash-map array represented as an object.'
       type: object

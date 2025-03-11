@@ -468,9 +468,11 @@ export interface ApiFormOptionGroup {
   label: string;
 }
 
-export type ApiFormSelect = (ApiFormOption | ApiFormOptionGroup)[];
-
 export type ApiGenericForm = Record<string, any>;
+
+export type ApiFormNestedOptions = (ApiFormOption | ApiFormOptionGroup)[];
+
+export type ApiFormSimpleOptions = ApiFormOption[];
 
 /** A hash-map array represented as an object. */
 export type HashMap = object;

@@ -68,7 +68,7 @@ import {onMounted, ref, shallowRef} from "vue";
 import {useAxios} from "~/vendor/axios.ts";
 import {getStationApiUrl} from "~/router.ts";
 import Loading from "~/components/Common/Loading.vue";
-import {ApiFormOption, ApiGenericForm} from "~/entities/ApiInterfaces.ts";
+import {ApiFormSimpleOptions, ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
 const form = defineModel<ApiGenericForm>('form', {required: true});
 
@@ -101,15 +101,15 @@ const sourceOptions = [
     }
 ];
 
-const playlistsLoading = ref(true);
-const playlistOptions = shallowRef([]);
+const playlistsLoading = ref<boolean>(true);
+const playlistOptions = shallowRef<ApiFormSimpleOptions>([]);
 
 const {axios} = useAxios();
 const playlistsApiUrl = getStationApiUrl('/podcasts/playlists');
 
 const loadPlaylists = async () => {
     try {
-        const {data} = await axios.get<ApiFormOption[]>(playlistsApiUrl.value);
+        const {data} = await axios.get<ApiFormSimpleOptions>(playlistsApiUrl.value);
         playlistOptions.value = data;
     } finally {
         playlistsLoading.value = false;

@@ -6,8 +6,7 @@ namespace App\Controller\Api\Stations\Podcasts;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\SingleActionInterface;
-use App\Entity\Api\Form\FormOption;
-use App\Entity\Api\Form\FormSelect;
+use App\Entity\Api\Form\SimpleFormOptions;
 use App\Entity\Enums\PlaylistSources;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -26,10 +25,7 @@ use Psr\Http\Message\ResponseInterface;
     responses: [
         new OpenApi\Response\Success(
             content: new OA\JsonContent(
-                type: 'array',
-                items: new OA\Items(
-                    ref: FormOption::class
-                )
+                ref: SimpleFormOptions::class
             )
         ),
         new OpenApi\Response\AccessDenied(),
@@ -58,7 +54,7 @@ final class PlaylistsAction implements SingleActionInterface
             ->getArrayResult();
 
         return $response->withJson(
-            FormSelect::fromArray(
+            SimpleFormOptions::fromArray(
                 array_column($playlistsRaw, 'name', 'id')
             )
         );

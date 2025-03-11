@@ -1,14 +1,14 @@
 import {map} from "lodash";
 import {computed, ComputedRef, MaybeRefOrGetter, toValue} from "vue";
-import {ApiFormOption, ApiFormOptionGroup} from "~/entities/ApiInterfaces.ts";
+import {ApiFormNestedOptions, ApiFormSimpleOptions} from "~/entities/ApiInterfaces.ts";
 
 type SimpleFormOptionObject = Record<(string | number), string>
 
-export type SimpleFormOptionInput = ApiFormOption[] | SimpleFormOptionObject
+export type SimpleFormOptionInput = ApiFormSimpleOptions | SimpleFormOptionObject
 
 export function objectToSimpleFormOptions(
     initial: MaybeRefOrGetter<SimpleFormOptionInput>,
-): ComputedRef<ApiFormOption[]> {
+): ComputedRef<ApiFormSimpleOptions> {
     return computed(() => {
         const array = toValue(initial);
 
@@ -25,12 +25,11 @@ export function objectToSimpleFormOptions(
 
 type NestedFormOptionObject = SimpleFormOptionObject | Record<(string | number), SimpleFormOptionObject>
 
-export type NestedFormOptionInput = (ApiFormOption | ApiFormOptionGroup)[] | NestedFormOptionObject;
-export type NestedFormOptionOutput = (ApiFormOption | ApiFormOptionGroup)[];
+export type NestedFormOptionInput = ApiFormNestedOptions | NestedFormOptionObject;
 
 export function objectToNestedFormOptions(
     initial: MaybeRefOrGetter<NestedFormOptionInput>
-): ComputedRef<NestedFormOptionOutput> {
+): ComputedRef<ApiFormNestedOptions> {
     return computed(() => {
         const array = toValue(initial);
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Entity\Api;
 
 use App\Entity\Api\Traits\HasLinks;
-use DateTimeImmutable;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -20,10 +19,10 @@ final class StationStreamerBroadcast
     public function __construct(
         #[OA\Property]
         public readonly int $id,
-        #[OA\Property(type: 'string', format: 'date-time')]
-        public readonly DateTimeImmutable $timestampStart,
-        #[OA\Property(type: 'string', format: 'date-time')]
-        public readonly ?DateTimeImmutable $timestampEnd,
+        #[OA\Property(format: 'date-time')]
+        public readonly string $timestampStart,
+        #[OA\Property(format: 'date-time')]
+        public readonly ?string $timestampEnd,
         #[OA\Property]
         public ?StationStreamer $streamer = null,
         #[OA\Property]

@@ -19,6 +19,7 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Paginator;
 use App\Utilities\File;
+use App\Utilities\Time;
 use App\Utilities\Types;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -199,8 +200,8 @@ class BroadcastsController extends AbstractApiCrudController
             function (StationStreamerBroadcast $row) use ($id, $router, $isInternal, $fsRecordings) {
                 $return = new ApiStationStreamerBroadcast(
                     $row->getIdRequired(),
-                    $row->getTimestampStart(),
-                    $row->getTimestampEnd()
+                    $row->getTimestampStart()->format(Time::JS_ISO8601_FORMAT),
+                    $row->getTimestampEnd()?->format(Time::JS_ISO8601_FORMAT)
                 );
 
 

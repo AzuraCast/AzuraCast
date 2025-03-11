@@ -494,7 +494,13 @@ paths:
       operationId: getAdminDebugQueues
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_Admin_Debug_Queue'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -509,7 +515,13 @@ paths:
       operationId: getAdminDebugStations
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_Admin_Debug_Station'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -524,7 +536,13 @@ paths:
       operationId: getAdminDebugSyncTasks
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_Admin_Debug_SyncTask'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -607,7 +625,11 @@ paths:
           $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Admin_Debug_LogResult'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4279,9 +4301,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Api_Form_Option'
+                $ref: '#/components/schemas/Api_Form_SimpleOptions'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -6056,6 +6076,45 @@ components:
             storageLocationId:
               type: integer
           type: object
+    Api_Admin_Debug_Queue:
+      required:
+        - name
+        - count
+        - url
+      properties:
+        name:
+          type: string
+          enum:
+            - high_priority
+            - normal_priority
+            - low_priority
+            - search_index
+            - media
+            - podcast_media
+        count:
+          type: integer
+        url:
+          type: string
+      type: object
+    Api_Admin_Debug_Station:
+      required:
+        - id
+        - name
+        - clearQueueUrl
+        - getNextSongUrl
+        - getNowPlayingUrl
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        clearQueueUrl:
+          type: string
+        getNextSongUrl:
+          type: string
+        getNowPlayingUrl:
+          type: string
+      type: object
     Api_Admin_Debug_LogEntry:
       required:
         - datetime
@@ -6104,6 +6163,26 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Api_Admin_Debug_LogEntry'
+      type: object
+    Api_Admin_Debug_SyncTask:
+      required:
+        - task
+        - pattern
+        - time
+        - nextRun
+        - url
+      properties:
+        task:
+          type: string
+        pattern:
+          type: string
+          nullable: true
+        time:
+          type: integer
+        nextRun:
+          type: integer
+        url:
+          type: string
       type: object
     Api_Admin_GeoLiteStatus:
       required:

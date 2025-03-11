@@ -6,6 +6,7 @@ namespace App\Controller\Api\Admin\Debug;
 
 use App\Container\LoggerAwareTrait;
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Admin\Debug\LogResult;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -26,8 +27,11 @@ use Psr\Http\Message\ResponseInterface;
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            // TODO API Response Body
-            new OpenApi\Response\Success(),
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    ref: LogResult::class
+                )
+            ),
             new OpenApi\Response\AccessDenied(),
             new OpenApi\Response\NotFound(),
             new OpenApi\Response\GenericError(),
@@ -66,8 +70,8 @@ final class TelnetAction implements SingleActionInterface
 
         $this->logger->popHandler();
 
-        return $response->withJson([
-            'logs' => $testHandler->getRecords(),
-        ]);
+        return $response->withJson(
+            LogResult::fromTestHandlerRecords($testHandler->getRecords())
+        );
     }
 }

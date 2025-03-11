@@ -55,6 +55,20 @@ export type ApiAdminBackup = HasLinks & {
   storageLocationId: number;
 };
 
+export interface ApiAdminDebugQueue {
+  name: "high_priority" | "normal_priority" | "low_priority" | "search_index" | "media" | "podcast_media";
+  count: number;
+  url: string;
+}
+
+export interface ApiAdminDebugStation {
+  id: number;
+  name: string;
+  clearQueueUrl: string;
+  getNextSongUrl: string;
+  getNowPlayingUrl: string;
+}
+
 export interface ApiAdminDebugLogEntry {
   /** @format date-time */
   datetime: string;
@@ -68,6 +82,14 @@ export interface ApiAdminDebugLogEntry {
 
 export interface ApiAdminDebugLogResult {
   logs: ApiAdminDebugLogEntry[];
+}
+
+export interface ApiAdminDebugSyncTask {
+  task: string;
+  pattern: string | null;
+  time: number;
+  nextRun: number;
+  url: string;
 }
 
 export interface ApiAdminGeoLiteStatus {

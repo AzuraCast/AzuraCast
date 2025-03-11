@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin\Debug;
 
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Admin\Debug\DebugStation;
 use App\Entity\Repository\StationRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -19,8 +20,14 @@ use Psr\Http\Message\ResponseInterface;
         summary: 'List all stations with their debug links.',
         tags: [OpenApi::TAG_ADMIN_DEBUG],
         responses: [
-            // TODO API Response Body
-            new OpenApi\Response\Success(),
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(
+                        ref: DebugStation::class
+                    )
+                )
+            ),
             new OpenApi\Response\AccessDenied(),
             new OpenApi\Response\NotFound(),
             new OpenApi\Response\GenericError(),
@@ -40,22 +47,22 @@ final class ListStationsAction implements SingleActionInterface
 
         $stations = [];
         foreach ($this->stationRepo->fetchArray() as $station) {
-            $stations[] = [
-                'id' => $station['id'],
-                'name' => $station['name'],
-                'clearQueueUrl' => $router->named(
+            $stations[] = new DebugStation(
+                $station['id'],
+                $station['name'],
+                $router->named(
                     'api:admin:debug:clear-station-queue',
                     ['station_id' => $station['id']]
                 ),
-                'getNextSongUrl' => $router->named(
+                $router->named(
                     'api:admin:debug:nextsong',
                     ['station_id' => $station['id']]
                 ),
-                'getNowPlayingUrl' => $router->named(
+                $router->named(
                     'api:admin:debug:nowplaying',
                     ['station_id' => $station['id']]
-                ),
-            ];
+                )
+            );
         }
 
         return $response->withJson($stations);

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Entity\Migration;
 
+use App\Entity\Attributes\StableMigration;
 use Doctrine\DBAL\Schema\Schema;
 
+#[StableMigration('0.21.0')]
 final class Version20250203160744 extends AbstractMigration
 {
     /**
@@ -35,11 +37,8 @@ final class Version20250203160744 extends AbstractMigration
         return 'Improve precision of several date/duration fields.';
     }
 
-    protected function migrateForwardsToDateTime(
-        string $tableName,
-        string $fieldName,
-        bool $nullable
-    ): void {
+    protected function migrateForwardsToDateTime(string $tableName, string $fieldName, bool $nullable): void
+    {
         $tableName = $this->connection->quoteIdentifier($tableName);
 
         $tempFieldName = $this->connection->quoteIdentifier('temp_' . $fieldName);
@@ -90,10 +89,8 @@ final class Version20250203160744 extends AbstractMigration
         $this->addSql('ALTER TABLE station_queue CHANGE duration duration DOUBLE PRECISION DEFAULT NULL');
     }
 
-    protected function migrateBackFromDateTime(
-        string $tableName,
-        string $fieldName
-    ): void {
+    protected function migrateBackFromDateTime(string $tableName, string $fieldName): void
+    {
         $tableName = $this->connection->quoteIdentifier($tableName);
 
         $tempFieldName = $this->connection->quoteIdentifier('temp_' . $fieldName);
@@ -101,7 +98,7 @@ final class Version20250203160744 extends AbstractMigration
 
         $this->addSql(
             <<<SQL
-                ALTER TABLE $tableName 
+                ALTER TABLE $tableName
                     RENAME COLUMN $destFieldName TO $tempFieldName,
                     ADD COLUMN $destFieldName INT DEFAULT NULL AFTER $tempFieldName
             SQL
@@ -113,7 +110,7 @@ final class Version20250203160744 extends AbstractMigration
 
         $this->addSql(
             <<<SQL
-                ALTER TABLE $tableName 
+                ALTER TABLE $tableName
                     CHANGE $destFieldName $destFieldName INT NOT NULL,
                     DROP $tempFieldName
             SQL

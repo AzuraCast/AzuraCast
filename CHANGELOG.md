@@ -5,6 +5,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.21.0 (Mar 12, 2025)
+
+## New Features/Changes
+
 - **Support for Rocket Streaming Audio Server (RSAS)**: RSAS is a popular, closed-source drop-in replacement for
   Icecast, and AzuraCast now supports uploading the RSAS binary and license key, and selecting RSAS as a broadcasting
   frontend, directly within the web UI.

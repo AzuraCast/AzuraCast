@@ -27,7 +27,7 @@
             <tbody>
                 <tr
                     v-for="row in media"
-                    :key="row.id"
+                    :key="row.spm_id"
                     class="align-middle"
                 >
                     <td>

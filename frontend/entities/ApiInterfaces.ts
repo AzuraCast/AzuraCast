@@ -416,6 +416,8 @@ export interface ApiBatchResult {
   errors: string[];
 }
 
+export type ApiDashboard = ApiNowPlaying & HasLinks;
+
 export type ApiDetailedSongHistory = ApiNowPlayingSongHistory & {
   /**
    * Number of listeners when the song playback started.
@@ -1102,6 +1104,12 @@ export interface ApiStationPlaylistQueue {
    * @example "Aluko River"
    */
   title?: string;
+}
+
+export interface ApiStationProfile {
+  station: ApiNowPlayingStation;
+  services: ApiStationServiceStatus;
+  schedule: ApiStationSchedule[];
 }
 
 export type ApiStationQueueDetailed = ApiNowPlayingStationQueue &

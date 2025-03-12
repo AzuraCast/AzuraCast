@@ -28,7 +28,7 @@ final class GenericBatchResult extends BatchResult
             properties: [
                 new OA\Property(
                     property: 'id',
-                    type: 'int',
+                    type: 'integer',
                     format: 'int64'
                 ),
                 new OA\Property(

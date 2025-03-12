@@ -1088,7 +1088,7 @@ paths:
           description: 'Station ID'
           required: true
           schema:
-            type: int
+            type: integer
             format: int64
       requestBody:
         content:
@@ -1888,7 +1888,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: App\Entity\Api\Dashboard
+                  $ref: '#/components/schemas/Api_Dashboard'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -3269,7 +3269,7 @@ paths:
           description: 'Playlist ID'
           required: true
           schema:
-            type: int
+            type: integer
             format: int64
       requestBody:
         content:
@@ -3308,7 +3308,7 @@ paths:
           description: 'Playlist ID'
           required: true
           schema:
-            type: int
+            type: integer
             format: int64
       responses:
         '200':
@@ -3339,7 +3339,7 @@ paths:
           description: 'Playlist ID'
           required: true
           schema:
-            type: int
+            type: integer
             format: int64
       responses:
         '200':
@@ -3365,7 +3365,7 @@ paths:
           description: 'Playlist ID'
           required: true
           schema:
-            type: int
+            type: integer
             format: int64
       responses:
         '200':
@@ -3391,7 +3391,7 @@ paths:
           description: 'Playlist ID'
           required: true
           schema:
-            type: int
+            type: integer
             format: int64
         -
           name: format
@@ -3428,7 +3428,7 @@ paths:
           description: 'Playlist ID'
           required: true
           schema:
-            type: int
+            type: integer
             format: int64
       responses:
         '200':
@@ -3453,7 +3453,7 @@ paths:
           description: 'Playlist ID'
           required: true
           schema:
-            type: int
+            type: integer
             format: int64
       responses:
         '200':
@@ -3479,7 +3479,7 @@ paths:
           description: 'Playlist ID'
           required: true
           schema:
-            type: int
+            type: integer
             format: int64
       responses:
         '200':
@@ -3504,7 +3504,7 @@ paths:
           description: 'Playlist ID'
           required: true
           schema:
-            type: int
+            type: integer
             format: int64
       responses:
         '200':
@@ -3530,7 +3530,7 @@ paths:
           description: 'Playlist ID'
           required: true
           schema:
-            type: int
+            type: integer
             format: int64
       responses:
         '200':
@@ -3556,7 +3556,7 @@ paths:
           description: 'Playlist ID'
           required: true
           schema:
-            type: int
+            type: integer
             format: int64
       responses:
         '200':
@@ -3582,7 +3582,7 @@ paths:
           description: 'Playlist ID'
           required: true
           schema:
-            type: int
+            type: integer
             format: int64
       responses:
         '200':
@@ -4516,7 +4516,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: App\Entity\Api\StationProfile
+                $ref: '#/components/schemas/Api_StationProfile'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4950,7 +4950,7 @@ paths:
           description: 'Request ID'
           required: true
           schema:
-            type: int
+            type: integer
             format: int64
       responses:
         '200':
@@ -5500,7 +5500,7 @@ paths:
                 rows:
                   description: 'The IDs to perform batch actions on.'
                   type: array
-                  items: { type: int, format: int64 }
+                  items: { type: integer, format: int64 }
               type: object
       responses:
         '200':
@@ -6851,6 +6851,13 @@ components:
           items:
             type: string
       type: object
+    Api_Dashboard:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_NowPlaying'
+        -
+          $ref: '#/components/schemas/HasLinks'
     Api_DetailedSongHistory:
       type: object
       allOf:
@@ -7815,6 +7822,21 @@ components:
           description: 'The song title.'
           type: string
           example: 'Aluko River'
+      type: object
+    Api_StationProfile:
+      required:
+        - station
+        - services
+        - schedule
+      properties:
+        station:
+          $ref: '#/components/schemas/Api_NowPlaying_Station'
+        services:
+          $ref: '#/components/schemas/Api_StationServiceStatus'
+        schedule:
+          type: array
+          items:
+            $ref: '#/components/schemas/Api_StationSchedule'
       type: object
     Api_StationQueueDetailed:
       type: object

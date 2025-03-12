@@ -72,7 +72,7 @@ use Throwable;
                 description: 'Station ID',
                 in: 'path',
                 required: true,
-                schema: new OA\Schema(type: 'int', format: 'int64')
+                schema: new OA\Schema(type: 'integer', format: 'int64')
             ),
         ],
         responses: [

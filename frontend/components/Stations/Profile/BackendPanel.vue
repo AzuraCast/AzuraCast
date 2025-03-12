@@ -94,7 +94,6 @@ export interface ProfileBackendPanelParentProps {
     numSongs: number,
     numPlaylists: number,
     backendType: BackendAdapters,
-    hasStarted: boolean,
     backendRestartUri: string,
     backendStartUri: string,
     backendStopUri: string,
@@ -106,6 +105,7 @@ defineOptions({
 
 interface ProfileBackendPanelProps extends ProfileBackendPanelParentProps {
     backendRunning: boolean,
+    hasStarted: boolean,
 }
 
 const props = defineProps<ProfileBackendPanelProps>();

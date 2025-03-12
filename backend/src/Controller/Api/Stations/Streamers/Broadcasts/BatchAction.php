@@ -38,7 +38,7 @@ use Throwable;
                     description: 'The IDs to perform batch actions on.',
                     type: 'array',
                     items: new OA\Items(
-                        type: 'int',
+                        type: 'integer',
                         format: 'int64'
                     ),
                 ),

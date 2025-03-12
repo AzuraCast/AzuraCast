@@ -262,7 +262,7 @@ import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
 import {getApiUrl} from "~/router.ts";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import useHasDatatable from "~/functions/useHasDatatable.ts";
-import {ApiNotification} from "~/entities/ApiInterfaces.ts";
+import {ApiDashboard, ApiNotification} from "~/entities/ApiInterfaces.ts";
 
 defineProps<{
     profileUrl: string,
@@ -294,7 +294,7 @@ const {state: notifications, isLoading: notificationsLoading} = useAsyncState<Ap
     []
 );
 
-const stationFields: DataTableField[] = [
+const stationFields: DataTableField<ApiDashboard>[] = [
     {
         key: 'play_button',
         label: '',

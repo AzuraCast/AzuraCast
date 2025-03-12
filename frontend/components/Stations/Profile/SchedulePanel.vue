@@ -48,13 +48,14 @@ import {computed} from "vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
+import {ApiStationSchedule} from "~/entities/ApiInterfaces.ts";
 
 defineOptions({
     inheritAttrs: false
 });
 
 const props = defineProps<{
-    scheduleItems: Array<any>
+    scheduleItems: ApiStationSchedule[]
 }>();
 
 const {DateTime} = useLuxon();
@@ -64,30 +65,37 @@ const {
     formatDateTime
 } = useStationDateTimeFormatter();
 
-const processedScheduleItems = computed(() => {
+interface ScheduleWithDetails extends ApiStationSchedule {
+    time_until: string,
+    start_formatted: string,
+    end_formatted: string
+}
+
+const processedScheduleItems = computed<ScheduleWithDetails[]>(() => {
     const nowTz = now();
 
     return map(props.scheduleItems, (row) => {
         const startMoment = timestampToDateTime(row.start_timestamp);
         const endMoment = timestampToDateTime(row.end_timestamp);
 
-        row.time_until = startMoment.toRelative();
+        const newRow: ScheduleWithDetails = {
+            ...row,
+            time_until: startMoment.toRelative(),
+            start_formatted: formatDateTime(
+                startMoment,
+                startMoment.hasSame(nowTz, 'day')
+                    ? DateTime.TIME_SIMPLE
+                    : DateTime.DATETIME_MED
+            ),
+            end_formatted: formatDateTime(
+                endMoment,
+                endMoment.hasSame(startMoment, 'day')
+                    ? DateTime.TIME_SIMPLE
+                    : DateTime.DATETIME_MED
+            )
+        };
 
-        row.start_formatted = formatDateTime(
-            startMoment,
-            startMoment.hasSame(nowTz, 'day')
-                ? DateTime.TIME_SIMPLE
-                : DateTime.DATETIME_MED
-        );
-
-        row.end_formatted = formatDateTime(
-            endMoment,
-            endMoment.hasSame(startMoment, 'day')
-                ? DateTime.TIME_SIMPLE
-                : DateTime.DATETIME_MED
-        );
-
-        return row;
+        return newRow;
     });
 });
 </script>

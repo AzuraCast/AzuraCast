@@ -52,6 +52,7 @@
             <template v-if="hasActiveBackend">
                 <profile-backend
                     v-bind="props"
+                    :has-started="profileInfo.services.station_has_started"
                     :backend-running="profileInfo.services.backend_running"
                 />
             </template>
@@ -78,7 +79,7 @@ import NowPlaying from "~/entities/NowPlaying";
 import {computed} from "vue";
 import {useAxios} from "~/vendor/axios";
 import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
-import {BackendAdapters, FrontendAdapters} from "~/entities/ApiInterfaces.ts";
+import {ApiStationProfile, BackendAdapters, FrontendAdapters} from "~/entities/ApiInterfaces.ts";
 
 export interface EnabledProfileProps extends ProfileBackendPanelParentProps,
     ProfileFrontendPanelParentProps,
@@ -104,8 +105,8 @@ const hasActiveBackend = computed(() => {
 
 const {axiosSilent} = useAxios();
 
-const {state: profileInfo} = useAutoRefreshingAsyncState(
-    () => axiosSilent.get(props.profileApiUri).then((r) => r.data),
+const {state: profileInfo} = useAutoRefreshingAsyncState<ApiStationProfile>(
+    async () => (await axiosSilent.get<ApiStationProfile>(props.profileApiUri)).data,
     {
         station: {
             ...NowPlaying.station
@@ -113,8 +114,8 @@ const {state: profileInfo} = useAutoRefreshingAsyncState(
         services: {
             backend_running: false,
             frontend_running: false,
-            has_started: false,
-            needs_restart: false
+            station_has_started: false,
+            station_needs_restart: false
         },
         schedule: []
     },

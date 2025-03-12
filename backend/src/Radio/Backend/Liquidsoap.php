@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Radio\Backend;
 
+use App\Entity\Api\LogType;
 use App\Entity\Station;
 use App\Entity\StationStreamer;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
@@ -19,6 +20,9 @@ use Symfony\Component\Process\Process;
 
 final class Liquidsoap extends AbstractLocalAdapter
 {
+    public const string GLOBAL_CACHE_PATH = '/tmp/liquidsoap_cache';
+    public const string USER_CACHE_DIR = '/liquidsoap_cache';
+
     /**
      * @inheritDoc
      */
@@ -110,6 +114,30 @@ final class Liquidsoap extends AbstractLocalAdapter
     }
 
     /**
+     * @inheritdoc
+     */
+    public function getEnvironmentVariables(Station $station): array
+    {
+        $tempDir = [
+            'TMPDIR' => $station->getRadioTempDir(),
+        ];
+
+        if ($this->environment->isProduction()) {
+            return [
+                ...$tempDir,
+                'LIQ_CACHE_SYSTEM_DIR' => self::GLOBAL_CACHE_PATH,
+                'LIQ_CACHE_USER_DIR' => $this->environment->getTempDirectory() . self::USER_CACHE_DIR,
+            ];
+        }
+
+        // Disable cache for dev/testing environments.
+        return [
+            ...$tempDir,
+            'LIQ_CACHE' => 'false',
+        ];
+    }
+
+    /**
      * @inheritDoc
      */
     public function getBinary(): string
@@ -133,7 +161,7 @@ final class Liquidsoap extends AbstractLocalAdapter
             : null;
     }
 
-    public function getHlsUrl(Station $station, UriInterface $baseUrl = null): UriInterface
+    public function getHlsUrl(Station $station, ?UriInterface $baseUrl = null): UriInterface
     {
         $baseUrl ??= $this->router->getBaseUrl();
         return $baseUrl->withPath(
@@ -182,17 +210,9 @@ final class Liquidsoap extends AbstractLocalAdapter
      */
     public function updateMetadata(Station $station, array $newMeta): array
     {
-        $metaStr = [];
-        foreach ($newMeta as $metaKey => $metaVal) {
-            if ($metaVal === null) {
-                continue;
-            }
-            $metaStr[] = $metaKey . '="' . ConfigWriter::annotateString($metaVal) . '"';
-        }
-
         return $this->command(
             $station,
-            'custom_metadata.insert ' . implode(',', $metaStr),
+            'custom_metadata.insert ' . ConfigWriter::annotateArray($newMeta),
         );
     }
 
@@ -251,5 +271,25 @@ final class Liquidsoap extends AbstractLocalAdapter
     public function getSupervisorProgramName(Station $station): string
     {
         return Configuration::getSupervisorProgramName($station, 'backend');
+    }
+
+    public function getLogTypes(Station $station): array
+    {
+        $stationConfigDir = $station->getRadioConfigDir();
+
+        return [
+            new LogType(
+                'liquidsoap_log',
+                __('Liquidsoap Log'),
+                $stationConfigDir . '/liquidsoap.log',
+                true
+            ),
+            new LogType(
+                'liquidsoap_liq',
+                __('Liquidsoap Configuration'),
+                $stationConfigDir . '/liquidsoap.liq',
+                false
+            ),
+        ];
     }
 }

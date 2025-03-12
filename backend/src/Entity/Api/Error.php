@@ -11,9 +11,10 @@ use Throwable;
 
 #[OA\Schema(
     schema: 'Api_Error',
+    required: ['*'],
     type: 'object'
 )]
-final class Error
+final readonly class Error
 {
     #[OA\Property(
         description: 'The numeric code of the error.',
@@ -94,7 +95,7 @@ final class Error
             $code = 500;
         }
 
-        $className = (new ReflectionClass($e))->getShortName();
+        $className = new ReflectionClass($e)->getShortName();
 
         if ($e instanceof Exception) {
             $messageFormatted = $e->getFormattedMessage();

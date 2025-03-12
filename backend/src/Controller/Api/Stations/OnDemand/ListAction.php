@@ -11,8 +11,32 @@ use App\Entity\StationMedia;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[OA\Get(
+    path: '/station/{station_id}/ondemand',
+    operationId: 'getStationOnDemand',
+    summary: 'List all tracks available on-demand for this station.',
+    security: [],
+    tags: [OpenApi::TAG_PUBLIC_STATIONS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+    ],
+    responses: [
+        new OpenApi\Response\Success(
+            content: new OA\JsonContent(
+                type: 'array',
+                items: new OA\Items(
+                    ref: StationOnDemand::class
+                )
+            )
+        ),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class ListAction extends AbstractSearchableListAction
 {
     public function __invoke(
@@ -48,8 +72,6 @@ final class ListAction extends AbstractSearchableListAction
                         'media_id' => $media->getUniqueId(),
                     ]
                 );
-
-                $row->resolveUrls($router->getBaseUrl());
 
                 return $row;
             }

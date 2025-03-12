@@ -217,8 +217,9 @@ final class CheckMediaTask extends AbstractTask
             if (isset($musicFiles[$pathHash])) {
                 $fileInfo = $musicFiles[$pathHash];
                 $mtime = $fileInfo[StorageAttributes::ATTRIBUTE_LAST_MODIFIED] ?? 0;
+                $mediaProcessedAt = Types::int($mediaRow['mtime']);
 
-                if (StationMedia::needsReprocessing($mtime, Types::int($mediaRow['mtime']))) {
+                if ($mtime > $mediaProcessedAt) {
                     $message = new ReprocessMediaMessage();
                     $message->storage_location_id = $storageLocation->getIdRequired();
                     $message->media_id = (int)$mediaRow['id'];

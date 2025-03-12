@@ -1,9 +1,10 @@
 import DataTable from "~/components/Common/DataTable.vue";
-import {Ref} from "vue";
+import {ShallowRef} from "vue";
+import {ComponentExposed} from "vue-component-type-helpers";
 
-export type DataTableTemplateRef = InstanceType<typeof DataTable> | null;
+export type DataTableTemplateRef = ComponentExposed<typeof DataTable>;
 
-export default function useHasDatatable($datatableRef: Ref<DataTableTemplateRef>) {
+export default function useHasDatatable($datatableRef: Readonly<ShallowRef<DataTableTemplateRef | null>>) {
     /**
      * Reset selected rows, active row, and trigger data reload.
      */
@@ -35,19 +36,10 @@ export default function useHasDatatable($datatableRef: Ref<DataTableTemplateRef>
         return $datatableRef.value?.setFilter(newTerm);
     }
 
-    /**
-     * Either set the specified row as active, or disable it if it already is active.
-     * @param row
-     */
-    const toggleDetails = (row) => {
-        return $datatableRef.value?.toggleDetails(row);
-    };
-
     return {
         refresh,
         relist,
         navigate,
-        setFilter,
-        toggleDetails
+        setFilter
     };
 }

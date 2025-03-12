@@ -43,7 +43,7 @@
                                 type="button"
                                 class="btn btn-warning"
                                 :disabled="isLoading"
-                                @click="makeApiCall(reloadUrl)"
+                                @click="doReload"
                             >
                                 {{ $gettext('Reload Configuration') }}
                             </button>
@@ -91,7 +91,7 @@
                             type="button"
                             class="btn btn-warning"
                             :disabled="isLoading"
-                            @click="makeApiCall(restartUrl)"
+                            @click="doRestart"
                         >
                             {{ $gettext('Restart Broadcasting') }}
                         </button>
@@ -106,17 +106,14 @@
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
-import {useSweetAlert} from "~/vendor/sweetalert";
 import {ref} from "vue";
 import {getStationApiUrl} from "~/router";
 import {useRouter} from "vue-router";
+import {useDialog} from "~/functions/useDialog.ts";
 
-const props = defineProps({
-    canReload: {
-        type: Boolean,
-        required: true,
-    }
-});
+defineProps<{
+    canReload: boolean,
+}>();
 
 const reloadUrl = getStationApiUrl('/reload');
 const restartUrl = getStationApiUrl('/restart');
@@ -124,40 +121,60 @@ const restartUrl = getStationApiUrl('/restart');
 const isLoading = ref(false);
 
 const {axios} = useAxios();
-const {showAlert} = useSweetAlert();
+const {showAlert} = useDialog();
 const {notify} = useNotify();
 const {$gettext} = useTranslate();
 
 const router = useRouter();
 
-const makeApiCall = (uri) => {
-    showAlert({
-        title: $gettext('Are you sure?')
+const makeApiCall = (uri: string) => {
+    isLoading.value = true;
+
+    void axios.post(uri).then((resp) => {
+        notify(resp.data.formatted_message, {
+            variant: (resp.data.success) ? 'success' : 'warning'
+        });
+
+        setTimeout(
+            () => {
+                const profileRoute = router.resolve({
+                    name: 'stations:index'
+                });
+
+                window.location.href = profileRoute.href;
+            },
+            2000
+        );
+    }).finally(() => {
+        isLoading.value = false;
+    });
+};
+
+const doReload = () => {
+    void showAlert({
+        title: $gettext('Are you sure?'),
+        confirmButtonClass: 'btn-warning',
+        confirmButtonText: $gettext('Reload Configuration')
     }).then((result) => {
         if (!result.value) {
             return;
         }
 
-        isLoading.value = true;
-
-        axios.post(uri).then((resp) => {
-            notify(resp.data.formatted_message, {
-                variant: (resp.data.success) ? 'success' : 'warning'
-            });
-
-            setTimeout(
-                () => {
-                    const profileRoute = router.resolve({
-                        name: 'stations:index'
-                    });
-
-                    window.location.href = profileRoute.href;
-                },
-                2000
-            );
-        }).finally(() => {
-            isLoading.value = false;
-        });
+        makeApiCall(reloadUrl.value);
     });
-};
+}
+
+const doRestart = () => {
+    void showAlert({
+        title: $gettext('Are you sure?'),
+        confirmButtonClass: 'btn-warning',
+        confirmButtonText: $gettext('Restart Broadcasting')
+    }).then((result) => {
+        if (!result.value) {
+            return;
+        }
+
+        makeApiCall(restartUrl.value);
+    });
+}
 </script>

@@ -1,12 +1,12 @@
 <template>
     <ul class="navdrawer-nav">
         <li
-            v-for="category in menu"
+            v-for="category in menu.categories"
             :key="category.key"
             class="nav-item"
         >
             <router-link
-                v-if="isRouteLink(category)"
+                v-if="isRouteLink(category.url)"
                 :class="getLinkClass(category)"
                 :to="category.url"
                 class="nav-link"
@@ -49,7 +49,7 @@
                         class="nav-item"
                     >
                         <router-link
-                            v-if="isRouteLink(item)"
+                            v-if="isRouteLink(item.url)"
                             :to="item.url"
                             class="nav-link ps-4 py-2"
                             :class="getLinkClass(item)"
@@ -85,42 +85,44 @@ import Icon from "~/components/Common/Icon.vue";
 import {useRoute} from "vue-router";
 import {some} from "lodash";
 import {IconOpenInNew} from "~/components/Common/icons.ts";
+import {MenuCategory, MenuRouteBasedUrl, MenuRouteUrl, MenuSubCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
 
-const props = defineProps({
-    menu: {
-        type: Object,
-        required: true
-    },
-});
+defineProps<{
+    menu: ReactiveMenu
+}>();
 
 const currentRoute = useRoute();
 
-const isRouteLink = (item) => {
-    return (typeof (item.url) !== 'undefined')
-        && (typeof (item.url) !== 'string');
+const isRouteLink = (url: MenuRouteUrl): url is MenuRouteBasedUrl => {
+    return (typeof (url) !== 'undefined')
+        && (typeof (url) !== 'string');
 };
 
-const isActiveItem = (item) => {
-    if (item.items && some(item.items, isActiveItem)) {
+const isCategory = (item: MenuCategory | MenuSubCategory): item is MenuCategory => {
+    return 'items' in item;
+}
+
+const isActiveItem = (item: MenuCategory | MenuSubCategory) => {
+    if (isCategory(item) && some(item.items ?? [], isActiveItem)) {
         return true;
     }
 
-    return isRouteLink(item) && !('params' in item.url) && item.url.name === currentRoute.name;
+    return isRouteLink(item.url) && !('params' in item.url) && item.url.name === currentRoute.name;
 };
 
-const getLinkClass = (item) => {
+const getLinkClass = (item: MenuSubCategory) => {
     return [
         item.class ?? null,
         isActiveItem(item) ? 'active' : ''
     ];
 }
 
-const getCategoryLink = (item) => {
+const getCategoryLink = (item: MenuSubCategory) => {
     const linkAttrs: {
         [key: string]: any
     } = {};
 
-    if (item.items) {
+    if ('items' in item) {
         linkAttrs['data-bs-toggle'] = 'collapse';
         linkAttrs.href = '#sidebar-submenu-' + item.key;
     } else {

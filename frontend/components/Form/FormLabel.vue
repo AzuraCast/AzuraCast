@@ -26,13 +26,21 @@
 </template>
 
 <script setup lang="ts">
-import formLabelProps from "~/components/Form/formLabelProps.ts";
+export interface FormLabelParentProps {
+    advanced?: boolean,
+    highCpu?: boolean
+}
 
-const props = defineProps({
-    isRequired: {
-        type: Boolean,
-        default: false
-    },
-    ...formLabelProps
-});
+interface FormLabelProps extends FormLabelParentProps {
+    isRequired?: boolean
+}
+
+withDefaults(
+    defineProps<FormLabelProps>(),
+    {
+        advanced: false,
+        highCpu: false,
+        isRequired: false
+    }
+);
 </script>

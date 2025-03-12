@@ -72,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import FlowUpload from '~/components/Common/FlowUpload.vue';
+import FlowUpload from "~/components/Common/FlowUpload.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
 import {onMounted, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
@@ -80,16 +80,17 @@ import FormMarkup from "~/components/Form/FormMarkup.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import {getStationApiUrl} from "~/router";
 import {useNotify} from "~/functions/useNotify";
+import {ApiUploadedRecordStatus} from "~/entities/ApiInterfaces.ts";
 
 const apiUrl = getStationApiUrl('/fallback');
 
-const downloadUrl = ref(null);
+const downloadUrl = ref<string | null>(null);
 
 const {axios} = useAxios();
 
 const relist = () => {
-    axios.get(apiUrl.value).then((resp) => {
-        downloadUrl.value = resp.data.links.download;
+    void axios.get<ApiUploadedRecordStatus>(apiUrl.value).then(({data}) => {
+        downloadUrl.value = data.url;
     });
 };
 
@@ -98,7 +99,7 @@ onMounted(relist);
 const {notifySuccess} = useNotify();
 
 const deleteFallback = () => {
-    axios.delete(apiUrl.value).then(() => {
+    void axios.delete(apiUrl.value).then(() => {
         notifySuccess();
         relist();
     });

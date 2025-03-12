@@ -26,12 +26,9 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-    alt: {
-        type: Array,
-        default: () => {
-            return [];
-        }
-    }
-});
+import {ChartAltData} from "~/functions/useChart.ts";
+
+defineProps<{
+    alt: ChartAltData[]
+}>();
 </script>

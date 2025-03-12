@@ -134,17 +134,12 @@ import SongText from "~/components/Stations/Reports/Overview/SongText.vue";
 import Loading from "~/components/Common/Loading.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {IconChevronDown, IconChevronUp} from "~/components/Common/icons";
+import {DateRange} from "~/components/Stations/Reports/Overview/CommonMetricsView.vue";
 
-const props = defineProps({
-    dateRange: {
-        type: Object,
-        required: true
-    },
-    apiUrl: {
-        type: String,
-        required: true
-    },
-});
+const props = defineProps<{
+    dateRange: DateRange,
+    apiUrl: string,
+}>();
 
 const dateRange = toRef(props, 'dateRange');
 const {axios} = useAxios();
@@ -171,7 +166,7 @@ const isMounted = useMounted();
 
 watch(dateRange, () => {
     if (isMounted.value) {
-        relist();
+        void relist();
     }
 });
 </script>

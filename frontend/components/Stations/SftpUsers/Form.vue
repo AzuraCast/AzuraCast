@@ -57,26 +57,19 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {computed} from "vue";
 import {required} from "@vuelidate/validators";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    isEditMode: {
-        type: Boolean,
-        required: true
-    }
-});
+const props = defineProps<{
+    isEditMode: boolean
+}>();
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {v$} = useVuelidateOnFormTab(
+    form,
     computed(() => {
         return {
             username: {required},
@@ -84,7 +77,6 @@ const {v$} = useVuelidateOnFormTab(
             publicKeys: {}
         }
     }),
-    form,
     {
         username: '',
         password: null,

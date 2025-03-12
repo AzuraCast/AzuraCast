@@ -10,12 +10,12 @@
     >
         <tabs content-class="mt-3">
             <admin-permissions-global-form
-                :form="v$"
+                v-model:form="form"
                 :global-permissions="globalPermissions"
             />
 
             <admin-permissions-station-form
-                :form="v$"
+                v-model:form="form"
                 :stations="stations"
                 :station-permissions="stationPermissions"
             />
@@ -25,96 +25,53 @@
 
 <script setup lang="ts">
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {computed, ref} from "vue";
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, useTemplateRef} from "vue";
+import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {useTranslate} from "~/vendor/gettext";
-import {required} from '@vuelidate/validators';
-import AdminPermissionsGlobalForm from "./Form/GlobalForm.vue";
-import AdminPermissionsStationForm from "./Form/StationForm.vue";
-import {forEach, map} from 'lodash';
+import AdminPermissionsGlobalForm from "~/components/Admin/Permissions/Form/GlobalForm.vue";
+import AdminPermissionsStationForm from "~/components/Admin/Permissions/Form/StationForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
+import {ApiAdminRole, GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    ...baseEditModalProps,
-    stations: {
-        type: Object,
-        required: true
-    },
-    globalPermissions: {
-        type: Object,
-        required: true
-    },
-    stationPermissions: {
-        type: Object,
-        required: true
+export interface PermissionStation {
+    id: number,
+    permissions: string[]
+}
+
+export interface Permission {
+    name: string,
+    permissions: {
+        global: string[],
+        station: PermissionStation[],
     }
-});
+}
 
-const emit = defineEmits(['relist']);
+interface PermissionsEditModalProps extends BaseEditModalProps {
+    stations: Record<number, string>,
+    globalPermissions: Record<GlobalPermissions, string>,
+    stationPermissions: Record<StationPermissions, string>,
+}
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const props = defineProps<PermissionsEditModalProps>();
+const emit = defineEmits<BaseEditModalEmits>();
+
+const $modal = useTemplateRef('$modal');
 
 const {
     loading,
     error,
     isEditMode,
     v$,
+    form,
     clearContents,
     create,
     edit,
     doSubmit,
     close
-} = useBaseEditModal(
+} = useBaseEditModal<ApiAdminRole>(
     props,
     emit,
-    $modal,
-    {
-        'name': {required},
-        'permissions': {
-            'global': {},
-            'station': {},
-        }
-    },
-    {
-        'name': '',
-        'permissions': {
-            'global': [],
-            'station': [],
-        }
-    },
-    {
-        populateForm(data, formRef) {
-            formRef.value = {
-                name: data.name,
-                permissions: {
-                    global: data.permissions.global,
-                    station: map(data.permissions.station, (permissions, stationId) => {
-                        return {
-                            'station_id': stationId,
-                            'permissions': permissions
-                        };
-                    })
-                }
-            };
-        },
-        getSubmittableFormData(formRef) {
-            const formValue = formRef.value;
-
-            const formReturn = {
-                name: formValue.name,
-                permissions: {
-                    global: formValue.permissions.global,
-                    station: {}
-                }
-            };
-
-            forEach(formValue.permissions.station, (row) => {
-                formReturn.permissions.station[row.station_id] = row.permissions;
-            });
-
-            return formReturn;
-        },
-    }
+    $modal
 );
 
 const {$gettext} = useTranslate();

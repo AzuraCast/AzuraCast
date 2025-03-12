@@ -24,19 +24,16 @@
 </template>
 
 <script setup lang="ts">
-import TimeSeriesChart from '~/components/Common/Charts/TimeSeriesChart.vue';
+import TimeSeriesChart from "~/components/Common/Charts/TimeSeriesChart.vue";
 import {useAsyncState} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 
-const props = defineProps({
-    chartsUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    chartsUrl: string,
+}>();
 
 const {axios} = useAxios();
 

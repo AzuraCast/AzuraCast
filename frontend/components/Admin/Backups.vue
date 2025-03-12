@@ -104,7 +104,7 @@
 
         <data-table
             id="api_keys"
-            ref="$datatable"
+            ref="$dataTable"
             :fields="fields"
             :api-url="listUrl"
         >
@@ -152,13 +152,13 @@
 <script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import AdminBackupsLastOutputModal from "./Backups/LastOutputModal.vue";
+import AdminBackupsLastOutputModal from "~/components/Admin/Backups/LastOutputModal.vue";
 import formatFileSize from "~/functions/formatFileSize";
 import AdminBackupsConfigureModal from "~/components/Admin/Backups/ConfigureModal.vue";
 import AdminBackupsRunBackupModal from "~/components/Admin/Backups/RunBackupModal.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import {useAzuraCast} from "~/vendor/azuracast";
-import {onMounted, ref} from "vue";
+import {onMounted, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
@@ -167,18 +167,18 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {getApiUrl} from "~/router";
 import {IconLogs, IconSend, IconSettings} from "~/components/Common/icons";
-import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import {DeepRequired} from "utility-types";
+import {ApiAdminBackup} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    storageLocations: {
-        type: Object,
-        required: true
-    },
-    isDocker: {
-        type: Boolean,
-        default: true
-    },
-});
+withDefaults(
+    defineProps<{
+        storageLocations: Record<number, string>,
+        isDocker: boolean,
+    }>(),
+    {
+        isDocker: true
+    }
+);
 
 const listUrl = getApiUrl('/admin/backups');
 const runBackupUrl = getApiUrl('/admin/backups/run');
@@ -188,7 +188,7 @@ const settingsLoading = ref(false);
 
 const blankSettings = {
     backupEnabled: false,
-    backupLastRun: null,
+    backupLastRun: 0,
     backupLastOutput: '',
 };
 
@@ -198,7 +198,9 @@ const {$gettext} = useTranslate();
 const {timeConfig} = useAzuraCast();
 const {DateTime, timestampToRelative} = useLuxon();
 
-const fields: DataTableField[] = [
+type Row = DeepRequired<ApiAdminBackup>
+
+const fields: DataTableField<Row>[] = [
     {
         key: 'basename',
         isRowHeader: true,
@@ -229,14 +231,14 @@ const fields: DataTableField[] = [
     }
 ];
 
-const $datatable = ref<DataTableTemplateRef>(null);
+const $dataTable = useTemplateRef('$dataTable');
 
 const {axios} = useAxios();
 
 const relist = () => {
     settingsLoading.value = true;
 
-    axios.get(settingsUrl.value).then((resp) => {
+    void axios.get(settingsUrl.value).then((resp) => {
         settings.value = {
             backupEnabled: resp.data.backup_enabled,
             backupLastRun: resp.data.backup_last_run,
@@ -245,22 +247,22 @@ const relist = () => {
         settingsLoading.value = false;
     });
 
-    $datatable.value?.relist();
+    $dataTable.value?.relist();
 };
 
 onMounted(relist);
 
-const $lastOutputModal = ref<InstanceType<typeof AdminBackupsLastOutputModal> | null>(null);
+const $lastOutputModal = useTemplateRef('$lastOutputModal');
 const showLastOutput = () => {
     $lastOutputModal.value?.show();
 };
 
-const $configureModal = ref<InstanceType<typeof AdminBackupsConfigureModal> | null>(null);
+const $configureModal = useTemplateRef('$configureModal');
 const doConfigure = () => {
     $configureModal.value?.open();
 };
 
-const $runBackupModal = ref<InstanceType<typeof AdminBackupsRunBackupModal> | null>(null);
+const $runBackupModal = useTemplateRef('$runBackupModal');
 const doRunBackup = () => {
     $runBackupModal.value?.open();
 };

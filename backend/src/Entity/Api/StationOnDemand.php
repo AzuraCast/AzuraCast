@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Entity\Api;
 
 use OpenApi\Attributes as OA;
-use Psr\Http\Message\UriInterface;
 
 #[OA\Schema(
     schema: 'Api_StationOnDemand',
     type: 'object'
 )]
-final class StationOnDemand implements ResolvableUrlInterface
+final class StationOnDemand
 {
     #[OA\Property(
         description: 'Track ID unique identifier',
@@ -30,14 +29,4 @@ final class StationOnDemand implements ResolvableUrlInterface
 
     #[OA\Property]
     public string $playlist;
-
-    /**
-     * Re-resolve any Uri instances to reflect base URL changes.
-     *
-     * @param UriInterface $base
-     */
-    public function resolveUrls(UriInterface $base): void
-    {
-        $this->media->resolveUrls($base);
-    }
 }

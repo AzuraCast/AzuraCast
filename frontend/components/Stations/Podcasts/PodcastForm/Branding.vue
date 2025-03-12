@@ -10,10 +10,10 @@
                 :field="v$.branding_config.public_custom_html"
                 :label="$gettext('Custom HTML for Public Pages')"
             >
-                <template #default="slotProps">
+                <template #default="{id, model}">
                     <codemirror-textarea
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
+                        :id="id"
+                        v-model="model.$model"
                         mode="html"
                     />
                 </template>
@@ -23,33 +23,25 @@
 </template>
 
 <script setup lang="ts">
-import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import Tab from "~/components/Common/Tab.vue";
 import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    }
-});
-
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {v$, tabClass} = useVuelidateOnFormTab(
+    form,
     {
         branding_config: {
             public_custom_html: {}
         },
     },
-    form,
-    {
+    () => ({
         branding_config: {
             public_custom_html: ''
         }
-    }
+    })
 );
 </script>

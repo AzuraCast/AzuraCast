@@ -110,16 +110,15 @@ import validatePassword from "~/functions/validatePassword";
 import useVuelidate from "@vuelidate/core";
 import {IconMail, IconVpnKey} from "~/components/Common/icons";
 
-const props = defineProps({
-    csrf: {
-        type: String,
-        required: true
-    },
-    error: {
-        type: String,
-        default: null
-    },
-});
+withDefaults(
+    defineProps<{
+        csrf: string,
+        error?: string
+    }>(),
+    {
+        error: null
+    }
+);
 
 const form = reactive({
     username: null,

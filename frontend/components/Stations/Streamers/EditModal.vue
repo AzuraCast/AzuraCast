@@ -28,32 +28,32 @@
 </template>
 
 <script setup lang="ts">
-import FormBasicInfo from './Form/BasicInfo.vue';
-import FormSchedule from './Form/Schedule.vue';
-import FormArtwork from './Form/Artwork.vue';
+import FormBasicInfo from "~/components/Stations/Streamers/Form/BasicInfo.vue";
+import FormSchedule from "~/components/Stations/Streamers/Form/Schedule.vue";
+import FormArtwork from "~/components/Stations/Streamers/Form/Artwork.vue";
 import mergeExisting from "~/functions/mergeExisting";
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, ref} from "vue";
+import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useResettableRef} from "~/functions/useResettableRef";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 
-const props = defineProps({
-    ...baseEditModalProps,
-    newArtUrl: {
-        type: String,
-        required: true
-    },
-});
+interface StreamersEditModalProps extends BaseEditModalProps {
+    newArtUrl: string
+}
 
-const emit = defineEmits(['relist']);
+const props = defineProps<StreamersEditModalProps>();
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const emit = defineEmits<BaseEditModalEmits>();
+
+const $modal = useTemplateRef('$modal');
 
 const {record, reset} = useResettableRef({
     has_custom_art: false,
-    links: {}
+    links: {
+        art: null,
+    }
 });
 
 const {
@@ -71,7 +71,10 @@ const {
     props,
     emit,
     $modal,
-    {},
+    {
+        schedule_items: {},
+        artwork_file: {},
+    },
     {
         schedule_items: [],
         artwork_file: null
@@ -82,7 +85,7 @@ const {
             reset();
         },
         populateForm: (data, formRef) => {
-            record.value = data;
+            record.value = mergeExisting(record.value, data as typeof record.value);
             formRef.value = mergeExisting(formRef.value, data);
         },
     },

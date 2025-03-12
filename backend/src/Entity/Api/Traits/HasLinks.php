@@ -11,6 +11,7 @@ trait HasLinks
 {
     #[OA\Property(
         type: 'object',
+        readOnly: true,
         additionalProperties: new OA\AdditionalProperties(type: 'string')
     )]
     public array $links = [];

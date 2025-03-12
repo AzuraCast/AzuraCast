@@ -22,7 +22,7 @@
             </h2>
         </div>
         <div
-            v-if="userAllowedForStation(StationPermission.Profile)"
+            v-if="userAllowedForStation(StationPermissions.Profile)"
             class="flex-shrink-0 ms-3"
         >
             <router-link
@@ -40,17 +40,25 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/Common/Icon.vue';
+import Icon from "~/components/Common/Icon.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
-import headerPanelProps from "~/components/Stations/Profile/headerPanelProps";
-import {StationPermission, userAllowedForStation} from "~/acl";
+import {userAllowedForStation} from "~/acl";
 import {IconEdit} from "~/components/Common/icons";
+import {ApiNowPlayingStation, StationPermissions} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    ...headerPanelProps,
-    station: {
-        type: Object,
-        required: true
-    }
+export interface ProfileHeaderPanelParentProps {
+    stationName: string,
+    stationDescription: string,
+    hasStarted: boolean,
+}
+
+defineOptions({
+    inheritAttrs: false
 });
+
+interface ProfileHeaderPanelProps extends ProfileHeaderPanelParentProps {
+    station: ApiNowPlayingStation
+}
+
+defineProps<ProfileHeaderPanelProps>();
 </script>

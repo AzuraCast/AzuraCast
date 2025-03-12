@@ -33,16 +33,16 @@
                     v-model="filters.type"
                     class="form-select form-select-sm"
                 >
-                    <option :value="ListenerTypeFilter.All">
+                    <option :value="ListenerTypeFilters.All">
                         {{ $gettext('All Types') }}
                     </option>
-                    <option :value="ListenerTypeFilter.Mobile">
+                    <option :value="ListenerTypeFilters.Mobile">
                         {{ $gettext('Mobile') }}
                     </option>
-                    <option :value="ListenerTypeFilter.Desktop">
+                    <option :value="ListenerTypeFilters.Desktop">
                         {{ $gettext('Desktop') }}
                     </option>
-                    <option :value="ListenerTypeFilter.Bot">
+                    <option :value="ListenerTypeFilters.Bot">
                         {{ $gettext('Bot/Crawler') }}
                     </option>
                 </select>
@@ -64,22 +64,15 @@
 </template>
 
 <script setup lang="ts">
-import {ListenerFilters, ListenerTypeFilter} from "./listenerFilters.ts";
-import {useVModel} from "@vueuse/core";
-import {WritableComputedRef} from "vue";
+import {ListenerFilters, ListenerTypeFilters} from "~/components/Stations/Reports/Listeners/listenerFilters.ts";
 import {IconClearAll} from "~/components/Common/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
 
-const props = defineProps<{
-    filters: ListenerFilters
-}>();
-
-const emit = defineEmits(['update:filters']);
-const filters: WritableComputedRef<ListenerFilters> = useVModel(props, 'filters', emit);
+const filters = defineModel<ListenerFilters>('filters', {required: true});
 
 const clearFilters = () => {
     filters.value.minLength = null;
     filters.value.maxLength = null;
-    filters.value.type = ListenerTypeFilter.All;
+    filters.value.type = ListenerTypeFilters.All;
 }
 </script>

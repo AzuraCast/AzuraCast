@@ -98,17 +98,18 @@
 <script setup lang="ts">
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {required} from '@vuelidate/validators';
-import {ref} from "vue";
+import {required} from "@vuelidate/validators";
+import {ref, useTemplateRef} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {getApiUrl} from "~/router.ts";
 import useWebAuthn from "~/functions/useWebAuthn.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const registerWebAuthnUrl = getApiUrl('/frontend/account/webauthn/register');
 
@@ -130,7 +131,7 @@ const clearContents = () => {
     error.value = null;
 };
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
 const create = () => {

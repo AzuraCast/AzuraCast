@@ -43,35 +43,27 @@
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
+import {ApiGenericForm, FrontendAdapters} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    stationFrontendType: {
-        type: String,
-        required: true
-    }
-});
+defineProps<{
+    stationFrontendType: FrontendAdapters
+}>();
+
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {maxBitrate} = useAzuraCastStation();
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
-
 const {v$, tabClass} = useVuelidateOnFormTab(
+    form,
     {
         enable_autodj: {},
         autodj_format: {},
         autodj_bitrate: {},
     },
-    form,
     {
         enable_autodj: true,
         autodj_format: 'mp3',
@@ -103,6 +95,6 @@ const formatOptions = [
 ];
 
 const formatSupportsBitrateOptions = computed(() => {
-    return (props.form.autodj_format !== 'flac');
+    return (form.value.autodj_format !== 'flac');
 });
 </script>

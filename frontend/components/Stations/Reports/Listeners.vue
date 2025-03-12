@@ -28,10 +28,13 @@
                         >
                             <date-range-dropdown
                                 v-model="dateRange"
-                                time-picker
-                                :min-date="minDate"
-                                :max-date="maxDate"
-                                :tz="timezone"
+                                :options="{
+                                    timezone: timezone,
+                                    enableTimePicker: true,
+                                    minDate: minDate,
+                                    maxDate: maxDate,
+                                }"
+                                class="btn-dark"
                             />
                         </div>
                     </div>
@@ -109,7 +112,7 @@
 
                     <data-table
                         id="station_listeners"
-                        ref="$datatable"
+                        ref="$dataTable"
                         paginated
                         handle-client-side
                         :fields="fields"
@@ -184,30 +187,28 @@
 </template>
 
 <script setup lang="ts">
-import StationReportsListenersMap from "./Listeners/Map.vue";
+import StationReportsListenersMap from "~/components/Stations/Reports/Listeners/Map.vue";
 import Icon from "~/components/Common/Icon.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
-import {computed, ComputedRef, nextTick, onMounted, Ref, ref, ShallowRef, shallowRef, watch} from "vue";
+import {computed, ComputedRef, nextTick, onMounted, Ref, ref, ShallowRef, shallowRef, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import {getStationApiUrl} from "~/router";
 import {IconDesktopWindows, IconDownload, IconRouter, IconSmartphone} from "~/components/Common/icons";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
-import {ListenerFilters, ListenerTypeFilter} from "~/components/Stations/Reports/Listeners/listenerFilters.ts";
+import useHasDatatable from "~/functions/useHasDatatable";
+import {ListenerFilters, ListenerTypeFilters} from "~/components/Stations/Reports/Listeners/listenerFilters.ts";
 import {filter} from "lodash";
 import formatTime from "~/functions/formatTime.ts";
-import ListenerFiltersBar from "./Listeners/FiltersBar.vue";
+import ListenerFiltersBar from "~/components/Stations/Reports/Listeners/FiltersBar.vue";
 import {ApiListener} from "~/entities/ApiInterfaces.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
+import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 
-const props = defineProps({
-    attribution: {
-        type: String,
-        required: true
-    }
-});
+defineProps<{
+    attribution: string
+}>();
 
 const apiUrl = getStationApiUrl('/listeners');
 
@@ -215,6 +216,8 @@ const isLive = ref<boolean>(true);
 const listeners: ShallowRef<ApiListener[]> = shallowRef([]);
 
 const {DateTime} = useLuxon();
+
+const {timezone} = useAzuraCastStation();
 const {
     now,
     formatTimestampAsDateTime
@@ -233,7 +236,7 @@ const dateRange = ref({
 const filters: Ref<ListenerFilters> = ref({
     minLength: null,
     maxLength: null,
-    type: ListenerTypeFilter.All,
+    type: ListenerTypeFilters.All,
 });
 
 const {$gettext} = useTranslate();
@@ -326,30 +329,20 @@ const exportUrl = computed(() => {
     return exportUrl.toString();
 });
 
-const totalListenerHours = computed(() => {
-    let tlh_seconds = 0;
-    filteredListeners.value.forEach(function (listener) {
-        tlh_seconds += listener.connected_time;
-    });
-
-    const tlh_hours = tlh_seconds / 3600;
-    return Math.round((tlh_hours + 0.00001) * 100) / 100;
-});
-
 const {axios} = useAxios();
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {navigate} = useHasDatatable($datatable);
+const $dataTable = useTemplateRef('$dataTable');
+const {navigate} = useHasDatatable($dataTable);
 
 const hasFilters: ComputedRef<boolean> = computed(() => {
     return null !== filters.value.minLength
         || null !== filters.value.maxLength
-        || ListenerTypeFilter.All !== filters.value.type;
+        || ListenerTypeFilters.All !== filters.value.type;
 });
 
-const filteredListeners: ComputedRef<ApiListener[]> = computed(() => {
+const filteredListeners = computed<ApiListener[]>(() => {
     if (!hasFilters.value) {
-        return listeners.value;
+        return listeners.value ?? [];
     }
 
     return filter(
@@ -362,10 +355,10 @@ const filteredListeners: ComputedRef<ApiListener[]> = computed(() => {
             if (null !== filters.value.maxLength && connectedTime > filters.value.maxLength) {
                 return false;
             }
-            if (ListenerTypeFilter.All !== filters.value.type) {
-                if (ListenerTypeFilter.Mobile === filters.value.type && !row.device.is_mobile) {
+            if (ListenerTypeFilters.All !== filters.value.type) {
+                if (ListenerTypeFilters.Mobile === filters.value.type && !row.device.is_mobile) {
                     return false;
-                } else if (ListenerTypeFilter.Desktop === filters.value.type && row.device.is_mobile) {
+                } else if (ListenerTypeFilters.Desktop === filters.value.type && row.device.is_mobile) {
                     return false;
                 }
             }
@@ -373,6 +366,17 @@ const filteredListeners: ComputedRef<ApiListener[]> = computed(() => {
             return true;
         }
     );
+});
+
+const totalListenerHours = computed(() => {
+    let tlh_seconds = 0;
+
+    filteredListeners.value.forEach(function (listener) {
+        tlh_seconds += listener.connected_time;
+    });
+
+    const tlh_hours = tlh_seconds / 3600;
+    return Math.round((tlh_hours + 0.00001) * 100) / 100;
 });
 
 const updateListeners = () => {
@@ -405,6 +409,6 @@ onMounted(updateListeners);
 
 const setIsLive = (newValue: boolean) => {
     isLive.value = newValue;
-    nextTick(updateListeners);
+    void nextTick(updateListeners);
 };
 </script>

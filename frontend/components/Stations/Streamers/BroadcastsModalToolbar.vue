@@ -19,28 +19,23 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/Common/Icon.vue';
-import '~/vendor/sweetalert';
+import Icon from "~/components/Common/Icon.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
-import {useSweetAlert} from "~/vendor/sweetalert";
 import {IconDelete} from "~/components/Common/icons";
-import {computed, h, toRef} from "vue";
+import {computed, h, toRef, VNode} from "vue";
 import {forEach, map} from "lodash";
 import {useNotify} from "~/functions/useNotify.ts";
+import {useDialog} from "~/functions/useDialog.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import {ApiGenericBatchResult} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    batchUrl: {
-        type: String,
-        required: true
-    },
-    selectedItems: {
-        type: Array,
-        required: true
-    }
-});
+const props = defineProps<{
+    batchUrl: string,
+    selectedItems: Array<any>,
+}>();
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const {$gettext} = useTranslate();
 const {axios} = useAxios();
@@ -51,26 +46,17 @@ const hasSelectedItems = computed(() => {
     return selectedItems.value.length > 0;
 });
 
-interface BatchRow {
-    id: number,
-    title: string
-}
-
-interface BatchResponse {
-    success: boolean,
-    records: BatchRow[],
-    errors: string[],
-}
+type BatchAction = "delete";
 
 const {notifySuccess, notifyError} = useNotify();
 
 const handleBatchResponse = (
-    data: BatchResponse,
+    data: ApiGenericBatchResult,
     successMessage: string,
     errorMessage: string
 ): void => {
     if (data.success) {
-        const itemNameNodes = [];
+        const itemNameNodes: VNode[] = [];
         forEach(data.records, (item) => {
             itemNameNodes.push(h('div', {}, item.title));
         });
@@ -79,7 +65,7 @@ const handleBatchResponse = (
             title: successMessage
         });
     } else {
-        const itemErrorNodes = [];
+        const itemErrorNodes: VNode[] = [];
         forEach(data.errors, (err) => {
             itemErrorNodes.push(h('div', {}, err));
         })
@@ -90,8 +76,12 @@ const handleBatchResponse = (
     }
 }
 
-const doBatch = (action, successMessage, errorMessage) => {
-    axios.put(props.batchUrl, {
+const doBatch = (
+    action: BatchAction,
+    successMessage: string,
+    errorMessage: string
+) => {
+    void axios.put<ApiGenericBatchResult>(props.batchUrl, {
         'do': action,
         'rows': map(props.selectedItems, 'id')
     }).then(({data}) => {
@@ -100,17 +90,16 @@ const doBatch = (action, successMessage, errorMessage) => {
     });
 };
 
-const {confirmDelete} = useSweetAlert();
+const {confirmDelete} = useDialog();
 
 const doDelete = () => {
-    const numFiles = props.selectedItems.length;
-    const buttonConfirmText = $gettext(
-        'Delete %{ num } broadcasts?',
-        {num: numFiles}
-    );
-
-    confirmDelete({
-        title: buttonConfirmText,
+    void confirmDelete({
+        title: $gettext(
+            'Delete %{num} broadcasts?',
+            {
+                num: String(props.selectedItems.length)
+            }
+        ),
     }).then((result) => {
         if (result.value) {
             doBatch(

@@ -6,9 +6,9 @@ namespace App\Notification\Check;
 
 use App\Container\SettingsAwareTrait;
 use App\Entity\Api\Notification;
+use App\Enums\FlashLevels;
 use App\Enums\GlobalPermissions;
 use App\Event\GetNotifications;
-use App\Session\FlashLevels;
 
 final class SyncTaskCheck
 {
@@ -32,35 +32,37 @@ final class SyncTaskCheck
 
         if ($settings->getSyncDisabled()) {
             // phpcs:disable Generic.Files.LineLength
-            $notification = new Notification();
-            $notification->title = __('Synchronization Disabled');
-            $notification->body = __(
-                'Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks.'
+            $event->addNotification(
+                new Notification(
+                    __('Synchronization Disabled'),
+                    __(
+                        'Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks.'
+                    ),
+                    FlashLevels::Error
+                )
             );
-            $notification->type = FlashLevels::Error->value;
             // phpcs:enable
 
-            $event->addNotification($notification);
             return;
         }
 
         $syncLastRun = $settings->getSyncLastRun();
         if ($syncLastRun < (time() - 60 * 5)) {
-            // phpcs:disable Generic.Files.LineLength
-            $notification = new Notification();
-            $notification->title = __('Synchronization Not Recently Run');
-            $notification->body = __(
-                'The routine synchronization task has not run recently. This may indicate an error with your installation.'
-            );
-            $notification->type = FlashLevels::Error->value;
-
             $router = $request->getRouter();
 
-            $notification->actionLabel = __('System Debugger');
-            $notification->actionUrl = $router->named('admin:debug:index');
+            // phpcs:disable Generic.Files.LineLength
+            $event->addNotification(
+                new Notification(
+                    __('Synchronization Not Recently Run'),
+                    __(
+                        'The routine synchronization task has not run recently. This may indicate an error with your installation.'
+                    ),
+                    FlashLevels::Error,
+                    __('System Debugger'),
+                    $router->named('admin:debug:index')
+                )
+            );
             // phpcs:enable
-
-            $event->addNotification($notification);
         }
     }
 }

@@ -31,24 +31,25 @@
 </template>
 
 <script setup lang="ts">
-import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo.vue';
-import PodcastCommonArtwork from './Common/Artwork.vue';
-import EpisodeFormMedia from './EpisodeForm/Media.vue';
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, ref} from "vue";
+import EpisodeFormBasicInfo from "~/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue";
+import PodcastCommonArtwork from "~/components/Stations/Podcasts/Common/Artwork.vue";
+import EpisodeFormMedia from "~/components/Stations/Podcasts/EpisodeForm/Media.vue";
+import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, useTemplateRef} from "vue";
 import {useResettableRef} from "~/functions/useResettableRef";
 import mergeExisting from "~/functions/mergeExisting";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
+import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    ...baseEditModalProps,
-    podcast: {
-        type: Object,
-        required: true
-    }
-});
+interface EpisodeEditModalProps extends BaseEditModalProps {
+    podcast: ApiPodcast
+}
+
+const props = defineProps<EpisodeEditModalProps>();
+
+const emit = defineEmits<BaseEditModalEmits>();
 
 const newArtUrl = computed(() => props.podcast.links.episode_new_art);
 const newMediaUrl = computed(() => props.podcast.links.episode_new_media);
@@ -56,9 +57,7 @@ const podcastIsManual = computed(() => {
     return props.podcast.source == 'manual';
 });
 
-const emit = defineEmits(['relist']);
-
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 
 const {record, reset} = useResettableRef({
     has_custom_art: false,
@@ -87,7 +86,10 @@ const {
     props,
     emit,
     $modal,
-    {},
+    {
+        artwork_file: {},
+        media_file: {}
+    },
     {
         artwork_file: null,
         media_file: null
@@ -98,7 +100,7 @@ const {
             reset();
         },
         populateForm: (data, formRef) => {
-            record.value = mergeExisting(record.value, data);
+            record.value = mergeExisting(record.value, data as typeof record.value);
             formRef.value = mergeExisting(formRef.value, data);
         },
     },

@@ -166,6 +166,9 @@
                                 column.class,
                                 (column.sortable) ? 'sortable' : ''
                             ]"
+                            :aria-sort="(column.sortable && sortField?.key === column.key)
+                                ? ((sortOrder === 'asc') ? 'ascending' : 'descending')
+                                : undefined"
                             @click.stop="sort(column)"
                         >
                             <slot
@@ -176,7 +179,7 @@
                                     {{ column.label }}
 
                                     <template v-if="column.sortable && sortField?.key === column.key">
-                                        <icon :icon="(sortOrder === 'asc') ? IconArrowDropDown : IconArrowDropUp" />
+                                        <icon :icon="(sortOrder === 'asc') ? IconArrowDropUp : IconArrowDropDown" />
                                     </template>
                                 </div>
                             </slot>
@@ -286,10 +289,10 @@
     </div>
 </template>
 
-<script setup lang="ts" generic="Row extends object">
-import {filter, forEach, get, includes, indexOf, isEmpty, map, reverse, slice, some} from 'lodash';
-import Icon from './Icon.vue';
-import {computed, onMounted, ref, shallowRef, toRaw, toRef, useSlots, watch} from "vue";
+<script setup lang="ts" generic="Row extends DataTableRow = DataTableRow">
+import {filter, forEach, get, includes, indexOf, isEmpty, map, reverse, slice, some} from "lodash";
+import Icon from "~/components/Common/Icon.vue";
+import {computed, onMounted, ref, shallowRef, toRaw, toRef, watch} from "vue";
 import {watchDebounced} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
@@ -298,10 +301,28 @@ import Pagination from "~/components/Common/Pagination.vue";
 import useOptionalStorage from "~/functions/useOptionalStorage";
 import {IconArrowDropDown, IconArrowDropUp, IconFilterList, IconRefresh, IconSearch} from "~/components/Common/icons";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
+import {AxiosRequestConfig} from "axios";
+import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 
-export interface DataTableProps {
+export type DataTableRow = Record<string, any>
+
+export interface DataTableField<Row extends DataTableRow = DataTableRow> {
+    key: string,
+    label: string,
+    isRowHeader?: boolean,
+    sortable?: boolean,
+    selectable?: boolean,
+    visible?: boolean,
+    "class"?: string | Array<any>,
+
+    formatter?(value: any, key: string, row: Row): string,
+
+    sorter?(row: Row): string
+}
+
+export interface DataTableProps<Row extends DataTableRow = DataTableRow> {
     id?: string,
-    fields: DataTableField[],
+    fields: DataTableField<Row>[],
     apiUrl?: string, // URL to fetch for server-side data
     items?: Row[], // Array of items for client-side data
     responsive?: boolean | string, // Make table responsive (boolean or CSS class for specific responsiveness width)
@@ -315,14 +336,11 @@ export interface DataTableProps {
     detailed?: boolean, // Allow showing "Detail" panel for selected rows.
     selectFields?: boolean, // Allow selecting which columns are visible.
     handleClientSide?: boolean, // Handle searching, sorting and pagination client-side without API calls.
-    requestConfig?(config: object): object, // Custom server-side request configuration (pre-request)
+    requestConfig?(config: AxiosRequestConfig): AxiosRequestConfig, // Custom server-side request configuration (pre-request)
     requestProcess?(rawData: object[]): Row[], // Custom server-side request result processing (post-request)
 }
 
-const props = withDefaults(defineProps<DataTableProps>(), {
-    id: null,
-    apiUrl: null,
-    items: null,
+const props = withDefaults(defineProps<DataTableProps<Row>>(), {
     responsive: () => true,
     paginated: false,
     loading: false,
@@ -338,15 +356,28 @@ const props = withDefaults(defineProps<DataTableProps>(), {
     requestProcess: undefined
 });
 
-const slots = useSlots();
+const slots = defineSlots<{
+    [key: `cell(${string})`]: (props: {
+        column: DataTableField<Row>,
+        item: Row,
+        isActive: boolean,
+        toggleDetails: () => void
+    }) => any,
+    'detail'?: (props: {
+        item: Row,
+        index: number
+    }) => any,
+    'caption'?: () => any,
+    'empty'?: () => any,
+}>()
 
-const emit = defineEmits([
-    'refresh-clicked',
-    'refreshed',
-    'row-selected',
-    'filtered',
-    'data-loaded'
-]);
+const emit = defineEmits<{
+    (e: 'refresh-clicked', event: MouseEvent): void,
+    (e: 'refreshed'): void,
+    (e: 'row-selected', rows: Row[]): void,
+    (e: 'filtered', newPhrase: string): void,
+    (e: 'data-loaded', data: Row[]): void,
+}>();
 
 const selectedRows = shallowRef<Row[]>([]);
 
@@ -358,7 +389,7 @@ const searchPhrase = ref<string>('');
 const currentPage = ref<number>(1);
 const flushCache = ref<boolean>(false);
 
-const sortField = ref<DataTableField | null>(null);
+const sortField = ref<DataTableField<Row> | null>(null);
 const sortOrder = ref<string | null>(null);
 
 const isLoading = ref<boolean>(false);
@@ -372,24 +403,12 @@ const totalRows = ref(0);
 
 const activeDetailsRow = shallowRef<Row>(null);
 
-export interface DataTableField {
-    key: string,
-    label: string,
-    isRowHeader?: boolean,
-    sortable?: boolean,
-    selectable?: boolean,
-    visible?: boolean,
-    class?: string | Array<any>,
+type RowField = DataTableField<Row>
+type RowFields = RowField[]
 
-    formatter?(column: any, key: string, row: Row): string,
-
-    sorter?(row: Row): string
-}
-
-const allFields = computed<DataTableField[]>(() => {
-    return map(props.fields, (field: DataTableField) => {
+const allFields = computed<RowFields>(() => {
+    return map(props.fields, (field: RowField): RowField => {
         return {
-            label: '',
             isRowHeader: false,
             sortable: false,
             selectable: false,
@@ -402,22 +421,22 @@ const allFields = computed<DataTableField[]>(() => {
     });
 });
 
-const selectableFields = computed<DataTableField[]>(() => {
-    return filter({...allFields.value}, (field) => {
-        return field.selectable;
+const selectableFields = computed<RowFields>(() => {
+    return filter({...allFields.value}, (field: RowField) => {
+        return field.selectable ?? false;
     });
 });
 
-const selectableFieldOptions = computed(() => map(selectableFields.value, (field) => {
+const selectableFieldOptions = computed<SimpleFormOptionInput>(() => map(selectableFields.value, (field) => {
     return {
         value: field.key,
         text: field.label
     };
 }));
 
-const defaultSelectableFields = computed(() => {
-    return filter({...selectableFields.value}, (field) => {
-        return field.visible;
+const defaultSelectableFields = computed<RowFields>(() => {
+    return filter({...selectableFields.value}, (field: RowField) => {
+        return field.visible ?? true;
     });
 });
 
@@ -460,7 +479,7 @@ const perPage = computed<number>(() => {
     return settings.value?.perPage ?? props.defaultPerPage;
 });
 
-const visibleFields = computed<DataTableField[]>(() => {
+const visibleFields = computed<DataTableField<Row>[]>(() => {
     const fields = allFields.value.slice();
 
     if (!props.selectFields) {
@@ -478,7 +497,7 @@ const visibleFields = computed<DataTableField[]>(() => {
     });
 });
 
-const getPerPageLabel = (num): string => {
+const getPerPageLabel = (num: number): string => {
     return (num === 0) ? 'All' : num.toString();
 };
 
@@ -522,7 +541,7 @@ const refreshClientSide = () => {
                 sortField.value.sorter(b)
             )
         );
-        
+
         if (sortOrder.value === 'desc') {
             itemsOnPage = reverse(itemsOnPage);
         }
@@ -582,17 +601,17 @@ const refreshServerSide = () => {
         }
     }
 
-    let requestConfig = {params: queryParams};
+    let requestConfig: AxiosRequestConfig = {params: queryParams};
     if (typeof props.requestConfig === 'function') {
         requestConfig = props.requestConfig(requestConfig);
     }
 
     isLoading.value = true;
 
-    return axios.get(props.apiUrl, requestConfig).then((resp) => {
+    axios.get(props.apiUrl, requestConfig).then((resp) => {
         totalRows.value = resp.data.total;
 
-        let rows = resp.data.rows;
+        let rows = resp.data.rows ?? [];
         if (typeof props.requestProcess === 'function') {
             rows = props.requestProcess(rows);
         }
@@ -621,7 +640,7 @@ const refresh = () => {
     }
 };
 
-const onPageChange = (p) => {
+const onPageChange = (p: number) => {
     currentPage.value = p;
     refresh();
 }
@@ -631,7 +650,7 @@ const relist = () => {
     refresh();
 };
 
-const onClickRefresh = (e) => {
+const onClickRefresh = (e: MouseEvent) => {
     emit('refresh-clicked', e);
 
     if (e.shiftKey) {
@@ -647,7 +666,7 @@ const navigate = () => {
     relist();
 };
 
-const setFilter = (newTerm) => {
+const setFilter = (newTerm: string) => {
     searchPhrase.value = newTerm;
 };
 
@@ -702,7 +721,7 @@ const sort = (column: DataTableField) => {
             : 'asc';
         sortField.value = column;
     }
-    
+
     refresh();
 };
 
@@ -722,7 +741,7 @@ const checkRow = (row: Row) => {
 }
 
 const checkAll = () => {
-    const newSelectedRows = [];
+    const newSelectedRows: Row[] = [];
 
     if (!isAllChecked.value) {
         forEach(visibleItems.value, (currentRow) => {
@@ -751,7 +770,7 @@ const responsiveClass = computed(() => {
     return (props.responsive ? 'table-responsive' : '');
 });
 
-const getColumnValue = (field: DataTableField, row: Row): string => {
+const getColumnValue = (field: DataTableField<Row>, row: Row): string => {
     const columnValue = get(row, field.key, null);
 
     return (field.formatter)

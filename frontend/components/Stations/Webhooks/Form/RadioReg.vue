@@ -25,38 +25,29 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
+import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    title: {
-        type: String,
-        required: true
-    },
-    form: {
-        type: Object,
-        required: true
-    }
-});
+defineProps<WebhookComponentProps>();
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {v$, tabClass} = useVuelidateOnFormTab(
+    form,
     {
         config: {
             webhookurl: {required},
             apikey: {required}
         }
     },
-    form,
-    {
+    () => ({
         config: {
             webhookurl: '',
             apikey: ''
         }
-    }
+    })
 );
 </script>

@@ -1,29 +1,29 @@
-import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import {useDialog} from "~/functions/useDialog.ts";
+import {ApiStatus} from "~/entities/ApiInterfaces.ts";
 
-export default function useConfirmAndDelete(
+export default function useConfirmAndDelete<T extends ApiStatus = ApiStatus>(
     confirmMessage: string,
-    onSuccess = null
+    onSuccess?: (data: T) => void
 ) {
-    const {confirmDelete} = useSweetAlert();
+    const {confirmDelete} = useDialog();
     const {notifySuccess} = useNotify();
     const {axios} = useAxios();
 
-    const doDelete = (deleteUrl) => {
-        confirmDelete({
+    const doDelete = async (deleteUrl: string) => {
+        const {value} = await confirmDelete({
             title: confirmMessage
-        }).then((result) => {
-            if (result.value) {
-                axios.delete(deleteUrl).then((resp) => {
-                    notifySuccess(resp.data.message);
-
-                    if (typeof onSuccess === 'function') {
-                        onSuccess(resp.data);
-                    }
-                });
-            }
         });
+
+        if (value) {
+            const {data} = await axios.delete<T>(deleteUrl);
+
+            notifySuccess(data.message);
+            if (typeof onSuccess === 'function') {
+                onSuccess(data);
+            }
+        }
     };
 
     return {

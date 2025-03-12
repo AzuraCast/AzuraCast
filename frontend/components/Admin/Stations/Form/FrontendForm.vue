@@ -116,7 +116,7 @@
                         <form-group-select
                             id="edit_form_frontend_banned_countries"
                             :field="v$.frontend_config.banned_countries"
-                            :options="countryOptions"
+                            :options="countries"
                             multiple
                             :label="$gettext('Banned Countries')"
                             :description="$gettext('Select the countries that are not allowed to connect to the streams.')"
@@ -168,39 +168,29 @@
 <script setup lang="ts">
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {FrontendAdapter} from "~/entities/RadioAdapters";
-import objectToFormOptions from "~/functions/objectToFormOptions";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric, required} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
+import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
+import {ApiGenericForm, FrontendAdapters} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    isShoutcastInstalled: {
-        type: Boolean,
-        default: false
-    },
-    countries: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    isRsasInstalled: boolean,
+    isShoutcastInstalled: boolean,
+    countries: Record<string, string>,
+}>();
+
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {enableAdvancedFeatures} = useAzuraCast();
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
-
 const {v$, tabClass} = useVuelidateOnFormTab(
+    form,
     computed(() => {
         let validations: {
             [key: string | number]: any
@@ -232,12 +222,11 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
         return validations;
     }),
-    form,
     () => {
         let blankForm: {
             [key: string | number]: any
         } = {
-            frontend_type: FrontendAdapter.Icecast,
+            frontend_type: FrontendAdapters.Icecast,
             frontend_config: {
                 sc_license_id: '',
                 sc_user_id: '',
@@ -268,39 +257,42 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
 const {$gettext} = useTranslate();
 
-const frontendTypeOptions = computed(() => {
-    const frontendOptions = [
+const frontendTypeOptions = computed<SimpleFormOptionInput>(() => {
+    const frontendOptions: SimpleFormOptionInput = [
         {
             text: $gettext('Use Icecast 2.4 on this server.'),
-            value: FrontendAdapter.Icecast
+            value: FrontendAdapters.Icecast
         },
     ];
+
+    if (props.isRsasInstalled) {
+        frontendOptions.push({
+            text: $gettext('Use Rocket Streaming Audio Server (RSAS) on this server.'),
+            value: FrontendAdapters.Rsas
+        });
+    }
 
     if (props.isShoutcastInstalled) {
         frontendOptions.push({
             text: $gettext('Use Shoutcast DNAS 2 on this server.'),
-            value: FrontendAdapter.Shoutcast
+            value: FrontendAdapters.Shoutcast
         });
     }
 
     frontendOptions.push({
         text: $gettext('Do not use a local broadcasting service.'),
-        value: FrontendAdapter.Remote
+        value: FrontendAdapters.Remote
     });
 
     return frontendOptions;
 });
 
-const countryOptions = computed(() => {
-    return objectToFormOptions(props.countries);
-});
-
 const isLocalFrontend = computed(() => {
-    return form.value.frontend_type !== FrontendAdapter.Remote;
+    return form.value.frontend_type !== FrontendAdapters.Remote;
 });
 
 const isShoutcastFrontend = computed(() => {
-    return form.value.frontend_type === FrontendAdapter.Shoutcast;
+    return form.value.frontend_type === FrontendAdapters.Shoutcast;
 });
 
 const clearCountries = () => {

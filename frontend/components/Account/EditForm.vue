@@ -17,15 +17,11 @@
                 :label="$gettext('E-mail Address')"
             />
 
-            <form-group-multi-check
+            <time-radios
                 id="edit_form_show_24_hour_time"
                 class="mb-3"
                 tabindex="3"
                 :field="form.show_24_hour_time"
-                :options="show24hourOptions"
-                stacked
-                radio
-                :label="$gettext('Time Display')"
             />
         </div>
         <div class="col-md-6">
@@ -44,47 +40,30 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import objectToFormOptions from "~/functions/objectToFormOptions";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import {objectToSimpleFormOptions} from "~/functions/objectToFormOptions.ts";
+import TimeRadios from "~/components/Account/TimeRadios.vue";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    supportedLocales: {
-        type: Object,
-        required: true
-    }
-});
+interface AccountEditFormProps {
+    form: ApiGenericForm,
+    supportedLocales: Record<string, string>
+}
+
+const props = defineProps<AccountEditFormProps>();
 
 const {$gettext} = useTranslate();
 
 const localeOptions = computed(() => {
-    const localeOptions = objectToFormOptions(props.supportedLocales);
+    const localeOptions = objectToSimpleFormOptions(props.supportedLocales).value;
+
     localeOptions.unshift({
         text: $gettext('Use Browser Default'),
         value: 'default'
     });
-    return localeOptions;
-});
 
-const show24hourOptions = computed(() => {
-    return [
-        {
-            text: $gettext('Prefer System Default'),
-            value: null
-        },
-        {
-            text: $gettext('12 Hour'),
-            value: false
-        },
-        {
-            text: $gettext('24 Hour'),
-            value: true
-        }
-    ];
+    return localeOptions;
 });
 </script>

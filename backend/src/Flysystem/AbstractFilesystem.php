@@ -18,7 +18,7 @@ abstract class AbstractFilesystem extends Filesystem implements ExtendedFilesyst
     public function __construct(
         ExtendedAdapterInterface $adapter,
         array $config = [],
-        PathNormalizer $pathNormalizer = null
+        ?PathNormalizer $pathNormalizer = null
     ) {
         $this->adapter = $adapter;
 

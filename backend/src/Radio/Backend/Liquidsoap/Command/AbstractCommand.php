@@ -8,6 +8,7 @@ use App\Container\LoggerAwareTrait;
 use App\Entity\Station;
 use App\Radio\Enums\BackendAdapters;
 use App\Utilities\Types;
+use LogicException;
 use Monolog\LogRecord;
 use ReflectionClass;
 use Throwable;
@@ -20,7 +21,11 @@ abstract class AbstractCommand
         Station $station,
         bool $asAutoDj = false,
         ?array $payload = []
-    ): string {
+    ): mixed {
+        if (BackendAdapters::Liquidsoap !== $station->getBackendType()) {
+            throw new LogicException('Station does not use Liquidsoap backend.');
+        }
+
         $this->logger->pushProcessor(
             function (LogRecord $record) use ($station) {
                 $record->extra['station'] = [
@@ -31,44 +36,17 @@ abstract class AbstractCommand
             }
         );
 
-        $className = (new ReflectionClass(static::class))->getShortName();
-        $this->logger->debug(
-            sprintf('Running Internal Command %s', $className),
-            [
-                'asAutoDj' => $asAutoDj,
-                'payload' => $payload,
-            ]
-        );
-
         try {
-            if (BackendAdapters::Liquidsoap !== $station->getBackendType()) {
-                $this->logger->error('Station does not use Liquidsoap backend.');
-                return 'false';
-            }
-
-            $result = $this->doRun($station, $asAutoDj, $payload ?? []);
-
-            if (true === $result) {
-                return 'true';
-            }
-            if (false === $result) {
-                return 'false';
-            }
-
-            return Types::string($result);
-        } catch (Throwable $e) {
-            $this->logger->error(
-                sprintf(
-                    'Error with Internal Command %s: %s',
-                    $className,
-                    $e->getMessage()
-                ),
+            $className = (new ReflectionClass(static::class))->getShortName();
+            $this->logger->debug(
+                sprintf('Running Internal Command %s', $className),
                 [
-                    'exception' => $e,
+                    'asAutoDj' => $asAutoDj,
+                    'payload' => $payload,
                 ]
             );
 
-            return 'false';
+            return $this->doRun($station, $asAutoDj, $payload ?? []);
         } finally {
             $this->logger->popProcessor();
         }

@@ -114,17 +114,12 @@ import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {useTranslate} from "~/vendor/gettext.ts";
+import {DateRange} from "~/components/Stations/Reports/Overview/CommonMetricsView.vue";
 
-const props = defineProps({
-    dateRange: {
-        type: Object,
-        required: true
-    },
-    apiUrl: {
-        type: String,
-        required: true
-    },
-});
+const props = defineProps<{
+    dateRange: DateRange,
+    apiUrl: string,
+}>();
 
 const dateRange = toRef(props, 'dateRange');
 const {axios} = useAxios();
@@ -189,13 +184,13 @@ const isMounted = useMounted();
 
 watch(dateRange, () => {
     if (isMounted.value) {
-        relist();
+        void relist();
     }
 });
 
 watch(resultType, () => {
     if (isMounted.value) {
-        relist();
+        void relist();
     }
 });
 </script>

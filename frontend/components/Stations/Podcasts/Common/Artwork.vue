@@ -50,23 +50,14 @@ import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
 import Tab from "~/components/Common/Tab.vue";
+import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
 
-const props = defineProps({
-    modelValue: {
-        type: Object,
-        default: null
-    },
-    artworkSrc: {
-        type: String,
-        default: null
-    },
-    newArtUrl: {
-        type: String,
-        required: true
-    },
-});
+const props = defineProps<{
+    artworkSrc?: string,
+    newArtUrl: string
+}>();
 
-const emit = defineEmits(['update:modelValue']);
+const model = defineModel<UploadResponseBody | null>();
 
 const artworkSrc = ref(props.artworkSrc);
 const reloadArt = () => {
@@ -82,7 +73,7 @@ const src = computed(() => {
 
 const {axios} = useAxios();
 
-const uploaded = (file) => {
+const uploaded = (file: File | null) => {
     if (null === file) {
         return;
     }
@@ -97,15 +88,15 @@ const uploaded = (file) => {
     const formData = new FormData();
     formData.append('art', file);
 
-    axios.post(url, formData).then((resp) => {
-        emit('update:modelValue', resp.data);
+    void axios.post(url, formData).then((resp) => {
+        model.value = resp.data;
         reloadArt();
     });
 };
 
 const deleteArt = () => {
     if (props.artworkSrc) {
-        axios.delete(props.artworkSrc).then(() => {
+        void axios.delete(props.artworkSrc).then(() => {
             reloadArt();
             localSrc.value = null;
         });

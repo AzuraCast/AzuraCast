@@ -47,10 +47,10 @@
                             :id="'form_edit_'+row.field_name"
                             :field="v$[row.field_name]"
                         >
-                            <template #default="slotProps">
+                            <template #default="{id, model}">
                                 <codemirror-textarea
-                                    :id="slotProps.id"
-                                    v-model="slotProps.field.$model"
+                                    :id="id"
+                                    v-model="model.$model"
                                     mode="liquidsoap"
                                 />
                             </template>
@@ -59,7 +59,7 @@
                             v-else
                             :id="'form_section_'+index"
                         >
-                            <pre class="typography-body-1">{{ row.markup }}</pre>
+                            <pre class="typography-body-1">{{ row.markup ?? "" }}</pre>
                         </form-markup>
                     </form-fieldset>
 
@@ -94,8 +94,14 @@ import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";
 
 const settingsUrl = getStationApiUrl('/liquidsoap-config');
 
-const config = ref([]);
-const sections = ref([]);
+interface ConfigRow {
+    is_field: boolean,
+    field_name: string,
+    markup?: string
+}
+
+const sections = ref<string[]>([]);
+const config = ref<ConfigRow[]>([]);
 
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
     computed(() => {
@@ -122,7 +128,7 @@ const {axios} = useAxios();
 
 const relist = () => {
     isLoading.value = true;
-    axios.get(settingsUrl.value).then((resp) => {
+    void axios.get(settingsUrl.value).then((resp) => {
         config.value = resp.data.config;
         sections.value = resp.data.sections;
 
@@ -139,7 +145,7 @@ const {notifySuccess} = useNotify();
 
 const submit = () => {
     ifValid(() => {
-        axios({
+        void axios({
             method: 'PUT',
             url: settingsUrl.value,
             data: form.value,

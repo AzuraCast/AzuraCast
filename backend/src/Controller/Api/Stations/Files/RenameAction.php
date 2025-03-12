@@ -11,9 +11,29 @@ use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\BatchUtilities;
+use App\OpenApi;
 use App\Utilities\Types;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[
+    OA\Put(
+        path: '/station/{station_id}/files/rename',
+        operationId: 'postStationFilesRename',
+        summary: 'Rename the specified files in the station media directory.',
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            // TODO: API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class RenameAction implements SingleActionInterface
 {
     public function __construct(

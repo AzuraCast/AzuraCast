@@ -61,8 +61,8 @@
 </template>
 
 <script setup lang="ts">
-import SettingsGeneralTab from "./Settings/GeneralTab.vue";
-import SettingsServicesTab from "./Settings/ServicesTab.vue";
+import SettingsGeneralTab from "~/components/Admin/Settings/GeneralTab.vue";
+import SettingsServicesTab from "~/components/Admin/Settings/ServicesTab.vue";
 import SettingsSecurityPrivacyTab from "~/components/Admin/Settings/SecurityPrivacyTab.vue";
 import {onMounted, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
@@ -71,14 +71,29 @@ import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Loading from "~/components/Common/Loading.vue";
-import settingsProps from "~/components/Admin/settingsProps";
 import Tabs from "~/components/Common/Tabs.vue";
 
-const props = defineProps({
-    ...settingsProps
+export interface SettingsProps {
+    apiUrl: string,
+    testMessageUrl: string,
+    acmeUrl: string,
+    releaseChannel?: string
+}
+
+defineOptions({
+    inheritAttrs: false
 });
 
-const emit = defineEmits(['saved']);
+const props = withDefaults(
+    defineProps<SettingsProps>(),
+    {
+        releaseChannel: 'rolling'
+    }
+);
+
+const emit = defineEmits<{
+    (e: 'saved'): void
+}>();
 
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm();
 
@@ -87,7 +102,7 @@ const error = ref(null);
 
 const {axios} = useAxios();
 
-const populateForm = (data) => {
+const populateForm = (data: typeof form.value) => {
     resetForm();
     form.value = mergeExisting(form.value, data);
 };
@@ -96,7 +111,7 @@ const relist = () => {
     resetForm();
     isLoading.value = true;
 
-    axios.get(props.apiUrl).then((resp) => {
+    void axios.get(props.apiUrl).then((resp) => {
         populateForm(resp.data);
         isLoading.value = false;
     });
@@ -109,7 +124,7 @@ const {$gettext} = useTranslate();
 
 const submit = () => {
     ifValid(() => {
-        axios({
+        void axios({
             method: 'PUT',
             url: props.apiUrl,
             data: form.value

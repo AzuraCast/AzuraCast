@@ -61,7 +61,7 @@
 
         <data-table
             id="station_podcast_episodes"
-            ref="$datatable"
+            ref="$dataTable"
             selectable
             paginated
             select-fields
@@ -157,16 +157,16 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import EditModal from './Podcasts/EpisodeEditModal.vue';
-import Icon from '~/components/Common/Icon.vue';
-import AlbumArt from '~/components/Common/AlbumArt.vue';
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import EditModal from "~/components/Stations/Podcasts/EpisodeEditModal.vue";
+import Icon from "~/components/Common/Icon.vue";
+import AlbumArt from "~/components/Common/AlbumArt.vue";
 import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {computed, ref, shallowRef} from "vue";
+import {computed, shallowRef, useTemplateRef} from "vue";
 import AddButton from "~/components/Common/AddButton.vue";
 import {IconChevronLeft} from "~/components/Common/icons";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import useHasDatatable from "~/functions/useHasDatatable.ts";
 import {getStationApiUrl} from "~/router.ts";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
@@ -175,7 +175,6 @@ import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter
 import CardPage from "~/components/Common/CardPage.vue";
 import EpisodesToolbar from "~/components/Stations/Podcasts/EpisodesToolbar.vue";
 import BatchEditModal from "~/components/Stations/Podcasts/BatchEditModal.vue";
-import Modal from "~/components/Common/Modal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 
 const props = defineProps<{
@@ -252,17 +251,18 @@ const podcastIsManual = computed(() => {
     return props.podcast.source == 'manual';
 });
 
-const $quota = ref<InstanceType<typeof StationsCommonQuota> | null>(null);
+const $quota = useTemplateRef('$quota');
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {refresh} = useHasDatatable($datatable);
+const $dataTable = useTemplateRef('$dataTable');
+const {refresh} = useHasDatatable($dataTable);
 
 const relist = () => {
     $quota.value?.update();
     refresh();
 };
 
-const $editEpisodeModal = ref<InstanceType<typeof EditModal> | null>(null);
+const $editEpisodeModal = useTemplateRef('$editEpisodeModal');
+
 const {doCreate, doEdit} = useHasEditModal($editEpisodeModal);
 
 const {doDelete} = useConfirmAndDelete(
@@ -276,7 +276,8 @@ const onRowSelected = (items) => {
     selectedItems.value = items;
 };
 
-const $batchEditModal = ref<InstanceType<typeof Modal> | null>(null);
+const $batchEditModal = useTemplateRef('$batchEditModal');
+
 const {show: showBatchEditModal} = useHasModal($batchEditModal);
 
 const doBatchEdit = () => {

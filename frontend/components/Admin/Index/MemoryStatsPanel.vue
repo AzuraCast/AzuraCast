@@ -22,23 +22,23 @@
             <h6 class="mb-1 text-center">
                 {{ $gettext('Total RAM') }}
                 :
-                {{ stats.memory.readable.total }}
+                {{ memoryStats.total_readable }}
             </h6>
 
             <div
                 class="progress h-20 mb-3 mt-2"
                 role="progressbar"
-                :aria-label="stats.memory.readable.used"
+                :aria-label="memoryStats.used_readable"
                 aria-valuemin="0"
-                :aria-valuemax="stats.memory.bytes.total"
+                :aria-valuemax="memoryStats.total_bytes"
             >
                 <div
                     class="progress-bar text-bg-primary"
-                    :style="{ width: getPercent(stats.memory.bytes.used, stats.memory.bytes.total) }"
+                    :style="{ width: getPercent(memoryStats.used_bytes, memoryStats.total_bytes) }"
                 />
                 <div
                     class="progress-bar text-bg-warning"
-                    :style="{ width: getPercent(stats.memory.bytes.cached, stats.memory.bytes.total) }"
+                    :style="{ width: getPercent(memoryStats.cached_bytes, memoryStats.total_bytes) }"
                 />
             </div>
 
@@ -46,13 +46,13 @@
                 <div class="col">
                     <span class="badge text-bg-primary me-1">&nbsp;&nbsp;</span>
                     {{ $gettext('Used') }}
-                    : {{ stats.memory.readable.used }}
+                    : {{ memoryStats.used_readable }}
                 </div>
                 <div class="col">
                     <span class="badge text-bg-warning me-1">&nbsp;&nbsp;</span>&nbsp;
 
                     {{ $gettext('Cached') }}
-                    : {{ stats.memory.readable.cached }}
+                    : {{ memoryStats.cached_readable }}
                 </div>
             </div>
         </div>
@@ -63,23 +63,22 @@
 
 <script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import MemoryStatsHelpModal from "~/components/Admin/Index/MemoryStatsHelpModal.vue";
 import {IconInfo} from "~/components/Common/icons.ts";
+import {ApiAdminServerStatsMemoryStats} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    stats: {
-        type: Object,
-        required: true
-    }
-});
+defineProps<{
+    memoryStats: ApiAdminServerStatsMemoryStats
+}>();
 
-const $memoryStatsHelpModal = ref<InstanceType<typeof MemoryStatsHelpModal> | null>(null);
+const $memoryStatsHelpModal = useTemplateRef('$memoryStatsHelpModal');
+
 const showMemoryStatsHelpModal = () => {
     $memoryStatsHelpModal.value?.create();
 };
 
-const getPercent = (amount, total) => {
-    return ((amount / total) * 100) + '%';
+const getPercent = (amount: string | number, total: string | number) => {
+    return ((Number(amount) / Number(total)) * 100) + '%';
 }
 </script>

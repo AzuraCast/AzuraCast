@@ -60,23 +60,16 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    }
-});
-
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {v$, tabClass} = useVuelidateOnFormTab(
+    form,
     {
         s3CredentialKey: {required},
         s3CredentialSecret: {required},
@@ -86,6 +79,14 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         s3Endpoint: {required},
         s3UsePathStyle: {}
     },
-    form
+    {
+        s3CredentialKey: null,
+        s3CredentialSecret: null,
+        s3Region: null,
+        s3Version: 'latest',
+        s3Bucket: null,
+        s3Endpoint: null,
+        s3UsePathStyle: false,
+    }
 );
 </script>

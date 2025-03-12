@@ -340,7 +340,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
             : null;
     }
 
-    public function getStorageUsed(): ?string
+    public function getStorageUsed(): string
     {
         $rawSize = $this->getStorageUsedBytes();
         return Quota::getReadableSize($rawSize);

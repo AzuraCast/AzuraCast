@@ -26,19 +26,18 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
-    name: Test Suite
+  php-test:
+    name: PHP Test Suite
     runs-on: ubuntu-latest
     env:
       APPLICATION_ENV: testing
-      NODE_ENV: production
     steps:
       - uses: actions/checkout@master
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: '8.4'
           extensions: intl, xdebug
           tools: composer:v2, cs2pr
 
@@ -64,9 +63,31 @@ jobs:
         run: |
           vendor/bin/phpcs --report=checkstyle | cs2pr
 
+  node-test:
+    name: Node Test Suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/jod"
+          cache: "npm"
+
+      - run: npm ci --include=dev
+
+      - name: Check TypeScript types
+        run: npm run tsc
+
+      - name: Generate linting report
+        run: npm run lint
+  
   prepare:
     name: Prepare Codebase
-    needs: test
+    needs:
+      - php-test
+      - node-test
     runs-on: ubuntu-latest
     env:
       APPLICATION_ENV: testing
@@ -78,7 +99,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: '8.4'
           extensions: intl, xdebug
           tools: composer:v2, cs2pr
 
@@ -87,6 +108,12 @@ jobs:
         with:
           path: vendor
           key: ${{ runner.OS }}-build-${{ hashFiles('composer.lock') }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/jod"
+          cache: "npm"
 
       - name: Set console permissions and clear static assets.
         run: |

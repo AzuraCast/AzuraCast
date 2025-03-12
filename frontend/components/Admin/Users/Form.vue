@@ -34,7 +34,7 @@
             id="edit_form_roles"
             class="col-md-12"
             :field="v$.roles"
-            :options="roleOptions"
+            :options="roles"
             :label="$gettext('Roles')"
         />
     </div>
@@ -42,33 +42,22 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import objectToFormOptions from "~/functions/objectToFormOptions";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {email, required} from "@vuelidate/validators";
 import validatePassword from "~/functions/validatePassword";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    roles: {
-        type: Object,
-        required: true
-    },
-    isEditMode: {
-        type: Boolean,
-        required: true
-    }
-});
+const props = defineProps<{
+    roles: Record<number, string>,
+    isEditMode: boolean,
+}>();
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {v$} = useVuelidateOnFormTab(
+    form,
     computed(() => {
         return {
             email: {required, email},
@@ -79,7 +68,6 @@ const {v$} = useVuelidateOnFormTab(
             roles: {}
         }
     }),
-    form,
     {
         email: '',
         new_password: '',
@@ -87,8 +75,4 @@ const {v$} = useVuelidateOnFormTab(
         roles: [],
     }
 );
-
-const roleOptions = computed(() => {
-    return objectToFormOptions(props.roles);
-});
 </script>

@@ -8,12 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import {useVModel} from "@vueuse/core";
-
-const props = defineProps<{
-    modelValue: boolean | null
-}>();
-
-const emit = defineEmits(['update:modelValue']);
-const checkboxValue = useVModel(props, 'modelValue', emit);
+const checkboxValue = defineModel<boolean>({
+    default: false
+});
 </script>

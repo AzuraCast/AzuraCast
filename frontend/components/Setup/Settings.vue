@@ -23,18 +23,15 @@
 </template>
 
 <script setup lang="ts">
-import AdminSettings from "~/components/Admin/Settings.vue";
-import SetupStep from "./SetupStep.vue";
+import AdminSettings, {SettingsProps} from "~/components/Admin/Settings.vue";
+import SetupStep from "~/components/Setup/SetupStep.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
-import settingsProps from "~/components/Admin/settingsProps";
 
-const props = defineProps({
-    ...settingsProps,
-    continueUrl: {
-        type: String,
-        required: true
-    }
-});
+interface SetupSettingsProps extends SettingsProps {
+    continueUrl: string,
+}
+
+const props = defineProps<SetupSettingsProps>();
 
 const onSaved = () => {
     window.location.href = props.continueUrl;

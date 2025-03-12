@@ -23,7 +23,7 @@
 
         <div class="card-body">
             <admin-stations-form
-                v-bind="$props"
+                v-bind="props"
                 ref="$adminForm"
                 :is-edit-mode="false"
                 :create-url="createUrl"
@@ -38,25 +38,19 @@
 </template>
 
 <script setup lang="ts">
-import AdminStationsForm from "~/components/Admin/Stations/StationForm.vue";
-import SetupStep from "./SetupStep.vue";
+import AdminStationsForm, {StationFormParentProps} from "~/components/Admin/Stations/StationForm.vue";
+import SetupStep from "~/components/Setup/SetupStep.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
-import {onMounted, ref} from "vue";
-import stationFormProps from "~/components/Admin/Stations/stationFormProps";
+import {onMounted, useTemplateRef} from "vue";
 
-const props = defineProps({
-    ...stationFormProps,
-    createUrl: {
-        type: String,
-        required: true
-    },
-    continueUrl: {
-        type: String,
-        required: true
-    }
-});
+interface SetupStationProps extends StationFormParentProps {
+    createUrl: string,
+    continueUrl: string,
+}
 
-const $adminForm = ref<InstanceType<typeof AdminStationsForm> | null>(null);
+const props = defineProps<SetupStationProps>();
+
+const $adminForm = useTemplateRef('$adminForm');
 
 onMounted(() => {
     $adminForm.value?.reset();

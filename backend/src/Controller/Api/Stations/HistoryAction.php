@@ -9,6 +9,7 @@ use App\Container\EnvironmentAwareTrait;
 use App\Controller\Api\Traits\AcceptsDateRange;
 use App\Controller\SingleActionInterface;
 use App\Doctrine\ReadOnlyBatchIteratorAggregate;
+use App\Entity\Api\DetailedSongHistory;
 use App\Entity\ApiGenerator\SongHistoryApiGenerator;
 use App\Entity\SongHistory;
 use App\Entity\Station;
@@ -17,7 +18,6 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Paginator;
 use App\Utilities\Types;
-use Carbon\CarbonImmutable;
 use Doctrine\ORM\Query;
 use League\Csv\Writer;
 use OpenApi\Attributes as OA;
@@ -28,9 +28,8 @@ use RuntimeException;
     OA\Get(
         path: '/station/{station_id}/history',
         operationId: 'getStationHistory',
-        description: 'Return song playback history items for a given station.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: History'],
+        summary: 'Return song playback history items for a given station.',
+        tags: [OpenApi::TAG_STATIONS_REPORTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -51,17 +50,15 @@ use RuntimeException;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_DetailedSongHistory')
+                    items: new OA\Items(ref: DetailedSongHistory::class)
                 )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]
@@ -87,8 +84,8 @@ final class HistoryAction implements SingleActionInterface
         $stationTz = $station->getTimezoneObject();
 
         $dateRange = $this->getDateRange($request, $stationTz);
-        $start = $dateRange->getStart();
-        $end = $dateRange->getEnd();
+        $start = $dateRange->start;
+        $end = $dateRange->end;
 
         $qb = $this->em->createQueryBuilder();
 
@@ -101,8 +98,8 @@ final class HistoryAction implements SingleActionInterface
             ->andWhere('sh.timestamp_start >= :start AND sh.timestamp_start <= :end')
             ->andWhere('sh.listeners_start IS NOT NULL')
             ->setParameter('station_id', $station->getId())
-            ->setParameter('start', $start->getTimestamp())
-            ->setParameter('end', $end->getTimestamp());
+            ->setParameter('start', $start)
+            ->setParameter('end', $end);
 
         $format = $request->getQueryParam('format', 'json');
 
@@ -132,15 +129,10 @@ final class HistoryAction implements SingleActionInterface
 
         $paginator = Paginator::fromQueryBuilder($qb, $request);
 
-        $router = $request->getRouter();
-
         $paginator->setPostprocessor(
-            function ($shRow) use ($router) {
+            function ($shRow) {
                 /** @var SongHistory $shRow */
-                $row = $this->songHistoryApiGenerator->detailed($shRow);
-                $row->resolveUrls($router->getBaseUrl());
-
-                return $row;
+                return $this->songHistoryApiGenerator->detailed($shRow);
             }
         );
 
@@ -169,12 +161,11 @@ final class HistoryAction implements SingleActionInterface
             'Streamer',
         ]);
 
+        $stationTz = $station->getTimezoneObject();
+
         /** @var SongHistory $sh */
         foreach (ReadOnlyBatchIteratorAggregate::fromQuery($query, 100) as $sh) {
-            $datetime = CarbonImmutable::createFromTimestamp(
-                $sh->getTimestampStart(),
-                $station->getTimezoneObject()
-            );
+            $datetime = $sh->getTimestampStart()->setTimezone($stationTz);
 
             $playlist = $sh->getPlaylist();
             $playlistName = (null !== $playlist)

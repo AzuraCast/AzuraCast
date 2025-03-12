@@ -14,18 +14,15 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import Modal from "~/components/Common/Modal.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 
-const props = defineProps({
-    lastOutput: {
-        type: String,
-        required: true
-    },
-});
+defineProps<{
+    lastOutput: string,
+}>();
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show} = useHasModal($modal);
 
 defineExpose({

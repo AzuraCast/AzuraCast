@@ -1,43 +1,52 @@
-import axios, {AxiosStatic} from "axios";
-import VueAxios from "vue-axios";
-import {App, inject, InjectionKey} from "vue";
+/* eslint-disable @typescript-eslint/prefer-promise-reject-errors */
+
+import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
+import {App, InjectionKey} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
 import {useNProgress} from "~/vendor/nprogress.ts";
+import injectRequired from "~/functions/injectRequired.ts";
 
-const injectKey: InjectionKey<AxiosStatic> = Symbol() as InjectionKey<AxiosStatic>;
-const injectKeySilent: InjectionKey<AxiosStatic> = Symbol() as InjectionKey<AxiosStatic>;
+const injectKey: InjectionKey<AxiosInstance> = Symbol() as InjectionKey<AxiosInstance>;
+const injectKeySilent: InjectionKey<AxiosInstance> = Symbol() as InjectionKey<AxiosInstance>;
 
 /* Composition API Axios utilities */
 interface UseAxios {
-    axios: AxiosStatic,
-    axiosSilent: AxiosStatic
+    axios: AxiosInstance,
+    axiosSilent: AxiosInstance
 }
 
 export const useAxios = (): UseAxios => ({
-    axios: inject<AxiosStatic>(injectKey),
-    axiosSilent: inject<AxiosStatic>(injectKeySilent)
+    axios: injectRequired<AxiosInstance>(injectKey),
+    axiosSilent: injectRequired<AxiosInstance>(injectKeySilent)
 });
 
 export default function installAxios(vueApp: App) {
     // Configure auto-CSRF on requests
     const {apiCsrf} = useAzuraCast();
 
-    const axiosInstance = axios.create({
+    const config: AxiosRequestConfig = {
         headers: {
-            'X-API-CSRF': apiCsrf
+            "X-API-CSRF": apiCsrf
         }
-    });
+    }
 
     // Configure some Axios settings that depend on the BootstrapVue $bvToast superglobal.
-    const handleAxiosError = (error) => {
+    const handleAxiosError = (error: any) => {
         const {$gettext} = useTranslate();
 
         let notifyMessage = $gettext('An error occurred and your request could not be completed.');
         if (error.response) {
             // Request made and server responded
             const responseJson = error.response.data ?? {};
+
+            // Immediately redirect back to login page if the HTTP request returns a 403 NotLoggedIn error.
+            if (responseJson.type === "NotLoggedInException") {
+                window.location.href = "/login";
+                return;
+            }
+
             notifyMessage = responseJson.message ?? notifyMessage;
             console.error(responseJson);
         } else if (error.request) {
@@ -52,9 +61,9 @@ export default function installAxios(vueApp: App) {
         notifyError(notifyMessage);
     };
 
-    const axiosSilent = axiosInstance.create({});
-
     const {setLoading} = useNProgress();
+
+    const axiosInstance = axios.create(config);
 
     axiosInstance.interceptors.request.use((config) => {
         setLoading(true);
@@ -62,6 +71,7 @@ export default function installAxios(vueApp: App) {
     }, (error) => {
         setLoading(false);
         handleAxiosError(error);
+
         return Promise.reject(error);
     });
 
@@ -71,10 +81,30 @@ export default function installAxios(vueApp: App) {
     }, (error) => {
         setLoading(false);
         handleAxiosError(error);
+
         return Promise.reject(error);
     });
 
-    vueApp.use(VueAxios, axiosInstance);
+    const axiosSilent = axios.create(config);
+
+    axiosSilent.interceptors.request.use(
+        (config) => (config),
+        (error) => {
+            handleAxiosError(error);
+
+            return Promise.reject(error);
+        }
+    );
+
+    axiosSilent.interceptors.response.use(
+        (response) => (response),
+        (error) => {
+            handleAxiosError(error);
+
+
+            return Promise.reject(error);
+        }
+    );
 
     vueApp.provide(injectKey, axiosInstance);
     vueApp.provide(injectKeySilent, axiosSilent);

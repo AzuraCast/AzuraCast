@@ -78,31 +78,22 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import {NestedFormOptionInput} from "~/functions/objectToFormOptions.ts";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    languageOptions: {
-        type: Object,
-        required: true
-    },
-    categoriesOptions: {
-        type: Object,
-        required: true
-    }
-});
+defineProps<{
+    languageOptions: NestedFormOptionInput,
+    categoriesOptions: NestedFormOptionInput,
+}>();
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {v$, tabClass} = useVuelidateOnFormTab(
+    form,
     {
         title: {required},
         link: {},
@@ -113,7 +104,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         categories: {required},
         is_enabled: {},
     },
-    form,
     {
         title: '',
         link: '',

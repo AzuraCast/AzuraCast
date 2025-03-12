@@ -13,18 +13,18 @@
 </template>
 
 <script setup lang="ts">
-import {required} from '@vuelidate/validators';
+import {required} from "@vuelidate/validators";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import AdminStationsCloneModalForm from "~/components/Admin/Stations/CloneModalForm.vue";
-import {ref} from "vue";
+import {ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const loading = ref(true);
 const cloneUrl = ref(null);
@@ -43,12 +43,12 @@ const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
     }
 );
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {hide, show} = useHasModal($modal);
 
 const {$gettext} = useTranslate();
 
-const create = (stationName, stationCloneUrl) => {
+const create = (stationName: string, stationCloneUrl: string) => {
     resetForm();
 
     form.value.name = $gettext(

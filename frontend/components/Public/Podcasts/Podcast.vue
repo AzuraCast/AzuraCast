@@ -113,7 +113,7 @@
             paginated
             :api-url="episodesUrl"
         >
-            <template #item="{item}">
+            <template #item="{item}: {item: ApiPodcastEpisode}">
                 <div class="card mb-4">
                     <div class="card-header d-flex align-items-center">
                         <div class="flex-shrink-0 pe-2">
@@ -180,31 +180,41 @@ import {IconRss} from "~/components/Common/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
-import PodcastCommon from "./PodcastCommon.vue";
+import PodcastCommon from "~/components/Public/Podcasts/PodcastCommon.vue";
 import GridLayout from "~/components/Common/GridLayout.vue";
-import {usePodcastGroupLayout} from "~/components/Public/Podcasts/usePodcastGroupLayout.ts";
+import {ApiPodcast, ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
+import {usePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
+import {computed} from "vue";
 
-const {groupLayout} = usePodcastGroupLayout();
+const {groupLayout, stationId, stationTz} = usePodcastGlobals();
 
-const {params} = useRoute();
+const podcastUrl = getStationApiUrl(computed(() => {
+    const {params} = useRoute();
+    const podcastId = params.podcast_id as string;
 
-const podcastUrl = getStationApiUrl(`/public/podcast/${params.podcast_id}`);
+    return `/public/podcast/${podcastId}`;
+}), stationId);
 
 const {axios} = useAxios();
-const {state: podcast, isLoading} = useRefreshableAsyncState(
+const {state: podcast, isLoading} = useRefreshableAsyncState<ApiPodcast>(
     () => axios.get(podcastUrl.value).then((r) => r.data),
     {},
 );
 
-const episodesUrl = getStationApiUrl(`/public/podcast/${params.podcast_id}/episodes`);
+const episodesUrl = getStationApiUrl(computed(() => {
+    const {params} = useRoute();
+    const podcastId = params.podcast_id as string;
+
+    return `/public/podcast/${podcastId}/episodes`;
+}), stationId);
 
 const {$gettext} = useTranslate();
-const fields: DataTableField[] = [
+const fields: DataTableField<ApiPodcastEpisode>[] = [
     {key: 'play_button', label: '', sortable: false, class: 'shrink pe-0'},
     {key: 'art', label: '', sortable: false, class: 'shrink pe-0'},
     {key: 'title', label: $gettext('Episode'), sortable: true},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
+const {formatTimestampAsDateTime} = useStationDateTimeFormatter(stationTz);
 </script>

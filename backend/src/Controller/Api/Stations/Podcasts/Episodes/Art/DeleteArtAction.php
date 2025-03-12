@@ -19,9 +19,8 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Delete(
     path: '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/art',
     operationId: 'deletePodcastEpisodeArt',
-    description: 'Removes the album art for a podcast episode.',
-    security: OpenApi::API_KEY_SECURITY,
-    tags: ['Stations: Podcasts'],
+    summary: 'Removes the album art for a podcast episode.',
+    tags: [OpenApi::TAG_STATIONS_PODCASTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(
@@ -40,21 +39,12 @@ use Psr\Http\Message\ResponseInterface;
         ),
     ],
     responses: [
-        new OA\Response(
-            response: 200,
-            description: 'Success',
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_Status')
+        new OpenApi\Response\Success(
+            content: new OA\JsonContent(ref: Status::class)
         ),
-        new OA\Response(
-            response: 404,
-            description: 'Record not found',
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_Error')
-        ),
-        new OA\Response(
-            response: 403,
-            description: 'Access denied',
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_Error')
-        ),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
     ]
 )]
 final class DeleteArtAction implements SingleActionInterface

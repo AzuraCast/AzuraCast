@@ -16,7 +16,7 @@
 
         <data-table
             id="listening_time_table"
-            ref="$datatable"
+            ref="$dataTable"
             paginated
             handle-client-side
             :fields="fields"
@@ -29,24 +29,19 @@
 <script setup lang="ts">
 import PieChart from "~/components/Common/Charts/PieChart.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import {ref, toRef, watch} from "vue";
+import {toRef, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAsyncState, useMounted} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import {useLuxon} from "~/vendor/luxon";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
+import useHasDatatable from "~/functions/useHasDatatable";
+import {DateRange} from "~/components/Stations/Reports/Overview/CommonMetricsView.vue";
 
-const props = defineProps({
-    dateRange: {
-        type: Object,
-        required: true
-    },
-    apiUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    dateRange: DateRange,
+    apiUrl: string,
+}>();
 
 const {$gettext} = useTranslate();
 
@@ -76,14 +71,14 @@ const {state: stats, isLoading, execute: reloadData} = useAsyncState(
     }
 );
 
-const $datatable = ref<DataTableTemplateRef>();
-const {navigate} = useHasDatatable($datatable);
+const $dataTable = useTemplateRef('$dataTable');
+const {navigate} = useHasDatatable($dataTable);
 
 const isMounted = useMounted();
 
-watch(dateRange, () => {
+watch(dateRange, async () => {
     if (isMounted.value) {
-        reloadData();
+        await reloadData();
         navigate();
     }
 });

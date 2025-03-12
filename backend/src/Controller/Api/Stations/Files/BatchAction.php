@@ -23,23 +23,45 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\BatchUtilities;
 use App\Message;
+use App\OpenApi;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\LiquidsoapQueues;
 use App\Utilities\File;
+use App\Utilities\Time;
 use App\Utilities\Types;
+use Carbon\CarbonImmutable;
 use Exception;
 use InvalidArgumentException;
 use League\Flysystem\StorageAttributes;
 use League\Flysystem\UnableToDeleteDirectory;
 use League\Flysystem\UnableToDeleteFile;
+use OpenApi\Attributes as OA;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 use Symfony\Component\Messenger\MessageBus;
 use Throwable;
 
+#[
+    OA\Put(
+        path: '/station/{station_id}/files/batch',
+        operationId: 'putStationFileBatchAction',
+        summary: 'Perform a batch action on a collection of files/directories.',
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            // TODO: API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class BatchAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
@@ -300,8 +322,8 @@ final class BatchAction implements SingleActionInterface
         } else {
             $nextCuedItem = $this->queueRepo->getNextToSendToAutoDj($station);
             $cuedTimestamp = (null !== $nextCuedItem)
-                ? $nextCuedItem->getTimestampCued() - 10
-                : time();
+                ? CarbonImmutable::instance($nextCuedItem->getTimestampCued())->subSeconds(10)
+                : Time::nowUtc();
 
             foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
                 try {
@@ -315,7 +337,7 @@ final class BatchAction implements SingleActionInterface
                     $result->errors[] = sprintf('%s: %s', $media->getPath(), $e->getMessage());
                 }
 
-                $cuedTimestamp -= 10;
+                $cuedTimestamp = $cuedTimestamp->subSeconds(10);
             }
         }
 
@@ -352,7 +374,7 @@ final class BatchAction implements SingleActionInterface
                 );
             }
         } else {
-            $cuedTimestamp = time();
+            $cuedTimestamp = Time::nowUtc();
 
             foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
                 try {
@@ -363,6 +385,7 @@ final class BatchAction implements SingleActionInterface
                     $newQueue->setTimestampCued($cuedTimestamp);
                     $newQueue->setIsPlayed();
                     $this->em->persist($newQueue);
+                    $this->em->flush();
 
                     $event = AnnotateNextSong::fromStationQueue($newQueue, true);
                     $this->eventDispatcher->dispatch($event);
@@ -376,7 +399,7 @@ final class BatchAction implements SingleActionInterface
                     $result->errors[] = sprintf('%s: %s', $media->getPath(), $e->getMessage());
                 }
 
-                $cuedTimestamp += 10;
+                $cuedTimestamp = $cuedTimestamp->addSeconds(10);
             }
         }
 

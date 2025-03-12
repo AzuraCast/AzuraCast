@@ -9,11 +9,13 @@ use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Security\SplitToken;
 use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Attributes as OA;
 use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[
+    OA\Schema(type: 'object'),
     Attributes\Auditable,
     ORM\Table(name: 'api_keys'),
     ORM\Entity(readOnly: true)
@@ -23,6 +25,7 @@ class ApiKey implements Stringable, IdentifiableEntityInterface
     use Traits\HasSplitTokenFields;
     use Traits\TruncateStrings;
 
+    #[OA\Property]
     #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EAGER', inversedBy: 'api_keys')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     #[Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
@@ -30,6 +33,7 @@ class ApiKey implements Stringable, IdentifiableEntityInterface
     #[Serializer\MaxDepth(1)]
     protected User $user;
 
+    #[OA\Property]
     #[ORM\Column(length: 255, nullable: false)]
     #[Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     protected string $comment = '';

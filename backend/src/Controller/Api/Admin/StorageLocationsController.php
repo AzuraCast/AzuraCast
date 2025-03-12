@@ -11,7 +11,6 @@ use App\Entity\StorageLocation;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
@@ -23,47 +22,40 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/admin/storage_locations',
         operationId: 'getStorageLocations',
-        description: 'List all current storage locations in the system.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Administration: Storage Locations'],
+        summary: 'List all current storage locations in the system.',
+        tags: [OpenApi::TAG_ADMIN_STORAGE_LOCATIONS],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_Admin_StorageLocation')
+                    items: new OA\Items(ref: ApiStorageLocation::class)
                 )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Post(
         path: '/admin/storage_locations',
         operationId: 'addStorageLocation',
-        description: 'Create a new storage location.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Create a new storage location.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_Admin_StorageLocation')
+            content: new OA\JsonContent(ref: ApiStorageLocation::class)
         ),
-        tags: ['Administration: Storage Locations'],
+        tags: [OpenApi::TAG_ADMIN_STORAGE_LOCATIONS],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_Admin_StorageLocation')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: ApiStorageLocation::class)
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Get(
         path: '/admin/storage_location/{id}',
         operationId: 'getStorageLocation',
-        description: 'Retrieve details for a single storage location.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Administration: Storage Locations'],
+        summary: 'Retrieve details for a single storage location.',
+        tags: [OpenApi::TAG_ADMIN_STORAGE_LOCATIONS],
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -74,25 +66,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_Admin_StorageLocation')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: ApiStorageLocation::class)
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Put(
         path: '/admin/storage_location/{id}',
         operationId: 'editStorageLocation',
-        description: 'Update details of a single storage location.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Update details of a single storage location.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_Admin_StorageLocation')
+            content: new OA\JsonContent(ref: ApiStorageLocation::class)
         ),
-        tags: ['Administration: Storage Locations'],
+        tags: [OpenApi::TAG_ADMIN_STORAGE_LOCATIONS],
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -103,18 +92,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Delete(
         path: '/admin/storage_location/{id}',
         operationId: 'deleteStorageLocation',
-        description: 'Delete a single storage location.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Administration: Storage Locations'],
+        summary: 'Delete a single storage location.',
+        tags: [OpenApi::TAG_ADMIN_STORAGE_LOCATIONS],
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -125,10 +113,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]
@@ -171,9 +159,7 @@ final class StorageLocationsController extends AbstractApiCrudController
     {
         $original = parent::viewRecord($record, $request);
 
-        $return = new ApiStorageLocation();
-        $return->fromParentObject($original);
-
+        $return = ApiStorageLocation::fromParent($original);
         $return->storageQuotaBytes = (string)($record->getStorageQuotaBytes() ?? '');
         $return->storageUsedBytes = (string)$record->getStorageUsedBytes();
         $return->storageUsedPercent = $record->getStorageUsePercentage();

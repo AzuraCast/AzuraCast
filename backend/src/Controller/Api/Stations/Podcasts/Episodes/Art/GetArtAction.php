@@ -19,9 +19,9 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/art',
     operationId: 'getPodcastEpisodeArt',
-    description: 'Gets the album art for a podcast episode.',
-    security: OpenApi::API_KEY_SECURITY,
-    tags: ['Stations: Podcasts'],
+    summary: 'Gets the album art for a podcast episode.',
+    security: [],
+    tags: [OpenApi::TAG_PUBLIC_STATIONS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(
@@ -40,13 +40,11 @@ use Psr\Http\Message\ResponseInterface;
         ),
     ],
     responses: [
-        new OA\Response(
-            response: 200,
-            description: 'Success'
-        ),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        new OpenApi\Response\SuccessWithImage(),
+        new OpenApi\Response\Redirect(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
     ]
 )]
 final class GetArtAction implements SingleActionInterface

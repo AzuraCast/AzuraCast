@@ -40,23 +40,18 @@
 
 <script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
-import AccountEditModal from "./Account/EditModal.vue";
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import {IconEdit} from "~/components/Common/icons";
+import AccountEditModal from "~/components/Account/EditModal.vue";
 import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
 import SecurityPanel from "~/components/Account/SecurityPanel.vue";
 import ApiKeysPanel from "~/components/Account/ApiKeysPanel.vue";
 
-const props = defineProps({
-    supportedLocales: {
-        type: Object,
-        default: () => {
-            return {};
-        }
-    }
-});
+defineProps<{
+    supportedLocales: Record<string, string>
+}>();
 
-const $editModal = ref<InstanceType<typeof AccountEditModal> | null>(null);
+const $editModal = useTemplateRef('$editModal');
 
 const doEditProfile = () => {
     $editModal.value?.open();

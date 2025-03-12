@@ -1,6 +1,6 @@
 <template>
     <profile-header
-        v-bind="pickProps(props, headerPanelProps)"
+        v-bind="props"
         :station="profileInfo.station"
     />
 
@@ -11,8 +11,7 @@
         <div class="col-lg-7">
             <template v-if="hasStarted">
                 <profile-now-playing
-                    v-bind="pickProps(props, nowPlayingPanelProps)"
-                    @api-call="makeApiCall"
+                    v-bind="props"
                 />
 
                 <profile-schedule
@@ -28,34 +27,33 @@
             </template>
 
             <profile-public-pages
-                v-bind="pickProps(props, {...publicPagesPanelProps,...embedModalProps})"
+                v-bind="props"
             />
         </div>
 
         <div class="col-lg-5">
             <profile-requests
                 v-if="stationSupportsRequests"
-                v-bind="pickProps(props, requestsPanelProps)"
+                v-bind="props"
             />
 
             <profile-streamers
                 v-if="stationSupportsStreamers"
-                v-bind="pickProps(props, streamersPanelProps)"
+                v-bind="props"
             />
 
             <template v-if="hasActiveFrontend">
                 <profile-frontend
-                    v-bind="pickProps(props, frontendPanelProps)"
+                    v-bind="props"
                     :frontend-running="profileInfo.services.frontend_running"
-                    @api-call="makeApiCall"
                 />
             </template>
 
             <template v-if="hasActiveBackend">
                 <profile-backend
-                    v-bind="pickProps(props, backendPanelProps)"
+                    v-bind="props"
+                    :has-started="profileInfo.services.station_has_started"
                     :backend-running="profileInfo.services.backend_running"
-                    @api-call="makeApiCall"
                 />
             </template>
             <template v-else>
@@ -66,70 +64,49 @@
 </template>
 
 <script setup lang="ts">
-import ProfileStreams from './StreamsPanel.vue';
-import ProfileHeader from './HeaderPanel.vue';
-import ProfileNowPlaying from './NowPlayingPanel.vue';
-import ProfileSchedule from './SchedulePanel.vue';
-import ProfileRequests from './RequestsPanel.vue';
-import ProfileStreamers from './StreamersPanel.vue';
-import ProfilePublicPages from './PublicPagesPanel.vue';
-import ProfileFrontend from './FrontendPanel.vue';
-import ProfileBackendNone from './BackendNonePanel.vue';
-import ProfileBackend from './BackendPanel.vue';
-import NowPlayingNotStartedPanel from "./NowPlayingNotStartedPanel.vue";
-import {BackendAdapter, FrontendAdapter} from '~/entities/RadioAdapters';
-import NowPlaying from '~/entities/NowPlaying';
+import ProfileStreams from "~/components/Stations/Profile/StreamsPanel.vue";
+import ProfileHeader, {ProfileHeaderPanelParentProps} from "~/components/Stations/Profile/HeaderPanel.vue";
+import ProfileNowPlaying, {ProfileNowPlayingPanelProps} from "~/components/Stations/Profile/NowPlayingPanel.vue";
+import ProfileSchedule from "~/components/Stations/Profile/SchedulePanel.vue";
+import ProfileRequests, {ProfileRequestPanelProps} from "~/components/Stations/Profile/RequestsPanel.vue";
+import ProfileStreamers, {ProfileStreamersPanelProps} from "~/components/Stations/Profile/StreamersPanel.vue";
+import ProfilePublicPages, {ProfilePublicPagesPanelProps} from "~/components/Stations/Profile/PublicPagesPanel.vue";
+import ProfileFrontend, {ProfileFrontendPanelParentProps} from "~/components/Stations/Profile/FrontendPanel.vue";
+import ProfileBackendNone from "~/components/Stations/Profile/BackendNonePanel.vue";
+import ProfileBackend, {ProfileBackendPanelParentProps} from "~/components/Stations/Profile/BackendPanel.vue";
+import NowPlayingNotStartedPanel from "~/components/Stations/Profile/NowPlayingNotStartedPanel.vue";
+import NowPlaying from "~/entities/NowPlaying";
 import {computed} from "vue";
 import {useAxios} from "~/vendor/axios";
-import backendPanelProps from "./backendPanelProps";
-import embedModalProps from "./embedModalProps";
-import frontendPanelProps from "./frontendPanelProps";
-import headerPanelProps from "./headerPanelProps";
-import nowPlayingPanelProps from "./nowPlayingPanelProps";
-import publicPagesPanelProps from "./publicPagesPanelProps";
-import requestsPanelProps from "./requestsPanelProps";
-import streamersPanelProps from "./streamersPanelProps";
-import {pickProps} from "~/functions/pickProps";
-import {useSweetAlert} from "~/vendor/sweetalert";
-import {useNotify} from "~/functions/useNotify";
-import {useTranslate} from "~/vendor/gettext";
 import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
+import {ApiStationProfile, BackendAdapters, FrontendAdapters} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    ...backendPanelProps,
-    ...embedModalProps,
-    ...frontendPanelProps,
-    ...headerPanelProps,
-    ...nowPlayingPanelProps,
-    ...publicPagesPanelProps,
-    ...requestsPanelProps,
-    ...streamersPanelProps,
-    profileApiUri: {
-        type: String,
-        required: true
-    },
-    stationSupportsRequests: {
-        type: Boolean,
-        required: true
-    },
-    stationSupportsStreamers: {
-        type: Boolean,
-        required: true
-    }
-});
+export interface EnabledProfileProps extends ProfileBackendPanelParentProps,
+    ProfileFrontendPanelParentProps,
+    ProfileHeaderPanelParentProps,
+    ProfileNowPlayingPanelProps,
+    ProfileRequestPanelProps,
+    ProfilePublicPagesPanelProps,
+    ProfileStreamersPanelProps {
+    profileApiUri: string,
+    stationSupportsRequests: boolean,
+    stationSupportsStreamers: boolean
+}
+
+const props = defineProps<EnabledProfileProps>();
 
 const hasActiveFrontend = computed(() => {
-    return props.frontendType !== FrontendAdapter.Remote;
+    return props.frontendType !== FrontendAdapters.Remote;
 });
 
 const hasActiveBackend = computed(() => {
-    return props.backendType !== BackendAdapter.None;
+    return props.backendType !== BackendAdapters.None;
 });
 
-const {axios, axiosSilent} = useAxios();
+const {axiosSilent} = useAxios();
 
-const {state: profileInfo} = useAutoRefreshingAsyncState(
-    () => axiosSilent.get(props.profileApiUri).then((r) => r.data),
+const {state: profileInfo} = useAutoRefreshingAsyncState<ApiStationProfile>(
+    async () => (await axiosSilent.get<ApiStationProfile>(props.profileApiUri)).data,
     {
         station: {
             ...NowPlaying.station
@@ -137,8 +114,8 @@ const {state: profileInfo} = useAutoRefreshingAsyncState(
         services: {
             backend_running: false,
             frontend_running: false,
-            has_started: false,
-            needs_restart: false
+            station_has_started: false,
+            station_needs_restart: false
         },
         schedule: []
     },
@@ -146,24 +123,4 @@ const {state: profileInfo} = useAutoRefreshingAsyncState(
         timeout: 15000
     }
 );
-
-const {showAlert} = useSweetAlert();
-const {notify} = useNotify();
-const {$gettext} = useTranslate();
-
-const makeApiCall = (uri) => {
-    showAlert({
-        title: $gettext('Are you sure?')
-    }).then((result) => {
-        if (!result.value) {
-            return;
-        }
-
-        axios.post(uri).then((resp) => {
-            notify(resp.data.formatted_message, {
-                variant: (resp.data.success) ? 'success' : 'warning'
-            });
-        });
-    });
-};
 </script>

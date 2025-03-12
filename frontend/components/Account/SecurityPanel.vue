@@ -29,7 +29,7 @@
             <div class="card-body">
                 <h5>
                     {{ $gettext('Two-Factor Authentication') }}
-                    <enabled-badge :enabled="security.twoFactorEnabled" />
+                    <enabled-badge :enabled="security.two_factor_enabled"/>
                 </h5>
 
                 <p class="card-text mt-2">
@@ -40,7 +40,7 @@
 
                 <div class="buttons">
                     <button
-                        v-if="security.twoFactorEnabled"
+                        v-if="security.two_factor_enabled"
                         type="button"
                         class="btn btn-danger"
                         @click="disableTwoFactor"
@@ -137,35 +137,36 @@ import AccountChangePasswordModal from "~/components/Account/ChangePasswordModal
 import {useAxios} from "~/vendor/axios.ts";
 import {getApiUrl} from "~/router.ts";
 import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState.ts";
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import {useTranslate} from "~/vendor/gettext.ts";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import useHasDatatable from "~/functions/useHasDatatable.ts";
 import PasskeyModal from "~/components/Account/PasskeyModal.vue";
+import {ApiAccountTwoFactorStatus} from "~/entities/ApiInterfaces.ts";
 
 const {axios} = useAxios();
 
 const twoFactorUrl = getApiUrl('/frontend/account/two-factor');
 
-const {state: security, isLoading: securityLoading, execute: reloadSecurity} = useRefreshableAsyncState(
-    () => axios.get(twoFactorUrl.value).then((r) => {
-        return {
-            twoFactorEnabled: r.data.two_factor_enabled
-        };
-    }),
+const {
+    state: security,
+    isLoading: securityLoading,
+    execute: reloadSecurity
+} = useRefreshableAsyncState<ApiAccountTwoFactorStatus>(
+    async () => (await axios.get<ApiAccountTwoFactorStatus>(twoFactorUrl.value)).data,
     {
-        twoFactorEnabled: false,
+        two_factor_enabled: false,
     },
 );
 
-const $changePasswordModal = ref<InstanceType<typeof AccountChangePasswordModal> | null>(null);
+const $changePasswordModal = useTemplateRef('$changePasswordModal');
 
 const doChangePassword = () => {
     $changePasswordModal.value?.open();
 };
 
-const $twoFactorModal = ref<InstanceType<typeof AccountTwoFactorModal> | null>(null);
+const $twoFactorModal = useTemplateRef('$twoFactorModal');
 
 const enableTwoFactor = () => {
     $twoFactorModal.value?.open();
@@ -175,7 +176,9 @@ const {$gettext} = useTranslate();
 
 const {doDelete: doDisableTwoFactor} = useConfirmAndDelete(
     $gettext('Disable two-factor authentication?'),
-    reloadSecurity
+    () => {
+        void reloadSecurity();
+    }
 );
 const disableTwoFactor = () => doDisableTwoFactor(twoFactorUrl.value);
 
@@ -196,7 +199,7 @@ const passkeyFields: DataTableField[] = [
     }
 ];
 
-const $dataTable = ref<DataTableTemplateRef>(null);
+const $dataTable = useTemplateRef('$dataTable');
 const {relist: reloadPasskeys} = useHasDatatable($dataTable);
 
 const {doDelete: deletePasskey} = useConfirmAndDelete(
@@ -204,7 +207,7 @@ const {doDelete: deletePasskey} = useConfirmAndDelete(
     reloadPasskeys
 );
 
-const $passkeyModal = ref<InstanceType<typeof PasskeyModal> | null>(null);
+const $passkeyModal = useTemplateRef('$passkeyModal');
 
 const doAddPasskey = () => {
     $passkeyModal.value?.create();

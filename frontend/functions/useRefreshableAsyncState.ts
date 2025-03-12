@@ -1,6 +1,5 @@
 import {useAsyncState, UseAsyncStateOptions, UseAsyncStateReturn} from "@vueuse/core";
 import syncOnce from "~/functions/syncOnce";
-import {Ref} from "vue";
 
 /**
  * Just like useAsyncState, except with settings changed:
@@ -14,13 +13,7 @@ export default function useRefreshableAsyncState<Data, Params extends any[] = []
     initialState: Data,
     options: UseAsyncStateOptions<Shallow, Data> = {}
 ): UseAsyncStateReturn<Data, Params, Shallow> {
-    const {
-        state,
-        isReady,
-        isLoading: allIsLoading,
-        error,
-        execute
-    } = useAsyncState(
+    const parentState = useAsyncState(
         promise,
         initialState,
         {
@@ -29,13 +22,8 @@ export default function useRefreshableAsyncState<Data, Params extends any[] = []
         }
     );
 
-    const isLoading: Ref<boolean> = syncOnce(allIsLoading);
+    const parentIsLoading = parentState.isLoading;
+    parentState.isLoading = syncOnce(parentIsLoading);
 
-    return {
-        state,
-        isReady,
-        isLoading,
-        error,
-        execute
-    };
+    return parentState;
 }

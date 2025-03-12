@@ -1,9 +1,12 @@
-import Modal from "~/components/Common/Modal.vue";
-import {Ref} from "vue";
+import {ShallowRef} from "vue";
 
-export type ModalTemplateRef = InstanceType<typeof Modal> | null;
+interface ModalCompatible {
+    show(): void,
 
-export function useHasModal(modalRef: Ref<ModalTemplateRef>) {
+    hide(): void,
+}
+
+export function useHasModal(modalRef: Readonly<ShallowRef<ModalCompatible | null>>) {
     const hide = () => {
         modalRef.value?.hide();
     };

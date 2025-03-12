@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import FlowUpload from '~/components/Common/FlowUpload.vue';
+import FlowUpload, {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
 import {computed, ref, toRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {syncRef} from "@vueuse/core";
@@ -65,26 +65,13 @@ import FormGroup from "~/components/Form/FormGroup.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import Tab from "~/components/Common/Tab.vue";
 
-const props = defineProps({
-    modelValue: {
-        type: Object,
-        required: true
-    },
-    recordHasMedia: {
-        type: Boolean,
-        required: true
-    },
-    editMediaUrl: {
-        type: String,
-        required: true
-    },
-    newMediaUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    recordHasMedia: boolean,
+    editMediaUrl: string,
+    newMediaUrl: string,
+}>();
 
-const emit = defineEmits(['update:modelValue']);
+const model = defineModel<UploadResponseBody | null>();
 
 const hasMedia = ref(null);
 syncRef(toRef(props, 'recordHasMedia'), hasMedia, {direction: 'ltr'});
@@ -95,11 +82,11 @@ const targetUrl = computed(() => {
         : props.newMediaUrl;
 });
 
-const onFileSuccess = (_file, message) => {
+const onFileSuccess = (_file, message: UploadResponseBody | null) => {
     hasMedia.value = true;
 
-    if (!props.editMediaUrl) {
-        emit('update:modelValue', message);
+    if (!props.editMediaUrl && message) {
+        model.value = message;
     }
 };
 
@@ -107,13 +94,12 @@ const {axios} = useAxios();
 
 const deleteMedia = () => {
     if (props.editMediaUrl) {
-        axios.delete(props.editMediaUrl).then(() => {
+        void axios.delete(props.editMediaUrl).then(() => {
             hasMedia.value = false;
         });
     } else {
         hasMedia.value = false;
-
-        emit('update:modelValue', null);
+        model.value = null;
     }
 }
 </script>

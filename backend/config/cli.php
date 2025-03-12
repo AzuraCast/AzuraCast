@@ -42,10 +42,11 @@ return function (App\Event\BuildConsoleCommands $event) {
 
     if (!$event->getEnvironment()->isProduction()) {
         $event->addAliases([
-            'azuracast:api:docs' => Command\GenerateApiDocsCommand::class,
+            'azuracast:api:docs' => Command\Dev\GenerateApiDocsCommand::class,
+            'azuracast:new-version' => Command\Dev\NewVersionCommand::class,
+            'azuracast:dev:generate-db-fixture' => Command\Dev\GenerateDbFixtureCommand::class,
             'azuracast:locale:generate' => Command\Locale\GenerateCommand::class,
             'azuracast:locale:import' => Command\Locale\ImportCommand::class,
-            'azuracast:new-version' => Command\NewVersionCommand::class,
             'locale:generate' => Command\Locale\GenerateCommand::class,
             'locale:import' => Command\Locale\ImportCommand::class,
         ]);

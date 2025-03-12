@@ -78,7 +78,7 @@
         </template>
 
         <data-table
-            ref="$datatable"
+            ref="$dataTable"
             :fields="syncTaskFields"
             :items="syncTasks"
             :loading="syncTasksLoading"
@@ -231,8 +231,8 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
+import {useTemplateRef} from "vue";
+import useHasDatatable from "~/functions/useHasDatatable";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
@@ -248,6 +248,7 @@ import Loading from "~/components/Common/Loading.vue";
 import {IconRefresh} from "~/components/Common/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
 import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
+import {ApiAdminDebugQueue, ApiAdminDebugStation, ApiAdminDebugSyncTask} from "~/entities/ApiInterfaces.ts";
 
 const listSyncTasksUrl = getApiUrl('/admin/debug/sync-tasks');
 const listQueueTotalsUrl = getApiUrl('/admin/debug/queues');
@@ -257,31 +258,37 @@ const clearQueuesUrl = getApiUrl('/admin/debug/clear-queue');
 
 const {axios} = useAxios();
 
-const {state: syncTasks, isLoading: syncTasksLoading, execute: resetSyncTasks} = useAutoRefreshingAsyncState(
-    () => axios.get(listSyncTasksUrl.value).then(r => r.data),
+const {state: syncTasks, isLoading: syncTasksLoading, execute: resetSyncTasks} = useAutoRefreshingAsyncState<
+    ApiAdminDebugSyncTask[]
+>(
+    async () => (await axios.get<ApiAdminDebugSyncTask[]>(listSyncTasksUrl.value)).data,
     [],
     {
         timeout: 60000
     }
 );
 
-const {state: queueTotals, isLoading: queueTotalsLoading, execute: resetQueueTotals} = useAutoRefreshingAsyncState(
-    () => axios.get(listQueueTotalsUrl.value).then(r => r.data),
+const {state: queueTotals, isLoading: queueTotalsLoading, execute: resetQueueTotals} = useAutoRefreshingAsyncState<
+    ApiAdminDebugQueue[]
+>(
+    async () => (await axios.get<ApiAdminDebugQueue[]>(listQueueTotalsUrl.value)).data,
     [],
     {
         timeout: 60000
     }
 );
 
-const {state: stations, isLoading: stationsLoading} = useRefreshableAsyncState(
-    () => axios.get(listStationsUrl.value).then(r => r.data),
+const {state: stations, isLoading: stationsLoading} = useRefreshableAsyncState<
+    ApiAdminDebugStation[]
+>(
+    async () => (await axios.get<ApiAdminDebugStation[]>(listStationsUrl.value)).data,
     [],
 );
 
 const {$gettext} = useTranslate();
 const {timestampToRelative} = useLuxon();
 
-const syncTaskFields: DataTableField[] = [
+const syncTaskFields: DataTableField<ApiAdminDebugSyncTask>[] = [
     {key: 'name', isRowHeader: true, label: $gettext('Task Name'), sortable: true},
     {
         key: 'time',
@@ -300,20 +307,19 @@ const syncTaskFields: DataTableField[] = [
     {key: 'actions', label: $gettext('Actions')}
 ];
 
-const $datatable = ref<DataTableTemplateRef>(null);
-useHasDatatable($datatable);
+const $dataTable = useTemplateRef('$dataTable');
+useHasDatatable($dataTable);
 
-const $modal = ref<InstanceType<typeof TaskOutputModal> | null>(null);
+const $modal = useTemplateRef('$modal');
 
 const {notifySuccess} = useNotify();
 
-const makeDebugCall = (url) => {
-    axios.put(url).then((resp) => {
-        if (resp.data.logs) {
-            $modal.value?.open(resp.data.logs);
-        } else {
-            notifySuccess(resp.data.message);
-        }
-    });
+const makeDebugCall = async (url: string) => {
+    const {data} = await axios.put(url);
+    if (data.logs) {
+        $modal.value?.open(data.logs);
+    } else {
+        notifySuccess(data.message);
+    }
 }
 </script>

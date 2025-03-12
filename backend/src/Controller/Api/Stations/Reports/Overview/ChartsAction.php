@@ -9,10 +9,28 @@ use App\Entity\Enums\AnalyticsIntervals;
 use App\Entity\Repository\AnalyticsRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use Carbon\CarbonImmutable;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
 
+#[OA\Get(
+    path: '/station/{station_id}/reports/overview/charts',
+    operationId: 'getStationReportCharts',
+    summary: 'Get chart data for the station reports.',
+    tags: [OpenApi::TAG_STATIONS_REPORTS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+    ],
+    responses: [
+        // TODO API Response
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class ChartsAction extends AbstractReportAction
 {
     public function __construct(
@@ -166,10 +184,7 @@ final class ChartsAction extends AbstractReportAction
         $totalsByHour = [];
 
         foreach ($hourlyTotalCategories as $category) {
-            $categoryHours = [];
-            for ($i = 0; $i < 24; $i++) {
-                $categoryHours[$i] = [];
-            }
+            $categoryHours = array_fill(0, 24, []);
             $totalsByHour[$category] = $categoryHours;
         }
 

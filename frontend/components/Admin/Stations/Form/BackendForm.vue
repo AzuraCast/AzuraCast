@@ -298,39 +298,28 @@
 <script setup lang="ts">
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {AudioProcessingMethod, BackendAdapter, MasterMePreset} from "~/entities/RadioAdapters";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {decimal, numeric, required} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
+import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
+import {ApiGenericForm, AudioProcessingMethods, BackendAdapters} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    station: {
-        type: Object,
-        required: true
-    },
-    isStereoToolInstalled: {
-        type: Boolean,
-        default: true
-    }
-});
+const props = defineProps<{
+    isStereoToolInstalled: boolean
+}>();
+
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {enableAdvancedFeatures} = useAzuraCast();
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
-
 const {v$, tabClass} = useVuelidateOnFormTab(
+    form,
     computed(() => {
         let validations: {
             [key: string | number]: any
@@ -367,19 +356,18 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
         return validations;
     }),
-    form,
     () => {
         let blankForm: {
             [key: string | number]: any
         } = {
-            backend_type: BackendAdapter.Liquidsoap,
+            backend_type: BackendAdapters.Liquidsoap,
             backend_config: {
                 crossfade_type: 'normal',
                 crossfade: 2,
                 write_playlists_to_liquidsoap: true,
-                audio_processing_method: AudioProcessingMethod.None,
+                audio_processing_method: AudioProcessingMethods.None,
                 post_processing_include_live: true,
-                master_me_preset: MasterMePreset.MusicGeneral,
+                master_me_preset: 'music_general',
                 master_me_loudness_target: -16,
                 stereo_tool_license_key: '',
                 enable_auto_cue: false,
@@ -407,19 +395,19 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 );
 
 const isBackendEnabled = computed(() => {
-    return form.value?.backend_type !== BackendAdapter.None;
+    return form.value?.backend_type !== BackendAdapters.None;
 });
 
 const isStereoToolEnabled = computed(() => {
-    return form.value?.backend_config?.audio_processing_method === AudioProcessingMethod.StereoTool;
+    return form.value?.backend_config?.audio_processing_method === AudioProcessingMethods.StereoTool;
 });
 
 const isMasterMeEnabled = computed(() => {
-    return form.value?.backend_config?.audio_processing_method === AudioProcessingMethod.MasterMe;
+    return form.value?.backend_config?.audio_processing_method === AudioProcessingMethods.MasterMe;
 });
 
 const isPostProcessingEnabled = computed(() => {
-    return form.value?.backend_config?.audio_processing_method !== AudioProcessingMethod.None;
+    return form.value?.backend_config?.audio_processing_method !== AudioProcessingMethods.None;
 });
 
 const isAutoCueEnabled = computed(() => {
@@ -428,20 +416,20 @@ const isAutoCueEnabled = computed(() => {
 
 const {$gettext} = useTranslate();
 
-const backendTypeOptions = computed(() => {
+const backendTypeOptions = computed<SimpleFormOptionInput>(() => {
     return [
         {
             text: $gettext('Use Liquidsoap on this server.'),
-            value: BackendAdapter.Liquidsoap
+            value: BackendAdapters.Liquidsoap
         },
         {
             text: $gettext('Do not use an AutoDJ service.'),
-            value: BackendAdapter.None
+            value: BackendAdapters.None
         }
     ];
 });
 
-const crossfadeOptions = computed(() => {
+const crossfadeOptions = computed<SimpleFormOptionInput>(() => {
     return [
         {
             text: $gettext('Smart Mode'),
@@ -458,19 +446,19 @@ const crossfadeOptions = computed(() => {
     ];
 });
 
-const audioProcessingOptions = computed(() => {
-    const audioProcessingOptions = [
+const audioProcessingOptions = computed<SimpleFormOptionInput>(() => {
+    const audioProcessingOptions: SimpleFormOptionInput = [
         {
             text: $gettext('No Post-processing'),
-            value: AudioProcessingMethod.None
+            value: AudioProcessingMethods.None
         },
         {
             text: $gettext('Basic Normalization and Compression'),
-            value: AudioProcessingMethod.Liquidsoap
+            value: AudioProcessingMethods.Liquidsoap
         },
         {
             text: $gettext('Master_me Post-processing'),
-            value: AudioProcessingMethod.MasterMe
+            value: AudioProcessingMethods.MasterMe
         },
     ];
 
@@ -478,7 +466,7 @@ const audioProcessingOptions = computed(() => {
         audioProcessingOptions.push(
             {
                 text: $gettext('Stereo Tool'),
-                value: AudioProcessingMethod.StereoTool
+                value: AudioProcessingMethods.StereoTool
             }
         )
     }
@@ -486,39 +474,39 @@ const audioProcessingOptions = computed(() => {
     return audioProcessingOptions;
 });
 
-const charsetOptions = computed(() => {
+const charsetOptions = computed<SimpleFormOptionInput>(() => {
     return [
         {text: 'UTF-8', value: 'UTF-8'},
         {text: 'ISO-8859-1', value: 'ISO-8859-1'}
     ];
 });
 
-const masterMePresetOptions = computed(() => {
+const masterMePresetOptions = computed<SimpleFormOptionInput>(() => {
     return [
         {
             text: $gettext('Music General'),
-            value: MasterMePreset.MusicGeneral
+            value: 'music_general'
         },
         {
             text: $gettext('Speech General'),
-            value: MasterMePreset.SpeechGeneral
+            value: 'speech_general'
         },
         {
             text: $gettext('EBU R128'),
-            value: MasterMePreset.EbuR128
+            value: 'ebu_r128'
         },
         {
             text: $gettext('Apple Podcasts'),
-            value: MasterMePreset.ApplePodcasts
+            value: 'apple_podcasts'
         },
         {
             text: $gettext('YouTube'),
-            value: MasterMePreset.YouTube
+            value: 'youtube'
         }
     ]
 });
 
-const performanceModeOptions = computed(() => {
+const performanceModeOptions = computed<SimpleFormOptionInput>(() => {
     return [
         {
             text: $gettext('Use Less Memory (Uses More CPU)'),

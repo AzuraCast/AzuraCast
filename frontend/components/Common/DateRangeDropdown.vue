@@ -1,23 +1,13 @@
 <template>
     <vue-date-picker
+        v-bind="vueDatePickerOptions"
         v-model="dateRange"
-        :dark="isDark"
-        range
-        :partial-range="false"
-        :preset-dates="ranges"
-        :min-date="minDate"
-        :max-date="maxDate"
-        :locale="localeWithDashes"
-        :select-text="$gettext('Select')"
-        :cancel-text="$gettext('Cancel')"
-        :now-button-label="$gettext('Now')"
-        :timezone="tz"
-        :clearable="false"
     >
         <template #dp-input="{ value }">
             <button
                 type="button"
-                class="btn btn-dark dropdown-toggle"
+                class="btn dropdown-toggle"
+                v-bind="$attrs"
             >
                 <icon :icon="IconDateRange" />
                 <span>
@@ -29,8 +19,8 @@
 </template>
 
 <script setup lang="ts">
-import VueDatePicker from '@vuepic/vue-datepicker';
-import Icon from "./Icon.vue";
+import VueDatePicker, {VueDatePickerProps} from "@vuepic/vue-datepicker";
+import Icon from "~/components/Common/Icon.vue";
 import useTheme from "~/functions/theme";
 import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";
@@ -42,34 +32,19 @@ defineOptions({
     inheritAttrs: false
 });
 
-const props = defineProps({
-    tz: {
-        type: String,
-        default: null
-    },
-    minDate: {
-        type: [String, Date],
-        default() {
-            return null
-        }
-    },
-    maxDate: {
-        type: [String, Date],
-        default() {
-            return null
-        }
-    },
-    timePicker: {
-        type: Boolean,
-        default: false,
-    },
-    modelValue: {
-        type: Object,
-        required: true
-    }
-});
+export interface DateRange {
+    startDate: Date,
+    endDate: Date
+}
 
-const emit = defineEmits(['update:modelValue']);
+const props = defineProps<{
+    options?: Partial<VueDatePickerProps>,
+    modelValue?: DateRange
+}>();
+
+const emit = defineEmits<{
+    (e: 'update:modelValue', modelValue: DateRange): void
+}>();
 
 const {isDark} = useTheme();
 
@@ -96,7 +71,11 @@ const dateRange = computed({
 const {$gettext} = useTranslate();
 
 const ranges = computed(() => {
-    const nowTz = DateTime.now().setZone(props.tz);
+    const tz: string = (props.options && "timezone" in props.options)
+        ? (typeof props.options.timezone === "string" ? props.options.timezone : props.options.timezone.timezone)
+        : 'UTC';
+
+    const nowTz = DateTime.now().setZone(tz);
     const nowAtMidnightDate = nowTz.endOf('day').toJSDate();
 
     return [
@@ -157,5 +136,22 @@ const ranges = computed(() => {
             ]
         }
     ];
+});
+
+const vueDatePickerOptions = computed<VueDatePickerProps>(() => {
+    return {
+        dark: isDark.value,
+        range: {
+            partialRange: false
+        },
+        enableTimePicker: false,
+        presetDates: ranges.value,
+        locale: localeWithDashes,
+        selectText: $gettext('Select'),
+        cancelText: $gettext('Cancel'),
+        nowButtonLabel: $gettext('Now'),
+        clearable: false,
+        ...props.options,
+    }
 });
 </script>

@@ -14,10 +14,13 @@ use Normalizer;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
+use Symfony\Component\Filesystem\Path;
 
 final class UploadedFile implements UploadedFileInterface, JsonSerializable
 {
     private string $clientFilename;
+
+    private string $clientFullPath;
 
     private string $file;
 
@@ -35,18 +38,21 @@ final class UploadedFile implements UploadedFileInterface, JsonSerializable
             throw new RuntimeException('Could not generate original filename.');
         }
 
-        $clientFilename = self::filterOriginalFilename($clientFilename);
-        $this->clientFilename = $clientFilename;
+        $this->clientFullPath = self::filterClientPath($clientFilename);
+        $this->clientFilename = basename($this->clientFullPath);
 
         if (null === $uploadedPath) {
             $prefix = substr(bin2hex(random_bytes(5)), 0, 9);
-            $this->file = $tempDir . '/' . $prefix . '_' . $clientFilename;
+            $this->file = $tempDir . '/' . $prefix . '_' . $this->clientFilename;
         } else {
-            $uploadedPath = realpath($uploadedPath);
-            if (false === $uploadedPath) {
-                throw new InvalidArgumentException('Could not determine real path of specified path.');
-            }
-            if (!str_starts_with($uploadedPath, $tempDir)) {
+            $uploadedPath = Path::canonicalize($uploadedPath);
+
+            if (
+                !Path::isBasePath(
+                    $tempDir,
+                    $uploadedPath
+                )
+            ) {
                 throw new InvalidArgumentException('Uploaded path is not inside specified temporary directory.');
             }
 
@@ -61,6 +67,11 @@ final class UploadedFile implements UploadedFileInterface, JsonSerializable
     public function getClientFilename(): string
     {
         return $this->clientFilename;
+    }
+
+    public function getClientFullPath(): string
+    {
+        return $this->clientFullPath;
     }
 
     public function getUploadedPath(): string
@@ -164,15 +175,28 @@ final class UploadedFile implements UploadedFileInterface, JsonSerializable
         return new self($input['originalFilename'], $input['uploadedPath'], $tempDir);
     }
 
-    public static function filterOriginalFilename(string $name): string
+    public static function filterClientPath(string $name): string
     {
-        $name = basename($name);
-        $normalizedName = Normalizer::normalize($name, Normalizer::FORM_KD);
-        if (false !== $normalizedName) {
-            $name = $normalizedName;
-        }
+        $name = implode(
+            '/',
+            array_filter(
+                array_map(
+                    function (string $namePart): string|null {
+                        if (empty($namePart) || '..' === $namePart) {
+                            return null;
+                        }
 
-        $name = File::sanitizeFileName($name);
+                        $normalizedName = Normalizer::normalize($namePart, Normalizer::FORM_KD);
+                        if (false !== $normalizedName) {
+                            $namePart = $normalizedName;
+                        }
+
+                        return File::sanitizeFileName($namePart);
+                    },
+                    explode('/', Path::canonicalize($name))
+                )
+            )
+        );
 
         // Truncate filenames whose lengths are longer than 255 characters, while preserving extension.
         $thresholdLength = 255 - 10; // To allow for a prefix.

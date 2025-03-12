@@ -74,10 +74,10 @@
                             :label="$gettext('Custom CSS for Public Pages')"
                             :description="$gettext('This CSS will be applied to the station public pages and login page.')"
                         >
-                            <template #default="slotProps">
+                            <template #default="{id, model}">
                                 <codemirror-textarea
-                                    :id="slotProps.id"
-                                    v-model="slotProps.field.$model"
+                                    :id="id"
+                                    v-model="model.$model"
                                     mode="css"
                                 />
                             </template>
@@ -90,10 +90,10 @@
                             :label="$gettext('Custom JS for Public Pages')"
                             :description="$gettext('This javascript code will be applied to the station public pages and login page.')"
                         >
-                            <template #default="slotProps">
+                            <template #default="{id, model}">
                                 <codemirror-textarea
-                                    :id="slotProps.id"
-                                    v-model="slotProps.field.$model"
+                                    :id="id"
+                                    v-model="model.$model"
                                     mode="javascript"
                                 />
                             </template>
@@ -106,10 +106,10 @@
                             :label="$gettext('Custom CSS for Internal Pages')"
                             :description="$gettext('This CSS will be applied to the main management pages, like this one.')"
                         >
-                            <template #default="slotProps">
+                            <template #default="{id, model}">
                                 <codemirror-textarea
-                                    :id="slotProps.id"
-                                    v-model="slotProps.field.$model"
+                                    :id="id"
+                                    v-model="model.$model"
                                     mode="css"
                                 />
                             </template>
@@ -141,12 +141,9 @@ import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Loading from "~/components/Common/Loading.vue";
 
-const props = defineProps({
-    apiUrl: {
-        type: String,
-        required: true
-    },
-});
+const props = defineProps<{
+    apiUrl: string,
+}>();
 
 const isLoading = ref(true);
 const error = ref(null);
@@ -195,7 +192,7 @@ const publicThemeOptions = computed(() => {
 
 const {axios} = useAxios();
 
-const populateForm = (data) => {
+const populateForm = (data: typeof form.value) => {
     form.value = mergeExisting(form.value, data);
 };
 
@@ -204,7 +201,7 @@ const relist = () => {
 
     isLoading.value = true;
 
-    axios.get(props.apiUrl).then((resp) => {
+    void axios.get(props.apiUrl).then((resp) => {
         populateForm(resp.data);
         isLoading.value = false;
     });
@@ -216,7 +213,7 @@ const {notifySuccess} = useNotify();
 
 const submit = () => {
     ifValid(() => {
-        axios({
+        void axios({
             method: 'PUT',
             url: props.apiUrl,
             data: form.value

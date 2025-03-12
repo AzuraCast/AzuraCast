@@ -20,6 +20,6 @@ final class Version20240706170405 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE station DROP max_bitrate, max_hls_streams');
+        $this->addSql('ALTER TABLE station DROP max_mounts, DROP max_hls_streams');
     }
 }

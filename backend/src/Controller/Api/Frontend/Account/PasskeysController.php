@@ -9,6 +9,8 @@ use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Entity\UserPasskey;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -17,6 +19,65 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
  * @template TEntity as UserPasskey
  * @extends AbstractApiCrudController<TEntity>
  */
+#[
+    OA\Get(
+        path: '/frontend/account/passkeys',
+        operationId: 'getAccountListPasskeys',
+        summary: 'List currently registered passkeys.',
+        tags: [OpenApi::TAG_ACCOUNTS],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    ),
+    OA\Get(
+        path: '/frontend/account/passkey/{id}',
+        operationId: 'getAccountGetPasskey',
+        summary: 'Get the details of a single passkey.',
+        tags: [OpenApi::TAG_ACCOUNTS],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'Passkey ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string')
+            ),
+        ],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    ),
+    OA\Delete(
+        path: '/frontend/account/passkey/{id}',
+        operationId: 'deleteAccountPasskey',
+        summary: 'Delete a specified passkey by ID.',
+        tags: [OpenApi::TAG_ACCOUNTS],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'Passkey ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string')
+            ),
+        ],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class PasskeysController extends AbstractApiCrudController
 {
     protected string $entityClass = UserPasskey::class;

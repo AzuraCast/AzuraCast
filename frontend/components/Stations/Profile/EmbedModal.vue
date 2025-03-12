@@ -93,17 +93,33 @@
 </template>
 
 <script setup lang="ts">
-import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton.vue';
-import {computed, ref} from "vue";
+import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton.vue";
+import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import embedModalProps from "./embedModalProps";
 import Modal from "~/components/Common/Modal.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 
-const props = defineProps({
-    ...embedModalProps
+export interface ProfileEmbedModalProps {
+    stationSupportsStreamers: boolean,
+    stationSupportsRequests: boolean,
+    enablePublicPage: boolean,
+    enableStreamers: boolean,
+    enableOnDemand: boolean,
+    enableRequests: boolean,
+    publicPageEmbedUri: string,
+    publicOnDemandEmbedUri: string,
+    publicRequestEmbedUri: string,
+    publicHistoryEmbedUri: string,
+    publicScheduleEmbedUri: string,
+    publicPodcastsEmbedUri: string
+}
+
+defineOptions({
+    inheritAttrs: false
 });
+
+const props = defineProps<ProfileEmbedModalProps>();
 
 const selectedType = ref('player');
 const selectedTheme = ref('light');
@@ -220,7 +236,7 @@ const embedCode = computed(() => {
     return '<iframe src="' + embedUrl.value + '" frameborder="0" allowtransparency="true" style="width: 100%; min-height: ' + embedHeight.value + '; border: 0;"></iframe>';
 });
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show: open} = useHasModal($modal);
 
 defineExpose({

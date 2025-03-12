@@ -32,27 +32,25 @@
 <script setup lang="ts">
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useLuxon} from "~/vendor/luxon";
+import {ApiNowPlayingSongHistory, ApiSong} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    history: {
-        type: Object,
-        default: () => {
-            return {};
-        }
-    },
-    showAlbumArt: {
-        type: Boolean,
-        default: true
+withDefaults(
+    defineProps<{
+        history: ApiNowPlayingSongHistory[],
+        showAlbumArt?: boolean,
+    }>(),
+    {
+        showAlbumArt: true
     }
-});
+);
 
 const {timestampToRelative} = useLuxon();
 
-const unixTimestampToDate = (timestamp) => (!timestamp)
+const unixTimestampToDate = (timestamp?: number | null) => (!timestamp)
     ? ''
     : timestampToRelative(timestamp);
 
-const albumAndArtist = (song) => {
+const albumAndArtist = (song: ApiSong) => {
     return [song.artist, song.album].filter(str => !!str).join(' - ');
 };
 </script>

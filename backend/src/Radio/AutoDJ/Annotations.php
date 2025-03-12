@@ -12,8 +12,10 @@ use App\Entity\StationMediaMetadata;
 use App\Entity\StationQueue;
 use App\Entity\StationRequest;
 use App\Event\Radio\AnnotateNextSong;
-use App\Radio\Backend\Liquidsoap\ConfigWriter;
+use App\Utilities\Time;
+use App\Utilities\Types;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class Annotations implements EventSubscriberInterface
@@ -48,11 +50,11 @@ final class Annotations implements EventSubscriberInterface
     public function annotateNextSong(
         Station $station,
         bool $asAutoDj = false,
-    ): string|bool {
+    ): string {
         $queueRow = $this->queueRepo->getNextToSendToAutoDj($station);
 
         if (null === $queueRow) {
-            return false;
+            throw new RuntimeException('Queue is empty!');
         }
 
         $event = AnnotateNextSong::fromStationQueue($queueRow, $asAutoDj);
@@ -91,7 +93,7 @@ final class Annotations implements EventSubscriberInterface
 
         $duration = $media->getLength();
 
-        $annotations = array_filter([
+        $event->addAnnotations([
             'title' => $media->getTitle(),
             'artist' => $media->getArtist(),
             'duration' => $duration,
@@ -100,42 +102,79 @@ final class Annotations implements EventSubscriberInterface
             'sq_id' => $event->getQueue()?->getIdRequired(),
             ...$this->processAutocueAnnotations(
                 $station,
-                $media->getExtraMetadata()->toAnnotations($duration),
+                $media->getExtraMetadata(),
                 $duration,
             ),
-        ], fn ($row) => ('' !== $row && null !== $row));
-
-        $event->addAnnotations(
-            array_map([ConfigWriter::class, 'valueToString'], $annotations)
-        );
+        ]);
     }
 
     private function processAutocueAnnotations(
         Station $station,
-        array $annotations,
+        StationMediaMetadata $metadata,
         float $duration,
     ): array {
+        $annotations = array_filter(
+            $metadata->toArray() ?? [],
+            fn($row) => $row !== null
+        );
+
         if (0 === count($annotations)) {
             return [];
         }
 
-        $backendConfig = $station->getBackendConfig();
+        // Safety checks for cue lengths.
+        if (
+            isset($annotations[StationMediaMetadata::CUE_OUT])
+            && $annotations[StationMediaMetadata::CUE_OUT] < 0.0
+        ) {
+            $cueOut = abs($annotations[StationMediaMetadata::CUE_OUT]);
 
-        if ($backendConfig->getEnableAutoCue()) {
-            // Directly write annotations as `liq_` values (pre-2.3.x)
-            $annotationsNew = [];
-            foreach ($annotations as $key => $val) {
-                $key = 'liq_' . $key;
-                $annotationsNew[$key] = $val;
+            if (0.0 === $cueOut) {
+                unset($annotations[StationMediaMetadata::CUE_OUT]);
             }
 
-            return $annotationsNew;
+            if ($cueOut > $duration) {
+                unset($annotations[StationMediaMetadata::CUE_OUT]);
+            } else {
+                $annotations[StationMediaMetadata::CUE_OUT] = max(0, $duration - $cueOut);
+            }
+        }
+
+        if (
+            isset($annotations[StationMediaMetadata::CUE_OUT])
+            && $annotations[StationMediaMetadata::CUE_OUT] > $duration
+        ) {
+            unset($annotations[StationMediaMetadata::CUE_OUT]);
+        }
+
+        if (
+            isset($annotations[StationMediaMetadata::CUE_IN])
+            && $annotations[StationMediaMetadata::CUE_IN] > $duration
+        ) {
+            unset($annotations[StationMediaMetadata::CUE_IN]);
+        }
+
+        if (0 === count($annotations)) {
+            return [];
+        }
+
+        // Standardize Amplify metadata in Liquidsoap format.
+        if (isset($annotations[StationMediaMetadata::AMPLIFY])) {
+            $annotations[StationMediaMetadata::AMPLIFY] .= ' dB';
+
+            // If only amplify is specified, return just it to use it in other AutoCue/amplify functions.
+            if (1 === count($annotations)) {
+                return [
+                    'liq_amplify' => $annotations[StationMediaMetadata::AMPLIFY],
+                ];
+            }
         }
 
         // Ensure default values for all annotations.
         $annotations[StationMediaMetadata::CUE_IN] ??= 0.0;
         $annotations[StationMediaMetadata::CUE_OUT] ??= $duration;
 
+        $backendConfig = $station->getBackendConfig();
         $defaultFade = $backendConfig->isCrossfadeEnabled()
             ? $backendConfig->getCrossfade()
             : 0.0;
@@ -143,38 +182,17 @@ final class Annotations implements EventSubscriberInterface
         $annotations[StationMediaMetadata::FADE_IN] ??= $defaultFade;
         $annotations[StationMediaMetadata::FADE_OUT] ??= $defaultFade;
 
-        if (!isset($annotations[StationMediaMetadata::CROSS_START_NEXT])) {
-            $defaultStartNext = $backendConfig->isCrossfadeEnabled()
-                ? $duration - $backendConfig->getCrossfadeDuration()
-                : $duration;
-
-            if ($defaultStartNext < 0) {
-                $defaultStartNext = $duration;
-            }
-
-            $annotations[StationMediaMetadata::CROSS_START_NEXT] = $defaultStartNext;
-        }
-
-        $annotationMapping = [
-            StationMediaMetadata::AMPLIFY => 'azuracast_amplify',
-            StationMediaMetadata::CUE_IN => 'azuracast_cue_in',
-            StationMediaMetadata::CUE_OUT => 'azuracast_cue_out',
-            StationMediaMetadata::FADE_IN => 'azuracast_fade_in',
-            StationMediaMetadata::FADE_OUT => 'azuracast_fade_out',
-            StationMediaMetadata::CROSS_START_NEXT => 'azuracast_start_next',
-        ];
-
-        $annotationsNew = [
+        return [
             'azuracast_autocue' => true,
+            'liq_amplify' => Types::stringOrNull($annotations[StationMediaMetadata::AMPLIFY] ?? null),
+            'autocue_cue_in' => Types::float($annotations[StationMediaMetadata::CUE_IN]),
+            'autocue_cue_out' => Types::float($annotations[StationMediaMetadata::CUE_OUT]),
+            'autocue_fade_in' => Types::float($annotations[StationMediaMetadata::FADE_IN]),
+            'autocue_fade_out' => Types::float($annotations[StationMediaMetadata::FADE_OUT]),
+            'autocue_start_next' => Types::floatOrNull(
+                $annotations[StationMediaMetadata::CROSS_START_NEXT] ?? null
+            ),
         ];
-
-        foreach ($annotations as $key => $value) {
-            if (isset($annotationMapping[$key])) {
-                $annotationsNew[$annotationMapping[$key]] = $value;
-            }
-        }
-
-        return $annotationsNew;
     }
 
     public function annotatePlaylist(AnnotateNextSong $event): void
@@ -214,7 +232,7 @@ final class Annotations implements EventSubscriberInterface
         $queueRow = $event->getQueue();
         if ($queueRow instanceof StationQueue) {
             $queueRow->setSentToAutodj();
-            $queueRow->setTimestampCued(time());
+            $queueRow->setTimestampCued(Time::nowUtc());
             $this->em->persist($queueRow);
             $this->em->flush();
         }

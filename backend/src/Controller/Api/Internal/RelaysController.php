@@ -16,6 +16,7 @@ use App\Entity\StationRemote;
 use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Radio\Adapters;
 use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\RemoteAdapters;
@@ -27,15 +28,13 @@ use Psr\Http\Message\ResponseInterface;
         path: '/internal/relays',
         operationId: 'internalGetRelayDetails',
         description: "Returns all necessary information to relay all 'relayable' stations.",
-        tags: ['Administration: Relays'],
+        tags: [OpenApi::TAG_ADMIN],
         parameters: [],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_Admin_Relay')
+                    items: new OA\Items(ref: ApiRelay::class)
                 )
             ),
         ]
@@ -57,8 +56,6 @@ final class RelaysController
         Response $response
     ): ResponseInterface {
         $stations = $this->getManageableStations($request);
-
-        $router = $request->getRouter();
 
         $return = [];
         foreach ($stations as $station) {
@@ -88,7 +85,6 @@ final class RelaysController
             }
 
             $row->mounts = $mounts;
-            $row->resolveUrls($router->getBaseUrl());
 
             $return[] = $row;
         }
@@ -146,7 +142,6 @@ final class RelaysController
 
         $relay->setName($body['name'] ?? 'Relay');
         $relay->setIsVisibleOnPublicPages($body['is_visible_on_public_pages'] ?? true);
-        $relay->setUpdatedAt(time());
 
         $this->em->persist($relay);
 

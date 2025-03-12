@@ -15,7 +15,7 @@
 
         <data-table
             id="station_queue"
-            ref="$datatable"
+            ref="$dataTable"
             :fields="fields"
             :api-url="listUrl"
             :hide-on-loading="false"
@@ -71,28 +71,31 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '../Common/DataTable.vue';
-import QueueLogsModal from './Queue/LogsModal.vue';
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import QueueLogsModal from "~/components/Stations/Queue/LogsModal.vue";
 import Icon from "~/components/Common/Icon.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {computed, ref} from "vue";
+import {computed, useTemplateRef} from "vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
+import useHasDatatable from "~/functions/useHasDatatable";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
-import {useSweetAlert} from "~/vendor/sweetalert";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getStationApiUrl} from "~/router";
 import {IconRemove} from "~/components/Common/icons";
 import {useIntervalFn} from "@vueuse/core";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import {useDialog} from "~/functions/useDialog.ts";
+import {ApiStationQueueDetailed, ApiStatus} from "~/entities/ApiInterfaces.ts";
 
 const listUrl = getStationApiUrl('/queue');
 const clearUrl = getStationApiUrl('/queue/clear');
 
 const {$gettext} = useTranslate();
 
-const fields: DataTableField[] = [
+type Row = Required<ApiStationQueueDetailed>;
+
+const fields: DataTableField<Row>[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false},
     {key: 'song_title', isRowHeader: true, label: $gettext('Song Title'), sortable: false},
     {key: 'played_at', label: $gettext('Expected to Play at'), sortable: false},
@@ -104,16 +107,18 @@ const {
     formatTimestampAsRelative
 } = useStationDateTimeFormatter();
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {relist} = useHasDatatable($datatable);
+const $dataTable = useTemplateRef('$dataTable');
+
+const {relist} = useHasDatatable($dataTable);
 
 useIntervalFn(
     relist,
     computed(() => (document.hidden) ? 60000 : 30000)
 );
 
-const $logsModal = ref<InstanceType<typeof QueueLogsModal> | null>(null);
-const doShowLogs = (logs) => {
+const $logsModal = useTemplateRef('$logsModal');
+
+const doShowLogs = (logs: string[]) => {
     $logsModal.value?.show(logs);
 };
 
@@ -122,21 +127,21 @@ const {doDelete} = useConfirmAndDelete(
     relist
 );
 
-const {confirmDelete} = useSweetAlert();
+const {confirmDelete} = useDialog();
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const doClear = () => {
-    confirmDelete({
+const doClear = async () => {
+    const {value} = await confirmDelete({
         title: $gettext('Clear Upcoming Song Queue?'),
         confirmButtonText: $gettext('Clear'),
-    }).then((result) => {
-        if (result.value) {
-            axios.post(clearUrl.value).then((resp) => {
-                notifySuccess(resp.data.message);
-                relist();
-            });
-        }
     });
+
+    if (value) {
+        const {data} = await axios.post<ApiStatus>(clearUrl.value);
+
+        notifySuccess(data.message);
+        relist();
+    }
 }
 </script>

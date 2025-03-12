@@ -17,22 +17,22 @@
 </template>
 
 <script setup lang="ts">
-import RemoteFormBasicInfo from "./Form/BasicInfo.vue";
-import RemoteFormAutoDj from "./Form/AutoDj.vue";
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, ref} from "vue";
+import RemoteFormBasicInfo from "~/components/Stations/Remotes/Form/BasicInfo.vue";
+import RemoteFormAutoDj from "~/components/Stations/Remotes/Form/AutoDj.vue";
+import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, useTemplateRef} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 
-const props = defineProps({
-    ...baseEditModalProps,
-});
+const props = defineProps<BaseEditModalProps>();
 
-const emit = defineEmits(['relist', 'needs-restart']);
+const emit = defineEmits<BaseEditModalEmits & {
+    (e: 'needs-restart'): void
+}>();
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 
 const {notifySuccess} = useNotify();
 

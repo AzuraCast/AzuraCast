@@ -8,6 +8,7 @@ use App\Acl;
 use App\Controller\Api\AbstractApiCrudController;
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
+use App\Entity\Api\Admin\Role as ApiRole;
 use App\Entity\Repository\RolePermissionRepository;
 use App\Entity\Role;
 use App\Entity\RolePermission;
@@ -15,7 +16,6 @@ use App\Entity\Station;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
@@ -27,47 +27,44 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/admin/roles',
         operationId: 'getRoles',
-        description: 'List all current roles in the system.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Administration: Roles'],
+        summary: 'List all current roles in the system.',
+        tags: [OpenApi::TAG_ADMIN_ROLES],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Role')
+                    items: new OA\Items(
+                        ref: ApiRole::class
+                    )
                 )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Post(
         path: '/admin/roles',
         operationId: 'addRole',
-        description: 'Create a new role.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Create a new role.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Role')
+            content: new OA\JsonContent(ref: ApiRole::class)
         ),
-        tags: ['Administration: Roles'],
+        tags: [OpenApi::TAG_ADMIN_ROLES],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Role')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    ref: ApiRole::class
+                )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Get(
         path: '/admin/role/{id}',
         operationId: 'getRole',
-        description: 'Retrieve details for a single current role.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Administration: Roles'],
+        summary: 'Retrieve details for a single current role.',
+        tags: [OpenApi::TAG_ADMIN_ROLES],
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -78,25 +75,24 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Role')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    ref: ApiRole::class
+                )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Put(
         path: '/admin/role/{id}',
         operationId: 'editRole',
-        description: 'Update details of a single role.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Update details of a single role.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Role')
+            content: new OA\JsonContent(ref: ApiRole::class)
         ),
-        tags: ['Administration: Roles'],
+        tags: [OpenApi::TAG_ADMIN_ROLES],
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -107,18 +103,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Delete(
         path: '/admin/role/{id}',
         operationId: 'deleteRole',
-        description: 'Delete a single role.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Administration: Roles'],
+        summary: 'Delete a single role.',
+        tags: [OpenApi::TAG_ADMIN_ROLES],
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -129,10 +124,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]
@@ -187,14 +182,22 @@ final class RolesController extends AbstractApiCrudController
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
 
-    protected function viewRecord(object $record, ServerRequest $request): array
+    protected function viewRecord(object $record, ServerRequest $request): ApiRole
     {
-        /** @var array<array-key, mixed> $result */
-        $result = parent::viewRecord($record, $request);
+        $isInternal = $request->isInternal();
+        $router = $request->getRouter();
 
-        $result['is_super_admin'] = $record->getIdRequired() === $this->superAdminRole->getIdRequired();
+        $apiRole = ApiRole::fromRole($record);
+        $apiRole->is_super_admin = $record->getIdRequired() === $this->superAdminRole->getIdRequired();
+        $apiRole->links = [
+            'self' => $router->fromHere(
+                routeName: $this->resourceRouteName,
+                routeParams: ['id' => $record->getIdRequired()],
+                absolute: !$isInternal
+            ),
+        ];
 
-        return $result;
+        return $apiRole;
     }
 
     protected function editRecord(?array $data, ?object $record = null, array $context = []): object
@@ -257,6 +260,12 @@ final class RolesController extends AbstractApiCrudController
 
         if (isset($newPermissions['station'])) {
             foreach ($newPermissions['station'] as $stationId => $stationPerms) {
+                // Accept both { id: perms[] } and [ { id: 1, perms: string[] } ] formats.
+                if (isset($stationPerms['id'])) {
+                    $stationId = $stationPerms['id'];
+                    $stationPerms = $stationPerms['permissions'] ?? [];
+                }
+
                 $station = $this->em->find(Station::class, $stationId);
 
                 if ($station instanceof Station) {

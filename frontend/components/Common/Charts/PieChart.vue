@@ -10,30 +10,19 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
-import useChart, {chartProps, ChartTemplateRef} from "~/functions/useChart";
+import useChart, {ChartProps} from "~/functions/useChart";
 
-const props = defineProps({
-    ...chartProps,
-    labels: {
-        type: Array,
-        default: () => {
-            return [];
-        }
-    }
-});
+const props = defineProps<ChartProps>();
 
-const $canvas = ref<ChartTemplateRef>(null);
+const $canvas = useTemplateRef('$canvas');
 
-useChart(
+useChart<'pie'>(
     props,
     $canvas,
     {
-        type: 'pie',
-        options: {
-            aspectRatio: props.aspectRatio,
-        }
+        type: 'pie'
     }
 );
 </script>

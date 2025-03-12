@@ -17,16 +17,16 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-    label: {
-        type: String,
-        default: null
-    },
-    description: {
-        type: String,
-        default: null
+withDefaults(
+    defineProps<{
+        label?: string,
+        description?: string
+    }>(),
+    {
+        label: null,
+        description: null
     }
-});
+);
 
 const slots = defineSlots();
 </script>

@@ -9,13 +9,13 @@
         @hidden="clearContents"
     >
         <admin-stations-form
-            v-bind="pickProps(props, stationFormProps)"
+            v-bind="props"
             ref="$form"
             is-modal
             :create-url="createUrl"
             :edit-url="editUrl"
             :is-edit-mode="isEditMode"
-            @error="close"
+            @error="hide"
             @submitted="onSubmit"
             @valid-update="onValidUpdate"
         >
@@ -45,26 +45,27 @@
 </template>
 
 <script setup lang="ts">
-import AdminStationsForm from "~/components/Admin/Stations/StationForm.vue";
+import AdminStationsForm, {StationFormParentProps} from "~/components/Admin/Stations/StationForm.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
-import {computed, ref} from "vue";
+import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import stationFormProps from "~/components/Admin/Stations/stationFormProps";
-import {pickProps} from "~/functions/pickProps";
 import Modal from "~/components/Common/Modal.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
-const props = defineProps({
-    ...stationFormProps,
-    createUrl: {
-        type: String,
-        required: true
-    }
+defineOptions({
+    inheritAttrs: false
 });
 
-const emit = defineEmits(['relist']);
+interface StationEditModalProps extends StationFormParentProps {
+    createUrl: string
+}
 
-const editUrl = ref(null);
+const props = defineProps<StationEditModalProps>();
+
+const emit = defineEmits<HasRelistEmit>();
+
+const editUrl = ref<string | null>(null);
 const disableSaveButton = ref(true);
 
 const isEditMode = computed(() => {
@@ -79,10 +80,10 @@ const langTitle = computed(() => {
         : $gettext('Add Station');
 });
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
-const onValidUpdate = (newValue) => {
+const onValidUpdate = (newValue: boolean) => {
     disableSaveButton.value = !newValue;
 };
 
@@ -91,12 +92,12 @@ const create = () => {
     show();
 };
 
-const edit = (recordUrl) => {
+const edit = (recordUrl: string) => {
     editUrl.value = recordUrl;
     show();
 };
 
-const $form = ref<InstanceType<typeof AdminStationsForm> | null>(null);
+const $form = useTemplateRef('$form');
 
 const resetForm = () => {
     $form.value?.reset();

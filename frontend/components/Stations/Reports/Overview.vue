@@ -11,8 +11,11 @@
                 <div class="flex-shrink">
                     <date-range-dropdown
                         v-model="dateRange"
-                        time-picker
-                        :tz="timezone"
+                        :options="{
+                            enableTimePicker: true,
+                            timezone: timezone
+                        }"
+                        class="btn-dark"
                     />
                 </div>
             </div>
@@ -84,12 +87,12 @@
 
 <script setup lang="ts">
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
-import ListenersByTimePeriodTab from "./Overview/ListenersByTimePeriodTab.vue";
-import BestAndWorstTab from "./Overview/BestAndWorstTab.vue";
-import BrowsersTab from "./Overview/BrowsersTab.vue";
-import CountriesTab from "./Overview/CountriesTab.vue";
-import StreamsTab from "./Overview/StreamsTab.vue";
-import ClientsTab from "./Overview/ClientsTab.vue";
+import ListenersByTimePeriodTab from "~/components/Stations/Reports/Overview/ListenersByTimePeriodTab.vue";
+import BestAndWorstTab from "~/components/Stations/Reports/Overview/BestAndWorstTab.vue";
+import BrowsersTab from "~/components/Stations/Reports/Overview/BrowsersTab.vue";
+import CountriesTab from "~/components/Stations/Reports/Overview/CountriesTab.vue";
+import StreamsTab from "~/components/Stations/Reports/Overview/StreamsTab.vue";
+import ClientsTab from "~/components/Stations/Reports/Overview/ClientsTab.vue";
 import ListeningTimeTab from "~/components/Stations/Reports/Overview/ListeningTimeTab.vue";
 import {ref} from "vue";
 import {getStationApiUrl} from "~/router";
@@ -98,12 +101,9 @@ import Tab from "~/components/Common/Tab.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 
-const props = defineProps({
-    showFullAnalytics: {
-        type: Boolean,
-        required: true
-    }
-});
+defineProps<{
+    showFullAnalytics: boolean
+}>();
 
 const listenersByTimePeriodUrl = getStationApiUrl('/reports/overview/charts');
 const bestAndWorstUrl = getStationApiUrl('/reports/overview/best-and-worst');

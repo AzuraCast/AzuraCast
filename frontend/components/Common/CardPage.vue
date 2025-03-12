@@ -41,16 +41,15 @@
 <script setup lang="ts">
 import InfoCard from "~/components/Common/InfoCard.vue";
 
-const props = defineProps({
-    title: {
-        type: String,
-        default: null
-    },
-    headerId: {
-        type: String,
-        default: "card_hdr"
+withDefaults(
+    defineProps<{
+        title?: string,
+        headerId?: string,
+    }>(),
+    {
+        headerId: 'card_hdr'
     }
-})
+);
 
 const slots = defineSlots();
 </script>

@@ -11,11 +11,11 @@
                 :id="'form_edit_publish_at_'+index"
                 :field="v$.publish_at"
             >
-                <template #default="slotProps">
+                <template #default="{id, model, fieldClass}">
                     <publish-at-fields
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        :class="slotProps.class"
+                        :id="id"
+                        v-model="model.$model"
+                        :class="fieldClass"
                     />
                 </template>
             </form-group-field>
@@ -52,25 +52,18 @@ import {required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {useVModel} from "@vueuse/core";
 import PublishAtFields from "~/components/Stations/Podcasts/Common/PublishAtFields.vue";
+import {ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    index: {
-        type: Number,
-        required: true
-    },
-    row: {
-        type: Object,
-        required: true
-    }
-});
+type T = Partial<ApiPodcastEpisode>;
 
-const emit = defineEmits(['update:row']);
+defineProps<{
+    index: number,
+}>();
 
-const row = useVModel(props, 'row', emit);
+const row = defineModel<T>('row');
 
-const v$ = useVuelidate(
+const v$ = useVuelidate<T>(
     {
         id: {required},
         title: {required},

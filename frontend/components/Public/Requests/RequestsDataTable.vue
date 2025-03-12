@@ -35,25 +35,25 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import {forEach} from 'lodash';
-import AlbumArt from '~/components/Common/AlbumArt.vue';
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import {forEach} from "lodash";
+import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
-import requestsProps from "~/components/Public/Requests/requestsProps.ts";
+import {RequestsProps} from "~/components/Public/Requests.vue";
 
-const props = defineProps({
-    ...requestsProps
-});
+const props = defineProps<RequestsProps>();
 
-const emit = defineEmits(['submitted']);
+const emit = defineEmits<{
+    (e: 'submitted'): void
+}>();
 
 const {$gettext} = useTranslate();
 
 const fields = computed<DataTableField[]>(() => {
-    const fields = [
+    const fields: DataTableField[] = [
         {
             key: 'name',
             isRowHeader: true,
@@ -107,7 +107,12 @@ const fields = computed<DataTableField[]>(() => {
     });
 
     fields.push(
-        {key: 'actions', label: $gettext('Actions'), class: 'shrink', sortable: false}
+        {
+            key: 'actions',
+            label: $gettext('Actions'),
+            class: 'shrink',
+            sortable: false
+        }
     );
 
     return fields;
@@ -118,8 +123,8 @@ const pageOptions = [10, 25];
 const {notifySuccess, notifyError} = useNotify();
 const {axios} = useAxios();
 
-const doSubmitRequest = (url) => {
-    axios.post(url).then((resp) => {
+const doSubmitRequest = (url: string) => {
+    void axios.post(url).then((resp) => {
         if (resp.data.success) {
             notifySuccess(resp.data.message);
         } else {

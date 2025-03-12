@@ -17,25 +17,23 @@
 
 <script setup lang="ts">
 import mergeExisting from "~/functions/mergeExisting";
-import {email, required} from '@vuelidate/validators';
-import AccountEditForm from "./EditForm.vue";
+import {email, required} from "@vuelidate/validators";
+import AccountEditForm from "~/components/Account/EditForm.vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {ref} from "vue";
+import {ref, useTemplateRef} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
-import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
 import {getApiUrl} from "~/router.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 
-const props = defineProps({
-    supportedLocales: {
-        type: Object,
-        required: true
-    }
-});
+defineProps<{
+    supportedLocales: Record<string, string>
+}>();
 
-const emit = defineEmits(['reload']);
+const emit = defineEmits<{
+    (e: 'reload'): void
+}>();
 
 const userUrl = getApiUrl('/frontend/account/me');
 
@@ -63,7 +61,7 @@ const clearContents = () => {
     error.value = null;
 };
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
 const {notifySuccess} = useNotify();

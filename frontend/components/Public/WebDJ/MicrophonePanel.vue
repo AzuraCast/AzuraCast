@@ -80,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/Common/Icon.vue';
+import Icon from "~/components/Common/Icon.vue";
 import VolumeSlider from "~/components/Public/WebDJ/VolumeSlider.vue";
 import {useDevicesList} from "@vueuse/core";
 import {ref, watch} from "vue";
@@ -117,7 +117,7 @@ watch(audioInputs, (inputs) => {
     }
 });
 
-let destination = null;
+let destination: AudioNode | null = null;
 
 const createSource = () => {
     if (source.value != null) {

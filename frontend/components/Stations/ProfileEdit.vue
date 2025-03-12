@@ -42,7 +42,7 @@
             class="card-body"
         >
             <admin-stations-form
-                v-bind="pickProps(props, stationFormProps)"
+                v-bind="props"
                 ref="$form"
                 is-edit-mode
                 :edit-url="editUrl"
@@ -54,37 +54,35 @@
 </template>
 
 <script setup lang="ts">
-import AdminStationsForm from "~/components/Admin/Stations/StationForm.vue";
-import {nextTick, onMounted, ref} from "vue";
-import stationFormProps from "~/components/Admin/Stations/stationFormProps";
-import {pickProps} from "~/functions/pickProps";
+import AdminStationsForm, {StationFormParentProps} from "~/components/Admin/Stations/StationForm.vue";
+import {nextTick, onMounted, ref, useTemplateRef} from "vue";
 import Icon from "~/components/InlinePlayer.vue";
 import ErrorCard from "~/components/Common/ErrorCard.vue";
 import {getStationApiUrl} from "~/router";
 import {useRouter} from "vue-router";
 import {IconRefresh} from "~/components/Common/icons";
 
-const props = defineProps(stationFormProps);
+const props = defineProps<StationFormParentProps>();
 
 const editUrl = getStationApiUrl('/profile/edit');
 
-const $form = ref<InstanceType<typeof AdminStationsForm> | null>(null);
+const $form = useTemplateRef('$form');
 
 onMounted(() => {
     $form.value?.reset();
 });
 
-const error = ref(null);
+const error = ref<string | null>(null);
 
 const retry = () => {
     error.value = null;
 
-    nextTick(() => {
+    void nextTick(() => {
         $form.value?.reset();
     });
 }
 
-const onError = (err) => {
+const onError = (err: string | null) => {
     error.value = err;
 }
 

@@ -24,23 +24,22 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/station/{station_id}/requests',
         operationId: 'getRequestableSongs',
-        description: 'Return a list of requestable songs.',
-        tags: ['Stations: Song Requests'],
+        summary: 'Return a list of requestable songs.',
+        security: [],
+        tags: [OpenApi::TAG_PUBLIC_STATIONS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_StationRequest')
+                    items: new OA\Items(ref: StationRequest::class)
                 )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]
@@ -82,8 +81,6 @@ final class ListAction extends AbstractSearchableListAction
                         'media_id' => $media->getUniqueId(),
                     ]
                 );
-
-                $row->resolveUrls($router->getBaseUrl());
 
                 return $row;
             }

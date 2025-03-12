@@ -9,6 +9,7 @@ use App\Entity\Api\NowPlaying\SongHistory;
 use App\Entity\SongHistory as SongHistoryEntity;
 use App\Entity\StationPlaylist;
 use App\Entity\StationStreamer;
+use Carbon\CarbonImmutable;
 use Psr\Http\Message\UriInterface;
 
 final class SongHistoryApiGenerator
@@ -26,9 +27,11 @@ final class SongHistoryApiGenerator
     ): SongHistory {
         $response = new SongHistory();
         $response->sh_id = $record->getIdRequired();
-        $response->played_at = (0 === $record->getTimestampStart())
-            ? 0
-            : $record->getTimestampStart() + SongHistoryEntity::PLAYBACK_DELAY_SECONDS;
+
+        $response->played_at = CarbonImmutable::instance($record->getTimestampStart())
+            ->addSeconds(SongHistoryEntity::PLAYBACK_DELAY_SECONDS)
+            ->getTimestamp();
+
         $response->duration = (int)$record->getDuration();
         $response->is_request = ($record->getRequest() !== null);
         if ($record->getPlaylist() instanceof StationPlaylist) {
@@ -88,8 +91,7 @@ final class SongHistoryApiGenerator
         ?UriInterface $baseUri = null
     ): DetailedSongHistory {
         $apiHistory = ($this)($record, $baseUri);
-        $response = new DetailedSongHistory();
-        $response->fromParentObject($apiHistory);
+        $response = DetailedSongHistory::fromParent($apiHistory);
         $response->listeners_start = (int)$record->getListenersStart();
         $response->listeners_end = (int)$record->getListenersEnd();
         $response->delta_total = $record->getDeltaTotal();

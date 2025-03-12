@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Entity\Api\NowPlaying\Station as NowPlayingStation;
 use App\Entity\ApiGenerator\StationApiGenerator;
 use App\Entity\Station;
 use App\Http\Response;
@@ -17,16 +18,15 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/stations',
         operationId: 'getStations',
-        description: 'Returns a list of stations.',
-        tags: ['Stations: General'],
+        summary: 'Returns a list of stations.',
+        security: [],
+        tags: [OpenApi::TAG_PUBLIC_STATIONS],
         parameters: [],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_NowPlaying_Station')
+                    items: new OA\Items(ref: NowPlayingStation::class)
                 )
             ),
         ]
@@ -34,18 +34,17 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/station/{station_id}',
         operationId: 'getStation',
-        description: 'Return information about a single station.',
-        tags: ['Stations: General'],
+        summary: 'Return information about a single station.',
+        security: [],
+        tags: [OpenApi::TAG_PUBLIC_STATIONS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_NowPlaying_Station')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: NowPlayingStation::class)
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OpenApi\Response\NotFound(),
         ]
     )
 ]
@@ -64,10 +63,9 @@ final class IndexController
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $apiResponse = ($this->stationApiGenerator)($station);
-        $apiResponse->resolveUrls($request->getRouter()->getBaseUrl());
-
-        return $response->withJson($apiResponse);
+        return $response->withJson(
+            $this->stationApiGenerator->__invoke($station)
+        );
     }
 
     public function listAction(
@@ -80,8 +78,7 @@ final class IndexController
         $stations = [];
         foreach ($stationsRaw as $row) {
             /** @var Station $row */
-            $apiRow = ($this->stationApiGenerator)($row);
-            $apiRow->resolveUrls($request->getRouter()->getBaseUrl());
+            $apiRow = $this->stationApiGenerator->__invoke($row);
 
             if ($apiRow->is_public) {
                 $stations[] = $apiRow;

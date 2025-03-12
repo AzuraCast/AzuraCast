@@ -46,50 +46,40 @@
                 <template #cell(art)="row">
                     <album-art :src="row.item.media.art" />
                 </template>
-                <template #cell(size)="row">
-                    <template v-if="!row.item.size">
-                        &nbsp;
-                    </template>
-                    <template v-else>
-                        {{ formatFileSize(row.item.size) }}
-                    </template>
-                </template>
             </data-table>
         </template>
     </full-height-card>
 </template>
 
 <script setup lang="ts">
-import InlinePlayer from '../InlinePlayer.vue';
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import {forEach} from 'lodash';
-import Icon from '~/components/Common/Icon.vue';
+import InlinePlayer from "~/components/InlinePlayer.vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import {forEach} from "lodash";
+import Icon from "~/components/Common/Icon.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import {useTranslate} from "~/vendor/gettext";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {IconDownload} from "~/components/Common/icons";
 import FullHeightCard from "~/components/Public/FullHeightCard.vue";
 
-const props = defineProps({
-    listUrl: {
-        type: String,
-        required: true
-    },
-    stationName: {
-        type: String,
-        required: true
-    },
-    customFields: {
-        type: Array,
-        default: () => {
-            return [];
-        }
-    },
-    showDownloadButton: {
-        type: Boolean,
-        default: false
+interface OnDemandCustomField {
+    display_key: string,
+    key: string,
+    label: string,
+}
+
+const props = withDefaults(
+    defineProps<{
+        listUrl: string,
+        stationName: string,
+        customFields?: OnDemandCustomField[],
+        showDownloadButton?: boolean
+    }>(),
+    {
+        customFields: () => ([]),
+        showDownloadButton: false,
     }
-});
+);
 
 const {$gettext} = useTranslate();
 

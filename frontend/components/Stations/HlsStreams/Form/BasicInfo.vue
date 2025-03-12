@@ -46,28 +46,21 @@ import {map} from "lodash";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
-import {useVModel} from "@vueuse/core";
 import Tab from "~/components/Common/Tab.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    }
-});
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
 const {maxBitrate} = useAzuraCastStation();
 
 const {v$, tabClass} = useVuelidateOnFormTab(
+    form,
     {
         name: {required},
         format: {required},
         bitrate: {required}
     },
-    form,
     {
         name: null,
         format: 'aac',
@@ -87,7 +80,7 @@ const bitrateOptions = map(
     (val) => {
         return {
             value: val,
-            text: val
+            text: String(val)
         }
     },
 );

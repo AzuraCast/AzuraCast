@@ -25,121 +25,110 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/station/{station_id}/mounts',
         operationId: 'getStationMounts',
-        description: 'List all current mount points.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Mount Points'],
+        summary: 'List all current mount points.',
+        tags: [OpenApi::TAG_STATIONS_MOUNT_POINTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/StationMount')
+                    items: new OA\Items(ref: StationMount::class)
                 )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Post(
         path: '/station/{station_id}/mounts',
         operationId: 'addMount',
-        description: 'Create a new mount point.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Create a new mount point.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/StationMount')
+            content: new OA\JsonContent(ref: StationMount::class)
         ),
-        tags: ['Stations: Mount Points'],
+        tags: [OpenApi::TAG_STATIONS_MOUNT_POINTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/StationMount')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: StationMount::class)
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Get(
         path: '/station/{station_id}/mount/{id}',
         operationId: 'getMount',
-        description: 'Retrieve details for a single mount point.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Mount Points'],
+        summary: 'Retrieve details for a single mount point.',
+        tags: [OpenApi::TAG_STATIONS_MOUNT_POINTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
-                description: 'Streamer ID',
+                description: 'Mount Point ID',
                 in: 'path',
                 required: true,
                 schema: new OA\Schema(type: 'integer', format: 'int64')
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/StationMount')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: StationMount::class)
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Put(
         path: '/station/{station_id}/mount/{id}',
         operationId: 'editMount',
-        description: 'Update details of a single mount point.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Update details of a single mount point.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/StationMount')
+            content: new OA\JsonContent(ref: StationMount::class)
         ),
-        tags: ['Stations: Mount Points'],
+        tags: [OpenApi::TAG_STATIONS_MOUNT_POINTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
-                description: 'Streamer ID',
+                description: 'Mount Point ID',
                 in: 'path',
                 required: true,
                 schema: new OA\Schema(type: 'integer', format: 'int64')
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Delete(
         path: '/station/{station_id}/mount/{id}',
         operationId: 'deleteMount',
-        description: 'Delete a single mount point.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Mount Points'],
+        summary: 'Delete a single mount point.',
+        tags: [OpenApi::TAG_STATIONS_MOUNT_POINTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
-                description: 'StationMount ID',
+                description: 'Mount Point ID',
                 in: 'path',
                 required: true,
                 schema: new OA\Schema(type: 'integer', format: 'int64')
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]

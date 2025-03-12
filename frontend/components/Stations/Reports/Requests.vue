@@ -51,19 +51,19 @@
 
         <data-table
             id="station_queue"
-            ref="$datatable"
+            ref="$dataTable"
             :fields="fields"
             :api-url="listUrlForType"
         >
             <template #cell(timestamp)="row">
-                {{ formatTimestampAsDateTime(row.item.timestamp) }}
+                {{ formatIsoAsDateTime(row.item.timestamp) }}
             </template>
             <template #cell(played_at)="row">
-                <span v-if="row.item.played_at === 0">
+                <span v-if="row.item.played_at === null">
                     {{ $gettext('Not Played') }}
                 </span>
                 <span v-else>
-                    {{ formatTimestampAsDateTime(row.item.played_at) }}
+                    {{ formatIsoAsDateTime(row.item.played_at) }}
                 </span>
             </template>
             <template #cell(song_title)="row">
@@ -93,22 +93,28 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import Icon from "~/components/Common/Icon.vue";
-import {computed, nextTick, ref} from "vue";
+import {computed, nextTick, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {getStationApiUrl} from "~/router";
 import {IconRemove} from "~/components/Common/icons";
-import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import {useDialog} from "~/functions/useDialog.ts";
+
+type RequestType = "pending" | "history";
+
+interface TypeTabs {
+    type: RequestType,
+    title: string
+}
 
 const listUrl = getStationApiUrl('/reports/requests');
 const clearUrl = getStationApiUrl('/reports/requests/clear');
 
-const activeType = ref('pending');
+const activeType = ref<RequestType>('pending');
 
 const listUrlForType = computed(() => {
     return listUrl.value + '?type=' + activeType.value;
@@ -124,7 +130,7 @@ const fields: DataTableField[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false}
 ];
 
-const tabs = [
+const tabs: TypeTabs[] = [
     {
         type: 'pending',
         title: $gettext('Pending Requests')
@@ -135,29 +141,29 @@ const tabs = [
     }
 ];
 
-const $datatable = ref<DataTableTemplateRef>(null);
+const $dataTable = useTemplateRef('$dataTable');
 
 const relist = () => {
-    $datatable.value?.refresh();
+    $dataTable.value?.refresh();
 };
 
-const setType = (type) => {
+const setType = (type: RequestType) => {
     activeType.value = type;
-    nextTick(relist);
+    void nextTick(relist);
 };
 
-const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
+const {formatIsoAsDateTime} = useStationDateTimeFormatter();
 
-const {confirmDelete} = useSweetAlert();
+const {confirmDelete} = useDialog();
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const doDelete = (url) => {
-    confirmDelete({
+const doDelete = (url: string) => {
+    void confirmDelete({
         title: $gettext('Delete Request?'),
     }).then((result) => {
         if (result.value) {
-            axios.delete(url).then((resp) => {
+            void axios.delete(url).then((resp) => {
                 notifySuccess(resp.data.message);
                 relist();
             });
@@ -166,12 +172,12 @@ const doDelete = (url) => {
 };
 
 const doClear = () => {
-    confirmDelete({
+    void confirmDelete({
         title: $gettext('Clear All Pending Requests?'),
         confirmButtonText: $gettext('Clear'),
     }).then((result) => {
         if (result.value) {
-            axios.post(clearUrl.value).then((resp) => {
+            void axios.post(clearUrl.value).then((resp) => {
                 notifySuccess(resp.data.message);
                 relist();
             });

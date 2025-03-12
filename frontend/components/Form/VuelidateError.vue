@@ -8,17 +8,15 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T = ModelFormField">
 import {useTranslate} from "~/vendor/gettext";
 import {get, map} from "lodash";
 import {computed} from "vue";
+import {ModelFormField, VuelidateField} from "~/components/Form/useFormField.ts";
 
-const props = defineProps({
-    field: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    field: VuelidateField<T>,
+}>();
 
 const {$gettext} = useTranslate();
 
@@ -26,21 +24,21 @@ const messages = {
     required: () => {
         return $gettext('This field is required.');
     },
-    minLength: (params) => {
+    minLength: (params: any) => {
         return $gettext(
-            'This field must have at least %{ min } letters.',
+            'This field must have at least %{min} letters.',
             params
         );
     },
-    maxLength: (params) => {
+    maxLength: (params: any) => {
         return $gettext(
-            'This field must have at most %{ max } letters.',
+            'This field must have at most %{max} letters.',
             params
         );
     },
-    between: (params) => {
+    between: (params: any) => {
         return $gettext(
-            'This field must be between %{ min } and %{ max }.',
+            'This field must be between %{min} and %{max}.',
             params
         );
     },

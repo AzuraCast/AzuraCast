@@ -1,7 +1,7 @@
 import {Router} from "vue-router";
 import {App} from "vue";
 import {useAxios} from "~/vendor/axios.ts";
-import NProgress from 'nprogress';
+import NProgress from "nprogress";
 
 export function installRouter(router: Router, vueApp: App): void {
     // Add remote prop loading support

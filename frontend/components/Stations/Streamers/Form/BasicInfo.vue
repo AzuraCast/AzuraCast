@@ -65,24 +65,17 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import {computed} from "vue";
-import {useVModel} from "@vueuse/core";
 import Tab from "~/components/Common/Tab.vue";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    isEditMode: {
-        type: Boolean,
-        required: true
-    }
-});
+const props = defineProps<{
+    isEditMode: boolean,
+}>();
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {v$, tabClass} = useVuelidateOnFormTab(
+    form,
     computed(() => {
         return {
             streamer_username: {required},
@@ -93,7 +86,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             enforce_schedule: {}
         };
     }),
-    form,
     {
         streamer_username: null,
         streamer_password: null,

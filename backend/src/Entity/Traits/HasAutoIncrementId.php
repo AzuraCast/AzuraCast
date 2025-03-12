@@ -10,11 +10,21 @@ use OpenApi\Attributes as OA;
 use RuntimeException;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[OA\Schema(type: 'object')]
+#[OA\Schema(
+    required: ['id'],
+    properties: [
+        // Defined here to enforce nullable false
+        new OA\Property(
+            property: 'id',
+            type: 'integer',
+            readOnly: true
+        ),
+    ],
+    type: 'object',
+)]
 trait HasAutoIncrementId
 {
     #[
-        OA\Property,
         ORM\Column(nullable: false),
         ORM\Id,
         ORM\GeneratedValue,

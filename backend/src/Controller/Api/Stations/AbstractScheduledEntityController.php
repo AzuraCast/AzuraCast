@@ -12,7 +12,6 @@ use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\AutoDJ\Scheduler;
-use Carbon\CarbonImmutable;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -45,13 +44,12 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
         $tz = $station->getTimezoneObject();
 
         $dateRange = $this->getDateRange($request, $tz);
-        $now = CarbonImmutable::now($tz);
 
-        $events = $this->getEvents($dateRange, $now, $this->scheduler, $scheduleItems, $rowRender);
+        $events = $this->getEvents($station, $dateRange, $this->scheduler, $scheduleItems, $rowRender);
         return $response->withJson($events);
     }
 
-    protected function editRecord(?array $data, object $record = null, array $context = []): object
+    protected function editRecord(?array $data, ?object $record = null, array $context = []): object
     {
         if (null === $data) {
             throw new InvalidArgumentException('Could not parse input data.');

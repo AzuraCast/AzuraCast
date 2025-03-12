@@ -99,16 +99,17 @@
 </template>
 
 <script setup lang="ts">
-import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton.vue';
-import {ref} from "vue";
+import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
+import {ref, useTemplateRef} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import Modal from "~/components/Common/Modal.vue";
 import FormFile from "~/components/Form/FormFile.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const importPlaylistUrl = ref(null);
 const playlistFile = ref(null);
@@ -120,7 +121,7 @@ const uploaded = (file) => {
     playlistFile.value = file;
 }
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
 const open = (newImportPlaylistUrl) => {
@@ -138,7 +139,7 @@ const doSubmit = () => {
     const formData = new FormData();
     formData.append('playlist_file', playlistFile.value);
 
-    axios.post(importPlaylistUrl.value, formData).then((resp) => {
+    void axios.post(importPlaylistUrl.value, formData).then((resp) => {
         if (resp.data.success) {
             results.value = resp.data;
 

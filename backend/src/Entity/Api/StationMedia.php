@@ -8,7 +8,6 @@ use App\Entity\Api\Traits\HasLinks;
 use App\Entity\Api\Traits\HasSongFields;
 use App\Entity\StationPlaylist;
 use App\OpenApi;
-use App\Traits\LoadFromParentObject;
 use App\Utilities\Types;
 use OpenApi\Attributes as OA;
 
@@ -18,7 +17,6 @@ use OpenApi\Attributes as OA;
 )]
 class StationMedia
 {
-    use LoadFromParentObject;
     use HasSongFields;
     use HasLinks;
 
@@ -83,16 +81,23 @@ class StationMedia
     public string $length_text = '0:00';
 
     #[OA\Property(
-        type: 'array',
-        items: new OA\Items(type: 'string', example: 'custom_field_value')
+        description: "An object containing all custom fields, with the key being the value name.",
     )]
     public HashMap $custom_fields;
 
-    #[OA\Property(type: "array", items: new OA\Items())]
+    #[OA\Property]
     public HashMap $extra_metadata;
 
-    #[OA\Property(type: "array", items: new OA\Items())]
-    public array $playlists;
+    /**
+     * @var StationMediaPlaylist[]
+     */
+    #[OA\Property(type: "array", items: new OA\Items(
+        oneOf: [
+            new OA\Schema(ref: StationMediaPlaylist::class, readOnly: true),
+            new OA\Schema(type: 'integer', writeOnly: true),
+        ],
+    ))]
+    public array $playlists = [];
 
     public static function fromArray(
         array $row,
@@ -138,21 +143,24 @@ class StationMedia
         return $lengthMin . ':' . str_pad((string)$lengthSec, 2, '0', STR_PAD_LEFT);
     }
 
+    /**
+     * @return StationMediaPlaylist[]
+     */
     public static function aggregatePlaylists(array $rawPlaylists = []): array
     {
+        /** @var StationMediaPlaylist[] $playlists */
         $playlists = [];
         foreach ($rawPlaylists as $playlist) {
             $playlistId = $playlist['id'];
 
             if (isset($playlists[$playlistId])) {
-                $playlists[$playlistId]['count']++;
+                $playlists[$playlistId]->count++;
             } else {
-                $playlists[$playlistId] = [
-                    'id' => $playlistId,
-                    'name' => $playlist['name'],
-                    'short_name' => StationPlaylist::generateShortName($playlist['name']),
-                    'count' => 1,
-                ];
+                $playlists[$playlistId] = new StationMediaPlaylist(
+                    $playlistId,
+                    $playlist['name'],
+                    StationPlaylist::generateShortName($playlist['name'])
+                );
             }
         }
 

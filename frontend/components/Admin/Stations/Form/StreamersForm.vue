@@ -45,7 +45,7 @@
                     <bitrate-options
                         id="edit_form_backend_record_streams_bitrate"
                         class="col-md-6"
-                        :max-bitrate="_maxBitrate ?? props.form.max_bitrate"
+                        :max-bitrate="form.max_bitrate"
                         :field="v$.backend_config.record_streams_bitrate"
                         :label="$gettext('Live Broadcast Recording Bitrate (kbps)')"
                     />
@@ -127,36 +127,23 @@
 <script setup lang="ts">
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {BackendAdapter} from "~/entities/RadioAdapters";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import BackendDisabled from "./Common/BackendDisabled.vue";
+import BackendDisabled from "~/components/Admin/Stations/Form/Common/BackendDisabled.vue";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric} from "@vuelidate/validators";
-import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
+import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
-import { useRoute } from 'vue-router'
+import {ApiGenericForm, BackendAdapters} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    station: {
-        type: Object,
-        required: true
-    }
-});
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {enableAdvancedFeatures} = useAzuraCast();
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
-
 const {v$, tabClass} = useVuelidateOnFormTab(
+    form,
     computed(() => {
         let validations: {
             [key: string | number]: any
@@ -185,7 +172,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
         return validations;
     }),
-    form,
     () => {
         let blankForm: {
             [key: string | number]: any
@@ -217,7 +203,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 );
 
 const isBackendEnabled = computed(() => {
-    return form.value.backend_type !== BackendAdapter.None;
+    return form.value.backend_type !== BackendAdapters.None;
 });
 
 const tabClassWithBackend = computed(() => {
@@ -248,12 +234,4 @@ const recordStreamsOptions = computed(() => {
         }
     ];
 });
-
-const route = useRoute()
-let _maxBitrate;
-if (route.matched.some(({ name }) => name.toString().startsWith('admin:'))){
-    _maxBitrate = null;
-} else {
-    ({maxBitrate: _maxBitrate} = useAzuraCastStation());
-}
 </script>

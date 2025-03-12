@@ -19,7 +19,7 @@
                         v-if="!isPlaying || isPaused"
                         type="button"
                         class="btn btn-sm btn-success"
-                        @click="play"
+                        @click="play()"
                     >
                         <icon :icon="IconPlayCircle" />
                     </button>
@@ -104,7 +104,7 @@
                         class="custom-file-input files"
                         accept="audio/*"
                         multiple
-                        @change="addNewFiles($event.target.files)"
+                        @change="onFileSelected"
                     >
                     <label
                         :for="id + '_files'"
@@ -174,7 +174,7 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/Common/Icon.vue';
+import Icon from "~/components/Common/Icon.vue";
 import VolumeSlider from "~/components/Public/WebDJ/VolumeSlider.vue";
 import formatTime from "~/functions/formatTime";
 import {computed, ref, watch} from "vue";
@@ -183,16 +183,13 @@ import {useTranslate} from "~/vendor/gettext";
 import {forEach} from "lodash";
 import {useInjectMixer} from "~/components/Public/WebDJ/useMixerValue";
 import {usePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
-import {useWebDjSource} from "~/components/Public/WebDJ/useWebDjSource";
+import {TagLibProcessResult, useWebDjSource, WebDjFilePointer} from "~/components/Public/WebDJ/useWebDjSource";
 import {useInjectWebcaster} from "~/components/Public/WebDJ/useWebcaster";
 import {IconFastForward, IconFastRewind, IconPauseCircle, IconPlayCircle, IconStop} from "~/components/Common/icons";
 
-const props = defineProps({
-    id: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    id: string
+}>();
 
 const isLeftPlaylist = computed(() => {
     return props.id === 'playlist_1';
@@ -222,7 +219,7 @@ const {
 usePassthroughSync(trackPassThrough, props.id);
 
 const fileIndex = ref(-1);
-const files = ref([]);
+const files = ref<WebDjFilePointer[]>([]);
 const duration = ref(0.0);
 const loop = ref(false);
 const playThrough = ref(false);
@@ -272,9 +269,12 @@ const langHeader = computed(() => {
         : $gettext('Playlist 2');
 });
 
-const addNewFiles = (newFiles) => {
-    forEach(newFiles, (file) => {
-        file.readTaglibMetadata((data) => {
+const onFileSelected = (e: Event) => {
+    const eventTarget = e.target as HTMLInputElement;
+
+    forEach(eventTarget.files, (file: File) => {
+        // @ts-expect-error Weird custom function from taglib. Don't worry about it.
+        file.readTaglibMetadata((data: TagLibProcessResult) => {
             files.value.push({
                 file: file,
                 audio: data.audio,
@@ -282,11 +282,17 @@ const addNewFiles = (newFiles) => {
             });
         });
     });
-};
+}
 
-const selectFile = (options = {}) => {
+interface PlayOptions {
+    isAutoPlay?: boolean,
+    backward?: boolean,
+    fileIndex?: number
+}
+
+const selectFile = (options: PlayOptions = {}): WebDjFilePointer | null => {
     if (files.value.length === 0) {
-        return;
+        return null;
     }
 
     if (options.fileIndex) {
@@ -300,7 +306,7 @@ const selectFile = (options = {}) => {
         if (fileIndex.value >= files.value.length) {
             if (options.isAutoPlay && !loop.value) {
                 fileIndex.value = -1;
-                return;
+                return null;
             }
 
             if (fileIndex.value < 0) {
@@ -314,7 +320,12 @@ const selectFile = (options = {}) => {
     return files.value[fileIndex.value];
 };
 
-const play = (options = {}) => {
+const play = (initialOptions: PlayOptions = {}) => {
+    const options = {
+        isAutoPlay: false,
+        ...initialOptions,
+    };
+
     const file = selectFile(options);
 
     if (!file) {
@@ -330,7 +341,7 @@ const play = (options = {}) => {
 
     const destination = prepare();
 
-    createAudioSource(file, (newSource) => {
+    createAudioSource(file, (newSource: any) => {
         source.value = newSource;
         newSource.connect(destination);
 

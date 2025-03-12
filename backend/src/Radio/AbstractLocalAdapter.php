@@ -7,6 +7,7 @@ namespace App\Radio;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Entity\Api\LogType;
 use App\Entity\Station;
 use App\Exception\Supervisor\AlreadyRunningException;
 use App\Exception\Supervisor\NotRunningException;
@@ -16,6 +17,8 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Supervisor\Exception\Fault;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
 use Supervisor\SupervisorInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Throwable;
 
 abstract class AbstractLocalAdapter
 {
@@ -44,15 +47,22 @@ abstract class AbstractLocalAdapter
             return false;
         }
 
-        $currentConfig = (is_file($configPath))
-            ? file_get_contents($configPath)
-            : null;
+        $fsUtils = new Filesystem();
 
-        $newConfig = $this->getCurrentConfiguration($station);
+        try {
+            $currentConfig = $fsUtils->readFile($configPath);
+        } catch (Throwable) {
+            $currentConfig = '';
+        }
 
-        file_put_contents($configPath, $newConfig);
+        $newConfig = $this->getCurrentConfiguration($station) ?? '';
 
-        return 0 !== strcmp($currentConfig ?: '', $newConfig ?: '');
+        $fsUtils->dumpFile(
+            $configPath,
+            $newConfig
+        );
+
+        return 0 !== strcmp($currentConfig, $newConfig);
     }
 
     /**
@@ -129,12 +139,21 @@ abstract class AbstractLocalAdapter
 
     /**
      * Return the shell command required to run the program.
-     *
-     * @param Station $station
      */
     public function getCommand(Station $station): ?string
     {
         return null;
+    }
+
+    /**
+     * Return a list of environment variables to be attached to the process when it runs.
+     * Value is in the form of "Env var name" => "Env var value", both as strings.
+     *
+     * @return array<string, string>
+     */
+    public function getEnvironmentVariables(Station $station): array
+    {
+        return [];
     }
 
     /**
@@ -243,6 +262,16 @@ abstract class AbstractLocalAdapter
         $eNew->addLoggingContext('station_name', $station->getName());
 
         throw $eNew;
+    }
+
+    /**
+     * Return the logs available for this adapter for the given station.
+     *
+     * @return LogType[]
+     */
+    public function getLogTypes(Station $station): array
+    {
+        return [];
     }
 
     /**

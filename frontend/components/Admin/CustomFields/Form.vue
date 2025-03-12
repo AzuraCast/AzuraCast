@@ -3,7 +3,7 @@
         <form-group-field
             id="edit_form_name"
             class="col-md-6"
-            :field="form.name"
+            :field="v$.name"
             :label="$gettext('Field Name')"
             :description="$gettext('This will be used as the label when editing individual songs, and will show in API results.')"
         />
@@ -11,7 +11,7 @@
         <form-group-field
             id="edit_form_short_name"
             class="col-md-6"
-            :field="form.short_name"
+            :field="v$.short_name"
             :label="$gettext('Programmatic Name')"
         >
             <template #description>
@@ -24,7 +24,7 @@
         <form-group-select
             id="edit_form_auto_assign"
             class="col-md-6"
-            :field="form.auto_assign"
+            :field="v$.auto_assign"
             :label="$gettext('Automatically Set from ID3v2 Value')"
             :options="autoAssignOptions"
             :description="$gettext('Optionally select an ID3v2 metadata field that, if present, will be used to set this field\'s value.')"
@@ -38,17 +38,31 @@ import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {forEach} from "lodash";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
+import {required} from "@vuelidate/validators";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab.ts";
+import {CustomField} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
+const props = defineProps<{
+    autoAssignTypes: Record<string, string>
+}>();
+
+const form = defineModel<CustomField>('form', {required: true});
+
+const {
+    v$
+} = useVuelidateOnFormTab(
+    form,
+    {
+        'name': {required},
+        'short_name': {},
+        'auto_assign': {}
     },
-    autoAssignTypes: {
-        type: Object,
-        required: true
+    {
+        'name': '',
+        'short_name': '',
+        'auto_assign': ''
     }
-});
+);
 
 const {$gettext} = useTranslate();
 

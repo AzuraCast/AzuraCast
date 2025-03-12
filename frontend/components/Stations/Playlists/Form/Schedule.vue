@@ -38,25 +38,15 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/Common/Icon.vue';
+import Icon from "~/components/Common/Icon.vue";
 import PlaylistsFormScheduleRow from "~/components/Stations/Playlists/Form/ScheduleRow.vue";
-import {useVModel} from "@vueuse/core";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {IconAdd} from "~/components/Common/icons";
 
-const props = defineProps({
-    scheduleItems: {
-        type: Array,
-        default: () => {
-            return [];
-        }
-    }
-});
-
-const emit = defineEmits(['update:scheduleItems']);
-
-const scheduleItems = useVModel(props, 'scheduleItems', emit);
+const scheduleItems = defineModel<Array<any>>('scheduleItems', {
+    default: () => []
+})
 
 const add = () => {
     scheduleItems.value.push({

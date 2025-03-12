@@ -38,23 +38,21 @@
 </template>
 
 <script setup lang="ts">
-import {required} from '@vuelidate/validators';
+import {required} from "@vuelidate/validators";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {nextTick, ref} from "vue";
+import {nextTick, ref, useTemplateRef} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
-const props = defineProps({
-    renameUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    renameUrl: string
+}>();
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const file = ref(null);
 
@@ -67,7 +65,7 @@ const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
     }
 );
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
 const open = (filePath: string): void => {
@@ -77,10 +75,10 @@ const open = (filePath: string): void => {
     show();
 }
 
-const $field = ref<InstanceType<typeof FormGroupField> | null>(null);
+const $field = useTemplateRef('$field');
 
 const onShown = () => {
-    nextTick(() => {
+    void nextTick(() => {
         $field.value?.focus();
     });
 };
@@ -94,7 +92,7 @@ const {axios} = useAxios();
 
 const doRename = () => {
     ifValid(() => {
-        axios.put(props.renameUrl, {
+        void axios.put(props.renameUrl, {
             file: file.value,
             ...form.value
         }).finally(() => {

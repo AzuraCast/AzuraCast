@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Radio\Enums;
 
+use OpenApi\Attributes as OA;
+
+#[OA\Schema(type: 'string')]
 enum AudioProcessingMethods: string
 {
     case None = 'none';

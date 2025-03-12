@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "php": "^8.3",
+    "php": "^8.4",
     "ext-PDO": "*",
     "ext-curl": "*",
     "ext-ffi": "*",
@@ -63,6 +63,7 @@
     "php-di/php-di": "^7.0.1",
     "php-ffmpeg/php-ffmpeg": "^1.2",
     "phpseclib/phpseclib": "^3.0",
+    "potibm/phluesky": "^0.5.0",
     "promphp/prometheus_client_php": "^2.10",
     "psr/simple-cache": "^3.0",
     "ramsey/uuid": "^4.0",
@@ -90,9 +91,8 @@
     "symfony/validator": "^7",
     "symfony/yaml": "^7",
     "vlucas/phpdotenv": "^5.3",
-    "voku/portable-utf8": "^6.0",
     "wikimedia/composer-merge-plugin": "dev-master",
-    "zircote/swagger-php": "^4.9.2"
+    "zircote/swagger-php": "^5"
   },
   "replace": {
     "symfony/polyfill-iconv": "1.99",
@@ -106,10 +106,11 @@
     "symfony/polyfill-php80": "1.99",
     "symfony/polyfill-php81": "1.99",
     "symfony/polyfill-php82": "1.99",
-    "symfony/polyfill-php83": "1.99"
+    "symfony/polyfill-php83": "1.99",
+    "symfony/polyfill-php84": "1.99"
   },
   "require-dev": {
-    "codeception/codeception": "^5.0.0-RC1",
+    "codeception/codeception": "^5.2.1",
     "codeception/module-asserts": "^3",
     "codeception/module-cli": "^2",
     "codeception/module-doctrine": "^3.1",
@@ -123,7 +124,7 @@
     "php-parallel-lint/php-parallel-lint": "^1.3",
     "phpstan/phpstan": "^2",
     "phpstan/phpstan-doctrine": "^2",
-    "phpunit/phpunit": "^11",
+    "phpunit/phpunit": "^12",
     "psy/psysh": "^0.12",
     "pyrech/composer-changelogs": "^2",
     "roave/security-advisories": "dev-latest",

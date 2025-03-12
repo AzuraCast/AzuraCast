@@ -29,11 +29,10 @@
                     <template #label>
                         {{ $gettext('Start Time') }}
                     </template>
-                    <template #default="slotProps">
+                    <template #default="{id, model}">
                         <playlist-time
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            :state="slotProps.state"
+                            :id="id"
+                            v-model="model.$model"
                         />
                     </template>
                 </form-group-field>
@@ -51,11 +50,10 @@
                             $gettext('If the end time is before the start time, the schedule entry will continue overnight.')
                         }}
                     </template>
-                    <template #default="slotProps">
+                    <template #default="{id, model}">
                         <playlist-time
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            :state="slotProps.state"
+                            :id="id"
+                            v-model="model.$model"
                         />
                     </template>
                 </form-group-field>
@@ -103,7 +101,7 @@
 </template>
 
 <script setup lang="ts">
-import PlaylistTime from '~/components/Common/TimeCode.vue';
+import PlaylistTime from "~/components/Common/TimeCode.vue";
 import Icon from "~/components/Common/Icon.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {required} from "@vuelidate/validators";
@@ -115,18 +113,22 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 import {IconRemove} from "~/components/Common/icons";
 
-const props = defineProps({
-    index: {
-        type: Number,
-        required: true
-    },
-    row: {
-        type: Object,
-        required: true
-    }
-});
+interface PlaylistScheduleRow {
+    start_time: number,
+    end_time: number,
+    start_date: string,
+    end_date: string,
+    days: number[],
+}
 
-const emit = defineEmits(['remove']);
+const props = defineProps<{
+    index: number,
+    row: PlaylistScheduleRow,
+}>();
+
+const emit = defineEmits<{
+    (e: 'remove'): void
+}>();
 
 const v$ = useVuelidate(
     {

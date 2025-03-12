@@ -7,7 +7,8 @@ namespace App\Entity\Repository;
 use App\Entity\Interfaces\SongInterface;
 use App\Entity\SongHistory;
 use App\Entity\Station;
-use Carbon\CarbonImmutable;
+use App\Utilities\Time;
+use DateTimeImmutable;
 use RuntimeException;
 
 /**
@@ -108,7 +109,7 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
                 $this->listenerRepository->getUniqueListeners(
                     $station,
                     $previousCurrentSong->getTimestampStart(),
-                    time()
+                    Time::nowUtc()
                 )
             );
 
@@ -116,7 +117,6 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
         }
 
         $newCurrentSong->setListenersFromLastSong($previousCurrentSong);
-        $newCurrentSong->setTimestampStart(time());
         $newCurrentSong->updateVisibility();
 
         $currentStreamer = $station->getCurrentStreamer();
@@ -134,12 +134,12 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
 
     /**
      * @param Station $station
-     * @param int $start
-     * @param int $end
+     * @param DateTimeImmutable $start
+     * @param DateTimeImmutable $end
      *
      * @return array{int, int, float}
      */
-    public function getStatsByTimeRange(Station $station, int $start, int $end): array
+    public function getStatsByTimeRange(Station $station, DateTimeImmutable $start, DateTimeImmutable $end): array
     {
         $historyTotals = $this->em->createQuery(
             <<<'DQL'
@@ -164,15 +164,12 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
 
     public function cleanup(int $daysToKeep): void
     {
-        $threshold = CarbonImmutable::now()
-            ->subDays($daysToKeep)
-            ->getTimestamp();
+        $threshold = Time::nowUtc()->subDays($daysToKeep);
 
         $this->em->createQuery(
             <<<'DQL'
                 DELETE FROM App\Entity\SongHistory sh
-                WHERE sh.timestamp_start != 0
-                AND sh.timestamp_start <= :threshold
+                WHERE sh.timestamp_start <= :threshold
             DQL
         )->setParameter('threshold', $threshold)
             ->execute();

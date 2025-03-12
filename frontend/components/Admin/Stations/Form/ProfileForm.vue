@@ -45,7 +45,7 @@
                 id="edit_form_timezone"
                 class="col-md-12"
                 :field="v$.timezone"
-                :options="timezoneOptions"
+                :options="timezones"
                 :label="$gettext('Time Zone')"
                 :description="$gettext('Scheduled playlists and other timed items will be controlled by this time zone.')"
             />
@@ -133,34 +133,26 @@
 <script setup lang="ts">
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import objectToFormOptions from "~/functions/objectToFormOptions";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required, url} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    timezones: {
-        type: Object,
-        required: true
-    },
-});
+defineProps<{
+    timezones: Record<string, string>,
+}>();
+
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {enableAdvancedFeatures} = useAzuraCast();
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
-
 const {v$, tabClass} = useVuelidateOnFormTab(
+    form,
     computed(() => {
         let validations: {
             [key: string | number]: any
@@ -185,7 +177,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
         return validations;
     }),
-    form,
     () => {
         let blankForm: {
             [key: string | number]: any
@@ -211,10 +202,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         return blankForm;
     }
 );
-
-const timezoneOptions = computed(() => {
-    return objectToFormOptions(props.timezones);
-});
 
 const {$gettext} = useTranslate();
 

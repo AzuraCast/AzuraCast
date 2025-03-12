@@ -17,104 +17,98 @@
         <tabs v-else>
             <basic-info
                 v-model:form="form"
+                :type="type"
                 :trigger-details="triggerDetails"
-                :triggers="triggers"
             />
 
             <component
                 :is="formComponent"
                 v-model:form="form"
-                :label="typeTitle"
+                :title="typeTitle"
             />
         </tabs>
     </modal-form>
 </template>
 
 <script setup lang="ts">
-import TypeSelect from "./Form/TypeSelect.vue";
-import BasicInfo from "./Form/BasicInfo.vue";
-import {get, map} from "lodash";
-import Generic from "./Form/Generic.vue";
-import Email from "./Form/Email.vue";
-import Tunein from "./Form/Tunein.vue";
-import Discord from "./Form/Discord.vue";
-import Telegram from "./Form/Telegram.vue";
-import GoogleAnalyticsV4 from "./Form/GoogleAnalyticsV4.vue";
-import MatomoAnalytics from "./Form/MatomoAnalytics.vue";
-import Mastodon from "./Form/Mastodon.vue";
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, nextTick, provide, ref} from "vue";
+import TypeSelect from "~/components/Stations/Webhooks/Form/TypeSelect.vue";
+import BasicInfo from "~/components/Stations/Webhooks/Form/BasicInfo.vue";
+import {get} from "lodash";
+import Generic from "~/components/Stations/Webhooks/Form/Generic.vue";
+import Email from "~/components/Stations/Webhooks/Form/Email.vue";
+import Tunein from "~/components/Stations/Webhooks/Form/Tunein.vue";
+import Discord from "~/components/Stations/Webhooks/Form/Discord.vue";
+import Telegram from "~/components/Stations/Webhooks/Form/Telegram.vue";
+import GoogleAnalyticsV4 from "~/components/Stations/Webhooks/Form/GoogleAnalyticsV4.vue";
+import MatomoAnalytics from "~/components/Stations/Webhooks/Form/MatomoAnalytics.vue";
+import Mastodon from "~/components/Stations/Webhooks/Form/Mastodon.vue";
+import {BaseEditModalProps, HasRelistEmit, useBaseEditModal} from "~/functions/useBaseEditModal";
+import type {Component} from "vue";
+import {computed, nextTick, provide, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {getTriggers, WebhookType} from "~/entities/Webhooks";
+import {ActiveWebhookTypes, WebhookTriggerDetails, WebhookTypeDetails} from "~/entities/Webhooks";
 import Tabs from "~/components/Common/Tabs.vue";
 import RadioDe from "~/components/Stations/Webhooks/Form/RadioDe.vue";
 import GetMeRadio from "~/components/Stations/Webhooks/Form/GetMeRadio.vue";
 import RadioReg from "~/components/Stations/Webhooks/Form/RadioReg.vue";
 import GroupMe from "~/components/Stations/Webhooks/Form/GroupMe.vue";
+import Bluesky from "~/components/Stations/Webhooks/Form/Bluesky.vue";
+import mergeExisting from "~/functions/mergeExisting.ts";
+import {WebhookTypes} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    ...baseEditModalProps,
-    nowPlayingUrl: {
-        type: String,
-        required: true
-    },
-    typeDetails: {
-        type: Object,
-        required: true
-    },
-    triggerDetails: {
-        type: Object,
-        required: true
-    }
-});
+export interface WebhookComponentProps {
+    title: string
+}
+
+interface WebhookEditModalProps extends BaseEditModalProps {
+    nowPlayingUrl: string,
+    typeDetails: WebhookTypeDetails,
+    triggerDetails: WebhookTriggerDetails
+}
+
+const props = defineProps<WebhookEditModalProps>();
 
 provide('nowPlayingUrl', props.nowPlayingUrl);
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
-const type = ref(null);
+const type = ref<WebhookTypes | null>(null);
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 
-const webhookComponents = {
-    [WebhookType.Generic]: Generic,
-    [WebhookType.Email]: Email,
-    [WebhookType.TuneIn]: Tunein,
-    [WebhookType.RadioDe]: RadioDe,
-    [WebhookType.RadioReg]: RadioReg,
-    [WebhookType.GetMeRadio]: GetMeRadio,
-    [WebhookType.Discord]: Discord,
-    [WebhookType.Telegram]: Telegram,
-    [WebhookType.GroupMe]: GroupMe,
-    [WebhookType.Mastodon]: Mastodon,
-    [WebhookType.GoogleAnalyticsV4]: GoogleAnalyticsV4,
-    [WebhookType.MatomoAnalytics]: MatomoAnalytics,
+const webhookComponents: {
+    [key in ActiveWebhookTypes]?: Component
+} = {
+    [WebhookTypes.Generic]: Generic,
+    [WebhookTypes.Email]: Email,
+    [WebhookTypes.TuneIn]: Tunein,
+    [WebhookTypes.RadioDe]: RadioDe,
+    [WebhookTypes.RadioReg]: RadioReg,
+    [WebhookTypes.GetMeRadio]: GetMeRadio,
+    [WebhookTypes.Discord]: Discord,
+    [WebhookTypes.Telegram]: Telegram,
+    [WebhookTypes.GroupMe]: GroupMe,
+    [WebhookTypes.Mastodon]: Mastodon,
+    [WebhookTypes.Bluesky]: Bluesky,
+    [WebhookTypes.GoogleAnalyticsV4]: GoogleAnalyticsV4,
+    [WebhookTypes.MatomoAnalytics]: MatomoAnalytics,
 };
 
-const triggers = computed(() => {
-    if (!type.value) {
-        return [];
+const typeTitle = computed<string | null>(() => {
+    if (type.value === null) {
+        return null;
     }
 
-    return map(
-        getTriggers(type.value),
-        (trigger) => {
-            return {
-                key: trigger,
-                title: get(props.triggerDetails, [trigger, 'title']),
-                description: get(props.triggerDetails, [trigger, 'description'])
-            };
-        }
-    );
+    return get(props.typeDetails, [type.value as string, 'title'], '');
 });
 
-const typeTitle = computed(() => {
-    return get(props.typeDetails, [type.value, 'title'], '');
-});
+const formComponent = computed<Component>(() => {
+    if (type.value === null) {
+        return Generic;
+    }
 
-const formComponent = computed(() => {
-    return get(webhookComponents, type.value, Generic);
+    return get(webhookComponents, type.value as string, Generic);
 });
 
 const {
@@ -133,21 +127,26 @@ const {
     props,
     emit,
     $modal,
-    {},
-    {},
+    {
+        type: {}
+    },
+    {
+        type: WebhookTypes.Generic as string
+    },
     {
         populateForm: (data, formRef) => {
-            type.value = data.type;
-            formRef.value = {
-                name: data.name,
-                triggers: data.triggers,
-                config: data.config
-            };
+            type.value = data.type as WebhookTypes | null;
+
+            // Wait for type-specific components to mount.
+            void nextTick(() => {
+                resetForm();
+                formRef.value = mergeExisting(formRef.value, data);
+            });
         },
         getSubmittableFormData(formRef, isEditModeRef) {
             const formData = formRef.value;
             if (!isEditModeRef.value) {
-                formData.type = type.value;
+                formData.type = type.value as string | null;
             }
             return formData;
         },
@@ -171,9 +170,9 @@ const clearContents = () => {
     originalClearContents();
 };
 
-const setType = (newType) => {
+const setType = (newType: WebhookTypes) => {
     type.value = newType;
-    nextTick(resetForm);
+    void nextTick(resetForm);
 };
 
 defineExpose({

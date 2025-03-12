@@ -11,10 +11,31 @@ use App\Entity\ApiGenerator\StationApiGenerator;
 use App\Entity\Repository\StationScheduleRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Radio\Adapters;
 use GuzzleHttp\Psr7\Uri;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[
+    OA\Get(
+        path: '/station/{station_id}/profile',
+        operationId: 'getStationProfile',
+        summary: 'Retrieve the profile of the given station.',
+        tags: [OpenApi::TAG_STATIONS],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: StationProfile::class)
+            ),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class ProfileAction implements SingleActionInterface
 {
     public function __construct(
@@ -37,7 +58,7 @@ final class ProfileAction implements SingleActionInterface
 
         $apiResponse = new StationProfile();
 
-        $apiResponse->station = ($this->stationApiGenerator)($station, $baseUri, true);
+        $apiResponse->station = $this->stationApiGenerator->__invoke($station, $baseUri, true);
 
         $apiResponse->services = new StationServiceStatus(
             null !== $backend && $backend->isRunning($station),
@@ -47,8 +68,6 @@ final class ProfileAction implements SingleActionInterface
         );
 
         $apiResponse->schedule = $this->scheduleRepo->getUpcomingSchedule($station);
-
-        $apiResponse->resolveUrls($request->getRouter()->getBaseUrl());
 
         return $response->withJson($apiResponse);
     }

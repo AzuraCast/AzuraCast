@@ -15,21 +15,21 @@
 </template>
 
 <script setup lang="ts">
-import FormBasicInfo from './Form/BasicInfo.vue';
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, ref} from "vue";
+import FormBasicInfo from "~/components/Stations/HlsStreams/Form/BasicInfo.vue";
+import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, useTemplateRef} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 
-const props = defineProps({
-    ...baseEditModalProps,
-});
+const props = defineProps<BaseEditModalProps>();
 
-const emit = defineEmits(['relist', 'needs-restart']);
+const emit = defineEmits<BaseEditModalEmits & {
+    (e: 'needs-restart'): void
+}>();
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 
 const {notifySuccess} = useNotify();
 

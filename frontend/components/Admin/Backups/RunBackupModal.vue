@@ -26,7 +26,7 @@
                             id="edit_form_storage_location"
                             class="col-md-12"
                             :field="v$.storage_location"
-                            :options="storageLocationOptions"
+                            :options="storageLocations"
                             :label="$gettext('Storage Location')"
                         />
 
@@ -106,39 +106,30 @@ import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import objectToFormOptions from "~/functions/objectToFormOptions";
 import StreamingLogView from "~/components/Common/StreamingLogView.vue";
-import {computed, ref} from "vue";
+import {ref, useTemplateRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Modal from "~/components/Common/Modal.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import {ApiTaskWithLog} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    runBackupUrl: {
-        type: String,
-        required: true
-    },
-    storageLocations: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    runBackupUrl: string,
+    storageLocations: Record<number, string>,
+}>();
 
-const emit = defineEmits(['relist']);
-
-const storageLocationOptions = computed(() => {
-    return objectToFormOptions(props.storageLocations);
-});
+const emit = defineEmits<HasRelistEmit>();
 
 const logUrl = ref(null);
 const error = ref(null);
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show: open, hide} = useHasModal($modal);
 
-const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
+const {form, resetForm, v$, validate} = useVuelidateOnForm(
     {
         'storage_location': {},
         'path': {},
@@ -153,20 +144,18 @@ const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
 
 const {axios} = useAxios();
 
-const submit = () => {
-    ifValid(() => {
-        error.value = null;
+const submit = async () => {
+    const isValid = await validate();
+    if (!isValid) {
+        return;
+    }
 
-        axios({
-            method: 'POST',
-            url: props.runBackupUrl,
-            data: form.value
-        }).then((resp) => {
-            logUrl.value = resp.data.links.log;
-        }).catch((error) => {
-            error.value = error.response.data.message;
-        });
-    });
+    try {
+        const {data} = await axios.post<ApiTaskWithLog>(props.runBackupUrl, form.value);
+        logUrl.value = data.logUrl;
+    } catch (error) {
+        error.value = error.response.data.message
+    }
 };
 
 const clearContents = () => {

@@ -71,7 +71,7 @@
         paginated
         :api-url="apiUrl"
     >
-        <template #item="{item}">
+        <template #item="{item}: {item: ApiPodcast}">
             <div class="card mb-4">
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title m-0 flex-fill">
@@ -124,16 +124,17 @@ import {getStationApiUrl} from "~/router.ts";
 import {useTranslate} from "~/vendor/gettext.ts";
 import {IconRss} from "~/components/Common/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
-import {usePodcastGroupLayout} from "~/components/Public/Podcasts/usePodcastGroupLayout.ts";
 import GridLayout from "~/components/Common/GridLayout.vue";
+import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
+import {usePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
 
-const {groupLayout} = usePodcastGroupLayout();
+const {groupLayout, stationId} = usePodcastGlobals();
 
-const apiUrl = getStationApiUrl('/public/podcasts');
+const apiUrl = getStationApiUrl('/public/podcasts', stationId);
 
 const {$gettext} = useTranslate();
 
-const fields: DataTableField[] = [
+const fields: DataTableField<ApiPodcast>[] = [
     {key: 'art', label: '', sortable: false, class: 'shrink pe-0'},
     {key: 'title', label: $gettext('Podcast'), sortable: true},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}

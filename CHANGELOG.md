@@ -11,10 +11,77 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.21.0 (Mar 12, 2025)
+
+## New Features/Changes
+
+- **Support for Rocket Streaming Audio Server (RSAS)**: RSAS is a popular, closed-source drop-in replacement for
+  Icecast, and AzuraCast now supports uploading the RSAS binary and license key, and selecting RSAS as a broadcasting
+  frontend, directly within the web UI.
+
+- **Update to Liquidsoap 2.3.1**: We have worked closely with the maintainers of Liquidsoap and members of the radio
+  community to test and refine the next big version of Liquidsoap, our underlying broadcast manager, and they have
+  released 2.3.1 as a stable release. We're planning on using this version moving forward, first in Rolling Release for
+  testing and then in Stable builds. Some custom code may require modification from previous versions, but a majority of
+  code should work unmodified.
+
+- **Bluesky Post Webhook**: You can now add a web hook that, when dispatched, creates a new post on Bluesky.
+
+- You can now navigate from week to week on the "Schedule" tab of Playlist/Streamer admin pages, as well as switch to "
+  Day" view.
+
+## Code Quality/Technical Changes
+
+- Schema/API Changes: We have greatly expanded the documentation of our over 250 API endpoints and now have over 90%
+  full documentation of API request bodies and responses. In the process of documenting our API endpoints, we have found
+  several endpoints with similar responses or unclear response types, and fixed these issues. If you built applications
+  that depended on undocumented API endpoints, you should review the updated API documentation (visible at `/api` on
+  any installation) to ensure no changes are necessary in your code.
+
+- Schema/API Change: Several date/time fields have been made more precise to allow for storing higher-precision
+  timestamps. Tables affected include `AuditLog`, `Listener`, `Relay`, `SongHistory`, `StationQueue`, `StationRequest`
+  and `StationStreamerBroadcast`. Public-facing APIs still use UNIX timestamps in seconds for backward compatibility,
+  but several internal APIs have updated to use the ISO 8601 datetime format. When submitting changes to these entities,
+  you can still submit UNIX timestamps and they will be accepted as well as the ISO 8601 format.
+
+- API Change: The Permissions API endpoint will now return station permissions as an array (i.e.
+  `station: [{id: 1, permissions: ["foo"]]`) instead of an object (i.e. `station: { 1: ["foo"] }`). Please update any
+  calling code accordingly. You can still submit new permissions in either format and it will be accepted.
+
+- Backups to local filesystems will now back directly up to the destination file, instead of writing to a temp file and
+  copying it; this avoids doubling up on disk space requirements, prevents temp files from remaining on the filesystem
+  and allows you to mount a larger custom backup storage location without issues.
+
+- All web hooks can now have rate limits set for them, so they only dispatch once in the time specified, in case
+  third-party services need to receive updates less frequently.
+
+- Volume controls are hidden on iOS, as volume is immutable on that platform.
+
+- AzuraCast will now detect a rename in a radio station's base directory and automatically shut down services pointing
+  to the original directory, move relevant files to the new directory (and storage locations, if appropriate), then
+  start up services in the new directory seamlessly with a single rename step.
+
+- Similar to the above, AzuraCast will detect a rename in the station's "short code" (i.e. `my_radio_station`) and
+  update the custom `/listen/my_radio_station` URLs immediately to match.
+
+## Bug Fixes
+
+- Fixed a bug where extra metadata (fade-in/out, cue-in/out, etc.) would not save on the Bulk Media Editor import.
+
+- Fixed a bug where extra metadata (fade-in/out, cue-in/out, etc.) could contain invalid values (i.e. -1) that would
+  cause the track to skip when playing.
+
+- Fixed a bug where file uploads would fail if the user navigated to a different directory while uploading the file.
+
+---
+
 # AzuraCast 0.20.4 (Nov 23, 2024)
 
-Due to bug reports relating to the updated AutoDJ scheduler, we're reverting the relevant code back to the code as it previously existed in versions 0.20.2 and earlier. This is the sole change in this
+Due to bug reports relating to the updated AutoDJ scheduler, we're reverting the relevant code back to the code as it
+previously existed in versions 0.20.2 and earlier. This is the sole change in this
 version of the application.
+
+**Technical note:** This is the last stable version of AzuraCast to use the Liquidsoap 2.2.x version series.
 
 ---
 

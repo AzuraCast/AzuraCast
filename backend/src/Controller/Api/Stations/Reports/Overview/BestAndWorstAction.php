@@ -10,9 +10,27 @@ use App\Entity\Song;
 use App\Entity\SongHistory;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Utilities\DateRange;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[OA\Get(
+    path: '/station/{station_id}/reports/overview/best-and-worst',
+    operationId: 'getStationReportBestAndWorst',
+    summary: 'Get the "Best and Worst Performing Songs" report for a station.',
+    tags: [OpenApi::TAG_STATIONS_REPORTS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+    ],
+    responses: [
+        // TODO API Response
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class BestAndWorstAction extends AbstractReportAction
 {
     public function __construct(
@@ -52,11 +70,11 @@ final class BestAndWorstAction extends AbstractReportAction
             ->where('sh.station = :station')
             ->setParameter('station', $station)
             ->andWhere('sh.timestamp_start <= :end AND sh.timestamp_end >= :start')
-            ->setParameter('start', $dateRange->getStartTimestamp())
-            ->setParameter('end', $dateRange->getEndTimestamp())
+            ->setParameter('start', $dateRange->start)
+            ->setParameter('end', $dateRange->end)
             ->andWhere('sh.is_visible = 1')
             ->andWhere('sh.listeners_start IS NOT NULL')
-            ->andWhere('sh.timestamp_end != 0')
+            ->andWhere('sh.timestamp_end IS NOT NULL')
             ->setMaxResults(5);
 
         $rawStats = [
@@ -67,13 +85,11 @@ final class BestAndWorstAction extends AbstractReportAction
         ];
 
         $stats = [];
-        $baseUrl = $request->getRouter()->getBaseUrl();
 
         foreach ($rawStats as $category => $rawRows) {
             $stats[$category] = array_map(
-                function ($row) use ($station, $baseUrl) {
-                    $song = ($this->songApiGenerator)(Song::createFromArray($row), $station);
-                    $song->resolveUrls($baseUrl);
+                function ($row) use ($station) {
+                    $song = $this->songApiGenerator->__invoke(Song::createFromArray($row), $station);
 
                     return [
                         'song' => $song,
@@ -107,17 +123,14 @@ final class BestAndWorstAction extends AbstractReportAction
                 ORDER BY records DESC
             DQL
         )->setParameter('station', $request->getStation())
-            ->setParameter('start', $dateRange->getStartTimestamp())
-            ->setParameter('end', $dateRange->getEndTimestamp())
+            ->setParameter('start', $dateRange->start)
+            ->setParameter('end', $dateRange->end)
             ->setMaxResults(10)
             ->getArrayResult();
 
-        $baseUrl = $request->getRouter()->getBaseUrl();
-
         return array_map(
-            function ($row) use ($station, $baseUrl) {
-                $song = ($this->songApiGenerator)(Song::createFromArray($row), $station);
-                $song->resolveUrls($baseUrl);
+            function ($row) use ($station) {
+                $song = $this->songApiGenerator->__invoke(Song::createFromArray($row), $station);
 
                 return [
                     'song' => $song,

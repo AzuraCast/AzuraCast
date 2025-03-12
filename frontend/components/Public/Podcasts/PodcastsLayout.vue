@@ -6,7 +6,7 @@
                     <div class="flex-shrink">
                         <h2 class="card-title py-2">
                             <slot name="title">
-                                {{ name }}
+                                {{ stationName }}
                             </slot>
                         </h2>
                     </div>
@@ -25,22 +25,15 @@
 <script setup lang="ts">
 import FullHeightCard from "~/components/Public/FullHeightCard.vue";
 import InlinePlayer from "~/components/InlinePlayer.vue";
-import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 import MinimalLayout from "~/components/MinimalLayout.vue";
-import {useProvidePodcastGroupLayout} from "~/components/Public/Podcasts/usePodcastGroupLayout.ts";
+import {PodcastLayoutProps, useProvidePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
 
-const props = defineProps({
-    baseUrl: {
-        type: String,
-        required: true
-    },
-    groupLayout: {
-        type: String,
-        default: 'table'
+const props = withDefaults(
+    defineProps<PodcastLayoutProps>(),
+    {
+        groupLayout: 'table'
     }
-});
+);
 
-useProvidePodcastGroupLayout(props.groupLayout);
-
-const {name} = useAzuraCastStation();
+useProvidePodcastGlobals(props);
 </script>

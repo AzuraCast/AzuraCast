@@ -178,7 +178,7 @@ class StationStreamer implements
         return $this->comments;
     }
 
-    public function setComments(string $comments = null): void
+    public function setComments(?string $comments = null): void
     {
         $this->comments = $comments;
     }

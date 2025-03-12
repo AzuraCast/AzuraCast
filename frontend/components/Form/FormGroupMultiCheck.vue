@@ -9,7 +9,8 @@
         >
             <form-label
                 :is-required="isRequired"
-                v-bind="pickProps(props, formLabelProps)"
+                :advanced="props.advanced"
+                :high-cpu="props.highCpu"
             >
                 <slot
                     name="label"
@@ -65,53 +66,37 @@
     </form-group>
 </template>
 
-<script setup lang="ts">
-import VuelidateError from "./VuelidateError.vue";
-import FormLabel from "~/components/Form/FormLabel.vue";
+<script setup lang="ts" generic="T = ModelFormField">
+import VuelidateError from "~/components/Form/VuelidateError.vue";
+import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 import useSlotsExcept from "~/functions/useSlotsExcept";
-import {formFieldProps, useFormField} from "~/components/Form/useFormField";
+import {FormFieldEmits, FormFieldProps, ModelFormField, useFormField} from "~/components/Form/useFormField";
 import {useSlots} from "vue";
-import formLabelProps from "~/components/Form/formLabelProps.ts";
-import {pickProps} from "~/functions/pickProps.ts";
+import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 
-const props = defineProps({
-    ...formFieldProps,
-    ...formLabelProps,
-    id: {
-        type: String,
-        required: true
-    },
-    name: {
-        type: String,
-        default: null,
-    },
-    label: {
-        type: String,
-        default: null
-    },
-    description: {
-        type: String,
-        default: null
-    },
-    options: {
-        type: Array,
-        required: true
-    },
-    radio: {
-        type: Boolean,
-        default: false
-    },
-    stacked: {
-        type: Boolean,
-        default: false
+interface FormGroupMultiCheckProps extends FormFieldProps<T>, FormLabelParentProps {
+    id: string,
+    name?: string,
+    label?: string,
+    description?: string,
+    options: SimpleFormOptionInput,
+    radio?: boolean,
+    stacked?: boolean
+}
+
+const props = withDefaults(
+    defineProps<FormGroupMultiCheckProps>(),
+    {
+        radio: false,
+        stacked: false
     }
-});
+);
 
 const slots = useSlots();
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<FormFieldEmits<T>>();
 
-const {model, isVuelidateField, isRequired} = useFormField(props, emit);
+const {model, isVuelidateField, isRequired} = useFormField<T>(props, emit);
 </script>

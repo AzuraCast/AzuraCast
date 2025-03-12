@@ -20,27 +20,27 @@
 
         <div class="card-body">
             <h5 class="mb-1 text-center">
-                {{ formatCpuName(stats.cpu.total.name) }}
+                {{ formatCpuName(cpuStats.total.name) }}
             </h5>
 
             <div
                 class="progress h-20 mb-3 mt-2"
                 role="progressbar"
-                :aria-label="formatPercentageString(stats.cpu.total.usage)"
+                :aria-label="formatPercentageString(cpuStats.total.usage)"
                 aria-valuemin="0"
                 aria-valuemax="100"
             >
                 <div
                     class="progress-bar text-bg-danger"
-                    :style="{ width: stats.cpu.total.steal+'%' }"
+                    :style="{ width: cpuStats.total.steal+'%' }"
                 />
                 <div
                     class="progress-bar text-bg-warning"
-                    :style="{ width: stats.cpu.total.io_wait+'%' }"
+                    :style="{ width: cpuStats.total.io_wait+'%' }"
                 />
                 <div
                     class="progress-bar text-bg-primary"
-                    :style="{ width: stats.cpu.total.usage+'%' }"
+                    :style="{ width: cpuStats.total.usage+'%' }"
                 />
             </div>
 
@@ -48,17 +48,17 @@
                 <div class="col">
                     <span class="badge text-bg-danger me-1">&nbsp;&nbsp;</span>
                     {{ $gettext('Steal') }}
-                    : {{ stats.cpu.total.steal }}%
+                    : {{ cpuStats.total.steal }}%
                 </div>
                 <div class="col">
                     <span class="badge text-bg-warning me-1">&nbsp;&nbsp;</span>
                     {{ $gettext('Wait') }}
-                    : {{ stats.cpu.total.io_wait }}%
+                    : {{ cpuStats.total.io_wait }}%
                 </div>
                 <div class="col">
                     <span class="badge text-bg-primary me-1">&nbsp;&nbsp;</span>
                     {{ $gettext('Use') }}
-                    : {{ stats.cpu.total.usage }}%
+                    : {{ cpuStats.total.usage }}%
                 </div>
             </div>
 
@@ -66,7 +66,7 @@
 
             <div class="row">
                 <div
-                    v-for="core in stats.cpu.cores"
+                    v-for="core in cpuStats.cores"
                     :key="core.name"
                     class="col-lg-6"
                 >
@@ -117,15 +117,15 @@
             <div class="row text-center">
                 <div class="col">
                     <h6>1-Min</h6>
-                    {{ stats.cpu.load[0].toFixed(2) }}
+                    {{ cpuStats.load[0].toFixed(2) }}
                 </div>
                 <div class="col">
                     <h6>5-Min</h6>
-                    {{ stats.cpu.load[1].toFixed(2) }}
+                    {{ cpuStats.load[1].toFixed(2) }}
                 </div>
                 <div class="col">
                     <h6>15-Min</h6>
-                    {{ stats.cpu.load[2].toFixed(2) }}
+                    {{ cpuStats.load[2].toFixed(2) }}
                 </div>
             </div>
         </div>
@@ -135,25 +135,23 @@
 </template>
 <script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import CpuStatsHelpModal from "~/components/Admin/Index/CpuStatsHelpModal.vue";
 import {upperFirst} from "lodash";
 import {IconInfo} from "~/components/Common/icons.ts";
+import {ApiAdminServerStatsCpuStats} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    stats: {
-        type: Object,
-        required: true
-    }
-});
+defineProps<{
+    cpuStats: ApiAdminServerStatsCpuStats
+}>();
 
-const $cpuStatsHelpModal = ref<InstanceType<typeof CpuStatsHelpModal> | null>(null);
+const $cpuStatsHelpModal = useTemplateRef('$cpuStatsHelpModal');
 const showCpuStatsHelpModal = () => {
     $cpuStatsHelpModal.value?.create();
 };
 
-const formatCpuName = (cpuName) => upperFirst(cpuName);
+const formatCpuName = (cpuName: string) => upperFirst(cpuName);
 
-const formatPercentageString = (value) => value + '%';
+const formatPercentageString = (value: string | number) => value + '%';
 
 </script>

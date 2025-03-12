@@ -14,31 +14,25 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "./Icon.vue";
+import Icon from "~/components/Common/Icon.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {IconPlayCircle, IconStopCircle} from "~/components/Common/icons";
 import getUrlWithoutQuery from "~/functions/getUrlWithoutQuery.ts";
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 
-const props = defineProps({
-    url: {
-        type: String,
-        required: true
-    },
-    isStream: {
-        type: Boolean,
-        default: false
-    },
-    isHls: {
-        type: Boolean,
-        default: false
-    },
-    iconClass: {
-        type: String,
-        default: null
+const props = withDefaults(
+    defineProps<{
+        url: string,
+        isStream?: boolean,
+        isHls?: boolean,
+        iconClass?: string
+    }>(),
+    {
+        isStream: false,
+        isHls: false
     }
-});
+);
 
 const {isPlaying, current, toggle: storeToggle} = usePlayerStore();
 

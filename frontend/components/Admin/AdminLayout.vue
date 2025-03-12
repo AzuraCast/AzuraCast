@@ -4,7 +4,7 @@
             v-if="!isHome"
             #sidebar
         >
-            <sidebar v-bind="sidebarProps" />
+            <sidebar />
         </template>
         <template #default>
             <router-view />
@@ -19,7 +19,7 @@ import {useRoute} from "vue-router";
 import {ref, watch} from "vue";
 import Sidebar from "~/components/Admin/Sidebar.vue";
 
-const {panelProps, sidebarProps} = useAzuraCast();
+const {panelProps} = useAzuraCast();
 
 const isHome = ref(true);
 const route = useRoute();

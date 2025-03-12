@@ -20,8 +20,9 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/art/{media_id}',
     operationId: 'getMediaArt',
-    description: 'Returns the album art for a song, or a generic image.',
-    tags: ['Stations: Media'],
+    summary: 'Returns the album art for a song, or a generic image.',
+    security: [],
+    tags: [OpenApi::TAG_PUBLIC_STATIONS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(
@@ -33,12 +34,10 @@ use Psr\Http\Message\ResponseInterface;
         ),
     ],
     responses: [
-        new OA\Response(
-            response: 200,
+        new OpenApi\Response\SuccessWithImage(
             description: 'The requested album artwork'
         ),
-        new OA\Response(
-            response: 404,
+        new OpenApi\Response\Redirect(
             description: 'Image not found; generic filler image.'
         ),
     ]

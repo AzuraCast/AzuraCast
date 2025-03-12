@@ -36,7 +36,7 @@
 
         <data-table
             id="admin_storage_locations"
-            ref="$datatable"
+            ref="$dataTable"
             :show-toolbar="false"
             :fields="fields"
             :api-url="listUrlForType"
@@ -104,16 +104,17 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
-import EditModal from './StorageLocations/EditModal.vue';
-import {computed, nextTick, ref} from "vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import EditModal from "~/components/Admin/StorageLocations/EditModal.vue";
+import {computed, nextTick, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
-import useHasEditModal, {EditModalTemplateRef} from "~/functions/useHasEditModal";
+import useHasDatatable from "~/functions/useHasDatatable";
+import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
+import {ApiAdminStorageLocation} from "~/entities/ApiInterfaces.ts";
 
 const activeType = ref('station_media');
 
@@ -124,7 +125,7 @@ const listUrlForType = computed(() => {
 
 const {$gettext} = useTranslate();
 
-const fields: DataTableField[] = [
+const fields: DataTableField<ApiAdminStorageLocation>[] = [
     {key: 'adapter', label: $gettext('Adapter'), sortable: false},
     {key: 'space', label: $gettext('Space Used'), class: 'text-nowrap', sortable: false},
     {key: 'stations', label: $gettext('Station(s)'), sortable: false},
@@ -150,18 +151,18 @@ const tabs = [
     }
 ];
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {relist} = useHasDatatable($datatable);
+const $dataTable = useTemplateRef('$dataTable');
+const {relist} = useHasDatatable($dataTable);
 
-const $editModal = ref<EditModalTemplateRef>(null);
+const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const setType = (type) => {
+const setType = (type: string) => {
     activeType.value = type;
-    nextTick(relist);
+    void nextTick(relist);
 };
 
-const getAdapterName = (adapter) => {
+const getAdapterName = (adapter: string) => {
     switch (adapter) {
         case 'local':
             return $gettext('Local');
@@ -177,13 +178,13 @@ const getAdapterName = (adapter) => {
     }
 };
 
-const getSpaceUsed = (item) => {
+const getSpaceUsed = (item: ApiAdminStorageLocation) => {
     return (item.storageAvailable)
         ? item.storageUsed + ' / ' + item.storageAvailable
         : item.storageUsed;
 };
 
-const getProgressVariant = (percent) => {
+const getProgressVariant = (percent: number) => {
     if (percent > 85) {
         return 'text-bg-danger';
     } else if (percent > 65) {

@@ -35,22 +35,19 @@
 </template>
 
 <script setup lang="ts">
-import {email, required} from '@vuelidate/validators';
+import {email, required} from "@vuelidate/validators";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Modal from "~/components/Common/Modal.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 
-const props = defineProps({
-    testMessageUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    testMessageUrl: string,
+}>();
 
 const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
     {
@@ -64,7 +61,7 @@ const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
     }
 );
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show: open, hide} = useHasModal($modal);
 
 const {notifySuccess} = useNotify();
@@ -73,7 +70,7 @@ const {$gettext} = useTranslate();
 
 const doSendTest = () => {
     ifValid(() => {
-        axios.post(props.testMessageUrl, {
+        void axios.post(props.testMessageUrl, {
             'email': form.value.emailAddress
         }).then(() => {
             notifySuccess($gettext('Test message sent.'));

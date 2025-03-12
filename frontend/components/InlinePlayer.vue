@@ -42,9 +42,12 @@
             :aria-label="$gettext('Stop')"
             @click="stop()"
         >
-            <icon :icon="IconStop" />
+            <icon :icon="IconStop"/>
         </button>
-        <div class="inline-volume-controls d-inline-flex align-items-center ms-2">
+        <div
+            v-if="showVolume"
+            class="inline-volume-controls d-inline-flex align-items-center ms-2"
+        >
             <div class="flex-shrink-0">
                 <mute-button
                     class="btn p-2 text-reset"
@@ -69,14 +72,15 @@
 </template>
 
 <script setup lang="ts">
-import AudioPlayer from '~/components/Common/AudioPlayer.vue';
-import formatTime from '~/functions/formatTime';
-import Icon from '~/components/Common/Icon.vue';
-import {computed, Ref, ref} from "vue";
+import AudioPlayer from "~/components/Common/AudioPlayer.vue";
+import formatTime from "~/functions/formatTime";
+import Icon from "~/components/Common/Icon.vue";
+import {computed, Ref, ref, useTemplateRef} from "vue";
 import MuteButton from "~/components/Common/MuteButton.vue";
 import usePlayerVolume from "~/functions/usePlayerVolume";
 import {IconStop} from "~/components/Common/icons";
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
+import useShowVolume from "~/functions/useShowVolume.ts";
 
 defineOptions({
     inheritAttrs: false
@@ -86,6 +90,8 @@ const {isPlaying, current, stop} = usePlayerStore();
 
 const volume = usePlayerVolume();
 const isMuted = ref(false);
+
+const showVolume = useShowVolume();
 
 const duration: Ref<number> = ref(0);
 const currentTime: Ref<number> = ref(0);
@@ -106,7 +112,7 @@ const onUpdateProgress = (newValue: number) => {
 const durationText = computed(() => formatTime(duration.value));
 const currentTimeText = computed(() => formatTime(currentTime.value));
 
-const $player = ref<InstanceType<typeof AudioPlayer> | null>(null);
+const $player = useTemplateRef('$player');
 
 const progress = computed({
     get: () => {

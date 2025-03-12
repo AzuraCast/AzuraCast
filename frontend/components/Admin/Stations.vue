@@ -9,7 +9,7 @@
 
         <data-table
             id="stations"
-            ref="$datatable"
+            ref="$dataTable"
             paginated
             :fields="fields"
             :api-url="listUrl"
@@ -69,7 +69,7 @@
     </card-page>
 
     <admin-stations-edit-modal
-        v-bind="pickProps(props, stationFormProps)"
+        v-bind="props"
         ref="$editModal"
         :create-url="listUrl"
         @relist="relist"
@@ -82,36 +82,29 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import AdminStationsEditModal from "./Stations/EditModal.vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import AdminStationsEditModal from "~/components/Admin/Stations/EditModal.vue";
 import {get} from "lodash";
-import AdminStationsCloneModal from "./Stations/CloneModal.vue";
-import stationFormProps from "./Stations/stationFormProps";
-import {pickProps} from "~/functions/pickProps";
+import AdminStationsCloneModal from "~/components/Admin/Stations/CloneModal.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {ref} from "vue";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
-import useHasEditModal, {EditModalTemplateRef} from "~/functions/useHasEditModal";
+import {useTemplateRef} from "vue";
+import useHasDatatable from "~/functions/useHasDatatable";
+import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
-import CloneModal from "~/components/Admin/Stations/CloneModal.vue";
-import {useSweetAlert} from "~/vendor/sweetalert.ts";
 import {useNotify} from "~/functions/useNotify.ts";
 import {useAxios} from "~/vendor/axios.ts";
+import {useDialog} from "~/functions/useDialog.ts";
+import {StationFormParentProps} from "~/components/Admin/Stations/StationForm.vue";
 
-const props = defineProps({
-    ...stationFormProps,
-    frontendTypes: {
-        type: Object,
-        required: true
-    },
-    backendTypes: {
-        type: Object,
-        required: true
-    }
-});
+interface AdminStationsProps extends StationFormParentProps {
+    frontendTypes: object,
+    backendTypes: object
+}
+
+const props = defineProps<AdminStationsProps>();
 
 const listUrl = getApiUrl('/admin/stations');
 
@@ -148,32 +141,38 @@ const fields: DataTableField[] = [
     }
 ];
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {relist} = useHasDatatable($datatable);
+const $dataTable = useTemplateRef('$dataTable');
+const {relist} = useHasDatatable($dataTable);
 
-const $editModal = ref<EditModalTemplateRef>(null);
+const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const $cloneModal = ref<InstanceType<typeof CloneModal> | null>(null);
+const $cloneModal = useTemplateRef('$cloneModal');
 
-const doClone = (stationName, url) => {
+const doClone = (stationName: string, url: string) => {
     $cloneModal.value.create(stationName, url);
 };
 
-const {showAlert} = useSweetAlert();
+const {showAlert} = useDialog();
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const doToggle = (station) => {
-    const title = (station.is_enabled)
-        ? $gettext('Disable station?')
-        : $gettext('Enable station?');
-
-    showAlert({
-        title: title
-    }).then((result) => {
+    void showAlert((station.is_enabled)
+        ? {
+            title: $gettext('Disable station?'),
+            confirmButtonText: $gettext('Disable'),
+            confirmButtonClass: 'btn-warning',
+            focusCancel: true
+        } : {
+            title: $gettext('Enable station?'),
+            confirmButtonText: $gettext('Enable'),
+            confirmButtonClass: 'btn-success',
+            focusCancel: false
+        }
+    ).then((result) => {
         if (result.value) {
-            axios.put(station.links.self, {
+            void axios.put(station.links.self, {
                 is_enabled: !station.is_enabled
             }).then((resp) => {
                 notifySuccess(resp.data.message);

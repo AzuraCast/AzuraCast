@@ -14,7 +14,7 @@
 
                 <data-table
                     id="station_sftp_users"
-                    ref="$datatable"
+                    ref="$dataTable"
                     :show-toolbar="false"
                     :fields="fields"
                     :api-url="listUrl"
@@ -76,22 +76,25 @@
 
 <script setup lang="ts">
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import SftpUsersEditModal from "./SftpUsers/EditModal.vue";
+import SftpUsersEditModal from "~/components/Stations/SftpUsers/EditModal.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {ref} from "vue";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
-import useHasEditModal, {EditModalTemplateRef} from "~/functions/useHasEditModal";
+import {useTemplateRef} from "vue";
+import useHasDatatable from "~/functions/useHasDatatable";
+import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 
-const props = defineProps({
-    connectionInfo: {
-        type: Object,
-        required: true
-    }
-});
+interface SftpUsersConnectionInfo {
+    url: string,
+    ip: string | null,
+    port: number
+}
+
+defineProps<{
+    connectionInfo: SftpUsersConnectionInfo,
+}>();
 
 const listUrl = getStationApiUrl('/sftp-users');
 
@@ -102,10 +105,10 @@ const fields: DataTableField[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {relist} = useHasDatatable($datatable);
+const $dataTable = useTemplateRef('$dataTable');
+const {relist} = useHasDatatable($dataTable);
 
-const $editModal = ref<EditModalTemplateRef>(null);
+const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const {doDelete} = useConfirmAndDelete(

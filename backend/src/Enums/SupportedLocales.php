@@ -10,7 +10,9 @@ use App\Http\ServerRequest;
 use Gettext\Translator;
 use Gettext\TranslatorFunctions;
 use Locale;
+use OpenApi\Attributes as OA;
 
+#[OA\Schema(type: 'string')]
 enum SupportedLocales: string
 {
     case English = 'en_US.UTF-8';

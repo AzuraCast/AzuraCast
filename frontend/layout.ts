@@ -1,14 +1,15 @@
-import {App, createApp} from "vue";
+import {App, Component, createApp} from "vue";
 import installAxios from "~/vendor/axios";
 import {installTranslate} from "~/vendor/gettext";
 import {installCurrentVueInstance} from "~/vendor/vueInstance";
 import {AzuraCastConstants, setGlobalProps} from "~/vendor/azuracast";
 
-interface InitApp {
+export default function initApp(
+    appConfig: Component = {},
+    appCallback?: (app: App<Element>) => Promise<void>
+): {
     vueApp: App<Element>
-}
-
-export default function initApp(appConfig = {}, appCallback = null): InitApp {
+} {
     const vueApp: App<Element> = createApp(appConfig);
 
     /* Track current instance (for programmatic use). */

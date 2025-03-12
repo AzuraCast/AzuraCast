@@ -9,6 +9,7 @@ use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Entity\StationQueue;
 use App\Entity\StationRequest;
+use App\Radio\Backend\Liquidsoap\ConfigWriter;
 use RuntimeException;
 use Symfony\Contracts\EventDispatcher\Event;
 
@@ -19,9 +20,31 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 final class AnnotateNextSong extends Event
 {
-    private ?string $songPath = null;
+    public const array ALLOWED_ANNOTATIONS = [
+        'title',
+        'artist',
+        'duration',
+        'song_id',
+        'media_id',
+        'playlist_id',
+        'jingle_mode',
+        'request_id',
+        'sq_id',
+        'liq_amplify',
+        'azuracast_autocue',
+        'autocue_cue_in',
+        'autocue_cue_out',
+        'autocue_fade_in',
+        'autocue_fade_out',
+        'autocue_start_next',
+    ];
 
-    private ?string $protocol = null;
+    public const array ALWAYS_STRING_ANNOTATIONS = [
+        'title',
+        'artist',
+    ];
+
+    private ?string $songPath = null;
 
     /** @var array Custom annotations that should be sent along with the AutoDJ response. */
     private array $annotations = [];
@@ -76,11 +99,6 @@ final class AnnotateNextSong extends Event
         $this->songPath = $songPath;
     }
 
-    public function setProtocol(string $protocol): void
-    {
-        $this->protocol = $protocol;
-    }
-
     public function isAsAutoDj(): bool
     {
         return $this->asAutoDj;
@@ -95,23 +113,12 @@ final class AnnotateNextSong extends Event
             throw new RuntimeException('No valid path for song.');
         }
 
-        $this->annotations = array_filter($this->annotations);
-
         if (!empty($this->annotations)) {
-            $annotationsStr = [];
-            foreach ($this->annotations as $annotationKey => $annotationVal) {
-                $annotationsStr[] = $annotationKey . '="' . $annotationVal . '"';
-            }
-
             $annotateParts = [
                 'annotate',
-                implode(',', $annotationsStr),
+                ConfigWriter::annotateArray($this->annotations),
                 $this->songPath,
             ];
-
-            if (null !== $this->protocol) {
-                array_unshift($annotateParts, $this->protocol);
-            }
 
             return implode(':', $annotateParts);
         }

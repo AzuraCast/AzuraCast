@@ -5,15 +5,13 @@ declare(strict_types=1);
 namespace App\Entity\Api\Admin;
 
 use App\Entity\Api\NowPlaying\StationMount;
-use App\Entity\Api\ResolvableUrlInterface;
 use OpenApi\Attributes as OA;
-use Psr\Http\Message\UriInterface;
 
 #[OA\Schema(
     schema: 'Api_Admin_Relay',
     type: 'object'
 )]
-final class Relay implements ResolvableUrlInterface
+final class Relay
 {
     #[OA\Property(
         description: 'Station ID',
@@ -78,16 +76,4 @@ final class Relay implements ResolvableUrlInterface
     /** @var StationMount[] */
     #[OA\Property]
     public array $mounts = [];
-
-    /**
-     * Re-resolve any Uri instances to reflect base URL changes.
-     *
-     * @param UriInterface $base
-     */
-    public function resolveUrls(UriInterface $base): void
-    {
-        foreach ($this->mounts as $mount) {
-            $mount->resolveUrls($base);
-        }
-    }
 }

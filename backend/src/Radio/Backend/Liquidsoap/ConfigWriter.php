@@ -18,6 +18,7 @@ use App\Entity\StationPlaylist;
 use App\Entity\StationRemote;
 use App\Entity\StationSchedule;
 use App\Entity\StationStreamerBroadcast;
+use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\AudioProcessingMethods;
@@ -280,6 +281,7 @@ final class ConfigWriter implements EventSubscriberInterface
             settings.server.log.level := {$logLevel}
             init.daemon.pidfile.path := "{$pidfile}"
             settings.server.socket.path := "{$socketFile}"
+            settings.init.compact_before_start := true
             
             environment.set("TZ", "{$stationTz}") 
             
@@ -297,6 +299,7 @@ final class ConfigWriter implements EventSubscriberInterface
             settings.azuracast.crossfade_type := "{$crossfadeType}"
             
             settings.azuracast.live_broadcast_text := "{$liveBroadcastText}"
+            
             LIQ
         );
 
@@ -326,13 +329,6 @@ final class ConfigWriter implements EventSubscriberInterface
         $station = $event->getStation();
 
         $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_PRE_PLAYLISTS);
-
-        $event->appendBlock(
-            <<<LIQ
-            # Ensure AutoCue settings are valid
-            ignore(azuracast.verify_autocue_settings())
-            LIQ
-        );
 
         // Set up playlists using older format as a fallback.
         $playlistVarNames = [];
@@ -862,7 +858,7 @@ final class ConfigWriter implements EventSubscriberInterface
             
             radio = fallback(
                 id="live_fallback",
-                track_sensitive=false,
+                track_sensitive=true,
                 replay_metadata=true,
                 transitions=[
                     fun (_, s) -> begin
@@ -1054,10 +1050,10 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $event->appendBlock(
             <<<LIQ
-            def hls_segment_name(~position,~extname,stream_name) =
+            def hls_segment_name(metadata) =
                 timestamp = int_of_float(time())
                 duration = {$hlsSegmentLength}
-                "#{stream_name}_#{duration}_#{timestamp}_#{position}.#{extname}"
+                "#{metadata.stream_name}_#{duration}_#{timestamp}_#{metadata.position}.#{metadata.extname}"
             end
 
             output.file.hls(playlist="live.m3u8",
@@ -1232,29 +1228,6 @@ final class ConfigWriter implements EventSubscriberInterface
         );
     }
 
-    /**
-     * Convert a boolean-ish value into a Liquidsoap annotated boolean.
-     *
-     * @param string|bool $value
-     * @return string
-     */
-    public static function toBool(string|bool $value): string
-    {
-        return Types::bool($value, false, true)
-            ? 'true'
-            : 'false';
-    }
-
-    public static function valueToString(string|int|float|bool $dataVal): string
-    {
-        return match (true) {
-            'true' === $dataVal || 'false' === $dataVal => $dataVal,
-            is_bool($dataVal) => self::toBool($dataVal),
-            is_numeric($dataVal) && !is_int($dataVal) => self::toFloat($dataVal),
-            default => Types::string($dataVal)
-        };
-    }
-
     public static function formatTimeCode(int $timeCode): string
     {
         $hours = floor($timeCode / 100);
@@ -1302,10 +1275,51 @@ final class ConfigWriter implements EventSubscriberInterface
         return self::cleanUpVarName('playlist_' . $playlist->getShortName());
     }
 
-    public static function annotateString(string $str): string
+    /**
+     * Given a value, convert it into an annotation-friendly quoted string.
+     */
+    public static function annotateValue(string|int|float|bool $dataVal, bool $preserveType = false): string
     {
-        $str = mb_convert_encoding($str, 'UTF-8');
-        return str_replace(['"', "\n", "\t", "\r"], ['\"', '', '', ''], $str);
+        if ($preserveType) {
+            $strVal = Types::string($dataVal);
+        } else {
+            $strVal = match (true) {
+                'true' === $dataVal || 'false' === $dataVal => $dataVal,
+                is_bool($dataVal) => Types::bool($dataVal, false, true) ? 'true' : 'false',
+                is_numeric($dataVal) && !is_int($dataVal) => self::toFloat($dataVal),
+                default => Types::string($dataVal)
+            };
+        }
+
+        $strVal = mb_convert_encoding($strVal, 'UTF-8');
+        return str_replace(['"', "\n", "\t", "\r"], ['\"', '', '', ''], $strVal);
+    }
+
+    /**
+     * Given an array of values, convert them into a Liquidsoap annotation format.
+     *
+     * @param array<string, string|int|float|bool|null> $values
+     */
+    public static function annotateArray(array $values): string
+    {
+        $values = array_filter(
+            $values,
+            fn(string|int|float|bool|null $val, string $key): bool => $val !== null
+                && in_array($key, AnnotateNextSong::ALLOWED_ANNOTATIONS, true),
+            ARRAY_FILTER_USE_BOTH
+        );
+
+        $annotations = [];
+        foreach ($values as $key => $val) {
+            $annotatedVal = self::annotateValue(
+                $val,
+                in_array($key, AnnotateNextSong::ALWAYS_STRING_ANNOTATIONS, true)
+            );
+
+            $annotations[] = $key . '="' . $annotatedVal . '"';
+        }
+
+        return implode(',', $annotations);
     }
 
     public static function shouldWritePlaylist(

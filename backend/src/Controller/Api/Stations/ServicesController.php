@@ -22,85 +22,99 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/station/{station_id}/status',
         operationId: 'getServiceStatus',
-        description: 'Retrieve the current status of all serivces associated with the radio broadcast.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Service Control'],
+        summary: 'Retrieve the current status of all serivces associated with the radio broadcast.',
+        tags: [OpenApi::TAG_STATIONS_BROADCASTING],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
-                    ref: '#/components/schemas/Api_StationServiceStatus'
+                    ref: StationServiceStatus::class
                 )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Post(
         path: '/station/{station_id}/restart',
         operationId: 'restartServices',
-        description: 'Restart all services associated with the radio broadcast.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Service Control'],
+        summary: 'Restart all services associated with the radio broadcast.',
+        tags: [OpenApi::TAG_STATIONS_BROADCASTING],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Post(
         path: '/station/{station_id}/frontend/{action}',
         operationId: 'doFrontendServiceAction',
-        description: 'Perform service control actions on the radio frontend (Icecast, Shoutcast, etc.)',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Service Control'],
+        summary: 'Perform service control actions on the radio frontend (Icecast, Shoutcast, etc.)',
+        tags: [OpenApi::TAG_STATIONS_BROADCASTING],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'action',
-                description: 'The action to perform (start, stop, restart)',
+                description: 'The action to perform.',
                 in: 'path',
                 required: true,
-                schema: new OA\Schema(type: 'string', default: 'restart')
+                schema: new OA\Schema(
+                    type: 'string',
+                    default: 'restart',
+                    enum: [
+                        'start',
+                        'stop',
+                        'reload',
+                        'restart',
+                    ]
+                )
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Post(
         path: '/station/{station_id}/backend/{action}',
         operationId: 'doBackendServiceAction',
-        description: 'Perform service control actions on the radio backend (Liquidsoap)',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Service Control'],
+        summary: 'Perform service control actions on the radio backend (Liquidsoap)',
+        tags: [OpenApi::TAG_STATIONS_BROADCASTING],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'action',
-                description: 'The action to perform (for all: start, stop, restart, skip, disconnect)',
+                description: 'The action to perform.',
                 in: 'path',
                 required: true,
-                schema: new OA\Schema(type: 'string', default: 'restart')
+                schema: new OA\Schema(
+                    type: 'string',
+                    default: 'restart',
+                    enum: [
+                        'skip',
+                        'disconnect',
+                        'start',
+                        'stop',
+                        'reload',
+                        'restart',
+                    ]
+                )
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]

@@ -9,15 +9,38 @@ use App\Container\EnvironmentAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Service\MemoryStats;
+use App\OpenApi;
+use App\Service\ServerStats;
 use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
 use Brick\Math\RoundingMode;
+use OpenApi\Attributes as OA;
 use Prometheus\CollectorRegistry;
 use Prometheus\RenderTextFormat;
 use Prometheus\Storage\InMemory;
 use Psr\Http\Message\ResponseInterface;
 
+#[
+    OA\Get(
+        path: '/prometheus',
+        operationId: 'getPrometheus',
+        summary: 'Returns the Prometheus measurements for this installation.',
+        tags: [OpenApi::TAG_MISC],
+        responses: [
+            new OpenApi\Response\SuccessWithDownload(
+                description: 'Success',
+                content: new OA\MediaType(
+                    mediaType: 'text/plain',
+                    schema: new OA\Schema(
+                        description: 'The Prometheus measurements for this installation.',
+                        type: 'string',
+                        format: 'binary'
+                    )
+                )
+            ),
+        ]
+    )
+]
 final class PrometheusAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
@@ -68,7 +91,7 @@ final class PrometheusAction implements SingleActionInterface
 
     private function addRamMeasurements(CollectorRegistry $registry): void
     {
-        $memoryStats = MemoryStats::getMemoryUsage();
+        $memoryStats = ServerStats::getMemoryUsage();
 
         $registry->getOrRegisterGauge(
             self::APP_NAMESPACE,

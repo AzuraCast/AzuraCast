@@ -9,7 +9,9 @@ use App\Entity\Enums\PlaylistRemoteTypes;
 use App\Entity\Enums\PlaylistSources;
 use App\Entity\Enums\PlaylistTypes;
 use App\Utilities\File;
+use App\Utilities\Time;
 use Azura\Normalizer\Attributes\DeepNormalize;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -162,16 +164,16 @@ class StationPlaylist implements
     protected bool $avoid_duplicates = true;
 
     #[
-        ORM\Column,
+        ORM\Column(type: 'datetime_immutable', precision: 6, nullable: true),
         Attributes\AuditIgnore
     ]
-    protected int $played_at = 0;
+    protected ?DateTimeImmutable $played_at = null;
 
     #[
-        ORM\Column,
+        ORM\Column(type: 'datetime_immutable', precision: 6, nullable: true),
         Attributes\AuditIgnore
     ]
-    protected int $queue_reset_at = 0;
+    protected ?DateTimeImmutable $queue_reset_at = null;
 
     /** @var Collection<int, StationPlaylistMedia> */
     #[
@@ -380,24 +382,24 @@ class StationPlaylist implements
         $this->avoid_duplicates = $avoidDuplicates;
     }
 
-    public function getPlayedAt(): int
+    public function getPlayedAt(): ?DateTimeImmutable
     {
         return $this->played_at;
     }
 
-    public function setPlayedAt(int $playedAt): void
+    public function setPlayedAt(mixed $playedAt): void
     {
-        $this->played_at = $playedAt;
+        $this->played_at = Time::toNullableUtcCarbonImmutable($playedAt);
     }
 
-    public function getQueueResetAt(): int
+    public function getQueueResetAt(): ?DateTimeImmutable
     {
         return $this->queue_reset_at;
     }
 
-    public function setQueueResetAt(int $queueResetAt): void
+    public function setQueueResetAt(mixed $queueResetAt): void
     {
-        $this->queue_reset_at = $queueResetAt;
+        $this->queue_reset_at = Time::toNullableUtcCarbonImmutable($queueResetAt);
     }
 
     /**
@@ -526,8 +528,8 @@ class StationPlaylist implements
 
     public function __clone()
     {
-        $this->played_at = 0;
-        $this->queue_reset_at = 0;
+        $this->played_at = null;
+        $this->queue_reset_at = null;
     }
 
     public function __toString(): string

@@ -4,44 +4,41 @@ declare(strict_types=1);
 
 namespace App\Utilities;
 
-use Carbon\CarbonInterface;
+use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 
-final class DateRange
+final readonly class DateRange
 {
     public function __construct(
-        private readonly CarbonInterface $start,
-        private readonly CarbonInterface $end,
+        public CarbonImmutable $start,
+        public CarbonImmutable $end,
     ) {
     }
 
-    public function getStart(): CarbonInterface
+    public function contains(?DateTimeImmutable $time): bool
     {
-        return $this->start;
-    }
+        if (null === $time) {
+            return false;
+        }
 
-    public function getStartTimestamp(): int
-    {
-        return $this->start->getTimestamp();
-    }
-
-    public function getEnd(): CarbonInterface
-    {
-        return $this->end;
-    }
-
-    public function getEndTimestamp(): int
-    {
-        return $this->end->getTimestamp();
-    }
-
-    public function contains(CarbonInterface $time): bool
-    {
-        return $time->between($this->start, $this->end);
+        return CarbonImmutable::instance($time)->between($this->start, $this->end);
     }
 
     public function isWithin(self $toCompare): bool
     {
-        return $this->getEnd() >= $toCompare->getStart()
-            && $this->getStart() <= $toCompare->getEnd();
+        return $this->end >= $toCompare->start
+            && $this->start <= $toCompare->end;
+    }
+
+    public function format(
+        string $format = 'Y-m-d H:i:s',
+        string $separator = ' to '
+    ): string {
+        return $this->start->format($format) . $separator . $this->end->format($format);
+    }
+
+    public function __toString(): string
+    {
+        return $this->format();
     }
 }

@@ -8,6 +8,7 @@ use App\Entity\Api\SystemStatus;
 use App\Entity\Api\Time;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -16,14 +17,13 @@ final class IndexController
     #[OA\Get(
         path: '/status',
         operationId: 'getStatus',
-        description: 'Returns an affirmative response if the API is active.',
-        tags: ['Miscellaneous'],
+        summary: 'Returns an affirmative response if the API is active.',
+        security: [],
+        tags: [OpenApi::TAG_PUBLIC_MISC],
         parameters: [],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_SystemStatus')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: SystemStatus::class)
             ),
         ]
     )]
@@ -38,13 +38,12 @@ final class IndexController
         path: '/time',
         operationId: 'getTime',
         description: "Returns the time (with formatting) in GMT and the user's local time zone, if logged in.",
-        tags: ['Miscellaneous'],
+        security: [],
+        tags: [OpenApi::TAG_PUBLIC_MISC],
         parameters: [],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_Time')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: Time::class)
             ),
         ]
     )]

@@ -6,12 +6,16 @@ namespace App\Radio\Backend\Liquidsoap\Command;
 
 use App\Entity\Repository\StationStreamerRepository;
 use App\Entity\Station;
+use App\Radio\AutoDJ\Scheduler;
+use App\Utilities\Types;
+use InvalidArgumentException;
 use RuntimeException;
 
 final class DjAuthCommand extends AbstractCommand
 {
     public function __construct(
         private readonly StationStreamerRepository $streamerRepo,
+        private readonly Scheduler $scheduler,
     ) {
     }
 
@@ -19,20 +23,65 @@ final class DjAuthCommand extends AbstractCommand
         Station $station,
         bool $asAutoDj = false,
         array $payload = []
-    ): bool {
+    ): array {
         if (!$station->getEnableStreamers()) {
-            throw new RuntimeException('Attempted DJ authentication when streamers are disabled on this station.');
+            throw new RuntimeException('Streamers are disabled on this station.');
         }
 
-        $user = $payload['user'] ?? '';
-        $pass = $payload['password'] ?? '';
+        [$user, $pass] = $this->getCredentials($payload);
 
         // Allow connections using the exact broadcast source password.
-        $sourcePw = $station->getFrontendConfig()->getSourcePassword();
-        if (!empty($sourcePw) && strcmp($sourcePw, $pass) === 0) {
-            return true;
+        if ('source' === $user) {
+            $sourcePw = $station->getFrontendConfig()->getSourcePassword();
+
+            if (!empty($sourcePw) && strcmp($sourcePw, $pass) === 0) {
+                return [
+                    'allow' => true,
+                    'username' => $user,
+                ];
+            }
         }
 
-        return $this->streamerRepo->authenticate($station, $user, $pass);
+        $streamer = $this->streamerRepo->getStreamer($station, $user);
+
+        if (null === $streamer) {
+            return [
+                'allow' => false,
+            ];
+        }
+
+        return [
+            'allow' => $streamer->authenticate($pass) && $this->scheduler->canStreamerStreamNow($streamer),
+            'username' => $streamer->getStreamerUsername(),
+            'display_name' => $streamer->getDisplayName(),
+        ];
+    }
+
+    /**
+     * @return array{string, string}
+     */
+    private function getCredentials(array $payload = []): array
+    {
+        $user = Types::stringOrNull($payload['user'] ?? null, true);
+        $pass = Types::stringOrNull($payload['password'] ?? null, true);
+
+        if (null === $pass) {
+            throw new InvalidArgumentException('No credentials provided!');
+        }
+
+        if (null === $user || 'source' === $user) {
+            foreach ([',', ':'] as $separator) {
+                if (str_contains($pass, $separator)) {
+                    [$user, $pass] = explode($separator, $pass, 2);
+                    return [$user, $pass];
+                }
+            }
+        }
+
+        if (null === $user) {
+            throw new InvalidArgumentException('No credentials provided!');
+        }
+
+        return [$user, $pass];
     }
 }

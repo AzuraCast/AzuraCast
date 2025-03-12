@@ -21,7 +21,7 @@ use App\Entity\StationPlaylistMedia;
 use App\Entity\StationQueue;
 use App\Event\Radio\BuildQueue;
 use App\Radio\PlaylistParser;
-use Carbon\CarbonInterface;
+use DateTimeImmutable;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -219,14 +219,14 @@ final class QueueBuilder implements EventSubscriberInterface
      *
      * @param StationPlaylist $playlist
      * @param array $recentSongHistory
-     * @param CarbonInterface $expectedPlayTime
+     * @param DateTimeImmutable $expectedPlayTime
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      * @return StationQueue|StationQueue[]|null
      */
     private function playSongFromPlaylist(
         StationPlaylist $playlist,
         array $recentSongHistory,
-        CarbonInterface $expectedPlayTime,
+        DateTimeImmutable $expectedPlayTime,
         bool $allowDuplicates = false
     ): StationQueue|array|null {
         if (PlaylistSources::RemoteUrl === $playlist->getSource()) {
@@ -246,7 +246,7 @@ final class QueueBuilder implements EventSubscriberInterface
             );
 
             if (!empty($queueEntries)) {
-                $playlist->setPlayedAt($expectedPlayTime->getTimestamp());
+                $playlist->setPlayedAt($expectedPlayTime);
                 $this->em->persist($playlist);
                 return $queueEntries;
             }
@@ -269,7 +269,7 @@ final class QueueBuilder implements EventSubscriberInterface
                 $queueEntry = $this->makeQueueFromApi($validTrack, $playlist, $expectedPlayTime);
 
                 if (null !== $queueEntry) {
-                    $playlist->setPlayedAt($expectedPlayTime->getTimestamp());
+                    $playlist->setPlayedAt($expectedPlayTime);
                     $this->em->persist($playlist);
                     return $queueEntry;
                 }
@@ -290,7 +290,7 @@ final class QueueBuilder implements EventSubscriberInterface
     private function makeQueueFromApi(
         StationPlaylistQueue $validTrack,
         StationPlaylist $playlist,
-        CarbonInterface $expectedPlayTime,
+        DateTimeImmutable $expectedPlayTime,
     ): ?StationQueue {
         $mediaToPlay = $this->em->find(StationMedia::class, $validTrack->media_id);
         if (!$mediaToPlay instanceof StationMedia) {
@@ -312,14 +312,14 @@ final class QueueBuilder implements EventSubscriberInterface
 
     private function getSongFromRemotePlaylist(
         StationPlaylist $playlist,
-        CarbonInterface $expectedPlayTime
+        DateTimeImmutable $expectedPlayTime
     ): ?StationQueue {
         $mediaToPlay = $this->getMediaFromRemoteUrl($playlist);
 
         if (is_array($mediaToPlay)) {
             [$mediaUri, $mediaDuration] = $mediaToPlay;
 
-            $playlist->setPlayedAt($expectedPlayTime->getTimestamp());
+            $playlist->setPlayedAt($expectedPlayTime);
             $this->em->persist($playlist);
 
             $stationQueueEntry = new StationQueue(
@@ -439,7 +439,7 @@ final class QueueBuilder implements EventSubscriberInterface
         $this->spmRepo->resetQueue($playlist);
         $mediaQueue = $this->spmRepo->getQueue($playlist);
 
-        return $this->duplicatePrevention->preventDuplicates($mediaQueue, $recentSongHistory, false);
+        return $this->duplicatePrevention->preventDuplicates($mediaQueue, $recentSongHistory);
     }
 
     public function getNextSongFromRequests(BuildQueue $event): void
@@ -461,7 +461,7 @@ final class QueueBuilder implements EventSubscriberInterface
         $stationQueueEntry = StationQueue::fromRequest($request);
         $this->em->persist($stationQueueEntry);
 
-        $request->setPlayedAt($expectedPlayTime->getTimestamp());
+        $request->setPlayedAt($expectedPlayTime);
         $this->em->persist($request);
 
         $event->setNextSongs($stationQueueEntry);

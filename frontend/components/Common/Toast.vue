@@ -46,18 +46,12 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-    title: {
-        type: String,
-        default: null
-    },
-    message: {
-        type: String,
-        required: true
-    },
-    variant: {
-        type: String,
-        default: 'info'
+import {ToastProps} from "~/functions/useNotify.ts";
+
+withDefaults(
+    defineProps<ToastProps>(),
+    {
+        variant: 'info',
     }
-})
+);
 </script>

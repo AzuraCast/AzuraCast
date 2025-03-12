@@ -21,14 +21,17 @@
                 <div class="flex-shrink buttons ms-lg-2 mt-2 mt-lg-0">
                     <date-range-dropdown
                         v-model="dateRange"
-                        time-picker
-                        :tz="timezone"
+                        :options="{
+                            enableTimePicker: true,
+                            timezone: timezone
+                        }"
+                        class="btn-dark"
                     />
                 </div>
             </div>
         </div>
         <data-table
-            ref="$datatable"
+            ref="$dataTable"
             paginated
             select-fields
             :fields="fields"
@@ -88,11 +91,11 @@
 import Icon from "~/components/Common/Icon.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
-import {computed, nextTick, ref, watch} from "vue";
+import {computed, nextTick, ref, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {getStationApiUrl} from "~/router";
 import {IconDownload, IconTrendingDown, IconTrendingUp} from "~/components/Common/icons";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import useHasDatatable from "~/functions/useHasDatatable.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
@@ -187,12 +190,12 @@ const exportUrl = computed(() => {
     return exportUrl.toString();
 });
 
-const abs = (val) => {
+const abs = (val: number) => {
     return Math.abs(val);
 };
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {navigate} = useHasDatatable($datatable);
+const $dataTable = useTemplateRef('$dataTable');
+const {navigate} = useHasDatatable($dataTable);
 
-watch(dateRange, () => nextTick(navigate));
+watch(dateRange, () => void nextTick(navigate));
 </script>

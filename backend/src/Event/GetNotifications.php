@@ -10,6 +10,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class GetNotifications extends Event
 {
+    /** @var Notification[] */
     private array $notifications = [];
 
     public function __construct(

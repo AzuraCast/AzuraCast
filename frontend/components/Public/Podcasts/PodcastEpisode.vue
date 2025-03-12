@@ -100,12 +100,26 @@ import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState.ts";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
-import PodcastCommon from "./PodcastCommon.vue";
+import PodcastCommon from "~/components/Public/Podcasts/PodcastCommon.vue";
+import {usePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
+import {computed} from "vue";
 
-const {params} = useRoute();
+const {stationId, stationTz} = usePodcastGlobals();
 
-const podcastUrl = getStationApiUrl(`/public/podcast/${params.podcast_id}`);
-const episodeUrl = getStationApiUrl(`/public/podcast/${params.podcast_id}/episode/${params.episode_id}`);
+const podcastUrl = getStationApiUrl(computed(() => {
+    const {params} = useRoute();
+    const podcastId = params.podcast_id as string;
+
+    return `/public/podcast/${podcastId}`;
+}), stationId);
+
+const episodeUrl = getStationApiUrl(computed(() => {
+    const {params} = useRoute();
+    const podcastId = params.podcast_id as string;
+    const episodeId = params.episode_id as string;
+
+    return `/public/podcast/${podcastId}/episode/${episodeId}`;
+}), stationId);
 
 const {axios} = useAxios();
 
@@ -119,5 +133,5 @@ const {state: episode, isLoading: episodeLoading} = useRefreshableAsyncState(
     {},
 );
 
-const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
+const {formatTimestampAsDateTime} = useStationDateTimeFormatter(stationTz);
 </script>

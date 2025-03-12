@@ -244,51 +244,34 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/Common/Icon.vue';
+import Icon from "~/components/Common/Icon.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useAxios} from "~/vendor/axios";
 import {useAsyncState, useIntervalFn} from "@vueuse/core";
-import {computed, ref} from "vue";
+import {computed, useTemplateRef} from "vue";
 import DashboardCharts from "~/components/DashboardCharts.vue";
 import {useTranslate} from "~/vendor/gettext";
 import Lightbox from "~/components/Common/Lightbox.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import HeaderInlinePlayer from "~/components/HeaderInlinePlayer.vue";
-import {LightboxTemplateRef, useProvideLightbox} from "~/vendor/lightbox";
+import {useProvideLightbox} from "~/vendor/lightbox";
 import useOptionalStorage from "~/functions/useOptionalStorage";
 import {IconAccountCircle, IconHeadphones, IconInfo, IconSettings, IconWarning} from "~/components/Common/icons";
 import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
 import {getApiUrl} from "~/router.ts";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import useHasDatatable from "~/functions/useHasDatatable.ts";
+import {ApiDashboard, ApiNotification} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    profileUrl: {
-        type: String,
-        required: true
-    },
-    adminUrl: {
-        type: String,
-        required: true
-    },
-    showAdmin: {
-        type: Boolean,
-        required: true
-    },
-    showCharts: {
-        type: Boolean,
-        required: true
-    },
-    manageStationsUrl: {
-        type: String,
-        required: true
-    },
-    showAlbumArt: {
-        type: Boolean,
-        required: true
-    }
-});
+defineProps<{
+    profileUrl: string,
+    adminUrl: string,
+    showAdmin: boolean,
+    showCharts: boolean,
+    manageStationsUrl: string,
+    showAlbumArt: boolean,
+}>();
 
 const notificationsUrl = getApiUrl('/frontend/dashboard/notifications');
 const chartsUrl = getApiUrl('/frontend/dashboard/charts');
@@ -306,14 +289,15 @@ const langShowHideCharts = computed(() => {
 
 const {axios} = useAxios();
 
-const {state: notifications, isLoading: notificationsLoading} = useAsyncState(
-    () => axios.get(notificationsUrl.value).then((r) => r.data),
+const {state: notifications, isLoading: notificationsLoading} = useAsyncState<ApiNotification[]>(
+    async () => (await axios.get<ApiNotification[]>(notificationsUrl.value)).data,
     []
 );
 
-const stationFields: DataTableField[] = [
+const stationFields: DataTableField<ApiDashboard>[] = [
     {
         key: 'play_button',
+        label: '',
         sortable: false,
         class: 'shrink'
     },
@@ -334,12 +318,13 @@ const stationFields: DataTableField[] = [
     },
     {
         key: 'actions',
+        label: '',
         sortable: false,
         class: 'shrink'
     }
 ];
 
-const $datatable = ref<DataTableTemplateRef>(null);
+const $datatable = useTemplateRef('$datatable');
 const {refresh} = useHasDatatable($datatable);
 
 useIntervalFn(
@@ -347,6 +332,6 @@ useIntervalFn(
     computed(() => (document.hidden) ? 30000 : 15000)
 );
 
-const $lightbox = ref<LightboxTemplateRef>(null);
+const $lightbox = useTemplateRef('$lightbox');
 useProvideLightbox($lightbox);
 </script>

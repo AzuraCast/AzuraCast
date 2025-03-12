@@ -54,16 +54,16 @@
 </template>
 
 <script setup lang="ts">
-import {required} from '@vuelidate/validators';
+import {required} from "@vuelidate/validators";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {nextTick, ref} from "vue";
+import {nextTick, useTemplateRef} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 import {getStationApiUrl} from "~/router.ts";
 import InfoCard from "~/components/Common/InfoCard.vue";
 
@@ -80,17 +80,17 @@ const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
     }
 );
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {hide, show: open} = useHasModal($modal);
 
 const onHidden = () => {
     resetForm();
 }
 
-const $field = ref<InstanceType<typeof FormGroupField> | null>(null);
+const $field = useTemplateRef('$field');
 
 const onShown = () => {
-    nextTick(() => {
+    void nextTick(() => {
         $field.value?.focus();
     })
 };
@@ -101,7 +101,7 @@ const {$gettext} = useTranslate();
 
 const doUpdateMetadata = () => {
     ifValid(() => {
-        axios.post(updateMetadataUrl.value, form.value).then(() => {
+        void axios.post(updateMetadataUrl.value, form.value).then(() => {
             notifySuccess($gettext('Metadata updated.'));
         }).finally(() => {
             hide();

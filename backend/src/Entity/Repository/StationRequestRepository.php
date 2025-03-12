@@ -9,8 +9,8 @@ use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationRequest;
 use App\Radio\AutoDJ;
-use Carbon\CarbonImmutable;
-use Carbon\CarbonInterface;
+use App\Utilities\Time;
+use DateTimeImmutable;
 use Exception as PhpException;
 
 /**
@@ -42,7 +42,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
             <<<'DQL'
                 DELETE FROM App\Entity\StationRequest sr
                 WHERE sr.station = :station
-                AND sr.played_at = 0
+                AND sr.played_at IS NULL
             DQL
         )->setParameter('station', $station)
             ->execute();
@@ -53,7 +53,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
      */
     public function isTrackPending(StationMedia $media, Station $station): bool
     {
-        $pendingRequestThreshold = time() - (60 * 10);
+        $pendingRequestThreshold = Time::nowUtc()->subMinutes(10);
 
         try {
             $pendingRequest = $this->em->createQuery(
@@ -62,7 +62,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
                     FROM App\Entity\StationRequest sr
                     WHERE sr.track_id = :track_id
                     AND sr.station_id = :station_id
-                    AND (sr.timestamp >= :threshold OR sr.played_at = 0)
+                    AND (sr.timestamp >= :threshold OR sr.played_at IS NULL)
                     ORDER BY sr.timestamp DESC
                 DQL
             )->setParameter('track_id', $media->getId())
@@ -79,30 +79,28 @@ final class StationRequestRepository extends AbstractStationBasedRepository
 
     public function getNextPlayableRequest(
         Station $station,
-        ?CarbonInterface $now = null
+        ?DateTimeImmutable $now = null
     ): ?StationRequest {
-        $now ??= CarbonImmutable::now($station->getTimezoneObject());
+        $tz = $station->getTimezoneObject();
+        $now = Time::nowInTimezone($tz, $now);
 
         // Look up all requests that have at least waited as long as the threshold.
         $requests = $this->em->createQuery(
             <<<'DQL'
                 SELECT sr, sm
                 FROM App\Entity\StationRequest sr JOIN sr.track sm
-                WHERE sr.played_at = 0
+                WHERE sr.played_at IS NULL
                 AND sr.station = :station
                 ORDER BY sr.skip_delay DESC, sr.id ASC
             DQL
         )->setParameter('station', $station)
             ->execute();
 
-        foreach ($requests as $request) {
-            /** @var StationRequest $request */
-            if ($request->shouldPlayNow($now) && !$this->hasPlayedRecently($request->getTrack(), $station)) {
-                return $request;
-            }
-        }
-
-        return null;
+        return array_find(
+            $requests,
+            fn(StationRequest $request) => $request->shouldPlayNow($now)
+                && !$this->hasPlayedRecently($request->getTrack(), $station)
+        );
     }
 
     /**
@@ -116,7 +114,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
             return false;
         }
 
-        $lastPlayThreshold = time() - ($lastPlayThresholdMins * 60);
+        $lastPlayThreshold = Time::nowUtc()->subMinutes($lastPlayThresholdMins);
 
         $recentTracks = $this->em->createQuery(
             <<<'DQL'

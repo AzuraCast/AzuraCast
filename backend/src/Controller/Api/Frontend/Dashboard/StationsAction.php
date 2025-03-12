@@ -16,9 +16,32 @@ use App\Entity\Station;
 use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Paginator;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[
+    OA\Get(
+        path: '/frontend/dashboard/stations',
+        operationId: 'getDashboardStations',
+        summary: 'List stations that can be managed by the current user account on the dashboard.',
+        tags: [OpenApi::TAG_MISC],
+        responses: [
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(
+                        ref: Dashboard::class
+                    )
+                )
+            ),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class StationsAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
@@ -76,16 +99,11 @@ final class StationsAction implements SingleActionInterface
         $paginator = Paginator::fromArray($viewStations, $request);
 
         $router = $request->getRouter();
-        $baseUrl = $router->getBaseUrl();
         $listenersEnabled = $this->readSettings()->isAnalyticsEnabled();
 
         $paginator->setPostprocessor(
-            function (NowPlaying $np) use ($router, $baseUrl, $listenersEnabled, $acl) {
-                $np->resolveUrls($baseUrl);
-
-                $row = new Dashboard();
-                $row->fromParentObject($np);
-
+            function (NowPlaying $np) use ($router, $listenersEnabled, $acl) {
+                $row = Dashboard::fromParent($np);
                 $row->links = [
                     'public' => $router->named('public:index', ['station_id' => $np->station->shortcode]),
                     'manage' => $router->named('stations:index:index', ['station_id' => $np->station->id]),

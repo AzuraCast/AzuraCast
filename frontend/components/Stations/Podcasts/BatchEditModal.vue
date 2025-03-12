@@ -62,12 +62,12 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 import {useAsyncState} from "@vueuse/core";
 import Loading from "~/components/Common/Loading.vue";
 import useHandlePodcastBatchResponse from "~/components/Stations/Podcasts/useHandlePodcastBatchResponse.ts";
@@ -75,23 +75,19 @@ import {map} from "lodash";
 import {useTranslate} from "~/vendor/gettext.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
 import BatchEditRow from "~/components/Stations/Podcasts/BatchEditRow.vue";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import {ApiPodcastBatchResult, ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    batchUrl: {
-        type: String,
-        required: true
-    },
-    selectedItems: {
-        type: Object,
-        required: true
-    },
-});
+const props = defineProps<{
+    batchUrl: string,
+    selectedItems: Array<any>,
+}>();
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const {v$, resetForm, ifValid} = useVuelidateOnForm();
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show: showModal, hide} = useHasModal($modal);
 
 const {axios} = useAxios();
@@ -105,11 +101,11 @@ const blankRow = {
     episode_number: null
 };
 
-const {state: rows, execute: loadRows, isLoading} = useAsyncState(
-    () => axios.put(props.batchUrl, {
+const {state: rows, execute: loadRows, isLoading} = useAsyncState<ApiPodcastEpisode[], any[], false>(
+    () => axios.put<ApiPodcastBatchResult>(props.batchUrl, {
         'do': 'list',
         'episodes': map(props.selectedItems, 'id'),
-    }).then((r) => map(r.data.records, (row) => mergeExisting(blankRow, row))),
+    }).then((r) => map(r.data.records ?? [], (row) => mergeExisting(blankRow, row))),
     [],
     {
         immediate: false,
@@ -118,7 +114,7 @@ const {state: rows, execute: loadRows, isLoading} = useAsyncState(
 );
 
 const show = () => {
-    loadRows();
+    void loadRows();
     showModal();
 };
 
@@ -132,7 +128,7 @@ const {handleBatchResponse} = useHandlePodcastBatchResponse();
 
 const doBatchEdit = () => {
     ifValid(() => {
-        axios.put(props.batchUrl, {
+        void axios.put(props.batchUrl, {
             'do': 'edit',
             'episodes': map(props.selectedItems, 'id'),
             'records': rows.value

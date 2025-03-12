@@ -1,21 +1,21 @@
 <template>
     <div class="radio-player-widget">
         <audio-player
-            :title="np.now_playing.song.text"
+            :title="np.now_playing?.song?.text"
             :volume="volume"
             :is-muted="isMuted"
         />
 
         <div class="now-playing-details">
             <div
-                v-if="showAlbumArt && np.now_playing.song.art"
+                v-if="showAlbumArt && np.now_playing?.song?.art"
                 class="now-playing-art"
             >
                 <album-art :src="np.now_playing.song.art" />
             </div>
             <div class="now-playing-main">
                 <h6
-                    v-if="np.live.is_live"
+                    v-if="np.live?.is_live"
                     class="now-playing-live"
                 >
                     <span class="badge text-bg-primary me-2">
@@ -29,7 +29,7 @@
                         {{ offlineText ?? $gettext('Station Offline') }}
                     </h4>
                 </div>
-                <div v-else-if="np.now_playing.song.title !== ''">
+                <div v-else-if="np.now_playing?.song?.title">
                     <h4 class="now-playing-title">
                         {{ np.now_playing.song.title }}
                     </h4>
@@ -39,7 +39,7 @@
                 </div>
                 <div v-else>
                     <h4 class="now-playing-title">
-                        {{ np.now_playing.song.text }}
+                        {{ np.now_playing?.song?.text }}
                     </h4>
                 </div>
 
@@ -112,7 +112,10 @@
                 </div>
             </div>
 
-            <div class="radio-control-volume d-flex align-items-center">
+            <div
+                v-if="showVolume"
+                class="radio-control-volume d-flex align-items-center"
+            >
                 <div class="flex-shrink-0 mx-2">
                     <mute-button
                         class="p-0 text-secondary"
@@ -138,26 +141,43 @@
 </template>
 
 <script setup lang="ts">
-import AudioPlayer from '~/components/Common/AudioPlayer.vue';
+import AudioPlayer from "~/components/Common/AudioPlayer.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import {computed, nextTick, onMounted, ref, shallowRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
-import playerProps from "~/components/Public/playerProps";
 import MuteButton from "~/components/Common/MuteButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
-import {useAzuraCastStation} from "~/vendor/azuracast";
 import usePlayerVolume from "~/functions/usePlayerVolume";
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {useEventListener} from "@vueuse/core";
+import useShowVolume from "~/functions/useShowVolume.ts";
+import {ApiNowPlaying} from "~/entities/ApiInterfaces.ts";
+import {NowPlayingProps} from "~/functions/useNowPlaying.ts";
 
-const props = defineProps({
-    ...playerProps
+export interface PlayerProps extends NowPlayingProps {
+    offlineText?: string,
+    showHls?: boolean,
+    showAlbumArt?: boolean,
+    autoplay?: boolean
+}
+
+defineOptions({
+    inheritAttrs: false
 });
 
-const emit = defineEmits(['np_updated']);
+const props = withDefaults(
+    defineProps<PlayerProps>(),
+    {
+        showHls: true,
+        showAlbumArt: true,
+        autoplay: true
+    }
+);
 
-const {offlineText} = useAzuraCastStation();
+const emit = defineEmits<{
+    (e: 'np_updated', np: ApiNowPlaying): void
+}>();
 
 const {
     np,
@@ -189,7 +209,7 @@ const hlsIsDefault = computed(() => {
 const {$gettext} = useTranslate();
 
 const streams = computed<CurrentStreamDescriptor[]>(() => {
-    const allStreams = [];
+    const allStreams: CurrentStreamDescriptor[] = [];
 
     if (enableHls.value) {
         allStreams.push({
@@ -199,17 +219,17 @@ const streams = computed<CurrentStreamDescriptor[]>(() => {
         });
     }
 
-    np.value?.station?.mounts.forEach(function (mount) {
+    np.value?.station?.mounts?.forEach(function (mount) {
         allStreams.push({
-            name: mount.name,
+            name: mount.name ?? mount.url,
             url: mount.url,
             hls: false,
         });
     });
 
-    np.value?.station?.remotes.forEach(function (remote) {
+    np.value?.station?.remotes?.forEach(function (remote) {
         allStreams.push({
-            name: remote.name,
+            name: remote.name ?? remote.url,
             url: remote.url,
             hls: false,
         });
@@ -219,6 +239,7 @@ const streams = computed<CurrentStreamDescriptor[]>(() => {
 });
 
 const volume = usePlayerVolume();
+const showVolume = useShowVolume();
 
 const urlParamVolume = (new URL(document.location.href)).searchParams.get('volume');
 if (null !== urlParamVolume) {
@@ -244,11 +265,11 @@ const switchStream = (new_stream: CurrentStreamDescriptor) => {
 };
 
 if (props.autoplay) {
-    const stop = useEventListener(document, "now-playing", async () => {
-        await nextTick();
-
-        switchStream(currentStream.value);
-        stop();
+    const stop = useEventListener(document, "now-playing", () => {
+        void nextTick(() => {
+            switchStream(currentStream.value);
+            stop();
+        });
     });
 }
 
@@ -256,12 +277,12 @@ onMounted(() => {
     document.dispatchEvent(new CustomEvent("player-ready"));
 });
 
-const onNowPlayingUpdated = (np_new) => {
+const onNowPlayingUpdated = (np_new: ApiNowPlaying) => {
     emit('np_updated', np_new);
 
     // Set a "default" current stream if none exists.
     const $streams = streams.value;
-    let $currentStream = currentStream.value;
+    let $currentStream: CurrentStreamDescriptor | null = currentStream.value;
 
     if ($currentStream.url === '' && $streams.length > 0) {
         if (hlsIsDefault.value) {
@@ -269,9 +290,9 @@ const onNowPlayingUpdated = (np_new) => {
         } else {
             $currentStream = null;
 
-            if (np_new.station.listen_url !== '') {
+            if (np_new.station?.listen_url) {
                 $streams.forEach(function (stream) {
-                    if (stream.url === np_new.station.listen_url) {
+                    if (stream.url === np_new.station?.listen_url) {
                         $currentStream = stream;
                     }
                 });

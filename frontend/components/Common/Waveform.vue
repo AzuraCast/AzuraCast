@@ -28,17 +28,18 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-5">
+            <div
+                v-if="showVolume"
+                class="col-md-5"
+            >
                 <div class="inline-volume-controls d-flex align-items-center">
-                    <div class="flex-shrink-0">
-                        <button
-                            type="button"
-                            class="btn btn-sm btn-outline-inverse"
-                            :title="$gettext('Mute')"
-                            @click="volume = 0"
-                        >
-                            <icon :icon="IconVolumeOff" />
-                        </button>
+                    <div class="flex-shrink-0 mx-2">
+                        <mute-button
+                            class="p-0"
+                            :volume="volume"
+                            :is-muted="isMuted"
+                            @toggle-mute="toggleMute"
+                        />
                     </div>
                     <div class="flex-fill mx-1">
                         <input
@@ -51,16 +52,6 @@
                             step="1"
                         >
                     </div>
-                    <div class="flex-shrink-0">
-                        <button
-                            type="button"
-                            class="btn btn-sm btn-outline-inverse"
-                            :title="$gettext('Full Volume')"
-                            @click="volume = 100"
-                        >
-                            <icon :icon="IconVolumeUp" />
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -68,37 +59,44 @@
 </template>
 
 <script setup lang="ts">
-import WS from 'wavesurfer.js';
-import timeline from 'wavesurfer.js/dist/plugins/timeline.js';
-import regions from 'wavesurfer.js/dist/plugins/regions.js';
-import getLogarithmicVolume from '~/functions/getLogarithmicVolume';
-import Icon from './Icon.vue';
-import {onMounted, onUnmounted, ref, watch} from "vue";
+import WaveSurfer from "wavesurfer.js";
+import timelinePlugin from "wavesurfer.js/dist/plugins/timeline.js";
+import regionsPlugin, {RegionParams} from "wavesurfer.js/dist/plugins/regions.js";
+import getLogarithmicVolume from "~/functions/getLogarithmicVolume";
+import {onMounted, onUnmounted, ref, toRef, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
 import usePlayerVolume from "~/functions/usePlayerVolume";
-import {IconVolumeOff, IconVolumeUp} from "~/components/Common/icons";
+import useShowVolume from "~/functions/useShowVolume.ts";
+import MuteButton from "~/components/Common/MuteButton.vue";
 
-const props = defineProps({
-    audioUrl: {
-        type: String,
-        required: true
-    },
-    waveformUrl: {
-        type: String,
-        required: true
-    },
-    waveformCacheUrl: {
-        type: String,
-        default: null
+const props = withDefaults(
+    defineProps<{
+        regions?: RegionParams[],
+        audioUrl: string,
+        waveformUrl: string,
+        waveformCacheUrl?: string,
+    }>(),
+    {
+        regions: () => [],
     }
-});
+);
 
-const emit = defineEmits(['ready']);
+const emit = defineEmits<{
+    (e: 'ready', duration: number): void
+}>();
 
-let wavesurfer = null;
-let wsRegions = null;
+let wavesurfer: WaveSurfer | null = null;
+let wsRegions: regionsPlugin | null = null;
 
 const volume = usePlayerVolume();
+const showVolume = useShowVolume();
+
+const isMuted = ref(false);
+
+const toggleMute = () => {
+    isMuted.value = !isMuted.value;
+}
+
 const zoom = ref(0);
 
 watch(zoom, (val) => {
@@ -109,12 +107,16 @@ watch(volume, (val) => {
     wavesurfer?.setVolume(getLogarithmicVolume(val));
 });
 
+watch(isMuted, (val) => {
+    wavesurfer?.setMuted(val);
+});
+
 const isExternalJson = ref(false);
 
 const {axiosSilent} = useAxios();
 
 const cacheWaveformRemotely = () => {
-    if (props.waveformCacheUrl === null) {
+    if (!props.waveformCacheUrl) {
         return;
     }
 
@@ -133,35 +135,28 @@ const cacheWaveformRemotely = () => {
         data: peaks
     };
 
-    axiosSilent.post(props.waveformCacheUrl, dataToCache);
+    void axiosSilent.post(props.waveformCacheUrl, dataToCache);
 };
 
 onMounted(() => {
-    wavesurfer = WS.create({
+    wavesurfer = WaveSurfer.create({
         container: '#waveform_container',
         waveColor: '#2196f3',
         progressColor: '#4081CF',
     });
 
-    wavesurfer.registerPlugin(timeline.create({
-        primaryColor: '#222',
-        secondaryColor: '#888',
-        primaryFontColor: '#222',
-        secondaryFontColor: '#888'
-    }));
+    wavesurfer.registerPlugin(timelinePlugin.create());
 
-    wsRegions = wavesurfer.registerPlugin(regions.create({
-        regions: []
-    }));
+    wsRegions = wavesurfer.registerPlugin(regionsPlugin.create());
 
-    wavesurfer.on('ready', () => {
+    wavesurfer.on('ready', (duration: number) => {
         wavesurfer.setVolume(getLogarithmicVolume(volume.value));
 
         if (!isExternalJson.value) {
             cacheWaveformRemotely();
         }
 
-        emit('ready');
+        emit('ready', duration);
     });
 
     axiosSilent.get(props.waveformUrl).then((resp) => {
@@ -169,23 +164,40 @@ onMounted(() => {
 
         if (waveformJson) {
             isExternalJson.value = true;
-            wavesurfer.load(props.audioUrl, waveformJson);
+            void wavesurfer.load(props.audioUrl, waveformJson);
         } else {
             isExternalJson.value = false;
-            wavesurfer.load(props.audioUrl);
+            void wavesurfer.load(props.audioUrl);
         }
     }).catch(() => {
         isExternalJson.value = false;
-        wavesurfer.load(props.audioUrl);
+        void wavesurfer.load(props.audioUrl);
     });
 });
+
+watch(
+    toRef(props, 'regions'),
+    (regions: RegionParams[]) => {
+        wsRegions?.clearRegions();
+
+        regions.forEach((region) => {
+            wsRegions?.addRegion(
+                {
+                    resize: false,
+                    drag: false,
+                    ...region,
+                }
+            );
+        });
+    },
+);
 
 onUnmounted(() => {
     wavesurfer = null;
 });
 
 const play = () => {
-    wavesurfer?.play();
+    void wavesurfer?.play();
 };
 
 const stop = () => {
@@ -200,29 +212,11 @@ const getDuration = () => {
     return wavesurfer?.getDuration();
 }
 
-const addRegion = (start, end, color) => {
-    wsRegions?.addRegion(
-        {
-            start: start,
-            end: end,
-            resize: false,
-            drag: false,
-            color: color
-        }
-    );
-};
-
-const clearRegions = () => {
-    wsRegions?.clearRegions();
-}
-
 defineExpose({
     play,
     stop,
     getCurrentTime,
     getDuration,
-    addRegion,
-    clearRegions
 })
 </script>
 

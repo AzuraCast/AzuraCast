@@ -26,7 +26,6 @@ use Symfony\Component\Serializer\Annotation as Serializer;
 ]
 class StationMedia implements
     SongInterface,
-    ProcessableMediaInterface,
     PathAwareInterface,
     IdentifiableEntityInterface
 {
@@ -59,8 +58,8 @@ class StationMedia implements
     #[ORM\Column(length: 15, nullable: true)]
     protected ?string $isrc = null;
 
-    #[ORM\Column(type: 'decimal', precision: 7, scale: 2, nullable: false)]
-    protected string $length = '0.00';
+    #[ORM\Column(type: 'float', nullable: false)]
+    protected float $length = 0.0;
 
     #[ORM\Column(length: 500)]
     protected string $path;
@@ -178,12 +177,12 @@ class StationMedia implements
 
     public function getLength(): float
     {
-        return Types::float($this->length);
+        return $this->length;
     }
 
     public function setLength(float $length): void
     {
-        $this->length = (string)$length;
+        $this->length = $length;
     }
 
     public function getPath(): string
@@ -242,7 +241,7 @@ class StationMedia implements
     /**
      * Get the length with cue-in and cue-out points included.
      */
-    public function getCalculatedLength(): int
+    public function getCalculatedLength(): float
     {
         $length = $this->getLength();
 
@@ -259,7 +258,7 @@ class StationMedia implements
             $length -= $cueIn;
         }
 
-        return (int)floor($length);
+        return $length;
     }
 
     /**
@@ -364,11 +363,6 @@ class StationMedia implements
     public function __toString(): string
     {
         return 'StationMedia ' . $this->id . ': ' . $this->artist . ' - ' . $this->title;
-    }
-
-    public static function needsReprocessing(int $fileModifiedTime = 0, int $dbModifiedTime = 0): bool
-    {
-        return $fileModifiedTime > $dbModifiedTime;
     }
 
     public static function getArtPath(string $uniqueId): string

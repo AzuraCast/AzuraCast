@@ -15,7 +15,7 @@
                     :disabled="dirHistory.length === 0"
                     @click="pageBack"
                 >
-                    <icon :icon="IconChevronLeft" />
+                    <icon :icon="IconChevronLeft"/>
                     <span>
                         {{ $gettext('Back') }}
                     </span>
@@ -37,7 +37,7 @@
             <div class="col-md-12">
                 <data-table
                     id="station_media"
-                    ref="$datatable"
+                    ref="$dataTable"
                     show-toolbar
                     paginated
                     :fields="fields"
@@ -49,7 +49,7 @@
                     <template #cell(name)="{item}">
                         <div class="is_dir d-flex align-items-center">
                             <span class="file-icon me-2">
-                                <icon :icon="IconFolder" />
+                                <icon :icon="IconFolder"/>
                             </span>
 
                             <a
@@ -74,8 +74,8 @@
             <button
                 type="button"
                 class="btn btn-primary"
-                @click="doMove"
                 :disabled="props.selectedItems.all.length === 0"
+                @click="doMove"
             >
                 {{ $gettext('Move to Directory') }}
             </button>
@@ -84,41 +84,30 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import Icon from '~/components/Common/Icon.vue';
-import {computed, ref} from "vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import Icon from "~/components/Common/Icon.vue";
+import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {IconChevronLeft, IconFolder} from "~/components/Common/icons";
-import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchResponse.ts";
 import {useAsyncState} from "@vueuse/core";
+import {MediaSelectedItems} from "~/components/Stations/Media.vue";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
-const props = defineProps({
-    selectedItems: {
-        type: Object,
-        required: true
-    },
-    currentDirectory: {
-        type: String,
-        required: true
-    },
-    batchUrl: {
-        type: String,
-        required: true
-    },
-    listDirectoriesUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    selectedItems: MediaSelectedItems,
+    currentDirectory: string,
+    batchUrl: string,
+    listDirectoriesUrl: string,
+}>();
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
-const destinationDirectory = ref('');
-const dirHistory = ref([]);
+const destinationDirectory = ref<string>('');
+const dirHistory = ref<string[]>([]);
 
 const {$gettext} = useTranslate();
 
@@ -128,13 +117,13 @@ const fields: DataTableField[] = [
 
 const langHeader = computed(() => {
     return $gettext(
-        'Move %{ num } File(s) to',
-        {num: props.selectedItems.all.length}
+        'Move %{num} File(s) to',
+        {num: String(props.selectedItems.all.length)}
     );
 });
 
-const $modal = ref<ModalTemplateRef>(null);
-const {show: open, hide} = useHasModal($modal);
+const $modal = useTemplateRef('$modal');
+const {show, hide} = useHasModal($modal);
 
 const onHidden = () => {
     dirHistory.value = [];
@@ -152,15 +141,18 @@ const {state: directories, execute: reload, isLoading} = useAsyncState(
         }
     }).then((r) => r.data.rows),
     [],
+    {
+        immediate: false
+    }
 );
 
 const doMove = () => {
-    axios.put(props.batchUrl, {
-            'do': 'move',
-            'currentDirectory': props.currentDirectory,
-            'directory': destinationDirectory.value,
-            'files': props.selectedItems.files,
-            'dirs': props.selectedItems.directories
+    void axios.put(props.batchUrl, {
+        'do': 'move',
+        'currentDirectory': props.currentDirectory,
+        'directory': destinationDirectory.value,
+        'files': props.selectedItems.files,
+        'dirs': props.selectedItems.directories
     }).then(({data}) => {
         handleBatchResponse(
             data,
@@ -173,14 +165,15 @@ const doMove = () => {
     });
 };
 
-const $datatable = ref<DataTableTemplateRef>(null);
+const $dataTable = useTemplateRef('$dataTable');
 
 const onDirChange = () => {
-    reload();
-    $datatable.value?.refresh();
+    void reload().finally(() => {
+        $dataTable.value?.refresh();
+    });
 }
 
-const enterDirectory = (path) => {
+const enterDirectory = (path: string) => {
     dirHistory.value.push(path);
     destinationDirectory.value = path;
     onDirChange();
@@ -197,6 +190,11 @@ const pageBack = () => {
     destinationDirectory.value = newDirectory;
     onDirChange();
 };
+
+const open = () => {
+    void reload();
+    show();
+}
 
 defineExpose({
     open

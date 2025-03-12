@@ -1,3 +1,5 @@
+// noinspection JSDeprecatedSymbols
+
 import {computed, ref, watch} from "vue";
 import {useInjectWebDjNode} from "~/components/Public/WebDJ/useWebDjNode";
 
@@ -70,17 +72,16 @@ export function useWebDjTrack() {
         return newSource;
     };
 
-    let controlsNode = null;
-    let trackGainNode = null;
-    let passThroughNode = null;
+    let controlsNode: ScriptProcessorNode | null = null;
+    let trackGainNode: GainNode | null = null;
+    let passThroughNode: ScriptProcessorNode | null = null;
 
     const setTrackGain = (newGain) => {
-        if (null === trackGainNode) {
-            return;
+        if (trackGainNode?.gain?.value) {
+            trackGainNode.gain.value = parseFloat(newGain) / 100.0;
         }
-
-        trackGainNode.gain.value = parseFloat(newGain) / 100.0;
     };
+
     watch(trackGain, setTrackGain);
 
     const prepare = () => {
@@ -95,7 +96,7 @@ export function useWebDjTrack() {
         passThroughNode.connect(context.value.destination);
         trackGainNode.connect(passThroughNode);
 
-        context.value.resume();
+        void context.value.resume();
 
         return trackGainNode;
     }

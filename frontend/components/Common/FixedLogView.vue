@@ -18,13 +18,11 @@ import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import CodeMirror from "vue-codemirror6";
 import useTheme from "~/functions/theme";
+import {ApiLogContents} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    logUrl: {
-        type: String,
-        required: true,
-    }
-});
+const props = defineProps<{
+    logUrl: string
+}>();
 
 const isLoading = ref(false);
 const logs = ref('');
@@ -38,12 +36,12 @@ watch(toRef(props, 'logUrl'), (newLogUrl) => {
     logs.value = '';
 
     if (null !== newLogUrl) {
-        axios({
+        void axios.request<ApiLogContents>({
             method: 'GET',
             url: props.logUrl
-        }).then((resp) => {
-            if (resp.data.contents !== '') {
-                logs.value = resp.data.contents;
+        }).then(({data}) => {
+            if (data.contents !== '') {
+                logs.value = data.contents;
             }
         }).finally(() => {
             isLoading.value = false;

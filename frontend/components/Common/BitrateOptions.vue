@@ -9,7 +9,8 @@
         >
             <form-label
                 :is-required="isRequired"
-                :advanced="advanced"
+                :advanced="props.advanced"
+                :high-cpu="props.highCpu"
             >
                 <slot
                     name="label"
@@ -70,56 +71,41 @@
 </template>
 
 <script setup lang="ts">
-import {formFieldProps, useFormField} from "~/components/Form/useFormField";
-import {computed, ComputedRef, useSlots} from "vue";
+import {FormFieldEmits, FormFieldProps, useFormField} from "~/components/Form/useFormField";
+import {computed, useSlots, WritableComputedRef} from "vue";
 import {includes, map} from "lodash";
 import useSlotsExcept from "~/functions/useSlotsExcept.ts";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
-import FormLabel from "~/components/Form/FormLabel.vue";
+import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
+import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 
-const props = defineProps({
-    ...formFieldProps,
-    id: {
-        type: String,
-        required: true
-    },
-    maxBitrate: {
-        type: Number,
-        required: true
-    },
-    name: {
-        type: String,
-        default: null,
-    },
-    label: {
-        type: String,
-        default: null
-    },
-    description: {
-        type: String,
-        default: null
-    },
-    advanced: {
-        type: Boolean,
-        default: false
-    }
-});
+type T = number | null
+
+interface BitrateOptionsProps extends FormFieldProps<T>, FormLabelParentProps {
+    id: string,
+    maxBitrate: number,
+    name?: string,
+    label?: string,
+    description?: string,
+}
+
+const props = defineProps<BitrateOptionsProps>();
 
 const slots = useSlots();
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<FormFieldEmits<T>>();
 
-const {model} = useFormField(props, emit);
+const {model, isRequired} = useFormField<T>(props, emit);
 
 const radioBitrates = [
     32, 48, 64, 96, 128, 192, 256, 320
 ].filter((bitrate) => props.maxBitrate === 0 || bitrate <= props.maxBitrate);
 
-const customField: ComputedRef<number | null> = computed({
+const customField: WritableComputedRef<T> = computed({
     get() {
-        return includes(radioBitrates, model.value)
-            ? ''
+        return includes(radioBitrates, Number(model.value))
+            ? null
             : model.value;
     },
     set(newValue) {
@@ -127,9 +113,9 @@ const customField: ComputedRef<number | null> = computed({
     }
 });
 
-const radioField: ComputedRef<number | string | null> = computed({
+const radioField: WritableComputedRef<"custom" | T> = computed({
     get() {
-        return includes(radioBitrates, model.value)
+        return includes(radioBitrates, Number(model.value))
             ? model.value
             : 'custom';
     },
@@ -140,12 +126,12 @@ const radioField: ComputedRef<number | string | null> = computed({
     }
 });
 
-const bitrateOptions = map(
+const bitrateOptions: SimpleFormOptionInput = map(
     radioBitrates,
-    (val) => {
+    (val: number) => {
         return {
             value: val,
-            text: val
+            text: String(val)
         };
     }
 );

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Interfaces\SongInterface;
+use App\Utilities\Time;
 use App\Utilities\Types;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[
@@ -65,17 +67,17 @@ class SongHistory implements
     #[ORM\Column(nullable: true, insertable: false, updatable: false)]
     protected ?int $request_id = null;
 
-    #[ORM\Column]
-    protected int $timestamp_start = 0;
+    #[ORM\Column(type: 'datetime_immutable', precision: 6)]
+    protected DateTimeImmutable $timestamp_start;
 
-    #[ORM\Column(nullable: true)]
-    protected ?int $duration = null;
+    #[ORM\Column(type: 'float', nullable: true)]
+    protected ?float $duration = null;
 
     #[ORM\Column(nullable: true)]
     protected ?int $listeners_start = null;
 
-    #[ORM\Column]
-    protected int $timestamp_end = 0;
+    #[ORM\Column(type: 'datetime_immutable', precision: 6, nullable: true)]
+    protected ?DateTimeImmutable $timestamp_end = null;
 
     #[ORM\Column(nullable: true)]
     protected ?int $listeners_end = 0;
@@ -104,6 +106,7 @@ class SongHistory implements
     ) {
         $this->setSong($song);
         $this->station = $station;
+        $this->timestamp_start = Time::nowUtc();
     }
 
     public function getStation(): Station
@@ -116,7 +119,7 @@ class SongHistory implements
         return $this->playlist;
     }
 
-    public function setPlaylist(StationPlaylist $playlist = null): void
+    public function setPlaylist(?StationPlaylist $playlist = null): void
     {
         $this->playlist = $playlist;
     }
@@ -155,22 +158,17 @@ class SongHistory implements
         $this->request = $request;
     }
 
-    public function getTimestampStart(): int
+    public function getTimestampStart(): DateTimeImmutable
     {
         return $this->timestamp_start;
     }
 
-    public function setTimestampStart(int $timestampStart): void
-    {
-        $this->timestamp_start = $timestampStart;
-    }
-
-    public function getDuration(): ?int
+    public function getDuration(): ?float
     {
         return $this->duration;
     }
 
-    public function setDuration(?int $duration): void
+    public function setDuration(?float $duration): void
     {
         $this->duration = $duration;
     }
@@ -185,23 +183,9 @@ class SongHistory implements
         $this->listeners_start = $listenersStart;
     }
 
-    public function getTimestampEnd(): int
+    public function getTimestampEnd(): ?DateTimeImmutable
     {
         return $this->timestamp_end;
-    }
-
-    public function setTimestampEnd(int $timestampEnd): void
-    {
-        $this->timestamp_end = $timestampEnd;
-
-        if (!$this->duration) {
-            $this->duration = $timestampEnd - $this->timestamp_start;
-        }
-    }
-
-    public function getTimestamp(): int
-    {
-        return $this->timestamp_start;
     }
 
     public function getListenersEnd(): ?int
@@ -322,7 +306,12 @@ class SongHistory implements
 
     public function playbackEnded(): void
     {
-        $this->setTimestampEnd(time());
+        $nowUtc = Time::nowUtc();
+        $this->timestamp_end = $nowUtc;
+
+        if (!$this->duration) {
+            $this->duration = $nowUtc->diffInSeconds($this->timestamp_start, true);
+        }
 
         $deltaPoints = (array)$this->getDeltaPoints();
 

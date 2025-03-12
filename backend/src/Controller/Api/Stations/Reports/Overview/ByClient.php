@@ -7,8 +7,26 @@ namespace App\Controller\Api\Stations\Reports\Overview;
 use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[OA\Get(
+    path: '/station/{station_id}/reports/overview/by-client',
+    operationId: 'getStationReportByClient',
+    summary: 'Get the "Listeners by Client" report for a station.',
+    tags: [OpenApi::TAG_STATIONS_REPORTS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+    ],
+    responses: [
+        // TODO API Response
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class ByClient extends AbstractReportAction
 {
     public function __invoke(
@@ -52,8 +70,8 @@ final class ByClient extends AbstractReportAction
             SQL,
             [
                 'station_id' => $station->getIdRequired(),
-                'start' => $dateRange->getStartTimestamp(),
-                'end' => $dateRange->getEndTimestamp(),
+                'start' => $dateRange->start,
+                'end' => $dateRange->end,
             ]
         );
 

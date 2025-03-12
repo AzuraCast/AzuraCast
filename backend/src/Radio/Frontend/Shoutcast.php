@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Radio\Frontend;
 
+use App\Entity\Api\LogType;
 use App\Entity\Station;
 use App\Entity\StationMount;
 use App\Environment;
@@ -166,13 +167,9 @@ final class Shoutcast extends AbstractFrontend
             $config['maxbitrate'] = $maxBitrateInBps;
         }
 
-        $customConfig = trim($frontendConfig->getCustomConfiguration() ?? '');
-        if (!empty($customConfig)) {
-            $customConf = $this->processCustomConfig($customConfig);
-
-            if (false !== $customConf) {
-                $config = array_merge($config, $customConf);
-            }
+        $customConf = $this->processCustomConfig($frontendConfig->getCustomConfiguration());
+        if (false !== $customConf) {
+            $config = array_merge($config, $customConf);
         }
 
         $i = 0;
@@ -217,7 +214,7 @@ final class Shoutcast extends AbstractFrontend
         return null;
     }
 
-    public function getAdminUrl(Station $station, UriInterface $baseUrl = null): UriInterface
+    public function getAdminUrl(Station $station, ?UriInterface $baseUrl = null): UriInterface
     {
         $publicUrl = $this->getPublicUrl($station, $baseUrl);
         return $publicUrl
@@ -242,5 +239,25 @@ final class Shoutcast extends AbstractFrontend
         file_put_contents($bansFile, $bannedIpsString);
 
         return $bansFile;
+    }
+
+    public function getLogTypes(Station $station): array
+    {
+        $stationConfigDir = $station->getRadioConfigDir();
+
+        return [
+            new LogType(
+                'shoutcast_log',
+                __('Shoutcast Log'),
+                $stationConfigDir . '/shoutcast.log',
+                true
+            ),
+            new LogType(
+                'shoutcast_conf',
+                __('Shoutcast Configuration'),
+                $stationConfigDir . '/sc_serv.conf',
+                false
+            ),
+        ];
     }
 }

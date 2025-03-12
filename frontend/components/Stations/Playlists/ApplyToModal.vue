@@ -62,22 +62,23 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import {ref} from "vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import {ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
-import {useVuelidateOnForm} from '~/functions/useVuelidateOnForm';
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {map} from "lodash";
 import {useResettableRef} from "~/functions/useResettableRef";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import Modal from "~/components/Common/Modal.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
 const {$gettext} = useTranslate();
@@ -90,8 +91,9 @@ const fields: DataTableField[] = [
     }
 ];
 
-const loading = ref(true);
-const applyToUrl = ref(null);
+const loading = ref<boolean>(true);
+const applyToUrl = ref<string | null>(null);
+
 const {record: applyToResults, reset: resetApplyToResults} = useResettableRef({
     playlist: {
         id: null,
@@ -124,14 +126,14 @@ const clearContents = () => {
 
 const {axios} = useAxios();
 
-const open = (newApplyToUrl) => {
+const open = (newApplyToUrl: string) => {
     clearContents();
 
     applyToUrl.value = newApplyToUrl;
     loading.value = true;
     show();
 
-    axios.get(newApplyToUrl).then((resp) => {
+    void axios.get(newApplyToUrl).then((resp) => {
         applyToResults.value = resp.data;
         loading.value = false;
     });
@@ -141,7 +143,7 @@ const {notifySuccess} = useNotify();
 
 const save = () => {
     ifValid(() => {
-        axios.put(applyToUrl.value, {
+        void axios.put(applyToUrl.value, {
             ...form.value,
             directories: selectedDirs.value
         }).then(() => {

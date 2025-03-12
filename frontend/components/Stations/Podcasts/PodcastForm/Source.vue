@@ -58,7 +58,6 @@
 
 <script setup lang="ts">
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
@@ -67,27 +66,19 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {useTranslate} from "~/vendor/gettext.ts";
 import {onMounted, ref, shallowRef} from "vue";
 import {useAxios} from "~/vendor/axios.ts";
-import objectToFormOptions from "~/functions/objectToFormOptions.ts";
 import {getStationApiUrl} from "~/router.ts";
 import Loading from "~/components/Common/Loading.vue";
+import {ApiFormSimpleOptions, ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    }
-});
-
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {v$, tabClass} = useVuelidateOnFormTab(
+    form,
     {
         source: {required},
         playlist_id: {},
         playlist_auto_publish: {}
     },
-    form,
     {
         source: 'manual',
         playlist_id: null,
@@ -110,18 +101,19 @@ const sourceOptions = [
     }
 ];
 
-const playlistsLoading = ref(true);
-const playlistOptions = shallowRef([]);
+const playlistsLoading = ref<boolean>(true);
+const playlistOptions = shallowRef<ApiFormSimpleOptions>([]);
 
 const {axios} = useAxios();
 const playlistsApiUrl = getStationApiUrl('/podcasts/playlists');
 
-const loadPlaylists = () => {
-    axios.get(playlistsApiUrl.value).then((resp) => {
-        playlistOptions.value = objectToFormOptions(resp.data);
-    }).finally(() => {
+const loadPlaylists = async () => {
+    try {
+        const {data} = await axios.get<ApiFormSimpleOptions>(playlistsApiUrl.value);
+        playlistOptions.value = data;
+    } finally {
         playlistsLoading.value = false;
-    });
+    }
 };
 
 onMounted(loadPlaylists);

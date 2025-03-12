@@ -9,7 +9,9 @@ use App\Radio\Remote\AzuraRelay;
 use App\Radio\Remote\Icecast;
 use App\Radio\Remote\Shoutcast1;
 use App\Radio\Remote\Shoutcast2;
+use OpenApi\Attributes as OA;
 
+#[OA\Schema(type: 'string')]
 enum RemoteAdapters: string implements AdapterTypeInterface
 {
     case Shoutcast1 = 'shoutcast1';

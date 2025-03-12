@@ -32,7 +32,8 @@
             </tab>
             <tab :label="$gettext('Visual Cue Editor')">
                 <media-form-waveform-editor
-                    :form="form"
+                    v-model:form="form"
+                    :duration="record.length"
                     :audio-url="record.links.play"
                     :waveform-url="record.links.waveform"
                     :waveform-cache-url="record.links.waveform_cache"
@@ -49,36 +50,34 @@
 </template>
 
 <script setup lang="ts">
-import {required} from '@vuelidate/validators';
-import {defaultTo, forEach, map} from 'lodash';
-import MediaFormBasicInfo from './Form/BasicInfo.vue';
-import MediaFormAlbumArt from './Form/AlbumArt.vue';
-import MediaFormCustomFields from './Form/CustomFields.vue';
-import MediaFormAdvancedSettings from './Form/AdvancedSettings.vue';
-import MediaFormPlaylists from './Form/Playlists.vue';
-import MediaFormWaveformEditor from './Form/WaveformEditor.vue';
+import {required} from "@vuelidate/validators";
+import {defaultTo, forEach, map} from "lodash";
+import MediaFormBasicInfo from "~/components/Stations/Media/Form/BasicInfo.vue";
+import MediaFormAlbumArt from "~/components/Stations/Media/Form/AlbumArt.vue";
+import MediaFormCustomFields from "~/components/Stations/Media/Form/CustomFields.vue";
+import MediaFormAdvancedSettings from "~/components/Stations/Media/Form/AdvancedSettings.vue";
+import MediaFormPlaylists from "~/components/Stations/Media/Form/Playlists.vue";
+import MediaFormWaveformEditor from "~/components/Stations/Media/Form/WaveformEditor.vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
-import {ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal.ts";
+import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
+import {ApiStationMedia, CustomField} from "~/entities/ApiInterfaces.ts";
+import {MediaInitialPlaylist} from "~/components/Stations/Media.vue";
 
-const props = defineProps({
-    customFields: {
-        type: Array,
-        required: true
-    },
-    playlists: {
-        type: Array,
-        required: true
-    }
-});
+interface MediaEditModalProps extends BaseEditModalProps {
+    customFields: CustomField[],
+    playlists: MediaInitialPlaylist[]
+}
 
-const emit = defineEmits(['relist']);
+const props = defineProps<MediaEditModalProps>();
+const emit = defineEmits<BaseEditModalEmits>();
 
 const {record, reset} = useResettableRef({
+    length: null,
     length_text: null,
     links: {
         art: null,
@@ -88,7 +87,19 @@ const {record, reset} = useResettableRef({
     }
 });
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
+
+type StationMedia = Omit<ApiStationMedia, 'custom_fields' | 'extra_metadata'> & {
+    custom_fields: Record<string, any>,
+    extra_metadata?: {
+        amplify?: number,
+        cross_start_next?: number,
+        fade_in?: number,
+        fade_out?: number,
+        cue_in?: number,
+        cue_out?: number
+    }
+}
 
 const {
     loading,
@@ -98,7 +109,7 @@ const {
     clearContents,
     edit,
     doSubmit
-} = useBaseEditModal(
+} = useBaseEditModal<StationMedia>(
     props,
     emit,
     $modal,
@@ -124,14 +135,16 @@ const {
             playlists: {},
         };
 
-        forEach(props.customFields.slice(), (field) => {
-            validations.custom_fields[field.short_name] = {};
+        forEach(props.customFields.slice(), (field: CustomField) => {
+            if (field.short_name) {
+                validations.custom_fields[field.short_name] = {};
+            }
         });
 
         return validations;
     },
     () => {
-        const blankForm = {
+        const blankForm: StationMedia = {
             path: null,
             title: null,
             artist: null,
@@ -151,8 +164,10 @@ const {
             playlists: [],
         };
 
-        forEach(props.customFields.slice(), (field) => {
-            blankForm.custom_fields[field.short_name] = null;
+        forEach(props.customFields.slice(), (field: CustomField) => {
+            if (field.short_name) {
+                blankForm.custom_fields[field.short_name] = null;
+            }
         });
 
         return blankForm;
@@ -163,7 +178,7 @@ const {
             reset();
         },
         populateForm: (data, form) => {
-            record.value = mergeExisting(record.value, data);
+            record.value = mergeExisting(record.value, data as typeof record.value);
 
             const newForm = mergeExisting(form.value, data);
             newForm.playlists = map(data.playlists, 'id');
@@ -181,7 +196,7 @@ const {
     }
 );
 
-const open = (editRecordUrl) => {
+const open = (editRecordUrl: string) => {
     edit(editRecordUrl);
 };
 

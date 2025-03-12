@@ -20,7 +20,7 @@
             </div>
 
             <div
-                v-if="v$.backup_enabled.$model"
+                v-if="form.backup_enabled"
                 class="row g-3"
             >
                 <form-group-field
@@ -29,11 +29,11 @@
                     :field="v$.backup_time_code"
                     :label="$gettext('Scheduled Backup Time')"
                 >
-                    <template #default="slotProps">
+                    <template #default="{id, model, fieldClass}">
                         <time-code
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            :class="slotProps.class"
+                            :id="id"
+                            v-model="model.$model"
+                            :class="fieldClass"
                         />
                     </template>
                 </form-group-field>
@@ -61,7 +61,7 @@
                     class="col-md-6"
                     :field="v$.backup_storage_location"
                     :label="$gettext('Storage Location')"
-                    :options="storageLocationOptions"
+                    :options="storageLocations"
                 />
 
                 <form-group-multi-check
@@ -85,28 +85,21 @@ import FormFieldset from "~/components/Form/FormFieldset.vue";
 import mergeExisting from "~/functions/mergeExisting";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import TimeCode from "~/components/Common/TimeCode.vue";
-import objectToFormOptions from "~/functions/objectToFormOptions";
-import {computed, ref} from "vue";
+import {computed, ref, useTemplateRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 
-const props = defineProps({
-    settingsUrl: {
-        type: String,
-        required: true
-    },
-    storageLocations: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    settingsUrl: string,
+    storageLocations: Record<number, string>,
+}>();
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const loading = ref(true);
 
@@ -129,10 +122,6 @@ const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
     }
 );
 
-const storageLocationOptions = computed(() => {
-    return objectToFormOptions(props.storageLocations);
-});
-
 const formatOptions = computed(() => {
     return [
         {
@@ -152,7 +141,7 @@ const formatOptions = computed(() => {
 
 const {axios} = useAxios();
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {hide, show} = useHasModal($modal);
 
 const close = () => {
@@ -178,7 +167,7 @@ const {notifySuccess} = useNotify();
 
 const submit = () => {
     ifValid(() => {
-        axios({
+        void axios({
             method: 'PUT',
             url: props.settingsUrl,
             data: form.value

@@ -9,14 +9,59 @@ use App\Controller\SingleActionInterface;
 use App\Entity\Song;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Service\MusicBrainz;
 use Carbon\CarbonImmutable;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
 /**
  * Produce a report in SoundExchange (the US webcaster licensing agency) format.
  */
+#[OA\Get(
+    path: '/station/{station_id}/reports/soundexchange',
+    operationId: 'getStationSoundExchangeReport',
+    summary: 'Generate a SoundExchange royalty report.',
+    tags: [OpenApi::TAG_STATIONS_REPORTS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        new OA\Parameter(
+            name: 'start_date',
+            in: 'query',
+            required: false,
+            schema: new OA\Schema(
+                type: 'string',
+                format: 'date'
+            )
+        ),
+        new OA\Parameter(
+            name: 'end_date',
+            in: 'query',
+            required: false,
+            schema: new OA\Schema(
+                type: 'string',
+                format: 'date'
+            )
+        ),
+    ],
+    responses: [
+        new OpenApi\Response\SuccessWithDownload(
+            description: 'Success',
+            content: new OA\MediaType(
+                mediaType: 'text/plain',
+                schema: new OA\Schema(
+                    description: 'A CSV report for the given time range.',
+                    type: 'string',
+                    format: 'binary'
+                )
+            )
+        ),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class SoundExchangeAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
@@ -45,6 +90,7 @@ final class SoundExchangeAction implements SingleActionInterface
         $data['start_date'] ??= $defaultStartDate;
         $data['end_date'] ??= $defaultEndDate;
 
+        // NOTE: These are valid uses of shiftTimezone.
         $startDate = CarbonImmutable::parse($data['start_date'] . ' 00:00:00', $tzObject)
             ->shiftTimezone($tzObject);
 
@@ -93,8 +139,8 @@ final class SoundExchangeAction implements SingleActionInterface
                 GROUP BY sh.song_id
             DQL
         )->setParameter('station', $station)
-            ->setParameter('time_start', $startDate->getTimestamp())
-            ->setParameter('time_end', $endDate->getTimestamp())
+            ->setParameter('time_start', $startDate)
+            ->setParameter('time_end', $endDate)
             ->getArrayResult();
 
         // TODO: Fix this (not all song rows have a media_id)

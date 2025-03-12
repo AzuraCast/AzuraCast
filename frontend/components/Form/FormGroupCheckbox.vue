@@ -22,7 +22,8 @@
                     >
                         <form-label
                             :is-required="isRequired"
-                            v-bind="pickProps(props, formLabelProps)"
+                            :advanced="props.advanced"
+                            :high-cpu="props.highCpu"
                         >
                             <slot name="label">{{ label }}</slot>
                         </form-label>
@@ -51,45 +52,36 @@
 </template>
 
 <script setup lang="ts">
-import VuelidateError from "./VuelidateError.vue";
-import FormLabel from "~/components/Form/FormLabel.vue";
+import VuelidateError from "~/components/Form/VuelidateError.vue";
+import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
-import {formFieldProps, useFormField} from "~/components/Form/useFormField";
+import {FormFieldEmits, FormFieldProps, useFormField} from "~/components/Form/useFormField";
 import {useSlots} from "vue";
 import FormCheckbox from "~/components/Form/FormCheckbox.vue";
-import formLabelProps from "~/components/Form/formLabelProps.ts";
-import {pickProps} from "~/functions/pickProps.ts";
 
-const props = defineProps({
-    ...formFieldProps,
-    ...formLabelProps,
-    id: {
-        type: String,
-        required: true
-    },
-    name: {
-        type: String,
-        default: null
-    },
-    label: {
-        type: String,
-        default: null
-    },
-    description: {
-        type: String,
-        default: null
-    },
-    inputAttrs: {
-        type: Object,
-        default() {
-            return {};
-        }
-    },
-});
+type T = boolean | null
+
+interface FormGroupCheckboxProps extends FormFieldProps<T>, FormLabelParentProps {
+    id: string,
+    name?: string,
+    label?: string,
+    description?: string,
+    inputAttrs?: object
+}
+
+const props = withDefaults(
+    defineProps<FormGroupCheckboxProps>(),
+    {
+        name: null,
+        label: null,
+        description: null,
+        inputAttrs: () => ({})
+    }
+);
 
 const slots = useSlots();
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<FormFieldEmits<T>>();
 
-const {model, isVuelidateField, isRequired} = useFormField(props, emit);
+const {model, isVuelidateField, isRequired} = useFormField<T>(props, emit);
 </script>

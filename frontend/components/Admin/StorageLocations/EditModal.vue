@@ -30,27 +30,25 @@
 </template>
 
 <script setup lang="ts">
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, ref} from "vue";
+import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, nextTick, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import StorageLocationForm from "./Form.vue";
+import StorageLocationForm from "~/components/Admin/StorageLocations/Form.vue";
 import Sftp from "~/components/Admin/StorageLocations/Form/Sftp.vue";
 import S3 from "~/components/Admin/StorageLocations/Form/S3.vue";
 import Dropbox from "~/components/Admin/StorageLocations/Form/Dropbox.vue";
 import Tabs from "~/components/Common/Tabs.vue";
+import mergeExisting from "~/functions/mergeExisting.ts";
 
-const props = defineProps({
-    ...baseEditModalProps,
-    type: {
-        type: String,
-        required: true
-    }
-});
+interface StorageLocationsEditModalProps extends BaseEditModalProps {
+    type: string
+}
 
-const emit = defineEmits(['relist']);
+const props = defineProps<StorageLocationsEditModalProps>();
+const emit = defineEmits<BaseEditModalEmits>();
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 
 const {
     loading,
@@ -58,6 +56,7 @@ const {
     isEditMode,
     form,
     v$,
+    resetForm,
     clearContents,
     create,
     edit,
@@ -67,27 +66,21 @@ const {
     props,
     emit,
     $modal,
-    {},
     {
-        // These have to be defined here because the sub-items conditionally render.
-        dropboxAppKey: null,
-        dropboxAppSecret: null,
-        dropboxAuthToken: null,
-        s3CredentialKey: null,
-        s3CredentialSecret: null,
-        s3Region: null,
-        s3Version: 'latest',
-        s3Bucket: null,
-        s3Endpoint: null,
-        s3UsePathStyle: false,
-        sftpHost: null,
-        sftpPort: '22',
-        sftpUsername: null,
-        sftpPassword: null,
-        sftpPrivateKey: null,
-        sftpPrivateKeyPassPhrase: null,
+        adapter: {},
     },
     {
+        adapter: 'local',
+    },
+    {
+        populateForm: (data, formRef) => {
+            formRef.value.adapter = data.adapter;
+            
+            void nextTick(() => {
+                resetForm();
+                formRef.value = mergeExisting(formRef.value, data);
+            });
+        },
         getSubmittableFormData: (formRef, isEditModeRef) => {
             if (isEditModeRef.value) {
                 return formRef.value;
@@ -100,6 +93,21 @@ const {
         }
     }
 );
+
+watch(
+    () => form.value.adapter,
+    () => {
+        if (!isEditMode.value) {
+            const originalForm = form.value;
+
+            void nextTick(() => {
+                resetForm();
+                form.value = mergeExisting(form.value, originalForm);
+            });
+        }
+
+    }
+)
 
 const {$gettext} = useTranslate();
 

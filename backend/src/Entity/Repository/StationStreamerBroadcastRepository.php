@@ -8,6 +8,7 @@ use App\Doctrine\Repository;
 use App\Entity\Station;
 use App\Entity\StationStreamer;
 use App\Entity\StationStreamerBroadcast;
+use App\Utilities\Time;
 use Carbon\CarbonImmutable;
 
 /**
@@ -47,9 +48,9 @@ final class StationStreamerBroadcastRepository extends Repository
                 UPDATE App\Entity\StationStreamerBroadcast ssb
                 SET ssb.timestampEnd = :time
                 WHERE ssb.station = :station
-                AND ssb.timestampEnd = 0
+                AND ssb.timestampEnd IS NULL
             DQL
-        )->setParameter('time', time())
+        )->setParameter('time', Time::nowUtc())
             ->setParameter('station', $station)
             ->execute();
     }
@@ -63,7 +64,7 @@ final class StationStreamerBroadcastRepository extends Repository
     {
         return $this->repository->findBy([
             'station' => $station,
-            'timestampEnd' => 0,
+            'timestampEnd' => null,
         ]);
     }
 
@@ -118,8 +119,8 @@ final class StationStreamerBroadcastRepository extends Repository
             AND ssb.recordingPath IS NULL  
             DQL
         )->setParameter('streamer', $streamer)
-            ->setParameter('start', $startTime->subMinute()->getTimestamp())
-            ->setParameter('end', $startTime->addMinute()->getTimestamp())
+            ->setParameter('start', $startTime->subMinute())
+            ->setParameter('end', $startTime->addMinute())
             ->setMaxResults(1)
             ->getOneOrNullResult();
 
@@ -129,7 +130,7 @@ final class StationStreamerBroadcastRepository extends Repository
 
         assert($record instanceof StationStreamerBroadcast);
 
-        $record->setTimestampStart($startTime->getTimestamp());
+        $record->setTimestampStart($startTime);
         $record->setRecordingPath($recordingPath);
         return $record;
     }

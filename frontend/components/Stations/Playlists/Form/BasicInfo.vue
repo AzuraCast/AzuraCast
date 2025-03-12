@@ -233,22 +233,15 @@ import {map, range} from "lodash";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    }
-});
-
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {v$, tabClass} = useVuelidateOnFormTab(
+    form,
     {
         name: {required},
         is_enabled: {},
@@ -267,7 +260,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         include_in_requests: {},
         avoid_duplicates: {}
     },
-    form,
     {
         name: '',
         is_enabled: true,
@@ -369,7 +361,7 @@ const weightOptions = map(
     (val) => {
         return {
             value: val,
-            text: val
+            text: String(val)
         }
     }
 );

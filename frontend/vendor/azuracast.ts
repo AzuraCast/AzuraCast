@@ -1,31 +1,33 @@
- 
-
-import {GlobalPermission, StationPermission} from "~/acl.ts";
-
-let globalProps: AzuraCastConstants;
-
-export function setGlobalProps(newGlobalProps: AzuraCastConstants): void {
-    globalProps = newGlobalProps;
-}
+import {PanelLayoutProps} from "~/components/PanelLayout.vue";
+import {GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
 
 export interface AzuraCastStationConstants {
-    id: number | null,
+    id: number,
     name: string | null,
-    isEnabled: boolean | null,
-    shortName: string | null,
-    timezone: string | null,
+    shortName: string,
+    isEnabled: boolean,
+    hasStarted: boolean,
+    needsRestart: boolean,
+    timezone: string,
     offlineText: string | null,
-    maxBitrate: number | null,
-    maxMounts: number | null,
-    maxHlsStreams: number | null
+    maxBitrate: number,
+    maxMounts: number,
+    maxHlsStreams: number,
+    enablePublicPages: boolean,
+    publicPageUrl: string,
+    enableOnDemand: boolean,
+    onDemandUrl: string,
+    webDjUrl: string,
+    enableRequests: boolean,
+    features: Record<string, boolean>
 }
 
 export interface AzuraCastUserConstants {
     id: number | null,
     displayName: string | null,
-    globalPermissions: GlobalPermission[],
+    globalPermissions: GlobalPermissions[],
     stationPermissions: {
-        [key: number]: StationPermission[]
+        [key: number]: StationPermissions[]
     }
 }
 
@@ -36,40 +38,49 @@ export interface AzuraCastConstants {
     timeConfig: object,
     apiCsrf: string | null,
     enableAdvancedFeatures: boolean,
-    panelProps: object | null,
-    sidebarProps: object | null,
-    componentProps: object | null,
-    user: AzuraCastUserConstants | null,
-    station: AzuraCastStationConstants | null,
+    sidebarProps?: Record<string, any>,
+    panelProps?: PanelLayoutProps,
+    componentProps?: Record<string, any>,
+    user?: AzuraCastUserConstants,
+    station?: AzuraCastStationConstants,
+}
+
+let globalProps: AzuraCastConstants;
+
+export function setGlobalProps(newGlobalProps: AzuraCastConstants): void {
+    globalProps = newGlobalProps;
 }
 
 export function useAzuraCast(): AzuraCastConstants {
     return globalProps;
 }
 
+export function useAzuraCastPanelProps(): PanelLayoutProps {
+    const {panelProps} = useAzuraCast();
+
+    if (!panelProps) {
+        throw new Error("Panel properties are undefined in this request.");
+    }
+
+    return panelProps;
+}
+
 export function useAzuraCastUser(): AzuraCastUserConstants {
     const {user} = useAzuraCast();
 
-    return (user !== null) ? user : {
-        id: null,
-        displayName: null,
-        globalPermissions: [],
-        stationPermissions: {}
-    };
+    if (!user) {
+        throw Error("User is not logged in.");
+    }
+
+    return user;
 }
 
 export function useAzuraCastStation(): AzuraCastStationConstants {
     const {station} = useAzuraCast();
 
-    return (station !== null) ? station : {
-        id: null,
-        name: null,
-        isEnabled: null,
-        shortName: null,
-        timezone: null,
-        offlineText: null,
-        maxBitrate: null,
-        maxMounts: null,
-        maxHlsStreams: null
-    };
+    if (!station) {
+        throw Error("Station data is not provided in this request.");
+    }
+
+    return station;
 }

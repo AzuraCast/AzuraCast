@@ -23,7 +23,7 @@ return static function (RouteCollectorProxy $group) {
                     // Icecast internal auth functions
                     $group->map(
                         ['GET', 'POST'],
-                        '/listener-auth',
+                        '/listener-auth[/{api_auth}]',
                         Controller\Api\Internal\ListenerAuthAction::class
                     )->setName('api:internal:listener-auth');
                 }

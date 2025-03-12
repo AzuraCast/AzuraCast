@@ -10,16 +10,16 @@
 
         <data-table
             id="api_keys"
-            ref="$datatable"
+            ref="$dataTable"
             :fields="fields"
             :api-url="apiUrl"
         >
-            <template #cell(actions)="row">
+            <template #cell(actions)="{ item }">
                 <div class="btn-group btn-group-sm">
                     <button
                         type="button"
                         class="btn btn-sm btn-danger"
-                        @click="doDelete(row.item.links.self)"
+                        @click="doDelete(item.links.self)"
                     >
                         {{ $gettext('Delete') }}
                     </button>
@@ -30,19 +30,23 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
-import {ref} from "vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import {useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
+import useHasDatatable from "~/functions/useHasDatatable";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
+import {ApiKey, HasLinks} from "~/entities/ApiInterfaces.ts";
+import {DeepRequired} from "utility-types";
 
 const apiUrl = getApiUrl('/admin/api-keys');
 
 const {$gettext} = useTranslate();
 
-const fields: DataTableField[] = [
+type Row = DeepRequired<ApiKey & HasLinks>
+
+const fields: DataTableField<Row>[] = [
     {
         key: 'comment',
         isRowHeader: true,
@@ -62,8 +66,8 @@ const fields: DataTableField[] = [
     }
 ];
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {relist} = useHasDatatable($datatable);
+const $dataTable = useTemplateRef('$dataTable');
+const {relist} = useHasDatatable($dataTable);
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete API Key?'),

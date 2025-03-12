@@ -5,24 +5,21 @@
 </template>
 
 <script setup lang="ts">
-import {inject, onUnmounted, ref, watch} from 'vue';
-import {marker} from 'leaflet';
+import {inject, onUnmounted, ShallowRef, useTemplateRef, watch} from "vue";
+import {LatLngTuple, Map, marker, Popup} from "leaflet";
 
-const props = defineProps({
-    position: {
-        type: Array,
-        required: true
-    }
-});
+const props = defineProps<{
+    position: LatLngTuple
+}>();
 
-const $map = inject('map');
+const $map = inject<ShallowRef<Map | null>>('map');
 const map = $map.value;
 
 const mapMarker = marker(props.position);
 mapMarker.addTo(map);
 
-const popup = new L.Popup();
-const $content = ref<HTMLDivElement | null>(null);
+const popup = new Popup();
+const $content = useTemplateRef('$content');
 
 watch(
     $content,

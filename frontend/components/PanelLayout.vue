@@ -190,44 +190,19 @@ import {
 } from "~/components/Common/icons";
 import {useProvidePlayerStore} from "~/functions/usePlayerStore.ts";
 
-const props = defineProps({
-  instanceName: {
-    type: String,
-    required: true
-  },
-  userDisplayName: {
-    type: String,
-    required: true
-  },
-  homeUrl: {
-    type: String,
-    required: true,
-  },
-  profileUrl: {
-    type: String,
-    required: true,
-  },
-  adminUrl: {
-    type: String,
-    required: true
-  },
-  logoutUrl: {
-    type: String,
-    required: true
-  },
-  showAdmin: {
-    type: Boolean,
-    default: false
-  },
-  version: {
-    type: String,
-    required: true
-  },
-  platform: {
-      type: String,
-      required: true
-  }
-});
+export interface PanelLayoutProps {
+    instanceName: string,
+    userDisplayName: string,
+    homeUrl: string,
+    profileUrl: string,
+    adminUrl: string,
+    logoutUrl: string,
+    showAdmin: boolean,
+    version: string,
+    platform: string
+}
+
+defineProps<PanelLayoutProps>();
 
 const slots = useSlots();
 
@@ -251,8 +226,9 @@ watch(
 
 useProvidePlayerStore('global');
 
-onMounted(async () => {
-    await nextTick();
-    document.dispatchEvent(new CustomEvent("vue-ready"));
+onMounted(() => {
+    void nextTick(() => {
+        document.dispatchEvent(new CustomEvent("vue-ready"));
+    });
 });
 </script>

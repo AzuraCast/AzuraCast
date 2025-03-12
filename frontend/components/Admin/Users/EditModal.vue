@@ -17,24 +17,22 @@
 </template>
 
 <script setup lang="ts">
-import AdminUsersForm from './Form.vue';
-import {map} from 'lodash';
-import {computed, ref} from "vue";
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
+import AdminUsersForm from "~/components/Admin/Users/Form.vue";
+import {map} from "lodash";
+import {computed, useTemplateRef} from "vue";
+import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
+import mergeExisting from "~/functions/mergeExisting.ts";
 
-const props = defineProps({
-    ...baseEditModalProps,
-    roles: {
-        type: Object,
-        required: true
-    }
-});
+interface UsersEditModalProps extends BaseEditModalProps {
+    roles: Record<number, string>
+}
 
-const emit = defineEmits(['relist']);
+const props = defineProps<UsersEditModalProps>();
+const emit = defineEmits<BaseEditModalEmits>();
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 
 const {
     loading,
@@ -51,16 +49,24 @@ const {
     props,
     emit,
     $modal,
-    {},
-    {},
+    {
+        roles: {},
+        new_password: {}
+    },
+    {
+        roles: [],
+        new_password: null
+    },
     {
         populateForm: (data, formRef) => {
-            formRef.value = {
-                name: data.name,
-                email: data.email,
-                new_password: '',
-                roles: map(data.roles, 'id')
-            };
+            formRef.value = mergeExisting(
+                formRef.value,
+                {
+                    ...data,
+                    roles: map(data.roles, 'id'),
+                    new_password: ''
+                }
+            );
         },
     }
 );

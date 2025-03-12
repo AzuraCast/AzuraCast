@@ -1,40 +1,48 @@
-import {computed} from "vue";
+import {computed, ComputedRef, WritableComputedRef} from "vue";
 import {has} from "lodash";
+import {BaseValidation, ValidationRuleCollection} from "@vuelidate/core";
+import {reactiveComputed} from "@vueuse/core";
 
-export const formFieldProps = {
-    field: {
-        type: Object,
-        required: false,
-        default: () => {
-            return undefined;
-        }
-    },
-    modelValue: {
-        type: [String, Number, Boolean, Array],
-        required: false,
-        default: () => {
-            return undefined;
-        }
-    },
-    required: {
-        type: Boolean,
-        default: false
-    }
+export type ModelFormField = string | number | boolean | Array<any> | null
+
+export type VuelidateField<T = ModelFormField> = BaseValidation<T, ValidationRuleCollection<T>>
+
+export interface FormFieldProps<T = ModelFormField> {
+    modelValue?: T
+    field?: VuelidateField<T>
+    required?: boolean,
 }
 
-export function useFormField(props, emit) {
-    const isVuelidateField = computed(() => {
-        return props.field !== undefined;
-    });
+export interface FormFieldEmits<T = ModelFormField> {
+    (e: 'update:modelValue', value: T): void
+}
 
-    const model = computed({
+export function useFormField<T = ModelFormField>(
+    initialProps: FormFieldProps<T>,
+    emit: FormFieldEmits<T>
+): {
+    isVuelidateField: ComputedRef<boolean>,
+    model: WritableComputedRef<T>,
+    fieldClass: ComputedRef<string | null>,
+    isRequired: ComputedRef<boolean>
+} {
+    const props = reactiveComputed(() => ({
+        required: false,
+        ...initialProps
+    })) as FormFieldProps<T>;
+
+    const isVuelidateField = computed(
+        () => props.field !== undefined
+    );
+
+    const model: WritableComputedRef<T, T> = computed({
         get() {
-            return (isVuelidateField.value)
+            return (props.field)
                 ? props.field.$model
                 : props.modelValue;
         },
         set(newValue) {
-            if (isVuelidateField.value) {
+            if (props.field) {
                 props.field.$model = newValue;
             } else {
                 emit('update:modelValue', newValue);
@@ -43,7 +51,7 @@ export function useFormField(props, emit) {
     });
 
     const fieldClass = computed(() => {
-        if (!isVuelidateField.value) {
+        if (!props.field) {
             return null;
         }
 
@@ -61,7 +69,7 @@ export function useFormField(props, emit) {
             return props.required;
         }
 
-        return (isVuelidateField.value)
+        return (props.field !== undefined)
             ? has(props.field, 'required')
             : false;
     });

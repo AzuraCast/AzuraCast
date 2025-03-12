@@ -1,15 +1,22 @@
 import {useTranslate} from "~/vendor/gettext";
-import {h, render} from "vue";
-import {default as BSToast} from 'bootstrap/js/src/toast';
-
-import Toast from '~/components/Common/Toast.vue';
+import {h, render, VNode} from "vue";
+import {Toast as BSToast} from "bootstrap";
+import Toast from "~/components/Common/Toast.vue";
 import {currentVueInstance} from "~/vendor/vueInstance";
 
-export function createToast(props) {
-    let slot;
+type ToastMessage = string | VNode[]
+
+export interface ToastProps {
+    message: ToastMessage,
+    title?: string,
+    variant?: string,
+}
+
+export function createToast(props: ToastProps) {
+    let slot: Array<any>;
     if (Array.isArray(props.message)) {
         slot = props.message
-        delete props.message
+        props.message = "";
     }
 
     const defaultSlot = () => {
@@ -21,18 +28,21 @@ export function createToast(props) {
 
     const newDiv = document.createElement('div');
     newDiv.style.display = "contents";
-    document.querySelector('.toast-container').appendChild(newDiv);
+    document.querySelector('.toast-container')?.appendChild(newDiv);
 
     render(vNode, newDiv);
 
-    return new BSToast(vNode.el);
+    return new BSToast(vNode.el as unknown as HTMLElement);
 }
 
 /* Composition API BootstrapVue utilities */
 export function useNotify() {
     const {$gettext} = useTranslate();
 
-    const notify = (message = null, options = {}) => {
+    const notify = (
+        message: ToastMessage,
+        options: Partial<ToastProps> = {}
+    ): void => {
         if (document.hidden) {
             return;
         }
@@ -44,32 +54,30 @@ export function useNotify() {
         toast.show();
     };
 
-    const notifyError = (message = null, options = {}) => {
-        if (message === null) {
-            message = $gettext('An error occurred and your request could not be completed.');
-        }
+    const notifyError = (
+        message?: ToastMessage,
+        options: Partial<ToastProps> = {}
+    ): void => {
+        message ??= $gettext('An error occurred and your request could not be completed.');
 
         const defaults = {
             variant: 'danger'
         };
 
         notify(message, {...defaults, ...options});
-
-        return message;
     };
 
-    const notifySuccess = (message = null, options = {}) => {
-        if (message === null) {
-            message = $gettext('Changes saved.');
-        }
+    const notifySuccess = (
+        message?: ToastMessage,
+        options: Partial<ToastProps> = {}
+    ): void => {
+        message ??= $gettext('Changes saved.');
 
         const defaults = {
             variant: 'success'
         };
 
         notify(message, {...defaults, ...options});
-
-        return message;
     };
 
     return {

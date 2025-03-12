@@ -19,16 +19,58 @@ use App\Http\Response;
 use App\Http\RouterInterface;
 use App\Http\ServerRequest;
 use App\Media\MimeType;
+use App\OpenApi;
 use App\Paginator;
 use App\Utilities\Strings;
 use App\Utilities\Types;
 use Doctrine\Common\Collections\Order;
 use Doctrine\ORM\QueryBuilder;
 use League\Flysystem\StorageAttributes;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
+#[
+    OA\Get(
+        path: '/station/{station_id}/files/list',
+        operationId: 'getStationFileList',
+        summary: 'List files in the media directory by path.',
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+            new OA\Parameter(
+                name: 'currentDirectory',
+                in: 'query',
+                required: true,
+                schema: new OA\Schema(type: 'string')
+            ),
+            new OA\Parameter(
+                name: 'searchPhrase',
+                in: 'query',
+                schema: new OA\Schema(type: 'string', nullable: true)
+            ),
+            new OA\Parameter(
+                name: 'flushCache',
+                in: 'query',
+                schema: new OA\Schema(type: 'boolean', default: false, nullable: true),
+            ),
+        ],
+        responses: [
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(
+                        ref: FileList::class
+                    )
+                )
+            ),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class ListAction implements SingleActionInterface
 {
     use CanSortResults;

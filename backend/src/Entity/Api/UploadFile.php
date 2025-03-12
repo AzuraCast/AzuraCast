@@ -10,27 +10,30 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[OA\Schema(
     schema: 'Api_UploadFile',
+    required: ['*'],
     type: 'object'
 )]
-final class UploadFile
+final readonly class UploadFile
 {
-    #[
-        OA\Property(
-            description: 'The destination path of the uploaded file.',
-            example: 'relative/path/to/file.mp3'
-        ),
-        Assert\NotBlank
-    ]
-    public string $path;
-
-    #[
-        OA\Property(
-            description: 'The base64-encoded contents of the file to upload.',
-            example: ''
-        ),
-        Assert\NotBlank
-    ]
-    public string $file;
+    public function __construct(
+        #[
+            OA\Property(
+                description: 'The destination path of the uploaded file.',
+                example: 'relative/path/to/file.mp3'
+            ),
+            Assert\NotBlank
+        ]
+        public string $path,
+        #[
+            OA\Property(
+                description: 'The base64-encoded contents of the file to upload.',
+                example: ''
+            ),
+            Assert\NotBlank
+        ]
+        public string $file,
+    ) {
+    }
 
     public function getSanitizedFilename(): string
     {

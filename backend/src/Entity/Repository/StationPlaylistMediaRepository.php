@@ -12,8 +12,8 @@ use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Entity\StationPlaylistMedia;
+use App\Utilities\Time;
 use Carbon\CarbonImmutable;
-use Carbon\CarbonInterface;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use InvalidArgumentException;
@@ -262,8 +262,10 @@ final class StationPlaylistMediaRepository extends Repository
         );
     }
 
-    public function resetQueue(StationPlaylist $playlist, CarbonInterface $now = null): void
-    {
+    public function resetQueue(
+        StationPlaylist $playlist,
+        ?CarbonImmutable $now = null
+    ): void {
         if (PlaylistSources::Songs !== $playlist->getSource()) {
             throw new InvalidArgumentException('Playlist must contain songs.');
         }
@@ -311,16 +313,16 @@ final class StationPlaylistMediaRepository extends Repository
             );
         }
 
-        $now = $now ?? CarbonImmutable::now($playlist->getStation()->getTimezoneObject());
+        $now ??= Time::nowUtc();
 
-        $playlist->setQueueResetAt($now->getTimestamp());
+        $playlist->setQueueResetAt($now);
         $this->em->persist($playlist);
         $this->em->flush();
     }
 
     public function resetAllQueues(Station $station): void
     {
-        $now = CarbonImmutable::now($station->getTimezoneObject());
+        $now = Time::nowUtc();
 
         foreach ($station->getPlaylists() as $playlist) {
             if (PlaylistSources::Songs !== $playlist->getSource()) {

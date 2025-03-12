@@ -7,6 +7,7 @@ namespace App\Controller\Api\Admin;
 use App\Controller\Api\AbstractApiCrudController;
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
+use App\Entity\Enums\StorageLocationAdapters;
 use App\Entity\Repository\StationQueueRepository;
 use App\Entity\Repository\StationRepository;
 use App\Entity\Repository\StorageLocationRepository;
@@ -15,12 +16,15 @@ use App\Entity\StorageLocation;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Nginx\Nginx;
 use App\OpenApi;
 use App\Radio\Configuration;
+use App\Utilities\File;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -31,47 +35,40 @@ use Throwable;
     OA\Get(
         path: '/admin/stations',
         operationId: 'adminGetStations',
-        description: 'List all current stations in the system.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Administration: Stations'],
+        summary: 'List all current stations in the system.',
+        tags: [OpenApi::TAG_ADMIN_STATIONS],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Station')
+                    items: new OA\Items(ref: Station::class)
                 )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Post(
         path: '/admin/stations',
         operationId: 'adminAddStation',
-        description: 'Create a new station.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Create a new station.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Station')
+            content: new OA\JsonContent(ref: Station::class)
         ),
-        tags: ['Administration: Stations'],
+        tags: [OpenApi::TAG_ADMIN_STATIONS],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Station')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: Station::class)
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Get(
         path: '/admin/station/{id}',
         operationId: 'adminGetStation',
-        description: 'Retrieve details for a single station.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Administration: Stations'],
+        summary: 'Retrieve details for a single station.',
+        tags: [OpenApi::TAG_ADMIN_STATIONS],
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -82,25 +79,22 @@ use Throwable;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Station')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: Station::class)
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Put(
         path: '/admin/station/{id}',
         operationId: 'adminEditStation',
-        description: 'Update details of a single station.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Update details of a single station.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Station')
+            content: new OA\JsonContent(ref: Station::class)
         ),
-        tags: ['Administration: Stations'],
+        tags: [OpenApi::TAG_ADMIN_STATIONS],
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -111,18 +105,17 @@ use Throwable;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Delete(
         path: '/admin/station/{id}',
         operationId: 'adminDeleteStation',
-        description: 'Delete a single station.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Administration: Stations'],
+        summary: 'Delete a single station.',
+        tags: [OpenApi::TAG_ADMIN_STATIONS],
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -133,10 +126,10 @@ use Throwable;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]
@@ -153,6 +146,7 @@ class StationsController extends AbstractApiCrudController
         protected StorageLocationRepository $storageLocationRepo,
         protected StationQueueRepository $queueRepo,
         protected Configuration $configuration,
+        protected Nginx $nginx,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
@@ -263,7 +257,7 @@ class StationsController extends AbstractApiCrudController
      *
      * @return Station
      */
-    protected function editRecord(?array $data, object $record = null, array $context = []): object
+    protected function editRecord(?array $data, ?object $record = null, array $context = []): object
     {
         $createMode = (null === $record);
 
@@ -299,6 +293,17 @@ class StationsController extends AbstractApiCrudController
 
         $this->configuration->initializeConfiguration($station);
 
+        $rewriteConfiguration = false;
+
+        // Detect a change in the station's base config directory.
+        if (
+            !empty($originalRecord['radio_base_dir'])
+            && $originalRecord['radio_base_dir'] !== $station->getRadioBaseDir()
+        ) {
+            $rewriteConfiguration = true;
+            $this->handleBaseDirRename($station, $originalRecord['radio_base_dir']);
+        }
+
         // Delete media-related items if the media storage is changed.
         /** @var StorageLocation|null $oldMediaStorage */
         $oldMediaStorage = $originalRecord['media_storage_location'];
@@ -313,35 +318,36 @@ class StationsController extends AbstractApiCrudController
             $this->queueRepo->clearUnplayed($station);
         }
 
-        // Get the original values to check for changes.
-        $oldFrontend = $originalRecord['frontend_type'];
-        $oldBackend = $originalRecord['backend_type'];
-        $oldHls = (bool)$originalRecord['enable_hls'];
-        $oldMaxBitrate = (int)$originalRecord['max_bitrate'];
-        $oldMaxMounts = (int)$originalRecord['max_mounts'];
-        $oldMaxHlsStreams = (int)$originalRecord['max_hls_streams'];
-        $oldEnabled = (bool)$originalRecord['is_enabled'];
+        // Check for changes in essential variables.
+        if ($originalRecord['short_name'] !== $station->getShortName()) {
+            $rewriteConfiguration = true;
+            $this->nginx->writeConfiguration($station);
+        }
 
-        $frontendChanged = ($oldFrontend !== $station->getFrontendType());
-        $backendChanged = ($oldBackend !== $station->getBackendType());
-        $adapterChanged = $frontendChanged || $backendChanged;
-
-        $hlsChanged = $oldHls !== $station->getEnableHls();
-        $enabledChanged = $oldEnabled !== $station->getIsEnabled();
-
+        $frontendChanged = ($originalRecord['frontend_type'] !== $station->getFrontendType());
         if ($frontendChanged) {
+            $rewriteConfiguration = true;
             $this->stationRepo->resetMounts($station);
         }
 
-        if ($hlsChanged || $backendChanged) {
+        $backendChanged = ($originalRecord['backend_type'] !== $station->getBackendType());
+        $hlsChanged = (bool)$originalRecord['enable_hls'] !== $station->getEnableHls();
+        if ($backendChanged || $hlsChanged) {
+            $rewriteConfiguration = true;
             $this->stationRepo->resetHls($station);
         }
 
-        $maxBitrateChanged =
-            ($oldMaxBitrate !== 0 && $station->getMaxBitrate() !== 0 && $oldMaxBitrate > $station->getMaxBitrate())
-            || ($oldMaxBitrate === 0 && $station->getMaxBitrate() !== 0);
+        if ((bool)$originalRecord['is_enabled'] !== $station->getIsEnabled()) {
+            $rewriteConfiguration = true;
+        }
 
-        if ($maxBitrateChanged) {
+        // Apply "Max Bitrate"
+        $oldMaxBitrate = (int)$originalRecord['max_bitrate'];
+
+        if (
+            ($oldMaxBitrate !== 0 && $station->getMaxBitrate() !== 0 && $oldMaxBitrate > $station->getMaxBitrate())
+            || ($oldMaxBitrate === 0 && $station->getMaxBitrate() !== 0)
+        ) {
             if (!$frontendChanged) {
                 $this->stationRepo->reduceMountsBitrateToLimit($station);
             }
@@ -354,27 +360,29 @@ class StationsController extends AbstractApiCrudController
             $this->stationRepo->reduceLiveBroadcastRecordingBitrateToLimit($station);
         }
 
-        $maxMountsLowered =
+        // Apply "Max Mount Points"
+        $oldMaxMounts = (int)$originalRecord['max_mounts'];
+
+        if (
             $station->getMaxMounts() !== 0
-            && ($oldMaxMounts > $station->getMaxMounts() || $oldMaxMounts === 0);
-        if ($maxMountsLowered) {
+            && ($oldMaxMounts > $station->getMaxMounts() || $oldMaxMounts === 0)
+        ) {
+            $rewriteConfiguration = true;
             $this->stationRepo->reduceMountPointsToLimit($station);
         }
 
-        $maxHlsStreamsLowered =
+        // Apply "Max HLS Streams"
+        $oldMaxHlsStreams = (int)$originalRecord['max_hls_streams'];
+
+        if (
             $station->getMaxHlsStreams() !== 0
-            && ($oldMaxHlsStreams > $station->getMaxHlsStreams() || $oldMaxHlsStreams === 0);
-        if ($maxHlsStreamsLowered) {
+            && ($oldMaxHlsStreams > $station->getMaxHlsStreams() || $oldMaxHlsStreams === 0)
+        ) {
+            $rewriteConfiguration = true;
             $this->stationRepo->reduceHlsStreamsToLimit($station);
         }
 
-        if (
-            $adapterChanged
-            || $maxBitrateChanged
-            || $enabledChanged
-            || $maxMountsLowered
-            || $maxHlsStreamsLowered
-        ) {
+        if ($rewriteConfiguration) {
             try {
                 $this->configuration->writeConfiguration(
                     station: $station,
@@ -385,6 +393,68 @@ class StationsController extends AbstractApiCrudController
         }
 
         return $station;
+    }
+
+    protected function handleBaseDirRename(
+        Station $station,
+        string $originalPath
+    ): void {
+        $newPath = $station->getRadioBaseDir();
+
+        // Unlink the old path's supervisor config file.
+        $originalConfPath = Configuration::getSupervisorConfPath($originalPath);
+        @unlink($originalConfPath);
+
+        // Force a reload of supervisor services and stop all for this station.
+        $this->configuration->removeConfiguration($station);
+
+        // Move any local storage locations that only point to this station.
+        $allStorageLocationsMoved = true;
+
+        foreach ($station->getAllStorageLocations() as $storageLocation) {
+            if (StorageLocationAdapters::Local !== $storageLocation->getAdapter()) {
+                continue;
+            }
+
+            $stationsUsingLocation = $this->storageLocationRepo->getStationsUsingLocation($storageLocation);
+            if (count($stationsUsingLocation) > 1) {
+                $allStorageLocationsMoved = false;
+                continue;
+            }
+
+            $locationPath = $storageLocation->getPath();
+
+            if (Path::isBasePath($originalPath, $locationPath)) {
+                $newLocationPath = Path::makeAbsolute(
+                    Path::makeRelative($locationPath, $originalPath),
+                    $newPath
+                );
+
+                $storageLocation->setPath($newLocationPath);
+                $this->em->persist($storageLocation);
+
+                File::moveDirectoryContents(
+                    $locationPath,
+                    $newLocationPath
+                );
+            }
+        }
+
+        // Move non-storage-location directories.
+        foreach (Station::NON_STORAGE_LOCATION_DIRS as $otherDir) {
+            $dirOldPath = $originalPath . '/' . $otherDir;
+            $dirNewPath = $newPath . '/' . $otherDir;
+
+            File::moveDirectoryContents(
+                $dirOldPath,
+                $dirNewPath
+            );
+        }
+
+        // Clear the old directory entirely if all storage locations are moved.
+        if ($allStorageLocationsMoved) {
+            (new Filesystem())->remove($originalPath);
+        }
     }
 
     protected function handleCreate(Station $station): Station
@@ -415,12 +485,11 @@ class StationsController extends AbstractApiCrudController
         $this->configuration->removeConfiguration($station);
 
         // Remove directories generated specifically for this station.
-        $directoriesToEmpty = [
-            $station->getRadioConfigDir(),
-            $station->getRadioPlaylistsDir(),
-            $station->getRadioTempDir(),
-        ];
-        (new Filesystem())->remove($directoriesToEmpty);
+        $fsUtils = new Filesystem();
+        $stationBaseDir = $station->getRadioBaseDir();
+        foreach (Station::NON_STORAGE_LOCATION_DIRS as $otherDir) {
+            $fsUtils->remove($stationBaseDir . '/' . $otherDir);
+        }
 
         $this->em->flush();
 

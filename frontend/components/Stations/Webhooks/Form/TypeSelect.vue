@@ -3,20 +3,21 @@
         <div class="col-md-6">
             <type-select-section
                 :title="$gettext('Generic Web Hooks')"
-                :types="buildTypeInfo([
-                    WebhookType.Generic,
-                    WebhookType.Email
+                :types="reactivePick(typeDetails, [
+                    WebhookTypes.Generic,
+                    WebhookTypes.Email
                 ])"
                 @select="selectType"
             />
 
             <type-select-section
                 :title="$gettext('Social Media')"
-                :types="buildTypeInfo([
-                    WebhookType.Discord,
-                    WebhookType.Telegram,
-                    WebhookType.GroupMe,
-                    WebhookType.Mastodon
+                :types="reactivePick(typeDetails, [
+                    WebhookTypes.Discord,
+                    WebhookTypes.Telegram,
+                    WebhookTypes.GroupMe,
+                    WebhookTypes.Mastodon,
+                    WebhookTypes.Bluesky
                 ])"
                 @select="selectType"
             />
@@ -24,20 +25,20 @@
         <div class="col-md-6">
             <type-select-section
                 :title="$gettext('Station Directories')"
-                :types="buildTypeInfo([
-                    WebhookType.TuneIn,
-                    WebhookType.RadioDe,
-                    WebhookType.RadioReg,
-                    WebhookType.GetMeRadio
+                :types="reactivePick(typeDetails, [
+                    WebhookTypes.TuneIn,
+                    WebhookTypes.RadioDe,
+                    WebhookTypes.RadioReg,
+                    WebhookTypes.GetMeRadio
                 ])"
                 @select="selectType"
             />
 
             <type-select-section
                 :title="$gettext('Analytics')"
-                :types="buildTypeInfo([
-                    WebhookType.GoogleAnalyticsV4,
-                    WebhookType.MatomoAnalytics
+                :types="reactivePick(typeDetails, [
+                    WebhookTypes.GoogleAnalyticsV4,
+                    WebhookTypes.MatomoAnalytics
                 ])"
                 @select="selectType"
             />
@@ -46,29 +47,20 @@
 </template>
 
 <script setup lang="ts">
-import {WebhookType} from "~/entities/Webhooks";
+import {WebhookTypeDetails} from "~/entities/Webhooks";
 import TypeSelectSection from "~/components/Stations/Webhooks/Form/TypeSelectSection.vue";
-import {get, map} from "lodash";
+import {reactivePick} from "@vueuse/core";
+import {WebhookTypes} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    typeDetails: {
-        type: Object,
-        required: true
-    }
-});
+defineProps<{
+    typeDetails: WebhookTypeDetails
+}>();
 
-const buildTypeInfo = (types) => map(
-    types,
-    (type) => {
-        return {
-            ...get(props.typeDetails, type),
-            key: type
-        };
-    }
-);
+const emit = defineEmits<{
+    (e: 'select', type: WebhookTypes): void
+}>();
 
-const emit = defineEmits(['select']);
-const selectType = (type) => {
+const selectType = (type: WebhookTypes) => {
     emit('select', type);
 }
 </script>

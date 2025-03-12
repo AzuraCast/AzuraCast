@@ -18,6 +18,8 @@ abstract class AbstractConnector implements ConnectorInterface
 {
     use LoggerAwareTrait;
 
+    public const string RATE_LIMIT_KEY = 'rate_limit';
+
     public function __construct(
         protected Client $httpClient
     ) {
@@ -65,18 +67,13 @@ abstract class AbstractConnector implements ConnectorInterface
             return true;
         }
 
-        foreach ($triggers as $trigger) {
-            if ($webhook->hasTrigger($trigger)) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($triggers, fn($trigger) => $webhook->hasTrigger($trigger));
     }
 
     protected function getRateLimitTime(StationWebhook $webhook): ?int
     {
-        return null;
+        $config = $webhook->getConfig();
+        return Types::intOrNull($config[self::RATE_LIMIT_KEY] ?? null);
     }
 
     /**
@@ -90,11 +87,10 @@ abstract class AbstractConnector implements ConnectorInterface
     public function replaceVariables(array $rawVars, NowPlaying $np): array
     {
         $values = Arrays::flattenArray($np);
-        $vars = [];
 
-        foreach ($rawVars as $varKey => $varValue) {
-            // Replaces {{ var.name }} with the flattened $values['var.name']
-            $vars[$varKey] = preg_replace_callback(
+        // Replaces {{ var.name }} with the flattened $values['var.name']
+        return array_map(function ($varValue) use ($values) {
+            return preg_replace_callback(
                 "/\{\{(\s*)([a-zA-Z\d\-_.]+)(\s*)}}/",
                 static function (array $matches) use ($values): string {
                     $innerValue = strtolower(trim($matches[2]));
@@ -102,9 +98,7 @@ abstract class AbstractConnector implements ConnectorInterface
                 },
                 $varValue
             );
-        }
-
-        return $vars;
+        }, $rawVars);
     }
 
     /**

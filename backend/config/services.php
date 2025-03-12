@@ -86,11 +86,27 @@ return [
 
         // Specify MariaDB version for local Docker installs. Let non-local ones auto-detect via Doctrine.
         if (isset($connectionOptions['unix_socket']) || $environment->isTesting()) {
-            $connectionOptions['serverVersion'] = '11.2.3-MariaDB-1';
+            $connectionOptions['serverVersion'] = '11.4.4-MariaDB-1';
         }
 
         $config = new Doctrine\DBAL\Configuration();
         $config->setResultCache($psr6Cache);
+
+        // Add middleware that forces a custom platform, for high-precision DATETIMEs.
+        $config->setMiddlewares([
+            new class implements Doctrine\DBAL\Driver\Middleware {
+                public function wrap(Doctrine\DBAL\Driver $driver): Doctrine\DBAL\Driver
+                {
+                    return new class ($driver) extends Doctrine\DBAL\Driver\Middleware\AbstractDriverMiddleware {
+                        public function getDatabasePlatform(
+                            Doctrine\DBAL\ServerVersionProvider $versionProvider
+                        ): Doctrine\DBAL\Platforms\AbstractPlatform {
+                            return new App\Doctrine\Platform\MariaDbPlatform();
+                        }
+                    };
+                }
+            },
+        ]);
 
         /** @phpstan-ignore-next-line */
         return Doctrine\DBAL\DriverManager::getConnection($connectionOptions, $config);
@@ -139,6 +155,11 @@ return [
 
         $config->addCustomNumericFunction('RAND', DoctrineExtensions\Query\Mysql\Rand::class);
         $config->addCustomStringFunction('FIELD', DoctrineExtensions\Query\Mysql\Field::class);
+
+        Doctrine\DBAL\Types\Type::overrideType(
+            'datetime_immutable',
+            App\Doctrine\Types\UtcDateTimeImmutableType::class
+        );
 
         $eventManager = new Doctrine\Common\EventManager();
         $eventManager->addEventSubscriber($eventRequiresRestart);
@@ -200,28 +221,11 @@ return [
         ? new Symfony\Component\Lock\Store\RedisStore($redisFactory->getInstance())
         : new Symfony\Component\Lock\Store\FlockStore($environment->getTempDirectory()),
 
-    // Console
-    App\Console\Application::class => static function (
-        DI\Container $di,
-        App\CallableEventDispatcherInterface $dispatcher,
-        App\Version $version,
+    // DB migrator configuration
+    Doctrine\Migrations\Configuration\Migration\ConfigurationLoader::class => static function (
         Environment $environment,
-        Doctrine\ORM\EntityManagerInterface $em
+        App\CallableEventDispatcherInterface $dispatcher,
     ) {
-        $console = new App\Console\Application(
-            $environment->getAppName() . ' Command Line Tools ('
-            . $environment->getAppEnvironmentEnum()->getName() . ')',
-            $version->getVersion()
-        );
-        $console->setDispatcher($dispatcher);
-
-        // Doctrine ORM/DBAL
-        Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands(
-            $console,
-            new Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider($em)
-        );
-
-        // Add Doctrine Migrations
         $migrationConfigurations = [
             'migrations_paths' => [
                 'App\Entity\Migration' => $environment->getBackendDirectory() . '/src/Entity/Migration',
@@ -241,10 +245,34 @@ return [
 
         $migrationConfigurations = $buildMigrationConfigurationsEvent->getMigrationConfigurations();
 
-        $migrateConfig = new Doctrine\Migrations\Configuration\Migration\ConfigurationArray(
+        return new Doctrine\Migrations\Configuration\Migration\ConfigurationArray(
             $migrationConfigurations
         );
+    },
 
+    // Console
+    App\Console\Application::class => static function (
+        DI\Container $di,
+        App\CallableEventDispatcherInterface $dispatcher,
+        App\Version $version,
+        Environment $environment,
+        Doctrine\ORM\EntityManagerInterface $em,
+        Doctrine\Migrations\Configuration\Migration\ConfigurationLoader $migrateConfig,
+    ) {
+        $console = new App\Console\Application(
+            $environment->getAppName() . ' Command Line Tools ('
+            . $environment->getAppEnvironmentEnum()->getName() . ')',
+            $version->getVersion()
+        );
+        $console->setDispatcher($dispatcher);
+
+        // Doctrine ORM/DBAL
+        Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands(
+            $console,
+            new Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider($em)
+        );
+
+        // Add Doctrine Migrations
         $migrateFactory = Doctrine\Migrations\DependencyFactory::fromEntityManager(
             $migrateConfig,
             new Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager($em)
@@ -320,6 +348,7 @@ return [
 
         $normalizers = [
             new Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer(),
+            new App\Normalizer\DateTimeNormalizer(),
             new Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer(),
             new Azura\Normalizer\DoctrineEntityNormalizer(
                 $em,
@@ -492,7 +521,7 @@ return [
                 new GuzzleHttp\Psr7\HttpFactory(),
                 new GuzzleHttp\Client([
                     'curl' => [
-                        \CURLOPT_UNIX_SOCKET_PATH => '/var/run/supervisor.sock',
+                        CURLOPT_UNIX_SOCKET_PATH => '/var/run/supervisor.sock',
                     ],
                 ])
             )

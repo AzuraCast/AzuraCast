@@ -24,6 +24,9 @@ final class Configuration
 
     public const int DEFAULT_PORT_MIN = 8000;
     public const int DEFAULT_PORT_MAX = 8499;
+
+    public const string PER_STATION_SUPERVISOR_CONF = 'supervisord.conf';
+
     public const array PROTECTED_PORTS = [
         3306, // MariaDB
         6010, // Nginx internal
@@ -98,7 +101,7 @@ final class Configuration
 
         // Initialize adapters.
         $supervisorConfig = [];
-        $supervisorConfigFile = $this->getSupervisorConfigFile($station);
+        $supervisorConfigFile = self::getSupervisorConfPath($station);
 
         $frontendEnum = $station->getFrontendType();
         $backendEnum = $station->getBackendType();
@@ -111,17 +114,17 @@ final class Configuration
             (null === $frontend || !$frontend->hasCommand($station))
             && (null === $backend || !$backend->hasCommand($station))
         ) {
-            $this->unlinkAndStopStation($station, $reloadSupervisor, true);
+            $this->removeLocalServices($station, $reloadSupervisor, true);
             throw new RuntimeException('Station has no local services.');
         }
 
         if (!$station->getHasStarted()) {
-            $this->unlinkAndStopStation($station, $reloadSupervisor);
+            $this->removeLocalServices($station, $reloadSupervisor);
             throw new RuntimeException('Station has not started yet.');
         }
 
         if (!$station->getIsEnabled()) {
-            $this->unlinkAndStopStation($station, $reloadSupervisor);
+            $this->removeLocalServices($station, $reloadSupervisor);
             throw new RuntimeException('Station is disabled.');
         }
 
@@ -159,6 +162,7 @@ final class Configuration
                 'directory' => $station->getRadioConfigDir(),
                 'environment' => self::buildEnvironment([
                     'TZ' => $station->getTimezone(),
+                    ...$adapter->getEnvironmentVariables($station),
                 ]),
                 'autostart' => 'false',
                 'autorestart' => 'true',
@@ -207,13 +211,7 @@ final class Configuration
         }
     }
 
-    private function getSupervisorConfigFile(Station $station): string
-    {
-        $configDir = $station->getRadioConfigDir();
-        return $configDir . '/supervisord.conf';
-    }
-
-    private function unlinkAndStopStation(
+    private function removeLocalServices(
         Station $station,
         bool $reloadSupervisor = true,
         bool $isRemoteOnly = false
@@ -226,26 +224,7 @@ final class Configuration
         $this->em->persist($station);
         $this->em->flush();
 
-        $supervisorConfigFile = $this->getSupervisorConfigFile($station);
-        @unlink($supervisorConfigFile);
-        if ($reloadSupervisor) {
-            $this->stopForStation($station);
-        }
-    }
-
-    private function stopForStation(Station $station): void
-    {
-        $this->markAsStarted($station);
-
-        $stationGroup = 'station_' . $station->getId();
-        $affectedGroups = $this->reloadSupervisor();
-
-        if (!in_array($stationGroup, $affectedGroups, true)) {
-            try {
-                $this->supervisor->stopProcessGroup($stationGroup, false);
-            } catch (SupervisorException) {
-            }
-        }
+        $this->removeConfiguration($station, $reloadSupervisor);
     }
 
     private function markAsStarted(Station $station): void
@@ -307,7 +286,7 @@ final class Configuration
     /**
      * Determine the first available 10-port block that has no stations occupying it.
      */
-    public function getFirstAvailableRadioPort(Station $station = null): int
+    public function getFirstAvailableRadioPort(?Station $station = null): int
     {
         $usedPorts = $this->getUsedPorts($station);
 
@@ -346,7 +325,7 @@ final class Configuration
      *   name: string
      * }>
      */
-    public function getUsedPorts(Station $exceptStation = null): array
+    public function getUsedPorts(?Station $exceptStation = null): array
     {
         static $usedPorts;
 
@@ -408,8 +387,10 @@ final class Configuration
      *
      * @param Station $station
      */
-    public function removeConfiguration(Station $station): void
-    {
+    public function removeConfiguration(
+        Station $station,
+        bool $reloadSupervisor = true
+    ): void {
         if ($this->environment->isTesting()) {
             return;
         }
@@ -417,16 +398,20 @@ final class Configuration
         $stationGroup = 'station_' . $station->getId();
 
         // Try forcing the group to stop, but don't hard-fail if it doesn't.
-        try {
-            $this->supervisor->stopProcessGroup($stationGroup);
-            $this->supervisor->removeProcessGroup($stationGroup);
-        } catch (SupervisorException) {
+        if ($reloadSupervisor) {
+            try {
+                $this->supervisor->stopProcessGroup($stationGroup);
+                $this->supervisor->removeProcessGroup($stationGroup);
+            } catch (SupervisorException) {
+            }
         }
 
-        $supervisorConfigPath = $this->getSupervisorConfigFile($station);
+        $supervisorConfigPath = self::getSupervisorConfPath($station);
         @unlink($supervisorConfigPath);
 
-        $this->reloadSupervisor();
+        if ($reloadSupervisor) {
+            $this->reloadSupervisor();
+        }
     }
 
     protected static function buildEnvironment(array $values): string
@@ -434,7 +419,7 @@ final class Configuration
         return implode(
             ',',
             array_map(
-                static fn (string $k, mixed $v) => sprintf(
+                static fn(string $k, mixed $v) => sprintf(
                     '%s="%s"',
                     $k,
                     str_replace('%', '%%', $v)
@@ -443,6 +428,16 @@ final class Configuration
                 array_values($values)
             )
         );
+    }
+
+    public static function getSupervisorConfPath(
+        Station|string $configDir
+    ): string {
+        if ($configDir instanceof Station) {
+            $configDir = $configDir->getRadioConfigDir();
+        }
+
+        return $configDir . '/' . self::PER_STATION_SUPERVISOR_CONF;
     }
 
     /**

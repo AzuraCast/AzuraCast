@@ -7,7 +7,7 @@
         <div class="container pt-5">
             <div class="row g-3">
                 <div class="col-md-4 mb-sm-4">
-                    <settings-panel />
+                    <settings-panel :station-name="stationName" />
                 </div>
 
                 <div class="col-md-8">
@@ -37,18 +37,20 @@
 </template>
 
 <script setup lang="ts">
-import MixerPanel from './WebDJ/MixerPanel.vue';
-import MicrophonePanel from './WebDJ/MicrophonePanel.vue';
-import PlaylistPanel from './WebDJ/PlaylistPanel.vue';
-import SettingsPanel from './WebDJ/SettingsPanel.vue';
+import MixerPanel from "~/components/Public/WebDJ/MixerPanel.vue";
+import MicrophonePanel from "~/components/Public/WebDJ/MicrophonePanel.vue";
+import PlaylistPanel from "~/components/Public/WebDJ/PlaylistPanel.vue";
+import SettingsPanel from "~/components/Public/WebDJ/SettingsPanel.vue";
 import {useProvideWebDjNode} from "~/components/Public/WebDJ/useWebDjNode";
-import {useProvideWebcaster, webcasterProps} from "~/components/Public/WebDJ/useWebcaster";
+import {useProvideWebcaster, WebcasterProps} from "~/components/Public/WebDJ/useWebcaster";
 import {useProvideMixer} from "~/components/Public/WebDJ/useMixerValue";
 import {useProvidePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
 
-const props = defineProps({
-    ...webcasterProps
-});
+interface WebDjProps extends WebcasterProps {
+    stationName: string | null
+}
+
+const props = defineProps<WebDjProps>();
 
 const webcaster = useProvideWebcaster(props);
 

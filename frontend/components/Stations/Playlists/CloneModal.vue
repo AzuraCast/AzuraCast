@@ -28,20 +28,22 @@
 </template>
 
 <script setup lang="ts">
-import {required} from '@vuelidate/validators';
+import {required} from "@vuelidate/validators";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {ref} from "vue";
+import {ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
 
-const emit = defineEmits(['relist', 'needs-restart']);
+const emit = defineEmits<{
+    (e: 'relist'): void,
+    (e: 'needs-restart'): void
+}>();
 
-const cloneUrl = ref(null);
+const cloneUrl = ref<string | null>(null);
 
 const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
     {
@@ -72,9 +74,9 @@ const copyOptions = [
     }
 ];
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 
-const open = (name, newCloneUrl) => {
+const open = (name: string, newCloneUrl: string) => {
     clearContents();
 
     cloneUrl.value = newCloneUrl;
@@ -91,7 +93,7 @@ const {axios} = useAxios();
 
 const doSubmit = () => {
     ifValid(() => {
-        axios({
+        void axios({
             method: 'POST',
             url: cloneUrl.value,
             data: form.value

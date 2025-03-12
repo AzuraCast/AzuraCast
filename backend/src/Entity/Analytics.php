@@ -6,12 +6,9 @@ namespace App\Entity;
 
 use App\Entity\Enums\AnalyticsIntervals;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
-use Carbon\CarbonImmutable;
+use App\Utilities\Time;
 use DateTimeImmutable;
-use DateTimeInterface;
-use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
-use RuntimeException;
 
 #[
     ORM\Entity(readOnly: true),
@@ -33,7 +30,7 @@ class Analytics implements IdentifiableEntityInterface
     #[ORM\Column(type: 'string', length: 15, enumType: AnalyticsIntervals::class)]
     protected AnalyticsIntervals $type;
 
-    #[ORM\Column(type: 'datetime_immutable')]
+    #[ORM\Column(type: 'datetime_immutable', precision: 0)]
     protected DateTimeImmutable $moment;
 
     #[ORM\Column]
@@ -49,7 +46,7 @@ class Analytics implements IdentifiableEntityInterface
     protected ?int $number_unique = null;
 
     public function __construct(
-        DateTimeInterface $moment,
+        mixed $moment,
         ?Station $station = null,
         AnalyticsIntervals $type = AnalyticsIntervals::Daily,
         int $numberMin = 0,
@@ -57,9 +54,7 @@ class Analytics implements IdentifiableEntityInterface
         float $numberAvg = 0,
         ?int $numberUnique = null
     ) {
-        $utc = new DateTimeZone('UTC');
-
-        $this->moment = CarbonImmutable::parse($moment, $utc)->shiftTimezone($utc);
+        $this->moment = Time::toUtcCarbonImmutable($moment);
 
         $this->station = $station;
         $this->type = $type;
@@ -80,19 +75,9 @@ class Analytics implements IdentifiableEntityInterface
         return $this->type;
     }
 
-    public function getMoment(): CarbonImmutable
+    public function getMoment(): DateTimeImmutable
     {
-        return CarbonImmutable::instance($this->moment);
-    }
-
-    public function getMomentInStationTimeZone(): CarbonImmutable
-    {
-        if (null === $this->station) {
-            throw new RuntimeException('Cannot get moment in station timezone; no station associated.');
-        }
-
-        $tz = $this->station->getTimezoneObject();
-        return CarbonImmutable::instance($this->moment)->shiftTimezone($tz);
+        return $this->moment;
     }
 
     public function getNumberMin(): int

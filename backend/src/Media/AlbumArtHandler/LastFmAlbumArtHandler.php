@@ -20,6 +20,11 @@ final class LastFmAlbumArtHandler extends AbstractAlbumArtHandler
         return 'LastFm';
     }
 
+    protected function isSupported(): bool
+    {
+        return $this->lastFm->hasApiKey();
+    }
+
     protected function getAlbumArt(SongInterface $song): ?string
     {
         if ($song instanceof StationMedia && !empty($song->getAlbum())) {

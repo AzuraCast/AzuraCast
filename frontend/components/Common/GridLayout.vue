@@ -77,8 +77,6 @@ export interface GridLayoutProps {
 }
 
 const props = withDefaults(defineProps<GridLayoutProps>(), {
-    id: null,
-    apiUrl: null,
     paginated: false,
     loading: false,
     hideOnLoading: true,
@@ -87,10 +85,10 @@ const props = withDefaults(defineProps<GridLayoutProps>(), {
     defaultPerPage: 10,
 });
 
-const emit = defineEmits([
-    'refreshed',
-    'data-loaded'
-]);
+const emit = defineEmits<{
+    (e: 'refreshed'): void,
+    (e: 'data-loaded', data: Row[]): void
+}>();
 
 const currentPage = ref<number>(1);
 const flushCache = ref<boolean>(false);
@@ -147,7 +145,7 @@ const refresh = () => {
 
     isLoading.value = true;
 
-    return axios.get(props.apiUrl, {params: queryParams}).then((resp) => {
+    axios.get(props.apiUrl, {params: queryParams}).then((resp) => {
         totalRows.value = resp.data.total;
 
         const rows = resp.data.rows;
@@ -164,7 +162,7 @@ const refresh = () => {
     });
 }
 
-const onPageChange = (p) => {
+const onPageChange = (p: number) => {
     currentPage.value = p;
     refresh();
 }

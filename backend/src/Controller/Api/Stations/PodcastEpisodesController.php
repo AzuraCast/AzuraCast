@@ -26,9 +26,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/station/{station_id}/podcast/{podcast_id}/episodes',
         operationId: 'getEpisodes',
-        description: 'List all current episodes for a given podcast ID.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Podcasts'],
+        summary: 'List all current episodes for a given podcast ID.',
+        tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -40,28 +39,25 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_PodcastEpisode')
+                    items: new OA\Items(ref: ApiPodcastEpisode::class)
                 )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Post(
         path: '/station/{station_id}/podcast/{podcast_id}/episodes',
         operationId: 'addEpisode',
-        description: 'Create a new podcast episode.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Create a new podcast episode.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_PodcastEpisode')
+            content: new OA\JsonContent(ref: ApiPodcastEpisode::class)
         ),
-        tags: ['Stations: Podcasts'],
+        tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -73,22 +69,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_PodcastEpisode')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: ApiPodcastEpisode::class)
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Get(
         path: '/station/{station_id}/podcast/{podcast_id}/episode/{id}',
         operationId: 'getEpisode',
-        description: 'Retrieve details for a single podcast episode.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Podcasts'],
+        summary: 'Retrieve details for a single podcast episode.',
+        tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -107,25 +100,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_PodcastEpisode')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: ApiPodcastEpisode::class)
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Put(
         path: '/station/{station_id}/podcast/{podcast_id}/episode/{id}',
         operationId: 'editEpisode',
-        description: 'Update details of a single podcast episode.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Update details of a single podcast episode.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_PodcastEpisode')
+            content: new OA\JsonContent(ref: ApiPodcastEpisode::class)
         ),
-        tags: ['Stations: Podcasts'],
+        tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -144,18 +134,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Delete(
         path: '/station/{station_id}/podcast/{podcast_id}/episode/{id}',
         operationId: 'deleteEpisode',
-        description: 'Delete a single podcast episode.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Podcasts'],
+        summary: 'Delete a single podcast episode.',
+        tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -174,10 +163,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]

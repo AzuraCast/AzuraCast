@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Notification\Check;
 
 use App\Container\SettingsAwareTrait;
+use App\Entity\Api\Admin\UpdateDetails;
 use App\Entity\Api\Notification;
+use App\Enums\FlashLevels;
 use App\Enums\GlobalPermissions;
 use App\Enums\ReleaseChannel;
 use App\Event\GetNotifications;
-use App\Session\FlashLevels;
 use App\Version;
 
 final class UpdateCheck
@@ -34,10 +35,12 @@ final class UpdateCheck
             return;
         }
 
-        $updateData = $settings->getUpdateResults();
-        if (empty($updateData)) {
+        $updateDataRaw = $settings->getUpdateResults();
+        if (empty($updateDataRaw)) {
             return;
         }
+
+        $updateData = UpdateDetails::fromParent($updateDataRaw);
 
         $router = $event->getRequest()->getRouter();
 
@@ -48,59 +51,58 @@ final class UpdateCheck
 
         if (
             ReleaseChannel::Stable === $releaseChannel
-            && ($updateData['needs_release_update'] ?? false)
+            && ($updateData->needs_release_update)
         ) {
-            $notification = new Notification();
-            $notification->title = __(
-                'New AzuraCast Stable Release Available',
+            $event->addNotification(
+                new Notification(
+                    __(
+                        'New AzuraCast Stable Release Available',
+                    ),
+                    sprintf(
+                        __(
+                            'Version %s is now available. You are currently running version %s. Updating is recommended.'
+                        ),
+                        $updateData->latest_release,
+                        $updateData->current_release
+                    ),
+                    FlashLevels::Info,
+                    $actionLabel,
+                    $actionUrl
+                )
             );
-            $notification->body = sprintf(
-                __(
-                    'Version %s is now available. You are currently running version %s. Updating is recommended.'
-                ),
-                $updateData['latest_release'],
-                $updateData['current_release']
-            );
-            $notification->type = FlashLevels::Info->value;
-            $notification->actionLabel = $actionLabel;
-            $notification->actionUrl = $actionUrl;
-
-            $event->addNotification($notification);
             return;
         }
 
         if (ReleaseChannel::RollingRelease === $releaseChannel) {
-            if ($updateData['needs_rolling_update'] ?? false) {
-                $notification = new Notification();
-                $notification->title = __(
-                    'New AzuraCast Rolling Release Available'
+            if ($updateData->needs_rolling_update) {
+                $event->addNotification(
+                    new Notification(
+                        __('New AzuraCast Rolling Release Available'),
+                        sprintf(
+                            __(
+                                'Your installation is currently %d update(s) behind the latest version. Updating is recommended.'
+                            ),
+                            $updateData->rolling_updates_available
+                        ),
+                        FlashLevels::Info,
+                        $actionLabel,
+                        $actionUrl
+                    )
                 );
-                $notification->body = sprintf(
-                    __(
-                        'Your installation is currently %d update(s) behind the latest version. Updating is recommended.'
-                    ),
-                    $updateData['rolling_updates_available']
-                );
-                $notification->type = FlashLevels::Info->value;
-                $notification->actionLabel = $actionLabel;
-                $notification->actionUrl = $actionUrl;
-
-                $event->addNotification($notification);
             }
 
-            if ($updateData['can_switch_to_stable'] ?? false) {
-                $notification = new Notification();
-                $notification->title = __(
-                    'Switch to Stable Channel Available'
+            if ($updateData->can_switch_to_stable) {
+                $event->addNotification(
+                    new Notification(
+                        __('Switch to Stable Channel Available'),
+                        __(
+                            'Your Rolling Release installation is currently older than the latest Stable release. This means you can switch releases to the "Stable" release channel if desired.'
+                        ),
+                        FlashLevels::Info,
+                        __('About Release Channels'),
+                        '/docs/getting-started/updates/release-channels/'
+                    )
                 );
-                $notification->body = __(
-                    'Your Rolling Release installation is currently older than the latest Stable release. This means you can switch releases to the "Stable" release channel if desired.'
-                );
-                $notification->type = FlashLevels::Info->value;
-                $notification->actionLabel = __('About Release Channels');
-                $notification->actionUrl = '/docs/getting-started/updates/release-channels/';
-
-                $event->addNotification($notification);
             }
         }
     }

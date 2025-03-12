@@ -4,7 +4,7 @@
         :key="index"
     >
         <optgroup
-            v-if="Array.isArray(option.options)"
+            v-if="'options' in option"
             :label="option.label"
         >
             <select-options :options="option.options" />
@@ -19,21 +19,12 @@
 </template>
 
 <script setup lang="ts">
-import {computed} from "vue";
-import objectToFormOptions from "~/functions/objectToFormOptions";
+import {toRef} from "vue";
+import {NestedFormOptionInput, objectToNestedFormOptions} from "~/functions/objectToFormOptions.ts";
 
-const props = defineProps({
-    options: {
-        type: Array<any>,
-        required: true
-    }
-});
+const props = defineProps<{
+    options: NestedFormOptionInput
+}>();
 
-const parsedOptions = computed(() => {
-    if (Array.isArray(props.options)) {
-        return props.options;
-    }
-
-    return objectToFormOptions(props.options);
-});
+const parsedOptions = objectToNestedFormOptions(toRef(props, 'options'));
 </script>

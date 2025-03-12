@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Entity\Api;
 
 use OpenApi\Attributes as OA;
-use Psr\Http\Message\UriInterface;
 
 #[OA\Schema(
     schema: 'Api_StationRequest',
     type: 'object'
 )]
-final class StationRequest implements ResolvableUrlInterface
+final class StationRequest
 {
     #[OA\Property(
         description: 'Requestable ID unique identifier',
@@ -27,14 +26,4 @@ final class StationRequest implements ResolvableUrlInterface
 
     #[OA\Property]
     public Song $song;
-
-    /**
-     * Re-resolve any Uri instances to reflect base URL changes.
-     *
-     * @param UriInterface $base
-     */
-    public function resolveUrls(UriInterface $base): void
-    {
-        $this->song->resolveUrls($base);
-    }
 }

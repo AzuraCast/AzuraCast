@@ -64,10 +64,11 @@
 
 <script setup lang="ts">
 import {useTranslate} from "~/vendor/gettext.ts";
-import {get} from 'lodash';
+import {get} from "lodash";
+import {ApiAdminDebugLogEntry} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps<{
-  logs: Array<any>
+defineProps<{
+    logs: ApiAdminDebugLogEntry[]
 }>();
 
 const badgeClasses = {
@@ -80,7 +81,8 @@ const badgeClasses = {
     550: 'text-bg-danger',
     600: 'text-bg-danger'
 };
-const getBadgeClass = (logLevel) => {
+
+const getBadgeClass = (logLevel: keyof typeof badgeClasses) => {
     return get(badgeClasses, logLevel, badgeClasses[100]);
 };
 
@@ -96,11 +98,12 @@ const badgeLabels = {
     550: $gettext('Alert'),
     600: $gettext('Emergency')
 };
-const getBadgeLabel = (logLevel) => {
+
+const getBadgeLabel = (logLevel: keyof typeof badgeLabels) => {
     return get(badgeLabels, logLevel, badgeLabels[100]);
 };
 
-const dump = (value) => {
+const dump = (value: any) => {
     return JSON.stringify(value);
 }
 </script>

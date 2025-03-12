@@ -12,11 +12,31 @@ use App\Entity\StationBackendConfiguration;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Radio\Backend\Liquidsoap;
+use OpenApi\Attributes as OA;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
+#[
+    OA\Put(
+        path: '/station/{station_id}/liquidsoap-config',
+        operationId: 'putStationLiquidsoapConfig',
+        summary: 'Save the editable sections of the station Liquidsoap configuration.',
+        tags: [OpenApi::TAG_STATIONS_BROADCASTING],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            // TODO: API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class PutAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;

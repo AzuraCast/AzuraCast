@@ -188,7 +188,7 @@ final class MediaProcessor
         $mediaProcessedAt = $media->getMtime();
 
         // No need to update if all of these conditions are true.
-        if (!$force && !StationMedia::needsReprocessing($fileModified, $mediaProcessedAt)) {
+        if (!$force && $fileModified <= $mediaProcessedAt) {
             return false;
         }
 

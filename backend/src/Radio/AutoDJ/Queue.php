@@ -10,9 +10,11 @@ use App\Entity\Repository\StationQueueRepository;
 use App\Entity\Station;
 use App\Entity\StationQueue;
 use App\Event\Radio\BuildQueue;
+use App\Utilities\Time;
 use App\Utilities\Types;
 use Carbon\CarbonImmutable;
-use Carbon\CarbonInterface;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Monolog\Handler\TestHandler;
 use Monolog\LogRecord;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -44,15 +46,14 @@ final class Queue
         }
 
         // Adjust "expectedCueTime" time from current queue.
-        $tzObject = $station->getTimezoneObject();
-        $expectedCueTime = CarbonImmutable::now($tzObject);
+        $expectedCueTime = Time::nowUtc();
 
         // Get expected play time of each item.
         $currentSong = $station->getCurrentSong();
         if (null !== $currentSong) {
             $expectedPlayTime = $this->addDurationToTime(
                 $station,
-                CarbonImmutable::createFromTimestamp($currentSong->getTimestampStart(), $tzObject),
+                $currentSong->getTimestampStart(),
                 $currentSong->getDuration()
             );
 
@@ -77,7 +78,7 @@ final class Queue
             if ($queueRow->getSentToAutodj()) {
                 $expectedCueTime = $this->addDurationToTime(
                     $station,
-                    CarbonImmutable::createFromTimestamp($queueRow->getTimestampCued(), $tzObject),
+                    $queueRow->getTimestampCued(),
                     $queueRow->getDuration()
                 );
 
@@ -90,14 +91,14 @@ final class Queue
                     continue;
                 }
 
-                $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
+                $queueRow->setTimestampCued($expectedCueTime);
                 $expectedCueTime = $this->addDurationToTime($station, $expectedCueTime, $queueRow->getDuration());
 
                 // Only append to queue length for uncued songs.
                 $queueLength++;
             }
 
-            $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
+            $queueRow->setTimestampPlayed($expectedPlayTime);
             $this->em->persist($queueRow);
 
             $expectedPlayTime = $this->addDurationToTime($station, $expectedPlayTime, $queueRow->getDuration());
@@ -141,8 +142,8 @@ final class Queue
             }
 
             foreach ($nextSongs as $queueRow) {
-                $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
-                $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
+                $queueRow->setTimestampCued($expectedCueTime);
+                $queueRow->setTimestampPlayed($expectedPlayTime);
                 $queueRow->updateVisibility();
                 $this->em->persist($queueRow);
                 $this->em->flush();
@@ -216,8 +217,8 @@ final class Queue
 
         foreach ($nextSongs as $queueRow) {
             $queueRow->setIsPlayed();
-            $queueRow->setTimestampCued($expectedPlayTime->getTimestamp());
-            $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
+            $queueRow->setTimestampCued($expectedPlayTime);
+            $queueRow->setTimestampPlayed($expectedPlayTime);
             $queueRow->updateVisibility();
 
             $this->em->persist($queueRow);
@@ -237,14 +238,14 @@ final class Queue
 
     private function addDurationToTime(
         Station $station,
-        CarbonInterface $now,
-        ?int $duration
-    ): CarbonInterface {
+        DateTimeInterface $now,
+        ?float $duration
+    ): CarbonImmutable {
         $duration ??= 1;
 
         $startNext = $station->getBackendConfig()->getCrossfadeDuration();
 
-        $now = $now->addSeconds($duration);
+        $now = CarbonImmutable::instance($now)->addSeconds($duration);
         return ($duration >= $startNext)
             ? $now->subMilliseconds((int)($startNext * 1000))
             : $now;
@@ -252,7 +253,7 @@ final class Queue
 
     private function isQueueRowStillValid(
         StationQueue $queueRow,
-        CarbonInterface $expectedPlayTime
+        DateTimeImmutable $expectedPlayTime
     ): bool {
         $playlist = $queueRow->getPlaylist();
         if (null === $playlist) {

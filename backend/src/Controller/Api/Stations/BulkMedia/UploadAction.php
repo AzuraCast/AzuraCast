@@ -17,8 +17,10 @@ use App\Entity\StationPlaylist;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Service\Flow;
 use League\Csv\Reader;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -28,6 +30,24 @@ use Throwable;
 use function count;
 use function str_starts_with;
 
+#[
+    OA\Post(
+        path: '/station/{station_id}/files/bulk',
+        operationId: 'postStationBulkMediaUpload',
+        summary: 'Upload a CSV containing details about all station media.',
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            // TODO: API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class UploadAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
@@ -39,12 +59,6 @@ final class UploadAction implements SingleActionInterface
         'genre',
         'lyrics',
         'isrc',
-        'amplify',
-        'fade_overlap',
-        'fade_in',
-        'fade_out',
-        'cue_in',
-        'cue_out',
     ];
 
     public function __construct(

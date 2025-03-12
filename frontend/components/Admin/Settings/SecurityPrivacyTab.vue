@@ -85,29 +85,21 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    }
-});
-
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {v$, tabClass} = useVuelidateOnFormTab(
+    form,
     {
         analytics: {required},
         always_use_ssl: {},
         ip_source: {},
         api_access_control: {},
     },
-    form,
     {
         analytics: null,
         always_use_ssl: false,

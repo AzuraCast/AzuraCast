@@ -46,34 +46,26 @@ import Loading from "~/components/Common/Loading.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
 import {useLightbox} from "~/vendor/lightbox";
+import {ApiUploadedRecordStatus} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    id: {
-        type: String,
-        required: true
-    },
-    apiUrl: {
-        type: String,
-        required: true
-    },
-    caption: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    id: string,
+    apiUrl: string,
+    caption: string,
+}>();
 
-const isLoading = ref(true);
-const isUploaded = ref(false);
-const url = ref(null);
+const isLoading = ref<boolean>(true);
+const isUploaded = ref<boolean>(false);
+const url = ref<string | null>(null);
 
 const {axios} = useAxios();
 
 const relist = () => {
     isLoading.value = true;
 
-    axios.get(props.apiUrl).then((resp) => {
-        isUploaded.value = resp.data.is_uploaded;
-        url.value = resp.data.url;
+    void axios.get<ApiUploadedRecordStatus>(props.apiUrl).then(({data}) => {
+        isUploaded.value = data.hasRecord;
+        url.value = data.url;
 
         isLoading.value = false;
     });
@@ -81,7 +73,7 @@ const relist = () => {
 
 onMounted(relist);
 
-const uploaded = (newFile) => {
+const uploaded = (newFile: File | null) => {
     if (null === newFile) {
         return;
     }
@@ -89,13 +81,13 @@ const uploaded = (newFile) => {
     const formData = new FormData();
     formData.append('file', newFile);
 
-    axios.post(props.apiUrl, formData).finally(() => {
+    void axios.post(props.apiUrl, formData).finally(() => {
         relist();
     });
 };
 
 const clear = () => {
-    axios.delete(props.apiUrl).finally(() => {
+    void axios.delete(props.apiUrl).finally(() => {
         relist();
     });
 };

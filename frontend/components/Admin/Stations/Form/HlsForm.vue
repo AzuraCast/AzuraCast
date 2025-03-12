@@ -83,33 +83,21 @@
 <script setup lang="ts">
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {BackendAdapter} from "~/entities/RadioAdapters";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import BackendDisabled from "./Common/BackendDisabled.vue";
+import BackendDisabled from "~/components/Admin/Stations/Form/Common/BackendDisabled.vue";
 import {computed} from "vue";
-import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
+import {ApiGenericForm, BackendAdapters} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    station: {
-        type: Object,
-        required: true
-    }
-});
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {enableAdvancedFeatures} = useAzuraCast();
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
-
 const {v$, tabClass} = useVuelidateOnFormTab(
+    form,
     computed(() => {
         let validations: {
             [key: string | number]: any
@@ -135,7 +123,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
         return validations;
     }),
-    form,
     () => {
         let blankForm: {
             [key: string | number]: any
@@ -164,7 +151,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 );
 
 const isBackendEnabled = computed(() => {
-    return form.value.backend_type !== BackendAdapter.None;
+    return form.value.backend_type !== BackendAdapters.None;
 });
 
 const tabClassWithBackend = computed(() => {

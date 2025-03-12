@@ -90,10 +90,14 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-    connectionInfo: {
-        type: Object,
-        required: true
-    }
-});
+export interface StreamerConnectionInfo {
+    serverUrl: string,
+    streamPort: number,
+    ip: string | null,
+    djMountPoint: string,
+}
+
+defineProps<{
+    connectionInfo: StreamerConnectionInfo
+}>();
 </script>

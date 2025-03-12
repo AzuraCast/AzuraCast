@@ -67,47 +67,37 @@
 
 <script setup lang="ts">
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import useSlotsExcept from "~/functions/useSlotsExcept";
 import Modal from "~/components/Common/Modal.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 
-const props = defineProps({
-    title: {
-        type: String,
-        required: true
-    },
-    size: {
-        type: String,
-        default: 'lg'
-    },
-    centered: {
-        type: Boolean,
-        default: false
-    },
-    id: {
-        type: String,
-        default: 'edit-modal'
-    },
-    loading: {
-        type: Boolean,
-        default: false
-    },
-    disableSaveButton: {
-        type: Boolean,
-        default: false
-    },
-    noEnforceFocus: {
-        type: Boolean,
-        default: false,
-    },
-    error: {
-        type: String,
-        default: null
+withDefaults(
+    defineProps<{
+        title: string,
+        size?: string,
+        centered?: boolean,
+        id?: string,
+        loading?: boolean,
+        disableSaveButton?: boolean,
+        noEnforceFocus?: boolean,
+        error?: string,
+    }>(),
+    {
+        size: 'lg',
+        centered: false,
+        id: 'edit-modal',
+        loading: false,
+        disableSaveButton: false,
+        noEnforceFocus: false
     }
-});
+);
 
-const emit = defineEmits(['submit', 'shown', 'hidden']);
+const emit = defineEmits<{
+    (e: 'submit'): void,
+    (e: 'shown'): void,
+    (e: 'hidden'): void
+}>();
 
 const doSubmit = () => {
     emit('submit');
@@ -121,7 +111,7 @@ const onHidden = () => {
     emit('hidden');
 };
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
 defineExpose({

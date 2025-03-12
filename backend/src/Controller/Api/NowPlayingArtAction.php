@@ -10,8 +10,26 @@ use App\Entity\Api\Error;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[
+    OA\Get(
+        path: '/nowplaying/{station_id}/art',
+        operationId: 'getStationNowPlayingArt',
+        summary: 'Always redirects to the current art for the given station.',
+        security: [],
+        tags: [OpenApi::TAG_PUBLIC_NOW_PLAYING],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            new OpenApi\Response\Redirect(),
+            new OpenApi\Response\NotFound(),
+        ]
+    )
+]
 final class NowPlayingArtAction implements SingleActionInterface
 {
     public function __construct(
@@ -29,7 +47,6 @@ final class NowPlayingArtAction implements SingleActionInterface
         $np = $this->nowPlayingCache->getForStation($station);
 
         if ($np instanceof NowPlaying) {
-            $np->resolveUrls($request->getRouter()->getBaseUrl());
             $np->update();
 
             $currentArt = $np->now_playing?->song?->art;

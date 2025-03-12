@@ -46,10 +46,10 @@
                             :label="$gettext('Custom CSS for Public Pages')"
                             :description="$gettext('This CSS will be applied to the station public pages.')"
                         >
-                            <template #default="slotProps">
+                            <template #default="{id, model}">
                                 <codemirror-textarea
-                                    :id="slotProps.id"
-                                    v-model="slotProps.field.$model"
+                                    :id="id"
+                                    v-model="model.$model"
                                     mode="css"
                                 />
                             </template>
@@ -62,10 +62,10 @@
                             :label="$gettext('Custom JS for Public Pages')"
                             :description="$gettext('This javascript code will be applied to the station public pages.')"
                         >
-                            <template #default="slotProps">
+                            <template #default="{id, model}">
                                 <codemirror-textarea
-                                    :id="slotProps.id"
-                                    v-model="slotProps.field.$model"
+                                    :id="id"
+                                    v-model="model.$model"
                                     mode="javascript"
                                 />
                             </template>
@@ -95,12 +95,9 @@ import {useTranslate} from "~/vendor/gettext";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Loading from "~/components/Common/Loading.vue";
 
-const props = defineProps({
-    profileEditUrl: {
-        type: String,
-        required: true
-    },
-});
+const props = defineProps<{
+    profileEditUrl: string
+}>();
 
 const isLoading = ref(true);
 const error = ref(null);
@@ -113,17 +110,17 @@ const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
         offline_text: {}
     },
     {
-        default_album_art_url: '',
-        public_custom_css: '',
-        public_custom_js: '',
-        offline_text: ''
+        default_album_art_url: "",
+        public_custom_css: "",
+        public_custom_js: "",
+        offline_text: ""
     }
 );
 
 const {$gettext} = useTranslate();
 const {axios} = useAxios();
 
-const populateForm = (data) => {
+const populateForm = (data: typeof form.value) => {
     form.value = mergeExisting(form.value, data);
 };
 
@@ -132,7 +129,7 @@ const relist = () => {
 
     isLoading.value = true;
 
-    axios.get(props.profileEditUrl).then((resp) => {
+    void axios.get(props.profileEditUrl).then((resp) => {
         populateForm(resp.data.branding_config);
         isLoading.value = false;
     });
@@ -144,7 +141,7 @@ const {notifySuccess} = useNotify();
 
 const submit = () => {
     ifValid(() => {
-        axios({
+        void axios({
             method: 'PUT',
             url: props.profileEditUrl,
             data: {

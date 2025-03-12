@@ -33,38 +33,31 @@
 </template>
 
 <script setup lang="ts">
-import PodcastFormBasicInfo from './PodcastForm/BasicInfo.vue';
-import PodcastFormSource from './PodcastForm/Source.vue';
-import PodcastFormBranding from './PodcastForm/Branding.vue';
-import PodcastCommonArtwork from './Common/Artwork.vue';
+import PodcastFormBasicInfo from "~/components/Stations/Podcasts/PodcastForm/BasicInfo.vue";
+import PodcastFormSource from "~/components/Stations/Podcasts/PodcastForm/Source.vue";
+import PodcastFormBranding from "~/components/Stations/Podcasts/PodcastForm/Branding.vue";
+import PodcastCommonArtwork from "~/components/Stations/Podcasts/Common/Artwork.vue";
 import mergeExisting from "~/functions/mergeExisting";
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, ref} from "vue";
+import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, useTemplateRef} from "vue";
 import {useResettableRef} from "~/functions/useResettableRef";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import {map} from "lodash";
+import {NestedFormOptionInput} from "~/functions/objectToFormOptions.ts";
 
-const props = defineProps({
-    ...baseEditModalProps,
-    languageOptions: {
-        type: Object,
-        required: true
-    },
-    categoriesOptions: {
-        type: Object,
-        required: true
-    },
-    newArtUrl: {
-        type: String,
-        required: true
-    }
-});
+interface PodcastEditModalProps extends BaseEditModalProps {
+    languageOptions: NestedFormOptionInput,
+    categoriesOptions: NestedFormOptionInput,
+    newArtUrl: string
+}
 
-const emit = defineEmits(['relist']);
+const props = defineProps<PodcastEditModalProps>();
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const emit = defineEmits<BaseEditModalEmits>();
+
+const $modal = useTemplateRef('$modal');
 
 const {record, reset} = useResettableRef({
     has_custom_art: false,
@@ -89,9 +82,13 @@ const {
     props,
     emit,
     $modal,
-    {},
     {
-        artwork_file: null
+        artwork_file: {},
+        categories: {}
+    },
+    {
+        artwork_file: null,
+        categories: []
     },
     {
         resetForm: (originalResetForm) => {
@@ -104,7 +101,7 @@ const {
                 (row) => row.category
             );
 
-            record.value = data;
+            record.value = mergeExisting(record.value, data as typeof record.value);
             formRef.value = mergeExisting(formRef.value, data);
         },
     },

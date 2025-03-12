@@ -16,7 +16,7 @@
             </router-link>
 
             <router-link
-                v-if="userAllowedForStation(StationPermission.Profile)"
+                v-if="userAllowedForStation(StationPermissions.Profile)"
                 :to="{ name: 'stations:profile:edit' }"
                 class="navbar-brand ms-0 flex-shrink-0"
             >
@@ -26,9 +26,9 @@
         </div>
     </div>
 
-    <template v-if="userAllowedForStation(StationPermission.Broadcasting)">
+    <template v-if="userAllowedForStation(StationPermissions.Broadcasting)">
         <div
-            v-if="!station.hasStarted"
+            v-if="!hasStarted"
             class="navdrawer-alert bg-success-subtle text-success-emphasis"
         >
             <router-link
@@ -67,24 +67,18 @@ import SidebarMenu from "~/components/Common/SidebarMenu.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import {useIntervalFn} from "@vueuse/core";
 import {useStationsMenu} from "~/components/Stations/menu";
-import {StationPermission, userAllowedForStation} from "~/acl";
+import {userAllowedForStation} from "~/acl";
 import {useAxios} from "~/vendor/axios.ts";
 import {getStationApiUrl} from "~/router.ts";
 import {IconEdit} from "~/components/Common/icons.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
 import {useRestartEventBus} from "~/functions/useMayNeedRestart.ts";
-
-const props = defineProps({
-    station: {
-        type: Object,
-        required: true
-    }
-});
+import {ApiStationRestartStatus, StationPermissions} from "~/entities/ApiInterfaces.ts";
 
 const menuItems = useStationsMenu();
 
-const {name} = useAzuraCastStation();
+const {name, hasStarted, needsRestart: initialNeedsRestart} = useAzuraCastStation();
 
 const {DateTime} = useLuxon();
 const {now, formatDateTimeAsTime} = useStationDateTimeFormatter();
@@ -100,16 +94,18 @@ useIntervalFn(() => {
 
 const restartEventBus = useRestartEventBus();
 const restartStatusUrl = getStationApiUrl('/restart-status');
-const needsRestart = ref(props.station.needsRestart);
+const needsRestart = ref<boolean>(initialNeedsRestart);
 const {axios} = useAxios();
 
 restartEventBus.on((forceRestart: boolean): void => {
     if (forceRestart) {
         needsRestart.value = true;
     } else {
-        axios.get(restartStatusUrl.value).then((resp) => {
-            needsRestart.value = resp.data.needs_restart;
-        });
+        void axios.get<Required<ApiStationRestartStatus>>(restartStatusUrl.value).then(
+            ({data}) => {
+                needsRestart.value = data.needs_restart;
+            }
+        );
     }
 });
 </script>

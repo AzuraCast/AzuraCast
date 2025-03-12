@@ -51,7 +51,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
      * @param Station $station
      * @param UriInterface|null $baseUrl
      */
-    public function getStreamUrl(Station $station, UriInterface $baseUrl = null): UriInterface
+    public function getStreamUrl(Station $station, ?UriInterface $baseUrl = null): UriInterface
     {
         $defaultMount = $this->stationMountRepo->getDefaultMount($station);
 
@@ -99,7 +99,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
             ->withPath('');
     }
 
-    abstract public function getAdminUrl(Station $station, UriInterface $baseUrl = null): UriInterface;
+    abstract public function getAdminUrl(Station $station, ?UriInterface $baseUrl = null): UriInterface;
 
     public function getNowPlaying(Station $station, bool $includeClients = true): Result
     {
@@ -107,12 +107,18 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
     }
 
     /**
-     * @param string $customConfigRaw
+     * @param string|null $customConfigRaw
      *
      * @return mixed[]|false
      */
-    protected function processCustomConfig(string $customConfigRaw): array|false
+    protected function processCustomConfig(?string $customConfigRaw): array|false
     {
+        $customConfigRaw = trim($customConfigRaw ?? '');
+
+        if (empty($customConfigRaw)) {
+            return false;
+        }
+
         try {
             if (str_starts_with($customConfigRaw, '{')) {
                 return json_decode($customConfigRaw, true, 512, JSON_THROW_ON_ERROR);

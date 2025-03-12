@@ -27,6 +27,7 @@ use App\Radio\Backend\Liquidsoap;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -37,53 +38,46 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/station/{station_id}/files',
         operationId: 'getFiles',
-        description: 'List all current uploaded files.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Media'],
+        summary: 'List all current uploaded files.',
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_StationMedia')
+                    items: new OA\Items(ref: ApiStationMedia::class)
                 )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Post(
         path: '/station/{station_id}/files',
         operationId: 'addFile',
-        description: 'Upload a new file.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Upload a new file.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_UploadFile')
+            content: new OA\JsonContent(ref: UploadFile::class)
         ),
-        tags: ['Stations: Media'],
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_StationMedia')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: ApiStationMedia::class)
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Get(
         path: '/station/{station_id}/file/{id}',
         operationId: 'getFile',
-        description: 'Retrieve details for a single file.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Media'],
+        summary: 'Retrieve details for a single file.',
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -95,25 +89,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_StationMedia')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: ApiStationMedia::class)
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Put(
         path: '/station/{station_id}/file/{id}',
         operationId: 'editFile',
-        description: 'Update details of a single file.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Update details of a single file.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_StationMedia')
+            content: new OA\JsonContent(ref: ApiStationMedia::class)
         ),
-        tags: ['Stations: Media'],
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -125,18 +116,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Delete(
         path: '/station/{station_id}/file/{id}',
         operationId: 'deleteFile',
-        description: 'Delete a single file.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Media'],
+        summary: 'Delete a single file.',
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -148,10 +138,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]
@@ -309,7 +299,7 @@ final class FilesController extends AbstractStationApiCrudController
 
         // Write file to temp path.
         $tempPath = $station->getRadioTempDir() . '/' . $apiRecord->getSanitizedFilename();
-        file_put_contents($tempPath, $apiRecord->getFileContents());
+        new Filesystem()->dumpFile($tempPath, $apiRecord->getFileContents());
 
         // Process temp path as regular media record.
         $record = $this->mediaProcessor->processAndUpload(

@@ -1,30 +1,14 @@
 # syntax=docker/dockerfile:1
 
 #
-# Golang dependencies build step
-#
-FROM golang:1.23-bookworm AS go-dependencies
-
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends openssl git
-
-RUN go install github.com/jwilder/dockerize@v0.8.0
-
-RUN go install github.com/aptible/supercronic@v0.2.33
-
-RUN go install github.com/centrifugal/centrifugo/v5@v5.4.7
-
-RUN strip /go/bin/*
-
-#
 # MariaDB dependencies build step
 #
-FROM mariadb:11.2-jammy AS mariadb
+FROM mariadb:lts-noble AS mariadb
 
 #
 # Built-in docs build step
 #
-FROM ghcr.io/azuracast/azuracast.com:builtin AS docs
+FROM ghcr.io/azuracast/azuracast.com:builtin@sha256:010bfead081bc9cb1faff36ef34a343ca5aac07e18700b13ee3dbbabd4d5a901 AS docs
 
 #
 # Icecast-KH with AzuraCast customizations build step
@@ -43,11 +27,6 @@ FROM scratch AS dependencies
 # Add PHP extension installer tool
 COPY --from=php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
-# Add Go dependencies
-COPY --from=go-dependencies /go/bin/dockerize /usr/local/bin
-COPY --from=go-dependencies /go/bin/supercronic /usr/local/bin/supercronic
-COPY --from=go-dependencies /go/bin/centrifugo /usr/local/bin/centrifugo
-
 # Add MariaDB dependencies
 COPY --from=mariadb /usr/local/bin/healthcheck.sh /usr/local/bin/db_healthcheck.sh
 COPY --from=mariadb /usr/local/bin/docker-entrypoint.sh /usr/local/bin/db_entrypoint.sh
@@ -59,7 +38,7 @@ COPY --from=icecast /usr/local/share/icecast /usr/local/share/icecast
 #
 # Final build image
 #
-FROM php:8.3-fpm-bookworm AS pre-final
+FROM php:8.4-fpm-bookworm AS pre-final
 
 ENV TZ="UTC" \
     LANGUAGE="en_US.UTF-8" \
@@ -116,12 +95,13 @@ USER root
 VOLUME "/var/azuracast/stations"
 VOLUME "/var/azuracast/backups"
 VOLUME "/var/lib/mysql"
-VOLUME "/var/azuracast/storage/uploads"
+VOLUME "/var/azuracast/storage/acme"
+VOLUME "/var/azuracast/storage/geoip"
+VOLUME "/var/azuracast/storage/rsas"
+VOLUME "/var/azuracast/storage/sftpgo"
 VOLUME "/var/azuracast/storage/shoutcast2"
 VOLUME "/var/azuracast/storage/stereo_tool"
-VOLUME "/var/azuracast/storage/geoip"
-VOLUME "/var/azuracast/storage/sftpgo"
-VOLUME "/var/azuracast/storage/acme"
+VOLUME "/var/azuracast/storage/uploads"
 
 EXPOSE 80 443 2022
 EXPOSE 8000-8999

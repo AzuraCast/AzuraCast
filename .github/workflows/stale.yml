@@ -8,7 +8,7 @@ name: Close Stale Issues
 on:
   workflow_dispatch:
   schedule:
-  - cron: '0 0 * * *'
+    - cron: '0 0 * * *'
 
 jobs:
   stale:
@@ -18,13 +18,29 @@ jobs:
       pull-requests: write
 
     steps:
-    - uses: actions/stale@v3
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        days-before-stale: 56
-        days-before-close: 14
-        exempt-issue-labels: 'security,enhancement,bug,in progress'
-        stale-issue-label: 'stale'
-        stale-issue-message: 'This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions.'
-        close-issue-label: 'wontfix'
-        close-issue-message: 'Thank you for your bug report, this issue has been closed due to inactivity. Should this issue persist, please re-open the bug report.'
+      - uses: actions/stale@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          days-before-stale: 56
+          days-before-close: 14
+          exempt-issue-labels: 'security,enhancement,bug,in progress'
+          stale-issue-label: 'stale'
+          stale-issue-message: |
+            Hello and thank you for your contribution!
+            
+            AzuraCast is a big project maintained by a very small team, so we occasionally depend on automated tools to help us manage the high volume of issues we get.
+            
+            Our automated system has marked this issue as "stale" because it hasn't had any recent activity. If this issue is still happening, all you have to do to keep the issue open is to comment.
+            
+            If you haven't received a response from our team yet, it may be because we are unsure of what is causing your specific issue, or we need more information (like logs or details of your installation) to continue. The more information you can provide us, the better support we can provide in return.
+            
+            We apologize for any inconvenience caused by this system. Thank you for your patience and understanding.
+          close-issue-label: 'wontfix'
+          close-issue-message: |
+            Thank you for your contribution.
+            
+            We still haven't heard anything back in a while, so our automated system is closing this issue due to inactivity.
+            
+            If you're still experiencing this issue, you can re-open it at any time.
+            
+            We apologize for any inconvenience. Thank you for your patience and understanding.

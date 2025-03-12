@@ -158,7 +158,16 @@ final class Dispatcher
 
             $station = $webhook->getStation();
             $np = $this->nowPlayingApiGen->currentOrEmpty($station);
-            $np->resolveUrls($this->router->getBaseUrl());
+
+            $np = $np->withResolvedUrls($this->router->getBaseUrl());
+
+            $this->logger->info(
+                'test',
+                [
+                    'np' => $np,
+                ]
+            );
+
             $np->cache = 'event';
 
             $this->localHandler->dispatch($station, $np, []);

@@ -20,6 +20,7 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Radio\Frontend\Blocklist\BlocklistParser;
 use App\Service\DeviceDetector;
+use App\Utilities\Time;
 use App\Utilities\Types;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -28,8 +29,9 @@ use Psr\Http\Message\ResponseInterface;
     OA\Post(
         path: '/station/{station_id}/request/{request_id}',
         operationId: 'submitSongRequest',
-        description: 'Submit a song request.',
-        tags: ['Stations: Song Requests'],
+        summary: 'Submit a song request.',
+        security: [],
+        tags: [OpenApi::TAG_PUBLIC_STATIONS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -41,10 +43,10 @@ use Psr\Http\Message\ResponseInterface;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]
@@ -144,7 +146,7 @@ final class SubmitAction implements SingleActionInterface
                     AND sr.timestamp >= :threshold
                 DQL
             )->setParameter('user_ip', $ip)
-                ->setParameter('threshold', time() - $thresholdSeconds)
+                ->setParameter('threshold', Time::nowUtc()->subSeconds($thresholdSeconds))
                 ->getSingleScalarResult();
 
             if ($recentRequests > 0) {

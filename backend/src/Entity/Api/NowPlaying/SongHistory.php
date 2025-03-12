@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\NowPlaying;
 
-use App\Entity\Api\ResolvableUrlInterface;
 use App\Entity\Api\Song;
 use App\OpenApi;
 use OpenApi\Attributes as OA;
-use Psr\Http\Message\UriInterface;
 
 #[OA\Schema(
     schema: 'Api_NowPlaying_SongHistory',
+    required: ['*'],
     type: 'object'
 )]
-class SongHistory implements ResolvableUrlInterface
+class SongHistory
 {
     #[OA\Property(
         description: 'Song history unique identifier'
@@ -52,14 +51,4 @@ class SongHistory implements ResolvableUrlInterface
 
     #[OA\Property]
     public Song $song;
-
-    /**
-     * Re-resolve any Uri instances to reflect base URL changes.
-     *
-     * @param UriInterface $base
-     */
-    public function resolveUrls(UriInterface $base): void
-    {
-        $this->song->resolveUrls($base);
-    }
 }

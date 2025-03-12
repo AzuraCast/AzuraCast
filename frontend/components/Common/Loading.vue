@@ -21,14 +21,14 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-    loading: {
-        type: Boolean,
-        default: false
-    },
-    lazy: {
-        type: Boolean,
-        default: false
+withDefaults(
+    defineProps<{
+        loading?: boolean,
+        lazy?: boolean
+    }>(),
+    {
+        loading: false,
+        lazy: false
     }
-});
+);
 </script>

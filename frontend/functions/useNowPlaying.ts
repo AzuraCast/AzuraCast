@@ -1,27 +1,16 @@
-import NowPlaying from '~/entities/NowPlaying';
-import {computed, onMounted, Ref, ref, ShallowRef, shallowRef, watch} from "vue";
-import {useEventSource, useIntervalFn} from "@vueuse/core";
+import NowPlaying from "~/entities/NowPlaying";
+import {computed, onMounted, ref, shallowRef, watch} from "vue";
+import {reactiveComputed, useEventSource, useIntervalFn} from "@vueuse/core";
 import {ApiNowPlaying} from "~/entities/ApiInterfaces.ts";
 import {getApiUrl} from "~/router.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import formatTime from "~/functions/formatTime.ts";
 
-export const nowPlayingProps = {
-    stationShortName: {
-        type: String,
-        required: true,
-    },
-    useStatic: {
-        type: Boolean,
-        required: false,
-        default: false,
-    },
-    useSse: {
-        type: Boolean,
-        required: false,
-        default: false
-    },
-};
+export interface NowPlayingProps {
+    stationShortName: string,
+    useStatic?: boolean,
+    useSse?: boolean
+}
 
 interface SsePayload {
     data: {
@@ -30,15 +19,25 @@ interface SsePayload {
     }
 }
 
-export default function useNowPlaying(props) {
-    const np: ShallowRef<ApiNowPlaying> = shallowRef(NowPlaying);
-    const npTimestamp: Ref<number> = ref(0);
+export default function useNowPlaying(initialProps: NowPlayingProps) {
+    const props = reactiveComputed(() => ({
+        useStatic: false,
+        useSse: false,
+        ...initialProps
+    }));
 
-    const currentTime: Ref<number> = ref(Math.floor(Date.now() / 1000));
-    const currentTrackDuration: Ref<number> = ref(0);
-    const currentTrackElapsed: Ref<number> = ref(0);
+    const np = shallowRef<ApiNowPlaying>(NowPlaying);
+    const npTimestamp = ref<number>(0);
+
+    const currentTime = ref<number>(Math.floor(Date.now() / 1000));
+    const currentTrackDuration = ref<number>(0);
+    const currentTrackElapsed = ref<number>(0);
 
     const setNowPlaying = (np_new: ApiNowPlaying) => {
+        if (!np_new.now_playing) {
+            return;
+        }
+
         np.value = np_new;
         npTimestamp.value = Date.now();
 
@@ -47,10 +46,10 @@ export default function useNowPlaying(props) {
         // Update the browser metadata for browsers that support it (i.e. Mobile Chrome)
         if ('mediaSession' in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
-                title: np_new.now_playing.song.title,
-                artist: np_new.now_playing.song.artist,
+                title: np_new.now_playing.song?.title ?? undefined,
+                artist: np_new.now_playing.song?.artist ?? undefined,
                 artwork: [
-                    {src: np_new.now_playing.song.art}
+                    {src: np_new.now_playing.song?.art ?? undefined}
                 ]
             });
 
@@ -66,6 +65,10 @@ export default function useNowPlaying(props) {
             setPositionState(np_new.now_playing.duration ?? 0, np_new.now_playing.elapsed ?? 0);
 
             navigator.mediaSession.setActionHandler("seekto", () => {
+                if (!np_new.now_playing) {
+                    return;
+                }
+
                 setPositionState(np_new.now_playing.duration ?? 0, np_new.now_playing.elapsed ?? 0);
             });
         }
@@ -91,7 +94,7 @@ export default function useNowPlaying(props) {
         const handleSseData = (ssePayload: SsePayload, useTime: boolean = true) => {
             const jsonData = ssePayload.data;
 
-            if (useTime && 'current_time' in jsonData) {
+            if (useTime && jsonData.current_time) {
                 currentTime.value = jsonData.current_time;
             }
 
@@ -108,7 +111,11 @@ export default function useNowPlaying(props) {
         }
 
         const {data} = useEventSource(sseUri);
-        watch(data, (dataRaw: string) => {
+        watch(data, (dataRaw: string | null) => {
+            if (!dataRaw) {
+                return;
+            }
+
             const jsonData = JSON.parse(dataRaw);
 
             if ('connect' in jsonData) {
@@ -123,7 +130,7 @@ export default function useNowPlaying(props) {
                 for (const subName in connectData.subs) {
                     const sub = connectData.subs[subName];
                     if ('publications' in sub && sub.publications.length > 0) {
-                        sub.publications.forEach((initialRow) => handleSseData(initialRow, false));
+                        sub.publications.forEach((initialRow: SsePayload) => handleSseData(initialRow, false));
                     }
                 }
             } else if ('pub' in jsonData) {
@@ -157,7 +164,7 @@ export default function useNowPlaying(props) {
         };
 
         const checkTime = () => {
-            axiosSilent.get(timeUri.value, axiosNoCacheConfig).then((response) => {
+            void axiosSilent.get(timeUri.value, axiosNoCacheConfig).then((response) => {
                 currentTime.value = response.data.timestamp;
             }).finally(() => {
                 setTimeout(checkTime, (!document.hidden) ? 300000 : 600000);

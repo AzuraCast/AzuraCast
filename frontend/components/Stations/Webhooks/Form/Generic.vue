@@ -77,26 +77,18 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
-import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
+import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
+import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    title: {
-        type: String,
-        required: true
-    },
-    form: {
-        type: Object,
-        required: true
-    }
-});
+defineProps<WebhookComponentProps>();
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {v$, tabClass} = useVuelidateOnFormTab(
+    form,
     {
         config: {
             webhook_url: {required},
@@ -105,14 +97,13 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             timeout: {},
         }
     },
-    form,
-    {
+    () => ({
         config: {
             webhook_url: '',
             basic_auth_username: '',
             basic_auth_password: '',
             timeout: '5',
         }
-    }
+    })
 );
 </script>

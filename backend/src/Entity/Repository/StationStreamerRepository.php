@@ -9,7 +9,7 @@ use App\Entity\StationStreamer;
 use App\Entity\StationStreamerBroadcast;
 use App\Flysystem\StationFilesystems;
 use App\Media\AlbumArt;
-use App\Radio\AutoDJ\Scheduler;
+use App\Utilities\Time;
 
 /**
  * @extends AbstractStationBasedRepository<StationStreamer>
@@ -19,34 +19,8 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
     protected string $entityClass = StationStreamer::class;
 
     public function __construct(
-        private readonly Scheduler $scheduler,
         private readonly StationStreamerBroadcastRepository $broadcastRepo
     ) {
-    }
-
-    /**
-     * Attempt to authenticate a streamer.
-     *
-     * @param Station $station
-     * @param string $username
-     * @param string $password
-     */
-    public function authenticate(
-        Station $station,
-        string $username = '',
-        string $password = ''
-    ): bool {
-        // Extra safety check for the station's streamer status.
-        if (!$station->getEnableStreamers()) {
-            return false;
-        }
-
-        $streamer = $this->getStreamer($station, $username);
-        if (!($streamer instanceof StationStreamer)) {
-            return false;
-        }
-
-        return $streamer->authenticate($password) && $this->scheduler->canStreamerStreamNow($streamer);
     }
 
     public function onConnect(Station $station, string $username = ''): bool
@@ -73,7 +47,7 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
     public function onDisconnect(Station $station): bool
     {
         foreach ($this->broadcastRepo->getActiveBroadcasts($station) as $broadcast) {
-            $broadcast->setTimestampEnd(time());
+            $broadcast->setTimestampEnd(Time::nowUtc());
             $this->em->persist($broadcast);
         }
 

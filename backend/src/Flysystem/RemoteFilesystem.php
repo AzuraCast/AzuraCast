@@ -15,9 +15,9 @@ final class RemoteFilesystem extends AbstractFilesystem
 
     public function __construct(
         ExtendedAdapterInterface $remoteAdapter,
-        string $localPath = null,
+        ?string $localPath = null,
         array $config = [],
-        PathNormalizer $pathNormalizer = null
+        ?PathNormalizer $pathNormalizer = null
     ) {
         $this->localPath = new PathPrefixer($localPath ?? sys_get_temp_dir());
         parent::__construct($remoteAdapter, $config, $pathNormalizer);

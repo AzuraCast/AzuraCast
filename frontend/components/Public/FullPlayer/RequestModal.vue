@@ -14,17 +14,19 @@
 </template>
 
 <script setup lang="ts">
-import SongRequest from '../Requests.vue';
-import {ref} from "vue";
+import SongRequest, {RequestsProps} from "~/components/Public/Requests.vue";
+import {useTemplateRef} from "vue";
 import Modal from "~/components/Common/Modal.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
-import requestsProps from "~/components/Public/Requests/requestsProps.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 
-const props = defineProps({
-    ...requestsProps
+defineOptions({
+    inheritAttrs: false
 });
 
-const $modal = ref<ModalTemplateRef>(null);
+const props = defineProps<RequestsProps>();
+
+const $modal = useTemplateRef('$modal');
+
 const {show: open, hide} = useHasModal($modal);
 
 defineExpose({

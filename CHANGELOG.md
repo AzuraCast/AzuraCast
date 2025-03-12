@@ -9,9 +9,9 @@ release channel, you can take advantage of these new features and fixes.
   Icecast, and AzuraCast now supports uploading the RSAS binary and license key, and selecting RSAS as a broadcasting
   frontend, directly within the web UI.
 
-- **Update to Liquidsoap 2.3.0**: We have worked closely with the maintainers of Liquidsoap and members of the radio
+- **Update to Liquidsoap 2.3.1**: We have worked closely with the maintainers of Liquidsoap and members of the radio
   community to test and refine the next big version of Liquidsoap, our underlying broadcast manager, and they have
-  released 2.3.0 as a stable release. We're planning on using this version moving forward, first in Rolling Release for
+  released 2.3.1 as a stable release. We're planning on using this version moving forward, first in Rolling Release for
   testing and then in Stable builds. Some custom code may require modification from previous versions, but a majority of
   code should work unmodified.
 
@@ -21,6 +21,12 @@ release channel, you can take advantage of these new features and fixes.
   Day" view.
 
 ## Code Quality/Technical Changes
+
+- Schema/API Changes: We have greatly expanded the documentation of our over 250 API endpoints and now have over 90%
+  full documentation of API request bodies and responses. In the process of documenting our API endpoints, we have found
+  several endpoints with similar responses or unclear response types, and fixed these issues. If you built applications
+  that depended on undocumented API endpoints, you should review the updated API documentation (visible at `/api` on
+  any installation) to ensure no changes are necessary in your code.
 
 - Schema/API Change: Several date/time fields have been made more precise to allow for storing higher-precision
   timestamps. Tables affected include `AuditLog`, `Listener`, `Relay`, `SongHistory`, `StationQueue`, `StationRequest`

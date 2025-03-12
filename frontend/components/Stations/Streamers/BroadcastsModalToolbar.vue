@@ -28,6 +28,7 @@ import {forEach, map} from "lodash";
 import {useNotify} from "~/functions/useNotify.ts";
 import {useDialog} from "~/functions/useDialog.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import {ApiGenericBatchResult} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     batchUrl: string,
@@ -45,23 +46,12 @@ const hasSelectedItems = computed(() => {
     return selectedItems.value.length > 0;
 });
 
-interface BatchRow {
-    id: number,
-    title: string
-}
-
-interface BatchResponse {
-    success: boolean,
-    records: BatchRow[],
-    errors: string[],
-}
-
 type BatchAction = "delete";
 
 const {notifySuccess, notifyError} = useNotify();
 
 const handleBatchResponse = (
-    data: BatchResponse,
+    data: ApiGenericBatchResult,
     successMessage: string,
     errorMessage: string
 ): void => {
@@ -91,7 +81,7 @@ const doBatch = (
     successMessage: string,
     errorMessage: string
 ) => {
-    void axios.put(props.batchUrl, {
+    void axios.put<ApiGenericBatchResult>(props.batchUrl, {
         'do': action,
         'rows': map(props.selectedItems, 'id')
     }).then(({data}) => {

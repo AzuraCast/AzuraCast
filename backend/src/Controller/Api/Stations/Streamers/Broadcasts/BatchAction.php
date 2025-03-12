@@ -24,6 +24,27 @@ use Throwable;
     path: '/station/{station_id}/streamer/{id}/broadcasts/batch',
     operationId: 'postStationStreamerBroadcastsBatch',
     summary: 'Perform batch actions on the specified broadcasts.',
+    requestBody: new OA\RequestBody(
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(
+                    property: 'do',
+                    description: 'The action to take with the specified rows.',
+                    type: 'string',
+                    enum: ['delete']
+                ),
+                new OA\Property(
+                    property: 'rows',
+                    description: 'The IDs to perform batch actions on.',
+                    type: 'array',
+                    items: new OA\Items(
+                        type: 'int',
+                        format: 'int64'
+                    ),
+                ),
+            ]
+        )
+    ),
     tags: [OpenApi::TAG_STATIONS_STREAMERS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -36,8 +57,11 @@ use Throwable;
         ),
     ],
     responses: [
-        // TODO API Response
-        new OpenApi\Response\Success(),
+        new OpenApi\Response\Success(
+            content: new OA\JsonContent(
+                ref: GenericBatchResult::class
+            )
+        ),
         new OpenApi\Response\AccessDenied(),
         new OpenApi\Response\NotFound(),
         new OpenApi\Response\GenericError(),

@@ -26,10 +26,37 @@ use Throwable;
     tags: [OpenApi::TAG_STATIONS_REPORTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        new OA\Parameter(
+            name: 'start_date',
+            in: 'query',
+            required: false,
+            schema: new OA\Schema(
+                type: 'string',
+                format: 'date'
+            )
+        ),
+        new OA\Parameter(
+            name: 'end_date',
+            in: 'query',
+            required: false,
+            schema: new OA\Schema(
+                type: 'string',
+                format: 'date'
+            )
+        ),
     ],
     responses: [
-        // TODO API Response
-        new OpenApi\Response\Success(),
+        new OpenApi\Response\SuccessWithDownload(
+            description: 'Success',
+            content: new OA\MediaType(
+                mediaType: 'text/plain',
+                schema: new OA\Schema(
+                    description: 'A CSV report for the given time range.',
+                    type: 'string',
+                    format: 'binary'
+                )
+            )
+        ),
         new OpenApi\Response\AccessDenied(),
         new OpenApi\Response\NotFound(),
         new OpenApi\Response\GenericError(),

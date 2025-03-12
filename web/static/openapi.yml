@@ -1840,7 +1840,7 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-  /dashboard/charts:
+  /frontend/dashboard/charts:
     put:
       tags:
         - Miscellaneous
@@ -1855,7 +1855,7 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-  /dashboard/notifications:
+  /frontend/dashboard/notifications:
     get:
       tags:
         - Miscellaneous
@@ -1874,7 +1874,7 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-  /dashboard/stations:
+  /frontend/dashboard/stations:
     get:
       tags:
         - Miscellaneous
@@ -3990,9 +3990,29 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                do:
+                  description: 'The action to take with the specified rows.'
+                  type: string
+                  enum: [list, delete, edit]
+                episodes:
+                  description: 'The IDs to perform batch actions on.'
+                  type: array
+                  items: { type: string }
+              type: object
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_PodcastBatchResult'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4951,9 +4971,29 @@ paths:
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: start_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        -
+          name: end_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            text/plain:
+              schema:
+                description: 'A CSV report for the given time range.'
+                type: string
+                format: binary
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -5448,9 +5488,27 @@ paths:
           schema:
             type: integer
             format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                do:
+                  description: 'The action to take with the specified rows.'
+                  type: string
+                  enum: [delete]
+                rows:
+                  description: 'The IDs to perform batch actions on.'
+                  type: array
+                  items: { type: int, format: int64 }
+              type: object
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_GenericBatchResult'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -6781,6 +6839,18 @@ components:
           description: 'Whether you can seamlessly move from the Rolling Release channel to Stable without issues.'
           type: boolean
       type: object
+    Api_BatchResult:
+      required:
+        - success
+        - errors
+      properties:
+        success:
+          type: boolean
+        errors:
+          type: array
+          items:
+            type: string
+      type: object
     Api_DetailedSongHistory:
       type: object
       allOf:
@@ -6917,6 +6987,26 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Api_Form_Option'
+    Api_GenericBatchResult:
+      required:
+        - records
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_BatchResult'
+        -
+          properties:
+            records:
+              type: array
+              items:
+                required:
+                  - id
+                  - title
+                properties:
+                  id: { type: integer, format: int64 }
+                  title: { type: string }
+                type: object
+          type: object
     HashMap:
       description: 'A hash-map array represented as an object.'
       type: object
@@ -7475,6 +7565,32 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Api_PodcastCategory'
+          type: object
+    Api_PodcastBatchResult:
+      required:
+        - episodes
+        - records
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_BatchResult'
+        -
+          properties:
+            episodes:
+              type: array
+              items:
+                required:
+                  - id
+                  - title
+                properties:
+                  id: { type: string }
+                  title: { type: string }
+                type: object
+            records:
+              type: array
+              items:
+                $ref: '#/components/schemas/Api_PodcastEpisode'
+              nullable: true
           type: object
     Api_PodcastCategory:
       properties:

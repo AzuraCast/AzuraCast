@@ -76,6 +76,7 @@ import {useTranslate} from "~/vendor/gettext.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
 import BatchEditRow from "~/components/Stations/Podcasts/BatchEditRow.vue";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import {ApiPodcastBatchResult, ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     batchUrl: string,
@@ -100,11 +101,11 @@ const blankRow = {
     episode_number: null
 };
 
-const {state: rows, execute: loadRows, isLoading} = useAsyncState(
-    () => axios.put(props.batchUrl, {
+const {state: rows, execute: loadRows, isLoading} = useAsyncState<ApiPodcastEpisode[], any[], false>(
+    () => axios.put<ApiPodcastBatchResult>(props.batchUrl, {
         'do': 'list',
         'episodes': map(props.selectedItems, 'id'),
-    }).then((r) => map(r.data.records, (row) => mergeExisting(blankRow, row))),
+    }).then((r) => map(r.data.records ?? [], (row) => mergeExisting(blankRow, row))),
     [],
     {
         immediate: false,

@@ -411,6 +411,11 @@ export interface ApiAdminUpdateDetails {
   can_switch_to_stable?: boolean;
 }
 
+export interface ApiBatchResult {
+  success: boolean;
+  errors: string[];
+}
+
 export type ApiDetailedSongHistory = ApiNowPlayingSongHistory & {
   /**
    * Number of listeners when the song playback started.
@@ -495,6 +500,14 @@ export type ApiGenericForm = Record<string, any>;
 export type ApiFormNestedOptions = (ApiFormOption | ApiFormOptionGroup)[];
 
 export type ApiFormSimpleOptions = ApiFormOption[];
+
+export type ApiGenericBatchResult = ApiBatchResult & {
+  records: {
+    /** @format int64 */
+    id: number;
+    title: string;
+  }[];
+};
 
 /** A hash-map array represented as an object. */
 export type HashMap = object;
@@ -914,6 +927,14 @@ export type ApiPodcast = HasLinks & {
   is_published?: boolean;
   episodes?: number;
   categories?: ApiPodcastCategory[];
+};
+
+export type ApiPodcastBatchResult = ApiBatchResult & {
+  episodes: {
+    id: string;
+    title: string;
+  }[];
+  records: ApiPodcastEpisode[] | null;
 };
 
 export interface ApiPodcastCategory {

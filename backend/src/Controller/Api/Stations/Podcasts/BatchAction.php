@@ -30,6 +30,26 @@ use Throwable;
     path: '/station/{station_id}/podcast/{podcast_id}/batch',
     operationId: 'postStationPodcastBatch',
     summary: 'Import the contents of an uploaded playlist (PLS/M3U) file into the specified playlist.',
+    requestBody: new OA\RequestBody(
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(
+                    property: 'do',
+                    description: 'The action to take with the specified rows.',
+                    type: 'string',
+                    enum: ['list', 'delete', 'edit']
+                ),
+                new OA\Property(
+                    property: 'episodes',
+                    description: 'The IDs to perform batch actions on.',
+                    type: 'array',
+                    items: new OA\Items(
+                        type: 'string',
+                    ),
+                ),
+            ]
+        )
+    ),
     tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
@@ -42,8 +62,14 @@ use Throwable;
         ),
     ],
     responses: [
-        // TODO API Response
-        new OpenApi\Response\Success(),
+        new OpenApi\Response\Success(
+            content: new OA\JsonContent(
+                type: 'array',
+                items: new OA\Items(
+                    ref: PodcastBatchResult::class
+                )
+            )
+        ),
         new OpenApi\Response\AccessDenied(),
         new OpenApi\Response\NotFound(),
         new OpenApi\Response\GenericError(),

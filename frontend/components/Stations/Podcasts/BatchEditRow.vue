@@ -53,15 +53,9 @@ import useVuelidate from "@vuelidate/core";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import PublishAtFields from "~/components/Stations/Podcasts/Common/PublishAtFields.vue";
+import {ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
 
-type T = {
-    id: string,
-    title: string,
-    publish_at?: string,
-    explicit?: boolean,
-    season_number?: number,
-    episode_number?: number
-};
+type T = Partial<ApiPodcastEpisode>;
 
 defineProps<{
     index: number,

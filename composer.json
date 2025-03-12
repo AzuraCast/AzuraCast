@@ -110,7 +110,7 @@
     "symfony/polyfill-php84": "1.99"
   },
   "require-dev": {
-    "codeception/codeception": "^5.0.0-RC1",
+    "codeception/codeception": "^5.2.1",
     "codeception/module-asserts": "^3",
     "codeception/module-cli": "^2",
     "codeception/module-doctrine": "^3.1",

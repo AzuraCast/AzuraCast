@@ -6938,15 +6938,15 @@ components:
               type: integer
               nullable: true
             media:
-              nullable: true
               oneOf:
                 -
                   $ref: '#/components/schemas/Api_StationMedia'
-            dir:
               nullable: true
+            dir:
               oneOf:
                 -
                   $ref: '#/components/schemas/Api_FileListDir'
+              nullable: true
           type: object
     Api_FileListDir:
       properties:
@@ -7266,15 +7266,15 @@ components:
         live:
           $ref: '#/components/schemas/Api_NowPlaying_Live'
         now_playing:
-          nullable: true
           oneOf:
             -
               $ref: '#/components/schemas/Api_NowPlaying_CurrentSong'
-        playing_next:
           nullable: true
+        playing_next:
           oneOf:
             -
               $ref: '#/components/schemas/Api_NowPlaying_StationQueue'
+          nullable: true
         song_history:
           type: array
           items:
@@ -7649,15 +7649,15 @@ components:
               type: string
               nullable: true
             playlist_media:
-              nullable: true
               oneOf:
                 -
                   $ref: '#/components/schemas/Api_Song'
-            media:
               nullable: true
+            media:
               oneOf:
                 -
                   $ref: '#/components/schemas/Api_PodcastMedia'
+              nullable: true
             has_custom_art:
               type: boolean
             art:

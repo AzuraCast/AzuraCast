@@ -22,7 +22,7 @@ use Psr\SimpleCache\CacheInterface;
 
 #[
     OA\Put(
-        path: '/dashboard/charts',
+        path: '/frontend/dashboard/charts',
         operationId: 'getDashboardCharts',
         summary: 'Get the measurements for the dashboard charts.',
         tags: [OpenApi::TAG_MISC],

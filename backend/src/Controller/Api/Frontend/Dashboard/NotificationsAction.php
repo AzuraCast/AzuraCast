@@ -15,7 +15,7 @@ use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
 #[OA\Get(
-    path: '/dashboard/notifications',
+    path: '/frontend/dashboard/notifications',
     operationId: 'getNotifications',
     summary: 'Show all notifications your current account should see.',
     tags: [OpenApi::TAG_MISC],

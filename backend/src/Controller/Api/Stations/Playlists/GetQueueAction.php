@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Playlists;
 
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\StationPlaylistQueue;
 use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Enums\PlaylistSources;
 use App\Entity\Repository\StationPlaylistMediaRepository;
@@ -33,8 +34,14 @@ use Psr\Http\Message\ResponseInterface;
         ),
     ],
     responses: [
-        // TODO API Response
-        new OpenApi\Response\Success(),
+        new OpenApi\Response\Success(
+            content: new OA\JsonContent(
+                type: 'array',
+                items: new OA\Items(
+                    ref: StationPlaylistQueue::class
+                )
+            )
+        ),
         new OpenApi\Response\AccessDenied(),
         new OpenApi\Response\NotFound(),
         new OpenApi\Response\GenericError(),

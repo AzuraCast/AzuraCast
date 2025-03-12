@@ -64,24 +64,27 @@ import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
+import {ApiStationPlaylistQueue} from "~/entities/ApiInterfaces.ts";
 
-const loading = ref(true);
-const queueUrl = ref(null);
-const media = ref([]);
+const loading = ref<boolean>(true);
+const queueUrl = ref<string | null>(null);
+const media = ref<ApiStationPlaylistQueue[]>([]);
 
 const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
 const {axios} = useAxios();
 
-const open = (newQueueUrl) => {
+const open = async (newQueueUrl: string) => {
     queueUrl.value = newQueueUrl;
     loading.value = true;
 
-    void axios.get(newQueueUrl).then((resp) => {
-        media.value = resp.data;
+    try {
+        const {data} = await axios.get<ApiStationPlaylistQueue[]>(newQueueUrl);
+        media.value = data;
+    } finally {
         loading.value = false;
-    });
+    }
 
     show();
 };
@@ -94,11 +97,11 @@ const onHidden = () => {
 const {notifySuccess} = useNotify();
 const {$gettext} = useTranslate();
 
-const doClear = () => {
-    void axios.delete(queueUrl.value).then(() => {
-        notifySuccess($gettext('Playlist queue cleared.'));
-        hide();
-    });
+const doClear = async () => {
+    await axios.delete(queueUrl.value);
+
+    notifySuccess($gettext('Playlist queue cleared.'));
+    hide();
 };
 
 defineExpose({

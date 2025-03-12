@@ -1123,7 +1123,13 @@ paths:
       operationId: getAdminStationStorageLocations
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/Api_Form_SimpleOptions'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -3306,7 +3312,13 @@ paths:
             format: int64
       responses:
         '200':
-          $ref: '#/components/responses/Success'
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_StationPlaylistQueue'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':

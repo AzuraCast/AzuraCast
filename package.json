@@ -25,7 +25,7 @@
     "@vuelidate/core": "^2.0.0",
     "@vuelidate/validators": "^2.0.0",
     "@vuepic/vue-datepicker": "^11",
-    "@vueuse/core": "^12",
+    "@vueuse/core": "^13",
     "axios": "^1",
     "bootstrap": "^5.3.0",
     "chart.js": "^4.2.1",
@@ -69,7 +69,7 @@
     "@vue/eslint-config-typescript": "^14",
     "del": "^8",
     "eslint": "^9",
-    "eslint-plugin-vue": "^9.8.0",
+    "eslint-plugin-vue": "^10",
     "glob": "^11",
     "jsdom": "^26",
     "sass": "^1.39.2",
@@ -77,7 +77,7 @@
     "swagger-typescript-api": "^13.0.3",
     "typescript-eslint": "^8",
     "vite": "^6",
-    "vue-eslint-parser": "^9.3.1",
+    "vue-eslint-parser": "^10",
     "vue-tsc": "^2"
   }
 }

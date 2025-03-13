@@ -31,9 +31,14 @@ return static function (RouteCollectorProxy $group) {
         }
     )->setName('api:index:index');
 
-    $group->get('/openapi.yml', Controller\Api\OpenApiAction::class)
-        ->setName('api:openapi')
-        ->add(new Middleware\Cache\SetCache(60));
+    if (App\Environment::getInstance()->isDevelopment()) {
+        $group->get('/openapi.yml', Controller\Api\OpenApiDevAction::class)
+            ->setName('api:openapi');
+    } else {
+        $group->get('/openapi.yml', Controller\Api\OpenApiPublicAction::class)
+            ->setName('api:openapi')
+            ->add(new Middleware\Cache\SetCache(Middleware\Cache\SetCache::CACHE_ONE_DAY));
+    }
 
     $group->get('/status', Controller\Api\IndexController::class . ':statusAction')
         ->setName('api:index:status');

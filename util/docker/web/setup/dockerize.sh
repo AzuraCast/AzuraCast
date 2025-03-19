@@ -2,7 +2,7 @@
 set -e
 set -x
 
-export DOCKERIZE_VERSION=0.9.2
+export DOCKERIZE_VERSION=0.9.3
 
 mkdir -p /tmp/dockerize
 cd /tmp/dockerize

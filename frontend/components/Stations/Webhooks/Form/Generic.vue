@@ -21,7 +21,7 @@
             <ul>
                 <li>
                     <a
-                        href="https://azuracast.com/api"
+                        href="/api"
                         target="_blank"
                     >
                         {{ $gettext('NowPlaying API Response') }}

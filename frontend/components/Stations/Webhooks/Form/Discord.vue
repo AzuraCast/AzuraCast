@@ -69,6 +69,13 @@
                 :field="v$.config.footer"
                 :label="$gettext('Footer Text')"
             />
+
+            <form-group-field
+                id="form_config_color" 
+                class="col-md-6" 
+                :field="v$.config.color"
+                :label="$gettext('Embed Color (Hex)')"
+            />
         </div>
     </tab>
 </template>
@@ -77,7 +84,7 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/FormattingInfo.vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required} from "@vuelidate/validators";
+import {required, helpers} from "@vuelidate/validators";
 import {useTranslate} from "~/vendor/gettext";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
@@ -85,9 +92,14 @@ import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
 defineProps<WebhookComponentProps>();
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
+const form = defineModel<ApiGenericForm>('form', { required: true });
+
 
 const {$gettext} = useTranslate();
+const hexColor = helpers.withMessage(
+    $gettext('This field must be a valid, non-transparent 6-character hex color.'),
+    (value: string) => /^#[0-9A-F]{6}$/i.test(value)
+);
 
 const {v$, tabClass} = useVuelidateOnFormTab(
     form,
@@ -101,6 +113,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             author: {},
             thumbnail: {},
             footer: {},
+            color: {hexColor}
         }
     },
     () => ({
@@ -116,6 +129,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             author: '{{ live.streamer_name }}',
             thumbnail: '{{ now_playing.song.art }}',
             footer: $gettext('Powered by AzuraCast'),
+            color: '#3498DB'
         }
     })
 );

@@ -98,7 +98,7 @@ const form = defineModel<ApiGenericForm>('form', { required: true });
 const {$gettext} = useTranslate();
 const hexColor = helpers.withMessage(
     $gettext('This field must be a valid, non-transparent 6-character hex color.'),
-    (value: string) => /^#[0-9A-F]{6}$/i.test(value)
+    (value: string) => value === '' || /^#?[0-9A-F]{6}$/i.test(value)
 );
 
 const {v$, tabClass} = useVuelidateOnFormTab(

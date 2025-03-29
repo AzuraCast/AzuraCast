@@ -106,7 +106,7 @@ final class Discord extends AbstractConnector
                 'title' => $vars['title'] ?? '',
                 'description' => $vars['description'] ?? '',
                 'url' => $this->getValidUrl($vars['url']) ?? '',
-                'color' => $colorDecimal, 
+                'color' => $colorDecimal,
             ]
         );
 

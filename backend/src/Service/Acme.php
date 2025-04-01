@@ -198,7 +198,7 @@ final class Acme
         return false;
     }
 
-    private function reloadServices(): void
+    public function reloadServices(): void
     {
         try {
             $this->nginx->reload();

@@ -11,6 +11,7 @@
   ],
   "require": {
     "php": "^8.4",
+    "ext-ctype": "*",
     "ext-PDO": "*",
     "ext-curl": "*",
     "ext-ffi": "*",
@@ -31,7 +32,7 @@
     "azuracast/nowplaying": "dev-main",
     "beberlei/doctrineextensions": "^1.5",
     "br33f/php-ga4-mp": "^0.1.2",
-    "brick/math": "^0.12",
+    "brick/math": "^0.13",
     "composer/ca-bundle": "^1.2",
     "doctrine/data-fixtures": "^2",
     "doctrine/dbal": "^4",
@@ -66,7 +67,6 @@
     "potibm/phluesky": "^0.5.0",
     "promphp/prometheus_client_php": "^2.10",
     "psr/simple-cache": "^3.0",
-    "ramsey/uuid": "^4.0",
     "rlanvin/php-ip": "dev-master",
     "skoerfgen/acmecert": "^3.2",
     "slim/http": "^1.1",
@@ -88,6 +88,7 @@
     "symfony/rate-limiter": "^7",
     "symfony/redis-messenger": "^7",
     "symfony/serializer": "^7",
+    "symfony/uid": "^7.2",
     "symfony/validator": "^7",
     "symfony/yaml": "^7",
     "vlucas/phpdotenv": "^5.3",
@@ -95,7 +96,9 @@
     "zircote/swagger-php": "^5"
   },
   "replace": {
+    "symfony/polyfill-ctype": "1.99",
     "symfony/polyfill-iconv": "1.99",
+    "symfony/polyfill-intl-idn": "1.99",
     "symfony/polyfill-intl-grapheme": "1.99",
     "symfony/polyfill-intl-normalizer": "1.99",
     "symfony/polyfill-mbstring": "1.99",

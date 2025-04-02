@@ -15,7 +15,7 @@ use App\Http\ServerRequest;
 use App\Xml\Writer;
 use Carbon\CarbonImmutable;
 use Psr\Http\Message\ResponseInterface;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 final class PodcastFeedAction implements SingleActionInterface
 {
@@ -198,8 +198,8 @@ final class PodcastFeedAction implements SingleActionInterface
             '/'
         );
 
-        return (string)Uuid::uuid5(
-            self::PODCAST_NAMESPACE,
+        return (string)Uuid::v5(
+            Uuid::fromString(self::PODCAST_NAMESPACE),
             $baseUri
         );
     }

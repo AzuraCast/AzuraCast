@@ -6,22 +6,12 @@ namespace App\Doctrine\Generator;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Id\AbstractIdGenerator;
-use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidFactoryInterface;
+use Symfony\Component\Uid\Uuid;
 
 final class UuidV6Generator extends AbstractIdGenerator
 {
-    private readonly UuidFactoryInterface $factory;
-
-    public function __construct()
+    public function generateId(EntityManagerInterface $em, object|null $entity): string
     {
-        $this->factory = clone Uuid::getFactory();
-    }
-
-    public function generateId(EntityManagerInterface $em, object|null $entity): mixed
-    {
-        $nodeProvider = new RandomNodeProvider();
-        return $this->factory->uuid6($nodeProvider->getNode())->toString();
+        return (string)Uuid::v6();
     }
 }

@@ -139,7 +139,7 @@ final class QueueBuilder implements EventSubscriberInterface
                 sprintf(
                     '%d playable playlist(s) of type "%s" found.',
                     count($eligiblePlaylists),
-                    $type
+                    $currentPlaylistType
                 ),
                 ['playlists' => $logPlaylists]
             );
@@ -450,8 +450,25 @@ final class QueueBuilder implements EventSubscriberInterface
         }
 
         $expectedPlayTime = $event->getExpectedPlayTime();
+        $station = $event->getStation();
 
-        $request = $this->requestRepo->getNextPlayableRequest($event->getStation(), $expectedPlayTime);
+        // Check if any playlist marked with "Prioritize Over Requests" (e.g. a jingle) is due now.
+        foreach ($station->getPlaylists() as $playlist) {
+            /** @var StationPlaylist $playlist */
+            if (
+                in_array('prioritize', $playlist->getBackendOptions(), true) &&
+                $playlist->isPlayable($event->isInterrupting()) &&
+                $this->scheduler->shouldPlaylistPlayNow($playlist, $expectedPlayTime)
+            ) {
+                $this->logger->debug(sprintf(
+                    'Playlist "%s" is prioritized and due now; skipping request queue.',
+                    $playlist->getName()
+                ));
+                return;
+            }
+        }
+
+        $request = $this->requestRepo->getNextPlayableRequest($station, $expectedPlayTime);
         if (null === $request) {
             return;
         }

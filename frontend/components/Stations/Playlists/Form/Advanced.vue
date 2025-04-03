@@ -50,6 +50,10 @@ const backendOptions = [
     {
         value: 'merge',
         text: $gettext('Merge playlist to play as a single track.')
+    },
+    {
+        value: 'prioritize',
+        text: $gettext('Prioritize over listener requests.')
     }
 ];
 </script>

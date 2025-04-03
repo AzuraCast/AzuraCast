@@ -11,10 +11,7 @@
         <tabs>
             <form-basic-info v-model:form="form" />
             <form-schedule v-model:schedule-items="form.schedule_items" />
-            <form-advanced
-                v-if="enableAdvancedFeatures"
-                v-model:form="form"
-            />
+            <form-advanced v-model:form="form"/>
         </tabs>
     </modal-form>
 </template>
@@ -28,7 +25,6 @@ import {computed, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {useAzuraCast} from "~/vendor/azuracast";
 import Tabs from "~/components/Common/Tabs.vue";
 
 const props = defineProps<BaseEditModalProps>();
@@ -36,8 +32,6 @@ const props = defineProps<BaseEditModalProps>();
 const emit = defineEmits<BaseEditModalEmits & {
     (e: 'needs-restart'): void
 }>();
-
-const {enableAdvancedFeatures} = useAzuraCast();
 
 const $modal = useTemplateRef('$modal');
 

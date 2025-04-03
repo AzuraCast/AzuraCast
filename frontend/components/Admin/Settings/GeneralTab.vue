@@ -61,14 +61,6 @@
                     :label="$gettext('Use High-Performance Now Playing Updates')"
                     :description="$gettext('Uses either Websockets, Server-Sent Events (SSE) or static JSON files to serve Now Playing data on public pages. This improves performance, especially with large listener volume. Disable this if you are encountering problems with the service or use multiple URLs to serve your public pages.')"
                 />
-
-                <form-group-checkbox
-                    id="edit_form_enable_advanced_features"
-                    class="col-md-6"
-                    :field="v$.enable_advanced_features"
-                    :label="$gettext('Enable Advanced Features')"
-                    :description="$gettext('Enable certain advanced features in the web interface, including advanced playlist configuration, station port assignment, changing base media directories and other functionality that should only be used by users who are comfortable with advanced functionality.')"
-                />
             </div>
         </form-fieldset>
     </tab>
@@ -97,7 +89,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         use_radio_proxy: {},
         history_keep_days: {required},
         enable_static_nowplaying: {},
-        enable_advanced_features: {},
     },
     {
         base_url: '',
@@ -106,7 +97,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         use_radio_proxy: true,
         history_keep_days: 7,
         enable_static_nowplaying: true,
-        enable_advanced_features: true,
     }
 );
 

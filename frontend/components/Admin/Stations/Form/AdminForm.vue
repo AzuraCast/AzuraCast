@@ -13,7 +13,6 @@
             />
 
             <form-group-field
-                v-if="enableAdvancedFeatures"
                 id="edit_form_radio_base_dir"
                 class="col-md-6"
                 :field="v$.radio_base_dir"
@@ -82,12 +81,11 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {computed, onMounted, reactive, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 import {getApiUrl} from "~/router";
 import {ApiFormSimpleOptions, ApiGenericForm} from "~/entities/ApiInterfaces.ts";
@@ -101,53 +99,27 @@ const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const storageLocationApiUrl = getApiUrl('/admin/stations/storage-locations');
 
-const {enableAdvancedFeatures} = useAzuraCast();
-
 const {v$, tabClass} = useVuelidateOnFormTab(
     form,
-    computed(() => {
-        let validations: {
-            [key: string | number]: any
-        } = {
-            is_enabled: {},
-            media_storage_location: {},
-            recordings_storage_location: {},
-            podcasts_storage_location: {},
-            max_bitrate: {},
-            max_mounts: {},
-            max_hls_streams: {}
-        };
-
-        if (enableAdvancedFeatures) {
-            validations = {
-                ...validations,
-                radio_base_dir: {},
-            };
-        }
-
-        return validations;
-    }),
-    () => {
-        let blankForm: {
-            [key: string]: any
-        } = {
-            media_storage_location: '',
-            recordings_storage_location: '',
-            podcasts_storage_location: '',
-            is_enabled: true,
-            max_bitrate: 0,
-            max_mounts: 0,
-            max_hls_streams: 0
-        };
-
-        if (enableAdvancedFeatures) {
-            blankForm = {
-                ...blankForm,
-                radio_base_dir: '',
-            };
-        }
-
-        return blankForm;
+    {
+        is_enabled: {},
+        media_storage_location: {},
+        recordings_storage_location: {},
+        podcasts_storage_location: {},
+        max_bitrate: {},
+        max_mounts: {},
+        max_hls_streams: {},
+        radio_base_dir: {},
+    },
+    {
+        media_storage_location: '',
+        recordings_storage_location: '',
+        podcasts_storage_location: '',
+        is_enabled: true,
+        max_bitrate: 0,
+        max_mounts: 0,
+        max_hls_streams: 0,
+        radio_base_dir: '',
     }
 );
 

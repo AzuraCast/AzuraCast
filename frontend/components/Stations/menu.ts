@@ -1,7 +1,7 @@
 import {useTranslate} from "~/vendor/gettext.ts";
 import filterMenu, {MenuCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
 import {userAllowedForStation} from "~/acl.ts";
-import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast.ts";
+import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {computed} from "vue";
 import {
     IconBroadcast,
@@ -20,8 +20,6 @@ import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 
 export function useStationsMenu(): ReactiveMenu {
     const {$gettext} = useTranslate();
-
-    const {enableAdvancedFeatures} = useAzuraCast();
     const stationProps = useAzuraCastStation();
 
     // Reuse this variable to avoid multiple calls.
@@ -293,8 +291,7 @@ export function useStationsMenu(): ReactiveMenu {
                         url: {
                             name: 'stations:stereo_tool_config'
                         },
-                        visible: stationProps.features.media && enableAdvancedFeatures
-                            && userAllowedForStation(StationPermissions.Broadcasting)
+                        visible: stationProps.features.media && userAllowedForStation(StationPermissions.Broadcasting)
                     },
                     {
                         key: 'queue',

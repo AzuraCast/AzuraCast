@@ -423,6 +423,10 @@ final class FilesController extends AbstractStationApiCrudController
         $repo = $this->em->getRepository($this->entityClass);
 
         foreach (['id', 'unique_id', 'song_id'] as $field) {
+            if ($field === 'id' && !is_numeric($id)) {
+                continue;
+            }
+
             $record = $repo->findOneBy(
                 [
                     'storage_location' => $mediaStorage,

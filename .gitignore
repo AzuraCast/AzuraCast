@@ -25,6 +25,7 @@ tmp/cache/*---*
 !/util/local_ssl/.gitkeep
 /web/static/yarn-error.log
 /util/package_usage_report*
+/auth.json
 
 # Composer-generated content
 /vendor/*

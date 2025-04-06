@@ -5,7 +5,19 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- Liquidsoap is updated to version 2.3.2, including a number of bug fixes.
+
+- You can now specify the message color in Discord webhooks.
+
 ## Code Quality/Technical Changes
+
+- We have removed the "Hide Advanced Features" setting from the system settings panel. Often, this setting was disabled
+  by a single user, causing functionality to be hidden from other users, who thought the functionality was completely
+  removed or there was a bug. The "Advanced" label remains on any functionality you shouldn't modify without careful
+  consideration.
+
+- If you use an externally-mounted HTTPS certificate (i.e. manage LetsEncrypt yourself), you can now trigger a reload of
+  the internal web services (nginx and Icecast) by running `./docker.sh cli acme:reload`.
 
 ## Bug Fixes
 

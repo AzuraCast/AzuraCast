@@ -24,7 +24,6 @@
                 :edit-intro-url="record.links.intro"
             />
             <mount-form-advanced
-                v-if="enableAdvancedFeatures"
                 v-model:form="form"
                 :station-frontend-type="stationFrontendType"
             />
@@ -44,7 +43,6 @@ import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import {useResettableRef} from "~/functions/useResettableRef";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {useAzuraCast} from "~/vendor/azuracast";
 import Tabs from "~/components/Common/Tabs.vue";
 import {FrontendAdapters} from "~/entities/ApiInterfaces.ts";
 
@@ -52,8 +50,6 @@ const props = defineProps<BaseEditModalProps & {
     stationFrontendType: FrontendAdapters,
     newIntroUrl: string
 }>();
-
-const {enableAdvancedFeatures} = useAzuraCast();
 
 const emit = defineEmits<BaseEditModalEmits & {
     (e: 'needs-restart'): void

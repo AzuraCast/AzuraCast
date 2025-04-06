@@ -539,15 +539,26 @@ Live-aware Crossfade
 ----->#
 
 def azuracast.live_aware_crossfade_impl(old, new) =
+    log.info(label="azuracast.crossfade", "Crossfading")
+    list.iter(
+        fun (m) -> log.info(label="azuracast.crossfade", "Old metadata: #{fst(m)} -> #{snd(m)}"),
+        metadata.cover.remove(old.metadata)
+    )
+    list.iter(
+        fun (m) -> log.info(label="azuracast.crossfade", "New metadata: #{fst(m)} -> #{snd(m)}"),
+        metadata.cover.remove(new.metadata)
+    )
     if azuracast.to_live() then
         # If going to the live show, play a simple sequence
         # fade out AutoDJ, do (almost) not fade in streamer
+        log.info(label="azuracast.crossfade", "Fading to live...")
         sequence([
             fade.out(duration=settings.azuracast.default_fade(), old.source),
             fade.in(duration=settings.azuracast.default_fade(), new.source)
         ])
     elsif settings.azuracast.enable_crossfade() then
         if settings.azuracast.crossfade_type() == "smart" then
+            log.info(label="azuracast.crossfade", "Smart crossfade...")
             cross.smart(
                 old,
                 new,
@@ -556,15 +567,17 @@ def azuracast.live_aware_crossfade_impl(old, new) =
                 fade_out=settings.azuracast.default_fade()
             )
         else
+            log.info(label="azuracast.crossfade", "Simple crossfade...")
             cross.simple(
-                old.source, 
-                new.source, 
+                old.source,
+                new.source,
                 fade_in=settings.azuracast.default_fade(),
                 fade_out=settings.azuracast.default_fade()
             )
         end
     else
         # Otherwise, use a beautiful add
+        log.info(label="azuracast.crossfade", "Add crossfade...")
         add(normalize=false, [
             fade.in(
                 initial_metadata=new.metadata,

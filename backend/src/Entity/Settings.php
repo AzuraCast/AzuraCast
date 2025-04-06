@@ -797,6 +797,7 @@ class Settings implements Stringable
         $this->setGeoliteLastRun(time());
     }
 
+    // TODO: Remove this in a DB migration.
     #[
         OA\Property(
             description: "Whether to enable 'advanced' functionality in the system that is intended for power users.",

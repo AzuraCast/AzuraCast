@@ -54,7 +54,7 @@
                 />
             </div>
 
-            <form-fieldset v-if="enableAdvancedFeatures">
+            <form-fieldset>
                 <template #label>
                     {{ $gettext('Advanced Configuration') }}
                     <span class="badge small text-bg-primary ms-2">
@@ -135,7 +135,7 @@
                 </div>
             </form-fieldset>
 
-            <form-fieldset v-if="enableAdvancedFeatures">
+            <form-fieldset>
                 <template #label>
                     {{ $gettext('Custom Configuration') }}
                     <span class="badge small text-bg-primary ms-2">
@@ -174,7 +174,6 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric, required} from "@vuelidate/validators";
-import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import {ApiGenericForm, FrontendAdapters} from "~/entities/ApiInterfaces.ts";
@@ -187,72 +186,40 @@ const props = defineProps<{
 
 const form = defineModel<ApiGenericForm>('form', {required: true});
 
-const {enableAdvancedFeatures} = useAzuraCast();
-
 const {v$, tabClass} = useVuelidateOnFormTab(
     form,
-    computed(() => {
-        let validations: {
-            [key: string | number]: any
-        } = {
-            frontend_type: {required},
-            frontend_config: {
-                sc_license_id: {},
-                sc_user_id: {},
-                source_pw: {},
-                admin_pw: {},
-            },
-        };
-
-        if (enableAdvancedFeatures) {
-            validations = {
-                ...validations,
-                frontend_config: {
-                    ...validations.frontend_config,
-                    port: {numeric},
-                    max_listeners: {},
-                    custom_config: {},
-                    banned_ips: {},
-                    banned_countries: {},
-                    allowed_ips: {},
-                    banned_user_agents: {}
-                },
-            };
-        }
-
-        return validations;
-    }),
-    () => {
-        let blankForm: {
-            [key: string | number]: any
-        } = {
-            frontend_type: FrontendAdapters.Icecast,
-            frontend_config: {
-                sc_license_id: '',
-                sc_user_id: '',
-                source_pw: '',
-                admin_pw: '',
-            },
-        };
-
-        if (enableAdvancedFeatures) {
-            blankForm = {
-                ...blankForm,
-                frontend_config: {
-                    ...blankForm.frontend_config,
-                    port: '',
-                    max_listeners: '',
-                    custom_config: '',
-                    banned_ips: '',
-                    banned_countries: [],
-                    allowed_ips: '',
-                    banned_user_agents: '',
-                },
-            };
-        }
-
-        return blankForm;
-    }
+    {
+        frontend_type: {required},
+        frontend_config: {
+            sc_license_id: {},
+            sc_user_id: {},
+            source_pw: {},
+            admin_pw: {},
+            port: {numeric},
+            max_listeners: {},
+            custom_config: {},
+            banned_ips: {},
+            banned_countries: {},
+            allowed_ips: {},
+            banned_user_agents: {}
+        },
+    },
+    () => ({
+        frontend_type: FrontendAdapters.Icecast,
+        frontend_config: {
+            sc_license_id: '',
+            sc_user_id: '',
+            source_pw: '',
+            admin_pw: '',
+            port: '',
+            max_listeners: '',
+            custom_config: '',
+            banned_ips: '',
+            banned_countries: [],
+            allowed_ips: '',
+            banned_user_agents: '',
+        },
+    })
 );
 
 const {$gettext} = useTranslate();

@@ -51,7 +51,6 @@
             />
 
             <form-group-field
-                v-if="enableAdvancedFeatures"
                 id="edit_form_short_name"
                 class="col-md-6"
                 :field="v$.short_name"
@@ -66,7 +65,6 @@
             </form-group-field>
 
             <form-group-select
-                v-if="enableAdvancedFeatures"
                 id="edit_form_api_history_items"
                 class="col-md-6"
                 :field="v$.api_history_items"
@@ -139,7 +137,6 @@ import {useTranslate} from "~/vendor/gettext";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required, url} from "@vuelidate/validators";
-import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
@@ -149,57 +146,31 @@ defineProps<{
 
 const form = defineModel<ApiGenericForm>('form', {required: true});
 
-const {enableAdvancedFeatures} = useAzuraCast();
-
 const {v$, tabClass} = useVuelidateOnFormTab(
     form,
-    computed(() => {
-        let validations: {
-            [key: string | number]: any
-        } = {
-            name: {required},
-            description: {},
-            genre: {},
-            url: {url},
-            timezone: {},
-            enable_public_page: {},
-            enable_on_demand: {},
-            enable_on_demand_download: {},
-        };
-
-        if (enableAdvancedFeatures) {
-            validations = {
-                ...validations,
-                short_name: {},
-                api_history_items: {},
-            };
-        }
-
-        return validations;
-    }),
-    () => {
-        let blankForm: {
-            [key: string | number]: any
-        } = {
-            name: '',
-            description: '',
-            genre: '',
-            url: '',
-            timezone: 'UTC',
-            enable_public_page: true,
-            enable_on_demand: false,
-            enable_on_demand_download: true,
-        };
-
-        if (enableAdvancedFeatures) {
-            blankForm = {
-                ...blankForm,
-                short_name: '',
-                api_history_items: 5,
-            }
-        }
-
-        return blankForm;
+    {
+        name: {required},
+        description: {},
+        genre: {},
+        url: {url},
+        timezone: {},
+        enable_public_page: {},
+        enable_on_demand: {},
+        enable_on_demand_download: {},
+        short_name: {},
+        api_history_items: {},
+    },
+    {
+        name: '',
+        description: '',
+        genre: '',
+        url: '',
+        timezone: 'UTC',
+        enable_public_page: true,
+        enable_on_demand: false,
+        enable_on_demand_download: true,
+        short_name: '',
+        api_history_items: 5,
     }
 );
 

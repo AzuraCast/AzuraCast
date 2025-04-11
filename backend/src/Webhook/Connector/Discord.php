@@ -93,8 +93,8 @@ final class Discord extends AbstractConnector
         $vars = $this->replaceVariables($rawVars, $np);
 
         // Convert hex color to decimal if valid. Otherwise use default.
-        $colorInput = trim($vars['color'] ?? '');
-        if (!empty($colorInput) && preg_match('/^#[0-9A-F]{6}$/', $colorInput)) {
+        $colorInput = ltrim(trim($vars['color'] ?? ''), '#');
+        if (!empty($colorInput) && preg_match('/^[0-9A-F]{6}$/i', $colorInput)) {
             $colorDecimal = hexdec(ltrim($colorInput, '#'));
         } else {
             $colorDecimal = 2201331; // #2196f3

@@ -169,11 +169,6 @@ final class View extends Engine
             $customization = $request->getAttribute(ServerRequest::ATTR_CUSTOMIZATION);
             if ($customization instanceof Customization) {
                 $requestData['customization'] = $customization;
-
-                $this->globalProps->set(
-                    'enableAdvancedFeatures',
-                    $customization->enableAdvancedFeatures()
-                );
             }
 
             $localeObj = $request->getAttribute(ServerRequest::ATTR_LOCALE);

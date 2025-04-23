@@ -186,11 +186,6 @@ final class Customization
         return $this->settings->getHideProductName();
     }
 
-    public function enableAdvancedFeatures(): bool
-    {
-        return $this->settings->getEnableAdvancedFeatures();
-    }
-
     public function useStaticNowPlaying(): bool
     {
         return $this->settings->getEnableStaticNowPlaying();

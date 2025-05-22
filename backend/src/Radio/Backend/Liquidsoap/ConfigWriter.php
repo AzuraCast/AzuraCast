@@ -77,11 +77,6 @@ final class ConfigWriter implements EventSubscriberInterface
             return;
         }
 
-        $settings = $this->readSettings();
-        if (!$settings->getEnableAdvancedFeatures()) {
-            return;
-        }
-
         $settings = $event->getStation()->getBackendConfig();
         $customConfig = $settings->getCustomConfigurationSection($sectionName);
 

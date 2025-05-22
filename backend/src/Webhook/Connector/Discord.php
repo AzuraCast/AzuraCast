@@ -87,9 +87,18 @@ final class Discord extends AbstractConnector
             'author' => $config['author'] ?? '',
             'thumbnail' => $config['thumbnail'] ?? '',
             'footer' => $config['footer'] ?? '',
+            'color' => $config['color'] ?? '',
         ];
 
         $vars = $this->replaceVariables($rawVars, $np);
+
+        // Convert hex color to decimal if valid. Otherwise use default.
+        $colorInput = ltrim(trim($vars['color'] ?? ''), '#');
+        if (!empty($colorInput) && preg_match('/^[0-9A-F]{6}$/i', $colorInput)) {
+            $colorDecimal = hexdec(ltrim($colorInput, '#'));
+        } else {
+            $colorDecimal = 2201331; // #2196f3
+        }
 
         // Compose webhook
         $embed = array_filter(
@@ -97,7 +106,7 @@ final class Discord extends AbstractConnector
                 'title' => $vars['title'] ?? '',
                 'description' => $vars['description'] ?? '',
                 'url' => $this->getValidUrl($vars['url']) ?? '',
-                'color' => 2201331, // #2196f3
+                'color' => $colorDecimal,
             ]
         );
 

@@ -80,7 +80,7 @@ const processedScheduleItems = computed<ScheduleWithDetails[]>(() => {
 
         const newRow: ScheduleWithDetails = {
             ...row,
-            time_until: startMoment.toRelative(),
+            time_until: startMoment.toRelative({round: false}),
             start_formatted: formatDateTime(
                 startMoment,
                 startMoment.hasSame(nowTz, 'day')

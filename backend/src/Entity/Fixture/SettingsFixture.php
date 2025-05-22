@@ -28,7 +28,6 @@ final class SettingsFixture extends AbstractFixture
         $settings->setUseRadioProxy(true);
         $settings->setCheckForUpdates(true);
         $settings->setExternalIp('127.0.0.1');
-        $settings->setEnableAdvancedFeatures(true);
         $settings->setEnableStaticNowPlaying(true);
 
         if (!empty(getenv('INIT_DEMO_API_KEY') ?: '')) {

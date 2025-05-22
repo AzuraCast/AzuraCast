@@ -797,27 +797,6 @@ class Settings implements Stringable
         $this->setGeoliteLastRun(time());
     }
 
-    // TODO: Remove this in a DB migration.
-    #[
-        OA\Property(
-            description: "Whether to enable 'advanced' functionality in the system that is intended for power users.",
-            example: false
-        ),
-        ORM\Column,
-        Groups(self::GROUP_GENERAL)
-    ]
-    protected bool $enable_advanced_features = false;
-
-    public function getEnableAdvancedFeatures(): bool
-    {
-        return $this->enable_advanced_features;
-    }
-
-    public function setEnableAdvancedFeatures(bool $enableAdvancedFeatures): void
-    {
-        $this->enable_advanced_features = $enableAdvancedFeatures;
-    }
-
     #[
         OA\Property(description: "Enable e-mail delivery across the application.", example: "true"),
         ORM\Column,

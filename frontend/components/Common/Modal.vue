@@ -8,6 +8,7 @@
             :aria-label="title"
             :class="'modal-'+size"
             aria-hidden="true"
+            v-on="eventListeners"
         >
             <div class="modal-dialog">
                 <div
@@ -56,7 +57,6 @@
 import {Modal} from "bootstrap";
 import {onMounted, onUnmounted, ref, useSlots, useTemplateRef, watch} from "vue";
 import Loading from "~/components/Common/Loading.vue";
-import {useEventListener} from "@vueuse/core";
 
 const slots = useSlots();
 
@@ -96,37 +96,20 @@ onUnmounted(() => {
     bsModal?.dispose();
 });
 
-useEventListener(
-    $modal,
-    'hide.bs.modal',
-    () => {
+const eventListeners = {
+    ['hide.bs.modal']: () => {
         isActive.value = false;
-    }
-);
-
-useEventListener(
-    $modal,
-    'show.bs.modal',
-    () => {
-        isActive.value = true;
-    }
-);
-
-useEventListener(
-    $modal,
-    'hidden.bs.modal',
-    () => {
+    },
+    ['hidden.bs.modal']: () => {
         emit('hidden');
-    }
-);
-
-useEventListener(
-    $modal,
-    'shown.bs.modal',
-    () => {
+    },
+    ['show.bs.modal']: () => {
+        isActive.value = true;
+    },
+    ['shown.bs.modal']: () => {
         emit('shown');
-    }
-);
+    },
+};
 
 const show = () => {
     bsModal?.show();

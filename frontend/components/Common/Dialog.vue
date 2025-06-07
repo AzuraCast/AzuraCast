@@ -8,6 +8,7 @@
         :aria-label="title"
         aria-hidden="true"
         role="dialog"
+        v-on="eventListeners"
     >
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -45,7 +46,6 @@
 <script setup lang="ts">
 import {Modal} from "bootstrap";
 import {onMounted, ref, useTemplateRef} from "vue";
-import {useEventListener} from "@vueuse/core";
 
 export interface DialogOptions {
     title: string,
@@ -83,34 +83,22 @@ const $modal = useTemplateRef('$modal');
 const $cancelButton = useTemplateRef('$cancelButton');
 const $confirmButton = useTemplateRef('$confirmButton');
 
-useEventListener(
-    $modal,
-    'hide.bs.modal',
-    () => {
+const eventListeners = {
+    ['hide.bs.modal']: () => {
         sendResult(false);
-    }
-);
-
-useEventListener(
-    $modal,
-    'hidden.bs.modal',
-    () => {
+    },
+    ['hidden.bs.modal']: () => {
         bsModal?.dispose();
         isActive.value = false;
-    }
-);
-
-useEventListener(
-    $modal,
-    'shown.bs.modal',
-    () => {
+    },
+    ['shown.bs.modal']: () => {
         if (props.focusCancel) {
             $cancelButton.value?.focus();
         } else {
             $confirmButton.value?.focus();
         }
-    }
-);
+    },
+};
 
 const onButtonClick = (value: boolean) => {
     sendResult(value);

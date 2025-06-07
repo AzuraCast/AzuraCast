@@ -43,6 +43,8 @@
         <div
             ref="$fileDropTarget"
             class="file-drop-target"
+            @dragenter="onDragEnter"
+            @dragleave="onDragLeave"
         >
             {{ $gettext('Drag file(s) here to upload or') }}
             <button
@@ -69,7 +71,6 @@ import Flow from "@flowjs/flow.js";
 import {useAzuraCast} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
 import {IconUpload} from "~/components/Common/icons";
-import {useEventListener} from "@vueuse/core";
 
 export interface UploadResponseBody {
     originalFilename: string,
@@ -161,21 +162,21 @@ const {apiCsrf} = useAzuraCast();
 
 const {$gettext} = useTranslate();
 
-useEventListener($fileDropTarget, 'dragenter', (e: DragEvent) => {
+const onDragEnter = (e: DragEvent) => {
     const targetElement = e.target as HTMLDivElement;
 
     if (targetElement.classList.contains('file-drop-target')) {
         targetElement.classList.add('drag_over');
     }
-});
+};
 
-useEventListener($fileDropTarget, 'dragleave', (e: DragEvent) => {
+const onDragLeave = (e: DragEvent) => {
     const targetElement = e.target as HTMLDivElement;
 
     if (targetElement.classList.contains('file-drop-target')) {
         targetElement.classList.remove('drag_over');
     }
-});
+};
 
 onMounted(() => {
     const defaultConfig = {

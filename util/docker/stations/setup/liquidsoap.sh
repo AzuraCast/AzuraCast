@@ -22,7 +22,6 @@ fi
 wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap-release-assets/releases/download/rolling-release-v2.3.x/
 liquidsoap-1eaf75e_2.3.4-debian-bookworm-ocaml5.3.0-1_${ARCHITECTURE}.deb"
 
-
 dpkg -i /tmp/liquidsoap.deb
 apt-get install -y -f --no-install-recommends
 rm -f /tmp/liquidsoap.deb

@@ -524,13 +524,17 @@ const showPagination = computed<boolean>(() => {
     return props.paginated && perPage.value !== 0;
 });
 
-const refresh = (flushCache: boolean = false) => {
+const doRefresh = async (flushCache: boolean = false): Promise<void> => {
     selectedRows.value = [];
     activeDetailsRow.value = null;
 
-    props.data.refresh(flushCache);
+    await props.data.refresh(flushCache);
 
     emit('refreshed');
+}
+
+const refresh = () => {
+    void doRefresh(false);
 };
 
 const onPageChange = (p: number) => {
@@ -539,12 +543,12 @@ const onPageChange = (p: number) => {
 }
 
 const relist = () => {
-    refresh(true);
+    void doRefresh(true);
 };
 
 const onClickRefresh = (e: MouseEvent) => {
     emit('refresh-clicked', e);
-    refresh(e.shiftKey);
+    void doRefresh(e.shiftKey);
 };
 
 const navigate = () => {

@@ -72,8 +72,7 @@
             paginated
             select-fields
             :fields="fields"
-            :api-url="listUrl"
-            :request-config="requestConfig"
+            :data="listItemProvider"
             @row-selected="onRowSelected"
             @filtered="onFiltered"
         >
@@ -277,6 +276,8 @@ import {useRoute, useRouter} from "vue-router";
 import {IconFile, IconFolder, IconImage} from "~/components/Common/icons";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {ApiFileList, ApiStationMediaPlaylist, CustomField, FileTypes} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
 export interface MediaSelectedItems {
     all: ApiFileList[],
@@ -313,6 +314,17 @@ const listDirectoriesUrl = getStationApiUrl('/files/directories');
 const mkdirUrl = getStationApiUrl('/files/mkdir');
 const renameUrl = getStationApiUrl('/files/rename');
 const quotaUrl = getStationApiUrl('/quota/station_media');
+
+const currentDirectory = ref('');
+
+const listItemProvider = useApiItemProvider(
+    listUrl,
+    queryKeyWithStation([QueryKeys.StationMedia], [currentDirectory]),
+    (config) => {
+        config.params.currentDirectory = currentDirectory.value;
+        return config;
+    }
+);
 
 const {$gettext} = useTranslate();
 
@@ -392,7 +404,7 @@ const selectedItems = ref<MediaSelectedItems>({
     files: [],
     directories: []
 });
-const currentDirectory = ref('');
+
 const searchPhrase = ref('');
 
 const onRowSelected = (items: ApiFileList[]) => {
@@ -453,11 +465,6 @@ const $moveFilesModal = useTemplateRef('$moveFilesModal');
 const moveFiles = () => {
     $moveFilesModal.value?.open();
 }
-
-const requestConfig = (config) => {
-    config.params.currentDirectory = currentDirectory.value;
-    return config;
-};
 
 const isFilterString = (str: string) =>
     (str.substring(0, 9) === 'playlist:' || str.substring(0, 8) === 'special:');

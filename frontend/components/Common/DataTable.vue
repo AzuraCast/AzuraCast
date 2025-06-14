@@ -14,7 +14,7 @@
                 >
                     <pagination
                         v-model:current-page="currentPage"
-                        :total="totalRows"
+                        :total="total"
                         :per-page="perPage"
                         @change="onPageChange"
                     />
@@ -187,7 +187,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <template v-if="isLoading && hideOnLoading">
+                <template v-if="isLoading && hideOnLoading">
                         <tr>
                             <td
                                 :colspan="columnCount"
@@ -202,7 +202,7 @@
                             </td>
                         </tr>
                     </template>
-                    <template v-else-if="visibleItems.length === 0">
+                <template v-else-if="visibleItems.length === 0">
                         <tr>
                             <td :colspan="columnCount">
                                 <slot name="empty">
@@ -281,7 +281,7 @@
             <pagination
                 v-if="showPagination"
                 v-model:current-page="currentPage"
-                :total="totalRows"
+                :total="total"
                 :per-page="perPage"
                 @change="onPageChange"
             />
@@ -290,21 +290,22 @@
 </template>
 
 <script setup lang="ts" generic="Row extends DataTableRow = DataTableRow">
-import {filter, forEach, get, includes, indexOf, isEmpty, map, reverse, slice, some} from "lodash";
+import {filter, forEach, get, includes, indexOf, isEmpty, map, some} from "lodash";
 import Icon from "~/components/Common/Icon.vue";
-import {computed, onMounted, ref, shallowRef, toRaw, toRef, watch} from "vue";
+import {computed, onMounted, ref, shallowRef, toRaw, watch} from "vue";
 import {watchDebounced} from "@vueuse/core";
-import {useAxios} from "~/vendor/axios";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 import FormCheckbox from "~/components/Form/FormCheckbox.vue";
 import Pagination from "~/components/Common/Pagination.vue";
 import useOptionalStorage from "~/functions/useOptionalStorage";
 import {IconArrowDropDown, IconArrowDropUp, IconFilterList, IconRefresh, IconSearch} from "~/components/Common/icons";
-import {useAzuraCast} from "~/vendor/azuracast.ts";
-import {AxiosRequestConfig} from "axios";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
-
-export type DataTableRow = Record<string, any>
+import {
+    DATATABLE_DEFAULT_CONTEXT,
+    DataTableFilterContext,
+    DataTableItemProvider,
+    DataTableRow
+} from "~/functions/useHasDatatable.ts";
 
 export interface DataTableField<Row extends DataTableRow = DataTableRow> {
     key: string,
@@ -323,11 +324,9 @@ export interface DataTableField<Row extends DataTableRow = DataTableRow> {
 export interface DataTableProps<Row extends DataTableRow = DataTableRow> {
     id?: string,
     fields: DataTableField<Row>[],
-    apiUrl?: string, // URL to fetch for server-side data
-    items?: Row[], // Array of items for client-side data
+    data: DataTableItemProvider<Row>, // The data provider for this table.
     responsive?: boolean | string, // Make table responsive (boolean or CSS class for specific responsiveness width)
     paginated?: boolean, // Enable pagination.
-    loading?: boolean, // Pass to override the "loading" property for this table.
     hideOnLoading?: boolean, // Replace the table contents with a loading animation when data is being retrieved.
     showToolbar?: boolean, // Show the header "Toolbar" with search, refresh, per-page, etc.
     pageOptions?: number[],
@@ -335,25 +334,18 @@ export interface DataTableProps<Row extends DataTableRow = DataTableRow> {
     selectable?: boolean, // Allow selecting individual rows with checkboxes at the side of each row
     detailed?: boolean, // Allow showing "Detail" panel for selected rows.
     selectFields?: boolean, // Allow selecting which columns are visible.
-    handleClientSide?: boolean, // Handle searching, sorting and pagination client-side without API calls.
-    requestConfig?(config: AxiosRequestConfig): AxiosRequestConfig, // Custom server-side request configuration (pre-request)
-    requestProcess?(rawData: object[]): Row[], // Custom server-side request result processing (post-request)
 }
 
 const props = withDefaults(defineProps<DataTableProps<Row>>(), {
     responsive: () => true,
-    paginated: false,
-    loading: false,
+    paginated: DATATABLE_DEFAULT_CONTEXT.paginated,
     hideOnLoading: true,
     showToolbar: true,
     pageOptions: () => [10, 25, 50, 100, 250, 500, 0],
-    defaultPerPage: 10,
+    defaultPerPage: DATATABLE_DEFAULT_CONTEXT.perPage,
     selectable: false,
     detailed: false,
-    selectFields: false,
-    handleClientSide: false,
-    requestConfig: undefined,
-    requestProcess: undefined
+    selectFields: false
 });
 
 const slots = defineSlots<{
@@ -369,7 +361,7 @@ const slots = defineSlots<{
     }) => any,
     'caption'?: () => any,
     'empty'?: () => any,
-}>()
+}>();
 
 const emit = defineEmits<{
     (e: 'refresh-clicked', event: MouseEvent): void,
@@ -379,27 +371,29 @@ const emit = defineEmits<{
     (e: 'data-loaded', data: Row[]): void,
 }>();
 
+const total = computed<number>(() => {
+    return props.data.total.value;
+});
+
+const visibleItems = computed<Row[]>(() => {
+    return props.data.rows.value;
+});
+
+const isLoading = computed<boolean>(() => {
+    return props.data.loading.value;
+});
+
 const selectedRows = shallowRef<Row[]>([]);
 
 watch(selectedRows, (newRows: Row[]) => {
     emit('row-selected', newRows);
 });
 
-const searchPhrase = ref<string>('');
-const currentPage = ref<number>(1);
-const flushCache = ref<boolean>(false);
+const searchPhrase = ref<string>(DATATABLE_DEFAULT_CONTEXT.searchPhrase);
+const currentPage = ref<number>(DATATABLE_DEFAULT_CONTEXT.currentPage);
 
 const sortField = ref<DataTableField<Row> | null>(null);
 const sortOrder = ref<string | null>(null);
-
-const isLoading = ref<boolean>(false);
-
-watch(toRef(props, 'loading'), (newLoading: boolean) => {
-    isLoading.value = newLoading;
-});
-
-const visibleItems = shallowRef<Row[]>([]);
-const totalRows = ref(0);
 
 const activeDetailsRow = shallowRef<Row>(null);
 
@@ -479,6 +473,27 @@ const perPage = computed<number>(() => {
     return settings.value?.perPage ?? props.defaultPerPage;
 });
 
+const context = computed<DataTableFilterContext>(() => {
+    return {
+        searchPhrase: searchPhrase.value,
+        currentPage: currentPage.value,
+        sortField: sortField.value?.key,
+        sortOrder: sortOrder.value,
+        paginated: props.paginated,
+        perPage: perPage.value,
+    };
+});
+
+watch(
+    context,
+    (newContext) => {
+        props.data.setContext(newContext);
+    },
+    {
+        immediate: true
+    }
+);
+
 const visibleFields = computed<DataTableField<Row>[]>(() => {
     const fields = allFields.value.slice();
 
@@ -509,135 +524,13 @@ const showPagination = computed<boolean>(() => {
     return props.paginated && perPage.value !== 0;
 });
 
-const {localeShort} = useAzuraCast();
-
-const refreshClientSide = () => {
-    // Handle filtration client-side.
-    let itemsOnPage = filter(toRaw(props.items), (item) =>
-        Object.entries(item).filter((item) => {
-            const [key, val] = item;
-            if (!val || key[0] === '_') {
-                return false;
-            }
-
-            const itemValue = typeof val === 'object'
-                ? JSON.stringify(Object.values(val))
-                : typeof val === 'string'
-                    ? val : val.toString();
-
-            return itemValue.toLowerCase().includes(searchPhrase.value.toLowerCase())
-        }).length > 0
-    );
-
-    totalRows.value = itemsOnPage.length;
-
-    // Handle sorting client-side.
-    if (sortField.value) {
-        const collator = new Intl.Collator(localeShort, {numeric: true, sensitivity: 'base'});
-
-        itemsOnPage = itemsOnPage.sort(
-            (a, b) => collator.compare(
-                sortField.value.sorter(a),
-                sortField.value.sorter(b)
-            )
-        );
-
-        if (sortOrder.value === 'desc') {
-            itemsOnPage = reverse(itemsOnPage);
-        }
-    }
-
-    // Handle pagination client-side.
-    if (props.paginated && perPage.value > 0) {
-        itemsOnPage = slice(
-            itemsOnPage,
-            (currentPage.value - 1) * perPage.value,
-            currentPage.value * perPage.value
-        );
-    }
-
-    visibleItems.value = itemsOnPage;
-    emit('refreshed');
-};
-
-watch(toRef(props, 'items'), () => {
-    if (props.handleClientSide) {
-        refreshClientSide();
-    }
-}, {
-    immediate: true
-});
-
-const {axios} = useAxios();
-
-const refreshServerSide = () => {
-    const queryParams: {
-        [key: string]: any
-    } = {
-        internal: true
-    };
-
-    if (props.handleClientSide) {
-        queryParams.rowCount = 0;
-    } else {
-        if (props.paginated) {
-            queryParams.rowCount = perPage.value;
-            queryParams.current = (perPage.value !== 0) ? currentPage.value : 1;
-        } else {
-            queryParams.rowCount = 0;
-        }
-
-        if (flushCache.value) {
-            queryParams.flushCache = true;
-        }
-
-        if (searchPhrase.value !== '') {
-            queryParams.searchPhrase = searchPhrase.value;
-        }
-
-        if (null !== sortField.value) {
-            queryParams.sort = sortField.value.key;
-            queryParams.sortOrder = (sortOrder.value === 'desc') ? 'DESC' : 'ASC';
-        }
-    }
-
-    let requestConfig: AxiosRequestConfig = {params: queryParams};
-    if (typeof props.requestConfig === 'function') {
-        requestConfig = props.requestConfig(requestConfig);
-    }
-
-    isLoading.value = true;
-
-    axios.get(props.apiUrl, requestConfig).then((resp) => {
-        totalRows.value = resp.data.total;
-
-        let rows = resp.data.rows ?? [];
-        if (typeof props.requestProcess === 'function') {
-            rows = props.requestProcess(rows);
-        }
-
-        emit('data-loaded', rows);
-        visibleItems.value = rows;
-    }).catch((err) => {
-        totalRows.value = 0;
-        console.error(err.response.data.message);
-    }).finally(() => {
-        isLoading.value = false;
-        flushCache.value = false;
-        emit('refreshed');
-    });
-}
-
-const refresh = () => {
+const refresh = (flushCache: boolean = false) => {
     selectedRows.value = [];
-
     activeDetailsRow.value = null;
 
-    if (props.handleClientSide) {
-        refreshClientSide();
-    } else {
-        refreshServerSide();
-    }
+    props.data.refresh(flushCache);
+
+    emit('refreshed');
 };
 
 const onPageChange = (p: number) => {
@@ -646,18 +539,12 @@ const onPageChange = (p: number) => {
 }
 
 const relist = () => {
-    flushCache.value = true;
-    refresh();
+    refresh(true);
 };
 
 const onClickRefresh = (e: MouseEvent) => {
     emit('refresh-clicked', e);
-
-    if (e.shiftKey) {
-        relist();
-    } else {
-        refresh();
-    }
+    refresh(e.shiftKey);
 };
 
 const navigate = () => {

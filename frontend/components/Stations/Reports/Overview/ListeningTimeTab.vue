@@ -87,8 +87,8 @@ const metricsItemProvider = useClientItemProvider(
     computed(() => stats.value?.all ?? []),
     isLoading,
     undefined,
-    () => {
-        void refetch();
+    async (): Promise<void> => {
+        await refetch();
     }
 );
 

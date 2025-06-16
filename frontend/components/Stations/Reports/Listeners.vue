@@ -406,8 +406,8 @@ const listenersItemProvider = useClientItemProvider(
     filteredListeners,
     isLoading,
     undefined,
-    (): void => {
-        void queryClient.invalidateQueries({
+    async (): Promise<void> => {
+        await queryClient.invalidateQueries({
             queryKey: queryKeyWithStation(
                 [QueryKeys.StationReports],
                 ['listeners'],

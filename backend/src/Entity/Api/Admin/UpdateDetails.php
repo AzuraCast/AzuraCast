@@ -20,12 +20,12 @@ final readonly class UpdateDetails
             description: 'The stable-equivalent branch your installation currently appears to be on.',
             example: '0.20.3'
         )]
-        public string $current_release,
+        public ?string $current_release,
         #[OA\Property(
             description: 'The current latest stable release of the software.',
             example: '0.20.4'
         )]
-        public string $latest_release,
+        public ?string $latest_release,
         #[OA\Property(
             description: 'If you are on the Rolling Release, whether your installation needs to be updated.',
         )]

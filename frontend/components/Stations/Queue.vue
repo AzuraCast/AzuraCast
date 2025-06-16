@@ -109,7 +109,9 @@ const listItemProvider = useApiItemProvider(
     }
 );
 
-const {refresh: relist} = listItemProvider;
+const relist = () => {
+    void listItemProvider.refresh();
+};
 
 const {
     formatTimestampAsTime,

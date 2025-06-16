@@ -141,7 +141,9 @@ const listItemProvider = useApiItemProvider(
     ])
 );
 
-const {refresh} = listItemProvider;
+const refresh = () => {
+    void listItemProvider.refresh();
+}
 
 const tabs: TypeTabs[] = [
     {

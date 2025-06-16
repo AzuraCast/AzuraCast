@@ -204,7 +204,9 @@ const passkeysItemProvider = useApiItemProvider(
     [QueryKeys.AccountPasskeys]
 );
 
-const {refresh: reloadPasskeys} = passkeysItemProvider;
+const reloadPasskeys = () => {
+    void passkeysItemProvider.refresh();
+};
 
 const {doDelete: deletePasskey} = useConfirmAndDelete(
     $gettext('Delete Passkey?'),

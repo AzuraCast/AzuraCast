@@ -344,8 +344,6 @@ const listItemProvider = useApiItemProvider(
     queryKeyWithStation([QueryKeys.StationPlaylists])
 );
 
-const {refresh: refreshDatatable} = listItemProvider;
-
 const {Duration} = useLuxon();
 
 const formatLength = (length: number) => {
@@ -360,7 +358,7 @@ const formatLength = (length: number) => {
 const $scheduleTab = useTemplateRef('$scheduleTab');
 
 const relist = () => {
-    refreshDatatable();
+    void listItemProvider.refresh();
     $scheduleTab.value?.refresh();
 }
 

@@ -274,7 +274,7 @@ const $quota = useTemplateRef('$quota');
 
 const relist = () => {
     $quota.value?.update();
-    refresh();
+    void refresh();
 };
 
 const $editEpisodeModal = useTemplateRef('$editEpisodeModal');

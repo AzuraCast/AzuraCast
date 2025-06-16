@@ -90,7 +90,9 @@ const listItemProvider = useApiItemProvider(
     queryKeyWithStation([QueryKeys.StationHlsStreams])
 );
 
-const {refresh: relist} = listItemProvider;
+const relist = () => {
+    void listItemProvider.refresh();
+}
 
 const upper = (data: string) => {
     const upper: string[] = [];

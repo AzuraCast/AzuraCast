@@ -364,11 +364,8 @@ const slots = defineSlots<{
 }>();
 
 const emit = defineEmits<{
-    (e: 'refresh-clicked', event: MouseEvent): void,
-    (e: 'refreshed'): void,
     (e: 'row-selected', rows: Row[]): void,
     (e: 'filtered', newPhrase: string): void,
-    (e: 'data-loaded', data: Row[]): void,
 }>();
 
 const total = computed<number>(() => {
@@ -524,13 +521,11 @@ const showPagination = computed<boolean>(() => {
     return props.paginated && perPage.value !== 0;
 });
 
-const doRefresh = (flushCache: boolean = false): void => {
+const doRefresh = async (flushCache: boolean = false): Promise<void> => {
     selectedRows.value = [];
     activeDetailsRow.value = null;
 
-    props.provider.refresh(flushCache);
-
-    emit('refreshed');
+    await props.provider.refresh(flushCache);
 }
 
 const refresh = () => {
@@ -546,7 +541,6 @@ const relist = () => {
 };
 
 const onClickRefresh = (e: MouseEvent) => {
-    emit('refresh-clicked', e);
     void doRefresh(e.shiftKey);
 };
 

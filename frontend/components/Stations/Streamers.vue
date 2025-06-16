@@ -150,12 +150,10 @@ const listItemProvider = useApiItemProvider(
     ])
 );
 
-const {refresh: refreshDatatable} = listItemProvider;
-
 const $scheduleTab = useTemplateRef('$scheduleTab');
 
 const relist = () => {
-    refreshDatatable();
+    void listItemProvider.refresh();
     $scheduleTab.value?.refresh();
 }
 

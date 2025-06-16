@@ -29,7 +29,7 @@ export type DataTableItemProvider<Row extends DataTableRow = DataTableRow> = {
     total: ComputedRef<number>,
     loading: ComputedRef<boolean>,
     setContext: (ctx: DataTableFilterContext) => void,
-    refresh: (flushCache?: boolean) => void,
+    refresh: (flushCache?: boolean) => Promise<void>,
 };
 
 export default function useHasDatatable($datatableRef: Readonly<ShallowRef<DataTableTemplateRef | null>>) {

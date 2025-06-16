@@ -100,7 +100,9 @@ const apiKeyItemProvider = useApiItemProvider<Row>(
     ]
 );
 
-const {refresh: refreshApiKeys} = apiKeyItemProvider;
+const refreshApiKeys = () => {
+    void apiKeyItemProvider.refresh();
+};
 
 const $apiKeyModal = useTemplateRef('$apiKeyModal');
 

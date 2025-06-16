@@ -144,7 +144,9 @@ const listItemProvider = useApiItemProvider<Row>(
     ])
 );
 
-const {refresh: relist} = listItemProvider;
+const relist = () => {
+    void listItemProvider.refresh();
+};
 
 const langTypeDetails = useTypeDetails();
 const langTriggerDetails = useTriggerDetails();

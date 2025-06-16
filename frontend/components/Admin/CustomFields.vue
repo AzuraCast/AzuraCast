@@ -108,7 +108,9 @@ const itemProvider = useApiItemProvider(
     ]
 );
 
-const {refresh: relist} = itemProvider;
+const relist = () => {
+    void itemProvider.refresh();
+};
 
 const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);

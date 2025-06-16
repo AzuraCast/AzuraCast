@@ -152,7 +152,9 @@ const listItemProvider = useApiItemProvider(
     }
 );
 
-const {refresh} = listItemProvider;
+const refresh = () => {
+    void listItemProvider.refresh();
+}
 
 const {confirmDelete} = useDialog();
 const {notifySuccess} = useNotify();

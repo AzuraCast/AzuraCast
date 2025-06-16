@@ -140,7 +140,9 @@ const listItemProvider = useApiItemProvider<ApiAdminStorageLocation>(
     ]
 );
 
-const {refresh: relist} = listItemProvider;
+const relist = () => {
+    void listItemProvider.refresh();
+}
 
 const tabs = [
     {

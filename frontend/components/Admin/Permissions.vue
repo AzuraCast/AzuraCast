@@ -110,7 +110,9 @@ const listItemProvider = useApiItemProvider<Row>(
     [QueryKeys.AdminPermissions]
 );
 
-const {refresh: relist} = listItemProvider;
+const relist = () => {
+    void listItemProvider.refresh();
+}
 
 const getGlobalPermissionNames = (permissions: GlobalPermissions[]) => {
     return filter(map(permissions, (permission) => {

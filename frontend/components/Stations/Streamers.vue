@@ -35,9 +35,8 @@
 
                                 <data-table
                                     id="station_streamers"
-                                    ref="$dataTable"
                                     :fields="fields"
-                                    :api-url="listUrl"
+                                    :provider="listItemProvider"
                                 >
                                     <template #cell(art)="row">
                                         <album-art :src="row.item.art" />
@@ -65,7 +64,7 @@
                                             <button
                                                 type="button"
                                                 class="btn btn-secondary"
-                                                @click="doShowBroadcasts(row.item.links.broadcasts, row.item.links.broadcasts_batch)"
+                                                @click="doShowBroadcasts(row.item.id, row.item.links.broadcasts, row.item.links.broadcasts_batch)"
                                             >
                                                 {{ $gettext('Broadcasts') }}
                                             </button>
@@ -98,7 +97,7 @@
             ref="$editModal"
             :create-url="listUrl"
             :new-art-url="newArtUrl"
-            @relist="relist"
+            @relist="() => relist()"
         />
 
         <broadcasts-modal ref="$broadcastsModal" />
@@ -113,7 +112,6 @@ import ConnectionInfo, {StreamerConnectionInfo} from "~/components/Stations/Stre
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useTemplateRef} from "vue";
-import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
@@ -124,6 +122,8 @@ import AddButton from "~/components/Common/AddButton.vue";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 import ScheduleViewTab from "~/components/Stations/Common/ScheduleViewTab.vue";
 import {EventImpl} from "@fullcalendar/core/internal";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
 defineProps<{
     connectionInfo: StreamerConnectionInfo,
@@ -143,8 +143,14 @@ const fields: DataTableField[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const $dataTable = useTemplateRef('$dataTable');
-const {refresh: refreshDatatable} = useHasDatatable($dataTable);
+const listItemProvider = useApiItemProvider(
+    listUrl,
+    queryKeyWithStation([
+        QueryKeys.StationStreamers
+    ])
+);
+
+const {refresh: refreshDatatable} = listItemProvider;
 
 const $scheduleTab = useTemplateRef('$scheduleTab');
 
@@ -162,12 +168,12 @@ const doCalendarClick = (event: EventImpl) => {
 
 const $broadcastsModal = useTemplateRef('$broadcastsModal');
 
-const doShowBroadcasts = (listUrl: string, batchUrl: string) => {
-    $broadcastsModal.value?.open(listUrl, batchUrl);
+const doShowBroadcasts = (id: number, listUrl: string, batchUrl: string) => {
+    $broadcastsModal.value?.open(id, listUrl, batchUrl);
 };
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Streamer?'),
-    relist
+    () => relist()
 );
 </script>

@@ -50,10 +50,9 @@
         </div>
 
         <data-table
-            id="station_queue"
-            ref="$dataTable"
+            id="station_requests"
             :fields="fields"
-            :api-url="listUrlForType"
+            :provider="listItemProvider"
         >
             <template #cell(timestamp)="row">
                 {{ formatIsoAsDateTime(row.item.timestamp) }}
@@ -95,7 +94,7 @@
 <script setup lang="ts">
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import Icon from "~/components/Common/Icon.vue";
-import {computed, nextTick, ref, useTemplateRef} from "vue";
+import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
@@ -103,6 +102,8 @@ import {getStationApiUrl} from "~/router";
 import {IconRemove} from "~/components/Common/icons";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useDialog} from "~/functions/useDialog.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
 type RequestType = "pending" | "history";
 
@@ -130,6 +131,18 @@ const fields: DataTableField[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false}
 ];
 
+const listItemProvider = useApiItemProvider(
+    listUrlForType,
+    queryKeyWithStation([
+        QueryKeys.StationReports
+    ], [
+        'requests',
+        activeType
+    ])
+);
+
+const {refresh} = listItemProvider;
+
 const tabs: TypeTabs[] = [
     {
         type: 'pending',
@@ -141,15 +154,8 @@ const tabs: TypeTabs[] = [
     }
 ];
 
-const $dataTable = useTemplateRef('$dataTable');
-
-const relist = () => {
-    $dataTable.value?.refresh();
-};
-
 const setType = (type: RequestType) => {
     activeType.value = type;
-    void nextTick(relist);
 };
 
 const {formatIsoAsDateTime} = useStationDateTimeFormatter();
@@ -165,7 +171,7 @@ const doDelete = (url: string) => {
         if (result.value) {
             void axios.delete(url).then((resp) => {
                 notifySuccess(resp.data.message);
-                relist();
+                refresh();
             });
         }
     });
@@ -179,7 +185,7 @@ const doClear = () => {
         if (result.value) {
             void axios.post(clearUrl.value).then((resp) => {
                 notifySuccess(resp.data.message);
-                relist();
+                refresh();
             });
         }
     });

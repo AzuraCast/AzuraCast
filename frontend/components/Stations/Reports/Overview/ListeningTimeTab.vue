@@ -18,10 +18,8 @@
             id="listening_time_table"
             ref="$dataTable"
             paginated
-            handle-client-side
             :fields="fields"
-            :items="stats.all"
-            @refresh-clicked="reloadData()"
+            :provider="metricsItemProvider"
         />
     </loading>
 </template>
@@ -29,14 +27,17 @@
 <script setup lang="ts">
 import PieChart from "~/components/Common/Charts/PieChart.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import {toRef, useTemplateRef, watch} from "vue";
+import {computed, toRef, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useAsyncState, useMounted} from "@vueuse/core";
+import {useMounted} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import {useLuxon} from "~/vendor/luxon";
 import useHasDatatable from "~/functions/useHasDatatable";
 import {DateRange} from "~/components/Stations/Reports/Overview/CommonMetricsView.vue";
+import {useQuery} from "@tanstack/vue-query";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import {useClientItemProvider} from "~/functions/dataTable/useClientItemProvider.ts";
 
 const props = defineProps<{
     dateRange: DateRange,
@@ -54,20 +55,40 @@ const dateRange = toRef(props, 'dateRange');
 const {axios} = useAxios();
 const {DateTime} = useLuxon();
 
-const {state: stats, isLoading, execute: reloadData} = useAsyncState(
-    () => axios.get(props.apiUrl, {
-        params: {
-            start: DateTime.fromJSDate(dateRange.value.startDate).toISO(),
-            end: DateTime.fromJSDate(dateRange.value.endDate).toISO()
-        }
-    }).then(r => r.data),
-    {
+const metricsQuery = useQuery({
+    queryKey: queryKeyWithStation([
+        QueryKeys.StationReports
+    ], [
+        'listening_time_metrics',
+        dateRange
+    ]),
+    queryFn: async () => {
+        const {data} = await axios.get(props.apiUrl, {
+            params: {
+                start: DateTime.fromJSDate(dateRange.value.startDate).toISO(),
+                end: DateTime.fromJSDate(dateRange.value.endDate).toISO()
+            }
+        });
+        return data;
+    },
+    placeholderData: () => ({
         all: [],
         chart: {
             labels: [],
             datasets: [],
             alt: []
         }
+    })
+});
+
+const {data: stats, isLoading, refetch} = metricsQuery;
+
+const metricsItemProvider = useClientItemProvider(
+    computed(() => stats.value?.all ?? []),
+    isLoading,
+    undefined,
+    () => {
+        void refetch();
     }
 );
 
@@ -76,9 +97,8 @@ const {navigate} = useHasDatatable($dataTable);
 
 const isMounted = useMounted();
 
-watch(dateRange, async () => {
+watch(dateRange, () => {
     if (isMounted.value) {
-        await reloadData();
         navigate();
     }
 });

@@ -16,10 +16,9 @@
 
         <data-table
             id="custom_fields"
-            ref="$dataTable"
             :fields="fields"
             :show-toolbar="false"
-            :api-url="listUrl"
+            :provider="itemProvider"
         >
             <template #cell(name)="{ item }">
                 {{ item.name }} <code>{{ item.short_name }}</code>
@@ -49,7 +48,7 @@
         ref="$editModal"
         :create-url="listUrl"
         :auto-assign-types="autoAssignTypes"
-        @relist="relist"
+        @relist="() => relist()"
     />
 </template>
 
@@ -59,7 +58,6 @@ import EditModal from "~/components/Admin/CustomFields/EditModal.vue";
 import {get} from "lodash";
 import {useTranslate} from "~/vendor/gettext";
 import {useTemplateRef} from "vue";
-import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
@@ -67,6 +65,8 @@ import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import {DeepRequired} from "utility-types";
 import {CustomField, HasLinks} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 const props = defineProps<{
     autoAssignTypes: Record<string, string>,
@@ -101,14 +101,20 @@ const fields: DataTableField<Row>[] = [
     }
 ];
 
-const $dataTable = useTemplateRef('$dataTable');
-const {relist} = useHasDatatable($dataTable);
+const itemProvider = useApiItemProvider(
+    listUrl,
+    [
+        QueryKeys.AdminCustomFields
+    ]
+);
+
+const {refresh: relist} = itemProvider;
 
 const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Custom Field?'),
-    relist
+    () => relist(),
 );
 </script>

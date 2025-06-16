@@ -2,10 +2,9 @@
     <data-table
         v-if="groupLayout === 'table'"
         id="podcasts"
-        ref="$datatable"
         paginated
         :fields="fields"
-        :api-url="apiUrl"
+        :provider="podcastsItemProvider"
     >
         <template #cell(art)="{item}">
             <album-art
@@ -127,6 +126,8 @@ import Icon from "~/components/Common/Icon.vue";
 import GridLayout from "~/components/Common/GridLayout.vue";
 import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
 import {usePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 const {groupLayout, stationId} = usePodcastGlobals();
 
@@ -139,4 +140,12 @@ const fields: DataTableField<ApiPodcast>[] = [
     {key: 'title', label: $gettext('Podcast'), sortable: true},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
+
+const podcastsItemProvider = useApiItemProvider<ApiPodcast>(
+    apiUrl,
+    [
+        QueryKeys.PublicPodcasts,
+        {station: stationId},
+    ]
+)
 </script>

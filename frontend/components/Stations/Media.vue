@@ -72,7 +72,7 @@
             paginated
             select-fields
             :fields="fields"
-            :data="listItemProvider"
+            :provider="listItemProvider"
             @row-selected="onRowSelected"
             @filtered="onFiltered"
         >
@@ -278,6 +278,7 @@ import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter
 import {ApiFileList, ApiStationMediaPlaylist, CustomField, FileTypes} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import {useQueryClient} from "@tanstack/vue-query";
 
 export interface MediaSelectedItems {
     all: ApiFileList[],
@@ -317,12 +318,31 @@ const quotaUrl = getStationApiUrl('/quota/station_media');
 
 const currentDirectory = ref('');
 
-const listItemProvider = useApiItemProvider(
-    listUrl,
-    queryKeyWithStation([QueryKeys.StationMedia], [currentDirectory]),
-    (config) => {
-        config.params.currentDirectory = currentDirectory.value;
-        return config;
+const isFilterString = (str: string) =>
+    (str.substring(0, 9) === 'playlist:' || str.substring(0, 8) === 'special:');
+
+const router = useRouter();
+const route = useRoute();
+
+watch(
+    () => route.params,
+    async (newParams) => {
+        let path = newParams.path ?? '';
+        if (Array.isArray(path)) {
+            path = path.join('');
+        }
+
+        if (isFilterString(path)) {
+            await router.push({
+                name: 'stations:files:index',
+            });
+            filter(path);
+        } else {
+            currentDirectory.value = path;
+        }
+    },
+    {
+        immediate: true
     }
 );
 
@@ -331,6 +351,21 @@ const {$gettext} = useTranslate();
 const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
 
 type Row = ApiFileList;
+
+const listItemProvider = useApiItemProvider<Row>(
+    listUrl,
+    queryKeyWithStation(
+        [QueryKeys.StationMedia],
+        ['files', currentDirectory]
+    ),
+    {
+        staleTime: 2 * 60 * 1000
+    },
+    (config) => {
+        config.params.currentDirectory = currentDirectory.value;
+        return config;
+    }
+);
 
 const fields = computed<DataTableField<Row>[]>(() => {
     const fields: DataTableField<Row>[] = [
@@ -429,9 +464,14 @@ const filter = (newFilter: string) => {
 
 const $quota = useTemplateRef('$quota');
 
+const queryClient = useQueryClient();
+
 const onTriggerRelist = () => {
+    void queryClient.invalidateQueries({
+        queryKey: queryKeyWithStation([QueryKeys.StationMedia])
+    });
+
     $quota.value?.update();
-    $dataTable.value?.relist();
 };
 
 const onAddPlaylist = (row: MediaInitialPlaylist) => {
@@ -466,12 +506,6 @@ const moveFiles = () => {
     $moveFilesModal.value?.open();
 }
 
-const isFilterString = (str: string) =>
-    (str.substring(0, 9) === 'playlist:' || str.substring(0, 8) === 'special:');
-
-const router = useRouter();
-const route = useRoute();
-
 const changeDirectory = (newDir: string) => {
     void router.push({
         name: 'stations:files:index',
@@ -479,28 +513,7 @@ const changeDirectory = (newDir: string) => {
             path: newDir
         }
     });
+
+    onTriggerNavigate();
 };
-
-watch(
-    () => route.params,
-    async (newParams) => {
-        let path = newParams.path ?? '';
-        if (Array.isArray(path)) {
-            path = path.join('');
-        }
-
-        if (isFilterString(path)) {
-            await router.push({
-                name: 'stations:files:index',
-            });
-            filter(path);
-        } else {
-            currentDirectory.value = path;
-            onTriggerNavigate();
-        }
-    },
-    {
-        immediate: true
-    }
-);
 </script>

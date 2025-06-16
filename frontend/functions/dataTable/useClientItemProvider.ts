@@ -4,17 +4,24 @@ import {
     DataTableItemProvider,
     DataTableRow
 } from "~/functions/useHasDatatable.ts";
-import {computed, Ref, shallowRef, toValue} from "vue";
+import {computed, MaybeRefOrGetter, shallowRef, toValue} from "vue";
 import {filter, get, reverse, slice} from "lodash";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
 
 export function useClientItemProvider<Row extends DataTableRow = DataTableRow>(
-    items: Ref<Row[]>
+    items: MaybeRefOrGetter<Row[]>,
+    isLoading?: MaybeRefOrGetter<boolean>,
+    setContextFn?: (ctx: DataTableFilterContext) => void,
+    refreshFn?: (flushCache: boolean) => void
 ): DataTableItemProvider<Row> {
     const context = shallowRef<DataTableFilterContext>(DATATABLE_DEFAULT_CONTEXT);
 
     const setContext = (ctx: DataTableFilterContext) => {
         context.value = ctx;
+
+        if (typeof setContextFn === 'function') {
+            setContextFn(ctx);
+        }
     }
 
     const filteredItems = computed<Row[]>(() => {
@@ -73,10 +80,16 @@ export function useClientItemProvider<Row extends DataTableRow = DataTableRow>(
         return itemsOnPage;
     });
 
-    const loading = computed(() => false);
+    const loading = computed(() => {
+        return (isLoading !== undefined)
+            ? toValue(isLoading)
+            : false;
+    });
 
-    const refresh = async() => {
-        // Noop
+    const refresh = (flushCache: boolean = false) => {
+        if (typeof refreshFn === 'function') {
+            refreshFn(flushCache);
+        }
     }
 
     return {

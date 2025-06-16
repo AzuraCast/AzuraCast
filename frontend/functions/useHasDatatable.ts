@@ -21,15 +21,15 @@ export const DATATABLE_DEFAULT_CONTEXT: DataTableFilterContext = {
     sortField: null,
     sortOrder: null,
     paginated: false,
-    perPage: 0,
+    perPage: 10,
 };
 
 export type DataTableItemProvider<Row extends DataTableRow = DataTableRow> = {
     rows: ComputedRef<Row[]>,
     total: ComputedRef<number>,
     loading: ComputedRef<boolean>,
-    setContext(ctx: DataTableFilterContext): void,
-    refresh(flushCache: boolean): Promise<void>,
+    setContext: (ctx: DataTableFilterContext) => void,
+    refresh: (flushCache?: boolean) => void,
 };
 
 export default function useHasDatatable($datatableRef: Readonly<ShallowRef<DataTableTemplateRef | null>>) {

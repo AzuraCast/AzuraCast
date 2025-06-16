@@ -46,10 +46,9 @@
         <data-table
             v-if="groupLayout === 'table'"
             id="podcast-episodes"
-            ref="$datatable"
             paginated
             :fields="fields"
-            :api-url="episodesUrl"
+            :provider="episodesItemProvider"
         >
             <template #cell(play_button)="{item}">
                 <play-button
@@ -185,13 +184,15 @@ import GridLayout from "~/components/Common/GridLayout.vue";
 import {ApiPodcast, ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
 import {usePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
 import {computed} from "vue";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 const {groupLayout, stationId, stationTz} = usePodcastGlobals();
 
-const podcastUrl = getStationApiUrl(computed(() => {
-    const {params} = useRoute();
-    const podcastId = params.podcast_id as string;
+const {params} = useRoute();
 
+const podcastUrl = getStationApiUrl(computed(() => {
+    const podcastId = params.podcast_id as string;
     return `/public/podcast/${podcastId}`;
 }), stationId);
 
@@ -201,13 +202,6 @@ const {state: podcast, isLoading} = useRefreshableAsyncState<ApiPodcast>(
     {},
 );
 
-const episodesUrl = getStationApiUrl(computed(() => {
-    const {params} = useRoute();
-    const podcastId = params.podcast_id as string;
-
-    return `/public/podcast/${podcastId}/episodes`;
-}), stationId);
-
 const {$gettext} = useTranslate();
 const fields: DataTableField<ApiPodcastEpisode>[] = [
     {key: 'play_button', label: '', sortable: false, class: 'shrink pe-0'},
@@ -215,6 +209,21 @@ const fields: DataTableField<ApiPodcastEpisode>[] = [
     {key: 'title', label: $gettext('Episode'), sortable: true},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
+
+const episodesUrl = getStationApiUrl(computed(() => {
+    const podcastId = params.podcast_id as string;
+    return `/public/podcast/${podcastId}/episodes`;
+}), stationId);
+
+const episodesItemProvider = useApiItemProvider<ApiPodcastEpisode>(
+    episodesUrl,
+    [
+        QueryKeys.PublicPodcasts,
+        {station: stationId},
+        params.podcast_id,
+        'episodes'
+    ]
+);
 
 const {formatTimestampAsDateTime} = useStationDateTimeFormatter(stationTz);
 </script>

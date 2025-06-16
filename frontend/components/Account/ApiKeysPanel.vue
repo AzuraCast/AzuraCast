@@ -31,10 +31,9 @@
 
         <data-table
             id="account_api_keys"
-            ref="$dataTable"
             :show-toolbar="false"
             :fields="apiKeyFields"
-            :api-url="apiKeysApiUrl"
+            :provider="apiKeyItemProvider"
         >
             <template #cell(actions)="{ item }">
                 <div class="btn-group btn-group-sm">
@@ -53,7 +52,7 @@
     <account-api-key-modal
         ref="$apiKeyModal"
         :create-url="apiKeysApiUrl"
-        @relist="relist"
+        @relist="() => refreshApiKeys()"
     />
 </template>
 
@@ -67,10 +66,11 @@ import AccountApiKeyModal from "~/components/Account/ApiKeyModal.vue";
 import {useTemplateRef} from "vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import {useTranslate} from "~/vendor/gettext.ts";
-import useHasDatatable from "~/functions/useHasDatatable.ts";
 import {getApiUrl} from "~/router.ts";
 import {DeepRequired} from "utility-types";
 import {ApiKey, HasLinks} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 const apiKeysApiUrl = getApiUrl('/frontend/account/api-keys');
 
@@ -93,17 +93,23 @@ const apiKeyFields: DataTableField<Row>[] = [
     }
 ];
 
+const apiKeyItemProvider = useApiItemProvider<Row>(
+    apiKeysApiUrl,
+    [
+        QueryKeys.AdminApiKeys
+    ]
+);
+
+const {refresh: refreshApiKeys} = apiKeyItemProvider;
+
 const $apiKeyModal = useTemplateRef('$apiKeyModal');
 
 const createApiKey = () => {
     $apiKeyModal.value?.create();
 };
 
-const $dataTable = useTemplateRef('$dataTable');
-const {relist} = useHasDatatable($dataTable);
-
 const {doDelete: deleteApiKey} = useConfirmAndDelete(
     $gettext('Delete API Key?'),
-    relist
+    () => refreshApiKeys()
 );
 </script>

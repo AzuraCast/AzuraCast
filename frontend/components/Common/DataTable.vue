@@ -187,7 +187,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                <template v-if="isLoading && hideOnLoading">
+                    <template v-if="isLoading && hideOnLoading">
                         <tr>
                             <td
                                 :colspan="columnCount"
@@ -202,7 +202,7 @@
                             </td>
                         </tr>
                     </template>
-                <template v-else-if="visibleItems.length === 0">
+                    <template v-else-if="visibleItems.length === 0">
                         <tr>
                             <td :colspan="columnCount">
                                 <slot name="empty">
@@ -292,7 +292,7 @@
 <script setup lang="ts" generic="Row extends DataTableRow = DataTableRow">
 import {filter, forEach, get, includes, indexOf, isEmpty, map, some} from "lodash";
 import Icon from "~/components/Common/Icon.vue";
-import {computed, onMounted, ref, shallowRef, toRaw, watch} from "vue";
+import {computed, ref, shallowRef, toRaw, watch} from "vue";
 import {watchDebounced} from "@vueuse/core";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 import FormCheckbox from "~/components/Form/FormCheckbox.vue";
@@ -324,7 +324,7 @@ export interface DataTableField<Row extends DataTableRow = DataTableRow> {
 export interface DataTableProps<Row extends DataTableRow = DataTableRow> {
     id?: string,
     fields: DataTableField<Row>[],
-    data: DataTableItemProvider<Row>, // The data provider for this table.
+    provider: DataTableItemProvider<Row>, // The data provider for this table.
     responsive?: boolean | string, // Make table responsive (boolean or CSS class for specific responsiveness width)
     paginated?: boolean, // Enable pagination.
     hideOnLoading?: boolean, // Replace the table contents with a loading animation when data is being retrieved.
@@ -372,15 +372,15 @@ const emit = defineEmits<{
 }>();
 
 const total = computed<number>(() => {
-    return props.data.total.value;
+    return props.provider.total.value;
 });
 
 const visibleItems = computed<Row[]>(() => {
-    return props.data.rows.value;
+    return props.provider.rows.value;
 });
 
 const isLoading = computed<boolean>(() => {
-    return props.data.loading.value;
+    return props.provider.loading.value;
 });
 
 const selectedRows = shallowRef<Row[]>([]);
@@ -477,7 +477,7 @@ const context = computed<DataTableFilterContext>(() => {
     return {
         searchPhrase: searchPhrase.value,
         currentPage: currentPage.value,
-        sortField: sortField.value?.key,
+        sortField: sortField.value?.key ?? null,
         sortOrder: sortOrder.value,
         paginated: props.paginated,
         perPage: perPage.value,
@@ -487,7 +487,7 @@ const context = computed<DataTableFilterContext>(() => {
 watch(
     context,
     (newContext) => {
-        props.data.setContext(newContext);
+        props.provider.setContext(newContext);
     },
     {
         immediate: true
@@ -524,11 +524,11 @@ const showPagination = computed<boolean>(() => {
     return props.paginated && perPage.value !== 0;
 });
 
-const doRefresh = async (flushCache: boolean = false): Promise<void> => {
+const doRefresh = (flushCache: boolean = false): void => {
     selectedRows.value = [];
     activeDetailsRow.value = null;
 
-    await props.data.refresh(flushCache);
+    props.provider.refresh(flushCache);
 
     emit('refreshed');
 }
@@ -539,7 +539,6 @@ const refresh = () => {
 
 const onPageChange = (p: number) => {
     currentPage.value = p;
-    refresh();
 }
 
 const relist = () => {
@@ -554,7 +553,6 @@ const onClickRefresh = (e: MouseEvent) => {
 const navigate = () => {
     searchPhrase.value = '';
     currentPage.value = 1;
-    relist();
 };
 
 const setFilter = (newTerm: string) => {
@@ -575,8 +573,6 @@ watchDebounced(searchPhrase, (newSearchPhrase) => {
     debounce: 500,
     maxWait: 1000
 });
-
-onMounted(refresh);
 
 const isAllChecked = computed<boolean>(() => {
     if (visibleItems.value.length === 0) {

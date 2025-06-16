@@ -66,7 +66,7 @@
             paginated
             select-fields
             :fields="fields"
-            :api-url="podcast.links.episodes"
+            :provider="episodesItemProvider"
             @row-selected="onRowSelected"
         >
             <template #cell(art)="{item}">
@@ -163,10 +163,9 @@ import Icon from "~/components/Common/Icon.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {computed, shallowRef, useTemplateRef} from "vue";
+import {computed, shallowRef, toRef, useTemplateRef} from "vue";
 import AddButton from "~/components/Common/AddButton.vue";
 import {IconChevronLeft} from "~/components/Common/icons";
-import useHasDatatable from "~/functions/useHasDatatable.ts";
 import {getStationApiUrl} from "~/router.ts";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
@@ -176,6 +175,8 @@ import CardPage from "~/components/Common/CardPage.vue";
 import EpisodesToolbar from "~/components/Stations/Podcasts/EpisodesToolbar.vue";
 import BatchEditModal from "~/components/Stations/Podcasts/BatchEditModal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
 const props = defineProps<{
     podcast: ApiPodcast
@@ -247,14 +248,29 @@ const fields: DataTableField[] = [
     }
 ];
 
+
+const podcast = toRef(props, 'podcast');
+
+const episodesItemProvider = useApiItemProvider(
+    computed(() => props.podcast.links.episodes),
+    queryKeyWithStation(
+        [
+            QueryKeys.StationPodcasts
+        ],
+        [
+            computed(() => props.podcast.id),
+            'episodes'
+        ]
+    )
+);
+
+const {refresh} = episodesItemProvider;
+
 const podcastIsManual = computed(() => {
     return props.podcast.source == 'manual';
 });
 
 const $quota = useTemplateRef('$quota');
-
-const $dataTable = useTemplateRef('$dataTable');
-const {refresh} = useHasDatatable($dataTable);
 
 const relist = () => {
     $quota.value?.update();

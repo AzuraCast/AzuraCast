@@ -1,31 +1,19 @@
 import {DataTableFilterContext, DataTableItemProvider, DataTableRow} from "~/functions/useHasDatatable.ts";
 import {computed} from "vue";
 import {DefaultError, UseQueryReturnType} from "@tanstack/vue-query";
-
-export type ItemProviderResponse<Row extends DataTableRow = DataTableRow> = {
-    total: number,
-    rows: Row[]
-}
-
-export type DataTableQueryItemProvider<Row extends DataTableRow = DataTableRow> = DataTableItemProvider<Row> & {
-    query: UseQueryReturnType<ItemProviderResponse<Row>, DefaultError>
-};
+import {useClientItemProvider} from "~/functions/dataTable/useClientItemProvider.ts";
 
 export function useQueryItemProvider<Row extends DataTableRow = DataTableRow>(
-    query: UseQueryReturnType<ItemProviderResponse<Row>, DefaultError>,
+    query: UseQueryReturnType<Row[], DefaultError>,
     setContextFn?: (ctx: DataTableFilterContext) => void,
-    refreshFn?: (flushCache: boolean) => Promise<void>
-): DataTableQueryItemProvider<Row> {
+    refreshFn?: (flushCache: boolean) => void
+): DataTableItemProvider<Row> {
     const rows = computed(() => {
-        return query.data?.value?.rows ?? [];
-    });
-
-    const total = computed(() => {
-        return query.data?.value?.total ?? 0;
+        return query.data?.value ?? [];
     });
 
     const loading = computed<boolean>(() => {
-        return query.isLoading.value;
+        return query.isFetching.value;
     });
 
     const setContext = (ctx: DataTableFilterContext): void => {
@@ -34,20 +22,18 @@ export function useQueryItemProvider<Row extends DataTableRow = DataTableRow>(
         }
     }
 
-    const refresh = async (flushCache: boolean): Promise<void> => {
+    const refresh = (flushCache: boolean = false): void => {
         if (typeof refreshFn === 'function') {
-            await refreshFn(flushCache);
+            refreshFn(flushCache);
         } else {
-            await query.refetch();
+            void query.refetch();
         }
     }
 
-    return {
-        query,
+    return useClientItemProvider(
         rows,
-        total,
         loading,
         setContext,
         refresh
-    }
+    );
 }

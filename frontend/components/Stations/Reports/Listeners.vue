@@ -92,7 +92,7 @@
                                 </small>
                             </div>
                             <div class="col-12 h3">
-                                {{ listeners.length }}
+                                {{ filteredListeners.length }}
                             </div>
                             <div class="col-12 text-start text-md-end h5">
                                 {{ $gettext('Total Listener Hours') }}
@@ -114,11 +114,9 @@
                         id="station_listeners"
                         ref="$dataTable"
                         paginated
-                        handle-client-side
                         :fields="fields"
-                        :items="filteredListeners"
+                        :provider="listenersItemProvider"
                         select-fields
-                        @refresh-clicked="updateListeners()"
                     >
                         <!-- eslint-disable-next-line -->
                         <template #cell(device.client)="row">
@@ -191,7 +189,7 @@ import StationReportsListenersMap from "~/components/Stations/Reports/Listeners/
 import Icon from "~/components/Common/Icon.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
-import {computed, ComputedRef, nextTick, onMounted, Ref, ref, ShallowRef, shallowRef, useTemplateRef, watch} from "vue";
+import {computed, ComputedRef, Ref, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import {getStationApiUrl} from "~/router";
@@ -205,6 +203,9 @@ import {ApiListener} from "~/entities/ApiInterfaces.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
+import {useQuery, useQueryClient} from "@tanstack/vue-query";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import {useClientItemProvider} from "~/functions/dataTable/useClientItemProvider.ts";
 
 defineProps<{
     attribution: string
@@ -213,7 +214,6 @@ defineProps<{
 const apiUrl = getStationApiUrl('/listeners');
 
 const isLive = ref<boolean>(true);
-const listeners: ShallowRef<ApiListener[]> = shallowRef([]);
 
 const {DateTime} = useLuxon();
 
@@ -340,13 +340,45 @@ const hasFilters: ComputedRef<boolean> = computed(() => {
         || ListenerTypeFilters.All !== filters.value.type;
 });
 
-const filteredListeners = computed<ApiListener[]>(() => {
+const listenersQuery = useQuery({
+    queryKey: queryKeyWithStation(
+        [QueryKeys.StationReports],
+        [
+            'listeners',
+            computed(() => (isLive.value) ? 'live' : dateRange.value)
+        ],
+    ),
+    queryFn: async () => {
+        const params: {
+            [key: string]: any
+        } = {};
+
+        if (!isLive.value) {
+            params.start = DateTime.fromJSDate(dateRange.value.startDate).toISO();
+            params.end = DateTime.fromJSDate(dateRange.value.endDate).toISO();
+        }
+
+        const {data} = await axios.get<ApiListener[]>(apiUrl.value, {params: params});
+        return data;
+    },
+    staleTime: 10 * 1000,
+    refetchInterval: (query) => {
+        const broadcastType = [...query.options.queryKey].pop();
+        return (broadcastType === 'live') ? 15000 : false;
+    }
+});
+
+const {data: allListeners, isLoading} = listenersQuery;
+
+const filteredListeners = computed(() => {
+    const listeners = allListeners.value ?? [];
+
     if (!hasFilters.value) {
-        return listeners.value ?? [];
+        return listeners;
     }
 
     return filter(
-        listeners.value,
+        listeners,
         (row: ApiListener) => {
             const connectedTime: number = row.connected_time;
             if (null !== filters.value.minLength && connectedTime < filters.value.minLength) {
@@ -368,10 +400,28 @@ const filteredListeners = computed<ApiListener[]>(() => {
     );
 });
 
+const queryClient = useQueryClient();
+
+const listenersItemProvider = useClientItemProvider(
+    filteredListeners,
+    isLoading,
+    undefined,
+    (): void => {
+        void queryClient.invalidateQueries({
+            queryKey: queryKeyWithStation(
+                [QueryKeys.StationReports],
+                ['listeners'],
+            )
+        });
+    }
+);
+
 const totalListenerHours = computed(() => {
     let tlh_seconds = 0;
 
-    filteredListeners.value.forEach(function (listener) {
+    const listeners = listenersQuery.data.value ?? [];
+
+    listeners.forEach(function (listener) {
         tlh_seconds += listener.connected_time;
     });
 
@@ -379,36 +429,8 @@ const totalListenerHours = computed(() => {
     return Math.round((tlh_hours + 0.00001) * 100) / 100;
 });
 
-const updateListeners = () => {
-    const params: {
-        [key: string]: any
-    } = {};
-
-    if (!isLive.value) {
-        params.start = DateTime.fromJSDate(dateRange.value.startDate).toISO();
-        params.end = DateTime.fromJSDate(dateRange.value.endDate).toISO();
-    }
-
-    axios.get(apiUrl.value, {params: params}).then((resp) => {
-        listeners.value = resp.data;
-        navigate();
-
-        if (isLive.value) {
-            setTimeout(updateListeners, (!document.hidden) ? 15000 : 30000);
-        }
-    }).catch((error) => {
-        if (isLive.value && (!error.response || error.response.data.code !== 403)) {
-            setTimeout(updateListeners, (!document.hidden) ? 30000 : 120000);
-        }
-    });
-};
-
-watch(dateRange, updateListeners);
-
-onMounted(updateListeners);
-
 const setIsLive = (newValue: boolean) => {
     isLive.value = newValue;
-    void nextTick(updateListeners);
+    navigate();
 };
 </script>

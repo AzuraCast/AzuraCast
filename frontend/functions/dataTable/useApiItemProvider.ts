@@ -4,9 +4,15 @@ import {
     DataTableItemProvider,
     DataTableRow
 } from "~/functions/useHasDatatable.ts";
-import {MaybeRef, ref, shallowRef, toValue} from "vue";
-import {useQuery, UseQueryOptions, UseQueryReturnType} from "@tanstack/vue-query";
-import {useQueryItemProvider} from "~/functions/dataTable/useQueryItemProvider.ts";
+import {computed, MaybeRef, ref, shallowRef, toValue} from "vue";
+import {
+    DefaultError,
+    keepPreviousData,
+    useQuery,
+    useQueryClient,
+    UseQueryOptions,
+    UseQueryReturnType
+} from "@tanstack/vue-query";
 import {AxiosRequestConfig} from "axios";
 import {useAxios} from "~/vendor/axios.ts";
 
@@ -15,18 +21,22 @@ export type ItemProviderResponse<Row extends DataTableRow = DataTableRow> = {
     rows: Row[]
 }
 
-export type DataTableQueryItemProvider<Row extends DataTableRow = DataTableRow> = DataTableItemProvider<Row> & {
-    query: UseQueryReturnType<ItemProviderResponse<Row>, unknown>
+export type DataTableApiItemProvider<Row extends DataTableRow = DataTableRow> = DataTableItemProvider<Row> & {
+    query: UseQueryReturnType<ItemProviderResponse<Row>, DefaultError>
 };
 
 export function useApiItemProvider<Row extends DataTableRow = DataTableRow>(
     apiUrl: MaybeRef<string>,
     queryKey: unknown[],
+    queryOptions?: Partial<UseQueryOptions<ItemProviderResponse<Row>>>,
     requestConfigFn?: (config: AxiosRequestConfig) => AxiosRequestConfig,
     requestProcessFn?: (rawData: object[]) => Row[],
-    queryOptions?: Partial<UseQueryOptions<ItemProviderResponse<Row>>>
-): DataTableQueryItemProvider<Row> {
-    const context = shallowRef<DataTableFilterContext>(DATATABLE_DEFAULT_CONTEXT);
+): DataTableApiItemProvider<Row> {
+    const context = shallowRef<DataTableFilterContext>({
+        ...DATATABLE_DEFAULT_CONTEXT,
+        paginated: true,
+        perPage: 10
+    });
     const flushCache = ref<boolean>(false);
 
     const setContext = (ctx: DataTableFilterContext) => {
@@ -40,9 +50,7 @@ export function useApiItemProvider<Row extends DataTableRow = DataTableRow>(
 
     const query = useQuery({
         queryKey: compositeQueryKey,
-        queryFn: async (ctx) => {
-            console.log(ctx);
-
+        queryFn: async () => {
             const queryParams: {
                 [key: string]: any
             } = {
@@ -58,6 +66,7 @@ export function useApiItemProvider<Row extends DataTableRow = DataTableRow>(
 
             if (flushCache.value) {
                 queryParams.flushCache = true;
+                flushCache.value = false;
             }
 
             if (context.value.searchPhrase !== '') {
@@ -89,22 +98,41 @@ export function useApiItemProvider<Row extends DataTableRow = DataTableRow>(
                 rows: rows,
             };
         },
+        staleTime: 30 * 1000,
+        placeholderData: keepPreviousData,
         ...queryOptions
     });
 
-    const refresh = async (flush: boolean): Promise<void> => {
+    const rows = computed(() => {
+        return query.data?.value?.rows ?? [];
+    });
+
+    const total = computed(() => {
+        return query.data?.value?.total ?? 0;
+    });
+
+    const loading = computed<boolean>(() => {
+        return query.isFetching.value;
+    });
+
+    const queryClient = useQueryClient();
+
+    const refresh = (flush: boolean): void => {
         if (flush) {
             flushCache.value = true;
-            await query.refetch();
-            flushCache.value = false;
-        } else {
-            await query.refetch();
         }
+
+        void queryClient.invalidateQueries({
+            queryKey: queryKey
+        });
     }
 
-    return useQueryItemProvider(
+    return {
         query,
+        rows,
+        total,
+        loading,
         setContext,
         refresh
-    );
+    };
 }

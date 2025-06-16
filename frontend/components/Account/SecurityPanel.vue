@@ -92,10 +92,9 @@
 
         <data-table
             id="account_passkeys"
-            ref="$dataTable"
             :show-toolbar="false"
             :fields="passkeyFields"
-            :api-url="passkeysApiUrl"
+            :provider="passkeysItemProvider"
         >
             <template #cell(actions)="row">
                 <div class="btn-group btn-group-sm">
@@ -116,12 +115,12 @@
     <account-two-factor-modal
         ref="$twoFactorModal"
         :two-factor-url="twoFactorUrl"
-        @relist="reloadSecurity"
+        @relist="() => reloadSecurity()"
     />
 
     <passkey-modal
         ref="$passkeyModal"
-        @relist="reloadPasskeys"
+        @relist="() => reloadPasskeys()"
     />
 </template>
 
@@ -141,9 +140,10 @@ import {useTemplateRef} from "vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import {useTranslate} from "~/vendor/gettext.ts";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import useHasDatatable from "~/functions/useHasDatatable.ts";
 import PasskeyModal from "~/components/Account/PasskeyModal.vue";
 import {ApiAccountTwoFactorStatus} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 const {axios} = useAxios();
 
@@ -199,12 +199,16 @@ const passkeyFields: DataTableField[] = [
     }
 ];
 
-const $dataTable = useTemplateRef('$dataTable');
-const {relist: reloadPasskeys} = useHasDatatable($dataTable);
+const passkeysItemProvider = useApiItemProvider(
+    passkeysApiUrl,
+    [QueryKeys.AccountPasskeys]
+);
+
+const {refresh: reloadPasskeys} = passkeysItemProvider;
 
 const {doDelete: deletePasskey} = useConfirmAndDelete(
     $gettext('Delete Passkey?'),
-    reloadPasskeys
+    () => reloadPasskeys()
 );
 
 const $passkeyModal = useTemplateRef('$passkeyModal');

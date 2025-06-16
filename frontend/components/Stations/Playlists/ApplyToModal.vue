@@ -33,8 +33,7 @@
         <div style="max-height: 300px; overflow-y: scroll">
             <data-table
                 :fields="fields"
-                :items="applyToResults.directories"
-                handle-client-side
+                :provider="itemProvider"
                 :show-toolbar="false"
                 selectable
                 @row-selected="onRowSelected"
@@ -63,7 +62,7 @@
 
 <script setup lang="ts">
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import {ref, useTemplateRef} from "vue";
+import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
@@ -75,6 +74,7 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import Modal from "~/components/Common/Modal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import {useClientItemProvider} from "~/functions/dataTable/useClientItemProvider.ts";
 
 const emit = defineEmits<HasRelistEmit>();
 
@@ -101,6 +101,10 @@ const {record: applyToResults, reset: resetApplyToResults} = useResettableRef({
     },
     directories: [],
 });
+
+const itemProvider = useClientItemProvider(
+    computed(() => applyToResults.value.directories)
+);
 
 const selectedDirs = ref([]);
 const onRowSelected = (items) => {

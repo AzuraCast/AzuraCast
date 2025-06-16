@@ -16,10 +16,9 @@
 
         <data-table
             id="permissions"
-            ref="$dataTable"
             paginated
             :fields="fields"
-            :api-url="listUrl"
+            :provider="listItemProvider"
         >
             <template #cell(permissions)="{item}">
                 <div v-if="item.permissions.global.length > 0">
@@ -68,7 +67,7 @@
         :station-permissions="stationPermissions"
         :stations="stations"
         :global-permissions="globalPermissions"
-        @relist="relist"
+        @relist="() => relist()"
     />
 </template>
 
@@ -78,7 +77,6 @@ import EditModal from "~/components/Admin/Permissions/EditModal.vue";
 import {filter, get, map} from "lodash";
 import {useTranslate} from "~/vendor/gettext";
 import {useTemplateRef} from "vue";
-import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
@@ -86,6 +84,8 @@ import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import {DeepRequired} from "utility-types";
 import {ApiAdminRole, GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 const props = defineProps<{
     stations: Record<number, string>,
@@ -105,6 +105,13 @@ const fields: DataTableField<Row>[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
+const listItemProvider = useApiItemProvider<Row>(
+    listUrl,
+    [QueryKeys.AdminPermissions]
+);
+
+const {refresh: relist} = listItemProvider;
+
 const getGlobalPermissionNames = (permissions: GlobalPermissions[]) => {
     return filter(map(permissions, (permission) => {
         return get(props.globalPermissions, permission, null);
@@ -121,14 +128,11 @@ const getStationName = (stationId: number) => {
     return get(props.stations, stationId, null);
 };
 
-const $dataTable = useTemplateRef('$dataTable');
-const {relist} = useHasDatatable($dataTable);
-
 const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Role?'),
-    relist
+    () => relist()
 );
 </script>

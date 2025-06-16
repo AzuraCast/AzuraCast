@@ -145,9 +145,8 @@
 
             <data-table
                 id="dashboard_stations"
-                ref="$datatable"
                 :fields="stationFields"
-                :api-url="stationsUrl"
+                :provider="stationsItemProvider"
                 paginated
                 responsive
                 show-toolbar
@@ -248,7 +247,7 @@ import Icon from "~/components/Common/Icon.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useAxios} from "~/vendor/axios";
-import {useAsyncState, useIntervalFn} from "@vueuse/core";
+import {useAsyncState} from "@vueuse/core";
 import {computed, useTemplateRef} from "vue";
 import DashboardCharts from "~/components/DashboardCharts.vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -261,8 +260,9 @@ import {IconAccountCircle, IconHeadphones, IconInfo, IconSettings, IconWarning} 
 import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
 import {getApiUrl} from "~/router.ts";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import useHasDatatable from "~/functions/useHasDatatable.ts";
 import {ApiDashboard, ApiNotification} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 defineProps<{
     profileUrl: string,
@@ -324,12 +324,17 @@ const stationFields: DataTableField<ApiDashboard>[] = [
     }
 ];
 
-const $datatable = useTemplateRef('$datatable');
-const {refresh} = useHasDatatable($datatable);
-
-useIntervalFn(
-    refresh,
-    computed(() => (document.hidden) ? 30000 : 15000)
+const stationsItemProvider = useApiItemProvider<ApiDashboard>(
+    stationsUrl,
+    [
+        QueryKeys.AdminStations,
+        'dashboard'
+    ],
+    undefined,
+    undefined,
+    {
+        refetchInterval: 15000
+    }
 );
 
 const $lightbox = useTemplateRef('$lightbox');

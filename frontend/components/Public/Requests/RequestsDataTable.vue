@@ -1,12 +1,11 @@
 <template>
     <data-table
         id="public_requests"
-        ref="datatable"
         paginated
         select-fields
         :page-options="pageOptions"
         :fields="fields"
-        :api-url="requestListUri"
+        :provider="requestListItemProvider"
     >
         <template #cell(name)="row">
             <div class="d-flex align-items-center">
@@ -43,6 +42,8 @@ import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import {RequestsProps} from "~/components/Public/Requests.vue";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 const props = defineProps<RequestsProps>();
 
@@ -117,6 +118,13 @@ const fields = computed<DataTableField[]>(() => {
 
     return fields;
 });
+
+const requestListItemProvider = useApiItemProvider(
+    props.requestListUri,
+    [
+        QueryKeys.PublicRequests
+    ]
+);
 
 const pageOptions = [10, 25];
 

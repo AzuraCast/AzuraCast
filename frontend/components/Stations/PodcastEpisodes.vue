@@ -150,6 +150,7 @@
 
     <batch-edit-modal
         ref="$batchEditModal"
+        :id="podcast.id"
         :batch-url="podcast.links.batch"
         :selected-items="selectedItems"
         @relist="relist"

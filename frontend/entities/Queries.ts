@@ -4,6 +4,7 @@ export enum QueryKeys {
     Dashboard = 'Dashboard',
 
     StationHlsStreams = 'StationHlsStreams',
+    StationLogs = 'StationLogs',
     StationMedia = 'StationMedia',
     StationMounts = 'StationMounts',
     StationPlaylists = 'StationPlaylists',

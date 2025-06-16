@@ -247,7 +247,6 @@ import Icon from "~/components/Common/Icon.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useAxios} from "~/vendor/axios";
-import {useAsyncState} from "@vueuse/core";
 import {computed, useTemplateRef} from "vue";
 import DashboardCharts from "~/components/DashboardCharts.vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -263,6 +262,7 @@ import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import {ApiDashboard, ApiNotification} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
+import {useQuery} from "@tanstack/vue-query";
 
 defineProps<{
     profileUrl: string,
@@ -289,10 +289,16 @@ const langShowHideCharts = computed(() => {
 
 const {axios} = useAxios();
 
-const {state: notifications, isLoading: notificationsLoading} = useAsyncState<ApiNotification[]>(
-    async () => (await axios.get<ApiNotification[]>(notificationsUrl.value)).data,
-    []
-);
+const {data: notifications, isLoading: notificationsLoading} = useQuery<ApiNotification[]>({
+    queryKey: [
+        QueryKeys.Dashboard,
+        'notifications'
+    ],
+    queryFn: async () => {
+        const {data} = await axios.get<ApiNotification[]>(notificationsUrl.value);
+        return data;
+    },
+});
 
 const stationFields: DataTableField<ApiDashboard>[] = [
     {
@@ -327,13 +333,11 @@ const stationFields: DataTableField<ApiDashboard>[] = [
 const stationsItemProvider = useApiItemProvider<ApiDashboard>(
     stationsUrl,
     [
-        QueryKeys.AdminStations,
-        'dashboard'
+        QueryKeys.Dashboard,
+        'stations'
     ],
-    undefined,
-    undefined,
     {
-        refetchInterval: 15000
+        refetchInterval: 15 * 1000
     }
 );
 

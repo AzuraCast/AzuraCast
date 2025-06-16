@@ -123,7 +123,10 @@ const requestListItemProvider = useApiItemProvider(
     props.requestListUri,
     [
         QueryKeys.PublicRequests
-    ]
+    ],
+    {
+        staleTime: 60 * 1000
+    }
 );
 
 const pageOptions = [10, 25];

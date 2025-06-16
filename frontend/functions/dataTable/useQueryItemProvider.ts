@@ -6,7 +6,7 @@ import {useClientItemProvider} from "~/functions/dataTable/useClientItemProvider
 export function useQueryItemProvider<Row extends DataTableRow = DataTableRow>(
     query: UseQueryReturnType<Row[], DefaultError>,
     setContextFn?: (ctx: DataTableFilterContext) => void,
-    refreshFn?: (flushCache: boolean) => void
+    refreshFn?: (flushCache: boolean) => Promise<void>
 ): DataTableItemProvider<Row> {
     const rows = computed(() => {
         return query.data?.value ?? [];
@@ -22,11 +22,11 @@ export function useQueryItemProvider<Row extends DataTableRow = DataTableRow>(
         }
     }
 
-    const refresh = (flushCache: boolean = false): void => {
+    const refresh = async (flushCache: boolean = false): Promise<void> => {
         if (typeof refreshFn === 'function') {
-            refreshFn(flushCache);
+            await refreshFn(flushCache);
         } else {
-            void query.refetch();
+            await query.refetch();
         }
     }
 

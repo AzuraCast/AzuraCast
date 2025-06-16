@@ -117,12 +117,12 @@ export function useApiItemProvider<Row extends DataTableRow = DataTableRow>(
 
     const queryClient = useQueryClient();
 
-    const refresh = (flush: boolean): void => {
+    const refresh = async (flush: boolean): Promise<void> => {
         if (flush) {
             flushCache.value = true;
         }
 
-        void queryClient.invalidateQueries({
+        await queryClient.invalidateQueries({
             queryKey: queryKey
         });
     }

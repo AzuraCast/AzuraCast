@@ -96,25 +96,23 @@ import Loading from "~/components/Common/Loading.vue";
 import {useRoute} from "vue-router";
 import {getStationApiUrl} from "~/router.ts";
 import {useAxios} from "~/vendor/axios.ts";
-import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState.ts";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import PodcastCommon from "~/components/Public/Podcasts/PodcastCommon.vue";
 import {usePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
 import {computed} from "vue";
+import {usePodcastQuery} from "~/components/Public/Podcasts/usePodcastQuery.ts";
+import {useQuery} from "@tanstack/vue-query";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 const {stationId, stationTz} = usePodcastGlobals();
 
-const podcastUrl = getStationApiUrl(computed(() => {
-    const {params} = useRoute();
-    const podcastId = params.podcast_id as string;
+const {data: podcast, isLoading: podcastLoading} = usePodcastQuery();
 
-    return `/public/podcast/${podcastId}`;
-}), stationId);
+const {params} = useRoute();
 
 const episodeUrl = getStationApiUrl(computed(() => {
-    const {params} = useRoute();
     const podcastId = params.podcast_id as string;
     const episodeId = params.episode_id as string;
 
@@ -123,15 +121,20 @@ const episodeUrl = getStationApiUrl(computed(() => {
 
 const {axios} = useAxios();
 
-const {state: podcast, isLoading: podcastLoading} = useRefreshableAsyncState(
-    () => axios.get(podcastUrl.value).then((r) => r.data),
-    {},
-);
-
-const {state: episode, isLoading: episodeLoading} = useRefreshableAsyncState(
-    () => axios.get(episodeUrl.value).then((r) => r.data),
-    {},
-);
+const {data: episode, isLoading: episodeLoading} = useQuery({
+    queryKey: [
+        QueryKeys.PublicPodcasts,
+        {station: stationId},
+        params.podcast_id,
+        'episodes',
+        params.episode_id
+    ],
+    queryFn: async () => {
+        const {data} = await axios.get(episodeUrl.value);
+        return data;
+    },
+    staleTime: 5 * 60 * 1000
+});
 
 const {formatTimestampAsDateTime} = useStationDateTimeFormatter(stationTz);
 </script>

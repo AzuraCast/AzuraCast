@@ -25,11 +25,12 @@
 
 <script setup lang="ts">
 import TimeSeriesChart from "~/components/Common/Charts/TimeSeriesChart.vue";
-import {useAsyncState} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
+import {useQuery} from "@tanstack/vue-query";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 const props = defineProps<{
     chartsUrl: string,
@@ -37,9 +38,13 @@ const props = defineProps<{
 
 const {axios} = useAxios();
 
-const {state: chartsData, isLoading: chartsLoading} = useAsyncState(
-    () => axios.get(props.chartsUrl).then((r) => r.data),
-    {
+const {data: chartsData, isLoading: chartsLoading} = useQuery({
+    queryKey: [QueryKeys.Dashboard, 'charts'],
+    queryFn: async () => {
+        const {data} = await axios.get(props.chartsUrl);
+        return data;
+    },
+    placeholderData: () => ({
         average: {
             metrics: [],
             alt: []
@@ -48,6 +53,6 @@ const {state: chartsData, isLoading: chartsLoading} = useAsyncState(
             metrics: [],
             alt: []
         }
-    }
-);
+    })
+});
 </script>

@@ -146,6 +146,9 @@ const podcastsItemProvider = useApiItemProvider<ApiPodcast>(
     [
         QueryKeys.PublicPodcasts,
         {station: stationId},
-    ]
+    ],
+    {
+        staleTime: 5 * 60 * 1000
+    }
 )
 </script>

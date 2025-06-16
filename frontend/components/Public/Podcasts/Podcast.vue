@@ -170,8 +170,6 @@
 import {getStationApiUrl} from "~/router.ts";
 import {useRoute} from "vue-router";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState.ts";
-import {useAxios} from "~/vendor/axios.ts";
 import Loading from "~/components/Common/Loading.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useTranslate} from "~/vendor/gettext.ts";
@@ -181,26 +179,18 @@ import PlayButton from "~/components/Common/PlayButton.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import PodcastCommon from "~/components/Public/Podcasts/PodcastCommon.vue";
 import GridLayout from "~/components/Common/GridLayout.vue";
-import {ApiPodcast, ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
+import {ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
 import {usePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
 import {computed} from "vue";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
+import {usePodcastQuery} from "~/components/Public/Podcasts/usePodcastQuery.ts";
 
 const {groupLayout, stationId, stationTz} = usePodcastGlobals();
 
 const {params} = useRoute();
 
-const podcastUrl = getStationApiUrl(computed(() => {
-    const podcastId = params.podcast_id as string;
-    return `/public/podcast/${podcastId}`;
-}), stationId);
-
-const {axios} = useAxios();
-const {state: podcast, isLoading} = useRefreshableAsyncState<ApiPodcast>(
-    () => axios.get(podcastUrl.value).then((r) => r.data),
-    {},
-);
+const {data: podcast, isLoading} = usePodcastQuery();
 
 const {$gettext} = useTranslate();
 const fields: DataTableField<ApiPodcastEpisode>[] = [
@@ -222,7 +212,10 @@ const episodesItemProvider = useApiItemProvider<ApiPodcastEpisode>(
         {station: stationId},
         params.podcast_id,
         'episodes'
-    ]
+    ],
+    {
+        staleTime: 5 * 60 * 1000
+    }
 );
 
 const {formatTimestampAsDateTime} = useStationDateTimeFormatter(stationTz);

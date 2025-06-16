@@ -12,7 +12,7 @@ export function useClientItemProvider<Row extends DataTableRow = DataTableRow>(
     items: MaybeRefOrGetter<Row[]>,
     isLoading?: MaybeRefOrGetter<boolean>,
     setContextFn?: (ctx: DataTableFilterContext) => void,
-    refreshFn?: (flushCache: boolean) => void
+    refreshFn?: (flushCache: boolean) => Promise<void>
 ): DataTableItemProvider<Row> {
     const context = shallowRef<DataTableFilterContext>(DATATABLE_DEFAULT_CONTEXT);
 
@@ -86,9 +86,9 @@ export function useClientItemProvider<Row extends DataTableRow = DataTableRow>(
             : false;
     });
 
-    const refresh = (flushCache: boolean = false) => {
+    const refresh = async (flushCache: boolean = false): Promise<void> => {
         if (typeof refreshFn === 'function') {
-            refreshFn(flushCache);
+            await refreshFn(flushCache);
         }
     }
 

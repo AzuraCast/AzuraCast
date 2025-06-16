@@ -48,8 +48,9 @@
 <script setup lang="ts">
 import Avatar from "~/components/Common/Avatar.vue";
 import {useAxios} from "~/vendor/axios.ts";
-import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState.ts";
 import {getApiUrl} from "~/router.ts";
+import {useQuery} from "@tanstack/vue-query";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 const slots = defineSlots();
 
@@ -57,9 +58,13 @@ const {axios} = useAxios();
 
 const userUrl = getApiUrl('/frontend/account/me');
 
-const {state: user, execute: reload} = useRefreshableAsyncState(
-    () => axios.get(userUrl.value).then((r) => r.data),
-    {
+const {data: user, refetch} = useQuery({
+    queryKey: [QueryKeys.AccountIndex, 'profile'],
+    queryFn: async () => {
+        const {data} = await axios.get(userUrl.value);
+        return data;
+    },
+    placeholderData: () => ({
         name: null,
         email: null,
         avatar: {
@@ -68,8 +73,12 @@ const {state: user, execute: reload} = useRefreshableAsyncState(
             service_url: null
         },
         roles: [],
-    },
-);
+    }),
+});
+
+const reload = () => {
+    void refetch();
+};
 
 defineExpose({
     reload

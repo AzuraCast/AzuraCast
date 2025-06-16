@@ -135,7 +135,6 @@ import AccountTwoFactorModal from "~/components/Account/TwoFactorModal.vue";
 import AccountChangePasswordModal from "~/components/Account/ChangePasswordModal.vue";
 import {useAxios} from "~/vendor/axios.ts";
 import {getApiUrl} from "~/router.ts";
-import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState.ts";
 import {useTemplateRef} from "vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import {useTranslate} from "~/vendor/gettext.ts";
@@ -144,21 +143,30 @@ import PasskeyModal from "~/components/Account/PasskeyModal.vue";
 import {ApiAccountTwoFactorStatus} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
+import {useQuery} from "@tanstack/vue-query";
 
 const {axios} = useAxios();
 
 const twoFactorUrl = getApiUrl('/frontend/account/two-factor');
 
 const {
-    state: security,
+    data: security,
     isLoading: securityLoading,
-    execute: reloadSecurity
-} = useRefreshableAsyncState<ApiAccountTwoFactorStatus>(
-    async () => (await axios.get<ApiAccountTwoFactorStatus>(twoFactorUrl.value)).data,
-    {
-        two_factor_enabled: false,
+    refetch
+} = useQuery<ApiAccountTwoFactorStatus>({
+    queryKey: [QueryKeys.AccountIndex, 'two-factor'],
+    queryFn: async () => {
+        const {data} = await axios.get<ApiAccountTwoFactorStatus>(twoFactorUrl.value);
+        return data;
     },
-);
+    placeholderData: () => ({
+        two_factor_enabled: false,
+    }),
+});
+
+const reloadSecurity = () => {
+    void refetch();
+}
 
 const $changePasswordModal = useTemplateRef('$changePasswordModal');
 

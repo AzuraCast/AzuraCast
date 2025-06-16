@@ -1,11 +1,14 @@
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 
 export enum QueryKeys {
+    Dashboard = 'Dashboard',
+
     StationHlsStreams = 'StationHlsStreams',
     StationMedia = 'StationMedia',
     StationMounts = 'StationMounts',
     StationPlaylists = 'StationPlaylists',
     StationPodcasts = 'StationPodcasts',
+    StationProfile = 'StationProfile',
     StationQueue = 'StationQueue',
     StationRemotes = 'StationRemotes',
     StationReports = 'StationReports',
@@ -14,6 +17,7 @@ export enum QueryKeys {
     StationWebhooks = 'StationWebhooks',
 
     AccountApiKeys = 'AccountApiKeys',
+    AccountIndex = 'AccountIndex',
     AccountPasskeys = 'AccountPasskeys',
 
     PublicOnDemand = 'PublicOnDemand',
@@ -25,6 +29,7 @@ export enum QueryKeys {
     AdminBackups = 'AdminBackups',
     AdminCustomFields = 'AdminCustomFields',
     AdminDebug = 'AdminDebug',
+    AdminIndex = 'AdminIndex',
     AdminPermissions = 'AdminPermissions',
     AdminRelays = 'AdminRelays',
     AdminStations = 'AdminStations',

@@ -127,14 +127,15 @@
 
 <script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
-import {useAsyncState, useMounted} from "@vueuse/core";
-import {toRef, watch} from "vue";
+import {toRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import SongText from "~/components/Stations/Reports/Overview/SongText.vue";
 import Loading from "~/components/Common/Loading.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {IconChevronDown, IconChevronUp} from "~/components/Common/icons";
 import {DateRange} from "~/components/Stations/Reports/Overview/CommonMetricsView.vue";
+import {useQuery} from "@tanstack/vue-query";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
 const props = defineProps<{
     dateRange: DateRange,
@@ -146,27 +147,28 @@ const {axios} = useAxios();
 
 const {DateTime} = useLuxon();
 
-const {state, isLoading, execute: relist} = useAsyncState(
-    () => axios.get(props.apiUrl, {
-        params: {
-            start: DateTime.fromJSDate(dateRange.value.startDate).toISO(),
-            end: DateTime.fromJSDate(dateRange.value.endDate).toISO()
-        }
-    }).then(r => r.data),
-    {
+const {data: state, isLoading} = useQuery({
+    queryKey: queryKeyWithStation([
+        QueryKeys.StationReports
+    ], [
+        'best_and_worst',
+        dateRange
+    ]),
+    queryFn: async () => {
+        const {data} = await axios.get(props.apiUrl, {
+            params: {
+                start: DateTime.fromJSDate(dateRange.value.startDate).toISO(),
+                end: DateTime.fromJSDate(dateRange.value.endDate).toISO()
+            }
+        });
+        return data;
+    },
+    placeholderData: () => ({
         bestAndWorst: {
             best: [],
             worst: []
         },
         mostPlayed: []
-    }
-);
-
-const isMounted = useMounted();
-
-watch(dateRange, () => {
-    if (isMounted.value) {
-        void relist();
-    }
+    }),
 });
 </script>

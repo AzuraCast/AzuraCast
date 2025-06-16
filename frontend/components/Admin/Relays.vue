@@ -18,10 +18,9 @@
 
         <data-table
             id="relays"
-            ref="$dataTable"
             paginated
             :fields="fields"
-            :api-url="listUrl"
+            :provider="listItemProvider"
         >
             <template #cell(name)="{ item }">
                 <h5>
@@ -48,13 +47,13 @@
 <script setup lang="ts">
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useTemplateRef} from "vue";
-import useHasDatatable from "~/functions/useHasDatatable";
 import {useAzuraCast} from "~/vendor/azuracast";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {getApiUrl} from "~/router";
 import {Relay} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 const listUrl = getApiUrl('/admin/relays/list');
 
@@ -79,6 +78,8 @@ const fields: DataTableField<Relay>[] = [
     {key: 'updated_at', label: $gettext('Latest Update'), formatter: dateTimeFormatter, sortable: true}
 ];
 
-const $dataTable = useTemplateRef('$dataTable');
-useHasDatatable($dataTable);
+const listItemProvider = useApiItemProvider<Relay>(
+    listUrl,
+    [QueryKeys.AdminRelays]
+);
 </script>

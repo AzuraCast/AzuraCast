@@ -9,10 +9,9 @@
 
         <data-table
             id="stations"
-            ref="$dataTable"
             paginated
             :fields="fields"
-            :api-url="listUrl"
+            :provider="listItemProvider"
         >
             <template #cell(name)="{item}">
                 <div class="typography-subheading">
@@ -72,12 +71,12 @@
         v-bind="props"
         ref="$editModal"
         :create-url="listUrl"
-        @relist="relist"
+        @relist="() => relist()"
     />
 
     <admin-stations-clone-modal
         ref="$cloneModal"
-        @relist="relist"
+        @relist="() => relist()"
     />
 </template>
 
@@ -88,7 +87,6 @@ import {get} from "lodash";
 import AdminStationsCloneModal from "~/components/Admin/Stations/CloneModal.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useTemplateRef} from "vue";
-import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
@@ -98,6 +96,8 @@ import {useNotify} from "~/functions/useNotify.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import {useDialog} from "~/functions/useDialog.ts";
 import {StationFormParentProps} from "~/components/Admin/Stations/StationForm.vue";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 interface AdminStationsProps extends StationFormParentProps {
     frontendTypes: object,
@@ -141,8 +141,16 @@ const fields: DataTableField[] = [
     }
 ];
 
-const $dataTable = useTemplateRef('$dataTable');
-const {relist} = useHasDatatable($dataTable);
+const listItemProvider = useApiItemProvider(
+    listUrl,
+    [
+        QueryKeys.AdminStations
+    ]
+);
+
+const relist = () => {
+    void listItemProvider.refresh();
+}
 
 const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
@@ -184,6 +192,6 @@ const doToggle = (station) => {
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Station?'),
-    relist
+    () => relist()
 );
 </script>

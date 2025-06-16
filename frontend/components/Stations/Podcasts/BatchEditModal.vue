@@ -62,13 +62,12 @@
 </template>
 
 <script setup lang="ts">
-import {useTemplateRef} from "vue";
+import {computed, ref, useTemplateRef} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
-import {useAsyncState} from "@vueuse/core";
 import Loading from "~/components/Common/Loading.vue";
 import useHandlePodcastBatchResponse from "~/components/Stations/Podcasts/useHandlePodcastBatchResponse.ts";
 import {map} from "lodash";
@@ -77,8 +76,11 @@ import mergeExisting from "~/functions/mergeExisting.ts";
 import BatchEditRow from "~/components/Stations/Podcasts/BatchEditRow.vue";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {ApiPodcastBatchResult, ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
+import {useQuery} from "@tanstack/vue-query";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
 const props = defineProps<{
+    id: string,
     batchUrl: string,
     selectedItems: Array<any>,
 }>();
@@ -101,25 +103,38 @@ const blankRow = {
     episode_number: null
 };
 
-const {state: rows, execute: loadRows, isLoading} = useAsyncState<ApiPodcastEpisode[], any[], false>(
-    () => axios.put<ApiPodcastBatchResult>(props.batchUrl, {
-        'do': 'list',
-        'episodes': map(props.selectedItems, 'id'),
-    }).then((r) => map(r.data.records ?? [], (row) => mergeExisting(blankRow, row))),
-    [],
-    {
-        immediate: false,
-        shallow: false
-    }
-);
+const isModalOpen = ref(false);
+
+const {data: rows, isLoading} = useQuery<ApiPodcastEpisode[]>({
+    queryKey: queryKeyWithStation([
+        QueryKeys.StationPodcasts
+    ], [
+        computed(() => props.id),
+        'batch',
+        computed(() => props.selectedItems),
+    ]),
+    queryFn: async () => {
+        const {data} = await axios.put<ApiPodcastBatchResult>(props.batchUrl, {
+            'do': 'list',
+            'episodes': map(props.selectedItems, 'id'),
+        });
+
+        return map(
+            data.records ?? [],
+            (row) => mergeExisting(blankRow, row)
+        );
+    },
+    enabled: isModalOpen,
+});
 
 const show = () => {
-    void loadRows();
+    isModalOpen.value = true;
     showModal();
 };
 
 const onHidden = () => {
     rows.value = [];
+    isModalOpen.value = false;
     resetForm();
 }
 

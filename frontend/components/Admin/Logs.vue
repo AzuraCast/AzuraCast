@@ -5,6 +5,7 @@
             :title="$gettext('System Logs')"
         >
             <log-list
+                :query-key="[QueryKeys.AdminDebug, 'logs']"
                 :url="systemLogsUrl"
                 @view="viewLog"
             />
@@ -24,6 +25,7 @@
                     >
                         <div class="card-body-flush">
                             <log-list
+                                :query-key="[QueryKeys.AdminDebug, 'logs', row.id]"
                                 :url="row.url"
                                 @view="viewLog"
                             />
@@ -44,6 +46,7 @@ import {useTemplateRef} from "vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 interface StationLogsItem {
     id: number,

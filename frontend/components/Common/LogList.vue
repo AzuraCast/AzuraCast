@@ -14,11 +14,13 @@
 </template>
 
 <script setup lang="ts">
-import {useAsyncState} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import {ApiLogType} from "~/entities/ApiInterfaces.ts";
+import {useQuery} from "@tanstack/vue-query";
+import {toRef} from "vue";
 
 const props = defineProps<{
+    queryKey: unknown[],
     url: string
 }>();
 
@@ -28,10 +30,13 @@ const emit = defineEmits<{
 
 const {axios} = useAxios();
 
-const {state: logs} = useAsyncState<ApiLogType[]>(
-    async () => (await axios.get<ApiLogType[]>(props.url)).data,
-    []
-);
+const {data: logs} = useQuery<ApiLogType[]>({
+    queryKey: toRef(props, 'queryKey'),
+    queryFn: async () => {
+        const {data} = await axios.get<ApiLogType[]>(props.url);
+        return data;
+    }
+});
 
 const viewLog = (url: string, isStreaming: boolean) => {
     emit('view', url, isStreaming);

@@ -102,8 +102,9 @@ import DiskUsagePanel from "~/components/Admin/Index/DiskUsagePanel.vue";
 import ServicesPanel from "~/components/Admin/Index/ServicesPanel.vue";
 import NetworkStatsPanel from "~/components/Admin/Index/NetworkStatsPanel.vue";
 import Loading from "~/components/Common/Loading.vue";
-import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
 import {ApiAdminServerStats} from "~/entities/ApiInterfaces.ts";
+import {useQuery} from "@tanstack/vue-query";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 const statsUrl = getApiUrl('/admin/server/stats');
 
@@ -111,9 +112,13 @@ const menuItems = useAdminMenu();
 
 const {axiosSilent} = useAxios();
 
-const {state: stats, isLoading} = useAutoRefreshingAsyncState<ApiAdminServerStats>(
-    () => axiosSilent.get(statsUrl.value).then(r => r.data),
-    {
+const {data: stats, isLoading} = useQuery<ApiAdminServerStats>({
+    queryKey: [QueryKeys.AdminIndex, 'stats'],
+    queryFn: async () => {
+        const {data} = await axiosSilent.get(statsUrl.value);
+        return data;
+    },
+    placeholderData: () => ({
         cpu: {
             total: {
                 name: "Total",
@@ -158,10 +163,7 @@ const {state: stats, isLoading} = useAutoRefreshingAsyncState<ApiAdminServerStat
             used_readable: ""
         },
         network: []
-    },
-    {
-        shallow: true,
-        timeout: 5000
-    }
-);
+    }),
+    refetchInterval: 5 * 1000
+});
 </script>

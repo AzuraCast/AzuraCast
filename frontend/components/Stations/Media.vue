@@ -278,7 +278,6 @@ import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter
 import {ApiFileList, ApiStationMediaPlaylist, CustomField, FileTypes} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
-import {useQueryClient} from "@tanstack/vue-query";
 
 export interface MediaSelectedItems {
     all: ApiFileList[],
@@ -464,12 +463,8 @@ const filter = (newFilter: string) => {
 
 const $quota = useTemplateRef('$quota');
 
-const queryClient = useQueryClient();
-
 const onTriggerRelist = () => {
-    void queryClient.invalidateQueries({
-        queryKey: queryKeyWithStation([QueryKeys.StationMedia])
-    });
+    void listItemProvider.refresh(true);
 
     $quota.value?.update();
 };

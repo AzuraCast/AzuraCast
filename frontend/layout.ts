@@ -19,6 +19,13 @@ export default function initApp(
     /* TanStack Query */
     vueApp.use(VueQueryPlugin, {
         enableDevtoolsV6Plugin: true,
+        queryClientConfig: {
+            defaultOptions: {
+                queries: {
+                    retryDelay: (attemptIndex) => Math.min(2500 * 2 ** attemptIndex, 30000),
+                },
+            },
+        },
     });
 
     (<any>window).vueComponent = async (el: string, globalProps: AzuraCastConstants): Promise<void> => {

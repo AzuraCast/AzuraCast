@@ -1,5 +1,6 @@
- 
+/* eslint-disable */
 /* tslint:disable */
+// @ts-nocheck
 /*
  * ---------------------------------------------------------------
  * ## THIS FILE WAS GENERATED VIA SWAGGER-TYPESCRIPT-API        ##
@@ -8,6 +9,194 @@
  * ## SOURCE: https://github.com/acacode/swagger-typescript-api ##
  * ---------------------------------------------------------------
  */
+
+export enum WebhookTypes {
+  Generic = "generic",
+  Email = "email",
+  TuneIn = "tunein",
+  RadioDe = "radiode",
+  RadioReg = "radioreg",
+  GetMeRadio = "getmeradio",
+  Discord = "discord",
+  Telegram = "telegram",
+  GroupMe = "groupme",
+  Mastodon = "mastodon",
+  Bluesky = "bluesky",
+  GoogleAnalyticsV4 = "google_analytics_v4",
+  MatomoAnalytics = "matomo_analytics",
+  Twitter = "twitter",
+  GoogleAnalyticsV3 = "google_analytics",
+}
+
+export enum WebhookTriggers {
+  SongChanged = "song_changed",
+  SongChangedLive = "song_changed_live",
+  ListenerGained = "listener_gained",
+  ListenerLost = "listener_lost",
+  LiveConnect = "live_connect",
+  LiveDisconnect = "live_disconnect",
+  StationOffline = "station_offline",
+  StationOnline = "station_online",
+}
+
+export enum RemoteAdapters {
+  Shoutcast1 = "shoutcast1",
+  Shoutcast2 = "shoutcast2",
+  Icecast = "icecast",
+  AzuraRelay = "azurarelay",
+}
+
+export enum MasterMePresets {
+  MusicGeneral = "music_general",
+  SpeechGeneral = "speech_general",
+  EbuR128 = "ebu_r128",
+  ApplePodcasts = "apple_podcasts",
+  YouTube = "youtube",
+}
+
+export enum FrontendAdapters {
+  Icecast = "icecast",
+  Shoutcast = "shoutcast2",
+  Rsas = "rsas",
+  Remote = "remote",
+}
+
+export enum BackendAdapters {
+  Liquidsoap = "liquidsoap",
+  None = "none",
+}
+
+export enum AudioProcessingMethods {
+  None = "none",
+  Liquidsoap = "nrj",
+  MasterMe = "master_me",
+  StereoTool = "stereo_tool",
+}
+
+export enum SupportedThemes {
+  Browser = "browser",
+  Light = "light",
+  Dark = "dark",
+}
+
+export enum SupportedLocales {
+  English = "en_US.UTF-8",
+  Czech = "cs_CZ.UTF-8",
+  Dutch = "nl_NL.UTF-8",
+  French = "fr_FR.UTF-8",
+  German = "de_DE.UTF-8",
+  Greek = "el_GR.UTF-8",
+  Italian = "it_IT.UTF-8",
+  Japanese = "ja_JP.UTF-8",
+  Korean = "ko_KR.UTF-8",
+  Norwegian = "nb_NO.UTF-8",
+  Polish = "pl_PL.UTF-8",
+  Portuguese = "pt_PT.UTF-8",
+  PortugueseBrazilian = "pt_BR.UTF-8",
+  Russian = "ru_RU.UTF-8",
+  SimplifiedChinese = "zh_CN.UTF-8",
+  Spanish = "es_ES.UTF-8",
+  Swedish = "sv_SE.UTF-8",
+  Turkish = "tr_TR.UTF-8",
+  Ukrainian = "uk_UA.UTF-8",
+}
+
+export enum StationPermissions {
+  All = "administer all",
+  View = "view station management",
+  Reports = "view station reports",
+  Logs = "view station logs",
+  Profile = "manage station profile",
+  Broadcasting = "manage station broadcasting",
+  Streamers = "manage station streamers",
+  MountPoints = "manage station mounts",
+  RemoteRelays = "manage station remotes",
+  Media = "manage station media",
+  Automation = "manage station automation",
+  WebHooks = "manage station web hooks",
+  Podcasts = "manage station podcasts",
+}
+
+export enum ReleaseChannel {
+  RollingRelease = "latest",
+  Stable = "stable",
+}
+
+export enum GlobalPermissions {
+  All = "administer all",
+  View = "view administration",
+  Logs = "view system logs",
+  Settings = "administer settings",
+  ApiKeys = "administer api keys",
+  Stations = "administer stations",
+  CustomFields = "administer custom fields",
+  Backups = "administer backups",
+  StorageLocations = "administer storage locations",
+}
+
+export enum FlashLevels {
+  Success = "success",
+  Warning = "warning",
+  Error = "danger",
+  Info = "info",
+}
+
+export enum StationBackendPerformanceModes {
+  LessMemory = "less_memory",
+  LessCpu = "less_cpu",
+  Balanced = "balanced",
+  Disabled = "disabled",
+}
+
+export enum PodcastSources {
+  Manual = "manual",
+  Playlist = "playlist",
+}
+
+export enum PlaylistTypes {
+  Standard = "default",
+  OncePerXSongs = "once_per_x_songs",
+  OncePerXMinutes = "once_per_x_minutes",
+  OncePerHour = "once_per_hour",
+  Advanced = "custom",
+}
+
+export enum PlaylistSources {
+  Songs = "songs",
+  RemoteUrl = "remote_url",
+}
+
+export enum PlaylistRemoteTypes {
+  Stream = "stream",
+  Playlist = "playlist",
+  Other = "other",
+}
+
+export enum PlaylistOrders {
+  Random = "random",
+  Shuffle = "shuffle",
+  Sequential = "sequential",
+}
+
+export enum IpSources {
+  Local = "local",
+  XForwardedFor = "xff",
+  Cloudflare = "cloudflare",
+}
+
+export enum FileTypes {
+  Directory = "directory",
+  Media = "media",
+  CoverArt = "cover_art",
+  UnprocessableFile = "unprocessable_file",
+  Other = "other",
+}
+
+export enum AnalyticsLevel {
+  All = "all",
+  NoIp = "no_ip",
+  None = "none",
+}
 
 export interface ApiAccountChangePassword {
   /** The current account password. */
@@ -56,7 +245,13 @@ export type ApiAdminBackup = HasLinks & {
 };
 
 export interface ApiAdminDebugQueue {
-  name: "high_priority" | "normal_priority" | "low_priority" | "search_index" | "media" | "podcast_media";
+  name:
+    | "high_priority"
+    | "normal_priority"
+    | "low_priority"
+    | "search_index"
+    | "media"
+    | "podcast_media";
   count: number;
   url: string;
 }
@@ -395,12 +590,12 @@ export interface ApiAdminUpdateDetails {
    * The stable-equivalent branch your installation currently appears to be on.
    * @example "0.20.3"
    */
-  current_release?: string;
+  current_release?: string | null;
   /**
    * The current latest stable release of the software.
    * @example "0.20.4"
    */
-  latest_release?: string;
+  latest_release?: string | null;
   /** If you are on the Rolling Release, whether your installation needs to be updated. */
   needs_rolling_update?: boolean;
   /** Whether a newer stable release is available than the version you are currently using. */
@@ -1409,63 +1604,6 @@ export type CustomField = HasAutoIncrementId & {
   auto_assign?: string | null;
 };
 
-export enum AnalyticsLevel {
-  All = "all",
-  NoIp = "no_ip",
-  None = "none",
-}
-
-export enum FileTypes {
-  Directory = "directory",
-  Media = "media",
-  CoverArt = "cover_art",
-  UnprocessableFile = "unprocessable_file",
-  Other = "other",
-}
-
-export enum IpSources {
-  Local = "local",
-  XForwardedFor = "xff",
-  Cloudflare = "cloudflare",
-}
-
-export enum PlaylistOrders {
-  Random = "random",
-  Shuffle = "shuffle",
-  Sequential = "sequential",
-}
-
-export enum PlaylistRemoteTypes {
-  Stream = "stream",
-  Playlist = "playlist",
-  Other = "other",
-}
-
-export enum PlaylistSources {
-  Songs = "songs",
-  RemoteUrl = "remote_url",
-}
-
-export enum PlaylistTypes {
-  Standard = "default",
-  OncePerXSongs = "once_per_x_songs",
-  OncePerXMinutes = "once_per_x_minutes",
-  OncePerHour = "once_per_hour",
-  Advanced = "custom",
-}
-
-export enum PodcastSources {
-  Manual = "manual",
-  Playlist = "playlist",
-}
-
-export enum StationBackendPerformanceModes {
-  LessMemory = "less_memory",
-  LessCpu = "less_cpu",
-  Balanced = "balanced",
-  Disabled = "disabled",
-}
-
 export type Relay = HasAutoIncrementId & {
   /** @example "https://custom-url.example.com" */
   base_url?: string;
@@ -1666,11 +1804,6 @@ export interface Settings {
    * @example 1609480800
    */
   geolite_last_run?: number;
-  /**
-   * Whether to enable 'advanced' functionality in the system that is intended for power users.
-   * @example false
-   */
-  enable_advanced_features?: boolean;
   /**
    * Enable e-mail delivery across the application.
    * @example "true"
@@ -2031,134 +2164,3 @@ export type User = HasAutoIncrementId & {
   /** Role> */
   roles?: any[];
 };
-
-export enum FlashLevels {
-  Success = "success",
-  Warning = "warning",
-  Error = "danger",
-  Info = "info",
-}
-
-export enum GlobalPermissions {
-  All = "administer all",
-  View = "view administration",
-  Logs = "view system logs",
-  Settings = "administer settings",
-  ApiKeys = "administer api keys",
-  Stations = "administer stations",
-  CustomFields = "administer custom fields",
-  Backups = "administer backups",
-  StorageLocations = "administer storage locations",
-}
-
-export enum ReleaseChannel {
-  RollingRelease = "latest",
-  Stable = "stable",
-}
-
-export enum StationPermissions {
-  All = "administer all",
-  View = "view station management",
-  Reports = "view station reports",
-  Logs = "view station logs",
-  Profile = "manage station profile",
-  Broadcasting = "manage station broadcasting",
-  Streamers = "manage station streamers",
-  MountPoints = "manage station mounts",
-  RemoteRelays = "manage station remotes",
-  Media = "manage station media",
-  Automation = "manage station automation",
-  WebHooks = "manage station web hooks",
-  Podcasts = "manage station podcasts",
-}
-
-export enum SupportedLocales {
-  English = "en_US.UTF-8",
-  Czech = "cs_CZ.UTF-8",
-  Dutch = "nl_NL.UTF-8",
-  French = "fr_FR.UTF-8",
-  German = "de_DE.UTF-8",
-  Greek = "el_GR.UTF-8",
-  Italian = "it_IT.UTF-8",
-  Japanese = "ja_JP.UTF-8",
-  Korean = "ko_KR.UTF-8",
-  Norwegian = "nb_NO.UTF-8",
-  Polish = "pl_PL.UTF-8",
-  Portuguese = "pt_PT.UTF-8",
-  PortugueseBrazilian = "pt_BR.UTF-8",
-  Russian = "ru_RU.UTF-8",
-  SimplifiedChinese = "zh_CN.UTF-8",
-  Spanish = "es_ES.UTF-8",
-  Swedish = "sv_SE.UTF-8",
-  Turkish = "tr_TR.UTF-8",
-  Ukrainian = "uk_UA.UTF-8",
-}
-
-export enum SupportedThemes {
-  Browser = "browser",
-  Light = "light",
-  Dark = "dark",
-}
-
-export enum AudioProcessingMethods {
-  None = "none",
-  Liquidsoap = "nrj",
-  MasterMe = "master_me",
-  StereoTool = "stereo_tool",
-}
-
-export enum BackendAdapters {
-  Liquidsoap = "liquidsoap",
-  None = "none",
-}
-
-export enum FrontendAdapters {
-  Icecast = "icecast",
-  Shoutcast = "shoutcast2",
-  Rsas = "rsas",
-  Remote = "remote",
-}
-
-export enum MasterMePresets {
-  MusicGeneral = "music_general",
-  SpeechGeneral = "speech_general",
-  EbuR128 = "ebu_r128",
-  ApplePodcasts = "apple_podcasts",
-  YouTube = "youtube",
-}
-
-export enum RemoteAdapters {
-  Shoutcast1 = "shoutcast1",
-  Shoutcast2 = "shoutcast2",
-  Icecast = "icecast",
-  AzuraRelay = "azurarelay",
-}
-
-export enum WebhookTriggers {
-  SongChanged = "song_changed",
-  SongChangedLive = "song_changed_live",
-  ListenerGained = "listener_gained",
-  ListenerLost = "listener_lost",
-  LiveConnect = "live_connect",
-  LiveDisconnect = "live_disconnect",
-  StationOffline = "station_offline",
-  StationOnline = "station_online",
-}
-
-export enum WebhookTypes {
-  Generic = "generic",
-  Email = "email",
-  TuneIn = "tunein",
-  RadioDe = "radiode",
-  RadioReg = "radioreg",
-  GetMeRadio = "getmeradio",
-  Discord = "discord",
-  Telegram = "telegram",
-  GroupMe = "groupme",
-  Mastodon = "mastodon",
-  Bluesky = "bluesky",
-  GoogleAnalyticsV4 = "google_analytics_v4",
-  MatomoAnalytics = "matomo_analytics",
-  Twitter = "twitter",
-  GoogleAnalyticsV3 = "google_analytics",
-}

@@ -17,7 +17,9 @@ export default function initApp(
     installCurrentVueInstance(vueApp);
 
     /* TanStack Query */
-    vueApp.use(VueQueryPlugin);
+    vueApp.use(VueQueryPlugin, {
+        enableDevtoolsV6Plugin: true,
+    });
 
     (<any>window).vueComponent = async (el: string, globalProps: AzuraCastConstants): Promise<void> => {
         setGlobalProps(globalProps);

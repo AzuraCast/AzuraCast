@@ -227,7 +227,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $configDir = $station->getRadioConfigDir();
         $pidfile = $configDir . '/liquidsoap.pid';
-        $socketFile = $configDir . '/liquidsoap.sock';
+        $httpApiPort = $this->liquidsoap->getHttpApiPort($station);
 
         $stationTz = self::cleanUpString($station->getTimezone());
 
@@ -275,11 +275,12 @@ final class ConfigWriter implements EventSubscriberInterface
             
             settings.server.log.level := {$logLevel}
             init.daemon.pidfile.path := "{$pidfile}"
-            settings.server.socket.path := "{$socketFile}"
+            
             settings.init.compact_before_start := true
             
             environment.set("TZ", "{$stationTz}") 
             
+            settings.azuracast.liquidsoap_api_port := {$httpApiPort}
             settings.azuracast.api_url := "{$stationApiUrl}"
             settings.azuracast.api_key := "{$stationApiAuth}"
             settings.azuracast.media_path := "{$stationMediaDir}"
@@ -294,6 +295,9 @@ final class ConfigWriter implements EventSubscriberInterface
             settings.azuracast.crossfade_type := "{$crossfadeType}"
             
             settings.azuracast.live_broadcast_text := "{$liveBroadcastText}"
+            
+            # Start HTTP API Server
+            azuracast.start_http_api()
             
             LIQ
         );

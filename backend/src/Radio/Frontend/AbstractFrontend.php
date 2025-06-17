@@ -30,13 +30,13 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
 
     public function __construct(
         protected AdapterFactory $adapterFactory,
-        protected Client $httpClient,
         protected StationMountRepository $stationMountRepo,
         SupervisorInterface $supervisor,
         EventDispatcherInterface $dispatcher,
-        Router $router
+        Router $router,
+        Client $httpClient,
     ) {
-        parent::__construct($supervisor, $dispatcher, $router);
+        parent::__construct($supervisor, $dispatcher, $router, $httpClient);
     }
 
     /**

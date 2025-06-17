@@ -13,6 +13,7 @@ use App\Exception\Supervisor\AlreadyRunningException;
 use App\Exception\Supervisor\NotRunningException;
 use App\Exception\SupervisorException;
 use App\Http\Router;
+use GuzzleHttp\Client;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Supervisor\Exception\Fault;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
@@ -30,6 +31,7 @@ abstract class AbstractLocalAdapter
         protected SupervisorInterface $supervisor,
         protected EventDispatcherInterface $dispatcher,
         protected Router $router,
+        protected Client $httpClient,
     ) {
     }
 

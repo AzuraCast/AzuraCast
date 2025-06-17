@@ -8,9 +8,6 @@ init.daemon := false
 log.stdout := true
 log.file := false
 
-settings.server.socket := true
-settings.server.socket.permissions := 0o660
-
 settings.harbor.bind_addrs := ["0.0.0.0"]
 settings.encoder.metadata.export := ["artist","title","album","song"]
 
@@ -21,6 +18,11 @@ Settings
 ----->#
 
 let settings.azuracast = ()
+
+let settings.azuracast.liquidsoap_api_port = settings.make(
+    description="The port number used by Liquidsoap for its HTTP API.",
+    8004
+)
 
 let settings.azuracast.api_url = settings.make(
     description="The API URL used by AzuraCast API calls.",
@@ -133,6 +135,34 @@ Utility Functions
 # Transport for HTTPS outputs.
 https_transport = http.transport.ssl()
 ignore(https_transport)
+
+#<-----
+Liquidsoap HTTP API
+----->#
+
+def azuracast.http_api_log_requests(req, res, next)
+    started_at = time()
+    next(req, res)
+    duration = time() - started_at
+
+    log(label="http", "#{req.method} #{req.path} #{res.status_code.current()} #{duration}")
+end
+
+harbor.http.middleware.register(azuracast.http_api_log_requests)
+  
+def azuracast.http_api_check_token(req, res, next)
+    if req.headers["x-liquidsoap-api-key"] != settings.azuracast.api_key() then
+        res.status_code(401)
+    else
+        next(req, res)
+    end
+end
+
+harbor.http.middleware.register(azuracast.http_api_check_token)
+
+def azuracast.start_http_api(~port=settings.azuracast.liquidsoap_api_port()) = 
+    server.harbor(port=port)
+end
 
 #<-----
 API Utilities

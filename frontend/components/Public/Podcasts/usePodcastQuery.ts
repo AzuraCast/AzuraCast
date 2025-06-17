@@ -23,8 +23,8 @@ export const usePodcastQuery = () => {
             {station: stationId},
             params.podcast_id,
         ],
-        queryFn: async () => {
-            const {data} = await axios.get(podcastUrl.value);
+        queryFn: async ({signal}) => {
+            const {data} = await axios.get(podcastUrl.value, {signal});
             return data;
         },
         staleTime: 5 * 60 * 1000

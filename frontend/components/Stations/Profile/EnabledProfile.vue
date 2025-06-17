@@ -112,8 +112,8 @@ const {data: profileInfo} = useQuery<ApiStationProfile>({
     ], [
         'services'
     ]),
-    queryFn: async () => {
-        const {data} = await axiosSilent.get(props.profileApiUri);
+    queryFn: async ({signal}) => {
+        const {data} = await axiosSilent.get(props.profileApiUri, {signal});
         return data;
     },
     placeholderData: () => ({

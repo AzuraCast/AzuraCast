@@ -40,8 +40,8 @@ const {axios} = useAxios();
 
 const {data: chartsData, isLoading: chartsLoading} = useQuery({
     queryKey: [QueryKeys.Dashboard, 'charts'],
-    queryFn: async () => {
-        const {data} = await axios.get(props.chartsUrl);
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get(props.chartsUrl, {signal});
         return data;
     },
     placeholderData: () => ({

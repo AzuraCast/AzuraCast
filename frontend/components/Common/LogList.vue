@@ -32,8 +32,8 @@ const {axios} = useAxios();
 
 const {data: logs} = useQuery<ApiLogType[]>({
     queryKey: toRef(props, 'queryKey'),
-    queryFn: async () => {
-        const {data} = await axios.get<ApiLogType[]>(props.url);
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiLogType[]>(props.url, {signal});
         return data;
     }
 });

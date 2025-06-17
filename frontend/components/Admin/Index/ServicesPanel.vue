@@ -62,8 +62,8 @@ const {axios, axiosSilent} = useAxios();
 
 const {data: services, isLoading} = useQuery<ApiAdminServiceData[]>({
     queryKey: [QueryKeys.AdminIndex, 'services'],
-    queryFn: async () => {
-        const {data} = await axiosSilent.get(servicesUrl.value);
+    queryFn: async ({signal}) => {
+        const {data} = await axiosSilent.get(servicesUrl.value, {signal});
         return data;
     },
     placeholderData: () => ([]),

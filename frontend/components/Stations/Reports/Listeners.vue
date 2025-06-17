@@ -348,7 +348,7 @@ const listenersQuery = useQuery({
             computed(() => (isLive.value) ? 'live' : dateRange.value)
         ],
     ),
-    queryFn: async () => {
+    queryFn: async ({signal}) => {
         const params: {
             [key: string]: any
         } = {};
@@ -358,7 +358,7 @@ const listenersQuery = useQuery({
             params.end = DateTime.fromJSDate(dateRange.value.endDate).toISO();
         }
 
-        const {data} = await axios.get<ApiListener[]>(apiUrl.value, {params: params});
+        const {data} = await axios.get<ApiListener[]>(apiUrl.value, {signal, params});
         return data;
     },
     staleTime: 10 * 1000,

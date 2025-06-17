@@ -144,8 +144,9 @@ const directoriesQuery = useQuery({
             destinationDirectory
         ]
     ),
-    queryFn: async () => {
+    queryFn: async ({signal}) => {
         const {data} = await axios.get(props.listDirectoriesUrl, {
+            signal,
             params: {
                 currentDirectory: destinationDirectory.value
             }

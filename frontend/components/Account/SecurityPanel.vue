@@ -155,8 +155,8 @@ const {
     refetch
 } = useQuery<ApiAccountTwoFactorStatus>({
     queryKey: [QueryKeys.AccountIndex, 'two-factor'],
-    queryFn: async () => {
-        const {data} = await axios.get<ApiAccountTwoFactorStatus>(twoFactorUrl.value);
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiAccountTwoFactorStatus>(twoFactorUrl.value, {signal});
         return data;
     },
     placeholderData: () => ({

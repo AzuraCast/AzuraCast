@@ -279,7 +279,10 @@ const {axios} = useAxios();
 
 const syncTasksQuery = useQuery({
     queryKey: [QueryKeys.AdminDebug, 'syncTasks'],
-    queryFn: async () => (await axios.get<ApiAdminDebugSyncTask[]>(listSyncTasksUrl.value)).data,
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiAdminDebugSyncTask[]>(listSyncTasksUrl.value, {signal})
+        return data;
+    },
     refetchInterval: 60000
 });
 
@@ -291,13 +294,19 @@ const resetSyncTasks = () => {
 
 const {data: queueTotals, isLoading: queueTotalsLoading, refetch: resetQueueTotals} = useQuery({
     queryKey: [QueryKeys.AdminDebug, 'queueTotals'],
-    queryFn: async () => (await axios.get<ApiAdminDebugQueue[]>(listQueueTotalsUrl.value)).data,
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiAdminDebugQueue[]>(listQueueTotalsUrl.value, {signal});
+        return data;
+    },
     refetchInterval: 60000
 });
 
 const {data: stations, isLoading: stationsLoading} = useQuery({
     queryKey: [QueryKeys.AdminDebug, 'stations'],
-    queryFn: async () => (await axios.get<ApiAdminDebugStation[]>(listStationsUrl.value)).data,
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiAdminDebugStation[]>(listStationsUrl.value, {signal});
+        return data;
+    },
 });
 
 const $modal = useTemplateRef('$modal');

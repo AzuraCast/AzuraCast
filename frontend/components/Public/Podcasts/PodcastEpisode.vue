@@ -129,8 +129,8 @@ const {data: episode, isLoading: episodeLoading} = useQuery({
         'episodes',
         params.episode_id
     ],
-    queryFn: async () => {
-        const {data} = await axios.get(episodeUrl.value);
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get(episodeUrl.value, {signal});
         return data;
     },
     staleTime: 5 * 60 * 1000

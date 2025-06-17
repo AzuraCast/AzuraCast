@@ -114,8 +114,8 @@ const {axiosSilent} = useAxios();
 
 const {data: stats, isLoading} = useQuery<ApiAdminServerStats>({
     queryKey: [QueryKeys.AdminIndex, 'stats'],
-    queryFn: async () => {
-        const {data} = await axiosSilent.get(statsUrl.value);
+    queryFn: async ({signal}) => {
+        const {data} = await axiosSilent.get(statsUrl.value, {signal});
         return data;
     },
     placeholderData: () => ({

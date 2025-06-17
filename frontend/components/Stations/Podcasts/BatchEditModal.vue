@@ -113,11 +113,11 @@ const {data: rows, isLoading} = useQuery<ApiPodcastEpisode[]>({
         'batch',
         computed(() => props.selectedItems),
     ]),
-    queryFn: async () => {
+    queryFn: async ({signal}) => {
         const {data} = await axios.put<ApiPodcastBatchResult>(props.batchUrl, {
             'do': 'list',
             'episodes': map(props.selectedItems, 'id'),
-        });
+        }, {signal});
 
         return map(
             data.records ?? [],

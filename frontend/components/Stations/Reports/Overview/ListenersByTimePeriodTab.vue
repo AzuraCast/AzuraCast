@@ -143,8 +143,9 @@ const {data: chartData, isLoading} = useQuery({
         resultType,
         dateRange
     ]),
-    queryFn: async () => {
+    queryFn: async ({signal}) => {
         const {data} = await axios.get(props.apiUrl, {
+            signal,
             params: {
                 type: resultType.value,
                 start: DateTime.fromJSDate(dateRange.value.startDate).toISO(),

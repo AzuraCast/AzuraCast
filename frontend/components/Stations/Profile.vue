@@ -23,14 +23,16 @@ const {isEnabled} = useAzuraCastStation();
 
 const {axios} = useAxios();
 
+const apiUrl = getStationApiUrl('/vue/profile');
+
 const {data: state, isLoading} = useQuery({
     queryKey: queryKeyWithStation([
         QueryKeys.StationProfile
     ], [
         'profile'
     ]),
-    queryFn: async () => {
-        const {data} = await axios.get(getStationApiUrl('/vue/profile').value);
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get(apiUrl.value, {signal});
         return data;
     },
     enabled: isEnabled

@@ -96,8 +96,9 @@ const metricsQuery = useQuery({
         'common_metrics',
         dateRange
     ]),
-    queryFn: async () => {
+    queryFn: async ({signal}) => {
         const {data} = await axios.get(props.apiUrl, {
+            signal,
             params: {
                 start: DateTime.fromJSDate(dateRange.value.startDate).toISO(),
                 end: DateTime.fromJSDate(dateRange.value.endDate).toISO()

@@ -294,8 +294,8 @@ const {data: notifications, isLoading: notificationsLoading} = useQuery<ApiNotif
         QueryKeys.Dashboard,
         'notifications'
     ],
-    queryFn: async () => {
-        const {data} = await axios.get<ApiNotification[]>(notificationsUrl.value);
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiNotification[]>(notificationsUrl.value, {signal});
         return data;
     },
 });

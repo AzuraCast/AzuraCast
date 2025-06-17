@@ -50,7 +50,7 @@ export function useApiItemProvider<Row extends DataTableRow = DataTableRow>(
 
     const query = useQuery({
         queryKey: compositeQueryKey,
-        queryFn: async () => {
+        queryFn: async ({signal}) => {
             const queryParams: {
                 [key: string]: any
             } = {
@@ -78,7 +78,11 @@ export function useApiItemProvider<Row extends DataTableRow = DataTableRow>(
                 queryParams.sortOrder = (context.value.sortOrder === 'desc') ? 'DESC' : 'ASC';
             }
 
-            let requestConfig: AxiosRequestConfig = {params: queryParams};
+            let requestConfig: AxiosRequestConfig = {
+                params: queryParams,
+                signal
+            };
+
             if (typeof requestConfigFn === 'function') {
                 requestConfig = requestConfigFn(requestConfig);
             }

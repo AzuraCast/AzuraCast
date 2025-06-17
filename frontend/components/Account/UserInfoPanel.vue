@@ -60,8 +60,8 @@ const userUrl = getApiUrl('/frontend/account/me');
 
 const {data: user, refetch} = useQuery({
     queryKey: [QueryKeys.AccountIndex, 'profile'],
-    queryFn: async () => {
-        const {data} = await axios.get(userUrl.value);
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get(userUrl.value, {signal});
         return data;
     },
     placeholderData: () => ({

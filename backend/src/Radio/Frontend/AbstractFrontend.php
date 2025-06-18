@@ -83,11 +83,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
 
         $useRadioProxy = $this->readSettings()->getUseRadioProxy();
 
-        if (
-            $useRadioProxy
-            || 'https' === $baseUrl->getScheme()
-            || (!$this->environment->isProduction() && !$this->environment->isDocker())
-        ) {
+        if ($useRadioProxy || !$this->environment->isProduction()) {
             // Web proxy support.
             return $baseUrl
                 ->withPath($baseUrl->getPath() . CustomUrls::getListenUrl($station));

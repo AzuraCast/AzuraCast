@@ -470,7 +470,7 @@ class StationPlaylist implements
      */
     public function setBackendOptions(array $backendOptions): void
     {
-        $this->backend_options = implode(',', $backendOptions);
+        $this->backend_options = implode(',', array_filter($backendOptions));
     }
 
     public function backendInterruptOtherSongs(): bool

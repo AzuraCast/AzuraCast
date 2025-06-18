@@ -77,6 +77,8 @@ final class UptimeWaitCommand extends CommandAbstract
 
         $io->title(sprintf('Waiting for %s to become available...', $title));
 
+        $spinner->start('Waiting...');
+
         $elapsed = 0;
         while ($elapsed <= $timeout) {
             try {
@@ -87,7 +89,7 @@ final class UptimeWaitCommand extends CommandAbstract
                 };
 
                 if ($checkReturn) {
-                    $io->success('Services started up and ready!');
+                    $spinner->finish('Services started up and ready!');
                     return 0;
                 }
             } catch (Throwable $e) {
@@ -99,9 +101,7 @@ final class UptimeWaitCommand extends CommandAbstract
             sleep($interval);
             $elapsed += $interval;
 
-            if (!$debugMode) {
-                $spinner->tick('Waiting...');
-            }
+            $spinner->advance();
         }
 
         $io->error('Timed out waiting for services to start.');
@@ -115,7 +115,7 @@ final class UptimeWaitCommand extends CommandAbstract
             unset($dbSettings['host'], $dbSettings['port']);
         }
 
-        $connection = (new Driver())->connect($dbSettings);
+        $connection = new Driver()->connect($dbSettings);
         $connection->exec('SELECT 1');
         return true;
     }

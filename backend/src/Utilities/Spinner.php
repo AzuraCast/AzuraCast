@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace App\Utilities;
 
+use App\Traits\AvailableStaticallyTrait;
+use Symfony\Component\Console\Helper\ProgressIndicator;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class Spinner
+final class Spinner extends ProgressIndicator
 {
+    use AvailableStaticallyTrait;
+
     public const array DEFAULT_FRAMES = [
         '🖥️🎶－🎵－📻',
         '🖥️－🎶－🎵📻',
@@ -15,43 +19,15 @@ final class Spinner
         '🖥️－🎵－🎶📻',
     ];
 
-    private readonly int $length;
-
-    private int $current = 0;
-
     public function __construct(
-        private readonly ?OutputInterface $output = null,
-        private readonly array $frames = self::DEFAULT_FRAMES
+        OutputInterface $output,
+        ?string $format = null,
+        int $indicatorChangeInterval = 100,
+        ?array $indicatorValues = null,
+        ?string $finishedIndicatorValue = null
     ) {
-        $this->length = count($this->frames);
-    }
+        $indicatorValues ??= self::DEFAULT_FRAMES;
 
-    private function write(string $ln): void
-    {
-        if (null !== $this->output) {
-            $this->output->write($ln);
-        } else {
-            echo $ln;
-        }
-    }
-
-    public function tick(string $message): void
-    {
-        $next = $this->next();
-
-        $this->write(chr(27) . '[0G');
-        $this->write(sprintf('%s %s', $this->frames[$next], $message));
-    }
-
-    private function next(): int
-    {
-        $prev = $this->current;
-        $this->current = $prev + 1;
-
-        if ($this->current >= $this->length) {
-            $this->current = 0;
-        }
-
-        return $prev;
+        parent::__construct($output, $format, $indicatorChangeInterval, $indicatorValues, $finishedIndicatorValue);
     }
 }

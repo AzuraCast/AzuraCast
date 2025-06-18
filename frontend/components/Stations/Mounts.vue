@@ -16,10 +16,9 @@
 
         <data-table
             id="station_mounts"
-            ref="$dataTable"
             :fields="fields"
+            :provider="listItemProvider"
             paginated
-            :api-url="listUrl"
         >
             <template #cell(display_name)="row">
                 <h5 class="m-0">
@@ -66,8 +65,8 @@
         :create-url="listUrl"
         :new-intro-url="newIntroUrl"
         :station-frontend-type="stationFrontendType"
-        @relist="relist"
-        @needs-restart="mayNeedRestart"
+        @relist="() => relist()"
+        @needs-restart="() => mayNeedRestart()"
     />
 </template>
 
@@ -78,13 +77,14 @@ import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useTranslate} from "~/vendor/gettext";
 import {useTemplateRef} from "vue";
 import showFormatAndBitrate from "~/functions/showFormatAndBitrate";
-import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import {FrontendAdapters} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
 defineProps<{
     stationFrontendType: FrontendAdapters
@@ -101,8 +101,16 @@ const fields: DataTableField[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const $dataTable = useTemplateRef('$dataTable');
-const {relist} = useHasDatatable($dataTable);
+const listItemProvider = useApiItemProvider(
+    listUrl,
+    queryKeyWithStation([
+        QueryKeys.StationMounts
+    ])
+);
+
+const relist = () => {
+    void listItemProvider.refresh();
+}
 
 const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);

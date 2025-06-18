@@ -158,6 +158,9 @@ final class Strings
         $encoding = mb_detect_encoding($original, ['auto']);
         if ($encoding !== false && $encoding !== 'UTF-8') {
             $original = mb_convert_encoding($original, 'UTF-8', $encoding);
+            if ($original === false) {
+                throw new RuntimeException('Cannot convert to UTF-8');
+            }
         }
 
         if (!Normalizer::isNormalized($original)) {

@@ -18,10 +18,9 @@
         </template>
 
         <data-table
-            ref="$dataTable"
             paginated
             :fields="fields"
-            :api-url="apiUrl"
+            :provider="apiItemProvider"
         >
             <template #cell(operation)="row">
                 <span
@@ -86,13 +85,12 @@
 </template>
 
 <script setup lang="ts">
-import {computed, nextTick, ref, useTemplateRef, watch} from "vue";
+import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAzuraCast} from "~/vendor/azuracast";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import Icon from "~/components/Common/Icon.vue";
-import useHasDatatable from "~/functions/useHasDatatable";
 import DetailsModal from "~/components/Admin/AuditLog/DetailsModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
@@ -100,6 +98,8 @@ import {getApiUrl} from "~/router";
 import {IconAddCircle, IconRemoveCircle, IconSwapHorizontalCircle} from "~/components/Common/icons";
 import {ApiAdminAuditLog, ApiAdminAuditLogChangeset} from "~/entities/ApiInterfaces.ts";
 import {DeepRequired} from "utility-types";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 const baseApiUrl = getApiUrl('/admin/auditlog');
 
@@ -143,14 +143,13 @@ const apiUrl = computed(() => {
     return apiUrl.toString();
 });
 
-const $dataTable = useTemplateRef('$dataTable');
-const {navigate} = useHasDatatable($dataTable);
-
-watch(dateRange, () => {
-    void nextTick(() => {
-        navigate();
-    });
-});
+const apiItemProvider = useApiItemProvider<ApiAdminAuditLog>(
+    apiUrl,
+    [
+        QueryKeys.AdminAuditLog,
+        dateRange
+    ]
+);
 
 const $detailsModal = useTemplateRef('$detailsModal');
 

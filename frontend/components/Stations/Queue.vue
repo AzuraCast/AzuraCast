@@ -15,9 +15,8 @@
 
         <data-table
             id="station_queue"
-            ref="$dataTable"
             :fields="fields"
-            :api-url="listUrl"
+            :provider="listItemProvider"
             :hide-on-loading="false"
         >
             <template #cell(actions)="row">
@@ -75,18 +74,18 @@ import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import QueueLogsModal from "~/components/Stations/Queue/LogsModal.vue";
 import Icon from "~/components/Common/Icon.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {computed, useTemplateRef} from "vue";
+import {useTemplateRef} from "vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-import useHasDatatable from "~/functions/useHasDatatable";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getStationApiUrl} from "~/router";
 import {IconRemove} from "~/components/Common/icons";
-import {useIntervalFn} from "@vueuse/core";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useDialog} from "~/functions/useDialog.ts";
 import {ApiStationQueueDetailed, ApiStatus} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
 const listUrl = getStationApiUrl('/queue');
 const clearUrl = getStationApiUrl('/queue/clear');
@@ -102,19 +101,22 @@ const fields: DataTableField<Row>[] = [
     {key: 'source', label: $gettext('Source'), sortable: false}
 ];
 
+const listItemProvider = useApiItemProvider(
+    listUrl,
+    queryKeyWithStation([QueryKeys.StationQueue]),
+    {
+        refetchInterval: 30000
+    }
+);
+
+const relist = () => {
+    void listItemProvider.refresh();
+};
+
 const {
     formatTimestampAsTime,
     formatTimestampAsRelative
 } = useStationDateTimeFormatter();
-
-const $dataTable = useTemplateRef('$dataTable');
-
-const {relist} = useHasDatatable($dataTable);
-
-useIntervalFn(
-    relist,
-    computed(() => (document.hidden) ? 60000 : 30000)
-);
 
 const $logsModal = useTemplateRef('$logsModal');
 
@@ -124,7 +126,7 @@ const doShowLogs = (logs: string[]) => {
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Queue Item?'),
-    relist
+    () => relist()
 );
 
 const {confirmDelete} = useDialog();

@@ -145,9 +145,8 @@
 
             <data-table
                 id="dashboard_stations"
-                ref="$datatable"
                 :fields="stationFields"
-                :api-url="stationsUrl"
+                :provider="stationsItemProvider"
                 paginated
                 responsive
                 show-toolbar
@@ -248,7 +247,6 @@ import Icon from "~/components/Common/Icon.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useAxios} from "~/vendor/axios";
-import {useAsyncState, useIntervalFn} from "@vueuse/core";
 import {computed, useTemplateRef} from "vue";
 import DashboardCharts from "~/components/DashboardCharts.vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -261,8 +259,10 @@ import {IconAccountCircle, IconHeadphones, IconInfo, IconSettings, IconWarning} 
 import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
 import {getApiUrl} from "~/router.ts";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import useHasDatatable from "~/functions/useHasDatatable.ts";
 import {ApiDashboard, ApiNotification} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
+import {useQuery} from "@tanstack/vue-query";
 
 defineProps<{
     profileUrl: string,
@@ -289,10 +289,16 @@ const langShowHideCharts = computed(() => {
 
 const {axios} = useAxios();
 
-const {state: notifications, isLoading: notificationsLoading} = useAsyncState<ApiNotification[]>(
-    async () => (await axios.get<ApiNotification[]>(notificationsUrl.value)).data,
-    []
-);
+const {data: notifications, isLoading: notificationsLoading} = useQuery<ApiNotification[]>({
+    queryKey: [
+        QueryKeys.Dashboard,
+        'notifications'
+    ],
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiNotification[]>(notificationsUrl.value, {signal});
+        return data;
+    },
+});
 
 const stationFields: DataTableField<ApiDashboard>[] = [
     {
@@ -324,12 +330,15 @@ const stationFields: DataTableField<ApiDashboard>[] = [
     }
 ];
 
-const $datatable = useTemplateRef('$datatable');
-const {refresh} = useHasDatatable($datatable);
-
-useIntervalFn(
-    refresh,
-    computed(() => (document.hidden) ? 30000 : 15000)
+const stationsItemProvider = useApiItemProvider<ApiDashboard>(
+    stationsUrl,
+    [
+        QueryKeys.Dashboard,
+        'stations'
+    ],
+    {
+        refetchInterval: 15 * 1000
+    }
 );
 
 const $lightbox = useTemplateRef('$lightbox');

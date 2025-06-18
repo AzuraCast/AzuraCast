@@ -92,10 +92,9 @@
 
         <data-table
             id="account_passkeys"
-            ref="$dataTable"
             :show-toolbar="false"
             :fields="passkeyFields"
-            :api-url="passkeysApiUrl"
+            :provider="passkeysItemProvider"
         >
             <template #cell(actions)="row">
                 <div class="btn-group btn-group-sm">
@@ -116,12 +115,12 @@
     <account-two-factor-modal
         ref="$twoFactorModal"
         :two-factor-url="twoFactorUrl"
-        @relist="reloadSecurity"
+        @relist="() => reloadSecurity()"
     />
 
     <passkey-modal
         ref="$passkeyModal"
-        @relist="reloadPasskeys"
+        @relist="() => reloadPasskeys()"
     />
 </template>
 
@@ -136,29 +135,38 @@ import AccountTwoFactorModal from "~/components/Account/TwoFactorModal.vue";
 import AccountChangePasswordModal from "~/components/Account/ChangePasswordModal.vue";
 import {useAxios} from "~/vendor/axios.ts";
 import {getApiUrl} from "~/router.ts";
-import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState.ts";
 import {useTemplateRef} from "vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import {useTranslate} from "~/vendor/gettext.ts";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import useHasDatatable from "~/functions/useHasDatatable.ts";
 import PasskeyModal from "~/components/Account/PasskeyModal.vue";
 import {ApiAccountTwoFactorStatus} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
+import {useQuery} from "@tanstack/vue-query";
 
 const {axios} = useAxios();
 
 const twoFactorUrl = getApiUrl('/frontend/account/two-factor');
 
 const {
-    state: security,
+    data: security,
     isLoading: securityLoading,
-    execute: reloadSecurity
-} = useRefreshableAsyncState<ApiAccountTwoFactorStatus>(
-    async () => (await axios.get<ApiAccountTwoFactorStatus>(twoFactorUrl.value)).data,
-    {
-        two_factor_enabled: false,
+    refetch
+} = useQuery<ApiAccountTwoFactorStatus>({
+    queryKey: [QueryKeys.AccountIndex, 'two-factor'],
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiAccountTwoFactorStatus>(twoFactorUrl.value, {signal});
+        return data;
     },
-);
+    placeholderData: () => ({
+        two_factor_enabled: false,
+    }),
+});
+
+const reloadSecurity = () => {
+    void refetch();
+}
 
 const $changePasswordModal = useTemplateRef('$changePasswordModal');
 
@@ -199,12 +207,18 @@ const passkeyFields: DataTableField[] = [
     }
 ];
 
-const $dataTable = useTemplateRef('$dataTable');
-const {relist: reloadPasskeys} = useHasDatatable($dataTable);
+const passkeysItemProvider = useApiItemProvider(
+    passkeysApiUrl,
+    [QueryKeys.AccountPasskeys]
+);
+
+const reloadPasskeys = () => {
+    void passkeysItemProvider.refresh();
+};
 
 const {doDelete: deletePasskey} = useConfirmAndDelete(
     $gettext('Delete Passkey?'),
-    reloadPasskeys
+    () => reloadPasskeys()
 );
 
 const $passkeyModal = useTemplateRef('$passkeyModal');

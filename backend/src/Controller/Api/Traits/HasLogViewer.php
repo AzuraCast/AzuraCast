@@ -105,6 +105,9 @@ trait HasLogViewer
 
         $log = implode("\n", $logParts);
         $log = mb_convert_encoding($log, 'UTF-8', 'UTF-8');
+        if ($log === false) {
+            throw new RuntimeException('Cannot convert to UTF-8');
+        }
 
         return str_replace($filteredTerms, '(PASSWORD)', $log);
     }

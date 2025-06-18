@@ -16,6 +16,7 @@
                 </div>
 
                 <log-list
+                    :query-key="logsQueryKey"
                     :url="logsUrl"
                     @view="viewLog"
                 />
@@ -80,8 +81,12 @@ import LogList from "~/components/Common/LogList.vue";
 import {useTemplateRef} from "vue";
 import {getStationApiUrl} from "~/router";
 import {IconSupport} from "~/components/Common/icons.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
 const logsUrl = getStationApiUrl('/logs');
+const logsQueryKey = queryKeyWithStation([
+    QueryKeys.StationLogs
+]);
 
 const $modal = useTemplateRef('$modal');
 

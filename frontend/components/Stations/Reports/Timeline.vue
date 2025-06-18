@@ -35,7 +35,7 @@
             paginated
             select-fields
             :fields="fields"
-            :api-url="apiUrl"
+            :provider="listItemProvider"
         >
             <template #cell(delta)="row">
                 <span class="typography-subheading">
@@ -99,6 +99,8 @@ import useHasDatatable from "~/functions/useHasDatatable.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
 const baseApiUrl = getStationApiUrl('/history');
 
@@ -189,6 +191,16 @@ const exportUrl = computed(() => {
 
     return exportUrl.toString();
 });
+
+const listItemProvider = useApiItemProvider(
+    apiUrl,
+    queryKeyWithStation([
+        QueryKeys.StationReports
+    ], [
+        'timeline',
+        dateRange
+    ])
+);
 
 const abs = (val: number) => {
     return Math.abs(val);

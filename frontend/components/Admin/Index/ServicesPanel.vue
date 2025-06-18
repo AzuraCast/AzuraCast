@@ -52,21 +52,23 @@ import {getApiUrl} from "~/router.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import {useNotify} from "~/functions/useNotify";
 import Loading from "~/components/Common/Loading.vue";
-import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
 import {ApiAdminServiceData} from "~/entities/ApiInterfaces.ts";
+import {useQuery} from "@tanstack/vue-query";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 const servicesUrl = getApiUrl('/admin/services');
 
 const {axios, axiosSilent} = useAxios();
 
-const {state: services, isLoading} = useAutoRefreshingAsyncState<ApiAdminServiceData[]>(
-    async () => (await axiosSilent.get<ApiAdminServiceData[]>(servicesUrl.value)).data,
-    [],
-    {
-        timeout: 5000,
-        shallow: true
-    }
-);
+const {data: services, isLoading} = useQuery<ApiAdminServiceData[]>({
+    queryKey: [QueryKeys.AdminIndex, 'services'],
+    queryFn: async ({signal}) => {
+        const {data} = await axiosSilent.get(servicesUrl.value, {signal});
+        return data;
+    },
+    placeholderData: () => ([]),
+    refetchInterval: 5 * 1000
+});
 
 const {notifySuccess} = useNotify();
 

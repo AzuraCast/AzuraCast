@@ -104,9 +104,8 @@
 
         <data-table
             id="api_keys"
-            ref="$dataTable"
             :fields="fields"
-            :api-url="listUrl"
+            :provider="itemProvider"
         >
             <template #cell(actions)="row">
                 <div class="btn-group btn-group-sm">
@@ -133,14 +132,14 @@
         ref="$configureModal"
         :settings-url="settingsUrl"
         :storage-locations="storageLocations"
-        @relist="relist"
+        @relist="() => relist()"
     />
 
     <admin-backups-run-backup-modal
         ref="$runBackupModal"
         :run-backup-url="runBackupUrl"
         :storage-locations="storageLocations"
-        @relist="relist"
+        @relist="() => relist()"
     />
 
     <admin-backups-last-output-modal
@@ -169,6 +168,8 @@ import {getApiUrl} from "~/router";
 import {IconLogs, IconSend, IconSettings} from "~/components/Common/icons";
 import {DeepRequired} from "utility-types";
 import {ApiAdminBackup} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 withDefaults(
     defineProps<{
@@ -231,7 +232,10 @@ const fields: DataTableField<Row>[] = [
     }
 ];
 
-const $dataTable = useTemplateRef('$dataTable');
+const itemProvider = useApiItemProvider<Row>(
+    listUrl,
+    [QueryKeys.AdminBackups]
+);
 
 const {axios} = useAxios();
 
@@ -247,7 +251,7 @@ const relist = () => {
         settingsLoading.value = false;
     });
 
-    $dataTable.value?.relist();
+    void itemProvider.refresh();
 };
 
 onMounted(relist);

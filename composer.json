@@ -11,8 +11,8 @@
   ],
   "require": {
     "php": "^8.4",
-    "ext-ctype": "*",
     "ext-PDO": "*",
+    "ext-ctype": "*",
     "ext-curl": "*",
     "ext-ffi": "*",
     "ext-fileinfo": "*",
@@ -83,6 +83,7 @@
     "symfony/lock": "^7",
     "symfony/mailer": "^7",
     "symfony/messenger": "^7",
+    "symfony/monolog-bridge": "^7.3",
     "symfony/process": "^7",
     "symfony/property-access": "^7",
     "symfony/rate-limiter": "^7",

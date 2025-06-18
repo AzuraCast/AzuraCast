@@ -258,6 +258,7 @@ return [
         Environment $environment,
         Doctrine\ORM\EntityManagerInterface $em,
         Doctrine\Migrations\Configuration\Migration\ConfigurationLoader $migrateConfig,
+        Monolog\Logger $logger,
     ) {
         $console = new App\Console\Application(
             $environment->getAppName() . ' Command Line Tools ('
@@ -265,6 +266,10 @@ return [
             $version->getVersion()
         );
         $console->setDispatcher($dispatcher);
+
+        $logHandler = new Symfony\Bridge\Monolog\Handler\ConsoleHandler();
+        $logger->pushHandler($logHandler);
+        $dispatcher->addSubscriber($logHandler);
 
         // Doctrine ORM/DBAL
         Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands(
@@ -275,7 +280,8 @@ return [
         // Add Doctrine Migrations
         $migrateFactory = Doctrine\Migrations\DependencyFactory::fromEntityManager(
             $migrateConfig,
-            new Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager($em)
+            new Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager($em),
+            $logger
         );
         Doctrine\Migrations\Tools\Console\ConsoleRunner::addCommands($console, $migrateFactory);
 
@@ -319,11 +325,6 @@ return [
     Monolog\Logger::class => static function (Environment $environment) {
         $logger = new Monolog\Logger($environment->getAppName());
         $loggingLevel = $environment->getLogLevel();
-
-        if ($environment->isCli() || $environment->isDocker()) {
-            $logStderr = new Monolog\Handler\StreamHandler('php://stderr', $loggingLevel, true);
-            $logger->pushHandler($logStderr);
-        }
 
         $logFile = new Monolog\Handler\RotatingFileHandler(
             $environment->getTempDirectory() . '/app.log',

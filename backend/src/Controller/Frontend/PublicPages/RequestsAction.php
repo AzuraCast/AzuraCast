@@ -32,7 +32,15 @@ final class RequestsAction implements SingleActionInterface
         $router = $request->getRouter();
         $customization = $request->getCustomization();
 
-        return $request->getView()->renderVuePage(
+        $view = $request->getView();
+
+        // Add station public code.
+        $view->fetch(
+            'frontend/public/partials/station-custom',
+            ['station' => $station]
+        );
+
+        return $view->renderVuePage(
             response: $response
                 ->withHeader('X-Frame-Options', '*'),
             component: 'Public/Requests',

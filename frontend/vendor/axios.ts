@@ -37,8 +37,8 @@ export default function installAxios(vueApp: App) {
         const {$gettext} = useTranslate();
 
         // Canceled HTTP requests are expected.
-        if (error.code === 'ERR_CANCELED') {
-            console.log('HTTP request cancelled.');
+        if (axios.isCancel(error)) {
+            console.log('HTTP request cancelled:', error.message);
             return;
         }
 

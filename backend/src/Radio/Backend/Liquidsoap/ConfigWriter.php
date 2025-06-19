@@ -297,7 +297,7 @@ final class ConfigWriter implements EventSubscriberInterface
             settings.azuracast.live_broadcast_text := "{$liveBroadcastText}"
             
             # Start HTTP API Server
-            azuracast.start_http_api()
+            azuracast.start_http_api(port=settings.azuracast.liquidsoap_api_port())
             
             LIQ
         );

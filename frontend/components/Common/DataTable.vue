@@ -394,6 +394,11 @@ const sortOrder = ref<string | null>(null);
 
 const activeDetailsRow = shallowRef<Row>(null);
 
+watch(visibleItems, () => {
+    selectedRows.value = [];
+    activeDetailsRow.value = null;
+});
+
 type RowField = DataTableField<Row>
 type RowFields = RowField[]
 
@@ -522,9 +527,6 @@ const showPagination = computed<boolean>(() => {
 });
 
 const doRefresh = async (flushCache: boolean = false): Promise<void> => {
-    selectedRows.value = [];
-    activeDetailsRow.value = null;
-
     await props.provider.refresh(flushCache);
 }
 

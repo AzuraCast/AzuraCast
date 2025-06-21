@@ -160,7 +160,8 @@ end
 
 harbor.http.middleware.register(azuracast.http_api_check_token)
 
-def azuracast.start_http_api(~port=settings.azuracast.liquidsoap_api_port()) = 
+def azuracast.start_http_api(~port=null()) = 
+    port = port ?? settings.azuracast.liquidsoap_api_port()
     server.harbor(port=port)
 end
 
@@ -168,7 +169,8 @@ end
 API Utilities
 ----->#
 
-def azuracast.api_call(~timeout=settings.azuracast.http_timeout(), url, payload) =
+def azuracast.api_call(~timeout=null(), url, payload) =
+    timeout = timeout ?? settings.azuracast.http_timeout()
     full_url = "#{settings.azuracast.api_url()}/#{url}"
 
     log(

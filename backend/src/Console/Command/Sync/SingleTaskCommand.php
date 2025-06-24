@@ -6,15 +6,20 @@ namespace App\Console\Command\Sync;
 
 use App\Container\ContainerAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Event\GetSyncTasks;
 use App\Sync\Task\AbstractTask;
 use App\Utilities\Types;
+use Doctrine\Inflector\InflectorFactory;
+use Generator;
 use InvalidArgumentException;
 use Monolog\LogRecord;
 use Psr\Cache\CacheItemPoolInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use ReflectionClass;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -28,28 +33,56 @@ final class SingleTaskCommand extends AbstractSyncCommand
     use LoggerAwareTrait;
 
     public function __construct(
-        private readonly CacheItemPoolInterface $cache
+        private readonly CacheItemPoolInterface $cache,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {
         parent::__construct();
     }
 
     protected function configure(): void
     {
-        $this->addArgument('task', InputArgument::REQUIRED);
+        $this->addArgument(
+            'task',
+            InputArgument::REQUIRED,
+            'Task name (i.e. check_updates)'
+        )->addOption(
+            'force',
+            null,
+            InputOption::VALUE_NONE,
+            'Force the task to run even if system checks would prevent it.'
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->logToExtraFile('app_sync.log');
 
-        /** @var class-string $task */
         $task = Types::string($input->getArgument('task'));
+        $force = Types::bool($input->getOption('force'));
 
         try {
-            $this->runTask($task);
+            if ('all' === $task) {
+                $this->runAllTasks($force);
+            } else {
+                $this->runTask($task, $force);
+            }
         } catch (InvalidArgumentException $e) {
+            // Show all valid commands.
             $io = new SymfonyStyle($input, $output);
-            $io->error($e->getMessage());
+
+            $inflector = InflectorFactory::create()->build();
+
+            $validTaskNames = [];
+            foreach ($this->getValidTasks() as $taskClass) {
+                $taskName = self::getClassShortName($taskClass);
+                $taskName = str_replace('Task', '', $taskName);
+                $validTaskNames[] = ' - ' . $inflector->tableize($taskName);
+            }
+
+            $io->error([
+                'Invalid task. Valid tasks are:',
+                implode("\n", $validTaskNames),
+            ]);
             return 1;
         }
 
@@ -57,24 +90,19 @@ final class SingleTaskCommand extends AbstractSyncCommand
     }
 
     /**
-     * @param class-string $task
+     * @param string|AbstractTask $task
      * @param bool $force
      */
     public function runTask(
-        string $task,
+        string|AbstractTask $task,
         bool $force = false
     ): void {
-        if (!$this->di->has($task)) {
-            throw new InvalidArgumentException('Task not found.');
+        if (is_string($task)) {
+            $task = $this->getTask($task);
         }
 
-        $taskClass = $this->di->get($task);
-        if (!($taskClass instanceof AbstractTask)) {
-            throw new InvalidArgumentException('Specified class is not a synchronized task.');
-        }
-
-        $taskShortName = self::getClassShortName($task);
-        $cacheKey = self::getCacheKey($task);
+        $taskShortName = self::getClassShortName($task::class);
+        $cacheKey = self::getCacheKey($task::class);
 
         $startTime = microtime(true);
         $this->logger->pushProcessor(
@@ -86,17 +114,79 @@ final class SingleTaskCommand extends AbstractSyncCommand
 
         $this->logger->info('Starting sync task.');
 
-        $taskClass->run($force);
+        try {
+            $task->run($force);
 
-        $this->logger->info('Sync task completed.', [
-            'time' => microtime(true) - $startTime,
-        ]);
-        $this->logger->popProcessor();
+            $this->logger->info('Sync task completed.', [
+                'time' => microtime(true) - $startTime,
+            ]);
 
-        $cacheItem = $this->cache->getItem($cacheKey)
-            ->set(time())
-            ->expiresAfter(86400);
-        $this->cache->save($cacheItem);
+            $cacheItem = $this->cache->getItem($cacheKey)
+                ->set(time())
+                ->expiresAfter(86400);
+            $this->cache->save($cacheItem);
+        } finally {
+            $this->logger->popProcessor();
+        }
+    }
+
+    public function runAllTasks(
+        bool $force = false
+    ): void {
+        foreach ($this->getValidTasks() as $taskClass) {
+            $this->runTask($taskClass, $force);
+        }
+    }
+
+    /**
+     * @param class-string<AbstractTask>|string $taskName
+     * @return AbstractTask
+     */
+    public function getTask(string $taskName): AbstractTask
+    {
+        // Accept literal FQDN of class.
+        if ($this->di->has($taskName)) {
+            /** @var class-string $taskName */
+            $taskClass = $this->di->get($taskName);
+            assert($taskClass instanceof AbstractTask);
+
+            return $taskClass;
+        }
+
+        // Accept any shorter form of the task name, i.e.
+        // "check-updates" -> App\Sync\Task\CheckUpdatesTask
+
+        if (str_contains($taskName, '\\')) {
+            $taskName = substr($taskName, strrpos($taskName, '\\') + 1);
+        }
+
+        if (!str_ends_with(strtolower($taskName), 'task')) {
+            $taskName .= 'Task';
+        }
+
+        $inflector = InflectorFactory::create()->build();
+        $taskName = $inflector->classify($taskName);
+
+        $taskNamespace = new ReflectionClass(AbstractTask::class)->getNamespaceName();
+
+        /** @var class-string $taskName */
+        $taskName = $taskNamespace . '\\' . $taskName;
+
+        if ($this->di->has($taskName)) {
+            $taskClass = $this->di->get($taskName);
+            assert($taskClass instanceof AbstractTask);
+
+            return $taskClass;
+        }
+
+        throw new InvalidArgumentException('Task not found.');
+    }
+
+    private function getValidTasks(): Generator
+    {
+        $syncTasksEvent = new GetSyncTasks();
+        $this->eventDispatcher->dispatch($syncTasksEvent);
+        return $syncTasksEvent->getTasks();
     }
 
     /**
@@ -114,6 +204,6 @@ final class SingleTaskCommand extends AbstractSyncCommand
      */
     public static function getClassShortName(string $taskClass): string
     {
-        return (new ReflectionClass($taskClass))->getShortName();
+        return new ReflectionClass($taskClass)->getShortName();
     }
 }

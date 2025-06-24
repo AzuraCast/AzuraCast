@@ -5,7 +5,7 @@ import {
     DataTableRow
 } from "~/functions/useHasDatatable.ts";
 import {computed, MaybeRefOrGetter, shallowRef, toValue} from "vue";
-import {filter, get, reverse, slice} from "lodash";
+import {filter, get, slice} from "lodash";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
 
 export function useClientItemProvider<Row extends DataTableRow = DataTableRow>(
@@ -64,7 +64,7 @@ export function useClientItemProvider<Row extends DataTableRow = DataTableRow>(
             );
 
             if (context.value.sortOrder === 'desc') {
-                itemsOnPage = reverse(itemsOnPage);
+                itemsOnPage = itemsOnPage.reverse();
             }
         }
 

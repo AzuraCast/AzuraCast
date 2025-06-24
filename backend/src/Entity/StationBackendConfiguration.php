@@ -370,11 +370,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
     public function setPerformanceMode(?string $performanceMode): void
     {
         $perfModeEnum = StationBackendPerformanceModes::tryFrom($performanceMode ?? '');
-        if (null === $perfModeEnum) {
-            $this->set(self::PERFORMANCE_MODE, null);
-        } else {
-            $this->set(self::PERFORMANCE_MODE, $perfModeEnum->value);
-        }
+        $this->set(self::PERFORMANCE_MODE, $perfModeEnum?->value);
     }
 
     public const string HLS_SEGMENT_LENGTH = 'hls_segment_length';

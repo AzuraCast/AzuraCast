@@ -47,12 +47,12 @@ abstract class AbstractStationConfiguration implements JsonSerializable
         }
 
         foreach ($data as $dataKey => $dataVal) {
-            if (!is_string($dataKey)) {
+            if (!is_string($dataKey) || $dataKey === '') {
                 continue;
             }
 
             $methodName = $this->inflector->camelize('set_' . $dataKey);
-            if (method_exists($this, $methodName)) {
+            if (method_exists($this, $methodName) && $methodName !== 'set') {
                 $this->$methodName($dataVal);
             } else {
                 $this->set($dataKey, $dataVal);

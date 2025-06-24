@@ -11,13 +11,16 @@ use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
+use App\Message\WritePlaylistFileMessage;
 use Doctrine\ORM\Query;
+use Symfony\Component\Messenger\MessageBus;
 
 final class CheckFolderPlaylistsTask extends AbstractTask
 {
     public function __construct(
         private readonly StationPlaylistMediaRepository $spmRepo,
-        private readonly StationFilesystems $stationFilesystems
+        private readonly StationFilesystems $stationFilesystems,
+        private readonly MessageBus $messageBus,
     ) {
     }
 
@@ -122,6 +125,14 @@ final class CheckFolderPlaylistsTask extends AbstractTask
                         $addedRecords++;
                     }
                 }
+            }
+
+            if ($addedRecords > 0) {
+                // Write changes to file.
+                $message = new WritePlaylistFileMessage();
+                $message->playlist_id = $playlist->getIdRequired();
+
+                $this->messageBus->dispatch($message);
             }
 
             $logMessage = (0 === $addedRecords)

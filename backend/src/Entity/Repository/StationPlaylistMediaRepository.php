@@ -92,24 +92,27 @@ final class StationPlaylistMediaRepository extends Repository
 
     /**
      * @param StationMedia $media
-     * @param Station $station
+     * @param Station|null $station
      * @return array<array-key, int>
      */
     public function getPlaylistsForMedia(
         StationMedia $media,
-        Station $station
+        ?Station $station = null
     ): array {
-        return $this->em->createQuery(
-            <<<'DQL'
-                SELECT sp.id
-                FROM App\Entity\StationPlaylistMedia spm
-                LEFT JOIN spm.playlist sp
-                WHERE spm.media = :media
-                AND sp.station = :station
-            DQL
-        )->setParameter('media', $media)
-            ->setParameter('station', $station)
-            ->getSingleColumnResult();
+        $qb = $this->em->createQueryBuilder()
+            ->select('sp.id')
+            ->from(StationPlaylistMedia::class, 'spm')
+            ->leftJoin('spm.playlist', 'sp')
+            ->where('spm.media = :media')
+            ->setParameter('media', $media);
+
+        if ($station !== null) {
+            $qb = $qb->andWhere('sp.station = :station')
+                ->setParameter('station', $station);
+        }
+
+        $playlistIds = $qb->getQuery()->getSingleColumnResult();
+        return array_combine($playlistIds, $playlistIds);
     }
 
     /**

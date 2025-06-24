@@ -12,7 +12,9 @@ use App\Entity\Repository\StationPlaylistFolderRepository;
 use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\Repository\StationQueueRepository;
 use App\Entity\Station;
+use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
+use App\Entity\StationPlaylistFolder;
 use App\Entity\StationQueue;
 use App\Entity\StationRequest;
 use App\Entity\StorageLocation;
@@ -138,14 +140,12 @@ final class BatchAction implements SingleActionInterface
             }
         }
 
-        $affectedPlaylistIds = $this->batchUtilities->handleDelete(
+        $this->batchUtilities->handleDelete(
             $successfulFiles,
             $successfulDirs,
             $storageLocation,
             $fs
         );
-
-        $this->writePlaylistChanges($station, $affectedPlaylistIds);
 
         return $result;
     }
@@ -231,7 +231,7 @@ final class BatchAction implements SingleActionInterface
 
         $this->em->flush();
 
-        $this->writePlaylistChanges($station, $affectedPlaylistIds);
+        $this->batchUtilities->writePlaylistChanges($affectedPlaylistIds);
 
         return $result;
     }
@@ -246,6 +246,8 @@ final class BatchAction implements SingleActionInterface
 
         $from = Types::string($request->getParam('currentDirectory'));
         $to = Types::string($request->getParam('directory'));
+
+        $affectedPlaylists = [];
 
         $toMove = [
             $this->batchUtilities->iterateMedia($storageLocation, $result->files),
@@ -263,6 +265,10 @@ final class BatchAction implements SingleActionInterface
 
                     $record->setPath($newPath);
                     $this->em->persist($record);
+
+                    if ($record instanceof StationMedia) {
+                        $affectedPlaylists += $this->playlistMediaRepo->getPlaylistsForMedia($record);
+                    }
                 } catch (Throwable $e) {
                     $result->errors[] = sprintf('%s: %s', $oldPath, $e->getMessage());
                 }
@@ -293,12 +299,23 @@ final class BatchAction implements SingleActionInterface
                             File::renameDirectoryInPath($record->getPath(), $from, $to)
                         );
                         $this->em->persist($record);
+
+                        if ($record instanceof StationMedia) {
+                            $affectedPlaylists += $this->playlistMediaRepo->getPlaylistsForMedia($record);
+                        } else {
+                            if ($record instanceof StationPlaylistFolder) {
+                                $playlist = $record->getPlaylist();
+                                $affectedPlaylists[$playlist->getIdRequired()] = $playlist->getIdRequired();
+                            }
+                        }
                     } catch (Throwable $e) {
                         $result->errors[] = $record->getPath() . ': ' . $e->getMessage();
                     }
                 }
             }
         }
+
+        $this->batchUtilities->writePlaylistChanges($affectedPlaylists);
 
         return $result;
     }
@@ -487,21 +504,5 @@ final class BatchAction implements SingleActionInterface
         $result->directories = $directories;
 
         return $result;
-    }
-
-    private function writePlaylistChanges(
-        Station $station,
-        array $playlists
-    ): void {
-        // Write new PLS playlist configuration.
-        if ($station->getBackendType()->isEnabled()) {
-            foreach ($playlists as $playlistId => $playlistRow) {
-                // Instruct the message queue to start a new "write playlist to file" task.
-                $message = new Message\WritePlaylistFileMessage();
-                $message->playlist_id = $playlistId;
-
-                $this->messageBus->dispatch($message);
-            }
-        }
     }
 }

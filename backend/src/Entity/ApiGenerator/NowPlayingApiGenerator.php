@@ -151,6 +151,9 @@ final class NowPlayingApiGenerator
             }
 
             $np->live = $live;
+
+            // If a live streamer is connected, the stream is always online.
+            $np->is_online = true;
         } else {
             $np->live = new Live();
         }

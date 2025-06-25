@@ -22,7 +22,7 @@ class MariaDbPlatform extends MariaDB1010Platform
 
     public function getDateTimeTypeDeclarationSQL(array $column): string
     {
-        $precision = $column['precision'] ?? 0;
+        $precision = $column['precision'] ?? $column['length'] ?? 0;
 
         if (isset($column['version']) && $column['version'] === true) {
             if ($precision) {

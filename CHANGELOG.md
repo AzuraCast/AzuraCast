@@ -9,6 +9,13 @@ release channel, you can take advantage of these new features and fixes.
 
 - You can now specify the message color in Discord webhooks.
 
+- The Playlist edit modal's "Advanced" tab now has a new checkbox: "Prioritize over listener requests". If checked, the
+  playlist will always play at a higher priority than listener requests. Normally, listener requests pre-empt the
+  playback of normal playlists.
+
+- The "album" property for `SongInterface`-type items (station timelines, queues, media, etc.) is now supported as a
+  first-class property for all tracks.
+
 ## Code Quality/Technical Changes
 
 - We have removed the "Hide Advanced Features" setting from the system settings panel. Often, this setting was disabled
@@ -16,10 +23,37 @@ release channel, you can take advantage of these new features and fixes.
   removed or there was a bug. The "Advanced" label remains on any functionality you shouldn't modify without careful
   consideration.
 
+- Because we now provide our HTTPS certificate to the broadcasting frontends (Icecast/Shoutcast) directly, we will no
+  longer act as though the "Use Web Proxy" setting is always enabled for HTTPS connections. If the proxy is desired or
+  needed, you can always enable the setting from System Settings.
+
 - If you use an externally-mounted HTTPS certificate (i.e. manage LetsEncrypt yourself), you can now trigger a reload of
   the internal web services (nginx and Icecast) by running `./docker.sh cli acme:reload`.
 
+- We have switched our internal Redis implementation to Valkey, as it is more heavily supported and also has an open
+  license we can continue to use into the future without issues.
+
+- Our Vue frontend now uses TanStack Query to populate data; this allows for smarter request handling, better pagination
+  performance, and other minor improvements to user experience.
+
+- The API connection between AzuraCast and Liquidsoap now uses Liquidsoap's HTTP API instead of telnet via sockets,
+  removing a class of errors that users were encountering relating to socket permissions.
+
+- The CLI command `azuracast:sync:task` and API endpoint `/admin/debug/sync/{task}`, both used to manually invoke
+  synchronized (cron) tasks as needed, no longer require the fully-qualified namespaced name of a task to run. You can
+  now specify a much shorter name in many formats (i.e. "check-updates", "check_updates") to run the same tasks.
+
 ## Bug Fixes
+
+- We found and fixed several places in the application where playlists could be changed but the changes weren't written
+  to the filesystem. The playlist file on the station filesystem should much more accurately reflect current playlist
+  contents.
+
+- An issue writing extra metadata to Ogg Vorbis files has been fixed.
+
+- Custom station CSS and JavaScript will now apply to the public Requests pages.
+
+- Fixed an issue preventing station deletion if the station files were mounted to an external storage device.
 
 ---
 

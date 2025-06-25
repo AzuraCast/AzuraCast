@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Container\LoggerAwareTrait;
 use App\Controller\Api\AbstractApiCrudController;
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
@@ -23,6 +24,7 @@ use App\Utilities\File;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -137,6 +139,7 @@ class StationsController extends AbstractApiCrudController
 {
     use CanSortResults;
     use CanSearchResults;
+    use LoggerAwareTrait;
 
     protected string $entityClass = Station::class;
     protected string $resourceRouteName = 'api:admin:station';
@@ -488,7 +491,20 @@ class StationsController extends AbstractApiCrudController
         $fsUtils = new Filesystem();
         $stationBaseDir = $station->getRadioBaseDir();
         foreach (Station::NON_STORAGE_LOCATION_DIRS as $otherDir) {
-            $fsUtils->remove($stationBaseDir . '/' . $otherDir);
+            try {
+                $fsUtils->remove($stationBaseDir . '/' . $otherDir);
+            } catch (IOException $e) {
+                $this->logger->error(
+                    sprintf(
+                        'Error while deleting station directory "%s": %s',
+                        $otherDir,
+                        $e->getMessage()
+                    ),
+                    [
+                        'exception' => $e,
+                    ]
+                );
+            }
         }
 
         $this->em->flush();

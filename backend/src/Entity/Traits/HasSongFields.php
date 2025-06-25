@@ -44,11 +44,19 @@ trait HasSongFields
     ]
     protected ?string $title = null;
 
+    #[
+        OA\Property,
+        ORM\Column(length: 200, nullable: true),
+        Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected ?string $album = null;
+
     public function setSong(SongInterface $song): void
     {
-        $this->title = $this->truncateNullableString($song->getTitle(), 303);
-        $this->artist = $this->truncateNullableString($song->getArtist(), 150);
-        $this->text = $this->truncateNullableString($song->getText(), 150);
+        $this->title = $this->truncateNullableString($song->getTitle(), 512);
+        $this->artist = $this->truncateNullableString($song->getArtist());
+        $this->text = $this->truncateNullableString($song->getText());
+        $this->album = $this->truncateNullableString($song->getAlbum(), 200);
 
         // Force setting the text field if it's not otherwise set.
         $this->setText($this->getText());
@@ -75,12 +83,22 @@ trait HasSongFields
 
     public function getText(): ?string
     {
-        return $this->text ?? ($this->artist . ' - ' . $this->title);
+        if (null === $this->text) {
+            $this->setTextFromOtherFields();
+        }
+
+        return $this->text;
     }
 
-    protected function setTextFromArtistAndTitle(string $separator = ' - '): void
+    protected function setTextFromOtherFields(string $separator = ' - '): void
     {
-        $this->setText($this->artist . $separator . $this->title);
+        $textParts = [
+            trim($this->artist ?? ''),
+            trim($this->album ?? ''),
+            trim($this->title ?? ''),
+        ];
+
+        $this->setText(implode($separator, array_filter($textParts)));
     }
 
     public function setText(?string $text): void
@@ -104,7 +122,7 @@ trait HasSongFields
         $this->artist = $this->truncateNullableString($artist);
 
         if (0 !== strcmp($oldArtist ?? '', $this->artist ?? '')) {
-            $this->setTextFromArtistAndTitle();
+            $this->setTextFromOtherFields();
         }
     }
 
@@ -119,7 +137,22 @@ trait HasSongFields
         $this->title = $this->truncateNullableString($title);
 
         if (0 !== strcmp($oldTitle ?? '', $this->title ?? '')) {
-            $this->setTextFromArtistAndTitle();
+            $this->setTextFromOtherFields();
+        }
+    }
+
+    public function getAlbum(): ?string
+    {
+        return $this->album;
+    }
+
+    public function setAlbum(?string $album): void
+    {
+        $oldAlbum = $this->album;
+        $this->album = $this->truncateNullableString($album);
+
+        if (0 !== strcmp($oldAlbum ?? '', $this->album ?? '')) {
+            $this->setTextFromOtherFields();
         }
     }
 }

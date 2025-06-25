@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Interfaces\SongInterface;
-use InvalidArgumentException;
 use NowPlaying\Result\CurrentSong;
 
 class Song implements SongInterface
@@ -23,7 +22,7 @@ class Song implements SongInterface
 
     public function __toString(): string
     {
-        return 'Song ' . $this->song_id . ': ' . $this->artist . ' - ' . $this->title;
+        return 'Song ' . $this->getText();
     }
 
     public static function getSongHash(Song|array|string|CurrentSong $songText): string
@@ -68,6 +67,7 @@ class Song implements SongInterface
         $song->setText($apiSong->text);
         $song->setTitle($apiSong->title);
         $song->setArtist($apiSong->artist);
+        $song->setAlbum($apiSong->album);
         $song->updateSongId();
 
         return $song;
@@ -79,6 +79,7 @@ class Song implements SongInterface
         $song->setText($currentSong->text);
         $song->setTitle($currentSong->title);
         $song->setArtist($currentSong->artist);
+        $song->setAlbum($currentSong->album);
         $song->updateSongId();
 
         return $song;
@@ -89,7 +90,8 @@ class Song implements SongInterface
         $currentSong = new CurrentSong(
             $songRow['text'] ?? '',
             $songRow['title'] ?? '',
-            $songRow['artist'] ?? ''
+            $songRow['artist'] ?? '',
+            $songRow['album'] ?? '',
         );
         return self::createFromNowPlayingSong($currentSong);
     }

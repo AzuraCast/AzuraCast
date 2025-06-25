@@ -42,9 +42,9 @@ final class SongApiGenerator
         $response->text = $song->getText() ?? '';
         $response->artist = $song->getArtist() ?? '';
         $response->title = $song->getTitle() ?? '';
+        $response->album = $song->getAlbum() ?? '';
 
         if ($song instanceof StationMedia) {
-            $response->album = $song->getAlbum() ?? '';
             $response->genre = $song->getGenre() ?? '';
             $response->isrc = $song->getIsrc() ?? '';
             $response->lyrics = $song->getLyrics() ?? '';

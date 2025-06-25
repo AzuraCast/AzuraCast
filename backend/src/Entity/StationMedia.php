@@ -6,7 +6,6 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Interfaces\PathAwareInterface;
-use App\Entity\Interfaces\ProcessableMediaInterface;
 use App\Entity\Interfaces\SongInterface;
 use App\Flysystem\StationFilesystems;
 use App\Media\Metadata;
@@ -45,9 +44,6 @@ class StationMedia implements
 
     #[ORM\Column(length: 25, nullable: false)]
     protected string $unique_id;
-
-    #[ORM\Column(length: 200, nullable: true)]
-    protected ?string $album = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $genre = null;
@@ -122,16 +118,6 @@ class StationMedia implements
     public function getStorageLocation(): StorageLocation
     {
         return $this->storage_location;
-    }
-
-    public function getAlbum(): ?string
-    {
-        return $this->album;
-    }
-
-    public function setAlbum(?string $album = null): void
-    {
-        $this->album = $this->truncateNullableString($album, 200);
     }
 
     public function getGenre(): ?string

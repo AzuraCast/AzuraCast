@@ -21,4 +21,8 @@ interface SongInterface
     public function getTitle(): ?string;
 
     public function setTitle(?string $title): void;
+
+    public function getAlbum(): ?string;
+
+    public function setAlbum(?string $album): void;
 }

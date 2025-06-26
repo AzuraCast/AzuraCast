@@ -92,27 +92,16 @@ RUN touch /var/azuracast/.docker
 
 USER root
 
-RUN mkdir -p /var/azuracast/stations \
-    /var/azuracast/backups \
-    /var/lib/mysql \
-    /var/azuracast/storage/uploads \
-    /var/azuracast/storage/shoutcast2 \
-    /var/azuracast/storage/stereo_tool \
-    /var/azuracast/storage/geoip \
-    /var/azuracast/storage/sftpgo \
-    /var/azuracast/storage/acme \
-    && chown -R azuracast:azuracast /var/azuracast
-
-# VOLUME "/var/azuracast/stations"
-# VOLUME "/var/azuracast/backups"
-# VOLUME "/var/lib/mysql"
-# VOLUME "/var/azuracast/storage/acme"
-# VOLUME "/var/azuracast/storage/geoip"
-# VOLUME "/var/azuracast/storage/rsas"
-# VOLUME "/var/azuracast/storage/sftpgo"
-# VOLUME "/var/azuracast/storage/shoutcast2"
-# VOLUME "/var/azuracast/storage/stereo_tool"
-# VOLUME "/var/azuracast/storage/uploads"
+VOLUME "/var/azuracast/stations"
+VOLUME "/var/azuracast/backups"
+VOLUME "/var/lib/mysql"
+VOLUME "/var/azuracast/storage/acme"
+VOLUME "/var/azuracast/storage/geoip"
+VOLUME "/var/azuracast/storage/rsas"
+VOLUME "/var/azuracast/storage/sftpgo"
+VOLUME "/var/azuracast/storage/shoutcast2"
+VOLUME "/var/azuracast/storage/stereo_tool"
+VOLUME "/var/azuracast/storage/uploads"
 
 EXPOSE 80 443 2022
 EXPOSE 8000-8999

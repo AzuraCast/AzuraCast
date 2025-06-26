@@ -170,57 +170,56 @@ jobs:
             web/static/api/openapi.yml
   
   build:
-    name: Build & Publish
-    needs: prepare
-    permissions:
-      contents: read
-      id-token: write
-      packages: write
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event_name == 'schedule'
-    steps:
-      - uses: actions/checkout@master
+  name: Build & Publish
+  needs: prepare
+  permissions:
+    contents: read
+    id-token: write
+    packages: write
+  runs-on: ubuntu-latest
+  if: github.event_name == 'push' || github.event_name == 'schedule'
+  steps:
+    - uses: actions/checkout@master
 
-      - name: Download built static assets from previous step
-        uses: actions/download-artifact@v4
-        with:
-          name: assets
+    - name: Download built static assets from previous step
+      uses: actions/download-artifact@v4
+      with:
+        name: assets
 
-      - name: Set up Depot
-        uses: depot/setup-action@v1
+    - name: Set up Depot
+      uses: depot/setup-action@v1
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+    # - name: Login to DockerHub
+    #   uses: docker/login-action@v3
+    #   with:
+    #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+    #     password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build Docker Metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            azuracast/azuracast
-            ghcr.io/azuracast/azuracast
-          flavor: |
-            latest=false
-          tags: |
-            type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
-            type=ref,event=branch
-            type=semver,pattern={{version}}
+    - name: Build Docker Metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: |
+          ghcr.io/${{ github.repository }}
+        flavor: |
+          latest=false
+        tags: |
+          type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
+          type=ref,event=branch
+          type=semver,pattern={{version}}
 
-      - name: Publish to Docker Hub
-        uses: depot/build-push-action@v1
-        with:
-          context: .
-          push: true
-          platforms: linux/amd64,linux/arm64
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+    - name: Publish to GitHub Container Registry
+      uses: depot/build-push-action@v1
+      with:
+        context: .
+        push: true
+        platforms: linux/amd64,linux/arm64
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}

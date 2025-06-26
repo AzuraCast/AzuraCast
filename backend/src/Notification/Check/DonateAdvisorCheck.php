@@ -31,14 +31,14 @@ final class DonateAdvisorCheck
 
         $event->addNotification(
             new Notification(
-                __('AzuraCast is free and open-source software.'),
+                __('SoundMesh is in BETA!'),
                 __(
-                    'If you are enjoying AzuraCast, please consider donating to support our work. We depend ' .
-                    'on donations to build new features, fix bugs, and keep AzuraCast modern, accessible and free.',
+                    'Please make sure to report any issue you may see ' .
+                    'directly to us on discord so we can try to resolve it ASAP!',
                 ),
                 FlashLevels::Info,
-                __('Donate to AzuraCast'),
-                'https://donate.azuracast.com/'
+                __('Join our Discord'),
+                'https://join.immunity.community/'
             )
         );
     }

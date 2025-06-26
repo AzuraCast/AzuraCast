@@ -1,6 +1,6 @@
 <template>
     <h2 class="outside-card-header mb-1">
-        {{ $gettext('Update AzuraCast') }}
+        {{ $gettext('Update SoundMesh') }}
     </h2>
 
     <div class="row row-of-cards">
@@ -71,7 +71,7 @@
         <div class="col col-md-6">
             <card-page
                 header-id="hdr_update_via_web"
-                :title="$gettext('Update AzuraCast via Web')"
+                :title="$gettext('Update SoundMesh via Web')"
             >
                 <template v-if="enableWebUpdates">
                     <div class="card-body">
@@ -210,7 +210,7 @@ const {showAlert} = useDialog();
 
 const doUpdate = () => {
     void showAlert({
-        title: $gettext('Update AzuraCast? Your installation will restart.'),
+        title: $gettext('Update SoundMesh? Your installation will restart.'),
         confirmButtonText: $gettext('Update via Web')
     }).then((result) => {
         if (result.value) {

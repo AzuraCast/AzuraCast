@@ -14,7 +14,7 @@
 
                             <p class="card-text">
                                 {{
-                                    $gettext('Rocket Streaming Audio Server (RSAS) is a closed-source alternative to Icecast as a broadcasting frontend. As it is proprietary, AzuraCast cannot distribute it, but you can install it via this page. If installed, stations can select it as their broadcasting software.')
+                                    $gettext('Rocket Streaming Audio Server (RSAS) is a closed-source alternative to Icecast as a broadcasting frontend. As it is proprietary, SoundMesh cannot distribute it, but you can install it via this page. If installed, stations can select it as their broadcasting software.')
                                 }}
                             </p>
 

@@ -64,7 +64,7 @@
                 </template>
                 <template #description>
                     {{
-                        $gettext('AzuraCast will scan the uploaded file for matches in this station\'s music library. Media should already be uploaded before running this step. You can re-run this tool as many times as needed.')
+                        $gettext('SoundMesh will scan the uploaded file for matches in this station\'s music library. Media should already be uploaded before running this step. You can re-run this tool as many times as needed.')
                     }}
                 </template>
 

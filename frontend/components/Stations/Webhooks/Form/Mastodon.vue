@@ -23,7 +23,7 @@
                 </li>
                 <li>
                     {{
-                        $gettext('Enter "AzuraCast" as the application name. You can leave the URL fields unchanged. For "Scopes", only "write:media" and "write:statuses" are required.')
+                        $gettext('Enter "SoundMesh" as the application name. You can leave the URL fields unchanged. For "Scopes", only "write:media" and "write:statuses" are required.')
                     }}
                 </li>
             </ul>

@@ -5,7 +5,7 @@
     >
         <form-fieldset>
             <template #label>
-                {{ $gettext('AzuraCast Update Checks') }}
+                {{ $gettext('SoundMesh Update Checks') }}
             </template>
 
             <div class="row g-3">
@@ -19,7 +19,7 @@
                             href="/docs/getting-started/updates/release-channels/"
                             target="_blank"
                         >
-                            {{ $gettext('Learn more about release channels in the AzuraCast docs.') }}
+                            {{ $gettext('Learn more about release channels in the SoundMesh docs.') }}
                         </a>
                     </template>
 
@@ -33,7 +33,7 @@
                     class="col-md-6"
                     :field="v$.check_for_updates"
                     :label="$gettext('Show Update Announcements')"
-                    :description="$gettext('Show new releases within your update channel on the AzuraCast homepage.')"
+                    :description="$gettext('Show new releases within your update channel on the SoundMesh homepage.')"
                 />
             </div>
         </form-fieldset>
@@ -54,7 +54,7 @@
                     class="col-md-6"
                     :field="v$.acme_domains"
                     :label="$gettext('Domain Name(s)')"
-                    :description="$gettext('All listed domain names should point to this AzuraCast installation. Separate multiple domain names with commas.')"
+                    :description="$gettext('All listed domain names should point to this SoundMesh installation. Separate multiple domain names with commas.')"
                 />
 
                 <form-group-field

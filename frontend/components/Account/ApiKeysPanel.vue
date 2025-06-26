@@ -5,7 +5,7 @@
     >
         <template #info>
             {{
-                $gettext('Use API keys to authenticate with the AzuraCast API using the same permissions as your user account.')
+                $gettext('Use API keys to authenticate with the SoundMesh Radio API using the same permissions as your user account.')
             }}
 
             <a

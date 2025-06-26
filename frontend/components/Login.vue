@@ -14,7 +14,7 @@
                             v-else
                             class="card-title text-center"
                         >
-                            {{ $gettext('Welcome to AzuraCast!') }}
+                            {{ $gettext('Welcome to SoundMesh!') }}
                         </h2>
                         <h3
                             v-if="instanceName"

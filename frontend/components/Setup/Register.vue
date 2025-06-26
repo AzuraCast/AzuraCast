@@ -12,11 +12,11 @@
                             id="hdr_first_time_setup"
                             class="card-title mb-0 text-center"
                         >
-                            {{ $gettext('AzuraCast First-Time Setup') }}
+                            {{ $gettext('SoundMesh First-Time Setup') }}
                         </h2>
                         <h3 class="text-center">
                             <small class="text-muted">
-                                {{ $gettext('Welcome to AzuraCast!') }}
+                                {{ $gettext('Welcome to SoundMesh!') }}
                             </small>
                         </h3>
                     </div>

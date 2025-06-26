@@ -28,7 +28,7 @@
             class="navbar-brand ms-0 me-auto"
             :href="homeUrl"
         >
-            azura<strong>cast</strong>
+            Sound<strong>Mesh</strong>
             <small v-if="instanceName">{{ instanceName }}</small>
         </a>
 
@@ -155,19 +155,19 @@
         <footer id="footer">
             {{ $gettext('Powered by') }}
             <a
-                href="https://www.azuracast.com/"
+                href="https://soundmesh.dev"
                 target="_blank"
-            >AzuraCast</a>
+            >SoundMesh</a>
             &bull;
-            <span v-html="version" />
+            <!-- <span v-html="version" /> -->
             &bull;
-            <span v-html="platform" /><br>
-            {{ $gettext('Like our software?') }}
+            <!-- <span v-html="platform" /><br> -->
+            {{ $gettext('Need Support?') }}
             <a
-                href="https://donate.azuracast.com/"
+                href="https://join.immunity.community"
                 target="_blank"
             >
-                {{ $gettext('Donate to support AzuraCast!') }}
+                {{ $gettext('Join our Discord!') }}
             </a>
         </footer>
     </div>

@@ -52,7 +52,7 @@
                     </p>
                     <p class="card-text">
                         {{
-                            $gettext('If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.')
+                            $gettext('If you\'re experiencing a bug or error, you can submit find our discord below')
                         }}
                     </p>
                 </div>
@@ -60,12 +60,12 @@
                     <a
                         class="btn btn-primary"
                         role="button"
-                        href="https://github.com/AzuraCast/AzuraCast/issues/new/choose"
+                        href="https://join.immunity.community"
                         target="_blank"
                     >
                         <icon :icon="IconSupport" />
                         <span>
-                            {{ $gettext('Add New GitHub Issue') }}
+                            {{ $gettext('JOIN DISCORD') }}
                         </span>
                     </a>
                 </div>

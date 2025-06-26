@@ -28,7 +28,7 @@
 
                             <p class="card-text">
                                 {{
-                                    $gettext('Stereo Tool is not free software, and its restrictive license does not allow AzuraCast to distribute the Stereo Tool binary.')
+                                    $gettext('Stereo Tool is not free software, and its restrictive license does not allow SoundMesh to distribute the Stereo Tool binary.')
                                 }}
                             </p>
 

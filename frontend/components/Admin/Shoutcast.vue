@@ -14,7 +14,7 @@
 
                             <p class="card-text">
                                 {{
-                                    $gettext('Shoutcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the Shoutcast binary.')
+                                    $gettext('Shoutcast 2 DNAS is not free software, and its restrictive license does not allow SoundMesh to distribute the Shoutcast binary.')
                                 }}
                             </p>
 

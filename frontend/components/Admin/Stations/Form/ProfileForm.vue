@@ -38,7 +38,7 @@
                 :field="v$.url"
                 input-type="url"
                 :label="$gettext('Web Site URL')"
-                :description="$gettext('Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details.')"
+                :description="$gettext('Note: This should be the public-facing homepage of the radio station, not the SoundMesh URL. It will be included in broadcast details.')"
             />
 
             <form-group-select

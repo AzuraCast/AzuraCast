@@ -25,7 +25,7 @@
                         class="col-md-12"
                         :field="v$.backend_config.record_streams"
                         :label="$gettext('Record Live Broadcasts')"
-                        :description="$gettext('If enabled, AzuraCast will automatically record any live broadcasts made to this station to per-broadcast recordings.')"
+                        :description="$gettext('If enabled, SoundMesh will automatically record any live broadcasts made to this station to per-broadcast recordings.')"
                     />
                 </div>
                 <div

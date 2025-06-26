@@ -186,8 +186,8 @@ jobs:
         with:
           name: assets
 
-      - name: Set up Depot
-        uses: depot/setup-action@v1
+      # - name: Set up Depot
+      #   uses: depot/setup-action@v1
 
       # - name: Login to DockerHub
       #   uses: docker/login-action@v3
@@ -216,7 +216,7 @@ jobs:
             type=semver,pattern={{version}}
 
       - name: Publish to Github Container Registry
-        uses: depot/build-push-action@v1
+        uses: docker/build-push-action@v5
         with:
           context: .
           push: true

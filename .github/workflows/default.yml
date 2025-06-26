@@ -215,11 +215,11 @@ jobs:
             type=ref,event=branch
             type=semver,pattern={{version}}
 
-      # - name: Publish to Docker Hub
-      #   uses: depot/build-push-action@v1
-      #   with:
-      #     context: .
-      #     push: true
-      #     platforms: linux/amd64,linux/arm64
-      #     tags: ${{ steps.meta.outputs.tags }}
-      #     labels: ${{ steps.meta.outputs.labels }}
+      - name: Publish to Github Container Registry
+        uses: depot/build-push-action@v1
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}

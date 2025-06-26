@@ -1,6 +1,6 @@
 ![](https://github.com/AzuraCast/AzuraCast/raw/main/resources/azuracast.png)![](https://static.scarf.sh/a.png?x-pxid=d5169ead-cdcf-482c-ab64-c7137d3f8769)
 
-# AzuraCast: A Simple, Self-Hosted Web Radio Management Suite
+# AzuraCast:  FORK FOR SOUNDMESH
 
 [![Build Status](https://github.com/azuracast/azuracast/workflows/Build,%20Test%20and%20Publish/badge.svg)](https://github.com/AzuraCast/AzuraCast/actions)
 [![Latest Stable Release](https://img.shields.io/packagist/v/azuracast/azuracast.svg?label=latest+stable+version)]()

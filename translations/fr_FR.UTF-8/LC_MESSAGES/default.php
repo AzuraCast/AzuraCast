@@ -897,7 +897,7 @@
       'Port' => 'Port',
       'Port:' => 'Port :',
       'Powered by' => 'Propulsé par',
-      'Powered by AzuraCast' => 'Propulsé par AzuraCast',
+      'Powered by SoundMesh' => 'Propulsé par AzuraCast',
       'Prefer Browser URL (If Available)' => 'URL du navigateur préféré (si disponible)',
       'Prefer System Default' => 'Préférer le système par défaut',
       'Preview' => 'Aperçu',

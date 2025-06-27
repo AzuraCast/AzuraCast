@@ -4045,7 +4045,7 @@ msgid "Powered by"
 msgstr "Impulsado por"
 
 #: frontend/components/Stations/Webhooks/Form/Discord.vue:128
-msgid "Powered by AzuraCast"
+msgid "Powered by SoundMesh"
 msgstr "Desarrollado por AzuraCast"
 
 #: frontend/components/Admin/Settings/GeneralTab.vue:29

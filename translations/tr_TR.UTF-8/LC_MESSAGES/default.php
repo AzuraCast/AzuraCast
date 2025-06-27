@@ -710,7 +710,7 @@
       'Podcasts Storage Location' => 'Podcast Depolama Konumu',
       'Port' => 'Port',
       'Port:' => 'Port:',
-      'Powered by AzuraCast' => 'AzuraCast tarafından desteklenmektedir',
+      'Powered by SoundMesh' => 'AzuraCast tarafından desteklenmektedir',
       'Prefer Browser URL (If Available)' => 'Tarayıcı URLsini Tercih Et (Varsa)',
       'Prefer System Default' => 'Sistem Varsayılanını Kullan',
       'Preview' => 'Önizleme',

@@ -38,7 +38,7 @@ final class DonateAdvisorCheck
                 ),
                 FlashLevels::Info,
                 __('Join our Discord'),
-                'https://join.immunity.community/'
+                'https://chat.soundmesh.dev/'
             )
         );
     }

@@ -912,7 +912,7 @@
       'Port' => 'Porta',
       'Port:' => 'Porta:',
       'Powered by' => 'Desenvolvido por',
-      'Powered by AzuraCast' => 'Desenvolvido por AzuraCast',
+      'Powered by SoundMesh' => 'Desenvolvido por AzuraCast',
       'Prefer Browser URL (If Available)' => 'Preferir a URL do Navegador (Se Disponível)',
       'Prefer System Default' => 'Usar o Padrão do Sistema',
       'Preview' => 'Pré-visualização',

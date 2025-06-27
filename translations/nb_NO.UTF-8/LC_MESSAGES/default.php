@@ -842,7 +842,7 @@
       'Port' => 'Port',
       'Port:' => 'Havn:',
       'Powered by' => 'Drivet med',
-      'Powered by AzuraCast' => 'Drevet av AzuraCast',
+      'Powered by SoundMesh' => 'Drevet av AzuraCast',
       'Prefer Browser URL (If Available)' => 'Foretrekk nettleser-URL (hvis tilgjengelig)',
       'Prefer System Default' => 'Foretrekker System Default',
       'Previous' => 'Forrige',

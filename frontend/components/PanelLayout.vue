@@ -160,11 +160,11 @@
             >SoundMesh</a>
             &bull;
             <!-- <span v-html="version" /> -->
-            &bull;
+            <!-- &bull; -->
             <!-- <span v-html="platform" /><br> -->
             {{ $gettext('Need Support?') }}
             <a
-                href="https://join.immunity.community"
+                href="https://chat.soundmesh.dev"
                 target="_blank"
             >
                 {{ $gettext('Join our Discord!') }}

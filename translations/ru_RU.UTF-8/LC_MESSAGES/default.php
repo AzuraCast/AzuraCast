@@ -911,7 +911,7 @@
       'Port' => 'Порт',
       'Port:' => 'Порт:',
       'Powered by' => 'При поддержке',
-      'Powered by AzuraCast' => 'Работает на AzuraCast',
+      'Powered by SoundMesh' => 'Работает на AzuraCast',
       'Prefer Browser URL (If Available)' => 'Предпочтительно URL-адрес в браузере (если доступно)',
       'Prefer System Default' => 'Предпочитать системные настройки по умолчанию',
       'Preview' => 'Предпросмотр',

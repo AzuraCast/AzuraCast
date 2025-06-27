@@ -891,7 +891,7 @@
       'Port' => '端口',
       'Port:' => '端口:',
       'Powered by' => '技术支持',
-      'Powered by AzuraCast' => '由 AzuraCast 提供',
+      'Powered by SoundMesh' => '由 AzuraCast 提供',
       'Prefer Browser URL (If Available)' => '首选浏览器URL（如果可用）',
       'Prefer System Default' => '首选系统默认值',
       'Preview' => '预览',

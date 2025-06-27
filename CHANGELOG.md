@@ -204,7 +204,7 @@ version of the application.
   backend PHP application code is located in the `backend` folder, and frontend Vue/JS/SCSS code is located in
   the `frontend` folder. This should not impact normal operations or plugins.
 
-- A minor change has been made to how the CSS styles the "Powered by AzuraCast" footer on public and private pages; the
+- A minor change has been made to how the CSS styles the "Powered by SoundMesh" footer on public and private pages; the
   new setup uses Flexbox to achieve a "sticky" footer without complicated CSS rules. If you're using custom CSS, you may
   need to update your code to reflect this change.
 
@@ -2467,7 +2467,7 @@ are a few minor but significant new features, and updating is highly recommended
 
 ## Bug Fixes
 
-- Fixed a number of scenarios that caused the "This station is powered by AzuraCast" jingle to play despite a station
+- Fixed a number of scenarios that caused the "This station is Powered by SoundMesh" jingle to play despite a station
   having an established playlist of music. #1527 #1597
 
 - Fixed error where requested songs would not play during scheduled playlist blocks. #1620

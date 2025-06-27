@@ -897,7 +897,7 @@
       'Port' => '포트',
       'Port:' => '포트:',
       'Powered by' => '제공:',
-      'Powered by AzuraCast' => 'AzuraCast 제공',
+      'Powered by SoundMesh' => 'AzuraCast 제공',
       'Prefer Browser URL (If Available)' => '브라우저 URL 선호(사용 가능한 경우)',
       'Prefer System Default' => '시스템 기본값 선호',
       'Preview' => '미리보기',

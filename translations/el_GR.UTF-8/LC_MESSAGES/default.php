@@ -911,7 +911,7 @@
       'Port' => 'Θύρα',
       'Port:' => 'Θύρα:',
       'Powered by' => 'Υλοποίηση από',
-      'Powered by AzuraCast' => 'Τροφοδοτείται από AzuraCast',
+      'Powered by SoundMesh' => 'Τροφοδοτείται από AzuraCast',
       'Prefer Browser URL (If Available)' => 'Προτιμήστε Το Url Του Περιηγητή (Αν Διατίθεται)',
       'Prefer System Default' => 'Προτίμηση Προεπιλογής Συστήματος',
       'Preview' => 'Προεπισκόπηση',

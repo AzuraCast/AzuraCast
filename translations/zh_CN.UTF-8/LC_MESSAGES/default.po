@@ -4041,7 +4041,7 @@ msgid "Powered by"
 msgstr "技术支持"
 
 #: frontend/components/Stations/Webhooks/Form/Discord.vue:128
-msgid "Powered by AzuraCast"
+msgid "Powered by SoundMesh"
 msgstr "由 AzuraCast 提供"
 
 #: frontend/components/Admin/Settings/GeneralTab.vue:29

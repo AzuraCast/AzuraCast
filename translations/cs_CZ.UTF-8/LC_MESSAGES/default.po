@@ -4053,7 +4053,7 @@ msgid "Powered by"
 msgstr ""
 
 #: frontend/components/Stations/Webhooks/Form/Discord.vue:128
-msgid "Powered by AzuraCast"
+msgid "Powered by SoundMesh"
 msgstr ""
 
 #: frontend/components/Admin/Settings/GeneralTab.vue:29

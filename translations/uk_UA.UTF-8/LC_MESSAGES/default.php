@@ -887,7 +887,7 @@
       'Port' => 'Порт',
       'Port:' => 'Порт:',
       'Powered by' => 'Працює на',
-      'Powered by AzuraCast' => 'Працює на платформі AzuraCast',
+      'Powered by SoundMesh' => 'Працює на платформі AzuraCast',
       'Prefer Browser URL (If Available)' => 'Пріоритетніше використовувати URL браузера (якщо доступний)',
       'Prefer System Default' => 'Обрати системні налаштування за замовчуванням',
       'Preview' => 'Попередній перегляд',

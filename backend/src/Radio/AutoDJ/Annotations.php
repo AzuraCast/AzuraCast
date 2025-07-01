@@ -15,6 +15,7 @@ use App\Event\Radio\AnnotateNextSong;
 use App\Utilities\Time;
 use App\Utilities\Types;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\SimpleCache\CacheInterface;
 use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -25,6 +26,7 @@ final class Annotations implements EventSubscriberInterface
     public function __construct(
         private readonly StationQueueRepository $queueRepo,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly CacheInterface $psr16Cache,
     ) {
     }
 
@@ -37,6 +39,7 @@ final class Annotations implements EventSubscriberInterface
             AnnotateNextSong::class => [
                 ['annotateSongPath', 20],
                 ['annotateForLiquidsoap', 15],
+                ['addCachedAutocueData', 12],
                 ['annotatePlaylist', 10],
                 ['annotateRequest', 5],
                 ['postAnnotation', -10],
@@ -102,19 +105,57 @@ final class Annotations implements EventSubscriberInterface
             'sq_id' => $event->getQueue()?->getIdRequired(),
             ...$this->processAutocueAnnotations(
                 $station,
-                $media->getExtraMetadata(),
+                $media->getExtraMetadata()->toArray(),
                 $duration,
             ),
         ]);
     }
 
+    public function addCachedAutocueData(AnnotateNextSong $event): void
+    {
+        $media = $event->getMedia();
+        if (null === $media) {
+            return;
+        }
+
+        $station = $event->getStation();
+        if (!$station->getBackendType()->isEnabled()) {
+            return;
+        }
+
+        $cacheKey = $this->getAutocueCacheKey($media);
+        $event->addAnnotations([
+            'azuracast_cache_key' => $cacheKey,
+        ]);
+
+        if ($this->psr16Cache->has($cacheKey)) {
+            $cachedData = Types::arrayOrNull($this->psr16Cache->get($cacheKey));
+            $event->addAnnotations(
+                $this->processAutocueAnnotations(
+                    $station,
+                    $cachedData,
+                    $media->getLength()
+                )
+            );
+        }
+    }
+
+    private function getAutocueCacheKey(
+        StationMedia $media
+    ): string {
+        return 'autocue.' . $media->getUniqueId() . '_' . $media->getMtime();
+    }
+
+    /**
+     * @param null|array<string, mixed> $metadata
+     */
     private function processAutocueAnnotations(
         Station $station,
-        StationMediaMetadata $metadata,
+        ?array $metadata,
         float $duration,
     ): array {
         $annotations = array_filter(
-            $metadata->toArray() ?? [],
+            $metadata ?? [],
             fn($row) => $row !== null
         );
 

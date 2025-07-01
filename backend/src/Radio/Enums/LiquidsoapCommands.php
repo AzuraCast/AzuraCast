@@ -14,6 +14,7 @@ enum LiquidsoapCommands: string
     case DjOff = 'djoff';
     case Feedback = 'feedback';
     case NextSong = 'nextsong';
+    case SaveCache = 'savecache';
 
     /** @return class-string<Command\AbstractCommand> */
     public function getClass(): string
@@ -24,7 +25,8 @@ enum LiquidsoapCommands: string
             self::DjOn => Command\DjOnCommand::class,
             self::DjOff => Command\DjOffCommand::class,
             self::Feedback => Command\FeedbackCommand::class,
-            self::NextSong => Command\NextSongCommand::class
+            self::NextSong => Command\NextSongCommand::class,
+            self::SaveCache => Command\SaveCacheCommand::class,
         };
     }
 }

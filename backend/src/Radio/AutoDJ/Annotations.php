@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Radio\AutoDJ;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Entity\Repository\CustomFieldRepository;
 use App\Entity\Repository\StationQueueRepository;
 use App\Entity\Station;
 use App\Entity\StationMedia;
@@ -25,6 +26,7 @@ final class Annotations implements EventSubscriberInterface
 
     public function __construct(
         private readonly StationQueueRepository $queueRepo,
+        private readonly CustomFieldRepository $customFieldRepo,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly CacheInterface $psr16Cache,
     ) {
@@ -108,6 +110,7 @@ final class Annotations implements EventSubscriberInterface
                 $media->getExtraMetadata()->toArray(),
                 $duration,
             ),
+            ...$this->customFieldRepo->getCustomFields($media),
         ]);
     }
 

@@ -355,6 +355,10 @@ install-docker() {
     exit 1
   fi
 
+  curl -fsSL get.docker.com -o get-docker.sh
+  sh get-docker.sh
+  rm get-docker.sh
+
   if [[ $EUID -ne 0 ]]; then
     sudo usermod -aG docker "$(whoami)"
 

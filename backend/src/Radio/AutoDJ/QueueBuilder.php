@@ -80,7 +80,7 @@ final class QueueBuilder implements EventSubscriberInterface
         }
 
         if (empty($activePlaylistsByType)) {
-            $this->logger->error('No valid playlists detected. Skipping AutoDJ calculations.');
+            $this->logger->warning('No valid playlists detected. Skipping AutoDJ calculations.');
             return;
         }
 

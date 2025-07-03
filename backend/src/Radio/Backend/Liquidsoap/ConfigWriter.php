@@ -844,7 +844,7 @@ final class ConfigWriter implements EventSubscriberInterface
                         [("is_live", "true")]
                     end
                 end
-                last_live_meta := [...m, ...list.assoc.remove("title", updates)]
+                last_live_meta := [...m, ...updates]
                 updates
             end
             live = metadata.map(insert_missing, live)

@@ -7,36 +7,25 @@ list:
 install: # Developer mode installation
 	bash ./docker.sh install-dev
 
-install-cloud-ide:
-	cp docker-compose.sample.yml docker-compose.yml
-	cp docker-compose.cloudide.yml docker-compose.override.yml
-
-	cp dev.env .env
-	cp azuracast.dev.env azuracast.env
-
-	docker-compose pull
-	docker-compose build
-	docker-compose run --rm web azuracast_install "$@"
-
 up:
-	docker-compose up -d
+	docker compose up -d
 
 down:
-	docker-compose down
+	docker compose down
 
 restart: down up
 
 build: # Rebuild all containers and restart
-	docker-compose build
+	docker compose build
 	$(MAKE) restart
 
 post-update:
 	$(MAKE) down
-	docker-compose run --rm web azuracast_dev_install --update
+	docker compose run --rm web azuracast_dev_install --update
 	$(MAKE) up
 
 update: # Update everything (i.e. after a branch update)
-	docker-compose build
+	docker compose build
 	$(MAKE) post-update
 
 build-depot: # Rebuild all containers with Depot and restart
@@ -48,17 +37,17 @@ update-depot: # Update everything using Depot
 	$(MAKE) post-update
 
 test:
-	docker-compose exec --user=azuracast web composer run cleanup-and-test
+	docker compose exec --user=azuracast web composer run cleanup-and-test
 
 bash:
-	docker-compose exec --user=azuracast web bash
+	docker compose exec --user=azuracast web bash
 
 bash-root:
-	docker-compose exec web bash
+	docker compose exec web bash
 
 generate-locales:
-	docker-compose exec --user=azuracast web azuracast_cli locale:generate
+	docker compose exec --user=azuracast web azuracast_cli locale:generate
 
 import-locales:
-	docker-compose exec --user=azuracast web azuracast_cli locale:import
+	docker compose exec --user=azuracast web azuracast_cli locale:import
 

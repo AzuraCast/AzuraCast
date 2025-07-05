@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Radio\AutoDJ;
 
+use App\Cache\AutoCueCache;
 use App\Container\EntityManagerAwareTrait;
 use App\Entity\Repository\CustomFieldRepository;
 use App\Entity\Repository\StationQueueRepository;
@@ -16,7 +17,6 @@ use App\Event\Radio\AnnotateNextSong;
 use App\Utilities\Time;
 use App\Utilities\Types;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\SimpleCache\CacheInterface;
 use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -28,7 +28,7 @@ final class Annotations implements EventSubscriberInterface
         private readonly StationQueueRepository $queueRepo,
         private readonly CustomFieldRepository $customFieldRepo,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly CacheInterface $psr16Cache,
+        private readonly AutoCueCache $autoCueCache,
     ) {
     }
 
@@ -126,27 +126,16 @@ final class Annotations implements EventSubscriberInterface
             return;
         }
 
-        $cacheKey = $this->getAutocueCacheKey($media);
+        $cacheKey = $this->autoCueCache->getCacheKey($media);
+
         $event->addAnnotations([
             'azuracast_cache_key' => $cacheKey,
+            ...$this->processAutocueAnnotations(
+                $station,
+                $this->autoCueCache->getForCacheKey($cacheKey),
+                $media->getLength()
+            ),
         ]);
-
-        if ($this->psr16Cache->has($cacheKey)) {
-            $cachedData = Types::arrayOrNull($this->psr16Cache->get($cacheKey));
-            $event->addAnnotations(
-                $this->processAutocueAnnotations(
-                    $station,
-                    $cachedData,
-                    $media->getLength()
-                )
-            );
-        }
-    }
-
-    private function getAutocueCacheKey(
-        StationMedia $media
-    ): string {
-        return 'autocue.' . $media->getUniqueId() . '_' . $media->getMtime();
     }
 
     /**

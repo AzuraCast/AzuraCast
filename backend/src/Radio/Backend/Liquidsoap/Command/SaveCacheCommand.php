@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Radio\Backend\Liquidsoap\Command;
 
+use App\Cache\AutoCueCache;
 use App\Entity\Station;
-use Psr\Cache\CacheItemPoolInterface;
+use App\Utilities\Types;
 
 final class SaveCacheCommand extends AbstractCommand
 {
     public function __construct(
-        private readonly CacheItemPoolInterface $psr6Cache
+        private readonly AutoCueCache $autoCueCache
     ) {
     }
 
@@ -24,18 +25,13 @@ final class SaveCacheCommand extends AbstractCommand
         }
 
         $cacheKey = $payload['cache_key'] ?? null;
-        $data = $payload['data'] ?? null;
+        $data = Types::arrayOrNull($payload['data'] ?? null);
 
         if (empty($cacheKey) || empty($data)) {
             return false;
         }
 
-        $cacheItem = $this->psr6Cache->getItem($cacheKey);
-
-        $cacheItem->set($data);
-        $cacheItem->expiresAfter(86400);
-
-        $this->psr6Cache->save($cacheItem);
+        $this->autoCueCache->setForCacheKey($cacheKey, $data);
 
         return true;
     }

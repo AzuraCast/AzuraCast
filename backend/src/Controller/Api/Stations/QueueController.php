@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Cache\QueueLogCache;
 use App\Entity\Api\StationQueueDetailed;
 use App\Entity\Api\Status;
 use App\Entity\ApiGenerator\StationQueueApiGenerator;
@@ -12,7 +13,6 @@ use App\Entity\StationQueue;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use App\Radio\AutoDJ\Queue;
 use App\Utilities\Types;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -96,7 +96,7 @@ final class QueueController extends AbstractStationApiCrudController
     public function __construct(
         private readonly StationQueueApiGenerator $queueApiGenerator,
         private readonly StationQueueRepository $queueRepo,
-        private readonly Queue $queue,
+        private readonly QueueLogCache $queueLogCache,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
@@ -141,7 +141,7 @@ final class QueueController extends AbstractStationApiCrudController
         $apiResponse->sent_to_autodj = $record->getSentToAutodj();
         $apiResponse->is_played = $record->getIsPlayed();
         $apiResponse->autodj_custom_uri = $record->getAutodjCustomUri();
-        $apiResponse->log = $this->queue->getQueueRowLog($record);
+        $apiResponse->log = $this->queueLogCache->getLog($record);
 
         $apiResponse->links = [
             'self' => $router->fromHere(

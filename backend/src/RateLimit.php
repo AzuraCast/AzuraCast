@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Cache\CacheNamespace;
 use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Entity\Repository\SettingsRepository;
@@ -12,7 +13,6 @@ use App\Http\ServerRequest;
 use App\Lock\LockFactory;
 use PhpIP\IP;
 use Psr\Cache\CacheItemPoolInterface;
-use Symfony\Component\Cache\Adapter\ProxyAdapter;
 use Symfony\Component\Lock\Exception\LockAcquiringException;
 use Symfony\Component\Lock\Exception\LockConflictedException;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
@@ -30,7 +30,7 @@ final class RateLimit
         private readonly SettingsRepository $settingsRepo,
         CacheItemPoolInterface $cacheItemPool
     ) {
-        $this->psr6Cache = new ProxyAdapter($cacheItemPool, 'ratelimit.');
+        $this->psr6Cache = CacheNamespace::RateLimit->withNamespace($cacheItemPool);
     }
 
     /**

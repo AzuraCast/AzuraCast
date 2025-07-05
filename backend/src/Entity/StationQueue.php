@@ -26,7 +26,6 @@ class StationQueue implements
     use Traits\HasSongFields;
 
     public const int DAYS_TO_KEEP = 7;
-    public const int QUEUE_LOG_TTL = 86400;
 
     #[ORM\ManyToOne(inversedBy: 'history')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]

@@ -125,7 +125,7 @@ return [
         if ($environment->isCli()) {
             $psr6Cache = new Symfony\Component\Cache\Adapter\ArrayAdapter();
         } else {
-            $psr6Cache = new Symfony\Component\Cache\Adapter\ProxyAdapter($psr6Cache, 'doctrine.');
+            $psr6Cache = App\Cache\CacheNamespace::Doctrine->withNamespace($psr6Cache);
         }
 
         $mappingClassesPaths = [$environment->getBackendDirectory() . '/src/Entity'];

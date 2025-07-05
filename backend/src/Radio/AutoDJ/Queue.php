@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Radio\AutoDJ;
 
+use App\Cache\QueueLogCache;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Entity\Repository\StationQueueRepository;
@@ -11,15 +12,12 @@ use App\Entity\Station;
 use App\Entity\StationQueue;
 use App\Event\Radio\BuildQueue;
 use App\Utilities\Time;
-use App\Utilities\Types;
 use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Monolog\Handler\TestHandler;
-use Monolog\LogRecord;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LogLevel;
-use Psr\SimpleCache\CacheInterface;
 
 /**
  * Public methods related to the AutoDJ Queue process.
@@ -30,10 +28,10 @@ final class Queue
     use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly CacheInterface $cache,
         private readonly EventDispatcherInterface $dispatcher,
         private readonly StationQueueRepository $queueRepo,
         private readonly Scheduler $scheduler,
+        private readonly QueueLogCache $queueLogCache
     ) {
     }
 
@@ -148,7 +146,7 @@ final class Queue
                 $this->em->persist($queueRow);
                 $this->em->flush();
 
-                $this->setQueueRowLog($queueRow, $testHandler->getRecords());
+                $this->queueLogCache->setLog($queueRow, $testHandler->getRecords());
 
                 $lastSongId = $queueRow->getSongId();
 
@@ -224,7 +222,7 @@ final class Queue
             $this->em->persist($queueRow);
             $this->em->flush();
 
-            $this->setQueueRowLog($queueRow, $testHandler->getRecords());
+            $this->queueLogCache->setLog($queueRow, $testHandler->getRecords());
 
             $expectedPlayTime = $this->addDurationToTime(
                 $station,
@@ -266,33 +264,5 @@ final class Queue
                 $expectedPlayTime,
                 true
             );
-    }
-
-    public function getQueueRowLog(StationQueue $queueRow): ?array
-    {
-        return Types::arrayOrNull(
-            $this->cache->get($this->getQueueRowLogCacheKey($queueRow))
-        );
-    }
-
-    public function setQueueRowLog(StationQueue $queueRow, ?array $log): void
-    {
-        if (null !== $log) {
-            $log = array_map(
-                fn(LogRecord $logRecord) => $logRecord->formatted,
-                $log
-            );
-        }
-
-        $this->cache->set(
-            $this->getQueueRowLogCacheKey($queueRow),
-            $log,
-            StationQueue::QUEUE_LOG_TTL
-        );
-    }
-
-    private function getQueueRowLogCacheKey(StationQueue $queueRow): string
-    {
-        return 'queue_log.' . $queueRow->getIdRequired();
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Command\Sync;
 
+use App\Cache\SyncStatusCache;
 use App\Container\ContainerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Event\GetSyncTasks;
@@ -13,7 +14,6 @@ use Doctrine\Inflector\InflectorFactory;
 use Generator;
 use InvalidArgumentException;
 use Monolog\LogRecord;
-use Psr\Cache\CacheItemPoolInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use ReflectionClass;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -33,8 +33,8 @@ final class SingleTaskCommand extends AbstractSyncCommand
     use LoggerAwareTrait;
 
     public function __construct(
-        private readonly CacheItemPoolInterface $cache,
-        private readonly EventDispatcherInterface $eventDispatcher
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly SyncStatusCache $syncStatusCache
     ) {
         parent::__construct();
     }
@@ -74,7 +74,7 @@ final class SingleTaskCommand extends AbstractSyncCommand
 
             $validTaskNames = [];
             foreach ($this->getValidTasks() as $taskClass) {
-                $taskName = self::getClassShortName($taskClass);
+                $taskName = new ReflectionClass($taskClass)->getShortName();
                 $taskName = str_replace('Task', '', $taskName);
                 $validTaskNames[] = ' - ' . $inflector->tableize($taskName);
             }
@@ -101,8 +101,7 @@ final class SingleTaskCommand extends AbstractSyncCommand
             $task = $this->getTask($task);
         }
 
-        $taskShortName = self::getClassShortName($task::class);
-        $cacheKey = self::getCacheKey($task::class);
+        $taskShortName = new ReflectionClass($task::class)->getShortName();
 
         $startTime = microtime(true);
         $this->logger->pushProcessor(
@@ -121,10 +120,7 @@ final class SingleTaskCommand extends AbstractSyncCommand
                 'time' => microtime(true) - $startTime,
             ]);
 
-            $cacheItem = $this->cache->getItem($cacheKey)
-                ->set(time())
-                ->expiresAfter(86400);
-            $this->cache->save($cacheItem);
+            $this->syncStatusCache->markTaskAsRun($task::class);
         } finally {
             $this->logger->popProcessor();
         }
@@ -187,23 +183,5 @@ final class SingleTaskCommand extends AbstractSyncCommand
         $syncTasksEvent = new GetSyncTasks();
         $this->eventDispatcher->dispatch($syncTasksEvent);
         return $syncTasksEvent->getTasks();
-    }
-
-    /**
-     * @param class-string $taskClass
-     * @return string
-     */
-    public static function getCacheKey(string $taskClass): string
-    {
-        return urlencode('sync_last_run.' . self::getClassShortName($taskClass));
-    }
-
-    /**
-     * @param class-string $taskClass
-     * @return string
-     */
-    public static function getClassShortName(string $taskClass): string
-    {
-        return new ReflectionClass($taskClass)->getShortName();
     }
 }

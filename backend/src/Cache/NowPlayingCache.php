@@ -21,9 +21,12 @@ final class NowPlayingCache
 {
     private const int NOWPLAYING_CACHE_TTL = 180;
 
+    private readonly CacheItemPoolInterface $cache;
+
     public function __construct(
-        private readonly CacheItemPoolInterface $cache
+        CacheItemPoolInterface $cache
     ) {
+        $this->cache = CacheNamespace::NowPlaying->withNamespace($cache);
     }
 
     public function setForStation(
@@ -119,9 +122,7 @@ final class NowPlayingCache
 
     private function getLookupCache(): CacheItemInterface
     {
-        return $this->cache->getItem(
-            'now_playing.lookup'
-        );
+        return $this->cache->getItem('lookup');
     }
 
     private function populateLookupCache(
@@ -156,10 +157,6 @@ final class NowPlayingCache
             }
         }
 
-        return $this->cache->getItem(
-            urlencode(
-                'now_playing.station_' . $identifier
-            )
-        );
+        return $this->cache->getItem(urlencode('station_' . $identifier));
     }
 }

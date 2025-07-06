@@ -53,6 +53,9 @@ final class UploadAction implements SingleActionInterface
     use EntityManagerAwareTrait;
 
     private const array ALLOWED_MEDIA_FIELDS = [
+        'id',
+        'unique_id',
+        'song_id',
         'title',
         'artist',
         'album',

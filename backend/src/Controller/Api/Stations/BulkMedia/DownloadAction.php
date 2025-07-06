@@ -51,8 +51,7 @@ final class DownloadAction implements SingleActionInterface
     public function __construct(
         private readonly CustomFieldRepository $customFieldRepo,
         private readonly StationPlaylistRepository $playlistRepo,
-    ) {
-    }
+    ) {}
 
     public function __invoke(
         ServerRequest $request,
@@ -96,6 +95,8 @@ final class DownloadAction implements SingleActionInterface
          */
         $headerRow = [
             'id',
+            'unique_id',
+            'song_id',
             'path',
             'title',
             'artist',
@@ -134,7 +135,9 @@ final class DownloadAction implements SingleActionInterface
             }
 
             $bodyRow = [
+                $row['id'] ?? '',
                 $row['unique_id'] ?? '',
+                $row['song_id'] ?? '',
                 $row['path'] ?? '',
                 $row['title'] ?? '',
                 $row['artist'] ?? '',

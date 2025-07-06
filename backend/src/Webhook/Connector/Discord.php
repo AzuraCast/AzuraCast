@@ -7,7 +7,8 @@ namespace App\Webhook\Connector;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
-use DateTime;
+use App\Utilities\Time;
+use App\Utilities\Types;
 
 /*
  * https://discordapp.com/developers/docs/resources/webhook#execute-webhook
@@ -102,7 +103,7 @@ final class Discord extends AbstractConnector
         }
 
         // Compose webhook
-        $includeTimestamp = !empty($config['include_timestamp']);
+        $includeTimestamp = Types::bool($config['include_timestamp'] ?? false, false, true);
 
         $embed = array_filter(
             [
@@ -114,7 +115,7 @@ final class Discord extends AbstractConnector
         );
 
         if ($includeTimestamp) {
-            $embed['timestamp'] = (new DateTime())->format(DateTime::ATOM);
+            $embed['timestamp'] = Time::nowUtc()->toAtomString();
         }
 
         if (!empty($vars['author'])) {

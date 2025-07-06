@@ -101,7 +101,7 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/FormattingInfo.vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required, helpers} from "@vuelidate/validators";
+import {helpers, required} from "@vuelidate/validators";
 import {useTranslate} from "~/vendor/gettext";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
@@ -131,7 +131,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             thumbnail: {},
             footer: {},
             color: {hexColor},
-            include_timestamp: false
+            include_timestamp: {}
         }
     },
     () => ({

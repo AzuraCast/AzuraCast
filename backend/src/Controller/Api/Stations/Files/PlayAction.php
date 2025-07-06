@@ -42,7 +42,8 @@ final class PlayAction implements SingleActionInterface
     public function __construct(
         private readonly StationMediaRepository $mediaRepo,
         private readonly StationFilesystems $stationFilesystems
-    ) {}
+    ) {
+    }
 
     public function __invoke(
         ServerRequest $request,

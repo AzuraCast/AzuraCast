@@ -22,7 +22,7 @@ use Psr\Http\Message\ResponseInterface;
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
-                name: 'id',
+                name: 'media_id',
                 description: 'Media ID',
                 in: 'path',
                 required: true,
@@ -42,8 +42,7 @@ final class PlayAction implements SingleActionInterface
     public function __construct(
         private readonly StationMediaRepository $mediaRepo,
         private readonly StationFilesystems $stationFilesystems
-    ) {
-    }
+    ) {}
 
     public function __invoke(
         ServerRequest $request,

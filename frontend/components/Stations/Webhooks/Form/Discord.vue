@@ -76,6 +76,23 @@
                 :field="v$.config.color"
                 :label="$gettext('Embed Color (Hex)')"
             />
+
+            <div class="col-md-12">
+                <div class="form-check mb-2">
+                    <input 
+                        id="form_config_include_timestamp"
+                        class="form-check-input" 
+                        type="checkbox" 
+                        v-model="v$.config.include_timestamp.$model"
+                    >
+                    <label class="form-check-label" for="form_config_include_timestamp">
+                        {{ $gettext('Include Timestamp') }}
+                    </label>
+                </div>
+                <small class="form-text text-muted">
+                    {{ $gettext('If set, the time sent will be included in the embed footer.') }}
+                </small>
+            </div>
         </div>
     </tab>
 </template>
@@ -84,7 +101,7 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/FormattingInfo.vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required, helpers} from "@vuelidate/validators";
+import {helpers, required} from "@vuelidate/validators";
 import {useTranslate} from "~/vendor/gettext";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
@@ -113,7 +130,8 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             author: {},
             thumbnail: {},
             footer: {},
-            color: {hexColor}
+            color: {hexColor},
+            include_timestamp: {}
         }
     },
     () => ({
@@ -129,7 +147,8 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             author: '{{ live.streamer_name }}',
             thumbnail: '{{ now_playing.song.art }}',
             footer: $gettext('Powered by AzuraCast'),
-            color: '#3498DB'
+            color: '#3498DB',
+            include_timestamp: true
         }
     })
 );

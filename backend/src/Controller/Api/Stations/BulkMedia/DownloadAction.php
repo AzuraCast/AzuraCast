@@ -51,7 +51,8 @@ final class DownloadAction implements SingleActionInterface
     public function __construct(
         private readonly CustomFieldRepository $customFieldRepo,
         private readonly StationPlaylistRepository $playlistRepo,
-    ) {}
+    ) {
+    }
 
     public function __invoke(
         ServerRequest $request,

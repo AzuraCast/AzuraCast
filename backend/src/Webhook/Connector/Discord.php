@@ -101,6 +101,8 @@ final class Discord extends AbstractConnector
         }
 
         // Compose webhook
+        $includeTimestamp = !empty($config['include_timestamp']);
+
         $embed = array_filter(
             [
                 'title' => $vars['title'] ?? '',
@@ -109,6 +111,10 @@ final class Discord extends AbstractConnector
                 'color' => $colorDecimal,
             ]
         );
+
+        if ($includeTimestamp) {
+            $embed['timestamp'] = (new \DateTime())->format(\DateTime::ATOM);
+        }
 
         if (!empty($vars['author'])) {
             $embed['author'] = [

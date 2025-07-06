@@ -107,6 +107,8 @@ final class CloneAction extends StationsController implements SingleActionInterf
         ini_set('memory_limit', '-1');
 
         $record = $this->getRecord($request, $params);
+        assert($record instanceof Station);
+
         $data = (array)$request->getParsedBody();
 
         $toClone = $data['clone'];
@@ -134,8 +136,6 @@ final class CloneAction extends StationsController implements SingleActionInterf
             new DeepCopy\Matcher\PropertyMatcher(StationPlaylistMedia::class, 'media')
         );
 
-        /** @var Station $record */
-        /** @var Station $newStation */
         $newStation = $copier->copy($record);
 
         $newStation->setName($data['name'] ?? ($newStation->getName() . ' - Copy'));

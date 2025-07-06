@@ -131,7 +131,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             thumbnail: {},
             footer: {},
             color: {hexColor},
-            include_timestamp: {}
+            include_timestamp: false
         }
     },
     () => ({

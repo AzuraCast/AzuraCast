@@ -6822,10 +6822,12 @@ components:
           description: 'The stable-equivalent branch your installation currently appears to be on.'
           type: string
           example: 0.20.3
+          nullable: true
         latest_release:
           description: 'The current latest stable release of the software.'
           type: string
           example: 0.20.4
+          nullable: true
         needs_rolling_update:
           description: 'If you are on the Rolling Release, whether your installation needs to be updated.'
           type: boolean
@@ -7721,11 +7723,11 @@ components:
               type: integer
               example: 1
             unique_id:
-              description: 'A unique identifier associated with this record.'
+              description: "A unique identifier for this specific media item in the station's library. Each entry in the media table has a unique ID, even if it refers to a song that already exists elsewhere."
               type: string
               example: 69b536afc7ebbf16457b8645
             song_id:
-              description: "The media file's 32-character unique song identifier hash"
+              description: "The media file's 32-character unique song identifier hash. This hash is based on the audio content, so the same song uploaded multiple times will have the same `song_id`."
               type: string
               example: 9f33bbc912c19603e51be8e0987d076b
             art:
@@ -8570,10 +8572,6 @@ components:
           description: 'The UNIX timestamp when the Maxmind Geolite was last downloaded.'
           type: integer
           example: 1609480800
-        enable_advanced_features:
-          description: "Whether to enable 'advanced' functionality in the system that is intended for power users."
-          type: boolean
-          example: false
         mail_enabled:
           description: 'Enable e-mail delivery across the application.'
           type: boolean
@@ -9031,6 +9029,9 @@ components:
           type: string
           nullable: true
         title:
+          type: string
+          nullable: true
+        album:
           type: string
           nullable: true
       type: object

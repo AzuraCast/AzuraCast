@@ -2472,7 +2472,7 @@ paths:
     get:
       tags:
         - 'Stations: Media'
-      summary: 'Download or play a given file by `song_id`.'
+      summary: 'Download or play a given file by song_id.'
       operationId: getPlayFileSongId
       parameters:
         -

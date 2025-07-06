@@ -3702,7 +3702,7 @@ paths:
     delete:
       tags:
         - 'Stations: Playlists'
-      summary: 'Delete a single playlist relay.'
+      summary: 'Delete a single playlist.'
       operationId: deletePlaylist
       parameters:
         -

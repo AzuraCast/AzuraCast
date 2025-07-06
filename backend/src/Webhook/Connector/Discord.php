@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Webhook\Connector;
 
-use DateTime;
-
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
+use DateTime;
 
 /*
  * https://discordapp.com/developers/docs/resources/webhook#execute-webhook

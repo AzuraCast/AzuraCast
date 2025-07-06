@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Webhook\Connector;
 
+use DateTime;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
@@ -113,7 +114,7 @@ final class Discord extends AbstractConnector
         );
 
         if ($includeTimestamp) {
-            $embed['timestamp'] = (new \DateTime())->format(\DateTime::ATOM);
+            $embed['timestamp'] = (new DateTime())->format(DateTime::ATOM);
         }
 
         if (!empty($vars['author'])) {

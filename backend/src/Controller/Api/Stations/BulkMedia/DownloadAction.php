@@ -142,7 +142,7 @@ final class DownloadAction implements SingleActionInterface
                 $row['genre'] ?? '',
                 $row['lyrics'] ?? '',
                 $row['isrc'] ?? '',
-                implode(', ', $playlists),
+                implode(';', $playlists),
                 $row['length'] ?? '0.0',
                 ...$extraMetadata,
             ];

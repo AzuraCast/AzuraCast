@@ -112,7 +112,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     OA\Delete(
         path: '/station/{station_id}/playlist/{id}',
         operationId: 'deletePlaylist',
-        summary: 'Delete a single playlist relay.',
+        summary: 'Delete a single playlist.',
         tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),

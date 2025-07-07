@@ -7723,11 +7723,11 @@ components:
               type: integer
               example: 1
             unique_id:
-              description: "A unique identifier for this specific media item in the station's library. Each entry in the media table has a unique ID, even if it refers to a song that already exists elsewhere."
+              description: "A unique identifier for this specific media item in the station's library. Each entry in the media table has a unique ID, even if it refers to a song that exists elsewhere."
               type: string
               example: 69b536afc7ebbf16457b8645
             song_id:
-              description: "The media file's 32-character unique song identifier hash. This hash is based on the audio content, so the same song uploaded multiple times will have the same `song_id`."
+              description: "The media file's 32-character unique song identifier hash. This hash is based on track metadata, so the same song uploaded multiple times will have the same `song_id`."
               type: string
               example: 9f33bbc912c19603e51be8e0987d076b
             art:

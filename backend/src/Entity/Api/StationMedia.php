@@ -35,7 +35,7 @@ class StationMedia
 
     #[OA\Property(
         description: "The media file's 32-character unique song identifier hash. This hash is based " .
-            "on the audio content, so the same song uploaded multiple times will have the same `song_id`.",
+        "on track metadata, so the same song uploaded multiple times will have the same `song_id`.",
         example: "9f33bbc912c19603e51be8e0987d076b"
     )]
     public string $song_id = '';

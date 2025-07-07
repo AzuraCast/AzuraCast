@@ -21,26 +21,28 @@ class StationMedia
     use HasLinks;
 
     #[OA\Property(
-        description: 'The media\'s identifier.',
+        description: "The media's identifier.",
         example: 1
     )]
     public int $id;
 
     #[OA\Property(
-        description: "A unique identifier associated with this record.",
+        description: "A unique identifier for this specific media item in the station's library. " .
+            "Each entry in the media table has a unique ID, even if it refers to a song that exists elsewhere.",
         example: "69b536afc7ebbf16457b8645"
     )]
     public string $unique_id = '';
 
     #[OA\Property(
-        description: 'The media file\'s 32-character unique song identifier hash',
-        example: '9f33bbc912c19603e51be8e0987d076b'
+        description: "The media file's 32-character unique song identifier hash. This hash is based " .
+        "on track metadata, so the same song uploaded multiple times will have the same `song_id`.",
+        example: "9f33bbc912c19603e51be8e0987d076b"
     )]
     public string $song_id = '';
 
     #[OA\Property(
-        description: 'URL to the album art.',
-        example: 'https://picsum.photos/1200/1200'
+        description: "URL to the album art.",
+        example: "https://picsum.photos/1200/1200"
     )]
     public string $art = '';
 

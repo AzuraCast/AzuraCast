@@ -18,7 +18,9 @@ use App\Entity\StationPlaylistFolder;
 use App\Entity\StationQueue;
 use App\Entity\StationRequest;
 use App\Entity\StorageLocation;
+use App\Enums\StationPermissions;
 use App\Event\Radio\AnnotateNextSong;
+use App\Exception\Http\PermissionDeniedException;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
@@ -114,6 +116,10 @@ final class BatchAction implements SingleActionInterface
         StorageLocation $storageLocation,
         ExtendedFilesystemInterface $fs
     ): MediaBatchResult {
+        if (!$request->getAcl()->isAllowed(StationPermissions::DeleteMedia, $station)) {
+            throw PermissionDeniedException::create($request);
+        }
+
         $result = $this->parseRequest($request, $fs, true);
 
         $successfulFiles = [];

@@ -106,14 +106,15 @@ final class Liquidsoap extends AbstractLocalAdapter
     /**
      * @inheritdoc
      */
-    public function getCommand(Station $station): ?string
+    public function getCommand(Station $station): string
     {
-        if ($binary = $this->getBinary()) {
-            $configPath = $station->getRadioConfigDir() . '/liquidsoap.liq';
-            return $binary . ' ' . $configPath;
-        }
+        $binary = $this->getBinary();
 
-        return null;
+        return sprintf(
+            '%s %s',
+            escapeshellcmd($binary),
+            escapeshellarg($this->getConfigurationPath($station))
+        );
     }
 
     /**

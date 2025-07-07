@@ -331,9 +331,16 @@ class Icecast extends AbstractFrontend
 
     public function getCommand(Station $station): ?string
     {
-        return ($binary = $this->getBinary())
-            ? $binary . ' -c ' . $this->getConfigurationPath($station)
-            : null;
+        $binary = $this->getBinary();
+        if ($binary === null) {
+            return null;
+        }
+
+        return sprintf(
+            '%s -c %s',
+            escapeshellcmd($binary),
+            escapeshellarg($this->getConfigurationPath($station))
+        );
     }
 
     /**

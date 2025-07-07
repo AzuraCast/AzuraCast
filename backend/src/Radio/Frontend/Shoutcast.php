@@ -208,10 +208,16 @@ final class Shoutcast extends AbstractFrontend
 
     public function getCommand(Station $station): ?string
     {
-        if ($binary = $this->getBinary()) {
-            return $binary . ' ' . $this->getConfigurationPath($station);
+        $binary = $this->getBinary();
+        if ($binary === null) {
+            return null;
         }
-        return null;
+
+        return sprintf(
+            '%s %s',
+            escapeshellcmd($binary),
+            escapeshellarg($this->getConfigurationPath($station))
+        );
     }
 
     public function getAdminUrl(Station $station, ?UriInterface $baseUrl = null): UriInterface

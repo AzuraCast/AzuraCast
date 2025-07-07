@@ -2452,7 +2452,7 @@ paths:
         -
           $ref: '#/components/parameters/StationIdRequired'
         -
-          name: id
+          name: media_id
           in: path
           description: 'Media ID'
           required: true
@@ -2568,7 +2568,7 @@ paths:
         -
           $ref: '#/components/parameters/StationIdRequired'
         -
-          name: id
+          name: media_id
           in: path
           description: 'Media ID'
           required: true
@@ -2597,7 +2597,7 @@ paths:
         -
           $ref: '#/components/parameters/StationIdRequired'
         -
-          name: id
+          name: media_id
           in: path
           description: 'Media ID'
           required: true
@@ -2627,7 +2627,7 @@ paths:
         -
           $ref: '#/components/parameters/StationIdRequired'
         -
-          name: id
+          name: media_id
           in: path
           description: 'Media ID'
           required: true
@@ -3728,7 +3728,7 @@ paths:
     delete:
       tags:
         - 'Stations: Playlists'
-      summary: 'Delete a single playlist relay.'
+      summary: 'Delete a single playlist.'
       operationId: deletePlaylist
       parameters:
         -

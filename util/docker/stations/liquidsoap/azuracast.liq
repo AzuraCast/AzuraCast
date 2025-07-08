@@ -159,7 +159,7 @@ end
 
 harbor.http.middleware.register(azuracast.http_api_check_token)
 
-def azuracast.start_http_api(~port=null()) = 
+def azuracast.start_http_api(~port=null) = 
     port = port ?? settings.azuracast.liquidsoap_api_port()
     server.harbor(port=port)
 end
@@ -168,7 +168,7 @@ end
 API Utilities
 ----->#
 
-def azuracast.api_call(~timeout=null(), url, payload) =
+def azuracast.api_call(~timeout=null, url, payload) =
     timeout = timeout ?? settings.azuracast.http_timeout()
     full_url = "#{settings.azuracast.api_url()}/#{url}"
 
@@ -196,7 +196,7 @@ def azuracast.api_call(~timeout=null(), url, payload) =
         )
 
         if response.status_code != 200 then
-            null()
+            null
         else
             "#{response}"
         end
@@ -207,12 +207,12 @@ def azuracast.api_call(~timeout=null(), url, payload) =
             "API #{url} - Error: #{error.kind(err)} - #{error.message(err)}"
         )
         
-        null()
+        null
     end
 end
 
 # AzuraCast protocol implementation.
-def azuracast.media_protocol(~rlog=_,~maxtime,arg) =
+def azuracast.media_protocol(~rlog:_,~maxtime,arg) =
     station_media_dir = settings.azuracast.media_path()
     if station_media_dir == "api" then
         timeout = 1000.0 * (maxtime - time())
@@ -240,7 +240,7 @@ def azuracast.media_protocol(~rlog=_,~maxtime,arg) =
                     "#{uri}"
                 end
             else 
-                null()
+                null
             end
         catch err do
             log(
@@ -249,7 +249,7 @@ def azuracast.media_protocol(~rlog=_,~maxtime,arg) =
                 "ERROR parsing JSON: #{err}"
             )
 
-            null()
+            null
         end
     else
         "#{station_media_dir}/#{arg}"
@@ -346,7 +346,7 @@ def azuracast.autocue(
 
         autocue_result
     else
-        null()
+        null
     end
 end
 
@@ -377,7 +377,7 @@ def azuracast.autodj_next_song() =
 
             request.create(uri)
         else 
-            null()
+            null
         end
     catch err do
         log(
@@ -386,7 +386,7 @@ def azuracast.autodj_next_song() =
             "ERROR parsing JSON: #{err}"
         )
 
-        null()
+        null
     end
 end
 

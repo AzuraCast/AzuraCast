@@ -1,5 +1,5 @@
 # Reimplement LS's now-deprecated drop_metadata function.
-def drop_metadata(~id=null(), s)
+def drop_metadata(~id=null, s)
     let {metadata=_, ...tracks} = source.tracks(s)
     source(id=id, tracks)
 end

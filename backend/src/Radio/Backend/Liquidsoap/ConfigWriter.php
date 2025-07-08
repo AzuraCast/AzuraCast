@@ -929,15 +929,12 @@ final class ConfigWriter implements EventSubscriberInterface
     {
         $settings = $event->getBackendConfig();
 
-        /*
-         * TODO: Currently not working pending upstream.
         $event->appendBlock(
             <<<LIQ
             # Allow for Telnet-driven insertion of custom metadata.
-            radio = server.insert_metadata(radio)
+            server.insert_metadata(id="custom_metadata", radio)
             LIQ
         );
-         */
 
         if ($settings->isAudioProcessingEnabled() && $settings->getPostProcessingIncludeLive()) {
             $this->writePostProcessingSection($event);

@@ -96,6 +96,8 @@ final class DownloadAction implements SingleActionInterface
          */
         $headerRow = [
             'id',
+            'unique_id',
+            'song_id',
             'path',
             'title',
             'artist',
@@ -134,7 +136,9 @@ final class DownloadAction implements SingleActionInterface
             }
 
             $bodyRow = [
+                $row['id'] ?? '',
                 $row['unique_id'] ?? '',
+                $row['song_id'] ?? '',
                 $row['path'] ?? '',
                 $row['title'] ?? '',
                 $row['artist'] ?? '',

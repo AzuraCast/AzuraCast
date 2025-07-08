@@ -130,8 +130,8 @@ final class UploadAction implements SingleActionInterface
 
         foreach ($reader->getRecords() as $row) {
             $row = (array)$row;
-            if (isset($row['id'], $mediaByUniqueId[$row['id']])) {
-                $mediaId = $mediaByUniqueId[$row['id']];
+            if (isset($row['unique_id'], $mediaByUniqueId[$row['unique_id']])) {
+                $mediaId = $mediaByUniqueId[$row['unique_id']];
             } elseif (isset($row['path'], $mediaByPath[md5($row['path'])])) {
                 $mediaId = $mediaByPath[md5($row['path'])];
             } else {

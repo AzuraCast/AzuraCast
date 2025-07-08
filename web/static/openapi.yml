@@ -2468,6 +2468,32 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/file/{song_id}/play':
+    get:
+      tags:
+        - 'Stations: Media'
+      summary: 'Download or play a given file by song_id.'
+      operationId: getPlayFileSongId
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: song_id
+          in: path
+          description: 'Media ID'
+          required: true
+          schema:
+            type: string
+            format: guid
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessWithDownload'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/files/rename':
     put:
       tags:

@@ -9,7 +9,7 @@
 # @param a Ending track
 # @param b Starting track
 def cross.smart(
-  ~id=null(),
+  ~id=null,
   ~fade_in=3.,
   ~fade_out=3.,
   ~default=(fun (a, b) -> (sequence([a, b]) : source)),

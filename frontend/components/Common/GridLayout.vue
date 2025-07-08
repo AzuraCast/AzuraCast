@@ -9,7 +9,7 @@
         >
             <pagination
                 v-model:current-page="currentPage"
-                :total="totalRows"
+                :total="total"
                 :per-page="perPage"
                 @change="onPageChange"
             />
@@ -51,7 +51,7 @@
             <pagination
                 v-if="showPagination"
                 v-model:current-page="currentPage"
-                :total="totalRows"
+                :total="total"
                 :per-page="perPage"
                 @change="onPageChange"
             />
@@ -59,24 +59,23 @@
     </div>
 </template>
 
-<script setup lang="ts" generic="Row extends object">
+<script setup lang="ts" generic="Row extends DataTableRow = DataTableRow">
 import Pagination from "~/components/Common/Pagination.vue";
-import {useAxios} from "~/vendor/axios.ts";
-import {computed, onMounted, ref, shallowRef, toRef, watch} from "vue";
+import {computed, ref, watch} from "vue";
 import useOptionalStorage from "~/functions/useOptionalStorage.ts";
+import {DataTableFilterContext, DataTableItemProvider, DataTableRow} from "~/functions/useHasDatatable.ts";
 
-export interface GridLayoutProps {
+export interface GridLayoutProps<Row extends DataTableRow = DataTableRow> {
     id?: string,
-    apiUrl?: string, // URL to fetch for server-side data
+    provider: DataTableItemProvider<Row>, // The data provider for this table.
     paginated?: boolean, // Enable pagination.
-    loading?: boolean, // Pass to override the "loading" property for this grid.
     hideOnLoading?: boolean, // Replace the contents with a loading animation when data is being retrieved.
     showToolbar?: boolean, // Show the header "Toolbar" with search, refresh, per-page, etc.
     pageOptions?: number[],
     defaultPerPage?: number,
 }
 
-const props = withDefaults(defineProps<GridLayoutProps>(), {
+const props = withDefaults(defineProps<GridLayoutProps<Row>>(), {
     paginated: false,
     loading: false,
     hideOnLoading: true,
@@ -85,21 +84,19 @@ const props = withDefaults(defineProps<GridLayoutProps>(), {
     defaultPerPage: 10,
 });
 
-const emit = defineEmits<{
-    (e: 'refreshed'): void,
-    (e: 'data-loaded', data: Row[]): void
-}>();
-
-const currentPage = ref<number>(1);
-const flushCache = ref<boolean>(false);
-const isLoading = ref<boolean>(false);
-
-watch(toRef(props, 'loading'), (newLoading: boolean) => {
-    isLoading.value = newLoading;
+const total = computed<number>(() => {
+    return props.provider.total.value;
 });
 
-const visibleItems = shallowRef<Row[]>([]);
-const totalRows = ref(0);
+const visibleItems = computed<Row[]>(() => {
+    return props.provider.rows.value;
+});
+
+const isLoading = computed<boolean>(() => {
+    return props.provider.loading.value;
+});
+
+const currentPage = ref<number>(1);
 
 const settings = useOptionalStorage(
     'grid_' + props.id + '_settings',
@@ -119,65 +116,51 @@ const perPage = computed<number>(() => {
     return settings.value?.perPage ?? props.defaultPerPage;
 });
 
+const context = computed<DataTableFilterContext>(() => {
+    return {
+        searchPhrase: '',
+        currentPage: currentPage.value,
+        sortField: null,
+        sortOrder: null,
+        paginated: props.paginated,
+        perPage: perPage.value,
+    };
+});
+
+watch(
+    context,
+    (newContext) => {
+        props.provider.setContext(newContext);
+    },
+    {
+        immediate: true
+    }
+);
+
 const showPagination = computed<boolean>(() => {
     return props.paginated && perPage.value !== 0;
 });
 
-const {axios} = useAxios();
+const doRefresh = async (flushCache: boolean = false): Promise<void> => {
+    await props.provider.refresh(flushCache);
+}
 
 const refresh = () => {
-    const queryParams: {
-        [key: string]: any
-    } = {
-        internal: true
-    };
-
-    if (props.paginated) {
-        queryParams.rowCount = perPage.value;
-        queryParams.current = (perPage.value !== 0) ? currentPage.value : 1;
-    } else {
-        queryParams.rowCount = 0;
-    }
-
-    if (flushCache.value) {
-        queryParams.flushCache = true;
-    }
-
-    isLoading.value = true;
-
-    axios.get(props.apiUrl, {params: queryParams}).then((resp) => {
-        totalRows.value = resp.data.total;
-
-        const rows = resp.data.rows;
-
-        emit('data-loaded', rows);
-        visibleItems.value = rows;
-    }).catch((err) => {
-        totalRows.value = 0;
-        console.error(err.response.data.message);
-    }).finally(() => {
-        isLoading.value = false;
-        flushCache.value = false;
-        emit('refreshed');
-    });
-}
+    void doRefresh(false);
+};
 
 const onPageChange = (p: number) => {
     currentPage.value = p;
-    refresh();
 }
 
 const relist = () => {
-    flushCache.value = true;
-    refresh();
+    void doRefresh(true);
 };
 
 watch(perPage, () => {
     currentPage.value = 1;
     relist();
 });
-
-onMounted(refresh);
 
 defineExpose({
     refresh,

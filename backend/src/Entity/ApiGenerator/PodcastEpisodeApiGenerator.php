@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\ApiGenerator;
 
+use App\Entity\Api\Podcast;
 use App\Entity\Api\PodcastEpisode as ApiPodcastEpisode;
 use App\Entity\Api\PodcastMedia as ApiPodcastMedia;
 use App\Entity\Enums\PodcastSources;
@@ -12,10 +13,14 @@ use App\Entity\PodcastMedia;
 use App\Entity\StationMedia;
 use App\Http\ServerRequest;
 use App\Utilities\Strings;
+use GuzzleHttp\Psr7\Uri;
+use Psr\Http\Message\UriInterface;
 use Symfony\Component\Filesystem\Path;
 
 final class PodcastEpisodeApiGenerator
 {
+    public const string OP3_BASE_URL = 'https://op3.dev/e';
+
     public function __construct(
         private readonly SongApiGenerator $songApiGen
     ) {
@@ -23,7 +28,8 @@ final class PodcastEpisodeApiGenerator
 
     public function __invoke(
         PodcastEpisode $record,
-        ServerRequest $request
+        ServerRequest $request,
+        ?Podcast $apiPodcast = null
     ): ApiPodcastEpisode {
         $router = $request->getRouter();
         $isInternal = $request->isInternal();
@@ -121,6 +127,12 @@ final class PodcastEpisodeApiGenerator
             absolute: !$isInternal
         );
 
+        $downloadUri = $router->fromHereAsUri(
+            routeName: 'api:stations:public:podcast:episode:download',
+            routeParams: $downloadRouteParams,
+            absolute: true
+        );
+
         $return->links = [
             'self' => $router->named(
                 routeName: 'api:stations:public:podcast:episode',
@@ -132,13 +144,31 @@ final class PodcastEpisodeApiGenerator
                 routeParams: $baseRouteParams,
                 absolute: !$isInternal
             ),
-            'download' => $router->fromHere(
-                routeName: 'api:stations:public:podcast:episode:download',
-                routeParams: $downloadRouteParams,
-                absolute: !$isInternal
-            ),
+            'download' => (string)$this->buildDownloadUri($record, $downloadUri, $apiPodcast),
         ];
 
         return $return;
+    }
+
+    private function buildDownloadUri(
+        PodcastEpisode $record,
+        UriInterface $downloadUri,
+        ?Podcast $apiPodcast = null
+    ): UriInterface {
+        if ($record->getPodcast()->getBrandingConfig()->getEnableOp3Prefix()) {
+            $prefixUri = new Uri(self::OP3_BASE_URL);
+
+            $baseUri = ($downloadUri->getScheme() === 'http')
+                ? (string)$downloadUri
+                : (string)$downloadUri->withScheme('');
+            $baseUri = ltrim($baseUri, '/');
+
+            $podcastGuid = $apiPodcast?->guid;
+            return ($podcastGuid !== null)
+                ? $prefixUri->withPath($prefixUri->getPath() . ',pg=' . $podcastGuid . '/' . $baseUri)
+                : $prefixUri->withPath($prefixUri->getPath() . '/' . $baseUri);
+        }
+
+        return $downloadUri;
     }
 }

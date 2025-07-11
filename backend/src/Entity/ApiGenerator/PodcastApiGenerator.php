@@ -11,11 +11,15 @@ use App\Entity\Repository\PodcastRepository;
 use App\Entity\Station;
 use App\Http\ServerRequest;
 use App\Utilities\Strings;
+use Psr\Http\Message\UriInterface;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 use Symfony\Component\Intl\Languages;
+use Symfony\Component\Uid\Uuid;
 
 final class PodcastApiGenerator
 {
+    public const string PODCAST_GUID_NAMESPACE = 'ead4c236-bf58-58c6-a2c6-a6b28d128cb6';
+
     /**
      * @var array<string, array<string>>
      */
@@ -103,6 +107,14 @@ final class PodcastApiGenerator
             absolute: !$isInternal
         );
 
+        $feedUri = $router->namedAsUri(
+            routeName: 'public:podcast:feed',
+            routeParams: $baseRouteParams,
+            absolute: true
+        );
+
+        $return->guid = $this->buildPodcastGuid($feedUri);
+
         $return->links = [
             'self' => $router->named(
                 routeName: 'api:stations:public:podcast',
@@ -119,11 +131,7 @@ final class PodcastApiGenerator
                 routeParams: $baseRouteParams,
                 absolute: !$isInternal
             ),
-            'public_feed' => $router->named(
-                routeName: 'public:podcast:feed',
-                routeParams: $baseRouteParams,
-                absolute: !$isInternal
-            ),
+            'public_feed' => (string)$feedUri,
         ];
 
         return $return;
@@ -143,6 +151,19 @@ final class PodcastApiGenerator
             $podcast->getIdRequired(),
             $this->publishedPodcasts[$station->getShortName()] ?? [],
             true
+        );
+    }
+
+    private function buildPodcastGuid(UriInterface $uri): string
+    {
+        $baseUri = rtrim(
+            (string)$uri->withScheme(''),
+            '/'
+        );
+
+        return (string)Uuid::v5(
+            Uuid::fromString(self::PODCAST_GUID_NAMESPACE),
+            $baseUri
         );
     }
 }

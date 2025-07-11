@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Frontend\PublicPages;
 
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Podcast;
 use App\Entity\ApiGenerator\PodcastApiGenerator;
 use App\Entity\ApiGenerator\PodcastEpisodeApiGenerator;
 use App\Entity\PodcastCategory;
@@ -15,12 +16,9 @@ use App\Http\ServerRequest;
 use App\Xml\Writer;
 use Carbon\CarbonImmutable;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\Uid\Uuid;
 
 final class PodcastFeedAction implements SingleActionInterface
 {
-    public const string PODCAST_NAMESPACE = 'ead4c236-bf58-58c6-a2c6-a6b28d128cb6';
-
     public function __construct(
         private readonly PodcastApiGenerator $podcastApiGenerator,
         private readonly PodcastEpisodeApiGenerator $episodeApiGenerator
@@ -95,7 +93,7 @@ final class PodcastFeedAction implements SingleActionInterface
                 '@type' => 'application/rss+xml',
                 '@href' => (string)$request->getUri(),
             ],
-            'podcast:guid' => $this->buildPodcastGuid($podcastApi->links['public_feed']),
+            'podcast:guid' => $podcastApi->guid,
             'item' => [],
         ];
 
@@ -127,7 +125,7 @@ final class PodcastFeedAction implements SingleActionInterface
                 $hasExplicitEpisode = true;
             }
 
-            $channel['item'][] = $this->buildItemForEpisode($episode, $request);
+            $channel['item'][] = $this->buildItemForEpisode($episode, $request, $podcastApi);
         }
 
         if (!$hasPublishedEpisode) {
@@ -149,11 +147,14 @@ final class PodcastFeedAction implements SingleActionInterface
             ->withHeader('X-Robots-Tag', 'index, nofollow');
     }
 
-    private function buildItemForEpisode(PodcastEpisode $episode, ServerRequest $request): array
-    {
+    private function buildItemForEpisode(
+        PodcastEpisode $episode,
+        ServerRequest $request,
+        Podcast $apiPodcast
+    ): array {
         $station = $request->getStation();
 
-        $episodeApi = $this->episodeApiGenerator->__invoke($episode, $request);
+        $episodeApi = $this->episodeApiGenerator->__invoke($episode, $request, $apiPodcast);
 
         $publishedAt = CarbonImmutable::createFromTimestamp($episodeApi->publish_at, $station->getTimezoneObject());
 
@@ -189,18 +190,5 @@ final class PodcastFeedAction implements SingleActionInterface
         }
 
         return $item;
-    }
-
-    private function buildPodcastGuid(string $uri): string
-    {
-        $baseUri = rtrim(
-            str_replace(['https://', 'http://'], '', $uri),
-            '/'
-        );
-
-        return (string)Uuid::v5(
-            Uuid::fromString(self::PODCAST_NAMESPACE),
-            $baseUri
-        );
     }
 }

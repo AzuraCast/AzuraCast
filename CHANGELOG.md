@@ -24,6 +24,11 @@ release channel, you can take advantage of these new features and fixes.
   who have the "manage" permission will automatically receive the "delete" permission; when assigning new permissions,
   this new permission will need to be manually assigned.
 
+- Podcasts can now take advantage of the [Open Podcast Prefix Project (OP3)](https://op3.dev/) free and open-source
+  podcast analytics service directly from within AzuraCast. Enable OP3 support on the "Branding" tab of the podcast, and
+  all episodes will have their download URLs prefixed by the OP3 analytics URL, which will let you track your audience
+  details via the OP3 platform.
+
 ## Code Quality/Technical Changes
 
 - We have removed the "Hide Advanced Features" setting from the system settings panel. Often, this setting was disabled

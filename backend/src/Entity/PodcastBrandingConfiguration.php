@@ -19,4 +19,16 @@ class PodcastBrandingConfiguration extends AbstractStationConfiguration
     {
         $this->set(self::PUBLIC_CUSTOM_HTML, $html);
     }
+
+    public const string ENABLE_OP3_PREFIX = 'enable_op3_prefix';
+
+    public function getEnableOp3Prefix(): bool
+    {
+        return Types::bool($this->get(self::ENABLE_OP3_PREFIX), false, true);
+    }
+
+    public function setEnableOp3Prefix(string|bool $enable): void
+    {
+        $this->set(self::ENABLE_OP3_PREFIX, Types::bool($enable, false, true));
+    }
 }

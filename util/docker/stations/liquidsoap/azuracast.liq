@@ -142,9 +142,9 @@ Liquidsoap HTTP API
 def azuracast.http_api_log_requests(req, res, next)
     started_at = time()
     next(req, res)
-    duration = time() - started_at
+    req_duration = time() - started_at
 
-    log(label="http", "#{req.method} #{req.path} #{res.status_code.current()} #{duration}")
+    log(label="http", "#{req.method} #{req.path} #{res.status_code.current()} #{req_duration}")
 end
 
 harbor.http.middleware.register(azuracast.http_api_log_requests)
@@ -168,14 +168,14 @@ end
 API Utilities
 ----->#
 
-def azuracast.api_call(~timeout=null, url, payload) =
+def azuracast.api_call(~timeout=null, endpoint_url, payload) =
     timeout = timeout ?? settings.azuracast.http_timeout()
-    full_url = "#{settings.azuracast.api_url()}/#{url}"
+    full_url = "#{settings.azuracast.api_url()}/#{endpoint_url}"
 
     log(
         level=3,
         label="azuracast.api",
-        "API #{url} - Sending POST request to '#{full_url}' with body: #{payload}"
+        "API #{endpoint_url} - Sending POST request to '#{full_url}' with body: #{payload}"
     )
 
     try

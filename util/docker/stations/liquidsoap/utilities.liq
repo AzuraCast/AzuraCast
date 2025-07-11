@@ -1,17 +1,25 @@
+let azuracast.utilities = ()
+
 # Reimplement LS's now-deprecated drop_metadata function.
-def drop_metadata(~id=null, s)
+def azuracast.utilities.drop_metadata(~id:drop_meta_id=null, s)
     let {metadata=_, ...tracks} = source.tracks(s)
-    source(id=id, tracks)
+    source(id=drop_meta_id, tracks)
 end
 
 # Skip command (used by web UI)
-def add_skip_command(s) =
+def azuracast.utilities.add_skip_command(s) =
     def skip(_) =
         source.skip(s)
         "Done!"
     end
 
-    server.register(namespace="radio", usage="skip", description="Skip the current song.", "skip",skip)
+    server.register(
+        namespace="radio", 
+        usage="skip", 
+        description="Skip the current song.", 
+        "skip",
+        skip
+    )
 end
 
 # Register a server/telnet command to update a source's metadata. Returns a new
@@ -19,11 +27,11 @@ end
 # format: insert key1="val1",key2="val2",...
 # @flag extra
 # @category Source / Track processing
-def server.insert_metadata(
-    ~id=null,
+def azuracast.utilities.add_custom_metadata_command(
+    ~id:custom_meta_id=null,
     s
 ) =
-    id = string.id.default(default="custom_metadata", id)
+    custom_meta_id = string.id.default(default="custom_metadata", custom_meta_id)
 
     def insert(meta_str) =
         let (meta, _) = string.annotate.parse("#{meta_str}:")
@@ -38,7 +46,7 @@ def server.insert_metadata(
     end
 
     server.register(
-        namespace=id, 
+        namespace=custom_meta_id, 
         usage="insert key1=\"val1\",key2=\"val2\",..", 
         description="Insert a metadata chunk.",
         "insert",

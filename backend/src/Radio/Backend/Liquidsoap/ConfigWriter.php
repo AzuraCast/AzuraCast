@@ -434,7 +434,7 @@ final class ConfigWriter implements EventSubscriberInterface
             }
 
             if ($playlist->getIsJingle()) {
-                $playlistConfigLines[] = $playlistVarName . ' = drop_metadata(' . $playlistVarName . ')';
+                $playlistConfigLines[] = $playlistVarName . ' = azuracast.utilities.drop_metadata(' . $playlistVarName . ')';
             }
 
             if (PlaylistTypes::Advanced === $playlist->getType()) {
@@ -752,7 +752,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(
             <<<LIQ
             # Allow Telnet to skip the current track.
-            add_skip_command(radio)
+            azuracast.utilities.add_skip_command(radio)
             
             # Apply amplification metadata (if supplied)
             # This can be disabled by setting:
@@ -932,7 +932,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(
             <<<LIQ
             # Allow for Telnet-driven insertion of custom metadata.
-            server.insert_metadata(id="custom_metadata", radio)
+            azuracast.utilities.add_custom_metadata_command(id="custom_metadata", radio)
             LIQ
         );
 
@@ -1049,10 +1049,10 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $event->appendBlock(
             <<<LIQ
-            def hls_segment_name(metadata) =
-                timestamp = int_of_float(time())
-                duration = {$hlsSegmentLength}
-                "#{metadata.stream_name}_#{duration}_#{timestamp}_#{metadata.position}.#{metadata.extname}"
+            def hls_segment_name(seg_meta) =
+                seg_timestamp = int_of_float(time())
+                seg_duration = {$hlsSegmentLength}
+                "#{seg_meta.stream_name}_#{seg_duration}_#{seg_timestamp}_#{seg_meta.position}.#{seg_meta.extname}"
             end
 
             output.file.hls(playlist="live.m3u8",

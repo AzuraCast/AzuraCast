@@ -7592,6 +7592,9 @@ components:
               type: string
             art_updated_at:
               type: integer
+            guid:
+              description: 'The UUIDv5 global unique identifier for this podcast, based on its RSS feed URL.'
+              type: string
             is_published:
               type: boolean
             episodes:
@@ -9174,6 +9177,7 @@ components:
         - 'manage station mounts'
         - 'manage station remotes'
         - 'manage station media'
+        - 'delete station media'
         - 'manage station automation'
         - 'manage station web hooks'
         - 'manage station podcasts'
@@ -9188,6 +9192,7 @@ components:
         - MountPoints
         - RemoteRelays
         - Media
+        - DeleteMedia
         - Automation
         - WebHooks
         - Podcasts

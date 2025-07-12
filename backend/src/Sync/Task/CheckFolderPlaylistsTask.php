@@ -96,6 +96,9 @@ final class CheckFolderPlaylistsTask extends AbstractTask
             ->getArrayResult();
         $mediaInPlaylist = array_column($mediaInPlaylistRaw, 'media_id', 'media_id');
 
+        // Define variable to hold all media in folder
+        $allMediaInFolder = [];
+
         foreach ($folders as $folder) {
             $path = $folder->getPath();
 
@@ -107,6 +110,10 @@ final class CheckFolderPlaylistsTask extends AbstractTask
 
             $mediaInFolderRaw = $mediaInFolderQuery->setParameter('path', $path . '/%')
                 ->getArrayResult();
+
+            // Extracts IDs and combines all folders into a single array
+            $mediaInFolder = array_column($mediaInFolderRaw, 'id', 'id');
+            $allMediaInFolder += $mediaInFolder;
 
             $addedRecords = 0;
             $weight = $this->spmRepo->getHighestSongWeight($playlist);
@@ -147,5 +154,43 @@ final class CheckFolderPlaylistsTask extends AbstractTask
                 ]
             );
         }
+
+        // Remove songs from the playlist that are no longer in any of the folders
+        $mediaToRemove = array_diff_key($mediaInPlaylist, $allMediaInFolder);
+        $removedRecords = 0;
+        foreach ($mediaToRemove as $mediaId) {
+            $spmRow = $this->em->createQuery(
+                <<<'DQL'
+                    SELECT spm
+                    FROM App\Entity\StationPlaylistMedia spm
+                    WHERE spm.media_id = :media_id AND spm.playlist_id = :playlist_id
+                DQL
+            )
+                ->setParameter('media_id', $mediaId)
+                ->setParameter('playlist_id', $playlist->getId())
+                ->getOneOrNullResult();
+
+            if ($spmRow) {
+                $this->em->remove($spmRow);
+                $removedRecords++;
+            }
+        }
+
+        if ($removedRecords > 0 || !empty($addedRecords)) {
+            // Write changes to file.
+            $message = new WritePlaylistFileMessage();
+            $message->playlist_id = $playlist->getIdRequired();
+            $this->messageBus->dispatch($message);
+
+            if ($removedRecords > 0) {
+                $this->logger->debug(
+                    sprintf('%d media records removed from playlist (no longer in folder).', $removedRecords),
+                    [
+                        'playlist' => $playlist->getName(),
+                    ]
+                );
+            }
+        }
+        
     }
 }

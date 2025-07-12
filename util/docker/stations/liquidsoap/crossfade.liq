@@ -9,7 +9,7 @@
 # @param a Ending track
 # @param b Starting track
 def cross.smart(
-  ~id:cross_id=null,
+  ~id=null(),
   ~fade_in=3.,
   ~fade_out=3.,
   ~default=(fun (a, b) -> (sequence([a, b]) : source)),
@@ -19,7 +19,7 @@ def cross.smart(
   a,
   b
 ) =
-    cross_id = string.id.default(default="crossfade", cross_id)
+    cross_id = string.id.default(default="crossfade", id)
 
     let cross_log = fun (~level=3, x) -> log(label=cross_id, level=level, x)
     let cross_fade_out = fun (s) -> fade.out(type="sin", duration=fade_out, s)

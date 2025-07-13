@@ -197,7 +197,7 @@ class StationBackendConfiguration extends AbstractArrayEntity
 
             return Types::bool($this->get(__PROPERTY__));
         }
-        set (bool|string $value) {
+        set (bool|string|null $value) {
             $this->set(__PROPERTY__, $value);
         }
     }

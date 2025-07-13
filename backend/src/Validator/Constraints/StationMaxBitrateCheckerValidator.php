@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Validator\Constraints;
 
+use App\Entity\Station;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -19,6 +20,7 @@ final class StationMaxBitrateCheckerValidator extends ConstraintValidator
         $stationGetter = $constraint->stationGetter;
         $selectedBitrateProperty = $constraint->selectedBitrate;
 
+        /** @var Station $station */
         $station = ($stationGetter === 'self') ?
             $this->context->getObject() :
             $this->context->getObject()->{'get' . $stationGetter}();

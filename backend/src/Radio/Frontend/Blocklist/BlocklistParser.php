@@ -48,7 +48,7 @@ final class BlocklistParser
             return false;
         }
 
-        $allowedIps = trim($station->getFrontendConfig()->getAllowedIps() ?? '');
+        $allowedIps = trim($station->getFrontendConfig()->allowed_ips ?? '');
         return !empty($allowedIps);
     }
 
@@ -60,7 +60,7 @@ final class BlocklistParser
             return false;
         }
 
-        $allowedIps = $station->getFrontendConfig()->getAllowedIps() ?? '';
+        $allowedIps = $station->getFrontendConfig()->allowed_ips ?? '';
         return $this->isIpInList($ip, $allowedIps);
     }
 
@@ -72,7 +72,7 @@ final class BlocklistParser
             return false;
         }
 
-        $bannedIps = $station->getFrontendConfig()->getBannedIps() ?? '';
+        $bannedIps = $station->getFrontendConfig()->banned_ips ?? '';
         return $this->isIpInList($ip, $bannedIps);
     }
 
@@ -114,7 +114,7 @@ final class BlocklistParser
             return false;
         }
 
-        $bannedCountries = $station->getFrontendConfig()->getBannedCountries() ?? [];
+        $bannedCountries = $station->getFrontendConfig()->banned_countries ?? [];
         if (empty($bannedCountries)) {
             return false;
         }
@@ -133,7 +133,7 @@ final class BlocklistParser
             return false;
         }
 
-        $bannedUserAgents = $station->getFrontendConfig()->getBannedUserAgents() ?? '';
+        $bannedUserAgents = $station->getFrontendConfig()->banned_user_agents ?? '';
         if (empty($bannedUserAgents)) {
             return false;
         }

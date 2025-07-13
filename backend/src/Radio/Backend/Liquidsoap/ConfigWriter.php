@@ -117,7 +117,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 $preset = $settings->getMasterMePresetEnum();
                 $presetOptions = $preset->getOptions();
 
-                if (0 !== ($loudnessTarget = $settings->getMasterMeLoudnessTarget())) {
+                if (0 !== ($loudnessTarget = $settings->master_me_loudness_target)) {
                     $presetOptions['target'] = $loudnessTarget;
                 }
 
@@ -148,9 +148,9 @@ final class ConfigWriter implements EventSubscriberInterface
                 $stereoToolBinary = $stereoToolLibraryPath . '/stereo_tool';
 
                 $stereoToolConfiguration = $station->getRadioConfigDir()
-                    . DIRECTORY_SEPARATOR . $settings->getStereoToolConfigurationPath();
+                    . DIRECTORY_SEPARATOR . $settings->stereo_tool_configuration_path;
 
-                $stereoToolLicenseKey = $settings->getStereoToolLicenseKey();
+                $stereoToolLicenseKey = $settings->stereo_tool_license_key;
 
                 if (is_file($stereoToolBinary)) {
                     $stereoToolProcess = $stereoToolBinary . ' --silent - - -s ' . $stereoToolConfiguration;
@@ -247,17 +247,17 @@ final class ConfigWriter implements EventSubscriberInterface
         $logLevel = $this->environment->isProduction() ? 3 : 4;
 
         $backendConfig = $event->getBackendConfig();
-        $useComputeAutocue = $backendConfig->getEnableAutoCue() ? 'true' : 'false';
+        $useComputeAutocue = $backendConfig->enable_auto_cue ? 'true' : 'false';
 
         $enableCrossfade = $backendConfig->isCrossfadeEnabled() ? 'true' : 'false';
         $crossfadeType = (CrossfadeModes::Smart === $backendConfig->getCrossfadeTypeEnum())
             ? 'smart'
             : 'normal';
-        $defaultFade = self::toFloat($backendConfig->getCrossfade());
+        $defaultFade = self::toFloat($backendConfig->crossfade);
         $defaultCross = self::toFloat($backendConfig->getCrossfadeDuration());
 
         $liveBroadcastText = self::cleanUpString(
-            $backendConfig->getLiveBroadcastText()
+            $backendConfig->live_broadcast_text
         );
 
         $fallbackPath = self::cleanUpString(
@@ -764,7 +764,7 @@ final class ConfigWriter implements EventSubscriberInterface
         // Replaygain metadata
         $settings = $event->getBackendConfig();
 
-        if ($settings->useReplayGain()) {
+        if ($settings->enable_replaygain_metadata) {
             $event->appendBlock(
                 <<<LIQ
                 # Replaygain Metadata
@@ -785,7 +785,7 @@ final class ConfigWriter implements EventSubscriberInterface
             LS
         );
 
-        if ($settings->isAudioProcessingEnabled() && !$settings->getPostProcessingIncludeLive()) {
+        if ($settings->isAudioProcessingEnabled() && !$settings->post_processing_include_live) {
             $this->writePostProcessingSection($event);
         }
     }
@@ -801,9 +801,9 @@ final class ConfigWriter implements EventSubscriberInterface
         $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_PRE_LIVE);
 
         $settings = $event->getBackendConfig();
-        $charset = $settings->getCharset();
-        $djMount = $settings->getDjMountPoint();
-        $recordLiveStreams = $settings->recordStreams();
+        $charset = $settings->charset;
+        $djMount = $settings->dj_mount_point;
+        $recordLiveStreams = $settings->record_streams;
 
         $harborParams = [
             '"' . self::cleanUpString($djMount) . '"',
@@ -817,7 +817,7 @@ final class ConfigWriter implements EventSubscriberInterface
             'on_disconnect = azuracast.live_disconnected',
         ];
 
-        $djBuffer = $settings->getDjBuffer();
+        $djBuffer = $settings->dj_buffer;
         if (0 !== $djBuffer) {
             $harborParams[] = 'buffer = ' . self::toFloat($djBuffer);
             $harborParams[] = 'max = ' . self::toFloat(max($djBuffer + 5, 10));
@@ -891,7 +891,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
         if ($recordLiveStreams) {
             $recordLiveStreamsFormat = $settings->getRecordStreamsFormatEnum();
-            $recordLiveStreamsBitrate = $settings->getRecordStreamsBitrate();
+            $recordLiveStreamsBitrate = $settings->record_streams_bitrate;
 
             $formatString = $this->getOutputFormatString($recordLiveStreamsFormat, $recordLiveStreamsBitrate);
             $recordExtension = $recordLiveStreamsFormat->getExtension();
@@ -936,7 +936,7 @@ final class ConfigWriter implements EventSubscriberInterface
             LIQ
         );
 
-        if ($settings->isAudioProcessingEnabled() && $settings->getPostProcessingIncludeLive()) {
+        if ($settings->isAudioProcessingEnabled() && $settings->post_processing_include_live) {
             $this->writePostProcessingSection($event);
         }
 
@@ -1043,9 +1043,9 @@ final class ConfigWriter implements EventSubscriberInterface
         $hlsBaseDir = $station->getRadioHlsDir();
 
         $backendConfig = $event->getBackendConfig();
-        $hlsSegmentLength = $backendConfig->getHlsSegmentLength();
-        $hlsSegmentsInPlaylist = $backendConfig->getHlsSegmentsInPlaylist();
-        $hlsSegmentsOverhead = $backendConfig->getHlsSegmentsOverhead();
+        $hlsSegmentLength = $backendConfig->hls_segment_length;
+        $hlsSegmentsInPlaylist = $backendConfig->hls_segments_in_playlist;
+        $hlsSegmentsOverhead = $backendConfig->hls_segments_overhead;
 
         $event->appendBlock(
             <<<LIQ
@@ -1080,7 +1080,7 @@ final class ConfigWriter implements EventSubscriberInterface
         int $id
     ): string {
         $station = $event->getStation();
-        $charset = $event->getBackendConfig()->getCharset();
+        $charset = $event->getBackendConfig()->charset;
 
         $format = $mount->getAutodjFormat() ?? StreamFormats::default();
         $outputFormat = $this->getOutputFormatString(
@@ -1332,7 +1332,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $station = $event->getStation();
         $backendConfig = $event->getBackendConfig();
 
-        if ($backendConfig->getWritePlaylistsToLiquidsoap()) {
+        if ($backendConfig->write_playlists_to_liquidsoap) {
             return true;
         }
 

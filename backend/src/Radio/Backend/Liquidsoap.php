@@ -52,7 +52,7 @@ final class Liquidsoap extends AbstractLocalAdapter
     public function getHttpApiPort(Station $station): int
     {
         $settings = $station->getBackendConfig();
-        return $settings->getTelnetPort() ?? ($this->getStreamPort($station) - 1);
+        return $settings->telnet_port ?? ($this->getStreamPort($station) - 1);
     }
 
     /**
@@ -64,14 +64,14 @@ final class Liquidsoap extends AbstractLocalAdapter
      */
     public function getStreamPort(Station $station): int
     {
-        $djPort = $station->getBackendConfig()->getDjPort();
+        $djPort = $station->getBackendConfig()->dj_port;
         if (null !== $djPort) {
             return $djPort;
         }
 
         // Default to frontend port + 5
         $frontendConfig = $station->getFrontendConfig();
-        $frontendPort = $frontendConfig->getPort() ?? (8000 + (($station->getId() - 1) * 10));
+        $frontendPort = $frontendConfig->port ?? (8000 + (($station->getId() - 1) * 10));
 
         return $frontendPort + 5;
     }
@@ -247,7 +247,7 @@ final class Liquidsoap extends AbstractLocalAdapter
 
     public function getWebStreamingUrl(Station $station, UriInterface $baseUrl): UriInterface
     {
-        $djMount = $station->getBackendConfig()->getDjMountPoint();
+        $djMount = $station->getBackendConfig()->dj_mount_point;
 
         return $baseUrl
             ->withScheme('wss')

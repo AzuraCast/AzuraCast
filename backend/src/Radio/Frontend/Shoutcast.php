@@ -65,13 +65,13 @@ final class Shoutcast extends AbstractFrontend
     public function getNowPlaying(Station $station, bool $includeClients = true): Result
     {
         $feConfig = $station->getFrontendConfig();
-        $radioPort = $feConfig->getPort();
+        $radioPort = $feConfig->port;
 
         $baseUrl = $this->environment->getLocalUri()
             ->withPort($radioPort);
 
         $npAdapter = $this->adapterFactory->getShoutcast2Adapter($baseUrl);
-        $npAdapter->setAdminPassword($feConfig->getAdminPassword());
+        $npAdapter->setAdminPassword($feConfig->admin_pw);
 
         $mountPromises = [];
         $defaultMountId = null;
@@ -140,20 +140,20 @@ final class Shoutcast extends AbstractFrontend
         $urlHost = $this->getPublicUrl($station)->getHost();
 
         $config = [
-            'password' => $frontendConfig->getSourcePassword(),
-            'adminpassword' => $frontendConfig->getAdminPassword(),
+            'password' => $frontendConfig->source_pw,
+            'adminpassword' => $frontendConfig->admin_pw,
             'logfile' => $configPath . '/sc_serv.log',
             'w3clog' => $configPath . '/sc_w3c.log',
             'banfile' => $this->writeIpBansFile($station),
             'agentfile' => $this->writeUserAgentBansFile($station, 'sc_serv.agent'),
             'ripfile' => $configPath . '/sc_serv.rip',
-            'maxuser' => $frontendConfig->getMaxListeners() ?? 250,
-            'portbase' => $frontendConfig->getPort(),
+            'maxuser' => $frontendConfig->max_listeners ?? 250,
+            'portbase' => $frontendConfig->port,
             'requirestreamconfigs' => 1,
             'savebanlistonexit' => '0',
             'saveagentlistonexit' => '0',
-            'licenceid' => $frontendConfig->getScLicenseId(),
-            'userid' => $frontendConfig->getScUserId(),
+            'licenceid' => $frontendConfig->sc_license_id,
+            'userid' => $frontendConfig->sc_user_id,
             'sslCertificateFile' => $certPath,
             'sslCertificateKeyFile' => $certKey,
             'destdns' => $urlHost,
@@ -167,7 +167,7 @@ final class Shoutcast extends AbstractFrontend
             $config['maxbitrate'] = $maxBitrateInBps;
         }
 
-        $customConf = $this->processCustomConfig($frontendConfig->getCustomConfiguration());
+        $customConf = $this->processCustomConfig($frontendConfig->custom_config);
         if (false !== $customConf) {
             $config = array_merge($config, $customConf);
         }

@@ -48,7 +48,7 @@ final class MatomoAnalytics extends AbstractConnector
         }
 
         // Get listen URLs for each mount point.
-        $radioPort = $station->getFrontendConfig()->getPort();
+        $radioPort = $station->getFrontendConfig()->port;
 
         $baseUri = $this->router->getBaseUrl();
 

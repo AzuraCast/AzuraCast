@@ -87,7 +87,7 @@ final class QueueBuilder implements EventSubscriberInterface
         $recentSongHistoryForDuplicatePrevention = $this->queueRepo->getRecentlyPlayedByTimeRange(
             $station,
             $expectedPlayTime,
-            $station->getBackendConfig()->getDuplicatePreventionTimeRange()
+            $station->getBackendConfig()->duplicate_prevention_time_range
         );
 
         $this->logger->debug(

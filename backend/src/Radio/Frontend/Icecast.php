@@ -50,14 +50,14 @@ class Icecast extends AbstractFrontend
     public function getNowPlaying(Station $station, bool $includeClients = true): Result
     {
         $feConfig = $station->getFrontendConfig();
-        $radioPort = $feConfig->getPort();
+        $radioPort = $feConfig->port;
 
         $baseUrl = $this->environment->getLocalUri()
             ->withPort($radioPort);
 
         $npAdapter = $this->adapterFactory->getIcecastAdapter($baseUrl);
 
-        $npAdapter->setAdminPassword($feConfig->getAdminPassword());
+        $npAdapter->setAdminPassword($feConfig->admin_pw);
 
         $mountPromises = [];
         $defaultMountId = null;
@@ -152,7 +152,7 @@ class Icecast extends AbstractFrontend
             'admin' => 'icemaster@localhost',
             'hostname' => $baseUrl->getHost(),
             'limits' => [
-                'clients' => $frontendConfig->getMaxListeners() ?? 2500,
+                'clients' => $frontendConfig->max_listeners ?? 2500,
                 'sources' => $station->getMounts()->count(),
                 'queue-size' => 524288,
                 'client-timeout' => 30,
@@ -161,14 +161,14 @@ class Icecast extends AbstractFrontend
                 'burst-size' => 65535,
             ],
             'authentication' => [
-                'source-password' => $frontendConfig->getSourcePassword(),
-                'relay-password' => $frontendConfig->getRelayPassword(),
+                'source-password' => $frontendConfig->source_pw,
+                'relay-password' => $frontendConfig->relay_pw,
                 'admin-user' => 'admin',
-                'admin-password' => $frontendConfig->getAdminPassword(),
+                'admin-password' => $frontendConfig->admin_pw,
             ],
 
             'listen-socket' => [
-                'port' => $frontendConfig->getPort(),
+                'port' => $frontendConfig->port,
             ],
 
             'mount' => [],
@@ -205,11 +205,11 @@ class Icecast extends AbstractFrontend
             ],
         ];
 
-        $bannedCountries = $frontendConfig->getBannedCountries() ?? [];
-        $allowedIps = $this->getIpsAsArray($frontendConfig->getAllowedIps());
+        $bannedCountries = $frontendConfig->banned_countries ?? [];
+        $allowedIps = $this->getIpsAsArray($frontendConfig->allowed_ips);
 
         $useListenerAuth = !empty($bannedCountries) || !empty($allowedIps);
-        $charset = match ($station->getBackendConfig()->getCharset()) {
+        $charset = match ($station->getBackendConfig()->charset) {
             'ISO-8859-1' => 'ISO8859-1',
             default => 'UTF8',
         };
@@ -306,7 +306,7 @@ class Icecast extends AbstractFrontend
             $config['mount'][] = $mount;
         }
 
-        $customConfParsed = $this->processCustomConfig($frontendConfig->getCustomConfiguration());
+        $customConfParsed = $this->processCustomConfig($frontendConfig->custom_config);
         if (false !== $customConfParsed) {
             $config = Arrays::arrayMergeRecursiveDistinct($config, $customConfParsed);
         }

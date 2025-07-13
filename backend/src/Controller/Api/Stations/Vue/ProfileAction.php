@@ -149,10 +149,10 @@ final class ProfileAction implements SingleActionInterface
 
             // Frontend
             'frontendAdminUri' => (string)$frontend?->getAdminUrl($station, $router->getBaseUrl()),
-            'frontendAdminPassword' => $frontendConfig->getAdminPassword(),
-            'frontendSourcePassword' => $frontendConfig->getSourcePassword(),
-            'frontendRelayPassword' => $frontendConfig->getRelayPassword(),
-            'frontendPort' => $frontendConfig->getPort(),
+            'frontendAdminPassword' => $frontendConfig->admin_pw,
+            'frontendSourcePassword' => $frontendConfig->source_pw,
+            'frontendRelayPassword' => $frontendConfig->relay_pw,
+            'frontendPort' => $frontendConfig->port,
             'frontendRestartUri' => $router->fromHere('api:stations:frontend', ['do' => 'restart']),
             'frontendStartUri' => $router->fromHere('api:stations:frontend', ['do' => 'start']),
             'frontendStopUri' => $router->fromHere('api:stations:frontend', ['do' => 'stop']),

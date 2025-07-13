@@ -562,7 +562,7 @@ class Station implements Stringable, IdentifiableEntityInterface
      */
     public function useManualAutoDJ(): bool
     {
-        return $this->getBackendConfig()->useManualAutoDj();
+        return $this->getBackendConfig()->use_manual_autodj;
     }
 
     public function supportsAutoDjQueue(): bool
@@ -1207,12 +1207,14 @@ class Station implements Stringable, IdentifiableEntityInterface
 
         // Clear ports
         $feConfig = $this->getFrontendConfig();
-        $feConfig->setPort();
+        $feConfig->port = null;
+
         $this->setFrontendConfig($feConfig);
 
         $beConfig = $this->getBackendConfig();
-        $beConfig->setDjPort();
-        $beConfig->setTelnetPort();
+        $beConfig->dj_port = null;
+        $beConfig->telnet_port = null;
+
         $this->setBackendConfig($beConfig);
     }
 

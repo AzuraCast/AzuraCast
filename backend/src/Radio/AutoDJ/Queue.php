@@ -62,10 +62,7 @@ final class Queue
             $expectedPlayTime = $expectedCueTime;
         }
 
-        $maxQueueLength = $station->getBackendConfig()->getAutoDjQueueLength();
-        if ($maxQueueLength < 2) {
-            $maxQueueLength = 2;
-        }
+        $maxQueueLength = max($station->getBackendConfig()->autodj_queue_length, 2);
 
         $upcomingQueue = $this->queueRepo->getUnplayedQueue($station);
 

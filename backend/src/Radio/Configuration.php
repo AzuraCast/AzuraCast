@@ -258,23 +258,23 @@ final class Configuration
             $frontendConfig = $station->getFrontendConfig();
             $backendConfig = $station->getBackendConfig();
 
-            $basePort = $frontendConfig->getPort();
+            $basePort = $frontendConfig->port;
             if ($force || null === $basePort) {
                 $basePort = $this->getFirstAvailableRadioPort($station);
 
-                $frontendConfig->setPort($basePort);
+                $frontendConfig->port = $basePort;
                 $station->setFrontendConfig($frontendConfig);
             }
 
-            $djPort = $backendConfig->getDjPort();
+            $djPort = $backendConfig->dj_port;
             if ($force || null === $djPort) {
-                $backendConfig->setDjPort($basePort + 5);
+                $backendConfig->dj_port = $basePort + 5;
                 $station->setBackendConfig($backendConfig);
             }
 
-            $telnetPort = $backendConfig->getTelnetPort();
+            $telnetPort = $backendConfig->telnet_port;
             if ($force || null === $telnetPort) {
-                $backendConfig->setTelnetPort($basePort + 4);
+                $backendConfig->telnet_port = $basePort + 4;
                 $station->setBackendConfig($backendConfig);
             }
 

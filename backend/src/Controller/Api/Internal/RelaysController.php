@@ -70,9 +70,9 @@ final class RelaysController
             $row->type = $station->getFrontendType()->value;
 
             $frontendConfig = $station->getFrontendConfig();
-            $row->port = $frontendConfig->getPort();
-            $row->relay_pw = $frontendConfig->getRelayPassword();
-            $row->admin_pw = $frontendConfig->getAdminPassword();
+            $row->port = $frontendConfig->port;
+            $row->relay_pw = $frontendConfig->relay_pw;
+            $row->admin_pw = $frontendConfig->admin_pw;
 
             $mounts = [];
 

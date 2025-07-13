@@ -178,7 +178,7 @@ final class NowPlayingApiGenerator
         $np->station = $this->stationApiGenerator->__invoke($station, $baseUri);
         $np->listeners = new Listeners();
 
-        $songObj = Song::createOffline($station->getBrandingConfig()->getOfflineText());
+        $songObj = Song::createOffline($station->getBrandingConfig()->offline_text);
 
         $offlineApiNowPlaying = new CurrentSong();
         $offlineApiNowPlaying->sh_id = 0;

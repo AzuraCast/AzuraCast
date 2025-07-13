@@ -90,7 +90,7 @@ final class StationApiGenerator
         };
 
         $response->hls_enabled = $station->getBackendType()->isEnabled() && $station->getEnableHls();
-        $response->hls_is_default = $response->hls_enabled && $station->getBackendConfig()->getHlsIsDefault();
+        $response->hls_is_default = $response->hls_enabled && $station->getBackendConfig()->hls_is_default;
 
         $response->hls_url = (null !== $backend && $response->hls_enabled)
             ? new ResolvableUrl($backend->getHlsUrl($station, $baseUri))

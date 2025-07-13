@@ -386,7 +386,7 @@ class StationMount implements
 
     public function getAutodjPort(): ?int
     {
-        return $this->getStation()->getFrontendConfig()->getPort();
+        return $this->getStation()->getFrontendConfig()->port;
     }
 
     public function getAutodjProtocol(): ?StreamProtocols
@@ -404,7 +404,7 @@ class StationMount implements
 
     public function getAutodjPassword(): ?string
     {
-        return $this->getStation()->getFrontendConfig()->getSourcePassword();
+        return $this->getStation()->getFrontendConfig()->source_pw;
     }
 
     public function getAutodjMount(): ?string

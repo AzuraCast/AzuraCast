@@ -233,13 +233,13 @@ class StationMedia implements
 
         $extraMeta = $this->getExtraMetadata();
 
-        $cueOut = $extraMeta->getCueOut();
+        $cueOut = $extraMeta->cue_out;
         if ($cueOut > 0) {
             $lengthRemoved = $length - $cueOut;
             $length -= $lengthRemoved;
         }
 
-        $cueIn = $extraMeta->getCueIn();
+        $cueIn = $extraMeta->cue_in;
         if ($cueIn > 0) {
             $length -= $cueIn;
         }

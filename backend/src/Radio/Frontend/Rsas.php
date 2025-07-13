@@ -118,7 +118,7 @@ final class Rsas extends Icecast
         $config = [
             'hostname' => $baseUrl->getHost(),
             'listen-socket' => [
-                'port' => $frontendConfig->getPort(),
+                'port' => $frontendConfig->port,
                 'bind-address' => '0.0.0.0',
                 // 'tls' => 1,
             ],
@@ -126,11 +126,11 @@ final class Rsas extends Icecast
                 'icecast-status-page' => 1,
             ],
             'authentication' => [
-                'admin-password' => $frontendConfig->getAdminPassword(),
+                'admin-password' => $frontendConfig->admin_pw,
             ],
             'limits' => [
                 'workers' => 'auto',
-                'clients' => $frontendConfig->getMaxListeners() ?? 2500,
+                'clients' => $frontendConfig->max_listeners ?? 2500,
             ],
             'paths' => [
                 'logdir' => $configDir,
@@ -157,10 +157,10 @@ final class Rsas extends Icecast
             ],
         ];
 
-        $bannedCountries = $frontendConfig->getBannedCountries() ?? [];
-        $allowedIps = $this->getIpsAsArray($frontendConfig->getAllowedIps());
-        $bannedIps = $this->getIpsAsArray($frontendConfig->getBannedIps());
-        $bannedUserAgents = $frontendConfig->getBannedUserAgents();
+        $bannedCountries = $frontendConfig->banned_countries ?? [];
+        $allowedIps = $this->getIpsAsArray($frontendConfig->allowed_ips);
+        $bannedIps = $this->getIpsAsArray($frontendConfig->banned_ips);
+        $bannedUserAgents = $frontendConfig->banned_user_agents;
 
         $useListenerAuth = !empty($bannedCountries) || !empty($allowedIps)
             || !empty($bannedIps) || !empty($bannedUserAgents);
@@ -170,7 +170,7 @@ final class Rsas extends Icecast
             $mount = [
                 'mount-name' => $mountRow->getName(),
                 'username' => 'source',
-                'password' => $frontendConfig->getSourcePassword(),
+                'password' => $frontendConfig->source_pw,
             ];
 
             if ($mountRow->getMaxListenerDuration()) {
@@ -238,7 +238,7 @@ final class Rsas extends Icecast
             $config['mount'][] = $mount;
         }
 
-        $customConfParsed = $this->processCustomConfig($frontendConfig->getCustomConfiguration());
+        $customConfParsed = $this->processCustomConfig($frontendConfig->custom_config);
         if (false !== $customConfParsed) {
             $config = Arrays::arrayMergeRecursiveDistinct($config, $customConfParsed);
         }

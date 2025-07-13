@@ -35,9 +35,9 @@ final class StreamersAction implements SingleActionInterface
         return $response->withJson([
             'connectionInfo' => [
                 'serverUrl' => $serverUrl,
-                'streamPort' => $backendConfig->getDjPort(),
+                'streamPort' => $backendConfig->dj_port,
                 'ip' => $this->acCentral->getIp(),
-                'djMountPoint' => $backendConfig->getDjMountPoint(),
+                'djMountPoint' => $backendConfig->dj_mount_point,
             ],
         ]);
     }

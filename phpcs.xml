@@ -8,6 +8,13 @@
     <file>tests/Functional</file>
     <file>tests/Unit</file>
 
+    <!-- temporarily exclude these until PHP 8.4 property hooks get implemented -->
+    <exclude-pattern>backend/src/Entity/StationFrontendConfiguration.php</exclude-pattern>
+    <exclude-pattern>backend/src/Entity/PodcastBrandingConfiguration.php</exclude-pattern>
+    <exclude-pattern>backend/src/Entity/StationMediaMetadata.php</exclude-pattern>
+    <exclude-pattern>backend/src/Entity/StationBackendConfiguration.php</exclude-pattern>
+    <exclude-pattern>backend/src/Entity/StationBrandingConfiguration.php</exclude-pattern>
+
     <arg name="basepath" value="."/>
     <arg name="extensions" value="php"/>
     <arg name="colors"/>

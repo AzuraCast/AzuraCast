@@ -35,7 +35,7 @@ final class StationsAction implements SingleActionInterface
             'needsRestart' => $station->getNeedsRestart(),
             'shortName' => $station->getShortName(),
             'timezone' => $station->getTimezone(),
-            'offlineText' => $station->getBrandingConfig()->getOfflineText(),
+            'offlineText' => $station->getBrandingConfig()->offline_text,
             'maxBitrate' => $station->getMaxBitrate(),
             'maxMounts' => $station->getMaxMounts(),
             'maxHlsStreams' => $station->getMaxHlsStreams(),

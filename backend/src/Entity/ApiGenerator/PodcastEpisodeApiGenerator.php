@@ -155,7 +155,7 @@ final class PodcastEpisodeApiGenerator
         UriInterface $downloadUri,
         ?Podcast $apiPodcast = null
     ): UriInterface {
-        if ($record->getPodcast()->getBrandingConfig()->getEnableOp3Prefix()) {
+        if ($record->getPodcast()->getBrandingConfig()->enable_op3_prefix) {
             $prefixUri = new Uri(self::OP3_BASE_URL);
 
             $baseUri = ($downloadUri->getScheme() === 'http')

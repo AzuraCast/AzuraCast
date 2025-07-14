@@ -68,14 +68,14 @@ final class PlaylistAction implements SingleActionInterface
             $backend = $this->adapters->getBackendAdapter($station);
             $backendConfig = $station->getBackendConfig();
 
-            if (null !== $backend && $backendConfig->getHlsEnableOnPublicPlayer()) {
+            if (null !== $backend && $backendConfig->hls_enable_on_public_player) {
                 $streamUrl = $backend->getHlsUrl($station);
                 $streamRow = [
                     'name' => $station->getName() . ' - HLS',
                     'url' => (string)$streamUrl,
                 ];
 
-                if ($backendConfig->getHlsIsDefault()) {
+                if ($backendConfig->hls_is_default) {
                     array_unshift($streamUrls, $streamUrl);
                     array_unshift($streams, $streamRow);
                 } else {

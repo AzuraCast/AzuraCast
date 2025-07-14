@@ -99,7 +99,7 @@ final class AzuraRelay extends AbstractRemote
 
         // Remove port number and other decorations.
         return (string)$baseUrl
-            ->withPort($station->getFrontendConfig()->getPort())
+            ->withPort($station->getFrontendConfig()->port)
             ->withPath($remote->getMount() ?? '');
     }
 }

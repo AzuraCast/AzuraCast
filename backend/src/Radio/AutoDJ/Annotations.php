@@ -209,7 +209,7 @@ final class Annotations implements EventSubscriberInterface
 
         $backendConfig = $station->getBackendConfig();
         $defaultFade = $backendConfig->isCrossfadeEnabled()
-            ? $backendConfig->getCrossfade()
+            ? $backendConfig->crossfade
             : 0.0;
 
         $annotations[StationMediaMetadata::FADE_IN] ??= $defaultFade;

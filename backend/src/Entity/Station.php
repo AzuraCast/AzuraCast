@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Doctrine\AbstractArrayEntity;
 use App\Entity\Enums\StorageLocationAdapters;
 use App\Entity\Enums\StorageLocationTypes;
 use App\Entity\Interfaces\EntityGroupsInterface;
@@ -25,9 +26,10 @@ use Stringable;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
- * @phpstan-import-type ConfigData from AbstractStationConfiguration
+ * @phpstan-import-type ConfigData from AbstractArrayEntity
  */
 #[
     OA\Schema(schema: "Station", type: "object"),
@@ -43,6 +45,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
+    use Traits\ValidateMaxBitrate;
 
     public const string PLAYLISTS_DIR = 'playlists';
     public const string CONFIG_DIR = 'config';
@@ -127,13 +130,20 @@ class Station implements Stringable, IdentifiableEntityInterface
             type: "object"
         ),
         ORM\Column(type: 'json', nullable: true),
-        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL]),
-        AppAssert\StationMaxBitrateChecker(
-            stationGetter: 'self',
-            selectedBitrate: ['backendConfig', 'recordStreamsBitrate']
-        )
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
     protected ?array $backend_config = null;
+
+    #[Assert\Callback]
+    public function hasValidBitrate(ExecutionContextInterface $context): void
+    {
+        $this->doValidateMaxBitrate(
+            $context,
+            $this->getMaxBitrate(),
+            $this->getBackendConfig()->record_streams_bitrate,
+            'backend_config.record_streams_bitrate'
+        );
+    }
 
     #[
         ORM\Column(length: 150, nullable: true),
@@ -562,7 +572,7 @@ class Station implements Stringable, IdentifiableEntityInterface
      */
     public function useManualAutoDJ(): bool
     {
-        return $this->getBackendConfig()->useManualAutoDj();
+        return $this->getBackendConfig()->use_manual_autodj;
     }
 
     public function supportsAutoDjQueue(): bool
@@ -1207,12 +1217,14 @@ class Station implements Stringable, IdentifiableEntityInterface
 
         // Clear ports
         $feConfig = $this->getFrontendConfig();
-        $feConfig->setPort();
+        $feConfig->port = null;
+
         $this->setFrontendConfig($feConfig);
 
         $beConfig = $this->getBackendConfig();
-        $beConfig->setDjPort();
-        $beConfig->setTelnetPort();
+        $beConfig->dj_port = null;
+        $beConfig->telnet_port = null;
+
         $this->setBackendConfig($beConfig);
     }
 

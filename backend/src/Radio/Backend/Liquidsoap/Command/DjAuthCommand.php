@@ -32,7 +32,7 @@ final class DjAuthCommand extends AbstractCommand
 
         // Allow connections using the exact broadcast source password.
         if ('source' === $user) {
-            $sourcePw = $station->getFrontendConfig()->getSourcePassword();
+            $sourcePw = $station->getFrontendConfig()->source_pw;
 
             if (!empty($sourcePw) && strcmp($sourcePw, $pass) === 0) {
                 return [

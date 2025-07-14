@@ -36,7 +36,7 @@ final class StereoTool
         }
 
         $backendConfig = $station->getBackendConfig();
-        return !empty($backendConfig->getStereoToolConfigurationPath());
+        return !empty($backendConfig->stereo_tool_configuration_path);
     }
 
     public static function getVersion(): ?string

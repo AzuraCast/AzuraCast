@@ -115,10 +115,10 @@ final class LogsAction implements SingleActionInterface
         $frontendConfig = $station->getFrontendConfig();
         $filteredTerms = [
             $station->getAdapterApiKey(),
-            $frontendConfig->getAdminPassword(),
-            $frontendConfig->getRelayPassword(),
-            $frontendConfig->getSourcePassword(),
-            $frontendConfig->getStreamerPassword(),
+            $frontendConfig->admin_pw,
+            $frontendConfig->relay_pw,
+            $frontendConfig->source_pw,
+            $frontendConfig->streamer_pw,
         ];
 
         $logType = $logTypes[$log];

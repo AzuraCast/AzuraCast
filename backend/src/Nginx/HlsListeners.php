@@ -31,7 +31,7 @@ final class HlsListeners
             return $np;
         }
 
-        $thresholdSecs = $station->getBackendConfig()->getHlsSegmentLength() * 2;
+        $thresholdSecs = $station->getBackendConfig()->hls_segment_length * 2;
         $timestamp = time() - $thresholdSecs;
 
         $hlsLogFile = ConfigWriter::getHlsLogFile($station);

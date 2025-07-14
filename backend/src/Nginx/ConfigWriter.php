@@ -37,7 +37,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $listenBaseUrl = CustomUrls::getListenUrl($station);
         $listenBaseUrlForRegex = preg_quote($listenBaseUrl);
-        $port = $station->getFrontendConfig()->getPort();
+        $port = $station->getFrontendConfig()->port;
 
         $event->appendBlock(
             <<<NGINX
@@ -72,7 +72,7 @@ final class ConfigWriter implements EventSubscriberInterface
         }
 
         $webDjBaseUrl = preg_quote(CustomUrls::getWebDjUrl($station));
-        $autoDjPort = $station->getBackendConfig()->getDjPort();
+        $autoDjPort = $station->getBackendConfig()->dj_port;
 
         $event->appendBlock(
             <<<NGINX

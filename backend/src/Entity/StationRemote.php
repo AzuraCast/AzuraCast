@@ -11,10 +11,11 @@ use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
 use App\Radio\Remote\AbstractRemote;
 use App\Utilities;
-use App\Validator\Constraints as AppAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Psr\Http\Message\UriInterface;
 use Stringable;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[
     ORM\Entity,
@@ -29,6 +30,7 @@ class StationRemote implements
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
+    use Traits\ValidateMaxBitrate;
 
     #[ORM\ManyToOne(inversedBy: 'remotes')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
@@ -59,11 +61,19 @@ class StationRemote implements
     #[ORM\Column(type: 'string', length: 10, nullable: true, enumType: StreamFormats::class)]
     protected ?StreamFormats $autodj_format = null;
 
-    #[
-        ORM\Column(type: 'smallint', nullable: true),
-        AppAssert\StationMaxBitrateChecker(stationGetter: 'station', selectedBitrate: 'autodjBitrate')
-    ]
+    #[ORM\Column(type: 'smallint', nullable: true)]
     protected ?int $autodj_bitrate = null;
+
+    #[Assert\Callback]
+    public function hasValidBitrate(ExecutionContextInterface $context): void
+    {
+        $this->doValidateMaxBitrate(
+            $context,
+            $this->getStation()->getMaxBitrate(),
+            $this->getAutodjBitrate(),
+            'autodj_bitrate'
+        );
+    }
 
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $custom_listen_url = null;

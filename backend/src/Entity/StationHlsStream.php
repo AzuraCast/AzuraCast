@@ -6,11 +6,11 @@ namespace App\Entity;
 
 use App\Radio\Enums\StreamFormats;
 use App\Utilities\Strings;
-use App\Validator\Constraints as AppAssert;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[
     OA\Schema(type: "object"),
@@ -26,6 +26,7 @@ class StationHlsStream implements
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
     use Traits\TruncateInts;
+    use Traits\ValidateMaxBitrate;
 
     #[
         ORM\ManyToOne(inversedBy: 'hls_streams'),
@@ -51,10 +52,20 @@ class StationHlsStream implements
 
     #[
         OA\Property(example: 128),
-        ORM\Column(type: 'smallint', nullable: true),
-        AppAssert\StationMaxBitrateChecker(stationGetter: 'station', selectedBitrate: 'bitrate')
+        ORM\Column(type: 'smallint', nullable: true)
     ]
     protected ?int $bitrate = 128;
+
+    #[Assert\Callback]
+    public function hasValidBitrate(ExecutionContextInterface $context): void
+    {
+        $this->doValidateMaxBitrate(
+            $context,
+            $this->getStation()->getMaxBitrate(),
+            $this->getBitrate(),
+            'bitrate'
+        );
+    }
 
     #[
         ORM\Column,

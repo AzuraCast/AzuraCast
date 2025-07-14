@@ -11,12 +11,12 @@ use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
 use App\Radio\Frontend\AbstractFrontend;
 use App\Utilities\Urls;
-use App\Validator\Constraints as AppAssert;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[
     OA\Schema(type: "object"),
@@ -34,6 +34,7 @@ class StationMount implements
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
     use Traits\TruncateInts;
+    use Traits\ValidateMaxBitrate;
 
     #[
         ORM\ManyToOne(inversedBy: 'mounts'),
@@ -113,10 +114,20 @@ class StationMount implements
 
     #[
         OA\Property(example: 128),
-        ORM\Column(type: 'smallint', nullable: true),
-        AppAssert\StationMaxBitrateChecker(stationGetter: 'station', selectedBitrate: 'autodjBitrate')
+        ORM\Column(type: 'smallint', nullable: true)
     ]
     protected ?int $autodj_bitrate = 128;
+
+    #[Assert\Callback]
+    public function hasValidBitrate(ExecutionContextInterface $context): void
+    {
+        $this->doValidateMaxBitrate(
+            $context,
+            $this->getStation()->getMaxBitrate(),
+            $this->getAutodjBitrate(),
+            'autodj_bitrate'
+        );
+    }
 
     #[
         OA\Property(example: "https://custom-listen-url.example.com/stream.mp3"),

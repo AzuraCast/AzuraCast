@@ -84,7 +84,6 @@ useChart<'line'>(
                 x: {
                     type: 'time',
                     display: true,
-                    min: Number(DateTime.local({ zone: props.tz }).minus({ days: 30 }).toMillis()),
                     max: Number(DateTime.local({ zone: props.tz }).toMillis()),
                     adapters: {
                         date: {

@@ -336,12 +336,66 @@ class StationBackendConfiguration extends AbstractArrayEntity
         }
     }
 
+    /*
+     * Liquidsoap Custom Configuration Sections
+     */
+
     public const string CUSTOM_TOP = 'custom_config_top';
+
+    public ?string $custom_config_top {
+        get => Types::stringOrNull($this->get(__PROPERTY__), true);
+        set {
+            $this->set(__PROPERTY__, $value);
+        }
+    }
+
     public const string CUSTOM_PRE_PLAYLISTS = 'custom_config_pre_playlists';
+
+    public ?string $custom_config_pre_playlists {
+        get => Types::stringOrNull($this->get(__PROPERTY__), true);
+        set {
+            $this->set(__PROPERTY__, $value);
+        }
+    }
+
     public const string CUSTOM_PRE_LIVE = 'custom_config_pre_live';
+
+    public ?string $custom_config_pre_live {
+        get => Types::stringOrNull($this->get(__PROPERTY__), true);
+        set {
+            $this->set(__PROPERTY__, $value);
+        }
+    }
+
     public const string CUSTOM_PRE_FADE = 'custom_config_pre_fade';
+
+    public ?string $custom_config_pre_fade {
+        get => Types::stringOrNull($this->get(__PROPERTY__), true);
+        set {
+            $this->set(__PROPERTY__, $value);
+        }
+    }
+
     public const string CUSTOM_PRE_BROADCAST = 'custom_config';
+
+    /**
+     * Now used as pre-broadcast custom config
+     */
+    public ?string $custom_config {
+        get => Types::stringOrNull($this->get(__PROPERTY__), true);
+        set {
+            $this->set(__PROPERTY__, $value);
+        }
+    }
+
     public const string CUSTOM_BOTTOM = 'custom_config_bottom';
+
+    public ?string $custom_config_bottom {
+        get => Types::stringOrNull($this->get(__PROPERTY__), true);
+        set {
+            $this->set(__PROPERTY__, $value);
+        }
+    }
 
     /** @return array<int, string> */
     public static function getCustomConfigurationSections(): array
@@ -363,7 +417,7 @@ class StationBackendConfiguration extends AbstractArrayEntity
             throw new LogicException('Invalid custom configuration section.');
         }
 
-        return Types::stringOrNull($this->get($section), true);
+        return $this->$section;
     }
 
     public function setCustomConfigurationSection(string $section, ?string $value = null): void
@@ -373,6 +427,6 @@ class StationBackendConfiguration extends AbstractArrayEntity
             throw new LogicException('Invalid custom configuration section.');
         }
 
-        $this->set($section, $value);
+        $this->$section = $value;
     }
 }

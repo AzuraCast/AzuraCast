@@ -778,7 +778,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(
             <<<LS
             # Log current metadata for debugging.
-            radio = source.on_metadata(radio, azuracast.log_meta)
+            source.methods(radio).on_metadata(azuracast.log_meta)
             
             # Apply crossfade.
             radio = azuracast.apply_crossfade(radio)
@@ -885,7 +885,7 @@ final class ConfigWriter implements EventSubscriberInterface
             end
 
             # Continuously check on live.
-            radio = source.on_frame(radio, check_live)
+            source.methods(radio).on_frame(check_live)
             LIQ
         );
 
@@ -946,7 +946,7 @@ final class ConfigWriter implements EventSubscriberInterface
             radio = azuracast.add_fallback(radio)
             
             # Send metadata changes back to AzuraCast
-            radio = source.on_metadata(radio, azuracast.send_feedback)
+            source.methods(radio).on_metadata(azuracast.send_feedback)
 
             # Handle "Jingle Mode" tracks by replaying the previous metadata.
             radio = azuracast.handle_jingle_mode(radio)

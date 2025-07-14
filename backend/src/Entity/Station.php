@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Doctrine\AbstractArrayEntity;
 use App\Entity\Enums\StorageLocationAdapters;
 use App\Entity\Enums\StorageLocationTypes;
 use App\Entity\Interfaces\EntityGroupsInterface;
@@ -28,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
- * @phpstan-import-type ConfigData from AbstractStationConfiguration
+ * @phpstan-import-type ConfigData from AbstractArrayEntity
  */
 #[
     OA\Schema(schema: "Station", type: "object"),

@@ -139,16 +139,13 @@ return [
         $mappingClassesPaths = $buildDoctrineMappingPathsEvent->getMappingClassesPaths();
 
         // Fetch and store entity manager.
-        $config = Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration(
+        $config = Doctrine\ORM\ORMSetup::createAttributeMetadataConfig(
             $mappingClassesPaths,
             !$environment->isProduction(),
-            $environment->getTempDirectory() . '/proxies',
-            $psr6Cache
+            cache: $psr6Cache
         );
 
-        $config->setAutoGenerateProxyClasses(
-            Doctrine\ORM\Proxy\ProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS_OR_CHANGED
-        );
+        $config->enableNativeLazyObjects(true);
 
         // Debug mode:
         // $config->setSQLLogger(new Doctrine\DBAL\Logging\EchoSQLLogger);

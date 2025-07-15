@@ -25,7 +25,7 @@ trait HasSplitTokenFields
         EntityGroupsInterface::GROUP_ID,
         EntityGroupsInterface::GROUP_ALL,
     ])]
-    protected string $id;
+    public string $id;
 
     #[OA\Property(
         readOnly: true

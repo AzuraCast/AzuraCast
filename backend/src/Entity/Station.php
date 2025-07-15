@@ -228,7 +228,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         ORM\Column,
         Attributes\AuditIgnore
     ]
-    protected bool $is_streamer_live = false;
+    public bool $is_streamer_live = false;
 
     #[
         OA\Property(
@@ -1200,7 +1200,6 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function __clone()
     {
-        $this->id = null;
         $this->short_name = '';
         $this->radio_base_dir = null;
         $this->adapter_api_key = null;

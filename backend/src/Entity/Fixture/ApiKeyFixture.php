@@ -21,7 +21,7 @@ final class ApiKeyFixture extends AbstractFixture implements DependentFixtureInt
             $demoUser = $this->getReference('demo_user', User::class);
 
             $apiKey = new ApiKey($demoUser, SplitToken::fromKeyString($demoApiKey));
-            $apiKey->setComment('Demo User');
+            $apiKey->comment = 'Demo User';
 
             $manager->persist($apiKey);
         }
@@ -32,7 +32,7 @@ final class ApiKeyFixture extends AbstractFixture implements DependentFixtureInt
             $adminUser = $this->getReference('admin_user', User::class);
 
             $apiKey = new ApiKey($adminUser, SplitToken::fromKeyString($adminApiKey));
-            $apiKey->setComment('Administrator');
+            $apiKey->comment = 'Administrator';
 
             $manager->persist($apiKey);
         }

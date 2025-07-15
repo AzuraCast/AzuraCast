@@ -69,11 +69,11 @@ final class ListenerRepository extends Repository
             <<<'DQL'
                 SELECT COUNT(DISTINCT l.listener_hash)
                 FROM App\Entity\Listener l
-                WHERE l.station_id = :station_id
+                WHERE l.station = :station
                 AND l.timestamp_start <= :time_end
                 AND l.timestamp_end >= :time_start
             DQL
-        )->setParameter('station_id', $station->getId())
+        )->setParameter('station', $station)
             ->setParameter('time_end', $end)
             ->setParameter('time_start', $start)
             ->getSingleScalarResult();

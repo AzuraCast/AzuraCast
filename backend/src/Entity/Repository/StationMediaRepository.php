@@ -174,7 +174,7 @@ final class StationMediaRepository extends Repository
         $fieldCollection = $media->getCustomFields();
         foreach ($fieldCollection as $existingCustomField) {
             /** @var StationMediaCustomField $existingCustomField */
-            if ($existingCustomField->getField()->hasAutoAssign()) {
+            if (!empty($existingCustomField->getField()->auto_assign)) {
                 $this->em->remove($existingCustomField);
                 $fieldCollection->removeElement($existingCustomField);
             }

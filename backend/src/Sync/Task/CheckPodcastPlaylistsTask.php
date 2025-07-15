@@ -66,7 +66,7 @@ final class CheckPodcastPlaylistsTask extends AbstractTask
 
         $mediaInPodcastQuery = $this->em->createQuery(
             <<<'DQL'
-                SELECT pe.id, pe.playlist_media_id
+                SELECT pe.id, IDENTITY(pe.playlist_media)
                 FROM App\Entity\PodcastEpisode pe
                 WHERE pe.podcast = :podcast
             DQL
@@ -80,7 +80,7 @@ final class CheckPodcastPlaylistsTask extends AbstractTask
 
         /** @var Podcast $podcast */
         foreach ($podcasts as $podcast) {
-            $playlist = $podcast->getPlaylist();
+            $playlist = $podcast->playlist;
 
             $mediaInPlaylist = array_column(
                 $mediaInPlaylistQuery->setParameter('playlist', $playlist)->getArrayResult(),
@@ -110,31 +110,27 @@ final class CheckPodcastPlaylistsTask extends AbstractTask
                 if ($media instanceof StationMedia) {
                     // Create new podcast episode.
                     $podcastEpisode = new PodcastEpisode($podcast);
-                    $podcastEpisode->setPlaylistMedia($media);
 
-                    $podcastEpisode->setExplicit(false);
+                    $podcastEpisode->playlist_media = $media;
+                    $podcastEpisode->explicit = false;
 
-                    $podcastEpisode->setTitle($media->getTitle() ?? 'Untitled Episode');
-                    $podcastEpisode->setDescription(
-                        implode("\n", array_filter([
+                    $podcastEpisode->title = $media->getTitle() ?? 'Untitled Episode';
+                    $podcastEpisode->description = implode("\n", array_filter([
                             $media->getArtist(),
                             $media->getAlbum(),
                             $media->getLyrics(),
-                        ]))
-                    );
+                    ]));
 
                     $publishAt = CarbonImmutable::createFromTimestamp(
                         $media->getMtime(),
                         Time::getUtc()
                     );
 
-                    if (!$podcast->playlistAutoPublish()) {
+                    if (!$podcast->playlist_auto_publish) {
                         // Set a date in the future to unpublish the episode.
-                        $podcastEpisode->setPublishAt(
-                            $publishAt->addYears(10)->getTimestamp()
-                        );
+                        $podcastEpisode->publish_at = $publishAt->addYears(10)->getTimestamp();
                     } else {
-                        $podcastEpisode->setPublishAt($publishAt->getTimestamp());
+                        $podcastEpisode->publish_at = $publishAt->getTimestamp();
                     }
 
                     $this->em->persist($podcastEpisode);

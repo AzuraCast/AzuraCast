@@ -7,7 +7,7 @@ namespace App\Entity;
 use App\Doctrine\AbstractArrayEntity;
 use App\Utilities\Types;
 
-class PodcastBrandingConfiguration extends AbstractArrayEntity
+final class PodcastBrandingConfiguration extends AbstractArrayEntity
 {
     public ?string $public_custom_html {
         get => Types::stringOrNull($this->get(__PROPERTY__), true);

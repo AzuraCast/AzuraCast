@@ -75,9 +75,9 @@ final class GetMediaAction implements SingleActionInterface
         );
 
         if ($episode instanceof PodcastEpisode) {
-            switch ($podcast->getSource()) {
+            switch ($podcast->source) {
                 case PodcastSources::Playlist:
-                    $playlistMedia = $episode->getPlaylistMedia();
+                    $playlistMedia = $episode->playlist_media;
 
                     if ($playlistMedia instanceof StationMedia) {
                         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
@@ -91,18 +91,18 @@ final class GetMediaAction implements SingleActionInterface
                     break;
 
                 case PodcastSources::Manual:
-                    $podcastMedia = $episode->getMedia();
+                    $podcastMedia = $episode->media;
 
                     if ($podcastMedia instanceof PodcastMedia) {
                         $fsPodcasts = $this->stationFilesystems->getPodcastsFilesystem($station);
 
-                        $path = $podcastMedia->getPath();
+                        $path = $podcastMedia->path;
 
                         if ($fsPodcasts->fileExists($path)) {
                             return $response->streamFilesystemFile(
                                 $fsPodcasts,
                                 $path,
-                                $podcastMedia->getOriginalName()
+                                $podcastMedia->original_name
                             );
                         }
                     }

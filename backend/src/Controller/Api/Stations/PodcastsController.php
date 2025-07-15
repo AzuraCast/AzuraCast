@@ -301,7 +301,7 @@ final class PodcastsController extends AbstractApiCrudController
         $record = parent::fromArray($data, $record, $context);
 
         if (null !== $newCategories) {
-            $categories = $record->getCategories();
+            $categories = $record->categories;
             if ($categories->count() > 0) {
                 foreach ($categories as $existingCategories) {
                     $this->em->remove($existingCategories);

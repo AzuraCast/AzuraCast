@@ -26,11 +26,11 @@ final class CustomFieldRepository extends Repository
 
         foreach ($this->repository->findAll() as $field) {
             /** @var CustomField $field */
-            if (!$field->hasAutoAssign()) {
+            if (empty($field->auto_assign)) {
                 continue;
             }
 
-            $fields[$field->getAutoAssign()] = $field;
+            $fields[$field->auto_assign] = $field;
         }
 
         return $fields;

@@ -12,9 +12,7 @@ use App\Entity\Interfaces\StationCloneAwareInterface;
 use App\Entity\RolePermission;
 use App\Entity\Station;
 use App\Entity\StationPlaylist;
-use App\Entity\StationPlaylistFolder;
 use App\Entity\StationPlaylistMedia;
-use App\Entity\StationSchedule;
 use App\Entity\StationStreamer;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -114,14 +112,7 @@ final class CloneAction extends StationsController implements SingleActionInterf
         $toClone = $data['clone'];
 
         $copier = new DeepCopy\DeepCopy();
-        $copier->addFilter(
-            new DeepCopy\Filter\Doctrine\DoctrineProxyFilter(),
-            new DeepCopy\Matcher\Doctrine\DoctrineProxyMatcher()
-        );
-        $copier->addFilter(
-            new DeepCopy\Filter\SetNullFilter(),
-            new DeepCopy\Matcher\PropertyNameMatcher('id')
-        );
+
         $copier->addFilter(
             new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
             new DeepCopy\Matcher\PropertyTypeMatcher(Collection::class)
@@ -135,6 +126,8 @@ final class CloneAction extends StationsController implements SingleActionInterf
             new DeepCopy\Filter\KeepFilter(),
             new DeepCopy\Matcher\PropertyMatcher(StationPlaylistMedia::class, 'media')
         );
+
+        $this->em->detach($record);
 
         $newStation = $copier->copy($record);
 
@@ -175,7 +168,8 @@ final class CloneAction extends StationsController implements SingleActionInterf
                 $toClone
             ): void {
                 foreach ($oldPlaylist->getScheduleItems() as $oldScheduleItem) {
-                    /** @var StationSchedule $newScheduleItem */
+                    $this->em->detach($oldScheduleItem);
+
                     $newScheduleItem = $copier->copy($oldScheduleItem);
                     $newScheduleItem->setPlaylist($newPlaylist);
 
@@ -184,7 +178,8 @@ final class CloneAction extends StationsController implements SingleActionInterf
 
                 if (in_array(self::CLONE_MEDIA_STORAGE, $toClone, true)) {
                     foreach ($oldPlaylist->getFolders() as $oldPlaylistFolder) {
-                        /** @var StationPlaylistFolder $newPlaylistFolder */
+                        $this->em->detach($oldPlaylistFolder);
+
                         $newPlaylistFolder = $copier->copy($oldPlaylistFolder);
                         $newPlaylistFolder->setStation($newStation);
                         $newPlaylistFolder->setPlaylist($newPlaylist);
@@ -192,7 +187,8 @@ final class CloneAction extends StationsController implements SingleActionInterf
                     }
 
                     foreach ($oldPlaylist->getMediaItems() as $oldMediaItem) {
-                        /** @var StationPlaylistMedia $newMediaItem */
+                        $this->em->detach($oldMediaItem);
+
                         $newMediaItem = $copier->copy($oldMediaItem);
 
                         $newMediaItem->setPlaylist($newPlaylist);
@@ -229,7 +225,8 @@ final class CloneAction extends StationsController implements SingleActionInterf
                 $copier
             ): void {
                 foreach ($oldStreamer->getScheduleItems() as $oldScheduleItem) {
-                    /** @var StationSchedule $newScheduleItem */
+                    $this->em->detach($oldScheduleItem);
+
                     $newScheduleItem = $copier->copy($oldScheduleItem);
                     $newScheduleItem->setStreamer($newStreamer);
 
@@ -278,6 +275,8 @@ final class CloneAction extends StationsController implements SingleActionInterf
         $newStation = $this->em->refetch($newStation);
 
         foreach ($collection as $oldRecord) {
+            $this->em->detach($oldRecord);
+
             /** @var StationCloneAwareInterface $newRecord */
             $newRecord = $copier->copy($oldRecord);
             $newRecord->setStation($newStation);

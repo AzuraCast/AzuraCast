@@ -66,7 +66,7 @@ final class PodcastRepository extends Repository
         string $rawArtworkString,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $storageLocation = $podcast->getStorageLocation();
+        $storageLocation = $podcast->storage_location;
         $fs ??= $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
         $podcastArtworkString = AlbumArt::resize($rawArtworkString);
@@ -82,7 +82,7 @@ final class PodcastRepository extends Repository
         $storageLocation->addStorageUsed($podcastArtworkSize);
         $this->em->persist($storageLocation);
 
-        $podcast->setArtUpdatedAt(time());
+        $podcast->art_updated_at = time();
         $this->em->persist($podcast);
     }
 
@@ -90,7 +90,7 @@ final class PodcastRepository extends Repository
         Podcast $podcast,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $storageLocation = $podcast->getStorageLocation();
+        $storageLocation = $podcast->storage_location;
         $fs ??= $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
         $artworkPath = Podcast::getArtPath($podcast->getIdRequired());
@@ -109,7 +109,7 @@ final class PodcastRepository extends Repository
         $storageLocation->removeStorageUsed($size);
         $this->em->persist($storageLocation);
 
-        $podcast->setArtUpdatedAt(0);
+        $podcast->art_updated_at = 0;
         $this->em->persist($podcast);
     }
 
@@ -117,10 +117,10 @@ final class PodcastRepository extends Repository
         Podcast $podcast,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $fs ??= $this->storageLocationRepo->getAdapter($podcast->getStorageLocation())
+        $fs ??= $this->storageLocationRepo->getAdapter($podcast->storage_location)
             ->getFilesystem();
 
-        foreach ($podcast->getEpisodes() as $episode) {
+        foreach ($podcast->episodes as $episode) {
             $this->podcastEpisodeRepo->delete($episode, $fs);
         }
 

@@ -30,7 +30,7 @@ final class Mail implements MailerInterface
         $settings = $this->readSettings();
 
         $email = new Email();
-        $email->from(new Address($settings->mail_sender_email, $settings->mail_sender_name));
+        $email->from(new Address($settings->mail_sender_email ?? '', $settings->mail_sender_name ?? ''));
 
         return $email;
     }

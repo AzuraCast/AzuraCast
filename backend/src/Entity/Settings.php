@@ -9,7 +9,6 @@ use App\Entity\Enums\AnalyticsLevel;
 use App\Entity\Enums\IpSources;
 use App\Enums\SupportedThemes;
 use App\OpenApi;
-use App\Service\Avatar;
 use App\Utilities\Types;
 use App\Utilities\Urls;
 use Doctrine\ORM\Mapping as ORM;
@@ -93,22 +92,6 @@ final class Settings implements Stringable
         );
     }
 
-    public function setBaseUrl(?string $baseUrl): void
-    {
-        if (empty($baseUrl)) {
-            $this->base_url = null;
-            return;
-        }
-
-        // Filter the base URL to avoid trailing slashes and other problems.
-        $baseUri = Urls::parseUserUrl(
-            $baseUrl,
-            'System Base URL'
-        );
-
-        $this->base_url = $this->truncateNullableString((string)$baseUri);
-    }
-
     #[
         OA\Property(description: "AzuraCast Instance Name", example: "My AzuraCast Instance"),
         ORM\Column(length: 255, nullable: true),
@@ -155,6 +138,7 @@ final class Settings implements Stringable
         Groups(self::GROUP_GENERAL)
     ]
     public ?string $api_access_control = '' {
+        get => Types::stringOrNull($this->api_access_control, true);
         set => $this->truncateNullableString($value);
     }
 
@@ -173,13 +157,11 @@ final class Settings implements Stringable
         ORM\Column(type: 'string', length: 50, nullable: true, enumType: AnalyticsLevel::class),
         Groups(self::GROUP_GENERAL)
     ]
-    public ?AnalyticsLevel $analytics = null {
-        get => $this->analytics ?? AnalyticsLevel::default();
-    }
-
+    public ?AnalyticsLevel $analytics = null;
+    
     public function isAnalyticsEnabled(): bool
     {
-        return AnalyticsLevel::None !== $this->analytics;
+        return AnalyticsLevel::None !== ($this->analytics ?? AnalyticsLevel::default());
     }
 
     #[
@@ -564,22 +546,12 @@ final class Settings implements Stringable
     ]
     public ?string $avatar_service = null;
 
-    public function getAvatarService(): string
-    {
-        return $this->avatar_service ?? Avatar::DEFAULT_SERVICE;
-    }
-
     #[
         OA\Property(description: "The default avatar URL.", example: ""),
         ORM\Column(length: 255, nullable: true),
         Groups(self::GROUP_GENERAL)
     ]
     public ?string $avatar_default_url = null;
-
-    public function getAvatarDefaultUrl(): string
-    {
-        return $this->avatar_default_url ?? Avatar::DEFAULT_AVATAR;
-    }
 
     #[
         OA\Property(description: "ACME (LetsEncrypt) e-mail address.", example: ""),
@@ -621,13 +593,12 @@ final class Settings implements Stringable
         ORM\Column(type: 'string', length: 50, nullable: true, enumType: IpSources::class),
         Groups(self::GROUP_GENERAL)
     ]
-    public ?IpSources $ip_source = null {
-        get => $this->ip_source ?? IpSources::default();
-    }
+    public ?IpSources $ip_source = null;
 
     public function getIp(ServerRequestInterface $request): string
     {
-        return $this->ip_source->getIp($request);
+        $ipSource = $this->ip_source ?? IpSources::default();
+        return $ipSource->getIp($request);
     }
 
     public function __toString(): string

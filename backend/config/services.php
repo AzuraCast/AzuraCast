@@ -476,7 +476,7 @@ return [
 
             if ($hasAllSettings) {
                 $transport = new Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport(
-                    $settings->mail_smtp_host,
+                    $settings->mail_smtp_host ?? '',
                     $settings->mail_smtp_port,
                     $settings->mail_smtp_secure,
                     $eventDispatcher,
@@ -485,6 +485,9 @@ return [
 
                 if (!empty($settings->mail_smtp_username)) {
                     $transport->setUsername($settings->mail_smtp_username);
+                }
+
+                if (!empty($settings->mail_smtp_password)) {
                     $transport->setPassword($settings->mail_smtp_password);
                 }
 

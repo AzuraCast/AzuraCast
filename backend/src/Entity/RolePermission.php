@@ -69,7 +69,7 @@ final class RolePermission implements
     {
         return [
             'action'     => $this->action_name,
-            'station_id' => $this->station->id,
+            'station_id' => $this->station?->id,
         ];
     }
 }

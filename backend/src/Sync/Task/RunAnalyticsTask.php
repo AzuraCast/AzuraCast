@@ -38,7 +38,7 @@ final class RunAnalyticsTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        switch ($this->readSettings()->getAnalytics()) {
+        switch ($this->readSettings()->analytics ?? AnalyticsLevel::default()) {
             case AnalyticsLevel::None:
                 $this->purgeListeners();
                 $this->purgeAnalytics();

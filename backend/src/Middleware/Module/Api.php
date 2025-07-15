@@ -71,8 +71,8 @@ final class Api extends AbstractMiddleware
         $settings = $this->readSettings();
 
         // Check for a user-set CORS header override.
-        $acaoHeader = trim($settings->api_access_control);
-        if (!empty($acaoHeader)) {
+        $acaoHeader = $settings->api_access_control;
+        if (null !== $acaoHeader) {
             if ('*' === $acaoHeader) {
                 $response = $response->withHeader('Access-Control-Allow-Origin', '*');
             } else {

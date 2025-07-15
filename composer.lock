@@ -159,16 +159,16 @@
         },
         {
             "name": "azuracast/doctrine-entity-normalizer",
-            "version": "3.1.0",
+            "version": "3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/doctrine-entity-normalizer.git",
-                "reference": "15420de4214cbbf6be5a593c1f6855ccc7eb3e93"
+                "reference": "f8ea6c7527485dcd77193f66c8dbd86b2621da20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/doctrine-entity-normalizer/zipball/15420de4214cbbf6be5a593c1f6855ccc7eb3e93",
-                "reference": "15420de4214cbbf6be5a593c1f6855ccc7eb3e93",
+                "url": "https://api.github.com/repos/AzuraCast/doctrine-entity-normalizer/zipball/f8ea6c7527485dcd77193f66c8dbd86b2621da20",
+                "reference": "f8ea6c7527485dcd77193f66c8dbd86b2621da20",
                 "shasum": ""
             },
             "require": {
@@ -176,7 +176,7 @@
                 "doctrine/inflector": "^2",
                 "doctrine/orm": "^3",
                 "doctrine/persistence": "^2|^3",
-                "php": ">=8.2",
+                "php": ">=8.4",
                 "symfony/serializer": "^7"
             },
             "require-dev": {
@@ -205,7 +205,7 @@
             "description": "An implementation of the Symfony Serializer with custom support for Doctrine 3 ORM entities.",
             "support": {
                 "issues": "https://github.com/AzuraCast/doctrine-entity-normalizer/issues",
-                "source": "https://github.com/AzuraCast/doctrine-entity-normalizer/tree/3.1.0"
+                "source": "https://github.com/AzuraCast/doctrine-entity-normalizer/tree/3.2.1"
             },
             "funding": [
                 {
@@ -213,7 +213,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-26T17:39:23+00:00"
+            "time": "2025-07-15T04:02:45+00:00"
         },
         {
             "name": "azuracast/nowplaying",

@@ -240,7 +240,7 @@ final class RolesController extends AbstractApiCrudController
 
     private function doUpdatePermissions(Role $role, array $newPermissions): void
     {
-        $existingPerms = $role->getPermissions();
+        $existingPerms = $role->permissions;
         if ($existingPerms->count() > 0) {
             foreach ($existingPerms as $perm) {
                 $this->em->remove($perm);

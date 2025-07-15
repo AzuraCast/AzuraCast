@@ -13,41 +13,38 @@ use JsonSerializable;
     ORM\Table(name: 'role_permissions'),
     ORM\UniqueConstraint(name: 'role_permission_unique_idx', columns: ['role_id', 'action_name', 'station_id'])
 ]
-class RolePermission implements
+final class RolePermission implements
     JsonSerializable,
     Interfaces\StationCloneAwareInterface,
     Interfaces\IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
+    use Traits\TruncateStrings;
 
     #[ORM\ManyToOne(inversedBy: 'permissions')]
     #[ORM\JoinColumn(name: 'role_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    protected Role $role;
-
-    #[ORM\Column(insertable: false, updatable: false)]
-    protected int $role_id;
+    public readonly Role $role;
 
     #[ORM\Column(length: 50)]
-    protected string $action_name;
+    public readonly string $action_name;
 
     #[ORM\ManyToOne(inversedBy: 'permissions')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
-    protected ?Station $station = null;
-
-    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    protected ?int $station_id = null;
+    public ?Station $station;
 
     public function __construct(
         Role $role,
-        ?Station $station = null,
-        string|PermissionInterface|null $actionName = null
+        ?Station $station,
+        string|PermissionInterface $actionName
     ) {
         $this->role = $role;
         $this->station = $station;
 
-        if (null !== $actionName) {
-            $this->setActionName($actionName);
+        if ($actionName instanceof PermissionInterface) {
+            $actionName = $actionName->getValue();
         }
+
+        $this->action_name = $this->truncateString($actionName, 50);
     }
 
     public function getRole(): Role
@@ -65,25 +62,6 @@ class RolePermission implements
         $this->station = $station;
     }
 
-    public function hasStation(): bool
-    {
-        return (null !== $this->station);
-    }
-
-    public function getActionName(): string
-    {
-        return $this->action_name;
-    }
-
-    public function setActionName(string|PermissionInterface $actionName): void
-    {
-        if ($actionName instanceof PermissionInterface) {
-            $actionName = $actionName->getValue();
-        }
-
-        $this->action_name = $actionName;
-    }
-
     /**
      * @return mixed[]
      */
@@ -91,7 +69,7 @@ class RolePermission implements
     {
         return [
             'action'     => $this->action_name,
-            'station_id' => $this->station_id,
+            'station_id' => $this->station->id,
         ];
     }
 }

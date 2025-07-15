@@ -66,7 +66,7 @@ final class CheckPodcastPlaylistsTask extends AbstractTask
 
         $mediaInPodcastQuery = $this->em->createQuery(
             <<<'DQL'
-                SELECT pe.id, IDENTITY(pe.playlist_media)
+                SELECT pe.id, IDENTITY(pe.playlist_media) AS playlist_media_id
                 FROM App\Entity\PodcastEpisode pe
                 WHERE pe.podcast = :podcast
             DQL

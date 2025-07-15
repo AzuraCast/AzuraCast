@@ -85,7 +85,7 @@ final class ChartsAction implements SingleActionInterface
 
             $stats = $this->em->createQuery(
                 <<<'DQL'
-                    SELECT IDENTITY(a.station), a.moment, a.number_avg, a.number_unique
+                    SELECT IDENTITY(a.station) AS station_id, a.moment, a.number_avg, a.number_unique
                     FROM App\Entity\Analytics a
                     WHERE IDENTITY(a.station) IN (:stations)
                     AND a.type = :type

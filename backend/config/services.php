@@ -459,11 +459,11 @@ return [
     ) {
         $settings = $settingsRepo->readSettings();
 
-        if ($settings->getMailEnabled()) {
+        if ($settings->mail_enabled) {
             $requiredSettings = [
-                'mailSenderEmail' => $settings->getMailSenderEmail(),
-                'mailSmtpHost' => $settings->getMailSmtpHost(),
-                'mailSmtpPort' => $settings->getMailSmtpPort(),
+                'mailSenderEmail' => $settings->mail_sender_email,
+                'mailSmtpHost' => $settings->mail_smtp_host,
+                'mailSmtpPort' => $settings->mail_smtp_port,
             ];
 
             $hasAllSettings = true;
@@ -476,16 +476,16 @@ return [
 
             if ($hasAllSettings) {
                 $transport = new Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport(
-                    $settings->getMailSmtpHost(),
-                    $settings->getMailSmtpPort(),
-                    $settings->getMailSmtpSecure(),
+                    $settings->mail_smtp_host,
+                    $settings->mail_smtp_port,
+                    $settings->mail_smtp_secure,
                     $eventDispatcher,
                     $logger
                 );
 
-                if (!empty($settings->getMailSmtpUsername())) {
-                    $transport->setUsername($settings->getMailSmtpUsername());
-                    $transport->setPassword($settings->getMailSmtpPassword());
+                if (!empty($settings->mail_smtp_username)) {
+                    $transport->setUsername($settings->mail_smtp_username);
+                    $transport->setPassword($settings->mail_smtp_password);
                 }
 
                 return $transport;

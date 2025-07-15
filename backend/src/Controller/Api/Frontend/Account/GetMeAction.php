@@ -77,8 +77,8 @@ final class GetMeAction extends UsersController implements SingleActionInterface
 
         foreach ($user->getRoles() as $role) {
             $return['roles'][] = [
-                'id' => $role->getIdRequired(),
-                'name' => $role->getName(),
+                'id' => $role->id,
+                'name' => $role->name,
             ];
         }
 

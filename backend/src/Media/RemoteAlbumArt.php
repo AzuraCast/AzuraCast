@@ -34,12 +34,12 @@ final class RemoteAlbumArt
 
     public function enableForApis(): bool
     {
-        return $this->readSettings()->getUseExternalAlbumArtInApis();
+        return $this->readSettings()->use_external_album_art_in_apis;
     }
 
     public function enableForMedia(): bool
     {
-        return $this->readSettings()->getUseExternalAlbumArtWhenProcessingMedia();
+        return $this->readSettings()->use_external_album_art_when_processing_media;
     }
 
     public function getArtwork(SongInterface $media): ?string

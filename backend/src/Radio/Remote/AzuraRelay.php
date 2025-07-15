@@ -87,9 +87,9 @@ final class AzuraRelay extends AbstractRemote
             throw new InvalidArgumentException('AzuraRelay remote must have a corresponding relay.');
         }
 
-        $baseUrl = new Uri(rtrim($relay->getBaseUrl(), '/'));
+        $baseUrl = new Uri(rtrim($relay->base_url, '/'));
 
-        $useRadioProxy = $this->readSettings()->getUseRadioProxy();
+        $useRadioProxy = $this->readSettings()->use_radio_proxy;
 
         if ($useRadioProxy || 'https' === $baseUrl->getScheme()) {
             // Web proxy support.

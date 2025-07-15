@@ -59,7 +59,8 @@ final class Acl
     {
         $sql = $this->em->createQuery(
             <<<'DQL'
-                SELECT rp.station_id, rp.role_id, rp.action_name FROM App\Entity\RolePermission rp
+                SELECT IDENTITY(rp.station) AS station_id, IDENTITY(rp.role) AS role_id, rp.action_name 
+                FROM App\Entity\RolePermission rp
             DQL
         );
 

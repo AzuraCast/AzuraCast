@@ -29,7 +29,7 @@ trait HasAutoIncrementId
         ORM\GeneratedValue,
         Groups([EntityGroupsInterface::GROUP_ID, EntityGroupsInterface::GROUP_ALL])
     ]
-    public int $id;
+    public protected(set) int $id;
 
     public function getId(): ?int
     {

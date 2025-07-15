@@ -72,7 +72,7 @@ abstract class CestAbstract
         $this->_cleanTables();
 
         $settings = $this->settingsRepo->readSettings();
-        $settings->setSetupCompleteTime(0);
+        $settings->setup_complete_time = 0;
 
         $this->settingsRepo->writeSettings($settings);
     }
@@ -92,11 +92,10 @@ abstract class CestAbstract
     {
         // Create administrator account.
         $role = new Role();
-        $role->setName('Super Administrator');
+        $role->name = 'Super Administrator';
         $this->em->persist($role);
 
-        $rha = new RolePermission($role);
-        $rha->setActionName(GlobalPermissions::All);
+        $rha = new RolePermission($role, null, GlobalPermissions::All);
         $this->em->persist($rha);
 
         // Create user account.

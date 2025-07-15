@@ -71,7 +71,7 @@ final class Api extends AbstractMiddleware
         $settings = $this->readSettings();
 
         // Check for a user-set CORS header override.
-        $acaoHeader = trim($settings->getApiAccessControl());
+        $acaoHeader = trim($settings->api_access_control);
         if (!empty($acaoHeader)) {
             if ('*' === $acaoHeader) {
                 $response = $response->withHeader('Access-Control-Allow-Origin', '*');
@@ -82,7 +82,7 @@ final class Api extends AbstractMiddleware
                 if (!empty($origin)) {
                     $rawOrigins = array_map('trim', explode(',', $acaoHeader));
 
-                    $baseUrl = $settings->getBaseUrl();
+                    $baseUrl = $settings->base_url;
                     if (null !== $baseUrl) {
                         $rawOrigins[] = $baseUrl;
                     }

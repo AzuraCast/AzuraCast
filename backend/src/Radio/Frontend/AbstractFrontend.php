@@ -81,7 +81,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
         $radioPort = $station->getFrontendConfig()->port;
         $baseUrl ??= $this->router->getBaseUrl();
 
-        $useRadioProxy = $this->readSettings()->getUseRadioProxy();
+        $useRadioProxy = $this->readSettings()->use_radio_proxy;
 
         if ($useRadioProxy || !$this->environment->isProduction()) {
             // Web proxy support.

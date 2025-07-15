@@ -31,7 +31,7 @@ trait HasUniqueId
         ORM\Id, ORM\GeneratedValue(strategy: 'CUSTOM'), ORM\CustomIdGenerator(UuidV6Generator::class),
         Groups([EntityGroupsInterface::GROUP_ID, EntityGroupsInterface::GROUP_ALL])
     ]
-    public string $id;
+    public protected(set) string $id;
 
     public function getId(): ?string
     {

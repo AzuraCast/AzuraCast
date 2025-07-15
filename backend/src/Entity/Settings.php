@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'settings'),
     Attributes\Auditable
 ]
-class Settings implements Stringable
+final class Settings implements Stringable
 {
     use Traits\TruncateStrings;
     use Traits\TruncateInts;
@@ -52,15 +52,14 @@ class Settings implements Stringable
         ORM\GeneratedValue(strategy: 'CUSTOM'),
         ORM\CustomIdGenerator(UuidV6Generator::class)
     ]
-    protected string $app_unique_identifier;
+    public string $app_unique_identifier {
+        get {
+            if (!isset($this->app_unique_identifier)) {
+                throw new RuntimeException('Application Unique ID not generated yet.');
+            }
 
-    public function getAppUniqueIdentifier(): string
-    {
-        if (!isset($this->app_unique_identifier)) {
-            throw new RuntimeException('Application Unique ID not generated yet.');
+            return $this->app_unique_identifier;
         }
-
-        return $this->app_unique_identifier;
     }
 
     #[
@@ -68,11 +67,22 @@ class Settings implements Stringable
         ORM\Column(length: 255, nullable: true),
         Groups(self::GROUP_GENERAL)
     ]
-    protected ?string $base_url = '';
+    public ?string $base_url = '' {
+        set {
+            $value = Types::stringOrNull($value, true);
 
-    public function getBaseUrl(): ?string
-    {
-        return $this->base_url;
+            if ($value !== null) {
+                // Filter the base URL to avoid trailing slashes and other problems.
+                $baseUri = Urls::parseUserUrl(
+                    $value,
+                    'System Base URL'
+                );
+
+                $value = (string)$baseUri;
+            }
+
+            $this->base_url = $this->truncateNullableString($value);
+        }
     }
 
     public function getBaseUrlAsUri(): ?UriInterface
@@ -104,16 +114,8 @@ class Settings implements Stringable
         ORM\Column(length: 255, nullable: true),
         Groups(self::GROUP_GENERAL)
     ]
-    protected ?string $instance_name = null;
-
-    public function getInstanceName(): ?string
-    {
-        return $this->instance_name;
-    }
-
-    public function setInstanceName(?string $instanceName): void
-    {
-        $this->instance_name = $this->truncateNullableString($instanceName);
+    public ?string $instance_name = null {
+        set => $this->truncateNullableString($value);
     }
 
     #[
@@ -121,34 +123,14 @@ class Settings implements Stringable
         ORM\Column,
         Groups(self::GROUP_GENERAL)
     ]
-    protected bool $prefer_browser_url = true;
-
-    public function getPreferBrowserUrl(): bool
-    {
-        return $this->prefer_browser_url;
-    }
-
-    public function setPreferBrowserUrl(bool $preferBrowserUrl): void
-    {
-        $this->prefer_browser_url = $preferBrowserUrl;
-    }
+    public bool $prefer_browser_url = true;
 
     #[
         OA\Property(description: "Use Web Proxy for Radio", example: "false"),
         ORM\Column,
         Groups(self::GROUP_GENERAL)
     ]
-    protected bool $use_radio_proxy = true;
-
-    public function getUseRadioProxy(): bool
-    {
-        return $this->use_radio_proxy;
-    }
-
-    public function setUseRadioProxy(bool $useRadioProxy): void
-    {
-        $this->use_radio_proxy = $useRadioProxy;
-    }
+    public bool $use_radio_proxy = true;
 
     #[
         OA\Property(description: "Days of Playback History to Keep"),
@@ -156,16 +138,8 @@ class Settings implements Stringable
         Assert\Choice([0, 14, 30, 60, 365, 730]),
         Groups(self::GROUP_GENERAL)
     ]
-    protected int $history_keep_days = SongHistory::DEFAULT_DAYS_TO_KEEP;
-
-    public function getHistoryKeepDays(): int
-    {
-        return $this->history_keep_days;
-    }
-
-    public function setHistoryKeepDays(int $historyKeepDays): void
-    {
-        $this->history_keep_days = $this->truncateSmallInt($historyKeepDays);
+    public int $history_keep_days = SongHistory::DEFAULT_DAYS_TO_KEEP {
+        set => $this->truncateSmallInt($value);
     }
 
     #[
@@ -173,33 +147,15 @@ class Settings implements Stringable
         ORM\Column,
         Groups(self::GROUP_GENERAL)
     ]
-    protected bool $always_use_ssl = false;
-
-    public function getAlwaysUseSsl(): bool
-    {
-        return $this->always_use_ssl;
-    }
-
-    public function setAlwaysUseSsl(bool $alwaysUseSsl): void
-    {
-        $this->always_use_ssl = $alwaysUseSsl;
-    }
+    public bool $always_use_ssl = false;
 
     #[
         OA\Property(description: "API 'Access-Control-Allow-Origin' header", example: "*"),
         ORM\Column(length: 255, nullable: true),
         Groups(self::GROUP_GENERAL)
     ]
-    protected ?string $api_access_control = '';
-
-    public function getApiAccessControl(): string
-    {
-        return $this->api_access_control ?? '';
-    }
-
-    public function setApiAccessControl(?string $apiAccessControl): void
-    {
-        $this->api_access_control = $this->truncateNullableString($apiAccessControl);
+    public ?string $api_access_control = '' {
+        set => $this->truncateNullableString($value);
     }
 
     #[
@@ -210,38 +166,20 @@ class Settings implements Stringable
         ORM\Column,
         Groups(self::GROUP_GENERAL)
     ]
-    protected bool $enable_static_nowplaying = false;
-
-    public function getEnableStaticNowPlaying(): bool
-    {
-        return $this->enable_static_nowplaying;
-    }
-
-    public function setEnableStaticNowPlaying(bool $enableStaticNowplaying): void
-    {
-        $this->enable_static_nowplaying = $enableStaticNowplaying;
-    }
+    public bool $enable_static_nowplaying = false;
 
     #[
         OA\Property(description: "Listener Analytics Collection"),
         ORM\Column(type: 'string', length: 50, nullable: true, enumType: AnalyticsLevel::class),
         Groups(self::GROUP_GENERAL)
     ]
-    protected ?AnalyticsLevel $analytics = null;
-
-    public function getAnalytics(): AnalyticsLevel
-    {
-        return $this->analytics ?? AnalyticsLevel::default();
+    public ?AnalyticsLevel $analytics = null {
+        get => $this->analytics ?? AnalyticsLevel::default();
     }
 
     public function isAnalyticsEnabled(): bool
     {
-        return AnalyticsLevel::None !== $this->getAnalytics();
-    }
-
-    public function setAnalytics(?AnalyticsLevel $analytics): void
-    {
-        $this->analytics = $analytics;
+        return AnalyticsLevel::None !== $this->analytics;
     }
 
     #[
@@ -249,17 +187,7 @@ class Settings implements Stringable
         ORM\Column,
         Groups(self::GROUP_GENERAL)
     ]
-    protected bool $check_for_updates = true;
-
-    public function getCheckForUpdates(): bool
-    {
-        return $this->check_for_updates;
-    }
-
-    public function setCheckForUpdates(bool $checkForUpdates): void
-    {
-        $this->check_for_updates = $checkForUpdates;
-    }
+    public bool $check_for_updates = true;
 
     /**
      * @var mixed[]|null
@@ -269,20 +197,7 @@ class Settings implements Stringable
         ORM\Column(type: 'json', nullable: true),
         Attributes\AuditIgnore
     ]
-    protected ?array $update_results = null;
-
-    /**
-     * @return mixed[]|null
-     */
-    public function getUpdateResults(): ?array
-    {
-        return $this->update_results;
-    }
-
-    public function setUpdateResults(?array $updateResults): void
-    {
-        $this->update_results = $updateResults;
-    }
+    public ?array $update_results = null;
 
     #[
         OA\Property(
@@ -292,21 +207,11 @@ class Settings implements Stringable
         ORM\Column,
         Attributes\AuditIgnore
     ]
-    protected int $update_last_run = 0;
-
-    public function getUpdateLastRun(): int
-    {
-        return $this->update_last_run;
-    }
-
-    public function setUpdateLastRun(int $updateLastRun): void
-    {
-        $this->update_last_run = $updateLastRun;
-    }
+    public int $update_last_run = 0;
 
     public function updateUpdateLastRun(): void
     {
-        $this->setUpdateLastRun(time());
+        $this->update_last_run = time();
     }
 
     #[
@@ -314,52 +219,23 @@ class Settings implements Stringable
         ORM\Column(type: 'string', length: 50, nullable: true, enumType: SupportedThemes::class),
         Groups(self::GROUP_BRANDING)
     ]
-    protected ?SupportedThemes $public_theme = null;
-
-    public function getPublicTheme(): ?SupportedThemes
-    {
-        return $this->public_theme;
-    }
-
-    public function setPublicTheme(?SupportedThemes $publicTheme): void
-    {
-        $this->public_theme = $publicTheme;
-    }
+    public ?SupportedThemes $public_theme = null;
 
     #[
         OA\Property(description: "Hide Album Art on Public Pages", example: "false"),
         ORM\Column,
         Groups(self::GROUP_BRANDING)
     ]
-    protected bool $hide_album_art = false;
-
-    public function getHideAlbumArt(): bool
-    {
-        return $this->hide_album_art;
-    }
-
-    public function setHideAlbumArt(bool $hideAlbumArt): void
-    {
-        $this->hide_album_art = $hideAlbumArt;
-    }
+    public bool $hide_album_art = false;
 
     #[
         OA\Property(description: "Homepage Redirect URL", example: "https://example.com/"),
         ORM\Column(length: 255, nullable: true),
         Groups(self::GROUP_BRANDING)
     ]
-    protected ?string $homepage_redirect_url = null;
-
-    public function getHomepageRedirectUrl(): ?string
-    {
-        return Types::stringOrNull($this->homepage_redirect_url, true);
-    }
-
-    public function setHomepageRedirectUrl(?string $homepageRedirectUrl): void
-    {
-        $this->homepage_redirect_url = $this->truncateNullableString(
-            Types::stringOrNull($homepageRedirectUrl)
-        );
+    public ?string $homepage_redirect_url = null {
+        get => Types::stringOrNull($this->homepage_redirect_url, true);
+        set => $this->truncateNullableString($value);
     }
 
     #[
@@ -367,26 +243,16 @@ class Settings implements Stringable
         ORM\Column(nullable: true),
         Groups(self::GROUP_BRANDING)
     ]
-    protected ?string $default_album_art_url = null;
-
-    public function getDefaultAlbumArtUrl(): ?string
-    {
-        return Types::stringOrNull($this->default_album_art_url);
+    public ?string $default_album_art_url = null {
+        set => $this->truncateNullableString($value, 255, true);
     }
 
     public function getDefaultAlbumArtUrlAsUri(): ?UriInterface
     {
         return Urls::tryParseUserUrl(
-            $this->getDefaultAlbumArtUrl(),
+            $this->default_album_art_url,
             'Default Album Art URL',
             false
-        );
-    }
-
-    public function setDefaultAlbumArtUrl(?string $defaultAlbumArtUrl): void
-    {
-        $this->default_album_art_url = $this->truncateNullableString(
-            Types::stringOrNull($defaultAlbumArtUrl)
         );
     }
 
@@ -398,17 +264,7 @@ class Settings implements Stringable
         ORM\Column,
         Groups(self::GROUP_GENERAL)
     ]
-    protected bool $use_external_album_art_when_processing_media = false;
-
-    public function getUseExternalAlbumArtWhenProcessingMedia(): bool
-    {
-        return $this->use_external_album_art_when_processing_media;
-    }
-
-    public function setUseExternalAlbumArtWhenProcessingMedia(bool $useExternalAlbumArtWhenProcessingMedia): void
-    {
-        $this->use_external_album_art_when_processing_media = $useExternalAlbumArtWhenProcessingMedia;
-    }
+    public bool $use_external_album_art_when_processing_media = false;
 
     #[
         OA\Property(
@@ -418,17 +274,7 @@ class Settings implements Stringable
         ORM\Column,
         Groups(self::GROUP_GENERAL)
     ]
-    protected bool $use_external_album_art_in_apis = false;
-
-    public function getUseExternalAlbumArtInApis(): bool
-    {
-        return $this->use_external_album_art_in_apis;
-    }
-
-    public function setUseExternalAlbumArtInApis(bool $useExternalAlbumArtInApis): void
-    {
-        $this->use_external_album_art_in_apis = $useExternalAlbumArtInApis;
-    }
+    public bool $use_external_album_art_in_apis = false;
 
     #[
         OA\Property(
@@ -438,18 +284,8 @@ class Settings implements Stringable
         ORM\Column(length: 255, nullable: true),
         Groups(self::GROUP_GENERAL)
     ]
-    protected ?string $last_fm_api_key = null;
-
-    public function getLastFmApiKey(): ?string
-    {
-        return Types::stringOrNull($this->last_fm_api_key, true);
-    }
-
-    public function setLastFmApiKey(?string $lastFmApiKey): void
-    {
-        $this->last_fm_api_key = $this->truncateNullableString(
-            Types::stringOrNull($lastFmApiKey, true)
-        );
+    public ?string $last_fm_api_key = null {
+        set => $this->truncateNullableString($value, 255, true);
     }
 
     #[
@@ -457,33 +293,15 @@ class Settings implements Stringable
         ORM\Column,
         Groups(self::GROUP_BRANDING)
     ]
-    protected bool $hide_product_name = false;
-
-    public function getHideProductName(): bool
-    {
-        return $this->hide_product_name;
-    }
-
-    public function setHideProductName(bool $hideProductName): void
-    {
-        $this->hide_product_name = $hideProductName;
-    }
+    public bool $hide_product_name = false;
 
     #[
         OA\Property(description: "Custom CSS for Public Pages", example: ""),
         ORM\Column(type: 'text', nullable: true),
         Groups(self::GROUP_BRANDING)
     ]
-    protected ?string $public_custom_css = null;
-
-    public function getPublicCustomCss(): ?string
-    {
-        return Types::stringOrNull($this->public_custom_css, true);
-    }
-
-    public function setPublicCustomCss(?string $publicCustomCss): void
-    {
-        $this->public_custom_css = Types::stringOrNull($publicCustomCss, true);
+    public ?string $public_custom_css = null {
+        set => Types::stringOrNull($value, true);
     }
 
     #[
@@ -491,16 +309,8 @@ class Settings implements Stringable
         ORM\Column(type: 'text', nullable: true),
         Groups(self::GROUP_BRANDING)
     ]
-    protected ?string $public_custom_js = null;
-
-    public function getPublicCustomJs(): ?string
-    {
-        return Types::stringOrNull($this->public_custom_js, true);
-    }
-
-    public function setPublicCustomJs(?string $publicCustomJs): void
-    {
-        $this->public_custom_js = Types::stringOrNull($publicCustomJs, true);
+    public ?string $public_custom_js = null {
+        set => Types::stringOrNull($value, true);
     }
 
     #[
@@ -508,16 +318,8 @@ class Settings implements Stringable
         ORM\Column(type: 'text', nullable: true),
         Groups(self::GROUP_BRANDING)
     ]
-    protected ?string $internal_custom_css = null;
-
-    public function getInternalCustomCss(): ?string
-    {
-        return Types::stringOrNull($this->internal_custom_css, true);
-    }
-
-    public function setInternalCustomCss(?string $internalCustomCss): void
-    {
-        $this->internal_custom_css = Types::stringOrNull($internalCustomCss, true);
+    public ?string $internal_custom_css = null {
+        set => Types::stringOrNull($value, true);
     }
 
     #[
@@ -525,17 +327,7 @@ class Settings implements Stringable
         ORM\Column,
         Groups(self::GROUP_BACKUP)
     ]
-    protected bool $backup_enabled = false;
-
-    public function getBackupEnabled(): bool
-    {
-        return $this->backup_enabled;
-    }
-
-    public function setBackupEnabled(bool $backupEnabled): void
-    {
-        $this->backup_enabled = $backupEnabled;
-    }
+    public bool $backup_enabled = false;
 
     #[
         OA\Property(
@@ -545,16 +337,13 @@ class Settings implements Stringable
         ORM\Column(length: 4, nullable: true),
         Groups(self::GROUP_BACKUP)
     ]
-    protected ?string $backup_time_code = null;
+    public ?string $backup_time_code = null {
+        set => $this->truncateNullableString($value, 4, true);
+    }
 
     public function getBackupTimeCode(): ?string
     {
         return Types::stringOrNull($this->backup_time_code, true);
-    }
-
-    public function setBackupTimeCode(?string $backupTimeCode): void
-    {
-        $this->backup_time_code = Types::stringOrNull($backupTimeCode, true);
     }
 
     #[
@@ -562,7 +351,7 @@ class Settings implements Stringable
         ORM\Column,
         Groups(self::GROUP_BACKUP)
     ]
-    protected bool $backup_exclude_media = false;
+    public bool $backup_exclude_media = false;
 
     public function getBackupExcludeMedia(): bool
     {
@@ -579,16 +368,13 @@ class Settings implements Stringable
         ORM\Column(type: 'smallint'),
         Groups(self::GROUP_BACKUP)
     ]
-    protected int $backup_keep_copies = 0;
+    public int $backup_keep_copies = 0 {
+        set => $this->truncateSmallInt($value);
+    }
 
     public function getBackupKeepCopies(): int
     {
         return $this->backup_keep_copies;
-    }
-
-    public function setBackupKeepCopies(int $backupKeepCopies): void
-    {
-        $this->backup_keep_copies = $this->truncateSmallInt($backupKeepCopies);
     }
 
     #[
@@ -596,16 +382,11 @@ class Settings implements Stringable
         ORM\Column(nullable: true),
         Groups(self::GROUP_BACKUP)
     ]
-    protected ?int $backup_storage_location = null;
+    public ?int $backup_storage_location = null;
 
     public function getBackupStorageLocation(): ?int
     {
         return $this->backup_storage_location;
-    }
-
-    public function setBackupStorageLocation(?int $backupStorageLocation): void
-    {
-        $this->backup_storage_location = $backupStorageLocation;
     }
 
     #[
@@ -613,16 +394,9 @@ class Settings implements Stringable
         ORM\Column(nullable: true),
         Groups(self::GROUP_BACKUP)
     ]
-    protected ?string $backup_format = null;
-
-    public function getBackupFormat(): ?string
-    {
-        return Types::stringOrNull($this->backup_format, true);
-    }
-
-    public function setBackupFormat(?string $backupFormat): void
-    {
-        $this->backup_format = Types::stringOrNull($backupFormat, true);
+    public ?string $backup_format = null {
+        get => Types::stringOrNull($this->backup_format, true);
+        set => Types::stringOrNull($value, true);
     }
 
     #[
@@ -634,21 +408,11 @@ class Settings implements Stringable
         Attributes\AuditIgnore,
         Groups(self::GROUP_BACKUP)
     ]
-    protected int $backup_last_run = 0;
-
-    public function getBackupLastRun(): int
-    {
-        return $this->backup_last_run;
-    }
-
-    public function setBackupLastRun(int $backupLastRun): void
-    {
-        $this->backup_last_run = $backupLastRun;
-    }
+    public int $backup_last_run = 0;
 
     public function updateBackupLastRun(): void
     {
-        $this->setBackupLastRun(time());
+        $this->backup_last_run = time();
     }
 
     #[
@@ -657,17 +421,7 @@ class Settings implements Stringable
         Attributes\AuditIgnore,
         Groups(self::GROUP_BACKUP)
     ]
-    protected ?string $backup_last_output = null;
-
-    public function getBackupLastOutput(): ?string
-    {
-        return $this->backup_last_output;
-    }
-
-    public function setBackupLastOutput(?string $backupLastOutput): void
-    {
-        $this->backup_last_output = $backupLastOutput;
-    }
+    public ?string $backup_last_output = null;
 
     #[
         OA\Property(
@@ -676,26 +430,16 @@ class Settings implements Stringable
         ),
         ORM\Column
     ]
-    protected int $setup_complete_time = 0;
-
-    public function getSetupCompleteTime(): int
-    {
-        return $this->setup_complete_time;
-    }
+    public int $setup_complete_time = 0;
 
     public function isSetupComplete(): bool
     {
         return (0 !== $this->setup_complete_time);
     }
 
-    public function setSetupCompleteTime(int $setupCompleteTime): void
-    {
-        $this->setup_complete_time = $setupCompleteTime;
-    }
-
     public function updateSetupComplete(): void
     {
-        $this->setSetupCompleteTime(time());
+        $this->setup_complete_time = time();
     }
 
     #[
@@ -703,17 +447,7 @@ class Settings implements Stringable
         ORM\Column,
         Attributes\AuditIgnore
     ]
-    protected bool $sync_disabled = false;
-
-    public function getSyncDisabled(): bool
-    {
-        return $this->sync_disabled;
-    }
-
-    public function setSyncDisabled(bool $syncDisabled): void
-    {
-        $this->sync_disabled = $syncDisabled;
-    }
+    public bool $sync_disabled = false;
 
     #[
         OA\Property(
@@ -723,16 +457,11 @@ class Settings implements Stringable
         ORM\Column,
         Attributes\AuditIgnore
     ]
-    protected int $sync_last_run = 0;
+    public int $sync_last_run = 0;
 
     public function updateSyncLastRun(): void
     {
         $this->sync_last_run = time();
-    }
-
-    public function getSyncLastRun(): int
-    {
-        return $this->sync_last_run;
     }
 
     #[
@@ -740,35 +469,15 @@ class Settings implements Stringable
         ORM\Column(length: 45, nullable: true),
         Attributes\AuditIgnore
     ]
-    protected ?string $external_ip = null;
-
-    public function getExternalIp(): ?string
-    {
-        return $this->external_ip;
-    }
-
-    public function setExternalIp(?string $externalIp): void
-    {
-        $this->external_ip = $externalIp;
-    }
+    public ?string $external_ip = null;
 
     #[
         OA\Property(description: "The license key for the Maxmind Geolite download.", example: ""),
         ORM\Column(length: 255, nullable: true),
         Groups(self::GROUP_GEO_IP)
     ]
-    protected ?string $geolite_license_key = null;
-
-    public function getGeoliteLicenseKey(): ?string
-    {
-        return (null === $this->geolite_license_key)
-            ? null
-            : trim($this->geolite_license_key);
-    }
-
-    public function setGeoliteLicenseKey(?string $geoliteLicenseKey): void
-    {
-        $this->geolite_license_key = $geoliteLicenseKey;
+    public ?string $geolite_license_key = null {
+        get => Types::stringOrNull($this->geolite_license_key, true);
     }
 
     #[
@@ -780,21 +489,11 @@ class Settings implements Stringable
         Attributes\AuditIgnore,
         Groups(self::GROUP_GEO_IP)
     ]
-    protected int $geolite_last_run = 0;
-
-    public function getGeoliteLastRun(): int
-    {
-        return $this->geolite_last_run;
-    }
-
-    public function setGeoliteLastRun(int $geoliteLastRun): void
-    {
-        $this->geolite_last_run = $geoliteLastRun;
-    }
+    public int $geolite_last_run = 0;
 
     public function updateGeoliteLastRun(): void
     {
-        $this->setGeoliteLastRun(time());
+        $this->geolite_last_run = time();
     }
 
     #[
@@ -802,34 +501,14 @@ class Settings implements Stringable
         ORM\Column,
         Groups(self::GROUP_GENERAL)
     ]
-    protected bool $mail_enabled = false;
-
-    public function getMailEnabled(): bool
-    {
-        return $this->mail_enabled;
-    }
-
-    public function setMailEnabled(bool $mailEnabled): void
-    {
-        $this->mail_enabled = $mailEnabled;
-    }
+    public bool $mail_enabled = false;
 
     #[
         OA\Property(description: "The name of the sender of system e-mails.", example: "AzuraCast"),
         ORM\Column(length: 255, nullable: true),
         Groups(self::GROUP_GENERAL)
     ]
-    protected ?string $mail_sender_name = '';
-
-    public function getMailSenderName(): string
-    {
-        return $this->mail_sender_name ?? '';
-    }
-
-    public function setMailSenderName(?string $mailSenderName): void
-    {
-        $this->mail_sender_name = $mailSenderName;
-    }
+    public ?string $mail_sender_name = '';
 
     #[
         OA\Property(
@@ -839,67 +518,29 @@ class Settings implements Stringable
         ORM\Column(length: 255, nullable: true),
         Groups(self::GROUP_GENERAL)
     ]
-    protected ?string $mail_sender_email = '';
-
-    public function getMailSenderEmail(): string
-    {
-        return $this->mail_sender_email ?? '';
-    }
-
-    public function setMailSenderEmail(?string $mailSenderEmail): void
-    {
-        $this->mail_sender_email = $mailSenderEmail;
-    }
+    public ?string $mail_sender_email = '';
 
     #[
         OA\Property(description: "The host to send outbound SMTP mail.", example: "smtp.example.com"),
         ORM\Column(length: 255, nullable: true),
         Groups(self::GROUP_GENERAL)
     ]
-    protected ?string $mail_smtp_host = '';
-
-    public function getMailSmtpHost(): string
-    {
-        return $this->mail_smtp_host ?? '';
-    }
-
-    public function setMailSmtpHost(?string $mailSmtpHost): void
-    {
-        $this->mail_smtp_host = $mailSmtpHost;
-    }
+    public ?string $mail_smtp_host = '';
 
     #[
         OA\Property(description: "The port for sending outbound SMTP mail.", example: 465),
         ORM\Column(type: 'smallint'),
         Groups(self::GROUP_GENERAL)
     ]
-    protected int $mail_smtp_port = 0;
-
-    public function getMailSmtpPort(): int
-    {
-        return $this->mail_smtp_port;
-    }
-
-    public function setMailSmtpPort(int $mailSmtpPort): void
-    {
-        $this->mail_smtp_port = $this->truncateSmallInt($mailSmtpPort);
-    }
+    public int $mail_smtp_port = 0;
 
     #[
         OA\Property(description: "The username when connecting to SMTP mail.", example: "username"),
         ORM\Column(length: 255, nullable: true),
         Groups(self::GROUP_GENERAL)
     ]
-    protected ?string $mail_smtp_username = '';
-
-    public function getMailSmtpUsername(): string
-    {
-        return $this->mail_smtp_username ?? '';
-    }
-
-    public function setMailSmtpUsername(?string $mailSmtpUsername): void
-    {
-        $this->mail_smtp_username = $this->truncateNullableString($mailSmtpUsername);
+    public ?string $mail_smtp_username = '' {
+        set => $this->truncateNullableString($value);
     }
 
     #[
@@ -907,50 +548,25 @@ class Settings implements Stringable
         ORM\Column(length: 255, nullable: true),
         Groups(self::GROUP_GENERAL)
     ]
-    protected ?string $mail_smtp_password = '';
-
-    public function getMailSmtpPassword(): string
-    {
-        return $this->mail_smtp_password ?? '';
-    }
-
-    public function setMailSmtpPassword(?string $mailSmtpPassword): void
-    {
-        $this->mail_smtp_password = $mailSmtpPassword;
-    }
+    public ?string $mail_smtp_password = '';
 
     #[
         OA\Property(description: "Whether to use a secure (TLS) connection when sending SMTP mail.", example: "true"),
         ORM\Column,
         Groups(self::GROUP_GENERAL)
     ]
-    protected bool $mail_smtp_secure = true;
-
-    public function getMailSmtpSecure(): bool
-    {
-        return $this->mail_smtp_secure;
-    }
-
-    public function setMailSmtpSecure(bool $mailSmtpSecure): void
-    {
-        $this->mail_smtp_secure = $mailSmtpSecure;
-    }
+    public bool $mail_smtp_secure = true;
 
     #[
         OA\Property(description: "The external avatar service to use when fetching avatars.", example: "libravatar"),
         ORM\Column(length: 25, nullable: true),
         Groups(self::GROUP_GENERAL)
     ]
-    protected ?string $avatar_service = null;
+    public ?string $avatar_service = null;
 
     public function getAvatarService(): string
     {
         return $this->avatar_service ?? Avatar::DEFAULT_SERVICE;
-    }
-
-    public function setAvatarService(?string $avatarService): void
-    {
-        $this->avatar_service = $this->truncateNullableString($avatarService, 25);
     }
 
     #[
@@ -958,16 +574,11 @@ class Settings implements Stringable
         ORM\Column(length: 255, nullable: true),
         Groups(self::GROUP_GENERAL)
     ]
-    protected ?string $avatar_default_url = null;
+    public ?string $avatar_default_url = null;
 
     public function getAvatarDefaultUrl(): string
     {
         return $this->avatar_default_url ?? Avatar::DEFAULT_AVATAR;
-    }
-
-    public function setAvatarDefaultUrl(?string $avatarDefaultUrl): void
-    {
-        $this->avatar_default_url = $avatarDefaultUrl;
     }
 
     #[
@@ -975,49 +586,34 @@ class Settings implements Stringable
         ORM\Column(length: 255, nullable: true),
         Groups(self::GROUP_GENERAL)
     ]
-    protected ?string $acme_email = null;
-
-    public function getAcmeEmail(): ?string
-    {
-        return $this->acme_email;
-    }
-
-    public function setAcmeEmail(?string $acmeEmail): void
-    {
-        $this->acme_email = $acmeEmail;
-    }
+    public ?string $acme_email = null;
 
     #[
         OA\Property(description: "ACME (LetsEncrypt) domain name(s).", example: ""),
         ORM\Column(length: 255, nullable: true),
         Groups(self::GROUP_GENERAL)
     ]
-    protected ?string $acme_domains = null;
+    public ?string $acme_domains = null {
+        get => Types::stringOrNull($this->acme_domains, true);
+        set {
+            $acmeDomains = Types::stringOrNull($value, true);
 
-    public function getAcmeDomains(): ?string
-    {
-        return Types::stringOrNull($this->acme_domains, true);
-    }
+            if (null !== $acmeDomains) {
+                $acmeDomains = implode(
+                    ', ',
+                    array_map(
+                        static function ($str) {
+                            $str = trim($str);
+                            $str = trim($str, '/');
+                            return str_replace(['http://', 'https://'], '', $str);
+                        },
+                        explode(',', $acmeDomains)
+                    )
+                );
+            }
 
-    public function setAcmeDomains(?string $acmeDomains): void
-    {
-        $acmeDomains = Types::stringOrNull($acmeDomains, true);
-
-        if (null !== $acmeDomains) {
-            $acmeDomains = implode(
-                ', ',
-                array_map(
-                    static function ($str) {
-                        $str = trim($str);
-                        $str = trim($str, '/');
-                        return str_replace(['http://', 'https://'], '', $str);
-                    },
-                    explode(',', $acmeDomains)
-                )
-            );
+            $this->acme_domains = $acmeDomains;
         }
-
-        $this->acme_domains = $acmeDomains;
     }
 
     #[
@@ -1025,21 +621,13 @@ class Settings implements Stringable
         ORM\Column(type: 'string', length: 50, nullable: true, enumType: IpSources::class),
         Groups(self::GROUP_GENERAL)
     ]
-    protected ?IpSources $ip_source = null;
-
-    public function getIpSource(): IpSources
-    {
-        return $this->ip_source ?? IpSources::default();
+    public ?IpSources $ip_source = null {
+        get => $this->ip_source ?? IpSources::default();
     }
 
     public function getIp(ServerRequestInterface $request): string
     {
-        return $this->getIpSource()->getIp($request);
-    }
-
-    public function setIpSource(?IpSources $ipSource): void
-    {
-        $this->ip_source = $ipSource;
+        return $this->ip_source->getIp($request);
     }
 
     public function __toString(): string

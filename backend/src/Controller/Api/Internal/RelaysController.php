@@ -140,15 +140,15 @@ final class RelaysController
             $relay = new Relay($baseUrl);
         }
 
-        $relay->setName($body['name'] ?? 'Relay');
-        $relay->setIsVisibleOnPublicPages($body['is_visible_on_public_pages'] ?? true);
+        $relay->name = $body['name'] ?? 'Relay';
+        $relay->is_visible_on_public_pages = $body['is_visible_on_public_pages'] ?? true;
 
         $this->em->persist($relay);
 
         // List existing remotes to avoid duplication.
         $existingRemotes = [];
 
-        foreach ($relay->getRemotes() as $remote) {
+        foreach ($relay->remotes as $remote) {
             /** @var StationRemote $remote */
             $existingRemotes[$remote->getStation()->getId()][$remote->getMount()] = $remote;
         }
@@ -172,11 +172,11 @@ final class RelaysController
 
                 $remote->setRelay($relay);
                 $remote->setType(RemoteAdapters::AzuraRelay);
-                $remote->setDisplayName($mount->getDisplayName() . ' (' . $relay->getName() . ')');
-                $remote->setIsVisibleOnPublicPages($relay->getIsVisibleOnPublicPages());
+                $remote->setDisplayName($mount->getDisplayName() . ' (' . $relay->name . ')');
+                $remote->setIsVisibleOnPublicPages($relay->is_visible_on_public_pages);
                 $remote->setAutodjBitrate($mount->getAutodjBitrate());
                 $remote->setAutodjFormat($mount->getAutodjFormat());
-                $remote->setUrl($relay->getBaseUrl());
+                $remote->setUrl($relay->base_url);
                 $remote->setMount($mount->getName());
 
                 $this->em->persist($remote);

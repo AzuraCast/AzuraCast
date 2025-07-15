@@ -41,7 +41,7 @@ final class ListCommand extends CommandAbstract
             /** @var User $row */
             $roles = [];
             foreach ($row->getRoles() as $role) {
-                $roles[] = $role->getName();
+                $roles[] = $role->name;
             }
 
             $users[] = [

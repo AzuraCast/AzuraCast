@@ -43,7 +43,7 @@ final class CheckUpdatesTask extends AbstractTask
         Environment $environment,
         Settings $settings
     ): int {
-        $updateLastRun = $settings->getUpdateLastRun();
+        $updateLastRun = $settings->update_last_run;
 
         return ($updateLastRun !== 0)
             ? $updateLastRun + self::UPDATE_THRESHOLD
@@ -61,7 +61,7 @@ final class CheckUpdatesTask extends AbstractTask
             $updates = $this->azuracastCentral->checkForUpdates();
 
             if (!empty($updates)) {
-                $settings->setUpdateResults($updates);
+                $settings->update_results = $updates;
                 $this->writeSettings($settings);
 
                 $this->logger->info('Successfully checked for updates.', ['results' => $updates]);

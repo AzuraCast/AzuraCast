@@ -198,18 +198,18 @@ final class View extends Engine
                 $stationPermissions = [];
 
                 foreach ($userObj->getRoles() as $role) {
-                    foreach ($role->getPermissions() as $permission) {
-                        $station = $permission->getStation();
+                    foreach ($role->permissions as $permission) {
+                        $station = $permission->station;
                         if (null !== $station) {
-                            $stationPermissions[$station->getIdRequired()][] = $permission->getActionName();
+                            $stationPermissions[$station->id][] = $permission->action_name;
                         } else {
-                            $globalPermissions[] = $permission->getActionName();
+                            $globalPermissions[] = $permission->action_name;
                         }
                     }
                 }
 
                 $this->globalProps->set('user', [
-                    'id' => $userObj->getIdRequired(),
+                    'id' => $userObj->id,
                     'displayName' => $userObj->getDisplayName(),
                     'globalPermissions' => $globalPermissions,
                     'stationPermissions' => $stationPermissions,

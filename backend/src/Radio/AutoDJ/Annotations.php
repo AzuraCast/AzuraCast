@@ -96,7 +96,7 @@ final class Annotations implements EventSubscriberInterface
             return;
         }
 
-        $duration = $media->getLength();
+        $duration = $media->length;
 
         $event->addAnnotations([
             'title' => $media->title,
@@ -107,7 +107,7 @@ final class Annotations implements EventSubscriberInterface
             'sq_id' => $event->getQueue()?->getIdRequired(),
             ...$this->processAutocueAnnotations(
                 $station,
-                $media->getExtraMetadata()->toArray(),
+                $media->extra_metadata->toArray(),
                 $duration,
             ),
             ...$this->customFieldRepo->getCustomFields($media),
@@ -133,7 +133,7 @@ final class Annotations implements EventSubscriberInterface
             ...$this->processAutocueAnnotations(
                 $station,
                 $this->autoCueCache->getForCacheKey($cacheKey),
-                $media->getLength()
+                $media->length
             ),
         ]);
     }
@@ -236,10 +236,10 @@ final class Annotations implements EventSubscriberInterface
         }
 
         $event->addAnnotations([
-            'playlist_id' => $playlist->getId(),
+            'playlist_id' => $playlist->id,
         ]);
 
-        if ($playlist->getIsJingle()) {
+        if ($playlist->is_jingle) {
             $event->addAnnotations([
                 'jingle_mode' => 'true',
             ]);
@@ -251,7 +251,7 @@ final class Annotations implements EventSubscriberInterface
         $request = $event->getRequest();
         if ($request instanceof StationRequest) {
             $event->addAnnotations([
-                'request_id' => $request->getId(),
+                'request_id' => $request->id,
             ]);
         }
     }

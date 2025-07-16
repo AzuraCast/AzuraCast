@@ -73,7 +73,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
         }
 
         $publicUrl = $this->getPublicUrl($station, $baseUrl);
-        return $publicUrl->withPath($publicUrl->getPath() . $mount->getName());
+        return $publicUrl->withPath($publicUrl->getPath() . $mount->name);
     }
 
     public function getPublicUrl(Station $station, ?UriInterface $baseUrl = null): UriInterface

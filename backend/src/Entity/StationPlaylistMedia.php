@@ -87,8 +87,8 @@ class StationPlaylistMedia implements JsonSerializable, IdentifiableEntityInterf
     public function jsonSerialize(): array
     {
         return [
-            'id'     => $this->playlist->getId(),
-            'name'   => $this->playlist->getName(),
+            'id' => $this->playlist->id,
+            'name' => $this->playlist->name,
             'weight' => $this->weight,
         ];
     }

@@ -66,7 +66,7 @@ final class PutApplyToAction extends AbstractClonableAction implements SingleAct
             if ($clone) {
                 $playlist = $this->clone(
                     $record,
-                    $record->getName() . ' - ' . $directory
+                    $record->name . ' - ' . $directory
                 );
             } else {
                 $playlist = $record;

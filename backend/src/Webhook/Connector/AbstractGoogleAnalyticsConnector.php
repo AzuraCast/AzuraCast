@@ -31,7 +31,7 @@ abstract class AbstractGoogleAnalyticsConnector extends AbstractConnector
 
         $mountUrls = [];
         foreach ($station->mounts as $mount) {
-            $mountUrls[$mount->id] = $listenBaseUrl . $mount->getName();
+            $mountUrls[$mount->id] = $listenBaseUrl . $mount->name;
         }
 
         $remoteUrls = [];
@@ -41,7 +41,7 @@ abstract class AbstractGoogleAnalyticsConnector extends AbstractConnector
 
         $hlsUrls = [];
         foreach ($station->hls_streams as $hlsStream) {
-            $hlsUrls[$hlsStream->id] = $hlsBaseUrl . '/' . $hlsStream->getName();
+            $hlsUrls[$hlsStream->id] = $hlsBaseUrl . '/' . $hlsStream->name;
         }
 
         return [

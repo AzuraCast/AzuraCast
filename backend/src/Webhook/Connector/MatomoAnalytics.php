@@ -55,7 +55,7 @@ final class MatomoAnalytics extends AbstractConnector
         $mountUrls = [];
         $mountNames = [];
         foreach ($station->mounts as $mount) {
-            $mountUrl = $baseUri->withPath('/radio/' . $radioPort . $mount->getName());
+            $mountUrl = $baseUri->withPath('/radio/' . $radioPort . $mount->name);
             $mountUrls[$mount->id] = (string)$mountUrl;
             $mountNames[$mount->id] = (string)$mount;
         }

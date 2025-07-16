@@ -35,7 +35,7 @@ final class SongHistoryApiGenerator
         $response->duration = (int)$record->duration;
         $response->is_request = ($record->request !== null);
         if ($record->playlist instanceof StationPlaylist) {
-            $response->playlist = $record->playlist->getName();
+            $response->playlist = $record->playlist->name;
         } else {
             $response->playlist = '';
         }

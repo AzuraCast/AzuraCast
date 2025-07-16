@@ -214,7 +214,7 @@ final class FilesController extends AbstractStationApiCrudController
 
         $return = ApiStationMedia::fromArray(
             $returnArray,
-            $record->getExtraMetadata()->toArray() ?? [],
+            $record->extra_metadata->toArray() ?? [],
             $this->customFieldsRepo->getCustomFields($record),
             ApiStationMedia::aggregatePlaylists($returnArray['playlists'] ?? []),
         );
@@ -223,11 +223,11 @@ final class FilesController extends AbstractStationApiCrudController
         $router = $request->getRouter();
 
         $routeParams = [
-            'media_id' => $record->getUniqueId(),
+            'media_id' => $record->unique_id,
         ];
 
-        if (0 !== $record->getArtUpdatedAt()) {
-            $routeParams['timestamp'] = $record->getArtUpdatedAt();
+        if (0 !== $record->art_updated_at) {
+            $routeParams['timestamp'] = $record->art_updated_at;
         }
 
         $return->art = $router->fromHere(
@@ -255,15 +255,15 @@ final class FilesController extends AbstractStationApiCrudController
             'waveform' => $router->fromHere(
                 'api:stations:media:waveform',
                 [
-                    'media_id' => $record->getUniqueId(),
-                    'timestamp' => $record->getArtUpdatedAt(),
+                    'media_id' => $record->unique_id,
+                    'timestamp' => $record->art_updated_at,
                 ],
                 absolute: !$isInternal
             ),
             'waveform_cache' => $router->fromHere(
                 'api:stations:media:waveform-cache',
                 [
-                    'media_id' => $record->getUniqueId(),
+                    'media_id' => $record->unique_id,
                 ],
                 absolute: !$isInternal
             ),

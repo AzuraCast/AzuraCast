@@ -93,7 +93,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
         StationPlaylist $playlist,
         ?int $playPerSongs = null
     ): bool {
-        $playPerSongs ??= $playlist->getPlayPerSongs();
+        $playPerSongs ??= $playlist->play_per_songs;
 
         $recentPlayedQuery = $this->em->createQuery(
             <<<'DQL'

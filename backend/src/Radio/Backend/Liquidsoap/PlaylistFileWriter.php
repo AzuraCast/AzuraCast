@@ -103,7 +103,7 @@ final class PlaylistFileWriter implements EventSubscriberInterface
         }
 
         foreach ($station->playlists as $playlist) {
-            if (!$playlist->getIsEnabled()) {
+            if (!$playlist->is_enabled) {
                 continue;
             }
 
@@ -119,7 +119,7 @@ final class PlaylistFileWriter implements EventSubscriberInterface
             'Writing playlist file to disk...',
             [
                 'station' => $station->name,
-                'playlist' => $playlist->getName(),
+                'playlist' => $playlist->name,
             ]
         );
 

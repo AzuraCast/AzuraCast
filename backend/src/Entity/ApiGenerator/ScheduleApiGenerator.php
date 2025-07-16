@@ -40,7 +40,7 @@ final class ScheduleApiGenerator
 
         if ($playlist instanceof StationPlaylist) {
             $row->type = StationScheduleApi::TYPE_PLAYLIST;
-            $row->name = $playlist->getName();
+            $row->name = $playlist->name;
             $row->title = $row->name;
             $row->description = sprintf(__('Playlist: %s'), $row->name);
         } elseif ($streamer instanceof StationStreamer) {

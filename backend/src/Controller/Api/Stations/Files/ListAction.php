@@ -389,9 +389,9 @@ final class ListAction implements SingleActionInterface
         // Fetch custom fields for all shown media.
         $customFieldsRaw = $this->em->createQuery(
             <<<'DQL'
-            SELECT smcf.media_id, cf.short_name, smcf.value
+            SELECT IDENTITY(smcf.media) AS media_id, cf.short_name, smcf.value
             FROM App\Entity\StationMediaCustomField smcf JOIN smcf.field cf
-            WHERE smcf.media_id IN (:ids)
+            WHERE IDENTITY(smcf.media) IN (:ids)
             DQL
         )->setParameter('ids', $mediaIds)
             ->getScalarResult();

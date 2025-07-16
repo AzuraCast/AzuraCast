@@ -109,11 +109,11 @@ final class StationRepository extends Repository
         // Create default mountpoints if station supports them.
         if ($station->frontend_type->supportsMounts()) {
             $record = new StationMount($station);
-            $record->setName('/radio.mp3');
-            $record->setIsDefault(true);
-            $record->setEnableAutodj(true);
-            $record->setAutodjFormat(StreamFormats::Mp3);
-            $record->setAutodjBitrate($station->max_bitrate !== 0 ? $station->max_bitrate : 192);
+            $record->name = '/radio.mp3';
+            $record->is_default = true;
+            $record->enable_autodj = true;
+            $record->autodj_format = StreamFormats::Mp3;
+            $record->autodj_bitrate = $station->max_bitrate !== 0 ? $station->max_bitrate : 192;
             $this->em->persist($record);
         }
 
@@ -136,9 +136,9 @@ final class StationRepository extends Repository
 
             foreach ($streams as $name => $bitrate) {
                 $record = new StationHlsStream($station);
-                $record->setName($name);
-                $record->setFormat(StreamFormats::Aac);
-                $record->setBitrate($bitrate);
+                $record->name = $name;
+                $record->format = StreamFormats::Aac;
+                $record->bitrate = $bitrate;
                 $this->em->persist($record);
             }
         }
@@ -162,8 +162,8 @@ final class StationRepository extends Repository
     public function reduceHlsBitrateToLimit(Station $station): void
     {
         foreach ($station->hls_streams as $hlsStream) {
-            if ($hlsStream->getBitrate() > $station->max_bitrate) {
-                $hlsStream->setBitrate($station->max_bitrate);
+            if ($hlsStream->bitrate > $station->max_bitrate) {
+                $hlsStream->bitrate = $station->max_bitrate;
                 $this->em->persist($hlsStream);
             }
         }

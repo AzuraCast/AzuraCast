@@ -60,7 +60,7 @@ final class Podcast implements Interfaces\IdentifiableEntityInterface
 
     public PodcastBrandingConfiguration $branding_config {
         get => new PodcastBrandingConfiguration((array)$this->branding_config_raw);
-        set {
+        set (PodcastBrandingConfiguration|array|null $value) {
             $this->branding_config_raw = PodcastBrandingConfiguration::merge(
                 $this->branding_config_raw,
                 $value

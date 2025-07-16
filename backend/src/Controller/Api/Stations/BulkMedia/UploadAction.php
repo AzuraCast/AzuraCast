@@ -112,8 +112,8 @@ final class UploadAction implements SingleActionInterface
 
         $playlistsByName = [];
         foreach ($this->playlistRepo->getAllForStation($station) as $playlist) {
-            $shortName = StationPlaylist::generateShortName($playlist->getName());
-            $playlistsByName[$shortName] = $playlist->getIdRequired();
+            $shortName = StationPlaylist::generateShortName($playlist->name);
+            $playlistsByName[$shortName] = $playlist->id;
         }
 
         // Read and process CSV.

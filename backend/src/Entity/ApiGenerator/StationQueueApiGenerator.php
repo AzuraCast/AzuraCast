@@ -28,7 +28,7 @@ final class StationQueueApiGenerator
         $response->is_request = $record->getRequest() !== null;
 
         if ($record->getPlaylist() instanceof StationPlaylist) {
-            $response->playlist = $record->getPlaylist()->getName();
+            $response->playlist = $record->getPlaylist()->name;
         } else {
             $response->playlist = '';
         }

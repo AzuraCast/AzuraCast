@@ -176,24 +176,22 @@ final class BatchAction implements SingleActionInterface
         foreach ($requestPlaylists as $playlistId) {
             if ('new' === $playlistId) {
                 $playlist = new StationPlaylist($station);
-                $playlist->setName(
-                    Types::string($request->getParam('new_playlist_name'))
-                );
+                $playlist->name = Types::string($request->getParam('new_playlist_name'));
 
                 $this->em->persist($playlist);
                 $this->em->flush();
 
                 $result->responseRecord = [
-                    'id' => $playlist->getIdRequired(),
-                    'name' => $playlist->getName(),
+                    'id' => $playlist->id,
+                    'name' => $playlist->name,
                 ];
 
-                $affectedPlaylistIds[$playlist->getIdRequired()] = $playlist->getIdRequired();
-                $playlists[$playlist->getIdRequired()] = 0;
+                $affectedPlaylistIds[$playlist->id] = $playlist->id;
+                $playlists[$playlist->id] = 0;
             } else {
                 $playlist = $this->em->getRepository(StationPlaylist::class)->findOneBy(
                     [
-                        'station_id' => $station->getIdRequired(),
+                        'station_id' => $station->id,
                         'id' => (int)$playlistId,
                     ]
                 );
@@ -468,10 +466,10 @@ final class BatchAction implements SingleActionInterface
         $result = $this->parseRequest($request, $fs, true);
 
         foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
-            $media->clearExtraMetadata();
+            $media->extra_metadata = null;
 
             // Always flag for reprocessing to repopulate extra metadata from the file.
-            $media->setMtime(0);
+            $media->mtime = 0;
 
             $this->em->persist($media);
         }

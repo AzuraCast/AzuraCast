@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
     ORM\Table(name: 'station_hls_streams'),
     Attributes\Auditable
 ]
-class StationHlsStream implements
+final class StationHlsStream implements
     Stringable,
     Interfaces\StationCloneAwareInterface,
     Interfaces\IdentifiableEntityInterface
@@ -32,29 +32,28 @@ class StationHlsStream implements
         ORM\ManyToOne(inversedBy: 'hls_streams'),
         ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
     ]
-    protected Station $station;
-
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    protected int $station_id;
+    public Station $station;
 
     #[
         OA\Property(example: "aac_lofi"),
         ORM\Column(length: 100),
         Assert\NotBlank
     ]
-    protected string $name = '';
+    public string $name = '' {
+        set => $this->truncateString(Strings::getProgrammaticString($value), 100);
+    }
 
     #[
         OA\Property(example: "aac"),
         ORM\Column(type: 'string', length: 10, nullable: true, enumType: StreamFormats::class)
     ]
-    protected ?StreamFormats $format = StreamFormats::Aac;
+    public ?StreamFormats $format = StreamFormats::Aac;
 
     #[
         OA\Property(example: 128),
         ORM\Column(type: 'smallint', nullable: true)
     ]
-    protected ?int $bitrate = 128;
+    public ?int $bitrate = 128;
 
     #[Assert\Callback]
     public function hasValidBitrate(ExecutionContextInterface $context): void
@@ -62,7 +61,7 @@ class StationHlsStream implements
         $this->doValidateMaxBitrate(
             $context,
             $this->getStation()->max_bitrate,
-            $this->getBitrate(),
+            $this->bitrate,
             'bitrate'
         );
     }
@@ -71,7 +70,7 @@ class StationHlsStream implements
         ORM\Column,
         Attributes\AuditIgnore
     ]
-    protected int $listeners = 0;
+    public int $listeners = 0;
 
     public function __construct(Station $station)
     {
@@ -88,49 +87,8 @@ class StationHlsStream implements
         $this->station = $station;
     }
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $newName): void
-    {
-        // Ensure all mount point names start with a leading slash.
-        $this->name = $this->truncateString(Strings::getProgrammaticString($newName), 100);
-    }
-
-    public function getFormat(): ?StreamFormats
-    {
-        return $this->format;
-    }
-
-    public function setFormat(?StreamFormats $format): void
-    {
-        $this->format = $format;
-    }
-
-    public function getBitrate(): ?int
-    {
-        return $this->bitrate;
-    }
-
-    public function setBitrate(?int $bitrate): void
-    {
-        $this->bitrate = $bitrate;
-    }
-
-    public function getListeners(): int
-    {
-        return $this->listeners;
-    }
-
-    public function setListeners(int $listeners): void
-    {
-        $this->listeners = $listeners;
-    }
-
     public function __toString(): string
     {
-        return $this->getStation() . ' HLS Stream: ' . $this->getName();
+        return $this->getStation() . ' HLS Stream: ' . $this->name;
     }
 }

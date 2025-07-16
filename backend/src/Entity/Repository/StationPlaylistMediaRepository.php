@@ -74,7 +74,7 @@ final class StationPlaylistMediaRepository extends Repository
             if (0 === $weight) {
                 $weight = $this->getHighestSongWeight($playlist) + 1;
             }
-            if (PlaylistOrders::Sequential !== $playlist->getOrder()) {
+            if (PlaylistOrders::Sequential !== $playlist->order) {
                 $weight = random_int(1, $weight);
             }
 
@@ -130,18 +130,18 @@ final class StationPlaylistMediaRepository extends Repository
         StationPlaylist $playlist,
         int $weight = 0
     ): int {
-        if (PlaylistSources::Songs !== $playlist->getSource()) {
+        if (PlaylistSources::Songs !== $playlist->source) {
             throw new RuntimeException('This playlist is not meant to contain songs!');
         }
 
         // Only update existing record for random-order playlists.
-        $isNonSequential = PlaylistOrders::Sequential !== $playlist->getOrder();
+        $isNonSequential = PlaylistOrders::Sequential !== $playlist->order;
 
         $record = ($isNonSequential)
             ? $this->repository->findOneBy(
                 [
-                    'media_id' => $media->getId(),
-                    'playlist_id' => $playlist->getId(),
+                    'media_id' => $media->id,
+                    'playlist_id' => $playlist->id,
                 ]
             ) : null;
 
@@ -198,7 +198,7 @@ final class StationPlaylistMediaRepository extends Repository
     ): array {
         $affectedPlaylists = [];
 
-        $playlists = $media->getPlaylists();
+        $playlists = $media->playlists;
         if (null !== $station) {
             $playlists = $playlists->filter(
                 function (StationPlaylistMedia $spm) use ($station) {
@@ -269,11 +269,11 @@ final class StationPlaylistMediaRepository extends Repository
         StationPlaylist $playlist,
         ?CarbonImmutable $now = null
     ): void {
-        if (PlaylistSources::Songs !== $playlist->getSource()) {
+        if (PlaylistSources::Songs !== $playlist->source) {
             throw new InvalidArgumentException('Playlist must contain songs.');
         }
 
-        if (PlaylistOrders::Sequential === $playlist->getOrder()) {
+        if (PlaylistOrders::Sequential === $playlist->order) {
             $this->em->createQuery(
                 <<<'DQL'
                     UPDATE App\Entity\StationPlaylistMedia spm
@@ -282,7 +282,7 @@ final class StationPlaylistMediaRepository extends Repository
                 DQL
             )->setParameter('playlist', $playlist)
                 ->execute();
-        } elseif (PlaylistOrders::Shuffle === $playlist->getOrder()) {
+        } elseif (PlaylistOrders::Shuffle === $playlist->order) {
             $this->em->wrapInTransaction(
                 function () use ($playlist): void {
                     $allSpmRecordsQuery = $this->em->createQuery(
@@ -318,7 +318,7 @@ final class StationPlaylistMediaRepository extends Repository
 
         $now ??= Time::nowUtc();
 
-        $playlist->setQueueResetAt($now);
+        $playlist->queue_reset_at = $now;
         $this->em->persist($playlist);
         $this->em->flush();
     }
@@ -328,7 +328,7 @@ final class StationPlaylistMediaRepository extends Repository
         $now = Time::nowUtc();
 
         foreach ($station->playlists as $playlist) {
-            if (PlaylistSources::Songs !== $playlist->getSource()) {
+            if (PlaylistSources::Songs !== $playlist->source) {
                 continue;
             }
 
@@ -341,7 +341,7 @@ final class StationPlaylistMediaRepository extends Repository
      */
     public function getQueue(StationPlaylist $playlist): array
     {
-        if (PlaylistSources::Songs !== $playlist->getSource()) {
+        if (PlaylistSources::Songs !== $playlist->source) {
             throw new InvalidArgumentException('Playlist must contain songs.');
         }
 
@@ -352,7 +352,7 @@ final class StationPlaylistMediaRepository extends Repository
             ->where('spm.playlist = :playlist')
             ->setParameter('playlist', $playlist);
 
-        if (PlaylistOrders::Random === $playlist->getOrder()) {
+        if (PlaylistOrders::Random === $playlist->order) {
             $queuedMediaQuery = $queuedMediaQuery->orderBy('RAND()');
         } else {
             $queuedMediaQuery = $queuedMediaQuery->andWhere('spm.is_queued = 1')
@@ -378,11 +378,11 @@ final class StationPlaylistMediaRepository extends Repository
 
     public function isQueueCompletelyFilled(StationPlaylist $playlist): bool
     {
-        if (PlaylistSources::Songs !== $playlist->getSource()) {
+        if (PlaylistSources::Songs !== $playlist->source) {
             return true;
         }
 
-        if (PlaylistOrders::Random === $playlist->getOrder()) {
+        if (PlaylistOrders::Random === $playlist->order) {
             return true;
         }
 
@@ -396,11 +396,11 @@ final class StationPlaylistMediaRepository extends Repository
 
     public function isQueueEmpty(StationPlaylist $playlist): bool
     {
-        if (PlaylistSources::Songs !== $playlist->getSource()) {
+        if (PlaylistSources::Songs !== $playlist->source) {
             return false;
         }
 
-        if (PlaylistOrders::Random === $playlist->getOrder()) {
+        if (PlaylistOrders::Random === $playlist->order) {
             return false;
         }
 

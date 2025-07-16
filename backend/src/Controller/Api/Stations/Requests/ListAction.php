@@ -73,12 +73,12 @@ final class ListAction extends AbstractSearchableListAction
             function (StationMedia $media) use ($station, $router) {
                 $row = new StationRequest();
                 $row->song = ($this->songApiGenerator)($media, $station, $router->getBaseUrl());
-                $row->request_id = $media->getUniqueId();
+                $row->request_id = $media->unique_id;
                 $row->request_url = $router->named(
                     'api:requests:submit',
                     [
-                        'station_id' => $station->getId(),
-                        'media_id' => $media->getUniqueId(),
+                        'station_id' => $station->id,
+                        'media_id' => $media->unique_id,
                     ]
                 );
 

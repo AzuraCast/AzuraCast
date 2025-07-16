@@ -63,12 +63,12 @@ class Icecast extends AbstractFrontend
         $defaultMountId = null;
 
         foreach ($station->mounts as $mount) {
-            if ($mount->getIsDefault()) {
+            if ($mount->is_default) {
                 $defaultMountId = $mount->id;
             }
 
             $mountPromises[$mount->id] = $npAdapter->getNowPlayingAsync(
-                $mount->getName(),
+                $mount->name,
                 $includeClients
             )->then(
                 function (Result $result) use ($mount) {
@@ -78,8 +78,8 @@ class Icecast extends AbstractFrontend
                         }
                     }
 
-                    $mount->setListenersTotal($result->listeners->total);
-                    $mount->setListenersUnique($result->listeners->unique ?? 0);
+                    $mount->listeners_total = $result->listeners->total;
+                    $mount->listeners_unique = $result->listeners->unique ?? 0;
                     $this->em->persist($mount);
 
                     return $result;
@@ -218,7 +218,7 @@ class Icecast extends AbstractFrontend
         foreach ($station->mounts as $mountRow) {
             $mount = [
                 '@type' => 'normal',
-                'mount-name' => $mountRow->getName(),
+                'mount-name' => $mountRow->name,
                 'charset' => $charset,
                 'stream-name' => $station->name,
                 'listenurl' => $this->getUrlForMount($station, $mountRow),
@@ -241,12 +241,12 @@ class Icecast extends AbstractFrontend
                 $mount['genre'] = $station->genre;
             }
 
-            if (!$mountRow->getIsVisibleOnPublicPages()) {
+            if (!$mountRow->is_visible_on_public_pages) {
                 $mount['hidden'] = 1;
             }
 
-            if (!empty($mountRow->getIntroPath())) {
-                $introPath = $mountRow->getIntroPath();
+            if (!empty($mountRow->intro_path)) {
+                $introPath = $mountRow->intro_path;
                 // The intro path is appended to webroot, so the path should be relative to it.
                 $mount['intro'] = Path::makeRelative(
                     $station->getRadioConfigDir() . '/' . $introPath,
@@ -254,22 +254,22 @@ class Icecast extends AbstractFrontend
                 );
             }
 
-            if (!empty($mountRow->getFallbackMount())) {
-                $mount['fallback-mount'] = $mountRow->getFallbackMount();
+            if (!empty($mountRow->fallback_mount)) {
+                $mount['fallback-mount'] = $mountRow->fallback_mount;
                 $mount['fallback-override'] = 1;
-            } elseif ($mountRow->getEnableAutodj()) {
-                $autoDjFormat = $mountRow->getAutodjFormat() ?? StreamFormats::default();
-                $autoDjBitrate = $mountRow->getAutodjBitrate();
+            } elseif ($mountRow->enable_autodj) {
+                $autoDjFormat = $mountRow->autodj_format ?? StreamFormats::default();
+                $autoDjBitrate = $mountRow->autodj_bitrate;
 
                 $mount['fallback-mount'] = '/fallback-[' . $autoDjBitrate . '].' . $autoDjFormat->getExtension();
                 $mount['fallback-override'] = 1;
             }
 
-            if ($mountRow->getMaxListenerDuration()) {
-                $mount['max-listener-duration'] = $mountRow->getMaxListenerDuration();
+            if ($mountRow->max_listener_duration) {
+                $mount['max-listener-duration'] = $mountRow->max_listener_duration;
             }
 
-            $mountFrontendConfig = trim($mountRow->getFrontendConfig() ?? '');
+            $mountFrontendConfig = trim($mountRow->frontend_config ?? '');
             if (!empty($mountFrontendConfig)) {
                 $mountConf = $this->processCustomConfig($mountFrontendConfig);
                 if (false !== $mountConf) {
@@ -283,7 +283,7 @@ class Icecast extends AbstractFrontend
                     'server' => $mountRelayUri->getHost(),
                     'port' => $mountRelayUri->getPort(),
                     'mount' => $mountRelayUri->getPath(),
-                    'local-mount' => $mountRow->getName(),
+                    'local-mount' => $mountRow->name,
                 ]);
             }
 

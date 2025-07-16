@@ -60,13 +60,13 @@ final class Configuration
         // Check for at least one playlist, and create one if it doesn't exist.
         $defaultPlaylists = $station->playlists->filter(
             function (StationPlaylist $row) {
-                return $row->getIsEnabled() && PlaylistTypes::default() === $row->getType();
+                return $row->is_enabled && PlaylistTypes::default() === $row->type;
             }
         );
 
         if (0 === $defaultPlaylists->count()) {
             $defaultPlaylist = new StationPlaylist($station);
-            $defaultPlaylist->setName('default');
+            $defaultPlaylist->name = 'default';
             $this->em->persist($defaultPlaylist);
         }
 

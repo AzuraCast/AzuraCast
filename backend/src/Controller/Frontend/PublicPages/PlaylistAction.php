@@ -35,7 +35,7 @@ final class PlaylistAction implements SingleActionInterface
         if (null !== $fa) {
             foreach ($station->mounts as $mount) {
                 /** @var StationMount $mount */
-                if (!$mount->getIsVisibleOnPublicPages()) {
+                if (!$mount->is_visible_on_public_pages) {
                     continue;
                 }
 
@@ -43,7 +43,7 @@ final class PlaylistAction implements SingleActionInterface
 
                 $streamUrls[] = $streamUrl;
                 $streams[] = [
-                    'name' => $station->name . ' - ' . $mount->getDisplayName(),
+                    'name' => $station->name . ' - ' . $mount->display_name,
                     'url' => $streamUrl,
                 ];
             }

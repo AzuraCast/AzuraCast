@@ -68,7 +68,7 @@ final class DownloadAction implements SingleActionInterface
 
         $playlistsById = [];
         foreach ($this->playlistRepo->getAllForStation($station) as $playlist) {
-            $playlistsById[$playlist->getIdRequired()] = $playlist->getName();
+            $playlistsById[$playlist->id] = $playlist->name;
         }
 
         $query = $this->em->createQuery(

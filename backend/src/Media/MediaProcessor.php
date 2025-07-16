@@ -79,7 +79,7 @@ final class MediaProcessor
 
                 $this->mediaRepo->loadFromFile($record, $localPath, $fs);
 
-                $record->setMtime(time());
+                $record->mtime = time();
                 $this->em->persist($record);
                 $this->em->flush();
 
@@ -185,7 +185,7 @@ final class MediaProcessor
         }
 
         $fileModified = $fs->lastModified($path);
-        $mediaProcessedAt = $media->getMtime();
+        $mediaProcessedAt = $media->mtime;
 
         // No need to update if all of these conditions are true.
         if (!$force && $fileModified <= $mediaProcessedAt) {
@@ -199,7 +199,7 @@ final class MediaProcessor
             }
         );
 
-        $media->setMtime(time() + 5);
+        $media->mtime = time() + 5;
         $this->em->persist($media);
 
         return true;

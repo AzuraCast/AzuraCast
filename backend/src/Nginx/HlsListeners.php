@@ -45,8 +45,8 @@ final class HlsListeners
         $streamsByName = [];
         $clientsByStream = [];
         foreach ($hlsStreams as $hlsStream) {
-            $streamsByName[$hlsStream->getName()] = $hlsStream->id;
-            $clientsByStream[$hlsStream->getName()] = 0;
+            $streamsByName[$hlsStream->name] = $hlsStream->id;
+            $clientsByStream[$hlsStream->name] = 0;
         }
 
         $allClients = [];
@@ -82,8 +82,8 @@ final class HlsListeners
         }
 
         foreach ($hlsStreams as $hlsStream) {
-            $numClients = (int)$clientsByStream[$hlsStream->getName()];
-            $hlsStream->setListeners($numClients);
+            $numClients = (int)$clientsByStream[$hlsStream->name];
+            $hlsStream->listeners = $numClients;
             $this->em->persist($hlsStream);
         }
 

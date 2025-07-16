@@ -64,7 +64,7 @@ final class StationApiGenerator
             && $station->mounts->count() > 0
         ) {
             foreach ($station->mounts as $mount) {
-                if ($showAllMounts || $mount->getIsVisibleOnPublicPages()) {
+                if ($showAllMounts || $mount->is_visible_on_public_pages) {
                     $mounts[] = $mount->api($frontend, $baseUri);
                 }
             }
@@ -98,7 +98,7 @@ final class StationApiGenerator
 
         $hlsListeners = 0;
         foreach ($station->hls_streams as $hlsStream) {
-            $hlsListeners += $hlsStream->getListeners();
+            $hlsListeners += $hlsStream->listeners;
         }
         $response->hls_listeners = $hlsListeners;
 

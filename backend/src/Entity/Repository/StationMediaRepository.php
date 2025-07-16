@@ -171,10 +171,10 @@ final class StationMediaRepository extends Repository
         $this->em->persist($media);
 
         // Clear existing auto-assigned custom fields.
-        $fieldCollection = $media->getCustomFields();
+        $fieldCollection = $media->custom_fields;
         foreach ($fieldCollection as $existingCustomField) {
             /** @var StationMediaCustomField $existingCustomField */
-            if (!empty($existingCustomField->getField()->auto_assign)) {
+            if (!empty($existingCustomField->field->auto_assign)) {
                 $this->em->remove($existingCustomField);
                 $fieldCollection->removeElement($existingCustomField);
             }
@@ -185,7 +185,8 @@ final class StationMediaRepository extends Repository
         foreach ($customFieldsToSet as $tag => $customFieldKey) {
             if (!empty($tags[$tag])) {
                 $customFieldRow = new StationMediaCustomField($media, $customFieldKey);
-                $customFieldRow->setValue($tags[$tag]);
+                $customFieldRow->value = $tags[$tag];
+                
                 $this->em->persist($customFieldRow);
 
                 $fieldCollection->add($customFieldRow);
@@ -246,10 +247,10 @@ final class StationMediaRepository extends Repository
     ): void {
         $fs ??= $this->getFilesystem($media);
 
-        $media->setArtUpdatedAt(time());
+        $media->art_updated_at = time();
         $this->em->persist($media);
 
-        $albumArtPath = StationMedia::getArtPath($media->getUniqueId());
+        $albumArtPath = StationMedia::getArtPath($media->unique_id);
         $albumArtString = AlbumArt::resize($rawArtString);
 
         $fs->write($albumArtPath, $albumArtString);
@@ -261,10 +262,10 @@ final class StationMediaRepository extends Repository
     ): void {
         $fs ??= $this->getFilesystem($media);
 
-        $currentAlbumArtPath = StationMedia::getArtPath($media->getUniqueId());
+        $currentAlbumArtPath = StationMedia::getArtPath($media->unique_id);
         $fs->delete($currentAlbumArtPath);
 
-        $media->setArtUpdatedAt(0);
+        $media->art_updated_at = 0;
         $this->em->persist($media);
         $this->em->flush();
 
@@ -279,17 +280,17 @@ final class StationMediaRepository extends Repository
 
         $metadata = $media->toMetadata();
 
-        $artPath = StationMedia::getArtPath($media->getUniqueId());
+        $artPath = StationMedia::getArtPath($media->unique_id);
         if ($fs->fileExists($artPath)) {
             $metadata->setArtwork($fs->read($artPath));
         }
 
         // Write tags to the Media file.
-        $media->setMtime(time() + 5);
+        $media->mtime = time() + 5;
         $media->updateMetaFields();
 
         return $fs->withLocalFile(
-            $media->getPath(),
+            $media->path,
             function ($path) use ($metadata) {
                 $this->metadataManager->write($metadata, $path);
                 return true;
@@ -326,7 +327,7 @@ final class StationMediaRepository extends Repository
     ): void {
         $fs ??= $this->getFilesystem($media);
 
-        $waveformPath = StationMedia::getWaveformPath($media->getUniqueId());
+        $waveformPath = StationMedia::getWaveformPath($media->unique_id);
         $fs->write(
             $waveformPath,
             json_encode(
@@ -377,7 +378,7 @@ final class StationMediaRepository extends Repository
 
     private function getFilesystem(StationMedia $media): ExtendedFilesystemInterface
     {
-        return $this->storageLocationRepo->getAdapter($media->getStorageLocation())
+        return $this->storageLocationRepo->getAdapter($media->storage_location)
             ->getFilesystem();
     }
 }

@@ -350,7 +350,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $fallbackRemoteUrl = null;
 
         foreach ($station->playlists as $playlist) {
-            if (!$playlist->getIsEnabled()) {
+            if (!$playlist->is_enabled) {
                 continue;
             }
 
@@ -361,15 +361,15 @@ final class ConfigWriter implements EventSubscriberInterface
             $playlistVarName = self::getPlaylistVariableName($playlist);
 
             if (in_array($playlistVarName, $playlistVarNames, true)) {
-                $playlistVarName .= '_' . $playlist->getId();
+                $playlistVarName .= '_' . $playlist->id;
             }
 
-            $scheduleItems = $playlist->getScheduleItems();
+            $scheduleItems = $playlist->schedule_items;
 
             $playlistVarNames[] = $playlistVarName;
             $playlistConfigLines = [];
 
-            if (PlaylistSources::Songs === $playlist->getSource()) {
+            if (PlaylistSources::Songs === $playlist->source) {
                 $playlistFilePath = PlaylistFileWriter::getPlaylistFilePath($playlist);
 
                 $playlistParams = [
@@ -377,7 +377,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     'mime_type="audio/x-mpegurl"',
                 ];
 
-                $playlistMode = match ($playlist->getOrder()) {
+                $playlistMode = match ($playlist->order) {
                     PlaylistOrders::Sequential => 'normal',
                     PlaylistOrders::Shuffle => 'randomize',
                     PlaylistOrders::Random => 'random'
@@ -393,22 +393,22 @@ final class ConfigWriter implements EventSubscriberInterface
                     $playlistConfigLines[] = $playlistVarName . ' = merge_tracks(id="merge_'
                         . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
                 }
-            } elseif (PlaylistRemoteTypes::Playlist === $playlist->getRemoteType()) {
+            } elseif (PlaylistRemoteTypes::Playlist === $playlist->remote_type) {
                 $playlistFunc = 'playlist("'
-                    . self::cleanUpString($playlist->getRemoteUrl())
+                    . self::cleanUpString($playlist->remote_url)
                     . '")';
                 $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFunc;
             } else {
                 // Special handling for Remote Stream URLs.
-                $remoteUrl = $playlist->getRemoteUrl();
+                $remoteUrl = $playlist->remote_url;
                 if (null === $remoteUrl) {
                     continue;
                 }
 
-                $buffer = $playlist->getRemoteBuffer();
+                $buffer = $playlist->remote_buffer;
                 $buffer = ($buffer < 1) ? StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
 
-                $inputFunc = match ($playlist->getRemoteType()) {
+                $inputFunc = match ($playlist->remote_type) {
                     PlaylistRemoteTypes::Stream => 'input.http',
                     default => 'input.external.ffmpeg'
                 };
@@ -433,17 +433,17 @@ final class ConfigWriter implements EventSubscriberInterface
                 continue;
             }
 
-            if ($playlist->getIsJingle()) {
+            if ($playlist->is_jingle) {
                 $playlistConfigLines[] = $playlistVarName . ' = azuracast.utilities.drop_metadata(' . $playlistVarName . ')';
             }
 
-            if (PlaylistTypes::Advanced === $playlist->getType()) {
+            if (PlaylistTypes::Advanced === $playlist->type) {
                 $playlistConfigLines[] = 'ignore(' . $playlistVarName . ')';
             }
 
             $event->appendLines($playlistConfigLines);
 
-            switch ($playlist->getType()) {
+            switch ($playlist->type) {
                 case PlaylistTypes::Standard:
                     if ($scheduleItems->count() > 0) {
                         foreach ($scheduleItems as $scheduleItem) {
@@ -460,18 +460,18 @@ final class ConfigWriter implements EventSubscriberInterface
                             }
                         }
                     } else {
-                        $genPlaylistWeights[] = $playlist->getWeight();
+                        $genPlaylistWeights[] = $playlist->weight;
                         $genPlaylistVars[] = $playlistVarName;
                     }
                     break;
 
                 case PlaylistTypes::OncePerXSongs:
                 case PlaylistTypes::OncePerXMinutes:
-                    if (PlaylistTypes::OncePerXSongs === $playlist->getType()) {
+                if (PlaylistTypes::OncePerXSongs === $playlist->type) {
                         $playlistScheduleVar = 'rotate(weights=[1,'
-                            . $playlist->getPlayPerSongs() . '], [' . $playlistVarName . ', radio])';
+                            . $playlist->play_per_songs . '], [' . $playlistVarName . ', radio])';
                     } else {
-                        $delaySeconds = $playlist->getPlayPerMinutes() * 60;
+                    $delaySeconds = $playlist->play_per_songs * 60;
                         $delayTrackSensitive = $playlist->backendInterruptOtherSongs() ? 'false' : 'true';
 
                         $playlistScheduleVar = 'fallback(track_sensitive=' . $delayTrackSensitive . ', [delay(' . $delaySeconds . '., ' . $playlistVarName . '), radio])';
@@ -492,12 +492,12 @@ final class ConfigWriter implements EventSubscriberInterface
                             }
                         }
                     } else {
-                        $specialPlaylists[$playlist->getType()->value][] = 'radio = ' . $playlistScheduleVar;
+                        $specialPlaylists[$playlist->type->value][] = 'radio = ' . $playlistScheduleVar;
                     }
                     break;
 
                 case PlaylistTypes::OncePerHour:
-                    $minutePlayTime = $playlist->getPlayPerHourMinute() . 'm';
+                    $minutePlayTime = $playlist->play_per_hour_minute . 'm';
 
                     if ($scheduleItems->count() > 0) {
                         foreach ($scheduleItems as $scheduleItem) {
@@ -1001,13 +1001,13 @@ final class ConfigWriter implements EventSubscriberInterface
         $hlsStreams = [];
 
         foreach ($station->hls_streams as $hlsStream) {
-            $streamVarName = self::cleanUpVarName($hlsStream->getName());
+            $streamVarName = self::cleanUpVarName($hlsStream->name);
 
-            if (StreamFormats::Aac !== $hlsStream->getFormat()) {
+            if (StreamFormats::Aac !== $hlsStream->format) {
                 continue;
             }
 
-            $streamBitrate = $hlsStream->getBitrate() ?? 128;
+            $streamBitrate = $hlsStream->bitrate ?? 128;
 
             $lsConfig[] = <<<LIQ
             {$streamVarName} = %ffmpeg(
@@ -1271,7 +1271,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
     public static function getPlaylistVariableName(StationPlaylist $playlist): string
     {
-        return self::cleanUpVarName('playlist_' . $playlist->getShortName());
+        return self::cleanUpVarName('playlist_' . StationPlaylist::generateShortName($playlist->name));
     }
 
     /**
@@ -1340,7 +1340,7 @@ final class ConfigWriter implements EventSubscriberInterface
             return true;
         }
 
-        if (PlaylistSources::Songs !== $playlist->getSource()) {
+        if (PlaylistSources::Songs !== $playlist->source) {
             return true;
         }
 
@@ -1348,7 +1348,7 @@ final class ConfigWriter implements EventSubscriberInterface
             $playlist->backendInterruptOtherSongs()
             || $playlist->backendPlaySingleTrack()
             || $playlist->backendMerge()
-            || PlaylistTypes::Advanced === $playlist->getType()
+            || PlaylistTypes::Advanced === $playlist->type
         ) {
             return true;
         }

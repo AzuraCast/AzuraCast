@@ -65,7 +65,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
         )->setParameter('storageLocation', $station->media_storage_location);
 
         foreach ($station->playlists as $playlist) {
-            if (PlaylistSources::Songs !== $playlist->getSource()) {
+            if (PlaylistSources::Songs !== $playlist->source) {
                 continue;
             }
 
@@ -86,7 +86,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
         Query $mediaInPlaylistQuery,
         Query $mediaInFolderQuery
     ): void {
-        $folders = $playlist->getFolders();
+        $folders = $playlist->folders;
         if (0 === $folders->count()) {
             return;
         }
@@ -142,7 +142,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
             $this->logger->debug(
                 $logMessage,
                 [
-                    'playlist' => $playlist->getName(),
+                    'playlist' => $playlist->name,
                     'folder' => $folder->getPath(),
                 ]
             );

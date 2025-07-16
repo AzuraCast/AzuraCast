@@ -169,7 +169,7 @@ final class HistoryAction implements SingleActionInterface
 
             $playlist = $sh->playlist;
             $playlistName = (null !== $playlist)
-                ? $playlist->getName()
+                ? $playlist->name
                 : '';
 
             $streamer = $sh->streamer;

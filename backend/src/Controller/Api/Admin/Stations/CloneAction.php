@@ -167,7 +167,7 @@ final class CloneAction extends StationsController implements SingleActionInterf
                 $copier,
                 $toClone
             ): void {
-                foreach ($oldPlaylist->getScheduleItems() as $oldScheduleItem) {
+                foreach ($oldPlaylist->schedule_items as $oldScheduleItem) {
                     $this->em->detach($oldScheduleItem);
 
                     $newScheduleItem = $copier->copy($oldScheduleItem);
@@ -177,7 +177,7 @@ final class CloneAction extends StationsController implements SingleActionInterf
                 }
 
                 if (in_array(self::CLONE_MEDIA_STORAGE, $toClone, true)) {
-                    foreach ($oldPlaylist->getFolders() as $oldPlaylistFolder) {
+                    foreach ($oldPlaylist->folders as $oldPlaylistFolder) {
                         $this->em->detach($oldPlaylistFolder);
 
                         $newPlaylistFolder = $copier->copy($oldPlaylistFolder);
@@ -186,7 +186,7 @@ final class CloneAction extends StationsController implements SingleActionInterf
                         $this->em->persist($newPlaylistFolder);
                     }
 
-                    foreach ($oldPlaylist->getMediaItems() as $oldMediaItem) {
+                    foreach ($oldPlaylist->media_items as $oldMediaItem) {
                         $this->em->detach($oldMediaItem);
 
                         $newMediaItem = $copier->copy($oldMediaItem);

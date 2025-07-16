@@ -60,8 +60,8 @@ final class GetOrderAction implements SingleActionInterface
         $record = $this->playlistRepo->requireForStation($id, $station);
 
         if (
-            PlaylistSources::Songs !== $record->getSource()
-            || PlaylistOrders::Sequential !== $record->getOrder()
+            PlaylistSources::Songs !== $record->source
+            || PlaylistOrders::Sequential !== $record->order
         ) {
             throw new Exception(__('This playlist is not a sequential playlist.'));
         }
@@ -85,7 +85,7 @@ final class GetOrderAction implements SingleActionInterface
                     $row['media']['links'] = [
                         'play' => $router->named(
                             'api:stations:files:play',
-                            ['station_id' => $station->getIdRequired(), 'id' => $row['media']['unique_id']],
+                            ['station_id' => $station->id, 'id' => $row['media']['unique_id']],
                             [],
                             true
                         ),

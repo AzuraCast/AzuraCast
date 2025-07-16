@@ -81,8 +81,8 @@ final class GetApplyToAction implements SingleActionInterface
         return $response->withJson(
             [
                 'playlist' => [
-                    'id' => $record->getIdRequired(),
-                    'name' => $record->getName(),
+                    'id' => $record->id,
+                    'name' => $record->name,
                 ],
                 'directories' => $directories,
             ]

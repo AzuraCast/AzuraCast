@@ -64,9 +64,9 @@ final class PodcastEpisodeApiGenerator
                     $return->has_media = true;
 
                     $return->playlist_media = $this->songApiGen->__invoke($playlistMediaRow);
-                    $return->playlist_media_id = $playlistMediaRow->getUniqueId();
+                    $return->playlist_media_id = $playlistMediaRow->unique_id;
 
-                    $mediaExtension = Path::getExtension($playlistMediaRow->getPath());
+                    $mediaExtension = Path::getExtension($playlistMediaRow->path);
                 } else {
                     $return->has_media = false;
 

@@ -34,10 +34,10 @@ final class FilesAction implements SingleActionInterface
             <<<'DQL'
                 SELECT sp.id, sp.name
                 FROM App\Entity\StationPlaylist sp
-                WHERE sp.station_id = :station_id AND sp.source = :source
+                WHERE sp.station = :station AND sp.source = :source
                 ORDER BY sp.name ASC
             DQL
-        )->setParameter('station_id', $station->getId())
+        )->setParameter('station', $station)
             ->setParameter('source', PlaylistSources::Songs->value)
             ->getArrayResult();
 

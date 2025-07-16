@@ -118,11 +118,11 @@ final class CheckPodcastPlaylistsTask extends AbstractTask
                     $podcastEpisode->description = implode("\n", array_filter([
                         $media->artist,
                         $media->album,
-                        $media->getLyrics(),
+                        $media->lyrics,
                     ]));
 
                     $publishAt = CarbonImmutable::createFromTimestamp(
-                        $media->getMtime(),
+                        $media->mtime,
                         Time::getUtc()
                     );
 
@@ -136,7 +136,7 @@ final class CheckPodcastPlaylistsTask extends AbstractTask
                     $this->em->persist($podcastEpisode);
                     $this->em->flush();
 
-                    $artPath = StationMedia::getArtPath($media->getUniqueId());
+                    $artPath = StationMedia::getArtPath($media->unique_id);
                     if ($fsMedia->fileExists($artPath)) {
                         $art = $fsMedia->read($artPath);
                         $this->podcastEpisodeRepo->writeEpisodeArt($podcastEpisode, $art);

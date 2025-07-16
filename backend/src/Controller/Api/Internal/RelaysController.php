@@ -159,7 +159,7 @@ final class RelaysController
 
             foreach ($station->mounts as $mount) {
                 /** @var StationMount $mount */
-                $mountPath = $mount->getName();
+                $mountPath = $mount->name;
 
                 if (isset($existingRemotes[$stationId][$mountPath])) {
                     /** @var StationRemote $remote */
@@ -172,12 +172,12 @@ final class RelaysController
 
                 $remote->setRelay($relay);
                 $remote->setType(RemoteAdapters::AzuraRelay);
-                $remote->setDisplayName($mount->getDisplayName() . ' (' . $relay->name . ')');
+                $remote->setDisplayName($mount->display_name . ' (' . $relay->name . ')');
                 $remote->setIsVisibleOnPublicPages($relay->is_visible_on_public_pages);
-                $remote->setAutodjBitrate($mount->getAutodjBitrate());
-                $remote->setAutodjFormat($mount->getAutodjFormat());
+                $remote->setAutodjBitrate($mount->autodj_bitrate);
+                $remote->setAutodjFormat($mount->autodj_format);
                 $remote->setUrl($relay->base_url);
-                $remote->setMount($mount->getName());
+                $remote->setMount($mount->name);
 
                 $this->em->persist($remote);
             }

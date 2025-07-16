@@ -100,8 +100,8 @@ final class MusicBrainz
         if ($song instanceof StationMedia) {
             $advancedQuery = $query;
 
-            if (!empty($song->getIsrc())) {
-                $advancedQuery[] = 'isrc:' . $this->quoteQuery($song->getIsrc());
+            if (!empty($song->isrc)) {
+                $advancedQuery[] = 'isrc:' . $this->quoteQuery($song->isrc);
             }
 
             if (count($advancedQuery) > count($query)) {

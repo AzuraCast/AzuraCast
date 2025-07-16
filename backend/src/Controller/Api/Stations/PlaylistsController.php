@@ -211,13 +211,13 @@ final class PlaylistsController extends AbstractScheduledEntityController
                 $playlist = $scheduleItem->getPlaylist();
 
                 return [
-                    'id' => $playlist->getId(),
-                    'title' => $playlist->getName(),
+                    'id' => $playlist->id,
+                    'title' => $playlist->name,
                     'start' => $dateRange->start->toIso8601String(),
                     'end' => $dateRange->end->toIso8601String(),
                     'edit_url' => $request->getRouter()->named(
                         'api:stations:playlist',
-                        ['station_id' => $station->getId(), 'id' => $playlist->getId()]
+                        ['station_id' => $station->id, 'id' => $playlist->id]
                     ),
                 ];
             }

@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Annotation as Serializer;
     ORM\Index(name: 'search_idx', columns: ['title', 'artist', 'album']),
     ORM\UniqueConstraint(name: 'path_unique_idx', columns: ['path', 'storage_location_id'])
 ]
-class StationMedia implements
+final class StationMedia implements
     SongInterface,
     PathAwareInterface,
     IdentifiableEntityInterface
@@ -37,40 +37,51 @@ class StationMedia implements
         ORM\ManyToOne(inversedBy: 'media'),
         ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
     ]
-    protected StorageLocation $storage_location;
-
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    protected int $storage_location_id;
+    public readonly StorageLocation $storage_location;
 
     #[ORM\Column(length: 25, nullable: false)]
-    protected string $unique_id;
+    public string $unique_id;
 
     #[ORM\Column(length: 255, nullable: true)]
-    protected ?string $genre = null;
+    public ?string $genre = null {
+        set => $this->truncateNullableString($value);
+    }
 
     #[ORM\Column(type: 'text', nullable: true)]
-    protected ?string $lyrics = null;
+    public ?string $lyrics = null;
 
     #[ORM\Column(length: 15, nullable: true)]
-    protected ?string $isrc = null;
+    public ?string $isrc = null {
+        set => $this->truncateNullableString($value, 15);
+    }
 
     #[ORM\Column(type: 'float', nullable: false)]
-    protected float $length = 0.0;
+    public float $length = 0.0;
 
     #[ORM\Column(length: 500)]
-    protected string $path;
+    public string $path;
 
     #[ORM\Column(nullable: false)]
-    protected int $mtime;
+    public int $mtime;
 
     #[ORM\Column(nullable: false)]
-    protected int $uploaded_at;
+    public int $uploaded_at;
 
     #[ORM\Column]
-    protected int $art_updated_at = 0;
+    public int $art_updated_at = 0;
 
-    #[ORM\Column(type: 'json', nullable: true)]
-    protected ?array $extra_metadata = null;
+    #[ORM\Column(name: 'extra_metadata', type: 'json', nullable: true)]
+    private ?array $extra_metadata_raw = null;
+
+    public StationMediaMetadata $extra_metadata {
+        get => new StationMediaMetadata((array)$this->extra_metadata_raw);
+        set (StationMediaMetadata|array|null $value) {
+            $this->extra_metadata_raw = StationMediaMetadata::merge(
+                $this->extra_metadata_raw,
+                $value
+            );
+        }
+    }
 
     /** @var Collection<int, StationPlaylistMedia> */
     #[
@@ -78,15 +89,15 @@ class StationMedia implements
         DeepNormalize(true),
         Serializer\MaxDepth(1)
     ]
-    protected Collection $playlists;
+    public readonly Collection $playlists;
 
     /** @var Collection<int, StationMediaCustomField> */
     #[ORM\OneToMany(targetEntity: StationMediaCustomField::class, mappedBy: 'media')]
-    protected Collection $custom_fields;
+    public readonly Collection $custom_fields;
 
     /** @var Collection<int, PodcastEpisode> */
     #[ORM\OneToMany(targetEntity: PodcastEpisode::class, mappedBy: 'playlist_media')]
-    protected Collection $podcast_episodes;
+    public readonly Collection $podcast_episodes;
 
     public function __construct(StorageLocation $storageLocation, string $path)
     {
@@ -97,47 +108,9 @@ class StationMedia implements
         $this->podcast_episodes = new ArrayCollection();
 
         $this->mtime = $this->uploaded_at = time();
-
-        $this->generateUniqueId();
+        $this->unique_id = bin2hex(random_bytes(12));
 
         $this->setPath($path);
-    }
-
-    public function getUniqueId(): string
-    {
-        return $this->unique_id;
-    }
-
-    public function generateUniqueId(bool $forceNew = false): void
-    {
-        if (!isset($this->unique_id) || $forceNew) {
-            $this->unique_id = bin2hex(random_bytes(12));
-        }
-    }
-
-    public function getStorageLocation(): StorageLocation
-    {
-        return $this->storage_location;
-    }
-
-    public function getGenre(): ?string
-    {
-        return $this->genre;
-    }
-
-    public function setGenre(?string $genre = null): void
-    {
-        $this->genre = $this->truncateNullableString($genre);
-    }
-
-    public function getLyrics(): ?string
-    {
-        return $this->lyrics;
-    }
-
-    public function setLyrics(?string $lyrics = null): void
-    {
-        $this->lyrics = $lyrics;
     }
 
     /**
@@ -146,29 +119,9 @@ class StationMedia implements
     public function getRelatedFilePaths(): array
     {
         return [
-            self::getArtPath($this->getUniqueId()),
-            self::getWaveformPath($this->getUniqueId()),
+            self::getArtPath($this->unique_id),
+            self::getWaveformPath($this->unique_id),
         ];
-    }
-
-    public function getIsrc(): ?string
-    {
-        return $this->isrc;
-    }
-
-    public function setIsrc(?string $isrc = null): void
-    {
-        $this->isrc = $this->truncateNullableString($isrc, 15);
-    }
-
-    public function getLength(): float
-    {
-        return $this->length;
-    }
-
-    public function setLength(float $length): void
-    {
-        $this->length = $length;
     }
 
     public function getPath(): string
@@ -181,57 +134,13 @@ class StationMedia implements
         $this->path = $path;
     }
 
-    public function getMtime(): int
-    {
-        return $this->mtime;
-    }
-
-    public function setMtime(int $mtime): void
-    {
-        $this->mtime = $mtime;
-    }
-
-    public function getUploadedAt(): int
-    {
-        return $this->uploaded_at;
-    }
-
-    public function getArtUpdatedAt(): int
-    {
-        return $this->art_updated_at;
-    }
-
-    public function setArtUpdatedAt(int $artUpdatedAt): void
-    {
-        $this->art_updated_at = $artUpdatedAt;
-    }
-
-    public function getExtraMetadata(): StationMediaMetadata
-    {
-        return new StationMediaMetadata($this->extra_metadata ?? []);
-    }
-
-    public function setExtraMetadata(
-        StationMediaMetadata|array $metadata
-    ): void {
-        $this->extra_metadata = $this->getExtraMetadata()
-            ->fromArray($metadata)
-            ->toArray();
-    }
-
-    public function clearExtraMetadata(): void
-    {
-        $this->extra_metadata = null;
-    }
-
     /**
      * Get the length with cue-in and cue-out points included.
      */
     public function getCalculatedLength(): float
     {
-        $length = $this->getLength();
-
-        $extraMeta = $this->getExtraMetadata();
+        $length = $this->length;
+        $extraMeta = $this->extra_metadata;
 
         $cueOut = $extraMeta->cue_out;
         if ($cueOut > 0) {
@@ -248,35 +157,11 @@ class StationMedia implements
     }
 
     /**
-     * @return Collection<int, StationMediaCustomField>
-     */
-    public function getCustomFields(): Collection
-    {
-        return $this->custom_fields;
-    }
-
-    /**
-     * @param Collection<int, StationMediaCustomField> $customFields
-     */
-    public function setCustomFields(Collection $customFields): void
-    {
-        $this->custom_fields = $customFields;
-    }
-
-    /**
-     * @return Collection<int, PodcastEpisode>
-     */
-    public function getPodcastEpisodes(): Collection
-    {
-        return $this->podcast_episodes;
-    }
-
-    /**
      * Indicates whether this media is a part of any "requestable" playlists.
      */
     public function isRequestable(): bool
     {
-        foreach ($this->getPlaylists() as $playlistItem) {
+        foreach ($this->playlists as $playlistItem) {
             $playlist = $playlistItem->getPlaylist();
             /** @var StationPlaylist $playlist */
             if ($playlist->isRequestable()) {
@@ -287,17 +172,9 @@ class StationMedia implements
         return false;
     }
 
-    /**
-     * @return Collection<int, StationPlaylistMedia>
-     */
-    public function getPlaylists(): Collection
-    {
-        return $this->playlists;
-    }
-
     public function fromMetadata(MetadataInterface $metadata): void
     {
-        $this->setLength($metadata->getDuration());
+        $this->length = $metadata->getDuration();
 
         $tags = $metadata->getKnownTags();
 
@@ -311,23 +188,23 @@ class StationMedia implements
             $this->album = Types::stringOrNull($tags['album']);
         }
         if (isset($tags['genre'])) {
-            $this->setGenre(Types::stringOrNull($tags['genre']));
+            $this->genre = Types::stringOrNull($tags['genre']);
         }
         if (isset($tags['unsynchronised_lyric'])) {
-            $this->setLyrics(Types::stringOrNull($tags['unsynchronised_lyric']));
+            $this->lyrics = Types::stringOrNull($tags['unsynchronised_lyric']);
         }
         if (isset($tags['isrc'])) {
-            $this->setIsrc(Types::stringOrNull($tags['isrc']));
+            $this->isrc = Types::stringOrNull($tags['isrc']);
         }
 
-        $this->setExtraMetadata($metadata->getExtraTags());
+        $this->extra_metadata = $metadata->getExtraTags();
         $this->updateMetaFields();
     }
 
     public function toMetadata(): MetadataInterface
     {
         $metadata = new Metadata();
-        $metadata->setDuration($this->getLength());
+        $metadata->setDuration($this->length);
 
         $tags = array_filter(
             [
@@ -335,13 +212,13 @@ class StationMedia implements
                 'artist' => $this->artist,
                 'album' => $this->album,
                 'genre' => $this->genre,
-                'unsynchronised_lyric' => $this->getLyrics(),
-                'isrc' => $this->getIsrc(),
+                'unsynchronised_lyric' => $this->lyrics,
+                'isrc' => $this->isrc,
             ]
         );
 
         $metadata->setKnownTags($tags);
-        $metadata->setExtraTags($this->getExtraMetadata()->toArray() ?? []);
+        $metadata->setExtraTags($this->extra_metadata->toArray() ?? []);
 
         return $metadata;
     }

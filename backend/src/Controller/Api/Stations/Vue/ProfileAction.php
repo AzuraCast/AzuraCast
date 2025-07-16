@@ -42,18 +42,18 @@ final class ProfileAction implements SingleActionInterface
                 LEFT JOIN sm.playlists spm
                 LEFT JOIN spm.playlist sp
                 WHERE sp.id IS NOT NULL
-                AND sp.station_id = :station_id
+                AND sp.station = :station
             DQL
-        )->setParameter('station_id', $station->getId())
+        )->setParameter('station', $station)
             ->getSingleScalarResult();
 
         $numPlaylists = $this->em->createQuery(
             <<<'DQL'
                 SELECT COUNT(sp.id)
                 FROM App\Entity\StationPlaylist sp
-                WHERE sp.station_id = :station_id
+                WHERE sp.station = :station
             DQL
-        )->setParameter('station_id', $station->getId())
+        )->setParameter('station', $station)
             ->getSingleScalarResult();
 
         $backendEnum = $station->backend_type;

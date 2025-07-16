@@ -9,7 +9,7 @@ use App\Utilities\Types;
 use App\Utilities\Urls;
 use Psr\Http\Message\UriInterface;
 
-class StationBrandingConfiguration extends AbstractArrayEntity
+final class StationBrandingConfiguration extends AbstractArrayEntity
 {
     public ?string $default_album_art_url {
         get => Types::stringOrNull($this->get(__PROPERTY__), true);

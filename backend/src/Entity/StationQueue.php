@@ -190,7 +190,7 @@ class StationQueue implements
 
     public function updateVisibility(): void
     {
-        $this->is_visible = !($this->playlist instanceof StationPlaylist) || !$this->playlist->getIsJingle();
+        $this->is_visible = !($this->playlist instanceof StationPlaylist) || !$this->playlist->is_jingle;
     }
 
     public function getTimestampPlayed(): ?DateTimeImmutable

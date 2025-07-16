@@ -38,8 +38,8 @@ final class Scheduler
         $this->logger->pushProcessor(
             function (LogRecord $record) use ($playlist) {
                 $record->extra['playlist'] = [
-                    'id' => $playlist->getId(),
-                    'name' => $playlist->getName(),
+                    'id' => $playlist->id,
+                    'name' => $playlist->name,
                 ];
                 return $record;
             }
@@ -55,7 +55,7 @@ final class Scheduler
 
         $shouldPlay = true;
 
-        switch ($playlist->getType()) {
+        switch ($playlist->type) {
             case PlaylistTypes::OncePerHour:
                 $shouldPlay = $this->shouldPlaylistPlayNowPerHour($playlist, $now);
 
@@ -68,7 +68,7 @@ final class Scheduler
                 break;
 
             case PlaylistTypes::OncePerXSongs:
-                $playPerSongs = $playlist->getPlayPerSongs();
+                $playPerSongs = $playlist->play_per_songs;
                 $shouldPlay = !$this->queueRepo->isPlaylistRecentlyPlayed($playlist, $playPerSongs);
 
                 $this->logger->debug(
@@ -81,7 +81,7 @@ final class Scheduler
                 break;
 
             case PlaylistTypes::OncePerXMinutes:
-                $playPerMinutes = $playlist->getPlayPerMinutes();
+                $playPerMinutes = $playlist->play_per_minutes;
                 $shouldPlay = !$this->wasPlaylistPlayedInLastXMinutes($playlist, $now, $playPerMinutes);
 
                 $this->logger->debug(
@@ -111,14 +111,14 @@ final class Scheduler
         DateTimeImmutable $now,
         bool $excludeSpecialRules = false
     ): bool {
-        $scheduleItems = $playlist->getScheduleItems();
+        $scheduleItems = $playlist->schedule_items;
 
         if (0 === $scheduleItems->count()) {
             $this->logger->debug('Playlist has no schedule items; skipping schedule time check.');
             return true;
         }
 
-        $stationTz = $playlist->getStation()->getTimezoneObject();
+        $stationTz = $playlist->station->getTimezoneObject();
 
         $scheduleItem = $this->getActiveScheduleFromCollection(
             $scheduleItems,
@@ -137,7 +137,7 @@ final class Scheduler
         $now = CarbonImmutable::instance($now);
 
         $currentMinute = $now->minute;
-        $targetMinute = $playlist->getPlayPerHourMinute();
+        $targetMinute = $playlist->play_per_hour_minute;
 
         if ($currentMinute < $targetMinute) {
             $targetTime = $now->subHour()->minute($targetMinute);
@@ -159,7 +159,7 @@ final class Scheduler
         DateTimeImmutable $now,
         int $minutes
     ): bool {
-        $playedAt = $playlist->getPlayedAt();
+        $playedAt = $playlist->played_at;
         if (null === $playedAt) {
             return false;
         }
@@ -180,7 +180,7 @@ final class Scheduler
         $now = CarbonImmutable::now($stationTz);
 
         $scheduleItem = $this->getActiveScheduleFromCollection(
-            $playlist->getScheduleItems(),
+            $playlist->schedule_items,
             $stationTz,
             $now
         );
@@ -339,7 +339,7 @@ final class Scheduler
 
         // Handle "Play Single Track" advanced setting.
         if ($playlist->backendPlaySingleTrack()) {
-            $playedAt = $playlist->getPlayedAt();
+            $playedAt = $playlist->played_at;
 
             if (null !== $playedAt && $dateRange->start->isBefore($playedAt)) {
                 return false;
@@ -370,7 +370,7 @@ final class Scheduler
             return false;
         }
 
-        $playlistPlayedAt = $playlist->getPlayedAt();
+        $playlistPlayedAt = $playlist->played_at;
 
         $isQueueEmpty = $this->spmRepo->isQueueEmpty($playlist);
         $hasCuedPlaylistMedia = $this->queueRepo->hasCuedPlaylistMedia($playlist);
@@ -397,7 +397,7 @@ final class Scheduler
 
         $playlist = $this->em->refetch($playlist);
 
-        $playlistQueueResetAt = $playlist->getQueueResetAt();
+        $playlistQueueResetAt = $playlist->queue_reset_at;
 
         if (!$isQueueEmpty && !$dateRange->contains($playlistQueueResetAt)) {
             $this->logger->debug('Playlist should loop.');

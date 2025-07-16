@@ -60,16 +60,16 @@ final class RelaysController
         $return = [];
         foreach ($stations as $station) {
             $row = new ApiRelay();
-            $row->id = $station->getIdRequired();
-            $row->name = $station->getName();
-            $row->shortcode = $station->getShortName();
-            $row->description = $station->getDescription();
-            $row->url = $station->getUrl();
-            $row->genre = $station->getGenre();
+            $row->id = $station->id;
+            $row->name = $station->name;
+            $row->shortcode = $station->short_name;
+            $row->description = $station->description;
+            $row->url = $station->url;
+            $row->genre = $station->genre;
 
-            $row->type = $station->getFrontendType()->value;
+            $row->type = $station->frontend_type->value;
 
-            $frontendConfig = $station->getFrontendConfig();
+            $frontendConfig = $station->frontend_config;
             $row->port = $frontendConfig->port;
             $row->relay_pw = $frontendConfig->relay_pw;
             $row->admin_pw = $frontendConfig->admin_pw;
@@ -77,8 +77,8 @@ final class RelaysController
             $mounts = [];
 
             $fa = $this->adapters->getFrontendAdapter($station);
-            if (null !== $fa && $station->getMounts()->count() > 0) {
-                foreach ($station->getMounts() as $mount) {
+            if (null !== $fa && $station->mounts->count() > 0) {
+                foreach ($station->mounts as $mount) {
                     /** @var StationMount $mount */
                     $mounts[] = $mount->api($fa);
                 }
@@ -157,7 +157,7 @@ final class RelaysController
         foreach ($this->getManageableStations($request) as $station) {
             $stationId = $station->getId();
 
-            foreach ($station->getMounts() as $mount) {
+            foreach ($station->mounts as $mount) {
                 /** @var StationMount $mount */
                 $mountPath = $mount->getName();
 

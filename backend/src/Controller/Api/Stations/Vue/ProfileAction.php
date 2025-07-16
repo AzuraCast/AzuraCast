@@ -30,7 +30,7 @@ final class ProfileAction implements SingleActionInterface
     ): ResponseInterface {
         $station = $request->getStation();
 
-        if (!$station->getIsEnabled()) {
+        if (!$station->is_enabled) {
             throw new RuntimeException('The station profile is disabled.');
         }
 
@@ -56,10 +56,10 @@ final class ProfileAction implements SingleActionInterface
         )->setParameter('station_id', $station->getId())
             ->getSingleScalarResult();
 
-        $backendEnum = $station->getBackendType();
+        $backendEnum = $station->backend_type;
 
         $frontend = $this->adapters->getFrontendAdapter($station);
-        $frontendConfig = $station->getFrontendConfig();
+        $frontendConfig = $station->frontend_config;
 
         $router = $request->getRouter();
 
@@ -67,20 +67,20 @@ final class ProfileAction implements SingleActionInterface
             ...$this->nowPlayingComponent->getDataProps($request),
 
             // Common
-            'backendType' => $station->getBackendType()->value,
-            'frontendType' => $station->getFrontendType()->value,
+            'backendType' => $station->backend_type->value,
+            'frontendType' => $station->frontend_type->value,
             'stationSupportsRequests' => $backendEnum->isEnabled(),
             'stationSupportsStreamers' => $backendEnum->isEnabled(),
-            'enableRequests' => $station->getEnableRequests(),
-            'enableStreamers' => $station->getEnableStreamers(),
-            'enablePublicPage' => $station->getEnablePublicPage(),
-            'enableOnDemand' => $station->getEnableOnDemand(),
+            'enableRequests' => $station->enable_requests,
+            'enableStreamers' => $station->enable_streamers,
+            'enablePublicPage' => $station->enable_public_page,
+            'enableOnDemand' => $station->enable_on_demand,
             'profileApiUri' => $router->fromHere('api:stations:profile'),
-            'hasStarted' => $station->getHasStarted(),
+            'hasStarted' => $station->has_started,
 
             // Header
-            'stationName' => $station->getName(),
-            'stationDescription' => $station->getDescription(),
+            'stationName' => $station->name,
+            'stationDescription' => $station->description,
 
             // Now Playing
             'backendSkipSongUri' => $router->fromHere('api:stations:backend', ['do' => 'skip']),
@@ -92,57 +92,57 @@ final class ProfileAction implements SingleActionInterface
             // Public Pages
             'publicPageUri' => $router->named(
                 routeName: 'public:index',
-                routeParams: ['station_id' => $station->getShortName()],
+                routeParams: ['station_id' => $station->short_name],
                 absolute: true
             ),
             'publicPageEmbedUri' => $router->named(
                 routeName: 'public:index',
-                routeParams: ['station_id' => $station->getShortName(), 'embed' => 'embed'],
+                routeParams: ['station_id' => $station->short_name, 'embed' => 'embed'],
                 absolute: true
             ),
             'publicWebDjUri' => $router->named(
                 routeName: 'public:dj',
-                routeParams: ['station_id' => $station->getShortName()],
+                routeParams: ['station_id' => $station->short_name],
                 absolute: true
             ),
             'publicOnDemandUri' => $router->named(
                 routeName: 'public:ondemand',
-                routeParams: ['station_id' => $station->getShortName()],
+                routeParams: ['station_id' => $station->short_name],
                 absolute: true
             ),
             'publicPodcastsUri' => $router->named(
                 routeName: 'public:podcasts',
-                routeParams: ['station_id' => $station->getShortName()],
+                routeParams: ['station_id' => $station->short_name],
                 absolute: true
             ),
             'publicScheduleUri' => $router->named(
                 routeName: 'public:schedule',
-                routeParams: ['station_id' => $station->getShortName()],
+                routeParams: ['station_id' => $station->short_name],
                 absolute: true
             ),
             'publicOnDemandEmbedUri' => $router->named(
                 routeName: 'public:ondemand',
-                routeParams: ['station_id' => $station->getShortName(), 'embed' => 'embed'],
+                routeParams: ['station_id' => $station->short_name, 'embed' => 'embed'],
                 absolute: true
             ),
             'publicRequestEmbedUri' => $router->named(
                 routeName: 'public:embedrequests',
-                routeParams: ['station_id' => $station->getShortName()],
+                routeParams: ['station_id' => $station->short_name],
                 absolute: true
             ),
             'publicHistoryEmbedUri' => $router->named(
                 routeName: 'public:history',
-                routeParams: ['station_id' => $station->getShortName()],
+                routeParams: ['station_id' => $station->short_name],
                 absolute: true
             ),
             'publicScheduleEmbedUri' => $router->named(
                 routeName: 'public:schedule',
-                routeParams: ['station_id' => $station->getShortName(), 'embed' => 'embed'],
+                routeParams: ['station_id' => $station->short_name, 'embed' => 'embed'],
                 absolute: true
             ),
             'publicPodcastsEmbedUri' => $router->named(
                 routeName: 'public:podcasts',
-                routeParams: ['station_id' => $station->getShortName()],
+                routeParams: ['station_id' => $station->short_name],
                 queryParams: ['embed' => 'true'],
                 absolute: true
             ),

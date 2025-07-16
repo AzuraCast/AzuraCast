@@ -34,7 +34,7 @@ abstract class AbstractCustomAsset implements CustomAssetInterface
         $basePath = $this->environment->getUploadsDirectory();
 
         if (null !== $this->station) {
-            $basePath .= '/' . $this->station->getShortName();
+            $basePath .= '/' . $this->station->short_name;
         }
 
         return $basePath;
@@ -61,7 +61,7 @@ abstract class AbstractCustomAsset implements CustomAssetInterface
         $baseUrl = $this->environment->getAssetUrl() . self::UPLOADS_URL_PREFIX;
 
         if (null !== $this->station) {
-            $baseUrl .= '/' . $this->station->getShortName();
+            $baseUrl .= '/' . $this->station->short_name;
         }
 
         return $baseUrl;

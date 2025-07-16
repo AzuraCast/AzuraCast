@@ -302,13 +302,13 @@ class StationMedia implements
         $tags = $metadata->getKnownTags();
 
         if (isset($tags['title'])) {
-            $this->setTitle(Types::stringOrNull($tags['title']));
+            $this->title = Types::stringOrNull($tags['title']);
         }
         if (isset($tags['artist'])) {
-            $this->setArtist(Types::stringOrNull($tags['artist']));
+            $this->artist = Types::stringOrNull($tags['artist']);
         }
         if (isset($tags['album'])) {
-            $this->setAlbum(Types::stringOrNull($tags['album']));
+            $this->album = Types::stringOrNull($tags['album']);
         }
         if (isset($tags['genre'])) {
             $this->setGenre(Types::stringOrNull($tags['genre']));
@@ -321,7 +321,7 @@ class StationMedia implements
         }
 
         $this->setExtraMetadata($metadata->getExtraTags());
-        $this->updateSongId();
+        $this->updateMetaFields();
     }
 
     public function toMetadata(): MetadataInterface
@@ -331,10 +331,10 @@ class StationMedia implements
 
         $tags = array_filter(
             [
-                'title' => $this->getTitle(),
-                'artist' => $this->getArtist(),
-                'album' => $this->getAlbum(),
-                'genre' => $this->getGenre(),
+                'title' => $this->title,
+                'artist' => $this->artist,
+                'album' => $this->album,
+                'genre' => $this->genre,
                 'unsynchronised_lyric' => $this->getLyrics(),
                 'isrc' => $this->getIsrc(),
             ]

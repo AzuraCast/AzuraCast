@@ -146,9 +146,9 @@ final class UploadAction implements SingleActionInterface
             unset($row['id'], $row['path']);
 
             $importResult = [
-                'id' => $record->getIdRequired(),
-                'title' => $record->getTitle(),
-                'artist' => $record->getArtist(),
+                'id' => $record->id,
+                'title' => $record->title,
+                'artist' => $record->artist,
                 'success' => false,
                 'error' => null,
             ];

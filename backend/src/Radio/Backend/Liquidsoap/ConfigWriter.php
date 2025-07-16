@@ -77,7 +77,7 @@ final class ConfigWriter implements EventSubscriberInterface
             return;
         }
 
-        $settings = $event->getStation()->getBackendConfig();
+        $settings = $event->getStation()->backend_config;
         $customConfig = $settings->getCustomConfigurationSection($sectionName);
 
         if (!empty($customConfig)) {
@@ -229,9 +229,9 @@ final class ConfigWriter implements EventSubscriberInterface
         $pidfile = $configDir . '/liquidsoap.pid';
         $httpApiPort = $this->liquidsoap->getHttpApiPort($station);
 
-        $stationTz = self::cleanUpString($station->getTimezone());
+        $stationTz = self::cleanUpString($station->timezone ?? 'UTC');
 
-        $stationApiAuth = self::cleanUpString($station->getAdapterApiKey());
+        $stationApiAuth = self::cleanUpString($station->adapter_api_key);
         $stationApiUrl = self::cleanUpString(
             (string)$this->environment->getInternalUri()
                 ->withPath('/api/internal/' . $station->getId() . '/liquidsoap')
@@ -349,7 +349,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $fallbackRemoteUrl = null;
 
-        foreach ($station->getPlaylists() as $playlist) {
+        foreach ($station->playlists as $playlist) {
             if (!$playlist->getIsEnabled()) {
                 continue;
             }
@@ -586,7 +586,7 @@ final class ConfigWriter implements EventSubscriberInterface
             }
         }
 
-        if (!$station->useManualAutoDJ()) {
+        if (!$station->backend_config->use_manual_autodj) {
             $event->appendBlock(
                 <<< LIQ
                 radio = azuracast.enable_autodj(radio)
@@ -794,7 +794,7 @@ final class ConfigWriter implements EventSubscriberInterface
     {
         $station = $event->getStation();
 
-        if (!$station->getEnableStreamers()) {
+        if (!$station->enable_streamers) {
             return;
         }
 
@@ -961,7 +961,7 @@ final class ConfigWriter implements EventSubscriberInterface
     {
         $station = $event->getStation();
 
-        if (FrontendAdapters::Remote === $station->getFrontendType()) {
+        if (FrontendAdapters::Remote === $station->frontend_type) {
             return;
         }
 
@@ -971,7 +971,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
         // Configure the outbound broadcast.
         $i = 0;
-        foreach ($station->getMounts() as $mountRow) {
+        foreach ($station->mounts as $mountRow) {
             $i++;
 
             /** @var StationMount $mountRow */
@@ -989,7 +989,7 @@ final class ConfigWriter implements EventSubscriberInterface
     {
         $station = $event->getStation();
 
-        if (!$station->getEnableHls()) {
+        if (!$station->enable_hls) {
             return;
         }
 
@@ -1000,7 +1000,7 @@ final class ConfigWriter implements EventSubscriberInterface
         // Configure the outbound broadcast.
         $hlsStreams = [];
 
-        foreach ($station->getHlsStreams() as $hlsStream) {
+        foreach ($station->hls_streams as $hlsStream) {
             $streamVarName = self::cleanUpVarName($hlsStream->getName());
 
             if (StreamFormats::Aac !== $hlsStream->getFormat()) {
@@ -1125,15 +1125,15 @@ final class ConfigWriter implements EventSubscriberInterface
             $outputParams[] = 'mount = "' . self::cleanUpString($mountPoint) . '"';
         }
 
-        $outputParams[] = 'name = "' . self::cleanUpString($station->getName()) . '"';
+        $outputParams[] = 'name = "' . self::cleanUpString($station->name) . '"';
 
         if (!$mount->getIsShoutcast()) {
-            $outputParams[] = 'description = "' . self::cleanUpString($station->getDescription()) . '"';
+            $outputParams[] = 'description = "' . self::cleanUpString($station->description) . '"';
         }
-        $outputParams[] = 'genre = "' . self::cleanUpString($station->getGenre()) . '"';
+        $outputParams[] = 'genre = "' . self::cleanUpString($station->genre) . '"';
 
-        if (!empty($station->getUrl())) {
-            $outputParams[] = 'url = "' . self::cleanUpString($station->getUrl()) . '"';
+        if (!empty($station->url)) {
+            $outputParams[] = 'url = "' . self::cleanUpString($station->url) . '"';
         }
 
         $outputParams[] = 'public = ' . ($mount->getIsPublic() ? 'true' : 'false');
@@ -1192,7 +1192,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
         // Set up broadcast to remote relays.
         $i = 0;
-        foreach ($station->getRemotes() as $remoteRow) {
+        foreach ($station->remotes as $remoteRow) {
             $i++;
 
             /** @var StationRemote $remoteRow */
@@ -1336,7 +1336,7 @@ final class ConfigWriter implements EventSubscriberInterface
             return true;
         }
 
-        if ($station->useManualAutoDJ()) {
+        if ($station->backend_config->use_manual_autodj) {
             return true;
         }
 

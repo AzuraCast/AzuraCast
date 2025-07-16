@@ -50,7 +50,7 @@ final class PlaylistFileWriter implements EventSubscriberInterface
         }
 
         $station = $playlist->getStation();
-        if (!$station->getBackendType()->isEnabled()) {
+        if (!$station->backend_type->isEnabled()) {
             return;
         }
 
@@ -102,7 +102,7 @@ final class PlaylistFileWriter implements EventSubscriberInterface
             }
         }
 
-        foreach ($station->getPlaylists() as $playlist) {
+        foreach ($station->playlists as $playlist) {
             if (!$playlist->getIsEnabled()) {
                 continue;
             }
@@ -118,7 +118,7 @@ final class PlaylistFileWriter implements EventSubscriberInterface
         $this->logger->info(
             'Writing playlist file to disk...',
             [
-                'station' => $station->getName(),
+                'station' => $station->name,
                 'playlist' => $playlist->getName(),
             ]
         );

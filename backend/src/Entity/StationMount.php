@@ -123,7 +123,7 @@ class StationMount implements
     {
         $this->doValidateMaxBitrate(
             $context,
-            $this->getStation()->getMaxBitrate(),
+            $this->getStation()->max_bitrate,
             $this->getAutodjBitrate(),
             'autodj_bitrate'
         );
@@ -397,7 +397,7 @@ class StationMount implements
 
     public function getAutodjPort(): ?int
     {
-        return $this->getStation()->getFrontendConfig()->port;
+        return $this->getStation()->frontend_config->port;
     }
 
     public function getAutodjProtocol(): ?StreamProtocols
@@ -415,7 +415,7 @@ class StationMount implements
 
     public function getAutodjPassword(): ?string
     {
-        return $this->getStation()->getFrontendConfig()->source_pw;
+        return $this->getStation()->frontend_config->source_pw;
     }
 
     public function getAutodjMount(): ?string
@@ -425,7 +425,7 @@ class StationMount implements
 
     public function getAutodjAdapterType(): AdapterTypeInterface
     {
-        return $this->getStation()->getFrontendType();
+        return $this->getStation()->frontend_type;
     }
 
     public function getIsShoutcast(): bool

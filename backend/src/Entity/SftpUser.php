@@ -22,7 +22,7 @@ use const PASSWORD_ARGON2ID;
     UniqueEntity(fields: ['username']),
     Auditable
 ]
-class SftpUser implements
+final class SftpUser implements
     Interfaces\IdentifiableEntityInterface,
     Interfaces\StationAwareInterface
 {
@@ -32,7 +32,7 @@ class SftpUser implements
         ORM\ManyToOne(inversedBy: 'sftp_users'),
         ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
     ]
-    protected Station $station;
+    public readonly Station $station;
 
     #[
         OA\Property,
@@ -41,20 +41,27 @@ class SftpUser implements
         Assert\NotBlank,
         Assert\Regex(pattern: '/^[a-zA-Z0-9-_.~]+$/')
     ]
-    protected string $username;
+    public string $username;
 
     #[
         OA\Property,
         ORM\Column(length: 255),
         Assert\NotBlank
     ]
-    protected string $password;
+    public string $password {
+        get => '';
+        set {
+            if (!empty($password)) {
+                $this->password = password_hash($password, PASSWORD_ARGON2ID);
+            }
+        }
+    }
 
     #[
         OA\Property,
         ORM\Column(name: 'public_keys', type: 'text', nullable: true)
     ]
-    protected ?string $publicKeys = null;
+    public ?string $publicKeys = null;
 
     public function __construct(Station $station)
     {
@@ -64,33 +71,6 @@ class SftpUser implements
     public function getStation(): Station
     {
         return $this->station;
-    }
-
-    public function getUsername(): string
-    {
-        return $this->username;
-    }
-
-    public function setUsername(string $username): void
-    {
-        $this->username = $username;
-    }
-
-    public function getPassword(): string
-    {
-        return '';
-    }
-
-    public function setPassword(?string $password): void
-    {
-        if (!empty($password)) {
-            $this->password = password_hash($password, PASSWORD_ARGON2ID);
-        }
-    }
-
-    public function getPublicKeys(): ?string
-    {
-        return $this->publicKeys;
     }
 
     /**
@@ -112,11 +92,6 @@ class SftpUser implements
         return [];
     }
 
-    public function setPublicKeys(?string $publicKeys): void
-    {
-        $this->publicKeys = $publicKeys;
-    }
-
     public function authenticate(?string $password = null, ?string $pubKey = null): bool
     {
         if (!empty($password)) {
@@ -131,7 +106,7 @@ class SftpUser implements
         return false;
     }
 
-    public function cleanPublicKey(string $pubKeyRaw): ?string
+    private function cleanPublicKey(string $pubKeyRaw): ?string
     {
         try {
             $pkObj = PublicKeyLoader::loadPublicKey(trim($pubKeyRaw));

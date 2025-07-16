@@ -48,21 +48,21 @@ final class MatomoAnalytics extends AbstractConnector
         }
 
         // Get listen URLs for each mount point.
-        $radioPort = $station->getFrontendConfig()->port;
+        $radioPort = $station->frontend_config->port;
 
         $baseUri = $this->router->getBaseUrl();
 
         $mountUrls = [];
         $mountNames = [];
-        foreach ($station->getMounts() as $mount) {
+        foreach ($station->mounts as $mount) {
             $mountUrl = $baseUri->withPath('/radio/' . $radioPort . $mount->getName());
-            $mountUrls[$mount->getId()] = (string)$mountUrl;
-            $mountNames[$mount->getId()] = (string)$mount;
+            $mountUrls[$mount->id] = (string)$mountUrl;
+            $mountNames[$mount->id] = (string)$mount;
         }
 
         $remoteUrls = [];
         $remoteNames = [];
-        foreach ($station->getRemotes() as $remote) {
+        foreach ($station->remotes as $remote) {
             $remoteUrl = $baseUri->withPath('/radio/remote' . $remote->getMount());
             $remoteUrls[$remote->getId()] = (string)$remoteUrl;
             $remoteNames[$remote->getId()] = (string)$remote;
@@ -76,7 +76,7 @@ final class MatomoAnalytics extends AbstractConnector
 
         $apiToken = Types::stringOrNull($config['token'], true);
 
-        $stationName = $station->getName();
+        $stationName = $station->name;
 
         // Get all current listeners
         $liveListeners = $this->listenerRepo->iterateLiveListenersArray($station);

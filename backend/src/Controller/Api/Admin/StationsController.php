@@ -301,7 +301,7 @@ class StationsController extends AbstractApiCrudController
         // Detect a change in the station's base config directory.
         if (
             !empty($originalRecord['radio_base_dir'])
-            && $originalRecord['radio_base_dir'] !== $station->getRadioBaseDir()
+            && $originalRecord['radio_base_dir'] !== $station->radio_base_dir
         ) {
             $rewriteConfiguration = true;
             $this->handleBaseDirRename($station, $originalRecord['radio_base_dir']);
@@ -317,30 +317,30 @@ class StationsController extends AbstractApiCrudController
         }
 
         // If Manual AutoDJ mode is enabled, clear the queue.
-        if ($station->useManualAutoDj()) {
+        if ($station->backend_config->use_manual_autodj) {
             $this->queueRepo->clearUnplayed($station);
         }
 
         // Check for changes in essential variables.
-        if ($originalRecord['short_name'] !== $station->getShortName()) {
+        if ($originalRecord['short_name'] !== $station->short_name) {
             $rewriteConfiguration = true;
             $this->nginx->writeConfiguration($station);
         }
 
-        $frontendChanged = ($originalRecord['frontend_type'] !== $station->getFrontendType());
+        $frontendChanged = ($originalRecord['frontend_type'] !== $station->frontend_type);
         if ($frontendChanged) {
             $rewriteConfiguration = true;
             $this->stationRepo->resetMounts($station);
         }
 
-        $backendChanged = ($originalRecord['backend_type'] !== $station->getBackendType());
-        $hlsChanged = (bool)$originalRecord['enable_hls'] !== $station->getEnableHls();
+        $backendChanged = ($originalRecord['backend_type'] !== $station->backend_type);
+        $hlsChanged = (bool)$originalRecord['enable_hls'] !== $station->enable_hls;
         if ($backendChanged || $hlsChanged) {
             $rewriteConfiguration = true;
             $this->stationRepo->resetHls($station);
         }
 
-        if ((bool)$originalRecord['is_enabled'] !== $station->getIsEnabled()) {
+        if ((bool)$originalRecord['is_enabled'] !== $station->is_enabled) {
             $rewriteConfiguration = true;
         }
 
@@ -348,8 +348,8 @@ class StationsController extends AbstractApiCrudController
         $oldMaxBitrate = (int)$originalRecord['max_bitrate'];
 
         if (
-            ($oldMaxBitrate !== 0 && $station->getMaxBitrate() !== 0 && $oldMaxBitrate > $station->getMaxBitrate())
-            || ($oldMaxBitrate === 0 && $station->getMaxBitrate() !== 0)
+            ($oldMaxBitrate !== 0 && $station->max_bitrate !== 0 && $oldMaxBitrate > $station->max_bitrate)
+            || ($oldMaxBitrate === 0 && $station->max_bitrate !== 0)
         ) {
             if (!$frontendChanged) {
                 $this->stationRepo->reduceMountsBitrateToLimit($station);
@@ -367,8 +367,8 @@ class StationsController extends AbstractApiCrudController
         $oldMaxMounts = (int)$originalRecord['max_mounts'];
 
         if (
-            $station->getMaxMounts() !== 0
-            && ($oldMaxMounts > $station->getMaxMounts() || $oldMaxMounts === 0)
+            $station->max_mounts !== 0
+            && ($oldMaxMounts > $station->max_mounts || $oldMaxMounts === 0)
         ) {
             $rewriteConfiguration = true;
             $this->stationRepo->reduceMountPointsToLimit($station);
@@ -378,8 +378,8 @@ class StationsController extends AbstractApiCrudController
         $oldMaxHlsStreams = (int)$originalRecord['max_hls_streams'];
 
         if (
-            $station->getMaxHlsStreams() !== 0
-            && ($oldMaxHlsStreams > $station->getMaxHlsStreams() || $oldMaxHlsStreams === 0)
+            $station->max_hls_streams !== 0
+            && ($oldMaxHlsStreams > $station->max_hls_streams || $oldMaxHlsStreams === 0)
         ) {
             $rewriteConfiguration = true;
             $this->stationRepo->reduceHlsStreamsToLimit($station);
@@ -402,7 +402,7 @@ class StationsController extends AbstractApiCrudController
         Station $station,
         string $originalPath
     ): void {
-        $newPath = $station->getRadioBaseDir();
+        $newPath = $station->radio_base_dir;
 
         // Unlink the old path's supervisor config file.
         $originalConfPath = Configuration::getSupervisorConfPath($originalPath);
@@ -489,7 +489,7 @@ class StationsController extends AbstractApiCrudController
 
         // Remove directories generated specifically for this station.
         $fsUtils = new Filesystem();
-        $stationBaseDir = $station->getRadioBaseDir();
+        $stationBaseDir = $station->radio_base_dir;
         foreach (Station::NON_STORAGE_LOCATION_DIRS as $otherDir) {
             try {
                 $fsUtils->remove($stationBaseDir . '/' . $otherDir);

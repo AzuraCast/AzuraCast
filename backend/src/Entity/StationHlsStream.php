@@ -61,7 +61,7 @@ class StationHlsStream implements
     {
         $this->doValidateMaxBitrate(
             $context,
-            $this->getStation()->getMaxBitrate(),
+            $this->getStation()->max_bitrate,
             $this->getBitrate(),
             'bitrate'
         );

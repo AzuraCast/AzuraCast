@@ -102,7 +102,7 @@ final class Customization
 
     public function getStationCustomPublicCss(Station $station): string
     {
-        $publicCss = $station->getBrandingConfig()->public_custom_css ?? '';
+        $publicCss = $station->branding_config->public_custom_css ?? '';
 
         $background = AssetTypes::Background->createObject($this->environment, $station);
 
@@ -129,7 +129,7 @@ final class Customization
 
     public function getStationCustomPublicJs(Station $station): string
     {
-        return $station->getBrandingConfig()->public_custom_js ?? '';
+        return $station->branding_config->public_custom_js ?? '';
     }
 
     /**

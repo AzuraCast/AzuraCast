@@ -78,7 +78,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
 
     public function getPublicUrl(Station $station, ?UriInterface $baseUrl = null): UriInterface
     {
-        $radioPort = $station->getFrontendConfig()->port;
+        $radioPort = $station->frontend_config->port;
         $baseUrl ??= $this->router->getBaseUrl();
 
         $useRadioProxy = $this->readSettings()->use_radio_proxy;
@@ -146,7 +146,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
         $bannedUserAgents = array_filter(
             array_map(
                 'trim',
-                explode("\n", $station->getFrontendConfig()->banned_user_agents ?? '')
+                explode("\n", $station->frontend_config->banned_user_agents ?? '')
             )
         );
 
@@ -175,7 +175,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
 
     protected function getBannedIps(Station $station): array
     {
-        return $this->getIpsAsArray($station->getFrontendConfig()->banned_ips);
+        return $this->getIpsAsArray($station->frontend_config->banned_ips);
     }
 
     protected function getIpsAsArray(?string $ipString): array

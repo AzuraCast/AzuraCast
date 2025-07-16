@@ -39,7 +39,7 @@ final class CheckPodcastPlaylistsTask extends AbstractTask
         $this->logger->info(
             'Processing playlist-based podcasts for station...',
             [
-                'station' => $station->getName(),
+                'station' => $station->name,
             ]
         );
 
@@ -114,11 +114,11 @@ final class CheckPodcastPlaylistsTask extends AbstractTask
                     $podcastEpisode->playlist_media = $media;
                     $podcastEpisode->explicit = false;
 
-                    $podcastEpisode->title = $media->getTitle() ?? 'Untitled Episode';
+                    $podcastEpisode->title = $media->title ?? 'Untitled Episode';
                     $podcastEpisode->description = implode("\n", array_filter([
-                            $media->getArtist(),
-                            $media->getAlbum(),
-                            $media->getLyrics(),
+                        $media->artist,
+                        $media->album,
+                        $media->getLyrics(),
                     ]));
 
                     $publishAt = CarbonImmutable::createFromTimestamp(
@@ -161,7 +161,7 @@ final class CheckPodcastPlaylistsTask extends AbstractTask
         $this->logger->debug(
             'Playlist-based podcasts for station processed.',
             [
-                'station' => $station->getName(),
+                'station' => $station->name,
                 'stats' => $stats,
             ]
         );

@@ -105,9 +105,9 @@ final class PodcastEpisodeApiGenerator
         $return->has_custom_art = (0 !== $return->art_updated_at);
 
         $baseRouteParams = [
-            'station_id' => $station->getShortName(),
-            'podcast_id' => $podcast->getIdRequired(),
-            'episode_id' => $record->getIdRequired(),
+            'station_id' => $station->short_name,
+            'podcast_id' => $podcast->id,
+            'episode_id' => $record->id,
         ];
 
         $artRouteParams = $baseRouteParams;

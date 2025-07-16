@@ -46,15 +46,11 @@ final class Configuration
 
     public function initializeConfiguration(Station $station): void
     {
-        // Ensure default values for frontend/backend config exist.
-        $station->setFrontendConfig($station->getFrontendConfig());
-        $station->setBackendConfig($station->getBackendConfig());
-
         // Ensure port configuration exists
         $this->assignRadioPorts($station);
 
         // Clear station caches and generate API adapter key if none exists.
-        if (empty($station->getAdapterApiKey())) {
+        if (empty($station->adapter_api_key)) {
             $station->generateAdapterApiKey();
         }
 
@@ -62,7 +58,7 @@ final class Configuration
         $station->ensureDirectoriesExist();
 
         // Check for at least one playlist, and create one if it doesn't exist.
-        $defaultPlaylists = $station->getPlaylists()->filter(
+        $defaultPlaylists = $station->playlists->filter(
             function (StationPlaylist $row) {
                 return $row->getIsEnabled() && PlaylistTypes::default() === $row->getType();
             }
@@ -103,8 +99,8 @@ final class Configuration
         $supervisorConfig = [];
         $supervisorConfigFile = self::getSupervisorConfPath($station);
 
-        $frontendEnum = $station->getFrontendType();
-        $backendEnum = $station->getBackendType();
+        $frontendEnum = $station->frontend_type;
+        $backendEnum = $station->backend_type;
 
         $frontend = $this->adapters->getFrontendAdapter($station);
         $backend = $this->adapters->getBackendAdapter($station);
@@ -118,12 +114,12 @@ final class Configuration
             throw new RuntimeException('Station has no local services.');
         }
 
-        if (!$station->getHasStarted()) {
+        if (!$station->has_started) {
             $this->removeLocalServices($station, $reloadSupervisor);
             throw new RuntimeException('Station has not started yet.');
         }
 
-        if (!$station->getIsEnabled()) {
+        if (!$station->is_enabled) {
             $this->removeLocalServices($station, $reloadSupervisor);
             throw new RuntimeException('Station is disabled.');
         }
@@ -161,7 +157,7 @@ final class Configuration
                 'command' => $adapter->getCommand($station),
                 'directory' => $station->getRadioConfigDir(),
                 'environment' => self::buildEnvironment([
-                    'TZ' => $station->getTimezone(),
+                    'TZ' => $station->timezone ?? 'UTC',
                     ...$adapter->getEnvironmentVariables($station),
                 ]),
                 'autostart' => 'false',
@@ -216,10 +212,10 @@ final class Configuration
         bool $reloadSupervisor = true,
         bool $isRemoteOnly = false
     ): void {
-        $station->setHasStarted($isRemoteOnly);
-        $station->setNeedsRestart(false);
-        $station->setCurrentStreamer(null);
-        $station->setCurrentSong(null);
+        $station->has_started = $isRemoteOnly;
+        $station->needs_restart = false;
+        $station->current_streamer = null;
+        $station->current_song = null;
 
         $this->em->persist($station);
         $this->em->flush();
@@ -229,10 +225,10 @@ final class Configuration
 
     private function markAsStarted(Station $station): void
     {
-        $station->setHasStarted(true);
-        $station->setNeedsRestart(false);
-        $station->setCurrentStreamer(null);
-        $station->setCurrentSong(null);
+        $station->has_started = true;
+        $station->needs_restart = false;
+        $station->current_streamer = null;
+        $station->current_song = null;
 
         $this->em->persist($station);
         $this->em->flush();
@@ -252,30 +248,30 @@ final class Configuration
     public function assignRadioPorts(Station $station, bool $force = false): void
     {
         if (
-            $station->getFrontendType()->isEnabled()
-            || $station->getBackendType()->isEnabled()
+            $station->frontend_type->isEnabled()
+            || $station->backend_type->isEnabled()
         ) {
-            $frontendConfig = $station->getFrontendConfig();
-            $backendConfig = $station->getBackendConfig();
+            $frontendConfig = $station->frontend_config;
+            $backendConfig = $station->backend_config;
 
             $basePort = $frontendConfig->port;
             if ($force || null === $basePort) {
                 $basePort = $this->getFirstAvailableRadioPort($station);
 
                 $frontendConfig->port = $basePort;
-                $station->setFrontendConfig($frontendConfig);
+                $station->frontend_config = $frontendConfig;
             }
 
             $djPort = $backendConfig->dj_port;
             if ($force || null === $djPort) {
                 $backendConfig->dj_port = $basePort + 5;
-                $station->setBackendConfig($backendConfig);
+                $station->backend_config = $backendConfig;
             }
 
             $telnetPort = $backendConfig->telnet_port;
             if ($force || null === $telnetPort) {
                 $backendConfig->telnet_port = $basePort + 4;
-                $station->setBackendConfig($backendConfig);
+                $station->backend_config = $backendConfig;
             }
 
             $this->em->persist($station);

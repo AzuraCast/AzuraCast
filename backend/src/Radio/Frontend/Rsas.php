@@ -107,7 +107,7 @@ final class Rsas extends Icecast
 
     protected function getConfigurationArray(Station $station): array
     {
-        $frontendConfig = $station->getFrontendConfig();
+        $frontendConfig = $station->frontend_config;
         $configDir = $station->getRadioConfigDir();
 
         $settingsBaseUrl = $this->settingsRepo->readSettings()->getBaseUrlAsUri();
@@ -166,7 +166,7 @@ final class Rsas extends Icecast
             || !empty($bannedIps) || !empty($bannedUserAgents);
 
         /** @var StationMount $mountRow */
-        foreach ($station->getMounts() as $mountRow) {
+        foreach ($station->mounts as $mountRow) {
             $mount = [
                 'mount-name' => $mountRow->getName(),
                 'username' => 'source',

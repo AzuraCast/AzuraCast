@@ -24,7 +24,7 @@ final class DjAuthCommand extends AbstractCommand
         bool $asAutoDj = false,
         array $payload = []
     ): array {
-        if (!$station->getEnableStreamers()) {
+        if (!$station->enable_streamers) {
             throw new RuntimeException('Streamers are disabled on this station.');
         }
 
@@ -32,7 +32,7 @@ final class DjAuthCommand extends AbstractCommand
 
         // Allow connections using the exact broadcast source password.
         if ('source' === $user) {
-            $sourcePw = $station->getFrontendConfig()->source_pw;
+            $sourcePw = $station->frontend_config->source_pw;
 
             if (!empty($sourcePw) && strcmp($sourcePw, $pass) === 0) {
                 return [

@@ -47,12 +47,12 @@ final class Queue
         $expectedCueTime = Time::nowUtc();
 
         // Get expected play time of each item.
-        $currentSong = $station->getCurrentSong();
+        $currentSong = $station->current_song;
         if (null !== $currentSong) {
             $expectedPlayTime = $this->addDurationToTime(
                 $station,
-                $currentSong->getTimestampStart(),
-                $currentSong->getDuration()
+                $currentSong->timestamp_start,
+                $currentSong->duration
             );
 
             if ($expectedPlayTime < $expectedCueTime) {
@@ -62,7 +62,7 @@ final class Queue
             $expectedPlayTime = $expectedCueTime;
         }
 
-        $maxQueueLength = max($station->getBackendConfig()->autodj_queue_length, 2);
+        $maxQueueLength = max($station->backend_config->autodj_queue_length, 2);
 
         $upcomingQueue = $this->queueRepo->getUnplayedQueue($station);
 
@@ -98,7 +98,7 @@ final class Queue
 
             $expectedPlayTime = $this->addDurationToTime($station, $expectedPlayTime, $queueRow->getDuration());
 
-            $lastSongId = $queueRow->getSongId();
+            $lastSongId = $queueRow->song_id;
         }
 
         $this->em->flush();
@@ -145,7 +145,7 @@ final class Queue
 
                 $this->queueLogCache->setLog($queueRow, $testHandler->getRecords());
 
-                $lastSongId = $queueRow->getSongId();
+                $lastSongId = $queueRow->song_id;
 
                 $expectedCueTime = $this->addDurationToTime(
                     $station,
@@ -238,7 +238,7 @@ final class Queue
     ): CarbonImmutable {
         $duration ??= 1;
 
-        $startNext = $station->getBackendConfig()->getCrossfadeDuration();
+        $startNext = $station->backend_config->getCrossfadeDuration();
 
         $now = CarbonImmutable::instance($now)->addSeconds($duration);
         return ($duration >= $startNext)

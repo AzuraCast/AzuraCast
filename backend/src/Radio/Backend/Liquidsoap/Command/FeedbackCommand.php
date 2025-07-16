@@ -12,11 +12,9 @@ use App\Entity\Song;
 use App\Entity\SongHistory;
 use App\Entity\Station;
 use App\Entity\StationMedia;
-use App\Entity\StationMediaMetadata;
 use App\Entity\StationPlaylist;
 use App\Entity\StationQueue;
 use App\Utilities\Types;
-use Exception;
 use RuntimeException;
 
 final class FeedbackCommand extends AbstractCommand
@@ -126,12 +124,12 @@ final class FeedbackCommand extends AbstractCommand
         }
 
         $history = new SongHistory($station, $media);
-        $history->setMedia($media);
+        $history->media = $media;
 
         if (!empty($payload['playlist_id'])) {
             $playlist = $this->em->find(StationPlaylist::class, $payload['playlist_id']);
             if ($playlist instanceof StationPlaylist) {
-                $history->setPlaylist($playlist);
+                $history->playlist = $playlist;
             }
         }
 

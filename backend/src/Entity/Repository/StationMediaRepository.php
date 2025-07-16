@@ -214,8 +214,8 @@ final class StationMediaRepository extends Repository
         }
 
         // Attempt to derive title and artist from filename.
-        $artist = $media->getArtist();
-        $title = $media->getTitle();
+        $artist = $media->artist;
+        $title = $media->title;
 
         if (null === $artist || null === $title) {
             $filename = pathinfo($media->getPath(), PATHINFO_FILENAME);
@@ -225,11 +225,8 @@ final class StationMediaRepository extends Repository
             $media->setSong($songObj);
         }
 
-        // Force a text property to auto-generate from artist/title
-        $media->setText($media->getText());
-
         // Generate a song_id hash based on the track
-        $media->updateSongId();
+        $media->updateMetaFields();
     }
 
     public function updateAlbumArt(
@@ -289,7 +286,7 @@ final class StationMediaRepository extends Repository
 
         // Write tags to the Media file.
         $media->setMtime(time() + 5);
-        $media->updateSongId();
+        $media->updateMetaFields();
 
         return $fs->withLocalFile(
             $media->getPath(),

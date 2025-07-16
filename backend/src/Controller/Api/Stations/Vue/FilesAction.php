@@ -41,7 +41,7 @@ final class FilesAction implements SingleActionInterface
             ->setParameter('source', PlaylistSources::Songs->value)
             ->getArrayResult();
 
-        $backendEnum = $station->getBackendType();
+        $backendEnum = $station->backend_type;
 
         return $response->withJson([
             'initialPlaylists' => $playlists,

@@ -108,7 +108,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
      */
     public function hasPlayedRecently(StationMedia $media, Station $station): bool
     {
-        $lastPlayThresholdMins = ($station->getRequestThreshold() ?? 15);
+        $lastPlayThresholdMins = $station->request_threshold ?? 15;
 
         if (0 === $lastPlayThresholdMins) {
             return false;
@@ -128,10 +128,10 @@ final class StationRequestRepository extends AbstractStationBasedRepository
             ->getArrayResult();
 
         $eligibleTrack = new StationPlaylistQueue();
-        $eligibleTrack->media_id = $media->getIdRequired();
-        $eligibleTrack->song_id = $media->getSongId();
-        $eligibleTrack->title = $media->getTitle() ?? '';
-        $eligibleTrack->artist = $media->getArtist() ?? '';
+        $eligibleTrack->media_id = $media->id;
+        $eligibleTrack->song_id = $media->song_id;
+        $eligibleTrack->title = $media->title ?? '';
+        $eligibleTrack->artist = $media->artist ?? '';
 
         return (null === $this->duplicatePrevention->getDistinctTrack([$eligibleTrack], $recentTracks));
     }

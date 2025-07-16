@@ -37,7 +37,7 @@ final class CheckRequestsTask extends AbstractTask
     public function run(bool $force = false): void
     {
         foreach ($this->iterateStations() as $station) {
-            if (!$station->useManualAutoDJ()) {
+            if (!$station->backend_config->use_manual_autodj) {
                 continue;
             }
 

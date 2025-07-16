@@ -35,7 +35,7 @@ final class StereoTool
             return false;
         }
 
-        $backendConfig = $station->getBackendConfig();
+        $backendConfig = $station->backend_config;
         return !empty($backendConfig->stereo_tool_configuration_path);
     }
 

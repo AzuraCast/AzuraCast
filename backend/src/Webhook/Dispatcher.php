@@ -76,7 +76,7 @@ final class Dispatcher
         }
 
         /** @var StationWebhook[] $enabledWebhooks */
-        $enabledWebhooks = $station->getWebhooks()->filter(
+        $enabledWebhooks = $station->webhooks->filter(
             function (StationWebhook $webhook) {
                 return $webhook->getIsEnabled();
             }

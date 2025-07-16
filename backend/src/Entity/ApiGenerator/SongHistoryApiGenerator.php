@@ -28,28 +28,28 @@ final class SongHistoryApiGenerator
         $response = new SongHistory();
         $response->sh_id = $record->getIdRequired();
 
-        $response->played_at = CarbonImmutable::instance($record->getTimestampStart())
+        $response->played_at = CarbonImmutable::instance($record->timestamp_start)
             ->addSeconds(SongHistoryEntity::PLAYBACK_DELAY_SECONDS)
             ->getTimestamp();
 
-        $response->duration = (int)$record->getDuration();
-        $response->is_request = ($record->getRequest() !== null);
-        if ($record->getPlaylist() instanceof StationPlaylist) {
-            $response->playlist = $record->getPlaylist()->getName();
+        $response->duration = (int)$record->duration;
+        $response->is_request = ($record->request !== null);
+        if ($record->playlist instanceof StationPlaylist) {
+            $response->playlist = $record->playlist->getName();
         } else {
             $response->playlist = '';
         }
 
-        if ($record->getStreamer() instanceof StationStreamer) {
-            $response->streamer = $record->getStreamer()->getDisplayName();
+        if ($record->streamer instanceof StationStreamer) {
+            $response->streamer = $record->streamer->getDisplayName();
         } else {
             $response->streamer = '';
         }
 
-        if (null !== $record->getMedia()) {
+        if (null !== $record->media) {
             $response->song = ($this->songApiGenerator)(
-                song: $record->getMedia(),
-                station: $record->getStation(),
+                song: $record->media,
+                station: $record->station,
                 baseUri: $baseUri,
                 allowRemoteArt: $allowRemoteArt,
                 isNowPlaying: $isNowPlaying
@@ -57,7 +57,7 @@ final class SongHistoryApiGenerator
         } else {
             $response->song = ($this->songApiGenerator)(
                 song: $record,
-                station: $record->getStation(),
+                station: $record->station,
                 baseUri: $baseUri,
                 allowRemoteArt: $allowRemoteArt,
                 isNowPlaying: $isNowPlaying
@@ -92,10 +92,10 @@ final class SongHistoryApiGenerator
     ): DetailedSongHistory {
         $apiHistory = ($this)($record, $baseUri);
         $response = DetailedSongHistory::fromParent($apiHistory);
-        $response->listeners_start = (int)$record->getListenersStart();
-        $response->listeners_end = (int)$record->getListenersEnd();
-        $response->delta_total = $record->getDeltaTotal();
-        $response->is_visible = $record->getIsVisible();
+        $response->listeners_start = (int)$record->listeners_start;
+        $response->listeners_end = (int)$record->listeners_end;
+        $response->delta_total = $record->delta_total;
+        $response->is_visible = $record->is_visible;
 
         return $response;
     }

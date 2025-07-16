@@ -69,7 +69,7 @@ class StationRemote implements
     {
         $this->doValidateMaxBitrate(
             $context,
-            $this->getStation()->getMaxBitrate(),
+            $this->getStation()->max_bitrate,
             $this->getAutodjBitrate(),
             'autodj_bitrate'
         );

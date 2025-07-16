@@ -67,17 +67,17 @@ final class RemoteAlbumArt
     public function getUrlForSong(SongInterface $song): ?string
     {
         // Avoid tracks that shouldn't ever hit remote APIs.
-        if ($song->getSongId() === Song::OFFLINE_SONG_ID) {
+        if ($song->song_id === Song::OFFLINE_SONG_ID) {
             return null;
         }
 
         // Catch the default error track and derivatives.
-        if (false !== mb_stripos($song->getText() ?? '', 'AzuraCast')) {
+        if (false !== mb_stripos($song->text ?? '', 'AzuraCast')) {
             return null;
         }
 
         // Check for cached API hits for the same song ID before.
-        $cacheKey = 'album_art.' . $song->getSongId();
+        $cacheKey = 'album_art.' . $song->song_id;
 
         if ($this->cache->has($cacheKey)) {
             $cacheResult = $this->cache->get($cacheKey);
@@ -86,8 +86,8 @@ final class RemoteAlbumArt
                 'Cached entry found for track.',
                 [
                     'result' => $cacheResult,
-                    'song' => $song->getText(),
-                    'songId' => $song->getSongId(),
+                    'song' => $song->text,
+                    'songId' => $song->song_id,
                 ]
             );
 

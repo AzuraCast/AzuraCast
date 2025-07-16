@@ -92,18 +92,18 @@ final class Annotations implements EventSubscriberInterface
         }
 
         $station = $event->getStation();
-        if (!$station->getBackendType()->isEnabled()) {
+        if (!$station->backend_type->isEnabled()) {
             return;
         }
 
         $duration = $media->getLength();
 
         $event->addAnnotations([
-            'title' => $media->getTitle(),
-            'artist' => $media->getArtist(),
+            'title' => $media->title,
+            'artist' => $media->artist,
             'duration' => $duration,
-            'song_id' => $media->getSongId(),
-            'media_id' => $media->getId(),
+            'song_id' => $media->song_id,
+            'media_id' => $media->id,
             'sq_id' => $event->getQueue()?->getIdRequired(),
             ...$this->processAutocueAnnotations(
                 $station,
@@ -122,7 +122,7 @@ final class Annotations implements EventSubscriberInterface
         }
 
         $station = $event->getStation();
-        if (!$station->getBackendType()->isEnabled()) {
+        if (!$station->backend_type->isEnabled()) {
             return;
         }
 
@@ -207,7 +207,7 @@ final class Annotations implements EventSubscriberInterface
         $annotations[StationMediaMetadata::CUE_IN] ??= 0.0;
         $annotations[StationMediaMetadata::CUE_OUT] ??= $duration;
 
-        $backendConfig = $station->getBackendConfig();
+        $backendConfig = $station->backend_config;
         $defaultFade = $backendConfig->isCrossfadeEnabled()
             ? $backendConfig->crossfade
             : 0.0;

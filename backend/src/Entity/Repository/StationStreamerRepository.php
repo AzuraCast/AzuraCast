@@ -33,8 +33,8 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
             return false;
         }
 
-        $station->setIsStreamerLive(true);
-        $station->setCurrentStreamer($streamer);
+        $station->is_streamer_live = true;
+        $station->current_streamer = $streamer;
         $this->em->persist($station);
 
         $record = new StationStreamerBroadcast($streamer);
@@ -51,8 +51,9 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
             $this->em->persist($broadcast);
         }
 
-        $station->setIsStreamerLive(false);
-        $station->setCurrentStreamer(null);
+        $station->is_streamer_live = false;
+        $station->current_streamer = null;
+        
         $this->em->persist($station);
         $this->em->flush();
 

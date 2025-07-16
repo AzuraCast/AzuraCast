@@ -334,7 +334,7 @@ final class BatchAction implements SingleActionInterface
     ): MediaBatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
-        if ($station->useManualAutoDJ()) {
+        if ($station->backend_config->use_manual_autodj) {
             foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
                 /** @var Station $stationRef */
                 $stationRef = $this->em->getReference(Station::class, $station->getId());
@@ -375,14 +375,14 @@ final class BatchAction implements SingleActionInterface
     ): MediaBatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
-        if (BackendAdapters::Liquidsoap !== $station->getBackendType()) {
+        if (BackendAdapters::Liquidsoap !== $station->backend_type) {
             throw new RuntimeException('This functionality can only be used on stations that use Liquidsoap.');
         }
 
         /** @var Liquidsoap $backend */
         $backend = $this->adapters->getBackendAdapter($station);
 
-        if ($station->useManualAutoDJ()) {
+        if ($station->backend_config->use_manual_autodj) {
             foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
                 /** @var Station $station */
                 $station = $this->em->find(Station::class, $station->getIdRequired());

@@ -69,13 +69,13 @@ final class QueueBuilder implements EventSubscriberInterface
         $expectedPlayTime = $event->getExpectedPlayTime();
 
         $activePlaylistsByType = [];
-        foreach ($station->getPlaylists() as $playlist) {
+        foreach ($station->playlists as $playlist) {
             /** @var StationPlaylist $playlist */
             if ($playlist->isPlayable($event->isInterrupting())) {
                 $type = $playlist->getType()->value;
 
                 $subType = ($playlist->getScheduleItems()->count() > 0) ? 'scheduled' : 'unscheduled';
-                $activePlaylistsByType[$type . '_' . $subType][$playlist->getId()] = $playlist;
+                $activePlaylistsByType[$type . '_' . $subType][$playlist->id] = $playlist;
             }
         }
 
@@ -87,7 +87,7 @@ final class QueueBuilder implements EventSubscriberInterface
         $recentSongHistoryForDuplicatePrevention = $this->queueRepo->getRecentlyPlayedByTimeRange(
             $station,
             $expectedPlayTime,
-            $station->getBackendConfig()->duplicate_prevention_time_range
+            $station->backend_config->duplicate_prevention_time_range
         );
 
         $this->logger->debug(
@@ -453,7 +453,7 @@ final class QueueBuilder implements EventSubscriberInterface
         $station = $event->getStation();
 
         // Check if any playlist marked with "Prioritize Over Requests" (e.g. a jingle) is due now.
-        foreach ($station->getPlaylists() as $playlist) {
+        foreach ($station->playlists as $playlist) {
             /** @var StationPlaylist $playlist */
             if (
                 in_array('prioritize', $playlist->getBackendOptions(), true) &&

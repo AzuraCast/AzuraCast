@@ -102,7 +102,7 @@ class StationRequest implements
 
         $station = $this->station;
 
-        $thresholdMins = (int)$station->getRequestDelay();
+        $thresholdMins = (int)$station->request_delay;
         $thresholdMins += random_int(0, $thresholdMins);
 
         $now = (null !== $now)

@@ -141,15 +141,15 @@ final class PodcastApiGenerator
         Podcast $podcast,
         Station $station
     ): bool {
-        if (!isset($this->publishedPodcasts[$station->getShortName()])) {
-            $this->publishedPodcasts[$station->getShortName()] = $this->podcastRepo->getPodcastIdsWithPublishedEpisodes(
+        if (!isset($this->publishedPodcasts[$station->short_name])) {
+            $this->publishedPodcasts[$station->short_name] = $this->podcastRepo->getPodcastIdsWithPublishedEpisodes(
                 $station
             );
         }
 
         return in_array(
-            $podcast->getIdRequired(),
-            $this->publishedPodcasts[$station->getShortName()] ?? [],
+            $podcast->id,
+            $this->publishedPodcasts[$station->short_name] ?? [],
             true
         );
     }

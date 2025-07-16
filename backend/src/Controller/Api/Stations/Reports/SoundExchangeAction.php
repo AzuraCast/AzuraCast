@@ -130,7 +130,7 @@ final class SoundExchangeAction implements SingleActionInterface
 
         $historyRows = $this->em->createQuery(
             <<<'DQL'
-                SELECT sh.song_id AS song_id, sh.text, sh.artist, sh.title, sh.media_id, COUNT(sh.id) AS plays,
+                SELECT sh.song_id AS song_id, sh.text, sh.artist, sh.title, IDENTITY(sh.media) AS media_id, COUNT(sh.id) AS plays,
                     SUM(sh.unique_listeners) AS unique_listeners
                 FROM App\Entity\SongHistory sh
                 WHERE sh.station = :station
@@ -151,7 +151,7 @@ final class SoundExchangeAction implements SingleActionInterface
         unset($historyRowsById[$offlineSongHash]);
 
         // Assemble report items
-        $stationName = $station->getName();
+        $stationName = $station->name;
 
         $setIsrcQuery = $this->em->createQuery(
             <<<'DQL'
@@ -201,7 +201,7 @@ final class SoundExchangeAction implements SingleActionInterface
         $exportTxt = implode("\n", $exportTxtRaw);
 
         // Example: WABC01012009-31012009_A.txt
-        $exportFilename = strtoupper($station->getShortName())
+        $exportFilename = strtoupper($station->short_name)
             . $startDate->format('dmY') . '-'
             . $endDate->format('dmY') . '_A.txt';
 

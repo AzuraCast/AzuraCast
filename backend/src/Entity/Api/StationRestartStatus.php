@@ -22,8 +22,8 @@ final class StationRestartStatus
     public static function fromStation(Station $station): self
     {
         $record = new self();
-        $record->has_started = $station->getHasStarted();
-        $record->needs_restart = $station->getNeedsRestart();
+        $record->has_started = $station->has_started;
+        $record->needs_restart = $station->needs_restart;
         return $record;
     }
 }

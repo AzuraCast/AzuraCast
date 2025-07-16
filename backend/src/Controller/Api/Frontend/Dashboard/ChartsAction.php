@@ -65,8 +65,8 @@ final class ChartsAction implements SingleActionInterface
             $this->em->getRepository(Station::class)->findAll(),
             static function ($station) use ($acl) {
                 /** @var Station $station */
-                return $station->getIsEnabled() &&
-                    $acl->isAllowed(StationPermissions::View, $station->getId());
+                return $station->is_enabled &&
+                    $acl->isAllowed(StationPermissions::View, $station->id);
             }
         );
 
@@ -152,7 +152,7 @@ final class ChartsAction implements SingleActionInterface
             }
 
             foreach ($stations as $station) {
-                $stationsInMetric[$station->getId()] = $station->getName();
+                $stationsInMetric[$station->id] = $station->name;
             }
 
             $stationStats = [

@@ -88,7 +88,7 @@ final class ExportAction implements SingleActionInterface
                     $media = $mediaItem->getMedia();
 
                     $exportLines[] = 'File' . $i . '=' . $media->getPath();
-                    $exportLines[] = 'Title' . $i . '=' . $media->getArtist() . ' - ' . $media->getTitle();
+                    $exportLines[] = 'Title' . $i . '=' . $media->artist . ' - ' . $media->title;
                     $exportLines[] = 'Length' . $i . '=' . $media->getLength();
                     $exportLines[] = '';
                 }

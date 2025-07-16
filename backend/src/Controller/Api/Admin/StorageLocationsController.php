@@ -172,7 +172,7 @@ final class StorageLocationsController extends AbstractApiCrudController
         $stationsRaw = $this->storageLocationRepo->getStationsUsingLocation($record);
         $stations = [];
         foreach ($stationsRaw as $station) {
-            $stations[] = $station->getName();
+            $stations[] = $station->name;
         }
         $return->stations = $stations;
 
@@ -186,7 +186,7 @@ final class StorageLocationsController extends AbstractApiCrudController
         if (0 !== count($stations)) {
             $stationNames = [];
             foreach ($stations as $station) {
-                $stationNames[] = $station->getName();
+                $stationNames[] = $station->name;
             }
 
             throw new RuntimeException(

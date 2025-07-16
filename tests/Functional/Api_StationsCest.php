@@ -20,12 +20,12 @@ class Api_StationsCest extends CestAbstract
 
         $I->sendGET('/api/stations');
         $I->seeResponseContainsJson([
-            'name' => $testStation->getName(),
+            'name' => $testStation->name,
         ]);
 
         $I->sendGET('/api/station/' . $stationId);
         $I->seeResponseContainsJson([
-            'name' => $testStation->getName(),
+            'name' => $testStation->name,
         ]);
     }
 }

@@ -17,7 +17,7 @@ class Frontend_PublicCest extends CestAbstract
 
         // Disable public pages
         $testStation = $this->getTestStation();
-        $testStation->setEnablePublicPage(false);
+        $testStation->enable_public_page = false;
         $this->em->persist($testStation);
         $this->em->flush();
 
@@ -26,29 +26,29 @@ class Frontend_PublicCest extends CestAbstract
 
         // Enable public pages
         $testStation = $this->getTestStation();
-        $testStation->setEnablePublicPage(true);
+        $testStation->enable_public_page = true;
         $this->em->persist($testStation);
         $this->em->flush();
 
-        $I->amOnPage('/public/' . $testStation->getId());
+        $I->amOnPage('/public/' . $testStation->id);
         $I->seeResponseCodeIs(200);
-        $I->see($testStation->getName());
+        $I->see($testStation->name);
 
-        $I->amOnPage('/public/' . $testStation->getId() . '/embed');
-        $I->seeResponseCodeIs(200);
-
-        $I->amOnPage('/public/' . $testStation->getId() . '/history');
+        $I->amOnPage('/public/' . $testStation->id . '/embed');
         $I->seeResponseCodeIs(200);
 
-        $I->amOnPage('/public/' . $testStation->getId() . '/playlist.pls');
+        $I->amOnPage('/public/' . $testStation->id . '/history');
         $I->seeResponseCodeIs(200);
 
-        $I->amOnPage('/public/' . $testStation->getId() . '/playlist.m3u');
+        $I->amOnPage('/public/' . $testStation->id . '/playlist.pls');
+        $I->seeResponseCodeIs(200);
+
+        $I->amOnPage('/public/' . $testStation->id . '/playlist.m3u');
         $I->seeResponseCodeIs(200);
 
         // Disable WebDJ
         $testStation = $this->getTestStation();
-        $testStation->setEnableStreamers(false);
+        $testStation->enable_streamers = false;
         $this->em->persist($testStation);
         $this->em->flush();
 
@@ -57,7 +57,7 @@ class Frontend_PublicCest extends CestAbstract
 
         // Enable WebDJ
         $testStation = $this->getTestStation();
-        $testStation->setEnableStreamers(true);
+        $testStation->enable_streamers = true;
         $this->em->persist($testStation);
         $this->em->flush();
 

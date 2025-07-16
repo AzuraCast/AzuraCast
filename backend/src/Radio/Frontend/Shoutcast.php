@@ -64,7 +64,7 @@ final class Shoutcast extends AbstractFrontend
 
     public function getNowPlaying(Station $station, bool $includeClients = true): Result
     {
-        $feConfig = $station->getFrontendConfig();
+        $feConfig = $station->frontend_config;
         $radioPort = $feConfig->port;
 
         $baseUrl = $this->environment->getLocalUri()
@@ -77,7 +77,7 @@ final class Shoutcast extends AbstractFrontend
         $defaultMountId = null;
 
         $sid = 0;
-        foreach ($station->getMounts() as $mount) {
+        foreach ($station->mounts as $mount) {
             $sid++;
 
             if ($mount->getIsDefault()) {
@@ -91,7 +91,7 @@ final class Shoutcast extends AbstractFrontend
                 function (Result $result) use ($mount) {
                     if (!empty($result->clients)) {
                         foreach ($result->clients as $client) {
-                            $client->mount = 'local_' . $mount->getId();
+                            $client->mount = 'local_' . $mount->id;
                         }
                     }
 
@@ -133,7 +133,7 @@ final class Shoutcast extends AbstractFrontend
     public function getCurrentConfiguration(Station $station): string
     {
         $configPath = $station->getRadioConfigDir();
-        $frontendConfig = $station->getFrontendConfig();
+        $frontendConfig = $station->frontend_config;
 
         [$certPath, $certKey] = Acme::getCertificatePaths();
 
@@ -162,8 +162,8 @@ final class Shoutcast extends AbstractFrontend
             'publicip' => $urlHost,
         ];
 
-        if ($station->getMaxBitrate() !== 0) {
-            $maxBitrateInBps = (int) $station->getMaxBitrate() * 1024 + 2500;
+        if ($station->max_bitrate !== 0) {
+            $maxBitrateInBps = $station->max_bitrate * 1024 + 2500;
             $config['maxbitrate'] = $maxBitrateInBps;
         }
 
@@ -175,7 +175,7 @@ final class Shoutcast extends AbstractFrontend
         $i = 0;
 
         /** @var StationMount $mountRow */
-        foreach ($station->getMounts() as $mountRow) {
+        foreach ($station->mounts as $mountRow) {
             $i++;
             $config['streamid_' . $i] = $i;
             $config['streampath_' . $i] = $mountRow->getName();

@@ -23,13 +23,13 @@ final class PodcastsAction implements SingleActionInterface
     ): ResponseInterface {
         $station = $request->getStation();
 
-        if (!$station->getEnablePublicPage()) {
+        if (!$station->enable_public_page) {
             throw NotFoundException::station();
         }
 
         $isEmbedded = $this->isEmbedded($request, $params);
 
-        $pageClass = 'podcasts station-' . $station->getShortName();
+        $pageClass = 'podcasts station-' . $station->short_name;
         if ($isEmbedded) {
             $pageClass .= ' embed';
         }
@@ -52,15 +52,15 @@ final class PodcastsAction implements SingleActionInterface
             component: 'Public/Podcasts',
             id: 'podcast',
             layout: 'minimal',
-            title: 'Podcasts - ' . $station->getName(),
+            title: 'Podcasts - ' . $station->name,
             layoutParams: [
                 'page_class' => $pageClass,
                 'hide_footer' => $isEmbedded,
             ],
             props: [
-                'stationId' => $station->getIdRequired(),
-                'stationName' => $station->getName(),
-                'stationTz' => $station->getTimezone(),
+                'stationId' => $station->id,
+                'stationName' => $station->name,
+                'stationTz' => $station->timezone,
                 'baseUrl' => $router->fromHere('public:index'),
                 'groupLayout' => $groupLayout,
             ],

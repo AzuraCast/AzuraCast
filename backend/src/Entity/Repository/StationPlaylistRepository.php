@@ -27,7 +27,7 @@ final class StationPlaylistRepository extends AbstractStationBasedRepository
 
     public function stationHasActivePlaylists(Station $station): bool
     {
-        foreach ($station->getPlaylists() as $playlist) {
+        foreach ($station->playlists as $playlist) {
             if (!$playlist->getIsEnabled()) {
                 continue;
             }

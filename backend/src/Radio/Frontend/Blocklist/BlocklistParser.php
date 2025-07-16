@@ -44,11 +44,11 @@ final class BlocklistParser
 
     private function hasAllowedIps(Station $station): bool
     {
-        if (FrontendAdapters::Remote === $station->getFrontendType()) {
+        if (FrontendAdapters::Remote === $station->frontend_type) {
             return false;
         }
 
-        $allowedIps = trim($station->getFrontendConfig()->allowed_ips ?? '');
+        $allowedIps = trim($station->frontend_config->allowed_ips ?? '');
         return !empty($allowedIps);
     }
 
@@ -56,11 +56,11 @@ final class BlocklistParser
         Station $station,
         string $ip
     ): bool {
-        if (FrontendAdapters::Remote === $station->getFrontendType()) {
+        if (FrontendAdapters::Remote === $station->frontend_type) {
             return false;
         }
 
-        $allowedIps = $station->getFrontendConfig()->allowed_ips ?? '';
+        $allowedIps = $station->frontend_config->allowed_ips ?? '';
         return $this->isIpInList($ip, $allowedIps);
     }
 
@@ -68,11 +68,11 @@ final class BlocklistParser
         Station $station,
         string $ip
     ): bool {
-        if (FrontendAdapters::Remote === $station->getFrontendType()) {
+        if (FrontendAdapters::Remote === $station->frontend_type) {
             return false;
         }
 
-        $bannedIps = $station->getFrontendConfig()->banned_ips ?? '';
+        $bannedIps = $station->frontend_config->banned_ips ?? '';
         return $this->isIpInList($ip, $bannedIps);
     }
 
@@ -110,11 +110,11 @@ final class BlocklistParser
         Station $station,
         string $listenerIp
     ): bool {
-        if (FrontendAdapters::Remote === $station->getFrontendType()) {
+        if (FrontendAdapters::Remote === $station->frontend_type) {
             return false;
         }
 
-        $bannedCountries = $station->getFrontendConfig()->banned_countries ?? [];
+        $bannedCountries = $station->frontend_config->banned_countries ?? [];
         if (empty($bannedCountries)) {
             return false;
         }
@@ -129,11 +129,11 @@ final class BlocklistParser
         Station $station,
         string $listenerUserAgent
     ): bool {
-        if (FrontendAdapters::Remote === $station->getFrontendType()) {
+        if (FrontendAdapters::Remote === $station->frontend_type) {
             return false;
         }
 
-        $bannedUserAgents = $station->getFrontendConfig()->banned_user_agents ?? '';
+        $bannedUserAgents = $station->frontend_config->banned_user_agents ?? '';
         if (empty($bannedUserAgents)) {
             return false;
         }

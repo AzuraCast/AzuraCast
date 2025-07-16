@@ -38,11 +38,11 @@ final class SongApiGenerator
         bool $isNowPlaying = false,
     ): Song {
         $response = new Song();
-        $response->id = $song->getSongId();
-        $response->text = $song->getText() ?? '';
-        $response->artist = $song->getArtist() ?? '';
-        $response->title = $song->getTitle() ?? '';
-        $response->album = $song->getAlbum() ?? '';
+        $response->id = $song->song_id;
+        $response->text = $song->text ?? '';
+        $response->artist = $song->artist ?? '';
+        $response->title = $song->title ?? '';
+        $response->album = $song->album ?? '';
 
         if ($song instanceof StationMedia) {
             $response->genre = $song->getGenre() ?? '';
@@ -72,7 +72,7 @@ final class SongApiGenerator
     ): UriInterface {
         if (null !== $station && $song instanceof StationMedia) {
             $routeParams = [
-                'station_id' => $station->getShortName(),
+                'station_id' => $station->short_name,
                 'media_id' => $song->getUniqueId(),
             ];
 
@@ -95,13 +95,13 @@ final class SongApiGenerator
         }
 
         if ($isNowPlaying && null !== $station) {
-            $currentStreamer = $station->getCurrentStreamer();
+            $currentStreamer = $station->current_streamer;
             if (null !== $currentStreamer && 0 !== $currentStreamer->getArtUpdatedAt()) {
                 return $this->router->namedAsUri(
                     routeName: 'api:stations:streamer:art',
                     routeParams: [
-                        'station_id' => $station->getShortName(),
-                        'id' => $currentStreamer->getIdRequired(),
+                        'station_id' => $station->short_name,
+                        'id' => $currentStreamer->id,
                         'timestamp' => $currentStreamer->getArtUpdatedAt(),
                     ],
                 );

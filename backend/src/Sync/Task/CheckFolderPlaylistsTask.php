@@ -41,7 +41,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
         $this->logger->info(
             'Processing auto-assigning folders for station...',
             [
-                'station' => $station->getName(),
+                'station' => $station->name,
             ]
         );
 
@@ -62,9 +62,9 @@ final class CheckFolderPlaylistsTask extends AbstractTask
                 WHERE sm.storage_location = :storageLocation
                 AND sm.path LIKE :path
             DQL
-        )->setParameter('storageLocation', $station->getMediaStorageLocation());
+        )->setParameter('storageLocation', $station->media_storage_location);
 
-        foreach ($station->getPlaylists() as $playlist) {
+        foreach ($station->playlists as $playlist) {
             if (PlaylistSources::Songs !== $playlist->getSource()) {
                 continue;
             }

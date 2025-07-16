@@ -39,7 +39,7 @@ class Icecast extends AbstractFrontend
                 $this->supervisor->signalProcess($programName, 'HUP');
                 $this->logger->info(
                     'Adapter "' . self::class . '" reloaded.',
-                    ['station_id' => $station->getId(), 'station_name' => $station->getName()]
+                    ['station_id' => $station->id, 'station_name' => $station->name]
                 );
             } catch (SupervisorLibException $e) {
                 $this->handleSupervisorException($e, $programName, $station);
@@ -49,7 +49,7 @@ class Icecast extends AbstractFrontend
 
     public function getNowPlaying(Station $station, bool $includeClients = true): Result
     {
-        $feConfig = $station->getFrontendConfig();
+        $feConfig = $station->frontend_config;
         $radioPort = $feConfig->port;
 
         $baseUrl = $this->environment->getLocalUri()
@@ -62,19 +62,19 @@ class Icecast extends AbstractFrontend
         $mountPromises = [];
         $defaultMountId = null;
 
-        foreach ($station->getMounts() as $mount) {
+        foreach ($station->mounts as $mount) {
             if ($mount->getIsDefault()) {
-                $defaultMountId = $mount->getIdRequired();
+                $defaultMountId = $mount->id;
             }
 
-            $mountPromises[$mount->getIdRequired()] = $npAdapter->getNowPlayingAsync(
+            $mountPromises[$mount->id] = $npAdapter->getNowPlayingAsync(
                 $mount->getName(),
                 $includeClients
             )->then(
                 function (Result $result) use ($mount) {
                     if (!empty($result->clients)) {
                         foreach ($result->clients as $client) {
-                            $client->mount = 'local_' . $mount->getId();
+                            $client->mount = 'local_' . $mount->id;
                         }
                     }
 
@@ -139,7 +139,7 @@ class Icecast extends AbstractFrontend
 
     protected function getConfigurationArray(Station $station): array
     {
-        $frontendConfig = $station->getFrontendConfig();
+        $frontendConfig = $station->frontend_config;
         $configDir = $station->getRadioConfigDir();
 
         $settingsBaseUrl = $this->settingsRepo->readSettings()->getBaseUrlAsUri();
@@ -153,7 +153,7 @@ class Icecast extends AbstractFrontend
             'hostname' => $baseUrl->getHost(),
             'limits' => [
                 'clients' => $frontendConfig->max_listeners ?? 2500,
-                'sources' => $station->getMounts()->count(),
+                'sources' => $station->mounts->count(),
                 'queue-size' => 524288,
                 'client-timeout' => 30,
                 'header-timeout' => 15,
@@ -209,36 +209,36 @@ class Icecast extends AbstractFrontend
         $allowedIps = $this->getIpsAsArray($frontendConfig->allowed_ips);
 
         $useListenerAuth = !empty($bannedCountries) || !empty($allowedIps);
-        $charset = match ($station->getBackendConfig()->charset) {
+        $charset = match ($station->backend_config->charset) {
             'ISO-8859-1' => 'ISO8859-1',
             default => 'UTF8',
         };
 
         /** @var StationMount $mountRow */
-        foreach ($station->getMounts() as $mountRow) {
+        foreach ($station->mounts as $mountRow) {
             $mount = [
                 '@type' => 'normal',
                 'mount-name' => $mountRow->getName(),
                 'charset' => $charset,
-                'stream-name' => $station->getName(),
+                'stream-name' => $station->name,
                 'listenurl' => $this->getUrlForMount($station, $mountRow),
             ];
 
-            if ($station->getMaxBitrate() !== 0) {
-                $maxBitrateInBps = (int)$station->getMaxBitrate() * 1024 + 2500;
+            if ($station->max_bitrate !== 0) {
+                $maxBitrateInBps = $station->max_bitrate * 1024 + 2500;
                 $mount['limit-rate'] = $maxBitrateInBps;
             }
 
-            if (!empty($station->getDescription())) {
-                $mount['stream-description'] = $station->getDescription();
+            if (!empty($station->description)) {
+                $mount['stream-description'] = $station->description;
             }
 
-            if (!empty($station->getUrl())) {
-                $mount['stream-url'] = $station->getUrl();
+            if (!empty($station->url)) {
+                $mount['stream-url'] = $station->url;
             }
 
-            if (!empty($station->getGenre())) {
-                $mount['genre'] = $station->getGenre();
+            if (!empty($station->genre)) {
+                $mount['genre'] = $station->genre;
             }
 
             if (!$mountRow->getIsVisibleOnPublicPages()) {
@@ -321,8 +321,8 @@ class Icecast extends AbstractFrontend
             $this->router->named(
                 'api:internal:listener-auth',
                 [
-                    'station_id' => $station->getIdRequired(),
-                    'api_auth' => $station->getAdapterApiKey(),
+                    'station_id' => $station->id,
+                    'api_auth' => $station->adapter_api_key,
                 ]
             ),
             true

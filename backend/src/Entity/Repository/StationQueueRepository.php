@@ -173,7 +173,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
         return $this->getUnplayedBaseQuery($station)
             ->andWhere('sq.sent_to_autodj = 1')
             ->andWhere('sq.song_id = :song_id')
-            ->setParameter('song_id', $song->getSongId())
+            ->setParameter('song_id', $song->song_id)
             ->getQuery()
             ->setMaxResults(1)
             ->getOneOrNullResult();

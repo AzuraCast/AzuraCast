@@ -13,6 +13,8 @@ use App\Environment;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\FrontendAdapters;
 use App\Utilities\File;
+use App\Utilities\Time;
+use App\Utilities\Types;
 use App\Validator\Constraints as AppAssert;
 use Azura\Normalizer\Attributes\DeepNormalize;
 use DateTimeZone;
@@ -41,7 +43,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
     AppAssert\StationPortChecker,
     AppAssert\UniqueEntity(fields: ['short_name'])
 ]
-class Station implements Stringable, IdentifiableEntityInterface
+final class Station implements Stringable, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -65,7 +67,15 @@ class Station implements Stringable, IdentifiableEntityInterface
         Assert\NotBlank,
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected string $name = '';
+    public string $name = '' {
+        set {
+            $this->name = $this->truncateString($value, 100);
+
+            if (empty($this->short_name) && !empty($value)) {
+                $this->short_name = self::generateShortName($value);
+            }
+        }
+    }
 
     #[
         OA\Property(
@@ -76,7 +86,22 @@ class Station implements Stringable, IdentifiableEntityInterface
         Assert\NotBlank,
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected string $short_name = '';
+    public string $short_name = '' {
+        set {
+            $shortName = trim($value);
+            if (empty($shortName)) {
+                $shortName = $this->name;
+            }
+
+            $shortName = self::generateShortName($shortName);
+
+            $shortName = $this->truncateString($shortName, 100);
+            if ($this->short_name !== $shortName) {
+                $this->needs_restart = true;
+            }
+            $this->short_name = $shortName;
+        }
+    }
 
     #[
         OA\Property(
@@ -86,7 +111,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         ORM\Column,
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected bool $is_enabled = true;
+    public bool $is_enabled = true;
 
     #[
         OA\Property(
@@ -96,7 +121,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         ORM\Column(type: 'string', length: 100, enumType: FrontendAdapters::class),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected FrontendAdapters $frontend_type;
+    public FrontendAdapters $frontend_type;
 
     /**
      * @var ConfigData|null
@@ -106,10 +131,20 @@ class Station implements Stringable, IdentifiableEntityInterface
             description: "An array containing station-specific frontend configuration",
             type: "object"
         ),
-        ORM\Column(type: 'json', nullable: true),
+        ORM\Column(name: 'frontend_config', type: 'json', nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?array $frontend_config = null;
+    private ?array $frontend_config_raw = null;
+
+    public StationFrontendConfiguration $frontend_config {
+        get => new ((array)$this->frontend_config_raw);
+        set {
+            $this->frontend_config_raw = StationFrontendConfiguration::merge(
+                $this->frontend_config_raw,
+                $value
+            );
+        }
+    }
 
     #[
         OA\Property(
@@ -119,7 +154,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         ORM\Column(type: 'string', length: 100, enumType: BackendAdapters::class),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected BackendAdapters $backend_type;
+    public BackendAdapters $backend_type;
 
     /**
      * @var ConfigData|null
@@ -129,18 +164,28 @@ class Station implements Stringable, IdentifiableEntityInterface
             description: "An array containing station-specific backend configuration",
             type: "object"
         ),
-        ORM\Column(type: 'json', nullable: true),
+        ORM\Column(name: 'backend_config', type: 'json', nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?array $backend_config = null;
+    private ?array $backend_config_raw = null;
+
+    public StationBackendConfiguration $backend_config {
+        get => new StationBackendConfiguration((array)$this->backend_config_raw);
+        set {
+            $this->backend_config_raw = StationBackendConfiguration::merge(
+                $this->backend_config_raw,
+                $value
+            );
+        }
+    }
 
     #[Assert\Callback]
     public function hasValidBitrate(ExecutionContextInterface $context): void
     {
         $this->doValidateMaxBitrate(
             $context,
-            $this->getMaxBitrate(),
-            $this->getBackendConfig()->record_streams_bitrate,
+            $this->max_bitrate,
+            $this->backend_config->record_streams_bitrate,
             'backend_config.record_streams_bitrate'
         );
     }
@@ -149,35 +194,79 @@ class Station implements Stringable, IdentifiableEntityInterface
         ORM\Column(length: 150, nullable: true),
         Attributes\AuditIgnore
     ]
-    protected ?string $adapter_api_key = null;
+    public ?string $adapter_api_key = null;
+
+    /**
+     * Generate a random new adapter API key.
+     */
+    public function generateAdapterApiKey(): void
+    {
+        $this->adapter_api_key = bin2hex(random_bytes(50));
+    }
+
+    /**
+     * Authenticate the supplied adapter API key.
+     */
+    public function validateAdapterApiKey(string $apiKey): bool
+    {
+        return hash_equals($apiKey, $this->adapter_api_key ?? '');
+    }
 
     #[
         OA\Property(example: "A sample radio station."),
         ORM\Column(type: 'text', nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?string $description = null;
+    public ?string $description = null;
 
     #[
         OA\Property(example: "https://demo.azuracast.com/"),
         ORM\Column(length: 255, nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?string $url = null;
+    public ?string $url = null {
+        set {
+            $url = $this->truncateNullableString($value);
+
+            if ($url !== $this->url) {
+                $this->needs_restart = true;
+            }
+
+            $this->url = $url;
+        }
+    }
 
     #[
         OA\Property(example: "Various"),
         ORM\Column(length: 255, nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?string $genre = null;
+    public ?string $genre = null {
+        set => $this->truncateNullableString($value);
+    }
 
     #[
         OA\Property(example: "/var/azuracast/stations/azuratest_radio"),
         ORM\Column(length: 255, nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?string $radio_base_dir = null;
+    public ?string $radio_base_dir = null {
+        set {
+            $newDir = Types::stringOrNull($value, true);
+            if (null === $newDir) {
+                $newDir = $this->short_name;
+            }
+
+            if (Path::isRelative($newDir)) {
+                $newDir = Path::makeAbsolute(
+                    $newDir,
+                    Environment::getInstance()->getStationDirectory()
+                );
+            }
+
+            $this->radio_base_dir = $this->truncateNullableString($newDir, 255);
+        }
+    }
 
     #[
         OA\Property(
@@ -187,28 +276,28 @@ class Station implements Stringable, IdentifiableEntityInterface
         ORM\Column,
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected bool $enable_requests = false;
+    public bool $enable_requests = false;
 
     #[
         OA\Property(example: 5),
         ORM\Column(nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?int $request_delay = 5;
+    public ?int $request_delay = 5;
 
     #[
         OA\Property(example: 15),
         ORM\Column(nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?int $request_threshold = 15;
+    public ?int $request_threshold = 15;
 
     #[
         OA\Property(example: 0),
         ORM\Column(nullable: true, options: ['default' => 0]),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?int $disconnect_deactivate_streamer = 0;
+    public ?int $disconnect_deactivate_streamer = 0;
 
     #[
         OA\Property(
@@ -218,7 +307,15 @@ class Station implements Stringable, IdentifiableEntityInterface
         ORM\Column,
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected bool $enable_streamers = false;
+    public bool $enable_streamers = false {
+        set {
+            if ($this->enable_streamers !== $value) {
+                $this->needs_restart = true;
+            }
+
+            $this->enable_streamers = $value;
+        }
+    }
 
     #[
         OA\Property(
@@ -238,7 +335,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         ORM\Column,
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected bool $enable_public_page = true;
+    public bool $enable_public_page = true;
 
     #[
         OA\Property(
@@ -248,7 +345,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         ORM\Column,
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected bool $enable_on_demand = false;
+    public bool $enable_on_demand = false;
 
     #[
         OA\Property(
@@ -258,7 +355,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         ORM\Column,
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected bool $enable_on_demand_download = true;
+    public bool $enable_on_demand_download = true;
 
     #[
         OA\Property(
@@ -268,19 +365,21 @@ class Station implements Stringable, IdentifiableEntityInterface
         ORM\Column,
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected bool $enable_hls = false;
+    public bool $enable_hls = false;
 
     #[
         ORM\Column,
         Attributes\AuditIgnore
     ]
-    protected bool $needs_restart = false;
+    public bool $needs_restart = false {
+        set => ($this->hasLocalServices() && $this->has_started) ? $value : false;
+    }
 
     #[
         ORM\Column,
         Attributes\AuditIgnore
     ]
-    protected bool $has_started = false;
+    public bool $has_started = false;
 
     #[
         OA\Property(
@@ -290,7 +389,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         ORM\Column(type: 'smallint'),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected int $api_history_items = 5;
+    public int $api_history_items = 5;
 
     #[
         OA\Property(
@@ -300,7 +399,14 @@ class Station implements Stringable, IdentifiableEntityInterface
         ORM\Column(length: 100, nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?string $timezone = 'UTC';
+    public ?string $timezone = 'UTC';
+
+    public function getTimezoneObject(): DateTimeZone
+    {
+        return ($this->timezone !== null)
+            ? new DateTimeZone($this->timezone)
+            : Time::getUtc();
+    }
 
     #[
         OA\Property(
@@ -310,7 +416,14 @@ class Station implements Stringable, IdentifiableEntityInterface
         ORM\Column(type: 'smallint', nullable: false, options: ['default' => 0]),
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected int $max_bitrate = 0;
+    public int $max_bitrate = 0 {
+        set {
+            if ($this->max_bitrate !== $value) {
+                $this->needs_restart = true;
+            }
+            $this->max_bitrate = $value;
+        }
+    }
 
     #[
         OA\Property(
@@ -320,7 +433,14 @@ class Station implements Stringable, IdentifiableEntityInterface
         ORM\Column(type: 'smallint', nullable: false, options: ['default' => 0]),
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected int $max_mounts = 0;
+    public int $max_mounts = 0 {
+        set {
+            if ($this->max_mounts !== $value) {
+                $this->needs_restart = true;
+            }
+            $this->max_mounts = $value;
+        }
+    }
 
     #[
         OA\Property(
@@ -330,7 +450,14 @@ class Station implements Stringable, IdentifiableEntityInterface
         ORM\Column(type: 'smallint', nullable: false, options: ['default' => 0]),
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected int $max_hls_streams = 0;
+    public int $max_hls_streams = 0 {
+        set {
+            if ($this->max_hls_streams !== $value) {
+                $this->needs_restart = true;
+            }
+            $this->max_hls_streams = $value;
+        }
+    }
 
     /**
      * @var ConfigData|null
@@ -340,17 +467,27 @@ class Station implements Stringable, IdentifiableEntityInterface
             description: "An array containing station-specific branding configuration",
             type: "object"
         ),
-        ORM\Column(type: 'json', nullable: true),
+        ORM\Column(name: 'branding_config', type: 'json', nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?array $branding_config = null;
+    private ?array $branding_config_raw = null;
+
+    public StationBrandingConfiguration $branding_config {
+        get => new StationBrandingConfiguration((array)$this->branding_config_raw);
+        set {
+            $this->branding_config_raw = StationBrandingConfiguration::merge(
+                $this->branding_config_raw,
+                $value
+            );
+        }
+    }
 
     /** @var Collection<int, SongHistory> */
     #[
         ORM\OneToMany(targetEntity: SongHistory::class, mappedBy: 'station'),
         ORM\OrderBy(['timestamp_start' => 'desc'])
     ]
-    protected Collection $history;
+    public readonly Collection $history;
 
     #[
         ORM\ManyToOne,
@@ -364,7 +501,21 @@ class Station implements Stringable, IdentifiableEntityInterface
         Serializer\MaxDepth(1),
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?StorageLocation $media_storage_location = null;
+    public ?StorageLocation $media_storage_location = null {
+        get {
+            if (null === $this->media_storage_location) {
+                throw new RuntimeException('Media storage location not initialized.');
+            }
+            return $this->media_storage_location;
+        }
+        set {
+            if (null !== $value && StorageLocationTypes::StationMedia !== $value->getType()) {
+                throw new RuntimeException('Invalid storage location.');
+            }
+
+            $this->media_storage_location = $value;
+        }
+    }
 
     #[
         ORM\ManyToOne,
@@ -378,7 +529,21 @@ class Station implements Stringable, IdentifiableEntityInterface
         Serializer\MaxDepth(1),
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?StorageLocation $recordings_storage_location = null;
+    public ?StorageLocation $recordings_storage_location = null {
+        get {
+            if (null === $this->recordings_storage_location) {
+                throw new RuntimeException('Recordings storage location not initialized.');
+            }
+            return $this->recordings_storage_location;
+        }
+        set {
+            if (null !== $value && StorageLocationTypes::StationRecordings !== $value->getType()) {
+                throw new RuntimeException('Invalid storage location.');
+            }
+
+            $this->recordings_storage_location = $value;
+        }
+    }
 
     #[
         ORM\ManyToOne,
@@ -392,50 +557,72 @@ class Station implements Stringable, IdentifiableEntityInterface
         Serializer\MaxDepth(1),
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?StorageLocation $podcasts_storage_location = null;
+    public ?StorageLocation $podcasts_storage_location = null {
+        get {
+            if (null === $this->podcasts_storage_location) {
+                throw new RuntimeException('Podcasts storage location not initialized.');
+            }
+
+            return $this->podcasts_storage_location;
+        }
+        set {
+            if (null !== $value && StorageLocationTypes::StationPodcasts !== $value->getType()) {
+                throw new RuntimeException('Invalid storage location.');
+            }
+
+            $this->podcasts_storage_location = $value;
+        }
+    }
 
     /** @var Collection<int, StationStreamer> */
     #[ORM\OneToMany(targetEntity: StationStreamer::class, mappedBy: 'station')]
-    protected Collection $streamers;
+    public readonly Collection $streamers;
 
     #[
         ORM\ManyToOne,
         ORM\JoinColumn(name: 'current_streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL'),
         Attributes\AuditIgnore
     ]
-    protected ?StationStreamer $current_streamer = null;
-
-    #[
-        ORM\Column(nullable: true, insertable: false, updatable: false),
-        Attributes\AuditIgnore
-    ]
-    private ?int $current_streamer_id = null;
+    public ?StationStreamer $current_streamer = null {
+        set {
+            if (null !== $this->current_streamer || null !== $value) {
+                $this->current_streamer = $value;
+            }
+        }
+    }
 
     #[ORM\Column(length: 255, nullable: true)]
-    protected ?string $fallback_path = null;
+    public ?string $fallback_path = null {
+        set {
+            if ($this->fallback_path !== $value) {
+                $this->needs_restart = true;
+            }
+            $this->fallback_path = $value;
+        }
+    }
 
     /** @var Collection<int, RolePermission> */
     #[ORM\OneToMany(targetEntity: RolePermission::class, mappedBy: 'station')]
-    protected Collection $permissions;
+    public readonly Collection $permissions;
 
     /** @var Collection<int, StationPlaylist> */
     #[
         ORM\OneToMany(targetEntity: StationPlaylist::class, mappedBy: 'station'),
         ORM\OrderBy(['type' => 'ASC', 'weight' => 'DESC'])
     ]
-    protected Collection $playlists;
+    public readonly Collection $playlists;
 
     /** @var Collection<int, StationMount> */
     #[ORM\OneToMany(targetEntity: StationMount::class, mappedBy: 'station')]
-    protected Collection $mounts;
+    public readonly Collection $mounts;
 
     /** @var Collection<int, StationRemote> */
     #[ORM\OneToMany(targetEntity: StationRemote::class, mappedBy: 'station')]
-    protected Collection $remotes;
+    public readonly Collection $remotes;
 
     /** @var Collection<int, StationHlsStream> */
     #[ORM\OneToMany(targetEntity: StationHlsStream::class, mappedBy: 'station')]
-    protected Collection $hls_streams;
+    public readonly Collection $hls_streams;
 
     /** @var Collection<int, StationWebhook> */
     #[ORM\OneToMany(
@@ -444,29 +631,33 @@ class Station implements Stringable, IdentifiableEntityInterface
         cascade: ['persist'],
         fetch: 'EXTRA_LAZY'
     )]
-    protected Collection $webhooks;
+    public readonly Collection $webhooks;
 
     /** @var Collection<int, StationStreamerBroadcast> */
     #[ORM\OneToMany(targetEntity: StationStreamerBroadcast::class, mappedBy: 'station')]
-    protected Collection $streamer_broadcasts;
+    public readonly Collection $streamer_broadcasts;
 
     /** @var Collection<int, SftpUser> */
     #[ORM\OneToMany(targetEntity: SftpUser::class, mappedBy: 'station')]
-    protected Collection $sftp_users;
+    public readonly Collection $sftp_users;
 
     /** @var Collection<int, StationRequest> */
     #[ORM\OneToMany(targetEntity: StationRequest::class, mappedBy: 'station')]
-    protected Collection $requests;
+    public readonly Collection $requests;
 
     #[
         ORM\ManyToOne,
         ORM\JoinColumn(name: 'current_song_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL'),
         Attributes\AuditIgnore
     ]
-    protected ?SongHistory $current_song = null;
+    public ?SongHistory $current_song = null;
 
     public function __construct()
     {
+        $this->frontend_config_raw = new StationFrontendConfiguration([])->toArray();
+        $this->backend_config_raw = new StationBackendConfiguration([])->toArray();
+        $this->branding_config_raw = new StationBrandingConfiguration([])->toArray();
+
         $this->frontend_type = FrontendAdapters::default();
         $this->backend_type = BackendAdapters::default();
 
@@ -483,222 +674,27 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->requests = new ArrayCollection();
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $this->truncateString($name, 100);
-
-        if (empty($this->short_name) && !empty($name)) {
-            $this->setShortName(self::generateShortName($name));
-        }
-    }
-
-    public function getShortName(): string
-    {
-        return (!empty($this->short_name))
-            ? $this->short_name
-            : self::generateShortName($this->name);
-    }
-
-    public function setShortName(string $shortName): void
-    {
-        $shortName = trim($shortName);
-        if (empty($shortName)) {
-            $shortName = $this->name;
-        }
-
-        $shortName = self::generateShortName($shortName);
-
-        $shortName = $this->truncateString($shortName, 100);
-        if ($this->short_name !== $shortName) {
-            $this->setNeedsRestart(true);
-        }
-        $this->short_name = $shortName;
-    }
-
-    public function setIsEnabled(bool $isEnabled): void
-    {
-        $this->is_enabled = $isEnabled;
-    }
-
-    public function getFrontendType(): FrontendAdapters
-    {
-        return $this->frontend_type;
-    }
-
-    public function setFrontendType(FrontendAdapters $frontendType): void
-    {
-        $this->frontend_type = $frontendType;
-    }
-
-    public function getFrontendConfig(): StationFrontendConfiguration
-    {
-        return new StationFrontendConfiguration($this->frontend_config ?? []);
-    }
-
-    /**
-     * @param StationFrontendConfiguration|ConfigData $frontendConfig
-     */
-    public function setFrontendConfig(
-        StationFrontendConfiguration|array $frontendConfig
-    ): void {
-        $config = $this->getFrontendConfig()
-            ->fromArray($frontendConfig)
-            ->toArray();
-
-        if ($this->frontend_config !== $config) {
-            $this->setNeedsRestart(true);
-        }
-
-        $this->frontend_config = $config;
-    }
-
-    public function getBackendType(): BackendAdapters
-    {
-        return $this->backend_type;
-    }
-
-    public function setBackendType(BackendAdapters $backendType): void
-    {
-        $this->backend_type = $backendType;
-    }
-
-    /**
-     * Whether the station uses AzuraCast to directly manage the AutoDJ or lets the backend handle it.
-     */
-    public function useManualAutoDJ(): bool
-    {
-        return $this->getBackendConfig()->use_manual_autodj;
-    }
-
     public function supportsAutoDjQueue(): bool
     {
-        return $this->getIsEnabled()
-            && !$this->useManualAutoDJ()
-            && BackendAdapters::None !== $this->getBackendType();
-    }
-
-    public function getBackendConfig(): StationBackendConfiguration
-    {
-        return new StationBackendConfiguration($this->backend_config ?? []);
+        return $this->is_enabled
+            && !$this->backend_config->use_manual_autodj
+            && BackendAdapters::None !== $this->backend_type;
     }
 
     public function hasLocalServices(): bool
     {
-        return $this->getIsEnabled() &&
-            ($this->getBackendType()->isEnabled() || $this->getFrontendType()->isEnabled());
-    }
-
-    /**
-     * @param StationBackendConfiguration|ConfigData $backendConfig
-     */
-    public function setBackendConfig(StationBackendConfiguration|array $backendConfig): void
-    {
-        $config = $this->getBackendConfig()
-            ->fromArray($backendConfig)
-            ->toArray();
-
-        if ($this->backend_config !== $config) {
-            $this->setNeedsRestart(true);
-        }
-
-        $this->backend_config = $config;
-    }
-
-    public function getAdapterApiKey(): ?string
-    {
-        return $this->adapter_api_key;
-    }
-
-    /**
-     * Generate a random new adapter API key.
-     */
-    public function generateAdapterApiKey(): void
-    {
-        $this->adapter_api_key = bin2hex(random_bytes(50));
-    }
-
-    /**
-     * Authenticate the supplied adapter API key.
-     *
-     * @param string $apiKey
-     */
-    public function validateAdapterApiKey(string $apiKey): bool
-    {
-        return hash_equals($apiKey, $this->adapter_api_key ?? '');
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description = null): void
-    {
-        $this->description = $description;
-    }
-
-    public function getUrl(): ?string
-    {
-        return $this->url;
-    }
-
-    public function setUrl(?string $url = null): void
-    {
-        $url = $this->truncateNullableString($url);
-
-        if ($url !== $this->url) {
-            $this->setNeedsRestart(true);
-        }
-
-        $this->url = $url;
-    }
-
-    public function getGenre(): ?string
-    {
-        return $this->genre;
-    }
-
-    public function setGenre(?string $genre): void
-    {
-        $this->genre = $this->truncateNullableString($genre);
-    }
-
-    public function getRadioBaseDir(): string
-    {
-        if (null === $this->radio_base_dir) {
-            $this->setRadioBaseDir();
-        }
-
-        return (string)$this->radio_base_dir;
-    }
-
-    public function setRadioBaseDir(?string $newDir = null): void
-    {
-        $newDir = $this->truncateNullableString(trim($newDir ?? ''));
-
-        if (empty($newDir)) {
-            $newDir = $this->getShortName();
-        }
-
-        if (Path::isRelative($newDir)) {
-            $newDir = Path::makeAbsolute(
-                $newDir,
-                Environment::getInstance()->getStationDirectory()
-            );
-        }
-
-        $this->radio_base_dir = $newDir;
+        return $this->is_enabled &&
+            ($this->backend_type->isEnabled() || $this->frontend_type->isEnabled());
     }
 
     public function ensureDirectoriesExist(): void
     {
+        if ($this->radio_base_dir === null) {
+            $this->radio_base_dir = $this->short_name;
+        }
+
         // Flysystem adapters will automatically create the main directory.
-        File::mkdirIfNotExists($this->getRadioBaseDir());
+        File::mkdirIfNotExists($this->radio_base_dir);
         File::mkdirIfNotExists($this->getRadioPlaylistsDir());
         File::mkdirIfNotExists($this->getRadioConfigDir());
         File::mkdirIfNotExists($this->getRadioTempDir());
@@ -710,7 +706,7 @@ class Station implements Stringable, IdentifiableEntityInterface
                 StorageLocationAdapters::Local
             );
 
-            $mediaPath = $this->getRadioBaseDir() . '/media';
+            $mediaPath = $this->radio_base_dir . '/media';
             File::mkdirIfNotExists($mediaPath);
             $storageLocation->setPath($mediaPath);
 
@@ -723,7 +719,7 @@ class Station implements Stringable, IdentifiableEntityInterface
                 StorageLocationAdapters::Local
             );
 
-            $recordingsPath = $this->getRadioBaseDir() . '/recordings';
+            $recordingsPath = $this->radio_base_dir . '/recordings';
             File::mkdirIfNotExists($recordingsPath);
             $storageLocation->setPath($recordingsPath);
 
@@ -736,7 +732,7 @@ class Station implements Stringable, IdentifiableEntityInterface
                 StorageLocationAdapters::Local
             );
 
-            $podcastsPath = $this->getRadioBaseDir() . '/podcasts';
+            $podcastsPath = $this->radio_base_dir . '/podcasts';
             File::mkdirIfNotExists($podcastsPath);
             $storageLocation->setPath($podcastsPath);
 
@@ -764,308 +760,19 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->radio_base_dir . '/' . self::HLS_DIR;
     }
 
-    public function getEnableRequests(): bool
-    {
-        return $this->enable_requests;
-    }
-
-    public function setEnableRequests(bool $enableRequests): void
-    {
-        $this->enable_requests = $enableRequests;
-    }
-
-    public function getRequestDelay(): ?int
-    {
-        return $this->request_delay;
-    }
-
-    public function setRequestDelay(?int $requestDelay = null): void
-    {
-        $this->request_delay = $requestDelay;
-    }
-
-    public function getRequestThreshold(): ?int
-    {
-        return $this->request_threshold;
-    }
-
-    public function setRequestThreshold(?int $requestThreshold = null): void
-    {
-        $this->request_threshold = $requestThreshold;
-    }
-
-    public function getDisconnectDeactivateStreamer(): ?int
-    {
-        return $this->disconnect_deactivate_streamer;
-    }
-
-    public function setDisconnectDeactivateStreamer(?int $disconnectDeactivateStreamer): void
-    {
-        $this->disconnect_deactivate_streamer = $disconnectDeactivateStreamer;
-    }
-
-    public function getEnableStreamers(): bool
-    {
-        return $this->enable_streamers;
-    }
-
-    public function setEnableStreamers(bool $enableStreamers): void
-    {
-        if ($this->enable_streamers !== $enableStreamers) {
-            $this->setNeedsRestart(true);
-        }
-
-        $this->enable_streamers = $enableStreamers;
-    }
-
-    public function getIsStreamerLive(): bool
-    {
-        return $this->is_streamer_live;
-    }
-
-    public function setIsStreamerLive(bool $isStreamerLive): void
-    {
-        $this->is_streamer_live = $isStreamerLive;
-    }
-
-    public function getEnablePublicPage(): bool
-    {
-        return $this->enable_public_page && $this->getIsEnabled();
-    }
-
-    public function setEnablePublicPage(bool $enablePublicPage): void
-    {
-        $this->enable_public_page = $enablePublicPage;
-    }
-
-    public function getEnableOnDemand(): bool
-    {
-        return $this->enable_on_demand;
-    }
-
-    public function setEnableOnDemand(bool $enableOnDemand): void
-    {
-        $this->enable_on_demand = $enableOnDemand;
-    }
-
-    public function getEnableOnDemandDownload(): bool
-    {
-        return $this->enable_on_demand_download;
-    }
-
-    public function setEnableOnDemandDownload(bool $enableOnDemandDownload): void
-    {
-        $this->enable_on_demand_download = $enableOnDemandDownload;
-    }
-
-    public function getEnableHls(): bool
-    {
-        return $this->enable_hls;
-    }
-
-    public function setEnableHls(bool $enableHls): void
-    {
-        $this->enable_hls = $enableHls;
-    }
-
-    public function getIsEnabled(): bool
-    {
-        return $this->is_enabled;
-    }
-
-    public function getNeedsRestart(): bool
-    {
-        return $this->needs_restart;
-    }
-
-    public function setNeedsRestart(bool $needsRestart): void
-    {
-        $this->needs_restart = $this->hasLocalServices() && $this->has_started
-            ? $needsRestart
-            : false;
-    }
-
-    public function getHasStarted(): bool
-    {
-        return $this->has_started;
-    }
-
-    public function setHasStarted(bool $hasStarted): void
-    {
-        $this->has_started = $this->hasLocalServices()
-            ? $hasStarted
-            : true;
-    }
-
-    public function getApiHistoryItems(): int
-    {
-        return $this->api_history_items ?? 5;
-    }
-
-    public function setApiHistoryItems(int $apiHistoryItems): void
-    {
-        $this->api_history_items = $apiHistoryItems;
-    }
-
-    public function getTimezone(): string
-    {
-        if (!empty($this->timezone)) {
-            return $this->timezone;
-        }
-
-        return 'UTC';
-    }
-
-    public function getTimezoneObject(): DateTimeZone
-    {
-        return new DateTimeZone($this->getTimezone());
-    }
-
-    public function setTimezone(?string $timezone): void
-    {
-        $this->timezone = $timezone;
-    }
-
-    public function getMaxBitrate(): int
-    {
-        return $this->max_bitrate;
-    }
-
-    public function setMaxBitrate(int $maxBitrate): void
-    {
-        if ($this->max_bitrate !== $maxBitrate) {
-            $this->setNeedsRestart(true);
-        }
-        $this->max_bitrate = $maxBitrate;
-    }
-
-    public function getMaxMounts(): int
-    {
-        if (!empty($this->max_mounts)) {
-            return $this->max_mounts;
-        }
-
-        return 0;
-    }
-
-    public function setMaxMounts(int $maxMounts): void
-    {
-        if ($this->max_mounts !== $maxMounts) {
-            $this->setNeedsRestart(true);
-        }
-        $this->max_mounts = $maxMounts;
-    }
-
-    public function getMaxHlsStreams(): int
-    {
-        if (!empty($this->max_hls_streams)) {
-            return $this->max_hls_streams;
-        }
-
-        return 0;
-    }
-
-    public function setMaxHlsStreams(int $maxHlsStreams): void
-    {
-        if ($this->max_hls_streams !== $maxHlsStreams) {
-            $this->setNeedsRestart(true);
-        }
-        $this->max_hls_streams = $maxHlsStreams;
-    }
-
-    public function getBrandingConfig(): StationBrandingConfiguration
-    {
-        return new StationBrandingConfiguration($this->branding_config ?? []);
-    }
-
-    /**
-     * @param StationBrandingConfiguration|ConfigData $brandingConfig
-     */
-    public function setBrandingConfig(
-        StationBrandingConfiguration|array $brandingConfig
-    ): void {
-        $this->branding_config = $this->getBrandingConfig()
-            ->fromArray($brandingConfig)
-            ->toArray();
-    }
-
-    /**
-     * @return Collection<int, SongHistory>
-     */
-    public function getHistory(): Collection
-    {
-        return $this->history;
-    }
-
-    /**
-     * @return Collection<int, StationStreamer>
-     */
-    public function getStreamers(): Collection
-    {
-        return $this->streamers;
-    }
-
-    public function getCurrentStreamer(): ?StationStreamer
-    {
-        return $this->current_streamer;
-    }
-
-    public function setCurrentStreamer(?StationStreamer $currentStreamer): void
-    {
-        if (null !== $this->current_streamer || null !== $currentStreamer) {
-            $this->current_streamer = $currentStreamer;
-        }
-    }
-
     public function getMediaStorageLocation(): StorageLocation
     {
-        if (null === $this->media_storage_location) {
-            throw new RuntimeException('Media storage location not initialized.');
-        }
         return $this->media_storage_location;
-    }
-
-    public function setMediaStorageLocation(?StorageLocation $storageLocation = null): void
-    {
-        if (null !== $storageLocation && StorageLocationTypes::StationMedia !== $storageLocation->getType()) {
-            throw new RuntimeException('Invalid storage location.');
-        }
-
-        $this->media_storage_location = $storageLocation;
     }
 
     public function getRecordingsStorageLocation(): StorageLocation
     {
-        if (null === $this->recordings_storage_location) {
-            throw new RuntimeException('Recordings storage location not initialized.');
-        }
         return $this->recordings_storage_location;
-    }
-
-    public function setRecordingsStorageLocation(?StorageLocation $storageLocation = null): void
-    {
-        if (null !== $storageLocation && StorageLocationTypes::StationRecordings !== $storageLocation->getType()) {
-            throw new RuntimeException('Invalid storage location.');
-        }
-
-        $this->recordings_storage_location = $storageLocation;
     }
 
     public function getPodcastsStorageLocation(): StorageLocation
     {
-        if (null === $this->podcasts_storage_location) {
-            throw new RuntimeException('Podcasts storage location not initialized.');
-        }
         return $this->podcasts_storage_location;
-    }
-
-    public function setPodcastsStorageLocation(?StorageLocation $storageLocation = null): void
-    {
-        if (null !== $storageLocation && StorageLocationTypes::StationPodcasts !== $storageLocation->getType()) {
-            throw new RuntimeException('Invalid storage location.');
-        }
-
-        $this->podcasts_storage_location = $storageLocation;
     }
 
     public function getStorageLocation(StorageLocationTypes $type): StorageLocation
@@ -1100,102 +807,14 @@ class Station implements Stringable, IdentifiableEntityInterface
         ];
     }
 
-    public function getFallbackPath(): ?string
-    {
-        return $this->fallback_path;
-    }
-
-    public function setFallbackPath(?string $fallbackPath): void
-    {
-        if ($this->fallback_path !== $fallbackPath) {
-            $this->setNeedsRestart(true);
-        }
-        $this->fallback_path = $fallbackPath;
-    }
-
-    /**
-     * @return Collection<int, RolePermission>
-     */
-    public function getPermissions(): Collection
-    {
-        return $this->permissions;
-    }
-
-    /**
-     * @return Collection<int, StationMedia>
-     */
-    public function getMedia(): Collection
-    {
-        return $this->getMediaStorageLocation()->getMedia();
-    }
-
-    /**
-     * @return Collection<int, StationPlaylist>
-     */
-    public function getPlaylists(): Collection
-    {
-        return $this->playlists;
-    }
-
-    /**
-     * @return Collection<int, StationMount>
-     */
-    public function getMounts(): Collection
-    {
-        return $this->mounts;
-    }
-
-    /**
-     * @return Collection<int, StationRemote>
-     */
-    public function getRemotes(): Collection
-    {
-        return $this->remotes;
-    }
-
-    /**
-     * @return Collection<int, StationHlsStream>
-     */
-    public function getHlsStreams(): Collection
-    {
-        return $this->hls_streams;
-    }
-
-    /**
-     * @return Collection<int, StationWebhook>
-     */
-    public function getWebhooks(): Collection
-    {
-        return $this->webhooks;
-    }
-
-    /**
-     * @return Collection<int, SftpUser>
-     */
-    public function getSftpUsers(): Collection
-    {
-        return $this->sftp_users;
-    }
-
-    public function getCurrentSong(): ?SongHistory
-    {
-        return $this->current_song;
-    }
-
-    public function setCurrentSong(?SongHistory $currentSong): void
-    {
-        $this->current_song = $currentSong;
-    }
-
     public function __toString(): string
     {
-        $name = $this->getName();
-        if (null !== $name) {
+        $name = $this->name;
+        if (!empty($name)) {
             return $name;
         }
 
-        $id = $this->getId();
-        return (null !== $id) ? 'Station #' . $id : 'New Station';
+        return isset($this->id) ? 'Station #' . $this->id : 'New Station';
     }
 
     public function __clone()
@@ -1204,7 +823,6 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->radio_base_dir = null;
         $this->adapter_api_key = null;
         $this->current_streamer = null;
-        $this->current_streamer_id = null;
         $this->is_streamer_live = false;
         $this->needs_restart = false;
         $this->has_started = false;
@@ -1215,16 +833,16 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->podcasts_storage_location = null;
 
         // Clear ports
-        $feConfig = $this->getFrontendConfig();
+        $feConfig = $this->frontend_config;
         $feConfig->port = null;
 
-        $this->setFrontendConfig($feConfig);
+        $this->frontend_config = $feConfig;
 
-        $beConfig = $this->getBackendConfig();
+        $beConfig = $this->backend_config;
         $beConfig->dj_port = null;
         $beConfig->telnet_port = null;
 
-        $this->setBackendConfig($beConfig);
+        $this->backend_config = $beConfig;
     }
 
     public static function generateShortName(string $str): string

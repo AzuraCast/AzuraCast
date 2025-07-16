@@ -33,7 +33,7 @@ final class PlaylistAction implements SingleActionInterface
 
         $fa = $this->adapters->getFrontendAdapter($station);
         if (null !== $fa) {
-            foreach ($station->getMounts() as $mount) {
+            foreach ($station->mounts as $mount) {
                 /** @var StationMount $mount */
                 if (!$mount->getIsVisibleOnPublicPages()) {
                     continue;
@@ -43,13 +43,13 @@ final class PlaylistAction implements SingleActionInterface
 
                 $streamUrls[] = $streamUrl;
                 $streams[] = [
-                    'name' => $station->getName() . ' - ' . $mount->getDisplayName(),
+                    'name' => $station->name . ' - ' . $mount->getDisplayName(),
                     'url' => $streamUrl,
                 ];
             }
         }
 
-        foreach ($station->getRemotes() as $remote) {
+        foreach ($station->remotes as $remote) {
             if (!$remote->getIsVisibleOnPublicPages()) {
                 continue;
             }
@@ -59,19 +59,19 @@ final class PlaylistAction implements SingleActionInterface
 
             $streamUrls[] = $streamUrl;
             $streams[] = [
-                'name' => $station->getName() . ' - ' . $remote->getDisplayName(),
+                'name' => $station->name . ' - ' . $remote->getDisplayName(),
                 'url' => $streamUrl,
             ];
         }
 
-        if ($station->getEnableHls() && $station->getBackendType()->isEnabled()) {
+        if ($station->enable_hls && $station->backend_type->isEnabled()) {
             $backend = $this->adapters->getBackendAdapter($station);
-            $backendConfig = $station->getBackendConfig();
+            $backendConfig = $station->backend_config;
 
             if (null !== $backend && $backendConfig->hls_enable_on_public_player) {
                 $streamUrl = $backend->getHlsUrl($station);
                 $streamRow = [
-                    'name' => $station->getName() . ' - HLS',
+                    'name' => $station->name . ' - HLS',
                     'url' => (string)$streamUrl,
                 ];
 
@@ -94,7 +94,7 @@ final class PlaylistAction implements SingleActionInterface
                 $response->getBody()->write($m3uFile);
                 return $response
                     ->withHeader('Content-Type', 'audio/x-mpegurl')
-                    ->withHeader('Content-Disposition', 'attachment; filename=' . $station->getShortName() . '.m3u');
+                    ->withHeader('Content-Disposition', 'attachment; filename=' . $station->short_name . '.m3u');
 
             // PLS Playlist Format
             case 'pls':
@@ -118,7 +118,7 @@ final class PlaylistAction implements SingleActionInterface
                 $response->getBody()->write(implode("\n", $output));
                 return $response
                     ->withHeader('Content-Type', 'audio/x-scpls')
-                    ->withHeader('Content-Disposition', 'attachment; filename=' . $station->getShortName() . '.pls');
+                    ->withHeader('Content-Disposition', 'attachment; filename=' . $station->short_name . '.pls');
         }
     }
 }

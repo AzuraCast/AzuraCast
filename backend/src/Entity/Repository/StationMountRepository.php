@@ -102,7 +102,7 @@ final class StationMountRepository extends AbstractStationBasedRepository
         }
 
         // Use the first mount if none is specified as default.
-        $mount = $station->getMounts()->first();
+        $mount = $station->mounts->first();
 
         if ($mount instanceof StationMount) {
             $mount->setIsDefault(true);

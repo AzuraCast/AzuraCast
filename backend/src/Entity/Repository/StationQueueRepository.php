@@ -104,7 +104,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
                 ORDER BY sq.id DESC
             DQL
         )->setParameters([
-            'station' => $playlist->getStation(),
+            'station' => $playlist->station,
             'playlist' => $playlist,
         ])->setMaxResults($playPerSongs);
 
@@ -181,7 +181,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
 
     public function hasCuedPlaylistMedia(StationPlaylist $playlist): bool
     {
-        $station = $playlist->getStation();
+        $station = $playlist->station;
 
         $cuedPlaylistContentCountQuery = $this->getUnplayedBaseQuery($station)
             ->select('count(sq.id)')

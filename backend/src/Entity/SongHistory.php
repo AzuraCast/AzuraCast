@@ -107,11 +107,6 @@ final class SongHistory implements
         $this->timestamp_start = Time::nowUtc();
     }
 
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
     public function addDeltaPoint(int $deltaPoint): void
     {
         $deltaPoints = $this->delta_points ?? [];

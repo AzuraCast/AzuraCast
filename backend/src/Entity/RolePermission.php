@@ -25,12 +25,17 @@ final class RolePermission implements
     #[ORM\JoinColumn(name: 'role_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public readonly Role $role;
 
-    #[ORM\Column(length: 50)]
-    public readonly string $action_name;
-
     #[ORM\ManyToOne(inversedBy: 'permissions')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     public ?Station $station;
+
+    public function setStation(Station $station): void
+    {
+        $this->station = $station;
+    }
+
+    #[ORM\Column(length: 50)]
+    public readonly string $action_name;
 
     public function __construct(
         Role $role,
@@ -45,21 +50,6 @@ final class RolePermission implements
         }
 
         $this->action_name = $this->truncateString($actionName, 50);
-    }
-
-    public function getRole(): Role
-    {
-        return $this->role;
-    }
-
-    public function getStation(): ?Station
-    {
-        return $this->station;
-    }
-
-    public function setStation(?Station $station): void
-    {
-        $this->station = $station;
     }
 
     /**

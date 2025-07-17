@@ -118,8 +118,8 @@ final class BackupCommand extends AbstractDatabaseCommand
                 DQL
             )->execute();
 
+            /** @var Station $station */
             foreach ($stations as $station) {
-                /** @var Station $station */
                 foreach ($station->getAllStorageLocations() as $storageLocation) {
                     if ($storageLocation->adapter->isLocal()) {
                         $filesToBackup[] = $storageLocation->path;

@@ -176,7 +176,7 @@ final class Scheduler
      */
     public function getPlaylistScheduleDuration(StationPlaylist $playlist): int
     {
-        $stationTz = $playlist->getStation()->getTimezoneObject();
+        $stationTz = $playlist->station->getTimezoneObject();
         $now = CarbonImmutable::now($stationTz);
 
         $scheduleItem = $this->getActiveScheduleFromCollection(

@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 ]
 final class StationPlaylistFolder implements
     Interfaces\PathAwareInterface,
+    Interfaces\StationAwareInterface,
     Interfaces\StationCloneAwareInterface,
     Interfaces\IdentifiableEntityInterface
 {
@@ -21,6 +22,11 @@ final class StationPlaylistFolder implements
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public Station $station;
+
+    public function setStation(Station $station): void
+    {
+        $this->station = $station;
+    }
 
     #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'folders')]
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
@@ -37,15 +43,5 @@ final class StationPlaylistFolder implements
         $this->station = $station;
         $this->playlist = $playlist;
         $this->path = $path;
-    }
-
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
-    public function setStation(Station $station): void
-    {
-        $this->station = $station;
     }
 }

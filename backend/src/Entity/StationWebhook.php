@@ -20,6 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 ]
 final class StationWebhook implements
     Stringable,
+    Interfaces\StationAwareInterface,
     Interfaces\StationCloneAwareInterface,
     Interfaces\IdentifiableEntityInterface
 {
@@ -33,6 +34,11 @@ final class StationWebhook implements
         ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
     ]
     public Station $station;
+
+    public function setStation(Station $station): void
+    {
+        $this->station = $station;
+    }
 
     #[
         OA\Property(
@@ -96,16 +102,6 @@ final class StationWebhook implements
     {
         $this->station = $station;
         $this->type = $type;
-    }
-
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
-    public function setStation(Station $station): void
-    {
-        $this->station = $station;
     }
 
     public function hasTrigger(WebhookTriggers|string $trigger): bool

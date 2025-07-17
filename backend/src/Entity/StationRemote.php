@@ -24,6 +24,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 ]
 final class StationRemote implements
     Stringable,
+    Interfaces\StationAwareInterface,
     Interfaces\StationMountInterface,
     Interfaces\StationCloneAwareInterface,
     Interfaces\IdentifiableEntityInterface
@@ -36,13 +37,32 @@ final class StationRemote implements
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public Station $station;
 
+    public function setStation(Station $station): void
+    {
+        $this->station = $station;
+    }
+
     #[ORM\ManyToOne(inversedBy: 'remotes')]
     #[ORM\JoinColumn(name: 'relay_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     public ?Relay $relay = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    public ?string $display_name = null {
-        set => $this->truncateNullableString($value);
+    #[ORM\Column(length: 255, nullable: false)]
+    public string $display_name = '' {
+        get {
+            if (!empty($this->display_name)) {
+                return $this->display_name;
+            }
+
+            if ($this->enable_autodj) {
+                $format = $this->autodj_format;
+                if (null !== $format) {
+                    return $format->formatBitrate($this->autodj_bitrate);
+                }
+            }
+
+            return Utilities\Strings::truncateUrl($this->url);
+        }
+        set (string|null $value) => $this->truncateNullableString($value) ?? '';
     }
 
     #[ORM\Column]
@@ -152,16 +172,6 @@ final class StationRemote implements
         $this->station = $station;
     }
 
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
-    public function setStation(Station $station): void
-    {
-        $this->station = $station;
-    }
-
     public function getEnableAutodj(): bool
     {
         return $this->enable_autodj;
@@ -214,7 +224,7 @@ final class StationRemote implements
         return $this->mount;
     }
 
-    public function getAutodjHost(): ?string
+    public function getAutodjHost(): string
     {
         return $this->getUrlAsUri()->getHost();
     }
@@ -228,7 +238,7 @@ final class StationRemote implements
         return $this->source_port ?? $this->getUrlAsUri()->getPort();
     }
 
-    public function getAutodjProtocol(): ?StreamProtocols
+    public function getAutodjProtocol(): StreamProtocols
     {
         $urlScheme = $this->getUrlAsUri()->getScheme();
 
@@ -291,24 +301,8 @@ final class StationRemote implements
         return $response;
     }
 
-    public function getDisplayName(): string
-    {
-        if (!empty($this->display_name)) {
-            return $this->display_name;
-        }
-
-        if ($this->enable_autodj) {
-            $format = $this->autodj_format;
-            if (null !== $format) {
-                return $format->formatBitrate($this->autodj_bitrate);
-            }
-        }
-
-        return Utilities\Strings::truncateUrl($this->url);
-    }
-
     public function __toString(): string
     {
-        return $this->getStation() . ' Relay: ' . $this->display_name;
+        return $this->station . ' Relay: ' . $this->display_name;
     }
 }

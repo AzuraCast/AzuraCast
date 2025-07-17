@@ -28,6 +28,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 final class StationMount implements
     Stringable,
     Interfaces\StationMountInterface,
+    Interfaces\StationAwareInterface,
     Interfaces\StationCloneAwareInterface,
     Interfaces\IdentifiableEntityInterface
 {
@@ -42,6 +43,11 @@ final class StationMount implements
     ]
     public Station $station;
 
+    public function setStation(Station $station): void
+    {
+        $this->station = $station;
+    }
+
     #[
         OA\Property(example: "/radio.mp3"),
         ORM\Column(length: 100),
@@ -53,9 +59,9 @@ final class StationMount implements
 
     #[
         OA\Property(example: "128kbps MP3"),
-        ORM\Column(length: 255, nullable: true)
+        ORM\Column(length: 255, nullable: false)
     ]
-    public ?string $display_name = null {
+    public string $display_name = '' {
         get {
             if (!empty($this->display_name)) {
                 return $this->display_name;
@@ -71,7 +77,7 @@ final class StationMount implements
 
             return $this->name;
         }
-        set => $this->truncateNullableString($value);
+        set (string|null $value) => $this->truncateNullableString($value) ?? '';
     }
 
     #[
@@ -219,16 +225,6 @@ final class StationMount implements
         $this->station = $station;
     }
 
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
-    public function setStation(Station $station): void
-    {
-        $this->station = $station;
-    }
-
     public function getIsPublic(): bool
     {
         return $this->is_public;
@@ -249,7 +245,7 @@ final class StationMount implements
         return $this->autodj_bitrate;
     }
 
-    public function getAutodjHost(): ?string
+    public function getAutodjHost(): string
     {
         return '127.0.0.1';
     }
@@ -267,17 +263,17 @@ final class StationMount implements
         };
     }
 
-    public function getAutodjUsername(): ?string
+    public function getAutodjUsername(): string
     {
         return '';
     }
 
-    public function getAutodjPassword(): ?string
+    public function getAutodjPassword(): string
     {
         return $this->station->frontend_config->source_pw;
     }
 
-    public function getAutodjMount(): ?string
+    public function getAutodjMount(): string
     {
         return $this->name;
     }

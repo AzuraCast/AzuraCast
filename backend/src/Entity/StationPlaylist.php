@@ -29,6 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 ]
 final class StationPlaylist implements
     Stringable,
+    Interfaces\StationAwareInterface,
     Interfaces\StationCloneAwareInterface,
     Interfaces\IdentifiableEntityInterface
 {
@@ -48,6 +49,11 @@ final class StationPlaylist implements
         ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
     ]
     public Station $station;
+
+    public function setStation(Station $station): void
+    {
+        $this->station = $station;
+    }
 
     #[
         OA\Property(example: "Test Playlist"),
@@ -268,16 +274,6 @@ final class StationPlaylist implements
         $this->folders = new ArrayCollection();
         $this->schedule_items = new ArrayCollection();
         $this->podcasts = new ArrayCollection();
-    }
-
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
-    public function setStation(Station $station): void
-    {
-        $this->station = $station;
     }
 
     /**

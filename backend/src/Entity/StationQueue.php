@@ -93,11 +93,6 @@ final class StationQueue implements
         $this->timestamp_cued = Time::nowUtc();
     }
 
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
     public function updateVisibility(): void
     {
         $this->is_visible = !($this->playlist instanceof StationPlaylist) || !$this->playlist->is_jingle;

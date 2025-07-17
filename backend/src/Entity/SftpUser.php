@@ -70,11 +70,6 @@ final class SftpUser implements
         $this->station = $station;
     }
 
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
     /**
      * @return string[]
      */

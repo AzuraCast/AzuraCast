@@ -20,6 +20,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 ]
 final class StationHlsStream implements
     Stringable,
+    Interfaces\StationAwareInterface,
     Interfaces\StationCloneAwareInterface,
     Interfaces\IdentifiableEntityInterface
 {
@@ -33,6 +34,11 @@ final class StationHlsStream implements
         ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
     ]
     public Station $station;
+
+    public function setStation(Station $station): void
+    {
+        $this->station = $station;
+    }
 
     #[
         OA\Property(example: "aac_lofi"),
@@ -60,7 +66,7 @@ final class StationHlsStream implements
     {
         $this->doValidateMaxBitrate(
             $context,
-            $this->getStation()->max_bitrate,
+            $this->station->max_bitrate,
             $this->bitrate,
             'bitrate'
         );
@@ -77,18 +83,8 @@ final class StationHlsStream implements
         $this->station = $station;
     }
 
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
-    public function setStation(Station $station): void
-    {
-        $this->station = $station;
-    }
-
     public function __toString(): string
     {
-        return $this->getStation() . ' HLS Stream: ' . $this->name;
+        return $this->station . ' HLS Stream: ' . $this->name;
     }
 }

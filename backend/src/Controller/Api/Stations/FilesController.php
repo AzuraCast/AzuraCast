@@ -464,7 +464,7 @@ final class FilesController extends AbstractStationApiCrudController
                 continue;
             }
 
-            $backend = $this->adapters->getBackendAdapter($playlist->getStation());
+            $backend = $this->adapters->getBackendAdapter($playlist->station);
             if ($backend instanceof Liquidsoap) {
                 // Instruct the message queue to start a new "write playlist to file" task.
                 $message = new WritePlaylistFileMessage();

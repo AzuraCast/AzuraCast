@@ -60,7 +60,7 @@ final class StationRequiresRestart implements EventSubscriber
                     ($entity instanceof StationMount)
                     || ($entity instanceof StationHlsStream)
                     || ($entity instanceof StationRemote && $entity->isEditable())
-                    || ($entity instanceof StationPlaylist && $entity->getStation()->backend_config->use_manual_autodj)
+                    || ($entity instanceof StationPlaylist && $entity->station->backend_config->use_manual_autodj)
                 ) {
                     if (AuditLogOperations::Update === $changeType) {
                         $changes = $uow->getEntityChangeSet($entity);
@@ -81,7 +81,7 @@ final class StationRequiresRestart implements EventSubscriber
                         }
                     }
 
-                    $station = $entity->getStation();
+                    $station = $entity->station;
                     if ($station->hasLocalServices()) {
                         $stationsToRestart[$station->id] = $station;
                     }

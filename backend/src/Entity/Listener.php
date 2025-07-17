@@ -90,11 +90,6 @@ final class Listener implements
         $this->device = $device;
     }
 
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
     public static function getListenerSeconds(array $intervals): int
     {
         // Sort by start time.

@@ -56,11 +56,6 @@ final class StationRequest implements
         $this->ip = $this->truncateString($ip ?? $_SERVER['REMOTE_ADDR'], 40);
     }
 
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
     public function shouldPlayNow(?DateTimeImmutable $now = null): bool
     {
         if ($this->skip_delay) {

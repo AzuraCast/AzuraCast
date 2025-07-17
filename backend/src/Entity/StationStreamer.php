@@ -31,6 +31,7 @@ use const PASSWORD_ARGON2ID;
 ]
 final class StationStreamer implements
     Stringable,
+    Interfaces\StationAwareInterface,
     Interfaces\StationCloneAwareInterface,
     Interfaces\IdentifiableEntityInterface
 {
@@ -42,6 +43,11 @@ final class StationStreamer implements
         ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
     ]
     public Station $station;
+
+    public function setStation(Station $station): void
+    {
+        $this->station = $station;
+    }
 
     #[
         OA\Property(example: "dj_test"),
@@ -78,11 +84,11 @@ final class StationStreamer implements
 
     #[
         OA\Property(example: "Test DJ"),
-        ORM\Column(length: 255, nullable: true)
+        ORM\Column(length: 255, nullable: false)
     ]
-    public ?string $display_name = null {
+    public string $display_name = '' {
         get => !empty($this->display_name) ? $this->display_name : $this->streamer_username;
-        set => $this->truncateNullableString($value);
+        set (string|null $value) => $this->truncateNullableString($value) ?? '';
     }
 
     #[
@@ -147,16 +153,6 @@ final class StationStreamer implements
 
         $this->schedule_items = new ArrayCollection();
         $this->broadcasts = new ArrayCollection();
-    }
-
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
-    public function setStation(Station $station): void
-    {
-        $this->station = $station;
     }
 
     public function deactivateFor(int $seconds): void

@@ -130,7 +130,8 @@ final class SoundExchangeAction implements SingleActionInterface
 
         $historyRows = $this->em->createQuery(
             <<<'DQL'
-                SELECT sh.song_id AS song_id, sh.text, sh.artist, sh.title, IDENTITY(sh.media) AS media_id, COUNT(sh.id) AS plays,
+                SELECT sh.song_id AS song_id, sh.text, sh.artist, sh.title, 
+                    IDENTITY(sh.media) AS media_id, COUNT(sh.id) AS plays,
                     SUM(sh.unique_listeners) AS unique_listeners
                 FROM App\Entity\SongHistory sh
                 WHERE sh.station = :station

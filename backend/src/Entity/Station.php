@@ -13,7 +13,6 @@ use App\Environment;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\FrontendAdapters;
 use App\Utilities\File;
-use App\Utilities\Time;
 use App\Utilities\Types;
 use App\Validator\Constraints as AppAssert;
 use Azura\Normalizer\Attributes\DeepNormalize;
@@ -247,7 +246,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
 
     #[
         OA\Property(example: "/var/azuracast/stations/azuratest_radio"),
-        ORM\Column(length: 255, nullable: true),
+        ORM\Column(length: 255, nullable: false),
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
     public string $radio_base_dir {
@@ -396,16 +395,14 @@ final class Station implements Stringable, IdentifiableEntityInterface
             description: "The time zone that station operations should take place in.",
             example: "UTC"
         ),
-        ORM\Column(length: 100, nullable: true),
+        ORM\Column(length: 100, nullable: false),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    public ?string $timezone = 'UTC';
+    public string $timezone = 'UTC';
 
     public function getTimezoneObject(): DateTimeZone
     {
-        return ($this->timezone !== null)
-            ? new DateTimeZone($this->timezone)
-            : Time::getUtc();
+        return new DateTimeZone($this->timezone);
     }
 
     #[
@@ -494,7 +491,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
         ORM\JoinColumn(
             name: 'media_storage_location_id',
             referencedColumnName: 'id',
-            nullable: true,
+            nullable: false,
             onDelete: 'SET NULL'
         ),
         DeepNormalize(true),
@@ -516,7 +513,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
         ORM\JoinColumn(
             name: 'recordings_storage_location_id',
             referencedColumnName: 'id',
-            nullable: true,
+            nullable: false,
             onDelete: 'SET NULL'
         ),
         DeepNormalize(true),
@@ -538,7 +535,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
         ORM\JoinColumn(
             name: 'podcasts_storage_location_id',
             referencedColumnName: 'id',
-            nullable: true,
+            nullable: false,
             onDelete: 'SET NULL'
         ),
         DeepNormalize(true),
@@ -674,7 +671,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
 
     public function ensureDirectoriesExist(): void
     {
-        if ($this->radio_base_dir === null) {
+        if (!isset($this->radio_base_dir)) {
             $this->radio_base_dir = $this->short_name;
         }
 
@@ -685,44 +682,59 @@ final class Station implements Stringable, IdentifiableEntityInterface
         File::mkdirIfNotExists($this->getRadioTempDir());
         File::mkdirIfNotExists($this->getRadioHlsDir());
 
-        if (null === $this->media_storage_location) {
-            $storageLocation = new StorageLocation(
-                StorageLocationTypes::StationMedia,
-                StorageLocationAdapters::Local
-            );
-
-            $mediaPath = $this->radio_base_dir . '/media';
-            File::mkdirIfNotExists($mediaPath);
-            $storageLocation->path = $mediaPath;
-
-            $this->media_storage_location = $storageLocation;
+        if (!isset($this->media_storage_location)) {
+            $this->createMediaStorageLocation();
         }
 
-        if (null === $this->recordings_storage_location) {
-            $storageLocation = new StorageLocation(
-                StorageLocationTypes::StationRecordings,
-                StorageLocationAdapters::Local
-            );
-
-            $recordingsPath = $this->radio_base_dir . '/recordings';
-            File::mkdirIfNotExists($recordingsPath);
-            $storageLocation->path = $recordingsPath;
-
-            $this->recordings_storage_location = $storageLocation;
+        if (!isset($this->recordings_storage_location)) {
+            $this->createRecordingsStorageLocation();
         }
 
-        if (null === $this->podcasts_storage_location) {
-            $storageLocation = new StorageLocation(
-                StorageLocationTypes::StationPodcasts,
-                StorageLocationAdapters::Local
-            );
-
-            $podcastsPath = $this->radio_base_dir . '/podcasts';
-            File::mkdirIfNotExists($podcastsPath);
-            $storageLocation->path = $podcastsPath;
-
-            $this->podcasts_storage_location = $storageLocation;
+        if (!isset($this->podcasts_storage_location)) {
+            $this->createPodcastsStorageLocation();
         }
+    }
+
+    public function createMediaStorageLocation(): void
+    {
+        $storageLocation = new StorageLocation(
+            StorageLocationTypes::StationMedia,
+            StorageLocationAdapters::Local
+        );
+
+        $mediaPath = $this->radio_base_dir . '/media';
+        File::mkdirIfNotExists($mediaPath);
+        $storageLocation->path = $mediaPath;
+
+        $this->media_storage_location = $storageLocation;
+    }
+
+    public function createRecordingsStorageLocation(): void
+    {
+        $storageLocation = new StorageLocation(
+            StorageLocationTypes::StationRecordings,
+            StorageLocationAdapters::Local
+        );
+
+        $recordingsPath = $this->radio_base_dir . '/recordings';
+        File::mkdirIfNotExists($recordingsPath);
+        $storageLocation->path = $recordingsPath;
+
+        $this->recordings_storage_location = $storageLocation;
+    }
+
+    public function createPodcastsStorageLocation(): void
+    {
+        $storageLocation = new StorageLocation(
+            StorageLocationTypes::StationPodcasts,
+            StorageLocationAdapters::Local
+        );
+
+        $podcastsPath = $this->radio_base_dir . '/podcasts';
+        File::mkdirIfNotExists($podcastsPath);
+        $storageLocation->path = $podcastsPath;
+
+        $this->podcasts_storage_location = $storageLocation;
     }
 
     public function getRadioPlaylistsDir(): string
@@ -790,17 +802,12 @@ final class Station implements Stringable, IdentifiableEntityInterface
     public function __clone()
     {
         $this->short_name = '';
-        $this->radio_base_dir = null;
         $this->adapter_api_key = null;
         $this->current_streamer = null;
         $this->is_streamer_live = false;
         $this->needs_restart = false;
         $this->has_started = false;
         $this->current_song = null;
-
-        $this->media_storage_location = null;
-        $this->recordings_storage_location = null;
-        $this->podcasts_storage_location = null;
 
         // Clear ports
         $feConfig = $this->frontend_config;

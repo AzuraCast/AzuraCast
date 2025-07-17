@@ -134,19 +134,27 @@ final class CloneAction extends StationsController implements SingleActionInterf
         $newStation->name = $data['name'] ?? ($newStation->name . ' - Copy');
         $newStation->description = $data['description'] ?? $newStation->description;
 
-        if (in_array(self::CLONE_MEDIA_STORAGE, $toClone, true)) {
-            $newStation->media_storage_location = $record->media_storage_location;
-        }
-        if (in_array(self::CLONE_RECORDINGS_STORAGE, $toClone, true)) {
-            $newStation->recordings_storage_location = $record->recordings_storage_location;
-        }
-        if (in_array(self::CLONE_PODCASTS_STORAGE, $toClone, true)) {
-            $newStation->podcasts_storage_location = $record->podcasts_storage_location;
-        }
-
         // Set new radio base directory
         $stationBaseDir = $this->environment->getStationDirectory();
         $newStation->radio_base_dir = $stationBaseDir . '/' . $newStation->short_name;
+
+        if (in_array(self::CLONE_MEDIA_STORAGE, $toClone, true)) {
+            $newStation->media_storage_location = $record->media_storage_location;
+        } else {
+            $newStation->createMediaStorageLocation();
+        }
+
+        if (in_array(self::CLONE_RECORDINGS_STORAGE, $toClone, true)) {
+            $newStation->recordings_storage_location = $record->recordings_storage_location;
+        } else {
+            $newStation->createRecordingsStorageLocation();
+        }
+
+        if (in_array(self::CLONE_PODCASTS_STORAGE, $toClone, true)) {
+            $newStation->podcasts_storage_location = $record->podcasts_storage_location;
+        } else {
+            $newStation->createPodcastsStorageLocation();
+        }
 
         $newStation->ensureDirectoriesExist();
 
@@ -279,7 +287,7 @@ final class CloneAction extends StationsController implements SingleActionInterf
 
             /** @var StationCloneAwareInterface $newRecord */
             $newRecord = $copier->copy($oldRecord);
-            $newRecord->station = $newStation;
+            $newRecord->setStation($newStation);
 
             $this->em->persist($newRecord);
 

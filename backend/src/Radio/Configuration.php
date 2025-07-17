@@ -367,7 +367,7 @@ final class Configuration
             }
         }
 
-        if (null !== $exceptStation && null !== $exceptStation->id) {
+        if (null !== $exceptStation && isset($exceptStation->id)) {
             return array_filter(
                 $usedPorts,
                 static function ($stationReference) use ($exceptStation) {

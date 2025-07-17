@@ -144,7 +144,7 @@ final class StationMediaRepository extends Repository
     private function getStorageLocation(Station|StorageLocation $source): StorageLocation
     {
         if ($source instanceof Station) {
-            return $source->getMediaStorageLocation();
+            return $source->media_storage_location;
         }
 
         return $source;

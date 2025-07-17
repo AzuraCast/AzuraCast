@@ -69,7 +69,7 @@ final class SftpEventAction implements SingleActionInterface
             return $errorResponse;
         }
 
-        $storageLocation = $sftpUser->getStation()->getMediaStorageLocation();
+        $storageLocation = $sftpUser->station->media_storage_location;
 
         if (!$storageLocation->adapter->isLocal()) {
             $this->logger->error(sprintf('Storage location "%s" is not local.', $storageLocation));
@@ -118,7 +118,7 @@ final class SftpEventAction implements SingleActionInterface
         );
 
         $message = new AddNewMediaMessage();
-        $message->storage_location_id = $storageLocation->getIdRequired();
+        $message->storage_location_id = $storageLocation->id;
         $message->path = $relativePath;
 
         $this->messageBus->dispatch($message);

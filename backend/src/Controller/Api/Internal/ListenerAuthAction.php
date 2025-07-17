@@ -31,7 +31,7 @@ final class ListenerAuthAction implements SingleActionInterface
         $station = $request->getStation();
 
         $acl = $request->getAcl();
-        if (!$acl->isAllowed(StationPermissions::View, $station->getId())) {
+        if (!$acl->isAllowed(StationPermissions::View, $station->id)) {
             $authKey = Types::stringOrNull($params['api_auth'], true)
                 ?? Types::stringOrNull($request->getQueryParam('api_auth'), true);
 

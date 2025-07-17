@@ -26,7 +26,7 @@ final class SongHistoryApiGenerator
         bool $isNowPlaying = false,
     ): SongHistory {
         $response = new SongHistory();
-        $response->sh_id = $record->getIdRequired();
+        $response->sh_id = $record->id;
 
         $response->played_at = CarbonImmutable::instance($record->timestamp_start)
             ->addSeconds(SongHistoryEntity::PLAYBACK_DELAY_SECONDS)

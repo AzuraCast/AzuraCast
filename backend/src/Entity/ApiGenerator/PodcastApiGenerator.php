@@ -40,10 +40,10 @@ final class PodcastApiGenerator
 
         $return = new ApiPodcast();
         $return->id = $record->id;
-        $return->storage_location_id = $record->storage_location->getIdRequired();
+        $return->storage_location_id = $record->storage_location->id;
 
         $return->source = $record->source->value;
-        $return->playlist_id = $record->playlist?->getIdRequired();
+        $return->playlist_id = $record->playlist?->id;
         $return->playlist_auto_publish = $record->playlist_auto_publish;
 
         $return->title = $record->title;

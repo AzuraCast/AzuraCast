@@ -20,7 +20,7 @@ class Api_Stations_MountsCest extends CestAbstract
 
         $this->testCrudApi(
             $I,
-            '/api/station/' . $station->getId() . '/mounts',
+            '/api/station/' . $station->id . '/mounts',
             [
                 'name' => '/radio.mp3',
                 'enable_autodj' => true,

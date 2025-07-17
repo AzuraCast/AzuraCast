@@ -474,7 +474,7 @@ final class QueueBuilder implements EventSubscriberInterface
             return;
         }
 
-        $this->logger->debug(sprintf('Queueing next song from request ID %d.', $request->getId()));
+        $this->logger->debug(sprintf('Queueing next song from request ID %d.', $request->id));
 
         $stationQueueEntry = StationQueue::fromRequest($request);
         $this->em->persist($stationQueueEntry);

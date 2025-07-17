@@ -367,11 +367,11 @@ final class Configuration
             }
         }
 
-        if (null !== $exceptStation && null !== $exceptStation->getId()) {
+        if (null !== $exceptStation && null !== $exceptStation->id) {
             return array_filter(
                 $usedPorts,
                 static function ($stationReference) use ($exceptStation) {
-                    return ($stationReference['id'] !== $exceptStation->getId());
+                    return ($stationReference['id'] !== $exceptStation->id);
                 }
             );
         }
@@ -392,7 +392,7 @@ final class Configuration
             return;
         }
 
-        $stationGroup = 'station_' . $station->getId();
+        $stationGroup = 'station_' . $station->id;
 
         // Try forcing the group to stop, but don't hard-fail if it doesn't.
         if ($reloadSupervisor) {
@@ -461,11 +461,11 @@ final class Configuration
 
     public static function getSupervisorGroupName(Station $station): string
     {
-        return 'station_' . $station->getIdRequired();
+        return 'station_' . $station->id;
     }
 
     public static function getSupervisorProgramName(Station $station, string $category): string
     {
-        return 'station_' . $station->getIdRequired() . '_' . $category;
+        return 'station_' . $station->id . '_' . $category;
     }
 }

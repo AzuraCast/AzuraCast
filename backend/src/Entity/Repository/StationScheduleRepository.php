@@ -42,7 +42,7 @@ final class StationScheduleRepository extends Repository
 
         $scheduleItems = [];
         foreach ($rawScheduleItems as $row) {
-            $scheduleItems[$row->getId()] = $row;
+            $scheduleItems[$row->id] = $row;
         }
 
         foreach ($items as $item) {

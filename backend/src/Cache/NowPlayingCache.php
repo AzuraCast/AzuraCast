@@ -135,7 +135,7 @@ final class NowPlayingCache
             ? Types::array($lookupCacheItem->get())
             : [];
 
-        $lookupCache[$station->getIdRequired()] = [
+        $lookupCache[$station->id] = [
             'short_name' => $station->short_name,
             'is_public' => $station->enable_public_page,
             'updated_at' => $updated ?? time(),

@@ -32,7 +32,7 @@ final class PodcastRepository extends Repository
         return $this->repository->findOneBy(
             [
                 'id' => $podcastId,
-                'storage_location' => $station->getPodcastsStorageLocation(),
+                'storage_location' => $station->podcasts_storage_location,
             ]
         );
     }
@@ -57,7 +57,7 @@ final class PodcastRepository extends Repository
         )->setParameter('time', time())
             ->setParameter('sourceManual', PodcastSources::Manual->value)
             ->setParameter('sourcePlaylist', PodcastSources::Playlist->value)
-            ->enableResultCache(60, 'podcast_ids_' . $station->getIdRequired())
+            ->enableResultCache(60, 'podcast_ids_' . $station->id)
             ->getSingleColumnResult();
     }
 
@@ -76,7 +76,7 @@ final class PodcastRepository extends Repository
             throw new StorageLocationFullException();
         }
 
-        $podcastArtworkPath = Podcast::getArtPath($podcast->getIdRequired());
+        $podcastArtworkPath = Podcast::getArtPath($podcast->id);
         $fs->write($podcastArtworkPath, $podcastArtworkString);
 
         $storageLocation->addStorageUsed($podcastArtworkSize);
@@ -93,7 +93,7 @@ final class PodcastRepository extends Repository
         $storageLocation = $podcast->storage_location;
         $fs ??= $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
-        $artworkPath = Podcast::getArtPath($podcast->getIdRequired());
+        $artworkPath = Podcast::getArtPath($podcast->id);
 
         try {
             $size = $fs->fileSize($artworkPath);

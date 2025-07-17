@@ -84,7 +84,7 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
         StationStreamer $streamer,
         string $rawArtworkString
     ): void {
-        $artworkPath = StationStreamer::getArtworkPath($streamer->getIdRequired());
+        $artworkPath = StationStreamer::getArtworkPath($streamer->id);
         $artworkString = AlbumArt::resize($rawArtworkString);
 
         $fsConfig = StationFilesystems::buildConfigFilesystem($streamer->getStation());
@@ -97,7 +97,7 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
     public function removeArtwork(
         StationStreamer $streamer
     ): void {
-        $artworkPath = StationStreamer::getArtworkPath($streamer->getIdRequired());
+        $artworkPath = StationStreamer::getArtworkPath($streamer->id);
 
         $fsConfig = StationFilesystems::buildConfigFilesystem($streamer->station);
         $fsConfig->delete($artworkPath);

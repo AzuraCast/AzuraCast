@@ -91,7 +91,7 @@ final class ListAction implements SingleActionInterface
         $router = $request->getRouter();
 
         $station = $request->getStation();
-        $storageLocation = $station->getMediaStorageLocation();
+        $storageLocation = $station->media_storage_location;
 
         $fs = $this->stationFilesystems->getMediaFilesystem($station);
 
@@ -107,7 +107,7 @@ final class ListAction implements SingleActionInterface
 
         $cacheKeyParts = [
             'files_list',
-            $storageLocation->getIdRequired(),
+            $storageLocation->id,
             (!empty($currentDir)) ? 'dir_' . rawurlencode($currentDir) : 'root',
         ];
 
@@ -132,7 +132,7 @@ final class ListAction implements SingleActionInterface
                 ->from(StationMedia::class, 'sm')
                 ->where('sm.storage_location = :storageLocation')
                 ->andWhere('sm.path LIKE :path')
-                ->setParameter('storageLocation', $station->getMediaStorageLocation())
+                ->setParameter('storageLocation', $station->media_storage_location)
                 ->setParameter('path', $pathLike);
 
             $foldersInDirQuery = $this->em->createQuery(
@@ -330,7 +330,7 @@ final class ListAction implements SingleActionInterface
         $paginator = Paginator::fromArray($result, $request);
 
         // Add processor-intensive data for just this page.
-        $stationId = $station->getIdRequired();
+        $stationId = $station->id;
 
         $paginator->setPostprocessor(
             static fn(FileList $row) => self::postProcessRow($row, $router, $stationId)

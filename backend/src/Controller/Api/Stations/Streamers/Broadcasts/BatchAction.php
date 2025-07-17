@@ -125,7 +125,7 @@ final class BatchAction extends BroadcastsController implements SingleActionInte
         $rows = ReadWriteBatchIteratorAggregate::fromQuery($rowsQuery, self::BATCH_SIZE);
 
         foreach ($rows as $row) {
-            $id = $row->getIdRequired();
+            $id = $row->id;
             $result->records[] = [
                 'id' => $id,
                 'title' => (string)$row,

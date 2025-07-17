@@ -61,7 +61,7 @@ final class ReshuffleAction implements SingleActionInterface
 
         // Write changes to file.
         $message = new WritePlaylistFileMessage();
-        $message->playlist_id = $record->getIdRequired();
+        $message->playlist_id = $record->id;
 
         $this->messageBus->dispatch($message);
 

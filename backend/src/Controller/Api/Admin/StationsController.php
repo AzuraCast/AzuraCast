@@ -196,17 +196,17 @@ class StationsController extends AbstractApiCrudController
         $return['links'] = [
             'self' => $router->fromHere(
                 routeName: $this->resourceRouteName,
-                routeParams: ['id' => $record->getIdRequired()],
+                routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             ),
             'manage' => $router->named(
                 routeName: 'stations:index:index',
-                routeParams: ['station_id' => $record->getIdRequired()],
+                routeParams: ['station_id' => $record->id],
                 absolute: !$isInternal
             ),
             'clone' => $router->fromHere(
                 routeName: 'api:admin:station:clone',
-                routeParams: ['id' => $record->getIdRequired()],
+                routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             ),
         ];
@@ -234,7 +234,7 @@ class StationsController extends AbstractApiCrudController
         foreach (Station::getStorageLocationTypes() as $locationKey => $storageLocationType) {
             $context[AbstractNormalizer::CALLBACKS][$locationKey] = static fn(
                 StorageLocation $value
-            ) => $value->getIdRequired();
+            ) => $value->id;
         }
 
         return parent::toArray($record, $context);
@@ -310,9 +310,9 @@ class StationsController extends AbstractApiCrudController
         // Delete media-related items if the media storage is changed.
         /** @var StorageLocation|null $oldMediaStorage */
         $oldMediaStorage = $originalRecord['media_storage_location'];
-        $newMediaStorage = $station->getMediaStorageLocation();
+        $newMediaStorage = $station->media_storage_location;
 
-        if (null === $oldMediaStorage || $oldMediaStorage->getId() !== $newMediaStorage->getId()) {
+        if (null === $oldMediaStorage || $oldMediaStorage->id !== $newMediaStorage->id) {
             $this->stationRepo->flushRelatedMedia($station);
         }
 

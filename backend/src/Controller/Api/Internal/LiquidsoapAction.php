@@ -12,7 +12,6 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Backend\Liquidsoap\Command\AbstractCommand;
 use App\Radio\Enums\LiquidsoapCommands;
-use App\Utilities\File;
 use App\Utilities\Types;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
@@ -37,7 +36,7 @@ final class LiquidsoapAction implements SingleActionInterface
 
         try {
             $acl = $request->getAcl();
-            if (!$acl->isAllowed(StationPermissions::View, $station->getIdRequired())) {
+            if (!$acl->isAllowed(StationPermissions::View, $station->id)) {
                 $authKey = $request->getHeaderLine('X-Liquidsoap-Api-Key');
                 if (!$station->validateAdapterApiKey($authKey)) {
                     throw new RuntimeException('Invalid API key.');

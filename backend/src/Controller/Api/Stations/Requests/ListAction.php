@@ -96,7 +96,7 @@ final class ListAction extends AbstractSearchableListAction
     private function getPlaylists(
         Station $station
     ): array {
-        $item = $this->psr6Cache->getItem('station_' . $station->getIdRequired() . '_requestable_playlists');
+        $item = $this->psr6Cache->getItem('station_' . $station->id . '_requestable_playlists');
 
         if (!$item->isHit()) {
             $playlists = $this->em->createQuery(
@@ -114,7 +114,7 @@ final class ListAction extends AbstractSearchableListAction
             /** @var StationPlaylist $playlist */
             foreach ($playlists as $playlist) {
                 if ($this->scheduler->isPlaylistScheduledToPlayNow($playlist, $now, true)) {
-                    $ids[] = $playlist->getIdRequired();
+                    $ids[] = $playlist->id;
                 }
             }
 

@@ -76,7 +76,7 @@ final class StorageLocationRepository extends Repository
         }
 
         foreach ($this->findAllByType($type) as $storageLocation) {
-            $select[$storageLocation->getId()] = (string)$storageLocation;
+            $select[$storageLocation->id] = (string)$storageLocation;
         }
 
         return $select;

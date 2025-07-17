@@ -62,16 +62,6 @@ final readonly class UserPasskey implements IdentifiableEntityInterface
         $this->created_at = time();
     }
 
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    public function getIdRequired(): int|string
-    {
-        return $this->id;
-    }
-
     public function getPasskey(): WebAuthnPasskey
     {
         return new WebAuthnPasskey(

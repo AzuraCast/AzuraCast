@@ -44,7 +44,7 @@ final class PodcastEpisodeRepository extends Repository
     public function fetchEpisodeForStation(Station $station, string $episodeId): ?PodcastEpisode
     {
         return $this->fetchEpisodeForStorageLocation(
-            $station->getPodcastsStorageLocation(),
+            $station->podcasts_storage_location,
             $episodeId
         );
     }
@@ -157,7 +157,7 @@ final class PodcastEpisodeRepository extends Repository
         }
 
         $ext = pathinfo($originalPath, PATHINFO_EXTENSION);
-        $path = $podcast->getId() . '/' . $episode->getId() . '.' . $ext;
+        $path = $podcast->id . '/' . $episode->id . '.' . $ext;
 
         $podcastMedia = new PodcastMedia($storageLocation);
         $podcastMedia->path = $path;

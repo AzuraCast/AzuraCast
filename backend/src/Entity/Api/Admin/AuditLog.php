@@ -64,7 +64,7 @@ final readonly class AuditLog
         $operation = $row->operation;
 
         return new self(
-            $row->getIdRequired(),
+            $row->id,
             $row->timestamp->format(Time::JS_ISO8601_FORMAT),
             $operation->value,
             $operation->getName(),

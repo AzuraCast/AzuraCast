@@ -62,7 +62,7 @@ final class SftpAuthAction implements SingleActionInterface
             return $errorResponse;
         }
 
-        $storageLocation = $sftpUser->station->getMediaStorageLocation();
+        $storageLocation = $sftpUser->station->media_storage_location;
 
         if (!$storageLocation->adapter->isLocal()) {
             $this->logger->error(

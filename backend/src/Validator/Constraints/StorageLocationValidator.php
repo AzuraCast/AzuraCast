@@ -56,12 +56,9 @@ final class StorageLocationValidator extends ConstraintValidator
             ->where('sl.type = :type')
             ->setParameter('type', $value->type)
             ->andWhere('sl.adapter = :adapter')
-            ->setParameter('adapter', $value->adapter);
-
-        if (null !== $value->getId()) {
-            $qb->andWhere('sl.id != :id')
-                ->setParameter('id', $value->id);
-        }
+            ->setParameter('adapter', $value->adapter)
+            ->andWhere('sl.id != :id')
+            ->setParameter('id', $value->id);
 
         $storageLocationUri = $value->getUri();
 

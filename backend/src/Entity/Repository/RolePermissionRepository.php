@@ -27,9 +27,9 @@ final class RolePermissionRepository extends Repository
             <<<'DQL'
                 SELECT e
                 FROM App\Entity\RolePermission e
-                WHERE IDENTITY(e.role) = :role_id
+                WHERE e.role = :role
             DQL
-        )->setParameter('role_id', $role->getId())
+        )->setParameter('role', $role)
             ->getArrayResult();
 
         $result = [];

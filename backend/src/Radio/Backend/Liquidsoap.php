@@ -71,7 +71,7 @@ final class Liquidsoap extends AbstractLocalAdapter
 
         // Default to frontend port + 5
         $frontendConfig = $station->frontend_config;
-        $frontendPort = $frontendConfig->port ?? (8000 + (($station->getId() - 1) * 10));
+        $frontendPort = $frontendConfig->port ?? (8000 + (($station->id - 1) * 10));
 
         return $frontendPort + 5;
     }

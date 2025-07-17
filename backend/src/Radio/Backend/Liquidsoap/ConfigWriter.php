@@ -234,12 +234,12 @@ final class ConfigWriter implements EventSubscriberInterface
         $stationApiAuth = self::cleanUpString($station->adapter_api_key);
         $stationApiUrl = self::cleanUpString(
             (string)$this->environment->getInternalUri()
-                ->withPath('/api/internal/' . $station->getId() . '/liquidsoap')
+                ->withPath('/api/internal/' . $station->id . '/liquidsoap')
         );
 
         $commonLibPath = $this->environment->getParentDirectory() . '/liquidsoap/azuracast.liq';
 
-        $mediaStorageLocation = $station->getMediaStorageLocation();
+        $mediaStorageLocation = $station->media_storage_location;
         $stationMediaDir = $mediaStorageLocation->adapter->isLocal()
             ? $mediaStorageLocation->getFilteredPath()
             : 'api';
@@ -701,7 +701,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
             $customFunctionBody = [];
 
-            $scheduleMethod = 'schedule_' . $playlistSchedule->getIdRequired() . '_date_range';
+            $scheduleMethod = 'schedule_' . $playlistSchedule->id . '_date_range';
             $customFunctionBody[] = 'def ' . $scheduleMethod . '() =';
 
             $conditions = [];

@@ -21,7 +21,7 @@ class Frontend_PublicCest extends CestAbstract
         $this->em->persist($testStation);
         $this->em->flush();
 
-        $I->amOnPage('/public/' . $testStation->getId());
+        $I->amOnPage('/public/' . $testStation->id);
         $I->seeResponseCodeIs(404);
 
         // Enable public pages
@@ -52,7 +52,7 @@ class Frontend_PublicCest extends CestAbstract
         $this->em->persist($testStation);
         $this->em->flush();
 
-        $I->amOnPage('/public/' . $testStation->getId() . '/dj');
+        $I->amOnPage('/public/' . $testStation->id . '/dj');
         $I->seeResponseCodeIs(500);
 
         // Enable WebDJ
@@ -61,7 +61,7 @@ class Frontend_PublicCest extends CestAbstract
         $this->em->persist($testStation);
         $this->em->flush();
 
-        $I->amOnPage('/public/' . $testStation->getId() . '/dj');
+        $I->amOnPage('/public/' . $testStation->id . '/dj');
         $I->seeResponseCodeIs(200);
     }
 }

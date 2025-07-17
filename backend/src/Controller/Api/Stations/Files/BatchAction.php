@@ -88,7 +88,7 @@ final class BatchAction implements SingleActionInterface
         array $params
     ): ResponseInterface {
         $station = $request->getStation();
-        $storageLocation = $station->getMediaStorageLocation();
+        $storageLocation = $station->media_storage_location;
 
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
@@ -197,8 +197,8 @@ final class BatchAction implements SingleActionInterface
                 );
 
                 if ($playlist instanceof StationPlaylist) {
-                    $affectedPlaylistIds[$playlist->getIdRequired()] = $playlist->getIdRequired();
-                    $playlists[$playlist->getIdRequired()] = $this->playlistMediaRepo->getHighestSongWeight($playlist);
+                    $affectedPlaylistIds[$playlist->id] = $playlist->id;
+                    $playlists[$playlist->id] = $this->playlistMediaRepo->getHighestSongWeight($playlist);
                 }
             }
         }
@@ -333,7 +333,7 @@ final class BatchAction implements SingleActionInterface
         if ($station->backend_config->use_manual_autodj) {
             foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
                 /** @var Station $stationRef */
-                $stationRef = $this->em->getReference(Station::class, $station->getId());
+                $stationRef = $this->em->getReference(Station::class, $station->id);
 
                 $newRequest = new StationRequest($stationRef, $media, null, true);
                 $this->em->persist($newRequest);
@@ -381,7 +381,7 @@ final class BatchAction implements SingleActionInterface
         if ($station->backend_config->use_manual_autodj) {
             foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
                 /** @var Station $station */
-                $station = $this->em->find(Station::class, $station->getIdRequired());
+                $station = $this->em->find(Station::class, $station->id);
 
                 $event = AnnotateNextSong::fromStationMedia($station, $media, true);
                 $this->eventDispatcher->dispatch($event);
@@ -398,7 +398,7 @@ final class BatchAction implements SingleActionInterface
             foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
                 try {
                     /** @var Station $station */
-                    $station = $this->em->find(Station::class, $station->getIdRequired());
+                    $station = $this->em->find(Station::class, $station->id);
 
                     $newQueue = StationQueue::fromMedia($station, $media);
                     $newQueue->timestamp_cued = $cuedTimestamp;
@@ -435,10 +435,10 @@ final class BatchAction implements SingleActionInterface
         $result = $this->parseRequest($request, $fs, true);
 
         foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
-            $mediaId = (int)$media->getId();
+            $mediaId = (int)$media->id;
 
             $message = new Message\ReprocessMediaMessage();
-            $message->storage_location_id = $storageLocation->getIdRequired();
+            $message->storage_location_id = $storageLocation->id;
             $message->media_id = $mediaId;
             $message->force = true;
 
@@ -447,7 +447,7 @@ final class BatchAction implements SingleActionInterface
 
         foreach ($this->batchUtilities->iterateUnprocessableMedia($storageLocation, $result->files) as $unprocessable) {
             $message = new Message\AddNewMediaMessage();
-            $message->storage_location_id = $storageLocation->getIdRequired();
+            $message->storage_location_id = $storageLocation->id;
             $message->path = $unprocessable->path;
 
             $this->messageBus->dispatch($message);

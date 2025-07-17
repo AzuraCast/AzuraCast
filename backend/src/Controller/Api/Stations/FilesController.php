@@ -172,7 +172,7 @@ final class FilesController extends AbstractStationApiCrudController
         Response $response,
         array $params
     ): ResponseInterface {
-        $storageLocation = $this->getStation($request)->getMediaStorageLocation();
+        $storageLocation = $this->getStation($request)->media_storage_location;
 
         $qb = $this->em->createQueryBuilder()
             ->select('e')
@@ -239,17 +239,17 @@ final class FilesController extends AbstractStationApiCrudController
         $return->links = [
             'self' => $router->fromHere(
                 routeName: $this->resourceRouteName,
-                routeParams: ['id' => $record->getIdRequired()],
+                routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             ),
             'play' => $router->fromHere(
                 'api:stations:files:play',
-                ['id' => $record->getIdRequired()],
+                ['id' => $record->id],
                 absolute: true
             ),
             'art' => $router->fromHere(
                 'api:stations:media:art',
-                ['media_id' => $record->getIdRequired()],
+                ['media_id' => $record->id],
                 absolute: !$isInternal
             ),
             'waveform' => $router->fromHere(
@@ -279,7 +279,7 @@ final class FilesController extends AbstractStationApiCrudController
     ): ResponseInterface {
         $station = $this->getStation($request);
 
-        $mediaStorage = $station->getMediaStorageLocation();
+        $mediaStorage = $station->media_storage_location;
         if ($mediaStorage->isStorageFull()) {
             return $response->withStatus(500)
                 ->withJson(new Error(500, __('This station is out of available storage space.')));
@@ -396,7 +396,7 @@ final class FilesController extends AbstractStationApiCrudController
     protected function createRecord(ServerRequest $request, array $data): object
     {
         $station = $request->getStation();
-        $mediaStorage = $station->getMediaStorageLocation();
+        $mediaStorage = $station->media_storage_location;
 
         return $this->editRecord(
             $data,
@@ -419,7 +419,7 @@ final class FilesController extends AbstractStationApiCrudController
 
         $station = $request->getStation();
 
-        $mediaStorage = $station->getMediaStorageLocation();
+        $mediaStorage = $station->media_storage_location;
         $repo = $this->em->getRepository($this->entityClass);
 
         foreach (['id', 'unique_id', 'song_id'] as $field) {

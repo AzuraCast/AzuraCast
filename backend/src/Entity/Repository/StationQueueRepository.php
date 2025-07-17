@@ -72,7 +72,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
             DQL
         )->setParameter('timestamp', Time::nowUtc())
             ->setParameter('station', $station)
-            ->setParameter('id', $row->getIdRequired())
+            ->setParameter('id', $row->id)
             ->execute();
 
         $this->em->createQuery(
@@ -109,7 +109,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
         ])->setMaxResults($playPerSongs);
 
         $recentPlayedPlaylists = $recentPlayedQuery->getSingleColumnResult();
-        return in_array($playlist->getIdRequired(), (array)$recentPlayedPlaylists, true);
+        return in_array($playlist->id, (array)$recentPlayedPlaylists, true);
     }
 
     /**

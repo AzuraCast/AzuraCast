@@ -89,7 +89,7 @@ final class ListAction extends AbstractSearchableListAction
     ): array {
         $item = $this->psr6Cache->getItem(
             urlencode(
-                'station_' . $station->getIdRequired() . '_on_demand_playlists'
+                'station_' . $station->id . '_on_demand_playlists'
             )
         );
 

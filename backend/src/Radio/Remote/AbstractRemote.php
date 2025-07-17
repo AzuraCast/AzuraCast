@@ -41,7 +41,7 @@ abstract class AbstractRemote
             function (Result $result) use ($remote) {
                 if (!empty($result->clients)) {
                     foreach ($result->clients as $client) {
-                        $client->mount = 'remote_' . $remote->getId();
+                        $client->mount = 'remote_' . $remote->id;
                     }
                 }
 

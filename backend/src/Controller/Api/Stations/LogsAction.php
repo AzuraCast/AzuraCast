@@ -94,7 +94,7 @@ final class LogsAction implements SingleActionInterface
                             'self' => $router->named(
                                 'api:stations:log',
                                 [
-                                    'station_id' => $station->getIdRequired(),
+                                    'station_id' => $station->id,
                                     'log' => $row->key,
                                 ]
                             ),

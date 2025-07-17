@@ -64,8 +64,8 @@ final class MatomoAnalytics extends AbstractConnector
         $remoteNames = [];
         foreach ($station->remotes as $remote) {
             $remoteUrl = $baseUri->withPath('/radio/remote' . $remote->mount);
-            $remoteUrls[$remote->getId()] = (string)$remoteUrl;
-            $remoteNames[$remote->getId()] = (string)$remote;
+            $remoteUrls[$remote->id] = (string)$remoteUrl;
+            $remoteNames[$remote->id] = (string)$remote;
         }
 
         // Build Matomo URI

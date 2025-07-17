@@ -223,7 +223,7 @@ final class ListenerRepository extends Repository
     private function batchAddRow(Station $station, Client $client, string $now): array
     {
         $record = [
-            'station_id' => $station->getId(),
+            'station_id' => $station->id,
             'timestamp_start' => $now,
             'listener_uid' => (int)$client->uid,
             'listener_user_agent' => $this->truncateString($client->userAgent ?? ''),

@@ -250,7 +250,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
         ORM\Column(length: 255, nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
-    public ?string $radio_base_dir = null {
+    public string $radio_base_dir {
         set {
             $newDir = Types::stringOrNull($value, true);
             if (null === $newDir) {
@@ -264,7 +264,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
                 );
             }
 
-            $this->radio_base_dir = $this->truncateNullableString($newDir, 255);
+            $this->radio_base_dir = $this->truncateString($newDir);
         }
     }
 
@@ -501,15 +501,9 @@ final class Station implements Stringable, IdentifiableEntityInterface
         Serializer\MaxDepth(1),
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
-    public ?StorageLocation $media_storage_location = null {
-        get {
-            if (null === $this->media_storage_location) {
-                throw new RuntimeException('Media storage location not initialized.');
-            }
-            return $this->media_storage_location;
-        }
+    public StorageLocation $media_storage_location {
         set {
-            if (null !== $value && StorageLocationTypes::StationMedia !== $value->type) {
+            if (StorageLocationTypes::StationMedia !== $value->type) {
                 throw new RuntimeException('Invalid storage location.');
             }
 
@@ -529,15 +523,9 @@ final class Station implements Stringable, IdentifiableEntityInterface
         Serializer\MaxDepth(1),
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
-    public ?StorageLocation $recordings_storage_location = null {
-        get {
-            if (null === $this->recordings_storage_location) {
-                throw new RuntimeException('Recordings storage location not initialized.');
-            }
-            return $this->recordings_storage_location;
-        }
+    public StorageLocation $recordings_storage_location {
         set {
-            if (null !== $value && StorageLocationTypes::StationRecordings !== $value->type) {
+            if (StorageLocationTypes::StationRecordings !== $value->type) {
                 throw new RuntimeException('Invalid storage location.');
             }
 
@@ -557,16 +545,12 @@ final class Station implements Stringable, IdentifiableEntityInterface
         Serializer\MaxDepth(1),
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
-    public ?StorageLocation $podcasts_storage_location = null {
+    public StorageLocation $podcasts_storage_location {
         get {
-            if (null === $this->podcasts_storage_location) {
-                throw new RuntimeException('Podcasts storage location not initialized.');
-            }
-
             return $this->podcasts_storage_location;
         }
         set {
-            if (null !== $value && StorageLocationTypes::StationPodcasts !== $value->type) {
+            if (StorageLocationTypes::StationPodcasts !== $value->type) {
                 throw new RuntimeException('Invalid storage location.');
             }
 
@@ -761,27 +745,12 @@ final class Station implements Stringable, IdentifiableEntityInterface
         return $this->radio_base_dir . '/' . self::HLS_DIR;
     }
 
-    public function getMediaStorageLocation(): StorageLocation
-    {
-        return $this->media_storage_location;
-    }
-
-    public function getRecordingsStorageLocation(): StorageLocation
-    {
-        return $this->recordings_storage_location;
-    }
-
-    public function getPodcastsStorageLocation(): StorageLocation
-    {
-        return $this->podcasts_storage_location;
-    }
-
     public function getStorageLocation(StorageLocationTypes $type): StorageLocation
     {
         return match ($type) {
-            StorageLocationTypes::StationMedia => $this->getMediaStorageLocation(),
-            StorageLocationTypes::StationRecordings => $this->getRecordingsStorageLocation(),
-            StorageLocationTypes::StationPodcasts => $this->getPodcastsStorageLocation(),
+            StorageLocationTypes::StationMedia => $this->media_storage_location,
+            StorageLocationTypes::StationRecordings => $this->recordings_storage_location,
+            StorageLocationTypes::StationPodcasts => $this->podcasts_storage_location,
             default => throw new InvalidArgumentException('Invalid storage location.')
         };
     }
@@ -790,9 +759,9 @@ final class Station implements Stringable, IdentifiableEntityInterface
     public function getAllStorageLocations(): array
     {
         return [
-            $this->getMediaStorageLocation(),
-            $this->getRecordingsStorageLocation(),
-            $this->getPodcastsStorageLocation(),
+            $this->media_storage_location,
+            $this->recordings_storage_location,
+            $this->podcasts_storage_location,
         ];
     }
 

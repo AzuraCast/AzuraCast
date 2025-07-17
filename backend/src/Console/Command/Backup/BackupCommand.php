@@ -120,19 +120,10 @@ final class BackupCommand extends AbstractDatabaseCommand
 
             foreach ($stations as $station) {
                 /** @var Station $station */
-                $mediaAdapter = $station->getMediaStorageLocation();
-                if ($mediaAdapter->adapter->isLocal()) {
-                    $filesToBackup[] = $mediaAdapter->path;
-                }
-
-                $podcastsAdapter = $station->getPodcastsStorageLocation();
-                if ($podcastsAdapter->adapter->isLocal()) {
-                    $filesToBackup[] = $podcastsAdapter->path;
-                }
-
-                $recordingsAdapter = $station->getRecordingsStorageLocation();
-                if ($recordingsAdapter->adapter->isLocal()) {
-                    $filesToBackup[] = $recordingsAdapter->path;
+                foreach ($station->getAllStorageLocations() as $storageLocation) {
+                    if ($storageLocation->adapter->isLocal()) {
+                        $filesToBackup[] = $storageLocation->path;
+                    }
                 }
             }
         }

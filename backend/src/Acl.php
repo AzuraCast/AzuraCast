@@ -152,7 +152,7 @@ final class Acl
         }
 
         if ($stationId instanceof Station) {
-            $stationId = $stationId->getId();
+            $stationId = $stationId->id;
         }
 
         $numRoles = $user->roles->count();

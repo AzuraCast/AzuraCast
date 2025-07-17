@@ -84,7 +84,7 @@ final class UploadAction implements SingleActionInterface
         }
 
         // Lookup tables for later.
-        $mediaStorage = $station->getMediaStorageLocation();
+        $mediaStorage = $station->media_storage_location;
 
         $mediaByPath = [];
         $mediaByUniqueId = [];

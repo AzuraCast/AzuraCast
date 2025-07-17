@@ -32,14 +32,4 @@ trait HasUniqueId
         Groups([EntityGroupsInterface::GROUP_ID, EntityGroupsInterface::GROUP_ALL])
     ]
     public protected(set) string $id;
-
-    public function getId(): ?string
-    {
-        return $this->id ?? null;
-    }
-
-    public function getIdRequired(): string
-    {
-        return $this->id;
-    }
 }

@@ -15,7 +15,7 @@ class Station_IndexCest extends CestAbstract
     public function viewIndex(FunctionalTester $I): void
     {
         $testStation = $this->getTestStation();
-        $stationId = $testStation->getId();
+        $stationId = $testStation->id;
 
         $I->wantTo('See a per-station management panel.');
 

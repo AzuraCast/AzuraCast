@@ -76,7 +76,7 @@ final class PutApplyToAction extends AbstractClonableAction implements SingleAct
                 $station,
                 $directory,
                 [
-                    $playlist->getIdRequired() => 0,
+                    $playlist->id => 0,
                 ]
             );
         }

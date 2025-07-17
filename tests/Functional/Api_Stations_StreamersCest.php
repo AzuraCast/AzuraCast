@@ -23,7 +23,7 @@ class Api_Stations_StreamersCest extends CestAbstract
         $this->em->persist($station);
         $this->em->flush();
 
-        $listUrl = '/api/station/' . $station->getId() . '/streamers';
+        $listUrl = '/api/station/' . $station->id . '/streamers';
 
         $I->sendPOST(
             $listUrl,

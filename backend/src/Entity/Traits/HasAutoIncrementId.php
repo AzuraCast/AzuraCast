@@ -30,14 +30,4 @@ trait HasAutoIncrementId
         Groups([EntityGroupsInterface::GROUP_ID, EntityGroupsInterface::GROUP_ALL])
     ]
     public protected(set) int $id;
-
-    public function getId(): ?int
-    {
-        return $this->id ?? null;
-    }
-
-    public function getIdRequired(): int
-    {
-        return $this->id;
-    }
 }

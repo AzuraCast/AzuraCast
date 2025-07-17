@@ -267,7 +267,7 @@ final class StreamersController extends AbstractScheduledEntityController
         $return['has_custom_art'] = (0 !== $record->art_updated_at);
 
         $routeParams = [
-            'id' => $record->getIdRequired(),
+            'id' => $record->id,
         ];
         if ($return['has_custom_art']) {
             $routeParams['timestamp'] = $record->art_updated_at;
@@ -281,18 +281,18 @@ final class StreamersController extends AbstractScheduledEntityController
 
         $return['links']['broadcasts'] = $router->fromHere(
             routeName: 'api:stations:streamer:broadcasts',
-            routeParams: ['id' => $record->getId()],
+            routeParams: ['id' => $record->id],
             absolute: !$isInternal
         );
         $return['links']['broadcasts_batch'] = $router->fromHere(
             routeName: 'api:stations:streamer:broadcasts:batch',
-            routeParams: ['id' => $record->getId()],
+            routeParams: ['id' => $record->id],
             absolute: !$isInternal
         );
 
         $return['links']['art'] = $router->fromHere(
             routeName: 'api:stations:streamer:art-internal',
-            routeParams: ['id' => $record->getId()],
+            routeParams: ['id' => $record->id],
             absolute: !$isInternal
         );
 

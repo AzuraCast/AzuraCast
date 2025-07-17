@@ -64,7 +64,7 @@ final class RunAnalyticsTask extends AbstractTask
         $stations = [];
         foreach ($stationsRaw as $station) {
             /** @var Station $station */
-            $stations[$station->getId()] = $station;
+            $stations[$station->id] = $station;
         }
 
         $now = Time::nowUtc();

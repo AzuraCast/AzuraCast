@@ -43,7 +43,7 @@ class Api_Admin_RolesCest extends CestAbstract
         $superAdminRole = $permissionRepo->ensureSuperAdministratorRole();
 
         $I->sendPut(
-            '/api/admin/role/' . $superAdminRole->getIdRequired(),
+            '/api/admin/role/' . $superAdminRole->id,
             [
                 'name' => 'Edited Role',
             ]
@@ -52,7 +52,7 @@ class Api_Admin_RolesCest extends CestAbstract
         $I->seeResponseCodeIsClientError();
 
         $I->sendDelete(
-            '/api/admin/role/' . $superAdminRole->getIdRequired(),
+            '/api/admin/role/' . $superAdminRole->id,
         );
 
         $I->seeResponseCodeIsClientError();

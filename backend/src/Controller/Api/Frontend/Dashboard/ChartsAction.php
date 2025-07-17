@@ -73,7 +73,7 @@ final class ChartsAction implements SingleActionInterface
         // Generate unique cache ID for stations.
         $stationIds = [];
         foreach ($stations as $station) {
-            $stationId = $station->getId();
+            $stationId = $station->id;
             $stationIds[$stationId] = $stationId;
         }
         $cacheName = 'homepage_metrics_' . implode(',', $stationIds);

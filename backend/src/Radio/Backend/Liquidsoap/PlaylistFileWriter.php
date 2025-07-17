@@ -66,7 +66,7 @@ final class PlaylistFileWriter implements EventSubscriberInterface
                 [
                     'message' => $e->getMessage(),
                     'playlist' => $playlistVarName,
-                    'station' => $station->getId(),
+                    'station' => $station->id,
                 ]
             );
         }

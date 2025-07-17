@@ -96,7 +96,7 @@ final class GetQuotaAction implements SingleActionInterface
                 SELECT COUNT(sm.id) FROM App\Entity\StationMedia sm
                 WHERE sm.storage_location = :storageLocation
             DQL
-        )->setParameter('storageLocation', $station->getMediaStorageLocation())
+        )->setParameter('storageLocation', $station->media_storage_location)
             ->getSingleScalarResult();
     }
 
@@ -107,7 +107,7 @@ final class GetQuotaAction implements SingleActionInterface
                 SELECT COUNT(pm.id) FROM App\Entity\PodcastMedia pm
                 WHERE pm.storage_location = :storageLocation
             DQL
-        )->setParameter('storageLocation', $station->getPodcastsStorageLocation())
+        )->setParameter('storageLocation', $station->podcasts_storage_location)
             ->getSingleScalarResult();
     }
 }

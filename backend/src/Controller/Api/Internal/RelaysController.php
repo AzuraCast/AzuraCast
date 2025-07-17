@@ -115,7 +115,7 @@ final class RelaysController
         return array_filter(
             $allStations,
             static function (Station $station) use ($acl) {
-                return $acl->isAllowed(StationPermissions::Broadcasting, $station->getId());
+                return $acl->isAllowed(StationPermissions::Broadcasting, $station->id);
             }
         );
     }

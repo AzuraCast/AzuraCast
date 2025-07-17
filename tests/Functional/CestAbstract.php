@@ -59,7 +59,7 @@ abstract class CestAbstract
         $this->em->clear();
 
         if (null !== $this->test_station) {
-            $I->sendDelete('/api/admin/station/' . $this->test_station->getId());
+            $I->sendDelete('/api/admin/station/' . $this->test_station->id);
 
             $this->em->clear();
         }
@@ -167,7 +167,7 @@ abstract class CestAbstract
 
         $songSrc = '/var/azuracast/www/resources/error.mp3';
 
-        $storageLocation = $testStation->getMediaStorageLocation();
+        $storageLocation = $testStation->media_storage_location;
 
         $storageLocationRepo = $this->di->get(StorageLocationRepository::class);
         $storageFs = $storageLocationRepo->getAdapter($storageLocation)->getFilesystem();

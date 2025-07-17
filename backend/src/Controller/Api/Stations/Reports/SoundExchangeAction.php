@@ -123,7 +123,7 @@ final class SoundExchangeAction implements SingleActionInterface
                 AND sp.station IS NULL OR sp.station = :station
             DQL
         )->setParameter('station', $station)
-            ->setParameter('storageLocation', $station->getMediaStorageLocation())
+            ->setParameter('storageLocation', $station->media_storage_location)
             ->getArrayResult();
 
         $mediaById = array_column($allMedia, null, 'id');

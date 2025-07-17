@@ -199,7 +199,7 @@ class BroadcastsController extends AbstractApiCrudController
         $paginator->setPostprocessor(
             function (StationStreamerBroadcast $row) use ($id, $router, $isInternal, $fsRecordings) {
                 $return = new ApiStationStreamerBroadcast(
-                    $row->getIdRequired(),
+                    $row->id,
                     $row->timestampStart->format(Time::JS_ISO8601_FORMAT),
                     $row->timestampEnd?->format(Time::JS_ISO8601_FORMAT)
                 );

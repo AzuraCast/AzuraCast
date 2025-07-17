@@ -220,7 +220,7 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
         }
 
         $message = new Message\DispatchWebhookMessage();
-        $message->station_id = $station->getIdRequired();
+        $message->station_id = $station->id;
         $message->np = $np;
         $message->triggers = $triggers;
 

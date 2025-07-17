@@ -34,16 +34,6 @@ trait HasSplitTokenFields
     #[AuditIgnore]
     protected readonly string $verifier;
 
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    public function getIdRequired(): string
-    {
-        return $this->id;
-    }
-
     public function verify(SplitToken $userSuppliedToken): bool
     {
         return $userSuppliedToken->verify($this->verifier);

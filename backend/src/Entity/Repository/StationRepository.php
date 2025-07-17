@@ -150,8 +150,8 @@ final class StationRepository extends Repository
     public function reduceMountsBitrateToLimit(Station $station): void
     {
         foreach ($station->mounts as $mount) {
-            if ($mount->getAutodjBitrate() > $station->max_bitrate) {
-                $mount->setAutodjBitrate($station->max_bitrate);
+            if ($mount->autodj_bitrate > $station->max_bitrate) {
+                $mount->autodj_bitrate = $station->max_bitrate;
                 $this->em->persist($mount);
             }
         }

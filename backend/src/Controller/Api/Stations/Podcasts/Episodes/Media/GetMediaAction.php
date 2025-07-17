@@ -85,7 +85,7 @@ final class GetMediaAction implements SingleActionInterface
                         set_time_limit(600);
                         return $response->streamFilesystemFile(
                             $fsMedia,
-                            $playlistMedia->getPath()
+                            $playlistMedia->path
                         );
                     }
                     break;

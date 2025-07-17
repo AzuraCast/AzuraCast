@@ -59,8 +59,10 @@ final class StationStreamer implements
         Attributes\AuditIgnore
     ]
     public string $streamer_password {
+        // @phpstan-ignore propertyGetHook.noRead
         get => '';
-        set {
+        // @phpstan-ignore propertySetHook.noAssign
+        set (string|null $value) {
             $streamerPassword = trim($value ?? '');
 
             if (!empty($streamerPassword)) {

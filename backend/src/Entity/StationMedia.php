@@ -59,7 +59,10 @@ final class StationMedia implements
     public float $length = 0.0;
 
     #[ORM\Column(length: 500)]
-    public string $path;
+    public string $path {
+        get => $this->path;
+        set => $this->truncateString($value, 500);
+    }
 
     #[ORM\Column(nullable: false)]
     public int $mtime;
@@ -110,7 +113,7 @@ final class StationMedia implements
         $this->mtime = $this->uploaded_at = time();
         $this->unique_id = bin2hex(random_bytes(12));
 
-        $this->setPath($path);
+        $this->path = $path;
     }
 
     /**
@@ -122,16 +125,6 @@ final class StationMedia implements
             self::getArtPath($this->unique_id),
             self::getWaveformPath($this->unique_id),
         ];
-    }
-
-    public function getPath(): string
-    {
-        return $this->path;
-    }
-
-    public function setPath(string $path): void
-    {
-        $this->path = $path;
     }
 
     /**

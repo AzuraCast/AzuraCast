@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 /**
  * @template TEntity as ApiKey
- * @extends AbstractApiCrudController<TEntity>
+ * @extends AbstractApiCrudController<ApiKey>
  */
 #[
     OA\Get(

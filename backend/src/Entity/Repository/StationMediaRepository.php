@@ -219,7 +219,7 @@ final class StationMediaRepository extends Repository
         $title = $media->title;
 
         if (null === $artist || null === $title) {
-            $filename = pathinfo($media->getPath(), PATHINFO_FILENAME);
+            $filename = pathinfo($media->path, PATHINFO_FILENAME);
             $filename = str_replace('_', ' ', $filename);
 
             $songObj = Song::createFromText($filename);
@@ -304,7 +304,7 @@ final class StationMediaRepository extends Repository
     ): void {
         $fs ??= $this->getFilesystem($media);
         $fs->withLocalFile(
-            $media->getPath(),
+            $media->path,
             function ($path) use ($media, $fs): void {
                 $this->writeWaveform($media, $path, $fs);
             }
@@ -362,7 +362,7 @@ final class StationMediaRepository extends Repository
 
         if ($deleteFile) {
             try {
-                $fs->delete($media->getPath());
+                $fs->delete($media->path);
             } catch (FilesystemException) {
                 // Skip
             }

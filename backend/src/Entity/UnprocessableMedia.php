@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 final class UnprocessableMedia implements PathAwareInterface, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
+    use Traits\TruncateStrings;
 
     public const int REPROCESS_THRESHOLD_MINIMUM = 604800; // One week
 
@@ -24,7 +25,10 @@ final class UnprocessableMedia implements PathAwareInterface, IdentifiableEntity
     public readonly StorageLocation $storage_location;
 
     #[ORM\Column(length: 500)]
-    public string $path;
+    public string $path {
+        get => $this->path;
+        set => $this->truncateString($value, 500);
+    }
 
     #[ORM\Column(nullable: false)]
     public int $mtime = 0;
@@ -35,16 +39,6 @@ final class UnprocessableMedia implements PathAwareInterface, IdentifiableEntity
     public function __construct(StorageLocation $storageLocation, string $path)
     {
         $this->storage_location = $storageLocation;
-        $this->path = $path;
-    }
-
-    public function getPath(): string
-    {
-        return $this->path;
-    }
-
-    public function setPath(string $path): void
-    {
         $this->path = $path;
     }
 

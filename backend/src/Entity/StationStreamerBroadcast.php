@@ -57,7 +57,7 @@ final class StationStreamerBroadcast implements IdentifiableEntityInterface, Str
         $this->streamer = $streamer;
         $this->station = $streamer->getStation();
 
-        $this->timestampStart = Time::toUtcCarbonImmutable($timestampStart) ?? Time::nowUtc();
+        $this->timestampStart = Time::toNullableUtcCarbonImmutable($timestampStart) ?? Time::nowUtc();
     }
 
     public function __toString(): string

@@ -509,7 +509,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
             return $this->media_storage_location;
         }
         set {
-            if (null !== $value && StorageLocationTypes::StationMedia !== $value->getType()) {
+            if (null !== $value && StorageLocationTypes::StationMedia !== $value->type) {
                 throw new RuntimeException('Invalid storage location.');
             }
 
@@ -537,7 +537,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
             return $this->recordings_storage_location;
         }
         set {
-            if (null !== $value && StorageLocationTypes::StationRecordings !== $value->getType()) {
+            if (null !== $value && StorageLocationTypes::StationRecordings !== $value->type) {
                 throw new RuntimeException('Invalid storage location.');
             }
 
@@ -566,7 +566,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
             return $this->podcasts_storage_location;
         }
         set {
-            if (null !== $value && StorageLocationTypes::StationPodcasts !== $value->getType()) {
+            if (null !== $value && StorageLocationTypes::StationPodcasts !== $value->type) {
                 throw new RuntimeException('Invalid storage location.');
             }
 
@@ -584,6 +584,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
         Attributes\AuditIgnore
     ]
     public ?StationStreamer $current_streamer = null {
+        // @phpstan-ignore propertySetHook.noAssign
         set {
             if (null !== $this->current_streamer || null !== $value) {
                 $this->current_streamer = $value;

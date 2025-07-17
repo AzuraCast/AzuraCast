@@ -140,8 +140,8 @@ final class StationPlaylistMediaRepository extends Repository
         $record = ($isNonSequential)
             ? $this->repository->findOneBy(
                 [
-                    'media_id' => $media->id,
-                    'playlist_id' => $playlist->id,
+                    'media' => $media,
+                    'playlist' => $playlist,
                 ]
             ) : null;
 

@@ -27,7 +27,10 @@ final class StationPlaylistFolder implements
     public StationPlaylist $playlist;
 
     #[ORM\Column(length: 500)]
-    public string $path;
+    public string $path {
+        get => $this->path;
+        set => $this->truncateString($value, 500);
+    }
 
     public function __construct(Station $station, StationPlaylist $playlist, string $path)
     {
@@ -44,15 +47,5 @@ final class StationPlaylistFolder implements
     public function setStation(Station $station): void
     {
         $this->station = $station;
-    }
-
-    public function getPath(): string
-    {
-        return $this->path;
-    }
-
-    public function setPath(string $path): void
-    {
-        $this->path = $this->truncateString($path, 500);
     }
 }

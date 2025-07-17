@@ -72,7 +72,7 @@ final class Annotations implements EventSubscriberInterface
     {
         $media = $event->getMedia();
         if ($media instanceof StationMedia) {
-            $event->setSongPath('media:' . ltrim($media->getPath(), '/'));
+            $event->setSongPath('media:' . ltrim($media->path, '/'));
         } else {
             $queue = $event->getQueue();
             if ($queue instanceof StationQueue) {

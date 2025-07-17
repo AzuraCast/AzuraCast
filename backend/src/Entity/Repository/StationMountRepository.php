@@ -95,7 +95,7 @@ final class StationMountRepository extends AbstractStationBasedRepository
 
     public function getDefaultMount(Station $station): ?StationMount
     {
-        $mount = $this->repository->findOneBy(['station_id' => $station->id, 'is_default' => true]);
+        $mount = $this->repository->findOneBy(['station' => $station, 'is_default' => true]);
 
         if ($mount instanceof StationMount) {
             return $mount;

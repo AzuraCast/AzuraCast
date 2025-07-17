@@ -331,7 +331,8 @@ final class Configuration
             // Get all station used ports.
             $stationConfigs = $this->em->createQuery(
                 <<<'DQL'
-                    SELECT s.id, s.name, s.frontend_type, s.frontend_config, s.backend_type, s.backend_config
+                    SELECT s.id, s.name, s.frontend_type, s.frontend_config_raw AS frontend_config,
+                        s.backend_type, s.backend_config_raw AS backend_config
                     FROM App\Entity\Station s
                 DQL
             )->getArrayResult();

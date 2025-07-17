@@ -44,8 +44,10 @@ final readonly class ApiKey implements Stringable, IdentifiableEntityInterface, 
         SplitToken $token,
         string $comment = ''
     ) {
+        $this->id = $token->identifier;
+        $this->verifier = $token->hashVerifier();
+        
         $this->user = $user;
-        $this->setFromToken($token);
         $this->comment = $this->truncateString($comment);
     }
 

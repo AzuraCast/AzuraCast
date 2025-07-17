@@ -34,12 +34,6 @@ trait HasSplitTokenFields
     #[AuditIgnore]
     protected readonly string $verifier;
 
-    protected function setFromToken(SplitToken $token): void
-    {
-        $this->id = $token->identifier;
-        $this->verifier = $token->hashVerifier();
-    }
-
     public function getId(): string
     {
         return $this->id;

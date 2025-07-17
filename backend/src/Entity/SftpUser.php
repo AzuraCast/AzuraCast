@@ -49,10 +49,12 @@ final class SftpUser implements
         Assert\NotBlank
     ]
     public string $password {
+        // @phpstan-ignore propertyGetHook.noRead
         get => '';
+        // @phpstan-ignore propertySetHook.noAssign
         set {
-            if (!empty($password)) {
-                $this->password = password_hash($password, PASSWORD_ARGON2ID);
+            if (!empty($value)) {
+                $this->password = password_hash($value, PASSWORD_ARGON2ID);
             }
         }
     }

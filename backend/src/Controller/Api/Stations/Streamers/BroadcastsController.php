@@ -220,7 +220,7 @@ class BroadcastsController extends AbstractApiCrudController
                     $routeParams['id'] = $row->streamer->id;
                 }
 
-                $recordingPath = $row->getRecordingPath();
+                $recordingPath = $row->recordingPath;
 
                 if (!empty($recordingPath) && $fsRecordings->fileExists($recordingPath)) {
                     $return->recording = new StationStreamerBroadcastRecording(
@@ -262,7 +262,7 @@ class BroadcastsController extends AbstractApiCrudController
                 ->withJson(Error::notFound());
         }
 
-        $recordingPath = $broadcast->getRecordingPath();
+        $recordingPath = $broadcast->recordingPath;
 
         if (empty($recordingPath)) {
             return $response->withStatus(400)
@@ -293,7 +293,7 @@ class BroadcastsController extends AbstractApiCrudController
                 ->withJson(Error::notFound());
         }
 
-        $recordingPath = $broadcast->getRecordingPath();
+        $recordingPath = $broadcast->recordingPath;
 
         if (!empty($recordingPath)) {
             $fsRecordings = $this->stationFilesystems->getRecordingsFilesystem($station);

@@ -191,7 +191,7 @@ final class BatchAction implements SingleActionInterface
             } else {
                 $playlist = $this->em->getRepository(StationPlaylist::class)->findOneBy(
                     [
-                        'station_id' => $station->id,
+                        'station' => $station,
                         'id' => (int)$playlistId,
                     ]
                 );
@@ -214,7 +214,7 @@ final class BatchAction implements SingleActionInterface
                     $playlists
                 );
             } catch (Exception $e) {
-                $result->errors[] = $media->getPath() . ': ' . $e->getMessage();
+                $result->errors[] = $media->path . ': ' . $e->getMessage();
             }
         }
 
@@ -311,7 +311,7 @@ final class BatchAction implements SingleActionInterface
                             }
                         }
                     } catch (Throwable $e) {
-                        $result->errors[] = $record->getPath() . ': ' . $e->getMessage();
+                        $result->errors[] = $record->path . ': ' . $e->getMessage();
                     }
                 }
             }
@@ -416,7 +416,7 @@ final class BatchAction implements SingleActionInterface
                         $event->buildAnnotations()
                     );
                 } catch (Throwable $e) {
-                    $result->errors[] = sprintf('%s: %s', $media->getPath(), $e->getMessage());
+                    $result->errors[] = sprintf('%s: %s', $media->path, $e->getMessage());
                 }
 
                 $cuedTimestamp = $cuedTimestamp->addSeconds(10);
@@ -448,7 +448,7 @@ final class BatchAction implements SingleActionInterface
         foreach ($this->batchUtilities->iterateUnprocessableMedia($storageLocation, $result->files) as $unprocessable) {
             $message = new Message\AddNewMediaMessage();
             $message->storage_location_id = $storageLocation->getIdRequired();
-            $message->path = $unprocessable->getPath();
+            $message->path = $unprocessable->path;
 
             $this->messageBus->dispatch($message);
         }

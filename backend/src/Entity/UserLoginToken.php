@@ -25,8 +25,10 @@ final readonly class UserLoginToken implements SplitTokenEntityInterface
 
     public function __construct(User $user, SplitToken $token)
     {
+        $this->id = $token->identifier;
+        $this->verifier = $token->hashVerifier();
+
         $this->user = $user;
-        $this->setFromToken($token);
         $this->created_at = time();
     }
 

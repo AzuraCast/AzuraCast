@@ -121,7 +121,7 @@ final class MediaProcessor
     ): ?StationMedia {
         if ($pathOrMedia instanceof StationMedia) {
             $record = $pathOrMedia;
-            $path = $pathOrMedia->getPath();
+            $path = $pathOrMedia->path;
         } else {
             $record = null;
             $path = $pathOrMedia;
@@ -175,7 +175,7 @@ final class MediaProcessor
         bool $force = false
     ): bool {
         $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
-        $path = $media->getPath();
+        $path = $media->path;
 
         if (!$fs->fileExists($path)) {
             throw CannotProcessMediaException::forPath(

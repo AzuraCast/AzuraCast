@@ -132,7 +132,7 @@ final class BatchAction extends BroadcastsController implements SingleActionInte
             ];
 
             try {
-                $recordingPath = $row->getRecordingPath();
+                $recordingPath = $row->recordingPath;
                 if (!empty($recordingPath)) {
                     $fsRecordings->delete($recordingPath);
                 }

@@ -28,7 +28,7 @@ final class ClearExtraMetadataCommand extends AbstractBatchMediaCommand
         $reprocessMediaQueue = $this->em->createQueryBuilder()
             ->update(StationMedia::class, 'sm')
             ->set('sm.mtime', 0)
-            ->set('sm.extra_metadata', 'null');
+            ->set('sm.extra_metadata_raw', 'null');
 
         if (null === $station) {
             $io->section('Clearing extra metadata for all stations...');

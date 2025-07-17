@@ -74,7 +74,7 @@ final class StationQueue implements
 
     #[ORM\Column(type: 'datetime_immutable', precision: 6)]
     public DateTimeImmutable $timestamp_cued {
-        set (DateTimeImmutable|string|null $value) => Time::toNullableUtcCarbonImmutable($value);
+        set (DateTimeImmutable|string|null $value) => Time::toUtcCarbonImmutable($value);
     }
 
     #[ORM\Column(type: 'datetime_immutable', precision: 6, nullable: true)]

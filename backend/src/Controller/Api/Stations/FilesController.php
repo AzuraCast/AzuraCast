@@ -339,13 +339,13 @@ final class FilesController extends AbstractStationApiCrudController
 
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
-        $oldPath = $record->getPath();
+        $oldPath = $record->path;
         $isRenamed = (isset($data['path']) && $data['path'] !== $oldPath);
 
         $record = $this->fromArray($data, $record);
 
         if ($isRenamed) {
-            $fsMedia->move($oldPath, $record->getPath());
+            $fsMedia->move($oldPath, $record->path);
         }
 
         $errors = $this->validator->validate($record);

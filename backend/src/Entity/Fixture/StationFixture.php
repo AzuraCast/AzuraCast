@@ -31,9 +31,9 @@ final class StationFixture extends AbstractFixture
 
         $stationQuota = getenv('INIT_STATION_QUOTA');
         if (!empty($stationQuota)) {
-            $mediaStorage->setStorageQuota($stationQuota);
-            $recordingsStorage->setStorageQuota($stationQuota);
-            $podcastsStorage->setStorageQuota($stationQuota);
+            $mediaStorage->storageQuota = $stationQuota;
+            $recordingsStorage->storageQuota = $stationQuota;
+            $podcastsStorage->storageQuota = $stationQuota;
         }
 
         $manager->persist($station);

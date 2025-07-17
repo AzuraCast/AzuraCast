@@ -85,7 +85,7 @@ final class BackupCommand extends AbstractDatabaseCommand
 
             $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
-            if ($storageLocation->isLocal()) {
+            if ($storageLocation->adapter->isLocal()) {
                 $destPath = $fs->getLocalPath($path);
             } else {
                 $tmpPath = $fsUtils->tempnam(
@@ -121,18 +121,18 @@ final class BackupCommand extends AbstractDatabaseCommand
             foreach ($stations as $station) {
                 /** @var Station $station */
                 $mediaAdapter = $station->getMediaStorageLocation();
-                if ($mediaAdapter->isLocal()) {
-                    $filesToBackup[] = $mediaAdapter->getPath();
+                if ($mediaAdapter->adapter->isLocal()) {
+                    $filesToBackup[] = $mediaAdapter->path;
                 }
 
                 $podcastsAdapter = $station->getPodcastsStorageLocation();
-                if ($podcastsAdapter->isLocal()) {
-                    $filesToBackup[] = $podcastsAdapter->getPath();
+                if ($podcastsAdapter->adapter->isLocal()) {
+                    $filesToBackup[] = $podcastsAdapter->path;
                 }
 
                 $recordingsAdapter = $station->getRecordingsStorageLocation();
-                if ($recordingsAdapter->isLocal()) {
-                    $filesToBackup[] = $recordingsAdapter->getPath();
+                if ($recordingsAdapter->adapter->isLocal()) {
+                    $filesToBackup[] = $recordingsAdapter->path;
                 }
             }
         }

@@ -174,7 +174,7 @@ final class HistoryAction implements SingleActionInterface
 
             $streamer = $sh->streamer;
             $streamerName = (null !== $streamer)
-                ? $streamer->getDisplayName()
+                ? $streamer->display_name
                 : '';
 
             $csv->insertOne([

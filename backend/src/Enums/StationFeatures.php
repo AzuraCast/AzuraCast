@@ -28,7 +28,7 @@ enum StationFeatures
         return match ($this) {
             self::Media, self::CustomLiquidsoapConfig => $backendEnabled,
             self::Streamers => $backendEnabled && $station->enable_streamers,
-            self::Sftp => $backendEnabled && $station->media_storage_location->isLocal(),
+            self::Sftp => $backendEnabled && $station->media_storage_location->adapter->isLocal(),
             self::MountPoints => $station->frontend_type->supportsMounts(),
             self::HlsStreams => $backendEnabled && $station->enable_hls,
             self::Requests => $backendEnabled && $station->enable_requests,

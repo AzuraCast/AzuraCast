@@ -240,7 +240,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $commonLibPath = $this->environment->getParentDirectory() . '/liquidsoap/azuracast.liq';
 
         $mediaStorageLocation = $station->getMediaStorageLocation();
-        $stationMediaDir = $mediaStorageLocation->isLocal()
+        $stationMediaDir = $mediaStorageLocation->adapter->isLocal()
             ? $mediaStorageLocation->getFilteredPath()
             : 'api';
 

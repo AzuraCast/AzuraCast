@@ -194,14 +194,14 @@ final class Scheduler
         StationStreamer $streamer,
         ?DateTimeImmutable $now = null
     ): bool {
-        if (!$streamer->enforceSchedule()) {
+        if (!$streamer->enforce_schedule) {
             return true;
         }
 
-        $stationTz = $streamer->getStation()->getTimezoneObject();
+        $stationTz = $streamer->station->getTimezoneObject();
 
         $scheduleItem = $this->getActiveScheduleFromCollection(
-            $streamer->getScheduleItems(),
+            $streamer->schedule_items,
             $stationTz,
             $now
         );

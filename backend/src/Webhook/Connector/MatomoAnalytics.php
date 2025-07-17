@@ -38,7 +38,7 @@ final class MatomoAnalytics extends AbstractConnector
         NowPlaying $np,
         array $triggers
     ): void {
-        $config = $webhook->getConfig();
+        $config = $webhook->config ?? [];
 
         $matomoUrl = Types::stringOrNull($config['matomo_url'], true);
         $siteId = Types::intOrNull($config['site_id']);

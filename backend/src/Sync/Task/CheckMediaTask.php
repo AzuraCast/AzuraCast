@@ -140,7 +140,7 @@ final class CheckMediaTask extends AbstractTask
             }
         }
 
-        $storageLocation->setStorageUsed($totalSize);
+        $storageLocation->storageUsed = $totalSize;
         $this->em->persist($storageLocation);
         $this->em->flush();
 

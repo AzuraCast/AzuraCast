@@ -415,7 +415,7 @@ class StationsController extends AbstractApiCrudController
         $allStorageLocationsMoved = true;
 
         foreach ($station->getAllStorageLocations() as $storageLocation) {
-            if (StorageLocationAdapters::Local !== $storageLocation->getAdapter()) {
+            if (StorageLocationAdapters::Local !== $storageLocation->adapter) {
                 continue;
             }
 
@@ -425,7 +425,7 @@ class StationsController extends AbstractApiCrudController
                 continue;
             }
 
-            $locationPath = $storageLocation->getPath();
+            $locationPath = $storageLocation->path;
 
             if (Path::isBasePath($originalPath, $locationPath)) {
                 $newLocationPath = Path::makeAbsolute(
@@ -433,7 +433,7 @@ class StationsController extends AbstractApiCrudController
                     $newPath
                 );
 
-                $storageLocation->setPath($newLocationPath);
+                $storageLocation->path = $newLocationPath;
                 $this->em->persist($storageLocation);
 
                 File::moveDirectoryContents(

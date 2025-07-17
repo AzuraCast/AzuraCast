@@ -200,25 +200,24 @@ class BroadcastsController extends AbstractApiCrudController
             function (StationStreamerBroadcast $row) use ($id, $router, $isInternal, $fsRecordings) {
                 $return = new ApiStationStreamerBroadcast(
                     $row->getIdRequired(),
-                    $row->getTimestampStart()->format(Time::JS_ISO8601_FORMAT),
-                    $row->getTimestampEnd()?->format(Time::JS_ISO8601_FORMAT)
+                    $row->timestampStart->format(Time::JS_ISO8601_FORMAT),
+                    $row->timestampEnd?->format(Time::JS_ISO8601_FORMAT)
                 );
 
-
                 if (null === $id) {
-                    $streamer = $row->getStreamer();
+                    $streamer = $row->streamer;
                     $return->streamer = new ApiStationStreamer(
-                        $streamer->getIdRequired(),
-                        $streamer->getStreamerUsername(),
-                        $streamer->getDisplayName()
+                        $streamer->id,
+                        $streamer->streamer_username,
+                        $streamer->display_name
                     );
                 }
 
                 $routeParams = [
-                    'broadcast_id' => $row->getIdRequired(),
+                    'broadcast_id' => $row->id,
                 ];
                 if (null === $id) {
-                    $routeParams['id'] = $row->getStreamer()->getIdRequired();
+                    $routeParams['id'] = $row->streamer->id;
                 }
 
                 $recordingPath = $row->getRecordingPath();
@@ -277,7 +276,7 @@ class BroadcastsController extends AbstractApiCrudController
         return $response->streamFilesystemFile(
             $fsRecordings,
             $recordingPath,
-            File::sanitizeFileName($broadcast->getStreamer()->getDisplayName()) . '_' . $filename
+            File::sanitizeFileName($broadcast->streamer->display_name) . '_' . $filename
         );
     }
 

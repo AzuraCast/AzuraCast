@@ -71,7 +71,7 @@ final class SftpEventAction implements SingleActionInterface
 
         $storageLocation = $sftpUser->getStation()->getMediaStorageLocation();
 
-        if (!$storageLocation->isLocal()) {
+        if (!$storageLocation->adapter->isLocal()) {
             $this->logger->error(sprintf('Storage location "%s" is not local.', $storageLocation));
             return $errorResponse;
         }
@@ -106,7 +106,7 @@ final class SftpEventAction implements SingleActionInterface
         StorageLocation $storageLocation,
         string $path
     ): void {
-        $pathPrefixer = new PathPrefixer($storageLocation->getPath(), DIRECTORY_SEPARATOR);
+        $pathPrefixer = new PathPrefixer($storageLocation->path, DIRECTORY_SEPARATOR);
         $relativePath = $pathPrefixer->stripPrefix($path);
 
         $this->logger->notice(
@@ -128,7 +128,7 @@ final class SftpEventAction implements SingleActionInterface
         StorageLocation $storageLocation,
         string $path
     ): void {
-        $pathPrefixer = new PathPrefixer($storageLocation->getPath(), DIRECTORY_SEPARATOR);
+        $pathPrefixer = new PathPrefixer($storageLocation->path, DIRECTORY_SEPARATOR);
         $relativePath = $pathPrefixer->stripPrefix($path);
 
         $this->logger->notice(
@@ -169,7 +169,7 @@ final class SftpEventAction implements SingleActionInterface
             throw new LogicException('No new path specified for rename.');
         }
 
-        $pathPrefixer = new PathPrefixer($storageLocation->getPath(), DIRECTORY_SEPARATOR);
+        $pathPrefixer = new PathPrefixer($storageLocation->path, DIRECTORY_SEPARATOR);
 
         $from = $pathPrefixer->stripPrefix($path);
         $to = $pathPrefixer->stripPrefix($newPath);

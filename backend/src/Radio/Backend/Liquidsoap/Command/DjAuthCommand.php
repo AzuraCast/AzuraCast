@@ -52,8 +52,8 @@ final class DjAuthCommand extends AbstractCommand
 
         return [
             'allow' => $streamer->authenticate($pass) && $this->scheduler->canStreamerStreamNow($streamer),
-            'username' => $streamer->getStreamerUsername(),
-            'display_name' => $streamer->getDisplayName(),
+            'username' => $streamer->streamer_username,
+            'display_name' => $streamer->display_name,
         ];
     }
 

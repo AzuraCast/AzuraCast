@@ -70,10 +70,10 @@ final class UnprocessableMediaRepository extends Repository
 
         if (!$record instanceof UnprocessableMedia) {
             $record = new UnprocessableMedia($storageLocation, $path);
-            $record->setError($error);
+            $record->error = $error;
         }
 
-        $record->setMtime(time() + 5);
+        $record->mtime = time() + 5;
 
         $this->em->persist($record);
         $this->em->flush();

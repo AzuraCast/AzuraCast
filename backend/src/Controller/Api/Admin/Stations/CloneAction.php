@@ -224,7 +224,7 @@ final class CloneAction extends StationsController implements SingleActionInterf
             ) use (
                 $copier
             ): void {
-                foreach ($oldStreamer->getScheduleItems() as $oldScheduleItem) {
+                foreach ($oldStreamer->schedule_items as $oldScheduleItem) {
                     $this->em->detach($oldScheduleItem);
 
                     $newScheduleItem = $copier->copy($oldScheduleItem);

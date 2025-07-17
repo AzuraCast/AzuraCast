@@ -29,7 +29,7 @@ use const PASSWORD_ARGON2ID;
     UniqueEntity(fields: ['station', 'streamer_username']),
     Attributes\Auditable
 ]
-class StationStreamer implements
+final class StationStreamer implements
     Stringable,
     Interfaces\StationCloneAwareInterface,
     Interfaces\IdentifiableEntityInterface
@@ -41,17 +41,16 @@ class StationStreamer implements
         ORM\ManyToOne(inversedBy: 'streamers'),
         ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
     ]
-    protected Station $station;
-
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    protected int $station_id;
+    public Station $station;
 
     #[
         OA\Property(example: "dj_test"),
         ORM\Column(length: 50),
         Assert\NotBlank
     ]
-    protected string $streamer_username;
+    public string $streamer_username {
+        set => $this->truncateString($value, 50);
+    }
 
     #[
         OA\Property(example: ""),
@@ -59,44 +58,70 @@ class StationStreamer implements
         Assert\NotBlank,
         Attributes\AuditIgnore
     ]
-    protected string $streamer_password;
+    public string $streamer_password {
+        get => '';
+        set {
+            $streamerPassword = trim($value ?? '');
+
+            if (!empty($streamerPassword)) {
+                $this->streamer_password = password_hash($streamerPassword, PASSWORD_ARGON2ID);
+            }
+        }
+    }
+
+    public function authenticate(string $password): bool
+    {
+        return password_verify($password, $this->streamer_password);
+    }
 
     #[
         OA\Property(example: "Test DJ"),
         ORM\Column(length: 255, nullable: true)
     ]
-    protected ?string $display_name = null;
+    public ?string $display_name = null {
+        get => !empty($this->display_name) ? $this->display_name : $this->streamer_username;
+        set => $this->truncateNullableString($value);
+    }
 
     #[
         OA\Property(example: "This is a test DJ account."),
         ORM\Column(type: 'text', nullable: true)
     ]
-    protected ?string $comments = null;
+    public ?string $comments = null;
 
     #[
         OA\Property(example: true),
         ORM\Column
     ]
-    protected bool $is_active = true;
+    public bool $is_active = true {
+        set {
+            $this->is_active = $value;
+
+            // Automatically set the "reactivate_at" flag to null if the DJ is for any reason reactivated.
+            if (true === $value) {
+                $this->reactivate_at = null;
+            }
+        }
+    }
 
     #[
         OA\Property(example: false),
         ORM\Column
     ]
-    protected bool $enforce_schedule = false;
+    public bool $enforce_schedule = false;
 
     #[
         OA\Property(example: OpenApi::SAMPLE_TIMESTAMP),
         ORM\Column(nullable: true),
         Attributes\AuditIgnore
     ]
-    protected ?int $reactivate_at = null;
+    public ?int $reactivate_at = null;
 
     #[
         ORM\Column,
         Attributes\AuditIgnore
     ]
-    protected int $art_updated_at = 0;
+    public int $art_updated_at = 0;
 
     /** @var Collection<int, StationSchedule> */
     #[
@@ -105,14 +130,14 @@ class StationStreamer implements
         DeepNormalize(true),
         Serializer\MaxDepth(1)
     ]
-    protected Collection $schedule_items;
+    public readonly Collection $schedule_items;
 
     /** @var Collection<int, StationStreamerBroadcast> */
     #[
         ORM\OneToMany(targetEntity: StationStreamerBroadcast::class, mappedBy: 'streamer'),
         DeepNormalize(true)
     ]
-    protected Collection $broadcasts;
+    public readonly Collection $broadcasts;
 
     public function __construct(Station $station)
     {
@@ -132,121 +157,15 @@ class StationStreamer implements
         $this->station = $station;
     }
 
-    public function getStreamerUsername(): string
-    {
-        return $this->streamer_username;
-    }
-
-    public function setStreamerUsername(string $streamerUsername): void
-    {
-        $this->streamer_username = $this->truncateString($streamerUsername, 50);
-    }
-
-    public function getStreamerPassword(): string
-    {
-        return '';
-    }
-
-    public function setStreamerPassword(?string $streamerPassword): void
-    {
-        $streamerPassword = trim($streamerPassword ?? '');
-
-        if (!empty($streamerPassword)) {
-            $this->streamer_password = password_hash($streamerPassword, PASSWORD_ARGON2ID);
-        }
-    }
-
-    public function authenticate(string $password): bool
-    {
-        return password_verify($password, $this->streamer_password);
-    }
-
-    public function getDisplayName(): string
-    {
-        return (!empty($this->display_name))
-            ? $this->display_name
-            : $this->streamer_username;
-    }
-
-    public function setDisplayName(?string $displayName): void
-    {
-        $this->display_name = $this->truncateNullableString($displayName);
-    }
-
-    public function getComments(): ?string
-    {
-        return $this->comments;
-    }
-
-    public function setComments(?string $comments = null): void
-    {
-        $this->comments = $comments;
-    }
-
-    public function getIsActive(): bool
-    {
-        return $this->is_active;
-    }
-
-    public function setIsActive(bool $isActive): void
-    {
-        $this->is_active = $isActive;
-
-        // Automatically set the "reactivate_at" flag to null if the DJ is for any reason reactivated.
-        if (true === $isActive) {
-            $this->reactivate_at = null;
-        }
-    }
-
-    public function enforceSchedule(): bool
-    {
-        return $this->enforce_schedule;
-    }
-
-    public function setEnforceSchedule(bool $enforceSchedule): void
-    {
-        $this->enforce_schedule = $enforceSchedule;
-    }
-
-    public function getReactivateAt(): ?int
-    {
-        return $this->reactivate_at;
-    }
-
-    public function setReactivateAt(?int $reactivateAt): void
-    {
-        $this->reactivate_at = $reactivateAt;
-    }
-
     public function deactivateFor(int $seconds): void
     {
         $this->is_active = false;
         $this->reactivate_at = time() + $seconds;
     }
 
-    public function getArtUpdatedAt(): int
-    {
-        return $this->art_updated_at;
-    }
-
-    public function setArtUpdatedAt(int $artUpdatedAt): self
-    {
-        $this->art_updated_at = $artUpdatedAt;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, StationSchedule>
-     */
-    public function getScheduleItems(): Collection
-    {
-        return $this->schedule_items;
-    }
-
     public function __toString(): string
     {
-        return $this->getStation() . ' Streamer: ' . $this->getDisplayName();
+        return $this->station . ' Streamer: ' . $this->display_name;
     }
 
     public function __clone()

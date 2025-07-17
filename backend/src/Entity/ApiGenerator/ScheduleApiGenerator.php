@@ -45,7 +45,7 @@ final class ScheduleApiGenerator
             $row->description = sprintf(__('Playlist: %s'), $row->name);
         } elseif ($streamer instanceof StationStreamer) {
             $row->type = StationScheduleApi::TYPE_STREAMER;
-            $row->name = $streamer->getDisplayName();
+            $row->name = $streamer->display_name;
             $row->title = $row->name;
             $row->description = sprintf(__('Streamer: %s'), $row->name);
         }

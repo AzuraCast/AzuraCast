@@ -160,11 +160,11 @@ final class StorageLocationsController extends AbstractApiCrudController
         $original = parent::viewRecord($record, $request);
 
         $return = ApiStorageLocation::fromParent($original);
-        $return->storageQuotaBytes = (string)($record->getStorageQuotaBytes() ?? '');
-        $return->storageUsedBytes = (string)$record->getStorageUsedBytes();
+        $return->storageQuotaBytes = (string)($record->storageQuotaBytes ?? '');
+        $return->storageUsedBytes = (string)$record->storageUsedBytes;
         $return->storageUsedPercent = $record->getStorageUsePercentage();
-        $return->storageAvailable = $record->getStorageAvailable();
-        $return->storageAvailableBytes = (string)($record->getStorageAvailableBytes() ?? '');
+        $return->storageAvailable = $record->storageAvailable;
+        $return->storageAvailableBytes = (string)($record->storageAvailableBytes ?? '');
         $return->isFull = $record->isStorageFull();
 
         $return->uri = $record->getUri();

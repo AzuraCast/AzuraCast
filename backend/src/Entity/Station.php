@@ -708,7 +708,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
 
             $mediaPath = $this->radio_base_dir . '/media';
             File::mkdirIfNotExists($mediaPath);
-            $storageLocation->setPath($mediaPath);
+            $storageLocation->path = $mediaPath;
 
             $this->media_storage_location = $storageLocation;
         }
@@ -721,7 +721,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
 
             $recordingsPath = $this->radio_base_dir . '/recordings';
             File::mkdirIfNotExists($recordingsPath);
-            $storageLocation->setPath($recordingsPath);
+            $storageLocation->path = $recordingsPath;
 
             $this->recordings_storage_location = $storageLocation;
         }
@@ -734,7 +734,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
 
             $podcastsPath = $this->radio_base_dir . '/podcasts';
             File::mkdirIfNotExists($podcastsPath);
-            $storageLocation->setPath($podcastsPath);
+            $storageLocation->path = $podcastsPath;
 
             $this->podcasts_storage_location = $storageLocation;
         }

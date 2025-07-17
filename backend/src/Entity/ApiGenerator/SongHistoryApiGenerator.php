@@ -41,7 +41,7 @@ final class SongHistoryApiGenerator
         }
 
         if ($record->streamer instanceof StationStreamer) {
-            $response->streamer = $record->streamer->getDisplayName();
+            $response->streamer = $record->streamer->display_name;
         } else {
             $response->streamer = '';
         }

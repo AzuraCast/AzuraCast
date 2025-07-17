@@ -47,7 +47,7 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
     public function onDisconnect(Station $station): bool
     {
         foreach ($this->broadcastRepo->getActiveBroadcasts($station) as $broadcast) {
-            $broadcast->setTimestampEnd(Time::nowUtc());
+            $broadcast->timestampEnd = Time::nowUtc();
             $this->em->persist($broadcast);
         }
 
@@ -90,7 +90,7 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
         $fsConfig = StationFilesystems::buildConfigFilesystem($streamer->getStation());
         $fsConfig->write($artworkPath, $artworkString);
 
-        $streamer->setArtUpdatedAt(time());
+        $streamer->art_updated_at = time();
         $this->em->persist($streamer);
     }
 
@@ -99,10 +99,10 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
     ): void {
         $artworkPath = StationStreamer::getArtworkPath($streamer->getIdRequired());
 
-        $fsConfig = StationFilesystems::buildConfigFilesystem($streamer->getStation());
+        $fsConfig = StationFilesystems::buildConfigFilesystem($streamer->station);
         $fsConfig->delete($artworkPath);
 
-        $streamer->setArtUpdatedAt(0);
+        $streamer->art_updated_at = 0;
         $this->em->persist($streamer);
     }
 

@@ -133,18 +133,18 @@ final class NowPlayingApiGenerator
         if (null !== $currentStreamer) {
             $live = new Live();
             $live->is_live = true;
-            $live->streamer_name = $currentStreamer->getDisplayName();
+            $live->streamer_name = $currentStreamer->display_name;
             $live->broadcast_start = $this->broadcastRepo->getLatestBroadcast($station)
-                ?->getTimestampStart()?->getTimestamp();
+                ?->timestampStart?->getTimestamp();
 
-            if (0 !== $currentStreamer->getArtUpdatedAt()) {
+            if (0 !== $currentStreamer->art_updated_at) {
                 $live->art = new ResolvableUrl(
                     $this->router->namedAsUri(
                         routeName: 'api:stations:streamer:art',
                         routeParams: [
                             'station_id' => $station->short_name,
-                            'id' => $currentStreamer->getIdRequired(),
-                            'timestamp' => $currentStreamer->getArtUpdatedAt(),
+                            'id' => $currentStreamer->id,
+                            'timestamp' => $currentStreamer->art_updated_at,
                         ],
                     )
                 );

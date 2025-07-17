@@ -244,8 +244,8 @@ final class StreamersController extends AbstractScheduledEntityController
                 $streamer = $scheduleItem->streamer;
 
                 return [
-                    'id' => $streamer->getId(),
-                    'title' => $streamer->getDisplayName(),
+                    'id' => $streamer->id,
+                    'title' => $streamer->display_name,
                     'start' => $dateRange->start->toIso8601String(),
                     'end' => $dateRange->end->toIso8601String(),
                     'edit_url' => $request->getRouter()->named(
@@ -264,13 +264,13 @@ final class StreamersController extends AbstractScheduledEntityController
         $isInternal = $request->isInternal();
         $router = $request->getRouter();
 
-        $return['has_custom_art'] = (0 !== $record->getArtUpdatedAt());
+        $return['has_custom_art'] = (0 !== $record->art_updated_at);
 
         $routeParams = [
             'id' => $record->getIdRequired(),
         ];
         if ($return['has_custom_art']) {
-            $routeParams['timestamp'] = $record->getArtUpdatedAt();
+            $routeParams['timestamp'] = $record->art_updated_at;
         }
 
         $return['art'] = $router->fromHere(

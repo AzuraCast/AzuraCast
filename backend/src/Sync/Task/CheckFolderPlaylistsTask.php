@@ -49,9 +49,9 @@ final class CheckFolderPlaylistsTask extends AbstractTask
 
         $mediaInPlaylistQuery = $this->em->createQuery(
             <<<'DQL'
-                SELECT spm.media_id
+                SELECT IDENTITY(spm.media) AS media_id
                 FROM App\Entity\StationPlaylistMedia spm
-                WHERE spm.playlist_id = :playlist_id
+                WHERE spm.playlist = :playlist
             DQL
         );
 
@@ -92,12 +92,12 @@ final class CheckFolderPlaylistsTask extends AbstractTask
         }
 
         // Get all media IDs that are already in the playlist.
-        $mediaInPlaylistRaw = $mediaInPlaylistQuery->setParameter('playlist_id', $playlist->getId())
+        $mediaInPlaylistRaw = $mediaInPlaylistQuery->setParameter('playlist', $playlist)
             ->getArrayResult();
         $mediaInPlaylist = array_column($mediaInPlaylistRaw, 'media_id', 'media_id');
 
         foreach ($folders as $folder) {
-            $path = $folder->getPath();
+            $path = $folder->path;
 
             // Verify the folder still exists.
             if (!$fsMedia->isDir($path)) {
@@ -130,7 +130,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
             if ($addedRecords > 0) {
                 // Write changes to file.
                 $message = new WritePlaylistFileMessage();
-                $message->playlist_id = $playlist->getIdRequired();
+                $message->playlist_id = $playlist->id;
 
                 $this->messageBus->dispatch($message);
             }
@@ -143,7 +143,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
                 $logMessage,
                 [
                     'playlist' => $playlist->name,
-                    'folder' => $folder->getPath(),
+                    'folder' => $folder->path,
                 ]
             );
         }

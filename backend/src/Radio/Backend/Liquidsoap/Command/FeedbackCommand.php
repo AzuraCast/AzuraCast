@@ -102,14 +102,14 @@ final class FeedbackCommand extends AbstractCommand
 
             if (null !== $sq) {
                 // If there's an existing record, ensure it has all the proper metadata.
-                if (null === $sq->getMedia()) {
-                    $sq->setMedia($media);
+                if (null === $sq->media) {
+                    $sq->media = $media;
                 }
 
-                if (!empty($payload['playlist_id']) && null === $sq->getPlaylist()) {
+                if (!empty($payload['playlist_id']) && null === $sq->playlist) {
                     $playlist = $this->em->find(StationPlaylist::class, $payload['playlist_id']);
                     if ($playlist instanceof StationPlaylist) {
-                        $sq->setPlaylist($playlist);
+                        $sq->playlist = $playlist;
                     }
                 }
 

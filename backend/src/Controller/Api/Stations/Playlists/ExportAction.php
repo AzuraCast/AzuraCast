@@ -74,7 +74,7 @@ final class ExportAction implements SingleActionInterface
             case 'm3u':
                 $contentType = 'application/x-mpegURL';
                 foreach ($record->media_items as $mediaItem) {
-                    $exportLines[] = $mediaItem->getMedia()->getPath();
+                    $exportLines[] = $mediaItem->media->path;
                 }
                 break;
 
@@ -86,7 +86,7 @@ final class ExportAction implements SingleActionInterface
                 foreach ($record->media_items as $mediaItem) {
                     $i++;
 
-                    $media = $mediaItem->getMedia();
+                    $media = $mediaItem->media;
 
                     $exportLines[] = 'File' . $i . '=' . $media->path;
                     $exportLines[] = 'Title' . $i . '=' . $media->artist . ' - ' . $media->title;

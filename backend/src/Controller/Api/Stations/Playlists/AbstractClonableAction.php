@@ -62,7 +62,7 @@ abstract class AbstractClonableAction
             foreach ($record->schedule_items as $oldScheduleItem) {
                 /** @var StationSchedule $newScheduleItem */
                 $newScheduleItem = $copier->copy($oldScheduleItem);
-                $newScheduleItem->setPlaylist($newRecord);
+                $newScheduleItem->playlist = $newRecord;
 
                 $this->em->persist($newScheduleItem);
             }
@@ -72,7 +72,7 @@ abstract class AbstractClonableAction
             foreach ($record->folders as $oldPlaylistFolder) {
                 /** @var StationPlaylistFolder $newPlaylistFolder */
                 $newPlaylistFolder = $copier->copy($oldPlaylistFolder);
-                $newPlaylistFolder->setPlaylist($newRecord);
+                $newPlaylistFolder->playlist = $newRecord;
                 $this->em->persist($newPlaylistFolder);
             }
 
@@ -80,7 +80,7 @@ abstract class AbstractClonableAction
                 /** @var StationPlaylistMedia $newMediaItem */
                 $newMediaItem = $copier->copy($oldMediaItem);
 
-                $newMediaItem->setPlaylist($newRecord);
+                $newMediaItem->playlist = $newRecord;
                 $this->em->persist($newMediaItem);
             }
         }

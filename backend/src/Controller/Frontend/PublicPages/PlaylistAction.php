@@ -50,7 +50,7 @@ final class PlaylistAction implements SingleActionInterface
         }
 
         foreach ($station->remotes as $remote) {
-            if (!$remote->getIsVisibleOnPublicPages()) {
+            if (!$remote->is_visible_on_public_pages) {
                 continue;
             }
 
@@ -59,7 +59,7 @@ final class PlaylistAction implements SingleActionInterface
 
             $streamUrls[] = $streamUrl;
             $streams[] = [
-                'name' => $station->name . ' - ' . $remote->getDisplayName(),
+                'name' => $station->name . ' - ' . $remote->display_name,
                 'url' => $streamUrl,
             ];
         }

@@ -21,8 +21,8 @@ final class ScheduleApiGenerator
         DateRange $dateRange,
         ?DateTimeImmutable $now = null
     ): StationScheduleApi {
-        $playlist = $scheduleItem->getPlaylist();
-        $streamer = $scheduleItem->getStreamer();
+        $playlist = $scheduleItem->playlist;
+        $streamer = $scheduleItem->streamer;
 
         $stationTz = $station->getTimezoneObject();
         $now = Time::nowInTimezone($stationTz, $now);
@@ -31,7 +31,7 @@ final class ScheduleApiGenerator
         $end = $dateRange->end;
 
         $row = new StationScheduleApi();
-        $row->id = $scheduleItem->getIdRequired();
+        $row->id = $scheduleItem->id;
         $row->start_timestamp = $start->getTimestamp();
         $row->start = $start->toIso8601String();
         $row->end_timestamp = $end->getTimestamp();

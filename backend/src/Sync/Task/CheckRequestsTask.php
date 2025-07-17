@@ -70,8 +70,8 @@ final class CheckRequestsTask extends AbstractTask
         if (!$sq instanceof StationQueue) {
             // Log the item in SongHistory.
             $sq = StationQueue::fromRequest($request);
-            $sq->setSentToAutodj();
-            $sq->setTimestampCued(Time::nowUtc());
+            $sq->sent_to_autodj = true;
+            $sq->timestamp_cued = Time::nowUtc();
 
             $this->em->persist($sq);
             $this->em->flush();
@@ -97,7 +97,7 @@ final class CheckRequestsTask extends AbstractTask
         $this->logger->debug('AutoDJ request response', ['response' => $response]);
 
         // Log the request as played.
-        $request->setPlayedAt(Time::nowUtc());
+        $request->played_at = Time::nowUtc();
 
         $this->em->persist($request);
         $this->em->flush();

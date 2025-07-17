@@ -71,7 +71,7 @@ final class GetOrderAction implements SingleActionInterface
                 SELECT spm, sm
                 FROM App\Entity\StationPlaylistMedia spm
                 JOIN spm.media sm
-                WHERE spm.playlist_id = :playlist_id
+                WHERE IDENTITY(spm.playlist) = :playlist_id
                 ORDER BY spm.weight ASC
             DQL
         )->setParameter('playlist_id', $id)

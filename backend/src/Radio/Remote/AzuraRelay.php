@@ -34,8 +34,8 @@ final class AzuraRelay extends AbstractRemote
 
     public function getNowPlayingAsync(StationRemote $remote, bool $includeClients = false): PromiseInterface
     {
-        $station = $remote->getStation();
-        $relay = $remote->getRelay();
+        $station = $remote->station;
+        $relay = $remote->relay;
 
         if (!$relay instanceof Relay) {
             throw new InvalidArgumentException('AzuraRelay remote must have a corresponding relay.');
@@ -43,24 +43,24 @@ final class AzuraRelay extends AbstractRemote
 
         $npRawRelay = $this->azuraRelayCache->getForRelay($relay);
 
-        if (isset($npRawRelay[$station->getId()][$remote->getMount()])) {
-            $npRaw = $npRawRelay[$station->getId()][$remote->getMount()];
+        if (isset($npRawRelay[$station->id][$remote->mount])) {
+            $npRaw = $npRawRelay[$station->id][$remote->mount];
 
             $result = Result::fromArray($npRaw);
 
             if (!empty($result->clients)) {
                 foreach ($result->clients as $client) {
-                    $client->mount = 'remote_' . $remote->getId();
+                    $client->mount = 'remote_' . $remote->id;
                 }
             }
 
             $this->logger->debug(
                 'Response for remote relay',
-                ['remote' => $remote->getDisplayName(), 'response' => $result]
+                ['remote' => $remote->display_name, 'response' => $result]
             );
 
-            $remote->setListenersTotal($result->listeners->total);
-            $remote->setListenersUnique($result->listeners->unique ?? 0);
+            $remote->listeners_total = $result->listeners->total;
+            $remote->listeners_unique = $result->listeners->unique ?? 0;
             $this->em->persist($remote);
 
             return Create::promiseFor($result);
@@ -80,8 +80,8 @@ final class AzuraRelay extends AbstractRemote
      */
     public function getPublicUrl(StationRemote $remote): string
     {
-        $station = $remote->getStation();
-        $relay = $remote->getRelay();
+        $station = $remote->station;
+        $relay = $remote->relay;
 
         if (!$relay instanceof Relay) {
             throw new InvalidArgumentException('AzuraRelay remote must have a corresponding relay.');
@@ -94,12 +94,12 @@ final class AzuraRelay extends AbstractRemote
         if ($useRadioProxy || 'https' === $baseUrl->getScheme()) {
             // Web proxy support.
             return (string)$baseUrl
-                ->withPath($baseUrl->getPath() . CustomUrls::getListenUrl($station) . $remote->getmount());
+                ->withPath($baseUrl->getPath() . CustomUrls::getListenUrl($station) . $remote->mount);
         }
 
         // Remove port number and other decorations.
         return (string)$baseUrl
             ->withPort($station->frontend_config->port)
-            ->withPath($remote->getMount() ?? '');
+            ->withPath($remote->mount ?? '');
     }
 }

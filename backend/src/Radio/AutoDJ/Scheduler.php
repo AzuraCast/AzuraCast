@@ -257,8 +257,8 @@ final class Scheduler
     ): bool {
         $now = Time::nowInTimezone($tz, $now);
 
-        $startTime = StationSchedule::getDateTime($schedule->getStartTime(), $tz, $now);
-        $endTime = StationSchedule::getDateTime($schedule->getEndTime(), $tz, $now);
+        $startTime = StationSchedule::getDateTime($schedule->start_time, $tz, $now);
+        $endTime = StationSchedule::getDateTime($schedule->end_time, $tz, $now);
 
         $this->logger->debug('Checking to see whether schedule should play now.', [
             'startTime' => $startTime,
@@ -327,7 +327,7 @@ final class Scheduler
         }
 
         // Check playlist special handling rules.
-        $playlist = $schedule->getPlaylist();
+        $playlist = $schedule->playlist;
         if (null === $playlist) {
             return true;
         }
@@ -348,7 +348,7 @@ final class Scheduler
 
         // Handle "Loop Once" schedule specification.
         if (
-            $schedule->getLoopOnce()
+            $schedule->loop_once
             && !$this->shouldPlaylistLoopNow($schedule, $dateRange)
         ) {
             return false;
@@ -363,7 +363,7 @@ final class Scheduler
     ): bool {
         $this->logger->debug('Checking if playlist should loop now.');
 
-        $playlist = $schedule->getPlaylist();
+        $playlist = $schedule->playlist;
 
         if (null === $playlist) {
             $this->logger->error('Attempting to check playlist loop status on a non-playlist-based schedule item.');
@@ -426,15 +426,15 @@ final class Scheduler
     ): bool {
         $now = CarbonImmutable::instance(Time::nowInTimezone($tz, $now));
 
-        $startDate = $schedule->getStartDate();
-        $endDate = $schedule->getEndDate();
+        $startDate = $schedule->start_date;
+        $endDate = $schedule->end_date;
 
         if (!empty($startDate)) {
             $startDate = CarbonImmutable::createFromFormat('Y-m-d', $startDate, $tz);
 
             if (null !== $startDate) {
                 $startDate = StationSchedule::getDateTime(
-                    $schedule->getStartTime(),
+                    $schedule->start_time,
                     $tz,
                     $startDate
                 );
@@ -450,7 +450,7 @@ final class Scheduler
 
             if (null !== $endDate) {
                 $endDate = StationSchedule::getDateTime(
-                    $schedule->getEndTime(),
+                    $schedule->end_time,
                     $tz,
                     $endDate
                 );
@@ -475,7 +475,7 @@ final class Scheduler
         StationSchedule $schedule,
         int $dayToCheck
     ): bool {
-        $playOnceDays = $schedule->getDays();
+        $playOnceDays = $schedule->days;
         return empty($playOnceDays)
             || in_array($dayToCheck, $playOnceDays, true);
     }

@@ -56,7 +56,7 @@ final class StationPlaylistMediaRepository extends Repository
                 <<<'DQL'
                 DELETE FROM App\Entity\StationPlaylistMedia spm
                 WHERE spm.media = :media
-                AND spm.playlist_id IN (:playlistIds)
+                AND IDENTITY(spm.playlist) IN (:playlistIds)
                 DQL
             )->setParameter('media', $media)
                 ->setParameter('playlistIds', $toDelete)
@@ -79,7 +79,7 @@ final class StationPlaylistMediaRepository extends Repository
             }
 
             $record = new StationPlaylistMedia($playlist, $media);
-            $record->setWeight($weight);
+            $record->weight = $weight;
             $this->em->persist($record);
 
             $added[$playlistId] = $playlistId;
@@ -147,7 +147,7 @@ final class StationPlaylistMediaRepository extends Repository
 
         if ($record instanceof StationPlaylistMedia) {
             if (0 !== $weight) {
-                $record->setWeight($weight);
+                $record->weight = $weight;
                 $this->em->persist($record);
             }
         } else {
@@ -159,7 +159,7 @@ final class StationPlaylistMediaRepository extends Repository
             }
 
             $record = new StationPlaylistMedia($playlist, $media);
-            $record->setWeight($weight);
+            $record->weight = $weight;
             $this->em->persist($record);
         }
 
@@ -173,9 +173,9 @@ final class StationPlaylistMediaRepository extends Repository
                 <<<'DQL'
                     SELECT MAX(e.weight)
                     FROM App\Entity\StationPlaylistMedia e
-                    WHERE e.playlist_id = :playlist_id
+                    WHERE e.playlist = :playlist
                 DQL
-            )->setParameter('playlist_id', $playlist->getId())
+            )->setParameter('playlist', $playlist)
                 ->getSingleScalarResult();
         } catch (NoResultException) {
             $highestWeight = 1;
@@ -202,14 +202,14 @@ final class StationPlaylistMediaRepository extends Repository
         if (null !== $station) {
             $playlists = $playlists->filter(
                 function (StationPlaylistMedia $spm) use ($station) {
-                    return $spm->getPlaylist()->getStation()->getId() === $station->getId();
+                    return $spm->playlist->station->id === $station->id;
                 }
             );
         }
 
         foreach ($playlists as $spmRow) {
-            $playlist = $spmRow->getPlaylist();
-            $affectedPlaylists[$playlist->getIdRequired()] = $playlist->getIdRequired();
+            $playlist = $spmRow->playlist;
+            $affectedPlaylists[$playlist->id] = $playlist->id;
 
             $this->queueRepo->clearForMediaAndPlaylist($media, $playlist);
 
@@ -249,10 +249,10 @@ final class StationPlaylistMediaRepository extends Repository
             <<<'DQL'
                 UPDATE App\Entity\StationPlaylistMedia e
                 SET e.weight = :weight
-                WHERE e.playlist_id = :playlist_id
+                WHERE e.playlist = :playlist
                 AND e.id = :id
             DQL
-        )->setParameter('playlist_id', $playlist->getId());
+        )->setParameter('playlist', $playlist);
 
         $this->em->wrapInTransaction(
             function () use ($updateQuery, $mapping): void {

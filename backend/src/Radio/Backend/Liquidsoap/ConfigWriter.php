@@ -645,8 +645,8 @@ final class ConfigWriter implements EventSubscriberInterface
         WriteLiquidsoapConfiguration $event,
         StationSchedule $playlistSchedule
     ): string {
-        $startTime = $playlistSchedule->getStartTime();
-        $endTime = $playlistSchedule->getEndTime();
+        $startTime = $playlistSchedule->start_time;
+        $endTime = $playlistSchedule->end_time;
 
         // Handle multi-day playlists.
         if ($startTime > $endTime) {
@@ -655,7 +655,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 '00h00m-' . self::formatTimeCode($endTime),
             ];
 
-            $playlistScheduleDays = $playlistSchedule->getDays();
+            $playlistScheduleDays = $playlistSchedule->days;
             if (!empty($playlistScheduleDays) && count($playlistScheduleDays) < 7) {
                 $currentPlayDays = [];
                 $nextPlayDays = [];
@@ -682,7 +682,7 @@ final class ConfigWriter implements EventSubscriberInterface
             ? self::formatTimeCode($startTime)
             : self::formatTimeCode($startTime) . '-' . self::formatTimeCode($endTime);
 
-        $playlistScheduleDays = $playlistSchedule->getDays();
+        $playlistScheduleDays = $playlistSchedule->days;
         if (!empty($playlistScheduleDays) && count($playlistScheduleDays) < 7) {
             $playDays = [];
 
@@ -693,8 +693,8 @@ final class ConfigWriter implements EventSubscriberInterface
         }
 
         // Handle start-date and end-date boundaries.
-        $startDate = $playlistSchedule->getStartDate();
-        $endDate = $playlistSchedule->getEndDate();
+        $startDate = $playlistSchedule->start_date;
+        $endDate = $playlistSchedule->end_date;
 
         if (!empty($startDate) || !empty($endDate)) {
             $tzObject = $event->getStation()->getTimezoneObject();
@@ -1196,7 +1196,7 @@ final class ConfigWriter implements EventSubscriberInterface
             $i++;
 
             /** @var StationRemote $remoteRow */
-            if (!$remoteRow->getEnableAutodj()) {
+            if (!$remoteRow->enable_autodj) {
                 continue;
             }
 

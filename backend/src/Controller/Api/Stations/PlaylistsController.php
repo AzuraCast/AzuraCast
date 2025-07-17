@@ -208,7 +208,7 @@ final class PlaylistsController extends AbstractScheduledEntityController
                 $request
             ) {
                 /** @var StationPlaylist $playlist */
-                $playlist = $scheduleItem->getPlaylist();
+                $playlist = $scheduleItem->playlist;
 
                 return [
                     'id' => $playlist->id,

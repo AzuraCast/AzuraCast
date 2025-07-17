@@ -62,13 +62,11 @@ final class BatchUtilities
             }
 
             foreach ($this->iteratePlaylistFoldersInDirectory($storageLocation, $from) as $record) {
-                $record->setPath(
-                    File::renameDirectoryInPath($record->getPath(), $from, $to)
-                );
+                $record->path = File::renameDirectoryInPath($record->path, $from, $to);
                 $this->em->persist($record);
 
-                $playlist = $record->getPlaylist();
-                $affectedPlaylists[$playlist->getIdRequired()] = $playlist->getIdRequired();
+                $playlist = $record->playlist;
+                $affectedPlaylists[$playlist->id] = $playlist->id;
             }
         } else {
             $record = $this->mediaRepo->findByPath($from, $storageLocation);

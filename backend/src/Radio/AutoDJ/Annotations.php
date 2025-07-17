@@ -76,7 +76,7 @@ final class Annotations implements EventSubscriberInterface
         } else {
             $queue = $event->getQueue();
             if ($queue instanceof StationQueue) {
-                $customUri = $queue->getAutodjCustomUri();
+                $customUri = $queue->autodj_custom_uri;
                 if (!empty($customUri)) {
                     $event->setSongPath($customUri);
                 }
@@ -264,8 +264,8 @@ final class Annotations implements EventSubscriberInterface
 
         $queueRow = $event->getQueue();
         if ($queueRow instanceof StationQueue) {
-            $queueRow->setSentToAutodj();
-            $queueRow->setTimestampCued(Time::nowUtc());
+            $queueRow->sent_to_autodj = true;
+            $queueRow->timestamp_cued = Time::nowUtc();
             $this->em->persist($queueRow);
             $this->em->flush();
         }

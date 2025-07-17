@@ -32,12 +32,12 @@ abstract class AbstractRemote
 
         $npAdapter = $this->adapterFactory->getAdapter(
             $adapterType,
-            $remote->getUrl()
+            $remote->url
         );
 
-        $npAdapter->setAdminPassword($remote->getAdminPassword());
+        $npAdapter->setAdminPassword($remote->admin_password);
 
-        return $npAdapter->getNowPlayingAsync($remote->getMount(), $includeClients)->then(
+        return $npAdapter->getNowPlayingAsync($remote->mount, $includeClients)->then(
             function (Result $result) use ($remote) {
                 if (!empty($result->clients)) {
                     foreach ($result->clients as $client) {
@@ -47,8 +47,8 @@ abstract class AbstractRemote
 
                 $this->logger->debug('NowPlaying adapter response', ['response' => $result]);
 
-                $remote->setListenersTotal($result->listeners->total);
-                $remote->setListenersUnique($result->listeners->unique ?? 0);
+                $remote->listeners_total = $result->listeners->total;
+                $remote->listeners_unique = $result->listeners->unique ?? 0;
                 $this->em->persist($remote);
 
                 return $result;
@@ -65,11 +65,11 @@ abstract class AbstractRemote
      */
     public function getPublicUrl(StationRemote $remote): string
     {
-        $customListenUrl = $remote->getCustomListenUrl();
+        $customListenUrl = $remote->custom_listen_url;
 
         return (!empty($customListenUrl))
             ? $customListenUrl
-            : $this->getRemoteUrl($remote, $remote->getMount());
+            : $this->getRemoteUrl($remote, $remote->mount);
     }
 
     /**

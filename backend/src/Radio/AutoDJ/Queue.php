@@ -70,11 +70,11 @@ final class Queue
         $queueLength = 0;
 
         foreach ($upcomingQueue as $queueRow) {
-            if ($queueRow->getSentToAutodj()) {
+            if ($queueRow->sent_to_autodj) {
                 $expectedCueTime = $this->addDurationToTime(
                     $station,
-                    $queueRow->getTimestampCued(),
-                    $queueRow->getDuration()
+                    $queueRow->timestamp_cued,
+                    $queueRow->duration
                 );
 
                 if (0 === $queueLength) {
@@ -86,17 +86,17 @@ final class Queue
                     continue;
                 }
 
-                $queueRow->setTimestampCued($expectedCueTime);
-                $expectedCueTime = $this->addDurationToTime($station, $expectedCueTime, $queueRow->getDuration());
+                $queueRow->timestamp_cued = $expectedCueTime;
+                $expectedCueTime = $this->addDurationToTime($station, $expectedCueTime, $queueRow->duration);
 
                 // Only append to queue length for uncued songs.
                 $queueLength++;
             }
 
-            $queueRow->setTimestampPlayed($expectedPlayTime);
+            $queueRow->timestamp_played = $expectedPlayTime;
             $this->em->persist($queueRow);
 
-            $expectedPlayTime = $this->addDurationToTime($station, $expectedPlayTime, $queueRow->getDuration());
+            $expectedPlayTime = $this->addDurationToTime($station, $expectedPlayTime, $queueRow->duration);
 
             $lastSongId = $queueRow->song_id;
         }
@@ -137,8 +137,8 @@ final class Queue
             }
 
             foreach ($nextSongs as $queueRow) {
-                $queueRow->setTimestampCued($expectedCueTime);
-                $queueRow->setTimestampPlayed($expectedPlayTime);
+                $queueRow->timestamp_cued = $expectedCueTime;
+                $queueRow->timestamp_played = $expectedPlayTime;
                 $queueRow->updateVisibility();
                 $this->em->persist($queueRow);
                 $this->em->flush();
@@ -150,12 +150,12 @@ final class Queue
                 $expectedCueTime = $this->addDurationToTime(
                     $station,
                     $expectedCueTime,
-                    $queueRow->getDuration()
+                    $queueRow->duration
                 );
                 $expectedPlayTime = $this->addDurationToTime(
                     $station,
                     $expectedPlayTime,
-                    $queueRow->getDuration()
+                    $queueRow->duration
                 );
 
                 $queueLength++;
@@ -211,9 +211,9 @@ final class Queue
         }
 
         foreach ($nextSongs as $queueRow) {
-            $queueRow->setIsPlayed();
-            $queueRow->setTimestampCued($expectedPlayTime);
-            $queueRow->setTimestampPlayed($expectedPlayTime);
+            $queueRow->is_played = true;
+            $queueRow->timestamp_cued = $expectedPlayTime;
+            $queueRow->timestamp_played = $expectedPlayTime;
             $queueRow->updateVisibility();
 
             $this->em->persist($queueRow);
@@ -224,7 +224,7 @@ final class Queue
             $expectedPlayTime = $this->addDurationToTime(
                 $station,
                 $expectedPlayTime,
-                $queueRow->getDuration()
+                $queueRow->duration
             );
         }
 
@@ -250,7 +250,7 @@ final class Queue
         StationQueue $queueRow,
         DateTimeImmutable $expectedPlayTime
     ): bool {
-        $playlist = $queueRow->getPlaylist();
+        $playlist = $queueRow->playlist;
         if (null === $playlist) {
             return true;
         }

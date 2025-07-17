@@ -84,8 +84,8 @@ final class StationQueueRepository extends AbstractStationBasedRepository
             AND (sq.id = :id OR sq.timestamp_cued < :cued)
         DQL
         )->setParameter('station', $station)
-            ->setParameter('id', $row->getIdRequired())
-            ->setParameter('cued', $row->getTimestampCued())
+            ->setParameter('id', $row->id)
+            ->setParameter('cued', $row->timestamp_cued)
             ->execute();
     }
 
@@ -97,7 +97,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
 
         $recentPlayedQuery = $this->em->createQuery(
             <<<'DQL'
-                SELECT sq.playlist_id
+                SELECT IDENTITY(sq.playlist) AS playlist_id
                 FROM App\Entity\StationQueue sq
                 WHERE sq.station = :station
                 AND (sq.playlist = :playlist OR sq.is_visible = 1)

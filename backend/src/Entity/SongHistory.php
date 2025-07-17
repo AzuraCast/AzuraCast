@@ -201,11 +201,11 @@ final class SongHistory implements
 
     public static function fromQueue(StationQueue $queue): self
     {
-        $sh = new self($queue->getStation(), $queue);
-        $sh->media = $queue->getMedia();
-        $sh->request = $queue->getRequest();
-        $sh->playlist = $queue->getPlaylist();
-        $sh->duration = $queue->getDuration();
+        $sh = new self($queue->station, $queue);
+        $sh->media = $queue->media;
+        $sh->request = $queue->request;
+        $sh->playlist = $queue->playlist;
+        $sh->duration = $queue->duration;
         $sh->updateVisibility();
 
         return $sh;

@@ -36,7 +36,7 @@ abstract class AbstractGoogleAnalyticsConnector extends AbstractConnector
 
         $remoteUrls = [];
         foreach ($station->remotes as $remote) {
-            $remoteUrls[$remote->id] = $listenBaseUrl . '/remote' . $remote->getMount();
+            $remoteUrls[$remote->id] = $listenBaseUrl . '/remote' . $remote->mount;
         }
 
         $hlsUrls = [];

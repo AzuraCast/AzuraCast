@@ -303,8 +303,9 @@ final class QueueBuilder implements EventSubscriberInterface
             $this->em->persist($spm);
         }
 
-        $stationQueueEntry = StationQueue::fromMedia($playlist->getStation(), $mediaToPlay);
-        $stationQueueEntry->setPlaylist($playlist);
+        $stationQueueEntry = StationQueue::fromMedia($playlist->station, $mediaToPlay);
+        $stationQueueEntry->playlist = $playlist;
+
         $this->em->persist($stationQueueEntry);
 
         return $stationQueueEntry;
@@ -327,9 +328,9 @@ final class QueueBuilder implements EventSubscriberInterface
                 Song::createFromText('Remote Playlist URL')
             );
 
-            $stationQueueEntry->setPlaylist($playlist);
-            $stationQueueEntry->setAutodjCustomUri($mediaUri);
-            $stationQueueEntry->setDuration($mediaDuration);
+            $stationQueueEntry->playlist = $playlist;
+            $stationQueueEntry->autodj_custom_uri = $mediaUri;
+            $stationQueueEntry->duration = $mediaDuration;
 
             $this->em->persist($stationQueueEntry);
 
@@ -478,7 +479,7 @@ final class QueueBuilder implements EventSubscriberInterface
         $stationQueueEntry = StationQueue::fromRequest($request);
         $this->em->persist($stationQueueEntry);
 
-        $request->setPlayedAt($expectedPlayTime);
+        $request->played_at = $expectedPlayTime;
         $this->em->persist($request);
 
         $event->setNextSongs($stationQueueEntry);

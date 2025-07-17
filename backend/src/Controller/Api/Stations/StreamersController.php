@@ -241,7 +241,7 @@ final class StreamersController extends AbstractScheduledEntityController
                 $request
             ) {
                 /** @var StationStreamer $streamer */
-                $streamer = $scheduleItem->getStreamer();
+                $streamer = $scheduleItem->streamer;
 
                 return [
                     'id' => $streamer->getId(),
@@ -250,7 +250,7 @@ final class StreamersController extends AbstractScheduledEntityController
                     'end' => $dateRange->end->toIso8601String(),
                     'edit_url' => $request->getRouter()->named(
                         'api:stations:streamer',
-                        ['station_id' => $station->getId(), 'id' => $streamer->getId()]
+                        ['station_id' => $station->id, 'id' => $streamer->id]
                     ),
                 ];
             }

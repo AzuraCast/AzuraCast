@@ -408,7 +408,7 @@ final class ListAction implements SingleActionInterface
             SELECT spm, sp
             FROM App\Entity\StationPlaylistMedia spm
             JOIN spm.playlist sp
-            WHERE sp.station = :station AND spm.media_id IN (:ids) 
+            WHERE sp.station = :station AND IDENTITY(spm.media) IN (:ids) 
             DQL
         )->setParameter('station', $station)
             ->setParameter('ids', $mediaIds)

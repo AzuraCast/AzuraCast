@@ -171,7 +171,7 @@ final class CloneAction extends StationsController implements SingleActionInterf
                     $this->em->detach($oldScheduleItem);
 
                     $newScheduleItem = $copier->copy($oldScheduleItem);
-                    $newScheduleItem->setPlaylist($newPlaylist);
+                    $newScheduleItem->playlist = $newPlaylist;
 
                     $this->em->persist($newScheduleItem);
                 }
@@ -181,8 +181,8 @@ final class CloneAction extends StationsController implements SingleActionInterf
                         $this->em->detach($oldPlaylistFolder);
 
                         $newPlaylistFolder = $copier->copy($oldPlaylistFolder);
-                        $newPlaylistFolder->setStation($newStation);
-                        $newPlaylistFolder->setPlaylist($newPlaylist);
+                        $newPlaylistFolder->station = $newStation;
+                        $newPlaylistFolder->playlist = $newPlaylist;
                         $this->em->persist($newPlaylistFolder);
                     }
 
@@ -191,7 +191,7 @@ final class CloneAction extends StationsController implements SingleActionInterf
 
                         $newMediaItem = $copier->copy($oldMediaItem);
 
-                        $newMediaItem->setPlaylist($newPlaylist);
+                        $newMediaItem->playlist = $newPlaylist;
                         $this->em->persist($newMediaItem);
                     }
                 }
@@ -228,7 +228,7 @@ final class CloneAction extends StationsController implements SingleActionInterf
                     $this->em->detach($oldScheduleItem);
 
                     $newScheduleItem = $copier->copy($oldScheduleItem);
-                    $newScheduleItem->setStreamer($newStreamer);
+                    $newScheduleItem->streamer = $newStreamer;
 
                     $this->em->persist($newScheduleItem);
                 }
@@ -279,7 +279,7 @@ final class CloneAction extends StationsController implements SingleActionInterf
 
             /** @var StationCloneAwareInterface $newRecord */
             $newRecord = $copier->copy($oldRecord);
-            $newRecord->setStation($newStation);
+            $newRecord->station = $newStation;
 
             $this->em->persist($newRecord);
 

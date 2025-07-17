@@ -58,7 +58,7 @@ final class StationMediaFixture extends AbstractFixture implements DependentFixt
 
             // Add the file to the playlist.
             $spmRow = new StationPlaylistMedia($playlist, $mediaRow);
-            $spmRow->setWeight(1);
+            $spmRow->weight = 1;
             $manager->persist($spmRow);
         }
 

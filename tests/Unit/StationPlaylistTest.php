@@ -38,9 +38,9 @@ class StationPlaylistTest extends Unit
 
         // Sample playlist that plays from 10PM to 4AM the next day.
         $scheduleEntry = new StationSchedule($playlist);
-        $scheduleEntry->setStartTime(2200);
-        $scheduleEntry->setEndTime(400);
-        $scheduleEntry->setDays([1, 2, 3]); // Monday, Tuesday, Wednesday
+        $scheduleEntry->start_time = 2200;
+        $scheduleEntry->end_time = 400;
+        $scheduleEntry->days = [1, 2, 3]; // Monday, Tuesday, Wednesday
 
         $playlist->schedule_items->add($scheduleEntry);
 

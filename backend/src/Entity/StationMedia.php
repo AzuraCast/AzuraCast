@@ -162,7 +162,7 @@ final class StationMedia implements
     public function isRequestable(): bool
     {
         foreach ($this->playlists as $playlistItem) {
-            $playlist = $playlistItem->getPlaylist();
+            $playlist = $playlistItem->playlist;
             /** @var StationPlaylist $playlist */
             if ($playlist->isRequestable()) {
                 return true;

@@ -174,8 +174,8 @@ final class StationRepository extends Repository
     public function reduceRemoteRelayAutoDjBitrateToLimit(Station $station): void
     {
         foreach ($station->remotes as $remoteRelay) {
-            if ($remoteRelay->getAutodjBitrate() > $station->max_bitrate) {
-                $remoteRelay->setAutodjBitrate($station->max_bitrate);
+            if ($remoteRelay->autodj_bitrate > $station->max_bitrate) {
+                $remoteRelay->autodj_bitrate = $station->max_bitrate;
                 $this->em->persist($remoteRelay);
             }
         }
@@ -238,7 +238,7 @@ final class StationRepository extends Repository
         $this->em->createQuery(
             <<<'DQL'
                 DELETE FROM App\Entity\StationPlaylistMedia spm
-                WHERE spm.playlist_id IN (
+                WHERE IDENTITY(spm.playlist) IN (
                     SELECT sp.id FROM App\Entity\StationPlaylist sp WHERE sp.station = :station
                 )
             DQL

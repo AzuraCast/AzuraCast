@@ -13,37 +13,34 @@ use Doctrine\ORM\Mapping as ORM;
     ORM\Entity,
     ORM\Table(name: 'station_requests')
 ]
-class StationRequest implements
+final class StationRequest implements
     Interfaces\IdentifiableEntityInterface,
     Interfaces\StationAwareInterface
 {
     use Traits\HasAutoIncrementId;
+    use Traits\TruncateStrings;
 
     #[ORM\ManyToOne(inversedBy: 'requests')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    protected Station $station;
-
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    protected int $station_id;
+    public readonly Station $station;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'track_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    protected StationMedia $track;
-
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    protected int $track_id;
+    public readonly StationMedia $track;
 
     #[ORM\Column(type: 'datetime_immutable', precision: 6)]
-    protected DateTimeImmutable $timestamp;
+    public readonly DateTimeImmutable $timestamp;
 
     #[ORM\Column]
-    protected bool $skip_delay = false;
-
-    #[ORM\Column(type: 'datetime_immutable', precision: 6, nullable: true)]
-    protected ?DateTimeImmutable $played_at = null;
+    public readonly bool $skip_delay;
 
     #[ORM\Column(length: 40)]
-    protected string $ip;
+    public readonly string $ip;
+
+    #[ORM\Column(type: 'datetime_immutable', precision: 6, nullable: true)]
+    public ?DateTimeImmutable $played_at = null {
+        set(DateTimeImmutable|string|null $value) => Time::toNullableUtcCarbonImmutable($value);
+    }
 
     public function __construct(
         Station $station,
@@ -56,42 +53,12 @@ class StationRequest implements
 
         $this->timestamp = Time::nowUtc();
         $this->skip_delay = $skipDelay;
-        $this->ip = $ip ?? $_SERVER['REMOTE_ADDR'];
+        $this->ip = $this->truncateString($ip ?? $_SERVER['REMOTE_ADDR'], 40);
     }
 
     public function getStation(): Station
     {
         return $this->station;
-    }
-
-    public function getTrack(): StationMedia
-    {
-        return $this->track;
-    }
-
-    public function getTimestamp(): DateTimeImmutable
-    {
-        return $this->timestamp;
-    }
-
-    public function skipDelay(): bool
-    {
-        return $this->skip_delay;
-    }
-
-    public function getPlayedAt(): ?DateTimeImmutable
-    {
-        return $this->played_at;
-    }
-
-    public function setPlayedAt(mixed $playedAt): void
-    {
-        $this->played_at = Time::toNullableUtcCarbonImmutable($playedAt);
-    }
-
-    public function getIp(): string
-    {
-        return $this->ip;
     }
 
     public function shouldPlayNow(?DateTimeImmutable $now = null): bool

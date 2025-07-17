@@ -150,12 +150,12 @@ final class RelaysController
 
         foreach ($relay->remotes as $remote) {
             /** @var StationRemote $remote */
-            $existingRemotes[$remote->getStation()->getId()][$remote->getMount()] = $remote;
+            $existingRemotes[$remote->station->id][$remote->mount] = $remote;
         }
 
         // Iterate through all remotes that *should* exist.
         foreach ($this->getManageableStations($request) as $station) {
-            $stationId = $station->getId();
+            $stationId = $station->id;
 
             foreach ($station->mounts as $mount) {
                 /** @var StationMount $mount */
@@ -170,14 +170,14 @@ final class RelaysController
                     $remote = new StationRemote($station);
                 }
 
-                $remote->setRelay($relay);
-                $remote->setType(RemoteAdapters::AzuraRelay);
-                $remote->setDisplayName($mount->display_name . ' (' . $relay->name . ')');
-                $remote->setIsVisibleOnPublicPages($relay->is_visible_on_public_pages);
-                $remote->setAutodjBitrate($mount->autodj_bitrate);
-                $remote->setAutodjFormat($mount->autodj_format);
-                $remote->setUrl($relay->base_url);
-                $remote->setMount($mount->name);
+                $remote->relay = $relay;
+                $remote->type = RemoteAdapters::AzuraRelay;
+                $remote->display_name = $mount->display_name . ' (' . $relay->name . ')';
+                $remote->is_visible_on_public_pages = $relay->is_visible_on_public_pages;
+                $remote->autodj_bitrate = $mount->autodj_bitrate;
+                $remote->autodj_format = $mount->autodj_format;
+                $remote->url = $relay->base_url;
+                $remote->mount = $mount->name;
 
                 $this->em->persist($remote);
             }

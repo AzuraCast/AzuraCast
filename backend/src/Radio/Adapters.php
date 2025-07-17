@@ -94,7 +94,7 @@ final class Adapters
 
     public function getRemoteAdapter(StationRemote $remote): Remote\AbstractRemote
     {
-        $className = $remote->getType()->getClass();
+        $className = $remote->type->getClass();
         if ($this->di->has($className)) {
             return $this->di->get($className);
         }

@@ -12,67 +12,31 @@ use JsonSerializable;
     ORM\Entity,
     ORM\Table(name: 'station_playlist_media')
 ]
-class StationPlaylistMedia implements JsonSerializable, IdentifiableEntityInterface
+final class StationPlaylistMedia implements JsonSerializable, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
 
-    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'media_items')]
-    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    protected StationPlaylist $playlist;
-
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    protected int $playlist_id;
-
     #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'playlists')]
     #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    protected StationMedia $media;
+    public readonly StationMedia $media;
 
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    protected int $media_id;
-
-    #[ORM\Column]
-    protected int $weight = 0;
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'media_items')]
+    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    public StationPlaylist $playlist;
 
     #[ORM\Column]
-    protected bool $is_queued = true;
+    public int $weight = 0;
 
     #[ORM\Column]
-    protected int $last_played = 0;
+    public bool $is_queued = true;
+
+    #[ORM\Column]
+    public int $last_played = 0;
 
     public function __construct(StationPlaylist $playlist, StationMedia $media)
     {
         $this->playlist = $playlist;
         $this->media = $media;
-    }
-
-    public function getPlaylist(): StationPlaylist
-    {
-        return $this->playlist;
-    }
-
-    public function setPlaylist(StationPlaylist $playlist): void
-    {
-        $this->playlist = $playlist;
-    }
-
-    public function getMedia(): StationMedia
-    {
-        return $this->media;
-    }
-
-    public function getWeight(): int
-    {
-        return $this->weight;
-    }
-
-    public function setWeight(int $weight): void
-    {
-        $this->weight = $weight;
-    }
-
-    public function getLastPlayed(): int
-    {
-        return $this->last_played;
     }
 
     public function played(?int $timestamp = null): void

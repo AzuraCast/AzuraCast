@@ -25,14 +25,14 @@ trait HasSplitTokenFields
         EntityGroupsInterface::GROUP_ID,
         EntityGroupsInterface::GROUP_ALL,
     ])]
-    public string $id;
+    public readonly string $id;
 
     #[OA\Property(
         readOnly: true
     )]
     #[ORM\Column(length: 128)]
     #[AuditIgnore]
-    protected string $verifier;
+    protected readonly string $verifier;
 
     protected function setFromToken(SplitToken $token): void
     {

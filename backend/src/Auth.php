@@ -178,9 +178,9 @@ final class Auth
             self::SESSION_IS_LOGIN_COMPLETE_KEY,
             (null !== $isLoginComplete)
                 ? $isLoginComplete
-                : null === $user->getTwoFactorSecret()
+                : null === $user->two_factor_secret
         );
-        $this->session->set(self::SESSION_USER_ID_KEY, $user->getId());
+        $this->session->set(self::SESSION_USER_ID_KEY, $user->id);
         $this->session->regenerate();
 
         $this->user = $user;

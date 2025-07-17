@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ORM\Table(name: 'api_keys'),
     ORM\Entity(readOnly: true)
 ]
-final class ApiKey implements Stringable, IdentifiableEntityInterface, SplitTokenEntityInterface
+final readonly class ApiKey implements Stringable, IdentifiableEntityInterface, SplitTokenEntityInterface
 {
     use Traits\HasSplitTokenFields;
     use Traits\TruncateStrings;
@@ -32,19 +32,21 @@ final class ApiKey implements Stringable, IdentifiableEntityInterface, SplitToke
     #[Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
     #[DeepNormalize(true)]
     #[Serializer\MaxDepth(1)]
-    public readonly User $user;
+    public User $user;
 
     #[OA\Property]
     #[ORM\Column(length: 255, nullable: false)]
     #[Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
-    public string $comment = '' {
-        set => $this->truncateString($value);
-    }
+    public string $comment;
 
-    public function __construct(User $user, SplitToken $token)
-    {
+    public function __construct(
+        User $user,
+        SplitToken $token,
+        string $comment = ''
+    ) {
         $this->user = $user;
         $this->setFromToken($token);
+        $this->comment = $this->truncateString($comment);
     }
 
     public function getUser(): User

@@ -155,18 +155,18 @@ final class Acl
             $stationId = $stationId->getId();
         }
 
-        $numRoles = $user->getRoles()->count();
+        $numRoles = $user->roles->count();
         if ($numRoles > 0) {
             if ($numRoles === 1) {
                 /** @var Role $role */
-                $role = $user->getRoles()->first();
+                $role = $user->roles->first();
 
-                return $this->roleAllowed($role->getIdRequired(), $action, $stationId);
+                return $this->roleAllowed($role->id, $action, $stationId);
             }
 
             $roles = [];
-            foreach ($user->getRoles() as $role) {
-                $roles[] = $role->getId();
+            foreach ($user->roles as $role) {
+                $roles[] = $role->id;
             }
 
             return $this->roleAllowed($roles, $action, $stationId);
@@ -188,7 +188,7 @@ final class Acl
         Station|int|null $stationId = null
     ): bool {
         if ($stationId instanceof Station) {
-            $stationId = $stationId->getId();
+            $stationId = $stationId->id;
         }
 
         if ($action instanceof PermissionInterface) {

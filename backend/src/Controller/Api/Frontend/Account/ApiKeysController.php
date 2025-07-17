@@ -13,6 +13,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Security\SplitToken;
+use App\Utilities\Types;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -141,13 +142,13 @@ final class ApiKeysController extends AbstractApiCrudController
     ): ResponseInterface {
         $newKey = SplitToken::generate();
 
+        $parsedBody = (array)$request->getParsedBody();
+
         $record = new ApiKey(
             $request->getUser(),
-            $newKey
+            $newKey,
+            Types::string($parsedBody['comment'] ?? null)
         );
-
-        /** @var TEntity $record */
-        $this->editRecord((array)$request->getParsedBody(), $record);
 
         $return = $this->viewRecord($record, $request);
         $return['key'] = (string)$newKey;

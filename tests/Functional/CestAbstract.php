@@ -100,11 +100,11 @@ abstract class CestAbstract
 
         // Create user account.
         $user = new User();
-        $user->setName('AzuraCast Test User');
-        $user->setEmail($this->login_username);
+        $user->name = 'AzuraCast Test User';
+        $user->email = $this->login_username;
         $user->setNewPassword($this->login_password);
-        $user->getRoles()->add($role);
-        $user->setLocale('en_US.UTF-8');
+        $user->roles->add($role);
+        $user->locale = 'en_US.UTF-8';
 
         $this->em->persist($user);
 
@@ -112,7 +112,7 @@ abstract class CestAbstract
         $key = SplitToken::generate();
 
         $apiKey = new ApiKey($user, $key);
-        $apiKey->setComment('Test Suite');
+        $apiKey->comment = 'Test Suite';
 
         $this->em->persist($apiKey);
         $this->em->flush();

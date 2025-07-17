@@ -18,7 +18,7 @@ final class StationPlaylistFixture extends AbstractFixture implements DependentF
 
         $playlist = new StationPlaylist($station);
         $playlist->name = 'default';
-        
+
         $manager->persist($playlist);
         $manager->flush();
 

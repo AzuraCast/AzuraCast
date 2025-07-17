@@ -186,7 +186,7 @@ final class StationMediaRepository extends Repository
             if (!empty($tags[$tag])) {
                 $customFieldRow = new StationMediaCustomField($media, $customFieldKey);
                 $customFieldRow->value = $tags[$tag];
-                
+
                 $this->em->persist($customFieldRow);
 
                 $fieldCollection->add($customFieldRow);

@@ -467,11 +467,11 @@ final class ConfigWriter implements EventSubscriberInterface
 
                 case PlaylistTypes::OncePerXSongs:
                 case PlaylistTypes::OncePerXMinutes:
-                if (PlaylistTypes::OncePerXSongs === $playlist->type) {
+                    if (PlaylistTypes::OncePerXSongs === $playlist->type) {
                         $playlistScheduleVar = 'rotate(weights=[1,'
                             . $playlist->play_per_songs . '], [' . $playlistVarName . ', radio])';
                     } else {
-                    $delaySeconds = $playlist->play_per_songs * 60;
+                        $delaySeconds = $playlist->play_per_songs * 60;
                         $delayTrackSensitive = $playlist->backendInterruptOtherSongs() ? 'false' : 'true';
 
                         $playlistScheduleVar = 'fallback(track_sensitive=' . $delayTrackSensitive . ', [delay(' . $delaySeconds . '., ' . $playlistVarName . '), radio])';

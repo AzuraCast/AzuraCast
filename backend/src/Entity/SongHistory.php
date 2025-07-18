@@ -35,13 +35,22 @@ final class SongHistory implements
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public readonly Station $station;
 
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    public private(set) int $station_id;
+
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     public ?StationPlaylist $playlist = null;
 
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    public private(set) ?int $playlist_id = null;
+
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     public ?StationStreamer $streamer = null;
+
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    public private(set) ?int $streamer_id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
@@ -55,9 +64,15 @@ final class SongHistory implements
         }
     }
 
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    public private(set) ?int $media_id = null;
+
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'request_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     public ?StationRequest $request = null;
+
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    public private(set) ?int $request_id = null;
 
     #[ORM\Column(type: 'datetime_immutable', precision: 6)]
     public readonly DateTimeImmutable $timestamp_start;

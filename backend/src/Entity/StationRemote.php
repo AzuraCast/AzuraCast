@@ -42,9 +42,15 @@ final class StationRemote implements
         $this->station = $station;
     }
 
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    public private(set) int $station_id;
+
     #[ORM\ManyToOne(inversedBy: 'remotes')]
     #[ORM\JoinColumn(name: 'relay_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     public ?Relay $relay = null;
+
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    public private(set) ?int $relay_id = null;
 
     #[ORM\Column(length: 255, nullable: false)]
     public string $display_name = '' {

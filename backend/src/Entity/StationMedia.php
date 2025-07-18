@@ -39,6 +39,9 @@ final class StationMedia implements
     ]
     public readonly StorageLocation $storage_location;
 
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    public private(set) int $storage_location_id;
+
     #[ORM\Column(length: 25, nullable: false)]
     public string $unique_id;
 

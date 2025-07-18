@@ -31,9 +31,15 @@ final class StationQueue implements
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public readonly Station $station;
 
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    public private(set) int $station_id;
+
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     public ?StationPlaylist $playlist = null;
+
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    public private(set) ?int $playlist_id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
@@ -47,9 +53,15 @@ final class StationQueue implements
         }
     }
 
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    public private(set) ?int $media_id = null;
+
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'request_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     public ?StationRequest $request = null;
+
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    public private(set) ?int $request_id = null;
 
     #[ORM\Column]
     public bool $sent_to_autodj = false;

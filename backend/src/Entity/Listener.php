@@ -26,17 +26,29 @@ final class Listener implements
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public readonly Station $station;
 
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    public private(set) int $station_id;
+
     #[ORM\ManyToOne(targetEntity: StationMount::class)]
     #[ORM\JoinColumn(name: 'mount_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     public readonly ?StationMount $mount;
+
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    public private(set) ?int $mount_id = null;
 
     #[ORM\ManyToOne(targetEntity: StationRemote::class)]
     #[ORM\JoinColumn(name: 'remote_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     public readonly ?StationRemote $remote;
 
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    public private(set) ?int $remote_id = null;
+
     #[ORM\ManyToOne(targetEntity: StationHlsStream::class)]
     #[ORM\JoinColumn(name: 'hls_stream_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     public readonly ?StationHlsStream $hls_stream;
+
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    public private(set) ?int $hls_stream_id = null;
 
     #[ORM\Column]
     public int $listener_uid;

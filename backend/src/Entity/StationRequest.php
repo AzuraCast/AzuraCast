@@ -24,9 +24,15 @@ final class StationRequest implements
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public readonly Station $station;
 
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    public private(set) int $station_id;
+
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'track_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public readonly StationMedia $track;
+
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    public private(set) int $track_id;
 
     #[ORM\Column(type: 'datetime_immutable', precision: 6)]
     public readonly DateTimeImmutable $timestamp;

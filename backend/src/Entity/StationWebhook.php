@@ -40,6 +40,9 @@ final class StationWebhook implements
         $this->station = $station;
     }
 
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    public private(set) int $station_id;
+
     #[
         OA\Property(
             description: "The nickname of the webhook connector.",

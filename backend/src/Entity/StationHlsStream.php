@@ -40,6 +40,9 @@ final class StationHlsStream implements
         $this->station = $station;
     }
 
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    public private(set) int $station_id;
+
     #[
         OA\Property(example: "aac_lofi"),
         ORM\Column(length: 100),

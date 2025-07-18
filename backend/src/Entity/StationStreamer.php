@@ -49,6 +49,9 @@ final class StationStreamer implements
         $this->station = $station;
     }
 
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    public private(set) int $station_id;
+
     #[
         OA\Property(example: "dj_test"),
         ORM\Column(length: 50),

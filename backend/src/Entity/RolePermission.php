@@ -25,9 +25,15 @@ final class RolePermission implements
     #[ORM\JoinColumn(name: 'role_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public readonly Role $role;
 
+    #[ORM\Column(insertable: false, updatable: false)]
+    public private(set) int $role_id;
+
     #[ORM\ManyToOne(inversedBy: 'permissions')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     public ?Station $station;
+
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    public private(set) ?int $station_id = null;
 
     public function setStation(Station $station): void
     {

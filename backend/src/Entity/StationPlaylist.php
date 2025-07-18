@@ -55,6 +55,9 @@ final class StationPlaylist implements
         $this->station = $station;
     }
 
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    public private(set) int $station_id;
+
     #[
         OA\Property(example: "Test Playlist"),
         ORM\Column(length: 200),

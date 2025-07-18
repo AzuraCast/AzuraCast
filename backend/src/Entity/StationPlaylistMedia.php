@@ -20,9 +20,15 @@ final class StationPlaylistMedia implements JsonSerializable, IdentifiableEntity
     #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public readonly StationMedia $media;
 
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    public private(set) int $media_id;
+
     #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'media_items')]
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public StationPlaylist $playlist;
+
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    public private(set) int $playlist_id;
 
     #[ORM\Column]
     public int $weight = 0;

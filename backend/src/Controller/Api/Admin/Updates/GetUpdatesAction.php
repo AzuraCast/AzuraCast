@@ -51,7 +51,7 @@ final class GetUpdatesAction implements SingleActionInterface
             $updates = $this->azuracastCentral->checkForUpdates();
 
             if (!empty($updates)) {
-                $settings->setUpdateResults($updates);
+                $settings->update_results = $updates;
                 $settings->updateUpdateLastRun();
                 $this->writeSettings($settings);
 

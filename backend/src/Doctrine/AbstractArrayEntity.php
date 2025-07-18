@@ -9,6 +9,7 @@ use ReflectionClass;
 use ReflectionProperty;
 
 /**
+ * @phpstan-consistent-constructor
  * @phpstan-type ConfigData array<string, mixed>
  */
 abstract class AbstractArrayEntity implements JsonSerializable
@@ -107,5 +108,23 @@ abstract class AbstractArrayEntity implements JsonSerializable
             fn(ReflectionProperty $reflProp) => $reflProp->getName(),
             $reflClass->getProperties(ReflectionProperty::IS_VIRTUAL)
         );
+    }
+
+    /**
+     * @param ConfigData|null $sourceData
+     * @param ConfigData|AbstractArrayEntity|null $newData
+     * @return ConfigData|null
+     */
+    public static function merge(
+        ?array $sourceData,
+        array|self|null $newData
+    ): array|null {
+        $arrayEntity = new static((array)$sourceData);
+
+        if ($newData !== null) {
+            $arrayEntity->fromArray($newData);
+        }
+
+        return $arrayEntity->toArray();
     }
 }

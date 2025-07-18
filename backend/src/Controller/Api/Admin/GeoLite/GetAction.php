@@ -44,7 +44,7 @@ final class GetAction implements SingleActionInterface
         return $response->withJson(
             new GeoLiteStatus(
                 $version,
-                $settings->getGeoliteLicenseKey()
+                $settings->geolite_license_key
             )
         );
     }

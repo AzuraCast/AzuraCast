@@ -25,7 +25,7 @@ final class Bluesky extends AbstractSocialConnector
         NowPlaying $np,
         array $triggers
     ): void {
-        $config = $webhook->getConfig();
+        $config = $webhook->config ?? [];
 
         $handle = Types::stringOrNull($config['handle'] ?? null, true);
         $appPassword = Types::stringOrNull($config['app_password'] ?? null, true);

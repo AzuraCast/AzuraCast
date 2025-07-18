@@ -29,7 +29,7 @@ final class TwoFactorAction implements SingleActionInterface
                 $user = $auth->getUser();
 
                 $flash->success(
-                    '<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(),
+                    '<b>' . __('Logged in successfully.') . '</b><br>' . $user->email,
                 );
 
                 $referrer = Types::stringOrNull($request->getSession()->get('login_referrer'), true);

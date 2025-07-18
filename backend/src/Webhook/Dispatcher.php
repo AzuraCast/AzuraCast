@@ -76,16 +76,16 @@ final class Dispatcher
         }
 
         /** @var StationWebhook[] $enabledWebhooks */
-        $enabledWebhooks = $station->getWebhooks()->filter(
+        $enabledWebhooks = $station->webhooks->filter(
             function (StationWebhook $webhook) {
-                return $webhook->getIsEnabled();
+                return $webhook->is_enabled;
             }
         );
 
         $this->logger->debug('Webhook dispatch: triggering events: ' . implode(', ', $triggers));
 
         foreach ($enabledWebhooks as $webhook) {
-            $webhookType = $webhook->getType();
+            $webhookType = $webhook->type;
             $webhookClass = $webhookType->getClass();
 
             if (null === $webhookClass) {
@@ -154,9 +154,9 @@ final class Dispatcher
                 return;
             }
 
-            $this->logger->info(sprintf('Dispatching test web hook "%s"...', $webhook->getName()));
+            $this->logger->info(sprintf('Dispatching test web hook "%s"...', $webhook->name));
 
-            $station = $webhook->getStation();
+            $station = $webhook->station;
             $np = $this->nowPlayingApiGen->currentOrEmpty($station);
 
             $np = $np->withResolvedUrls($this->router->getBaseUrl());
@@ -172,7 +172,7 @@ final class Dispatcher
 
             $this->localHandler->dispatch($station, $np, []);
 
-            $webhookType = $webhook->getType();
+            $webhookType = $webhook->type;
             $webhookClass = $webhookType->getClass();
 
             if (null === $webhookClass) {
@@ -187,7 +187,7 @@ final class Dispatcher
                 WebhookTriggers::SongChanged->value,
             ]);
 
-            $this->logger->info(sprintf('Web hook "%s" completed.', $webhook->getName()));
+            $this->logger->info(sprintf('Web hook "%s" completed.', $webhook->name));
         } catch (Throwable $e) {
             $this->logger->error(
                 sprintf(

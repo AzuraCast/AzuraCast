@@ -28,7 +28,7 @@ final class OverviewAction implements SingleActionInterface
             throw new RuntimeException('Analytics are not enabled for this station.');
         }
 
-        $analyticsLevel = $settings->getAnalytics();
+        $analyticsLevel = $settings->analytics ?? AnalyticsLevel::default();
 
         return $response->withJson([
             'showFullAnalytics' => AnalyticsLevel::All === $analyticsLevel,

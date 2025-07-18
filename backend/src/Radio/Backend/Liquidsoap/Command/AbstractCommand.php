@@ -20,15 +20,15 @@ abstract class AbstractCommand
         bool $asAutoDj = false,
         ?array $payload = []
     ): mixed {
-        if (BackendAdapters::Liquidsoap !== $station->getBackendType()) {
+        if (BackendAdapters::Liquidsoap !== $station->backend_type) {
             throw new LogicException('Station does not use Liquidsoap backend.');
         }
 
         $this->logger->pushProcessor(
             function (LogRecord $record) use ($station) {
                 $record->extra['station'] = [
-                    'id' => $station->getId(),
-                    'name' => $station->getName(),
+                    'id' => $station->id,
+                    'name' => $station->name,
                 ];
                 return $record;
             }

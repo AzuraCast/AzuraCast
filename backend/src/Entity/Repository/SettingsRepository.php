@@ -43,7 +43,7 @@ final class SettingsRepository extends Repository
             $this->em->flush();
         }
 
-        $settingsId = $settings->getAppUniqueIdentifier();
+        $settingsId = $settings->app_unique_identifier;
 
         return $settings;
     }

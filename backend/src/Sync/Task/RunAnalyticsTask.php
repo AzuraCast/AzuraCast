@@ -38,7 +38,7 @@ final class RunAnalyticsTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        switch ($this->readSettings()->getAnalytics()) {
+        switch ($this->readSettings()->analytics ?? AnalyticsLevel::default()) {
             case AnalyticsLevel::None:
                 $this->purgeListeners();
                 $this->purgeAnalytics();
@@ -64,7 +64,7 @@ final class RunAnalyticsTask extends AbstractTask
         $stations = [];
         foreach ($stationsRaw as $station) {
             /** @var Station $station */
-            $stations[$station->getId()] = $station;
+            $stations[$station->id] = $station;
         }
 
         $now = Time::nowUtc();

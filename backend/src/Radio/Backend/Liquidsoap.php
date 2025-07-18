@@ -51,7 +51,7 @@ final class Liquidsoap extends AbstractLocalAdapter
      */
     public function getHttpApiPort(Station $station): int
     {
-        $settings = $station->getBackendConfig();
+        $settings = $station->backend_config;
         return $settings->telnet_port ?? ($this->getStreamPort($station) - 1);
     }
 
@@ -64,14 +64,14 @@ final class Liquidsoap extends AbstractLocalAdapter
      */
     public function getStreamPort(Station $station): int
     {
-        $djPort = $station->getBackendConfig()->dj_port;
+        $djPort = $station->backend_config->dj_port;
         if (null !== $djPort) {
             return $djPort;
         }
 
         // Default to frontend port + 5
-        $frontendConfig = $station->getFrontendConfig();
-        $frontendPort = $frontendConfig->port ?? (8000 + (($station->getId() - 1) * 10));
+        $frontendConfig = $station->frontend_config;
+        $frontendPort = $frontendConfig->port ?? (8000 + (($station->id - 1) * 10));
 
         return $frontendPort + 5;
     }
@@ -94,7 +94,7 @@ final class Liquidsoap extends AbstractLocalAdapter
 
         $response = $this->httpClient->post($apiUri, [
             'headers' => [
-                'x-liquidsoap-api-key' => $station->getAdapterApiKey(),
+                'x-liquidsoap-api-key' => $station->adapter_api_key,
             ],
             'body' => $commandStr,
         ]);
@@ -229,8 +229,8 @@ final class Liquidsoap extends AbstractLocalAdapter
      */
     public function disconnectStreamer(Station $station): array
     {
-        $currentStreamer = $station->getCurrentStreamer();
-        $disconnectTimeout = $station->getDisconnectDeactivateStreamer();
+        $currentStreamer = $station->current_streamer;
+        $disconnectTimeout = $station->disconnect_deactivate_streamer;
 
         if ($currentStreamer instanceof StationStreamer && $disconnectTimeout > 0) {
             $currentStreamer->deactivateFor($disconnectTimeout);
@@ -247,7 +247,7 @@ final class Liquidsoap extends AbstractLocalAdapter
 
     public function getWebStreamingUrl(Station $station, UriInterface $baseUrl): UriInterface
     {
-        $djMount = $station->getBackendConfig()->dj_mount_point;
+        $djMount = $station->backend_config->dj_mount_point;
 
         return $baseUrl
             ->withScheme('wss')

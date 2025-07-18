@@ -42,7 +42,7 @@ final class StationScheduleRepository extends Repository
 
         $scheduleItems = [];
         foreach ($rawScheduleItems as $row) {
-            $scheduleItems[$row->getId()] = $row;
+            $scheduleItems[$row->id] = $row;
         }
 
         foreach ($items as $item) {
@@ -53,12 +53,12 @@ final class StationScheduleRepository extends Repository
                 $record = new StationSchedule($relation);
             }
 
-            $record->setStartTime((int)$item['start_time']);
-            $record->setEndTime((int)$item['end_time']);
-            $record->setStartDate($item['start_date']);
-            $record->setEndDate($item['end_date']);
-            $record->setDays($item['days'] ?? []);
-            $record->setLoopOnce($item['loop_once'] ?? false);
+            $record->start_time = (int)$item['start_time'];
+            $record->end_time = (int)$item['end_time'];
+            $record->start_date = $item['start_date'];
+            $record->end_date = $item['end_date'];
+            $record->days = $item['days'] ?? [];
+            $record->loop_once = $item['loop_once'] ?? false;
 
             $this->em->persist($record);
         }
@@ -133,8 +133,8 @@ final class StationScheduleRepository extends Repository
                     $this->scheduler->shouldSchedulePlayOnCurrentDate($scheduleItem, $stationTz, $i)
                     && $this->scheduler->isScheduleScheduledToPlayToday($scheduleItem, $dayOfWeek)
                 ) {
-                    $start = StationSchedule::getDateTime($scheduleItem->getStartTime(), $stationTz, $i);
-                    $end = StationSchedule::getDateTime($scheduleItem->getEndTime(), $stationTz, $i);
+                    $start = StationSchedule::getDateTime($scheduleItem->start_time, $stationTz, $i);
+                    $end = StationSchedule::getDateTime($scheduleItem->end_time, $stationTz, $i);
 
                     // Handle overnight schedule items
                     if ($end < $start) {

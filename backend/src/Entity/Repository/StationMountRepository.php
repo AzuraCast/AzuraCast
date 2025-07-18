@@ -22,20 +22,20 @@ final class StationMountRepository extends AbstractStationBasedRepository
         UploadedFile $file,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $fs ??= StationFilesystems::buildConfigFilesystem($mount->getStation());
+        $fs ??= StationFilesystems::buildConfigFilesystem($mount->station);
 
-        if (!empty($mount->getIntroPath())) {
+        if (!empty($mount->intro_path)) {
             $this->doDeleteIntro($mount, $fs);
-            $mount->setIntroPath(null);
+            $mount->intro_path = null;
         }
 
         $originalPath = $file->getClientFilename();
         $originalExt = pathinfo($originalPath, PATHINFO_EXTENSION);
 
-        $introPath = 'mount_' . $mount->getIdRequired() . '_intro.' . $originalExt;
+        $introPath = 'mount_' . $mount->id . '_intro.' . $originalExt;
         $fs->uploadAndDeleteOriginal($file->getUploadedPath(), $introPath);
 
-        $mount->setIntroPath($introPath);
+        $mount->intro_path = $introPath;
         $this->em->persist($mount);
         $this->em->flush();
     }
@@ -44,9 +44,9 @@ final class StationMountRepository extends AbstractStationBasedRepository
         StationMount $mount,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $fs ??= StationFilesystems::buildConfigFilesystem($mount->getStation());
+        $fs ??= StationFilesystems::buildConfigFilesystem($mount->station);
 
-        $introPath = $mount->getIntroPath();
+        $introPath = $mount->intro_path;
         if (empty($introPath)) {
             return;
         }
@@ -60,7 +60,7 @@ final class StationMountRepository extends AbstractStationBasedRepository
     ): void {
         $this->doDeleteIntro($mount, $fs);
 
-        $mount->setIntroPath(null);
+        $mount->intro_path = null;
         $this->em->persist($mount);
         $this->em->flush();
     }
@@ -87,7 +87,7 @@ final class StationMountRepository extends AbstractStationBasedRepository
 
         /** @var StationMount $mount */
         foreach ($mounts as $mount) {
-            $displayNames[$mount->getId()] = $mount->getDisplayName();
+            $displayNames[$mount->id] = $mount->display_name;
         }
 
         return $displayNames;
@@ -95,17 +95,17 @@ final class StationMountRepository extends AbstractStationBasedRepository
 
     public function getDefaultMount(Station $station): ?StationMount
     {
-        $mount = $this->repository->findOneBy(['station_id' => $station->getId(), 'is_default' => true]);
+        $mount = $this->repository->findOneBy(['station' => $station, 'is_default' => true]);
 
         if ($mount instanceof StationMount) {
             return $mount;
         }
 
         // Use the first mount if none is specified as default.
-        $mount = $station->getMounts()->first();
+        $mount = $station->mounts->first();
 
         if ($mount instanceof StationMount) {
-            $mount->setIsDefault(true);
+            $mount->is_default = true;
             $this->em->persist($mount);
             $this->em->flush();
 

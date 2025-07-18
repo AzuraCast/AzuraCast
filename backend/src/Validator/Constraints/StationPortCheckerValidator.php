@@ -26,8 +26,8 @@ final class StationPortCheckerValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, Station::class);
         }
 
-        $frontendConfig = $value->getFrontendConfig();
-        $backendConfig = $value->getBackendConfig();
+        $frontendConfig = $value->frontend_config;
+        $backendConfig = $value->backend_config;
 
         $portsToCheck = [
             'frontend_config_port' => $frontendConfig->port,

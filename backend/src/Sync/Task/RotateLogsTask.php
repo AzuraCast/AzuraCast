@@ -45,7 +45,7 @@ final class RotateLogsTask extends AbstractTask
             try {
                 $this->cleanUpIcecastLog($station);
 
-                if ($station->getEnableHls() && $this->rotateHlsLog($station)) {
+                if ($station->enable_hls && $this->rotateHlsLog($station)) {
                     $hlsRotated = true;
                 }
             } catch (Throwable $e) {

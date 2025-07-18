@@ -241,16 +241,16 @@ final class StreamersController extends AbstractScheduledEntityController
                 $request
             ) {
                 /** @var StationStreamer $streamer */
-                $streamer = $scheduleItem->getStreamer();
+                $streamer = $scheduleItem->streamer;
 
                 return [
-                    'id' => $streamer->getId(),
-                    'title' => $streamer->getDisplayName(),
+                    'id' => $streamer->id,
+                    'title' => $streamer->display_name,
                     'start' => $dateRange->start->toIso8601String(),
                     'end' => $dateRange->end->toIso8601String(),
                     'edit_url' => $request->getRouter()->named(
                         'api:stations:streamer',
-                        ['station_id' => $station->getId(), 'id' => $streamer->getId()]
+                        ['station_id' => $station->id, 'id' => $streamer->id]
                     ),
                 ];
             }
@@ -264,13 +264,13 @@ final class StreamersController extends AbstractScheduledEntityController
         $isInternal = $request->isInternal();
         $router = $request->getRouter();
 
-        $return['has_custom_art'] = (0 !== $record->getArtUpdatedAt());
+        $return['has_custom_art'] = (0 !== $record->art_updated_at);
 
         $routeParams = [
-            'id' => $record->getIdRequired(),
+            'id' => $record->id,
         ];
         if ($return['has_custom_art']) {
-            $routeParams['timestamp'] = $record->getArtUpdatedAt();
+            $routeParams['timestamp'] = $record->art_updated_at;
         }
 
         $return['art'] = $router->fromHere(
@@ -281,18 +281,18 @@ final class StreamersController extends AbstractScheduledEntityController
 
         $return['links']['broadcasts'] = $router->fromHere(
             routeName: 'api:stations:streamer:broadcasts',
-            routeParams: ['id' => $record->getId()],
+            routeParams: ['id' => $record->id],
             absolute: !$isInternal
         );
         $return['links']['broadcasts_batch'] = $router->fromHere(
             routeName: 'api:stations:streamer:broadcasts:batch',
-            routeParams: ['id' => $record->getId()],
+            routeParams: ['id' => $record->id],
             absolute: !$isInternal
         );
 
         $return['links']['art'] = $router->fromHere(
             routeName: 'api:stations:streamer:art-internal',
-            routeParams: ['id' => $record->getId()],
+            routeParams: ['id' => $record->id],
             absolute: !$isInternal
         );
 

@@ -61,7 +61,7 @@ final class ForgotPasswordAction implements SingleActionInterface
 
             if ($user instanceof User) {
                 $email = $this->mail->createMessage();
-                $email->to($user->getEmail());
+                $email->to($user->email);
 
                 $email->subject(__('Account Recovery'));
 

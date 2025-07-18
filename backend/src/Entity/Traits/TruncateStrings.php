@@ -4,10 +4,19 @@ declare(strict_types=1);
 
 namespace App\Entity\Traits;
 
+use App\Utilities\Types;
+
 trait TruncateStrings
 {
-    protected function truncateNullableString(?string $string = null, int $length = 255): ?string
-    {
+    protected function truncateNullableString(
+        ?string $string = null,
+        int $length = 255,
+        bool $countEmptyAsNull = false
+    ): ?string {
+        if ($countEmptyAsNull) {
+            $string = Types::stringOrNull($string, true);
+        }
+
         if ($string === null) {
             return null;
         }

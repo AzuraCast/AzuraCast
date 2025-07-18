@@ -66,7 +66,7 @@ final class FlowUploadAction implements SingleActionInterface
         $allParams = $request->getParams();
         $station = $request->getStation();
 
-        $mediaStorage = $station->getMediaStorageLocation();
+        $mediaStorage = $station->media_storage_location;
         $mediaStorage->errorIfFull();
 
         $flowResponse = Flow::process($request, $response, $station->getRadioTempDir());

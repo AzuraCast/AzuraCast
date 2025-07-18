@@ -19,7 +19,7 @@ final class PlaylistsAction implements SingleActionInterface
         $station = $request->getStation();
 
         return $response->withJson([
-            'useManualAutoDj' => $station->useManualAutoDJ(),
+            'useManualAutoDj' => $station->backend_config->use_manual_autodj,
         ]);
     }
 }

@@ -28,15 +28,15 @@ final class ClearExtraMetadataCommand extends AbstractBatchMediaCommand
         $reprocessMediaQueue = $this->em->createQueryBuilder()
             ->update(StationMedia::class, 'sm')
             ->set('sm.mtime', 0)
-            ->set('sm.extra_metadata', 'null');
+            ->set('sm.extra_metadata_raw', 'null');
 
         if (null === $station) {
             $io->section('Clearing extra metadata for all stations...');
         } else {
-            $io->writeln(sprintf('Clearing extra metadata for station: %s', $station->getName()));
+            $io->writeln(sprintf('Clearing extra metadata for station: %s', $station->name));
 
             $reprocessMediaQueue = $reprocessMediaQueue->andWhere('sm.storage_location = :storageLocation')
-                ->setParameter('storageLocation', $station->getMediaStorageLocation());
+                ->setParameter('storageLocation', $station->media_storage_location);
         }
 
         if (null !== $path) {

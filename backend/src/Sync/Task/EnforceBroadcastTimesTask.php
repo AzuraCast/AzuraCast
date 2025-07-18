@@ -25,11 +25,11 @@ final class EnforceBroadcastTimesTask extends AbstractTask
     public function run(bool $force = false): void
     {
         foreach ($this->iterateStations() as $station) {
-            if (BackendAdapters::Liquidsoap !== $station->getBackendType()) {
+            if (BackendAdapters::Liquidsoap !== $station->backend_type) {
                 continue;
             }
 
-            $currentStreamer = $station->getCurrentStreamer();
+            $currentStreamer = $station->current_streamer;
             if (null === $currentStreamer) {
                 continue;
             }

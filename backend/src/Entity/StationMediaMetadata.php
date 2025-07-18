@@ -8,7 +8,7 @@ use App\Doctrine\AbstractArrayEntity;
 use App\Utilities\Time;
 use App\Utilities\Types;
 
-class StationMediaMetadata extends AbstractArrayEntity
+final class StationMediaMetadata extends AbstractArrayEntity
 {
     public const string AMPLIFY = 'amplify';
 

@@ -21,7 +21,7 @@ class Api_Stations_RemotesCest extends CestAbstract
 
         $this->testCrudApi(
             $I,
-            '/api/station/' . $station->getId() . '/remotes',
+            '/api/station/' . $station->id . '/remotes',
             [
                 'type' => RemoteAdapters::Icecast->value,
                 'display_name' => 'Test Remote Relay',

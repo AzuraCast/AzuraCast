@@ -48,7 +48,7 @@ final class SetAdministratorCommand extends CommandAbstract
         if ($user instanceof User) {
             $adminRole = $this->permsRepo->ensureSuperAdministratorRole();
 
-            $userRoles = $user->getRoles();
+            $userRoles = $user->roles;
             if (!$userRoles->contains($adminRole)) {
                 $userRoles->add($adminRole);
             }
@@ -59,7 +59,7 @@ final class SetAdministratorCommand extends CommandAbstract
             $io->text(
                 sprintf(
                     __('The account associated with e-mail address "%s" has been set as an administrator'),
-                    $user->getEmail()
+                    $user->email
                 )
             );
             $io->newLine();

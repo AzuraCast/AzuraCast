@@ -195,7 +195,7 @@ final class MountsController extends AbstractStationApiCrudController
 
         $return['links']['intro'] = $router->fromHere(
             routeName: 'api:stations:mounts:intro',
-            routeParams: ['id' => $record->getId()],
+            routeParams: ['id' => $record->id],
             absolute: true
         );
 
@@ -213,7 +213,7 @@ final class MountsController extends AbstractStationApiCrudController
     protected function createRecord(ServerRequest $request, array $data): object
     {
         $station = $request->getStation();
-        if ($station->getMaxMounts() !== 0 && $station->getMaxMounts() <= $station->getMounts()->count()) {
+        if ($station->max_mounts !== 0 && $station->max_mounts <= $station->mounts->count()) {
             throw new ValidationException(
                 __('Unable to create a new mount point, station\'s maximum mount points reached.')
             );

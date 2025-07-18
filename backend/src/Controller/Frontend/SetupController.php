@@ -80,9 +80,9 @@ final class SetupController
 
                 // Create user account.
                 $user = new User();
-                $user->setEmail($data['username']);
+                $user->email = $data['username'];
                 $user->setNewPassword($data['password']);
-                $user->getRoles()->add($role);
+                $user->roles->add($role);
 
                 $errors = $this->validator->validate($user);
                 if (count($errors) > 0) {

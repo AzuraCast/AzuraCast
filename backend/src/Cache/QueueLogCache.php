@@ -56,6 +56,6 @@ final class QueueLogCache
 
     private function getCacheKey(StationQueue $queueRow): string
     {
-        return (string)$queueRow->getIdRequired();
+        return (string)$queueRow->id;
     }
 }

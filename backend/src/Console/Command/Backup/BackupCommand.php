@@ -85,7 +85,7 @@ final class BackupCommand extends AbstractDatabaseCommand
 
             $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
-            if ($storageLocation->isLocal()) {
+            if ($storageLocation->adapter->isLocal()) {
                 $destPath = $fs->getLocalPath($path);
             } else {
                 $tmpPath = $fsUtils->tempnam(
@@ -118,21 +118,12 @@ final class BackupCommand extends AbstractDatabaseCommand
                 DQL
             )->execute();
 
+            /** @var Station $station */
             foreach ($stations as $station) {
-                /** @var Station $station */
-                $mediaAdapter = $station->getMediaStorageLocation();
-                if ($mediaAdapter->isLocal()) {
-                    $filesToBackup[] = $mediaAdapter->getPath();
-                }
-
-                $podcastsAdapter = $station->getPodcastsStorageLocation();
-                if ($podcastsAdapter->isLocal()) {
-                    $filesToBackup[] = $podcastsAdapter->getPath();
-                }
-
-                $recordingsAdapter = $station->getRecordingsStorageLocation();
-                if ($recordingsAdapter->isLocal()) {
-                    $filesToBackup[] = $recordingsAdapter->getPath();
+                foreach ($station->getAllStorageLocations() as $storageLocation) {
+                    if ($storageLocation->adapter->isLocal()) {
+                        $filesToBackup[] = $storageLocation->path;
+                    }
                 }
             }
         }

@@ -67,7 +67,7 @@ final class GetAction implements SingleActionInterface
                 /** @var FileAttributes $file */
                 $filename = $file->path();
 
-                $pathEncoded = base64_encode($storageLocation->getId() . '|' . $filename);
+                $pathEncoded = base64_encode($storageLocation->id . '|' . $filename);
 
                 $backups[] = new Backup(
                     $filename,
@@ -75,7 +75,7 @@ final class GetAction implements SingleActionInterface
                     $pathEncoded,
                     $file->lastModified() ?? 0,
                     $file->fileSize(),
-                    $storageLocation->getIdRequired()
+                    $storageLocation->id
                 );
             }
         }

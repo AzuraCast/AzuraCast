@@ -9,7 +9,7 @@ use App\Utilities\Strings;
 use App\Utilities\Types;
 use LogicException;
 
-class StationFrontendConfiguration extends AbstractArrayEntity
+final class StationFrontendConfiguration extends AbstractArrayEntity
 {
     public function __construct(array $elements = [])
     {

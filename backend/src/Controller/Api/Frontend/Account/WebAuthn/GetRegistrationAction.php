@@ -45,8 +45,8 @@ final class GetRegistrationAction
         $webAuthn = $this->getWebAuthn($request);
 
         $createArgs = $webAuthn->getCreateArgs(
-            (string)$user->getId(),
-            $user->getEmail(),
+            (string)$user->id,
+            $user->email,
             $user->getDisplayName(),
             self::WEBAUTHN_TIMEOUT,
             requireResidentKey: 'required',

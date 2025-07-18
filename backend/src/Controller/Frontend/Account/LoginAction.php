@@ -110,7 +110,7 @@ final class LoginAction implements SingleActionInterface
                 }
 
                 $flash->success(
-                    '<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(),
+                    '<b>' . __('Logged in successfully.') . '</b><br>' . $user->email,
                 );
 
                 $referrer = Types::stringOrNull($session->get('login_referrer'), true);

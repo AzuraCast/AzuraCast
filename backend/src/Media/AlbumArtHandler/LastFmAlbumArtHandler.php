@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Media\AlbumArtHandler;
 
 use App\Entity\Interfaces\SongInterface;
-use App\Entity\StationMedia;
 use App\Service\LastFm;
 
 final class LastFmAlbumArtHandler extends AbstractAlbumArtHandler
@@ -27,12 +26,12 @@ final class LastFmAlbumArtHandler extends AbstractAlbumArtHandler
 
     protected function getAlbumArt(SongInterface $song): ?string
     {
-        if ($song instanceof StationMedia && !empty($song->getAlbum())) {
+        if (!empty($song->album)) {
             $response = $this->lastFm->makeRequest(
                 'album.getInfo',
                 [
-                    'artist' => $song->getArtist(),
-                    'album' => $song->getAlbum(),
+                    'artist' => $song->artist,
+                    'album' => $song->album,
                 ]
             );
 
@@ -44,8 +43,8 @@ final class LastFmAlbumArtHandler extends AbstractAlbumArtHandler
         $response = $this->lastFm->makeRequest(
             'track.getInfo',
             [
-                'artist' => $song->getArtist(),
-                'track' => $song->getTitle(),
+                'artist' => $song->artist,
+                'track' => $song->title,
             ]
         );
 

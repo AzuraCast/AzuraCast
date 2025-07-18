@@ -63,8 +63,8 @@ final class ProfileAction implements SingleActionInterface
         $apiResponse->services = new StationServiceStatus(
             null !== $backend && $backend->isRunning($station),
             null !== $frontend && $frontend->isRunning($station),
-            $station->getHasStarted(),
-            $station->getNeedsRestart()
+            $station->has_started,
+            $station->needs_restart
         );
 
         $apiResponse->schedule = $this->scheduleRepo->getUpcomingSchedule($station);

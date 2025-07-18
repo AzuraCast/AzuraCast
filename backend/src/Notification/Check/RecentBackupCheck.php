@@ -35,12 +35,12 @@ final class RecentBackupCheck
         // Don't show backup warning for freshly created installations.
         $settings = $this->readSettings();
 
-        $setupComplete = $settings->getSetupCompleteTime();
+        $setupComplete = $settings->setup_complete_time;
         if ($setupComplete >= $threshold) {
             return;
         }
 
-        $backupLastRun = $settings->getBackupLastRun();
+        $backupLastRun = $settings->backup_last_run;
 
         if ($backupLastRun < $threshold) {
             $router = $request->getRouter();

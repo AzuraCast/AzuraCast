@@ -30,18 +30,18 @@ abstract class AbstractGoogleAnalyticsConnector extends AbstractConnector
         $hlsBaseUrl = CustomUrls::getHlsUrl($station);
 
         $mountUrls = [];
-        foreach ($station->getMounts() as $mount) {
-            $mountUrls[$mount->getIdRequired()] = $listenBaseUrl . $mount->getName();
+        foreach ($station->mounts as $mount) {
+            $mountUrls[$mount->id] = $listenBaseUrl . $mount->name;
         }
 
         $remoteUrls = [];
-        foreach ($station->getRemotes() as $remote) {
-            $remoteUrls[$remote->getIdRequired()] = $listenBaseUrl . '/remote' . $remote->getMount();
+        foreach ($station->remotes as $remote) {
+            $remoteUrls[$remote->id] = $listenBaseUrl . '/remote' . $remote->mount;
         }
 
         $hlsUrls = [];
-        foreach ($station->getHlsStreams() as $hlsStream) {
-            $hlsUrls[$hlsStream->getIdRequired()] = $hlsBaseUrl . '/' . $hlsStream->getName();
+        foreach ($station->hls_streams as $hlsStream) {
+            $hlsUrls[$hlsStream->id] = $hlsBaseUrl . '/' . $hlsStream->name;
         }
 
         return [

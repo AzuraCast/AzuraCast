@@ -65,7 +65,7 @@ final class ByBrowser extends AbstractReportAction
                 GROUP BY l.device_browser_family
             SQL,
             [
-                'station_id' => $station->getIdRequired(),
+                'station_id' => $station->id,
                 'start' => $dateRange->start,
                 'end' => $dateRange->end,
             ]

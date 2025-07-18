@@ -59,7 +59,7 @@ final class EmptyAction implements SingleActionInterface
 
         $record = $this->playlistRepo->requireForStation($id, $request->getStation());
 
-        if (PlaylistSources::Songs !== $record->getSource()) {
+        if (PlaylistSources::Songs !== $record->source) {
             throw new Exception(__('This playlist is not song-based.'));
         }
 
@@ -67,7 +67,7 @@ final class EmptyAction implements SingleActionInterface
 
         // Write changes to file.
         $message = new WritePlaylistFileMessage();
-        $message->playlist_id = $record->getIdRequired();
+        $message->playlist_id = $record->id;
 
         $this->messageBus->dispatch($message);
 

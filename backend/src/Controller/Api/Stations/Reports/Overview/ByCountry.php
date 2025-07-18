@@ -63,7 +63,7 @@ final class ByCountry extends AbstractReportAction
                 GROUP BY l.location_country
             SQL,
             [
-                'station_id' => $station->getIdRequired(),
+                'station_id' => $station->id,
                 'start' => $dateRange->start,
                 'end' => $dateRange->end,
             ]

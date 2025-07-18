@@ -31,7 +31,7 @@ final class PodcastFeedAction implements SingleActionInterface
         array $params
     ): ResponseInterface {
         $station = $request->getStation();
-        if (!$station->getEnablePublicPage()) {
+        if (!$station->enable_public_page) {
             throw NotFoundException::station();
         }
 
@@ -57,11 +57,11 @@ final class PodcastFeedAction implements SingleActionInterface
             'description' => $podcastApi->description,
             'language' => $podcastApi->language,
             'lastBuildDate' => $now->toRssString(),
-            'category' => $podcast->getCategories()->map(
+            'category' => $podcast->categories->map(
                 function (PodcastCategory $podcastCategory) {
-                    return (null === $podcastCategory->getSubTitle())
-                        ? $podcastCategory->getTitle()
-                        : $podcastCategory->getSubTitle();
+                    return (null === $podcastCategory->subtitle)
+                        ? $podcastCategory->title
+                        : $podcastCategory->subtitle;
                 }
             )->getValues(),
             'ttl' => 5,
@@ -75,15 +75,15 @@ final class PodcastFeedAction implements SingleActionInterface
                 '@href' => $podcastApi->art,
             ],
             'itunes:explicit' => 'false',
-            'itunes:category' => $podcast->getCategories()->map(
+            'itunes:category' => $podcast->categories->map(
                 function (PodcastCategory $podcastCategory) {
-                    return (null === $podcastCategory->getSubTitle())
+                    return (null === $podcastCategory->subtitle)
                         ? [
-                            '@text' => $podcastCategory->getTitle(),
+                            '@text' => $podcastCategory->title,
                         ] : [
-                            '@text' => $podcastCategory->getTitle(),
+                            '@text' => $podcastCategory->title,
                             'itunes:category' => [
-                                '@text' => $podcastCategory->getSubTitle(),
+                                '@text' => $podcastCategory->subtitle,
                             ],
                         ];
                 }
@@ -115,13 +115,13 @@ final class PodcastFeedAction implements SingleActionInterface
         $hasExplicitEpisode = false;
 
         /** @var PodcastEpisode $episode */
-        foreach ($podcast->getEpisodes() as $episode) {
+        foreach ($podcast->episodes as $episode) {
             if (!$episode->isPublished()) {
                 continue;
             }
 
             $hasPublishedEpisode = true;
-            if ($episode->getExplicit()) {
+            if ($episode->explicit) {
                 $hasExplicitEpisode = true;
             }
 
@@ -176,10 +176,10 @@ final class PodcastFeedAction implements SingleActionInterface
             'itunes:explicit' => $episodeApi->explicit ? 'true' : 'false',
         ];
 
-        $podcastMedia = $episode->getMedia();
+        $podcastMedia = $episode->media;
         if (null !== $podcastMedia) {
-            $item['enclosure']['@length'] = $podcastMedia->getLength();
-            $item['enclosure']['@type'] = $podcastMedia->getMimeType();
+            $item['enclosure']['@length'] = $podcastMedia->length;
+            $item['enclosure']['@type'] = $podcastMedia->mime_type;
         }
 
         if (null !== $episodeApi->season_number) {

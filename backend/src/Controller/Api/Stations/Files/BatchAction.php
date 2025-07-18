@@ -88,7 +88,7 @@ final class BatchAction implements SingleActionInterface
         array $params
     ): ResponseInterface {
         $station = $request->getStation();
-        $storageLocation = $station->getMediaStorageLocation();
+        $storageLocation = $station->media_storage_location;
 
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
@@ -176,31 +176,29 @@ final class BatchAction implements SingleActionInterface
         foreach ($requestPlaylists as $playlistId) {
             if ('new' === $playlistId) {
                 $playlist = new StationPlaylist($station);
-                $playlist->setName(
-                    Types::string($request->getParam('new_playlist_name'))
-                );
+                $playlist->name = Types::string($request->getParam('new_playlist_name'));
 
                 $this->em->persist($playlist);
                 $this->em->flush();
 
                 $result->responseRecord = [
-                    'id' => $playlist->getIdRequired(),
-                    'name' => $playlist->getName(),
+                    'id' => $playlist->id,
+                    'name' => $playlist->name,
                 ];
 
-                $affectedPlaylistIds[$playlist->getIdRequired()] = $playlist->getIdRequired();
-                $playlists[$playlist->getIdRequired()] = 0;
+                $affectedPlaylistIds[$playlist->id] = $playlist->id;
+                $playlists[$playlist->id] = 0;
             } else {
                 $playlist = $this->em->getRepository(StationPlaylist::class)->findOneBy(
                     [
-                        'station_id' => $station->getIdRequired(),
+                        'station' => $station,
                         'id' => (int)$playlistId,
                     ]
                 );
 
                 if ($playlist instanceof StationPlaylist) {
-                    $affectedPlaylistIds[$playlist->getIdRequired()] = $playlist->getIdRequired();
-                    $playlists[$playlist->getIdRequired()] = $this->playlistMediaRepo->getHighestSongWeight($playlist);
+                    $affectedPlaylistIds[$playlist->id] = $playlist->id;
+                    $playlists[$playlist->id] = $this->playlistMediaRepo->getHighestSongWeight($playlist);
                 }
             }
         }
@@ -216,7 +214,7 @@ final class BatchAction implements SingleActionInterface
                     $playlists
                 );
             } catch (Exception $e) {
-                $result->errors[] = $media->getPath() . ': ' . $e->getMessage();
+                $result->errors[] = $media->path . ': ' . $e->getMessage();
             }
         }
 
@@ -263,13 +261,13 @@ final class BatchAction implements SingleActionInterface
         foreach ($toMove as $iterator) {
             foreach ($iterator as $record) {
                 /** @var PathAwareInterface $record */
-                $oldPath = $record->getPath();
+                $oldPath = $record->path;
                 $newPath = File::renameDirectoryInPath($oldPath, $from, $to, false);
 
                 try {
                     $fs->move($oldPath, $newPath);
 
-                    $record->setPath($newPath);
+                    $record->path = $newPath;
                     $this->em->persist($record);
 
                     if ($record instanceof StationMedia) {
@@ -301,21 +299,19 @@ final class BatchAction implements SingleActionInterface
                 foreach ($iterator as $record) {
                     /** @var PathAwareInterface $record */
                     try {
-                        $record->setPath(
-                            File::renameDirectoryInPath($record->getPath(), $from, $to)
-                        );
+                        $record->path = File::renameDirectoryInPath($record->path, $from, $to);
                         $this->em->persist($record);
 
                         if ($record instanceof StationMedia) {
                             $affectedPlaylists += $this->playlistMediaRepo->getPlaylistsForMedia($record);
                         } else {
                             if ($record instanceof StationPlaylistFolder) {
-                                $playlist = $record->getPlaylist();
-                                $affectedPlaylists[$playlist->getIdRequired()] = $playlist->getIdRequired();
+                                $playlist = $record->playlist;
+                                $affectedPlaylists[$playlist->id] = $playlist->id;
                             }
                         }
                     } catch (Throwable $e) {
-                        $result->errors[] = $record->getPath() . ': ' . $e->getMessage();
+                        $result->errors[] = $record->path . ': ' . $e->getMessage();
                     }
                 }
             }
@@ -334,10 +330,10 @@ final class BatchAction implements SingleActionInterface
     ): MediaBatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
-        if ($station->useManualAutoDJ()) {
+        if ($station->backend_config->use_manual_autodj) {
             foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
                 /** @var Station $stationRef */
-                $stationRef = $this->em->getReference(Station::class, $station->getId());
+                $stationRef = $this->em->getReference(Station::class, $station->id);
 
                 $newRequest = new StationRequest($stationRef, $media, null, true);
                 $this->em->persist($newRequest);
@@ -345,19 +341,19 @@ final class BatchAction implements SingleActionInterface
         } else {
             $nextCuedItem = $this->queueRepo->getNextToSendToAutoDj($station);
             $cuedTimestamp = (null !== $nextCuedItem)
-                ? CarbonImmutable::instance($nextCuedItem->getTimestampCued())->subSeconds(10)
+                ? CarbonImmutable::instance($nextCuedItem->timestamp_cued)->subSeconds(10)
                 : Time::nowUtc();
 
             foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
                 try {
                     /** @var Station $stationRef */
-                    $stationRef = $this->em->getReference(Station::class, $station->getId());
+                    $stationRef = $this->em->getReference(Station::class, $station->id);
 
                     $newQueue = StationQueue::fromMedia($stationRef, $media);
-                    $newQueue->setTimestampCued($cuedTimestamp);
+                    $newQueue->timestamp_cued = $cuedTimestamp;
                     $this->em->persist($newQueue);
                 } catch (Throwable $e) {
-                    $result->errors[] = sprintf('%s: %s', $media->getPath(), $e->getMessage());
+                    $result->errors[] = sprintf('%s: %s', $media->path, $e->getMessage());
                 }
 
                 $cuedTimestamp = $cuedTimestamp->subSeconds(10);
@@ -375,17 +371,17 @@ final class BatchAction implements SingleActionInterface
     ): MediaBatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
-        if (BackendAdapters::Liquidsoap !== $station->getBackendType()) {
+        if (BackendAdapters::Liquidsoap !== $station->backend_type) {
             throw new RuntimeException('This functionality can only be used on stations that use Liquidsoap.');
         }
 
         /** @var Liquidsoap $backend */
         $backend = $this->adapters->getBackendAdapter($station);
 
-        if ($station->useManualAutoDJ()) {
+        if ($station->backend_config->use_manual_autodj) {
             foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
                 /** @var Station $station */
-                $station = $this->em->find(Station::class, $station->getIdRequired());
+                $station = $this->em->find(Station::class, $station->id);
 
                 $event = AnnotateNextSong::fromStationMedia($station, $media, true);
                 $this->eventDispatcher->dispatch($event);
@@ -402,11 +398,12 @@ final class BatchAction implements SingleActionInterface
             foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
                 try {
                     /** @var Station $station */
-                    $station = $this->em->find(Station::class, $station->getIdRequired());
+                    $station = $this->em->find(Station::class, $station->id);
 
                     $newQueue = StationQueue::fromMedia($station, $media);
-                    $newQueue->setTimestampCued($cuedTimestamp);
-                    $newQueue->setIsPlayed();
+                    $newQueue->timestamp_cued = $cuedTimestamp;
+                    $newQueue->is_played = true;
+
                     $this->em->persist($newQueue);
                     $this->em->flush();
 
@@ -419,7 +416,7 @@ final class BatchAction implements SingleActionInterface
                         $event->buildAnnotations()
                     );
                 } catch (Throwable $e) {
-                    $result->errors[] = sprintf('%s: %s', $media->getPath(), $e->getMessage());
+                    $result->errors[] = sprintf('%s: %s', $media->path, $e->getMessage());
                 }
 
                 $cuedTimestamp = $cuedTimestamp->addSeconds(10);
@@ -438,10 +435,10 @@ final class BatchAction implements SingleActionInterface
         $result = $this->parseRequest($request, $fs, true);
 
         foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
-            $mediaId = (int)$media->getId();
+            $mediaId = (int)$media->id;
 
             $message = new Message\ReprocessMediaMessage();
-            $message->storage_location_id = $storageLocation->getIdRequired();
+            $message->storage_location_id = $storageLocation->id;
             $message->media_id = $mediaId;
             $message->force = true;
 
@@ -450,8 +447,8 @@ final class BatchAction implements SingleActionInterface
 
         foreach ($this->batchUtilities->iterateUnprocessableMedia($storageLocation, $result->files) as $unprocessable) {
             $message = new Message\AddNewMediaMessage();
-            $message->storage_location_id = $storageLocation->getIdRequired();
-            $message->path = $unprocessable->getPath();
+            $message->storage_location_id = $storageLocation->id;
+            $message->path = $unprocessable->path;
 
             $this->messageBus->dispatch($message);
         }
@@ -468,10 +465,10 @@ final class BatchAction implements SingleActionInterface
         $result = $this->parseRequest($request, $fs, true);
 
         foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
-            $media->clearExtraMetadata();
+            $media->extra_metadata = null;
 
             // Always flag for reprocessing to repopulate extra metadata from the file.
-            $media->setMtime(0);
+            $media->mtime = 0;
 
             $this->em->persist($media);
         }

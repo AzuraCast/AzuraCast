@@ -61,7 +61,7 @@ final class PostAction implements SingleActionInterface
         );
 
         $settings = $this->readSettings();
-        $settings->setGeoliteLicenseKey($newKey);
+        $settings->geolite_license_key = $newKey;
         $this->writeSettings($settings);
 
         if (!empty($newKey)) {

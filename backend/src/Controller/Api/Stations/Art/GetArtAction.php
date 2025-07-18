@@ -95,13 +95,13 @@ final class GetArtAction implements SingleActionInterface
             return null;
         }
 
-        $mediaPath = StationMedia::getArtPath($media->getUniqueId());
+        $mediaPath = StationMedia::getArtPath($media->unique_id);
         if ($fsMedia->fileExists($mediaPath)) {
             return $mediaPath;
         }
 
         $folderPath = StationMedia::getFolderArtPath(
-            StationMedia::getFolderHashForPath($media->getPath())
+            StationMedia::getFolderHashForPath($media->path)
         );
         if ($fsMedia->fileExists($folderPath)) {
             return $folderPath;

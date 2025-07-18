@@ -27,7 +27,7 @@ final class WebDjAction implements SingleActionInterface
     ): ResponseInterface {
         $station = $request->getStation();
 
-        if (!$station->getEnablePublicPage()) {
+        if (!$station->enable_public_page) {
             throw NotFoundException::station();
         }
 
@@ -60,13 +60,13 @@ final class WebDjAction implements SingleActionInterface
             component: 'Public/WebDJ',
             id: 'webdj',
             layout: 'minimal',
-            title: __('Web DJ') . ' - ' . $station->getName(),
+            title: __('Web DJ') . ' - ' . $station->name,
             layoutParams: [
-                'page_class' => 'dj station-' . $station->getShortName(),
+                'page_class' => 'dj station-' . $station->short_name,
             ],
             props: [
                 'baseUri' => $wssUrl,
-                'stationName' => $station->getName(),
+                'stationName' => $station->name,
             ],
         );
     }

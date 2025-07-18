@@ -72,7 +72,7 @@ final class GetArtAction implements SingleActionInterface
             return $response->streamFilesystemFile($fsPodcasts, $episodeArtPath, null, 'inline', false);
         }
 
-        $podcastArtPath = Podcast::getArtPath($podcast->getIdRequired());
+        $podcastArtPath = Podcast::getArtPath($podcast->id);
         if ($fsPodcasts->fileExists($podcastArtPath)) {
             return $response->streamFilesystemFile($fsPodcasts, $podcastArtPath, null, 'inline', false);
         }

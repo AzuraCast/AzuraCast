@@ -62,8 +62,8 @@ final class PutOrderAction implements SingleActionInterface
         $record = $this->playlistRepo->requireForStation($id, $request->getStation());
 
         if (
-            PlaylistSources::Songs !== $record->getSource()
-            || PlaylistOrders::Sequential !== $record->getOrder()
+            PlaylistSources::Songs !== $record->source
+            || PlaylistOrders::Sequential !== $record->order
         ) {
             throw new Exception(__('This playlist is not a sequential playlist.'));
         }
@@ -74,7 +74,7 @@ final class PutOrderAction implements SingleActionInterface
 
         // Write changes to file.
         $message = new WritePlaylistFileMessage();
-        $message->playlist_id = $record->getIdRequired();
+        $message->playlist_id = $record->id;
 
         $this->messageBus->dispatch($message);
 

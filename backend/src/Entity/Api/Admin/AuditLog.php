@@ -44,7 +44,7 @@ final readonly class AuditLog
 
     public static function fromRow(AuditLogEntity $row): self
     {
-        $changesRaw = $row->getChanges();
+        $changesRaw = $row->changes;
         $changes = [];
 
         foreach ($changesRaw as $fieldName => [$fieldPrevious, $fieldNew]) {
@@ -61,18 +61,18 @@ final readonly class AuditLog
             );
         }
 
-        $operation = $row->getOperation();
+        $operation = $row->operation;
 
         return new self(
-            $row->getIdRequired(),
-            $row->getTimestamp()->format(Time::JS_ISO8601_FORMAT),
+            $row->id,
+            $row->timestamp->format(Time::JS_ISO8601_FORMAT),
             $operation->value,
             $operation->getName(),
-            $row->getClass(),
-            $row->getIdentifier(),
-            $row->getTargetClass(),
-            $row->getTarget(),
-            $row->getUser(),
+            $row->class,
+            $row->identifier,
+            $row->targetClass,
+            $row->target,
+            $row->user,
             $changes
         );
     }

@@ -69,13 +69,13 @@ final class QueueBuilder implements EventSubscriberInterface
         $expectedPlayTime = $event->getExpectedPlayTime();
 
         $activePlaylistsByType = [];
-        foreach ($station->getPlaylists() as $playlist) {
+        foreach ($station->playlists as $playlist) {
             /** @var StationPlaylist $playlist */
             if ($playlist->isPlayable($event->isInterrupting())) {
-                $type = $playlist->getType()->value;
+                $type = $playlist->type->value;
 
-                $subType = ($playlist->getScheduleItems()->count() > 0) ? 'scheduled' : 'unscheduled';
-                $activePlaylistsByType[$type . '_' . $subType][$playlist->getId()] = $playlist;
+                $subType = ($playlist->schedule_items->count() > 0) ? 'scheduled' : 'unscheduled';
+                $activePlaylistsByType[$type . '_' . $subType][$playlist->id] = $playlist;
             }
         }
 
@@ -87,7 +87,7 @@ final class QueueBuilder implements EventSubscriberInterface
         $recentSongHistoryForDuplicatePrevention = $this->queueRepo->getRecentlyPlayedByTimeRange(
             $station,
             $expectedPlayTime,
-            $station->getBackendConfig()->duplicate_prevention_time_range
+            $station->backend_config->duplicate_prevention_time_range
         );
 
         $this->logger->debug(
@@ -122,12 +122,12 @@ final class QueueBuilder implements EventSubscriberInterface
                     continue;
                 }
 
-                $eligiblePlaylists[$playlistId] = $playlist->getWeight();
+                $eligiblePlaylists[$playlistId] = $playlist->weight;
 
                 $logPlaylists[] = [
-                    'id' => $playlist->getId(),
-                    'name' => $playlist->getName(),
-                    'weight' => $playlist->getWeight(),
+                    'id' => $playlist->id,
+                    'name' => $playlist->name,
+                    'weight' => $playlist->weight,
                 ];
             }
 
@@ -229,7 +229,7 @@ final class QueueBuilder implements EventSubscriberInterface
         DateTimeImmutable $expectedPlayTime,
         bool $allowDuplicates = false
     ): StationQueue|array|null {
-        if (PlaylistSources::RemoteUrl === $playlist->getSource()) {
+        if (PlaylistSources::RemoteUrl === $playlist->source) {
             return $this->getSongFromRemotePlaylist($playlist, $expectedPlayTime);
         }
 
@@ -246,12 +246,12 @@ final class QueueBuilder implements EventSubscriberInterface
             );
 
             if (!empty($queueEntries)) {
-                $playlist->setPlayedAt($expectedPlayTime);
+                $playlist->played_at = $expectedPlayTime;
                 $this->em->persist($playlist);
                 return $queueEntries;
             }
         } else {
-            $validTrack = match ($playlist->getOrder()) {
+            $validTrack = match ($playlist->order) {
                 PlaylistOrders::Random => $this->getRandomMediaIdFromPlaylist(
                     $playlist,
                     $recentSongHistory,
@@ -269,7 +269,7 @@ final class QueueBuilder implements EventSubscriberInterface
                 $queueEntry = $this->makeQueueFromApi($validTrack, $playlist, $expectedPlayTime);
 
                 if (null !== $queueEntry) {
-                    $playlist->setPlayedAt($expectedPlayTime);
+                    $playlist->played_at = $expectedPlayTime;
                     $this->em->persist($playlist);
                     return $queueEntry;
                 }
@@ -277,10 +277,10 @@ final class QueueBuilder implements EventSubscriberInterface
         }
 
         $this->logger->warning(
-            sprintf('Playlist "%s" did not return a playable track.', $playlist->getName()),
+            sprintf('Playlist "%s" did not return a playable track.', $playlist->name),
             [
-                'playlist_id' => $playlist->getId(),
-                'playlist_order' => $playlist->getOrder()->value,
+                'playlist_id' => $playlist->id,
+                'playlist_order' => $playlist->order->value,
                 'allow_duplicates' => $allowDuplicates,
             ]
         );
@@ -303,8 +303,9 @@ final class QueueBuilder implements EventSubscriberInterface
             $this->em->persist($spm);
         }
 
-        $stationQueueEntry = StationQueue::fromMedia($playlist->getStation(), $mediaToPlay);
-        $stationQueueEntry->setPlaylist($playlist);
+        $stationQueueEntry = StationQueue::fromMedia($playlist->station, $mediaToPlay);
+        $stationQueueEntry->playlist = $playlist;
+
         $this->em->persist($stationQueueEntry);
 
         return $stationQueueEntry;
@@ -319,17 +320,17 @@ final class QueueBuilder implements EventSubscriberInterface
         if (is_array($mediaToPlay)) {
             [$mediaUri, $mediaDuration] = $mediaToPlay;
 
-            $playlist->setPlayedAt($expectedPlayTime);
+            $playlist->played_at = $expectedPlayTime;
             $this->em->persist($playlist);
 
             $stationQueueEntry = new StationQueue(
-                $playlist->getStation(),
+                $playlist->station,
                 Song::createFromText('Remote Playlist URL')
             );
 
-            $stationQueueEntry->setPlaylist($playlist);
-            $stationQueueEntry->setAutodjCustomUri($mediaUri);
-            $stationQueueEntry->setDuration($mediaDuration);
+            $stationQueueEntry->playlist = $playlist;
+            $stationQueueEntry->autodj_custom_uri = $mediaUri;
+            $stationQueueEntry->duration = $mediaDuration;
 
             $this->em->persist($stationQueueEntry);
 
@@ -347,23 +348,23 @@ final class QueueBuilder implements EventSubscriberInterface
      */
     private function getMediaFromRemoteUrl(StationPlaylist $playlist): ?array
     {
-        $remoteType = $playlist->getRemoteType() ?? PlaylistRemoteTypes::Stream;
+        $remoteType = $playlist->remote_type ?? PlaylistRemoteTypes::Stream;
 
         // Handle a raw stream URL of possibly indeterminate length.
         if (PlaylistRemoteTypes::Stream === $remoteType) {
             // Annotate a hard-coded "duration" parameter to avoid infinite play for scheduled playlists.
             $duration = $this->scheduler->getPlaylistScheduleDuration($playlist);
-            return [$playlist->getRemoteUrl(), $duration];
+            return [$playlist->remote_url, $duration];
         }
 
         // Handle a remote playlist containing songs or streams.
-        $queueCacheKey = 'playlist_queue.' . $playlist->getId();
+        $queueCacheKey = 'playlist_queue.' . $playlist->id;
 
         $mediaQueue = $this->cache->get($queueCacheKey);
         if (empty($mediaQueue)) {
             $mediaQueue = [];
 
-            $playlistRemoteUrl = $playlist->getRemoteUrl();
+            $playlistRemoteUrl = $playlist->remote_url;
             if (null !== $playlistRemoteUrl) {
                 $playlistRaw = file_get_contents($playlistRemoteUrl);
                 if (false !== $playlistRaw) {
@@ -392,7 +393,7 @@ final class QueueBuilder implements EventSubscriberInterface
     ): ?StationPlaylistQueue {
         $mediaQueue = $this->spmRepo->getQueue($playlist);
 
-        if ($playlist->getAvoidDuplicates()) {
+        if ($playlist->avoid_duplicates) {
             return $this->duplicatePrevention->preventDuplicates($mediaQueue, $recentSongHistory, $allowDuplicates);
         }
 
@@ -422,7 +423,7 @@ final class QueueBuilder implements EventSubscriberInterface
             $mediaQueue = $this->spmRepo->getQueue($playlist);
         }
 
-        if (!$playlist->getAvoidDuplicates()) {
+        if (!$playlist->avoid_duplicates) {
             return array_shift($mediaQueue);
         }
 
@@ -453,16 +454,16 @@ final class QueueBuilder implements EventSubscriberInterface
         $station = $event->getStation();
 
         // Check if any playlist marked with "Prioritize Over Requests" (e.g. a jingle) is due now.
-        foreach ($station->getPlaylists() as $playlist) {
+        foreach ($station->playlists as $playlist) {
             /** @var StationPlaylist $playlist */
             if (
-                in_array('prioritize', $playlist->getBackendOptions(), true) &&
+                $playlist->backendPrioritizeOverRequests() &&
                 $playlist->isPlayable($event->isInterrupting()) &&
                 $this->scheduler->shouldPlaylistPlayNow($playlist, $expectedPlayTime)
             ) {
                 $this->logger->debug(sprintf(
                     'Playlist "%s" is prioritized and due now; skipping request queue.',
-                    $playlist->getName()
+                    $playlist->name
                 ));
                 return;
             }
@@ -473,12 +474,12 @@ final class QueueBuilder implements EventSubscriberInterface
             return;
         }
 
-        $this->logger->debug(sprintf('Queueing next song from request ID %d.', $request->getId()));
+        $this->logger->debug(sprintf('Queueing next song from request ID %d.', $request->id));
 
         $stationQueueEntry = StationQueue::fromRequest($request);
         $this->em->persist($stationQueueEntry);
 
-        $request->setPlayedAt($expectedPlayTime);
+        $request->played_at = $expectedPlayTime;
         $this->em->persist($request);
 
         $event->setNextSongs($stationQueueEntry);

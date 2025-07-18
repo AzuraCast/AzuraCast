@@ -164,7 +164,7 @@ final class PodcastsController extends AbstractApiCrudController
             ->leftJoin('p.categories', 'pc')
             ->where('p.storage_location = :storageLocation')
             ->orderBy('p.title', 'ASC')
-            ->setParameter('storageLocation', $station->getPodcastsStorageLocation());
+            ->setParameter('storageLocation', $station->podcasts_storage_location);
 
         $queryBuilder = $this->searchQueryBuilder(
             $request,
@@ -195,7 +195,7 @@ final class PodcastsController extends AbstractApiCrudController
         /** @var Podcast $record */
         $record = $this->editRecord(
             $data,
-            new Podcast($station->getPodcastsStorageLocation())
+            new Podcast($station->podcasts_storage_location)
         );
 
         if (!empty($data['artwork_file'])) {
@@ -225,8 +225,8 @@ final class PodcastsController extends AbstractApiCrudController
         $return = $this->podcastApiGen->__invoke($record, $request);
 
         $baseRouteParams = [
-            'station_id' => $request->getStation()->getIdRequired(),
-            'podcast_id' => $record->getIdRequired(),
+            'station_id' => $request->getStation()->id,
+            'podcast_id' => $record->id,
         ];
 
         $artRouteParams = $baseRouteParams;
@@ -301,7 +301,7 @@ final class PodcastsController extends AbstractApiCrudController
         $record = parent::fromArray($data, $record, $context);
 
         if (null !== $newCategories) {
-            $categories = $record->getCategories();
+            $categories = $record->categories;
             if ($categories->count() > 0) {
                 foreach ($categories as $existingCategories) {
                     $this->em->remove($existingCategories);

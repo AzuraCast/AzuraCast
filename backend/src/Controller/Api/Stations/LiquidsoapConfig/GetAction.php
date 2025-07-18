@@ -74,7 +74,7 @@ final class GetAction implements SingleActionInterface
             $tok = strtok($tokens);
         }
 
-        $backendConfig = $request->getStation()->getBackendConfig();
+        $backendConfig = $request->getStation()->backend_config;
 
         $contents = [];
         foreach ($configSections as $field) {

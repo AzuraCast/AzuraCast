@@ -49,7 +49,7 @@ final class NowPlayingCommand extends AbstractSyncRunnerCommand
         $io = new SymfonyStyle($input, $output);
 
         $settings = $this->readSettings();
-        if ($settings->getSyncDisabled()) {
+        if ($settings->sync_disabled) {
             $this->logger->error('Automated synchronization is temporarily disabled.');
             return 1;
         }

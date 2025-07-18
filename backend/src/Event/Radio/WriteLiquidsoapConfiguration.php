@@ -17,7 +17,7 @@ final class WriteLiquidsoapConfiguration extends AbstractConfigurationEvent
         private readonly bool $forEditing = false,
         private readonly bool $writeToDisk = true
     ) {
-        $this->backendConfig = $station->getBackendConfig();
+        $this->backendConfig = $station->backend_config;
     }
 
     public function getStation(): Station

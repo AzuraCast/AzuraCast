@@ -63,7 +63,7 @@ final class GetMeAction extends UsersController implements SingleActionInterface
         // Avatars
         $avatarService = $this->avatar->getAvatarService();
 
-        $email = $user->getEmail();
+        $email = $user->email;
 
         $return['roles'] = [];
 
@@ -75,10 +75,10 @@ final class GetMeAction extends UsersController implements SingleActionInterface
             'service_url' => $avatarService->getServiceUrl(),
         ];
 
-        foreach ($user->getRoles() as $role) {
+        foreach ($user->roles as $role) {
             $return['roles'][] = [
-                'id' => $role->getIdRequired(),
-                'name' => $role->getName(),
+                'id' => $role->id,
+                'name' => $role->name,
             ];
         }
 

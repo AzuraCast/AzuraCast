@@ -20,7 +20,7 @@ final class Generic extends AbstractConnector
         NowPlaying $np,
         array $triggers
     ): void {
-        $config = $webhook->getConfig();
+        $config = $webhook->config ?? [];
 
         $webhookUrl = $this->getValidUrl($config['webhook_url']);
 

@@ -38,8 +38,8 @@ final class QueueInterruptingTracks extends AbstractTask
             $this->logger->pushProcessor(
                 function (LogRecord $record) use ($station) {
                     $record->extra['station'] = [
-                        'id' => $station->getId(),
-                        'name' => $station->getName(),
+                        'id' => $station->id,
+                        'name' => $station->name,
                     ];
                     return $record;
                 }
@@ -61,7 +61,7 @@ final class QueueInterruptingTracks extends AbstractTask
 
         // This feature is not useful for stations without interrupting playlists.
         $hasInterruptingPlaylist = false;
-        foreach ($station->getPlaylists() as $playlist) {
+        foreach ($station->playlists as $playlist) {
             if ($playlist->isPlayable(true)) {
                 $hasInterruptingPlaylist = true;
                 break;

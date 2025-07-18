@@ -56,14 +56,14 @@ final class PutAction implements SingleActionInterface
 
         $station = $this->em->refetch($request->getStation());
 
-        $backendConfig = $station->getBackendConfig();
+        $backendConfig = $station->backend_config;
         foreach (StationBackendConfiguration::getCustomConfigurationSections() as $field) {
             if (isset($body[$field])) {
                 $backendConfig->setCustomConfigurationSection($field, $body[$field]);
             }
         }
 
-        $station->setBackendConfig($backendConfig);
+        $station->backend_config = $backendConfig;
 
         $this->em->persist($station);
         $this->em->flush();

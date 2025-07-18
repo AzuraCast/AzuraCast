@@ -76,7 +76,7 @@ final class TestAction implements SingleActionInterface
         touch($tempFile);
 
         $message = new TestWebhookMessage();
-        $message->webhookId = $webhook->getIdRequired();
+        $message->webhookId = $webhook->id;
         $message->outputPath = $tempFile;
         $message->logLevel = $logLevel->value;
 

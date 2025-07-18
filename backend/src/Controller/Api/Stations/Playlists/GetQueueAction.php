@@ -65,11 +65,11 @@ final class GetQueueAction implements SingleActionInterface
 
         $record = $this->playlistRepo->requireForStation($id, $request->getStation());
 
-        if (PlaylistSources::Songs !== $record->getSource()) {
+        if (PlaylistSources::Songs !== $record->source) {
             throw new InvalidArgumentException('This playlist does not have songs as its primary source.');
         }
 
-        if (PlaylistOrders::Random === $record->getOrder()) {
+        if (PlaylistOrders::Random === $record->order) {
             throw new InvalidArgumentException('This playlist is always shuffled and has no visible queue.');
         }
 

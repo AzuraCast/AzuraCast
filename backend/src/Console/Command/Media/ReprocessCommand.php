@@ -32,10 +32,10 @@ final class ReprocessCommand extends AbstractBatchMediaCommand
         if (null === $station) {
             $io->section('Reprocessing media for all stations...');
         } else {
-            $io->writeln(sprintf('Reprocessing media for station: %s', $station->getName()));
+            $io->writeln(sprintf('Reprocessing media for station: %s', $station->name));
 
             $reprocessMediaQueue = $reprocessMediaQueue->andWhere('sm.storage_location = :storageLocation')
-                ->setParameter('storageLocation', $station->getMediaStorageLocation());
+                ->setParameter('storageLocation', $station->media_storage_location);
         }
 
         if (null !== $path) {

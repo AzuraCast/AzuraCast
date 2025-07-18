@@ -39,7 +39,7 @@ final class DashboardAction implements SingleActionInterface
                 'showAdmin' => $acl->isAllowed(GlobalPermissions::View),
                 'showCharts' => $showCharts,
                 'manageStationsUrl' => $router->named('admin:stations:index'),
-                'showAlbumArt' => !$settings->getHideAlbumArt(),
+                'showAlbumArt' => !$settings->hide_album_art,
             ]
         );
     }

@@ -62,7 +62,7 @@ final class DeleteMediaAction implements SingleActionInterface
     ): ResponseInterface {
         $podcast = $request->getPodcast();
 
-        if ($podcast->getSource() !== PodcastSources::Manual) {
+        if ($podcast->source !== PodcastSources::Manual) {
             throw new InvalidArgumentException('Media cannot be manually set on this podcast.');
         }
 
@@ -74,8 +74,7 @@ final class DeleteMediaAction implements SingleActionInterface
                 ->withJson(Error::notFound());
         }
 
-        $podcastMedia = $episode->getMedia();
-
+        $podcastMedia = $episode->media;
         if ($podcastMedia instanceof PodcastMedia) {
             $this->episodeRepo->deleteMedia($podcastMedia);
         }

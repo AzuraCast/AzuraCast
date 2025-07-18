@@ -55,8 +55,8 @@ final class NowPlayingPerStationCommand extends AbstractSyncCommand
         $this->logger->pushProcessor(
             function (LogRecord $record) use ($station) {
                 $record->extra['station'] = [
-                    'id' => $station->getId(),
-                    'name' => $station->getName(),
+                    'id' => $station->id,
+                    'name' => $station->name,
                 ];
                 return $record;
             }

@@ -72,7 +72,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
             DQL
         )->setParameter('timestamp', Time::nowUtc())
             ->setParameter('station', $station)
-            ->setParameter('id', $row->getIdRequired())
+            ->setParameter('id', $row->id)
             ->execute();
 
         $this->em->createQuery(
@@ -84,8 +84,8 @@ final class StationQueueRepository extends AbstractStationBasedRepository
             AND (sq.id = :id OR sq.timestamp_cued < :cued)
         DQL
         )->setParameter('station', $station)
-            ->setParameter('id', $row->getIdRequired())
-            ->setParameter('cued', $row->getTimestampCued())
+            ->setParameter('id', $row->id)
+            ->setParameter('cued', $row->timestamp_cued)
             ->execute();
     }
 
@@ -93,23 +93,23 @@ final class StationQueueRepository extends AbstractStationBasedRepository
         StationPlaylist $playlist,
         ?int $playPerSongs = null
     ): bool {
-        $playPerSongs ??= $playlist->getPlayPerSongs();
+        $playPerSongs ??= $playlist->play_per_songs;
 
         $recentPlayedQuery = $this->em->createQuery(
             <<<'DQL'
-                SELECT sq.playlist_id
+                SELECT IDENTITY(sq.playlist) AS playlist_id
                 FROM App\Entity\StationQueue sq
                 WHERE sq.station = :station
                 AND (sq.playlist = :playlist OR sq.is_visible = 1)
                 ORDER BY sq.id DESC
             DQL
         )->setParameters([
-            'station' => $playlist->getStation(),
+            'station' => $playlist->station,
             'playlist' => $playlist,
         ])->setMaxResults($playPerSongs);
 
         $recentPlayedPlaylists = $recentPlayedQuery->getSingleColumnResult();
-        return in_array($playlist->getIdRequired(), (array)$recentPlayedPlaylists, true);
+        return in_array($playlist->id, (array)$recentPlayedPlaylists, true);
     }
 
     /**
@@ -173,7 +173,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
         return $this->getUnplayedBaseQuery($station)
             ->andWhere('sq.sent_to_autodj = 1')
             ->andWhere('sq.song_id = :song_id')
-            ->setParameter('song_id', $song->getSongId())
+            ->setParameter('song_id', $song->song_id)
             ->getQuery()
             ->setMaxResults(1)
             ->getOneOrNullResult();
@@ -181,7 +181,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
 
     public function hasCuedPlaylistMedia(StationPlaylist $playlist): bool
     {
-        $station = $playlist->getStation();
+        $station = $playlist->station;
 
         $cuedPlaylistContentCountQuery = $this->getUnplayedBaseQuery($station)
             ->select('count(sq.id)')

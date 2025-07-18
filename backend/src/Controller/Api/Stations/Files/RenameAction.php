@@ -65,7 +65,7 @@ final class RenameAction implements SingleActionInterface
         }
 
         $station = $request->getStation();
-        $storageLocation = $station->getMediaStorageLocation();
+        $storageLocation = $station->media_storage_location;
 
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
         $fsMedia->move($from, $to);

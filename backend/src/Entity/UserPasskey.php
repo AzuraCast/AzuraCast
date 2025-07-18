@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ORM\Entity(readOnly: true),
     ORM\Table(name: 'user_passkeys')
 ]
-class UserPasskey implements IdentifiableEntityInterface
+final readonly class UserPasskey implements IdentifiableEntityInterface
 {
     use TruncateStrings;
 
@@ -26,65 +26,40 @@ class UserPasskey implements IdentifiableEntityInterface
         EntityGroupsInterface::GROUP_ID,
         EntityGroupsInterface::GROUP_ALL,
     ])]
-    protected string $id;
+    public string $id;
 
     #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'passkeys')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    protected User $user;
+    public User $user;
 
     #[ORM\Column]
     #[Groups([
         EntityGroupsInterface::GROUP_GENERAL,
         EntityGroupsInterface::GROUP_ALL,
     ])]
-    protected int $created_at;
+    public int $created_at;
 
     #[ORM\Column(length: 255)]
     #[Groups([
         EntityGroupsInterface::GROUP_GENERAL,
         EntityGroupsInterface::GROUP_ALL,
     ])]
-    protected string $name;
+    public string $name;
 
     #[ORM\Column(type: 'text')]
-    protected string $full_id;
+    private string $full_id;
 
     #[ORM\Column(type: 'text')]
-    protected string $public_key_pem;
+    private string $public_key_pem;
 
     public function __construct(User $user, string $name, WebAuthnPasskey $passkey)
     {
+        $this->id = $passkey->getHashedId();
         $this->user = $user;
         $this->name = $this->truncateString($name);
-        $this->id = $passkey->getHashedId();
         $this->full_id = base64_encode($passkey->getId());
         $this->public_key_pem = $passkey->getPublicKeyPem();
         $this->created_at = time();
-    }
-
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    public function getIdRequired(): int|string
-    {
-        return $this->id;
-    }
-
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
-    public function getCreatedAt(): int
-    {
-        return $this->created_at;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
     }
 
     public function getPasskey(): WebAuthnPasskey

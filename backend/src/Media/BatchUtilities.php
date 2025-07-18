@@ -46,29 +46,23 @@ final class BatchUtilities
         if ($fs->isDir($to)) {
             // Update the paths of all media contained within the directory.
             foreach ($this->iterateMediaInDirectory($storageLocation, $from) as $record) {
-                $record->setPath(
-                    File::renameDirectoryInPath($record->getPath(), $from, $to)
-                );
+                $record->path = File::renameDirectoryInPath($record->path, $from, $to);
                 $this->em->persist($record);
 
                 $affectedPlaylists += $this->spmRepo->getPlaylistsForMedia($record);
             }
 
             foreach ($this->iterateUnprocessableMediaInDirectory($storageLocation, $from) as $record) {
-                $record->setPath(
-                    File::renameDirectoryInPath($record->getPath(), $from, $to)
-                );
+                $record->path = File::renameDirectoryInPath($record->path, $from, $to);
                 $this->em->persist($record);
             }
 
             foreach ($this->iteratePlaylistFoldersInDirectory($storageLocation, $from) as $record) {
-                $record->setPath(
-                    File::renameDirectoryInPath($record->getPath(), $from, $to)
-                );
+                $record->path = File::renameDirectoryInPath($record->path, $from, $to);
                 $this->em->persist($record);
 
-                $playlist = $record->getPlaylist();
-                $affectedPlaylists[$playlist->getIdRequired()] = $playlist->getIdRequired();
+                $playlist = $record->playlist;
+                $affectedPlaylists[$playlist->id] = $playlist->id;
             }
         } else {
             $record = $this->mediaRepo->findByPath($from, $storageLocation);
@@ -76,14 +70,14 @@ final class BatchUtilities
             if ($record instanceof StationMedia) {
                 $affectedPlaylists += $this->spmRepo->getPlaylistsForMedia($record);
 
-                $record->setPath($to);
+                $record->path = $to;
                 $this->em->persist($record);
                 $this->em->flush();
             } else {
                 $record = $this->unprocessableMediaRepo->findByPath($from, $storageLocation);
 
                 if ($record instanceof UnprocessableMedia) {
-                    $record->setPath($to);
+                    $record->path = $to;
                     $this->em->persist($record);
                     $this->em->flush();
                 }

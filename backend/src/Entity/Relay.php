@@ -19,7 +19,7 @@ use OpenApi\Attributes as OA;
     ORM\Table(name: 'relays'),
     ORM\HasLifecycleCallbacks
 ]
-class Relay implements IdentifiableEntityInterface
+final class Relay implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -28,19 +28,21 @@ class Relay implements IdentifiableEntityInterface
         OA\Property(example: "https://custom-url.example.com"),
         ORM\Column(length: 255)
     ]
-    protected string $base_url;
+    public readonly string $base_url;
 
     #[
         OA\Property(example: "Relay"),
         ORM\Column(length: 100, nullable: true)
     ]
-    protected ?string $name = 'Relay';
+    public ?string $name = 'Relay' {
+        set => $this->truncateNullableString($value, 100);
+    }
 
     #[
         OA\Property(example: true),
         ORM\Column
     ]
-    protected bool $is_visible_on_public_pages = true;
+    public bool $is_visible_on_public_pages = true;
 
     #[
         OA\Property(
@@ -50,7 +52,7 @@ class Relay implements IdentifiableEntityInterface
         ),
         ORM\Column(type: 'datetime_immutable', precision: 6)
     ]
-    protected DateTimeImmutable $created_at;
+    public readonly DateTimeImmutable $created_at;
 
     #[
         OA\Property(
@@ -60,11 +62,11 @@ class Relay implements IdentifiableEntityInterface
         ),
         ORM\Column(type: 'datetime_immutable', precision: 6)
     ]
-    protected DateTimeImmutable $updated_at;
+    public DateTimeImmutable $updated_at;
 
     /** @var Collection<int, StationRemote> */
     #[ORM\OneToMany(targetEntity: StationRemote::class, mappedBy: 'relay')]
-    protected Collection $remotes;
+    public private(set) Collection $remotes;
 
     public function __construct(string $baseUrl)
     {
@@ -83,46 +85,8 @@ class Relay implements IdentifiableEntityInterface
         $this->updated_at = Time::nowUtc();
     }
 
-    public function getBaseUrl(): string
+    public function __clone(): void
     {
-        return $this->base_url;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(?string $name): void
-    {
-        $this->name = $this->truncateNullableString($name, 100);
-    }
-
-    public function getIsVisibleOnPublicPages(): bool
-    {
-        return $this->is_visible_on_public_pages;
-    }
-
-    public function setIsVisibleOnPublicPages(bool $isVisibleOnPublicPages): void
-    {
-        $this->is_visible_on_public_pages = $isVisibleOnPublicPages;
-    }
-
-    public function getCreatedAt(): DateTimeImmutable
-    {
-        return $this->created_at;
-    }
-
-    public function getUpdatedAt(): DateTimeImmutable
-    {
-        return $this->updated_at;
-    }
-
-    /**
-     * @return Collection<int, StationRemote>
-     */
-    public function getRemotes(): Collection
-    {
-        return $this->remotes;
+        $this->remotes = new ArrayCollection();
     }
 }

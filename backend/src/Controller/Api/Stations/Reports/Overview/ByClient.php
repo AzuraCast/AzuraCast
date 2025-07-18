@@ -69,7 +69,7 @@ final class ByClient extends AbstractReportAction
                 GROUP BY l.client_raw
             SQL,
             [
-                'station_id' => $station->getIdRequired(),
+                'station_id' => $station->id,
                 'start' => $dateRange->start,
                 'end' => $dateRange->end,
             ]

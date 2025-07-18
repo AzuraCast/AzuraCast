@@ -6,6 +6,7 @@ namespace App\Controller\Api\Stations\Playlists;
 
 use App\Controller\SingleActionInterface;
 use App\Entity\Repository\StationPlaylistRepository;
+use App\Entity\StationPlaylist;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -66,14 +67,14 @@ final class ExportAction implements SingleActionInterface
 
         $record = $this->playlistRepo->requireForStation($id, $request->getStation());
 
-        $exportFileName = 'playlist_' . $record->getShortName() . '.' . $format;
+        $exportFileName = 'playlist_' . StationPlaylist::generateShortName($record->name) . '.' . $format;
         $exportLines = [];
 
         switch (strtolower($format)) {
             case 'm3u':
                 $contentType = 'application/x-mpegURL';
-                foreach ($record->getMediaItems() as $mediaItem) {
-                    $exportLines[] = $mediaItem->getMedia()->getPath();
+                foreach ($record->media_items as $mediaItem) {
+                    $exportLines[] = $mediaItem->media->path;
                 }
                 break;
 
@@ -82,14 +83,14 @@ final class ExportAction implements SingleActionInterface
                 $exportLines[] = '[playlist]';
 
                 $i = 0;
-                foreach ($record->getMediaItems() as $mediaItem) {
+                foreach ($record->media_items as $mediaItem) {
                     $i++;
 
-                    $media = $mediaItem->getMedia();
+                    $media = $mediaItem->media;
 
-                    $exportLines[] = 'File' . $i . '=' . $media->getPath();
-                    $exportLines[] = 'Title' . $i . '=' . $media->getArtist() . ' - ' . $media->getTitle();
-                    $exportLines[] = 'Length' . $i . '=' . $media->getLength();
+                    $exportLines[] = 'File' . $i . '=' . $media->path;
+                    $exportLines[] = 'Title' . $i . '=' . $media->artist . ' - ' . $media->title;
+                    $exportLines[] = 'Length' . $i . '=' . $media->length;
                     $exportLines[] = '';
                 }
 

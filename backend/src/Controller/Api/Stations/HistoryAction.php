@@ -94,10 +94,10 @@ final class HistoryAction implements SingleActionInterface
             ->leftJoin('sh.request', 'sr')
             ->leftJoin('sh.playlist', 'sp')
             ->leftJoin('sh.streamer', 'ss')
-            ->where('sh.station_id = :station_id')
+            ->where('sh.station = :station')
             ->andWhere('sh.timestamp_start >= :start AND sh.timestamp_start <= :end')
             ->andWhere('sh.listeners_start IS NOT NULL')
-            ->setParameter('station_id', $station->getId())
+            ->setParameter('station', $station)
             ->setParameter('start', $start)
             ->setParameter('end', $end);
 
@@ -106,7 +106,7 @@ final class HistoryAction implements SingleActionInterface
         if ('csv' === $format) {
             $csvFilename = sprintf(
                 '%s_timeline_%s_to_%s.csv',
-                $station->getShortName(),
+                $station->short_name,
                 $start->format('Y-m-d_H-i-s'),
                 $end->format('Y-m-d_H-i-s')
             );
@@ -165,25 +165,25 @@ final class HistoryAction implements SingleActionInterface
 
         /** @var SongHistory $sh */
         foreach (ReadOnlyBatchIteratorAggregate::fromQuery($query, 100) as $sh) {
-            $datetime = $sh->getTimestampStart()->setTimezone($stationTz);
+            $datetime = $sh->timestamp_start->setTimezone($stationTz);
 
-            $playlist = $sh->getPlaylist();
+            $playlist = $sh->playlist;
             $playlistName = (null !== $playlist)
-                ? $playlist->getName()
+                ? $playlist->name
                 : '';
 
-            $streamer = $sh->getStreamer();
+            $streamer = $sh->streamer;
             $streamerName = (null !== $streamer)
-                ? $streamer->getDisplayName()
+                ? $streamer->display_name
                 : '';
 
             $csv->insertOne([
                 $datetime->format('Y-m-d'),
                 $datetime->format('g:ia'),
-                $sh->getListenersStart(),
-                $sh->getDeltaTotal(),
-                $sh->getTitle() ?: $sh->getText(),
-                $sh->getArtist(),
+                $sh->listeners_start,
+                $sh->delta_total,
+                $sh->title ?: $sh->text,
+                $sh->artist,
                 $playlistName,
                 $streamerName,
             ]);

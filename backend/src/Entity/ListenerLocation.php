@@ -4,59 +4,44 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Utilities\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
 #[ORM\Embeddable]
-class ListenerLocation implements JsonSerializable
+final readonly class ListenerLocation implements JsonSerializable
 {
     #[ORM\Column(length: 255, nullable: false)]
-    protected string $description = 'Unknown';
+    public string $description;
 
     #[ORM\Column(length: 150, nullable: true)]
-    protected ?string $region = null;
+    public ?string $region;
 
     #[ORM\Column(length: 150, nullable: true)]
-    protected ?string $city = null;
+    public ?string $city;
 
     #[ORM\Column(length: 2, nullable: true)]
-    protected ?string $country = null;
+    public ?string $country;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 6, nullable: true)]
-    protected ?string $lat = null;
+    public ?string $lat;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 6, nullable: true)]
-    protected ?string $lon = null;
+    public ?string $lon;
 
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    public function getRegion(): ?string
-    {
-        return $this->region;
-    }
-
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
-
-    public function getCountry(): ?string
-    {
-        return $this->country;
-    }
-
-    public function getLat(): ?float
-    {
-        return Types::floatOrNull($this->lat);
-    }
-
-    public function getLon(): ?float
-    {
-        return Types::floatOrNull($this->lon);
+    public function __construct(
+        string $description,
+        ?string $region,
+        ?string $city,
+        ?string $country,
+        ?string $lat,
+        ?string $lon
+    ) {
+        $this->description = $description;
+        $this->region = $region;
+        $this->city = $city;
+        $this->country = $country;
+        $this->lat = $lat;
+        $this->lon = $lon;
     }
 
     public function jsonSerialize(): array

@@ -62,9 +62,9 @@ final class SftpAuthAction implements SingleActionInterface
             return $errorResponse;
         }
 
-        $storageLocation = $sftpUser->getStation()->getMediaStorageLocation();
+        $storageLocation = $sftpUser->station->media_storage_location;
 
-        if (!$storageLocation->isLocal()) {
+        if (!$storageLocation->adapter->isLocal()) {
             $this->logger->error(
                 sprintf(
                     'SFTP login failed for user "%s": Storage Location %s is not local.',
@@ -76,14 +76,14 @@ final class SftpAuthAction implements SingleActionInterface
             return $errorResponse;
         }
 
-        $quotaRaw = $storageLocation->getStorageQuotaBytes();
+        $quotaRaw = $storageLocation->storageQuotaBytes;
         $quota = $quotaRaw ?? 0;
 
         $row = [
             'status' => 1,
-            'username' => $sftpUser->getUsername(),
+            'username' => $sftpUser->username,
             'expiration_date' => 0,
-            'home_dir' => $storageLocation->getPath(),
+            'home_dir' => $storageLocation->path,
             'uid' => 0,
             'gid' => 0,
             'quota_size' => $quota,

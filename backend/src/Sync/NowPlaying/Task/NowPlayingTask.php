@@ -64,7 +64,7 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
 
     public function run(Station $station): void
     {
-        if (!$station->getIsEnabled()) {
+        if (!$station->is_enabled) {
             return;
         }
 
@@ -96,8 +96,8 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
         $this->logger->debug(
             'Final NowPlaying Response for Station',
             [
-                'id' => $station->getId(),
-                'name' => $station->getName(),
+                'id' => $station->id,
+                'name' => $station->name,
                 'np' => $npResult,
             ]
         );
@@ -220,7 +220,7 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
         }
 
         $message = new Message\DispatchWebhookMessage();
-        $message->station_id = $station->getIdRequired();
+        $message->station_id = $station->id;
         $message->np = $np;
         $message->triggers = $triggers;
 

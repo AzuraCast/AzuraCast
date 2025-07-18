@@ -130,7 +130,7 @@ final class HlsStreamsController extends AbstractStationApiCrudController
     protected function createRecord(ServerRequest $request, array $data): object
     {
         $station = $request->getStation();
-        if ($station->getMaxHlsStreams() !== 0 && $station->getMaxHlsStreams() <= $station->getHlsStreams()->count()) {
+        if ($station->max_hls_streams !== 0 && $station->max_hls_streams <= $station->hls_streams->count()) {
             throw new ValidationException(
                 __('Unable to create a new stream, station\'s maximum HLS streams reached.')
             );

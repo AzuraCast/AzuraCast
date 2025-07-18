@@ -45,7 +45,7 @@ final class GetFallbackAction implements SingleActionInterface
 
         $download = ($params['do'] ?? null) === 'download';
 
-        $fallbackPath = $station->getFallbackPath();
+        $fallbackPath = $station->fallback_path;
         if (!empty($fallbackPath)) {
             $fsConfig = StationFilesystems::buildConfigFilesystem($station);
             if ($fsConfig->fileExists($fallbackPath)) {

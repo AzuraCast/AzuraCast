@@ -22,7 +22,7 @@ abstract class AbstractStationBasedRepository extends Repository
     {
         $record = $this->find($id);
 
-        if ($record instanceof StationAwareInterface && $station === $record->getStation()) {
+        if ($record instanceof StationAwareInterface && $station === $record->station) {
             return $record;
         }
 

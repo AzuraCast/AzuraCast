@@ -18,7 +18,7 @@ abstract class AbstractReportAction implements SingleActionInterface
 
     protected function isAllAnalyticsEnabled(): bool
     {
-        return AnalyticsLevel::All === $this->readSettings()->getAnalytics();
+        return AnalyticsLevel::All === $this->readSettings()->analytics;
     }
 
     protected function isAnalyticsEnabled(): bool

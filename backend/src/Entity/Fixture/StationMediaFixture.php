@@ -32,7 +32,7 @@ final class StationMediaFixture extends AbstractFixture implements DependentFixt
 
         $station = $this->getReference('station', Station::class);
 
-        $mediaStorage = $station->getMediaStorageLocation();
+        $mediaStorage = $station->media_storage_location;
         $fs = $this->storageLocationRepo->getAdapter($mediaStorage)->getFilesystem();
 
         $playlist = $this->getReference('station_playlist', StationPlaylist::class);
@@ -58,7 +58,7 @@ final class StationMediaFixture extends AbstractFixture implements DependentFixt
 
             // Add the file to the playlist.
             $spmRow = new StationPlaylistMedia($playlist, $mediaRow);
-            $spmRow->setWeight(1);
+            $spmRow->weight = 1;
             $manager->persist($spmRow);
         }
 

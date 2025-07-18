@@ -13,7 +13,7 @@ use App\Radio\Enums\StreamFormats;
 use App\Utilities\Types;
 use LogicException;
 
-class StationBackendConfiguration extends AbstractArrayEntity
+final class StationBackendConfiguration extends AbstractArrayEntity
 {
     public string $charset {
         get => Types::stringOrNull($this->get(__PROPERTY__), true) ?? 'UTF-8';

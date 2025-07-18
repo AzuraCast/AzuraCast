@@ -59,7 +59,7 @@ abstract class CestAbstract
         $this->em->clear();
 
         if (null !== $this->test_station) {
-            $I->sendDelete('/api/admin/station/' . $this->test_station->getId());
+            $I->sendDelete('/api/admin/station/' . $this->test_station->id);
 
             $this->em->clear();
         }
@@ -72,7 +72,7 @@ abstract class CestAbstract
         $this->_cleanTables();
 
         $settings = $this->settingsRepo->readSettings();
-        $settings->setSetupCompleteTime(0);
+        $settings->setup_complete_time = 0;
 
         $this->settingsRepo->writeSettings($settings);
     }
@@ -92,20 +92,19 @@ abstract class CestAbstract
     {
         // Create administrator account.
         $role = new Role();
-        $role->setName('Super Administrator');
+        $role->name = 'Super Administrator';
         $this->em->persist($role);
 
-        $rha = new RolePermission($role);
-        $rha->setActionName(GlobalPermissions::All);
+        $rha = new RolePermission($role, null, GlobalPermissions::All);
         $this->em->persist($rha);
 
         // Create user account.
         $user = new User();
-        $user->setName('AzuraCast Test User');
-        $user->setEmail($this->login_username);
+        $user->name = 'AzuraCast Test User';
+        $user->email = $this->login_username;
         $user->setNewPassword($this->login_password);
-        $user->getRoles()->add($role);
-        $user->setLocale('en_US.UTF-8');
+        $user->roles->add($role);
+        $user->locale = 'en_US.UTF-8';
 
         $this->em->persist($user);
 
@@ -113,7 +112,7 @@ abstract class CestAbstract
         $key = SplitToken::generate();
 
         $apiKey = new ApiKey($user, $key);
-        $apiKey->setComment('Test Suite');
+        $apiKey->comment = 'Test Suite';
 
         $this->em->persist($apiKey);
         $this->em->flush();
@@ -168,7 +167,7 @@ abstract class CestAbstract
 
         $songSrc = '/var/azuracast/www/resources/error.mp3';
 
-        $storageLocation = $testStation->getMediaStorageLocation();
+        $storageLocation = $testStation->media_storage_location;
 
         $storageLocationRepo = $this->di->get(StorageLocationRepository::class);
         $storageFs = $storageLocationRepo->getAdapter($storageLocation)->getFilesystem();

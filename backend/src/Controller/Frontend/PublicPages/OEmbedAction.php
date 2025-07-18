@@ -20,7 +20,7 @@ final class OEmbedAction implements SingleActionInterface
     ): ResponseInterface {
         $station = $request->getStation();
 
-        if (!$station->getEnablePublicPage()) {
+        if (!$station->enable_public_page) {
             throw NotFoundException::station();
         }
 
@@ -30,17 +30,17 @@ final class OEmbedAction implements SingleActionInterface
 
         $embedUrl = $router->named(
             'public:index',
-            ['station_id' => $station->getShortName(), 'embed' => 'social'],
+            ['station_id' => $station->short_name, 'embed' => 'social'],
             [],
             true
         );
 
         $result = [
             'version' => '1.0',
-            'title' => $station->getName(),
+            'title' => $station->name,
             'thumbnail_url' => $router->named(
                 routeName: 'api:nowplaying:art',
-                routeParams: ['station_id' => $station->getShortName(), 'timestamp' => time()],
+                routeParams: ['station_id' => $station->short_name, 'timestamp' => time()],
                 absolute: true
             ),
             'thumbnail_width' => 128,

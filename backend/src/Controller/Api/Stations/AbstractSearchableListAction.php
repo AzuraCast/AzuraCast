@@ -45,7 +45,7 @@ abstract class AbstractSearchableListAction implements SingleActionInterface
             ->leftJoin('spm.playlist', 'sp')
             ->where('sm.storage_location = :storageLocation')
             ->andWhere('sp.id IN (:playlistIds)')
-            ->setParameter('storageLocation', $station->getMediaStorageLocation())
+            ->setParameter('storageLocation', $station->media_storage_location)
             ->setParameter('playlistIds', $playlists);
 
         if (!empty($sortField)) {

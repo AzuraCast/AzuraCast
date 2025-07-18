@@ -192,24 +192,24 @@ final class View extends Engine
 
             if ($userObj instanceof User) {
                 // See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#hourcycle
-                $timeConfig->hourCycle = $userObj->getShow24HourTime() ? 'h23' : 'h12';
+                $timeConfig->hourCycle = $userObj->show_24_hour_time ? 'h23' : 'h12';
 
                 $globalPermissions = [];
                 $stationPermissions = [];
 
-                foreach ($userObj->getRoles() as $role) {
-                    foreach ($role->getPermissions() as $permission) {
-                        $station = $permission->getStation();
+                foreach ($userObj->roles as $role) {
+                    foreach ($role->permissions as $permission) {
+                        $station = $permission->station;
                         if (null !== $station) {
-                            $stationPermissions[$station->getIdRequired()][] = $permission->getActionName();
+                            $stationPermissions[$station->id][] = $permission->action_name;
                         } else {
-                            $globalPermissions[] = $permission->getActionName();
+                            $globalPermissions[] = $permission->action_name;
                         }
                     }
                 }
 
                 $this->globalProps->set('user', [
-                    'id' => $userObj->getIdRequired(),
+                    'id' => $userObj->id,
                     'displayName' => $userObj->getDisplayName(),
                     'globalPermissions' => $globalPermissions,
                     'stationPermissions' => $stationPermissions,

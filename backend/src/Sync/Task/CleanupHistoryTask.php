@@ -32,7 +32,7 @@ final class CleanupHistoryTask extends AbstractTask
         $this->queueRepo->cleanup(StationQueue::DAYS_TO_KEEP);
 
         // Clean up history and listeners according to user settings.
-        $daysToKeep = $this->readSettings()->getHistoryKeepDays();
+        $daysToKeep = $this->readSettings()->history_keep_days;
         if (0 !== $daysToKeep) {
             $this->historyRepo->cleanup($daysToKeep);
             $this->listenerRepo->cleanup($daysToKeep);

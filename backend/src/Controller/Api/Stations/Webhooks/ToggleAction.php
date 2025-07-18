@@ -52,8 +52,8 @@ final class ToggleAction implements SingleActionInterface
 
         $record = $this->webhookRepo->requireForStation($id, $request->getStation());
 
-        $newValue = !$record->getIsEnabled();
-        $record->setIsEnabled($newValue);
+        $newValue = !$record->is_enabled;
+        $record->is_enabled = $newValue;
 
         $em = $this->webhookRepo->getEntityManager();
         $em->persist($record);

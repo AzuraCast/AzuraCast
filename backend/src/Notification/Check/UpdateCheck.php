@@ -31,11 +31,11 @@ final class UpdateCheck
         }
 
         $settings = $this->readSettings();
-        if (!$settings->getCheckForUpdates()) {
+        if (!$settings->check_for_updates) {
             return;
         }
 
-        $updateDataRaw = $settings->getUpdateResults();
+        $updateDataRaw = $settings->update_results;
         if (empty($updateDataRaw)) {
             return;
         }

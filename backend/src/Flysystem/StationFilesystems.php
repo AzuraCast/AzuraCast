@@ -29,7 +29,7 @@ final class StationFilesystems
     public function getMediaFilesystem(Station $station): ExtendedFilesystemInterface
     {
         $mediaAdapter = $this->storageLocationRepo->getAdapter(
-            $station->getMediaStorageLocation()
+            $station->media_storage_location
         )->getStorageAdapter();
 
         return ($mediaAdapter instanceof LocalAdapterInterface)
@@ -40,7 +40,7 @@ final class StationFilesystems
     public function getRecordingsFilesystem(Station $station): ExtendedFilesystemInterface
     {
         $recordingsAdapter = $this->storageLocationRepo->getAdapter(
-            $station->getRecordingsStorageLocation()
+            $station->recordings_storage_location
         )->getStorageAdapter();
 
         return ($recordingsAdapter instanceof LocalAdapterInterface)
@@ -51,7 +51,7 @@ final class StationFilesystems
     public function getPodcastsFilesystem(Station $station): ExtendedFilesystemInterface
     {
         $podcastsAdapter = $this->storageLocationRepo->getAdapter(
-            $station->getPodcastsStorageLocation()
+            $station->podcasts_storage_location
         )->getStorageAdapter();
 
         return ($podcastsAdapter instanceof LocalAdapterInterface)

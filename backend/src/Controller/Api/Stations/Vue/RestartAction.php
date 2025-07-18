@@ -17,7 +17,7 @@ final class RestartAction implements SingleActionInterface
         array $params
     ): ResponseInterface {
         $station = $request->getStation();
-        $frontendEnum = $station->getFrontendType();
+        $frontendEnum = $station->frontend_type;
 
         return $response->withJson([
             'canReload' => $frontendEnum->supportsReload(),

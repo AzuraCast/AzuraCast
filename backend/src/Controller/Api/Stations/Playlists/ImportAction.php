@@ -89,7 +89,7 @@ final class ImportAction implements SingleActionInterface
         $importResults = [];
 
         if (!empty($paths)) {
-            $storageLocation = $request->getStation()->getMediaStorageLocation();
+            $storageLocation = $request->getStation()->media_storage_location;
 
             // Assemble list of station media to match against.
             $mediaLookup = [];
@@ -199,7 +199,7 @@ final class ImportAction implements SingleActionInterface
                 $mediaById = [];
                 foreach ($matchedMediaRaw as $row) {
                     /** @var StationMedia $row */
-                    $mediaById[$row->getId()] = $row;
+                    $mediaById[$row->id] = $row;
                 }
 
                 $weight = $this->spmRepo->getHighestSongWeight($playlist);

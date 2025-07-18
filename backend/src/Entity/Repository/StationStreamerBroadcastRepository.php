@@ -20,7 +20,7 @@ final class StationStreamerBroadcastRepository extends Repository
 
     public function getLatestBroadcast(Station $station): ?StationStreamerBroadcast
     {
-        $currentStreamer = $station->getCurrentStreamer();
+        $currentStreamer = $station->current_streamer;
         if (null === $currentStreamer) {
             return null;
         }
@@ -125,13 +125,12 @@ final class StationStreamerBroadcastRepository extends Repository
             ->getOneOrNullResult();
 
         if (null === $record) {
-            $record = new StationStreamerBroadcast($streamer);
+            $record = new StationStreamerBroadcast($streamer, $startTime);
         }
 
         assert($record instanceof StationStreamerBroadcast);
 
-        $record->setTimestampStart($startTime);
-        $record->setRecordingPath($recordingPath);
+        $record->recordingPath = $recordingPath;
         return $record;
     }
 }

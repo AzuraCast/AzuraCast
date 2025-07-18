@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
+use App\Entity\Interfaces\SplitTokenEntityInterface;
 use App\Security\SplitToken;
 use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,7 +21,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ORM\Table(name: 'api_keys'),
     ORM\Entity(readOnly: true)
 ]
-class ApiKey implements Stringable, IdentifiableEntityInterface
+final readonly class ApiKey implements Stringable, IdentifiableEntityInterface, SplitTokenEntityInterface
 {
     use Traits\HasSplitTokenFields;
     use Traits\TruncateStrings;
@@ -31,32 +32,28 @@ class ApiKey implements Stringable, IdentifiableEntityInterface
     #[Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
     #[DeepNormalize(true)]
     #[Serializer\MaxDepth(1)]
-    protected User $user;
+    public User $user;
 
     #[OA\Property]
     #[ORM\Column(length: 255, nullable: false)]
     #[Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
-    protected string $comment = '';
+    public string $comment;
 
-    public function __construct(User $user, SplitToken $token)
-    {
+    public function __construct(
+        User $user,
+        SplitToken $token,
+        string $comment = ''
+    ) {
+        $this->id = $token->identifier;
+        $this->verifier = $token->hashVerifier();
+        
         $this->user = $user;
-        $this->setFromToken($token);
+        $this->comment = $this->truncateString($comment);
     }
 
     public function getUser(): User
     {
         return $this->user;
-    }
-
-    public function getComment(): string
-    {
-        return $this->comment;
-    }
-
-    public function setComment(string $comment): void
-    {
-        $this->comment = $this->truncateString($comment);
     }
 
     public function __toString(): string

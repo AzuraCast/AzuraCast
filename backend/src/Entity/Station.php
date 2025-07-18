@@ -125,16 +125,16 @@ final class Station implements Stringable, IdentifiableEntityInterface
     /**
      * @var ConfigData|null
      */
+    #[ORM\Column(name: 'frontend_config', type: 'json', nullable: true)]
+    private ?array $frontend_config_raw = null;
+
     #[
         OA\Property(
             description: "An array containing station-specific frontend configuration",
             type: "object"
         ),
-        ORM\Column(name: 'frontend_config', type: 'json', nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    private ?array $frontend_config_raw = null;
-
     public StationFrontendConfiguration $frontend_config {
         get => new StationFrontendConfiguration((array)$this->frontend_config_raw);
         set (StationFrontendConfiguration|array|null $value) {
@@ -158,16 +158,16 @@ final class Station implements Stringable, IdentifiableEntityInterface
     /**
      * @var ConfigData|null
      */
+    #[ORM\Column(name: 'backend_config', type: 'json', nullable: true)]
+    private ?array $backend_config_raw = null;
+
     #[
         OA\Property(
             description: "An array containing station-specific backend configuration",
             type: "object"
         ),
-        ORM\Column(name: 'backend_config', type: 'json', nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    private ?array $backend_config_raw = null;
-
     public StationBackendConfiguration $backend_config {
         get => new StationBackendConfiguration((array)$this->backend_config_raw);
         set (StationBackendConfiguration|array|null $value) {
@@ -459,16 +459,16 @@ final class Station implements Stringable, IdentifiableEntityInterface
     /**
      * @var ConfigData|null
      */
+    #[ORM\Column(name: 'branding_config', type: 'json', nullable: true)]
+    private ?array $branding_config_raw = null;
+
     #[
         OA\Property(
             description: "An array containing station-specific branding configuration",
             type: "object"
         ),
-        ORM\Column(name: 'branding_config', type: 'json', nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    private ?array $branding_config_raw = null;
-
     public StationBrandingConfiguration $branding_config {
         get => new StationBrandingConfiguration((array)$this->branding_config_raw);
         set (StationBrandingConfiguration|array|null $value) {
@@ -492,7 +492,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
             name: 'media_storage_location_id',
             referencedColumnName: 'id',
             nullable: false,
-            onDelete: 'SET NULL'
+            onDelete: 'CASCADE'
         ),
         DeepNormalize(true),
         Serializer\MaxDepth(1),
@@ -514,7 +514,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
             name: 'recordings_storage_location_id',
             referencedColumnName: 'id',
             nullable: false,
-            onDelete: 'SET NULL'
+            onDelete: 'CASCADE'
         ),
         DeepNormalize(true),
         Serializer\MaxDepth(1),
@@ -536,7 +536,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
             name: 'podcasts_storage_location_id',
             referencedColumnName: 'id',
             nullable: false,
-            onDelete: 'SET NULL'
+            onDelete: 'CASCADE'
         ),
         DeepNormalize(true),
         Serializer\MaxDepth(1),

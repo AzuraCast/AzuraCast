@@ -76,6 +76,10 @@ final class ErrorHandler extends SlimErrorHandler
         $this->showDetailed = $this->environment->showDetailedErrors();
         $this->returnJson = $this->shouldReturnJson($request);
 
+        if ($this->environment->isDevelopment()) {
+            dump($exception);
+        }
+
         return parent::__invoke($request, $exception, $displayErrorDetails, $logErrors, $logErrorDetails);
     }
 

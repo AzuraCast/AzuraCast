@@ -66,7 +66,7 @@ final class Relay implements IdentifiableEntityInterface
 
     /** @var Collection<int, StationRemote> */
     #[ORM\OneToMany(targetEntity: StationRemote::class, mappedBy: 'relay')]
-    public readonly Collection $remotes;
+    public private(set) Collection $remotes;
 
     public function __construct(string $baseUrl)
     {
@@ -83,5 +83,10 @@ final class Relay implements IdentifiableEntityInterface
     public function preUpdate(): void
     {
         $this->updated_at = Time::nowUtc();
+    }
+
+    public function __clone(): void
+    {
+        $this->remotes = new ArrayCollection();
     }
 }

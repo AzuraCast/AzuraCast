@@ -68,8 +68,7 @@ final class StationMount implements
             }
 
             if ($this->enable_autodj) {
-                $format = $this->getAutodjFormat();
-
+                $format = $this->autodj_format;
                 return (null !== $format)
                     ? $this->name . ' (' . $format->formatBitrate($this->autodj_bitrate) . ')'
                     : $this->name;

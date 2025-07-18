@@ -94,19 +94,25 @@ final class Podcast implements Interfaces\IdentifiableEntityInterface
 
     /** @var Collection<int, PodcastCategory> */
     #[ORM\OneToMany(targetEntity: PodcastCategory::class, mappedBy: 'podcast')]
-    public readonly Collection $categories;
+    public private(set) Collection $categories;
 
     /** @var Collection<int, PodcastEpisode> */
     #[
         ORM\OneToMany(targetEntity: PodcastEpisode::class, mappedBy: 'podcast', fetch: 'EXTRA_LAZY'),
         ORM\OrderBy(['publish_at' => 'DESC'])
     ]
-    public readonly Collection $episodes;
+    public private(set) Collection $episodes;
 
     public function __construct(StorageLocation $storageLocation)
     {
         $this->storage_location = $storageLocation;
 
+        $this->categories = new ArrayCollection();
+        $this->episodes = new ArrayCollection();
+    }
+
+    public function __clone(): void
+    {
         $this->categories = new ArrayCollection();
         $this->episodes = new ArrayCollection();
     }

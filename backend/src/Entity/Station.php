@@ -136,7 +136,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
     private ?array $frontend_config_raw = null;
 
     public StationFrontendConfiguration $frontend_config {
-        get => new ((array)$this->frontend_config_raw);
+        get => new StationFrontendConfiguration((array)$this->frontend_config_raw);
         set (StationFrontendConfiguration|array|null $value) {
             $this->frontend_config_raw = StationFrontendConfiguration::merge(
                 $this->frontend_config_raw,
@@ -484,7 +484,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
         ORM\OneToMany(targetEntity: SongHistory::class, mappedBy: 'station'),
         ORM\OrderBy(['timestamp_start' => 'desc'])
     ]
-    public readonly Collection $history;
+    public private(set) Collection $history;
 
     #[
         ORM\ManyToOne,
@@ -557,7 +557,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
 
     /** @var Collection<int, StationStreamer> */
     #[ORM\OneToMany(targetEntity: StationStreamer::class, mappedBy: 'station')]
-    public readonly Collection $streamers;
+    public private(set) Collection $streamers;
 
     #[
         ORM\ManyToOne,
@@ -585,26 +585,26 @@ final class Station implements Stringable, IdentifiableEntityInterface
 
     /** @var Collection<int, RolePermission> */
     #[ORM\OneToMany(targetEntity: RolePermission::class, mappedBy: 'station')]
-    public readonly Collection $permissions;
+    public private(set) Collection $permissions;
 
     /** @var Collection<int, StationPlaylist> */
     #[
         ORM\OneToMany(targetEntity: StationPlaylist::class, mappedBy: 'station'),
         ORM\OrderBy(['type' => 'ASC', 'weight' => 'DESC'])
     ]
-    public readonly Collection $playlists;
+    public private(set) Collection $playlists;
 
     /** @var Collection<int, StationMount> */
     #[ORM\OneToMany(targetEntity: StationMount::class, mappedBy: 'station')]
-    public readonly Collection $mounts;
+    public private(set) Collection $mounts;
 
     /** @var Collection<int, StationRemote> */
     #[ORM\OneToMany(targetEntity: StationRemote::class, mappedBy: 'station')]
-    public readonly Collection $remotes;
+    public private(set) Collection $remotes;
 
     /** @var Collection<int, StationHlsStream> */
     #[ORM\OneToMany(targetEntity: StationHlsStream::class, mappedBy: 'station')]
-    public readonly Collection $hls_streams;
+    public private(set) Collection $hls_streams;
 
     /** @var Collection<int, StationWebhook> */
     #[ORM\OneToMany(
@@ -613,19 +613,19 @@ final class Station implements Stringable, IdentifiableEntityInterface
         cascade: ['persist'],
         fetch: 'EXTRA_LAZY'
     )]
-    public readonly Collection $webhooks;
+    public private(set) Collection $webhooks;
 
     /** @var Collection<int, StationStreamerBroadcast> */
     #[ORM\OneToMany(targetEntity: StationStreamerBroadcast::class, mappedBy: 'station')]
-    public readonly Collection $streamer_broadcasts;
+    public private(set) Collection $streamer_broadcasts;
 
     /** @var Collection<int, SftpUser> */
     #[ORM\OneToMany(targetEntity: SftpUser::class, mappedBy: 'station')]
-    public readonly Collection $sftp_users;
+    public private(set) Collection $sftp_users;
 
     /** @var Collection<int, StationRequest> */
     #[ORM\OneToMany(targetEntity: StationRequest::class, mappedBy: 'station')]
-    public readonly Collection $requests;
+    public private(set) Collection $requests;
 
     #[
         ORM\ManyToOne,
@@ -801,6 +801,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
 
     public function __clone()
     {
+        $this->name = '';
         $this->short_name = '';
         $this->adapter_api_key = null;
         $this->current_streamer = null;
@@ -820,6 +821,19 @@ final class Station implements Stringable, IdentifiableEntityInterface
         $beConfig->telnet_port = null;
 
         $this->backend_config = $beConfig;
+
+        // Clear collections
+        $this->history = new ArrayCollection();
+        $this->permissions = new ArrayCollection();
+        $this->playlists = new ArrayCollection();
+        $this->mounts = new ArrayCollection();
+        $this->remotes = new ArrayCollection();
+        $this->hls_streams = new ArrayCollection();
+        $this->webhooks = new ArrayCollection();
+        $this->streamers = new ArrayCollection();
+        $this->streamer_broadcasts = new ArrayCollection();
+        $this->sftp_users = new ArrayCollection();
+        $this->requests = new ArrayCollection();
     }
 
     public static function generateShortName(string $str): string

@@ -31,13 +31,19 @@ final class Role implements Stringable, IdentifiableEntityInterface
 
     /** @var Collection<int, User> */
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'roles')]
-    public readonly Collection $users;
+    public private(set) Collection $users;
 
     /** @var Collection<int, RolePermission> */
     #[ORM\OneToMany(targetEntity: RolePermission::class, mappedBy: 'role')]
-    public readonly Collection $permissions;
+    public private(set) Collection $permissions;
 
     public function __construct()
+    {
+        $this->users = new ArrayCollection();
+        $this->permissions = new ArrayCollection();
+    }
+
+    public function __clone(): void
     {
         $this->users = new ArrayCollection();
         $this->permissions = new ArrayCollection();

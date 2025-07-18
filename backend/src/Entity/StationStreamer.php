@@ -138,14 +138,14 @@ final class StationStreamer implements
         DeepNormalize(true),
         Serializer\MaxDepth(1)
     ]
-    public readonly Collection $schedule_items;
+    public private(set) Collection $schedule_items;
 
     /** @var Collection<int, StationStreamerBroadcast> */
     #[
         ORM\OneToMany(targetEntity: StationStreamerBroadcast::class, mappedBy: 'streamer'),
         DeepNormalize(true)
     ]
-    public readonly Collection $broadcasts;
+    public private(set) Collection $broadcasts;
 
     public function __construct(Station $station)
     {
@@ -169,6 +169,9 @@ final class StationStreamer implements
     public function __clone()
     {
         $this->reactivate_at = null;
+
+        $this->schedule_items = new ArrayCollection();
+        $this->broadcasts = new ArrayCollection();
     }
 
     public static function getArtworkPath(int|string $streamerId): string

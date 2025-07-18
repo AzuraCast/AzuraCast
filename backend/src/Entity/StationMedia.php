@@ -92,28 +92,26 @@ final class StationMedia implements
         DeepNormalize(true),
         Serializer\MaxDepth(1)
     ]
-    public readonly Collection $playlists;
+    public private(set) Collection $playlists;
 
     /** @var Collection<int, StationMediaCustomField> */
     #[ORM\OneToMany(targetEntity: StationMediaCustomField::class, mappedBy: 'media')]
-    public readonly Collection $custom_fields;
+    public private(set) Collection $custom_fields;
 
     /** @var Collection<int, PodcastEpisode> */
     #[ORM\OneToMany(targetEntity: PodcastEpisode::class, mappedBy: 'playlist_media')]
-    public readonly Collection $podcast_episodes;
+    public private(set) Collection $podcast_episodes;
 
     public function __construct(StorageLocation $storageLocation, string $path)
     {
         $this->storage_location = $storageLocation;
+        $this->mtime = $this->uploaded_at = time();
+        $this->unique_id = bin2hex(random_bytes(12));
+        $this->path = $path;
 
         $this->playlists = new ArrayCollection();
         $this->custom_fields = new ArrayCollection();
         $this->podcast_episodes = new ArrayCollection();
-
-        $this->mtime = $this->uploaded_at = time();
-        $this->unique_id = bin2hex(random_bytes(12));
-
-        $this->path = $path;
     }
 
     /**
@@ -214,6 +212,13 @@ final class StationMedia implements
         $metadata->setExtraTags($this->extra_metadata->toArray() ?? []);
 
         return $metadata;
+    }
+
+    public function __clone(): void
+    {
+        $this->playlists = new ArrayCollection();
+        $this->custom_fields = new ArrayCollection();
+        $this->podcast_episodes = new ArrayCollection();
     }
 
     public function __toString(): string

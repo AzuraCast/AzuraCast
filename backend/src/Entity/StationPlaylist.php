@@ -235,13 +235,13 @@ final class StationPlaylist implements
         ORM\OneToMany(targetEntity: StationPlaylistMedia::class, mappedBy: 'playlist', fetch: 'EXTRA_LAZY'),
         ORM\OrderBy(['weight' => 'ASC'])
     ]
-    public readonly Collection $media_items;
+    public private(set) Collection $media_items;
 
     /** @var Collection<int, StationPlaylistFolder> */
     #[
         ORM\OneToMany(targetEntity: StationPlaylistFolder::class, mappedBy: 'playlist', fetch: 'EXTRA_LAZY')
     ]
-    public readonly Collection $folders;
+    public private(set) Collection $folders;
 
     /** @var Collection<int, StationSchedule> */
     #[
@@ -250,7 +250,7 @@ final class StationPlaylist implements
         DeepNormalize(true),
         Serializer\MaxDepth(1)
     ]
-    public readonly Collection $schedule_items;
+    public private(set) Collection $schedule_items;
 
     /** @var Collection<int, Podcast> */
     #[
@@ -259,7 +259,7 @@ final class StationPlaylist implements
         DeepNormalize(true),
         Serializer\MaxDepth(1)
     ]
-    public readonly Collection $podcasts;
+    public private(set) Collection $podcasts;
 
     public function __construct(Station $station)
     {
@@ -311,6 +311,11 @@ final class StationPlaylist implements
     {
         $this->played_at = null;
         $this->queue_reset_at = null;
+
+        $this->media_items = new ArrayCollection();
+        $this->folders = new ArrayCollection();
+        $this->schedule_items = new ArrayCollection();
+        $this->podcasts = new ArrayCollection();
     }
 
     public function __toString(): string

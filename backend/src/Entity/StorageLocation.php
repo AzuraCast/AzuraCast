@@ -244,11 +244,11 @@ final class StorageLocation implements Stringable, IdentifiableEntityInterface
 
     /** @var Collection<int, StationMedia> */
     #[ORM\OneToMany(targetEntity: StationMedia::class, mappedBy: 'storage_location')]
-    public readonly Collection $media;
+    public private(set) Collection $media;
 
     /** @var Collection<int, UnprocessableMedia> */
     #[ORM\OneToMany(targetEntity: UnprocessableMedia::class, mappedBy: 'storage_location')]
-    public readonly Collection $unprocessable_media;
+    public private(set) Collection $unprocessable_media;
 
     public function __construct(
         StorageLocationTypes $type,
@@ -305,6 +305,12 @@ final class StorageLocation implements Stringable, IdentifiableEntityInterface
     {
         $adapterClass = $this->adapter->getAdapterClass();
         return $adapterClass::filterPath($this->path);
+    }
+
+    public function __clone(): void
+    {
+        $this->media = new ArrayCollection();
+        $this->unprocessable_media = new ArrayCollection();
     }
 
     public function __toString(): string

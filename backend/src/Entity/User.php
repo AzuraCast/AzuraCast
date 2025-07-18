@@ -119,7 +119,7 @@ final class User implements Stringable, IdentifiableEntityInterface
         DeepNormalize(true),
         Serializer\MaxDepth(1)
     ]
-    public readonly Collection $roles;
+    public private(set) Collection $roles;
 
     /** @var Collection<int, ApiKey> */
     #[
@@ -127,7 +127,7 @@ final class User implements Stringable, IdentifiableEntityInterface
         Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
         DeepNormalize(true)
     ]
-    public readonly Collection $api_keys;
+    public private(set) Collection $api_keys;
 
     /** @var Collection<int, UserPasskey> */
     #[
@@ -135,7 +135,7 @@ final class User implements Stringable, IdentifiableEntityInterface
         Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
         DeepNormalize(true)
     ]
-    public readonly Collection $passkeys;
+    public private(set) Collection $passkeys;
 
     /** @var Collection<int, UserLoginToken> */
     #[
@@ -143,7 +143,7 @@ final class User implements Stringable, IdentifiableEntityInterface
         Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
         DeepNormalize(true)
     ]
-    public readonly Collection $login_tokens;
+    public private(set) Collection $login_tokens;
 
     public function __construct()
     {
@@ -206,6 +206,14 @@ final class User implements Stringable, IdentifiableEntityInterface
         }
 
         return Factory::loadFromProvisioningUri($this->two_factor_secret)->verify($otp, null, Auth::TOTP_WINDOW);
+    }
+
+    public function __clone(): void
+    {
+        $this->roles = new ArrayCollection();
+        $this->api_keys = new ArrayCollection();
+        $this->passkeys = new ArrayCollection();
+        $this->login_tokens = new ArrayCollection();
     }
 
     public function __toString(): string

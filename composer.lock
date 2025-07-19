@@ -159,16 +159,16 @@
         },
         {
             "name": "azuracast/doctrine-entity-normalizer",
-            "version": "3.2.2",
+            "version": "3.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/doctrine-entity-normalizer.git",
-                "reference": "b96cb151eeb59869a5a58baeca6f5ea2ab08691d"
+                "reference": "71db5d172cfe726c9769385550e248ee32345699"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/doctrine-entity-normalizer/zipball/b96cb151eeb59869a5a58baeca6f5ea2ab08691d",
-                "reference": "b96cb151eeb59869a5a58baeca6f5ea2ab08691d",
+                "url": "https://api.github.com/repos/AzuraCast/doctrine-entity-normalizer/zipball/71db5d172cfe726c9769385550e248ee32345699",
+                "reference": "71db5d172cfe726c9769385550e248ee32345699",
                 "shasum": ""
             },
             "require": {
@@ -177,6 +177,7 @@
                 "doctrine/orm": "^3",
                 "doctrine/persistence": "^2|^3",
                 "php": ">=8.4",
+                "symfony/property-info": "^7",
                 "symfony/serializer": "^7"
             },
             "require-dev": {
@@ -205,7 +206,7 @@
             "description": "An implementation of the Symfony Serializer with custom support for Doctrine 3 ORM entities.",
             "support": {
                 "issues": "https://github.com/AzuraCast/doctrine-entity-normalizer/issues",
-                "source": "https://github.com/AzuraCast/doctrine-entity-normalizer/tree/3.2.2"
+                "source": "https://github.com/AzuraCast/doctrine-entity-normalizer/tree/3.2.3"
             },
             "funding": [
                 {
@@ -213,7 +214,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-07-18T14:50:25+00:00"
+            "time": "2025-07-19T15:59:10+00:00"
         },
         {
             "name": "azuracast/nowplaying",

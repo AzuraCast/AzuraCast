@@ -344,16 +344,20 @@ return [
             new Symfony\Component\Serializer\Mapping\Loader\AttributeLoader()
         );
 
+        $reflectionExtractor = new Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor();
+
         $normalizers = [
             new Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer(),
             new App\Normalizer\DateTimeNormalizer(),
             new Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer(),
             new Azura\Normalizer\DoctrineEntityNormalizer(
                 $em,
-                classMetadataFactory: $classMetaFactory
+                classMetadataFactory: $classMetaFactory,
+                propertyTypeExtractor: $reflectionExtractor
             ),
             new Symfony\Component\Serializer\Normalizer\ObjectNormalizer(
-                classMetadataFactory: $classMetaFactory
+                classMetadataFactory: $classMetaFactory,
+                propertyTypeExtractor: $reflectionExtractor
             ),
         ];
         $encoders = [

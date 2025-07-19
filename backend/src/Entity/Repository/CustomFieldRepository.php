@@ -76,7 +76,7 @@ final class CustomFieldRepository extends Repository
                 FROM App\Entity\StationMediaCustomField e JOIN e.field cf
                 WHERE e.media = :media
             DQL
-        )->setParameter('media_id', $media)
+        )->setParameter('media', $media)
             ->getArrayResult();
 
         return array_column($metadataRaw, 'value', 'short_name');
@@ -94,7 +94,7 @@ final class CustomFieldRepository extends Repository
             <<<'DQL'
                 DELETE FROM App\Entity\StationMediaCustomField e WHERE e.media = :media
             DQL
-        )->setParameter('media_id', $media)
+        )->setParameter('media', $media)
             ->execute();
 
         foreach ($customFields as $fieldId => $fieldValue) {

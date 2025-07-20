@@ -49,8 +49,8 @@ final class PlaylistFileWriter implements EventSubscriberInterface
             return;
         }
 
-        $station = $playlist->getStation();
-        if (!$station->getBackendType()->isEnabled()) {
+        $station = $playlist->station;
+        if (!$station->backend_type->isEnabled()) {
             return;
         }
 
@@ -66,7 +66,7 @@ final class PlaylistFileWriter implements EventSubscriberInterface
                 [
                     'message' => $e->getMessage(),
                     'playlist' => $playlistVarName,
-                    'station' => $station->getId(),
+                    'station' => $station->id,
                 ]
             );
         }
@@ -102,8 +102,8 @@ final class PlaylistFileWriter implements EventSubscriberInterface
             }
         }
 
-        foreach ($station->getPlaylists() as $playlist) {
-            if (!$playlist->getIsEnabled()) {
+        foreach ($station->playlists as $playlist) {
+            if (!$playlist->is_enabled) {
                 continue;
             }
 
@@ -113,13 +113,13 @@ final class PlaylistFileWriter implements EventSubscriberInterface
 
     private function writePlaylistFile(StationPlaylist $playlist): void
     {
-        $station = $playlist->getStation();
+        $station = $playlist->station;
 
         $this->logger->info(
             'Writing playlist file to disk...',
             [
-                'station' => $station->getName(),
-                'playlist' => $playlist->getName(),
+                'station' => $station->name,
+                'playlist' => $playlist->name,
             ]
         );
 
@@ -160,7 +160,7 @@ final class PlaylistFileWriter implements EventSubscriberInterface
 
     public static function getPlaylistFilePath(StationPlaylist $playlist): string
     {
-        return $playlist->getStation()->getRadioPlaylistsDir() . '/'
+        return $playlist->station->getRadioPlaylistsDir() . '/'
             . ConfigWriter::getPlaylistVariableName($playlist) . '.m3u';
     }
 }

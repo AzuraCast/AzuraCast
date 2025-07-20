@@ -142,11 +142,11 @@ final class AnnotateNextSong extends Event
         bool $asAutoDj = false
     ): self {
         return new self(
-            station: $queue->getStation(),
+            station: $queue->station,
             queue: $queue,
-            media: $queue->getMedia(),
-            playlist: $queue->getPlaylist(),
-            request: $queue->getRequest(),
+            media: $queue->media,
+            playlist: $queue->playlist,
+            request: $queue->request,
             asAutoDj: $asAutoDj
         );
     }

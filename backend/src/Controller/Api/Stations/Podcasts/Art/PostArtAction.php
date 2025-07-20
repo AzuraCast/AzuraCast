@@ -61,7 +61,7 @@ final class PostArtAction implements SingleActionInterface
             $podcast = null;
         }
 
-        $mediaStorage = $station->getPodcastsStorageLocation();
+        $mediaStorage = $station->podcasts_storage_location;
         $mediaStorage->errorIfFull();
 
         $flowResponse = Flow::process($request, $response, $station->getRadioTempDir());

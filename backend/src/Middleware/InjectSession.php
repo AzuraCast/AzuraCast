@@ -38,7 +38,7 @@ final class InjectSession extends AbstractMiddleware
 
     public function getSessionPersistence(ServerRequest $request): SessionPersistenceInterface
     {
-        $alwaysUseSsl = $this->readSettings()->getAlwaysUseSsl();
+        $alwaysUseSsl = $this->readSettings()->always_use_ssl;
         $isHttpsUrl = ('https' === $request->getUri()->getScheme());
 
         return new CacheSessionPersistence(

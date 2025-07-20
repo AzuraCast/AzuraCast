@@ -8,5 +8,7 @@ use App\Entity\Station;
 
 interface StationAwareInterface
 {
-    public function getStation(): ?Station;
+    public Station $station {
+        get;
+    }
 }

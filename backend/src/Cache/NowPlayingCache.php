@@ -35,7 +35,7 @@ final class NowPlayingCache
     ): void {
         $this->populateLookupCache($station);
 
-        $stationCacheItem = $this->getStationCache($station->getShortName());
+        $stationCacheItem = $this->getStationCache($station->short_name);
 
         $stationCacheItem->set($nowPlaying);
         $stationCacheItem->expiresAfter(self::NOWPLAYING_CACHE_TTL);
@@ -47,7 +47,7 @@ final class NowPlayingCache
     public function getForStation(string|Station $station): ?NowPlaying
     {
         if ($station instanceof Station) {
-            $station = $station->getShortName();
+            $station = $station->short_name;
         }
 
         $stationCacheItem = $this->getStationCache($station);
@@ -135,9 +135,9 @@ final class NowPlayingCache
             ? Types::array($lookupCacheItem->get())
             : [];
 
-        $lookupCache[$station->getIdRequired()] = [
-            'short_name' => $station->getShortName(),
-            'is_public' => $station->getEnablePublicPage(),
+        $lookupCache[$station->id] = [
+            'short_name' => $station->short_name,
+            'is_public' => $station->enable_public_page,
             'updated_at' => $updated ?? time(),
         ];
 

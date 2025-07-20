@@ -25,12 +25,12 @@ final class SyncTaskCheck
 
         $settings = $this->readSettings();
 
-        $setupComplete = $settings->getSetupCompleteTime();
+        $setupComplete = $settings->setup_complete_time;
         if ($setupComplete > (time() - 60 * 60 * 2)) {
             return;
         }
 
-        if ($settings->getSyncDisabled()) {
+        if ($settings->sync_disabled) {
             // phpcs:disable Generic.Files.LineLength
             $event->addNotification(
                 new Notification(
@@ -46,7 +46,7 @@ final class SyncTaskCheck
             return;
         }
 
-        $syncLastRun = $settings->getSyncLastRun();
+        $syncLastRun = $settings->sync_last_run;
         if ($syncLastRun < (time() - 60 * 5)) {
             $router = $request->getRouter();
 

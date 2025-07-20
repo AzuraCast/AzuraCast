@@ -10,17 +10,17 @@ final class CustomUrls
 {
     public static function getListenUrl(Station $station): string
     {
-        return '/listen/' . $station->getShortName();
+        return '/listen/' . $station->short_name;
     }
 
     public static function getWebDjUrl(Station $station): string
     {
-        return '/webdj/' . $station->getShortName();
+        return '/webdj/' . $station->short_name;
     }
 
     public static function getHlsUrl(Station $station): string
     {
-        return '/hls/' . $station->getShortName();
+        return '/hls/' . $station->short_name;
     }
 
     /**

@@ -38,7 +38,7 @@ final class UpdatesAction implements SingleActionInterface
 
         return $response->withJson([
             'releaseChannel' => $this->version->getReleaseChannelEnum()->value,
-            'initialUpdateInfo' => $settings->getUpdateResults(),
+            'initialUpdateInfo' => $settings->update_results,
             'enableWebUpdates' => $enableWebUpdates,
         ]);
     }

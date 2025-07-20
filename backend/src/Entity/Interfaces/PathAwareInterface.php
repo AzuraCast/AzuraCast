@@ -6,7 +6,8 @@ namespace App\Entity\Interfaces;
 
 interface PathAwareInterface
 {
-    public function getPath(): string;
-
-    public function setPath(string $path): void;
+    public string $path {
+        get;
+        set;
+    }
 }

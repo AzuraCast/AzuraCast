@@ -279,15 +279,12 @@ final class AuditLog implements EventSubscriber
             return (string)$entity;
         }
 
-        if (method_exists($entity, 'getName')) {
-            return $entity->getName();
+        if (property_exists($entity, 'name')) {
+            return $entity->name;
         }
 
         if ($entity instanceof IdentifiableEntityInterface) {
-            $entityId = $entity->getId();
-            if (null !== $entityId) {
-                return (string)$entityId;
-            }
+            return (string)$entity->id;
         }
 
         return spl_object_hash($entity);

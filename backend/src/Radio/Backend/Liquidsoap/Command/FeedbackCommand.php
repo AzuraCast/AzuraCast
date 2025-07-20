@@ -12,11 +12,9 @@ use App\Entity\Song;
 use App\Entity\SongHistory;
 use App\Entity\Station;
 use App\Entity\StationMedia;
-use App\Entity\StationMediaMetadata;
 use App\Entity\StationPlaylist;
 use App\Entity\StationQueue;
 use App\Utilities\Types;
-use Exception;
 use RuntimeException;
 
 final class FeedbackCommand extends AbstractCommand
@@ -104,14 +102,14 @@ final class FeedbackCommand extends AbstractCommand
 
             if (null !== $sq) {
                 // If there's an existing record, ensure it has all the proper metadata.
-                if (null === $sq->getMedia()) {
-                    $sq->setMedia($media);
+                if (null === $sq->media) {
+                    $sq->media = $media;
                 }
 
-                if (!empty($payload['playlist_id']) && null === $sq->getPlaylist()) {
+                if (!empty($payload['playlist_id']) && null === $sq->playlist) {
                     $playlist = $this->em->find(StationPlaylist::class, $payload['playlist_id']);
                     if ($playlist instanceof StationPlaylist) {
-                        $sq->setPlaylist($playlist);
+                        $sq->playlist = $playlist;
                     }
                 }
 
@@ -126,12 +124,12 @@ final class FeedbackCommand extends AbstractCommand
         }
 
         $history = new SongHistory($station, $media);
-        $history->setMedia($media);
+        $history->media = $media;
 
         if (!empty($payload['playlist_id'])) {
             $playlist = $this->em->find(StationPlaylist::class, $payload['playlist_id']);
             if ($playlist instanceof StationPlaylist) {
-                $history->setPlaylist($playlist);
+                $history->playlist = $playlist;
             }
         }
 

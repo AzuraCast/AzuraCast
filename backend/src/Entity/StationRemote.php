@@ -22,8 +22,9 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
     ORM\Table(name: 'station_remotes'),
     Attributes\Auditable
 ]
-class StationRemote implements
+final class StationRemote implements
     Stringable,
+    Interfaces\StationAwareInterface,
     Interfaces\StationMountInterface,
     Interfaces\StationCloneAwareInterface,
     Interfaces\IdentifiableEntityInterface
@@ -34,262 +35,87 @@ class StationRemote implements
 
     #[ORM\ManyToOne(inversedBy: 'remotes')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    protected Station $station;
-
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    protected int $station_id;
-
-    #[ORM\ManyToOne(inversedBy: 'remotes')]
-    #[ORM\JoinColumn(name: 'relay_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
-    protected ?Relay $relay = null;
-
-    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    protected ?int $relay_id = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    protected ?string $display_name = null;
-
-    #[ORM\Column]
-    protected bool $is_visible_on_public_pages = true;
-
-    #[ORM\Column(type: 'string', length: 50, enumType: RemoteAdapters::class)]
-    protected RemoteAdapters $type;
-
-    #[ORM\Column]
-    protected bool $enable_autodj = false;
-
-    #[ORM\Column(type: 'string', length: 10, nullable: true, enumType: StreamFormats::class)]
-    protected ?StreamFormats $autodj_format = null;
-
-    #[ORM\Column(type: 'smallint', nullable: true)]
-    protected ?int $autodj_bitrate = null;
-
-    #[Assert\Callback]
-    public function hasValidBitrate(ExecutionContextInterface $context): void
-    {
-        $this->doValidateMaxBitrate(
-            $context,
-            $this->getStation()->getMaxBitrate(),
-            $this->getAutodjBitrate(),
-            'autodj_bitrate'
-        );
-    }
-
-    #[ORM\Column(length: 255, nullable: true)]
-    protected ?string $custom_listen_url = null;
-
-    #[ORM\Column(length: 255, nullable: false)]
-    protected string $url = '';
-
-    #[ORM\Column(length: 150, nullable: true)]
-    protected ?string $mount = null;
-
-    #[ORM\Column(length: 100, nullable: true)]
-    protected ?string $admin_password = null;
-
-    #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
-    protected ?int $source_port = null;
-
-    #[ORM\Column(length: 150, nullable: true)]
-    protected ?string $source_mount = null;
-
-    #[ORM\Column(length: 100, nullable: true)]
-    protected ?string $source_username = null;
-
-    #[ORM\Column(length: 100, nullable: true)]
-    protected ?string $source_password = null;
-
-    #[ORM\Column]
-    protected bool $is_public = false;
-
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
-    protected int $listeners_unique = 0;
-
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
-    protected int $listeners_total = 0;
-
-    public function __construct(Station $station)
-    {
-        $this->station = $station;
-    }
-
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
+    public Station $station;
 
     public function setStation(Station $station): void
     {
         $this->station = $station;
     }
 
-    public function getRelay(): ?Relay
-    {
-        return $this->relay;
-    }
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    public private(set) int $station_id;
 
-    public function setRelay(?Relay $relay): void
-    {
-        $this->relay = $relay;
-    }
+    #[ORM\ManyToOne(inversedBy: 'remotes')]
+    #[ORM\JoinColumn(name: 'relay_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    public ?Relay $relay = null;
 
-    public function getIsVisibleOnPublicPages(): bool
-    {
-        return $this->is_visible_on_public_pages;
-    }
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    public private(set) ?int $relay_id = null;
 
-    public function setIsVisibleOnPublicPages(bool $isVisibleOnPublicPages): void
-    {
-        $this->is_visible_on_public_pages = $isVisibleOnPublicPages;
-    }
-
-    public function getEnableAutodj(): bool
-    {
-        return $this->enable_autodj;
-    }
-
-    public function setEnableAutodj(bool $enableAutodj): void
-    {
-        $this->enable_autodj = $enableAutodj;
-    }
-
-    public function getAutodjFormat(): ?StreamFormats
-    {
-        return $this->autodj_format;
-    }
-
-    public function setAutodjFormat(?StreamFormats $autodjFormat = null): void
-    {
-        $this->autodj_format = $autodjFormat;
-    }
-
-    public function getAutodjBitrate(): ?int
-    {
-        return $this->autodj_bitrate;
-    }
-
-    public function setAutodjBitrate(?int $autodjBitrate = null): void
-    {
-        $this->autodj_bitrate = $autodjBitrate;
-    }
-
-    public function getCustomListenUrl(): ?string
-    {
-        return $this->custom_listen_url;
-    }
-
-    public function setCustomListenUrl(?string $customListenUrl = null): void
-    {
-        $this->custom_listen_url = $this->truncateNullableString($customListenUrl);
-    }
-
-    public function getAutodjUsername(): ?string
-    {
-        return $this->getSourceUsername();
-    }
-
-    public function getSourceUsername(): ?string
-    {
-        return $this->source_username;
-    }
-
-    public function setSourceUsername(?string $sourceUsername): void
-    {
-        $this->source_username = $this->truncateNullableString($sourceUsername, 100);
-    }
-
-    public function getAutodjPassword(): ?string
-    {
-        $password = $this->getSourcePassword();
-
-        if (RemoteAdapters::Shoutcast2 === $this->getType()) {
-            $mount = $this->getSourceMount();
-            if (empty($mount)) {
-                $mount = $this->getMount();
+    #[ORM\Column(length: 255, nullable: false)]
+    public string $display_name = '' {
+        get {
+            if (!empty($this->display_name)) {
+                return $this->display_name;
             }
 
-            if (!empty($mount)) {
-                $password .= ':#' . $mount;
+            if ($this->enable_autodj) {
+                $format = $this->autodj_format;
+                if (null !== $format) {
+                    return $format->formatBitrate($this->autodj_bitrate);
+                }
+            }
+
+            return Utilities\Strings::truncateUrl($this->url);
+        }
+        set (string|null $value) => $this->truncateNullableString($value) ?? '';
+    }
+
+    #[ORM\Column]
+    public bool $is_visible_on_public_pages = true;
+
+    #[ORM\Column(type: 'string', length: 50, enumType: RemoteAdapters::class)]
+    public RemoteAdapters $type;
+
+    #[ORM\Column]
+    public bool $enable_autodj = false;
+
+    #[ORM\Column(type: 'string', length: 10, nullable: true, enumType: StreamFormats::class)]
+    public ?StreamFormats $autodj_format = null;
+
+    #[ORM\Column(type: 'smallint', nullable: true)]
+    public ?int $autodj_bitrate = null;
+
+    #[Assert\Callback]
+    public function hasValidBitrate(ExecutionContextInterface $context): void
+    {
+        $this->doValidateMaxBitrate(
+            $context,
+            $this->station->max_bitrate,
+            $this->autodj_bitrate,
+            'autodj_bitrate'
+        );
+    }
+
+    #[ORM\Column(length: 255, nullable: true)]
+    public ?string $custom_listen_url = null {
+        set => $this->truncateNullableString($value);
+    }
+
+    #[ORM\Column(length: 255, nullable: false)]
+    public string $url = '' {
+        set {
+            if (empty($value)) {
+                $this->url = '';
+            } else {
+                $uri = Utilities\Urls::parseUserUrl(
+                    $value,
+                    'Remote Relay URL'
+                );
+
+                $this->url = $this->truncateString((string)$uri);
             }
         }
-
-        return $password;
-    }
-
-    public function getSourcePassword(): ?string
-    {
-        return $this->source_password;
-    }
-
-    public function setSourcePassword(?string $sourcePassword): void
-    {
-        $this->source_password = $this->truncateNullableString($sourcePassword, 100);
-    }
-
-    public function getType(): RemoteAdapters
-    {
-        return $this->type;
-    }
-
-    public function setType(RemoteAdapters $type): void
-    {
-        $this->type = $type;
-    }
-
-    public function getSourceMount(): ?string
-    {
-        return $this->source_mount;
-    }
-
-    public function setSourceMount(?string $sourceMount): void
-    {
-        $this->source_mount = $this->truncateNullableString($sourceMount, 150);
-    }
-
-    public function getMount(): ?string
-    {
-        return $this->mount;
-    }
-
-    public function setMount(?string $mount): void
-    {
-        $this->mount = $this->truncateNullableString($mount, 150);
-    }
-
-    public function getAdminPassword(): ?string
-    {
-        return $this->admin_password;
-    }
-
-    public function setAdminPassword(?string $adminPassword): void
-    {
-        $this->admin_password = $adminPassword;
-    }
-
-    public function getAutodjMount(): ?string
-    {
-        if (RemoteAdapters::Icecast !== $this->getType()) {
-            return null;
-        }
-
-        $mount = $this->getSourceMount();
-        if (!empty($mount)) {
-            return $mount;
-        }
-
-        return $this->getMount();
-    }
-
-    public function getAutodjHost(): ?string
-    {
-        return $this->getUrlAsUri()->getHost();
-    }
-
-    public function getUrl(): string
-    {
-        return $this->url;
     }
 
     public function getUrlAsUri(): UriInterface
@@ -300,18 +126,113 @@ class StationRemote implements
         );
     }
 
-    public function setUrl(string $url): void
-    {
-        if (empty($url)) {
-            $this->url = '';
-        } else {
-            $uri = Utilities\Urls::parseUserUrl(
-                $url,
-                'Remote Relay URL'
-            );
+    #[ORM\Column(length: 150, nullable: true)]
+    public ?string $mount = null {
+        set => $this->truncateNullableString($value, 150);
+    }
 
-            $this->url = $this->truncateString((string)$uri);
+    #[ORM\Column(length: 100, nullable: true)]
+    public ?string $admin_password = null {
+        set => $this->truncateNullableString($value, 100);
+    }
+
+    #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
+    public ?int $source_port = null {
+        set {
+            if ((int)$value === 0) {
+                $value = null;
+            }
+
+            $this->source_port = $value;
         }
+    }
+
+    #[ORM\Column(length: 150, nullable: true)]
+    public ?string $source_mount = null {
+        set => $this->truncateNullableString($value, 150);
+    }
+
+    #[ORM\Column(length: 100, nullable: true)]
+    public ?string $source_username = null {
+        set => $this->truncateNullableString($value, 100);
+    }
+
+    #[ORM\Column(length: 100, nullable: true)]
+    public ?string $source_password = null {
+        set => $this->truncateNullableString($value, 100);
+    }
+
+    #[ORM\Column]
+    public bool $is_public = false;
+
+    #[ORM\Column]
+    #[Attributes\AuditIgnore]
+    public int $listeners_unique = 0;
+
+    #[ORM\Column]
+    #[Attributes\AuditIgnore]
+    public int $listeners_total = 0;
+
+    public function __construct(Station $station)
+    {
+        $this->station = $station;
+    }
+
+    public function getEnableAutodj(): bool
+    {
+        return $this->enable_autodj;
+    }
+
+    public function getAutodjFormat(): ?StreamFormats
+    {
+        return $this->autodj_format;
+    }
+
+    public function getAutodjBitrate(): ?int
+    {
+        return $this->autodj_bitrate;
+    }
+
+    public function getAutodjUsername(): ?string
+    {
+        return $this->source_username;
+    }
+
+    public function getAutodjPassword(): ?string
+    {
+        $password = $this->source_password;
+
+        if (RemoteAdapters::Shoutcast2 === $this->type) {
+            $mount = $this->source_mount;
+            if (empty($mount)) {
+                $mount = $this->mount;
+            }
+
+            if (!empty($mount)) {
+                $password .= ':#' . $mount;
+            }
+        }
+
+        return $password;
+    }
+
+    public function getAutodjMount(): ?string
+    {
+        if (RemoteAdapters::Icecast !== $this->type) {
+            return null;
+        }
+
+        $mount = $this->source_mount;
+        if (!empty($mount)) {
+            return $mount;
+        }
+
+        return $this->mount;
+    }
+
+    public function getAutodjHost(): string
+    {
+        return $this->getUrlAsUri()->getHost();
     }
 
     /*
@@ -320,24 +241,10 @@ class StationRemote implements
 
     public function getAutodjPort(): ?int
     {
-        return $this->getSourcePort() ?? $this->getUrlAsUri()->getPort();
+        return $this->source_port ?? $this->getUrlAsUri()->getPort();
     }
 
-    public function getSourcePort(): ?int
-    {
-        return $this->source_port;
-    }
-
-    public function setSourcePort(?int $sourcePort): void
-    {
-        if ((int)$sourcePort === 0) {
-            $sourcePort = null;
-        }
-
-        $this->source_port = $sourcePort;
-    }
-
-    public function getAutodjProtocol(): ?StreamProtocols
+    public function getAutodjProtocol(): StreamProtocols
     {
         $urlScheme = $this->getUrlAsUri()->getScheme();
 
@@ -349,7 +256,7 @@ class StationRemote implements
 
     public function getAutodjAdapterType(): AdapterTypeInterface
     {
-        return $this->getType();
+        return $this->type;
     }
 
     public function getIsPublic(): bool
@@ -357,37 +264,12 @@ class StationRemote implements
         return $this->is_public;
     }
 
-    public function setIsPublic(bool $isPublic): void
-    {
-        $this->is_public = $isPublic;
-    }
-
-    public function getListenersUnique(): int
-    {
-        return $this->listeners_unique;
-    }
-
-    public function setListenersUnique(int $listenersUnique): void
-    {
-        $this->listeners_unique = $listenersUnique;
-    }
-
-    public function getListenersTotal(): int
-    {
-        return $this->listeners_total;
-    }
-
-    public function setListenersTotal(int $listenersTotal): void
-    {
-        $this->listeners_total = $listenersTotal;
-    }
-
     /**
      * @return bool Whether this remote relay can be hand-edited.
      */
     public function isEditable(): bool
     {
-        return (RemoteAdapters::AzuraRelay !== $this->getType());
+        return (RemoteAdapters::AzuraRelay !== $this->type);
     }
 
     public function getIsShoutcast(): bool
@@ -408,8 +290,8 @@ class StationRemote implements
     ): Api\NowPlaying\StationRemote {
         $response = new Api\NowPlaying\StationRemote();
 
-        $response->id = $this->getIdRequired();
-        $response->name = $this->getDisplayName();
+        $response->id = $this->id;
+        $response->name = $this->display_name;
         $response->url = new ResolvableUrl($adapter->getPublicUrl($this));
 
         $response->listeners = new Api\NowPlaying\Listeners(
@@ -417,7 +299,7 @@ class StationRemote implements
             unique: $this->listeners_unique
         );
 
-        if ($this->enable_autodj || (RemoteAdapters::AzuraRelay === $this->getType())) {
+        if ($this->enable_autodj || (RemoteAdapters::AzuraRelay === $this->type)) {
             $response->bitrate = (int)$this->autodj_bitrate;
             $response->format = $this->autodj_format?->value;
         }
@@ -425,32 +307,8 @@ class StationRemote implements
         return $response;
     }
 
-    public function getDisplayName(): string
-    {
-        if (!empty($this->display_name)) {
-            return $this->display_name;
-        }
-
-        if ($this->enable_autodj) {
-            $format = $this->getAutodjFormat();
-            if (null !== $format) {
-                return $format->formatBitrate($this->autodj_bitrate);
-            }
-        }
-
-        return Utilities\Strings::truncateUrl($this->url);
-    }
-
-    /**
-     * @param string|null $displayName
-     */
-    public function setDisplayName(?string $displayName): void
-    {
-        $this->display_name = $this->truncateNullableString($displayName);
-    }
-
     public function __toString(): string
     {
-        return $this->getStation() . ' Relay: ' . $this->getDisplayName();
+        return $this->station . ' Relay: ' . $this->display_name;
     }
 }

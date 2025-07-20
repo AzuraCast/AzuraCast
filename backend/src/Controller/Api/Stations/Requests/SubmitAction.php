@@ -131,7 +131,7 @@ final class SubmitAction implements SingleActionInterface
 
         if (!$isAuthenticated) {
             // Check for any request (on any station) within the last $threshold_seconds.
-            $thresholdMins = $station->getRequestDelay() ?? 5;
+            $thresholdMins = $station->request_delay ?? 5;
             $thresholdSeconds = $thresholdMins * 60;
 
             // Always have a minimum threshold to avoid flooding.

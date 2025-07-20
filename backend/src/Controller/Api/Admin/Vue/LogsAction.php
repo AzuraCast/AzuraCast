@@ -30,10 +30,10 @@ final class LogsAction implements SingleActionInterface
         foreach ($this->stationRepo->iterateEnabledStations() as $station) {
             if ($acl->isAllowed(StationPermissions::Logs, $station)) {
                 $stationLogs[] = [
-                    'id' => $station->getIdRequired(),
-                    'name' => $station->getName(),
+                    'id' => $station->id,
+                    'name' => $station->name,
                     'url' => $router->named('api:stations:logs', [
-                        'station_id' => $station->getIdRequired(),
+                        'station_id' => $station->id,
                     ]),
                 ];
             }

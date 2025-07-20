@@ -38,7 +38,7 @@ final class RunnerCommand extends AbstractSyncRunnerCommand
         $this->logToExtraFile('app_sync.log');
 
         $settings = $this->readSettings();
-        if ($settings->getSyncDisabled()) {
+        if ($settings->sync_disabled) {
             $io = new SymfonyStyle($input, $output);
             $io->error('Automated synchronization is temporarily disabled.');
             return 1;

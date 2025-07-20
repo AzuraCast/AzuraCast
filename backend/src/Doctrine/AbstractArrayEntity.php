@@ -7,11 +7,14 @@ namespace App\Doctrine;
 use JsonSerializable;
 use ReflectionClass;
 use ReflectionProperty;
+use Symfony\Component\Serializer\Normalizer\DenormalizableInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
+ * @phpstan-consistent-constructor
  * @phpstan-type ConfigData array<string, mixed>
  */
-abstract class AbstractArrayEntity implements JsonSerializable
+abstract class AbstractArrayEntity implements JsonSerializable, DenormalizableInterface
 {
     /** @var ConfigData */
     protected array $data = [];
@@ -23,6 +26,17 @@ abstract class AbstractArrayEntity implements JsonSerializable
         array $data = []
     ) {
         $this->fromArray($data);
+    }
+
+    public function denormalize(
+        DenormalizerInterface $denormalizer,
+        array|string|int|float|bool $data,
+        ?string $format = null,
+        array $context = []
+    ): void {
+        if (is_array($data)) {
+            $this->fromArray($data);
+        }
     }
 
     /**
@@ -107,5 +121,23 @@ abstract class AbstractArrayEntity implements JsonSerializable
             fn(ReflectionProperty $reflProp) => $reflProp->getName(),
             $reflClass->getProperties(ReflectionProperty::IS_VIRTUAL)
         );
+    }
+
+    /**
+     * @param ConfigData|null $sourceData
+     * @param ConfigData|AbstractArrayEntity|null $newData
+     * @return ConfigData|null
+     */
+    public static function merge(
+        ?array $sourceData,
+        array|self|null $newData
+    ): array|null {
+        $arrayEntity = new static((array)$sourceData);
+
+        if ($newData !== null) {
+            $arrayEntity->fromArray($newData);
+        }
+
+        return $arrayEntity->toArray();
     }
 }

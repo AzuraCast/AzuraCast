@@ -28,7 +28,7 @@ final class StreamersAction implements SingleActionInterface
         $station = $request->getStation();
 
         $settings = $this->readSettings();
-        $backendConfig = $station->getBackendConfig();
+        $backendConfig = $station->backend_config;
 
         $serverUrl = ($settings->getBaseUrlAsUri() ?? $request->getRouter()->getBaseUrl())->getHost();
 

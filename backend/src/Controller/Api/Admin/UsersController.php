@@ -168,18 +168,18 @@ class UsersController extends AbstractApiCrudController
         $csrf = $request->getCsrf();
         $currentUser = $request->getUser();
 
-        $return['is_me'] = $currentUser->getIdRequired() === $record->getIdRequired();
+        $return['is_me'] = $currentUser->id === $record->id;
 
         $return['links'] = [
             'self' => $router->fromHere(
                 routeName: $this->resourceRouteName,
-                routeParams: ['id' => $record->getIdRequired()],
+                routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             ),
             'masquerade' => $router->fromHere(
                 routeName: 'account:masquerade',
                 routeParams: [
-                    'id' => $record->getIdRequired(),
+                    'id' => $record->id,
                     'csrf' => $csrf->generate(MasqueradeAction::CSRF_NAMESPACE),
                 ],
                 absolute: !$isInternal
@@ -202,7 +202,7 @@ class UsersController extends AbstractApiCrudController
         }
 
         $currentUser = $request->getUser();
-        if ($record->getId() === $currentUser->getId()) {
+        if ($record->id === $currentUser->id) {
             return $response->withStatus(403)
                 ->withJson(new Error(403, __('You cannot modify yourself.')));
         }
@@ -236,7 +236,7 @@ class UsersController extends AbstractApiCrudController
         }
 
         $currentUser = $request->getUser();
-        if ($record->getId() === $currentUser->getId()) {
+        if ($record->id === $currentUser->id) {
             return $response->withStatus(403)
                 ->withJson(new Error(403, __('You cannot remove yourself.')));
         }

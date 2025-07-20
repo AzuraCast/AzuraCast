@@ -140,7 +140,7 @@ final class CheckMediaTask extends AbstractTask
             }
         }
 
-        $storageLocation->setStorageUsed($totalSize);
+        $storageLocation->storageUsed = $totalSize;
         $this->em->persist($storageLocation);
         $this->em->flush();
 
@@ -187,7 +187,7 @@ final class CheckMediaTask extends AbstractTask
 
         foreach ($coverFiles as $folderHash => $coverFile) {
             $message = new ProcessCoverArtMessage();
-            $message->storage_location_id = $storageLocation->getIdRequired();
+            $message->storage_location_id = $storageLocation->id;
             $message->path = $coverFile[StorageAttributes::ATTRIBUTE_PATH];
             $message->folder_hash = $folderHash;
 
@@ -221,7 +221,7 @@ final class CheckMediaTask extends AbstractTask
 
                 if ($mtime > $mediaProcessedAt) {
                     $message = new ReprocessMediaMessage();
-                    $message->storage_location_id = $storageLocation->getIdRequired();
+                    $message->storage_location_id = $storageLocation->id;
                     $message->media_id = (int)$mediaRow['id'];
 
                     $this->messageBus->dispatch($message);
@@ -268,7 +268,7 @@ final class CheckMediaTask extends AbstractTask
 
                 if (UnprocessableMedia::needsReprocessing($mtime, Types::int($unprocessableRow['mtime']))) {
                     $message = new AddNewMediaMessage();
-                    $message->storage_location_id = $storageLocation->getIdRequired();
+                    $message->storage_location_id = $storageLocation->id;
                     $message->path = $unprocessableRow['path'];
 
                     $this->messageBus->dispatch($message);
@@ -296,7 +296,7 @@ final class CheckMediaTask extends AbstractTask
             $path = $newMusicFile[StorageAttributes::ATTRIBUTE_PATH];
 
             $message = new AddNewMediaMessage();
-            $message->storage_location_id = $storageLocation->getIdRequired();
+            $message->storage_location_id = $storageLocation->id;
             $message->path = $path;
 
             $this->messageBus->dispatch($message);

@@ -31,7 +31,7 @@ final class PodcastEpisodeFixture extends AbstractFixture implements DependentFi
 
         $podcast = $this->getReference('podcast', Podcast::class);
 
-        $fs = $this->storageLocationRepo->getAdapter($podcast->getStorageLocation())
+        $fs = $this->storageLocationRepo->getAdapter($podcast->storage_location)
             ->getFilesystem();
 
         $finder = (new Finder())
@@ -71,9 +71,9 @@ final class PodcastEpisodeFixture extends AbstractFixture implements DependentFi
             /** @noinspection NonSecureArrayRandUsageInspection */
             $podcastFiller = $podcastFillers[array_rand($podcastFillers)];
 
-            $episode->setTitle('Episode ' . $i . ': ' . sprintf($podcastName, $podcastFiller));
-            $episode->setDescription('Another great episode!');
-            $episode->setExplicit(false);
+            $episode->title = 'Episode ' . $i . ': ' . sprintf($podcastName, $podcastFiller);
+            $episode->description = 'Another great episode!';
+            $episode->explicit = false;
 
             $manager->persist($episode);
             $manager->flush();

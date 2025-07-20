@@ -25,7 +25,7 @@ final class Telegram extends AbstractConnector
         NowPlaying $np,
         array $triggers
     ): void {
-        $config = $webhook->getConfig();
+        $config = $webhook->config ?? [];
 
         $botToken = Types::stringOrNull($config['bot_token'], true);
         $chatId = Types::stringOrNull($config['chat_id'], true);

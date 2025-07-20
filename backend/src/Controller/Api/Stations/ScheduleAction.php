@@ -78,7 +78,7 @@ final class ScheduleAction implements SingleActionInterface
         if (isset($queryParams['start'])) {
             $dateRange = $this->getDateRange($request, $tz);
 
-            $cacheKey = 'api_station_' . $station->getId() . '_schedule_'
+            $cacheKey = 'api_station_' . $station->id . '_schedule_'
                 . $dateRange->format('Ymd', '-');
 
             $cacheItem = $this->psr6Cache->getItem(urlencode($cacheKey));
@@ -106,10 +106,10 @@ final class ScheduleAction implements SingleActionInterface
                 $now = CarbonImmutable::parse($queryParams['now'], $tz)
                     ->setTimezone($tz);
 
-                $cacheKey = 'api_station_' . $station->getId() . '_schedule_' . $now->format('Ymd_gia');
+                $cacheKey = 'api_station_' . $station->id . '_schedule_' . $now->format('Ymd_gia');
             } else {
                 $now = CarbonImmutable::now($tz);
-                $cacheKey = 'api_station_' . $station->getId() . '_schedule_upcoming';
+                $cacheKey = 'api_station_' . $station->id . '_schedule_upcoming';
             }
 
             $cacheItem = $this->psr6Cache->getItem(urlencode($cacheKey));

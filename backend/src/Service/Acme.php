@@ -83,13 +83,13 @@ final class Acme
         // Build LetsEncrypt settings.
         $settings = $this->readSettings();
 
-        $acmeEmail = $settings->getAcmeEmail();
-        $acmeDomain = $settings->getAcmeDomains();
+        $acmeEmail = $settings->acme_email;
+        $acmeDomain = $settings->acme_domains;
 
         if (empty($acmeEmail)) {
             $acmeEmail = getenv('LETSENCRYPT_EMAIL');
             if (!empty($acmeEmail)) {
-                $settings->setAcmeEmail($acmeEmail);
+                $settings->acme_email = $acmeEmail;
                 $this->writeSettings($settings);
             }
         }
@@ -99,7 +99,7 @@ final class Acme
             if (empty($acmeDomain)) {
                 throw new RuntimeException('Skipping LetsEncrypt; no domain(s) set.');
             } else {
-                $settings->setAcmeDomains($acmeDomain);
+                $settings->acme_domains = $acmeDomain;
                 $this->writeSettings($settings);
             }
         }
@@ -204,8 +204,8 @@ final class Acme
             $this->nginx->reload();
 
             foreach ($this->stationRepo->iterateEnabledStations() as $station) {
-                $frontendType = $station->getFrontendType();
-                if (!$station->getHasStarted() || !$frontendType->supportsReload()) {
+                $frontendType = $station->frontend_type;
+                if (!$station->has_started || !$frontendType->supportsReload()) {
                     continue;
                 }
 

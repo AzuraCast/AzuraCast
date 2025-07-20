@@ -7,12 +7,14 @@ namespace App\Doctrine;
 use JsonSerializable;
 use ReflectionClass;
 use ReflectionProperty;
+use Symfony\Component\Serializer\Normalizer\DenormalizableInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
  * @phpstan-consistent-constructor
  * @phpstan-type ConfigData array<string, mixed>
  */
-abstract class AbstractArrayEntity implements JsonSerializable
+abstract class AbstractArrayEntity implements JsonSerializable, DenormalizableInterface
 {
     /** @var ConfigData */
     protected array $data = [];
@@ -21,9 +23,20 @@ abstract class AbstractArrayEntity implements JsonSerializable
      * @param ConfigData $data
      */
     public function __construct(
-        array $data
+        array $data = []
     ) {
         $this->fromArray($data);
+    }
+
+    public function denormalize(
+        DenormalizerInterface $denormalizer,
+        array|string|int|float|bool $data,
+        ?string $format = null,
+        array $context = []
+    ): void {
+        if (is_array($data)) {
+            $this->fromArray($data);
+        }
     }
 
     /**

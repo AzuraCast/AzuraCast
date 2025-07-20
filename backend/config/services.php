@@ -348,6 +348,7 @@ return [
             new Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer(),
             new App\Normalizer\DateTimeNormalizer(),
             new Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer(),
+            new Symfony\Component\Serializer\Normalizer\CustomNormalizer(),
             new Azura\Normalizer\DoctrineEntityNormalizer(
                 $em,
                 classMetadataFactory: $classMetaFactory

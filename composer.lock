@@ -159,16 +159,16 @@
         },
         {
             "name": "azuracast/doctrine-entity-normalizer",
-            "version": "3.2.5",
+            "version": "3.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/doctrine-entity-normalizer.git",
-                "reference": "e86e4cc6f752922d9d17b885255c798f6ffea807"
+                "reference": "536ebda00f292fcc1d1c31e4fdaf2c640570dafb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/doctrine-entity-normalizer/zipball/e86e4cc6f752922d9d17b885255c798f6ffea807",
-                "reference": "e86e4cc6f752922d9d17b885255c798f6ffea807",
+                "url": "https://api.github.com/repos/AzuraCast/doctrine-entity-normalizer/zipball/536ebda00f292fcc1d1c31e4fdaf2c640570dafb",
+                "reference": "536ebda00f292fcc1d1c31e4fdaf2c640570dafb",
                 "shasum": ""
             },
             "require": {
@@ -206,7 +206,7 @@
             "description": "An implementation of the Symfony Serializer with custom support for Doctrine 3 ORM entities.",
             "support": {
                 "issues": "https://github.com/AzuraCast/doctrine-entity-normalizer/issues",
-                "source": "https://github.com/AzuraCast/doctrine-entity-normalizer/tree/3.2.5"
+                "source": "https://github.com/AzuraCast/doctrine-entity-normalizer/tree/3.2.6"
             },
             "funding": [
                 {
@@ -214,7 +214,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-07-20T05:34:45+00:00"
+            "time": "2025-07-20T12:33:03+00:00"
         },
         {
             "name": "azuracast/nowplaying",

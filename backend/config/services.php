@@ -343,7 +343,7 @@ return [
         $classMetaFactory = new Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory(
             new Symfony\Component\Serializer\Mapping\Loader\AttributeLoader()
         );
-        
+
         $normalizers = [
             new Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer(),
             new App\Normalizer\DateTimeNormalizer(),

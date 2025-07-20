@@ -21,7 +21,7 @@ abstract class AbstractArrayEntity implements JsonSerializable
      * @param ConfigData $data
      */
     public function __construct(
-        array $data = []
+        array $data
     ) {
         $this->fromArray($data);
     }

@@ -343,21 +343,17 @@ return [
         $classMetaFactory = new Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory(
             new Symfony\Component\Serializer\Mapping\Loader\AttributeLoader()
         );
-
-        $reflectionExtractor = new Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor();
-
+        
         $normalizers = [
             new Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer(),
             new App\Normalizer\DateTimeNormalizer(),
             new Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer(),
             new Azura\Normalizer\DoctrineEntityNormalizer(
                 $em,
-                classMetadataFactory: $classMetaFactory,
-                propertyTypeExtractor: $reflectionExtractor
+                classMetadataFactory: $classMetaFactory
             ),
             new Symfony\Component\Serializer\Normalizer\ObjectNormalizer(
-                classMetadataFactory: $classMetaFactory,
-                propertyTypeExtractor: $reflectionExtractor
+                classMetadataFactory: $classMetaFactory
             ),
         ];
         $encoders = [

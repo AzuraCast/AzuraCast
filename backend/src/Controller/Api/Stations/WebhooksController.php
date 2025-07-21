@@ -167,11 +167,9 @@ final class WebhooksController extends AbstractStationApiCrudController
         $station = $request->getStation();
         $originalWebhook = $this->getRecord($request, $params);
 
-        if (null === $originalWebhook) {
+        if (!$originalWebhook instanceof StationWebhook) {
             return $response->withStatus(404, 'Web hook not found.');
         }
-
-        assert($originalWebhook instanceof StationWebhook);
 
         $newWebhook = new StationWebhook(
             $station,
@@ -229,6 +227,8 @@ final class WebhooksController extends AbstractStationApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
+        assert($record instanceof StationWebhook);
+        
         $return = $this->toArray($record);
 
         $isInternal = $request->isInternal();
@@ -242,7 +242,7 @@ final class WebhooksController extends AbstractStationApiCrudController
             ),
             'duplicate' => $router->fromHere(
                 routeName: 'api:stations:webhook:duplicate',
-                routeParams: ['id' => $record->getIdRequired()],
+                routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             ),
             'toggle' => $router->fromHere(

@@ -15,7 +15,7 @@ final class StationMediaMetadata extends AbstractArrayEntity
     public ?float $amplify {
         get => Types::floatOrNull($this->get(__PROPERTY__));
         set (float|string|null $value) {
-            $this->set(__PROPERTY__, self::getNumericValue($value));
+            $this->set(__PROPERTY__, self::getNumericValue($value, true));
         }
     }
 

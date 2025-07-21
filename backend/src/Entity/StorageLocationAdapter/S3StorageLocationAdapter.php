@@ -32,7 +32,12 @@ final class S3StorageLocationAdapter extends AbstractStorageLocationLocationAdap
             throw new RuntimeException('Amazon S3 bucket is empty.');
         }
 
-        return new AwsS3Adapter($this->getClient(), $bucket, $filteredPath);
+        return new AwsS3Adapter(
+            client: $this->getClient(),
+            bucket: $bucket,
+            prefix: $filteredPath,
+            options: ['ACL' => null]
+        );
     }
 
     public function validate(): void
@@ -61,9 +66,6 @@ final class S3StorageLocationAdapter extends AbstractStorageLocationLocationAdap
                 'endpoint' => $this->storageLocation->getS3Endpoint(),
                 'use_path_style_endpoint' => $this->storageLocation->getS3UsePathStyle(),
                 'request_checksum_calculation' => 'when_required',
-                'options' => [
-                    'ACL' => '',
-                ],
             ]
         );
         return new S3Client($s3Options);

@@ -47,7 +47,7 @@ abstract class AbstractArrayEntity implements JsonSerializable, DenormalizableIn
         array|self $data
     ): static {
         if ($data instanceof self) {
-            $data = $data->toArray() ?? [];
+            $data = $data->getData();
         }
 
         // Only accept hashmap-style data, not lists.
@@ -74,6 +74,13 @@ abstract class AbstractArrayEntity implements JsonSerializable, DenormalizableIn
         }
 
         return $this;
+    }
+
+    public function getData(): array
+    {
+        $data = $this->data;
+        ksort($data);
+        return $data;
     }
 
     /**
@@ -138,6 +145,6 @@ abstract class AbstractArrayEntity implements JsonSerializable, DenormalizableIn
             $arrayEntity->fromArray($newData);
         }
 
-        return $arrayEntity->toArray();
+        return $arrayEntity->getData();
     }
 }

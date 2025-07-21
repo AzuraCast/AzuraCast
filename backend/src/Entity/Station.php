@@ -636,9 +636,9 @@ final class Station implements Stringable, IdentifiableEntityInterface
 
     public function __construct()
     {
-        $this->frontend_config_raw = new StationFrontendConfiguration([])->toArray();
-        $this->backend_config_raw = new StationBackendConfiguration([])->toArray();
-        $this->branding_config_raw = new StationBrandingConfiguration([])->toArray();
+        $this->frontend_config_raw = new StationFrontendConfiguration([])->getData();
+        $this->backend_config_raw = new StationBackendConfiguration([])->getData();
+        $this->branding_config_raw = new StationBrandingConfiguration([])->getData();
 
         $this->frontend_type = FrontendAdapters::default();
         $this->backend_type = BackendAdapters::default();

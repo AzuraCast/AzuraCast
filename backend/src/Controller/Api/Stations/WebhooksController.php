@@ -171,6 +171,8 @@ final class WebhooksController extends AbstractStationApiCrudController
             return $response->withStatus(404, 'Web hook not found.');
         }
 
+        assert($originalWebhook instanceof StationWebhook);
+
         $newWebhook = new StationWebhook(
             $station,
             $originalWebhook->getType()
@@ -184,7 +186,8 @@ final class WebhooksController extends AbstractStationApiCrudController
         $this->em->persist($newWebhook);
         $this->em->flush();
 
-        return $response->withJson($this->viewRecord($newWebhook, $request));
+        $record = $this->viewRecord($newWebhook, $request);
+        return $response->withJson($record)->withStatus(201);
     }
 
     /**

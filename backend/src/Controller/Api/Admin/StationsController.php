@@ -456,16 +456,13 @@ class StationsController extends AbstractApiCrudController
 
         // Clear the old directory entirely if all storage locations are moved.
         if ($allStorageLocationsMoved) {
-            (new Filesystem())->remove($originalPath);
+            new Filesystem()->remove($originalPath);
         }
     }
 
     protected function handleCreate(Station $station): Station
     {
         $station->generateAdapterApiKey();
-
-        $this->em->persist($station);
-        $this->em->flush();
 
         try {
             // Initialize station folder configuration.

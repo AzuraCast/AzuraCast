@@ -275,7 +275,6 @@ final class Configuration
             }
 
             $this->em->persist($station);
-            $this->em->flush();
         }
     }
 

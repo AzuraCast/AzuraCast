@@ -615,35 +615,31 @@ Feedback API
 
 # Send metadata changes back to AzuraCast
 def azuracast.send_feedback(m) =
-    def f() =
-        if (m["is_error_file"] != "true") then
-            if (m["title"] != azuracast.last_title() or m["artist"] != azuracast.last_artist()) then
-                azuracast.last_title := m["title"]
-                azuracast.last_artist := m["artist"]
+    if (m["is_error_file"] != "true") then
+        if (m["title"] != azuracast.last_title() or m["artist"] != azuracast.last_artist()) then
+            azuracast.last_title := m["title"]
+            azuracast.last_artist := m["artist"]
 
-                # Only send some metadata to AzuraCast
-                def fl(k, _) =
-                    tags = ["song_id", "media_id", "playlist_id", "sq_id", "artist", "title"]
-                    list.mem(k, tags)
-                end
-
-                feedback_meta = list.assoc.filter((fl), metadata.cover.remove(m))
-
-                j = json()
-                for item = list.iterator(feedback_meta) do
-                    let (tag, value) = item
-                    j.add(tag, value)
-                end
-
-                _ = azuracast.api_call(
-                    "feedback",
-                    json.stringify(compact=true, j)
-                )
+            # Only send some metadata to AzuraCast
+            def fl(k, _) =
+                tags = ["song_id", "media_id", "playlist_id", "sq_id", "artist", "title"]
+                list.mem(k, tags)
             end
+
+            feedback_meta = list.assoc.filter((fl), metadata.cover.remove(m))
+
+            j = json()
+            for item = list.iterator(feedback_meta) do
+                let (tag, value) = item
+                j.add(tag, value)
+            end
+
+            _ = azuracast.api_call(
+                "feedback",
+                json.stringify(compact=true, j)
+            )
         end
     end
-
-    thread.run(fast=false, f)
 end
 
 #<-----

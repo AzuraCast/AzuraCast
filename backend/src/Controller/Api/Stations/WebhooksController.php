@@ -227,8 +227,6 @@ final class WebhooksController extends AbstractStationApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
-        assert($record instanceof StationWebhook);
-        
         $return = $this->toArray($record);
 
         $isInternal = $request->isInternal();

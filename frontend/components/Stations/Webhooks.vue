@@ -78,6 +78,13 @@
                         >
                             {{ $gettext('Test') }}
                         </button>
+                        <button
+                            type="button"
+                            class="btn btn-info"
+                            @click="doDuplicate(item.links.duplicate)"
+                        >
+                            {{ $gettext('Duplicate') }}
+                        </button>
                     </template>
                     <button
                         type="button"
@@ -186,6 +193,13 @@ const {axios} = useAxios();
 const doToggle = (url: string) => {
     void axios.put(url).then((resp) => {
         notifySuccess(resp.data.message);
+        relist();
+    });
+};
+
+const doDuplicate = (url: string) => {
+    void axios.post(url).then(() => {
+        notifySuccess($gettext('Webhook duplicated.'));
         relist();
     });
 };

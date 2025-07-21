@@ -125,6 +125,30 @@ use Psr\Http\Message\ResponseInterface;
             new OpenApi\Response\NotFound(),
             new OpenApi\Response\GenericError(),
         ]
+    ),
+    OA\Post(
+        path: '/station/{station_id}/webhook/{id}/duplicate',
+        operationId: 'duplicateWebhook',
+        summary: 'Duplicate a single web hook.',
+        tags: [OpenApi::TAG_STATIONS_WEBHOOKS],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+            new OA\Parameter(
+                name: 'id',
+                description: 'Web Hook ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: StationWebhook::class)
+            ),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
     )
 ]
 final class WebhooksController extends AbstractStationApiCrudController
@@ -134,6 +158,34 @@ final class WebhooksController extends AbstractStationApiCrudController
 
     protected string $entityClass = StationWebhook::class;
     protected string $resourceRouteName = 'api:stations:webhook';
+
+    public function duplicateAction(
+        ServerRequest $request,
+        Response $response,
+        array $params
+    ): ResponseInterface {
+        $station = $request->getStation();
+        $originalWebhook = $this->getRecord($request, $params);
+
+        if (null === $originalWebhook) {
+            return $response->withStatus(404, 'Web hook not found.');
+        }
+
+        $newWebhook = new StationWebhook(
+            $station,
+            $originalWebhook->getType()
+        );
+
+        $newWebhook->setName($originalWebhook->getName() . ' (Copy)');
+        $newWebhook->setConfig($originalWebhook->getConfig());
+        $newWebhook->setTriggers($originalWebhook->getTriggers());
+        $newWebhook->setIsEnabled(false);
+
+        $this->em->persist($newWebhook);
+        $this->em->flush();
+
+        return $response->withJson($this->viewRecord($newWebhook, $request));
+    }
 
     /**
      * @param ServerRequest $request
@@ -182,6 +234,11 @@ final class WebhooksController extends AbstractStationApiCrudController
         $return['links'] = [
             'self' => $router->fromHere(
                 routeName: $this->resourceRouteName,
+                routeParams: ['id' => $record->getIdRequired()],
+                absolute: !$isInternal
+            ),
+            'duplicate' => $router->fromHere(
+                routeName: 'api:stations:webhook:duplicate',
                 routeParams: ['id' => $record->getIdRequired()],
                 absolute: !$isInternal
             ),

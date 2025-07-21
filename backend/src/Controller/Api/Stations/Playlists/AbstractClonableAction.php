@@ -54,33 +54,33 @@ abstract class AbstractClonableAction
         /** @var StationPlaylist $newRecord */
         $newRecord = $copier->copy($record);
 
-        $newRecord->setName($newName ?? $record->getName() . ' - Copy');
+        $newRecord->name = $newName ?? $record->name . ' - Copy';
 
         $this->em->persist($newRecord);
 
         if ($cloneSchedules) {
-            foreach ($record->getScheduleItems() as $oldScheduleItem) {
+            foreach ($record->schedule_items as $oldScheduleItem) {
                 /** @var StationSchedule $newScheduleItem */
                 $newScheduleItem = $copier->copy($oldScheduleItem);
-                $newScheduleItem->setPlaylist($newRecord);
+                $newScheduleItem->playlist = $newRecord;
 
                 $this->em->persist($newScheduleItem);
             }
         }
 
         if ($cloneMedia) {
-            foreach ($record->getFolders() as $oldPlaylistFolder) {
+            foreach ($record->folders as $oldPlaylistFolder) {
                 /** @var StationPlaylistFolder $newPlaylistFolder */
                 $newPlaylistFolder = $copier->copy($oldPlaylistFolder);
-                $newPlaylistFolder->setPlaylist($newRecord);
+                $newPlaylistFolder->playlist = $newRecord;
                 $this->em->persist($newPlaylistFolder);
             }
 
-            foreach ($record->getMediaItems() as $oldMediaItem) {
+            foreach ($record->media_items as $oldMediaItem) {
                 /** @var StationPlaylistMedia $newMediaItem */
                 $newMediaItem = $copier->copy($oldMediaItem);
 
-                $newMediaItem->setPlaylist($newRecord);
+                $newMediaItem->playlist = $newRecord;
                 $this->em->persist($newMediaItem);
             }
         }

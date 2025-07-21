@@ -9,6 +9,7 @@
                     :data="chartsData.average.metrics"
                     :alt="chartsData.average.alt"
                     :aspect-ratio="3"
+                    :options="dashboardChartOptions"
                 />
             </tab>
             <tab :label="$gettext('Unique Listeners')">
@@ -17,6 +18,7 @@
                     :data="chartsData.unique.metrics"
                     :alt="chartsData.unique.alt"
                     :aspect-ratio="3"
+                    :options="dashboardChartOptions"
                 />
             </tab>
         </tabs>
@@ -31,10 +33,23 @@ import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {useQuery} from "@tanstack/vue-query";
 import {QueryKeys} from "~/entities/Queries.ts";
+import {useLuxon} from "~/vendor/luxon.ts";
 
 const props = defineProps<{
     chartsUrl: string,
 }>();
+
+const {DateTime} = useLuxon();
+
+const dashboardChartOptions = {
+    options: {
+        scales: {
+            x: {
+                min: Number(DateTime.utc().minus({days: 30}).toMillis()),
+            }
+        }
+    }
+};
 
 const {axios} = useAxios();
 

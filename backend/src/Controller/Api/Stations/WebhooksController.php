@@ -237,7 +237,7 @@ final class WebhooksController extends AbstractStationApiCrudController
         $return['links'] = [
             'self' => $router->fromHere(
                 routeName: $this->resourceRouteName,
-                routeParams: ['id' => $record->getIdRequired()],
+                routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             ),
             'duplicate' => $router->fromHere(
@@ -247,12 +247,12 @@ final class WebhooksController extends AbstractStationApiCrudController
             ),
             'toggle' => $router->fromHere(
                 routeName: 'api:stations:webhook:toggle',
-                routeParams: ['id' => $record->getIdRequired()],
+                routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             ),
             'test' => $router->fromHere(
                 routeName: 'api:stations:webhook:test',
-                routeParams: ['id' => $record->getIdRequired()],
+                routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             ),
         ];

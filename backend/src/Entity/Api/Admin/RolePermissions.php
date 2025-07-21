@@ -45,11 +45,11 @@ final readonly class RolePermissions
         $permissionsByStation = [];
 
         foreach ($rolePermissions as $permission) {
-            $station = $permission->getStation();
+            $station = $permission->station;
             if (null !== $station) {
-                $permissionsByStation[$station->getIdRequired()][] = $permission->getActionName();
+                $permissionsByStation[$station->id][] = $permission->action_name;
             } else {
-                $globalPermissions[] = $permission->getActionName();
+                $globalPermissions[] = $permission->action_name;
             }
         }
 

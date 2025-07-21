@@ -198,7 +198,7 @@ return static function (RouteCollectorProxy $group) {
                                             $group->delete(
                                                 '',
                                                 Controller\Api\Stations\PodcastEpisodesController::class
-                                                . ':deleteAction'
+                                                    . ':deleteAction'
                                             );
 
                                             $group->get(
@@ -315,25 +315,25 @@ return static function (RouteCollectorProxy $group) {
                                     $group->get(
                                         '',
                                         Controller\Api\Stations\FilesController::class . ':getAction'
-                                    )->setName('api:stations:file');
+                                    )->setName('api:stations:file')
+                                        ->add(new Middleware\Permissions(StationPermissions::Media, true));
 
                                     $group->put(
                                         '',
                                         Controller\Api\Stations\FilesController::class . ':editAction'
-                                    );
+                                    )->add(new Middleware\Permissions(StationPermissions::Media, true));
 
                                     $group->delete(
                                         '',
                                         Controller\Api\Stations\FilesController::class . ':deleteAction'
-                                    );
+                                    )->add(new Middleware\Permissions(StationPermissions::DeleteMedia, true));
 
                                     $group->get('/play', Controller\Api\Stations\Files\PlayAction::class)
                                         ->setName('api:stations:files:play');
                                 }
                             );
                         }
-                    )->add(new Middleware\StationSupportsFeature(StationFeatures::Media))
-                        ->add(new Middleware\Permissions(StationPermissions::Media, true));
+                    )->add(new Middleware\StationSupportsFeature(StationFeatures::Media));
 
                     // SFTP Users
                     $group->group(
@@ -734,7 +734,7 @@ return static function (RouteCollectorProxy $group) {
                                     $group->get(
                                         '/broadcast/{broadcast_id}/download',
                                         Controller\Api\Stations\Streamers\BroadcastsController::class
-                                        . ':downloadAction'
+                                            . ':downloadAction'
                                     )->setName('api:stations:streamer:broadcast:download');
 
                                     $group->delete(

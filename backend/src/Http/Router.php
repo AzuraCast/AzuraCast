@@ -54,10 +54,10 @@ final class Router implements RouterInterface
     {
         $settings = $this->readSettings();
 
-        $useRequest ??= $settings->getPreferBrowserUrl();
+        $useRequest ??= $settings->prefer_browser_url;
 
         $baseUrl = $settings->getBaseUrlAsUri() ?? new Uri('');
-        $useHttps = $settings->getAlwaysUseSsl();
+        $useHttps = $settings->always_use_ssl;
 
         if ($this->request instanceof ServerRequestInterface) {
             $currentUri = $this->request->getUri();

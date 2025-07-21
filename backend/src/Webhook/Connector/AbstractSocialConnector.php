@@ -16,7 +16,7 @@ abstract class AbstractSocialConnector extends AbstractConnector
         NowPlaying $np,
         array $triggers
     ): Generator {
-        $config = $webhook->getConfig();
+        $config = $webhook->config ?? [];
 
         $messages = [
             WebhookTriggers::SongChanged->value => $config['message'] ?? '',

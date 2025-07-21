@@ -45,7 +45,7 @@ final class GetStereoToolConfigurationAction implements SingleActionInterface
 
         $download = ($params['do'] ?? null) === 'download';
 
-        $stereoToolConfigurationPath = $station->getBackendConfig()->getStereoToolConfigurationPath();
+        $stereoToolConfigurationPath = $station->backend_config->stereo_tool_configuration_path;
 
         if (!empty($stereoToolConfigurationPath)) {
             $fsConfig = StationFilesystems::buildConfigFilesystem($station);

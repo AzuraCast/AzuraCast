@@ -41,8 +41,8 @@ final class UserRepository extends Repository
         $user = $this->findByEmail($email);
         if (!($user instanceof User)) {
             $user = new User();
-            $user->setEmail($email);
-            $user->setName($email);
+            $user->email = $email;
+            $user->name = $email;
         }
 
         return $user;

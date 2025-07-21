@@ -41,8 +41,8 @@ abstract class AbstractAlbumArtHandler
                 sprintf('%s Album Art Error: %s', $serviceName, $e->getMessage()),
                 [
                     'exception' => $e,
-                    'song' => $song->getText(),
-                    'songId' => $song->getSongId(),
+                    'song' => $song->text,
+                    'songId' => $song->song_id,
                 ]
             );
 

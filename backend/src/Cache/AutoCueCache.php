@@ -22,7 +22,7 @@ final class AutoCueCache
 
     public function getCacheKey(StationMedia $media): string
     {
-        return $media->getUniqueId() . '_' . $media->getMtime();
+        return $media->unique_id . '_' . $media->mtime;
     }
 
     public function setForCacheKey(

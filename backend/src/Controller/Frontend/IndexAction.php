@@ -34,7 +34,7 @@ final class IndexAction implements SingleActionInterface
             return $response->withRedirect($request->getRouter()->named('dashboard'));
         } catch (InvalidRequestAttribute) {
             // Redirect to a custom homepage URL if specified in settings.
-            $homepageRedirect = $settings->getHomepageRedirectUrl();
+            $homepageRedirect = $settings->homepage_redirect_url;
             if (null !== $homepageRedirect) {
                 return $response->withRedirect($homepageRedirect, 302);
             }

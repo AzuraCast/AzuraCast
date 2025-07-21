@@ -26,13 +26,13 @@ final class StationPortCheckerValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, Station::class);
         }
 
-        $frontendConfig = $value->getFrontendConfig();
-        $backendConfig = $value->getBackendConfig();
+        $frontendConfig = $value->frontend_config;
+        $backendConfig = $value->backend_config;
 
         $portsToCheck = [
-            'frontend_config_port' => $frontendConfig->getPort(),
-            'backend_config_dj_port' => $backendConfig->getDjPort(),
-            'backend_config_telnet_port' => $backendConfig->getTelnetPort(),
+            'frontend_config_port' => $frontendConfig->port,
+            'backend_config_dj_port' => $backendConfig->dj_port,
+            'backend_config_telnet_port' => $backendConfig->telnet_port,
         ];
 
         $usedPorts = $this->configuration->getUsedPorts($value);

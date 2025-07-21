@@ -66,9 +66,8 @@
     <grid-layout
         v-else
         id="podcasts_grid"
-        ref="$grid"
+        :provider="podcastsItemProvider"
         paginated
-        :api-url="apiUrl"
     >
         <template #item="{item}: {item: ApiPodcast}">
             <div class="card mb-4">

@@ -32,8 +32,8 @@ final class Customization
         SettingsRepository $settingsRepo
     ) {
         $this->settings = $settingsRepo->readSettings();
-        $this->instanceName = $this->settings->getInstanceName() ?? '';
-        $this->publicTheme = $this->settings->getPublicTheme();
+        $this->instanceName = $this->settings->instance_name ?? '';
+        $this->publicTheme = $this->settings->public_theme;
         $this->locale = SupportedLocales::default();
     }
 
@@ -84,7 +84,7 @@ final class Customization
      */
     public function getCustomPublicCss(): string
     {
-        $publicCss = $this->settings->getPublicCustomCss() ?? '';
+        $publicCss = $this->settings->public_custom_css ?? '';
 
         $background = AssetTypes::Background->createObject($this->environment);
         if ($background->isUploaded()) {
@@ -102,7 +102,7 @@ final class Customization
 
     public function getStationCustomPublicCss(Station $station): string
     {
-        $publicCss = $station->getBrandingConfig()->getPublicCustomCss() ?? '';
+        $publicCss = $station->branding_config->public_custom_css ?? '';
 
         $background = AssetTypes::Background->createObject($this->environment, $station);
 
@@ -124,12 +124,12 @@ final class Customization
      */
     public function getCustomPublicJs(): string
     {
-        return $this->settings->getPublicCustomJs() ?? '';
+        return $this->settings->public_custom_js ?? '';
     }
 
     public function getStationCustomPublicJs(Station $station): string
     {
-        return $station->getBrandingConfig()->getPublicCustomJs() ?? '';
+        return $station->branding_config->public_custom_js ?? '';
     }
 
     /**
@@ -137,7 +137,7 @@ final class Customization
      */
     public function getCustomInternalCss(): string
     {
-        return $this->settings->getInternalCustomCss() ?? '';
+        return $this->settings->internal_custom_css ?? '';
     }
 
     public function getBrowserIconUrl(int $size = 256): string
@@ -153,7 +153,7 @@ final class Customization
      */
     public function hideAlbumArt(): bool
     {
-        return $this->settings->getHideAlbumArt();
+        return $this->settings->hide_album_art;
     }
 
     /**
@@ -183,11 +183,11 @@ final class Customization
      */
     public function hideProductName(): bool
     {
-        return $this->settings->getHideProductName();
+        return $this->settings->hide_product_name;
     }
 
     public function useStaticNowPlaying(): bool
     {
-        return $this->settings->getEnableStaticNowPlaying();
+        return $this->settings->enable_static_nowplaying;
     }
 }

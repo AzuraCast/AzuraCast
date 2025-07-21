@@ -25,7 +25,7 @@ final class GetMeRadio extends AbstractConnector
         NowPlaying $np,
         array $triggers
     ): void {
-        $config = $webhook->getConfig();
+        $config = $webhook->config ?? [];
 
         if (
             empty($config['token'])

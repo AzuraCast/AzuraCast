@@ -51,8 +51,8 @@ final class Liquidsoap extends AbstractLocalAdapter
      */
     public function getHttpApiPort(Station $station): int
     {
-        $settings = $station->getBackendConfig();
-        return $settings->getTelnetPort() ?? ($this->getStreamPort($station) - 1);
+        $settings = $station->backend_config;
+        return $settings->telnet_port ?? ($this->getStreamPort($station) - 1);
     }
 
     /**
@@ -64,14 +64,14 @@ final class Liquidsoap extends AbstractLocalAdapter
      */
     public function getStreamPort(Station $station): int
     {
-        $djPort = $station->getBackendConfig()->getDjPort();
+        $djPort = $station->backend_config->dj_port;
         if (null !== $djPort) {
             return $djPort;
         }
 
         // Default to frontend port + 5
-        $frontendConfig = $station->getFrontendConfig();
-        $frontendPort = $frontendConfig->getPort() ?? (8000 + (($station->getId() - 1) * 10));
+        $frontendConfig = $station->frontend_config;
+        $frontendPort = $frontendConfig->port ?? (8000 + (($station->id - 1) * 10));
 
         return $frontendPort + 5;
     }
@@ -94,7 +94,7 @@ final class Liquidsoap extends AbstractLocalAdapter
 
         $response = $this->httpClient->post($apiUri, [
             'headers' => [
-                'x-liquidsoap-api-key' => $station->getAdapterApiKey(),
+                'x-liquidsoap-api-key' => $station->adapter_api_key,
             ],
             'body' => $commandStr,
         ]);
@@ -106,14 +106,15 @@ final class Liquidsoap extends AbstractLocalAdapter
     /**
      * @inheritdoc
      */
-    public function getCommand(Station $station): ?string
+    public function getCommand(Station $station): string
     {
-        if ($binary = $this->getBinary()) {
-            $configPath = $station->getRadioConfigDir() . '/liquidsoap.liq';
-            return $binary . ' ' . $configPath;
-        }
+        $binary = $this->getBinary();
 
-        return null;
+        return sprintf(
+            '%s %s',
+            escapeshellcmd($binary),
+            escapeshellarg($this->getConfigurationPath($station))
+        );
     }
 
     /**
@@ -228,8 +229,8 @@ final class Liquidsoap extends AbstractLocalAdapter
      */
     public function disconnectStreamer(Station $station): array
     {
-        $currentStreamer = $station->getCurrentStreamer();
-        $disconnectTimeout = $station->getDisconnectDeactivateStreamer();
+        $currentStreamer = $station->current_streamer;
+        $disconnectTimeout = $station->disconnect_deactivate_streamer;
 
         if ($currentStreamer instanceof StationStreamer && $disconnectTimeout > 0) {
             $currentStreamer->deactivateFor($disconnectTimeout);
@@ -246,7 +247,7 @@ final class Liquidsoap extends AbstractLocalAdapter
 
     public function getWebStreamingUrl(Station $station, UriInterface $baseUrl): UriInterface
     {
-        $djMount = $station->getBackendConfig()->getDjMountPoint();
+        $djMount = $station->backend_config->dj_mount_point;
 
         return $baseUrl
             ->withScheme('wss')

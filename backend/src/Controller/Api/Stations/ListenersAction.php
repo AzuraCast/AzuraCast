@@ -204,7 +204,7 @@ final class ListenersAction implements SingleActionInterface
                 $response,
                 $station,
                 $listeners,
-                $station->getShortName() . '_listeners_' . $range . '.csv'
+                $station->short_name . '_listeners_' . $range . '.csv'
             );
         }
 

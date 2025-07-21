@@ -13,10 +13,10 @@ final class RoleFixture extends AbstractFixture
     public function load(ObjectManager $manager): void
     {
         $adminRole = new Role();
-        $adminRole->setName('Super Administrator');
+        $adminRole->name = 'Super Administrator';
 
         $demoRole = new Role();
-        $demoRole->setName('Demo Account');
+        $demoRole->name = 'Demo Account';
 
         $manager->persist($adminRole);
         $manager->persist($demoRole);

@@ -69,9 +69,9 @@ final class SftpEventAction implements SingleActionInterface
             return $errorResponse;
         }
 
-        $storageLocation = $sftpUser->getStation()->getMediaStorageLocation();
+        $storageLocation = $sftpUser->station->media_storage_location;
 
-        if (!$storageLocation->isLocal()) {
+        if (!$storageLocation->adapter->isLocal()) {
             $this->logger->error(sprintf('Storage location "%s" is not local.', $storageLocation));
             return $errorResponse;
         }
@@ -106,7 +106,7 @@ final class SftpEventAction implements SingleActionInterface
         StorageLocation $storageLocation,
         string $path
     ): void {
-        $pathPrefixer = new PathPrefixer($storageLocation->getPath(), DIRECTORY_SEPARATOR);
+        $pathPrefixer = new PathPrefixer($storageLocation->path, DIRECTORY_SEPARATOR);
         $relativePath = $pathPrefixer->stripPrefix($path);
 
         $this->logger->notice(
@@ -118,7 +118,7 @@ final class SftpEventAction implements SingleActionInterface
         );
 
         $message = new AddNewMediaMessage();
-        $message->storage_location_id = $storageLocation->getIdRequired();
+        $message->storage_location_id = $storageLocation->id;
         $message->path = $relativePath;
 
         $this->messageBus->dispatch($message);
@@ -128,7 +128,7 @@ final class SftpEventAction implements SingleActionInterface
         StorageLocation $storageLocation,
         string $path
     ): void {
-        $pathPrefixer = new PathPrefixer($storageLocation->getPath(), DIRECTORY_SEPARATOR);
+        $pathPrefixer = new PathPrefixer($storageLocation->path, DIRECTORY_SEPARATOR);
         $relativePath = $pathPrefixer->stripPrefix($path);
 
         $this->logger->notice(
@@ -169,7 +169,7 @@ final class SftpEventAction implements SingleActionInterface
             throw new LogicException('No new path specified for rename.');
         }
 
-        $pathPrefixer = new PathPrefixer($storageLocation->getPath(), DIRECTORY_SEPARATOR);
+        $pathPrefixer = new PathPrefixer($storageLocation->path, DIRECTORY_SEPARATOR);
 
         $from = $pathPrefixer->stripPrefix($path);
         $to = $pathPrefixer->stripPrefix($newPath);

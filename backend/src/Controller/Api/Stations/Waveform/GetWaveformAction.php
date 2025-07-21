@@ -66,7 +66,7 @@ final class GetWaveformAction implements SingleActionInterface
 
         $media = $this->mediaRepo->requireByUniqueId($mediaId, $station);
 
-        $waveformPath = StationMedia::getWaveformPath($media->getUniqueId());
+        $waveformPath = StationMedia::getWaveformPath($media->unique_id);
         if (!$fsMedia->fileExists($waveformPath)) {
             $this->mediaRepo->updateWaveform($media);
         }

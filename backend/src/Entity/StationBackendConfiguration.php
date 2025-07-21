@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Doctrine\AbstractArrayEntity;
 use App\Entity\Enums\StationBackendPerformanceModes;
 use App\Radio\Enums\AudioProcessingMethods;
 use App\Radio\Enums\CrossfadeModes;
@@ -12,160 +13,120 @@ use App\Radio\Enums\StreamFormats;
 use App\Utilities\Types;
 use LogicException;
 
-class StationBackendConfiguration extends AbstractStationConfiguration
+final class StationBackendConfiguration extends AbstractArrayEntity
 {
-    public const string CHARSET = 'charset';
-
-    public function getCharset(): string
-    {
-        return Types::stringOrNull($this->get(self::CHARSET), true) ?? 'UTF-8';
+    public string $charset {
+        get => Types::stringOrNull($this->get(__PROPERTY__), true) ?? 'UTF-8';
+        set (?string $value) {
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
-    public function setCharset(?string $charset): void
-    {
-        $this->set(self::CHARSET, $charset);
+    public ?int $dj_port {
+        get => Types::intOrNull($this->get(__PROPERTY__));
+        set (int|string|null $value) {
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
-    public const string DJ_PORT = 'dj_port';
-
-    public function getDjPort(): ?int
-    {
-        return Types::intOrNull($this->get(self::DJ_PORT));
+    public ?int $telnet_port {
+        get => Types::intOrNull($this->get(__PROPERTY__));
+        set (int|string|null $value) {
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
-    public function setDjPort(int|string|null $port = null): void
-    {
-        $this->set(self::DJ_PORT, $port);
+    public bool $record_streams {
+        get => Types::boolOrNull($this->get(__PROPERTY__)) ?? false;
+        set(string|bool $value) {
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
-    public const string TELNET_PORT = 'telnet_port';
+    public string $record_streams_format {
+        get => Types::stringOrNull($this->get(__PROPERTY__)) ?? '';
+        set (string|StreamFormats|null $value) {
+            if ($value instanceof StreamFormats) {
+                $value = $value->value;
+            } else {
+                if ($value !== null) {
+                    $value = strtolower($value);
+                    if (null === StreamFormats::tryFrom($value)) {
+                        $value = null;
+                    }
+                }
+            }
 
-    public function getTelnetPort(): ?int
-    {
-        return Types::intOrNull($this->get(self::TELNET_PORT));
-    }
-
-    public function setTelnetPort(int|string|null $port = null): void
-    {
-        $this->set(self::TELNET_PORT, $port);
-    }
-
-    public const string RECORD_STREAMS = 'record_streams';
-
-    public function recordStreams(): bool
-    {
-        return Types::boolOrNull($this->get(self::RECORD_STREAMS)) ?? false;
-    }
-
-    public function setRecordStreams(string|bool $recordStreams): void
-    {
-        $this->set(self::RECORD_STREAMS, $recordStreams);
-    }
-
-    public const string RECORD_STREAMS_FORMAT = 'record_streams_format';
-
-    public function getRecordStreamsFormat(): string
-    {
-        return $this->getRecordStreamsFormatEnum()->value;
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
     public function getRecordStreamsFormatEnum(): StreamFormats
     {
-        return StreamFormats::tryFrom(
-            Types::stringOrNull($this->get(self::RECORD_STREAMS_FORMAT)) ?? ''
-        )
-            ?? StreamFormats::Mp3;
+        return StreamFormats::tryFrom($this->record_streams_format) ?? StreamFormats::Mp3;
     }
 
-    public function setRecordStreamsFormat(?string $format): void
-    {
-        if (null !== $format) {
-            $format = strtolower($format);
-
-            if (null === StreamFormats::tryFrom($format)) {
-                $format = null;
-            }
+    public int $record_streams_bitrate {
+        get => Types::intOrNull($this->get(__PROPERTY__)) ?? 128;
+        set (int|string|null $value) {
+            $this->set(__PROPERTY__, $value);
         }
-
-        $this->set(self::RECORD_STREAMS_FORMAT, $format);
     }
 
-    public const string RECORD_STREAMS_BITRATE = 'record_streams_bitrate';
-
-    public function getRecordStreamsBitrate(): int
-    {
-        return Types::intOrNull($this->get(self::RECORD_STREAMS_BITRATE)) ?? 128;
+    public bool $use_manual_autodj {
+        get => Types::boolOrNull($this->get(__PROPERTY__)) ?? false;
+        set (bool|null $value) {
+            $this->set(__PROPERTY__, $value);
+        }
     }
-
-    public function setRecordStreamsBitrate(int|string|null $bitrate = null): void
-    {
-        $this->set(self::RECORD_STREAMS_BITRATE, $bitrate);
-    }
-
-    public const string USE_MANUAL_AUTODJ = 'use_manual_autodj';
-
-    public function useManualAutoDj(): bool
-    {
-        return Types::boolOrNull($this->get(self::USE_MANUAL_AUTODJ)) ?? false;
-    }
-
-    public function setUseManualAutoDj(?bool $useManualAutoDj): void
-    {
-        $this->set(self::USE_MANUAL_AUTODJ, $useManualAutoDj);
-    }
-
-    public const string AUTODJ_QUEUE_LENGTH = 'autodj_queue_length';
 
     protected const int DEFAULT_QUEUE_LENGTH = 3;
 
-    public function getAutoDjQueueLength(): int
-    {
-        return Types::intOrNull($this->get(self::AUTODJ_QUEUE_LENGTH)) ?? self::DEFAULT_QUEUE_LENGTH;
+    public int $autodj_queue_length {
+        get => Types::intOrNull($this->get(__PROPERTY__)) ?? self::DEFAULT_QUEUE_LENGTH;
+        set(int|string|null $value) {
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
-    public function setAutoDjQueueLength(int|string|null $queueLength = null): void
-    {
-        $this->set(self::AUTODJ_QUEUE_LENGTH, $queueLength);
+    public string $dj_mount_point {
+        get => Types::stringOrNull($this->get(__PROPERTY__)) ?? '/';
+        set (string|null $value) {
+            $this->set(__PROPERTY__, $value);
+        }
     }
-
-    public const string DJ_MOUNT_POINT = 'dj_mount_point';
-
-    public function getDjMountPoint(): string
-    {
-        return Types::stringOrNull($this->get(self::DJ_MOUNT_POINT)) ?? '/';
-    }
-
-    public function setDjMountPoint(?string $mountPoint): void
-    {
-        $this->set(self::DJ_MOUNT_POINT, $mountPoint);
-    }
-
-    public const string DJ_BUFFER = 'dj_buffer';
 
     protected const int DEFAULT_DJ_BUFFER = 5;
 
-    public function getDjBuffer(): int
-    {
-        return Types::intOrNull($this->get(self::DJ_BUFFER)) ?? self::DEFAULT_DJ_BUFFER;
+    public int $dj_buffer {
+        get => Types::intOrNull($this->get(__PROPERTY__)) ?? self::DEFAULT_DJ_BUFFER;
+        set (int|string|null $value) {
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
-    public function setDjBuffer(int|string|null $buffer = null): void
-    {
-        $this->set(self::DJ_BUFFER, $buffer);
-    }
+    public string $audio_processing_method {
+        get => Types::string($this->get(__PROPERTY__));
+        set(string|AudioProcessingMethods|null $value) {
+            if ($value instanceof AudioProcessingMethods) {
+                $value = $value->value;
+            } else {
+                if ($value !== null) {
+                    $value = strtolower($value);
+                    if (null === AudioProcessingMethods::tryFrom($value)) {
+                        $value = null;
+                    }
+                }
+            }
 
-    public const string AUDIO_PROCESSING_METHOD = 'audio_processing_method';
-
-    public function getAudioProcessingMethod(): ?string
-    {
-        return $this->getAudioProcessingMethodEnum()->value;
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
     public function getAudioProcessingMethodEnum(): AudioProcessingMethods
     {
-        return AudioProcessingMethods::tryFrom(
-            Types::stringOrNull($this->get(self::AUDIO_PROCESSING_METHOD)) ?? ''
-        ) ?? AudioProcessingMethods::default();
+        return AudioProcessingMethods::tryFrom($this->audio_processing_method)
+            ?? AudioProcessingMethods::default();
     }
 
     public function isAudioProcessingEnabled(): bool
@@ -173,157 +134,106 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return AudioProcessingMethods::None !== $this->getAudioProcessingMethodEnum();
     }
 
-    public function setAudioProcessingMethod(?string $method): void
-    {
-        if (null !== $method) {
-            $method = strtolower($method);
-
-            if (null === AudioProcessingMethods::tryFrom($method)) {
-                $method = null;
-            }
+    public bool $post_processing_include_live {
+        get => Types::bool($this->get(__PROPERTY__));
+        set (bool|string|null $value) {
+            $this->set(__PROPERTY__, $value);
         }
-
-        $this->set(self::AUDIO_PROCESSING_METHOD, $method);
     }
 
-    public const string POST_PROCESSING_INCLUDE_LIVE = 'post_processing_include_live';
-
-    public function getPostProcessingIncludeLive(): bool
-    {
-        return Types::boolOrNull($this->get(self::POST_PROCESSING_INCLUDE_LIVE)) ?? false;
+    public ?string $stereo_tool_license_key {
+        get => Types::stringOrNull($this->get(__PROPERTY__), true);
+        set {
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
-    public function setPostProcessingIncludeLive(bool|string|null $postProcessingIncludeLive = null): void
-    {
-        $this->set(self::POST_PROCESSING_INCLUDE_LIVE, $postProcessingIncludeLive);
+    public ?string $stereo_tool_configuration_path {
+        get => Types::stringOrNull($this->get(__PROPERTY__), true);
+        set {
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
-    public const string STEREO_TOOL_LICENSE_KEY = 'stereo_tool_license_key';
+    public ?string $master_me_preset {
+        get => Types::stringOrNull($this->get(__PROPERTY__), true);
+        set (string|MasterMePresets|null $value) {
+            if ($value instanceof MasterMePresets) {
+                $value = $value->value;
+            } elseif ($value !== null) {
+                $value = strtolower($value);
 
-    public function getStereoToolLicenseKey(): ?string
-    {
-        return Types::stringOrNull($this->get(self::STEREO_TOOL_LICENSE_KEY), true);
-    }
+                if (null === MasterMePresets::tryFrom($value)) {
+                    $value = null;
+                }
+            }
 
-    public function setStereoToolLicenseKey(?string $licenseKey): void
-    {
-        $this->set(self::STEREO_TOOL_LICENSE_KEY, $licenseKey);
-    }
-
-    public const string STEREO_TOOL_CONFIGURATION_PATH = 'stereo_tool_configuration_path';
-
-    public function getStereoToolConfigurationPath(): ?string
-    {
-        return Types::stringOrNull($this->get(self::STEREO_TOOL_CONFIGURATION_PATH), true);
-    }
-
-    public function setStereoToolConfigurationPath(?string $stereoToolConfigurationPath): void
-    {
-        $this->set(self::STEREO_TOOL_CONFIGURATION_PATH, $stereoToolConfigurationPath);
-    }
-
-    public const string MASTER_ME_PRESET = 'master_me_preset';
-
-    public function getMasterMePreset(): ?string
-    {
-        return Types::stringOrNull($this->get(self::MASTER_ME_PRESET), true);
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
     public function getMasterMePresetEnum(): MasterMePresets
     {
-        return MasterMePresets::tryFrom($this->getMasterMePreset() ?? '')
+        return MasterMePresets::tryFrom($this->master_me_preset ?? '')
             ?? MasterMePresets::default();
     }
 
-    public function setMasterMePreset(?string $masterMePreset): void
-    {
-        if (null !== $masterMePreset) {
-            $masterMePreset = strtolower($masterMePreset);
-
-            if (null === MasterMePresets::tryFrom($masterMePreset)) {
-                $masterMePreset = null;
-            }
-        }
-
-        $this->set(self::MASTER_ME_PRESET, $masterMePreset);
-    }
-
-    public const string MASTER_ME_LOUDNESS_TARGET = 'master_me_loudness_target';
-
     protected const int MASTER_ME_DEFAULT_LOUDNESS_TARGET = -16;
 
-    public function getMasterMeLoudnessTarget(): int
-    {
-        return Types::intOrNull($this->get(self::MASTER_ME_LOUDNESS_TARGET))
+    public int $master_me_loudness_target {
+        get => Types::intOrNull($this->get(__PROPERTY__))
             ?? self::MASTER_ME_DEFAULT_LOUDNESS_TARGET;
-    }
-
-    public function setMasterMeLoudnessTarget(int|string|null $masterMeLoudnessTarget = null): void
-    {
-        $this->set(self::MASTER_ME_LOUDNESS_TARGET, $masterMeLoudnessTarget);
-    }
-
-    public const string USE_REPLAYGAIN = 'enable_replaygain_metadata';
-
-    public function useReplayGain(): bool
-    {
-        // AutoCue overrides this functionality.
-        if ($this->getEnableAutoCue()) {
-            return false;
+        set (int|string|null $value) {
+            $this->set(__PROPERTY__, $value);
         }
-
-        return Types::boolOrNull($this->get(self::USE_REPLAYGAIN)) ?? false;
     }
 
-    public function setUseReplayGain(bool|string $useReplayGain): void
-    {
-        $this->set(self::USE_REPLAYGAIN, $useReplayGain);
+    public bool $enable_replaygain_metadata {
+        get {
+            // AutoCue overrides this functionality.
+            if ($this->enable_auto_cue) {
+                return false;
+            }
+
+            return Types::bool($this->get(__PROPERTY__));
+        }
+        set (bool|string|null $value) {
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
-    public const string CROSSFADE_TYPE = 'crossfade_type';
+    public string $crossfade_type {
+        get => Types::string($this->get(__PROPERTY__));
+        set {
+            $this->set(__PROPERTY__, $value);
+        }
+    }
 
     public function getCrossfadeTypeEnum(): CrossfadeModes
     {
         // AutoCue overrides this functionality.
-        if ($this->getEnableAutoCue()) {
+        if ($this->enable_auto_cue) {
             return CrossfadeModes::Disabled;
         }
 
-        return CrossfadeModes::tryFrom(
-            Types::stringOrNull($this->get(self::CROSSFADE_TYPE)) ?? ''
-        ) ?? CrossfadeModes::default();
+        return CrossfadeModes::tryFrom($this->crossfade_type) ?? CrossfadeModes::default();
     }
-
-    public function getCrossfadeType(): string
-    {
-        return $this->getCrossfadeTypeEnum()->value;
-    }
-
-    public function setCrossfadeType(string $crossfadeType): void
-    {
-        $this->set(self::CROSSFADE_TYPE, $crossfadeType);
-    }
-
-    public const string CROSSFADE = 'crossfade';
 
     protected const int DEFAULT_CROSSFADE_DURATION = 2;
 
-    public function getCrossfade(): float
-    {
-        return round(
-            Types::floatOrNull($this->get(self::CROSSFADE)) ?? self::DEFAULT_CROSSFADE_DURATION,
+    public float $crossfade {
+        get => round(
+            Types::floatOrNull($this->get(__PROPERTY__)) ?? self::DEFAULT_CROSSFADE_DURATION,
             1
         );
-    }
-
-    public function setCrossfade(float|string|null $crossfade = null): void
-    {
-        $this->set(self::CROSSFADE, $crossfade);
+        set (float|string|null $value) {
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
     public function getCrossfadeDuration(): float
     {
-        $crossfade = $this->getCrossfade();
+        $crossfade = $this->crossfade;
         $crossfadeType = $this->getCrossfadeTypeEnum();
 
         if (CrossfadeModes::Disabled !== $crossfadeType && $crossfade > 0) {
@@ -338,144 +248,154 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return $this->getCrossfadeDuration() > 0;
     }
 
-    public const string DUPLICATE_PREVENTION_TIME_RANGE = 'duplicate_prevention_time_range';
-
     protected const int DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE = 120;
 
-    public function getDuplicatePreventionTimeRange(): int
-    {
-        return Types::intOrNull($this->get(self::DUPLICATE_PREVENTION_TIME_RANGE))
-            ?? self::DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE;
+    public int $duplicate_prevention_time_range {
+        get => Types::int($this->get(__PROPERTY__), self::DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE);
+        set (int|string|null $value) {
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
-    public function setDuplicatePreventionTimeRange(int|string|null $duplicatePreventionTimeRange = null): void
-    {
-        $this->set(self::DUPLICATE_PREVENTION_TIME_RANGE, $duplicatePreventionTimeRange);
-    }
+    public string $performance_mode {
+        get => Types::string($this->get(__PROPERTY__));
+        set(string|StationBackendPerformanceModes|null $value) {
+            if ($value instanceof StationBackendPerformanceModes) {
+                $value = $value->value;
+            } else {
+                if ($value !== null) {
+                    if (null === StationBackendPerformanceModes::tryFrom($value)) {
+                        $value = null;
+                    }
+                }
+            }
 
-    public const string PERFORMANCE_MODE = 'performance_mode';
-
-    public function getPerformanceMode(): string
-    {
-        return $this->getPerformanceModeEnum()->value;
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
     public function getPerformanceModeEnum(): StationBackendPerformanceModes
     {
-        return StationBackendPerformanceModes::tryFrom(
-            Types::stringOrNull($this->get(self::PERFORMANCE_MODE)) ?? ''
-        ) ?? StationBackendPerformanceModes::default();
+        return StationBackendPerformanceModes::tryFrom($this->performance_mode)
+            ?? StationBackendPerformanceModes::default();
     }
 
-    public function setPerformanceMode(?string $performanceMode): void
-    {
-        $perfModeEnum = StationBackendPerformanceModes::tryFrom($performanceMode ?? '');
-        $this->set(self::PERFORMANCE_MODE, $perfModeEnum?->value);
+    public int $hls_segment_length {
+        get => Types::int($this->get(__PROPERTY__), 4);
+        set (int|string|null $value) {
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
-    public const string HLS_SEGMENT_LENGTH = 'hls_segment_length';
-
-    public function getHlsSegmentLength(): int
-    {
-        return Types::intOrNull($this->get(self::HLS_SEGMENT_LENGTH)) ?? 4;
+    public int $hls_segments_in_playlist {
+        get => Types::int($this->get(__PROPERTY__), 5);
+        set (int|string|null $value) {
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
-    public function setHlsSegmentLength(int|string|null $length = null): void
-    {
-        $this->set(self::HLS_SEGMENT_LENGTH, $length);
+    public int $hls_segments_overhead {
+        get => Types::int($this->get(__PROPERTY__), 2);
+        set (int|string|null $value) {
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
-    public const string HLS_SEGMENTS_IN_PLAYLIST = 'hls_segments_in_playlist';
-
-    public function getHlsSegmentsInPlaylist(): int
-    {
-        return Types::intOrNull($this->get(self::HLS_SEGMENTS_IN_PLAYLIST)) ?? 5;
+    public bool $hls_enable_on_public_player {
+        get => Types::bool($this->get(__PROPERTY__));
+        set (bool|string $value) {
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
-    public function setHlsSegmentsInPlaylist(int|string|null $value = null): void
-    {
-        $this->set(self::HLS_SEGMENTS_IN_PLAYLIST, $value);
+    public bool $hls_is_default {
+        get => Types::bool($this->get(__PROPERTY__));
+        set (bool|string $value) {
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
-    public const string HLS_SEGMENTS_OVERHEAD = 'hls_segments_overhead';
-
-    public function getHlsSegmentsOverhead(): int
-    {
-        return Types::intOrNull($this->get(self::HLS_SEGMENTS_OVERHEAD)) ?? 2;
+    public string $live_broadcast_text {
+        get => Types::string($this->get(__PROPERTY__), 'Live Broadcast', true);
+        set (string|null $value) {
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
-    public function setHlsSegmentsOverhead(int|string|null $value = null): void
-    {
-        $this->set(self::HLS_SEGMENTS_OVERHEAD, $value);
+    public bool $enable_auto_cue {
+        get => Types::bool($this->get(__PROPERTY__));
+        set {
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
-    public const string HLS_ENABLE_ON_PUBLIC_PLAYER = 'hls_enable_on_public_player';
-
-    public function getHlsEnableOnPublicPlayer(): bool
-    {
-        return Types::boolOrNull($this->get(self::HLS_ENABLE_ON_PUBLIC_PLAYER)) ?? false;
+    public bool $write_playlists_to_liquidsoap {
+        get => Types::bool($this->get(__PROPERTY__), true);
+        set {
+            $this->set(__PROPERTY__, $value);
+        }
     }
 
-    public function setHlsEnableOnPublicPlayer(bool|string $enable): void
-    {
-        $this->set(self::HLS_ENABLE_ON_PUBLIC_PLAYER, $enable);
-    }
-
-    public const string HLS_IS_DEFAULT = 'hls_is_default';
-
-    public function getHlsIsDefault(): bool
-    {
-        return Types::boolOrNull($this->get(self::HLS_IS_DEFAULT)) ?? false;
-    }
-
-    public function setHlsIsDefault(bool|string $value): void
-    {
-        $this->set(self::HLS_IS_DEFAULT, $value);
-    }
-
-    public const string LIVE_BROADCAST_TEXT = 'live_broadcast_text';
-
-    public function getLiveBroadcastText(): string
-    {
-        return Types::stringOrNull($this->get(self::LIVE_BROADCAST_TEXT), true)
-            ?? 'Live Broadcast';
-    }
-
-    public function setLiveBroadcastText(?string $text): void
-    {
-        $this->set(self::LIVE_BROADCAST_TEXT, $text);
-    }
-
-    public const string ENABLE_AUTO_CUE = 'enable_auto_cue';
-
-    public function getEnableAutoCue(): bool
-    {
-        return Types::bool($this->get(self::ENABLE_AUTO_CUE));
-    }
-
-    public function setEnableAutoCue(bool $value): void
-    {
-        $this->set(self::ENABLE_AUTO_CUE, $value);
-    }
-
-    public const string WRITE_PLAYLISTS_TO_LIQUIDSOAP = 'write_playlists_to_liquidsoap';
-
-    public function getWritePlaylistsToLiquidsoap(): bool
-    {
-        return Types::bool($this->get(self::WRITE_PLAYLISTS_TO_LIQUIDSOAP), true);
-    }
-
-    public function setWritePlaylistsToLiquidsoap(bool $value): void
-    {
-        $this->set(self::WRITE_PLAYLISTS_TO_LIQUIDSOAP, $value);
-    }
+    /*
+     * Liquidsoap Custom Configuration Sections
+     */
 
     public const string CUSTOM_TOP = 'custom_config_top';
+
+    public ?string $custom_config_top {
+        get => Types::stringOrNull($this->get(__PROPERTY__), true);
+        set {
+            $this->set(__PROPERTY__, $value);
+        }
+    }
+
     public const string CUSTOM_PRE_PLAYLISTS = 'custom_config_pre_playlists';
+
+    public ?string $custom_config_pre_playlists {
+        get => Types::stringOrNull($this->get(__PROPERTY__), true);
+        set {
+            $this->set(__PROPERTY__, $value);
+        }
+    }
+
     public const string CUSTOM_PRE_LIVE = 'custom_config_pre_live';
+
+    public ?string $custom_config_pre_live {
+        get => Types::stringOrNull($this->get(__PROPERTY__), true);
+        set {
+            $this->set(__PROPERTY__, $value);
+        }
+    }
+
     public const string CUSTOM_PRE_FADE = 'custom_config_pre_fade';
+
+    public ?string $custom_config_pre_fade {
+        get => Types::stringOrNull($this->get(__PROPERTY__), true);
+        set {
+            $this->set(__PROPERTY__, $value);
+        }
+    }
+
     public const string CUSTOM_PRE_BROADCAST = 'custom_config';
+
+    /**
+     * Now used as pre-broadcast custom config
+     */
+    public ?string $custom_config {
+        get => Types::stringOrNull($this->get(__PROPERTY__), true);
+        set {
+            $this->set(__PROPERTY__, $value);
+        }
+    }
+
     public const string CUSTOM_BOTTOM = 'custom_config_bottom';
+
+    public ?string $custom_config_bottom {
+        get => Types::stringOrNull($this->get(__PROPERTY__), true);
+        set {
+            $this->set(__PROPERTY__, $value);
+        }
+    }
 
     /** @return array<int, string> */
     public static function getCustomConfigurationSections(): array
@@ -497,7 +417,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
             throw new LogicException('Invalid custom configuration section.');
         }
 
-        return Types::stringOrNull($this->get($section), true);
+        return $this->$section;
     }
 
     public function setCustomConfigurationSection(string $section, ?string $value = null): void
@@ -507,6 +427,6 @@ class StationBackendConfiguration extends AbstractStationConfiguration
             throw new LogicException('Invalid custom configuration section.');
         }
 
-        $this->set($section, $value);
+        $this->$section = $value;
     }
 }

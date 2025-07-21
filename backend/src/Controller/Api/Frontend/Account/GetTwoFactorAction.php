@@ -44,7 +44,7 @@ final class GetTwoFactorAction implements SingleActionInterface
 
         return $response->withJson(
             new TwoFactorStatus(
-                !empty($user->getTwoFactorSecret())
+                !empty($user->two_factor_secret)
             )
         );
     }

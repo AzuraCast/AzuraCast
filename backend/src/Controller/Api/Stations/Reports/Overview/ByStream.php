@@ -78,7 +78,7 @@ final class ByStream extends AbstractReportAction
                 GROUP BY l.stream_id
             SQL,
             [
-                'station_id' => $station->getIdRequired(),
+                'station_id' => $station->id,
                 'start' => $dateRange->start,
                 'end' => $dateRange->end,
             ]

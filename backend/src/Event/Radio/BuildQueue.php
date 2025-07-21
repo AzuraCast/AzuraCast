@@ -74,7 +74,7 @@ final class BuildQueue extends Event
         }
 
         if (!is_array($nextSongs)) {
-            if ($this->lastPlayedSongId === $nextSongs->getSongId()) {
+            if ($this->lastPlayedSongId === $nextSongs->song_id) {
                 return false;
             }
 

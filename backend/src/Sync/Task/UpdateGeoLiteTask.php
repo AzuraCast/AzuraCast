@@ -33,7 +33,7 @@ final class UpdateGeoLiteTask extends AbstractTask
         $settings = $this->readSettings();
 
         if (!$force) {
-            $lastRun = $settings->getGeoliteLastRun();
+            $lastRun = $settings->geolite_last_run;
             if ($lastRun > (time() - self::UPDATE_THRESHOLD)) {
                 $this->logger->debug('Not checking for updates; checked too recently.');
                 return;
@@ -41,7 +41,7 @@ final class UpdateGeoLiteTask extends AbstractTask
         }
 
         try {
-            $this->updateDatabase($settings->getGeoliteLicenseKey() ?? '');
+            $this->updateDatabase($settings->geolite_license_key ?? '');
         } catch (Exception $e) {
             $this->logger->error(
                 'Error updating GeoLite database.',

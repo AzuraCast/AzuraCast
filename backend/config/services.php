@@ -86,7 +86,7 @@ return [
 
         // Specify MariaDB version for local Docker installs. Let non-local ones auto-detect via Doctrine.
         if (isset($connectionOptions['unix_socket']) || $environment->isTesting()) {
-            $connectionOptions['serverVersion'] = '11.4.4-MariaDB-1';
+            $connectionOptions['serverVersion'] = '11.8.2-MariaDB-1';
         }
 
         $config = new Doctrine\DBAL\Configuration();
@@ -139,16 +139,13 @@ return [
         $mappingClassesPaths = $buildDoctrineMappingPathsEvent->getMappingClassesPaths();
 
         // Fetch and store entity manager.
-        $config = Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration(
+        $config = Doctrine\ORM\ORMSetup::createAttributeMetadataConfig(
             $mappingClassesPaths,
             !$environment->isProduction(),
-            $environment->getTempDirectory() . '/proxies',
-            $psr6Cache
+            cache: $psr6Cache
         );
 
-        $config->setAutoGenerateProxyClasses(
-            Doctrine\ORM\Proxy\ProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS_OR_CHANGED
-        );
+        $config->enableNativeLazyObjects(true);
 
         // Debug mode:
         // $config->setSQLLogger(new Doctrine\DBAL\Logging\EchoSQLLogger);
@@ -351,6 +348,7 @@ return [
             new Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer(),
             new App\Normalizer\DateTimeNormalizer(),
             new Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer(),
+            new Symfony\Component\Serializer\Normalizer\CustomNormalizer(),
             new Azura\Normalizer\DoctrineEntityNormalizer(
                 $em,
                 classMetadataFactory: $classMetaFactory
@@ -462,11 +460,11 @@ return [
     ) {
         $settings = $settingsRepo->readSettings();
 
-        if ($settings->getMailEnabled()) {
+        if ($settings->mail_enabled) {
             $requiredSettings = [
-                'mailSenderEmail' => $settings->getMailSenderEmail(),
-                'mailSmtpHost' => $settings->getMailSmtpHost(),
-                'mailSmtpPort' => $settings->getMailSmtpPort(),
+                'mailSenderEmail' => $settings->mail_sender_email,
+                'mailSmtpHost' => $settings->mail_smtp_host,
+                'mailSmtpPort' => $settings->mail_smtp_port,
             ];
 
             $hasAllSettings = true;
@@ -479,16 +477,19 @@ return [
 
             if ($hasAllSettings) {
                 $transport = new Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport(
-                    $settings->getMailSmtpHost(),
-                    $settings->getMailSmtpPort(),
-                    $settings->getMailSmtpSecure(),
+                    $settings->mail_smtp_host ?? '',
+                    $settings->mail_smtp_port,
+                    $settings->mail_smtp_secure,
                     $eventDispatcher,
                     $logger
                 );
 
-                if (!empty($settings->getMailSmtpUsername())) {
-                    $transport->setUsername($settings->getMailSmtpUsername());
-                    $transport->setPassword($settings->getMailSmtpPassword());
+                if (!empty($settings->mail_smtp_username)) {
+                    $transport->setUsername($settings->mail_smtp_username);
+                }
+
+                if (!empty($settings->mail_smtp_password)) {
+                    $transport->setPassword($settings->mail_smtp_password);
                 }
 
                 return $transport;

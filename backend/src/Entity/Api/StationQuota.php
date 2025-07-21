@@ -45,13 +45,13 @@ final class StationQuota
         int|null $numFiles = null
     ): self {
         $record = new self();
-        $record->used = $storageLocation->getStorageUsed();
-        $record->used_bytes = (string)$storageLocation->getStorageUsedBytes();
+        $record->used = $storageLocation->storageUsed;
+        $record->used_bytes = (string)$storageLocation->storageUsedBytes;
         $record->used_percent = $storageLocation->getStorageUsePercentage();
-        $record->available = $storageLocation->getStorageAvailable();
-        $record->available_bytes = (string)$storageLocation->getStorageAvailableBytes();
-        $record->quota = $storageLocation->getStorageQuota();
-        $record->quota_bytes = (string)$storageLocation->getStorageQuotaBytes();
+        $record->available = $storageLocation->storageAvailable;
+        $record->available_bytes = (string)$storageLocation->storageAvailableBytes;
+        $record->quota = $storageLocation->storageQuota;
+        $record->quota_bytes = (string)$storageLocation->storageQuotaBytes;
         $record->is_full = $storageLocation->isStorageFull();
         $record->num_files = $numFiles;
 

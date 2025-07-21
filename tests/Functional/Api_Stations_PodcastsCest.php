@@ -19,7 +19,7 @@ class Api_Stations_PodcastsCest extends CestAbstract
         $station = $this->getTestStation();
 
         // Test CRUD for the podcast itself
-        $listUrl = '/api/station/' . $station->getId() . '/podcasts';
+        $listUrl = '/api/station/' . $station->id . '/podcasts';
 
         $this->testCrudApi(
             $I,

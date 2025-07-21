@@ -60,12 +60,12 @@ final class PutTwoFactorAction implements SingleActionInterface
             $user = $request->getUser();
 
             $totp = TOTP::create($secret);
-            $totp->setLabel($user->getEmail() ?: 'AzuraCast');
+            $totp->setLabel($user->email ?: 'AzuraCast');
 
             if (!empty($params['otp'])) {
                 if ($totp->verify($params['otp'], null, Auth::TOTP_WINDOW)) {
                     $user = $this->em->refetch($user);
-                    $user->setTwoFactorSecret($totp->getProvisioningUri());
+                    $user->two_factor_secret = $totp->getProvisioningUri();
 
                     $this->em->persist($user);
                     $this->em->flush();

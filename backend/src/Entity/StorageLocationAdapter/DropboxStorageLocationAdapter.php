@@ -25,7 +25,7 @@ final class DropboxStorageLocationAdapter extends AbstractStorageLocationLocatio
 
     public function getStorageAdapter(): ExtendedAdapterInterface
     {
-        $filteredPath = self::filterPath($this->storageLocation->getPath());
+        $filteredPath = self::filterPath($this->storageLocation->path);
 
         return new DropboxAdapter($this->getClient(), $filteredPath);
     }
@@ -50,11 +50,11 @@ final class DropboxStorageLocationAdapter extends AbstractStorageLocationLocatio
 
     public static function getUri(StorageLocation $storageLocation, ?string $suffix = null): string
     {
-        $path = self::applyPath($storageLocation->getPath(), $suffix);
+        $path = self::applyPath($storageLocation->path, $suffix);
 
-        $token = (!empty($storageLocation->getDropboxAuthToken()))
-            ? $storageLocation->getDropboxAuthToken()
-            : $storageLocation->getDropboxRefreshToken();
+        $token = (!empty($storageLocation->dropboxAuthToken))
+            ? $storageLocation->dropboxAuthToken
+            : $storageLocation->dropboxRefreshToken;
 
         $token = substr(md5($token ?? ''), 0, 10);
 

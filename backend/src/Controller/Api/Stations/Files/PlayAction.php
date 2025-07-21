@@ -85,6 +85,6 @@ final class PlayAction implements SingleActionInterface
 
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
-        return $response->streamFilesystemFile($fsMedia, $media->getPath());
+        return $response->streamFilesystemFile($fsMedia, $media->path);
     }
 }

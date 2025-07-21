@@ -67,7 +67,7 @@ final class StationsAction implements SingleActionInterface
                 'is_enabled' => 1,
             ]),
             static function (Station $station) use ($acl) {
-                return $acl->isAllowed(StationPermissions::View, $station->getId());
+                return $acl->isAllowed(StationPermissions::View, $station->id);
             }
         );
 

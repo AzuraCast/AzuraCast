@@ -22,7 +22,7 @@ abstract class AbstractStorageLocationLocationAdapter implements StorageLocation
 
     protected function setStorageLocation(StorageLocation $storageLocation): void
     {
-        if ($this->getType() !== $storageLocation->getAdapter()) {
+        if ($this->getType() !== $storageLocation->adapter) {
             throw new InvalidArgumentException('This storage location is not using the specified adapter.');
         }
 
@@ -49,7 +49,7 @@ abstract class AbstractStorageLocationLocationAdapter implements StorageLocation
         StorageLocation $storageLocation,
         ?string $suffix = null
     ): string {
-        return self::applyPath($storageLocation->getPath(), $suffix);
+        return self::applyPath($storageLocation->path, $suffix);
     }
 
     protected static function applyPath(

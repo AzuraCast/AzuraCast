@@ -28,7 +28,7 @@ final class BaseUrlCheck
         $settings = $this->readSettings();
 
         // Base URL mismatch doesn't happen if this setting is enabled.
-        if ($settings->getPreferBrowserUrl()) {
+        if ($settings->prefer_browser_url) {
             return;
         }
 

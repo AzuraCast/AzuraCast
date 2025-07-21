@@ -6,7 +6,7 @@ namespace App\Entity\Interfaces;
 
 interface IdentifiableEntityInterface
 {
-    public function getId(): null|int|string;
-
-    public function getIdRequired(): int|string;
+    public int|string $id {
+        get;
+    }
 }

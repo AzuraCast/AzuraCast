@@ -288,9 +288,9 @@ class PodcastEpisodesController extends AbstractApiCrudController
         $return = $this->episodeApiGen->__invoke($record, $request);
 
         $baseRouteParams = [
-            'station_id' => $request->getStation()->getIdRequired(),
-            'podcast_id' => $record->getPodcast()->getIdRequired(),
-            'episode_id' => $record->getIdRequired(),
+            'station_id' => $request->getStation()->id,
+            'podcast_id' => $record->podcast->id,
+            'episode_id' => $record->id,
         ];
 
         $artRouteParams = $baseRouteParams;

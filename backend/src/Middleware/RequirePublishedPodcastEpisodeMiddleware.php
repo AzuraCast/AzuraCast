@@ -28,7 +28,7 @@ final class RequirePublishedPodcastEpisodeMiddleware extends AbstractMiddleware
 
         $podcast = $request->getPodcast();
 
-        if (!$podcast->isEnabled() || !in_array($podcast->getIdRequired(), $publishedPodcastIds, true)) {
+        if (!$podcast->is_enabled || !in_array($podcast->id, $publishedPodcastIds, true)) {
             throw NotFoundException::podcast();
         }
 

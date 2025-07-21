@@ -60,13 +60,13 @@ final class StationRequestRepository extends AbstractStationBasedRepository
                 <<<'DQL'
                     SELECT sr.timestamp
                     FROM App\Entity\StationRequest sr
-                    WHERE sr.track_id = :track_id
-                    AND sr.station_id = :station_id
+                    WHERE sr.track = :track
+                    AND sr.station = :station
                     AND (sr.timestamp >= :threshold OR sr.played_at IS NULL)
                     ORDER BY sr.timestamp DESC
                 DQL
-            )->setParameter('track_id', $media->getId())
-                ->setParameter('station_id', $station->getId())
+            )->setParameter('track', $media)
+                ->setParameter('station', $station)
                 ->setParameter('threshold', $pendingRequestThreshold)
                 ->setMaxResults(1)
                 ->getSingleScalarResult();
@@ -99,7 +99,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
         return array_find(
             $requests,
             fn(StationRequest $request) => $request->shouldPlayNow($now)
-                && !$this->hasPlayedRecently($request->getTrack(), $station)
+                && !$this->hasPlayedRecently($request->track, $station)
         );
     }
 
@@ -108,7 +108,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
      */
     public function hasPlayedRecently(StationMedia $media, Station $station): bool
     {
-        $lastPlayThresholdMins = ($station->getRequestThreshold() ?? 15);
+        $lastPlayThresholdMins = $station->request_threshold ?? 15;
 
         if (0 === $lastPlayThresholdMins) {
             return false;
@@ -128,10 +128,10 @@ final class StationRequestRepository extends AbstractStationBasedRepository
             ->getArrayResult();
 
         $eligibleTrack = new StationPlaylistQueue();
-        $eligibleTrack->media_id = $media->getIdRequired();
-        $eligibleTrack->song_id = $media->getSongId();
-        $eligibleTrack->title = $media->getTitle() ?? '';
-        $eligibleTrack->artist = $media->getArtist() ?? '';
+        $eligibleTrack->media_id = $media->id;
+        $eligibleTrack->song_id = $media->song_id;
+        $eligibleTrack->title = $media->title ?? '';
+        $eligibleTrack->artist = $media->artist ?? '';
 
         return (null === $this->duplicatePrevention->getDistinctTrack([$eligibleTrack], $recentTracks));
     }

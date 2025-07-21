@@ -42,7 +42,7 @@ final class ResetPasswordCommand extends CommandAbstract
             $tempPw = Utilities\Strings::generatePassword(15);
 
             $user->setNewPassword($tempPw);
-            $user->setTwoFactorSecret();
+            $user->two_factor_secret = null;
 
             $this->em->persist($user);
             $this->em->flush();

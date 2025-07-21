@@ -19,7 +19,7 @@ final class MountsAction implements SingleActionInterface
         $station = $request->getStation();
 
         return $response->withJson([
-            'stationFrontendType' => $station->getFrontendType()->value,
+            'stationFrontendType' => $station->frontend_type->value,
         ]);
     }
 }

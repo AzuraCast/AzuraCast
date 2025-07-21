@@ -27,9 +27,9 @@ final class RolePermissionRepository extends Repository
             <<<'DQL'
                 SELECT e
                 FROM App\Entity\RolePermission e
-                WHERE e.role_id = :role_id
+                WHERE e.role = :role
             DQL
-        )->setParameter('role_id', $role->getId())
+        )->setParameter('role', $role)
             ->getArrayResult();
 
         $result = [];
@@ -61,7 +61,7 @@ final class RolePermissionRepository extends Repository
         }
 
         $newRole = new Role();
-        $newRole->setName('Super Administrator');
+        $newRole->name = 'Super Administrator';
         $this->em->persist($newRole);
 
         $newPerm = new RolePermission($newRole, null, GlobalPermissions::All);

@@ -38,8 +38,8 @@ final class Scheduler
         $this->logger->pushProcessor(
             function (LogRecord $record) use ($playlist) {
                 $record->extra['playlist'] = [
-                    'id' => $playlist->getId(),
-                    'name' => $playlist->getName(),
+                    'id' => $playlist->id,
+                    'name' => $playlist->name,
                 ];
                 return $record;
             }
@@ -55,7 +55,7 @@ final class Scheduler
 
         $shouldPlay = true;
 
-        switch ($playlist->getType()) {
+        switch ($playlist->type) {
             case PlaylistTypes::OncePerHour:
                 $shouldPlay = $this->shouldPlaylistPlayNowPerHour($playlist, $now);
 
@@ -68,7 +68,7 @@ final class Scheduler
                 break;
 
             case PlaylistTypes::OncePerXSongs:
-                $playPerSongs = $playlist->getPlayPerSongs();
+                $playPerSongs = $playlist->play_per_songs;
                 $shouldPlay = !$this->queueRepo->isPlaylistRecentlyPlayed($playlist, $playPerSongs);
 
                 $this->logger->debug(
@@ -81,7 +81,7 @@ final class Scheduler
                 break;
 
             case PlaylistTypes::OncePerXMinutes:
-                $playPerMinutes = $playlist->getPlayPerMinutes();
+                $playPerMinutes = $playlist->play_per_minutes;
                 $shouldPlay = !$this->wasPlaylistPlayedInLastXMinutes($playlist, $now, $playPerMinutes);
 
                 $this->logger->debug(
@@ -111,14 +111,14 @@ final class Scheduler
         DateTimeImmutable $now,
         bool $excludeSpecialRules = false
     ): bool {
-        $scheduleItems = $playlist->getScheduleItems();
+        $scheduleItems = $playlist->schedule_items;
 
         if (0 === $scheduleItems->count()) {
             $this->logger->debug('Playlist has no schedule items; skipping schedule time check.');
             return true;
         }
 
-        $stationTz = $playlist->getStation()->getTimezoneObject();
+        $stationTz = $playlist->station->getTimezoneObject();
 
         $scheduleItem = $this->getActiveScheduleFromCollection(
             $scheduleItems,
@@ -137,7 +137,7 @@ final class Scheduler
         $now = CarbonImmutable::instance($now);
 
         $currentMinute = $now->minute;
-        $targetMinute = $playlist->getPlayPerHourMinute();
+        $targetMinute = $playlist->play_per_hour_minute;
 
         if ($currentMinute < $targetMinute) {
             $targetTime = $now->subHour()->minute($targetMinute);
@@ -159,7 +159,7 @@ final class Scheduler
         DateTimeImmutable $now,
         int $minutes
     ): bool {
-        $playedAt = $playlist->getPlayedAt();
+        $playedAt = $playlist->played_at;
         if (null === $playedAt) {
             return false;
         }
@@ -176,11 +176,11 @@ final class Scheduler
      */
     public function getPlaylistScheduleDuration(StationPlaylist $playlist): int
     {
-        $stationTz = $playlist->getStation()->getTimezoneObject();
+        $stationTz = $playlist->station->getTimezoneObject();
         $now = CarbonImmutable::now($stationTz);
 
         $scheduleItem = $this->getActiveScheduleFromCollection(
-            $playlist->getScheduleItems(),
+            $playlist->schedule_items,
             $stationTz,
             $now
         );
@@ -194,14 +194,14 @@ final class Scheduler
         StationStreamer $streamer,
         ?DateTimeImmutable $now = null
     ): bool {
-        if (!$streamer->enforceSchedule()) {
+        if (!$streamer->enforce_schedule) {
             return true;
         }
 
-        $stationTz = $streamer->getStation()->getTimezoneObject();
+        $stationTz = $streamer->station->getTimezoneObject();
 
         $scheduleItem = $this->getActiveScheduleFromCollection(
-            $streamer->getScheduleItems(),
+            $streamer->schedule_items,
             $stationTz,
             $now
         );
@@ -257,8 +257,8 @@ final class Scheduler
     ): bool {
         $now = Time::nowInTimezone($tz, $now);
 
-        $startTime = StationSchedule::getDateTime($schedule->getStartTime(), $tz, $now);
-        $endTime = StationSchedule::getDateTime($schedule->getEndTime(), $tz, $now);
+        $startTime = StationSchedule::getDateTime($schedule->start_time, $tz, $now);
+        $endTime = StationSchedule::getDateTime($schedule->end_time, $tz, $now);
 
         $this->logger->debug('Checking to see whether schedule should play now.', [
             'startTime' => $startTime,
@@ -327,7 +327,7 @@ final class Scheduler
         }
 
         // Check playlist special handling rules.
-        $playlist = $schedule->getPlaylist();
+        $playlist = $schedule->playlist;
         if (null === $playlist) {
             return true;
         }
@@ -339,7 +339,7 @@ final class Scheduler
 
         // Handle "Play Single Track" advanced setting.
         if ($playlist->backendPlaySingleTrack()) {
-            $playedAt = $playlist->getPlayedAt();
+            $playedAt = $playlist->played_at;
 
             if (null !== $playedAt && $dateRange->start->isBefore($playedAt)) {
                 return false;
@@ -348,7 +348,7 @@ final class Scheduler
 
         // Handle "Loop Once" schedule specification.
         if (
-            $schedule->getLoopOnce()
+            $schedule->loop_once
             && !$this->shouldPlaylistLoopNow($schedule, $dateRange)
         ) {
             return false;
@@ -363,14 +363,14 @@ final class Scheduler
     ): bool {
         $this->logger->debug('Checking if playlist should loop now.');
 
-        $playlist = $schedule->getPlaylist();
+        $playlist = $schedule->playlist;
 
         if (null === $playlist) {
             $this->logger->error('Attempting to check playlist loop status on a non-playlist-based schedule item.');
             return false;
         }
 
-        $playlistPlayedAt = $playlist->getPlayedAt();
+        $playlistPlayedAt = $playlist->played_at;
 
         $isQueueEmpty = $this->spmRepo->isQueueEmpty($playlist);
         $hasCuedPlaylistMedia = $this->queueRepo->hasCuedPlaylistMedia($playlist);
@@ -397,7 +397,7 @@ final class Scheduler
 
         $playlist = $this->em->refetch($playlist);
 
-        $playlistQueueResetAt = $playlist->getQueueResetAt();
+        $playlistQueueResetAt = $playlist->queue_reset_at;
 
         if (!$isQueueEmpty && !$dateRange->contains($playlistQueueResetAt)) {
             $this->logger->debug('Playlist should loop.');
@@ -426,15 +426,15 @@ final class Scheduler
     ): bool {
         $now = CarbonImmutable::instance(Time::nowInTimezone($tz, $now));
 
-        $startDate = $schedule->getStartDate();
-        $endDate = $schedule->getEndDate();
+        $startDate = $schedule->start_date;
+        $endDate = $schedule->end_date;
 
         if (!empty($startDate)) {
             $startDate = CarbonImmutable::createFromFormat('Y-m-d', $startDate, $tz);
 
             if (null !== $startDate) {
                 $startDate = StationSchedule::getDateTime(
-                    $schedule->getStartTime(),
+                    $schedule->start_time,
                     $tz,
                     $startDate
                 );
@@ -450,7 +450,7 @@ final class Scheduler
 
             if (null !== $endDate) {
                 $endDate = StationSchedule::getDateTime(
-                    $schedule->getEndTime(),
+                    $schedule->end_time,
                     $tz,
                     $endDate
                 );
@@ -475,7 +475,7 @@ final class Scheduler
         StationSchedule $schedule,
         int $dayToCheck
     ): bool {
-        $playOnceDays = $schedule->getDays();
+        $playOnceDays = $schedule->days;
         return empty($playOnceDays)
             || in_array($dayToCheck, $playOnceDays, true);
     }

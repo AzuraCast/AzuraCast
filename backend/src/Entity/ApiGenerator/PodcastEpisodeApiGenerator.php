@@ -38,35 +38,35 @@ final class PodcastEpisodeApiGenerator
         $podcast = $request->getPodcast();
 
         $return = new ApiPodcastEpisode();
-        $return->id = $record->getIdRequired();
-        $return->title = $record->getTitle();
+        $return->id = $record->id;
+        $return->title = $record->title;
 
-        $return->link = $record->getLink();
+        $return->link = $record->link;
 
-        $return->description = $record->getDescription();
+        $return->description = $record->description;
         $return->description_short = Strings::truncateText($return->description, 100);
 
-        $return->explicit = $record->getExplicit();
-        $return->season_number = $record->getSeasonNumber();
-        $return->episode_number = $record->getEpisodeNumber();
+        $return->explicit = $record->explicit;
+        $return->season_number = $record->season_number;
+        $return->episode_number = $record->episode_number;
 
-        $return->created_at = $record->getCreatedAt();
-        $return->publish_at = $record->getPublishAt();
+        $return->created_at = $record->created_at;
+        $return->publish_at = $record->publish_at;
 
         $mediaExtension = '';
 
-        switch ($podcast->getSource()) {
+        switch ($podcast->source) {
             case PodcastSources::Playlist:
                 $return->media = null;
 
-                $playlistMediaRow = $record->getPlaylistMedia();
+                $playlistMediaRow = $record->playlist_media;
                 if ($playlistMediaRow instanceof StationMedia) {
                     $return->has_media = true;
 
                     $return->playlist_media = $this->songApiGen->__invoke($playlistMediaRow);
-                    $return->playlist_media_id = $playlistMediaRow->getUniqueId();
+                    $return->playlist_media_id = $playlistMediaRow->unique_id;
 
-                    $mediaExtension = Path::getExtension($playlistMediaRow->getPath());
+                    $mediaExtension = Path::getExtension($playlistMediaRow->path);
                 } else {
                     $return->has_media = false;
 
@@ -79,20 +79,19 @@ final class PodcastEpisodeApiGenerator
                 $return->playlist_media = null;
                 $return->playlist_media_id = null;
 
-                $mediaRow = $record->getMedia();
-                $return->has_media = ($mediaRow instanceof PodcastMedia);
+                $mediaRow = $record->media;
                 if ($mediaRow instanceof PodcastMedia) {
                     $media = new ApiPodcastMedia();
-                    $media->id = $mediaRow->getId();
-                    $media->original_name = $mediaRow->getOriginalName();
-                    $media->length = $mediaRow->getLength();
-                    $media->length_text = $mediaRow->getLengthText();
-                    $media->path = $mediaRow->getPath();
+                    $media->id = $mediaRow->id;
+                    $media->original_name = $mediaRow->original_name;
+                    $media->length = $mediaRow->length;
+                    $media->length_text = $mediaRow->length_text;
+                    $media->path = $mediaRow->path;
 
                     $return->has_media = true;
                     $return->media = $media;
 
-                    $mediaExtension = Path::getExtension($mediaRow->getPath());
+                    $mediaExtension = Path::getExtension($mediaRow->path);
                 } else {
                     $return->has_media = false;
                     $return->media = null;
@@ -102,13 +101,13 @@ final class PodcastEpisodeApiGenerator
 
         $return->is_published = $record->isPublished();
 
-        $return->art_updated_at = $record->getArtUpdatedAt();
+        $return->art_updated_at = $record->art_updated_at;
         $return->has_custom_art = (0 !== $return->art_updated_at);
 
         $baseRouteParams = [
-            'station_id' => $station->getShortName(),
-            'podcast_id' => $podcast->getIdRequired(),
-            'episode_id' => $record->getIdRequired(),
+            'station_id' => $station->short_name,
+            'podcast_id' => $podcast->id,
+            'episode_id' => $record->id,
         ];
 
         $artRouteParams = $baseRouteParams;
@@ -155,7 +154,7 @@ final class PodcastEpisodeApiGenerator
         UriInterface $downloadUri,
         ?Podcast $apiPodcast = null
     ): UriInterface {
-        if ($record->getPodcast()->getBrandingConfig()->getEnableOp3Prefix()) {
+        if ($record->podcast->branding_config->enable_op3_prefix) {
             $prefixUri = new Uri(self::OP3_BASE_URL);
 
             $baseUri = ($downloadUri->getScheme() === 'http')

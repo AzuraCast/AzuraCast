@@ -135,8 +135,8 @@ enum SupportedLocales: string
         // Prefer user-based profile locale.
         try {
             $user = $request->getUser();
-            if (!empty($user->getLocale()) && 'default' !== $user->getLocale()) {
-                $possibleLocales[] = $user->getLocale();
+            if (!empty($user->locale) && 'default' !== $user->locale) {
+                $possibleLocales[] = $user->locale;
             }
         } catch (InvalidRequestAttribute) {
         }

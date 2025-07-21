@@ -44,7 +44,7 @@ final class PodcastEpisodeRepository extends Repository
     public function fetchEpisodeForStation(Station $station, string $episodeId): ?PodcastEpisode
     {
         return $this->fetchEpisodeForStorageLocation(
-            $station->getPodcastsStorageLocation(),
+            $station->podcasts_storage_location,
             $episodeId
         );
     }
@@ -72,7 +72,7 @@ final class PodcastEpisodeRepository extends Repository
     ): void {
         $episodeArtworkString = AlbumArt::resize($rawArtworkString);
 
-        $storageLocation = $episode->getPodcast()->getStorageLocation();
+        $storageLocation = $episode->podcast->storage_location;
         $fs = $this->storageLocationRepo->getAdapter($storageLocation)
             ->getFilesystem();
 
@@ -81,13 +81,13 @@ final class PodcastEpisodeRepository extends Repository
             throw new StorageLocationFullException();
         }
 
-        $episodeArtworkPath = PodcastEpisode::getArtPath($episode->getIdRequired());
+        $episodeArtworkPath = PodcastEpisode::getArtPath($episode->id);
         $fs->write($episodeArtworkPath, $episodeArtworkString);
 
         $storageLocation->addStorageUsed($episodeArtworkSize);
         $this->em->persist($storageLocation);
 
-        $episode->setArtUpdatedAt(time());
+        $episode->art_updated_at = time();
         $this->em->persist($episode);
     }
 
@@ -95,9 +95,9 @@ final class PodcastEpisodeRepository extends Repository
         PodcastEpisode $episode,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $artworkPath = PodcastEpisode::getArtPath($episode->getIdRequired());
+        $artworkPath = PodcastEpisode::getArtPath($episode->id);
 
-        $storageLocation = $episode->getPodcast()->getStorageLocation();
+        $storageLocation = $episode->podcast->storage_location;
         $fs ??= $this->storageLocationRepo->getAdapter($storageLocation)
             ->getFilesystem();
 
@@ -115,7 +115,7 @@ final class PodcastEpisodeRepository extends Repository
         $storageLocation->removeStorageUsed($size);
         $this->em->persist($storageLocation);
 
-        $episode->setArtUpdatedAt(0);
+        $episode->art_updated_at = 0;
         $this->em->persist($episode);
     }
 
@@ -125,13 +125,13 @@ final class PodcastEpisodeRepository extends Repository
         string $uploadPath,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $podcast = $episode->getPodcast();
+        $podcast = $episode->podcast;
 
-        if ($podcast->getSource() !== PodcastSources::Manual) {
+        if ($podcast->source !== PodcastSources::Manual) {
             throw new LogicException('Cannot upload media to this podcast type.');
         }
 
-        $storageLocation = $podcast->getStorageLocation();
+        $storageLocation = $podcast->storage_location;
 
         $fs ??= $this->storageLocationRepo->getAdapter($storageLocation)
             ->getFilesystem();
@@ -150,36 +150,36 @@ final class PodcastEpisodeRepository extends Repository
             );
         }
 
-        $existingMedia = $episode->getMedia();
+        $existingMedia = $episode->media;
         if ($existingMedia instanceof PodcastMedia) {
             $this->deleteMedia($existingMedia, $fs);
-            $episode->setMedia(null);
+            $episode->media = null;
         }
 
         $ext = pathinfo($originalPath, PATHINFO_EXTENSION);
-        $path = $podcast->getId() . '/' . $episode->getId() . '.' . $ext;
+        $path = $podcast->id . '/' . $episode->id . '.' . $ext;
 
         $podcastMedia = new PodcastMedia($storageLocation);
-        $podcastMedia->setPath($path);
-        $podcastMedia->setOriginalName(basename($originalPath));
+        $podcastMedia->path = $path;
+        $podcastMedia->original_name = basename($originalPath);
 
         // Load metadata from local file while it's available.
-        $podcastMedia->setLength($metadata->getDuration());
-        $podcastMedia->setMimeType($metadata->getMimeType());
+        $podcastMedia->length = $metadata->getDuration();
+        $podcastMedia->mime_type = $metadata->getMimeType();
 
         // Upload local file remotely.
         $fs->uploadAndDeleteOriginal($uploadPath, $path);
 
-        $podcastMedia->setEpisode($episode);
+        $podcastMedia->episode = $episode;
         $this->em->persist($podcastMedia);
 
         $storageLocation->addStorageUsed($size);
         $this->em->persist($storageLocation);
 
-        $episode->setMedia($podcastMedia);
+        $episode->media = $podcastMedia;
 
         $artwork = $metadata->getArtwork();
-        if (!empty($artwork) && 0 === $episode->getArtUpdatedAt()) {
+        if (!empty($artwork) && 0 === $episode->art_updated_at) {
             $this->writeEpisodeArt(
                 $episode,
                 $artwork
@@ -194,11 +194,11 @@ final class PodcastEpisodeRepository extends Repository
         PodcastMedia $media,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $storageLocation = $media->getStorageLocation();
+        $storageLocation = $media->storage_location;
         $fs ??= $this->storageLocationRepo->getAdapter($storageLocation)
             ->getFilesystem();
 
-        $mediaPath = $media->getPath();
+        $mediaPath = $media->path;
 
         try {
             $size = $fs->fileSize($mediaPath);
@@ -222,10 +222,10 @@ final class PodcastEpisodeRepository extends Repository
         PodcastEpisode $episode,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $fs ??= $this->storageLocationRepo->getAdapter($episode->getPodcast()->getStorageLocation())
+        $fs ??= $this->storageLocationRepo->getAdapter($episode->podcast->storage_location)
             ->getFilesystem();
 
-        $media = $episode->getMedia();
+        $media = $episode->media;
         if (null !== $media) {
             $this->deleteMedia($media, $fs);
         }

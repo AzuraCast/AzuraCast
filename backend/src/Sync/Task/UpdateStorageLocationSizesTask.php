@@ -71,7 +71,7 @@ final class UpdateStorageLocationSizesTask extends AbstractTask
             );
         }
 
-        $storageLocation->setStorageUsed($used);
+        $storageLocation->storageUsed = $used;
         $this->em->persist($storageLocation);
 
         $this->logger->info('Storage location size updated.', [

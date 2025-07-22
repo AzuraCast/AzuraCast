@@ -21,138 +21,72 @@ trait HasSongFields
         ORM\Column(length: 50),
         Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected string $song_id;
+    public protected(set) string $song_id;
 
     #[
         OA\Property,
         ORM\Column(length: 512, nullable: true),
         Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?string $text = null;
+    public ?string $text = null {
+        get => $this->text;
+        set => $this->truncateNullableString($value, 512);
+    }
 
     #[
         OA\Property,
         ORM\Column(length: 255, nullable: true),
         Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?string $artist = null;
+    public ?string $artist = null {
+        get => $this->artist;
+        set => $this->truncateNullableString($value, 255);
+    }
 
     #[
         OA\Property,
         ORM\Column(length: 255, nullable: true),
         Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?string $title = null;
+    public ?string $title = null {
+        get => $this->title;
+        set => $this->truncateNullableString($value, 255);
+    }
 
     #[
         OA\Property,
         ORM\Column(length: 200, nullable: true),
         Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?string $album = null;
+    public ?string $album = null {
+        get => $this->album;
+        set => $this->truncateNullableString($value, 200);
+    }
 
     public function setSong(SongInterface $song): void
     {
-        $this->title = $this->truncateNullableString($song->getTitle(), 512);
-        $this->artist = $this->truncateNullableString($song->getArtist());
-        $this->text = $this->truncateNullableString($song->getText());
-        $this->album = $this->truncateNullableString($song->getAlbum(), 200);
+        $this->title = $song->title;
+        $this->artist = $song->artist;
+        $this->album = $song->album;
+        $this->text = $song->text;
+        $this->updateMetaFields();
+    }
 
+    public function updateMetaFields(string $separator = ' - '): void
+    {
         // Force setting the text field if it's not otherwise set.
-        $this->setText($this->getText());
-        $this->updateSongId();
-    }
-
-    public function getSongId(): string
-    {
-        return $this->song_id;
-    }
-
-    protected function setSongId(string $songId): void
-    {
-        $this->song_id = $songId;
-    }
-
-    public function updateSongId(): void
-    {
-        $text = $this->getText();
-        $this->song_id = !empty($text)
-            ? Song::getSongHash($text)
-            : Song::OFFLINE_SONG_ID;
-    }
-
-    public function getText(): ?string
-    {
         if (null === $this->text) {
-            $this->setTextFromOtherFields();
+            $textParts = [
+                trim($this->artist ?? ''),
+                trim($this->album ?? ''),
+                trim($this->title ?? ''),
+            ];
+
+            $this->text = implode($separator, array_filter($textParts));
         }
 
-        return $this->text;
-    }
-
-    protected function setTextFromOtherFields(string $separator = ' - '): void
-    {
-        $textParts = [
-            trim($this->artist ?? ''),
-            trim($this->album ?? ''),
-            trim($this->title ?? ''),
-        ];
-
-        $this->setText(implode($separator, array_filter($textParts)));
-    }
-
-    public function setText(?string $text): void
-    {
-        $oldText = $this->text;
-        $this->text = $this->truncateNullableString($text, 512);
-
-        if (0 !== strcmp($oldText ?? '', $this->text ?? '')) {
-            $this->updateSongId();
-        }
-    }
-
-    public function getArtist(): ?string
-    {
-        return $this->artist;
-    }
-
-    public function setArtist(?string $artist): void
-    {
-        $oldArtist = $this->artist;
-        $this->artist = $this->truncateNullableString($artist);
-
-        if (0 !== strcmp($oldArtist ?? '', $this->artist ?? '')) {
-            $this->setTextFromOtherFields();
-        }
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(?string $title): void
-    {
-        $oldTitle = $this->title;
-        $this->title = $this->truncateNullableString($title);
-
-        if (0 !== strcmp($oldTitle ?? '', $this->title ?? '')) {
-            $this->setTextFromOtherFields();
-        }
-    }
-
-    public function getAlbum(): ?string
-    {
-        return $this->album;
-    }
-
-    public function setAlbum(?string $album): void
-    {
-        $oldAlbum = $this->album;
-        $this->album = $this->truncateNullableString($album);
-
-        if (0 !== strcmp($oldAlbum ?? '', $this->album ?? '')) {
-            $this->setTextFromOtherFields();
-        }
+        $this->song_id = !empty($this->text)
+            ? Song::getSongHash($this->text)
+            : Song::OFFLINE_SONG_ID;
     }
 }

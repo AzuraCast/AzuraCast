@@ -39,7 +39,7 @@ final class CheckPodcastPlaylistsTask extends AbstractTask
         $this->logger->info(
             'Processing playlist-based podcasts for station...',
             [
-                'station' => $station->getName(),
+                'station' => $station->name,
             ]
         );
 
@@ -58,7 +58,7 @@ final class CheckPodcastPlaylistsTask extends AbstractTask
 
         $mediaInPlaylistQuery = $this->em->createQuery(
             <<<'DQL'
-                SELECT spm.media_id
+                SELECT IDENTITY(spm.media) AS media_id
                 FROM App\Entity\StationPlaylistMedia spm
                 WHERE spm.playlist = :playlist
             DQL
@@ -66,7 +66,7 @@ final class CheckPodcastPlaylistsTask extends AbstractTask
 
         $mediaInPodcastQuery = $this->em->createQuery(
             <<<'DQL'
-                SELECT pe.id, pe.playlist_media_id
+                SELECT pe.id, IDENTITY(pe.playlist_media) AS playlist_media_id
                 FROM App\Entity\PodcastEpisode pe
                 WHERE pe.podcast = :podcast
             DQL
@@ -80,7 +80,7 @@ final class CheckPodcastPlaylistsTask extends AbstractTask
 
         /** @var Podcast $podcast */
         foreach ($podcasts as $podcast) {
-            $playlist = $podcast->getPlaylist();
+            $playlist = $podcast->playlist;
 
             $mediaInPlaylist = array_column(
                 $mediaInPlaylistQuery->setParameter('playlist', $playlist)->getArrayResult(),
@@ -110,37 +110,33 @@ final class CheckPodcastPlaylistsTask extends AbstractTask
                 if ($media instanceof StationMedia) {
                     // Create new podcast episode.
                     $podcastEpisode = new PodcastEpisode($podcast);
-                    $podcastEpisode->setPlaylistMedia($media);
 
-                    $podcastEpisode->setExplicit(false);
+                    $podcastEpisode->playlist_media = $media;
+                    $podcastEpisode->explicit = false;
 
-                    $podcastEpisode->setTitle($media->getTitle() ?? 'Untitled Episode');
-                    $podcastEpisode->setDescription(
-                        implode("\n", array_filter([
-                            $media->getArtist(),
-                            $media->getAlbum(),
-                            $media->getLyrics(),
-                        ]))
-                    );
+                    $podcastEpisode->title = $media->title ?? 'Untitled Episode';
+                    $podcastEpisode->description = implode("\n", array_filter([
+                        $media->artist,
+                        $media->album,
+                        $media->lyrics,
+                    ]));
 
                     $publishAt = CarbonImmutable::createFromTimestamp(
-                        $media->getMtime(),
+                        $media->mtime,
                         Time::getUtc()
                     );
 
-                    if (!$podcast->playlistAutoPublish()) {
+                    if (!$podcast->playlist_auto_publish) {
                         // Set a date in the future to unpublish the episode.
-                        $podcastEpisode->setPublishAt(
-                            $publishAt->addYears(10)->getTimestamp()
-                        );
+                        $podcastEpisode->publish_at = $publishAt->addYears(10)->getTimestamp();
                     } else {
-                        $podcastEpisode->setPublishAt($publishAt->getTimestamp());
+                        $podcastEpisode->publish_at = $publishAt->getTimestamp();
                     }
 
                     $this->em->persist($podcastEpisode);
                     $this->em->flush();
 
-                    $artPath = StationMedia::getArtPath($media->getUniqueId());
+                    $artPath = StationMedia::getArtPath($media->unique_id);
                     if ($fsMedia->fileExists($artPath)) {
                         $art = $fsMedia->read($artPath);
                         $this->podcastEpisodeRepo->writeEpisodeArt($podcastEpisode, $art);
@@ -165,7 +161,7 @@ final class CheckPodcastPlaylistsTask extends AbstractTask
         $this->logger->debug(
             'Playlist-based podcasts for station processed.',
             [
-                'station' => $station->getName(),
+                'station' => $station->name,
                 'stats' => $stats,
             ]
         );

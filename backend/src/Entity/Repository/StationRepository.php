@@ -102,18 +102,18 @@ final class StationRepository extends Repository
      */
     public function resetMounts(Station $station): void
     {
-        foreach ($station->getMounts() as $mount) {
+        foreach ($station->mounts as $mount) {
             $this->em->remove($mount);
         }
 
         // Create default mountpoints if station supports them.
-        if ($station->getFrontendType()->supportsMounts()) {
+        if ($station->frontend_type->supportsMounts()) {
             $record = new StationMount($station);
-            $record->setName('/radio.mp3');
-            $record->setIsDefault(true);
-            $record->setEnableAutodj(true);
-            $record->setAutodjFormat(StreamFormats::Mp3);
-            $record->setAutodjBitrate($station->getMaxBitrate() !== 0 ? $station->getMaxBitrate() : 192);
+            $record->name = '/radio.mp3';
+            $record->is_default = true;
+            $record->enable_autodj = true;
+            $record->autodj_format = StreamFormats::Mp3;
+            $record->autodj_bitrate = $station->max_bitrate !== 0 ? $station->max_bitrate : 192;
             $this->em->persist($record);
         }
 
@@ -123,22 +123,22 @@ final class StationRepository extends Repository
 
     public function resetHls(Station $station): void
     {
-        foreach ($station->getHlsStreams() as $hlsStream) {
+        foreach ($station->hls_streams as $hlsStream) {
             $this->em->remove($hlsStream);
         }
 
-        if ($station->getEnableHls() && $station->getBackendType()->isEnabled()) {
+        if ($station->enable_hls && $station->backend_type->isEnabled()) {
             $streams = [
                 'aac_lofi' => 48,
                 'aac_midfi' => 96,
-                'aac_hifi' => $station->getMaxBitrate() !== 0 ? $station->getMaxBitrate() : 192,
+                'aac_hifi' => $station->max_bitrate !== 0 ? $station->max_bitrate : 192,
             ];
 
             foreach ($streams as $name => $bitrate) {
                 $record = new StationHlsStream($station);
-                $record->setName($name);
-                $record->setFormat(StreamFormats::Aac);
-                $record->setBitrate($bitrate);
+                $record->name = $name;
+                $record->format = StreamFormats::Aac;
+                $record->bitrate = $bitrate;
                 $this->em->persist($record);
             }
         }
@@ -149,9 +149,9 @@ final class StationRepository extends Repository
 
     public function reduceMountsBitrateToLimit(Station $station): void
     {
-        foreach ($station->getMounts() as $mount) {
-            if ($mount->getAutodjBitrate() > $station->getMaxBitrate()) {
-                $mount->setAutodjBitrate($station->getMaxBitrate());
+        foreach ($station->mounts as $mount) {
+            if ($mount->autodj_bitrate > $station->max_bitrate) {
+                $mount->autodj_bitrate = $station->max_bitrate;
                 $this->em->persist($mount);
             }
         }
@@ -161,9 +161,9 @@ final class StationRepository extends Repository
 
     public function reduceHlsBitrateToLimit(Station $station): void
     {
-        foreach ($station->getHlsStreams() as $hlsStream) {
-            if ($hlsStream->getBitrate() > $station->getMaxBitrate()) {
-                $hlsStream->setBitrate($station->getMaxBitrate());
+        foreach ($station->hls_streams as $hlsStream) {
+            if ($hlsStream->bitrate > $station->max_bitrate) {
+                $hlsStream->bitrate = $station->max_bitrate;
                 $this->em->persist($hlsStream);
             }
         }
@@ -173,9 +173,9 @@ final class StationRepository extends Repository
 
     public function reduceRemoteRelayAutoDjBitrateToLimit(Station $station): void
     {
-        foreach ($station->getRemotes() as $remoteRelay) {
-            if ($remoteRelay->getAutodjBitrate() > $station->getMaxBitrate()) {
-                $remoteRelay->setAutodjBitrate($station->getMaxBitrate());
+        foreach ($station->remotes as $remoteRelay) {
+            if ($remoteRelay->autodj_bitrate > $station->max_bitrate) {
+                $remoteRelay->autodj_bitrate = $station->max_bitrate;
                 $this->em->persist($remoteRelay);
             }
         }
@@ -185,10 +185,10 @@ final class StationRepository extends Repository
 
     public function reduceLiveBroadcastRecordingBitrateToLimit(Station $station): void
     {
-        $backendConfig = $station->getBackendConfig();
-        if ($backendConfig->getRecordStreamsBitrate() > $station->getMaxBitrate()) {
-            $backendConfig->setRecordStreamsBitrate($station->getMaxBitrate());
-            $station->setBackendConfig($backendConfig);
+        $backendConfig = $station->backend_config;
+        if ($backendConfig->record_streams_bitrate > $station->max_bitrate) {
+            $backendConfig->record_streams_bitrate = $station->max_bitrate;
+            $station->backend_config = $backendConfig;
             $this->em->persist($station);
         }
 
@@ -197,12 +197,12 @@ final class StationRepository extends Repository
 
     public function reduceMountPointsToLimit(Station $station): void
     {
-        if ($station->getMaxMounts() === 0) {
+        if ($station->max_mounts === 0) {
             return;
         }
 
-        foreach ($station->getMounts() as $index => $stationMount) {
-            if (($index + 1) > $station->getMaxMounts()) {
+        foreach ($station->mounts as $index => $stationMount) {
+            if (($index + 1) > $station->max_mounts) {
                 $this->em->remove($stationMount);
             }
         }
@@ -212,12 +212,12 @@ final class StationRepository extends Repository
 
     public function reduceHlsStreamsToLimit(Station $station): void
     {
-        if ($station->getMaxHlsStreams() === 0) {
+        if ($station->max_hls_streams === 0) {
             return;
         }
 
-        foreach ($station->getHlsStreams() as $index => $stationHlsStream) {
-            if (($index + 1) > $station->getMaxHlsStreams()) {
+        foreach ($station->hls_streams as $index => $stationHlsStream) {
+            if (($index + 1) > $station->max_hls_streams) {
                 $this->em->remove($stationHlsStream);
             }
         }
@@ -238,7 +238,7 @@ final class StationRepository extends Repository
         $this->em->createQuery(
             <<<'DQL'
                 DELETE FROM App\Entity\StationPlaylistMedia spm
-                WHERE spm.playlist_id IN (
+                WHERE IDENTITY(spm.playlist) IN (
                     SELECT sp.id FROM App\Entity\StationPlaylist sp WHERE sp.station = :station
                 )
             DQL
@@ -273,7 +273,7 @@ final class StationRepository extends Repository
                 return $stationAlbumArt->getUri();
             }
 
-            $stationCustomUri = $station->getBrandingConfig()->getDefaultAlbumArtUrlAsUri();
+            $stationCustomUri = $station->branding_config->getDefaultAlbumArtUrlAsUri();
             if (null !== $stationCustomUri) {
                 return $stationCustomUri;
             }
@@ -290,9 +290,9 @@ final class StationRepository extends Repository
     ): void {
         $fs ??= StationFilesystems::buildConfigFilesystem($station);
 
-        if (!empty($station->getFallbackPath())) {
+        if (!empty($station->fallback_path)) {
             $this->doDeleteFallback($station, $fs);
-            $station->setFallbackPath(null);
+            $station->fallback_path = null;
         }
 
         $originalPath = $file->getClientFilename();
@@ -301,7 +301,7 @@ final class StationRepository extends Repository
         $fallbackPath = 'fallback.' . $originalExt;
         $fs->uploadAndDeleteOriginal($file->getUploadedPath(), $fallbackPath);
 
-        $station->setFallbackPath($fallbackPath);
+        $station->fallback_path = $fallbackPath;
         $this->em->persist($station);
         $this->em->flush();
     }
@@ -312,7 +312,7 @@ final class StationRepository extends Repository
     ): void {
         $fs ??= StationFilesystems::buildConfigFilesystem($station);
 
-        $fallbackPath = $station->getFallbackPath();
+        $fallbackPath = $station->fallback_path;
         if (empty($fallbackPath)) {
             return;
         }
@@ -326,7 +326,7 @@ final class StationRepository extends Repository
     ): void {
         $this->doDeleteFallback($station, $fs);
 
-        $station->setFallbackPath(null);
+        $station->fallback_path = null;
         $this->em->persist($station);
         $this->em->flush();
     }
@@ -338,18 +338,18 @@ final class StationRepository extends Repository
     ): void {
         $fs ??= StationFilesystems::buildConfigFilesystem($station);
 
-        $backendConfig = $station->getBackendConfig();
+        $backendConfig = $station->backend_config;
 
-        if (null !== $backendConfig->getStereoToolConfigurationPath()) {
+        if (null !== $backendConfig->stereo_tool_configuration_path) {
             $this->doDeleteStereoToolConfiguration($station, $fs);
-            $backendConfig->setStereoToolConfigurationPath(null);
+            $backendConfig->stereo_tool_configuration_path = null;
         }
 
         $stereoToolConfigurationPath = 'stereo-tool.sts';
         $fs->uploadAndDeleteOriginal($file->getUploadedPath(), $stereoToolConfigurationPath);
 
-        $backendConfig->setStereoToolConfigurationPath($stereoToolConfigurationPath);
-        $station->setBackendConfig($backendConfig);
+        $backendConfig->stereo_tool_configuration_path = $stereoToolConfigurationPath;
+        $station->backend_config = $backendConfig;
 
         $this->em->persist($station);
         $this->em->flush();
@@ -359,13 +359,15 @@ final class StationRepository extends Repository
         Station $station,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $backendConfig = $station->getBackendConfig();
-        if (null === $backendConfig->getStereoToolConfigurationPath()) {
+        $backendConfig = $station->backend_config;
+        $configPath = $backendConfig->stereo_tool_configuration_path;
+
+        if (null === $configPath) {
             return;
         }
 
         $fs ??= StationFilesystems::buildConfigFilesystem($station);
-        $fs->delete($backendConfig->getStereoToolConfigurationPath());
+        $fs->delete($configPath);
     }
 
     public function clearStereoToolConfiguration(
@@ -374,9 +376,9 @@ final class StationRepository extends Repository
     ): void {
         $this->doDeleteStereoToolConfiguration($station, $fs);
 
-        $backendConfig = $station->getBackendConfig();
-        $backendConfig->setStereoToolConfigurationPath(null);
-        $station->setBackendConfig($backendConfig);
+        $backendConfig = $station->backend_config;
+        $backendConfig->stereo_tool_configuration_path = null;
+        $station->backend_config = $backendConfig;
 
         $this->em->persist($station);
         $this->em->flush();

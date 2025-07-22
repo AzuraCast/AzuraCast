@@ -25,7 +25,7 @@ final class Permissions extends AbstractMiddleware
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if ($this->useStation) {
-            $stationId = $request->getStation()->getId();
+            $stationId = $request->getStation()->id;
         } else {
             $stationId = null;
         }

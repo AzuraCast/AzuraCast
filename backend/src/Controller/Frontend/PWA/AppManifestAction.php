@@ -20,16 +20,16 @@ final class AppManifestAction implements SingleActionInterface
     ): ResponseInterface {
         $station = $request->getStation();
 
-        if (!$station->getEnablePublicPage()) {
+        if (!$station->enable_public_page) {
             throw NotFoundException::station();
         }
 
         $customization = $request->getCustomization();
 
         $manifest = [
-            'name' => $station->getName() . ' - AzuraCast',
-            'short_name' => $station->getName(),
-            'description' => $station->getDescription(),
+            'name' => $station->name . ' - AzuraCast',
+            'short_name' => $station->name,
+            'description' => $station->description,
             'scope' => '/public/',
             'start_url' => '.',
             'display' => 'standalone',

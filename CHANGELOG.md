@@ -16,6 +16,16 @@ release channel, you can take advantage of these new features and fixes.
 - The "album" property for `SongInterface`-type items (station timelines, queues, media, etc.) is now supported as a
   first-class property for all tracks.
 
+- Media management permissions have been split into "manage station media" and "delete station media", allowing you to
+  assign permissions to users to add media without being able to remove it. If migrating from a previous version, users
+  who have the "manage" permission will automatically receive the "delete" permission; when assigning new permissions,
+  this new permission will need to be manually assigned.
+
+- Podcasts can now take advantage of the [Open Podcast Prefix Project (OP3)](https://op3.dev/) free and open-source
+  podcast analytics service directly from within AzuraCast. Enable OP3 support on the "Branding" tab of the podcast, and
+  all episodes will have their download URLs prefixed by the OP3 analytics URL, which will let you track your audience
+  details via the OP3 platform.
+
 ## Code Quality/Technical Changes
 
 - We have removed the "Hide Advanced Features" setting from the system settings panel. Often, this setting was disabled

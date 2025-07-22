@@ -14,7 +14,7 @@ final class FallbackFile
 
     public function getFallbackPathForStation(Station $station): string
     {
-        $stationFallback = $station->getFallbackPath();
+        $stationFallback = $station->fallback_path;
         if (!empty($stationFallback)) {
             $fsConfig = StationFilesystems::buildConfigFilesystem($station);
             if ($fsConfig->fileExists($stationFallback)) {

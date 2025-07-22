@@ -41,9 +41,9 @@ final class Role
     public static function fromRole(RoleEntity $role): self
     {
         return new self(
-            $role->getIdRequired(),
-            $role->getName(),
-            RolePermissions::fromRolePermissions($role->getPermissions())
+            $role->id,
+            $role->name,
+            RolePermissions::fromRolePermissions($role->permissions)
         );
     }
 }

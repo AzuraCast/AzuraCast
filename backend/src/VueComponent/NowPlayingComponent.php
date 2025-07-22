@@ -19,14 +19,14 @@ final class NowPlayingComponent implements VueComponentInterface
         $customization = $request->getCustomization();
 
         $station = $request->getStation();
-        $backendConfig = $station->getBackendConfig();
+        $backendConfig = $station->backend_config;
 
         return [
             ...$this->getDataProps($request),
-            'offlineText' => $station->getBrandingConfig()->getOfflineText(),
+            'offlineText' => $station->branding_config->offline_text,
             'showAlbumArt' => !$customization->hideAlbumArt(),
             'autoplay' => !empty($request->getQueryParam('autoplay')),
-            'showHls' => $backendConfig->getHlsEnableOnPublicPlayer(),
+            'showHls' => $backendConfig->hls_enable_on_public_player,
         ];
     }
 
@@ -36,7 +36,7 @@ final class NowPlayingComponent implements VueComponentInterface
         $customization = $request->getCustomization();
 
         return [
-            'stationShortName' => $station->getShortName(),
+            'stationShortName' => $station->short_name,
             'useStatic' => $customization->useStaticNowPlaying(),
             'useSse' => $customization->useStaticNowPlaying() && $this->centrifugo->isSupported(),
         ];

@@ -72,11 +72,11 @@ final class Annotations implements EventSubscriberInterface
     {
         $media = $event->getMedia();
         if ($media instanceof StationMedia) {
-            $event->setSongPath('media:' . ltrim($media->getPath(), '/'));
+            $event->setSongPath('media:' . ltrim($media->path, '/'));
         } else {
             $queue = $event->getQueue();
             if ($queue instanceof StationQueue) {
-                $customUri = $queue->getAutodjCustomUri();
+                $customUri = $queue->autodj_custom_uri;
                 if (!empty($customUri)) {
                     $event->setSongPath($customUri);
                 }
@@ -92,22 +92,22 @@ final class Annotations implements EventSubscriberInterface
         }
 
         $station = $event->getStation();
-        if (!$station->getBackendType()->isEnabled()) {
+        if (!$station->backend_type->isEnabled()) {
             return;
         }
 
-        $duration = $media->getLength();
+        $duration = $media->length;
 
         $event->addAnnotations([
-            'title' => $media->getTitle(),
-            'artist' => $media->getArtist(),
+            'title' => $media->title,
+            'artist' => $media->artist,
             'duration' => $duration,
-            'song_id' => $media->getSongId(),
-            'media_id' => $media->getId(),
-            'sq_id' => $event->getQueue()?->getIdRequired(),
+            'song_id' => $media->song_id,
+            'media_id' => $media->id,
+            'sq_id' => $event->getQueue()?->id,
             ...$this->processAutocueAnnotations(
                 $station,
-                $media->getExtraMetadata()->toArray(),
+                $media->extra_metadata->toArray(),
                 $duration,
             ),
             ...$this->customFieldRepo->getCustomFields($media),
@@ -122,7 +122,7 @@ final class Annotations implements EventSubscriberInterface
         }
 
         $station = $event->getStation();
-        if (!$station->getBackendType()->isEnabled()) {
+        if (!$station->backend_type->isEnabled()) {
             return;
         }
 
@@ -133,7 +133,7 @@ final class Annotations implements EventSubscriberInterface
             ...$this->processAutocueAnnotations(
                 $station,
                 $this->autoCueCache->getForCacheKey($cacheKey),
-                $media->getLength()
+                $media->length
             ),
         ]);
     }
@@ -207,9 +207,9 @@ final class Annotations implements EventSubscriberInterface
         $annotations[StationMediaMetadata::CUE_IN] ??= 0.0;
         $annotations[StationMediaMetadata::CUE_OUT] ??= $duration;
 
-        $backendConfig = $station->getBackendConfig();
+        $backendConfig = $station->backend_config;
         $defaultFade = $backendConfig->isCrossfadeEnabled()
-            ? $backendConfig->getCrossfade()
+            ? $backendConfig->crossfade
             : 0.0;
 
         $annotations[StationMediaMetadata::FADE_IN] ??= $defaultFade;
@@ -236,10 +236,10 @@ final class Annotations implements EventSubscriberInterface
         }
 
         $event->addAnnotations([
-            'playlist_id' => $playlist->getId(),
+            'playlist_id' => $playlist->id,
         ]);
 
-        if ($playlist->getIsJingle()) {
+        if ($playlist->is_jingle) {
             $event->addAnnotations([
                 'jingle_mode' => 'true',
             ]);
@@ -251,7 +251,7 @@ final class Annotations implements EventSubscriberInterface
         $request = $event->getRequest();
         if ($request instanceof StationRequest) {
             $event->addAnnotations([
-                'request_id' => $request->getId(),
+                'request_id' => $request->id,
             ]);
         }
     }
@@ -264,8 +264,8 @@ final class Annotations implements EventSubscriberInterface
 
         $queueRow = $event->getQueue();
         if ($queueRow instanceof StationQueue) {
-            $queueRow->setSentToAutodj();
-            $queueRow->setTimestampCued(Time::nowUtc());
+            $queueRow->sent_to_autodj = true;
+            $queueRow->timestamp_cued = Time::nowUtc();
             $this->em->persist($queueRow);
             $this->em->flush();
         }

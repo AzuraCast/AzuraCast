@@ -112,6 +112,7 @@ export enum StationPermissions {
   MountPoints = "manage station mounts",
   RemoteRelays = "manage station remotes",
   Media = "manage station media",
+  DeleteMedia = "delete station media",
   Automation = "manage station automation",
   WebHooks = "manage station web hooks",
   Podcasts = "manage station podcasts",
@@ -1121,6 +1122,8 @@ export type ApiPodcast = HasLinks & {
   has_custom_art?: boolean;
   art?: string;
   art_updated_at?: number;
+  /** The UUIDv5 global unique identifier for this podcast, based on its RSS feed URL. */
+  guid?: string;
   is_published?: boolean;
   episodes?: number;
   categories?: ApiPodcastCategory[];
@@ -1195,12 +1198,12 @@ export type ApiStationMedia = ApiHasSongFields &
      */
     id?: number;
     /**
-     * A unique identifier associated with this record.
+     * A unique identifier for this specific media item in the station's library. Each entry in the media table has a unique ID, even if it refers to a song that exists elsewhere.
      * @example "69b536afc7ebbf16457b8645"
      */
     unique_id?: string;
     /**
-     * The media file's 32-character unique song identifier hash
+     * The media file's 32-character unique song identifier hash. This hash is based on track metadata, so the same song uploaded multiple times will have the same `song_id`.
      * @example "9f33bbc912c19603e51be8e0987d076b"
      */
     song_id?: string;
@@ -2133,6 +2136,7 @@ export interface HasSongFields {
   text?: string | null;
   artist?: string | null;
   title?: string | null;
+  album?: string | null;
 }
 
 export interface HasSplitTokenFields {

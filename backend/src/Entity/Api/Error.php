@@ -7,6 +7,7 @@ namespace App\Entity\Api;
 use App\Exception;
 use OpenApi\Attributes as OA;
 use ReflectionClass;
+use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Throwable;
 
 #[OA\Schema(
@@ -96,7 +97,6 @@ final readonly class Error
         }
 
         $className = new ReflectionClass($e)->getShortName();
-
         if ($e instanceof Exception) {
             $messageFormatted = $e->getFormattedMessage();
             $extraData = $e->getExtraData();
@@ -110,6 +110,10 @@ final readonly class Error
         $extraData['line'] = $e->getLine();
 
         if ($includeTrace) {
+            if (!($e instanceof FlattenException)) {
+                $e = FlattenException::createFromThrowable($e);
+            }
+
             $extraData['trace'] = $e->getTrace();
         }
 

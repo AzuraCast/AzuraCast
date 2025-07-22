@@ -23,7 +23,7 @@ use Symfony\Component\Filesystem\Path;
     Attributes\Auditable,
     AppAssert\StorageLocation
 ]
-class StorageLocation implements Stringable, IdentifiableEntityInterface
+final class StorageLocation implements Stringable, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -31,79 +31,224 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     public const string DEFAULT_BACKUPS_PATH = '/var/azuracast/backups';
 
     #[ORM\Column(type: 'string', length: 50, enumType: StorageLocationTypes::class)]
-    protected StorageLocationTypes $type;
+    public readonly StorageLocationTypes $type;
 
     #[ORM\Column(type: 'string', length: 50, enumType: StorageLocationAdapters::class)]
-    protected StorageLocationAdapters $adapter;
+    public readonly StorageLocationAdapters $adapter;
 
     #[ORM\Column(length: 255, nullable: false)]
-    protected string $path = '';
+    public string $path = '' {
+        set => $this->truncateString(Path::canonicalize($value));
+    }
 
     #[ORM\Column(name: 's3_credential_key', length: 255, nullable: true)]
-    protected ?string $s3CredentialKey = null;
+    public ?string $s3CredentialKey = null {
+        set => $this->truncateNullableString($value);
+    }
 
     #[ORM\Column(name: 's3_credential_secret', length: 255, nullable: true)]
-    protected ?string $s3CredentialSecret = null;
+    public ?string $s3CredentialSecret = null {
+        set => $this->truncateNullableString($value);
+    }
 
     #[ORM\Column(name: 's3_region', length: 150, nullable: true)]
-    protected ?string $s3Region = null;
+    public ?string $s3Region = null {
+        set => $this->truncateNullableString($value, 150);
+    }
 
     #[ORM\Column(name: 's3_version', length: 150, nullable: true)]
-    protected ?string $s3Version = 'latest';
+    public ?string $s3Version = 'latest' {
+        set => $this->truncateNullableString($value, 150);
+    }
 
     #[ORM\Column(name: 's3_bucket', length: 255, nullable: true)]
-    protected ?string $s3Bucket = null;
+    public ?string $s3Bucket = null {
+        set => $this->truncateNullableString($value);
+    }
 
     #[ORM\Column(name: 's3_endpoint', length: 255, nullable: true)]
-    protected ?string $s3Endpoint = null;
+    public ?string $s3Endpoint = null {
+        set => $this->truncateNullableString($value);
+    }
 
     #[ORM\Column(name: 's3_use_path_style', nullable: true)]
-    protected ?bool $s3UsePathStyle = false;
+    public ?bool $s3UsePathStyle = false;
 
     #[ORM\Column(name: 'dropbox_app_key', length: 50, nullable: true)]
-    protected ?string $dropboxAppKey = null;
+    public ?string $dropboxAppKey = null {
+        set => $this->truncateNullableString($value, 50);
+    }
 
     #[ORM\Column(name: 'dropbox_app_secret', length: 150, nullable: true)]
-    protected ?string $dropboxAppSecret = null;
+    public ?string $dropboxAppSecret = null {
+        set => $this->truncateNullableString($value, 150);
+    }
 
     #[ORM\Column(name: 'dropbox_auth_token', length: 255, nullable: true)]
-    protected ?string $dropboxAuthToken = null;
+    public ?string $dropboxAuthToken = null {
+        set => $this->truncateNullableString($value);
+    }
 
     #[ORM\Column(name: 'dropbox_refresh_token', length: 255, nullable: true)]
-    protected ?string $dropboxRefreshToken = null;
+    public ?string $dropboxRefreshToken = null {
+        set => $this->truncateNullableString($value);
+    }
 
     #[ORM\Column(name: 'sftp_host', length: 255, nullable: true)]
-    protected ?string $sftpHost = null;
+    public ?string $sftpHost = null {
+        set => $this->truncateNullableString($value);
+    }
 
     #[ORM\Column(name: 'sftp_username', length: 255, nullable: true)]
-    protected ?string $sftpUsername = null;
+    public ?string $sftpUsername = null {
+        set => $this->truncateNullableString($value);
+    }
 
     #[ORM\Column(name: 'sftp_password', length: 255, nullable: true)]
-    protected ?string $sftpPassword = null;
+    public ?string $sftpPassword = null {
+        set => $this->truncateNullableString($value);
+    }
 
     #[ORM\Column(name: 'sftp_port', nullable: true)]
-    protected ?int $sftpPort = null;
+    public ?int $sftpPort = null;
 
     #[ORM\Column(name: 'sftp_private_key', type: 'text', nullable: true)]
-    protected ?string $sftpPrivateKey = null;
+    public ?string $sftpPrivateKey = null;
 
     #[ORM\Column(name: 'sftp_private_key_pass_phrase', length: 255, nullable: true)]
-    protected ?string $sftpPrivateKeyPassPhrase = null;
+    public ?string $sftpPrivateKeyPassPhrase = null {
+        set => $this->truncateNullableString($value);
+    }
 
     #[ORM\Column(name: 'storage_quota', type: 'bigint', nullable: true)]
-    protected string|int|null $storageQuota = null;
+    private string|int|null $storageQuotaRaw = null;
+
+    public ?BigInteger $storageQuotaBytes {
+        get {
+            $size = $this->storageQuotaRaw;
+            return (null !== $size && '' !== $size)
+                ? BigInteger::of($size)
+                : null;
+        }
+        set {
+            $this->storageQuotaRaw = ($value !== null) ? (string)$value : null;
+        }
+    }
+
+    public ?string $storageQuota {
+        get {
+            $rawQuota = $this->storageQuotaBytes;
+            return ($rawQuota instanceof BigInteger)
+                ? Quota::getReadableSize($rawQuota)
+                : null;
+        }
+        set (BigInteger|string|null $value) {
+            $this->storageQuotaBytes = Quota::convertFromReadableSize($value);
+        }
+    }
 
     #[ORM\Column(name: 'storage_used', type: 'bigint', nullable: true)]
     #[Attributes\AuditIgnore]
-    protected string|int|null $storageUsed = null;
+    private string|int|null $storageUsedRaw = null;
+
+    public BigInteger $storageUsedBytes {
+        get {
+            $size = $this->storageUsedRaw;
+            return (null !== $size && '' !== $size)
+                ? BigInteger::of($size)
+                : BigInteger::zero();
+        }
+        set (BigInteger|null $value) {
+            $this->storageUsedRaw = ($value !== null) ? (string)$value : null;
+        }
+    }
+
+    public string $storageUsed {
+        get => Quota::getReadableSize($this->storageUsedBytes);
+        set (BigInteger|string|null $value) {
+            $this->storageUsedBytes = Quota::convertFromReadableSize($value);
+        }
+    }
+
+    /**
+     * Increment the current used storage total.
+     */
+    public function addStorageUsed(BigInteger|int|string $newStorageAmount): void
+    {
+        if (empty($newStorageAmount)) {
+            return;
+        }
+
+        $currentStorageUsed = $this->storageUsedBytes;
+        $this->storageUsed = (string)$currentStorageUsed->plus($newStorageAmount);
+    }
+
+    /**
+     * Decrement the current used storage total.
+     */
+    public function removeStorageUsed(BigInteger|int|string $amountToRemove): void
+    {
+        if (empty($amountToRemove)) {
+            return;
+        }
+
+        $storageUsed = $this->storageUsedBytes->minus($amountToRemove);
+        if ($storageUsed->isLessThan(0)) {
+            $storageUsed = BigInteger::zero();
+        }
+
+        $this->storageUsed = (string)$storageUsed;
+    }
+
+    public string $storageAvailable {
+        get {
+            $rawSize = $this->storageAvailableBytes;
+
+            return ($rawSize instanceof BigInteger)
+                ? Quota::getReadableSize($rawSize)
+                : '';
+        }
+    }
+
+    public ?BigInteger $storageAvailableBytes {
+        get {
+            $quota = $this->storageQuotaBytes;
+
+            if ($this->adapter->isLocal()) {
+                $localPath = $this->path;
+
+                $totalSpaceFloat = disk_total_space($localPath);
+                if (is_float($totalSpaceFloat)) {
+                    $totalSpace = BigInteger::of($totalSpaceFloat);
+                    if (null === $quota || $quota->isGreaterThan($totalSpace)) {
+                        return $totalSpace;
+                    }
+                }
+            }
+
+            return $quota ?? null;
+        }
+    }
+
+    public function getStorageUsePercentage(): int
+    {
+        $storageUsed = $this->storageUsedBytes;
+        $storageAvailable = $this->storageAvailableBytes;
+
+        if (null === $storageAvailable) {
+            return 0;
+        }
+
+        return Quota::getPercentage($storageUsed, $storageAvailable);
+    }
 
     /** @var Collection<int, StationMedia> */
     #[ORM\OneToMany(targetEntity: StationMedia::class, mappedBy: 'storage_location')]
-    protected Collection $media;
+    public private(set) Collection $media;
 
     /** @var Collection<int, UnprocessableMedia> */
     #[ORM\OneToMany(targetEntity: UnprocessableMedia::class, mappedBy: 'storage_location')]
-    protected Collection $unprocessable_media;
+    public private(set) Collection $unprocessable_media;
 
     public function __construct(
         StorageLocationTypes $type,
@@ -116,324 +261,14 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
         $this->unprocessable_media = new ArrayCollection();
     }
 
-    public function getType(): StorageLocationTypes
-    {
-        return $this->type;
-    }
-
-    public function getAdapter(): StorageLocationAdapters
-    {
-        return $this->adapter;
-    }
-
-    public function getPath(): string
-    {
-        return $this->path;
-    }
-
-    public function setPath(string $path): void
-    {
-        $this->path = $this->truncateString(
-            Path::canonicalize($path)
-        );
-    }
-
-    public function getS3CredentialKey(): ?string
-    {
-        return $this->s3CredentialKey;
-    }
-
-    public function setS3CredentialKey(?string $s3CredentialKey): void
-    {
-        $this->s3CredentialKey = $this->truncateNullableString($s3CredentialKey);
-    }
-
-    public function getS3CredentialSecret(): ?string
-    {
-        return $this->s3CredentialSecret;
-    }
-
-    public function setS3CredentialSecret(?string $s3CredentialSecret): void
-    {
-        $this->s3CredentialSecret = $this->truncateNullableString($s3CredentialSecret);
-    }
-
-    public function getS3Region(): ?string
-    {
-        return $this->s3Region;
-    }
-
-    public function setS3Region(?string $s3Region): void
-    {
-        $this->s3Region = $s3Region;
-    }
-
-    public function getS3Version(): ?string
-    {
-        return $this->s3Version;
-    }
-
-    public function setS3Version(?string $s3Version): void
-    {
-        $this->s3Version = $s3Version;
-    }
-
-    public function getS3Bucket(): ?string
-    {
-        return $this->s3Bucket;
-    }
-
-    public function setS3Bucket(?string $s3Bucket): void
-    {
-        $this->s3Bucket = $s3Bucket;
-    }
-
-    public function getS3Endpoint(): ?string
-    {
-        return $this->s3Endpoint;
-    }
-
-    public function setS3Endpoint(?string $s3Endpoint): void
-    {
-        $this->s3Endpoint = $this->truncateNullableString($s3Endpoint);
-    }
-
-    public function getS3UsePathStyle(): bool
-    {
-        return $this->s3UsePathStyle ?? false;
-    }
-
-    public function setS3UsePathStyle(?bool $s3UsePathStyle): void
-    {
-        $this->s3UsePathStyle = $s3UsePathStyle;
-    }
-
-    public function getDropboxAppKey(): ?string
-    {
-        return $this->dropboxAppKey;
-    }
-
-    public function setDropboxAppKey(?string $dropboxAppKey): void
-    {
-        $this->dropboxAppKey = $dropboxAppKey;
-    }
-
-    public function getDropboxAppSecret(): ?string
-    {
-        return $this->dropboxAppSecret;
-    }
-
-    public function setDropboxAppSecret(?string $dropboxAppSecret): void
-    {
-        $this->dropboxAppSecret = $dropboxAppSecret;
-    }
-
-    public function getDropboxAuthToken(): ?string
-    {
-        return $this->dropboxAuthToken;
-    }
-
-    public function setDropboxAuthToken(?string $dropboxAuthToken): void
-    {
-        $this->dropboxAuthToken = $dropboxAuthToken;
-    }
-
-    public function getDropboxRefreshToken(): ?string
-    {
-        return $this->dropboxRefreshToken;
-    }
-
-    public function setDropboxRefreshToken(?string $dropboxRefreshToken): void
-    {
-        $this->dropboxRefreshToken = $dropboxRefreshToken;
-    }
-
-    public function getSftpHost(): ?string
-    {
-        return $this->sftpHost;
-    }
-
-    public function setSftpHost(?string $sftpHost): void
-    {
-        $this->sftpHost = $sftpHost;
-    }
-
-    public function getSftpUsername(): ?string
-    {
-        return $this->sftpUsername;
-    }
-
-    public function setSftpUsername(?string $sftpUsername): void
-    {
-        $this->sftpUsername = $sftpUsername;
-    }
-
-    public function getSftpPassword(): ?string
-    {
-        return $this->sftpPassword;
-    }
-
-    public function setSftpPassword(?string $sftpPassword): void
-    {
-        $this->sftpPassword = $sftpPassword;
-    }
-
-    public function getSftpPort(): ?int
-    {
-        return $this->sftpPort;
-    }
-
-    public function setSftpPort(?int $sftpPort): void
-    {
-        $this->sftpPort = $sftpPort;
-    }
-
-    public function getSftpPrivateKey(): ?string
-    {
-        return $this->sftpPrivateKey;
-    }
-
-    public function setSftpPrivateKey(?string $sftpPrivateKey): void
-    {
-        $this->sftpPrivateKey = $sftpPrivateKey;
-    }
-
-    public function getSftpPrivateKeyPassPhrase(): ?string
-    {
-        return $this->sftpPrivateKeyPassPhrase;
-    }
-
-    public function setSftpPrivateKeyPassPhrase(?string $sftpPrivateKeyPassPhrase): void
-    {
-        $this->sftpPrivateKeyPassPhrase = $sftpPrivateKeyPassPhrase;
-    }
-
-    public function isLocal(): bool
-    {
-        return $this->getAdapter()->isLocal();
-    }
-
-    public function getStorageQuota(): ?string
-    {
-        $rawQuota = $this->getStorageQuotaBytes();
-
-        return ($rawQuota instanceof BigInteger)
-            ? Quota::getReadableSize($rawQuota)
-            : '';
-    }
-
-    /**
-     * @param string|BigInteger|null $storageQuota
-     */
-    public function setStorageQuota(BigInteger|string|null $storageQuota): void
-    {
-        $storageQuota = (string)Quota::convertFromReadableSize($storageQuota);
-        $this->storageQuota = !empty($storageQuota) ? $storageQuota : null;
-    }
-
-    public function getStorageQuotaBytes(): ?BigInteger
-    {
-        $size = $this->storageQuota;
-
-        return (null !== $size && '' !== $size)
-            ? BigInteger::of($size)
-            : null;
-    }
-
-    public function getStorageUsed(): string
-    {
-        $rawSize = $this->getStorageUsedBytes();
-        return Quota::getReadableSize($rawSize);
-    }
-
-    /**
-     * @param string|BigInteger|null $storageUsed
-     */
-    public function setStorageUsed(BigInteger|string|null $storageUsed): void
-    {
-        $storageUsed = (string)Quota::convertFromReadableSize($storageUsed);
-        $this->storageUsed = !empty($storageUsed) ? $storageUsed : null;
-    }
-
-    public function getStorageUsedBytes(): BigInteger
-    {
-        $size = $this->storageUsed;
-
-        return (null !== $size && '' !== $size)
-            ? BigInteger::of($size)
-            : BigInteger::zero();
-    }
-
-    /**
-     * Increment the current used storage total.
-     *
-     * @param int|string|BigInteger $newStorageAmount
-     */
-    public function addStorageUsed(BigInteger|int|string $newStorageAmount): void
-    {
-        if (empty($newStorageAmount)) {
-            return;
-        }
-
-        $currentStorageUsed = $this->getStorageUsedBytes();
-        $this->storageUsed = (string)$currentStorageUsed->plus($newStorageAmount);
-    }
-
-    /**
-     * Decrement the current used storage total.
-     *
-     * @param int|string|BigInteger $amountToRemove
-     */
-    public function removeStorageUsed(BigInteger|int|string $amountToRemove): void
-    {
-        if (empty($amountToRemove)) {
-            return;
-        }
-
-        $storageUsed = $this->getStorageUsedBytes()->minus($amountToRemove);
-        if ($storageUsed->isLessThan(0)) {
-            $storageUsed = BigInteger::zero();
-        }
-
-        $this->storageUsed = (string)$storageUsed;
-    }
-
-    public function getStorageAvailable(): string
-    {
-        $rawSize = $this->getStorageAvailableBytes();
-
-        return ($rawSize instanceof BigInteger)
-            ? Quota::getReadableSize($rawSize)
-            : '';
-    }
-
-    public function getStorageAvailableBytes(): ?BigInteger
-    {
-        $quota = $this->getStorageQuotaBytes();
-
-        if ($this->isLocal()) {
-            $localPath = $this->getPath();
-
-            $totalSpaceFloat = disk_total_space($localPath);
-            if (is_float($totalSpaceFloat)) {
-                $totalSpace = BigInteger::of($totalSpaceFloat);
-                if (null === $quota || $quota->isGreaterThan($totalSpace)) {
-                    return $totalSpace;
-                }
-            }
-        }
-
-        return $quota ?? null;
-    }
-
     public function isStorageFull(): bool
     {
-        $quota = $this->getStorageQuotaBytes();
+        $quota = $this->storageQuotaBytes;
         if ($quota === null) {
             return false;
         }
 
-        $used = $this->getStorageUsedBytes();
+        $used = $this->storageUsedBytes;
 
         return ($used->compareTo($quota) !== -1);
     }
@@ -444,12 +279,12 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
             return true;
         }
 
-        $quota = $this->getStorageQuotaBytes();
+        $quota = $this->storageQuotaBytes;
         if ($quota === null) {
             return true;
         }
 
-        $newStorageUsed = $this->getStorageUsedBytes()->plus($size);
+        $newStorageUsed = $this->storageUsedBytes->plus($size);
         return ($newStorageUsed->compareTo($quota) === -1);
     }
 
@@ -460,40 +295,26 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
         }
     }
 
-    public function getStorageUsePercentage(): int
-    {
-        $storageUsed = $this->getStorageUsedBytes();
-        $storageAvailable = $this->getStorageAvailableBytes();
-
-        if (null === $storageAvailable) {
-            return 0;
-        }
-
-        return Quota::getPercentage($storageUsed, $storageAvailable);
-    }
-
-    /**
-     * @return Collection<int, StationMedia>
-     */
-    public function getMedia(): Collection
-    {
-        return $this->media;
-    }
-
     public function getUri(?string $suffix = null): string
     {
-        $adapterClass = $this->getAdapter()->getAdapterClass();
+        $adapterClass = $this->adapter->getAdapterClass();
         return $adapterClass::getUri($this, $suffix);
     }
 
     public function getFilteredPath(): string
     {
-        $adapterClass = $this->getAdapter()->getAdapterClass();
+        $adapterClass = $this->adapter->getAdapterClass();
         return $adapterClass::filterPath($this->path);
+    }
+
+    public function __clone(): void
+    {
+        $this->media = new ArrayCollection();
+        $this->unprocessable_media = new ArrayCollection();
     }
 
     public function __toString(): string
     {
-        return $this->getAdapter()->getName() . ': ' . $this->getUri();
+        return $this->adapter->getName() . ': ' . $this->getUri();
     }
 }

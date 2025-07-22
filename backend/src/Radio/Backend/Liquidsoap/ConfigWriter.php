@@ -77,7 +77,7 @@ final class ConfigWriter implements EventSubscriberInterface
             return;
         }
 
-        $settings = $event->getStation()->getBackendConfig();
+        $settings = $event->getStation()->backend_config;
         $customConfig = $settings->getCustomConfigurationSection($sectionName);
 
         if (!empty($customConfig)) {
@@ -117,7 +117,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 $preset = $settings->getMasterMePresetEnum();
                 $presetOptions = $preset->getOptions();
 
-                if (0 !== ($loudnessTarget = $settings->getMasterMeLoudnessTarget())) {
+                if (0 !== ($loudnessTarget = $settings->master_me_loudness_target)) {
                     $presetOptions['target'] = $loudnessTarget;
                 }
 
@@ -148,9 +148,9 @@ final class ConfigWriter implements EventSubscriberInterface
                 $stereoToolBinary = $stereoToolLibraryPath . '/stereo_tool';
 
                 $stereoToolConfiguration = $station->getRadioConfigDir()
-                    . DIRECTORY_SEPARATOR . $settings->getStereoToolConfigurationPath();
+                    . DIRECTORY_SEPARATOR . $settings->stereo_tool_configuration_path;
 
-                $stereoToolLicenseKey = $settings->getStereoToolLicenseKey();
+                $stereoToolLicenseKey = $settings->stereo_tool_license_key;
 
                 if (is_file($stereoToolBinary)) {
                     $stereoToolProcess = $stereoToolBinary . ' --silent - - -s ' . $stereoToolConfiguration;
@@ -229,35 +229,35 @@ final class ConfigWriter implements EventSubscriberInterface
         $pidfile = $configDir . '/liquidsoap.pid';
         $httpApiPort = $this->liquidsoap->getHttpApiPort($station);
 
-        $stationTz = self::cleanUpString($station->getTimezone());
+        $stationTz = self::cleanUpString($station->timezone ?? 'UTC');
 
-        $stationApiAuth = self::cleanUpString($station->getAdapterApiKey());
+        $stationApiAuth = self::cleanUpString($station->adapter_api_key);
         $stationApiUrl = self::cleanUpString(
             (string)$this->environment->getInternalUri()
-                ->withPath('/api/internal/' . $station->getId() . '/liquidsoap')
+                ->withPath('/api/internal/' . $station->id . '/liquidsoap')
         );
 
         $commonLibPath = $this->environment->getParentDirectory() . '/liquidsoap/azuracast.liq';
 
-        $mediaStorageLocation = $station->getMediaStorageLocation();
-        $stationMediaDir = $mediaStorageLocation->isLocal()
+        $mediaStorageLocation = $station->media_storage_location;
+        $stationMediaDir = $mediaStorageLocation->adapter->isLocal()
             ? $mediaStorageLocation->getFilteredPath()
             : 'api';
 
         $logLevel = $this->environment->isProduction() ? 3 : 4;
 
         $backendConfig = $event->getBackendConfig();
-        $useComputeAutocue = $backendConfig->getEnableAutoCue() ? 'true' : 'false';
+        $useComputeAutocue = $backendConfig->enable_auto_cue ? 'true' : 'false';
 
         $enableCrossfade = $backendConfig->isCrossfadeEnabled() ? 'true' : 'false';
         $crossfadeType = (CrossfadeModes::Smart === $backendConfig->getCrossfadeTypeEnum())
             ? 'smart'
             : 'normal';
-        $defaultFade = self::toFloat($backendConfig->getCrossfade());
+        $defaultFade = self::toFloat($backendConfig->crossfade);
         $defaultCross = self::toFloat($backendConfig->getCrossfadeDuration());
 
         $liveBroadcastText = self::cleanUpString(
-            $backendConfig->getLiveBroadcastText()
+            $backendConfig->live_broadcast_text
         );
 
         $fallbackPath = self::cleanUpString(
@@ -349,8 +349,8 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $fallbackRemoteUrl = null;
 
-        foreach ($station->getPlaylists() as $playlist) {
-            if (!$playlist->getIsEnabled()) {
+        foreach ($station->playlists as $playlist) {
+            if (!$playlist->is_enabled) {
                 continue;
             }
 
@@ -361,15 +361,15 @@ final class ConfigWriter implements EventSubscriberInterface
             $playlistVarName = self::getPlaylistVariableName($playlist);
 
             if (in_array($playlistVarName, $playlistVarNames, true)) {
-                $playlistVarName .= '_' . $playlist->getId();
+                $playlistVarName .= '_' . $playlist->id;
             }
 
-            $scheduleItems = $playlist->getScheduleItems();
+            $scheduleItems = $playlist->schedule_items;
 
             $playlistVarNames[] = $playlistVarName;
             $playlistConfigLines = [];
 
-            if (PlaylistSources::Songs === $playlist->getSource()) {
+            if (PlaylistSources::Songs === $playlist->source) {
                 $playlistFilePath = PlaylistFileWriter::getPlaylistFilePath($playlist);
 
                 $playlistParams = [
@@ -377,7 +377,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     'mime_type="audio/x-mpegurl"',
                 ];
 
-                $playlistMode = match ($playlist->getOrder()) {
+                $playlistMode = match ($playlist->order) {
                     PlaylistOrders::Sequential => 'normal',
                     PlaylistOrders::Shuffle => 'randomize',
                     PlaylistOrders::Random => 'random'
@@ -393,22 +393,22 @@ final class ConfigWriter implements EventSubscriberInterface
                     $playlistConfigLines[] = $playlistVarName . ' = merge_tracks(id="merge_'
                         . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
                 }
-            } elseif (PlaylistRemoteTypes::Playlist === $playlist->getRemoteType()) {
+            } elseif (PlaylistRemoteTypes::Playlist === $playlist->remote_type) {
                 $playlistFunc = 'playlist("'
-                    . self::cleanUpString($playlist->getRemoteUrl())
+                    . self::cleanUpString($playlist->remote_url)
                     . '")';
                 $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFunc;
             } else {
                 // Special handling for Remote Stream URLs.
-                $remoteUrl = $playlist->getRemoteUrl();
+                $remoteUrl = $playlist->remote_url;
                 if (null === $remoteUrl) {
                     continue;
                 }
 
-                $buffer = $playlist->getRemoteBuffer();
+                $buffer = $playlist->remote_buffer;
                 $buffer = ($buffer < 1) ? StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
 
-                $inputFunc = match ($playlist->getRemoteType()) {
+                $inputFunc = match ($playlist->remote_type) {
                     PlaylistRemoteTypes::Stream => 'input.http',
                     default => 'input.external.ffmpeg'
                 };
@@ -433,17 +433,17 @@ final class ConfigWriter implements EventSubscriberInterface
                 continue;
             }
 
-            if ($playlist->getIsJingle()) {
-                $playlistConfigLines[] = $playlistVarName . ' = drop_metadata(' . $playlistVarName . ')';
+            if ($playlist->is_jingle) {
+                $playlistConfigLines[] = $playlistVarName . ' = azuracast.utilities.drop_metadata(' . $playlistVarName . ')';
             }
 
-            if (PlaylistTypes::Advanced === $playlist->getType()) {
+            if (PlaylistTypes::Advanced === $playlist->type) {
                 $playlistConfigLines[] = 'ignore(' . $playlistVarName . ')';
             }
 
             $event->appendLines($playlistConfigLines);
 
-            switch ($playlist->getType()) {
+            switch ($playlist->type) {
                 case PlaylistTypes::Standard:
                     if ($scheduleItems->count() > 0) {
                         foreach ($scheduleItems as $scheduleItem) {
@@ -460,18 +460,18 @@ final class ConfigWriter implements EventSubscriberInterface
                             }
                         }
                     } else {
-                        $genPlaylistWeights[] = $playlist->getWeight();
+                        $genPlaylistWeights[] = $playlist->weight;
                         $genPlaylistVars[] = $playlistVarName;
                     }
                     break;
 
                 case PlaylistTypes::OncePerXSongs:
                 case PlaylistTypes::OncePerXMinutes:
-                    if (PlaylistTypes::OncePerXSongs === $playlist->getType()) {
+                    if (PlaylistTypes::OncePerXSongs === $playlist->type) {
                         $playlistScheduleVar = 'rotate(weights=[1,'
-                            . $playlist->getPlayPerSongs() . '], [' . $playlistVarName . ', radio])';
+                            . $playlist->play_per_songs . '], [' . $playlistVarName . ', radio])';
                     } else {
-                        $delaySeconds = $playlist->getPlayPerMinutes() * 60;
+                        $delaySeconds = $playlist->play_per_songs * 60;
                         $delayTrackSensitive = $playlist->backendInterruptOtherSongs() ? 'false' : 'true';
 
                         $playlistScheduleVar = 'fallback(track_sensitive=' . $delayTrackSensitive . ', [delay(' . $delaySeconds . '., ' . $playlistVarName . '), radio])';
@@ -492,12 +492,12 @@ final class ConfigWriter implements EventSubscriberInterface
                             }
                         }
                     } else {
-                        $specialPlaylists[$playlist->getType()->value][] = 'radio = ' . $playlistScheduleVar;
+                        $specialPlaylists[$playlist->type->value][] = 'radio = ' . $playlistScheduleVar;
                     }
                     break;
 
                 case PlaylistTypes::OncePerHour:
-                    $minutePlayTime = $playlist->getPlayPerHourMinute() . 'm';
+                    $minutePlayTime = $playlist->play_per_hour_minute . 'm';
 
                     if ($scheduleItems->count() > 0) {
                         foreach ($scheduleItems as $scheduleItem) {
@@ -586,7 +586,7 @@ final class ConfigWriter implements EventSubscriberInterface
             }
         }
 
-        if (!$station->useManualAutoDJ()) {
+        if (!$station->backend_config->use_manual_autodj) {
             $event->appendBlock(
                 <<< LIQ
                 radio = azuracast.enable_autodj(radio)
@@ -645,8 +645,8 @@ final class ConfigWriter implements EventSubscriberInterface
         WriteLiquidsoapConfiguration $event,
         StationSchedule $playlistSchedule
     ): string {
-        $startTime = $playlistSchedule->getStartTime();
-        $endTime = $playlistSchedule->getEndTime();
+        $startTime = $playlistSchedule->start_time;
+        $endTime = $playlistSchedule->end_time;
 
         // Handle multi-day playlists.
         if ($startTime > $endTime) {
@@ -655,7 +655,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 '00h00m-' . self::formatTimeCode($endTime),
             ];
 
-            $playlistScheduleDays = $playlistSchedule->getDays();
+            $playlistScheduleDays = $playlistSchedule->days;
             if (!empty($playlistScheduleDays) && count($playlistScheduleDays) < 7) {
                 $currentPlayDays = [];
                 $nextPlayDays = [];
@@ -682,7 +682,7 @@ final class ConfigWriter implements EventSubscriberInterface
             ? self::formatTimeCode($startTime)
             : self::formatTimeCode($startTime) . '-' . self::formatTimeCode($endTime);
 
-        $playlistScheduleDays = $playlistSchedule->getDays();
+        $playlistScheduleDays = $playlistSchedule->days;
         if (!empty($playlistScheduleDays) && count($playlistScheduleDays) < 7) {
             $playDays = [];
 
@@ -693,15 +693,15 @@ final class ConfigWriter implements EventSubscriberInterface
         }
 
         // Handle start-date and end-date boundaries.
-        $startDate = $playlistSchedule->getStartDate();
-        $endDate = $playlistSchedule->getEndDate();
+        $startDate = $playlistSchedule->start_date;
+        $endDate = $playlistSchedule->end_date;
 
         if (!empty($startDate) || !empty($endDate)) {
             $tzObject = $event->getStation()->getTimezoneObject();
 
             $customFunctionBody = [];
 
-            $scheduleMethod = 'schedule_' . $playlistSchedule->getIdRequired() . '_date_range';
+            $scheduleMethod = 'schedule_' . $playlistSchedule->id . '_date_range';
             $customFunctionBody[] = 'def ' . $scheduleMethod . '() =';
 
             $conditions = [];
@@ -752,7 +752,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(
             <<<LIQ
             # Allow Telnet to skip the current track.
-            add_skip_command(radio)
+            azuracast.utilities.add_skip_command(radio)
             
             # Apply amplification metadata (if supplied)
             # This can be disabled by setting:
@@ -764,7 +764,7 @@ final class ConfigWriter implements EventSubscriberInterface
         // Replaygain metadata
         $settings = $event->getBackendConfig();
 
-        if ($settings->useReplayGain()) {
+        if ($settings->enable_replaygain_metadata) {
             $event->appendBlock(
                 <<<LIQ
                 # Replaygain Metadata
@@ -785,7 +785,7 @@ final class ConfigWriter implements EventSubscriberInterface
             LS
         );
 
-        if ($settings->isAudioProcessingEnabled() && !$settings->getPostProcessingIncludeLive()) {
+        if ($settings->isAudioProcessingEnabled() && !$settings->post_processing_include_live) {
             $this->writePostProcessingSection($event);
         }
     }
@@ -794,16 +794,16 @@ final class ConfigWriter implements EventSubscriberInterface
     {
         $station = $event->getStation();
 
-        if (!$station->getEnableStreamers()) {
+        if (!$station->enable_streamers) {
             return;
         }
 
         $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_PRE_LIVE);
 
         $settings = $event->getBackendConfig();
-        $charset = $settings->getCharset();
-        $djMount = $settings->getDjMountPoint();
-        $recordLiveStreams = $settings->recordStreams();
+        $charset = $settings->charset;
+        $djMount = $settings->dj_mount_point;
+        $recordLiveStreams = $settings->record_streams;
 
         $harborParams = [
             '"' . self::cleanUpString($djMount) . '"',
@@ -817,7 +817,7 @@ final class ConfigWriter implements EventSubscriberInterface
             'on_disconnect = azuracast.live_disconnected',
         ];
 
-        $djBuffer = $settings->getDjBuffer();
+        $djBuffer = $settings->dj_buffer;
         if (0 !== $djBuffer) {
             $harborParams[] = 'buffer = ' . self::toFloat($djBuffer);
             $harborParams[] = 'max = ' . self::toFloat(max($djBuffer + 5, 10));
@@ -891,7 +891,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
         if ($recordLiveStreams) {
             $recordLiveStreamsFormat = $settings->getRecordStreamsFormatEnum();
-            $recordLiveStreamsBitrate = $settings->getRecordStreamsBitrate();
+            $recordLiveStreamsBitrate = $settings->record_streams_bitrate;
 
             $formatString = $this->getOutputFormatString($recordLiveStreamsFormat, $recordLiveStreamsBitrate);
             $recordExtension = $recordLiveStreamsFormat->getExtension();
@@ -932,11 +932,11 @@ final class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(
             <<<LIQ
             # Allow for Telnet-driven insertion of custom metadata.
-            radio = server.insert_metadata(id="custom_metadata", radio)
+            azuracast.utilities.add_custom_metadata_command(id="custom_metadata", radio)
             LIQ
         );
 
-        if ($settings->isAudioProcessingEnabled() && $settings->getPostProcessingIncludeLive()) {
+        if ($settings->isAudioProcessingEnabled() && $settings->post_processing_include_live) {
             $this->writePostProcessingSection($event);
         }
 
@@ -946,7 +946,7 @@ final class ConfigWriter implements EventSubscriberInterface
             radio = azuracast.add_fallback(radio)
             
             # Send metadata changes back to AzuraCast
-            radio.on_metadata(azuracast.send_feedback)
+            radio = source.on_metadata(radio, azuracast.send_feedback)
 
             # Handle "Jingle Mode" tracks by replaying the previous metadata.
             radio = azuracast.handle_jingle_mode(radio)
@@ -961,7 +961,7 @@ final class ConfigWriter implements EventSubscriberInterface
     {
         $station = $event->getStation();
 
-        if (FrontendAdapters::Remote === $station->getFrontendType()) {
+        if (FrontendAdapters::Remote === $station->frontend_type) {
             return;
         }
 
@@ -971,7 +971,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
         // Configure the outbound broadcast.
         $i = 0;
-        foreach ($station->getMounts() as $mountRow) {
+        foreach ($station->mounts as $mountRow) {
             $i++;
 
             /** @var StationMount $mountRow */
@@ -989,7 +989,7 @@ final class ConfigWriter implements EventSubscriberInterface
     {
         $station = $event->getStation();
 
-        if (!$station->getEnableHls()) {
+        if (!$station->enable_hls) {
             return;
         }
 
@@ -1000,14 +1000,14 @@ final class ConfigWriter implements EventSubscriberInterface
         // Configure the outbound broadcast.
         $hlsStreams = [];
 
-        foreach ($station->getHlsStreams() as $hlsStream) {
-            $streamVarName = self::cleanUpVarName($hlsStream->getName());
+        foreach ($station->hls_streams as $hlsStream) {
+            $streamVarName = self::cleanUpVarName($hlsStream->name);
 
-            if (StreamFormats::Aac !== $hlsStream->getFormat()) {
+            if (StreamFormats::Aac !== $hlsStream->format) {
                 continue;
             }
 
-            $streamBitrate = $hlsStream->getBitrate() ?? 128;
+            $streamBitrate = $hlsStream->bitrate ?? 128;
 
             $lsConfig[] = <<<LIQ
             {$streamVarName} = %ffmpeg(
@@ -1043,16 +1043,16 @@ final class ConfigWriter implements EventSubscriberInterface
         $hlsBaseDir = $station->getRadioHlsDir();
 
         $backendConfig = $event->getBackendConfig();
-        $hlsSegmentLength = $backendConfig->getHlsSegmentLength();
-        $hlsSegmentsInPlaylist = $backendConfig->getHlsSegmentsInPlaylist();
-        $hlsSegmentsOverhead = $backendConfig->getHlsSegmentsOverhead();
+        $hlsSegmentLength = $backendConfig->hls_segment_length;
+        $hlsSegmentsInPlaylist = $backendConfig->hls_segments_in_playlist;
+        $hlsSegmentsOverhead = $backendConfig->hls_segments_overhead;
 
         $event->appendBlock(
             <<<LIQ
-            def hls_segment_name(metadata) =
-                timestamp = int_of_float(time())
-                duration = {$hlsSegmentLength}
-                "#{metadata.stream_name}_#{duration}_#{timestamp}_#{metadata.position}.#{metadata.extname}"
+            def hls_segment_name(seg_meta) =
+                seg_timestamp = int_of_float(time())
+                seg_duration = {$hlsSegmentLength}
+                "#{seg_meta.stream_name}_#{seg_duration}_#{seg_timestamp}_#{seg_meta.position}.#{seg_meta.extname}"
             end
 
             output.file.hls(playlist="live.m3u8",
@@ -1080,7 +1080,7 @@ final class ConfigWriter implements EventSubscriberInterface
         int $id
     ): string {
         $station = $event->getStation();
-        $charset = $event->getBackendConfig()->getCharset();
+        $charset = $event->getBackendConfig()->charset;
 
         $format = $mount->getAutodjFormat() ?? StreamFormats::default();
         $outputFormat = $this->getOutputFormatString(
@@ -1125,15 +1125,15 @@ final class ConfigWriter implements EventSubscriberInterface
             $outputParams[] = 'mount = "' . self::cleanUpString($mountPoint) . '"';
         }
 
-        $outputParams[] = 'name = "' . self::cleanUpString($station->getName()) . '"';
+        $outputParams[] = 'name = "' . self::cleanUpString($station->name) . '"';
 
         if (!$mount->getIsShoutcast()) {
-            $outputParams[] = 'description = "' . self::cleanUpString($station->getDescription()) . '"';
+            $outputParams[] = 'description = "' . self::cleanUpString($station->description) . '"';
         }
-        $outputParams[] = 'genre = "' . self::cleanUpString($station->getGenre()) . '"';
+        $outputParams[] = 'genre = "' . self::cleanUpString($station->genre) . '"';
 
-        if (!empty($station->getUrl())) {
-            $outputParams[] = 'url = "' . self::cleanUpString($station->getUrl()) . '"';
+        if (!empty($station->url)) {
+            $outputParams[] = 'url = "' . self::cleanUpString($station->url) . '"';
         }
 
         $outputParams[] = 'public = ' . ($mount->getIsPublic() ? 'true' : 'false');
@@ -1192,11 +1192,11 @@ final class ConfigWriter implements EventSubscriberInterface
 
         // Set up broadcast to remote relays.
         $i = 0;
-        foreach ($station->getRemotes() as $remoteRow) {
+        foreach ($station->remotes as $remoteRow) {
             $i++;
 
             /** @var StationRemote $remoteRow */
-            if (!$remoteRow->getEnableAutodj()) {
+            if (!$remoteRow->enable_autodj) {
                 continue;
             }
 
@@ -1271,7 +1271,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
     public static function getPlaylistVariableName(StationPlaylist $playlist): string
     {
-        return self::cleanUpVarName('playlist_' . $playlist->getShortName());
+        return self::cleanUpVarName('playlist_' . StationPlaylist::generateShortName($playlist->name));
     }
 
     /**
@@ -1332,15 +1332,15 @@ final class ConfigWriter implements EventSubscriberInterface
         $station = $event->getStation();
         $backendConfig = $event->getBackendConfig();
 
-        if ($backendConfig->getWritePlaylistsToLiquidsoap()) {
+        if ($backendConfig->write_playlists_to_liquidsoap) {
             return true;
         }
 
-        if ($station->useManualAutoDJ()) {
+        if ($station->backend_config->use_manual_autodj) {
             return true;
         }
 
-        if (PlaylistSources::Songs !== $playlist->getSource()) {
+        if (PlaylistSources::Songs !== $playlist->source) {
             return true;
         }
 
@@ -1348,7 +1348,7 @@ final class ConfigWriter implements EventSubscriberInterface
             $playlist->backendInterruptOtherSongs()
             || $playlist->backendPlaySingleTrack()
             || $playlist->backendMerge()
-            || PlaylistTypes::Advanced === $playlist->getType()
+            || PlaylistTypes::Advanced === $playlist->type
         ) {
             return true;
         }

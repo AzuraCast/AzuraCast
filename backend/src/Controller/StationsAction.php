@@ -28,27 +28,27 @@ final class StationsAction implements SingleActionInterface
         $globalProps = $view->getGlobalProps();
 
         $globalProps->set('station', [
-            'id' => $station->getIdRequired(),
-            'name' => $station->getName(),
-            'isEnabled' => $station->getIsEnabled(),
-            'hasStarted' => $station->getHasStarted(),
-            'needsRestart' => $station->getNeedsRestart(),
-            'shortName' => $station->getShortName(),
-            'timezone' => $station->getTimezone(),
-            'offlineText' => $station->getBrandingConfig()->getOfflineText(),
-            'maxBitrate' => $station->getMaxBitrate(),
-            'maxMounts' => $station->getMaxMounts(),
-            'maxHlsStreams' => $station->getMaxHlsStreams(),
-            'enablePublicPages' => $station->getEnablePublicPage(),
-            'publicPageUrl' => $router->named('public:index', ['station_id' => $station->getShortName()]),
-            'enableOnDemand' => $station->getEnableOnDemand(),
-            'onDemandUrl' => $router->named('public:ondemand', ['station_id' => $station->getShortName()]),
+            'id' => $station->id,
+            'name' => $station->name,
+            'isEnabled' => $station->is_enabled,
+            'hasStarted' => $station->has_started,
+            'needsRestart' => $station->needs_restart,
+            'shortName' => $station->short_name,
+            'timezone' => $station->timezone,
+            'offlineText' => $station->branding_config->offline_text,
+            'maxBitrate' => $station->max_bitrate,
+            'maxMounts' => $station->max_mounts,
+            'maxHlsStreams' => $station->max_hls_streams,
+            'enablePublicPages' => $station->enable_public_page,
+            'publicPageUrl' => $router->named('public:index', ['station_id' => $station->short_name]),
+            'enableOnDemand' => $station->enable_on_demand,
+            'onDemandUrl' => $router->named('public:ondemand', ['station_id' => $station->short_name]),
             'webDjUrl' => (string)($router->namedAsUri(
                 routeName: 'public:dj',
-                routeParams: ['station_id' => $station->getShortName()],
+                routeParams: ['station_id' => $station->short_name],
                 absolute: true
             )->withScheme('https')),
-            'enableRequests' => $station->getEnableRequests(),
+            'enableRequests' => $station->enable_requests,
             'features' => [
                 'media' => StationFeatures::Media->supportedForStation($station),
                 'sftp' => StationFeatures::Sftp->supportedForStation($station),
@@ -67,10 +67,10 @@ final class StationsAction implements SingleActionInterface
             response: $response,
             component: 'Stations',
             id: 'stations-index',
-            title: $station->getName(),
+            title: $station->name,
             props: [
                 'baseUrl' => $router->named('stations:index:index', [
-                    'station_id' => $station->getIdRequired(),
+                    'station_id' => $station->id,
                 ]),
             ]
         );

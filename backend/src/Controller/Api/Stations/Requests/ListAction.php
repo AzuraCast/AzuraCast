@@ -73,12 +73,12 @@ final class ListAction extends AbstractSearchableListAction
             function (StationMedia $media) use ($station, $router) {
                 $row = new StationRequest();
                 $row->song = ($this->songApiGenerator)($media, $station, $router->getBaseUrl());
-                $row->request_id = $media->getUniqueId();
+                $row->request_id = $media->unique_id;
                 $row->request_url = $router->named(
                     'api:requests:submit',
                     [
-                        'station_id' => $station->getId(),
-                        'media_id' => $media->getUniqueId(),
+                        'station_id' => $station->id,
+                        'media_id' => $media->unique_id,
                     ]
                 );
 
@@ -96,7 +96,7 @@ final class ListAction extends AbstractSearchableListAction
     private function getPlaylists(
         Station $station
     ): array {
-        $item = $this->psr6Cache->getItem('station_' . $station->getIdRequired() . '_requestable_playlists');
+        $item = $this->psr6Cache->getItem('station_' . $station->id . '_requestable_playlists');
 
         if (!$item->isHit()) {
             $playlists = $this->em->createQuery(
@@ -114,7 +114,7 @@ final class ListAction extends AbstractSearchableListAction
             /** @var StationPlaylist $playlist */
             foreach ($playlists as $playlist) {
                 if ($this->scheduler->isPlaylistScheduledToPlayNow($playlist, $now, true)) {
-                    $ids[] = $playlist->getIdRequired();
+                    $ids[] = $playlist->id;
                 }
             }
 

@@ -40,15 +40,15 @@ final class ListCommand extends CommandAbstract
         foreach ($usersRaw as $row) {
             /** @var User $row */
             $roles = [];
-            foreach ($row->getRoles() as $role) {
-                $roles[] = $role->getName();
+            foreach ($row->roles as $role) {
+                $roles[] = $role->name;
             }
 
             $users[] = [
-                $row->getEmail(),
-                $row->getName(),
+                $row->email,
+                $row->name,
                 implode(', ', $roles),
-                gmdate('Y-m-d g:ia', $row->getCreatedAt()),
+                gmdate('Y-m-d g:ia', $row->created_at),
             ];
         }
 

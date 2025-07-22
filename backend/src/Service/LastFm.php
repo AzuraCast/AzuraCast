@@ -30,7 +30,7 @@ final class LastFm
      */
     public function getApiKey(): ?string
     {
-        return $this->readSettings()->getLastFmApiKey();
+        return $this->readSettings()->last_fm_api_key;
     }
 
     public function hasApiKey(): bool

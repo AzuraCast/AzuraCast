@@ -84,7 +84,7 @@ final class UploadAction implements SingleActionInterface
         }
 
         // Lookup tables for later.
-        $mediaStorage = $station->getMediaStorageLocation();
+        $mediaStorage = $station->media_storage_location;
 
         $mediaByPath = [];
         $mediaByUniqueId = [];
@@ -112,8 +112,8 @@ final class UploadAction implements SingleActionInterface
 
         $playlistsByName = [];
         foreach ($this->playlistRepo->getAllForStation($station) as $playlist) {
-            $shortName = StationPlaylist::generateShortName($playlist->getName());
-            $playlistsByName[$shortName] = $playlist->getIdRequired();
+            $shortName = StationPlaylist::generateShortName($playlist->name);
+            $playlistsByName[$shortName] = $playlist->id;
         }
 
         // Read and process CSV.
@@ -130,8 +130,8 @@ final class UploadAction implements SingleActionInterface
 
         foreach ($reader->getRecords() as $row) {
             $row = (array)$row;
-            if (isset($row['id'], $mediaByUniqueId[$row['id']])) {
-                $mediaId = $mediaByUniqueId[$row['id']];
+            if (isset($row['unique_id'], $mediaByUniqueId[$row['unique_id']])) {
+                $mediaId = $mediaByUniqueId[$row['unique_id']];
             } elseif (isset($row['path'], $mediaByPath[md5($row['path'])])) {
                 $mediaId = $mediaByPath[md5($row['path'])];
             } else {
@@ -146,9 +146,9 @@ final class UploadAction implements SingleActionInterface
             unset($row['id'], $row['path']);
 
             $importResult = [
-                'id' => $record->getIdRequired(),
-                'title' => $record->getTitle(),
-                'artist' => $record->getArtist(),
+                'id' => $record->id,
+                'title' => $record->title,
+                'artist' => $record->artist,
                 'success' => false,
                 'error' => null,
             ];

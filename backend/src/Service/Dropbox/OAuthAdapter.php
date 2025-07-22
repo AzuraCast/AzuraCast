@@ -35,17 +35,17 @@ final class OAuthAdapter implements RefreshableTokenProvider
     {
         $this->psr6Cache->deleteItem($this->getTokenCacheKey());
 
-        if (!empty($this->storageLocation->getDropboxAuthToken())) {
+        if (!empty($this->storageLocation->dropboxAuthToken)) {
             // Convert the short-lived auth code into an oauth refresh token.
             $token = $this->getOauthProvider()->getAccessToken(
                 'authorization_code',
                 [
-                    'code' => $this->storageLocation->getDropboxAuthToken(),
+                    'code' => $this->storageLocation->dropboxAuthToken,
                 ]
             );
 
-            $this->storageLocation->setDropboxAuthToken(null);
-            $this->storageLocation->setDropboxRefreshToken($token->getRefreshToken());
+            $this->storageLocation->dropboxAuthToken = null;
+            $this->storageLocation->dropboxRefreshToken = $token->getRefreshToken();
         }
     }
 
@@ -63,14 +63,14 @@ final class OAuthAdapter implements RefreshableTokenProvider
         $cacheItem = $this->psr6Cache->getItem($cacheKey);
 
         if (!$cacheItem->isHit()) {
-            if (empty($this->storageLocation->getDropboxRefreshToken())) {
-                $cacheItem->set($this->storageLocation->getDropboxAuthToken());
+            if (empty($this->storageLocation->dropboxRefreshToken)) {
+                $cacheItem->set($this->storageLocation->dropboxAuthToken);
             } else {
                 // Try to get a new auth token from the refresh token.
                 $token = $this->getOauthProvider()->getAccessToken(
                     'refresh_token',
                     [
-                        'refresh_token' => $this->storageLocation->getDropboxRefreshToken(),
+                        'refresh_token' => $this->storageLocation->dropboxRefreshToken,
                     ]
                 );
 
@@ -87,13 +87,13 @@ final class OAuthAdapter implements RefreshableTokenProvider
     private function getOauthProvider(): OAuthProvider
     {
         return new OAuthProvider([
-            'clientId' => $this->storageLocation->getDropboxAppKey(),
-            'clientSecret' => $this->storageLocation->getDropboxAppSecret(),
+            'clientId' => $this->storageLocation->dropboxAppKey,
+            'clientSecret' => $this->storageLocation->dropboxAppSecret,
         ]);
     }
 
     private function getTokenCacheKey(): string
     {
-        return 'storage_location_' . ($this->storageLocation->getId() ?? 'new') . '_auth_token';
+        return 'storage_location_' . ($this->storageLocation->id ?? 'new') . '_auth_token';
     }
 }

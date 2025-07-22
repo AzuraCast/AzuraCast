@@ -64,23 +64,23 @@ final class Shoutcast extends AbstractFrontend
 
     public function getNowPlaying(Station $station, bool $includeClients = true): Result
     {
-        $feConfig = $station->getFrontendConfig();
-        $radioPort = $feConfig->getPort();
+        $feConfig = $station->frontend_config;
+        $radioPort = $feConfig->port;
 
         $baseUrl = $this->environment->getLocalUri()
             ->withPort($radioPort);
 
         $npAdapter = $this->adapterFactory->getShoutcast2Adapter($baseUrl);
-        $npAdapter->setAdminPassword($feConfig->getAdminPassword());
+        $npAdapter->setAdminPassword($feConfig->admin_pw);
 
         $mountPromises = [];
         $defaultMountId = null;
 
         $sid = 0;
-        foreach ($station->getMounts() as $mount) {
+        foreach ($station->mounts as $mount) {
             $sid++;
 
-            if ($mount->getIsDefault()) {
+            if ($mount->is_default) {
                 $defaultMountId = $sid;
             }
 
@@ -91,12 +91,12 @@ final class Shoutcast extends AbstractFrontend
                 function (Result $result) use ($mount) {
                     if (!empty($result->clients)) {
                         foreach ($result->clients as $client) {
-                            $client->mount = 'local_' . $mount->getId();
+                            $client->mount = 'local_' . $mount->id;
                         }
                     }
 
-                    $mount->setListenersTotal($result->listeners->total);
-                    $mount->setListenersUnique($result->listeners->unique ?? 0);
+                    $mount->listeners_total = $result->listeners->total;
+                    $mount->listeners_unique = $result->listeners->unique ?? 0;
                     $this->em->persist($mount);
 
                     return $result;
@@ -133,27 +133,27 @@ final class Shoutcast extends AbstractFrontend
     public function getCurrentConfiguration(Station $station): string
     {
         $configPath = $station->getRadioConfigDir();
-        $frontendConfig = $station->getFrontendConfig();
+        $frontendConfig = $station->frontend_config;
 
         [$certPath, $certKey] = Acme::getCertificatePaths();
 
         $urlHost = $this->getPublicUrl($station)->getHost();
 
         $config = [
-            'password' => $frontendConfig->getSourcePassword(),
-            'adminpassword' => $frontendConfig->getAdminPassword(),
+            'password' => $frontendConfig->source_pw,
+            'adminpassword' => $frontendConfig->admin_pw,
             'logfile' => $configPath . '/sc_serv.log',
             'w3clog' => $configPath . '/sc_w3c.log',
             'banfile' => $this->writeIpBansFile($station),
             'agentfile' => $this->writeUserAgentBansFile($station, 'sc_serv.agent'),
             'ripfile' => $configPath . '/sc_serv.rip',
-            'maxuser' => $frontendConfig->getMaxListeners() ?? 250,
-            'portbase' => $frontendConfig->getPort(),
+            'maxuser' => $frontendConfig->max_listeners ?? 250,
+            'portbase' => $frontendConfig->port,
             'requirestreamconfigs' => 1,
             'savebanlistonexit' => '0',
             'saveagentlistonexit' => '0',
-            'licenceid' => $frontendConfig->getScLicenseId(),
-            'userid' => $frontendConfig->getScUserId(),
+            'licenceid' => $frontendConfig->sc_license_id,
+            'userid' => $frontendConfig->sc_user_id,
             'sslCertificateFile' => $certPath,
             'sslCertificateKeyFile' => $certKey,
             'destdns' => $urlHost,
@@ -162,12 +162,12 @@ final class Shoutcast extends AbstractFrontend
             'publicip' => $urlHost,
         ];
 
-        if ($station->getMaxBitrate() !== 0) {
-            $maxBitrateInBps = (int) $station->getMaxBitrate() * 1024 + 2500;
+        if ($station->max_bitrate !== 0) {
+            $maxBitrateInBps = $station->max_bitrate * 1024 + 2500;
             $config['maxbitrate'] = $maxBitrateInBps;
         }
 
-        $customConf = $this->processCustomConfig($frontendConfig->getCustomConfiguration());
+        $customConf = $this->processCustomConfig($frontendConfig->custom_config);
         if (false !== $customConf) {
             $config = array_merge($config, $customConf);
         }
@@ -175,26 +175,26 @@ final class Shoutcast extends AbstractFrontend
         $i = 0;
 
         /** @var StationMount $mountRow */
-        foreach ($station->getMounts() as $mountRow) {
+        foreach ($station->mounts as $mountRow) {
             $i++;
             $config['streamid_' . $i] = $i;
-            $config['streampath_' . $i] = $mountRow->getName();
+            $config['streampath_' . $i] = $mountRow->name;
 
-            if (!empty($mountRow->getIntroPath())) {
-                $introPath = $mountRow->getIntroPath();
+            if (!empty($mountRow->intro_path)) {
+                $introPath = $mountRow->intro_path;
                 $config['streamintrofile_' . $i] = $station->getRadioConfigDir() . '/' . $introPath;
             }
 
-            if ($mountRow->getRelayUrl()) {
-                $config['streamrelayurl_' . $i] = $mountRow->getRelayUrl();
+            if ($mountRow->relay_url) {
+                $config['streamrelayurl_' . $i] = $mountRow->relay_url;
             }
 
-            if ($mountRow->getAuthhash()) {
-                $config['streamauthhash_' . $i] = $mountRow->getAuthhash();
+            if ($mountRow->authhash) {
+                $config['streamauthhash_' . $i] = $mountRow->authhash;
             }
 
-            if ($mountRow->getMaxListenerDuration()) {
-                $config['streamlistenertime_' . $i] = $mountRow->getMaxListenerDuration();
+            if ($mountRow->max_listener_duration) {
+                $config['streamlistenertime_' . $i] = $mountRow->max_listener_duration;
             }
         }
 
@@ -208,10 +208,16 @@ final class Shoutcast extends AbstractFrontend
 
     public function getCommand(Station $station): ?string
     {
-        if ($binary = $this->getBinary()) {
-            return $binary . ' ' . $this->getConfigurationPath($station);
+        $binary = $this->getBinary();
+        if ($binary === null) {
+            return null;
         }
-        return null;
+
+        return sprintf(
+            '%s %s',
+            escapeshellcmd($binary),
+            escapeshellarg($this->getConfigurationPath($station))
+        );
     }
 
     public function getAdminUrl(Station $station, ?UriInterface $baseUrl = null): UriInterface

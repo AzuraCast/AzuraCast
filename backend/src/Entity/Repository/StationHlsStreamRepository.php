@@ -27,7 +27,7 @@ final class StationHlsStreamRepository extends AbstractStationBasedRepository
 
         /** @var StationHlsStream $stream */
         foreach ($streams as $stream) {
-            $displayNames[$stream->getIdRequired()] = 'HLS: ' . $stream->getName();
+            $displayNames[$stream->id] = 'HLS: ' . $stream->name;
         }
 
         return $displayNames;

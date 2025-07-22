@@ -78,7 +78,7 @@ final class AzuraCastCentral
 
     public function getUniqueIdentifier(): string
     {
-        return $this->readSettings()->getAppUniqueIdentifier();
+        return $this->readSettings()->app_unique_identifier;
     }
 
     /**
@@ -90,7 +90,7 @@ final class AzuraCastCentral
     {
         $settings = $this->readSettings();
         $ip = ($cached)
-            ? $settings->getExternalIp()
+            ? $settings->external_ip
             : null;
 
         if (empty($ip)) {
@@ -110,7 +110,7 @@ final class AzuraCastCentral
             }
 
             if (!empty($ip) && $cached) {
-                $settings->setExternalIp($ip);
+                $settings->external_ip = $ip;
                 $this->writeSettings($settings);
             }
         }

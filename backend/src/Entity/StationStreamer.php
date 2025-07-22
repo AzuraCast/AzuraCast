@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use ReflectionException;
 use ReflectionProperty;
+use SensitiveParameter;
 use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -67,7 +68,6 @@ final class StationStreamer implements
     #[
         OA\Property(example: ""),
         ORM\Column(length: 255),
-        Assert\NotBlank,
         Attributes\AuditIgnore
     ]
     public string $streamer_password {
@@ -84,7 +84,7 @@ final class StationStreamer implements
     }
 
     public function authenticate(
-        #[\SensitiveParameter]
+        #[SensitiveParameter]
         string $password
     ): bool {
         try {

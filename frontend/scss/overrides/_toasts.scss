@@ -1,5 +1,12 @@
 body.page-full {
-  div.toast-container.top-0 {
-    top: $header-nav-height !important;
+  div.toast-container {
+    &.top-0 {
+      top: $header-nav-height !important;
+    }
+
+    div.toast-body {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
   }
 }

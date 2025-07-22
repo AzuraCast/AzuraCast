@@ -28,6 +28,8 @@
                 class="col-md-12"
                 :field="v$.config.message"
                 :label="$gettext('Message Body')"
+                input-type="textarea"
+                :input-attrs="{rows: 4}"
             />
         </div>
     </tab>

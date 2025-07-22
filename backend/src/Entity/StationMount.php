@@ -48,6 +48,7 @@ final class StationMount implements
         $this->station = $station;
     }
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: false, insertable: false, updatable: false)]
     public private(set) int $station_id;
 

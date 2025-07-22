@@ -69,9 +69,14 @@ final class CustomField implements Stringable, IdentifiableEntityInterface
 
     /** @var Collection<int, StationMediaCustomField> */
     #[ORM\OneToMany(targetEntity: StationMediaCustomField::class, mappedBy: 'field')]
-    protected Collection $media_fields;
+    public private(set) Collection $media_fields;
 
     public function __construct()
+    {
+        $this->media_fields = new ArrayCollection();
+    }
+
+    public function __clone(): void
     {
         $this->media_fields = new ArrayCollection();
     }

@@ -87,7 +87,10 @@ final class ErrorHandler extends SlimErrorHandler
         }
 
         if ($this->exception instanceof Exception || $this->exception instanceof HttpException) {
-            return $this->exception->getCode();
+            $statusCode = $this->exception->getCode();
+            if ($statusCode >= 100 && $statusCode < 600) {
+                return $statusCode;
+            }
         }
 
         return 500;

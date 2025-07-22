@@ -11,6 +11,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
+use ReflectionException;
+use ReflectionProperty;
 use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -81,9 +83,18 @@ final class StationStreamer implements
         }
     }
 
-    public function authenticate(string $password): bool
-    {
-        return password_verify($password, $this->streamer_password);
+    public function authenticate(
+        #[\SensitiveParameter]
+        string $password
+    ): bool {
+        try {
+            $reflProp = new ReflectionProperty($this, 'streamer_password');
+            $hash = $reflProp->getRawValue($this);
+
+            return password_verify($password, $hash);
+        } catch (ReflectionException) {
+            return false;
+        }
     }
 
     #[

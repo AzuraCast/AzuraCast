@@ -39,6 +39,7 @@ final class StationMedia implements
     ]
     public readonly StorageLocation $storage_location;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: false, insertable: false, updatable: false)]
     public private(set) int $storage_location_id;
 

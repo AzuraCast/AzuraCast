@@ -32,6 +32,7 @@ final class StationPlaylistFolder implements
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public StationPlaylist $playlist;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: false, insertable: false, updatable: false)]
     public private(set) int $playlist_id;
 

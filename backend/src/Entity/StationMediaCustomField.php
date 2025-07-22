@@ -20,6 +20,7 @@ final class StationMediaCustomField implements IdentifiableEntityInterface
     #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public readonly StationMedia $media;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: false, insertable: false, updatable: false)]
     public private(set) int $media_id;
 
@@ -27,6 +28,7 @@ final class StationMediaCustomField implements IdentifiableEntityInterface
     #[ORM\JoinColumn(name: 'field_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public readonly CustomField $field;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: false, insertable: false, updatable: false)]
     public private(set) int $field_id;
 

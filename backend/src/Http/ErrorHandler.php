@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;
 use Slim\Exception\HttpException;
 use Slim\Handlers\ErrorHandler as SlimErrorHandler;
+use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Throwable;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
@@ -134,7 +135,8 @@ final class ErrorHandler extends SlimErrorHandler
         }
 
         if ($this->showDetailed) {
-            $context['trace'] = array_slice($this->exception->getTrace(), 0, 5);
+            $flatException = FlattenException::createFromThrowable($this->exception);
+            $context['trace'] = array_slice($flatException->getTrace(), 0, 5);
         }
 
         $this->logger->log($this->loggerLevel, $this->exception->getMessage(), $context);

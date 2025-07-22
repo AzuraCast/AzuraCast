@@ -347,6 +347,7 @@ return [
         $normalizers = [
             new Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer(),
             new App\Normalizer\DateTimeNormalizer(),
+            new App\Normalizer\BigNumberNormalizer(),
             new Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer(),
             new Symfony\Component\Serializer\Normalizer\CustomNormalizer(),
             new Azura\Normalizer\DoctrineEntityNormalizer(

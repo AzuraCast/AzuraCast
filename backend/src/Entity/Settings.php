@@ -320,12 +320,10 @@ final class Settings implements Stringable
         Groups(self::GROUP_BACKUP)
     ]
     public ?string $backup_time_code = null {
-        set => $this->truncateNullableString($value, 4, true);
-    }
-
-    public function getBackupTimeCode(): ?string
-    {
-        return Types::stringOrNull($this->backup_time_code, true);
+        set(string|int|null $value) => $this->truncateNullableString(
+            Types::stringOrNull($value, true),
+            4
+        );
     }
 
     #[
@@ -334,16 +332,6 @@ final class Settings implements Stringable
         Groups(self::GROUP_BACKUP)
     ]
     public bool $backup_exclude_media = false;
-
-    public function getBackupExcludeMedia(): bool
-    {
-        return $this->backup_exclude_media;
-    }
-
-    public function setBackupExcludeMedia(bool $backupExcludeMedia): void
-    {
-        $this->backup_exclude_media = $backupExcludeMedia;
-    }
 
     #[
         OA\Property(description: "Number of backups to keep, or infinite if zero/null.", example: 2),
@@ -354,21 +342,13 @@ final class Settings implements Stringable
         set => $this->truncateSmallInt($value);
     }
 
-    public function getBackupKeepCopies(): int
-    {
-        return $this->backup_keep_copies;
-    }
-
     #[
         OA\Property(description: "The storage location ID for automated backups.", example: 1),
         ORM\Column(nullable: true),
         Groups(self::GROUP_BACKUP)
     ]
-    public ?int $backup_storage_location = null;
-
-    public function getBackupStorageLocation(): ?int
-    {
-        return $this->backup_storage_location;
+    public ?int $backup_storage_location = null {
+        set(string|int|null $value) => Types::intOrNull($value);
     }
 
     #[

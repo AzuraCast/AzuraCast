@@ -21,7 +21,7 @@ final class Mastodon extends AbstractSocialConnector
         NowPlaying $np,
         array $triggers
     ): void {
-        $config = $webhook->getConfig();
+        $config = $webhook->config ?? [];
 
         $instanceUrl = Types::stringOrNull($config['instance_url'], true);
         $accessToken = Types::stringOrNull($config['access_token'], true);

@@ -25,7 +25,7 @@ final class TuneIn extends AbstractConnector
         NowPlaying $np,
         array $triggers
     ): void {
-        $config = $webhook->getConfig();
+        $config = $webhook->config ?? [];
 
         if (empty($config['partner_id']) || empty($config['partner_key']) || empty($config['station_id'])) {
             throw $this->incompleteConfigException($webhook);

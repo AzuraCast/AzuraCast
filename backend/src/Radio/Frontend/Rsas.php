@@ -107,7 +107,7 @@ final class Rsas extends Icecast
 
     protected function getConfigurationArray(Station $station): array
     {
-        $frontendConfig = $station->getFrontendConfig();
+        $frontendConfig = $station->frontend_config;
         $configDir = $station->getRadioConfigDir();
 
         $settingsBaseUrl = $this->settingsRepo->readSettings()->getBaseUrlAsUri();
@@ -118,7 +118,7 @@ final class Rsas extends Icecast
         $config = [
             'hostname' => $baseUrl->getHost(),
             'listen-socket' => [
-                'port' => $frontendConfig->getPort(),
+                'port' => $frontendConfig->port,
                 'bind-address' => '0.0.0.0',
                 // 'tls' => 1,
             ],
@@ -126,11 +126,11 @@ final class Rsas extends Icecast
                 'icecast-status-page' => 1,
             ],
             'authentication' => [
-                'admin-password' => $frontendConfig->getAdminPassword(),
+                'admin-password' => $frontendConfig->admin_pw,
             ],
             'limits' => [
                 'workers' => 'auto',
-                'clients' => $frontendConfig->getMaxListeners() ?? 2500,
+                'clients' => $frontendConfig->max_listeners ?? 2500,
             ],
             'paths' => [
                 'logdir' => $configDir,
@@ -157,32 +157,32 @@ final class Rsas extends Icecast
             ],
         ];
 
-        $bannedCountries = $frontendConfig->getBannedCountries() ?? [];
-        $allowedIps = $this->getIpsAsArray($frontendConfig->getAllowedIps());
-        $bannedIps = $this->getIpsAsArray($frontendConfig->getBannedIps());
-        $bannedUserAgents = $frontendConfig->getBannedUserAgents();
+        $bannedCountries = $frontendConfig->banned_countries ?? [];
+        $allowedIps = $this->getIpsAsArray($frontendConfig->allowed_ips);
+        $bannedIps = $this->getIpsAsArray($frontendConfig->banned_ips);
+        $bannedUserAgents = $frontendConfig->banned_user_agents;
 
         $useListenerAuth = !empty($bannedCountries) || !empty($allowedIps)
             || !empty($bannedIps) || !empty($bannedUserAgents);
 
         /** @var StationMount $mountRow */
-        foreach ($station->getMounts() as $mountRow) {
+        foreach ($station->mounts as $mountRow) {
             $mount = [
-                'mount-name' => $mountRow->getName(),
+                'mount-name' => $mountRow->name,
                 'username' => 'source',
-                'password' => $frontendConfig->getSourcePassword(),
+                'password' => $frontendConfig->source_pw,
             ];
 
-            if ($mountRow->getMaxListenerDuration()) {
-                $mount['max-listener-duration'] = $mountRow->getMaxListenerDuration();
+            if ($mountRow->max_listener_duration) {
+                $mount['max-listener-duration'] = $mountRow->max_listener_duration;
             }
 
-            if (!$mountRow->getIsVisibleOnPublicPages()) {
+            if (!$mountRow->is_visible_on_public_pages) {
                 $mount['hidden'] = 1;
             }
 
-            if (!empty($mountRow->getIntroPath())) {
-                $introPath = $mountRow->getIntroPath();
+            if (!empty($mountRow->intro_path)) {
+                $introPath = $mountRow->intro_path;
                 // The intro path is appended to webroot, so the path should be relative to it.
                 $mount['preroll'] = Path::makeRelative(
                     $station->getRadioConfigDir() . '/' . $introPath,
@@ -190,18 +190,18 @@ final class Rsas extends Icecast
                 );
             }
 
-            if (!empty($mountRow->getFallbackMount())) {
-                $mount['fallback-mount'] = $mountRow->getFallbackMount();
+            if (!empty($mountRow->fallback_mount)) {
+                $mount['fallback-mount'] = $mountRow->fallback_mount;
                 $mount['fallback-override'] = 1;
-            } elseif ($mountRow->getEnableAutodj()) {
-                $autoDjFormat = $mountRow->getAutodjFormat() ?? StreamFormats::default();
-                $autoDjBitrate = $mountRow->getAutodjBitrate();
+            } elseif ($mountRow->enable_autodj) {
+                $autoDjFormat = $mountRow->autodj_format ?? StreamFormats::default();
+                $autoDjBitrate = $mountRow->autodj_bitrate;
 
                 $mount['fallback-mount'] = '/fallback-[' . $autoDjBitrate . '].' . $autoDjFormat->getExtension();
                 $mount['fallback-override'] = 1;
             }
 
-            $mountFrontendConfig = trim($mountRow->getFrontendConfig() ?? '');
+            $mountFrontendConfig = trim($mountRow->frontend_config ?? '');
             if (!empty($mountFrontendConfig)) {
                 $mountConf = $this->processCustomConfig($mountFrontendConfig);
                 if (false !== $mountConf) {
@@ -215,7 +215,7 @@ final class Rsas extends Icecast
                     'server' => $mountRelayUri->getHost(),
                     'port' => $mountRelayUri->getPort(),
                     'mount' => $mountRelayUri->getPath(),
-                    'local-mount' => $mountRow->getName(),
+                    'local-mount' => $mountRow->name,
                 ]);
             }
 
@@ -238,7 +238,7 @@ final class Rsas extends Icecast
             $config['mount'][] = $mount;
         }
 
-        $customConfParsed = $this->processCustomConfig($frontendConfig->getCustomConfiguration());
+        $customConfParsed = $this->processCustomConfig($frontendConfig->custom_config);
         if (false !== $customConfParsed) {
             $config = Arrays::arrayMergeRecursiveDistinct($config, $customConfParsed);
         }

@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
-use App\Entity\ApiKey;
+use App\Entity\Interfaces\SplitTokenEntityInterface;
 use App\Entity\User;
-use App\Entity\UserLoginToken;
 use App\Security\SplitToken;
 
 /**
- * @template TEntity of ApiKey|UserLoginToken
+ * @template TEntity of SplitTokenEntityInterface
  * @extends Repository<TEntity>
  */
 abstract class AbstractSplitTokenRepository extends Repository
@@ -27,7 +26,7 @@ abstract class AbstractSplitTokenRepository extends Repository
 
         $tokenEntity = $this->repository->find($userSuppliedToken->identifier);
 
-        if ($tokenEntity instanceof $this->entityClass) {
+        if ($tokenEntity instanceof SplitTokenEntityInterface) {
             return ($tokenEntity->verify($userSuppliedToken))
                 ? $tokenEntity->getUser()
                 : null;

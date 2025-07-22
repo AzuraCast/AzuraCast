@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
     ORM\Table(name: 'audit_log'),
     ORM\Index(name: 'idx_search', columns: ['class', 'user', 'identifier'])
 ]
-class AuditLog implements IdentifiableEntityInterface
+final class AuditLog implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -23,28 +23,28 @@ class AuditLog implements IdentifiableEntityInterface
     protected static ?string $currentUser = null;
 
     #[ORM\Column(type: 'datetime_immutable', precision: 6)]
-    protected DateTimeImmutable $timestamp;
+    public readonly DateTimeImmutable $timestamp;
 
     #[ORM\Column(type: 'smallint', enumType: AuditLogOperations::class)]
-    protected AuditLogOperations $operation;
+    public readonly AuditLogOperations $operation;
 
     #[ORM\Column(length: 255)]
-    protected string $class;
+    public readonly string $class;
 
     #[ORM\Column(length: 255)]
-    protected string $identifier;
+    public readonly string $identifier;
 
     #[ORM\Column(name: 'target_class', length: 255, nullable: true)]
-    protected ?string $targetClass;
+    public readonly ?string $targetClass;
 
     #[ORM\Column(length: 255, nullable: true)]
-    protected ?string $target;
+    public readonly ?string $target;
 
     #[ORM\Column(type: 'json')]
-    protected array $changes;
+    public readonly array $changes;
 
     #[ORM\Column(length: 255, nullable: true)]
-    protected ?string $user;
+    public readonly ?string $user;
 
     public function __construct(
         AuditLogOperations $operation,
@@ -55,13 +55,13 @@ class AuditLog implements IdentifiableEntityInterface
         array $changes
     ) {
         $this->timestamp = Time::nowUtc();
-        $this->user = self::$currentUser;
+        $this->user = $this->truncateNullableString(self::$currentUser);
 
         $this->operation = $operation;
-        $this->class = $this->filterClassName($class) ?? '';
-        $this->identifier = $identifier;
-        $this->targetClass = $this->filterClassName($targetClass);
-        $this->target = $target;
+        $this->class = $this->truncateString($this->filterClassName($class) ?? '');
+        $this->identifier = $this->truncateString($identifier);
+        $this->targetClass = $this->truncateNullableString($this->filterClassName($targetClass));
+        $this->target = $this->truncateNullableString($target);
         $this->changes = $changes;
     }
 
@@ -90,48 +90,5 @@ class AuditLog implements IdentifiableEntityInterface
         self::$currentUser = (null !== $user)
             ? (string)$user
             : null;
-    }
-
-    public function getTimestamp(): DateTimeImmutable
-    {
-        return $this->timestamp;
-    }
-
-    public function getOperation(): AuditLogOperations
-    {
-        return $this->operation;
-    }
-
-    public function getClass(): string
-    {
-        return $this->class;
-    }
-
-    public function getIdentifier(): string
-    {
-        return $this->identifier;
-    }
-
-    public function getTargetClass(): ?string
-    {
-        return $this->targetClass;
-    }
-
-    public function getTarget(): ?string
-    {
-        return $this->target;
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function getChanges(): array
-    {
-        return $this->changes;
-    }
-
-    public function getUser(): ?string
-    {
-        return $this->user;
     }
 }

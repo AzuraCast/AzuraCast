@@ -26,11 +26,11 @@ final class CustomFieldRepository extends Repository
 
         foreach ($this->repository->findAll() as $field) {
             /** @var CustomField $field */
-            if (!$field->hasAutoAssign()) {
+            if (empty($field->auto_assign)) {
                 continue;
             }
 
-            $fields[$field->getAutoAssign()] = $field;
+            $fields[$field->auto_assign] = $field;
         }
 
         return $fields;
@@ -74,9 +74,9 @@ final class CustomFieldRepository extends Repository
             <<<'DQL'
                 SELECT cf.short_name, e.value
                 FROM App\Entity\StationMediaCustomField e JOIN e.field cf
-                WHERE e.media_id = :media_id
+                WHERE e.media = :media
             DQL
-        )->setParameter('media_id', $media->getId())
+        )->setParameter('media', $media)
             ->getArrayResult();
 
         return array_column($metadataRaw, 'value', 'short_name');
@@ -92,9 +92,9 @@ final class CustomFieldRepository extends Repository
     {
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\Entity\StationMediaCustomField e WHERE e.media_id = :media_id
+                DELETE FROM App\Entity\StationMediaCustomField e WHERE e.media = :media
             DQL
-        )->setParameter('media_id', $media->getId())
+        )->setParameter('media', $media)
             ->execute();
 
         foreach ($customFields as $fieldId => $fieldValue) {
@@ -104,7 +104,8 @@ final class CustomFieldRepository extends Repository
 
             if ($field instanceof CustomField) {
                 $record = new StationMediaCustomField($media, $field);
-                $record->setValue($fieldValue);
+                $record->value = $fieldValue;
+
                 $this->em->persist($record);
             }
         }

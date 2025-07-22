@@ -74,11 +74,6 @@ final class SetupCommand extends CommandAbstract
         );
 
         $io->newLine();
-        $io->section(__('Generating Database Proxy Classes'));
-
-        $this->runCommand($output, 'orm:generate-proxies');
-
-        $io->newLine();
         $io->section(__('Reload System Data'));
 
         $this->runCommand($output, 'cache:clear');

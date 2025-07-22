@@ -172,7 +172,7 @@ final class ErrorHandler extends SlimErrorHandler
 
         if ($this->returnJson) {
             $apiResponse = Error::fromException($this->exception, $this->showDetailed);
-            return $response->withJson($apiResponse);
+            return $response->withJson($apiResponse, null, JSON_PARTIAL_OUTPUT_ON_ERROR);
         }
 
         if ($this->exception instanceof NotLoggedInException) {

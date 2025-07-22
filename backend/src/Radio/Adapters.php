@@ -30,7 +30,7 @@ final class Adapters
 
     public function getFrontendAdapter(Station $station): ?Frontend\AbstractFrontend
     {
-        $className = $station->getFrontendType()->getClass();
+        $className = $station->frontend_type->getClass();
 
         return (null !== $className && $this->di->has($className))
             ? $this->di->get($className)
@@ -62,7 +62,7 @@ final class Adapters
 
     public function getBackendAdapter(Station $station): ?Liquidsoap
     {
-        $className = $station->getBackendType()->getClass();
+        $className = $station->backend_type->getClass();
 
         return (null !== $className && $this->di->has($className))
             ? $this->di->get($className)
@@ -94,7 +94,7 @@ final class Adapters
 
     public function getRemoteAdapter(StationRemote $remote): Remote\AbstractRemote
     {
-        $className = $remote->getType()->getClass();
+        $className = $remote->type->getClass();
         if ($this->di->has($className)) {
             return $this->di->get($className);
         }

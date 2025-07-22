@@ -8,55 +8,42 @@ use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
 #[ORM\Embeddable]
-class ListenerDevice implements JsonSerializable
+final readonly class ListenerDevice implements JsonSerializable
 {
     #[ORM\Column(length: 255)]
-    protected ?string $client = null;
+    public ?string $client;
 
     #[ORM\Column]
-    protected bool $is_browser = false;
+    public bool $is_browser;
 
     #[ORM\Column]
-    protected bool $is_mobile = false;
+    public bool $is_mobile;
 
     #[ORM\Column]
-    protected bool $is_bot = false;
+    public bool $is_bot;
 
     #[ORM\Column(length: 150, nullable: true)]
-    protected ?string $browser_family = null;
+    public ?string $browser_family;
 
     #[ORM\Column(length: 150, nullable: true)]
-    protected ?string $os_family = null;
+    public ?string $os_family;
 
-    public function getClient(): ?string
-    {
-        return $this->client;
+    public function __construct(
+        ?string $client,
+        bool $is_browser,
+        bool $is_mobile,
+        bool $is_bot,
+        ?string $browser_family,
+        ?string $os_family
+    ) {
+        $this->client = $client;
+        $this->is_browser = $is_browser;
+        $this->is_mobile = $is_mobile;
+        $this->is_bot = $is_bot;
+        $this->browser_family = $browser_family;
+        $this->os_family = $os_family;
     }
 
-    public function isBrowser(): bool
-    {
-        return $this->is_browser;
-    }
-
-    public function isMobile(): bool
-    {
-        return $this->is_mobile;
-    }
-
-    public function isBot(): bool
-    {
-        return $this->is_bot;
-    }
-
-    public function getBrowserFamily(): ?string
-    {
-        return $this->browser_family;
-    }
-
-    public function getOsFamily(): ?string
-    {
-        return $this->os_family;
-    }
 
     public function jsonSerialize(): array
     {

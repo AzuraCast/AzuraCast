@@ -2468,6 +2468,32 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/file/{song_id}/play':
+    get:
+      tags:
+        - 'Stations: Media'
+      summary: 'Download or play a given file by song_id.'
+      operationId: getPlayFileSongId
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: song_id
+          in: path
+          description: 'Media ID'
+          required: true
+          schema:
+            type: string
+            format: guid
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessWithDownload'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/files/rename':
     put:
       tags:
@@ -7566,6 +7592,9 @@ components:
               type: string
             art_updated_at:
               type: integer
+            guid:
+              description: 'The UUIDv5 global unique identifier for this podcast, based on its RSS feed URL.'
+              type: string
             is_published:
               type: boolean
             episodes:
@@ -7723,11 +7752,11 @@ components:
               type: integer
               example: 1
             unique_id:
-              description: 'A unique identifier associated with this record.'
+              description: "A unique identifier for this specific media item in the station's library. Each entry in the media table has a unique ID, even if it refers to a song that exists elsewhere."
               type: string
               example: 69b536afc7ebbf16457b8645
             song_id:
-              description: "The media file's 32-character unique song identifier hash"
+              description: "The media file's 32-character unique song identifier hash. This hash is based on track metadata, so the same song uploaded multiple times will have the same `song_id`."
               type: string
               example: 9f33bbc912c19603e51be8e0987d076b
             art:
@@ -9148,6 +9177,7 @@ components:
         - 'manage station mounts'
         - 'manage station remotes'
         - 'manage station media'
+        - 'delete station media'
         - 'manage station automation'
         - 'manage station web hooks'
         - 'manage station podcasts'
@@ -9162,6 +9192,7 @@ components:
         - MountPoints
         - RemoteRelays
         - Media
+        - DeleteMedia
         - Automation
         - WebHooks
         - Podcasts

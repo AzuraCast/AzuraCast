@@ -23,7 +23,7 @@ class Api_Stations_ReportsCest extends CestAbstract
         $I->wantTo('View various station reports via API.');
 
         $station = $this->getTestStation();
-        $uriBase = '/api/station/' . $station->getId();
+        $uriBase = '/api/station/' . $station->id;
 
         $I->sendGet($uriBase . '/reports/overview/charts');
         $I->seeResponseCodeIs(200);
@@ -50,7 +50,7 @@ class Api_Stations_ReportsCest extends CestAbstract
         $I->wantTo('Download station listener report CSV via API.');
 
         $station = $this->getTestStation();
-        $uriBase = '/api/station/' . $station->getId();
+        $uriBase = '/api/station/' . $station->id;
 
         $startDateTime = (new DateTime())->sub(DateInterval::createFromDateString('30 days'));
         $endDateTime = new DateTime();
@@ -97,7 +97,7 @@ class Api_Stations_ReportsCest extends CestAbstract
         $I->wantTo('Download station timeline report CSV via API.');
 
         $station = $this->getTestStation();
-        $uriBase = '/api/station/' . $station->getId();
+        $uriBase = '/api/station/' . $station->id;
 
         $startDateTime = (new DateTime())->sub(DateInterval::createFromDateString('30 days'));
         $endDateTime = new DateTime();

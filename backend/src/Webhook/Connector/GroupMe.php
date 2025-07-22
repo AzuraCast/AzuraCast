@@ -25,7 +25,7 @@ final class GroupMe extends AbstractConnector
         NowPlaying $np,
         array $triggers
     ): void {
-        $config = $webhook->getConfig();
+        $config = $webhook->config ?? [];
 
         $botId = Types::stringOrNull($config['bot_id'], true);
 

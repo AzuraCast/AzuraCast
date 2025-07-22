@@ -31,13 +31,13 @@ final class ConfigWriter implements EventSubscriberInterface
         $station = $event->getStation();
 
         // Only forward local radio
-        if (FrontendAdapters::Remote === $station->getFrontendType()) {
+        if (FrontendAdapters::Remote === $station->frontend_type) {
             return;
         }
 
         $listenBaseUrl = CustomUrls::getListenUrl($station);
         $listenBaseUrlForRegex = preg_quote($listenBaseUrl);
-        $port = $station->getFrontendConfig()->getPort();
+        $port = $station->frontend_config->port;
 
         $event->appendBlock(
             <<<NGINX
@@ -67,12 +67,12 @@ final class ConfigWriter implements EventSubscriberInterface
         $station = $event->getStation();
 
         // Only forward Liquidsoap
-        if (BackendAdapters::Liquidsoap !== $station->getBackendType()) {
+        if (BackendAdapters::Liquidsoap !== $station->backend_type) {
             return;
         }
 
         $webDjBaseUrl = preg_quote(CustomUrls::getWebDjUrl($station));
-        $autoDjPort = $station->getBackendConfig()->getDjPort();
+        $autoDjPort = $station->backend_config->dj_port;
 
         $event->appendBlock(
             <<<NGINX
@@ -90,7 +90,7 @@ final class ConfigWriter implements EventSubscriberInterface
     {
         $station = $event->getStation();
 
-        if (!$station->getEnableHls()) {
+        if (!$station->enable_hls) {
             return;
         }
 

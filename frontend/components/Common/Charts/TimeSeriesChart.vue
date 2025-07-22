@@ -49,7 +49,12 @@ useChart<'line'>(
                     // Container for pan options
                     pan: {
                         enabled: true,
-                        mode: 'x'
+                        mode: 'x',
+                    },
+                    limits: {
+                        x: {
+                            max: Number(DateTime.local({zone: props.tz}).toMillis()),
+                        }
                     }
                 }, 
                 tooltip: {
@@ -84,7 +89,6 @@ useChart<'line'>(
                 x: {
                     type: 'time',
                     display: true,
-                    min: Number(DateTime.local({ zone: props.tz }).minus({ days: 30 }).toMillis()),
                     max: Number(DateTime.local({ zone: props.tz }).toMillis()),
                     adapters: {
                         date: {

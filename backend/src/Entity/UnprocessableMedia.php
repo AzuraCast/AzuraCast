@@ -13,68 +13,37 @@ use Doctrine\ORM\Mapping as ORM;
     ORM\Table(name: 'unprocessable_media'),
     ORM\UniqueConstraint(name: 'path_unique_idx', columns: ['path', 'storage_location_id'])
 ]
-class UnprocessableMedia implements PathAwareInterface, IdentifiableEntityInterface
+final class UnprocessableMedia implements PathAwareInterface, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
+    use Traits\TruncateStrings;
 
     public const int REPROCESS_THRESHOLD_MINIMUM = 604800; // One week
 
     #[ORM\ManyToOne(inversedBy: 'unprocessable_media')]
     #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    protected StorageLocation $storage_location;
+    public readonly StorageLocation $storage_location;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    protected int $storage_location_id;
+    public private(set) int $storage_location_id;
 
     #[ORM\Column(length: 500)]
-    protected string $path;
+    public string $path {
+        get => $this->path;
+        set => $this->truncateString($value, 500);
+    }
 
     #[ORM\Column(nullable: false)]
-    protected int $mtime = 0;
+    public int $mtime = 0;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    protected ?string $error = null;
+    public ?string $error = null;
 
     public function __construct(StorageLocation $storageLocation, string $path)
     {
         $this->storage_location = $storageLocation;
-
-        $this->setPath($path);
-    }
-
-    public function getStorageLocation(): StorageLocation
-    {
-        return $this->storage_location;
-    }
-
-    public function getPath(): string
-    {
-        return $this->path;
-    }
-
-    public function setPath(string $path): void
-    {
         $this->path = $path;
-    }
-
-    public function getMtime(): int
-    {
-        return $this->mtime;
-    }
-
-    public function setMtime(int $mtime): void
-    {
-        $this->mtime = $mtime;
-    }
-
-    public function getError(): ?string
-    {
-        return $this->error;
-    }
-
-    public function setError(?string $error): void
-    {
-        $this->error = $error;
     }
 
     public static function needsReprocessing(int $fileModifiedTime = 0, int $dbModifiedTime = 0): bool

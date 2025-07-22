@@ -10,8 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
     ORM\Entity,
     ORM\Table(name: 'station_playlist_folders')
 ]
-class StationPlaylistFolder implements
+final class StationPlaylistFolder implements
     Interfaces\PathAwareInterface,
+    Interfaces\StationAwareInterface,
     Interfaces\StationCloneAwareInterface,
     Interfaces\IdentifiableEntityInterface
 {
@@ -20,52 +21,31 @@ class StationPlaylistFolder implements
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    protected Station $station;
-
-    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'folders')]
-    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    protected StationPlaylist $playlist;
-
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    protected int $playlist_id;
-
-    #[ORM\Column(length: 500)]
-    protected string $path;
-
-    public function __construct(Station $station, StationPlaylist $playlist, string $path)
-    {
-        $this->station = $station;
-        $this->playlist = $playlist;
-        $this->path = $path;
-    }
-
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
+    public Station $station;
 
     public function setStation(Station $station): void
     {
         $this->station = $station;
     }
 
-    public function getPlaylist(): StationPlaylist
-    {
-        return $this->playlist;
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'folders')]
+    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    public StationPlaylist $playlist;
+
+    /* TODO Remove direct identifier access. */
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    public private(set) int $playlist_id;
+
+    #[ORM\Column(length: 500)]
+    public string $path {
+        get => $this->path;
+        set => $this->truncateString($value, 500);
     }
 
-    public function setPlaylist(StationPlaylist $playlist): void
+    public function __construct(Station $station, StationPlaylist $playlist, string $path)
     {
+        $this->station = $station;
         $this->playlist = $playlist;
-    }
-
-    public function getPath(): string
-    {
-        return $this->path;
-    }
-
-    public function setPath(string $path): void
-    {
-        $this->path = $this->truncateString($path, 500);
+        $this->path = $path;
     }
 }

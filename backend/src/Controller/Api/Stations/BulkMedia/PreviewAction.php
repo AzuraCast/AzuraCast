@@ -88,7 +88,8 @@ final class PreviewAction implements SingleActionInterface
 
         $mediaInStorageLocation = $this->em->createQuery(
             <<<DQL
-            SELECT sm.id, sm.unique_id, sm.path, sm.title, sm.artist, sm.album, sm.genre, sm.lyrics, sm.isrc, sm.extra_metadata_raw
+            SELECT sm.id, sm.unique_id, sm.path, sm.title, sm.artist,
+                   sm.album, sm.genre, sm.lyrics, sm.isrc, sm.extra_metadata_raw
             FROM App\Entity\StationMedia sm
             WHERE sm.storage_location = :storageLocation
             DQL
@@ -273,7 +274,7 @@ final class PreviewAction implements SingleActionInterface
 
             if (!empty($addedPlaylists) || !empty($removedPlaylists)) {
                 $playlistChanges = [];
-                
+
                 if (!empty($addedPlaylists)) {
                     $addedPlaylistNames = [];
                     foreach ($playlistsByName as $name => $id) {
@@ -319,7 +320,7 @@ final class PreviewAction implements SingleActionInterface
             foreach ($customFields as $fieldId => $newValue) {
                 $fieldShortName = array_search($fieldId, $customFieldShortNames, true);
                 $currentValue = $currentCustomFieldValues[$fieldShortName] ?? null;
-                
+
                 if ($currentValue !== $newValue) {
                     $customFieldChanges[] = [
                         'field' => $fieldShortName,

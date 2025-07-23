@@ -98,7 +98,7 @@ final class PreviewAction implements SingleActionInterface
 
         $mediaLookup = [];
         foreach ($mediaInStorageLocation as $mediaRow) {
-            $mediaByPath[md5($mediaRow['path'])] = $mediaRow['id'];
+            $mediaByPath[hash('sha256', $mediaRow['path'])] = $mediaRow['id'];
             $mediaByUniqueId[$mediaRow['unique_id']] = $mediaRow['id'];
             $mediaLookup[$mediaRow['id']] = $mediaRow;
         }
@@ -129,8 +129,8 @@ final class PreviewAction implements SingleActionInterface
             $row = (array)$row;
             if (isset($row['unique_id'], $mediaByUniqueId[$row['unique_id']])) {
                 $mediaId = $mediaByUniqueId[$row['unique_id']];
-            } elseif (isset($row['path'], $mediaByPath[md5($row['path'])])) {
-                $mediaId = $mediaByPath[md5($row['path'])];
+            } elseif (isset($row['path'], $mediaByPath[hash('sha256', $row['path'])])) {
+                $mediaId = $mediaByPath[hash('sha256', $row['path'])];
             } else {
                 continue;
             }

@@ -106,6 +106,7 @@ final class SetupCommand extends CommandAbstract
         );
 
         if ($isInit) {
+            $io->success('App initialization completed successfully.');
             return 0;
         }
 

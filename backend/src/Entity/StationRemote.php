@@ -140,8 +140,9 @@ final class StationRemote implements
 
     #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     public ?int $source_port = null {
-        set {
-            if ((int)$value === 0) {
+        set(int|string|null $value) {
+            $value = Utilities\Types::intOrNull($value);
+            if (0 === $value) {
                 $value = null;
             }
 

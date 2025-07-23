@@ -11,9 +11,6 @@ opcache.enable=1
 opcache.enable_cli=1
 
 {{if eq .Env.APPLICATION_ENV "production"}}
-opcache.jit_buffer_size=100M
-opcache.jit=tracing
-
 opcache.revalidate_freq={{ default .Env.PHP_OPCACHE_REVALIDATE_FREQUENCY "60" }}
 {{end}}
 

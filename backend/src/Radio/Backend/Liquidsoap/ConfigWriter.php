@@ -84,7 +84,9 @@ final class ConfigWriter implements EventSubscriberInterface
             $event->appendLines(
                 [
                     '# Custom Configuration (Specified in Station Profile)',
+                    '# startcustomconfig(' . $sectionName . ')',
                     $customConfig,
+                    '# endcustomconfig(' . $sectionName . ')',
                 ]
             );
         }

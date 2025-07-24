@@ -37,6 +37,28 @@
 
             <loading :loading="isLoading">
                 <div class="card-body">
+                    <div class="buttons mb-3">
+                        <a
+                            class="btn btn-sm btn-secondary"
+                            :href="exportUrl"
+                            target="_blank"
+                        >
+                            {{ $gettext('Export Configuration') }}
+                        </a>
+
+                        <button class="btn btn-sm btn-secondary" @click.prevent="doImport">
+                            {{ $gettext('Import Configuration') }}
+                        </button>
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn mb-2"
+                        :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
+                    >
+                        {{ $gettext('Save Changes') }}
+                    </button>
+
                     <form-fieldset
                         v-for="(row, index) in config"
                         :key="index"
@@ -65,7 +87,7 @@
 
                     <button
                         type="submit"
-                        class="btn"
+                        class="btn mt-2"
                         :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
                     >
                         {{ $gettext('Save Changes') }}
@@ -74,6 +96,12 @@
             </loading>
         </section>
     </form>
+
+    <import-modal
+        ref="$importModal"
+        :import-url="importUrl"
+        @relist="() => relist()"
+    />
 </template>
 
 <script setup lang="ts">
@@ -84,15 +112,18 @@ import {forEach} from "lodash";
 import mergeExisting from "~/functions/mergeExisting";
 import InfoCard from "~/components/Common/InfoCard.vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, useTemplateRef} from "vue";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import Loading from "~/components/Common/Loading.vue";
 import {getStationApiUrl} from "~/router";
 import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";
+import ImportModal from "~/components/Stations/LiquidsoapConfig/ImportModal.vue";
 
 const settingsUrl = getStationApiUrl('/liquidsoap-config');
+const exportUrl = getStationApiUrl('/liquidsoap-config/export');
+const importUrl = getStationApiUrl('/liquidsoap-config/import');
 
 interface ConfigRow {
     is_field: boolean,
@@ -157,4 +188,10 @@ const submit = () => {
         });
     });
 }
+
+const $importModal = useTemplateRef('$importModal');
+
+const doImport = () => {
+    $importModal.value?.open();
+};
 </script>

@@ -62,8 +62,6 @@ final class PreviewAction implements SingleActionInterface
     public function __construct(
         private readonly CustomFieldRepository $customFieldRepo,
         private readonly StationPlaylistRepository $playlistRepo,
-        private readonly Serializer $serializer,
-        private readonly ValidatorInterface $validator,
     ) {
     }
 
@@ -303,7 +301,7 @@ final class PreviewAction implements SingleActionInterface
             // Get current custom fields for this media
             $currentCustomFields = $this->em->createQuery(
                 <<<DQL
-                SELECT cf.short_name, smcf.field_value
+                SELECT cf.short_name, smcf.value
                 FROM App\Entity\StationMediaCustomField smcf
                 JOIN smcf.field cf
                 WHERE smcf.media = :mediaId
@@ -313,7 +311,7 @@ final class PreviewAction implements SingleActionInterface
 
             $currentCustomFieldValues = [];
             foreach ($currentCustomFields as $field) {
-                $currentCustomFieldValues[$field['short_name']] = $field['field_value'];
+                $currentCustomFieldValues[$field['short_name']] = $field['value'];
             }
 
             $customFieldChanges = [];

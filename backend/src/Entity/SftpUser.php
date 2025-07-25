@@ -92,7 +92,7 @@ final class SftpUser implements
     public function authenticate(?string $password = null, ?string $pubKey = null): bool
     {
         if (!empty($password)) {
-            $reflProp = new ReflectionProperty($this, 'streamer_password');
+            $reflProp = new ReflectionProperty($this, 'password');
             $hash = $reflProp->getRawValue($this);
 
             return password_verify($password, $hash);

@@ -313,7 +313,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, useTemplateRef, computed} from "vue";
+import {computed, ref, useTemplateRef} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
@@ -340,8 +340,8 @@ const $previewModal = useTemplateRef('$previewModal');
 const {show: showPreview, hide: hidePreview} = useHasModal($previewModal);
 
 const filteredPreviewResults = computed(() => {
-    if (!previewResults.value?.preview_results) return [];
-    return previewResults.value.preview_results.filter((row: any) => 
+    if (!previewResults.value?.previewResults) return [];
+    return previewResults.value.previewResults.filter((row: any) =>
         row.has_changes || row.error
     );
 });

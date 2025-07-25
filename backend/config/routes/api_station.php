@@ -839,6 +839,11 @@ return static function (RouteCollectorProxy $group) {
                                         Controller\Api\Stations\WebhooksController::class . ':deleteAction'
                                     );
 
+                                    $group->post(
+                                        '/clone',
+                                        Controller\Api\Stations\WebhooksController::class . ':cloneAction'
+                                    )->setName('api:stations:webhook:clone');
+
                                     $group->put(
                                         '/toggle',
                                         Controller\Api\Stations\Webhooks\ToggleAction::class

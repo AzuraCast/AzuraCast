@@ -81,7 +81,7 @@
                         <button
                             type="button"
                             class="btn btn-info"
-                            @click="doDuplicate(item.links.duplicate)"
+                            @click="doClone(item.links.clone)"
                         >
                             {{ $gettext('Duplicate') }}
                         </button>
@@ -197,7 +197,7 @@ const doToggle = (url: string) => {
     });
 };
 
-const doDuplicate = (url: string) => {
+const doClone = (url: string) => {
     void axios.post(url).then(() => {
         notifySuccess($gettext('Webhook duplicated.'));
         relist();

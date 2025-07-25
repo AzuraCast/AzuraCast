@@ -840,9 +840,9 @@ return static function (RouteCollectorProxy $group) {
                                     );
 
                                     $group->post(
-                                        '/duplicate',
-                                        Controller\Api\Stations\WebhooksController::class . ':duplicateAction'
-                                    )->setName('api:stations:webhook:duplicate');
+                                        '/clone',
+                                        Controller\Api\Stations\WebhooksController::class . ':cloneAction'
+                                    )->setName('api:stations:webhook:clone');
 
                                     $group->put(
                                         '/toggle',

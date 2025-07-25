@@ -159,35 +159,6 @@ final class WebhooksController extends AbstractStationApiCrudController
     protected string $entityClass = StationWebhook::class;
     protected string $resourceRouteName = 'api:stations:webhook';
 
-    public function duplicateAction(
-        ServerRequest $request,
-        Response $response,
-        array $params
-    ): ResponseInterface {
-        $station = $request->getStation();
-        $originalWebhook = $this->getRecord($request, $params);
-
-        if (!$originalWebhook instanceof StationWebhook) {
-            return $response->withStatus(404, 'Web hook not found.');
-        }
-
-        $newWebhook = new StationWebhook(
-            $station,
-            $originalWebhook->getType()
-        );
-
-        $newWebhook->setName($originalWebhook->getName() . ' (Copy)');
-        $newWebhook->setConfig($originalWebhook->getConfig());
-        $newWebhook->setTriggers($originalWebhook->getTriggers());
-        $newWebhook->setIsEnabled(false);
-
-        $this->em->persist($newWebhook);
-        $this->em->flush();
-
-        $record = $this->viewRecord($newWebhook, $request);
-        return $response->withJson($record)->withStatus(201);
-    }
-
     /**
      * @param ServerRequest $request
      * @param Response $response
@@ -238,8 +209,8 @@ final class WebhooksController extends AbstractStationApiCrudController
                 routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             ),
-            'duplicate' => $router->fromHere(
-                routeName: 'api:stations:webhook:duplicate',
+            'clone' => $router->fromHere(
+                routeName: 'api:stations:webhook:clone',
                 routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             ),
@@ -256,5 +227,31 @@ final class WebhooksController extends AbstractStationApiCrudController
         ];
 
         return $return;
+    }
+
+    public function cloneAction(
+        ServerRequest $request,
+        Response $response,
+        array $params
+    ): ResponseInterface {
+        $originalWebhook = $this->getRecord($request, $params);
+
+        if (!$originalWebhook instanceof StationWebhook) {
+            return $response->withStatus(404, 'Web hook not found.');
+        }
+
+        $this->em->detach($originalWebhook);
+
+        $newWebhook = clone $originalWebhook;
+        $newWebhook->name = $originalWebhook->name . ' (Copy)';
+        $newWebhook->is_enabled = false;
+
+        $this->em->persist($newWebhook);
+        $this->em->flush();
+
+        return $response->withJson(
+            $this->viewRecord($newWebhook, $request),
+            201
+        );
     }
 }

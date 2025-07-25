@@ -29,6 +29,10 @@ release channel, you can take advantage of these new features and fixes.
   all episodes will have their download URLs prefixed by the OP3 analytics URL, which will let you track your audience
   details via the OP3 platform.
 
+- You can now export your station's Liquidsoap configuration (including any custom configuration sections) to an archive
+  file; this archive file contains all of AzuraCast's code and can also be used for diagnosing Liquidsoap errors. You
+  can re-import this file later to apply any custom configuration within the file to the station.
+
 ## Code Quality/Technical Changes
 
 - We have removed the "Hide Advanced Features" setting from the system settings panel. Often, this setting was disabled

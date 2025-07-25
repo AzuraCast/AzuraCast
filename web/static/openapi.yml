@@ -2152,6 +2152,24 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/files/bulk/preview':
+    post:
+      tags:
+        - 'Stations: Media'
+      summary: 'Preview changes from a CSV containing details about all station media.'
+      operationId: postStationBulkMediaPreview
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/custom_assets/{type}':
     get:
       tags:
@@ -2914,6 +2932,24 @@ paths:
         '404':
           $ref: '#/components/responses/RecordNotFound'
       security: []
+  '/station/{station_id}/liquidsoap-config/export':
+    get:
+      tags:
+        - 'Stations: Broadcasting'
+      summary: 'Generate an archive of all Liquidsoap configuration on your station, including custom config.'
+      operationId: exportStationLiquidsoapConfig
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/liquidsoap-config':
     get:
       tags:
@@ -2937,6 +2973,24 @@ paths:
         - 'Stations: Broadcasting'
       summary: 'Save the editable sections of the station Liquidsoap configuration.'
       operationId: putStationLiquidsoapConfig
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/liquidsoap-config/import':
+    post:
+      tags:
+        - 'Stations: Broadcasting'
+      summary: 'Import a previously exported Liquidsoap configuration archive and replace custom config sections.'
+      operationId: importStationLiquidsoapConfig
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -3546,7 +3600,7 @@ paths:
       tags:
         - 'Stations: Playlists'
       summary: 'Import the contents of an uploaded playlist (PLS/M3U) file into the specified playlist.'
-      operationId: getStationPlaylistImport
+      operationId: postStationPlaylistImport
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -6089,6 +6143,36 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/webhook/{id}/clone':
+    post:
+      tags:
+        - 'Stations: Web Hooks'
+      summary: 'Duplicate a single web hook.'
+      operationId: cloneWebhook
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Web Hook ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationWebhook'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -8724,7 +8808,6 @@ components:
             radio_base_dir:
               type: string
               example: /var/azuracast/stations/azuratest_radio
-              nullable: true
             enable_requests:
               description: 'Whether listeners can request songs to play on this station.'
               type: boolean
@@ -8773,7 +8856,6 @@ components:
               description: 'The time zone that station operations should take place in.'
               type: string
               example: UTC
-              nullable: true
             max_bitrate:
               description: 'The maximum bitrate at which a station may broadcast, in Kbps. 0 for unlimited'
               type: integer
@@ -8821,7 +8903,6 @@ components:
             display_name:
               type: string
               example: '128kbps MP3'
-              nullable: true
             is_visible_on_public_pages:
               type: boolean
               example: true
@@ -8929,9 +9010,10 @@ components:
               type: boolean
               example: true
             backend_options:
-              type: string
+              type: array
+              items:
+                type: string
               example: 'interrupt,loop_once,single_track,merge'
-              nullable: true
             avoid_duplicates:
               type: boolean
               example: true
@@ -8959,9 +9041,10 @@ components:
               example: 2200
             days:
               description: 'Array of ISO-8601 days (1 for Monday, 7 for Sunday)'
-              type: string
+              type: array
+              items:
+                type: integer
               example: '0,1,2,3'
-              nullable: true
             loop_once:
               type: boolean
               example: false
@@ -8983,7 +9066,6 @@ components:
             display_name:
               type: string
               example: 'Test DJ'
-              nullable: true
             comments:
               type: string
               example: 'This is a test DJ account.'
@@ -9091,10 +9173,9 @@ components:
             email:
               type: string
               example: demo@azuracast.com
-            new_password:
+            auth_password:
               type: string
               example: ''
-              nullable: true
             name:
               type: string
               example: 'Demo Account'

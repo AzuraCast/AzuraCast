@@ -211,6 +211,21 @@ final class Station implements Stringable, IdentifiableEntityInterface
         return hash_equals($apiKey, $this->adapter_api_key ?? '');
     }
 
+    /**
+     * @return string[] An array of terms to filter from logs and other sensitive displays.
+     */
+    public function getFilteredPasswords(): array
+    {
+        $frontendConfig = $this->frontend_config;
+        return array_filter([
+            $this->adapter_api_key,
+            $frontendConfig->admin_pw,
+            $frontendConfig->relay_pw,
+            $frontendConfig->source_pw,
+            $frontendConfig->streamer_pw,
+        ]);
+    }
+
     #[
         OA\Property(example: "A sample radio station."),
         ORM\Column(type: 'text', nullable: true),

@@ -73,7 +73,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     {
         s3CredentialKey: {required},
         s3CredentialSecret: {required},
-        s3Region: {required},
+        s3Region: {},
         s3Version: {required},
         s3Bucket: {required},
         s3Endpoint: {required},

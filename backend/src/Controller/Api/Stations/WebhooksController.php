@@ -127,8 +127,8 @@ use Psr\Http\Message\ResponseInterface;
         ]
     ),
     OA\Post(
-        path: '/station/{station_id}/webhook/{id}/duplicate',
-        operationId: 'duplicateWebhook',
+        path: '/station/{station_id}/webhook/{id}/clone',
+        operationId: 'cloneWebhook',
         summary: 'Duplicate a single web hook.',
         tags: [OpenApi::TAG_STATIONS_WEBHOOKS],
         parameters: [

@@ -26,6 +26,7 @@ final class Listener implements
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public readonly Station $station;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: false, insertable: false, updatable: false)]
     public private(set) int $station_id;
 
@@ -33,6 +34,7 @@ final class Listener implements
     #[ORM\JoinColumn(name: 'mount_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     public readonly ?StationMount $mount;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: true, insertable: false, updatable: false)]
     public private(set) ?int $mount_id = null;
 
@@ -40,6 +42,7 @@ final class Listener implements
     #[ORM\JoinColumn(name: 'remote_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     public readonly ?StationRemote $remote;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: true, insertable: false, updatable: false)]
     public private(set) ?int $remote_id = null;
 
@@ -47,6 +50,7 @@ final class Listener implements
     #[ORM\JoinColumn(name: 'hls_stream_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     public readonly ?StationHlsStream $hls_stream;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: true, insertable: false, updatable: false)]
     public private(set) ?int $hls_stream_id = null;
 

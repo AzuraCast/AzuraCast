@@ -150,6 +150,9 @@ final class ApiKeysController extends AbstractApiCrudController
             Types::string($parsedBody['comment'] ?? null)
         );
 
+        $this->em->persist($record);
+        $this->em->flush();
+
         $return = $this->viewRecord($record, $request);
         $return['key'] = (string)$newKey;
 

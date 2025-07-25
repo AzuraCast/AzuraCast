@@ -84,7 +84,9 @@ final class ConfigWriter implements EventSubscriberInterface
             $event->appendLines(
                 [
                     '# Custom Configuration (Specified in Station Profile)',
+                    '# startcustomconfig(' . $sectionName . ')',
                     $customConfig,
+                    '# endcustomconfig(' . $sectionName . ')',
                 ]
             );
         }
@@ -1291,9 +1293,6 @@ final class ConfigWriter implements EventSubscriberInterface
         }
 
         $strVal = mb_convert_encoding($strVal, 'UTF-8');
-        if ($strVal === false) {
-            throw new RuntimeException('Cannot convert to UTF-8');
-        }
 
         return str_replace(['"', "\n", "\t", "\r"], ['\"', '', '', ''], $strVal);
     }

@@ -10,6 +10,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
+use SensitiveParameter;
 
 trait HasLogViewer
 {
@@ -20,6 +21,7 @@ trait HasLogViewer
         Response $response,
         string $logPath,
         bool $tailFile = true,
+        #[SensitiveParameter]
         array $filteredTerms = []
     ): ResponseInterface {
         clearstatcache();
@@ -92,6 +94,7 @@ trait HasLogViewer
         string $rawLog,
         bool $cutFirstLine = false,
         bool $cutEmptyLastLine = false,
+        #[SensitiveParameter]
         array $filteredTerms = []
     ): string {
         $logParts = explode("\n", $rawLog);
@@ -105,9 +108,6 @@ trait HasLogViewer
 
         $log = implode("\n", $logParts);
         $log = mb_convert_encoding($log, 'UTF-8', 'UTF-8');
-        if ($log === false) {
-            throw new RuntimeException('Cannot convert to UTF-8');
-        }
 
         return str_replace($filteredTerms, '(PASSWORD)', $log);
     }

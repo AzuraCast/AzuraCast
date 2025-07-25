@@ -207,4 +207,9 @@ final class File
 
         throw new InvalidArgumentException('No existing directories found.');
     }
+
+    public static function convertToLf(string $original): string
+    {
+        return preg_replace('~\R~u', "\n", $original) ?? '';
+    }
 }

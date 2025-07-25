@@ -8,7 +8,6 @@ use App\Auth;
 use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\OpenApi;
-use App\Utilities\Strings;
 use App\Validator\Constraints\UniqueEntity;
 use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,6 +15,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use OTPHP\Factory;
+use ReflectionException;
+use ReflectionProperty;
+use SensitiveParameter;
 use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -45,16 +47,54 @@ final class User implements Stringable, IdentifiableEntityInterface
     public string $email;
 
     #[
+        OA\Property(example: ""),
+        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
         ORM\Column(length: 255, nullable: false),
         Attributes\AuditIgnore
     ]
-    public string $auth_password = '';
+    public string $auth_password = '' {
+        // @phpstan-ignore propertyGetHook.noRead
+        get => '';
+        // @phpstan-ignore propertySetHook.noAssign
+        set (string|null $value) {
+            $userPassword = trim($value ?? '');
 
-    #[
-        OA\Property(example: ""),
-        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
-    ]
-    public ?string $new_password = null;
+            if (!empty($userPassword)) {
+                $this->auth_password = password_hash($userPassword, PASSWORD_ARGON2ID);
+            }
+        }
+    }
+
+    public function verifyPassword(
+        #[SensitiveParameter]
+        string $password
+    ): bool {
+        try {
+            $reflProp = new ReflectionProperty($this, 'auth_password');
+            $hash = $reflProp->getRawValue($this);
+
+            if (password_verify($password, $hash)) {
+                if (password_needs_rehash($this->auth_password, PASSWORD_ARGON2ID)) {
+                    $this->auth_password = $password;
+                }
+                return true;
+            }
+
+            return false;
+        } catch (ReflectionException) {
+            return false;
+        }
+    }
+
+    /**
+     * Legacy setter for new password.
+     */
+    public function setNewPassword(
+        #[SensitiveParameter]
+        string|null $password
+    ): void {
+        $this->auth_password = $password;
+    }
 
     #[
         OA\Property(example: "Demo Account"),
@@ -170,30 +210,6 @@ final class User implements Stringable, IdentifiableEntityInterface
     public function getDisplayName(): string
     {
         return $this->name ?? $this->email;
-    }
-
-    public function verifyPassword(string $password): bool
-    {
-        if (password_verify($password, $this->auth_password)) {
-            if (password_needs_rehash($this->auth_password, PASSWORD_ARGON2ID)) {
-                $this->setNewPassword($password);
-            }
-            return true;
-        }
-
-        return false;
-    }
-
-    public function setNewPassword(?string $password): void
-    {
-        if (null !== $password && trim($password)) {
-            $this->auth_password = password_hash($password, PASSWORD_ARGON2ID);
-        }
-    }
-
-    public function generateRandomPassword(): void
-    {
-        $this->setNewPassword(Strings::generatePassword());
     }
 
     public function verifyTwoFactor(string $otp): bool

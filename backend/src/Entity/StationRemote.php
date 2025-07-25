@@ -42,6 +42,7 @@ final class StationRemote implements
         $this->station = $station;
     }
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: false, insertable: false, updatable: false)]
     public private(set) int $station_id;
 
@@ -49,6 +50,7 @@ final class StationRemote implements
     #[ORM\JoinColumn(name: 'relay_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     public ?Relay $relay = null;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: true, insertable: false, updatable: false)]
     public private(set) ?int $relay_id = null;
 
@@ -138,8 +140,9 @@ final class StationRemote implements
 
     #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     public ?int $source_port = null {
-        set {
-            if ((int)$value === 0) {
+        set(int|string|null $value) {
+            $value = Utilities\Types::intOrNull($value);
+            if (0 === $value) {
                 $value = null;
             }
 

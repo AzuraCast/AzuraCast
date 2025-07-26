@@ -8786,13 +8786,11 @@ components:
             frontend_type:
               $ref: '#/components/schemas/FrontendAdapters'
             frontend_config:
-              description: 'An array containing station-specific frontend configuration'
-              type: object
+              $ref: '#/components/schemas/StationFrontendConfiguration'
             backend_type:
               $ref: '#/components/schemas/BackendAdapters'
             backend_config:
-              description: 'An array containing station-specific backend configuration'
-              type: object
+              $ref: '#/components/schemas/StationBackendConfiguration'
             description:
               type: string
               example: 'A sample radio station.'
@@ -8869,9 +8867,154 @@ components:
               type: integer
               example: 3
             branding_config:
-              description: 'An array containing station-specific branding configuration'
-              type: object
+              $ref: '#/components/schemas/StationBrandingConfiguration'
           type: object
+    StationBackendConfiguration:
+      properties:
+        charset:
+          type: string
+        dj_port:
+          type: integer
+          nullable: true
+        telnet_port:
+          type: integer
+          nullable: true
+        record_streams:
+          type: boolean
+        record_streams_format:
+          type: string
+        record_streams_bitrate:
+          type: integer
+        use_manual_autodj:
+          type: boolean
+        autodj_queue_length:
+          type: integer
+        dj_mount_point:
+          type: string
+        dj_buffer:
+          type: integer
+        audio_processing_method:
+          type: string
+        post_processing_include_live:
+          type: boolean
+        stereo_tool_license_key:
+          type: string
+          nullable: true
+        stereo_tool_configuration_path:
+          type: string
+          nullable: true
+        master_me_preset:
+          type: string
+          nullable: true
+        master_me_loudness_target:
+          type: integer
+        enable_replaygain_metadata:
+          type: boolean
+        crossfade_type:
+          type: string
+        crossfade:
+          type: number
+          format: float
+        duplicate_prevention_time_range:
+          type: integer
+        performance_mode:
+          type: string
+        hls_segment_length:
+          type: integer
+        hls_segments_in_playlist:
+          type: integer
+        hls_segments_overhead:
+          type: integer
+        hls_enable_on_public_player:
+          type: boolean
+        hls_is_default:
+          type: boolean
+        live_broadcast_text:
+          type: string
+        enable_auto_cue:
+          type: boolean
+        write_playlists_to_liquidsoap:
+          type: boolean
+        custom_config_top:
+          description: 'Custom Liquidsoap Configuration: Top Section'
+          type: string
+          nullable: true
+        custom_config_pre_playlists:
+          description: 'Custom Liquidsoap Configuration: Pre-Playlists Section'
+          type: string
+          nullable: true
+        custom_config_pre_live:
+          description: 'Custom Liquidsoap Configuration: Pre-Live Section'
+          type: string
+          nullable: true
+        custom_config_pre_fade:
+          description: 'Custom Liquidsoap Configuration: Pre-Fade Section'
+          type: string
+          nullable: true
+        custom_config:
+          description: 'Custom Liquidsoap Configuration: Pre-Broadcast Section'
+          type: string
+          nullable: true
+        custom_config_bottom:
+          description: 'Custom Liquidsoap Configuration: Post-Broadcast Section'
+          type: string
+          nullable: true
+      type: object
+    StationBrandingConfiguration:
+      properties:
+        default_album_art_url:
+          type: string
+          nullable: true
+        public_custom_css:
+          type: string
+          nullable: true
+        public_custom_js:
+          type: string
+          nullable: true
+        offline_text:
+          type: string
+          nullable: true
+      type: object
+    StationFrontendConfiguration:
+      properties:
+        custom_config:
+          type: string
+          nullable: true
+        source_pw:
+          type: string
+        admin_pw:
+          type: string
+        relay_pw:
+          type: string
+        streamer_pw:
+          type: string
+        port:
+          type: integer
+          nullable: true
+        max_listeners:
+          type: integer
+          nullable: true
+        banned_ips:
+          type: string
+          nullable: true
+        banned_user_agents:
+          type: string
+          nullable: true
+        banned_countries:
+          type: array
+          items:
+            type: string
+          nullable: true
+        allowed_ips:
+          type: string
+          nullable: true
+        sc_license_id:
+          type: string
+          nullable: true
+        sc_user_id:
+          type: string
+          nullable: true
+      type: object
     StationHlsStream:
       type: object
       allOf:
@@ -8890,6 +9033,33 @@ components:
               example: 128
               nullable: true
           type: object
+    StationMediaMetadata:
+      properties:
+        amplify:
+          type: number
+          format: float
+          nullable: true
+        cross_start_next:
+          type: number
+          format: float
+          nullable: true
+        fade_in:
+          type: number
+          format: float
+          nullable: true
+        fade_out:
+          type: number
+          format: float
+          nullable: true
+        cue_in:
+          type: number
+          format: float
+          nullable: true
+        cue_out:
+          type: number
+          format: float
+          nullable: true
+      type: object
     StationMount:
       type: object
       allOf:

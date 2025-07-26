@@ -7,15 +7,15 @@ namespace App\Entity;
 use App\Doctrine\AbstractArrayEntity;
 use App\Utilities\Types;
 use App\Utilities\Urls;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 
+#[OA\Schema(schema: "StationBrandingConfiguration", type: "object")]
 final class StationBrandingConfiguration extends AbstractArrayEntity
 {
-    public ?string $default_album_art_url {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true);
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public ?string $default_album_art_url = null {
+        set => Types::stringOrNull($value, true);
     }
 
     public function getDefaultAlbumArtUrlAsUri(): ?UriInterface
@@ -27,24 +27,18 @@ final class StationBrandingConfiguration extends AbstractArrayEntity
         );
     }
 
-    public ?string $public_custom_css {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true);
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public ?string $public_custom_css = null {
+        set => Types::stringOrNull($value, true);
     }
 
-    public ?string $public_custom_js {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true);
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public ?string $public_custom_js = null {
+        set => Types::stringOrNull($value, true);
     }
 
-    public ?string $offline_text {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true);
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public ?string $offline_text = null {
+        set => Types::stringOrNull($value, true);
     }
 }

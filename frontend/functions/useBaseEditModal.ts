@@ -9,9 +9,10 @@ import {
     VuelidateValidations
 } from "~/functions/useVuelidateOnForm";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {AxiosRequestConfig} from "axios";
+import {AxiosError, AxiosRequestConfig} from "axios";
 import {GlobalConfig} from "@vuelidate/core";
-import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
+import {ApiError, ApiGenericForm, ApiStatus} from "~/entities/ApiInterfaces.ts";
+import {useMutation, UseMutationOptions, UseMutationReturnType} from "@tanstack/vue-query";
 
 export type ModalFormTemplateRef = InstanceType<typeof ModalForm>;
 
@@ -23,6 +24,21 @@ export interface HasRelistEmit {
     (e: 'relist'): void
 }
 
+type AxiosMutateResponse = ApiStatus & Record<string, any>
+
+type MutationOptions = UseMutationOptions<
+    AxiosMutateResponse,
+    AxiosError<ApiError>,
+    ApiGenericForm
+>
+
+type MutationReturn = UseMutationReturnType<
+    AxiosMutateResponse,
+    AxiosError<ApiError>,
+    ApiGenericForm,
+    unknown
+>
+
 export type BaseEditModalEmits = HasRelistEmit;
 
 export interface BaseEditModalOptions<T extends ApiGenericForm = ApiGenericForm> extends GlobalConfig {
@@ -32,13 +48,21 @@ export interface BaseEditModalOptions<T extends ApiGenericForm = ApiGenericForm>
 
     populateForm?(data: Partial<T>, form: Ref<T>): void,
 
-    getSubmittableFormData?(form: Ref<T>, isEditMode: ComputedRef<boolean>): Record<string, any>,
+    getSubmittableFormData?(form: Ref<T>, isEditMode: ComputedRef<boolean>): ApiGenericForm,
 
-    buildSubmitRequest?(): AxiosRequestConfig,
+    buildSubmitRequest?(data: ApiGenericForm): AxiosRequestConfig,
 
-    onSubmitSuccess?(): void,
+    onSubmitSuccess?(
+        data: AxiosMutateResponse,
+        variables: ApiGenericForm,
+        context: unknown
+    ): void,
 
-    onSubmitError?(error: any): void,
+    onSubmitError?(
+        error: AxiosError<ApiError, any>,
+        variables: ApiGenericForm,
+        context: unknown
+    ): void,
 }
 
 export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
@@ -47,7 +71,8 @@ export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
     $modal: Readonly<ShallowRef<ModalFormTemplateRef | null>>,
     validations?: VuelidateValidations<T>,
     blankForm?: VuelidateBlankForm<T>,
-    options: BaseEditModalOptions<T> = {}
+    options: BaseEditModalOptions<T> = {},
+    mutationOptions: Partial<MutationOptions> = {},
 ): {
     loading: Ref<boolean>,
     error: Ref<any>,
@@ -55,6 +80,7 @@ export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
     isEditMode: ComputedRef<boolean>,
     form: Ref<T>,
     v$: VuelidateRef<T>,
+    mutation: MutationReturn,
     resetForm: () => void,
     clearContents: () => void,
     create: () => void,
@@ -154,7 +180,7 @@ export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
         })
     };
 
-    const getSubmittableFormData = (): Record<string, any> => {
+    const getSubmittableFormData = (): ApiGenericForm => {
         if (typeof options.getSubmittableFormData === 'function') {
             return options.getSubmittableFormData(form, isEditMode);
         }
@@ -162,9 +188,9 @@ export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
         return form.value;
     };
 
-    const buildSubmitRequest = (): AxiosRequestConfig => {
+    const buildSubmitRequest = (data: ApiGenericForm): AxiosRequestConfig => {
         if (typeof options.buildSubmitRequest === 'function') {
-            return options.buildSubmitRequest();
+            return options.buildSubmitRequest(data);
         }
 
         return {
@@ -174,7 +200,7 @@ export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
             url: (isEditMode.value && editUrl.value)
                 ? editUrl.value
                 : createUrl.value,
-            data: getSubmittableFormData()
+            data: data
         };
     };
 
@@ -182,25 +208,32 @@ export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
         $modal.value?.hide();
     };
 
-    const onSubmitSuccess = (): void => {
-        if (typeof options.onSubmitSuccess === 'function') {
-            options.onSubmitSuccess();
-            return;
-        }
+    const mutation: MutationReturn = useMutation({
+        mutationFn: async (data: ApiGenericForm) => (await axios<AxiosMutateResponse>(buildSubmitRequest(data))).data,
+        onSuccess: (
+            data,
+            variables,
+            context
+        ): void => {
+            if (typeof options.onSubmitSuccess === 'function') {
+                options.onSubmitSuccess(data, variables, context);
+                return;
+            }
 
-        notifySuccess();
-        emit('relist');
-        close();
-    };
+            notifySuccess();
+            emit('relist');
+            close();
+        },
+        onError: (err, variables, context): void => {
+            if (typeof options.onSubmitError === 'function') {
+                options.onSubmitError(err, variables, context);
+                return;
+            }
 
-    const onSubmitError = (err: any): void => {
-        if (typeof options.onSubmitError === 'function') {
-            options.onSubmitError(err);
-            return;
-        }
-
-        error.value = err.response.data.message;
-    };
+            error.value = err.response?.data?.message;
+        },
+        ...mutationOptions
+    })
 
     const doSubmit = (): void => {
         v$.value.$touch();
@@ -210,22 +243,22 @@ export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
             }
 
             error.value = null;
-
-            axios(buildSubmitRequest()).then(() => {
-                onSubmitSuccess();
-            }).catch((err) => {
-                onSubmitError(err);
-            });
+            mutation.mutate(getSubmittableFormData());
         });
     };
 
+    const isLoading = computed(
+        () => loading.value || mutation.isPending.value
+    );
+
     return {
-        loading,
+        loading: isLoading,
         error,
         editUrl,
         isEditMode,
         form,
         v$,
+        mutation,
         resetForm,
         clearContents,
         create,

@@ -1,29 +1,74 @@
 [global]
 error_log = /dev/stderr
 daemonize = no
+; Emergency restart threshold - restart FPM if too many children die
+emergency_restart_threshold = 10
+emergency_restart_interval = 1m
+; Process control timeout for graceful restarts
+process_control_timeout = 10s
 
 [www]
 user = azuracast
 group = azuracast
-
 listen = /var/run/php-fpm-www.sock
 listen.owner = azuracast
 listen.group = www-data
 listen.mode = 0660
 
-pm = ondemand
-pm.max_children = {{ default .Env.PHP_FPM_MAX_CHILDREN "20" }}
-pm.start_servers = 2
-pm.min_spare_servers = 2
-pm.max_spare_servers = 4
-pm.max_requests = 200
-pm.status_path = /status
+{{if eq .Env.APPLICATION_ENV "production"}}
+; Production: Use dynamic for consistent performance under load
+pm = dynamic
+pm.max_children = {{ default .Env.PHP_FPM_MAX_CHILDREN "50" }}
+pm.start_servers = 8
+pm.min_spare_servers = 5
+pm.max_spare_servers = 15
+pm.max_requests = 500
 pm.process_idle_timeout = 60s
+{{else}}
+; Development: Use ondemand to save resources
+pm = ondemand
+pm.max_children = {{ default .Env.PHP_FPM_MAX_CHILDREN "10" }}
+pm.start_servers = 2
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3
+pm.max_requests = 100
+pm.process_idle_timeout = 30s
+{{end}}
 
+pm.status_path = /status
 chdir = /
-clear_env=No
+clear_env = No
 catch_workers_output = yes
 decorate_workers_output = no
+
+; Performance and stability settings
+{{if eq .Env.APPLICATION_ENV "production"}}
+; Production: Use optimized settings with OPcache enabled
+php_admin_value[memory_limit] = {{ default .Env.PHP_MEMORY_LIMIT "512M" }}
+php_admin_value[max_execution_time] = {{ default .Env.PHP_MAX_EXECUTION_TIME "60" }}
+php_admin_value[max_input_time] = 120
+{{else}}
+; Development: Higher limits for debugging, disable OPcache if needed
+php_admin_value[memory_limit] = 1G
+php_admin_value[max_execution_time] = 300
+php_admin_value[max_input_time] = 300
+; Uncomment next lines if experiencing segfaults in development
+; php_admin_flag[opcache.enable] = off
+; php_admin_flag[opcache.enable_cli] = off
+{{end}}
+
+; File upload and processing limits
+php_admin_value[post_max_size] = {{ default .Env.PHP_MAX_FILE_SIZE "100M" }}
+php_admin_value[upload_max_filesize] = {{ default .Env.PHP_MAX_FILE_SIZE "100M" }}
+php_admin_value[max_input_vars] = 5000
+
+; Error logging
+php_admin_flag[log_errors] = on
+php_admin_value[error_log] = /var/log/php-fpm-www-errors.log
+
+; Regex limits for stability
+php_admin_value[pcre.backtrack_limit] = 1000000
+php_admin_value[pcre.recursion_limit] = 100000
 
 {{if eq .Env.PROFILING_EXTENSION_ENABLED "1"}}
 process.dumpable = yes
@@ -32,22 +77,30 @@ process.dumpable = yes
 [internal]
 user = azuracast
 group = azuracast
-
 listen = /var/run/php-fpm-internal.sock
 listen.owner = azuracast
 listen.group = www-data
 listen.mode = 0660
 
+; Internal processes: Always use ondemand for resource efficiency
 pm = ondemand
-pm.max_children = 10
-pm.start_servers = 2
-pm.min_spare_servers = 2
-pm.max_spare_servers = 4
+pm.max_children = {{ default .Env.PHP_FPM_INTERNAL_MAX_CHILDREN "8" }}
+pm.start_servers = 1
+pm.min_spare_servers = 1
+pm.max_spare_servers = 2
 pm.max_requests = 50
-pm.process_idle_timeout = 60s
-
+pm.process_idle_timeout = 30s
 chdir = /
-
-clear_env=No
+clear_env = No
 catch_workers_output = yes
 decorate_workers_output = no
+
+; Internal process settings - more conservative limits
+php_admin_value[memory_limit] = {{ default .Env.PHP_MEMORY_LIMIT "512M" }}
+php_admin_value[max_execution_time] = 180
+php_admin_value[max_input_time] = 180
+php_admin_value[max_input_vars] = 3000
+
+; Error logging for internal processes
+php_admin_flag[log_errors] = on
+php_admin_value[error_log] = /var/log/php-fpm-internal-errors.log

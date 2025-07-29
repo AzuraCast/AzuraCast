@@ -9,8 +9,11 @@ uptime_wait redis || exit 1
 uptime_wait db || exit 1
 
 # Run initial app setup steps before spinning up other services
-azuracast_cli azuracast:setup --init || exit 1
-azuracast_cli azuracast:acme:get-certificate || true
+#azuracast_cli azuracast:setup --init || exit 1
+ulimit -s 65536 
+php -d memory_limit=2G -d opcache.enable=0 /var/azuracast/bin/console azuracast:setup --init #|| exit 1
+#azuracast_cli azuracast:acme:get-certificate || true
+php -d memory_limit=2G -d opcache.enable=0 /var/azuracast/bin/console azuracast:acme:get-certificate
 
 # Start PHP-FPM and Centrifugo
 supervisorctl start php-fpm

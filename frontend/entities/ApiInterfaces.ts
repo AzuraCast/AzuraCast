@@ -1894,11 +1894,9 @@ export type Station = HasAutoIncrementId & {
    */
   is_enabled?: boolean;
   frontend_type?: FrontendAdapters;
-  /** An array containing station-specific frontend configuration */
-  frontend_config?: object;
+  frontend_config?: StationFrontendConfiguration;
   backend_type?: BackendAdapters;
-  /** An array containing station-specific backend configuration */
-  backend_config?: object;
+  backend_config?: StationBackendConfiguration;
   /** @example "A sample radio station." */
   description?: string | null;
   /** @example "https://demo.azuracast.com/" */
@@ -1973,9 +1971,76 @@ export type Station = HasAutoIncrementId & {
    * @example 3
    */
   max_hls_streams?: number;
-  /** An array containing station-specific branding configuration */
-  branding_config?: object;
+  branding_config?: StationBrandingConfiguration;
 };
+
+export interface StationBackendConfiguration {
+  charset?: string;
+  dj_port?: number | null;
+  telnet_port?: number | null;
+  record_streams?: boolean;
+  record_streams_format?: string;
+  record_streams_bitrate?: number;
+  use_manual_autodj?: boolean;
+  autodj_queue_length?: number;
+  dj_mount_point?: string;
+  dj_buffer?: number;
+  audio_processing_method?: string;
+  post_processing_include_live?: boolean;
+  stereo_tool_license_key?: string | null;
+  stereo_tool_configuration_path?: string | null;
+  master_me_preset?: string | null;
+  master_me_loudness_target?: number;
+  enable_replaygain_metadata?: boolean;
+  crossfade_type?: string;
+  /** @format float */
+  crossfade?: number;
+  duplicate_prevention_time_range?: number;
+  performance_mode?: string;
+  hls_segment_length?: number;
+  hls_segments_in_playlist?: number;
+  hls_segments_overhead?: number;
+  hls_enable_on_public_player?: boolean;
+  hls_is_default?: boolean;
+  live_broadcast_text?: string;
+  enable_auto_cue?: boolean;
+  write_playlists_to_liquidsoap?: boolean;
+  /** Custom Liquidsoap Configuration: Top Section */
+  custom_config_top?: string | null;
+  /** Custom Liquidsoap Configuration: Pre-Playlists Section */
+  custom_config_pre_playlists?: string | null;
+  /** Custom Liquidsoap Configuration: Pre-Live Section */
+  custom_config_pre_live?: string | null;
+  /** Custom Liquidsoap Configuration: Pre-Fade Section */
+  custom_config_pre_fade?: string | null;
+  /** Custom Liquidsoap Configuration: Pre-Broadcast Section */
+  custom_config?: string | null;
+  /** Custom Liquidsoap Configuration: Post-Broadcast Section */
+  custom_config_bottom?: string | null;
+}
+
+export interface StationBrandingConfiguration {
+  default_album_art_url?: string | null;
+  public_custom_css?: string | null;
+  public_custom_js?: string | null;
+  offline_text?: string | null;
+}
+
+export interface StationFrontendConfiguration {
+  custom_config?: string | null;
+  source_pw?: string;
+  admin_pw?: string;
+  relay_pw?: string;
+  streamer_pw?: string;
+  port?: number | null;
+  max_listeners?: number | null;
+  banned_ips?: string | null;
+  banned_user_agents?: string | null;
+  banned_countries?: string[] | null;
+  allowed_ips?: string | null;
+  sc_license_id?: string | null;
+  sc_user_id?: string | null;
+}
 
 export type StationHlsStream = HasAutoIncrementId & {
   /** @example "aac_lofi" */
@@ -1985,6 +2050,21 @@ export type StationHlsStream = HasAutoIncrementId & {
   /** @example 128 */
   bitrate?: number | null;
 };
+
+export interface StationMediaMetadata {
+  /** @format float */
+  amplify?: number | null;
+  /** @format float */
+  cross_start_next?: number | null;
+  /** @format float */
+  fade_in?: number | null;
+  /** @format float */
+  fade_out?: number | null;
+  /** @format float */
+  cue_in?: number | null;
+  /** @format float */
+  cue_out?: number | null;
+}
 
 export type StationMount = HasAutoIncrementId & {
   /** @example "/radio.mp3" */

@@ -9025,9 +9025,12 @@ components:
             name:
               type: string
               example: aac_lofi
-            format:
-              example: aac
+            profile:
+              oneOf:
+                -
+                  $ref: '#/components/schemas/HlsStreamProfiles'
               nullable: true
+              example: aac
             bitrate:
               type: integer
               example: 128
@@ -9101,8 +9104,11 @@ components:
               type: boolean
               example: true
             autodj_format:
-              example: mp3
+              oneOf:
+                -
+                  $ref: '#/components/schemas/StreamFormats'
               nullable: true
+              example: mp3
             autodj_bitrate:
               type: integer
               example: 128
@@ -9531,6 +9537,20 @@ components:
         - Shoutcast
         - Rsas
         - Remote
+    HlsStreamProfiles:
+      type: string
+      enum:
+        - aac
+        - aac_he
+        - aac_he_v2
+        - aac_ld
+        - aac_eld
+      x-enumNames:
+        - AacLowComplexity
+        - AacHighEfficiencyV1
+        - AacHighEfficiencyV2
+        - AacLowDelay
+        - AacEnhancedLowDelay
     MasterMePresets:
       type: string
       enum:
@@ -9557,6 +9577,30 @@ components:
         - Shoutcast2
         - Icecast
         - AzuraRelay
+    StreamFormats:
+      type: string
+      enum:
+        - mp3
+        - ogg
+        - aac
+        - opus
+        - flac
+      x-enumNames:
+        - Mp3
+        - Ogg
+        - Aac
+        - Opus
+        - Flac
+    StreamProtocols:
+      type: string
+      enum:
+        - icy
+        - http
+        - https
+      x-enumNames:
+        - Icy
+        - Http
+        - Https
     WebhookTriggers:
       type: string
       enum:

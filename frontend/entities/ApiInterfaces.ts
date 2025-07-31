@@ -39,6 +39,20 @@ export enum WebhookTriggers {
   StationOnline = "station_online",
 }
 
+export enum StreamProtocols {
+  Icy = "icy",
+  Http = "http",
+  Https = "https",
+}
+
+export enum StreamFormats {
+  Mp3 = "mp3",
+  Ogg = "ogg",
+  Aac = "aac",
+  Opus = "opus",
+  Flac = "flac",
+}
+
 export enum RemoteAdapters {
   Shoutcast1 = "shoutcast1",
   Shoutcast2 = "shoutcast2",
@@ -52,6 +66,14 @@ export enum MasterMePresets {
   EbuR128 = "ebu_r128",
   ApplePodcasts = "apple_podcasts",
   YouTube = "youtube",
+}
+
+export enum HlsStreamProfiles {
+  AacLowComplexity = "aac",
+  AacHighEfficiencyV1 = "aac_he",
+  AacHighEfficiencyV2 = "aac_he_v2",
+  AacLowDelay = "aac_ld",
+  AacEnhancedLowDelay = "aac_eld",
 }
 
 export enum FrontendAdapters {
@@ -2046,7 +2068,7 @@ export type StationHlsStream = HasAutoIncrementId & {
   /** @example "aac_lofi" */
   name?: string;
   /** @example "aac" */
-  format?: any;
+  profile?: HlsStreamProfiles | null;
   /** @example 128 */
   bitrate?: number | null;
 };
@@ -2088,7 +2110,7 @@ export type StationMount = HasAutoIncrementId & {
   /** @example true */
   enable_autodj?: boolean;
   /** @example "mp3" */
-  autodj_format?: any;
+  autodj_format?: StreamFormats | null;
   /** @example 128 */
   autodj_bitrate?: number | null;
   /** @example "https://custom-listen-url.example.com/stream.mp3" */

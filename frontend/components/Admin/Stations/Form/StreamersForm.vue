@@ -133,7 +133,7 @@ import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
-import {ApiGenericForm, BackendAdapters} from "~/entities/ApiInterfaces.ts";
+import {ApiGenericForm, BackendAdapters, StreamFormats} from "~/entities/ApiInterfaces.ts";
 
 const form = defineModel<ApiGenericForm>('form', {required: true});
 
@@ -157,7 +157,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         disconnect_deactivate_streamer: 0,
         backend_config: {
             record_streams: false,
-            record_streams_format: 'mp3',
+            record_streams_format: StreamFormats.Mp3,
             record_streams_bitrate: 128,
             dj_buffer: 5,
             live_broadcast_text: 'Live Broadcast',
@@ -183,19 +183,19 @@ const recordStreamsOptions = computed(() => {
     return [
         {
             text: 'MP3',
-            value: 'mp3',
+            value: StreamFormats.Mp3
         },
         {
             text: 'OGG Vorbis',
-            value: 'ogg',
+            value: StreamFormats.Ogg
         },
         {
             text: 'OGG Opus',
-            value: 'opus',
+            value: StreamFormats.Opus
         },
         {
             text: 'AAC+ (MPEG4 HE-AAC v2)',
-            value: 'aac'
+            value: StreamFormats.Aac
         }
     ];
 });

@@ -307,7 +307,13 @@ import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {decimal, numeric, required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
-import {ApiGenericForm, AudioProcessingMethods, BackendAdapters} from "~/entities/ApiInterfaces.ts";
+import {
+    ApiGenericForm,
+    AudioProcessingMethods,
+    BackendAdapters,
+    CrossfadeModes,
+    MasterMePresets
+} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     isStereoToolInstalled: boolean
@@ -341,12 +347,12 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     () => ({
         backend_type: BackendAdapters.Liquidsoap,
         backend_config: {
-            crossfade_type: 'normal',
+            crossfade_type: CrossfadeModes.Normal,
             crossfade: 2,
             write_playlists_to_liquidsoap: true,
             audio_processing_method: AudioProcessingMethods.None,
             post_processing_include_live: true,
-            master_me_preset: 'music_general',
+            master_me_preset: MasterMePresets.MusicGeneral,
             master_me_loudness_target: -16,
             stereo_tool_license_key: '',
             enable_auto_cue: false,
@@ -400,15 +406,15 @@ const crossfadeOptions = computed<SimpleFormOptionInput>(() => {
     return [
         {
             text: $gettext('Smart Mode'),
-            value: 'smart',
+            value: CrossfadeModes.Smart,
         },
         {
             text: $gettext('Normal Mode'),
-            value: 'normal',
+            value: CrossfadeModes.Normal,
         },
         {
             text: $gettext('Disable Crossfading'),
-            value: 'none',
+            value: CrossfadeModes.Disabled
         }
     ];
 });
@@ -452,23 +458,23 @@ const masterMePresetOptions = computed<SimpleFormOptionInput>(() => {
     return [
         {
             text: $gettext('Music General'),
-            value: 'music_general'
+            value: MasterMePresets.MusicGeneral
         },
         {
             text: $gettext('Speech General'),
-            value: 'speech_general'
+            value: MasterMePresets.SpeechGeneral
         },
         {
             text: $gettext('EBU R128'),
-            value: 'ebu_r128'
+            value: MasterMePresets.EbuR128
         },
         {
             text: $gettext('Apple Podcasts'),
-            value: 'apple_podcasts'
+            value: MasterMePresets.ApplePodcasts
         },
         {
             text: $gettext('YouTube'),
-            value: 'youtube'
+            value: MasterMePresets.YouTube
         }
     ]
 });

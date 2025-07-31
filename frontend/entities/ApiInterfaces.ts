@@ -39,12 +39,6 @@ export enum WebhookTriggers {
   StationOnline = "station_online",
 }
 
-export enum StreamProtocols {
-  Icy = "icy",
-  Http = "http",
-  Https = "https",
-}
-
 export enum StreamFormats {
   Mp3 = "mp3",
   Ogg = "ogg",
@@ -81,6 +75,12 @@ export enum FrontendAdapters {
   Shoutcast = "shoutcast2",
   Rsas = "rsas",
   Remote = "remote",
+}
+
+export enum CrossfadeModes {
+  Normal = "normal",
+  Smart = "smart",
+  Disabled = "none",
 }
 
 export enum BackendAdapters {
@@ -2068,7 +2068,7 @@ export type StationHlsStream = HasAutoIncrementId & {
   /** @example "aac_lofi" */
   name?: string;
   /** @example "aac" */
-  profile?: HlsStreamProfiles | null;
+  format?: HlsStreamProfiles | null;
   /** @example 128 */
   bitrate?: number | null;
 };

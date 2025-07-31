@@ -9025,7 +9025,7 @@ components:
             name:
               type: string
               example: aac_lofi
-            profile:
+            format:
               oneOf:
                 -
                   $ref: '#/components/schemas/HlsStreamProfiles'
@@ -9525,6 +9525,16 @@ components:
       x-enumNames:
         - Liquidsoap
         - None
+    CrossfadeModes:
+      type: string
+      enum:
+        - normal
+        - smart
+        - none
+      x-enumNames:
+        - Normal
+        - Smart
+        - Disabled
     FrontendAdapters:
       type: string
       enum:
@@ -9591,16 +9601,6 @@ components:
         - Aac
         - Opus
         - Flac
-    StreamProtocols:
-      type: string
-      enum:
-        - icy
-        - http
-        - https
-      x-enumNames:
-        - Icy
-        - Http
-        - Https
     WebhookTriggers:
       type: string
       enum:

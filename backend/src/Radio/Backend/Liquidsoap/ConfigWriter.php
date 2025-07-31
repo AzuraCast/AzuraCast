@@ -1015,7 +1015,7 @@ final class ConfigWriter implements EventSubscriberInterface
             {$streamVarName} = %ffmpeg(
                 format="mpegts",
                 %audio(
-                    codec="aac",
+                    codec="libfdk_aac",
                     samplerate=44100,
                     channels=2,
                     b="{$streamBitrate}k",

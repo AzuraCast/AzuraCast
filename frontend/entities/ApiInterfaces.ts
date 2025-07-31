@@ -164,6 +164,20 @@ export enum FlashLevels {
   Info = "info",
 }
 
+export enum StorageLocationTypes {
+  Backup = "backup",
+  StationMedia = "station_media",
+  StationRecordings = "station_recordings",
+  StationPodcasts = "station_podcasts",
+}
+
+export enum StorageLocationAdapters {
+  Local = "local",
+  S3 = "s3",
+  Dropbox = "dropbox",
+  Sftp = "sftp",
+}
+
 export enum StationBackendPerformanceModes {
   LessMemory = "less_memory",
   LessCpu = "less_cpu",
@@ -497,104 +511,6 @@ export interface ApiAdminStereoToolStatus {
 }
 
 export type ApiAdminStorageLocation = HasLinks & {
-  /** @example 1 */
-  id?: number;
-  /**
-   * The type of storage location.
-   * @example "station_media"
-   */
-  type?: string;
-  /**
-   * The storage adapter to use for this location.
-   * @example "local"
-   */
-  adapter?: string;
-  /**
-   * The local path, if the local adapter is used, or path prefix for S3/remote adapters.
-   * @example "/var/azuracast/stations/azuratest_radio/media"
-   */
-  path?: string | null;
-  /**
-   * The credential key for S3 adapters.
-   * @example "your-key-here"
-   */
-  s3CredentialKey?: string | null;
-  /**
-   * The credential secret for S3 adapters.
-   * @example "your-secret-here"
-   */
-  s3CredentialSecret?: string | null;
-  /**
-   * The region for S3 adapters.
-   * @example "your-region"
-   */
-  s3Region?: string | null;
-  /**
-   * The API version for S3 adapters.
-   * @example "latest"
-   */
-  s3Version?: string | null;
-  /**
-   * The S3 bucket name for S3 adapters.
-   * @example "your-bucket-name"
-   */
-  s3Bucket?: string | null;
-  /**
-   * The optional custom S3 endpoint S3 adapters.
-   * @example "https://your-region.digitaloceanspaces.com"
-   */
-  s3Endpoint?: string | null;
-  /**
-   * The optional Dropbox App Key.
-   * @example ""
-   */
-  dropboxAppKey?: string | null;
-  /**
-   * The optional Dropbox App Secret.
-   * @example ""
-   */
-  dropboxAppSecret?: string | null;
-  /**
-   * The optional Dropbox Auth Token.
-   * @example ""
-   */
-  dropboxAuthToken?: string | null;
-  /**
-   * The host for SFTP adapters
-   * @example "127.0.0.1"
-   */
-  sftpHost?: string | null;
-  /**
-   * The username for SFTP adapters
-   * @example "root"
-   */
-  sftpUsername?: string | null;
-  /**
-   * The password for SFTP adapters
-   * @example "abc123"
-   */
-  sftpPassword?: string | null;
-  /**
-   * The port for SFTP adapters
-   * @example 20
-   */
-  sftpPort?: number | null;
-  /** The private key for SFTP adapters */
-  sftpPrivateKey?: string | null;
-  /** The private key pass phrase for SFTP adapters */
-  sftpPrivateKeyPassPhrase?: string | null;
-  /** @example "50 GB" */
-  storageQuota?: string | null;
-  /** @example "120000" */
-  storageQuotaBytes?: string | null;
-  /** @example "1 GB" */
-  storageUsed?: string | null;
-  /** @example "60000" */
-  storageUsedBytes?: string | null;
-  /** @example "1 GB" */
-  storageAvailable?: string | null;
-  /** @example "120000" */
-  storageAvailableBytes?: string | null;
   /** @example "75" */
   storageUsedPercent?: number | null;
   /** @example "true" */
@@ -2227,6 +2143,97 @@ export type StationWebhook = HasAutoIncrementId & {
   config?: any[];
   /** Internal details used by the webhook to preserve state. */
   metadata?: any[];
+};
+
+export type StorageLocation = HasAutoIncrementId & {
+  type?: StorageLocationTypes;
+  adapter?: StorageLocationAdapters;
+  /**
+   * The local path, if the local adapter is used, or path prefix for S3/remote adapters.
+   * @example "/var/azuracast/stations/azuratest_radio/media"
+   */
+  path?: string;
+  /**
+   * The credential key for S3 adapters.
+   * @example "your-key-here"
+   */
+  s3CredentialKey?: string | null;
+  /**
+   * The credential secret for S3 adapters.
+   * @example "your-secret-here"
+   */
+  s3CredentialSecret?: string | null;
+  /**
+   * The region for S3 adapters.
+   * @example "your-region"
+   */
+  s3Region?: string | null;
+  /**
+   * The API version for S3 adapters.
+   * @example "latest"
+   */
+  s3Version?: string | null;
+  /**
+   * The S3 bucket name for S3 adapters.
+   * @example "your-bucket-name"
+   */
+  s3Bucket?: string | null;
+  /**
+   * The optional custom S3 endpoint S3 adapters.
+   * @example "https://your-region.digitaloceanspaces.com"
+   */
+  s3Endpoint?: string | null;
+  /**
+   * The optional Dropbox App Key.
+   * @example ""
+   */
+  dropboxAppKey?: string | null;
+  /**
+   * The optional Dropbox App Secret.
+   * @example ""
+   */
+  dropboxAppSecret?: string | null;
+  /**
+   * The optional Dropbox Auth Token.
+   * @example ""
+   */
+  dropboxAuthToken?: string | null;
+  /**
+   * The host for SFTP adapters
+   * @example "127.0.0.1"
+   */
+  sftpHost?: string | null;
+  /**
+   * The username for SFTP adapters
+   * @example "root"
+   */
+  sftpUsername?: string | null;
+  /**
+   * The password for SFTP adapters
+   * @example "abc123"
+   */
+  sftpPassword?: string | null;
+  /**
+   * The port for SFTP adapters
+   * @example 20
+   */
+  sftpPort?: number | null;
+  /** The private key for SFTP adapters */
+  sftpPrivateKey?: string | null;
+  /** The private key pass phrase for SFTP adapters */
+  sftpPrivateKeyPassPhrase?: string | null;
+  /** @example "120000" */
+  storageQuotaBytes?: any;
+  /** @example "50 GB" */
+  storageQuota?: string | null;
+  /** @example "60000" */
+  storageUsedBytes?: any;
+  /** @example "1 GB" */
+  storageUsed?: string;
+  /** @example "120000" */
+  storageAvailableBytes?: any;
+  /** @example "1 GB" */
+  storageAvailable?: string;
 };
 
 export interface HasAutoIncrementId {

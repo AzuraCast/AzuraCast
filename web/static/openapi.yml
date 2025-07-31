@@ -1312,7 +1312,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Api_Admin_StorageLocation'
+                  allOf: [{ $ref: '#/components/schemas/StorageLocation' }, { $ref: '#/components/schemas/Api_Admin_StorageLocation' }]
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -1333,7 +1333,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Api_Admin_StorageLocation'
+                allOf:
+                  - { $ref: '#/components/schemas/StorageLocation' }
+                  - { $ref: '#/components/schemas/Api_Admin_StorageLocation' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -1359,7 +1361,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Api_Admin_StorageLocation'
+                allOf:
+                  - { $ref: '#/components/schemas/StorageLocation' }
+                  - { $ref: '#/components/schemas/Api_Admin_StorageLocation' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -1384,7 +1388,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Api_Admin_StorageLocation'
+              $ref: '#/components/schemas/StorageLocation'
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -6794,119 +6798,6 @@ components:
           $ref: '#/components/schemas/HasLinks'
         -
           properties:
-            id:
-              type: integer
-              example: 1
-            type:
-              description: 'The type of storage location.'
-              type: string
-              example: station_media
-            adapter:
-              description: 'The storage adapter to use for this location.'
-              type: string
-              example: local
-            path:
-              description: 'The local path, if the local adapter is used, or path prefix for S3/remote adapters.'
-              type: string
-              example: /var/azuracast/stations/azuratest_radio/media
-              nullable: true
-            s3CredentialKey:
-              description: 'The credential key for S3 adapters.'
-              type: string
-              example: your-key-here
-              nullable: true
-            s3CredentialSecret:
-              description: 'The credential secret for S3 adapters.'
-              type: string
-              example: your-secret-here
-              nullable: true
-            s3Region:
-              description: 'The region for S3 adapters.'
-              type: string
-              example: your-region
-              nullable: true
-            s3Version:
-              description: 'The API version for S3 adapters.'
-              type: string
-              example: latest
-              nullable: true
-            s3Bucket:
-              description: 'The S3 bucket name for S3 adapters.'
-              type: string
-              example: your-bucket-name
-              nullable: true
-            s3Endpoint:
-              description: 'The optional custom S3 endpoint S3 adapters.'
-              type: string
-              example: 'https://your-region.digitaloceanspaces.com'
-              nullable: true
-            dropboxAppKey:
-              description: 'The optional Dropbox App Key.'
-              type: string
-              example: ''
-              nullable: true
-            dropboxAppSecret:
-              description: 'The optional Dropbox App Secret.'
-              type: string
-              example: ''
-              nullable: true
-            dropboxAuthToken:
-              description: 'The optional Dropbox Auth Token.'
-              type: string
-              example: ''
-              nullable: true
-            sftpHost:
-              description: 'The host for SFTP adapters'
-              type: string
-              example: 127.0.0.1
-              nullable: true
-            sftpUsername:
-              description: 'The username for SFTP adapters'
-              type: string
-              example: root
-              nullable: true
-            sftpPassword:
-              description: 'The password for SFTP adapters'
-              type: string
-              example: abc123
-              nullable: true
-            sftpPort:
-              description: 'The port for SFTP adapters'
-              type: integer
-              example: 20
-              nullable: true
-            sftpPrivateKey:
-              description: 'The private key for SFTP adapters'
-              type: string
-              nullable: true
-            sftpPrivateKeyPassPhrase:
-              description: 'The private key pass phrase for SFTP adapters'
-              type: string
-              nullable: true
-            storageQuota:
-              type: string
-              example: '50 GB'
-              nullable: true
-            storageQuotaBytes:
-              type: string
-              example: '120000'
-              nullable: true
-            storageUsed:
-              type: string
-              example: '1 GB'
-              nullable: true
-            storageUsedBytes:
-              type: string
-              example: '60000'
-              nullable: true
-            storageAvailable:
-              type: string
-              example: '1 GB'
-              nullable: true
-            storageAvailableBytes:
-              type: string
-              example: '120000'
-              nullable: true
             storageUsedPercent:
               type: integer
               example: '75'
@@ -8486,6 +8377,30 @@ components:
         - LessCpu
         - Balanced
         - Disabled
+    StorageLocationAdapters:
+      type: string
+      enum:
+        - local
+        - s3
+        - dropbox
+        - sftp
+      x-enumNames:
+        - Local
+        - S3
+        - Dropbox
+        - Sftp
+    StorageLocationTypes:
+      type: string
+      enum:
+        - backup
+        - station_media
+        - station_recordings
+        - station_podcasts
+      x-enumNames:
+        - Backup
+        - StationMedia
+        - StationRecordings
+        - StationPodcasts
     Relay:
       type: object
       allOf:
@@ -9296,6 +9211,113 @@ components:
               description: 'Internal details used by the webhook to preserve state.'
               type: array
               items: {  }
+          type: object
+    StorageLocation:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            type:
+              $ref: '#/components/schemas/StorageLocationTypes'
+            adapter:
+              $ref: '#/components/schemas/StorageLocationAdapters'
+            path:
+              description: 'The local path, if the local adapter is used, or path prefix for S3/remote adapters.'
+              type: string
+              example: /var/azuracast/stations/azuratest_radio/media
+            s3CredentialKey:
+              description: 'The credential key for S3 adapters.'
+              type: string
+              example: your-key-here
+              nullable: true
+            s3CredentialSecret:
+              description: 'The credential secret for S3 adapters.'
+              type: string
+              example: your-secret-here
+              nullable: true
+            s3Region:
+              description: 'The region for S3 adapters.'
+              type: string
+              example: your-region
+              nullable: true
+            s3Version:
+              description: 'The API version for S3 adapters.'
+              type: string
+              example: latest
+              nullable: true
+            s3Bucket:
+              description: 'The S3 bucket name for S3 adapters.'
+              type: string
+              example: your-bucket-name
+              nullable: true
+            s3Endpoint:
+              description: 'The optional custom S3 endpoint S3 adapters.'
+              type: string
+              example: 'https://your-region.digitaloceanspaces.com'
+              nullable: true
+            dropboxAppKey:
+              description: 'The optional Dropbox App Key.'
+              type: string
+              example: ''
+              nullable: true
+            dropboxAppSecret:
+              description: 'The optional Dropbox App Secret.'
+              type: string
+              example: ''
+              nullable: true
+            dropboxAuthToken:
+              description: 'The optional Dropbox Auth Token.'
+              type: string
+              example: ''
+              nullable: true
+            sftpHost:
+              description: 'The host for SFTP adapters'
+              type: string
+              example: 127.0.0.1
+              nullable: true
+            sftpUsername:
+              description: 'The username for SFTP adapters'
+              type: string
+              example: root
+              nullable: true
+            sftpPassword:
+              description: 'The password for SFTP adapters'
+              type: string
+              example: abc123
+              nullable: true
+            sftpPort:
+              description: 'The port for SFTP adapters'
+              type: integer
+              example: 20
+              nullable: true
+            sftpPrivateKey:
+              description: 'The private key for SFTP adapters'
+              type: string
+              nullable: true
+            sftpPrivateKeyPassPhrase:
+              description: 'The private key pass phrase for SFTP adapters'
+              type: string
+              nullable: true
+            storageQuotaBytes:
+              example: '120000'
+              nullable: true
+            storageQuota:
+              type: string
+              example: '50 GB'
+              nullable: true
+            storageUsedBytes:
+              example: '60000'
+            storageUsed:
+              type: string
+              example: '1 GB'
+            storageAvailableBytes:
+              example: '120000'
+              nullable: true
+            storageAvailable:
+              type: string
+              example: '1 GB'
           type: object
     HasAutoIncrementId:
       required:

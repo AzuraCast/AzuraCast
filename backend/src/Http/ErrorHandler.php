@@ -99,7 +99,7 @@ final class ErrorHandler extends SlimErrorHandler
     private function shouldReturnJson(ServerRequestInterface $req): bool
     {
         // All API calls return JSON regardless.
-        if ($req instanceof ServerRequest && $req->isApi() && !$this->environment->isDevelopment()) {
+        if ($req instanceof ServerRequest && $req->isApi() && $this->environment->isProduction()) {
             return true;
         }
 

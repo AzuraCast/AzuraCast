@@ -691,74 +691,6 @@ export interface ApiListener {
   location?: ApiListenerLocation;
 }
 
-export interface ApiListenerDevice {
-  /**
-   * If the listener device is likely a browser.
-   * @example true
-   */
-  is_browser?: boolean;
-  /**
-   * If the listener device is likely a mobile device.
-   * @example true
-   */
-  is_mobile?: boolean;
-  /**
-   * If the listener device is likely a crawler.
-   * @example true
-   */
-  is_bot?: boolean;
-  /**
-   * Summary of the listener client.
-   * @example "Firefox 121.0, Windows"
-   */
-  client?: string | null;
-  /**
-   * Summary of the listener browser family.
-   * @example "Firefox"
-   */
-  browser_family?: string | null;
-  /**
-   * Summary of the listener OS family.
-   * @example "Windows"
-   */
-  os_family?: string | null;
-}
-
-export interface ApiListenerLocation {
-  /**
-   * The approximate city of the listener.
-   * @example "Austin"
-   */
-  city?: string | null;
-  /**
-   * The approximate region/state of the listener.
-   * @example "Texas"
-   */
-  region?: string | null;
-  /**
-   * The approximate country of the listener.
-   * @example "United States"
-   */
-  country?: string | null;
-  /**
-   * A description of the location.
-   * @example "Austin, Texas, US"
-   */
-  description?: string;
-  /**
-   * Latitude.
-   * @format float
-   * @example "30.000000"
-   */
-  lat?: number | null;
-  /**
-   * Latitude.
-   * @format float
-   * @example "-97.000000"
-   */
-  lon?: number | null;
-}
-
 export interface ApiLogContents {
   readonly contents: string;
   /** Whether the log file has ended at this point or has additional data. */
@@ -1495,6 +1427,74 @@ export type CustomField = HasAutoIncrementId & {
   /** An ID3v2 field to automatically assign to this value, if it exists in the media file. */
   auto_assign?: string | null;
 };
+
+export interface ApiListenerDevice {
+  /**
+   * Summary of the listener client.
+   * @example "Firefox 121.0, Windows"
+   */
+  client?: string | null;
+  /**
+   * If the listener device is likely a browser.
+   * @example true
+   */
+  is_browser?: boolean;
+  /**
+   * If the listener device is likely a mobile device.
+   * @example true
+   */
+  is_mobile?: boolean;
+  /**
+   * If the listener device is likely a crawler.
+   * @example true
+   */
+  is_bot?: boolean;
+  /**
+   * Summary of the listener browser family.
+   * @example "Firefox"
+   */
+  browser_family?: string | null;
+  /**
+   * Summary of the listener OS family.
+   * @example "Windows"
+   */
+  os_family?: string | null;
+}
+
+export interface ApiListenerLocation {
+  /**
+   * A description of the location.
+   * @example "Austin, Texas, US"
+   */
+  description?: string;
+  /**
+   * The approximate region/state of the listener.
+   * @example "Texas"
+   */
+  region?: string | null;
+  /**
+   * The approximate city of the listener.
+   * @example "Austin"
+   */
+  city?: string | null;
+  /**
+   * The approximate country of the listener.
+   * @example "United States"
+   */
+  country?: string | null;
+  /**
+   * Latitude.
+   * @format float
+   * @example "30.000000"
+   */
+  lat?: number | null;
+  /**
+   * Longitude.
+   * @format float
+   * @example "-97.000000"
+   */
+  lon?: number | null;
+}
 
 export type Relay = HasAutoIncrementId & {
   /** @example "https://custom-url.example.com" */

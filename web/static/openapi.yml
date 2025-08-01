@@ -7058,70 +7058,6 @@ components:
         location:
           $ref: '#/components/schemas/Api_ListenerLocation'
       type: object
-    Api_ListenerDevice:
-      properties:
-        is_browser:
-          description: 'If the listener device is likely a browser.'
-          type: boolean
-          example: true
-        is_mobile:
-          description: 'If the listener device is likely a mobile device.'
-          type: boolean
-          example: true
-        is_bot:
-          description: 'If the listener device is likely a crawler.'
-          type: boolean
-          example: true
-        client:
-          description: 'Summary of the listener client.'
-          type: string
-          example: 'Firefox 121.0, Windows'
-          nullable: true
-        browser_family:
-          description: 'Summary of the listener browser family.'
-          type: string
-          example: Firefox
-          nullable: true
-        os_family:
-          description: 'Summary of the listener OS family.'
-          type: string
-          example: Windows
-          nullable: true
-      type: object
-    Api_ListenerLocation:
-      properties:
-        city:
-          description: 'The approximate city of the listener.'
-          type: string
-          example: Austin
-          nullable: true
-        region:
-          description: 'The approximate region/state of the listener.'
-          type: string
-          example: Texas
-          nullable: true
-        country:
-          description: 'The approximate country of the listener.'
-          type: string
-          example: 'United States'
-          nullable: true
-        description:
-          description: 'A description of the location.'
-          type: string
-          example: 'Austin, Texas, US'
-        lat:
-          description: Latitude.
-          type: number
-          format: float
-          example: '30.000000'
-          nullable: true
-        lon:
-          description: Latitude.
-          type: number
-          format: float
-          example: '-97.000000'
-          nullable: true
-      type: object
     Api_LogContents:
       required:
         - contents
@@ -8321,6 +8257,70 @@ components:
         - StationMedia
         - StationRecordings
         - StationPodcasts
+    Api_ListenerDevice:
+      properties:
+        client:
+          description: 'Summary of the listener client.'
+          type: string
+          example: 'Firefox 121.0, Windows'
+          nullable: true
+        is_browser:
+          description: 'If the listener device is likely a browser.'
+          type: boolean
+          example: true
+        is_mobile:
+          description: 'If the listener device is likely a mobile device.'
+          type: boolean
+          example: true
+        is_bot:
+          description: 'If the listener device is likely a crawler.'
+          type: boolean
+          example: true
+        browser_family:
+          description: 'Summary of the listener browser family.'
+          type: string
+          example: Firefox
+          nullable: true
+        os_family:
+          description: 'Summary of the listener OS family.'
+          type: string
+          example: Windows
+          nullable: true
+      type: object
+    Api_ListenerLocation:
+      properties:
+        description:
+          description: 'A description of the location.'
+          type: string
+          example: 'Austin, Texas, US'
+        region:
+          description: 'The approximate region/state of the listener.'
+          type: string
+          example: Texas
+          nullable: true
+        city:
+          description: 'The approximate city of the listener.'
+          type: string
+          example: Austin
+          nullable: true
+        country:
+          description: 'The approximate country of the listener.'
+          type: string
+          example: 'United States'
+          nullable: true
+        lat:
+          description: Latitude.
+          type: number
+          format: float
+          example: '30.000000'
+          nullable: true
+        lon:
+          description: Longitude.
+          type: number
+          format: float
+          example: '-97.000000'
+          nullable: true
+      type: object
     Relay:
       type: object
       allOf:

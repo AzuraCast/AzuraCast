@@ -10,5 +10,23 @@ max_connections = {{ default .Env.MYSQL_MAX_CONNECTIONS "100" }}
 innodb_buffer_pool_size = {{ default .Env.MYSQL_INNODB_BUFFER_POOL_SIZE "128M" }}
 innodb_log_file_size = {{ default .Env.MYSQL_INNODB_LOG_FILE_SIZE "16M" }}
 
+# Fix connection packet errors and timeouts
+wait_timeout = 600
+interactive_timeout = 600
+connect_timeout = 60
+net_read_timeout = 30
+net_write_timeout = 30
+net_retry_count = 3
+
+# Reduce connection logging verbosity
+log_warnings = 1
+
+# Connection handling improvements
+max_connect_errors = 100000
+max_allowed_packet = 2G
+
+# Improve connection handling for PHP processes
+skip_name_resolve = ON
+
 [client]
 default-character-set=utf8mb4

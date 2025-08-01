@@ -1,8 +1,19 @@
 #!/usr/bin/env bash
 
+# AzuraCast CLI wrapper with memory and opcache fixes
 if [ `whoami` != 'azuracast' ]; then
     exec gosu azuracast azuracast_cli "$@"
 fi
 
 cd /var/azuracast/www
-exec php backend/bin/console "$@"
+
+# Execute with PHP optimizations to prevent segfaults and memory issues
+exec php -d memory_limit=2G \
+    -d opcache.enable=0 \
+    -d opcache.enable_cli=0 \
+    -d max_execution_time=300 \
+    -d max_input_time=300 \
+    -d default_socket_timeout=60 \
+    -d mysql.connect_timeout=60 \
+    -d mysqli.default_socket_timeout=60 \
+    backend/bin/console "$@"

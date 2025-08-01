@@ -1,5 +1,4 @@
 # AzuraCast custom PHP specifications
-
 [php]
 post_max_size={{ default .Env.PHP_MAX_FILE_SIZE "50M" }}
 upload_max_filesize={{ default .Env.PHP_MAX_FILE_SIZE "50M" }}
@@ -7,11 +6,39 @@ memory_limit={{ default .Env.PHP_MEMORY_LIMIT "256M" }}
 max_execution_time={{ default .Env.PHP_MAX_EXECUTION_TIME "30" }}
 
 [opcache]
+; https://www.luroconnect.com/php-opcache-explained/
+; https://medium.com/@edouard.courty/make-your-php-8-apps-twice-as-fast-opcache-jit-8d3542276595
+realpath_cache_size=4096K
+realpath_cache_ttl=600
 opcache.enable=1
 opcache.enable_cli=1
 
+; JIT Configuration - conditionally enable based on environment
 {{if eq .Env.APPLICATION_ENV "production"}}
-opcache.revalidate_freq={{ default .Env.PHP_OPCACHE_REVALIDATE_FREQUENCY "60" }}
+opcache.jit_buffer_size=256M
+opcache.jit=1255
+{{else}}
+; Disable JIT in development for better debugging
+opcache.jit_buffer_size=0
+opcache.jit=disable
+{{end}}
+
+opcache.memory_consumption=1024
+opcache.interned_strings_buffer=64
+opcache.max_accelerated_files=20000
+opcache.max_wasted_percentage=15
+opcache.revalidate_path=1
+opcache.huge_code_pages=0
+opcache.lockfile_path=/tmp
+
+{{if eq .Env.APPLICATION_ENV "production"}}
+; Production: Disable validation for maximum performance
+opcache.validate_timestamps=0
+opcache.revalidate_freq=0
+{{else}}
+; Development: Enable validation for code changes
+opcache.validate_timestamps=1
+opcache.revalidate_freq={{ default .Env.PHP_OPCACHE_REVALIDATE_FREQUENCY "2" }}
 {{end}}
 
 {{if eq .Env.APPLICATION_ENV "development"}}
@@ -31,7 +58,6 @@ spx.http_enabled=1
 spx.data_dir=/var/azuracast/www_tmp
 spx.http_key={{ default .Env.PROFILING_EXTENSION_HTTP_KEY "dev" }}
 spx.http_ip_whitelist={{ default .Env.PROFILING_EXTENSION_HTTP_IP_WHITELIST "*" }}
-
 {{if isTrue .Env.PROFILING_EXTENSION_ALWAYS_ON}}
 spx.http_profiling_enabled=1
 {{end}}

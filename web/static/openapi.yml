@@ -4660,7 +4660,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Api_StationQueueDetailed'
+                  allOf: [{ $ref: App\Entity\StationQueue }, { $ref: '#/components/schemas/Api_StationQueueDetailed' }]
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4690,7 +4690,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Api_StationQueueDetailed'
+                allOf:
+                  - { $ref: App\Entity\StationQueue }
+                  - { $ref: '#/components/schemas/Api_StationQueueDetailed' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -7840,8 +7842,6 @@ components:
     Api_StationQueueDetailed:
       type: object
       allOf:
-        -
-          $ref: '#/components/schemas/Api_NowPlaying_StationQueue'
         -
           $ref: '#/components/schemas/HasLinks'
         -

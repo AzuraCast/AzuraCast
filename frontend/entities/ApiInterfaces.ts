@@ -1246,20 +1246,19 @@ export interface ApiStationProfile {
   schedule: ApiStationSchedule[];
 }
 
-export type ApiStationQueueDetailed = ApiNowPlayingStationQueue &
-  HasLinks & {
-    /** Indicates whether the song has been sent to the AutoDJ. */
-    sent_to_autodj?: boolean;
-    /** Indicates whether the song has already been marked as played. */
-    is_played?: boolean;
-    /**
-     * Custom AutoDJ playback URI, if it exists.
-     * @example ""
-     */
-    autodj_custom_uri?: string | null;
-    /** Log entries on how the specific queue item was picked by the AutoDJ. */
-    log?: any[] | null;
-  };
+export type ApiStationQueueDetailed = HasLinks & {
+  /** Indicates whether the song has been sent to the AutoDJ. */
+  sent_to_autodj?: boolean;
+  /** Indicates whether the song has already been marked as played. */
+  is_played?: boolean;
+  /**
+   * Custom AutoDJ playback URI, if it exists.
+   * @example ""
+   */
+  autodj_custom_uri?: string | null;
+  /** Log entries on how the specific queue item was picked by the AutoDJ. */
+  log?: any[] | null;
+};
 
 export interface ApiStationQuota {
   used?: string;

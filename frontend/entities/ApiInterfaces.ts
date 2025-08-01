@@ -1272,52 +1272,6 @@ export interface ApiStationQuota {
   num_files?: number | null;
 }
 
-export type ApiStationRemote = HasLinks & {
-  id?: number | null;
-  /** @example "128kbps MP3" */
-  display_name?: string | null;
-  /** @example true */
-  is_visible_on_public_pages?: boolean;
-  /** @example "icecast" */
-  type?: string;
-  /** @example "true" */
-  is_editable?: boolean;
-  /** @example false */
-  enable_autodj?: boolean;
-  /** @example "mp3" */
-  autodj_format?: string | null;
-  /** @example 128 */
-  autodj_bitrate?: number | null;
-  /** @example "https://custom-listen-url.example.com/stream.mp3" */
-  custom_listen_url?: string | null;
-  /** @example "https://custom-url.example.com" */
-  url?: string;
-  /** @example "/stream.mp3" */
-  mount?: string | null;
-  /** @example "password" */
-  admin_password?: string | null;
-  /** @example 8000 */
-  source_port?: number | null;
-  /** @example "/" */
-  source_mount?: string | null;
-  /** @example "source" */
-  source_username?: string | null;
-  /** @example "password" */
-  source_password?: string | null;
-  /** @example false */
-  is_public?: boolean;
-  /**
-   * The most recent number of unique listeners.
-   * @example 10
-   */
-  listeners_unique?: number;
-  /**
-   * The most recent number of total (non-unique) listeners.
-   * @example 12
-   */
-  listeners_total?: number;
-};
-
 export interface ApiStationRequest {
   /**
    * Requestable ID unique identifier
@@ -2086,6 +2040,50 @@ export type StationPlaylist = HasAutoIncrementId & {
   schedule_items?: any[];
   /** Podcast> */
   podcasts?: any[];
+};
+
+export type StationRemote = HasAutoIncrementId & {
+  /** @example "128kbps MP3" */
+  display_name?: string;
+  /** @example true */
+  is_visible_on_public_pages?: boolean;
+  type?: RemoteAdapters;
+  /** @example "true" */
+  readonly is_editable?: boolean;
+  /** @example false */
+  enable_autodj?: boolean;
+  /** @example "mp3" */
+  autodj_format?: StreamFormats | null;
+  /** @example 128 */
+  autodj_bitrate?: number | null;
+  /** @example "https://custom-listen-url.example.com/stream.mp3" */
+  custom_listen_url?: string | null;
+  /** @example "https://custom-url.example.com" */
+  url?: string;
+  /** @example "/stream.mp3" */
+  mount?: string | null;
+  /** @example "password" */
+  admin_password?: string | null;
+  /** @example 8000 */
+  source_port?: number | null;
+  /** @example "/" */
+  source_mount?: string | null;
+  /** @example "source" */
+  source_username?: string | null;
+  /** @example "password" */
+  source_password?: string | null;
+  /** @example false */
+  is_public?: boolean;
+  /**
+   * The most recent number of unique listeners.
+   * @example 10
+   */
+  listeners_unique?: number;
+  /**
+   * The most recent number of total (non-unique) listeners.
+   * @example 12
+   */
+  listeners_total?: number;
 };
 
 export type StationSchedule = HasAutoIncrementId & {

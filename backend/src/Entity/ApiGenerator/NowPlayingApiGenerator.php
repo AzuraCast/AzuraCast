@@ -100,14 +100,15 @@ final class NowPlayingApiGenerator
             return $this->offlineApi($station, $baseUri);
         }
 
-        $apiSongHistory = $this->songHistoryApiGenerator->__invoke(
+        $apiCurrentSong = new CurrentSong();
+        $apiCurrentSong = $this->songHistoryApiGenerator->__invoke(
             record: $currentSong,
             baseUri: $baseUri,
             allowRemoteArt: true,
-            isNowPlaying: true
+            isNowPlaying: true,
+            objectToPopulate: $apiCurrentSong
         );
 
-        $apiCurrentSong = CurrentSong::fromParent($apiSongHistory);
         $np->now_playing = $apiCurrentSong;
 
         $np->song_history = $this->songHistoryApiGenerator->fromArray(

@@ -4741,7 +4741,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Api_StationRemote'
+                  allOf: [{ $ref: '#/components/schemas/StationRemote' }, { $ref: '#/components/schemas/HasLinks' }]
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4760,14 +4760,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Api_StationRemote'
+              $ref: '#/components/schemas/StationRemote'
       responses:
         '200':
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Api_StationRemote'
+                allOf:
+                  - { $ref: '#/components/schemas/StationRemote' }
+                  - { $ref: '#/components/schemas/HasLinks' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4797,7 +4799,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Api_StationRemote'
+                allOf:
+                  - { $ref: '#/components/schemas/StationRemote' }
+                  - { $ref: '#/components/schemas/HasLinks' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4824,7 +4828,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Api_StationRemote'
+              $ref: '#/components/schemas/StationRemote'
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -7887,83 +7891,6 @@ components:
           type: integer
           nullable: true
       type: object
-    Api_StationRemote:
-      type: object
-      allOf:
-        -
-          $ref: '#/components/schemas/HasLinks'
-        -
-          properties:
-            id:
-              type: integer
-              nullable: true
-            display_name:
-              type: string
-              example: '128kbps MP3'
-              nullable: true
-            is_visible_on_public_pages:
-              type: boolean
-              example: true
-            type:
-              type: string
-              example: icecast
-            is_editable:
-              type: boolean
-              example: 'true'
-            enable_autodj:
-              type: boolean
-              example: false
-            autodj_format:
-              type: string
-              example: mp3
-              nullable: true
-            autodj_bitrate:
-              type: integer
-              example: 128
-              nullable: true
-            custom_listen_url:
-              type: string
-              example: 'https://custom-listen-url.example.com/stream.mp3'
-              nullable: true
-            url:
-              type: string
-              example: 'https://custom-url.example.com'
-            mount:
-              type: string
-              example: /stream.mp3
-              nullable: true
-            admin_password:
-              type: string
-              example: password
-              nullable: true
-            source_port:
-              type: integer
-              example: 8000
-              nullable: true
-            source_mount:
-              type: string
-              example: /
-              nullable: true
-            source_username:
-              type: string
-              example: source
-              nullable: true
-            source_password:
-              type: string
-              example: password
-              nullable: true
-            is_public:
-              type: boolean
-              example: false
-            listeners_unique:
-              description: 'The most recent number of unique listeners.'
-              type: integer
-              example: 10
-            listeners_total:
-              description: 'The most recent number of total (non-unique) listeners.'
-              type: integer
-              example: 12
-          type: object
     Api_StationRequest:
       properties:
         request_id:
@@ -9110,6 +9037,81 @@ components:
               description: Podcast>
               type: array
               items: {  }
+          type: object
+    StationRemote:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            display_name:
+              type: string
+              example: '128kbps MP3'
+            is_visible_on_public_pages:
+              type: boolean
+              example: true
+            type:
+              $ref: '#/components/schemas/RemoteAdapters'
+            is_editable:
+              type: boolean
+              readOnly: true
+              example: 'true'
+            enable_autodj:
+              type: boolean
+              example: false
+            autodj_format:
+              oneOf:
+                -
+                  $ref: '#/components/schemas/StreamFormats'
+              nullable: true
+              example: mp3
+            autodj_bitrate:
+              type: integer
+              example: 128
+              nullable: true
+            custom_listen_url:
+              type: string
+              example: 'https://custom-listen-url.example.com/stream.mp3'
+              nullable: true
+            url:
+              type: string
+              example: 'https://custom-url.example.com'
+            mount:
+              type: string
+              example: /stream.mp3
+              nullable: true
+            admin_password:
+              type: string
+              example: password
+              nullable: true
+            source_port:
+              type: integer
+              example: 8000
+              nullable: true
+            source_mount:
+              type: string
+              example: /
+              nullable: true
+            source_username:
+              type: string
+              example: source
+              nullable: true
+            source_password:
+              type: string
+              example: password
+              nullable: true
+            is_public:
+              type: boolean
+              example: false
+            listeners_unique:
+              description: 'The most recent number of unique listeners.'
+              type: integer
+              example: 10
+            listeners_total:
+              description: 'The most recent number of total (non-unique) listeners.'
+              type: integer
+              example: 12
           type: object
     StationSchedule:
       type: object

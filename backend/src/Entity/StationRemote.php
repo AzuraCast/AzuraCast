@@ -12,6 +12,7 @@ use App\Radio\Enums\StreamProtocols;
 use App\Radio\Remote\AbstractRemote;
 use App\Utilities;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -20,7 +21,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 #[
     ORM\Entity,
     ORM\Table(name: 'station_remotes'),
-    Attributes\Auditable
+    Attributes\Auditable,
+    OA\Schema(type: 'object')
 ]
 final class StationRemote implements
     Stringable,
@@ -54,7 +56,10 @@ final class StationRemote implements
     #[ORM\Column(nullable: true, insertable: false, updatable: false)]
     public private(set) ?int $relay_id = null;
 
-    #[ORM\Column(length: 255, nullable: false)]
+    #[
+        ORM\Column(length: 255, nullable: false),
+        OA\Property(example: '128kbps MP3')
+    ]
     public string $display_name = '' {
         get {
             if (!empty($this->display_name)) {
@@ -73,19 +78,39 @@ final class StationRemote implements
         set (string|null $value) => $this->truncateNullableString($value) ?? '';
     }
 
-    #[ORM\Column]
+    #[
+        ORM\Column,
+        OA\Property(example: true)
+    ]
     public bool $is_visible_on_public_pages = true;
 
-    #[ORM\Column(type: 'string', length: 50, enumType: RemoteAdapters::class)]
+    #[
+        ORM\Column(type: 'string', length: 50, enumType: RemoteAdapters::class),
+        OA\Property(example: 'icecast')
+    ]
     public RemoteAdapters $type;
 
-    #[ORM\Column]
+    #[OA\Property(readOnly: true, example: 'true')]
+    public bool $is_editable {
+        get => $this->isEditable();
+    }
+
+    #[
+        ORM\Column,
+        OA\Property(example: false)
+    ]
     public bool $enable_autodj = false;
 
-    #[ORM\Column(type: 'string', length: 10, nullable: true, enumType: StreamFormats::class)]
+    #[
+        ORM\Column(type: 'string', length: 10, nullable: true, enumType: StreamFormats::class),
+        OA\Property(example: 'mp3')
+    ]
     public ?StreamFormats $autodj_format = null;
 
-    #[ORM\Column(type: 'smallint', nullable: true)]
+    #[
+        ORM\Column(type: 'smallint', nullable: true),
+        OA\Property(example: 128)
+    ]
     public ?int $autodj_bitrate = null;
 
     #[Assert\Callback]
@@ -99,12 +124,18 @@ final class StationRemote implements
         );
     }
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[
+        ORM\Column(length: 255, nullable: true),
+        OA\Property(example: 'https://custom-listen-url.example.com/stream.mp3')
+    ]
     public ?string $custom_listen_url = null {
         set => $this->truncateNullableString($value);
     }
 
-    #[ORM\Column(length: 255, nullable: false)]
+    #[
+        ORM\Column(length: 255, nullable: false),
+        OA\Property(example: 'https://custom-url.example.com')
+    ]
     public string $url = '' {
         set {
             if (empty($value)) {
@@ -128,17 +159,26 @@ final class StationRemote implements
         );
     }
 
-    #[ORM\Column(length: 150, nullable: true)]
+    #[
+        ORM\Column(length: 150, nullable: true),
+        OA\Property(example: '/stream.mp3')
+    ]
     public ?string $mount = null {
         set => $this->truncateNullableString($value, 150);
     }
 
-    #[ORM\Column(length: 100, nullable: true)]
+    #[
+        ORM\Column(length: 100, nullable: true),
+        OA\Property(example: 'password')
+    ]
     public ?string $admin_password = null {
         set => $this->truncateNullableString($value, 100);
     }
 
-    #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
+    #[
+        ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true]),
+        OA\Property(example: 8000)
+    ]
     public ?int $source_port = null {
         set(int|string|null $value) {
             $value = Utilities\Types::intOrNull($value);
@@ -150,30 +190,54 @@ final class StationRemote implements
         }
     }
 
-    #[ORM\Column(length: 150, nullable: true)]
+    #[
+        ORM\Column(length: 150, nullable: true),
+        OA\Property(example: '/')
+    ]
     public ?string $source_mount = null {
         set => $this->truncateNullableString($value, 150);
     }
 
-    #[ORM\Column(length: 100, nullable: true)]
+    #[
+        ORM\Column(length: 100, nullable: true),
+        OA\Property(example: 'source')
+    ]
     public ?string $source_username = null {
         set => $this->truncateNullableString($value, 100);
     }
 
-    #[ORM\Column(length: 100, nullable: true)]
+    #[
+        ORM\Column(length: 100, nullable: true),
+        OA\Property(example: 'password')
+    ]
     public ?string $source_password = null {
         set => $this->truncateNullableString($value, 100);
     }
 
-    #[ORM\Column]
+    #[
+        ORM\Column,
+        OA\Property(example: false)
+    ]
     public bool $is_public = false;
 
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        ORM\Column,
+        OA\Property(
+            description: 'The most recent number of unique listeners.',
+            example: 10
+        ),
+        Attributes\AuditIgnore
+    ]
     public int $listeners_unique = 0;
 
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        ORM\Column,
+        OA\Property(
+            description: 'The most recent number of total (non-unique) listeners.',
+            example: 12
+        ),
+        Attributes\AuditIgnore
+    ]
     public int $listeners_total = 0;
 
     public function __construct(Station $station)

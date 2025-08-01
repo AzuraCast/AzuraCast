@@ -1892,7 +1892,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Api_Dashboard'
+                  allOf: [{ $ref: '#/components/schemas/Api_NowPlaying' }, { $ref: '#/components/schemas/HasLinks' }]
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -6854,13 +6854,6 @@ components:
           items:
             type: string
       type: object
-    Api_Dashboard:
-      type: object
-      allOf:
-        -
-          $ref: '#/components/schemas/Api_NowPlaying'
-        -
-          $ref: '#/components/schemas/HasLinks'
     Api_DetailedSongHistory:
       type: object
       allOf:
@@ -8476,11 +8469,12 @@ components:
           type: boolean
           example: 'true'
         update_results:
-          description: 'Results of the latest update check.'
-          type: array
-          items: {  }
-          example: ''
+          oneOf:
+            -
+              $ref: '#/components/schemas/Api_Admin_UpdateDetails'
           nullable: true
+          description: 'Results of the latest update check.'
+          example: ''
         update_last_run:
           description: 'The UNIX timestamp when updates were last checked.'
           type: integer

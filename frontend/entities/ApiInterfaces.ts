@@ -550,8 +550,6 @@ export interface ApiBatchResult {
   errors: string[];
 }
 
-export type ApiDashboard = ApiNowPlaying & HasLinks;
-
 export type ApiDetailedSongHistory = ApiNowPlayingSongHistory & {
   /**
    * Number of listeners when the song playback started.
@@ -1614,7 +1612,7 @@ export interface Settings {
    * Results of the latest update check.
    * @example ""
    */
-  update_results?: any[] | null;
+  update_results?: ApiAdminUpdateDetails | null;
   /**
    * The UNIX timestamp when updates were last checked.
    * @example 1609480800

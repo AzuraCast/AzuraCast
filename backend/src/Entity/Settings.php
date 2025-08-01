@@ -173,12 +173,12 @@ final class Settings implements Stringable
     public bool $check_for_updates = true;
 
     #[
-        OA\Property(description: "Results of the latest update check.", example: ""),
         ORM\Column(name: 'update_results', type: 'json', nullable: true),
         Attributes\AuditIgnore
     ]
     private ?array $update_results_raw = null;
 
+    #[OA\Property(description: "Results of the latest update check.", example: "")]
     public ?UpdateDetails $update_results {
         get => $this->update_results_raw !== null
             ? UpdateDetails::fromArray($this->update_results_raw)

@@ -5,7 +5,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-- Liquidsoap is updated to version 2.3.2, including a number of bug fixes.
+- Liquidsoap is now updated to the Rolling Release build of 2.4.x. This includes a number of bug fixes for critical
+  issues, but also includes some breaking changes. Most of these changes will appear in the logs as warnings when
+  starting up a station with custom Liquidsoap code. If you use custom Liquidsoap code, you should evaluate these
+  warnings and make changes as needed.
 
 - You can now specify the message color in Discord webhooks.
 

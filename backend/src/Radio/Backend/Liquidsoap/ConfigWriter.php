@@ -413,7 +413,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
                 $inputFunc = match ($playlist->remote_type) {
                     PlaylistRemoteTypes::Stream => 'input.http',
-                    default => 'input.external.ffmpeg'
+                    default => 'input.ffmpeg'
                 };
 
                 $remoteUrlFunc = 'mksafe(buffer(buffer=' . $buffer . '., '

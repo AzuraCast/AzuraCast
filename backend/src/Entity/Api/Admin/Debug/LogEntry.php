@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\Admin\Debug;
 
-use App\Traits\LoadFromParentObject;
 use DateTimeImmutable;
 use Monolog\Level;
 use Monolog\LogRecord;
@@ -17,8 +16,6 @@ use OpenApi\Attributes as OA;
 )]
 final readonly class LogEntry
 {
-    use LoadFromParentObject;
-
     public function __construct(
         #[OA\Property(type: 'string', format: 'date-time')]
         public DateTimeImmutable $datetime,

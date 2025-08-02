@@ -47,7 +47,7 @@ import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
-import {ApiGenericForm, FrontendAdapters} from "~/entities/ApiInterfaces.ts";
+import {ApiGenericForm, FrontendAdapters, StreamFormats} from "~/entities/ApiInterfaces.ts";
 
 defineProps<{
     stationFrontendType: FrontendAdapters
@@ -66,30 +66,30 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     },
     {
         enable_autodj: true,
-        autodj_format: 'mp3',
+        autodj_format: StreamFormats.Mp3,
         autodj_bitrate: 128,
     }
 );
 
 const formatOptions = [
     {
-        value: 'mp3',
+        value: StreamFormats.Mp3,
         text: 'MP3'
     },
     {
-        value: 'ogg',
+        value: StreamFormats.Ogg,
         text: 'OGG Vorbis'
     },
     {
-        value: 'opus',
+        value: StreamFormats.Opus,
         text: 'OGG Opus'
     },
     {
-        value: 'aac',
+        value: StreamFormats.Aac,
         text: 'AAC+ (MPEG4 HE-AAC v2)'
     },
     {
-        value: 'flac',
+        value: StreamFormats.Flac,
         text: 'FLAC (OGG FLAC)'
     }
 ];

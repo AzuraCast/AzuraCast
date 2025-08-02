@@ -338,11 +338,20 @@ return [
 
     // Symfony Serializer
     Symfony\Component\Serializer\Serializer::class => static function (
-        App\Doctrine\ReloadableEntityManagerInterface $em
+        App\Doctrine\ReloadableEntityManagerInterface $em,
+        Environment $environment,
+        Psr\Cache\CacheItemPoolInterface $psr6Cache
     ) {
         $classMetaFactory = new Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory(
             new Symfony\Component\Serializer\Mapping\Loader\AttributeLoader()
         );
+
+        if ($environment->isProduction()) {
+            $classMetaFactory = new Symfony\Component\Serializer\Mapping\Factory\CacheClassMetadataFactory(
+                $classMetaFactory,
+                $psr6Cache
+            );
+        }
 
         $normalizers = [
             new Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer(),

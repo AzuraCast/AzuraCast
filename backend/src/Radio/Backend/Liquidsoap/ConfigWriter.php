@@ -24,6 +24,7 @@ use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\AudioProcessingMethods;
 use App\Radio\Enums\CrossfadeModes;
 use App\Radio\Enums\FrontendAdapters;
+use App\Radio\Enums\HlsStreamProfiles;
 use App\Radio\Enums\LiquidsoapQueues;
 use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
@@ -1005,9 +1006,8 @@ final class ConfigWriter implements EventSubscriberInterface
         foreach ($station->hls_streams as $hlsStream) {
             $streamVarName = self::cleanUpVarName($hlsStream->name);
 
-            if (StreamFormats::Aac !== $hlsStream->format) {
-                continue;
-            }
+            $streamAacProfile = ($hlsStream->format ?? HlsStreamProfiles::default())
+                ->getProfileName();
 
             $streamBitrate = $hlsStream->bitrate ?? 128;
 
@@ -1015,11 +1015,11 @@ final class ConfigWriter implements EventSubscriberInterface
             {$streamVarName} = %ffmpeg(
                 format="mpegts",
                 %audio(
-                    codec="aac",
+                    codec="libfdk_aac",
                     samplerate=44100,
                     channels=2,
                     b="{$streamBitrate}k",
-                    profile="aac_low"
+                    profile="{$streamAacProfile}"
                 )
             )
             LIQ;

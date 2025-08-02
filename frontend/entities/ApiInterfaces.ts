@@ -39,6 +39,14 @@ export enum WebhookTriggers {
   StationOnline = "station_online",
 }
 
+export enum StreamFormats {
+  Mp3 = "mp3",
+  Ogg = "ogg",
+  Aac = "aac",
+  Opus = "opus",
+  Flac = "flac",
+}
+
 export enum RemoteAdapters {
   Shoutcast1 = "shoutcast1",
   Shoutcast2 = "shoutcast2",
@@ -54,11 +62,25 @@ export enum MasterMePresets {
   YouTube = "youtube",
 }
 
+export enum HlsStreamProfiles {
+  AacLowComplexity = "aac",
+  AacHighEfficiencyV1 = "aac_he",
+  AacHighEfficiencyV2 = "aac_he_v2",
+  AacLowDelay = "aac_ld",
+  AacEnhancedLowDelay = "aac_eld",
+}
+
 export enum FrontendAdapters {
   Icecast = "icecast",
   Shoutcast = "shoutcast2",
   Rsas = "rsas",
   Remote = "remote",
+}
+
+export enum CrossfadeModes {
+  Normal = "normal",
+  Smart = "smart",
+  Disabled = "none",
 }
 
 export enum BackendAdapters {
@@ -142,6 +164,20 @@ export enum FlashLevels {
   Info = "info",
 }
 
+export enum StorageLocationTypes {
+  Backup = "backup",
+  StationMedia = "station_media",
+  StationRecordings = "station_recordings",
+  StationPodcasts = "station_podcasts",
+}
+
+export enum StorageLocationAdapters {
+  Local = "local",
+  S3 = "s3",
+  Dropbox = "dropbox",
+  Sftp = "sftp",
+}
+
 export enum StationBackendPerformanceModes {
   LessMemory = "less_memory",
   LessCpu = "less_cpu",
@@ -214,20 +250,6 @@ export interface ApiAccountNewApiKey {
 export interface ApiAccountTwoFactorStatus {
   /** The current two-factor status for this account. */
   readonly two_factor_enabled: boolean;
-}
-
-export interface ApiAdminAuditLog {
-  id: number;
-  /** @format date-time */
-  timestamp: string;
-  operation: 1 | 2 | 3;
-  operation_text: string;
-  class: string;
-  identifier: string;
-  target_class: string | null;
-  target: string | null;
-  user: string | null;
-  changes: ApiAdminAuditLogChangeset[];
 }
 
 export interface ApiAdminAuditLogChangeset {
@@ -475,104 +497,6 @@ export interface ApiAdminStereoToolStatus {
 }
 
 export type ApiAdminStorageLocation = HasLinks & {
-  /** @example 1 */
-  id?: number;
-  /**
-   * The type of storage location.
-   * @example "station_media"
-   */
-  type?: string;
-  /**
-   * The storage adapter to use for this location.
-   * @example "local"
-   */
-  adapter?: string;
-  /**
-   * The local path, if the local adapter is used, or path prefix for S3/remote adapters.
-   * @example "/var/azuracast/stations/azuratest_radio/media"
-   */
-  path?: string | null;
-  /**
-   * The credential key for S3 adapters.
-   * @example "your-key-here"
-   */
-  s3CredentialKey?: string | null;
-  /**
-   * The credential secret for S3 adapters.
-   * @example "your-secret-here"
-   */
-  s3CredentialSecret?: string | null;
-  /**
-   * The region for S3 adapters.
-   * @example "your-region"
-   */
-  s3Region?: string | null;
-  /**
-   * The API version for S3 adapters.
-   * @example "latest"
-   */
-  s3Version?: string | null;
-  /**
-   * The S3 bucket name for S3 adapters.
-   * @example "your-bucket-name"
-   */
-  s3Bucket?: string | null;
-  /**
-   * The optional custom S3 endpoint S3 adapters.
-   * @example "https://your-region.digitaloceanspaces.com"
-   */
-  s3Endpoint?: string | null;
-  /**
-   * The optional Dropbox App Key.
-   * @example ""
-   */
-  dropboxAppKey?: string | null;
-  /**
-   * The optional Dropbox App Secret.
-   * @example ""
-   */
-  dropboxAppSecret?: string | null;
-  /**
-   * The optional Dropbox Auth Token.
-   * @example ""
-   */
-  dropboxAuthToken?: string | null;
-  /**
-   * The host for SFTP adapters
-   * @example "127.0.0.1"
-   */
-  sftpHost?: string | null;
-  /**
-   * The username for SFTP adapters
-   * @example "root"
-   */
-  sftpUsername?: string | null;
-  /**
-   * The password for SFTP adapters
-   * @example "abc123"
-   */
-  sftpPassword?: string | null;
-  /**
-   * The port for SFTP adapters
-   * @example 20
-   */
-  sftpPort?: number | null;
-  /** The private key for SFTP adapters */
-  sftpPrivateKey?: string | null;
-  /** The private key pass phrase for SFTP adapters */
-  sftpPrivateKeyPassPhrase?: string | null;
-  /** @example "50 GB" */
-  storageQuota?: string | null;
-  /** @example "120000" */
-  storageQuotaBytes?: string | null;
-  /** @example "1 GB" */
-  storageUsed?: string | null;
-  /** @example "60000" */
-  storageUsedBytes?: string | null;
-  /** @example "1 GB" */
-  storageAvailable?: string | null;
-  /** @example "120000" */
-  storageAvailableBytes?: string | null;
   /** @example "75" */
   storageUsedPercent?: number | null;
   /** @example "true" */
@@ -611,8 +535,6 @@ export interface ApiBatchResult {
   success: boolean;
   errors: string[];
 }
-
-export type ApiDashboard = ApiNowPlaying & HasLinks;
 
 export type ApiDetailedSongHistory = ApiNowPlayingSongHistory & {
   /**
@@ -753,74 +675,6 @@ export interface ApiListener {
   connected_time?: number;
   device?: ApiListenerDevice;
   location?: ApiListenerLocation;
-}
-
-export interface ApiListenerDevice {
-  /**
-   * If the listener device is likely a browser.
-   * @example true
-   */
-  is_browser?: boolean;
-  /**
-   * If the listener device is likely a mobile device.
-   * @example true
-   */
-  is_mobile?: boolean;
-  /**
-   * If the listener device is likely a crawler.
-   * @example true
-   */
-  is_bot?: boolean;
-  /**
-   * Summary of the listener client.
-   * @example "Firefox 121.0, Windows"
-   */
-  client?: string | null;
-  /**
-   * Summary of the listener browser family.
-   * @example "Firefox"
-   */
-  browser_family?: string | null;
-  /**
-   * Summary of the listener OS family.
-   * @example "Windows"
-   */
-  os_family?: string | null;
-}
-
-export interface ApiListenerLocation {
-  /**
-   * The approximate city of the listener.
-   * @example "Austin"
-   */
-  city?: string | null;
-  /**
-   * The approximate region/state of the listener.
-   * @example "Texas"
-   */
-  region?: string | null;
-  /**
-   * The approximate country of the listener.
-   * @example "United States"
-   */
-  country?: string | null;
-  /**
-   * A description of the location.
-   * @example "Austin, Texas, US"
-   */
-  description?: string;
-  /**
-   * Latitude.
-   * @format float
-   * @example "30.000000"
-   */
-  lat?: number | null;
-  /**
-   * Latitude.
-   * @format float
-   * @example "-97.000000"
-   */
-  lon?: number | null;
 }
 
 export interface ApiLogContents {
@@ -1310,20 +1164,19 @@ export interface ApiStationProfile {
   schedule: ApiStationSchedule[];
 }
 
-export type ApiStationQueueDetailed = ApiNowPlayingStationQueue &
-  HasLinks & {
-    /** Indicates whether the song has been sent to the AutoDJ. */
-    sent_to_autodj?: boolean;
-    /** Indicates whether the song has already been marked as played. */
-    is_played?: boolean;
-    /**
-     * Custom AutoDJ playback URI, if it exists.
-     * @example ""
-     */
-    autodj_custom_uri?: string | null;
-    /** Log entries on how the specific queue item was picked by the AutoDJ. */
-    log?: any[] | null;
-  };
+export type ApiStationQueueDetailed = HasLinks & {
+  /** Indicates whether the song has been sent to the AutoDJ. */
+  sent_to_autodj?: boolean;
+  /** Indicates whether the song has already been marked as played. */
+  is_played?: boolean;
+  /**
+   * Custom AutoDJ playback URI, if it exists.
+   * @example ""
+   */
+  autodj_custom_uri?: string | null;
+  /** Log entries on how the specific queue item was picked by the AutoDJ. */
+  log?: any[] | null;
+};
 
 export interface ApiStationQuota {
   used?: string;
@@ -1336,52 +1189,6 @@ export interface ApiStationQuota {
   is_full?: boolean;
   num_files?: number | null;
 }
-
-export type ApiStationRemote = HasLinks & {
-  id?: number | null;
-  /** @example "128kbps MP3" */
-  display_name?: string | null;
-  /** @example true */
-  is_visible_on_public_pages?: boolean;
-  /** @example "icecast" */
-  type?: string;
-  /** @example "true" */
-  is_editable?: boolean;
-  /** @example false */
-  enable_autodj?: boolean;
-  /** @example "mp3" */
-  autodj_format?: string | null;
-  /** @example 128 */
-  autodj_bitrate?: number | null;
-  /** @example "https://custom-listen-url.example.com/stream.mp3" */
-  custom_listen_url?: string | null;
-  /** @example "https://custom-url.example.com" */
-  url?: string;
-  /** @example "/stream.mp3" */
-  mount?: string | null;
-  /** @example "password" */
-  admin_password?: string | null;
-  /** @example 8000 */
-  source_port?: number | null;
-  /** @example "/" */
-  source_mount?: string | null;
-  /** @example "source" */
-  source_username?: string | null;
-  /** @example "password" */
-  source_password?: string | null;
-  /** @example false */
-  is_public?: boolean;
-  /**
-   * The most recent number of unique listeners.
-   * @example 10
-   */
-  listeners_unique?: number;
-  /**
-   * The most recent number of total (non-unique) listeners.
-   * @example 12
-   */
-  listeners_total?: number;
-};
 
 export interface ApiStationRequest {
   /**
@@ -1599,6 +1406,19 @@ export type ApiKey = HasSplitTokenFields & {
   comment?: string;
 };
 
+export type AuditLog = HasAutoIncrementId & {
+  /** @format date-time */
+  timestamp: string;
+  operation: 1 | 2 | 3;
+  operationText: string;
+  class: string;
+  identifier: string;
+  targetClass: string | null;
+  target: string | null;
+  changes: ApiAdminAuditLogChangeset[];
+  user: string | null;
+};
+
 export type CustomField = HasAutoIncrementId & {
   name: string;
   /** The programmatic name for the field. Can be auto-generated from the full name. */
@@ -1606,6 +1426,74 @@ export type CustomField = HasAutoIncrementId & {
   /** An ID3v2 field to automatically assign to this value, if it exists in the media file. */
   auto_assign?: string | null;
 };
+
+export interface ApiListenerDevice {
+  /**
+   * Summary of the listener client.
+   * @example "Firefox 121.0, Windows"
+   */
+  client?: string | null;
+  /**
+   * If the listener device is likely a browser.
+   * @example true
+   */
+  is_browser?: boolean;
+  /**
+   * If the listener device is likely a mobile device.
+   * @example true
+   */
+  is_mobile?: boolean;
+  /**
+   * If the listener device is likely a crawler.
+   * @example true
+   */
+  is_bot?: boolean;
+  /**
+   * Summary of the listener browser family.
+   * @example "Firefox"
+   */
+  browser_family?: string | null;
+  /**
+   * Summary of the listener OS family.
+   * @example "Windows"
+   */
+  os_family?: string | null;
+}
+
+export interface ApiListenerLocation {
+  /**
+   * A description of the location.
+   * @example "Austin, Texas, US"
+   */
+  description?: string;
+  /**
+   * The approximate region/state of the listener.
+   * @example "Texas"
+   */
+  region?: string | null;
+  /**
+   * The approximate city of the listener.
+   * @example "Austin"
+   */
+  city?: string | null;
+  /**
+   * The approximate country of the listener.
+   * @example "United States"
+   */
+  country?: string | null;
+  /**
+   * Latitude.
+   * @format float
+   * @example "30.000000"
+   */
+  lat?: number | null;
+  /**
+   * Longitude.
+   * @format float
+   * @example "-97.000000"
+   */
+  lon?: number | null;
+}
 
 export type Relay = HasAutoIncrementId & {
   /** @example "https://custom-url.example.com" */
@@ -1676,7 +1564,7 @@ export interface Settings {
    * Results of the latest update check.
    * @example ""
    */
-  update_results?: any[] | null;
+  update_results?: ApiAdminUpdateDetails | null;
   /**
    * The UNIX timestamp when updates were last checked.
    * @example 1609480800
@@ -2046,7 +1934,7 @@ export type StationHlsStream = HasAutoIncrementId & {
   /** @example "aac_lofi" */
   name?: string;
   /** @example "aac" */
-  format?: any;
+  format?: HlsStreamProfiles | null;
   /** @example 128 */
   bitrate?: number | null;
 };
@@ -2088,7 +1976,7 @@ export type StationMount = HasAutoIncrementId & {
   /** @example true */
   enable_autodj?: boolean;
   /** @example "mp3" */
-  autodj_format?: any;
+  autodj_format?: StreamFormats | null;
   /** @example 128 */
   autodj_bitrate?: number | null;
   /** @example "https://custom-listen-url.example.com/stream.mp3" */
@@ -2153,6 +2041,50 @@ export type StationPlaylist = HasAutoIncrementId & {
   podcasts?: any[];
 };
 
+export type StationRemote = HasAutoIncrementId & {
+  /** @example "128kbps MP3" */
+  display_name?: string;
+  /** @example true */
+  is_visible_on_public_pages?: boolean;
+  type?: RemoteAdapters;
+  /** @example "true" */
+  readonly is_editable?: boolean;
+  /** @example false */
+  enable_autodj?: boolean;
+  /** @example "mp3" */
+  autodj_format?: StreamFormats | null;
+  /** @example 128 */
+  autodj_bitrate?: number | null;
+  /** @example "https://custom-listen-url.example.com/stream.mp3" */
+  custom_listen_url?: string | null;
+  /** @example "https://custom-url.example.com" */
+  url?: string;
+  /** @example "/stream.mp3" */
+  mount?: string | null;
+  /** @example "password" */
+  admin_password?: string | null;
+  /** @example 8000 */
+  source_port?: number | null;
+  /** @example "/" */
+  source_mount?: string | null;
+  /** @example "source" */
+  source_username?: string | null;
+  /** @example "password" */
+  source_password?: string | null;
+  /** @example false */
+  is_public?: boolean;
+  /**
+   * The most recent number of unique listeners.
+   * @example 10
+   */
+  listeners_unique?: number;
+  /**
+   * The most recent number of total (non-unique) listeners.
+   * @example 12
+   */
+  listeners_total?: number;
+};
+
 export type StationSchedule = HasAutoIncrementId & {
   /** @example 900 */
   start_time?: number;
@@ -2205,6 +2137,97 @@ export type StationWebhook = HasAutoIncrementId & {
   config?: any[];
   /** Internal details used by the webhook to preserve state. */
   metadata?: any[];
+};
+
+export type StorageLocation = HasAutoIncrementId & {
+  type?: StorageLocationTypes;
+  adapter?: StorageLocationAdapters;
+  /**
+   * The local path, if the local adapter is used, or path prefix for S3/remote adapters.
+   * @example "/var/azuracast/stations/azuratest_radio/media"
+   */
+  path?: string;
+  /**
+   * The credential key for S3 adapters.
+   * @example "your-key-here"
+   */
+  s3CredentialKey?: string | null;
+  /**
+   * The credential secret for S3 adapters.
+   * @example "your-secret-here"
+   */
+  s3CredentialSecret?: string | null;
+  /**
+   * The region for S3 adapters.
+   * @example "your-region"
+   */
+  s3Region?: string | null;
+  /**
+   * The API version for S3 adapters.
+   * @example "latest"
+   */
+  s3Version?: string | null;
+  /**
+   * The S3 bucket name for S3 adapters.
+   * @example "your-bucket-name"
+   */
+  s3Bucket?: string | null;
+  /**
+   * The optional custom S3 endpoint S3 adapters.
+   * @example "https://your-region.digitaloceanspaces.com"
+   */
+  s3Endpoint?: string | null;
+  /**
+   * The optional Dropbox App Key.
+   * @example ""
+   */
+  dropboxAppKey?: string | null;
+  /**
+   * The optional Dropbox App Secret.
+   * @example ""
+   */
+  dropboxAppSecret?: string | null;
+  /**
+   * The optional Dropbox Auth Token.
+   * @example ""
+   */
+  dropboxAuthToken?: string | null;
+  /**
+   * The host for SFTP adapters
+   * @example "127.0.0.1"
+   */
+  sftpHost?: string | null;
+  /**
+   * The username for SFTP adapters
+   * @example "root"
+   */
+  sftpUsername?: string | null;
+  /**
+   * The password for SFTP adapters
+   * @example "abc123"
+   */
+  sftpPassword?: string | null;
+  /**
+   * The port for SFTP adapters
+   * @example 20
+   */
+  sftpPort?: number | null;
+  /** The private key for SFTP adapters */
+  sftpPrivateKey?: string | null;
+  /** The private key pass phrase for SFTP adapters */
+  sftpPrivateKeyPassPhrase?: string | null;
+  /** @example "120000" */
+  storageQuotaBytes?: any;
+  /** @example "50 GB" */
+  storageQuota?: string | null;
+  /** @example "60000" */
+  storageUsedBytes?: any;
+  /** @example "1 GB" */
+  storageUsed?: string;
+  /** @example "120000" */
+  storageAvailableBytes?: any;
+  /** @example "1 GB" */
+  storageAvailable?: string;
 };
 
 export interface HasAutoIncrementId {

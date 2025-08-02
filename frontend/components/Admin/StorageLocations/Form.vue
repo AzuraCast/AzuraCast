@@ -48,7 +48,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
-import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
+import {ApiGenericForm, StorageLocationAdapters} from "~/entities/ApiInterfaces.ts";
 
 const form = defineModel<ApiGenericForm>('form', {required: true});
 
@@ -60,7 +60,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         storageQuota: {},
     },
     {
-        adapter: 'local',
+        adapter: StorageLocationAdapters.Local,
         path: '',
         storageQuota: '',
     }
@@ -71,19 +71,19 @@ const {$gettext} = useTranslate();
 const adapterOptions = computed(() => {
     return [
         {
-            value: 'local',
+            value: StorageLocationAdapters.Local,
             text: $gettext('Local Filesystem')
         },
         {
-            value: 's3',
+            value: StorageLocationAdapters.S3,
             text: $gettext('Remote: S3 Compatible')
         },
         {
-            value: 'dropbox',
+            value: StorageLocationAdapters.Dropbox,
             text: $gettext('Remote: Dropbox')
         },
         {
-            value: 'sftp',
+            value: StorageLocationAdapters.Sftp,
             text: $gettext('Remote: SFTP')
         }
     ];

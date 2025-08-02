@@ -111,7 +111,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Api_Admin_AuditLog'
+                  $ref: App\Entity\Api\Admin\AuditLog
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -1312,7 +1312,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Api_Admin_StorageLocation'
+                  allOf: [{ $ref: '#/components/schemas/StorageLocation' }, { $ref: '#/components/schemas/Api_Admin_StorageLocation' }]
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -1333,7 +1333,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Api_Admin_StorageLocation'
+                allOf:
+                  - { $ref: '#/components/schemas/StorageLocation' }
+                  - { $ref: '#/components/schemas/Api_Admin_StorageLocation' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -1359,7 +1361,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Api_Admin_StorageLocation'
+                allOf:
+                  - { $ref: '#/components/schemas/StorageLocation' }
+                  - { $ref: '#/components/schemas/Api_Admin_StorageLocation' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -1384,7 +1388,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Api_Admin_StorageLocation'
+              $ref: '#/components/schemas/StorageLocation'
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -1888,7 +1892,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Api_Dashboard'
+                  allOf: [{ $ref: '#/components/schemas/Api_NowPlaying' }, { $ref: '#/components/schemas/HasLinks' }]
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4656,7 +4660,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Api_StationQueueDetailed'
+                  allOf: [{ $ref: App\Entity\StationQueue }, { $ref: '#/components/schemas/Api_StationQueueDetailed' }]
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4686,7 +4690,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Api_StationQueueDetailed'
+                allOf:
+                  - { $ref: App\Entity\StationQueue }
+                  - { $ref: '#/components/schemas/Api_StationQueueDetailed' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4735,7 +4741,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Api_StationRemote'
+                  allOf: [{ $ref: '#/components/schemas/StationRemote' }, { $ref: '#/components/schemas/HasLinks' }]
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4754,14 +4760,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Api_StationRemote'
+              $ref: '#/components/schemas/StationRemote'
       responses:
         '200':
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Api_StationRemote'
+                allOf:
+                  - { $ref: '#/components/schemas/StationRemote' }
+                  - { $ref: '#/components/schemas/HasLinks' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4791,7 +4799,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Api_StationRemote'
+                allOf:
+                  - { $ref: '#/components/schemas/StationRemote' }
+                  - { $ref: '#/components/schemas/HasLinks' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4818,7 +4828,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Api_StationRemote'
+              $ref: '#/components/schemas/StationRemote'
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -6213,50 +6223,6 @@ components:
           type: boolean
           readOnly: true
       type: object
-    Api_Admin_AuditLog:
-      required:
-        - id
-        - timestamp
-        - operation
-        - operation_text
-        - class
-        - identifier
-        - target_class
-        - target
-        - user
-        - changes
-      properties:
-        id:
-          type: integer
-        timestamp:
-          type: string
-          format: date-time
-        operation:
-          type: integer
-          enum:
-            - 1
-            - 2
-            - 3
-        operation_text:
-          type: string
-        class:
-          type: string
-        identifier:
-          type: string
-        target_class:
-          type: string
-          nullable: true
-        target:
-          type: string
-          nullable: true
-        user:
-          type: string
-          nullable: true
-        changes:
-          type: array
-          items:
-            $ref: '#/components/schemas/Api_Admin_AuditLogChangeset'
-      type: object
     Api_Admin_AuditLogChangeset:
       required:
         - field
@@ -6794,119 +6760,6 @@ components:
           $ref: '#/components/schemas/HasLinks'
         -
           properties:
-            id:
-              type: integer
-              example: 1
-            type:
-              description: 'The type of storage location.'
-              type: string
-              example: station_media
-            adapter:
-              description: 'The storage adapter to use for this location.'
-              type: string
-              example: local
-            path:
-              description: 'The local path, if the local adapter is used, or path prefix for S3/remote adapters.'
-              type: string
-              example: /var/azuracast/stations/azuratest_radio/media
-              nullable: true
-            s3CredentialKey:
-              description: 'The credential key for S3 adapters.'
-              type: string
-              example: your-key-here
-              nullable: true
-            s3CredentialSecret:
-              description: 'The credential secret for S3 adapters.'
-              type: string
-              example: your-secret-here
-              nullable: true
-            s3Region:
-              description: 'The region for S3 adapters.'
-              type: string
-              example: your-region
-              nullable: true
-            s3Version:
-              description: 'The API version for S3 adapters.'
-              type: string
-              example: latest
-              nullable: true
-            s3Bucket:
-              description: 'The S3 bucket name for S3 adapters.'
-              type: string
-              example: your-bucket-name
-              nullable: true
-            s3Endpoint:
-              description: 'The optional custom S3 endpoint S3 adapters.'
-              type: string
-              example: 'https://your-region.digitaloceanspaces.com'
-              nullable: true
-            dropboxAppKey:
-              description: 'The optional Dropbox App Key.'
-              type: string
-              example: ''
-              nullable: true
-            dropboxAppSecret:
-              description: 'The optional Dropbox App Secret.'
-              type: string
-              example: ''
-              nullable: true
-            dropboxAuthToken:
-              description: 'The optional Dropbox Auth Token.'
-              type: string
-              example: ''
-              nullable: true
-            sftpHost:
-              description: 'The host for SFTP adapters'
-              type: string
-              example: 127.0.0.1
-              nullable: true
-            sftpUsername:
-              description: 'The username for SFTP adapters'
-              type: string
-              example: root
-              nullable: true
-            sftpPassword:
-              description: 'The password for SFTP adapters'
-              type: string
-              example: abc123
-              nullable: true
-            sftpPort:
-              description: 'The port for SFTP adapters'
-              type: integer
-              example: 20
-              nullable: true
-            sftpPrivateKey:
-              description: 'The private key for SFTP adapters'
-              type: string
-              nullable: true
-            sftpPrivateKeyPassPhrase:
-              description: 'The private key pass phrase for SFTP adapters'
-              type: string
-              nullable: true
-            storageQuota:
-              type: string
-              example: '50 GB'
-              nullable: true
-            storageQuotaBytes:
-              type: string
-              example: '120000'
-              nullable: true
-            storageUsed:
-              type: string
-              example: '1 GB'
-              nullable: true
-            storageUsedBytes:
-              type: string
-              example: '60000'
-              nullable: true
-            storageAvailable:
-              type: string
-              example: '1 GB'
-              nullable: true
-            storageAvailableBytes:
-              type: string
-              example: '120000'
-              nullable: true
             storageUsedPercent:
               type: integer
               example: '75'
@@ -6963,13 +6816,6 @@ components:
           items:
             type: string
       type: object
-    Api_Dashboard:
-      type: object
-      allOf:
-        -
-          $ref: '#/components/schemas/Api_NowPlaying'
-        -
-          $ref: '#/components/schemas/HasLinks'
     Api_DetailedSongHistory:
       type: object
       allOf:
@@ -7167,70 +7013,6 @@ components:
           $ref: '#/components/schemas/Api_ListenerDevice'
         location:
           $ref: '#/components/schemas/Api_ListenerLocation'
-      type: object
-    Api_ListenerDevice:
-      properties:
-        is_browser:
-          description: 'If the listener device is likely a browser.'
-          type: boolean
-          example: true
-        is_mobile:
-          description: 'If the listener device is likely a mobile device.'
-          type: boolean
-          example: true
-        is_bot:
-          description: 'If the listener device is likely a crawler.'
-          type: boolean
-          example: true
-        client:
-          description: 'Summary of the listener client.'
-          type: string
-          example: 'Firefox 121.0, Windows'
-          nullable: true
-        browser_family:
-          description: 'Summary of the listener browser family.'
-          type: string
-          example: Firefox
-          nullable: true
-        os_family:
-          description: 'Summary of the listener OS family.'
-          type: string
-          example: Windows
-          nullable: true
-      type: object
-    Api_ListenerLocation:
-      properties:
-        city:
-          description: 'The approximate city of the listener.'
-          type: string
-          example: Austin
-          nullable: true
-        region:
-          description: 'The approximate region/state of the listener.'
-          type: string
-          example: Texas
-          nullable: true
-        country:
-          description: 'The approximate country of the listener.'
-          type: string
-          example: 'United States'
-          nullable: true
-        description:
-          description: 'A description of the location.'
-          type: string
-          example: 'Austin, Texas, US'
-        lat:
-          description: Latitude.
-          type: number
-          format: float
-          example: '30.000000'
-          nullable: true
-        lon:
-          description: Latitude.
-          type: number
-          format: float
-          example: '-97.000000'
-          nullable: true
       type: object
     Api_LogContents:
       required:
@@ -7957,8 +7739,6 @@ components:
       type: object
       allOf:
         -
-          $ref: '#/components/schemas/Api_NowPlaying_StationQueue'
-        -
           $ref: '#/components/schemas/HasLinks'
         -
           properties:
@@ -8003,83 +7783,6 @@ components:
           type: integer
           nullable: true
       type: object
-    Api_StationRemote:
-      type: object
-      allOf:
-        -
-          $ref: '#/components/schemas/HasLinks'
-        -
-          properties:
-            id:
-              type: integer
-              nullable: true
-            display_name:
-              type: string
-              example: '128kbps MP3'
-              nullable: true
-            is_visible_on_public_pages:
-              type: boolean
-              example: true
-            type:
-              type: string
-              example: icecast
-            is_editable:
-              type: boolean
-              example: 'true'
-            enable_autodj:
-              type: boolean
-              example: false
-            autodj_format:
-              type: string
-              example: mp3
-              nullable: true
-            autodj_bitrate:
-              type: integer
-              example: 128
-              nullable: true
-            custom_listen_url:
-              type: string
-              example: 'https://custom-listen-url.example.com/stream.mp3'
-              nullable: true
-            url:
-              type: string
-              example: 'https://custom-url.example.com'
-            mount:
-              type: string
-              example: /stream.mp3
-              nullable: true
-            admin_password:
-              type: string
-              example: password
-              nullable: true
-            source_port:
-              type: integer
-              example: 8000
-              nullable: true
-            source_mount:
-              type: string
-              example: /
-              nullable: true
-            source_username:
-              type: string
-              example: source
-              nullable: true
-            source_password:
-              type: string
-              example: password
-              nullable: true
-            is_public:
-              type: boolean
-              example: false
-            listeners_unique:
-              description: 'The most recent number of unique listeners.'
-              type: integer
-              example: 10
-            listeners_total:
-              description: 'The most recent number of total (non-unique) listeners.'
-              type: integer
-              example: 12
-          type: object
     Api_StationRequest:
       properties:
         request_id:
@@ -8371,6 +8074,51 @@ components:
             comment:
               type: string
           type: object
+    AuditLog:
+      required:
+        - timestamp
+        - operation
+        - operationText
+        - class
+        - identifier
+        - targetClass
+        - target
+        - changes
+        - user
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            timestamp:
+              type: string
+              format: date-time
+            operation:
+              enum:
+                - 1
+                - 2
+                - 3
+            operationText:
+              type: string
+            class:
+              type: string
+            identifier:
+              type: string
+            targetClass:
+              type: string
+              nullable: true
+            target:
+              type: string
+              nullable: true
+            changes:
+              type: array
+              items:
+                $ref: '#/components/schemas/Api_Admin_AuditLogChangeset'
+            user:
+              type: string
+              nullable: true
+          type: object
     CustomField:
       required:
         - name
@@ -8486,6 +8234,94 @@ components:
         - LessCpu
         - Balanced
         - Disabled
+    StorageLocationAdapters:
+      type: string
+      enum:
+        - local
+        - s3
+        - dropbox
+        - sftp
+      x-enumNames:
+        - Local
+        - S3
+        - Dropbox
+        - Sftp
+    StorageLocationTypes:
+      type: string
+      enum:
+        - backup
+        - station_media
+        - station_recordings
+        - station_podcasts
+      x-enumNames:
+        - Backup
+        - StationMedia
+        - StationRecordings
+        - StationPodcasts
+    Api_ListenerDevice:
+      properties:
+        client:
+          description: 'Summary of the listener client.'
+          type: string
+          example: 'Firefox 121.0, Windows'
+          nullable: true
+        is_browser:
+          description: 'If the listener device is likely a browser.'
+          type: boolean
+          example: true
+        is_mobile:
+          description: 'If the listener device is likely a mobile device.'
+          type: boolean
+          example: true
+        is_bot:
+          description: 'If the listener device is likely a crawler.'
+          type: boolean
+          example: true
+        browser_family:
+          description: 'Summary of the listener browser family.'
+          type: string
+          example: Firefox
+          nullable: true
+        os_family:
+          description: 'Summary of the listener OS family.'
+          type: string
+          example: Windows
+          nullable: true
+      type: object
+    Api_ListenerLocation:
+      properties:
+        description:
+          description: 'A description of the location.'
+          type: string
+          example: 'Austin, Texas, US'
+        region:
+          description: 'The approximate region/state of the listener.'
+          type: string
+          example: Texas
+          nullable: true
+        city:
+          description: 'The approximate city of the listener.'
+          type: string
+          example: Austin
+          nullable: true
+        country:
+          description: 'The approximate country of the listener.'
+          type: string
+          example: 'United States'
+          nullable: true
+        lat:
+          description: Latitude.
+          type: number
+          format: float
+          example: '30.000000'
+          nullable: true
+        lon:
+          description: Longitude.
+          type: number
+          format: float
+          example: '-97.000000'
+          nullable: true
+      type: object
     Relay:
       type: object
       allOf:
@@ -8561,11 +8397,12 @@ components:
           type: boolean
           example: 'true'
         update_results:
-          description: 'Results of the latest update check.'
-          type: array
-          items: {  }
-          example: ''
+          oneOf:
+            -
+              $ref: '#/components/schemas/Api_Admin_UpdateDetails'
           nullable: true
+          description: 'Results of the latest update check.'
+          example: ''
         update_last_run:
           description: 'The UNIX timestamp when updates were last checked.'
           type: integer
@@ -9026,8 +8863,11 @@ components:
               type: string
               example: aac_lofi
             format:
-              example: aac
+              oneOf:
+                -
+                  $ref: '#/components/schemas/HlsStreamProfiles'
               nullable: true
+              example: aac
             bitrate:
               type: integer
               example: 128
@@ -9101,8 +8941,11 @@ components:
               type: boolean
               example: true
             autodj_format:
-              example: mp3
+              oneOf:
+                -
+                  $ref: '#/components/schemas/StreamFormats'
               nullable: true
+              example: mp3
             autodj_bitrate:
               type: integer
               example: 128
@@ -9195,6 +9038,81 @@ components:
               description: Podcast>
               type: array
               items: {  }
+          type: object
+    StationRemote:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            display_name:
+              type: string
+              example: '128kbps MP3'
+            is_visible_on_public_pages:
+              type: boolean
+              example: true
+            type:
+              $ref: '#/components/schemas/RemoteAdapters'
+            is_editable:
+              type: boolean
+              readOnly: true
+              example: 'true'
+            enable_autodj:
+              type: boolean
+              example: false
+            autodj_format:
+              oneOf:
+                -
+                  $ref: '#/components/schemas/StreamFormats'
+              nullable: true
+              example: mp3
+            autodj_bitrate:
+              type: integer
+              example: 128
+              nullable: true
+            custom_listen_url:
+              type: string
+              example: 'https://custom-listen-url.example.com/stream.mp3'
+              nullable: true
+            url:
+              type: string
+              example: 'https://custom-url.example.com'
+            mount:
+              type: string
+              example: /stream.mp3
+              nullable: true
+            admin_password:
+              type: string
+              example: password
+              nullable: true
+            source_port:
+              type: integer
+              example: 8000
+              nullable: true
+            source_mount:
+              type: string
+              example: /
+              nullable: true
+            source_username:
+              type: string
+              example: source
+              nullable: true
+            source_password:
+              type: string
+              example: password
+              nullable: true
+            is_public:
+              type: boolean
+              example: false
+            listeners_unique:
+              description: 'The most recent number of unique listeners.'
+              type: integer
+              example: 10
+            listeners_total:
+              description: 'The most recent number of total (non-unique) listeners.'
+              type: integer
+              example: 12
           type: object
     StationSchedule:
       type: object
@@ -9290,6 +9208,113 @@ components:
               description: 'Internal details used by the webhook to preserve state.'
               type: array
               items: {  }
+          type: object
+    StorageLocation:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            type:
+              $ref: '#/components/schemas/StorageLocationTypes'
+            adapter:
+              $ref: '#/components/schemas/StorageLocationAdapters'
+            path:
+              description: 'The local path, if the local adapter is used, or path prefix for S3/remote adapters.'
+              type: string
+              example: /var/azuracast/stations/azuratest_radio/media
+            s3CredentialKey:
+              description: 'The credential key for S3 adapters.'
+              type: string
+              example: your-key-here
+              nullable: true
+            s3CredentialSecret:
+              description: 'The credential secret for S3 adapters.'
+              type: string
+              example: your-secret-here
+              nullable: true
+            s3Region:
+              description: 'The region for S3 adapters.'
+              type: string
+              example: your-region
+              nullable: true
+            s3Version:
+              description: 'The API version for S3 adapters.'
+              type: string
+              example: latest
+              nullable: true
+            s3Bucket:
+              description: 'The S3 bucket name for S3 adapters.'
+              type: string
+              example: your-bucket-name
+              nullable: true
+            s3Endpoint:
+              description: 'The optional custom S3 endpoint S3 adapters.'
+              type: string
+              example: 'https://your-region.digitaloceanspaces.com'
+              nullable: true
+            dropboxAppKey:
+              description: 'The optional Dropbox App Key.'
+              type: string
+              example: ''
+              nullable: true
+            dropboxAppSecret:
+              description: 'The optional Dropbox App Secret.'
+              type: string
+              example: ''
+              nullable: true
+            dropboxAuthToken:
+              description: 'The optional Dropbox Auth Token.'
+              type: string
+              example: ''
+              nullable: true
+            sftpHost:
+              description: 'The host for SFTP adapters'
+              type: string
+              example: 127.0.0.1
+              nullable: true
+            sftpUsername:
+              description: 'The username for SFTP adapters'
+              type: string
+              example: root
+              nullable: true
+            sftpPassword:
+              description: 'The password for SFTP adapters'
+              type: string
+              example: abc123
+              nullable: true
+            sftpPort:
+              description: 'The port for SFTP adapters'
+              type: integer
+              example: 20
+              nullable: true
+            sftpPrivateKey:
+              description: 'The private key for SFTP adapters'
+              type: string
+              nullable: true
+            sftpPrivateKeyPassPhrase:
+              description: 'The private key pass phrase for SFTP adapters'
+              type: string
+              nullable: true
+            storageQuotaBytes:
+              example: '120000'
+              nullable: true
+            storageQuota:
+              type: string
+              example: '50 GB'
+              nullable: true
+            storageUsedBytes:
+              example: '60000'
+            storageUsed:
+              type: string
+              example: '1 GB'
+            storageAvailableBytes:
+              example: '120000'
+              nullable: true
+            storageAvailable:
+              type: string
+              example: '1 GB'
           type: object
     HasAutoIncrementId:
       required:
@@ -9519,6 +9544,16 @@ components:
       x-enumNames:
         - Liquidsoap
         - None
+    CrossfadeModes:
+      type: string
+      enum:
+        - normal
+        - smart
+        - none
+      x-enumNames:
+        - Normal
+        - Smart
+        - Disabled
     FrontendAdapters:
       type: string
       enum:
@@ -9531,6 +9566,20 @@ components:
         - Shoutcast
         - Rsas
         - Remote
+    HlsStreamProfiles:
+      type: string
+      enum:
+        - aac
+        - aac_he
+        - aac_he_v2
+        - aac_ld
+        - aac_eld
+      x-enumNames:
+        - AacLowComplexity
+        - AacHighEfficiencyV1
+        - AacHighEfficiencyV2
+        - AacLowDelay
+        - AacEnhancedLowDelay
     MasterMePresets:
       type: string
       enum:
@@ -9557,6 +9606,20 @@ components:
         - Shoutcast2
         - Icecast
         - AzuraRelay
+    StreamFormats:
+      type: string
+      enum:
+        - mp3
+        - ogg
+        - aac
+        - opus
+        - flac
+      x-enumNames:
+        - Mp3
+        - Ogg
+        - Aac
+        - Opus
+        - Flac
     WebhookTriggers:
       type: string
       enum:

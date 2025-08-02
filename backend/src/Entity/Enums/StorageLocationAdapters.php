@@ -9,7 +9,9 @@ use App\Entity\StorageLocationAdapter\LocalStorageLocationAdapter;
 use App\Entity\StorageLocationAdapter\S3StorageLocationAdapter;
 use App\Entity\StorageLocationAdapter\SftpStorageLocationAdapter;
 use App\Entity\StorageLocationAdapter\StorageLocationAdapterInterface;
+use OpenApi\Attributes as OA;
 
+#[OA\Schema(type: 'string')]
 enum StorageLocationAdapters: string
 {
     case Local = 'local';

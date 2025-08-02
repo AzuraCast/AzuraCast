@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
+use App\Entity\ListenerDevice;
+use App\Entity\ListenerLocation;
 use App\OpenApi;
 use App\Utilities\Types;
 use DateTimeImmutable;

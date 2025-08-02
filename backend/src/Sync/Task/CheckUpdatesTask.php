@@ -54,13 +54,10 @@ final class CheckUpdatesTask extends AbstractTask
     {
         $settings = $this->readSettings();
 
-        $settings->updateUpdateLastRun();
-        $this->writeSettings($settings);
-
         try {
             $updates = $this->azuracastCentral->checkForUpdates();
 
-            if (!empty($updates)) {
+            if (null !== $updates) {
                 $settings->update_results = $updates;
                 $this->writeSettings($settings);
 
@@ -70,6 +67,11 @@ final class CheckUpdatesTask extends AbstractTask
             }
         } catch (TransferException $e) {
             $this->logger->error(sprintf('Error from AzuraCast Central (%d): %s', $e->getCode(), $e->getMessage()));
+
+            // Force re-setting of update data (to update timestamps).
+            $updates = $settings->update_results;
+            $settings->update_results = $updates;
+            $this->writeSettings($settings);
             return;
         }
     }

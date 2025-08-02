@@ -111,7 +111,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Api_Admin_AuditLog'
+                  $ref: App\Entity\Api\Admin\AuditLog
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -6223,50 +6223,6 @@ components:
           type: boolean
           readOnly: true
       type: object
-    Api_Admin_AuditLog:
-      required:
-        - id
-        - timestamp
-        - operation
-        - operation_text
-        - class
-        - identifier
-        - target_class
-        - target
-        - user
-        - changes
-      properties:
-        id:
-          type: integer
-        timestamp:
-          type: string
-          format: date-time
-        operation:
-          type: integer
-          enum:
-            - 1
-            - 2
-            - 3
-        operation_text:
-          type: string
-        class:
-          type: string
-        identifier:
-          type: string
-        target_class:
-          type: string
-          nullable: true
-        target:
-          type: string
-          nullable: true
-        user:
-          type: string
-          nullable: true
-        changes:
-          type: array
-          items:
-            $ref: '#/components/schemas/Api_Admin_AuditLogChangeset'
-      type: object
     Api_Admin_AuditLogChangeset:
       required:
         - field
@@ -8117,6 +8073,51 @@ components:
               $ref: '#/components/schemas/User'
             comment:
               type: string
+          type: object
+    AuditLog:
+      required:
+        - timestamp
+        - operation
+        - operationText
+        - class
+        - identifier
+        - targetClass
+        - target
+        - changes
+        - user
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            timestamp:
+              type: string
+              format: date-time
+            operation:
+              enum:
+                - 1
+                - 2
+                - 3
+            operationText:
+              type: string
+            class:
+              type: string
+            identifier:
+              type: string
+            targetClass:
+              type: string
+              nullable: true
+            target:
+              type: string
+              nullable: true
+            changes:
+              type: array
+              items:
+                $ref: '#/components/schemas/Api_Admin_AuditLogChangeset'
+            user:
+              type: string
+              nullable: true
           type: object
     CustomField:
       required:

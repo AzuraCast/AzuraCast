@@ -252,20 +252,6 @@ export interface ApiAccountTwoFactorStatus {
   readonly two_factor_enabled: boolean;
 }
 
-export interface ApiAdminAuditLog {
-  id: number;
-  /** @format date-time */
-  timestamp: string;
-  operation: 1 | 2 | 3;
-  operation_text: string;
-  class: string;
-  identifier: string;
-  target_class: string | null;
-  target: string | null;
-  user: string | null;
-  changes: ApiAdminAuditLogChangeset[];
-}
-
 export interface ApiAdminAuditLogChangeset {
   field: string;
   from: string;
@@ -1418,6 +1404,19 @@ export interface ApiUploadedRecordStatus {
 export type ApiKey = HasSplitTokenFields & {
   user?: User;
   comment?: string;
+};
+
+export type AuditLog = HasAutoIncrementId & {
+  /** @format date-time */
+  timestamp: string;
+  operation: 1 | 2 | 3;
+  operationText: string;
+  class: string;
+  identifier: string;
+  targetClass: string | null;
+  target: string | null;
+  changes: ApiAdminAuditLogChangeset[];
+  user: string | null;
 };
 
 export type CustomField = HasAutoIncrementId & {

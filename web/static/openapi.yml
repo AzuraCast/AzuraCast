@@ -111,7 +111,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: App\Entity\Api\Admin\AuditLog
+                  $ref: '#/components/schemas/AuditLog'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -8876,28 +8876,40 @@ components:
     StationMediaMetadata:
       properties:
         amplify:
+          description: 'Value (in dB) to amplify the current track to produce a uniform loudness.'
           type: number
           format: float
-          nullable: true
-        cross_start_next:
-          type: number
-          format: float
+          example: '-1.5'
           nullable: true
         fade_in:
+          description: 'Seconds from the start of the track to end fading in.'
           type: number
           format: float
+          example: '2.0'
           nullable: true
         fade_out:
+          description: 'Seconds from the end of the track to begin fading out.'
           type: number
           format: float
+          example: '2.0'
           nullable: true
         cue_in:
+          description: 'Seconds from the start of the track to start playback (cue in).'
           type: number
           format: float
+          example: '3.5'
           nullable: true
         cue_out:
+          description: 'Seconds from the start of the track to end playback (cue out).'
           type: number
           format: float
+          example: '181.5'
+          nullable: true
+        cross_start_next:
+          description: 'Seconds from the start of the track to begin fading in the next track.'
+          type: number
+          format: float
+          example: '180.0'
           nullable: true
       type: object
     StationMount:

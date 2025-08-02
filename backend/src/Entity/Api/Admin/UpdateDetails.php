@@ -46,12 +46,12 @@ final readonly class UpdateDetails
     public static function fromArray(array $updates): self
     {
         return new self(
-            Types::stringOrNull($updates['current_release'] ?? null),
-            Types::stringOrNull($updates['latest_release'] ?? null),
-            Types::bool($updates['needs_rolling_update'] ?? false),
-            Types::bool($updates['needs_release_update'] ?? false),
-            Types::int($updates['rolling_updates_available'] ?? 0),
-            Types::bool($updates['can_switch_to_stable'] ?? false)
+            current_release: Types::stringOrNull($updates['current_release'] ?? null),
+            latest_release: Types::stringOrNull($updates['latest_release'] ?? null),
+            needs_rolling_update: Types::bool($updates['needs_rolling_update'] ?? false),
+            needs_release_update: Types::bool($updates['needs_release_update'] ?? false),
+            rolling_updates_available: Types::int($updates['rolling_updates_available'] ?? 0),
+            can_switch_to_stable: Types::bool($updates['can_switch_to_stable'] ?? false)
         );
     }
 }

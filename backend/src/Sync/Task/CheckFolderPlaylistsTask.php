@@ -100,7 +100,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
             $path = $folder->path;
 
             // Verify the folder still exists.
-            if (!$fsMedia->isDir($path)) {
+            if (!$fsMedia->directoryExists($path)) {
                 $this->em->remove($folder);
                 continue;
             }

@@ -27,14 +27,22 @@
                 :label="$gettext('AutoDJ Format')"
             />
 
-            <bitrate-options
+            <form-group-field
                 v-if="formatSupportsBitrateOptions"
                 id="edit_form_autodj_bitrate"
                 class="col-md-6"
-                :max-bitrate="maxBitrate"
-                :field="v$.autodj_bitrate"
                 :label="$gettext('AutoDJ Bitrate (kbps)')"
-            />
+                :field="v$.autodj_bitrate"
+            >
+                <template #default="{id, model, fieldClass}">
+                    <bitrate-options
+                        :id="id"
+                        v-model="model.$model"
+                        :class="fieldClass"
+                        :max-bitrate="maxBitrate"
+                    />
+                </template>
+            </form-group-field>
         </div>
     </tab>
 </template>
@@ -48,6 +56,7 @@ import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {ApiGenericForm, FrontendAdapters, StreamFormats} from "~/entities/ApiInterfaces.ts";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 
 defineProps<{
     stationFrontendType: FrontendAdapters

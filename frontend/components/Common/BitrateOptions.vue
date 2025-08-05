@@ -1,130 +1,44 @@
 <template>
-    <form-group
-        v-bind="$attrs"
+    <radio-with-custom-number
         :id="id"
+        :name="name"
+        :options="bitrateOptions"
+        v-model="model"
     >
         <template
-            v-if="label || slots.label"
-            #label="slotProps"
-        >
-            <form-label
-                :is-required="isRequired"
-                :advanced="props.advanced"
-                :high-cpu="props.highCpu"
-            >
-                <slot
-                    name="label"
-                    v-bind="slotProps"
-                >
-                    {{ label }}
-                </slot>
-            </form-label>
-        </template>
-
-        <template #default>
-            <form-multi-check
-                :id="id"
-                v-model="radioField"
-                :name="name || id"
-                :options="bitrateOptions"
-                radio
-                stacked
-            >
-                <template
-                    v-for="(_, slot) of useSlotsExcept(['default', 'label', 'description'])"
-                    #[slot]="scope"
-                >
-                    <slot
-                        :name="slot"
-                        v-bind="scope"
-                    />
-                </template>
-
-                <template #label(custom)>
-                    {{ $gettext('Custom') }}
-
-                    <input
-                        :id="id+'_custom'"
-                        v-model="customField"
-                        class="form-control form-control-sm"
-                        type="number"
-                        min="1"
-                        max="4096"
-                        step="1"
-                    >
-                </template>
-            </form-multi-check>
-        </template>
-
-        <template
-            v-if="description || slots.description"
-            #description="slotProps"
+            v-for="(_, slot) of slots"
+            #[slot]="scope"
         >
             <slot
-                v-bind="slotProps"
-                name="description"
-            >
-                {{ description }}
-            </slot>
+                :name="slot"
+                v-bind="scope"
+            />
         </template>
-    </form-group>
+    </radio-with-custom-number>
 </template>
 
-<script setup lang="ts">
-import {FormFieldEmits, FormFieldProps, useFormField} from "~/components/Form/useFormField";
-import {computed, useSlots, WritableComputedRef} from "vue";
-import {includes, map} from "lodash";
-import useSlotsExcept from "~/functions/useSlotsExcept.ts";
-import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
-import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
-import FormGroup from "~/components/Form/FormGroup.vue";
+<script setup lang="ts" generic="T = number | null">
+import {map} from "lodash";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
+import RadioWithCustomNumber from "~/components/Common/RadioWithCustomNumber.vue";
+import {useSlots} from "vue";
 
-type T = number | null
-
-interface BitrateOptionsProps extends FormFieldProps<T>, FormLabelParentProps {
+interface BitrateOptionsProps {
     id: string,
-    maxBitrate: number,
     name?: string,
-    label?: string,
-    description?: string,
+    inputAttrs?: object,
+    maxBitrate: number
 }
 
 const props = defineProps<BitrateOptionsProps>();
 
 const slots = useSlots();
 
-const emit = defineEmits<FormFieldEmits<T>>();
-
-const {model, isRequired} = useFormField<T>(props, emit);
+const model = defineModel<T>();
 
 const radioBitrates = [
     32, 48, 64, 96, 128, 192, 256, 320
 ].filter((bitrate) => props.maxBitrate === 0 || bitrate <= props.maxBitrate);
-
-const customField: WritableComputedRef<T> = computed({
-    get() {
-        return includes(radioBitrates, Number(model.value))
-            ? null
-            : model.value;
-    },
-    set(newValue) {
-        model.value = newValue;
-    }
-});
-
-const radioField: WritableComputedRef<"custom" | T> = computed({
-    get() {
-        return includes(radioBitrates, Number(model.value))
-            ? model.value
-            : 'custom';
-    },
-    set(newValue) {
-        if (newValue !== 'custom') {
-            model.value = newValue;
-        }
-    }
-});
 
 const bitrateOptions: SimpleFormOptionInput = map(
     radioBitrates,
@@ -135,9 +49,4 @@ const bitrateOptions: SimpleFormOptionInput = map(
         };
     }
 );
-
-bitrateOptions.push({
-    value: 'custom',
-    text: 'Custom'
-});
 </script>

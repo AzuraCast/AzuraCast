@@ -27,14 +27,22 @@
                 :label="$gettext('AutoDJ Format')"
             />
 
-            <bitrate-options
+            <form-group-field
                 v-if="formatSupportsBitrateOptions"
                 id="edit_form_autodj_bitrate"
                 class="col-md-6"
-                :max-bitrate="maxBitrate"
                 :field="v$.autodj_bitrate"
                 :label="$gettext('AutoDJ Bitrate (kbps)')"
-            />
+            >
+                <template #default="{id, model, fieldClass}">
+                    <bitrate-options
+                        :id="id"
+                        v-model="model.$model"
+                        :class="fieldClass"
+                        :max-bitrate="maxBitrate"
+                    />
+                </template>
+            </form-group-field>
 
             <form-group-field
                 id="edit_form_source_port"

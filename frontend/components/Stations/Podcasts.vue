@@ -119,13 +119,14 @@ import useHasEditModal from "~/functions/useHasEditModal.ts";
 import {NestedFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import {StorageLocationTypes} from "~/entities/ApiInterfaces.ts";
 
 defineProps<{
     languageOptions: Record<string, string>,
     categoriesOptions: NestedFormOptionInput,
 }>();
 
-const quotaUrl = getStationApiUrl('/quota/station_podcasts');
+const quotaUrl = getStationApiUrl(`/quota/${StorageLocationTypes.StationPodcasts}`);
 const listUrl = getStationApiUrl('/podcasts');
 const newArtUrl = getStationApiUrl('/podcasts/art');
 

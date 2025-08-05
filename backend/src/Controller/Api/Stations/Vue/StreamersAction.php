@@ -33,6 +33,7 @@ final class StreamersAction implements SingleActionInterface
         $serverUrl = ($settings->getBaseUrlAsUri() ?? $request->getRouter()->getBaseUrl())->getHost();
 
         return $response->withJson([
+            'recordStreams' => $backendConfig->record_streams,
             'connectionInfo' => [
                 'serverUrl' => $serverUrl,
                 'streamPort' => $backendConfig->dj_port,

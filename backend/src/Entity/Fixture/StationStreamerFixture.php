@@ -9,6 +9,7 @@ use App\Entity\StationStreamer;
 use App\Entity\StationStreamerBroadcast;
 use App\Environment;
 use App\Flysystem\StationFilesystems;
+use App\Radio\Enums\StreamFormats;
 use App\Utilities\Time;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -34,6 +35,12 @@ final class StationStreamerFixture extends AbstractFixture implements DependentF
         $station = $this->getReference('station', Station::class);
 
         $station->enable_streamers = true;
+
+        $backendConfig = $station->backend_config;
+        $backendConfig->record_streams = true;
+        $backendConfig->record_streams_format = StreamFormats::default()->value;
+        $station->backend_config = $backendConfig;
+
         $manager->persist($station);
 
         $streamer = new StationStreamer($station);

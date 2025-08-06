@@ -30,6 +30,9 @@ release channel, you can take advantage of these new features and fixes.
   file; this archive file contains all of AzuraCast's code and can also be used for diagnosing Liquidsoap errors. You
   can re-import this file later to apply any custom configuration within the file to the station.
 
+- You can now provide a custom value for the number of days of station history to keep and the number of history items
+  to show on each individual station API response.
+
 ## Code Quality/Technical Changes
 
 - We have removed the "Hide Advanced Features" setting from the system settings panel. Often, this setting was disabled

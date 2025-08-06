@@ -17,7 +17,7 @@
     </radio-with-custom-number>
 </template>
 
-<script setup lang="ts" generic="T = number | null">
+<script setup lang="ts" generic="T = string | number | null">
 import {map} from "lodash";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import RadioWithCustomNumber from "~/components/Common/RadioWithCustomNumber.vue";

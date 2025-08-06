@@ -22,8 +22,9 @@
 
             <input
                 :id="id+'_custom'"
-                v-model="customField"
+                v-model.number="customField"
                 v-bind="inputAttrs"
+                @focus="onCustomFieldFocus"
                 class="form-control form-control-sm"
                 type="number"
             >
@@ -31,12 +32,13 @@
     </form-multi-check>
 </template>
 
-<script setup lang="ts" generic="T = number | null">
+<script setup lang="ts" generic="T = string | number | null">
 import {FormFieldProps} from "~/components/Form/useFormField";
-import {computed, toRef, useSlots, WritableComputedRef} from "vue";
+import {computed, nextTick, ref, toRef, useSlots} from "vue";
 import {find} from "lodash";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 import {objectToSimpleFormOptions, SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
+import {pausableWatch, WatchPausableReturn} from "@vueuse/core";
 
 interface RadioCustomNumberProps extends FormFieldProps<T> {
     id: string,
@@ -74,27 +76,74 @@ const optionsWithCustom = computed(() => {
     return parsedOptions;
 });
 
-const customField: WritableComputedRef<T> = computed({
-    get() {
-        return find(originalOptions.value, {
-            value: Number(model.value)
-        }) ? null : model.value;
-    },
-    set(newValue) {
-        model.value = newValue;
-    }
-});
+const radioField = ref<"custom" | T>(null);
+const customField = ref<T>(null);
 
-const radioField: WritableComputedRef<"custom" | T> = computed({
-    get() {
-        return find(originalOptions.value, {
-            value: Number(model.value)
-        }) ? model.value : 'custom';
+const watchers: WatchPausableReturn[] = [];
+
+// Sync from models to others.
+watchers.push(pausableWatch(
+    model,
+    async (newValue) => {
+        watchers.forEach(w => w.pause());
+
+        if (find(originalOptions.value, {
+            value: newValue
+        })) {
+            radioField.value = newValue;
+            customField.value = null;
+        } else {
+            radioField.value = "custom";
+            customField.value = newValue;
+        }
+
+        await nextTick();
+
+        watchers.forEach(w => w.resume());
     },
-    set(newValue) {
-        if (newValue !== 'custom') {
+    {
+        flush: 'sync',
+        immediate: true
+    }
+));
+
+// Sync radio to model and others
+watchers.push(pausableWatch(
+    radioField,
+    async (newValue) => {
+        watchers.forEach(w => w.pause());
+
+        if (newValue === "custom") {
+            customField.value = model.value;
+        } else {
+            customField.value = null;
             model.value = newValue;
         }
+        await nextTick();
+
+        watchers.forEach(w => w.resume());
+    }, {
+        flush: 'sync'
     }
-});
+));
+
+// Sync custom field to model and others
+watchers.push(pausableWatch(
+    customField,
+    async (newValue) => {
+        watchers.forEach(w => w.pause());
+
+        model.value = newValue;
+        await nextTick();
+
+        watchers.forEach(w => w.resume());
+    }, {
+        flush: 'sync'
+    }
+));
+
+const onCustomFieldFocus = () => {
+    radioField.value = 'custom';
+    customField.value = model.value;
+}
 </script>

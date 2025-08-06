@@ -19,7 +19,7 @@ if [[ "$(uname -m)" = "aarch64" ]]; then
 fi
 
 # wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap/releases/download/v2.3.2/liquidsoap_2.3.2-debian-bookworm-2_${ARCHITECTURE}.deb"
-wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap-release-assets/releases/download/rolling-release-v2.4.x/liquidsoap-be4e164_2.4.0-debian-bookworm-ocaml4.14.2-1_${ARCHITECTURE}.deb"
+wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap-release-assets/releases/download/rolling-release-v2.4.x/liquidsoap-c61a5cb_2.4.0-debian-bookworm-ocaml4.14.2-1_${ARCHITECTURE}.deb"
 
 dpkg -i /tmp/liquidsoap.deb
 apt-get install -y -f --no-install-recommends

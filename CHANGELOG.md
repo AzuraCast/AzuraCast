@@ -5,6 +5,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.22.0 (Aug 7, 2025)
+
+## New Features/Changes
+
 - Liquidsoap is updated to version 2.3.2, including a number of bug fixes.
 
 - You can now specify the message color in Discord webhooks.

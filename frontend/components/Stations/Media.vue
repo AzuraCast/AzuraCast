@@ -275,7 +275,13 @@ import {getStationApiUrl} from "~/router";
 import {useRoute, useRouter} from "vue-router";
 import {IconFile, IconFolder, IconImage} from "~/components/Common/icons";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
-import {ApiFileList, ApiStationMediaPlaylist, CustomField, FileTypes} from "~/entities/ApiInterfaces.ts";
+import {
+    ApiFileList,
+    ApiStationMediaPlaylist,
+    CustomField,
+    FileTypes,
+    StorageLocationTypes
+} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
@@ -313,7 +319,7 @@ const uploadUrl = getStationApiUrl('/files/upload');
 const listDirectoriesUrl = getStationApiUrl('/files/directories');
 const mkdirUrl = getStationApiUrl('/files/mkdir');
 const renameUrl = getStationApiUrl('/files/rename');
-const quotaUrl = getStationApiUrl('/quota/station_media');
+const quotaUrl = getStationApiUrl(`/quota/${StorageLocationTypes.StationMedia}`);
 
 const currentDirectory = ref('');
 

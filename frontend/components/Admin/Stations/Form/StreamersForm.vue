@@ -42,13 +42,22 @@
                         :label="$gettext('Live Broadcast Recording Format')"
                     />
 
-                    <bitrate-options
+                    <form-group-field
                         id="edit_form_backend_record_streams_bitrate"
                         class="col-md-6"
-                        :max-bitrate="form.max_bitrate"
                         :field="v$.backend_config.record_streams_bitrate"
                         :label="$gettext('Live Broadcast Recording Bitrate (kbps)')"
-                    />
+                    >
+                        <template #default="{id, model, fieldClass, inputAttrs}">
+                            <bitrate-options
+                                :id="id"
+                                v-model="model.$model"
+                                :class="fieldClass"
+                                :input-attrs="inputAttrs"
+                                :max-bitrate="form.max_bitrate"
+                            />
+                        </template>
+                    </form-group-field>
                 </div>
 
                 <div class="row g-3 mb-3">

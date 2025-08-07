@@ -185,6 +185,7 @@ final class StorageLocationsController extends AbstractApiCrudController
             $stations[] = $station->name;
         }
         $return->stations = $stations;
+        $return->links = $original['links'];
 
         return [
             ...$original,

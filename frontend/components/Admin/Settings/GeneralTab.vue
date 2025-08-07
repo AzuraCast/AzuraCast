@@ -43,16 +43,21 @@
                     :description="$gettext('By default, radio stations broadcast on their own ports (i.e. 8000). If you\'re using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443).')"
                 />
 
-                <form-group-multi-check
+                <form-group-field
                     id="edit_form_history_keep_days"
                     class="col-md-6"
                     :field="v$.history_keep_days"
-                    :options="historyKeepDaysOptions"
-                    stacked
-                    radio
                     :label="$gettext('Days of Playback History to Keep')"
                     :description="$gettext('Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space.')"
-                />
+                >
+                    <template #default="{id, model}">
+                        <radio-with-custom-number
+                            :id="id"
+                            v-model="model.$model"
+                            :options="historyKeepDaysOptions"
+                        />
+                    </template>
+                </form-group-field>
 
                 <form-group-checkbox
                     id="edit_form_enable_static_nowplaying"
@@ -72,11 +77,11 @@ import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
+import RadioWithCustomNumber from "~/components/Common/RadioWithCustomNumber.vue";
 
 const form = defineModel<ApiGenericForm>('form', {required: true});
 

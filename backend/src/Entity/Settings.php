@@ -19,7 +19,6 @@ use Psr\Http\Message\UriInterface;
 use RuntimeException;
 use Stringable;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[
     OA\Schema(schema: "Settings", type: "object"),
@@ -119,7 +118,6 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "Days of Playback History to Keep"),
         ORM\Column(type: 'smallint'),
-        Assert\Choice([0, 14, 30, 60, 365, 730]),
         Groups(self::GROUP_GENERAL)
     ]
     public int $history_keep_days = SongHistory::DEFAULT_DAYS_TO_KEEP {

@@ -5,7 +5,7 @@
     >
         <template v-if="quota.available">
             <div
-                class="progress h-20 mb-3"
+                class="progress h-20 mb-2"
                 role="progressbar"
                 :aria-label="quota.used_percent+'%'"
                 :aria-valuenow="quota.used_percent"

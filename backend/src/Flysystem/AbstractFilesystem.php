@@ -9,7 +9,6 @@ use App\Flysystem\Normalizer\WhitespacePathNormalizer;
 use League\Flysystem\Filesystem;
 use League\Flysystem\PathNormalizer;
 use League\Flysystem\StorageAttributes;
-use League\Flysystem\UnableToRetrieveMetadata;
 
 abstract class AbstractFilesystem extends Filesystem implements ExtendedFilesystemInterface
 {
@@ -35,24 +34,6 @@ abstract class AbstractFilesystem extends Filesystem implements ExtendedFilesyst
     public function getMetadata(string $path): StorageAttributes
     {
         return $this->adapter->getMetadata($path);
-    }
-
-    public function isDir(string $path): bool
-    {
-        try {
-            return $this->getMetadata($path)->isDir();
-        } catch (UnableToRetrieveMetadata) {
-            return false;
-        }
-    }
-
-    public function isFile(string $path): bool
-    {
-        try {
-            return $this->getMetadata($path)->isFile();
-        } catch (UnableToRetrieveMetadata) {
-            return false;
-        }
     }
 
     public function uploadAndDeleteOriginal(string $localPath, string $to): void

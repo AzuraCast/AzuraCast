@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Middleware;
 
 use App\Enums\PermissionInterface;
+use App\Exception\Http\NotLoggedInException;
 use App\Exception\Http\PermissionDeniedException;
 use App\Http\ServerRequest;
 use Exception;
@@ -33,7 +34,7 @@ final class Permissions extends AbstractMiddleware
         try {
             $user = $request->getUser();
         } catch (Exception) {
-            throw PermissionDeniedException::create($request);
+            throw NotLoggedInException::create($request);
         }
 
         $acl = $request->getAcl();

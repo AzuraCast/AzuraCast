@@ -10,6 +10,18 @@ release channel, you can take advantage of these new features and fixes.
   starting up a station with custom Liquidsoap code. If you use custom Liquidsoap code, you should evaluate these
   warnings and make changes as needed.
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.22.0 (Aug 7, 2025)
+
+## New Features/Changes
+
+- Liquidsoap is updated to version 2.3.2, including a number of bug fixes.
+
 - You can now specify the message color in Discord webhooks.
 
 - The Playlist edit modal's "Advanced" tab now has a new checkbox: "Prioritize over listener requests". If checked, the
@@ -32,6 +44,9 @@ release channel, you can take advantage of these new features and fixes.
 - You can now export your station's Liquidsoap configuration (including any custom configuration sections) to an archive
   file; this archive file contains all of AzuraCast's code and can also be used for diagnosing Liquidsoap errors. You
   can re-import this file later to apply any custom configuration within the file to the station.
+
+- You can now provide a custom value for the number of days of station history to keep and the number of history items
+  to show on each individual station API response.
 
 ## Code Quality/Technical Changes
 

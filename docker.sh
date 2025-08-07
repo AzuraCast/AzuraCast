@@ -273,6 +273,8 @@ check-install-requirements() {
   CURRENT_OS=$(uname -s)
   if [[ $CURRENT_OS == "Linux" ]]; then
     echo -en "\e[32m[PASS]\e[0m Operating System: ${CURRENT_OS}\n"
+  elif [[ $CURRENT_OS == "Darwin" ]]; then
+    echo -en "\e[32m[PASS]\e[0m Operating System: ${CURRENT_OS}\n"
   else
     echo -en "\e[41m[FAIL]\e[0m Operating System: ${CURRENT_OS}\n"
 
@@ -346,6 +348,13 @@ check-install-requirements() {
 install-docker() {
   set -e
 
+  CURRENT_OS=$(uname -s)
+  if [[ $CURRENT_OS != "Linux" ]]; then
+    echo "The automatic Docker installation can only take place on Linux."
+    echo "Install Docker Desktop for your operating system."
+    exit 1
+  fi
+
   curl -fsSL get.docker.com -o get-docker.sh
   sh get-docker.sh
   rm get-docker.sh
@@ -364,6 +373,13 @@ install-docker() {
 install-docker-compose() {
   set -e
   echo "Installing Docker Compose..."
+
+  CURRENT_OS=$(uname -s)
+  if [[ $CURRENT_OS != "Linux" ]]; then
+    echo "The automatic Docker installation can only take place on Linux."
+    echo "Install Docker Desktop for your operating system."
+    exit 1
+  fi
 
   curl -fsSL -o docker-compose https://github.com/docker/compose/releases/download/v2.4.1/docker-compose-linux-$(uname -m)
 

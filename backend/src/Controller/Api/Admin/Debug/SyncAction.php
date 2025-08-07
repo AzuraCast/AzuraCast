@@ -8,14 +8,12 @@ use App\Console\Command\Sync\SingleTaskCommand;
 use App\Container\LoggerAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Admin\Debug\LogResult;
-use App\Event\GetSyncTasks;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use Monolog\Handler\TestHandler;
 use Monolog\Level;
 use OpenApi\Attributes as OA;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 
 #[
@@ -51,8 +49,7 @@ final class SyncAction implements SingleActionInterface
     use LoggerAwareTrait;
 
     public function __construct(
-        private readonly SingleTaskCommand $taskCommand,
-        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly SingleTaskCommand $taskCommand
     ) {
     }
 
@@ -69,13 +66,8 @@ final class SyncAction implements SingleActionInterface
 
         try {
             if ('all' === $task) {
-                $syncTasksEvent = new GetSyncTasks();
-                $this->eventDispatcher->dispatch($syncTasksEvent);
-                foreach ($syncTasksEvent->getTasks() as $taskClass) {
-                    $this->taskCommand->runTask($taskClass, true);
-                }
+                $this->taskCommand->runAllTasks(true);
             } else {
-                /** @var class-string $task */
                 $this->taskCommand->runTask($task, true);
             }
         } finally {

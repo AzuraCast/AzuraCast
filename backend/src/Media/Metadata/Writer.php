@@ -40,7 +40,12 @@ final class Writer
         $tagwriter->tagformats = $tagFormats;
 
         $writeTags = $metadata->getKnownTags();
-        $writeTags['text'] = $metadata->getExtraTags();
+
+        // GetID3 requires all tags for vorbiscomment & metaflac to have string values
+        // so we explicitly need to convert the extra tags into a multiline string
+        $writeTags['text'] = !empty(array_intersect(['vorbiscomment', 'metaflac'], $tagFormats))
+            ? implode(PHP_EOL, $metadata->getExtraTags())
+            : $metadata->getExtraTags();
 
         $artContents = $metadata->getArtwork();
         if (null !== $artContents) {

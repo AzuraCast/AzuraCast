@@ -137,8 +137,8 @@ final class BatchAction extends PodcastEpisodesController implements SingleActio
 
         foreach ($rows as $row) {
             $result->episodes[] = [
-                'id' => $row->getIdRequired(),
-                'title' => $row->getTitle(),
+                'id' => $row->id,
+                'title' => $row->title,
             ];
             $result->records[] = $this->viewRecord($row, $request);
         }
@@ -158,8 +158,8 @@ final class BatchAction extends PodcastEpisodesController implements SingleActio
         $rows = ReadWriteBatchIteratorAggregate::fromQuery($rowsQuery, self::BATCH_SIZE);
 
         foreach ($rows as $row) {
-            $id = $row->getIdRequired();
-            $title = $row->getTitle();
+            $id = $row->id;
+            $title = $row->title;
 
             $result->episodes[] = [
                 'id' => $id,
@@ -189,8 +189,8 @@ final class BatchAction extends PodcastEpisodesController implements SingleActio
         $rows = ReadWriteBatchIteratorAggregate::fromQuery($rowsQuery, self::BATCH_SIZE);
 
         foreach ($rows as $row) {
-            $id = $row->getIdRequired();
-            $title = $row->getTitle();
+            $id = $row->id;
+            $title = $row->title;
 
             $result->episodes[] = [
                 'id' => $id,

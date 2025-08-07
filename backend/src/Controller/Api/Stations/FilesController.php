@@ -81,7 +81,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
-                name: 'id',
+                name: 'media_id',
                 description: 'Media ID',
                 in: 'path',
                 required: true,
@@ -108,7 +108,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
-                name: 'id',
+                name: 'media_id',
                 description: 'Media ID',
                 in: 'path',
                 required: true,
@@ -130,7 +130,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
-                name: 'id',
+                name: 'media_id',
                 description: 'Media ID',
                 in: 'path',
                 required: true,
@@ -172,7 +172,7 @@ final class FilesController extends AbstractStationApiCrudController
         Response $response,
         array $params
     ): ResponseInterface {
-        $storageLocation = $this->getStation($request)->getMediaStorageLocation();
+        $storageLocation = $this->getStation($request)->media_storage_location;
 
         $qb = $this->em->createQueryBuilder()
             ->select('e')
@@ -214,7 +214,7 @@ final class FilesController extends AbstractStationApiCrudController
 
         $return = ApiStationMedia::fromArray(
             $returnArray,
-            $record->getExtraMetadata()->toArray() ?? [],
+            $record->extra_metadata->toArray() ?? [],
             $this->customFieldsRepo->getCustomFields($record),
             ApiStationMedia::aggregatePlaylists($returnArray['playlists'] ?? []),
         );
@@ -223,11 +223,11 @@ final class FilesController extends AbstractStationApiCrudController
         $router = $request->getRouter();
 
         $routeParams = [
-            'media_id' => $record->getUniqueId(),
+            'media_id' => $record->unique_id,
         ];
 
-        if (0 !== $record->getArtUpdatedAt()) {
-            $routeParams['timestamp'] = $record->getArtUpdatedAt();
+        if (0 !== $record->art_updated_at) {
+            $routeParams['timestamp'] = $record->art_updated_at;
         }
 
         $return->art = $router->fromHere(
@@ -239,31 +239,31 @@ final class FilesController extends AbstractStationApiCrudController
         $return->links = [
             'self' => $router->fromHere(
                 routeName: $this->resourceRouteName,
-                routeParams: ['id' => $record->getIdRequired()],
+                routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             ),
             'play' => $router->fromHere(
                 'api:stations:files:play',
-                ['id' => $record->getIdRequired()],
+                ['id' => $record->id],
                 absolute: true
             ),
             'art' => $router->fromHere(
                 'api:stations:media:art',
-                ['media_id' => $record->getIdRequired()],
+                ['media_id' => $record->id],
                 absolute: !$isInternal
             ),
             'waveform' => $router->fromHere(
                 'api:stations:media:waveform',
                 [
-                    'media_id' => $record->getUniqueId(),
-                    'timestamp' => $record->getArtUpdatedAt(),
+                    'media_id' => $record->unique_id,
+                    'timestamp' => $record->art_updated_at,
                 ],
                 absolute: !$isInternal
             ),
             'waveform_cache' => $router->fromHere(
                 'api:stations:media:waveform-cache',
                 [
-                    'media_id' => $record->getUniqueId(),
+                    'media_id' => $record->unique_id,
                 ],
                 absolute: !$isInternal
             ),
@@ -279,7 +279,7 @@ final class FilesController extends AbstractStationApiCrudController
     ): ResponseInterface {
         $station = $this->getStation($request);
 
-        $mediaStorage = $station->getMediaStorageLocation();
+        $mediaStorage = $station->media_storage_location;
         if ($mediaStorage->isStorageFull()) {
             return $response->withStatus(500)
                 ->withJson(new Error(500, __('This station is out of available storage space.')));
@@ -339,13 +339,13 @@ final class FilesController extends AbstractStationApiCrudController
 
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
-        $oldPath = $record->getPath();
+        $oldPath = $record->path;
         $isRenamed = (isset($data['path']) && $data['path'] !== $oldPath);
 
         $record = $this->fromArray($data, $record);
 
         if ($isRenamed) {
-            $fsMedia->move($oldPath, $record->getPath());
+            $fsMedia->move($oldPath, $record->path);
         }
 
         $errors = $this->validator->validate($record);
@@ -396,7 +396,7 @@ final class FilesController extends AbstractStationApiCrudController
     protected function createRecord(ServerRequest $request, array $data): object
     {
         $station = $request->getStation();
-        $mediaStorage = $station->getMediaStorageLocation();
+        $mediaStorage = $station->media_storage_location;
 
         return $this->editRecord(
             $data,
@@ -419,10 +419,14 @@ final class FilesController extends AbstractStationApiCrudController
 
         $station = $request->getStation();
 
-        $mediaStorage = $station->getMediaStorageLocation();
+        $mediaStorage = $station->media_storage_location;
         $repo = $this->em->getRepository($this->entityClass);
 
         foreach (['id', 'unique_id', 'song_id'] as $field) {
+            if ($field === 'id' && !is_numeric($id)) {
+                continue;
+            }
+
             $record = $repo->findOneBy(
                 [
                     'storage_location' => $mediaStorage,
@@ -460,7 +464,7 @@ final class FilesController extends AbstractStationApiCrudController
                 continue;
             }
 
-            $backend = $this->adapters->getBackendAdapter($playlist->getStation());
+            $backend = $this->adapters->getBackendAdapter($playlist->station);
             if ($backend instanceof Liquidsoap) {
                 // Instruct the message queue to start a new "write playlist to file" task.
                 $message = new WritePlaylistFileMessage();

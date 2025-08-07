@@ -15,8 +15,6 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Event triggered every time the next-playing song is preparing to be annotated for delivery to Liquidsoap.
- *
- * @package App\Event\Radio
  */
 final class AnnotateNextSong extends Event
 {
@@ -32,6 +30,7 @@ final class AnnotateNextSong extends Event
         'sq_id',
         'liq_amplify',
         'azuracast_autocue',
+        'azuracast_cache_key',
         'autocue_cue_in',
         'autocue_cue_out',
         'autocue_fade_in',
@@ -143,11 +142,11 @@ final class AnnotateNextSong extends Event
         bool $asAutoDj = false
     ): self {
         return new self(
-            station: $queue->getStation(),
+            station: $queue->station,
             queue: $queue,
-            media: $queue->getMedia(),
-            playlist: $queue->getPlaylist(),
-            request: $queue->getRequest(),
+            media: $queue->media,
+            playlist: $queue->playlist,
+            request: $queue->request,
             asAutoDj: $asAutoDj
         );
     }

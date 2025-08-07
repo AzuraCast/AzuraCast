@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Interfaces\SongInterface;
-use InvalidArgumentException;
 use NowPlaying\Result\CurrentSong;
 
-class Song implements SongInterface
+final class Song implements SongInterface
 {
     use Traits\HasSongFields;
 
@@ -23,14 +22,14 @@ class Song implements SongInterface
 
     public function __toString(): string
     {
-        return 'Song ' . $this->song_id . ': ' . $this->artist . ' - ' . $this->title;
+        return 'Song ' . $this->text;
     }
 
     public static function getSongHash(Song|array|string|CurrentSong $songText): string
     {
         // Handle various input types.
         if ($songText instanceof self) {
-            return self::getSongHash($songText->getText() ?? '');
+            return self::getSongHash($songText->text ?? '');
         }
         if ($songText instanceof CurrentSong) {
             return self::getSongHash($songText->text);
@@ -65,10 +64,11 @@ class Song implements SongInterface
     public static function createFromApiSong(Api\Song $apiSong): self
     {
         $song = new self();
-        $song->setText($apiSong->text);
-        $song->setTitle($apiSong->title);
-        $song->setArtist($apiSong->artist);
-        $song->updateSongId();
+        $song->title = $apiSong->title;
+        $song->artist = $apiSong->artist;
+        $song->album = $apiSong->album;
+        $song->text = $apiSong->text;
+        $song->updateMetaFields();
 
         return $song;
     }
@@ -76,10 +76,11 @@ class Song implements SongInterface
     public static function createFromNowPlayingSong(CurrentSong $currentSong): self
     {
         $song = new self();
-        $song->setText($currentSong->text);
-        $song->setTitle($currentSong->title);
-        $song->setArtist($currentSong->artist);
-        $song->updateSongId();
+        $song->title = $currentSong->title;
+        $song->artist = $currentSong->artist;
+        $song->album = $currentSong->album;
+        $song->text = $currentSong->text;
+        $song->updateMetaFields();
 
         return $song;
     }
@@ -89,7 +90,8 @@ class Song implements SongInterface
         $currentSong = new CurrentSong(
             $songRow['text'] ?? '',
             $songRow['title'] ?? '',
-            $songRow['artist'] ?? ''
+            $songRow['artist'] ?? '',
+            $songRow['album'] ?? '',
         );
         return self::createFromNowPlayingSong($currentSong);
     }
@@ -103,7 +105,7 @@ class Song implements SongInterface
     public static function createOffline(?string $text = null): self
     {
         $song = self::createFromText($text ?? 'Station Offline');
-        $song->setSongId(self::OFFLINE_SONG_ID);
+        $song->song_id = self::OFFLINE_SONG_ID;
         return $song;
     }
 }

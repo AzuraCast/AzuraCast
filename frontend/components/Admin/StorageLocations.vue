@@ -36,10 +36,9 @@
 
         <data-table
             id="admin_storage_locations"
-            ref="$dataTable"
             :show-toolbar="false"
             :fields="fields"
-            :api-url="listUrlForType"
+            :provider="listItemProvider"
         >
             <template #cell(actions)="{item}">
                 <div class="btn-group btn-group-sm">
@@ -99,24 +98,30 @@
         ref="$editModal"
         :create-url="listUrl"
         :type="activeType"
-        @relist="relist"
+        @relist="() => relist()"
     />
 </template>
 
 <script setup lang="ts">
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import EditModal from "~/components/Admin/StorageLocations/EditModal.vue";
-import {computed, nextTick, ref, useTemplateRef} from "vue";
+import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
-import {ApiAdminStorageLocation} from "~/entities/ApiInterfaces.ts";
+import {
+    ApiAdminStorageLocation,
+    StorageLocation,
+    StorageLocationAdapters,
+    StorageLocationTypes
+} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
 
-const activeType = ref('station_media');
+const activeType = ref<StorageLocationTypes>(StorageLocationTypes.StationMedia);
 
 const listUrl = getApiUrl('/admin/storage_locations');
 const listUrlForType = computed(() => {
@@ -125,60 +130,70 @@ const listUrlForType = computed(() => {
 
 const {$gettext} = useTranslate();
 
-const fields: DataTableField<ApiAdminStorageLocation>[] = [
+type Row = StorageLocation & ApiAdminStorageLocation;
+
+const fields: DataTableField<Row>[] = [
     {key: 'adapter', label: $gettext('Adapter'), sortable: false},
     {key: 'space', label: $gettext('Space Used'), class: 'text-nowrap', sortable: false},
     {key: 'stations', label: $gettext('Station(s)'), sortable: false},
     {key: 'actions', label: $gettext('Actions'), class: 'shrink', sortable: false}
 ];
 
+const listItemProvider = useApiItemProvider<Row>(
+    listUrlForType,
+    [
+        QueryKeys.AdminStorageLocations,
+        activeType,
+    ]
+);
+
+const relist = () => {
+    void listItemProvider.refresh();
+}
+
 const tabs = [
     {
-        type: 'station_media',
+        type: StorageLocationTypes.StationMedia,
         title: $gettext('Station Media')
     },
     {
-        type: 'station_recordings',
+        type: StorageLocationTypes.StationRecordings,
         title: $gettext('Station Recordings')
     },
     {
-        type: 'station_podcasts',
+        type: StorageLocationTypes.StationPodcasts,
         title: $gettext('Station Podcasts'),
     },
     {
-        type: 'backup',
+        type: StorageLocationTypes.Backup,
         title: $gettext('Backups')
     }
 ];
 
-const $dataTable = useTemplateRef('$dataTable');
-const {relist} = useHasDatatable($dataTable);
-
 const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const setType = (type: string) => {
+const setType = (type: StorageLocationTypes) => {
     activeType.value = type;
-    void nextTick(relist);
 };
 
-const getAdapterName = (adapter: string) => {
+const getAdapterName = (adapter: StorageLocationAdapters) => {
     switch (adapter) {
-        case 'local':
+        case StorageLocationAdapters.Local:
             return $gettext('Local');
 
-        case 's3':
+        case StorageLocationAdapters.S3:
             return $gettext('Remote: S3 Compatible');
 
-        case 'dropbox':
+        case StorageLocationAdapters.Dropbox:
             return $gettext('Remote: Dropbox');
 
-        case 'sftp':
+        case StorageLocationAdapters.Sftp:
             return $gettext('Remote: SFTP');
     }
 };
 
-const getSpaceUsed = (item: ApiAdminStorageLocation) => {
+const getSpaceUsed = (item: Row) => {
     return (item.storageAvailable)
         ? item.storageUsed + ' / ' + item.storageAvailable
         : item.storageUsed;
@@ -196,6 +211,6 @@ const getProgressVariant = (percent: number) => {
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Storage Location?'),
-    relist
+    () => relist()
 );
 </script>

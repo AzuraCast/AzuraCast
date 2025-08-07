@@ -18,8 +18,9 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'station_webhooks', options: ['charset' => 'utf8mb4', 'collate' => 'utf8mb4_unicode_ci']),
     Attributes\Auditable
 ]
-class StationWebhook implements
+final class StationWebhook implements
     Stringable,
+    Interfaces\StationAwareInterface,
     Interfaces\StationCloneAwareInterface,
     Interfaces\IdentifiableEntityInterface
 {
@@ -32,10 +33,16 @@ class StationWebhook implements
         ORM\ManyToOne(inversedBy: 'webhooks'),
         ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
     ]
-    protected Station $station;
+    public Station $station;
 
+    public function setStation(Station $station): void
+    {
+        $this->station = $station;
+    }
+
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    protected int $station_id;
+    public private(set) int $station_id;
 
     #[
         OA\Property(
@@ -44,7 +51,9 @@ class StationWebhook implements
         ),
         ORM\Column(length: 100, nullable: true)
     ]
-    protected ?string $name = null;
+    public ?string $name = null {
+        set => $this->truncateNullableString($value, 100);
+    }
 
     #[
         OA\Property(
@@ -54,13 +63,13 @@ class StationWebhook implements
         ORM\Column(type: "string", length: 100, enumType: WebhookTypes::class),
         Assert\NotBlank
     ]
-    protected WebhookTypes $type;
+    public readonly WebhookTypes $type;
 
     #[
         OA\Property(example: true),
         ORM\Column
     ]
-    protected bool $is_enabled = true;
+    public bool $is_enabled = true;
 
     #[
         OA\Property(
@@ -70,7 +79,7 @@ class StationWebhook implements
         ),
         ORM\Column(type: 'json', nullable: true)
     ]
-    protected ?array $triggers = null;
+    public ?array $triggers = null;
 
     #[
         OA\Property(
@@ -80,7 +89,7 @@ class StationWebhook implements
         ),
         ORM\Column(type: 'json', nullable: true)
     ]
-    protected ?array $config = null;
+    public ?array $config = null;
 
     #[
         OA\Property(
@@ -91,65 +100,12 @@ class StationWebhook implements
         ORM\Column(type: 'json', nullable: true),
         Attributes\AuditIgnore
     ]
-    protected ?array $metadata = null;
+    public ?array $metadata = null;
 
     public function __construct(Station $station, WebhookTypes $type)
     {
         $this->station = $station;
         $this->type = $type;
-    }
-
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
-    public function setStation(Station $station): void
-    {
-        $this->station = $station;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(?string $name): void
-    {
-        $this->name = $this->truncateNullableString($name, 100);
-    }
-
-    public function getType(): WebhookTypes
-    {
-        return $this->type;
-    }
-
-    public function getIsEnabled(): bool
-    {
-        return $this->is_enabled;
-    }
-
-    public function setIsEnabled(bool $isEnabled): void
-    {
-        $this->is_enabled = $isEnabled;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getTriggers(): array
-    {
-        return (array)$this->triggers;
-    }
-
-    public function setTriggers(?array $triggers = null): void
-    {
-        $this->triggers = $triggers;
-    }
-
-    public function hasTriggers(): bool
-    {
-        return 0 !== count($this->getTriggers());
     }
 
     public function hasTrigger(WebhookTriggers|string $trigger): bool
@@ -158,28 +114,9 @@ class StationWebhook implements
             $trigger = $trigger->value;
         }
 
-        return in_array($trigger, $this->getTriggers(), true);
+        return in_array($trigger, $this->triggers ?? [], true);
     }
 
-    /**
-     * @return mixed[]
-     */
-    public function getConfig(): array
-    {
-        return (array)$this->config;
-    }
-
-    public function setConfig(?array $config = null): void
-    {
-        $this->config = $config;
-    }
-
-    /**
-     * Set the value of a given metadata key.
-     *
-     * @param string $key
-     * @param mixed|null $value
-     */
     public function setMetadataKey(string $key, mixed $value = null): void
     {
         if (null === $value) {
@@ -189,31 +126,13 @@ class StationWebhook implements
         }
     }
 
-    /**
-     * Return the value of a given metadata key, or a default if it is null or doesn't exist.
-     *
-     * @param string $key
-     * @param mixed|null $default
-     *
-     */
     public function getMetadataKey(string $key, mixed $default = null): mixed
     {
         return $this->metadata[$key] ?? $default;
     }
 
     /**
-     * Clear all metadata associated with this webhook.
-     */
-    public function clearMetadata(): void
-    {
-        $this->metadata = [];
-    }
-
-    /**
      * Check whether this webhook was dispatched in the last $seconds seconds.
-     *
-     * @param int $seconds
-     *
      */
     public function checkRateLimit(int $seconds): bool
     {
@@ -228,7 +147,7 @@ class StationWebhook implements
 
     public function __toString(): string
     {
-        return $this->getStation() . ' Web Hook: ' . $this->getName();
+        return $this->station . ' Web Hook: ' . $this->name;
     }
 
     public function __clone()

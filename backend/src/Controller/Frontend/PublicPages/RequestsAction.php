@@ -25,29 +25,37 @@ final class RequestsAction implements SingleActionInterface
     ): ResponseInterface {
         $station = $request->getStation();
 
-        if (!$station->getEnablePublicPage()) {
+        if (!$station->enable_public_page) {
             throw NotFoundException::station();
         }
 
         $router = $request->getRouter();
         $customization = $request->getCustomization();
 
-        return $request->getView()->renderVuePage(
+        $view = $request->getView();
+
+        // Add station public code.
+        $view->fetch(
+            'frontend/public/partials/station-custom',
+            ['station' => $station]
+        );
+
+        return $view->renderVuePage(
             response: $response
                 ->withHeader('X-Frame-Options', '*'),
             component: 'Public/Requests',
             id: 'song-requests',
             layout: 'minimal',
-            title: __('Requests') . ' - ' . $station->getName(),
+            title: __('Requests') . ' - ' . $station->name,
             layoutParams: [
-                'page_class' => 'embed station-' . $station->getShortName(),
+                'page_class' => 'embed station-' . $station->short_name,
                 'hide_footer' => true,
             ],
             props: [
                 'customFields' => $this->customFieldRepo->fetchArray(),
                 'showAlbumArt' => !$customization->hideAlbumArt(),
                 'requestListUri' => $router->named('api:requests:list', [
-                    'station_id' => $station->getId(),
+                    'station_id' => $station->id,
                 ]),
             ],
         );

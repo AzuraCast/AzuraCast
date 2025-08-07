@@ -40,28 +40,35 @@ final class PlaylistFileWriter implements EventSubscriberInterface
      */
     public function __invoke(Message\AbstractMessage $message): void
     {
-        if ($message instanceof Message\WritePlaylistFileMessage) {
-            $playlist = $this->em->find(StationPlaylist::class, $message->playlist_id);
+        if (!($message instanceof Message\WritePlaylistFileMessage)) {
+            return;
+        }
 
-            if ($playlist instanceof StationPlaylist) {
-                $this->writePlaylistFile($playlist);
+        $playlist = $this->em->find(StationPlaylist::class, $message->playlist_id);
+        if (!($playlist instanceof StationPlaylist)) {
+            return;
+        }
 
-                $playlistVarName = ConfigWriter::getPlaylistVariableName($playlist);
-                $station = $playlist->getStation();
+        $station = $playlist->station;
+        if (!$station->backend_type->isEnabled()) {
+            return;
+        }
 
-                try {
-                    $this->liquidsoap->command($station, $playlistVarName . '.reload');
-                } catch (Exception $e) {
-                    $this->logger->error(
-                        'Could not reload playlist with AutoDJ.',
-                        [
-                            'message' => $e->getMessage(),
-                            'playlist' => $playlistVarName,
-                            'station' => $station->getId(),
-                        ]
-                    );
-                }
-            }
+        $this->writePlaylistFile($playlist);
+
+        $playlistVarName = ConfigWriter::getPlaylistVariableName($playlist);
+
+        try {
+            $this->liquidsoap->command($station, $playlistVarName . '.reload');
+        } catch (Exception $e) {
+            $this->logger->error(
+                'Could not reload playlist with AutoDJ.',
+                [
+                    'message' => $e->getMessage(),
+                    'playlist' => $playlistVarName,
+                    'station' => $station->id,
+                ]
+            );
         }
     }
 
@@ -95,8 +102,8 @@ final class PlaylistFileWriter implements EventSubscriberInterface
             }
         }
 
-        foreach ($station->getPlaylists() as $playlist) {
-            if (!$playlist->getIsEnabled()) {
+        foreach ($station->playlists as $playlist) {
+            if (!$playlist->is_enabled) {
                 continue;
             }
 
@@ -106,13 +113,13 @@ final class PlaylistFileWriter implements EventSubscriberInterface
 
     private function writePlaylistFile(StationPlaylist $playlist): void
     {
-        $station = $playlist->getStation();
+        $station = $playlist->station;
 
         $this->logger->info(
             'Writing playlist file to disk...',
             [
-                'station' => $station->getName(),
-                'playlist' => $playlist->getName(),
+                'station' => $station->name,
+                'playlist' => $playlist->name,
             ]
         );
 
@@ -153,7 +160,7 @@ final class PlaylistFileWriter implements EventSubscriberInterface
 
     public static function getPlaylistFilePath(StationPlaylist $playlist): string
     {
-        return $playlist->getStation()->getRadioPlaylistsDir() . '/'
+        return $playlist->station->getRadioPlaylistsDir() . '/'
             . ConfigWriter::getPlaylistVariableName($playlist) . '.m3u';
     }
 }

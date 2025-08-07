@@ -4,19 +4,16 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Doctrine\AbstractArrayEntity;
 use App\Utilities\Types;
 
-class PodcastBrandingConfiguration extends AbstractStationConfiguration
+final class PodcastBrandingConfiguration extends AbstractArrayEntity
 {
-    public const string PUBLIC_CUSTOM_HTML = 'public_custom_html';
-
-    public function getPublicCustomHtml(): ?string
-    {
-        return Types::stringOrNull($this->get(self::PUBLIC_CUSTOM_HTML), true);
+    public ?string $public_custom_html = null {
+        set => Types::stringOrNull($value, true);
     }
 
-    public function setPublicCustomHtml(?string $html): void
-    {
-        $this->set(self::PUBLIC_CUSTOM_HTML, $html);
+    public bool $enable_op3_prefix = false {
+        set(bool|string $value) => Types::bool($value, false, true);
     }
 }

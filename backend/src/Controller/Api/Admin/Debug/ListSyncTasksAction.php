@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin\Debug;
 
-use App\Console\Command\Sync\SingleTaskCommand;
+use App\Cache\SyncStatusCache;
 use App\Container\EnvironmentAwareTrait;
 use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
@@ -16,9 +16,9 @@ use App\OpenApi;
 use App\Sync\Task\AbstractTask;
 use App\Utilities\Time;
 use OpenApi\Attributes as OA;
-use Psr\Cache\CacheItemPoolInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
+use ReflectionClass;
 
 #[
     OA\Get(
@@ -48,7 +48,7 @@ final class ListSyncTasksAction implements SingleActionInterface
 
     public function __construct(
         private readonly EventDispatcherInterface $dispatcher,
-        private readonly CacheItemPoolInterface $cache
+        private readonly SyncStatusCache $syncStatusCache
     ) {
     }
 
@@ -66,8 +66,7 @@ final class ListSyncTasksAction implements SingleActionInterface
 
         /** @var class-string<AbstractTask> $task */
         foreach ($syncTasksEvent->getTasks() as $task) {
-            $cacheKey = SingleTaskCommand::getCacheKey($task);
-            $shortName = SingleTaskCommand::getClassShortName($task);
+            $shortName = new ReflectionClass($task)->getShortName();
 
             $pattern = $task::getSchedulePattern();
             $nextRun = $task::getNextRun($now, $this->environment, $settings);
@@ -75,11 +74,11 @@ final class ListSyncTasksAction implements SingleActionInterface
             $syncTasks[] = new SyncTask(
                 $shortName,
                 $pattern,
-                $this->cache->getItem($cacheKey)->get() ?? 0,
+                $this->syncStatusCache->getTaskLastRun($task) ?? 0,
                 $nextRun,
                 $router->named(
                     'api:admin:debug:sync',
-                    ['task' => rawurlencode($task)]
+                    ['task' => $shortName]
                 ),
             );
         }

@@ -58,6 +58,6 @@ final class DownloadAction implements SingleActionInterface
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
         set_time_limit(600);
-        return $response->streamFilesystemFile($fsMedia, $media->getPath());
+        return $response->streamFilesystemFile($fsMedia, $media->path);
     }
 }

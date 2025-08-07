@@ -39,10 +39,9 @@
                         
                         <data-table
                             id="station_playlists"
-                            ref="$dataTable"
                             paginated
                             :fields="fields"
-                            :api-url="listUrl"
+                            :provider="listItemProvider"
                             detailed
                         >
                             <template #cell(name)="row">
@@ -275,24 +274,24 @@
     <edit-modal
         ref="$editModal"
         :create-url="listUrl"
-        @relist="relist"
-        @needs-restart="mayNeedRestart"
+        @relist="() => relist()"
+        @needs-restart="() => mayNeedRestart()"
     />
     <reorder-modal ref="$reorderModal" />
     <queue-modal ref="$queueModal" />
     <reorder-modal ref="$reorderModal" />
     <import-modal
         ref="$importModal"
-        @relist="relist"
+        @relist="() => relist()"
     />
     <clone-modal
         ref="$cloneModal"
-        @relist="relist"
-        @needs-restart="mayNeedRestart"
+        @relist="() => relist()"
+        @needs-restart="() => mayNeedRestart()"
     />
     <apply-to-modal
         ref="$applyToModal"
-        @relist="relist"
+        @relist="() => relist()"
     />
 </template>
 
@@ -320,8 +319,9 @@ import AddButton from "~/components/Common/AddButton.vue";
 import {IconContract, IconExpand} from "~/components/Common/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
 import ScheduleViewTab from "~/components/Stations/Common/ScheduleViewTab.vue";
-import useHasDatatable from "~/functions/useHasDatatable.ts";
 import {EventImpl} from "@fullcalendar/core/internal";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
 const props = defineProps<{
     useManualAutoDj: boolean
@@ -339,6 +339,11 @@ const fields: DataTableField[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
+const listItemProvider = useApiItemProvider(
+    listUrl,
+    queryKeyWithStation([QueryKeys.StationPlaylists])
+);
+
 const {Duration} = useLuxon();
 
 const formatLength = (length: number) => {
@@ -350,13 +355,10 @@ const formatLength = (length: number) => {
     return duration.rescale().toHuman();
 };
 
-const $dataTable = useTemplateRef('$dataTable');
-const {refresh: refreshDatatable} = useHasDatatable($dataTable);
-
 const $scheduleTab = useTemplateRef('$scheduleTab');
 
 const relist = () => {
-    refreshDatatable();
+    void listItemProvider.refresh();
     $scheduleTab.value?.refresh();
 }
 

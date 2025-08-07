@@ -7,7 +7,6 @@ namespace App\Console\Command\Dev;
 use App\Console\Command\CommandAbstract;
 use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
-use App\OpenApi\AddXEnumNames;
 use App\OpenApi\MakeAllFieldsRequired;
 use App\Utilities\Types;
 use App\Version;
@@ -76,9 +75,11 @@ final class GenerateApiDocsCommand extends CommandAbstract
         ]);
 
         $generator = new Generator($this->logger);
+        $generator->setConfig([
+            'expandEnums.enumNames' => 'enumNames',
+        ]);
 
         $pipeline = $generator->getProcessorPipeline();
-        $pipeline->add(new AddXEnumNames());
         $pipeline->add(new MakeAllFieldsRequired());
 
         return $generator->generate($finder);

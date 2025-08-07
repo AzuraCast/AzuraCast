@@ -13,6 +13,7 @@ use App\Exception\Supervisor\AlreadyRunningException;
 use App\Exception\Supervisor\NotRunningException;
 use App\Exception\SupervisorException;
 use App\Http\Router;
+use GuzzleHttp\Client;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Supervisor\Exception\Fault;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
@@ -30,6 +31,7 @@ abstract class AbstractLocalAdapter
         protected SupervisorInterface $supervisor,
         protected EventDispatcherInterface $dispatcher,
         protected Router $router,
+        protected Client $httpClient,
     ) {
     }
 
@@ -130,7 +132,7 @@ abstract class AbstractLocalAdapter
      */
     public function hasCommand(Station $station): bool
     {
-        if ($this->environment->isTesting() || !$station->getIsEnabled()) {
+        if ($this->environment->isTesting() || !$station->is_enabled) {
             return false;
         }
 
@@ -210,7 +212,7 @@ abstract class AbstractLocalAdapter
                 $this->supervisor->stopProcess($programName);
                 $this->logger->info(
                     'Adapter "' . static::class . '" stopped.',
-                    ['station_id' => $station->getId(), 'station_name' => $station->getName()]
+                    ['station_id' => $station->id, 'station_name' => $station->name]
                 );
             } catch (SupervisorLibException $e) {
                 $this->handleSupervisorException($e, $programName, $station);
@@ -235,7 +237,7 @@ abstract class AbstractLocalAdapter
                 $this->supervisor->startProcess($programName);
                 $this->logger->info(
                     'Adapter "' . static::class . '" started.',
-                    ['station_id' => $station->getId(), 'station_name' => $station->getName()]
+                    ['station_id' => $station->id, 'station_name' => $station->name]
                 );
             } catch (SupervisorLibException $e) {
                 $this->handleSupervisorException($e, $programName, $station);
@@ -258,8 +260,8 @@ abstract class AbstractLocalAdapter
         Station $station
     ): void {
         $eNew = SupervisorException::fromSupervisorLibException($e, $programName);
-        $eNew->addLoggingContext('station_id', $station->getId());
-        $eNew->addLoggingContext('station_name', $station->getName());
+        $eNew->addLoggingContext('station_id', $station->id);
+        $eNew->addLoggingContext('station_name', $station->name);
 
         throw $eNew;
     }

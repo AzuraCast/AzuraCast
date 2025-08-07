@@ -24,7 +24,7 @@ final class LocalStorageLocationAdapter extends AbstractStorageLocationLocationA
 
     public function getStorageAdapter(): LocalAdapterInterface
     {
-        $filteredPath = self::filterPath($this->storageLocation->getPath());
+        $filteredPath = self::filterPath($this->storageLocation->path);
 
         return new LocalFilesystemAdapter($filteredPath);
     }
@@ -37,7 +37,7 @@ final class LocalStorageLocationAdapter extends AbstractStorageLocationLocationA
     public function validate(): void
     {
         // Check that there is any overlap between the specified path and the docroot.
-        $path = $this->storageLocation->getPath();
+        $path = $this->storageLocation->path;
         $baseDir = $this->environment->getBaseDirectory();
 
         if (Path::isBasePath($baseDir, $path)) {

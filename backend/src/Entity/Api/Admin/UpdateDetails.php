@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\Admin;
 
-use App\Traits\LoadFromParentObject;
+use App\Utilities\Types;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -13,19 +13,17 @@ use OpenApi\Attributes as OA;
 )]
 final readonly class UpdateDetails
 {
-    use LoadFromParentObject;
-
     public function __construct(
         #[OA\Property(
             description: 'The stable-equivalent branch your installation currently appears to be on.',
             example: '0.20.3'
         )]
-        public string $current_release,
+        public ?string $current_release,
         #[OA\Property(
             description: 'The current latest stable release of the software.',
             example: '0.20.4'
         )]
-        public string $latest_release,
+        public ?string $latest_release,
         #[OA\Property(
             description: 'If you are on the Rolling Release, whether your installation needs to be updated.',
         )]
@@ -43,5 +41,17 @@ final readonly class UpdateDetails
         )]
         public bool $can_switch_to_stable = false
     ) {
+    }
+
+    public static function fromArray(array $updates): self
+    {
+        return new self(
+            current_release: Types::stringOrNull($updates['current_release'] ?? null),
+            latest_release: Types::stringOrNull($updates['latest_release'] ?? null),
+            needs_rolling_update: Types::bool($updates['needs_rolling_update'] ?? false),
+            needs_release_update: Types::bool($updates['needs_release_update'] ?? false),
+            rolling_updates_available: Types::int($updates['rolling_updates_available'] ?? 0),
+            can_switch_to_stable: Types::bool($updates['can_switch_to_stable'] ?? false)
+        );
     }
 }

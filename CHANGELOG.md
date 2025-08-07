@@ -11,6 +11,79 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.22.0 (Aug 7, 2025)
+
+## New Features/Changes
+
+- Liquidsoap is updated to version 2.3.2, including a number of bug fixes.
+
+- You can now specify the message color in Discord webhooks.
+
+- The Playlist edit modal's "Advanced" tab now has a new checkbox: "Prioritize over listener requests". If checked, the
+  playlist will always play at a higher priority than listener requests. Normally, listener requests pre-empt the
+  playback of normal playlists.
+
+- The "album" property for `SongInterface`-type items (station timelines, queues, media, etc.) is now supported as a
+  first-class property for all tracks.
+
+- Media management permissions have been split into "manage station media" and "delete station media", allowing you to
+  assign permissions to users to add media without being able to remove it. If migrating from a previous version, users
+  who have the "manage" permission will automatically receive the "delete" permission; when assigning new permissions,
+  this new permission will need to be manually assigned.
+
+- Podcasts can now take advantage of the [Open Podcast Prefix Project (OP3)](https://op3.dev/) free and open-source
+  podcast analytics service directly from within AzuraCast. Enable OP3 support on the "Branding" tab of the podcast, and
+  all episodes will have their download URLs prefixed by the OP3 analytics URL, which will let you track your audience
+  details via the OP3 platform.
+
+- You can now export your station's Liquidsoap configuration (including any custom configuration sections) to an archive
+  file; this archive file contains all of AzuraCast's code and can also be used for diagnosing Liquidsoap errors. You
+  can re-import this file later to apply any custom configuration within the file to the station.
+
+- You can now provide a custom value for the number of days of station history to keep and the number of history items
+  to show on each individual station API response.
+
+## Code Quality/Technical Changes
+
+- We have removed the "Hide Advanced Features" setting from the system settings panel. Often, this setting was disabled
+  by a single user, causing functionality to be hidden from other users, who thought the functionality was completely
+  removed or there was a bug. The "Advanced" label remains on any functionality you shouldn't modify without careful
+  consideration.
+
+- Because we now provide our HTTPS certificate to the broadcasting frontends (Icecast/Shoutcast) directly, we will no
+  longer act as though the "Use Web Proxy" setting is always enabled for HTTPS connections. If the proxy is desired or
+  needed, you can always enable the setting from System Settings.
+
+- If you use an externally-mounted HTTPS certificate (i.e. manage LetsEncrypt yourself), you can now trigger a reload of
+  the internal web services (nginx and Icecast) by running `./docker.sh cli acme:reload`.
+
+- We have switched our internal Redis implementation to Valkey, as it is more heavily supported and also has an open
+  license we can continue to use into the future without issues.
+
+- Our Vue frontend now uses TanStack Query to populate data; this allows for smarter request handling, better pagination
+  performance, and other minor improvements to user experience.
+
+- The API connection between AzuraCast and Liquidsoap now uses Liquidsoap's HTTP API instead of telnet via sockets,
+  removing a class of errors that users were encountering relating to socket permissions.
+
+- The CLI command `azuracast:sync:task` and API endpoint `/admin/debug/sync/{task}`, both used to manually invoke
+  synchronized (cron) tasks as needed, no longer require the fully-qualified namespaced name of a task to run. You can
+  now specify a much shorter name in many formats (i.e. "check-updates", "check_updates") to run the same tasks.
+
+## Bug Fixes
+
+- We found and fixed several places in the application where playlists could be changed but the changes weren't written
+  to the filesystem. The playlist file on the station filesystem should much more accurately reflect current playlist
+  contents.
+
+- An issue writing extra metadata to Ogg Vorbis files has been fixed.
+
+- Custom station CSS and JavaScript will now apply to the public Requests pages.
+
+- Fixed an issue preventing station deletion if the station files were mounted to an external storage device.
+
+---
+
 # AzuraCast 0.21.0 (Mar 12, 2025)
 
 ## New Features/Changes

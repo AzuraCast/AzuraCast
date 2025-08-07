@@ -14,6 +14,10 @@
             input-type="password"
             autofocus
             :label="$gettext('Current Password')"
+            :input-attrs="{
+                autocomplete: 'current-password'
+            }"
+            class="mb-3"
         />
 
         <form-group-field
@@ -21,12 +25,19 @@
             :field="v$.new_password"
             input-type="password"
             :label="$gettext('New Password')"
+            :input-attrs="{
+                autocomplete: 'new-password'
+            }"
+            class="mb-3"
         />
 
         <form-group-field
-            id="form_current_password"
+            id="form_confirm_new_password"
             :field="v$.new_password2"
             input-type="password"
+            :input-attrs="{
+                autocomplete: 'new-password'
+            }"
             :label="$gettext('Confirm New Password')"
         />
 

@@ -27,7 +27,7 @@
             ref="$dataTable"
             paginated
             :fields="fields"
-            :api-url="listUrl"
+            :provider="listItemProvider"
         >
             <template #cell(art)="{item}">
                 <album-art :src="item.art" />
@@ -113,18 +113,20 @@ import {useTranslate} from "~/vendor/gettext";
 import {useTemplateRef} from "vue";
 import {getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
-import useHasDatatable from "~/functions/useHasDatatable.ts";
 import CardPage from "~/components/Common/CardPage.vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import useHasEditModal from "~/functions/useHasEditModal.ts";
 import {NestedFormOptionInput} from "~/functions/objectToFormOptions.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import {StorageLocationTypes} from "~/entities/ApiInterfaces.ts";
 
 defineProps<{
     languageOptions: Record<string, string>,
     categoriesOptions: NestedFormOptionInput,
 }>();
 
-const quotaUrl = getStationApiUrl('/quota/station_podcasts');
+const quotaUrl = getStationApiUrl(`/quota/${StorageLocationTypes.StationPodcasts}`);
 const listUrl = getStationApiUrl('/podcasts');
 const newArtUrl = getStationApiUrl('/podcasts/art');
 
@@ -141,15 +143,20 @@ const fields: DataTableField[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
+const listItemProvider = useApiItemProvider(
+    listUrl,
+    queryKeyWithStation([
+        QueryKeys.StationPodcasts
+    ])
+);
+
+const {refresh} = listItemProvider;
+
 const $quota = useTemplateRef('$quota');
-
-const $dataTable = useTemplateRef('$dataTable');
-
-const {refresh} = useHasDatatable($dataTable);
 
 const relist = () => {
     $quota.value?.update();
-    refresh();
+    void refresh();
 };
 
 const $editPodcastModal = useTemplateRef('$editPodcastModal');

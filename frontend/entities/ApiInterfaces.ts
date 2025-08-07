@@ -1,5 +1,6 @@
 /* eslint-disable */
 /* tslint:disable */
+// @ts-nocheck
 /*
  * ---------------------------------------------------------------
  * ## THIS FILE WAS GENERATED VIA SWAGGER-TYPESCRIPT-API        ##
@@ -8,6 +9,231 @@
  * ## SOURCE: https://github.com/acacode/swagger-typescript-api ##
  * ---------------------------------------------------------------
  */
+
+export enum WebhookTypes {
+  Generic = "generic",
+  Email = "email",
+  TuneIn = "tunein",
+  RadioDe = "radiode",
+  RadioReg = "radioreg",
+  GetMeRadio = "getmeradio",
+  Discord = "discord",
+  Telegram = "telegram",
+  GroupMe = "groupme",
+  Mastodon = "mastodon",
+  Bluesky = "bluesky",
+  GoogleAnalyticsV4 = "google_analytics_v4",
+  MatomoAnalytics = "matomo_analytics",
+  Twitter = "twitter",
+  GoogleAnalyticsV3 = "google_analytics",
+}
+
+export enum WebhookTriggers {
+  SongChanged = "song_changed",
+  SongChangedLive = "song_changed_live",
+  ListenerGained = "listener_gained",
+  ListenerLost = "listener_lost",
+  LiveConnect = "live_connect",
+  LiveDisconnect = "live_disconnect",
+  StationOffline = "station_offline",
+  StationOnline = "station_online",
+}
+
+export enum StreamFormats {
+  Mp3 = "mp3",
+  Ogg = "ogg",
+  Aac = "aac",
+  Opus = "opus",
+  Flac = "flac",
+}
+
+export enum RemoteAdapters {
+  Shoutcast1 = "shoutcast1",
+  Shoutcast2 = "shoutcast2",
+  Icecast = "icecast",
+  AzuraRelay = "azurarelay",
+}
+
+export enum MasterMePresets {
+  MusicGeneral = "music_general",
+  SpeechGeneral = "speech_general",
+  EbuR128 = "ebu_r128",
+  ApplePodcasts = "apple_podcasts",
+  YouTube = "youtube",
+}
+
+export enum HlsStreamProfiles {
+  AacLowComplexity = "aac",
+  AacHighEfficiencyV1 = "aac_he",
+  AacHighEfficiencyV2 = "aac_he_v2",
+  AacLowDelay = "aac_ld",
+  AacEnhancedLowDelay = "aac_eld",
+}
+
+export enum FrontendAdapters {
+  Icecast = "icecast",
+  Shoutcast = "shoutcast2",
+  Rsas = "rsas",
+  Remote = "remote",
+}
+
+export enum CrossfadeModes {
+  Normal = "normal",
+  Smart = "smart",
+  Disabled = "none",
+}
+
+export enum BackendAdapters {
+  Liquidsoap = "liquidsoap",
+  None = "none",
+}
+
+export enum AudioProcessingMethods {
+  None = "none",
+  Liquidsoap = "nrj",
+  MasterMe = "master_me",
+  StereoTool = "stereo_tool",
+}
+
+export enum SupportedThemes {
+  Browser = "browser",
+  Light = "light",
+  Dark = "dark",
+}
+
+export enum SupportedLocales {
+  English = "en_US.UTF-8",
+  Czech = "cs_CZ.UTF-8",
+  Dutch = "nl_NL.UTF-8",
+  French = "fr_FR.UTF-8",
+  German = "de_DE.UTF-8",
+  Greek = "el_GR.UTF-8",
+  Italian = "it_IT.UTF-8",
+  Japanese = "ja_JP.UTF-8",
+  Korean = "ko_KR.UTF-8",
+  Norwegian = "nb_NO.UTF-8",
+  Polish = "pl_PL.UTF-8",
+  Portuguese = "pt_PT.UTF-8",
+  PortugueseBrazilian = "pt_BR.UTF-8",
+  Russian = "ru_RU.UTF-8",
+  SimplifiedChinese = "zh_CN.UTF-8",
+  Spanish = "es_ES.UTF-8",
+  Swedish = "sv_SE.UTF-8",
+  Turkish = "tr_TR.UTF-8",
+  Ukrainian = "uk_UA.UTF-8",
+}
+
+export enum StationPermissions {
+  All = "administer all",
+  View = "view station management",
+  Reports = "view station reports",
+  Logs = "view station logs",
+  Profile = "manage station profile",
+  Broadcasting = "manage station broadcasting",
+  Streamers = "manage station streamers",
+  MountPoints = "manage station mounts",
+  RemoteRelays = "manage station remotes",
+  Media = "manage station media",
+  DeleteMedia = "delete station media",
+  Automation = "manage station automation",
+  WebHooks = "manage station web hooks",
+  Podcasts = "manage station podcasts",
+}
+
+export enum ReleaseChannel {
+  RollingRelease = "latest",
+  Stable = "stable",
+}
+
+export enum GlobalPermissions {
+  All = "administer all",
+  View = "view administration",
+  Logs = "view system logs",
+  Settings = "administer settings",
+  ApiKeys = "administer api keys",
+  Stations = "administer stations",
+  CustomFields = "administer custom fields",
+  Backups = "administer backups",
+  StorageLocations = "administer storage locations",
+}
+
+export enum FlashLevels {
+  Success = "success",
+  Warning = "warning",
+  Error = "danger",
+  Info = "info",
+}
+
+export enum StorageLocationTypes {
+  Backup = "backup",
+  StationMedia = "station_media",
+  StationRecordings = "station_recordings",
+  StationPodcasts = "station_podcasts",
+}
+
+export enum StorageLocationAdapters {
+  Local = "local",
+  S3 = "s3",
+  Dropbox = "dropbox",
+  Sftp = "sftp",
+}
+
+export enum StationBackendPerformanceModes {
+  LessMemory = "less_memory",
+  LessCpu = "less_cpu",
+  Balanced = "balanced",
+  Disabled = "disabled",
+}
+
+export enum PodcastSources {
+  Manual = "manual",
+  Playlist = "playlist",
+}
+
+export enum PlaylistTypes {
+  Standard = "default",
+  OncePerXSongs = "once_per_x_songs",
+  OncePerXMinutes = "once_per_x_minutes",
+  OncePerHour = "once_per_hour",
+  Advanced = "custom",
+}
+
+export enum PlaylistSources {
+  Songs = "songs",
+  RemoteUrl = "remote_url",
+}
+
+export enum PlaylistRemoteTypes {
+  Stream = "stream",
+  Playlist = "playlist",
+  Other = "other",
+}
+
+export enum PlaylistOrders {
+  Random = "random",
+  Shuffle = "shuffle",
+  Sequential = "sequential",
+}
+
+export enum IpSources {
+  Local = "local",
+  XForwardedFor = "xff",
+  Cloudflare = "cloudflare",
+}
+
+export enum FileTypes {
+  Directory = "directory",
+  Media = "media",
+  CoverArt = "cover_art",
+  UnprocessableFile = "unprocessable_file",
+  Other = "other",
+}
+
+export enum AnalyticsLevel {
+  All = "all",
+  NoIp = "no_ip",
+  None = "none",
+}
 
 export interface ApiAccountChangePassword {
   /** The current account password. */
@@ -26,20 +252,6 @@ export interface ApiAccountTwoFactorStatus {
   readonly two_factor_enabled: boolean;
 }
 
-export interface ApiAdminAuditLog {
-  id: number;
-  /** @format date-time */
-  timestamp: string;
-  operation: 1 | 2 | 3;
-  operation_text: string;
-  class: string;
-  identifier: string;
-  target_class: string | null;
-  target: string | null;
-  user: string | null;
-  changes: ApiAdminAuditLogChangeset[];
-}
-
 export interface ApiAdminAuditLogChangeset {
   field: string;
   from: string;
@@ -56,7 +268,13 @@ export type ApiAdminBackup = HasLinks & {
 };
 
 export interface ApiAdminDebugQueue {
-  name: "high_priority" | "normal_priority" | "low_priority" | "search_index" | "media" | "podcast_media";
+  name:
+    | "high_priority"
+    | "normal_priority"
+    | "low_priority"
+    | "search_index"
+    | "media"
+    | "podcast_media";
   count: number;
   url: string;
 }
@@ -279,104 +497,6 @@ export interface ApiAdminStereoToolStatus {
 }
 
 export type ApiAdminStorageLocation = HasLinks & {
-  /** @example 1 */
-  id?: number;
-  /**
-   * The type of storage location.
-   * @example "station_media"
-   */
-  type?: string;
-  /**
-   * The storage adapter to use for this location.
-   * @example "local"
-   */
-  adapter?: string;
-  /**
-   * The local path, if the local adapter is used, or path prefix for S3/remote adapters.
-   * @example "/var/azuracast/stations/azuratest_radio/media"
-   */
-  path?: string | null;
-  /**
-   * The credential key for S3 adapters.
-   * @example "your-key-here"
-   */
-  s3CredentialKey?: string | null;
-  /**
-   * The credential secret for S3 adapters.
-   * @example "your-secret-here"
-   */
-  s3CredentialSecret?: string | null;
-  /**
-   * The region for S3 adapters.
-   * @example "your-region"
-   */
-  s3Region?: string | null;
-  /**
-   * The API version for S3 adapters.
-   * @example "latest"
-   */
-  s3Version?: string | null;
-  /**
-   * The S3 bucket name for S3 adapters.
-   * @example "your-bucket-name"
-   */
-  s3Bucket?: string | null;
-  /**
-   * The optional custom S3 endpoint S3 adapters.
-   * @example "https://your-region.digitaloceanspaces.com"
-   */
-  s3Endpoint?: string | null;
-  /**
-   * The optional Dropbox App Key.
-   * @example ""
-   */
-  dropboxAppKey?: string | null;
-  /**
-   * The optional Dropbox App Secret.
-   * @example ""
-   */
-  dropboxAppSecret?: string | null;
-  /**
-   * The optional Dropbox Auth Token.
-   * @example ""
-   */
-  dropboxAuthToken?: string | null;
-  /**
-   * The host for SFTP adapters
-   * @example "127.0.0.1"
-   */
-  sftpHost?: string | null;
-  /**
-   * The username for SFTP adapters
-   * @example "root"
-   */
-  sftpUsername?: string | null;
-  /**
-   * The password for SFTP adapters
-   * @example "abc123"
-   */
-  sftpPassword?: string | null;
-  /**
-   * The port for SFTP adapters
-   * @example 20
-   */
-  sftpPort?: number | null;
-  /** The private key for SFTP adapters */
-  sftpPrivateKey?: string | null;
-  /** The private key pass phrase for SFTP adapters */
-  sftpPrivateKeyPassPhrase?: string | null;
-  /** @example "50 GB" */
-  storageQuota?: string | null;
-  /** @example "120000" */
-  storageQuotaBytes?: string | null;
-  /** @example "1 GB" */
-  storageUsed?: string | null;
-  /** @example "60000" */
-  storageUsedBytes?: string | null;
-  /** @example "1 GB" */
-  storageAvailable?: string | null;
-  /** @example "120000" */
-  storageAvailableBytes?: string | null;
   /** @example "75" */
   storageUsedPercent?: number | null;
   /** @example "true" */
@@ -395,12 +515,12 @@ export interface ApiAdminUpdateDetails {
    * The stable-equivalent branch your installation currently appears to be on.
    * @example "0.20.3"
    */
-  current_release?: string;
+  current_release?: string | null;
   /**
    * The current latest stable release of the software.
    * @example "0.20.4"
    */
-  latest_release?: string;
+  latest_release?: string | null;
   /** If you are on the Rolling Release, whether your installation needs to be updated. */
   needs_rolling_update?: boolean;
   /** Whether a newer stable release is available than the version you are currently using. */
@@ -415,8 +535,6 @@ export interface ApiBatchResult {
   success: boolean;
   errors: string[];
 }
-
-export type ApiDashboard = ApiNowPlaying & HasLinks;
 
 export type ApiDetailedSongHistory = ApiNowPlayingSongHistory & {
   /**
@@ -557,74 +675,6 @@ export interface ApiListener {
   connected_time?: number;
   device?: ApiListenerDevice;
   location?: ApiListenerLocation;
-}
-
-export interface ApiListenerDevice {
-  /**
-   * If the listener device is likely a browser.
-   * @example true
-   */
-  is_browser?: boolean;
-  /**
-   * If the listener device is likely a mobile device.
-   * @example true
-   */
-  is_mobile?: boolean;
-  /**
-   * If the listener device is likely a crawler.
-   * @example true
-   */
-  is_bot?: boolean;
-  /**
-   * Summary of the listener client.
-   * @example "Firefox 121.0, Windows"
-   */
-  client?: string | null;
-  /**
-   * Summary of the listener browser family.
-   * @example "Firefox"
-   */
-  browser_family?: string | null;
-  /**
-   * Summary of the listener OS family.
-   * @example "Windows"
-   */
-  os_family?: string | null;
-}
-
-export interface ApiListenerLocation {
-  /**
-   * The approximate city of the listener.
-   * @example "Austin"
-   */
-  city?: string | null;
-  /**
-   * The approximate region/state of the listener.
-   * @example "Texas"
-   */
-  region?: string | null;
-  /**
-   * The approximate country of the listener.
-   * @example "United States"
-   */
-  country?: string | null;
-  /**
-   * A description of the location.
-   * @example "Austin, Texas, US"
-   */
-  description?: string;
-  /**
-   * Latitude.
-   * @format float
-   * @example "30.000000"
-   */
-  lat?: number | null;
-  /**
-   * Latitude.
-   * @format float
-   * @example "-97.000000"
-   */
-  lon?: number | null;
 }
 
 export interface ApiLogContents {
@@ -926,6 +976,8 @@ export type ApiPodcast = HasLinks & {
   has_custom_art?: boolean;
   art?: string;
   art_updated_at?: number;
+  /** The UUIDv5 global unique identifier for this podcast, based on its RSS feed URL. */
+  guid?: string;
   is_published?: boolean;
   episodes?: number;
   categories?: ApiPodcastCategory[];
@@ -1000,12 +1052,12 @@ export type ApiStationMedia = ApiHasSongFields &
      */
     id?: number;
     /**
-     * A unique identifier associated with this record.
+     * A unique identifier for this specific media item in the station's library. Each entry in the media table has a unique ID, even if it refers to a song that exists elsewhere.
      * @example "69b536afc7ebbf16457b8645"
      */
     unique_id?: string;
     /**
-     * The media file's 32-character unique song identifier hash
+     * The media file's 32-character unique song identifier hash. This hash is based on track metadata, so the same song uploaded multiple times will have the same `song_id`.
      * @example "9f33bbc912c19603e51be8e0987d076b"
      */
     song_id?: string;
@@ -1112,20 +1164,19 @@ export interface ApiStationProfile {
   schedule: ApiStationSchedule[];
 }
 
-export type ApiStationQueueDetailed = ApiNowPlayingStationQueue &
-  HasLinks & {
-    /** Indicates whether the song has been sent to the AutoDJ. */
-    sent_to_autodj?: boolean;
-    /** Indicates whether the song has already been marked as played. */
-    is_played?: boolean;
-    /**
-     * Custom AutoDJ playback URI, if it exists.
-     * @example ""
-     */
-    autodj_custom_uri?: string | null;
-    /** Log entries on how the specific queue item was picked by the AutoDJ. */
-    log?: any[] | null;
-  };
+export type ApiStationQueueDetailed = HasLinks & {
+  /** Indicates whether the song has been sent to the AutoDJ. */
+  sent_to_autodj?: boolean;
+  /** Indicates whether the song has already been marked as played. */
+  is_played?: boolean;
+  /**
+   * Custom AutoDJ playback URI, if it exists.
+   * @example ""
+   */
+  autodj_custom_uri?: string | null;
+  /** Log entries on how the specific queue item was picked by the AutoDJ. */
+  log?: any[] | null;
+};
 
 export interface ApiStationQuota {
   used?: string;
@@ -1138,52 +1189,6 @@ export interface ApiStationQuota {
   is_full?: boolean;
   num_files?: number | null;
 }
-
-export type ApiStationRemote = HasLinks & {
-  id?: number | null;
-  /** @example "128kbps MP3" */
-  display_name?: string | null;
-  /** @example true */
-  is_visible_on_public_pages?: boolean;
-  /** @example "icecast" */
-  type?: string;
-  /** @example "true" */
-  is_editable?: boolean;
-  /** @example false */
-  enable_autodj?: boolean;
-  /** @example "mp3" */
-  autodj_format?: string | null;
-  /** @example 128 */
-  autodj_bitrate?: number | null;
-  /** @example "https://custom-listen-url.example.com/stream.mp3" */
-  custom_listen_url?: string | null;
-  /** @example "https://custom-url.example.com" */
-  url?: string;
-  /** @example "/stream.mp3" */
-  mount?: string | null;
-  /** @example "password" */
-  admin_password?: string | null;
-  /** @example 8000 */
-  source_port?: number | null;
-  /** @example "/" */
-  source_mount?: string | null;
-  /** @example "source" */
-  source_username?: string | null;
-  /** @example "password" */
-  source_password?: string | null;
-  /** @example false */
-  is_public?: boolean;
-  /**
-   * The most recent number of unique listeners.
-   * @example 10
-   */
-  listeners_unique?: number;
-  /**
-   * The most recent number of total (non-unique) listeners.
-   * @example 12
-   */
-  listeners_total?: number;
-};
 
 export interface ApiStationRequest {
   /**
@@ -1401,6 +1406,19 @@ export type ApiKey = HasSplitTokenFields & {
   comment?: string;
 };
 
+export type AuditLog = HasAutoIncrementId & {
+  /** @format date-time */
+  timestamp: string;
+  operation: 1 | 2 | 3;
+  operationText: string;
+  class: string;
+  identifier: string;
+  targetClass: string | null;
+  target: string | null;
+  changes: ApiAdminAuditLogChangeset[];
+  user: string | null;
+};
+
 export type CustomField = HasAutoIncrementId & {
   name: string;
   /** The programmatic name for the field. Can be auto-generated from the full name. */
@@ -1409,61 +1427,72 @@ export type CustomField = HasAutoIncrementId & {
   auto_assign?: string | null;
 };
 
-export enum AnalyticsLevel {
-  All = "all",
-  NoIp = "no_ip",
-  None = "none",
+export interface ApiListenerDevice {
+  /**
+   * Summary of the listener client.
+   * @example "Firefox 121.0, Windows"
+   */
+  client?: string | null;
+  /**
+   * If the listener device is likely a browser.
+   * @example true
+   */
+  is_browser?: boolean;
+  /**
+   * If the listener device is likely a mobile device.
+   * @example true
+   */
+  is_mobile?: boolean;
+  /**
+   * If the listener device is likely a crawler.
+   * @example true
+   */
+  is_bot?: boolean;
+  /**
+   * Summary of the listener browser family.
+   * @example "Firefox"
+   */
+  browser_family?: string | null;
+  /**
+   * Summary of the listener OS family.
+   * @example "Windows"
+   */
+  os_family?: string | null;
 }
 
-export enum FileTypes {
-  Directory = "directory",
-  Media = "media",
-  CoverArt = "cover_art",
-  UnprocessableFile = "unprocessable_file",
-  Other = "other",
-}
-
-export enum IpSources {
-  Local = "local",
-  XForwardedFor = "xff",
-  Cloudflare = "cloudflare",
-}
-
-export enum PlaylistOrders {
-  Random = "random",
-  Shuffle = "shuffle",
-  Sequential = "sequential",
-}
-
-export enum PlaylistRemoteTypes {
-  Stream = "stream",
-  Playlist = "playlist",
-  Other = "other",
-}
-
-export enum PlaylistSources {
-  Songs = "songs",
-  RemoteUrl = "remote_url",
-}
-
-export enum PlaylistTypes {
-  Standard = "default",
-  OncePerXSongs = "once_per_x_songs",
-  OncePerXMinutes = "once_per_x_minutes",
-  OncePerHour = "once_per_hour",
-  Advanced = "custom",
-}
-
-export enum PodcastSources {
-  Manual = "manual",
-  Playlist = "playlist",
-}
-
-export enum StationBackendPerformanceModes {
-  LessMemory = "less_memory",
-  LessCpu = "less_cpu",
-  Balanced = "balanced",
-  Disabled = "disabled",
+export interface ApiListenerLocation {
+  /**
+   * A description of the location.
+   * @example "Austin, Texas, US"
+   */
+  description?: string;
+  /**
+   * The approximate region/state of the listener.
+   * @example "Texas"
+   */
+  region?: string | null;
+  /**
+   * The approximate city of the listener.
+   * @example "Austin"
+   */
+  city?: string | null;
+  /**
+   * The approximate country of the listener.
+   * @example "United States"
+   */
+  country?: string | null;
+  /**
+   * Latitude.
+   * @format float
+   * @example "30.000000"
+   */
+  lat?: number | null;
+  /**
+   * Longitude.
+   * @format float
+   * @example "-97.000000"
+   */
+  lon?: number | null;
 }
 
 export type Relay = HasAutoIncrementId & {
@@ -1535,7 +1564,7 @@ export interface Settings {
    * Results of the latest update check.
    * @example ""
    */
-  update_results?: any[] | null;
+  update_results?: ApiAdminUpdateDetails | null;
   /**
    * The UNIX timestamp when updates were last checked.
    * @example 1609480800
@@ -1667,11 +1696,6 @@ export interface Settings {
    */
   geolite_last_run?: number;
   /**
-   * Whether to enable 'advanced' functionality in the system that is intended for power users.
-   * @example false
-   */
-  enable_advanced_features?: boolean;
-  /**
    * Enable e-mail delivery across the application.
    * @example "true"
    */
@@ -1758,11 +1782,9 @@ export type Station = HasAutoIncrementId & {
    */
   is_enabled?: boolean;
   frontend_type?: FrontendAdapters;
-  /** An array containing station-specific frontend configuration */
-  frontend_config?: object;
+  frontend_config?: StationFrontendConfiguration;
   backend_type?: BackendAdapters;
-  /** An array containing station-specific backend configuration */
-  backend_config?: object;
+  backend_config?: StationBackendConfiguration;
   /** @example "A sample radio station." */
   description?: string | null;
   /** @example "https://demo.azuracast.com/" */
@@ -1770,7 +1792,7 @@ export type Station = HasAutoIncrementId & {
   /** @example "Various" */
   genre?: string | null;
   /** @example "/var/azuracast/stations/azuratest_radio" */
-  radio_base_dir?: string | null;
+  radio_base_dir?: string;
   /**
    * Whether listeners can request songs to play on this station.
    * @example true
@@ -1821,7 +1843,7 @@ export type Station = HasAutoIncrementId & {
    * The time zone that station operations should take place in.
    * @example "UTC"
    */
-  timezone?: string | null;
+  timezone?: string;
   /**
    * The maximum bitrate at which a station may broadcast, in Kbps. 0 for unlimited
    * @example 128
@@ -1837,24 +1859,106 @@ export type Station = HasAutoIncrementId & {
    * @example 3
    */
   max_hls_streams?: number;
-  /** An array containing station-specific branding configuration */
-  branding_config?: object;
+  branding_config?: StationBrandingConfiguration;
 };
+
+export interface StationBackendConfiguration {
+  charset?: string;
+  dj_port?: number | null;
+  telnet_port?: number | null;
+  record_streams?: boolean;
+  record_streams_format?: string;
+  record_streams_bitrate?: number;
+  use_manual_autodj?: boolean;
+  autodj_queue_length?: number;
+  dj_mount_point?: string;
+  dj_buffer?: number;
+  audio_processing_method?: string;
+  post_processing_include_live?: boolean;
+  stereo_tool_license_key?: string | null;
+  stereo_tool_configuration_path?: string | null;
+  master_me_preset?: string | null;
+  master_me_loudness_target?: number;
+  enable_replaygain_metadata?: boolean;
+  crossfade_type?: string;
+  /** @format float */
+  crossfade?: number;
+  duplicate_prevention_time_range?: number;
+  performance_mode?: string;
+  hls_segment_length?: number;
+  hls_segments_in_playlist?: number;
+  hls_segments_overhead?: number;
+  hls_enable_on_public_player?: boolean;
+  hls_is_default?: boolean;
+  live_broadcast_text?: string;
+  enable_auto_cue?: boolean;
+  write_playlists_to_liquidsoap?: boolean;
+  /** Custom Liquidsoap Configuration: Top Section */
+  custom_config_top?: string | null;
+  /** Custom Liquidsoap Configuration: Pre-Playlists Section */
+  custom_config_pre_playlists?: string | null;
+  /** Custom Liquidsoap Configuration: Pre-Live Section */
+  custom_config_pre_live?: string | null;
+  /** Custom Liquidsoap Configuration: Pre-Fade Section */
+  custom_config_pre_fade?: string | null;
+  /** Custom Liquidsoap Configuration: Pre-Broadcast Section */
+  custom_config?: string | null;
+  /** Custom Liquidsoap Configuration: Post-Broadcast Section */
+  custom_config_bottom?: string | null;
+}
+
+export interface StationBrandingConfiguration {
+  default_album_art_url?: string | null;
+  public_custom_css?: string | null;
+  public_custom_js?: string | null;
+  offline_text?: string | null;
+}
+
+export interface StationFrontendConfiguration {
+  custom_config?: string | null;
+  source_pw?: string;
+  admin_pw?: string;
+  relay_pw?: string;
+  streamer_pw?: string;
+  port?: number | null;
+  max_listeners?: number | null;
+  banned_ips?: string | null;
+  banned_user_agents?: string | null;
+  banned_countries?: string[] | null;
+  allowed_ips?: string | null;
+  sc_license_id?: string | null;
+  sc_user_id?: string | null;
+}
 
 export type StationHlsStream = HasAutoIncrementId & {
   /** @example "aac_lofi" */
   name?: string;
   /** @example "aac" */
-  format?: any;
+  format?: HlsStreamProfiles | null;
   /** @example 128 */
   bitrate?: number | null;
 };
+
+export interface StationMediaMetadata {
+  /** @format float */
+  amplify?: number | null;
+  /** @format float */
+  cross_start_next?: number | null;
+  /** @format float */
+  fade_in?: number | null;
+  /** @format float */
+  fade_out?: number | null;
+  /** @format float */
+  cue_in?: number | null;
+  /** @format float */
+  cue_out?: number | null;
+}
 
 export type StationMount = HasAutoIncrementId & {
   /** @example "/radio.mp3" */
   name?: string;
   /** @example "128kbps MP3" */
-  display_name?: string | null;
+  display_name?: string;
   /** @example true */
   is_visible_on_public_pages?: boolean;
   /** @example false */
@@ -1872,7 +1976,7 @@ export type StationMount = HasAutoIncrementId & {
   /** @example true */
   enable_autodj?: boolean;
   /** @example "mp3" */
-  autodj_format?: any;
+  autodj_format?: StreamFormats | null;
   /** @example 128 */
   autodj_bitrate?: number | null;
   /** @example "https://custom-listen-url.example.com/stream.mp3" */
@@ -1928,13 +2032,57 @@ export type StationPlaylist = HasAutoIncrementId & {
    */
   include_in_on_demand?: boolean;
   /** @example "interrupt,loop_once,single_track,merge" */
-  backend_options?: string | null;
+  backend_options?: string[];
   /** @example true */
   avoid_duplicates?: boolean;
   /** StationSchedule> */
   schedule_items?: any[];
   /** Podcast> */
   podcasts?: any[];
+};
+
+export type StationRemote = HasAutoIncrementId & {
+  /** @example "128kbps MP3" */
+  display_name?: string;
+  /** @example true */
+  is_visible_on_public_pages?: boolean;
+  type?: RemoteAdapters;
+  /** @example "true" */
+  readonly is_editable?: boolean;
+  /** @example false */
+  enable_autodj?: boolean;
+  /** @example "mp3" */
+  autodj_format?: StreamFormats | null;
+  /** @example 128 */
+  autodj_bitrate?: number | null;
+  /** @example "https://custom-listen-url.example.com/stream.mp3" */
+  custom_listen_url?: string | null;
+  /** @example "https://custom-url.example.com" */
+  url?: string;
+  /** @example "/stream.mp3" */
+  mount?: string | null;
+  /** @example "password" */
+  admin_password?: string | null;
+  /** @example 8000 */
+  source_port?: number | null;
+  /** @example "/" */
+  source_mount?: string | null;
+  /** @example "source" */
+  source_username?: string | null;
+  /** @example "password" */
+  source_password?: string | null;
+  /** @example false */
+  is_public?: boolean;
+  /**
+   * The most recent number of unique listeners.
+   * @example 10
+   */
+  listeners_unique?: number;
+  /**
+   * The most recent number of total (non-unique) listeners.
+   * @example 12
+   */
+  listeners_total?: number;
 };
 
 export type StationSchedule = HasAutoIncrementId & {
@@ -1946,7 +2094,7 @@ export type StationSchedule = HasAutoIncrementId & {
    * Array of ISO-8601 days (1 for Monday, 7 for Sunday)
    * @example "0,1,2,3"
    */
-  days?: string | null;
+  days?: number[];
   /** @example false */
   loop_once?: boolean;
 };
@@ -1958,7 +2106,7 @@ export type StationStreamer = HasAutoIncrementId & {
   /** @example "" */
   streamer_password?: string;
   /** @example "Test DJ" */
-  display_name?: string | null;
+  display_name?: string;
   /** @example "This is a test DJ account." */
   comments?: string | null;
   /** @example true */
@@ -1991,6 +2139,97 @@ export type StationWebhook = HasAutoIncrementId & {
   metadata?: any[];
 };
 
+export type StorageLocation = HasAutoIncrementId & {
+  type?: StorageLocationTypes;
+  adapter?: StorageLocationAdapters;
+  /**
+   * The local path, if the local adapter is used, or path prefix for S3/remote adapters.
+   * @example "/var/azuracast/stations/azuratest_radio/media"
+   */
+  path?: string;
+  /**
+   * The credential key for S3 adapters.
+   * @example "your-key-here"
+   */
+  s3CredentialKey?: string | null;
+  /**
+   * The credential secret for S3 adapters.
+   * @example "your-secret-here"
+   */
+  s3CredentialSecret?: string | null;
+  /**
+   * The region for S3 adapters.
+   * @example "your-region"
+   */
+  s3Region?: string | null;
+  /**
+   * The API version for S3 adapters.
+   * @example "latest"
+   */
+  s3Version?: string | null;
+  /**
+   * The S3 bucket name for S3 adapters.
+   * @example "your-bucket-name"
+   */
+  s3Bucket?: string | null;
+  /**
+   * The optional custom S3 endpoint S3 adapters.
+   * @example "https://your-region.digitaloceanspaces.com"
+   */
+  s3Endpoint?: string | null;
+  /**
+   * The optional Dropbox App Key.
+   * @example ""
+   */
+  dropboxAppKey?: string | null;
+  /**
+   * The optional Dropbox App Secret.
+   * @example ""
+   */
+  dropboxAppSecret?: string | null;
+  /**
+   * The optional Dropbox Auth Token.
+   * @example ""
+   */
+  dropboxAuthToken?: string | null;
+  /**
+   * The host for SFTP adapters
+   * @example "127.0.0.1"
+   */
+  sftpHost?: string | null;
+  /**
+   * The username for SFTP adapters
+   * @example "root"
+   */
+  sftpUsername?: string | null;
+  /**
+   * The password for SFTP adapters
+   * @example "abc123"
+   */
+  sftpPassword?: string | null;
+  /**
+   * The port for SFTP adapters
+   * @example 20
+   */
+  sftpPort?: number | null;
+  /** The private key for SFTP adapters */
+  sftpPrivateKey?: string | null;
+  /** The private key pass phrase for SFTP adapters */
+  sftpPrivateKeyPassPhrase?: string | null;
+  /** @example "120000" */
+  storageQuotaBytes?: any;
+  /** @example "50 GB" */
+  storageQuota?: string | null;
+  /** @example "60000" */
+  storageUsedBytes?: any;
+  /** @example "1 GB" */
+  storageUsed?: string;
+  /** @example "120000" */
+  storageAvailableBytes?: any;
+  /** @example "1 GB" */
+  storageAvailable?: string;
+};
+
 export interface HasAutoIncrementId {
   readonly id: number;
 }
@@ -2000,6 +2239,7 @@ export interface HasSongFields {
   text?: string | null;
   artist?: string | null;
   title?: string | null;
+  album?: string | null;
 }
 
 export interface HasSplitTokenFields {
@@ -2015,7 +2255,7 @@ export type User = HasAutoIncrementId & {
   /** @example "demo@azuracast.com" */
   email?: string;
   /** @example "" */
-  new_password?: string | null;
+  auth_password?: string;
   /** @example "Demo Account" */
   name?: string | null;
   /** @example "en_US" */
@@ -2031,134 +2271,3 @@ export type User = HasAutoIncrementId & {
   /** Role> */
   roles?: any[];
 };
-
-export enum FlashLevels {
-  Success = "success",
-  Warning = "warning",
-  Error = "danger",
-  Info = "info",
-}
-
-export enum GlobalPermissions {
-  All = "administer all",
-  View = "view administration",
-  Logs = "view system logs",
-  Settings = "administer settings",
-  ApiKeys = "administer api keys",
-  Stations = "administer stations",
-  CustomFields = "administer custom fields",
-  Backups = "administer backups",
-  StorageLocations = "administer storage locations",
-}
-
-export enum ReleaseChannel {
-  RollingRelease = "latest",
-  Stable = "stable",
-}
-
-export enum StationPermissions {
-  All = "administer all",
-  View = "view station management",
-  Reports = "view station reports",
-  Logs = "view station logs",
-  Profile = "manage station profile",
-  Broadcasting = "manage station broadcasting",
-  Streamers = "manage station streamers",
-  MountPoints = "manage station mounts",
-  RemoteRelays = "manage station remotes",
-  Media = "manage station media",
-  Automation = "manage station automation",
-  WebHooks = "manage station web hooks",
-  Podcasts = "manage station podcasts",
-}
-
-export enum SupportedLocales {
-  English = "en_US.UTF-8",
-  Czech = "cs_CZ.UTF-8",
-  Dutch = "nl_NL.UTF-8",
-  French = "fr_FR.UTF-8",
-  German = "de_DE.UTF-8",
-  Greek = "el_GR.UTF-8",
-  Italian = "it_IT.UTF-8",
-  Japanese = "ja_JP.UTF-8",
-  Korean = "ko_KR.UTF-8",
-  Norwegian = "nb_NO.UTF-8",
-  Polish = "pl_PL.UTF-8",
-  Portuguese = "pt_PT.UTF-8",
-  PortugueseBrazilian = "pt_BR.UTF-8",
-  Russian = "ru_RU.UTF-8",
-  SimplifiedChinese = "zh_CN.UTF-8",
-  Spanish = "es_ES.UTF-8",
-  Swedish = "sv_SE.UTF-8",
-  Turkish = "tr_TR.UTF-8",
-  Ukrainian = "uk_UA.UTF-8",
-}
-
-export enum SupportedThemes {
-  Browser = "browser",
-  Light = "light",
-  Dark = "dark",
-}
-
-export enum AudioProcessingMethods {
-  None = "none",
-  Liquidsoap = "nrj",
-  MasterMe = "master_me",
-  StereoTool = "stereo_tool",
-}
-
-export enum BackendAdapters {
-  Liquidsoap = "liquidsoap",
-  None = "none",
-}
-
-export enum FrontendAdapters {
-  Icecast = "icecast",
-  Shoutcast = "shoutcast2",
-  Rsas = "rsas",
-  Remote = "remote",
-}
-
-export enum MasterMePresets {
-  MusicGeneral = "music_general",
-  SpeechGeneral = "speech_general",
-  EbuR128 = "ebu_r128",
-  ApplePodcasts = "apple_podcasts",
-  YouTube = "youtube",
-}
-
-export enum RemoteAdapters {
-  Shoutcast1 = "shoutcast1",
-  Shoutcast2 = "shoutcast2",
-  Icecast = "icecast",
-  AzuraRelay = "azurarelay",
-}
-
-export enum WebhookTriggers {
-  SongChanged = "song_changed",
-  SongChangedLive = "song_changed_live",
-  ListenerGained = "listener_gained",
-  ListenerLost = "listener_lost",
-  LiveConnect = "live_connect",
-  LiveDisconnect = "live_disconnect",
-  StationOffline = "station_offline",
-  StationOnline = "station_online",
-}
-
-export enum WebhookTypes {
-  Generic = "generic",
-  Email = "email",
-  TuneIn = "tunein",
-  RadioDe = "radiode",
-  RadioReg = "radioreg",
-  GetMeRadio = "getmeradio",
-  Discord = "discord",
-  Telegram = "telegram",
-  GroupMe = "groupme",
-  Mastodon = "mastodon",
-  Bluesky = "bluesky",
-  GoogleAnalyticsV4 = "google_analytics_v4",
-  MatomoAnalytics = "matomo_analytics",
-  Twitter = "twitter",
-  GoogleAnalyticsV3 = "google_analytics",
-}

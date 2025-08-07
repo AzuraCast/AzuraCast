@@ -88,10 +88,15 @@ final class RestartRadioCommand extends CommandAbstract
         }
 
         if (!$noSupervisorRestart) {
-            $this->nginx->reload();
+            try {
+                $this->nginx->reload();
+            } catch (Throwable $e) {
+                $io->warning($e->getMessage());
+            }
         }
 
         $io->progressFinish();
+        $io->success('All stations restarted.');
         return 0;
     }
 }

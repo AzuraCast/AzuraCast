@@ -28,7 +28,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: ApiStorageLocation::class)
+                    items: new OA\Items(
+                        allOf: [
+                            new OA\Schema(ref: StorageLocation::class),
+                            new OA\Schema(ref: ApiStorageLocation::class),
+                        ]
+                    )
                 )
             ),
             new OpenApi\Response\AccessDenied(),
@@ -45,7 +50,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         tags: [OpenApi::TAG_ADMIN_STORAGE_LOCATIONS],
         responses: [
             new OpenApi\Response\Success(
-                content: new OA\JsonContent(ref: ApiStorageLocation::class)
+                content: new OA\JsonContent(
+                    allOf: [
+                        new OA\Schema(ref: StorageLocation::class),
+                        new OA\Schema(ref: ApiStorageLocation::class),
+                    ]
+                )
             ),
             new OpenApi\Response\AccessDenied(),
             new OpenApi\Response\GenericError(),
@@ -67,7 +77,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         ],
         responses: [
             new OpenApi\Response\Success(
-                content: new OA\JsonContent(ref: ApiStorageLocation::class)
+                content: new OA\JsonContent(
+                    allOf: [
+                        new OA\Schema(ref: StorageLocation::class),
+                        new OA\Schema(ref: ApiStorageLocation::class),
+                    ]
+                )
             ),
             new OpenApi\Response\AccessDenied(),
             new OpenApi\Response\NotFound(),
@@ -79,7 +94,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         operationId: 'editStorageLocation',
         summary: 'Update details of a single storage location.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: ApiStorageLocation::class)
+            content: new OA\JsonContent(ref: StorageLocation::class)
         ),
         tags: [OpenApi::TAG_ADMIN_STORAGE_LOCATIONS],
         parameters: [
@@ -155,28 +170,27 @@ final class StorageLocationsController extends AbstractApiCrudController
     }
 
     /** @inheritDoc */
-    protected function viewRecord(object $record, ServerRequest $request): object
+    protected function viewRecord(object $record, ServerRequest $request): array
     {
         $original = parent::viewRecord($record, $request);
 
-        $return = ApiStorageLocation::fromParent($original);
-        $return->storageQuotaBytes = (string)($record->getStorageQuotaBytes() ?? '');
-        $return->storageUsedBytes = (string)$record->getStorageUsedBytes();
+        $return = new ApiStorageLocation();
         $return->storageUsedPercent = $record->getStorageUsePercentage();
-        $return->storageAvailable = $record->getStorageAvailable();
-        $return->storageAvailableBytes = (string)($record->getStorageAvailableBytes() ?? '');
         $return->isFull = $record->isStorageFull();
-
         $return->uri = $record->getUri();
 
         $stationsRaw = $this->storageLocationRepo->getStationsUsingLocation($record);
         $stations = [];
         foreach ($stationsRaw as $station) {
-            $stations[] = $station->getName();
+            $stations[] = $station->name;
         }
         $return->stations = $stations;
+        $return->links = $original['links'];
 
-        return $return;
+        return [
+            ...$original,
+            ...get_object_vars($return),
+        ];
     }
 
     protected function deleteRecord(object $record): void
@@ -186,7 +200,7 @@ final class StorageLocationsController extends AbstractApiCrudController
         if (0 !== count($stations)) {
             $stationNames = [];
             foreach ($stations as $station) {
-                $stationNames[] = $station->getName();
+                $stationNames[] = $station->name;
             }
 
             throw new RuntimeException(

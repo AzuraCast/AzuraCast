@@ -42,13 +42,22 @@
                         :label="$gettext('Live Broadcast Recording Format')"
                     />
 
-                    <bitrate-options
+                    <form-group-field
                         id="edit_form_backend_record_streams_bitrate"
                         class="col-md-6"
-                        :max-bitrate="form.max_bitrate"
                         :field="v$.backend_config.record_streams_bitrate"
                         :label="$gettext('Live Broadcast Recording Bitrate (kbps)')"
-                    />
+                    >
+                        <template #default="{id, model, fieldClass, inputAttrs}">
+                            <bitrate-options
+                                :id="id"
+                                v-model="model.$model"
+                                :class="fieldClass"
+                                :input-attrs="inputAttrs"
+                                :max-bitrate="form.max_bitrate"
+                            />
+                        </template>
+                    </form-group-field>
                 </div>
 
                 <div class="row g-3 mb-3">
@@ -70,7 +79,6 @@
                     </form-group-field>
 
                     <form-group-field
-                        v-if="enableAdvancedFeatures"
                         id="edit_form_backend_dj_port"
                         class="col-md-6"
                         :field="v$.backend_config.dj_port"
@@ -101,7 +109,6 @@
                     />
 
                     <form-group-field
-                        v-if="enableAdvancedFeatures"
                         id="edit_form_backend_dj_mount_point"
                         class="col-md-6"
                         :field="v$.backend_config.dj_mount_point"
@@ -133,73 +140,40 @@ import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric} from "@vuelidate/validators";
-import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
-import {ApiGenericForm, BackendAdapters} from "~/entities/ApiInterfaces.ts";
+import {ApiGenericForm, BackendAdapters, StreamFormats} from "~/entities/ApiInterfaces.ts";
 
 const form = defineModel<ApiGenericForm>('form', {required: true});
 
-const {enableAdvancedFeatures} = useAzuraCast();
-
 const {v$, tabClass} = useVuelidateOnFormTab(
     form,
-    computed(() => {
-        let validations: {
-            [key: string | number]: any
-        } = {
-            enable_streamers: {},
-            disconnect_deactivate_streamer: {},
-            backend_config: {
-                record_streams: {},
-                record_streams_format: {},
-                record_streams_bitrate: {},
-                dj_buffer: {numeric},
-                live_broadcast_text: {}
-            }
-        };
-
-        if (enableAdvancedFeatures) {
-            validations = {
-                ...validations,
-                backend_config: {
-                    ...validations.backend_config,
-                    dj_port: {numeric},
-                    dj_mount_point: {},
-                }
-            };
+    {
+        enable_streamers: {},
+        disconnect_deactivate_streamer: {},
+        backend_config: {
+            record_streams: {},
+            record_streams_format: {},
+            record_streams_bitrate: {},
+            dj_buffer: {numeric},
+            live_broadcast_text: {},
+            dj_port: {numeric},
+            dj_mount_point: {},
         }
-
-        return validations;
-    }),
-    () => {
-        let blankForm: {
-            [key: string | number]: any
-        } = {
-            enable_streamers: false,
-            disconnect_deactivate_streamer: 0,
-            backend_config: {
-                record_streams: false,
-                record_streams_format: 'mp3',
-                record_streams_bitrate: 128,
-                dj_buffer: 5,
-                live_broadcast_text: 'Live Broadcast'
-            }
-        };
-
-        if (enableAdvancedFeatures) {
-            blankForm = {
-                ...blankForm,
-                backend_config: {
-                    ...blankForm.backend_config,
-                    dj_port: '',
-                    dj_mount_point: '/',
-                }
-            }
+    },
+    () => ({
+        enable_streamers: false,
+        disconnect_deactivate_streamer: 0,
+        backend_config: {
+            record_streams: false,
+            record_streams_format: StreamFormats.Mp3,
+            record_streams_bitrate: 128,
+            dj_buffer: 5,
+            live_broadcast_text: 'Live Broadcast',
+            dj_port: '',
+            dj_mount_point: '/',
         }
-
-        return blankForm;
-    }
+    })
 );
 
 const isBackendEnabled = computed(() => {
@@ -218,19 +192,19 @@ const recordStreamsOptions = computed(() => {
     return [
         {
             text: 'MP3',
-            value: 'mp3',
+            value: StreamFormats.Mp3
         },
         {
             text: 'OGG Vorbis',
-            value: 'ogg',
+            value: StreamFormats.Ogg
         },
         {
             text: 'OGG Opus',
-            value: 'opus',
+            value: StreamFormats.Opus
         },
         {
             text: 'AAC+ (MPEG4 HE-AAC v2)',
-            value: 'aac'
+            value: StreamFormats.Aac
         }
     ];
 });

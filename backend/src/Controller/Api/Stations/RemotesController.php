@@ -6,7 +6,7 @@ namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
-use App\Entity\Api\StationRemote as ApiStationRemote;
+use App\Entity\Api\Traits\HasLinks;
 use App\Entity\StationRemote;
 use App\Exception\Http\PermissionDeniedException;
 use App\Http\Response;
@@ -29,7 +29,12 @@ use Psr\Http\Message\ResponseInterface;
             new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: ApiStationRemote::class)
+                    items: new OA\Items(
+                        allOf: [
+                            new OA\Schema(ref: StationRemote::class),
+                            new OA\Schema(ref: HasLinks::class),
+                        ]
+                    )
                 )
             ),
             new OpenApi\Response\AccessDenied(),
@@ -42,7 +47,7 @@ use Psr\Http\Message\ResponseInterface;
         operationId: 'addRelay',
         summary: 'Create a new remote relay.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: ApiStationRemote::class)
+            content: new OA\JsonContent(ref: StationRemote::class)
         ),
         tags: [OpenApi::TAG_STATIONS_REMOTE_RELAYS],
         parameters: [
@@ -50,7 +55,12 @@ use Psr\Http\Message\ResponseInterface;
         ],
         responses: [
             new OpenApi\Response\Success(
-                content: new OA\JsonContent(ref: ApiStationRemote::class)
+                content: new OA\JsonContent(
+                    allOf: [
+                        new OA\Schema(ref: StationRemote::class),
+                        new OA\Schema(ref: HasLinks::class),
+                    ]
+                )
             ),
             new OpenApi\Response\AccessDenied(),
             new OpenApi\Response\NotFound(),
@@ -74,7 +84,12 @@ use Psr\Http\Message\ResponseInterface;
         ],
         responses: [
             new OpenApi\Response\Success(
-                content: new OA\JsonContent(ref: ApiStationRemote::class)
+                content: new OA\JsonContent(
+                    allOf: [
+                        new OA\Schema(ref: StationRemote::class),
+                        new OA\Schema(ref: HasLinks::class),
+                    ]
+                )
             ),
             new OpenApi\Response\AccessDenied(),
             new OpenApi\Response\NotFound(),
@@ -86,7 +101,7 @@ use Psr\Http\Message\ResponseInterface;
         operationId: 'editRelay',
         summary: 'Update details of a single remote relay.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: ApiStationRemote::class)
+            content: new OA\JsonContent(ref: StationRemote::class)
         ),
         tags: [OpenApi::TAG_STATIONS_REMOTE_RELAYS],
         parameters: [
@@ -169,28 +184,6 @@ final class RemotesController extends AbstractStationApiCrudController
         );
 
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
-    }
-
-    protected function viewRecord(object $record, ServerRequest $request): ApiStationRemote
-    {
-        $returnArray = $this->toArray($record);
-
-        $return = ApiStationRemote::fromParent($returnArray);
-
-        $isInternal = $request->isInternal();
-        $router = $request->getRouter();
-
-        $return->is_editable = $record->isEditable();
-
-        $return->links = [
-            'self' => $router->fromHere(
-                routeName: $this->resourceRouteName,
-                routeParams: ['id' => $record->getIdRequired()],
-                absolute: !$isInternal
-            ),
-        ];
-
-        return $return;
     }
 
     protected function getRecord(ServerRequest $request, array $params): ?object

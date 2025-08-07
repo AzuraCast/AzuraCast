@@ -208,7 +208,7 @@
                 </template>
             </form-fieldset>
 
-            <form-fieldset v-if="enableAdvancedFeatures">
+            <form-fieldset>
                 <template #label>
                     {{ $gettext('Advanced Configuration') }}
                     <span class="badge small text-bg-primary ms-2">
@@ -305,10 +305,15 @@ import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {decimal, numeric, required} from "@vuelidate/validators";
-import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
-import {ApiGenericForm, AudioProcessingMethods, BackendAdapters} from "~/entities/ApiInterfaces.ts";
+import {
+    ApiGenericForm,
+    AudioProcessingMethods,
+    BackendAdapters,
+    CrossfadeModes,
+    MasterMePresets
+} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     isStereoToolInstalled: boolean
@@ -316,82 +321,50 @@ const props = defineProps<{
 
 const form = defineModel<ApiGenericForm>('form', {required: true});
 
-const {enableAdvancedFeatures} = useAzuraCast();
-
 const {v$, tabClass} = useVuelidateOnFormTab(
     form,
-    computed(() => {
-        let validations: {
-            [key: string | number]: any
-        } = {
-            backend_type: {required},
-            backend_config: {
-                crossfade_type: {},
-                crossfade: {decimal},
-                write_playlists_to_liquidsoap: {},
-                audio_processing_method: {},
-                post_processing_include_live: {},
-                master_me_preset: {},
-                master_me_loudness_target: {},
-                stereo_tool_license_key: {},
-                enable_auto_cue: {},
-                enable_replaygain_metadata: {}
-            },
-        };
-
-        if (enableAdvancedFeatures) {
-            validations = {
-                ...validations,
-                backend_config: {
-                    ...validations.backend_config,
-                    telnet_port: {numeric},
-                    autodj_queue_length: {},
-                    use_manual_autodj: {},
-                    charset: {},
-                    performance_mode: {},
-                    duplicate_prevention_time_range: {},
-                },
-            };
+    {
+        backend_type: {required},
+        backend_config: {
+            crossfade_type: {},
+            crossfade: {decimal},
+            write_playlists_to_liquidsoap: {},
+            audio_processing_method: {},
+            post_processing_include_live: {},
+            master_me_preset: {},
+            master_me_loudness_target: {},
+            stereo_tool_license_key: {},
+            enable_auto_cue: {},
+            enable_replaygain_metadata: {},
+            telnet_port: {numeric},
+            autodj_queue_length: {},
+            use_manual_autodj: {},
+            charset: {},
+            performance_mode: {},
+            duplicate_prevention_time_range: {},
         }
-
-        return validations;
-    }),
-    () => {
-        let blankForm: {
-            [key: string | number]: any
-        } = {
-            backend_type: BackendAdapters.Liquidsoap,
-            backend_config: {
-                crossfade_type: 'normal',
-                crossfade: 2,
-                write_playlists_to_liquidsoap: true,
-                audio_processing_method: AudioProcessingMethods.None,
-                post_processing_include_live: true,
-                master_me_preset: 'music_general',
-                master_me_loudness_target: -16,
-                stereo_tool_license_key: '',
-                enable_auto_cue: false,
-                enable_replaygain_metadata: false
-            },
-        };
-
-        if (enableAdvancedFeatures) {
-            blankForm = {
-                ...blankForm,
-                backend_config: {
-                    ...blankForm.backend_config,
-                    telnet_port: '',
-                    autodj_queue_length: 3,
-                    use_manual_autodj: false,
-                    charset: 'UTF-8',
-                    performance_mode: 'disabled',
-                    duplicate_prevention_time_range: 120,
-                }
-            };
-        }
-
-        return blankForm;
-    }
+    },
+    () => ({
+        backend_type: BackendAdapters.Liquidsoap,
+        backend_config: {
+            crossfade_type: CrossfadeModes.Normal,
+            crossfade: 2,
+            write_playlists_to_liquidsoap: true,
+            audio_processing_method: AudioProcessingMethods.None,
+            post_processing_include_live: true,
+            master_me_preset: MasterMePresets.MusicGeneral,
+            master_me_loudness_target: -16,
+            stereo_tool_license_key: '',
+            enable_auto_cue: false,
+            enable_replaygain_metadata: false,
+            telnet_port: '',
+            autodj_queue_length: 3,
+            use_manual_autodj: false,
+            charset: 'UTF-8',
+            performance_mode: 'disabled',
+            duplicate_prevention_time_range: 120,
+        },
+    })
 );
 
 const isBackendEnabled = computed(() => {
@@ -433,15 +406,15 @@ const crossfadeOptions = computed<SimpleFormOptionInput>(() => {
     return [
         {
             text: $gettext('Smart Mode'),
-            value: 'smart',
+            value: CrossfadeModes.Smart,
         },
         {
             text: $gettext('Normal Mode'),
-            value: 'normal',
+            value: CrossfadeModes.Normal,
         },
         {
             text: $gettext('Disable Crossfading'),
-            value: 'none',
+            value: CrossfadeModes.Disabled
         }
     ];
 });
@@ -485,23 +458,23 @@ const masterMePresetOptions = computed<SimpleFormOptionInput>(() => {
     return [
         {
             text: $gettext('Music General'),
-            value: 'music_general'
+            value: MasterMePresets.MusicGeneral
         },
         {
             text: $gettext('Speech General'),
-            value: 'speech_general'
+            value: MasterMePresets.SpeechGeneral
         },
         {
             text: $gettext('EBU R128'),
-            value: 'ebu_r128'
+            value: MasterMePresets.EbuR128
         },
         {
             text: $gettext('Apple Podcasts'),
-            value: 'apple_podcasts'
+            value: MasterMePresets.ApplePodcasts
         },
         {
             text: $gettext('YouTube'),
-            value: 'youtube'
+            value: MasterMePresets.YouTube
         }
     ]
 });

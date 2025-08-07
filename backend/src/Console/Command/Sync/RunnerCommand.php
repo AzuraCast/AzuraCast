@@ -7,8 +7,10 @@ namespace App\Console\Command\Sync;
 use App\Container\SettingsAwareTrait;
 use App\Event\GetSyncTasks;
 use App\Lock\LockFactory;
+use App\Sync\Task\AbstractTask;
 use App\Utilities\Time;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use ReflectionClass;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,9 +18,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 use function usleep;
 
-/**
- * @phpstan-import-type TaskClass from GetSyncTasks
- */
 #[AsCommand(
     name: 'azuracast:sync:run',
     description: 'Task to run the minute\'s synchronized tasks.'
@@ -39,7 +38,7 @@ final class RunnerCommand extends AbstractSyncRunnerCommand
         $this->logToExtraFile('app_sync.log');
 
         $settings = $this->readSettings();
-        if ($settings->getSyncDisabled()) {
+        if ($settings->sync_disabled) {
             $io = new SymfonyStyle($input, $output);
             $io->error('Automated synchronization is temporarily disabled.');
             return 1;
@@ -75,13 +74,13 @@ final class RunnerCommand extends AbstractSyncRunnerCommand
 
     /**
      * @param OutputInterface $output
-     * @param TaskClass $taskClass
+     * @param class-string<AbstractTask> $taskClass
      */
     private function start(
         OutputInterface $output,
         string $taskClass,
     ): void {
-        $taskShortName = SingleTaskCommand::getClassShortName($taskClass);
+        $taskShortName = new ReflectionClass($taskClass)->getShortName();
 
         $isLongTask = $taskClass::isLongTask();
         $timeout = ($isLongTask)

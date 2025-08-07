@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Cache\QueueLogCache;
 use App\Entity\Api\StationQueueDetailed;
 use App\Entity\Api\Status;
 use App\Entity\ApiGenerator\StationQueueApiGenerator;
@@ -12,7 +13,6 @@ use App\Entity\StationQueue;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use App\Radio\AutoDJ\Queue;
 use App\Utilities\Types;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -33,7 +33,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: StationQueueDetailed::class)
+                    items: new OA\Items(
+                        allOf: [
+                            new OA\Schema(ref: StationQueue::class),
+                            new OA\Schema(ref: StationQueueDetailed::class),
+                        ]
+                    )
                 )
             ),
             new OpenApi\Response\AccessDenied(),
@@ -58,7 +63,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         ],
         responses: [
             new OpenApi\Response\Success(
-                content: new OA\JsonContent(ref: StationQueueDetailed::class)
+                content: new OA\JsonContent(
+                    allOf: [
+                        new OA\Schema(ref: StationQueue::class),
+                        new OA\Schema(ref: StationQueueDetailed::class),
+                    ]
+                )
             ),
             new OpenApi\Response\AccessDenied(),
             new OpenApi\Response\NotFound(),
@@ -96,7 +106,7 @@ final class QueueController extends AbstractStationApiCrudController
     public function __construct(
         private readonly StationQueueApiGenerator $queueApiGenerator,
         private readonly StationQueueRepository $queueRepo,
-        private readonly Queue $queue,
+        private readonly QueueLogCache $queueLogCache,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
@@ -124,35 +134,32 @@ final class QueueController extends AbstractStationApiCrudController
         );
     }
 
-    /**
-     * @param object $record
-     * @param ServerRequest $request
-     */
-    protected function viewRecord(object $record, ServerRequest $request): StationQueueDetailed
+    protected function viewRecord(object $record, ServerRequest $request): array
     {
-        assert($record instanceof StationQueue);
-
         $isInternal = $request->isInternal();
         $router = $request->getRouter();
 
         $row = $this->queueApiGenerator->__invoke($record);
 
-        $apiResponse = StationQueueDetailed::fromParent($row);
-        $apiResponse->sent_to_autodj = $record->getSentToAutodj();
-        $apiResponse->is_played = $record->getIsPlayed();
-        $apiResponse->autodj_custom_uri = $record->getAutodjCustomUri();
-        $apiResponse->log = $this->queue->getQueueRowLog($record);
+        $apiResponse = new StationQueueDetailed();
+        $apiResponse->sent_to_autodj = $record->sent_to_autodj;
+        $apiResponse->is_played = $record->is_played;
+        $apiResponse->autodj_custom_uri = $record->autodj_custom_uri;
+        $apiResponse->log = $this->queueLogCache->getLog($record);
 
         $apiResponse->links = [
             'self' => $router->fromHere(
                 $this->resourceRouteName,
-                ['id' => $record->getId()],
+                ['id' => $record->id],
                 [],
                 !$isInternal
             ),
         ];
 
-        return $apiResponse;
+        return [
+            ...get_object_vars($row),
+            ...get_object_vars($apiResponse),
+        ];
     }
 
     public function clearAction(

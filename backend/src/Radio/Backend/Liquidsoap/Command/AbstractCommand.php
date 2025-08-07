@@ -7,11 +7,9 @@ namespace App\Radio\Backend\Liquidsoap\Command;
 use App\Container\LoggerAwareTrait;
 use App\Entity\Station;
 use App\Radio\Enums\BackendAdapters;
-use App\Utilities\Types;
 use LogicException;
 use Monolog\LogRecord;
 use ReflectionClass;
-use Throwable;
 
 abstract class AbstractCommand
 {
@@ -22,22 +20,22 @@ abstract class AbstractCommand
         bool $asAutoDj = false,
         ?array $payload = []
     ): mixed {
-        if (BackendAdapters::Liquidsoap !== $station->getBackendType()) {
+        if (BackendAdapters::Liquidsoap !== $station->backend_type) {
             throw new LogicException('Station does not use Liquidsoap backend.');
         }
 
         $this->logger->pushProcessor(
             function (LogRecord $record) use ($station) {
                 $record->extra['station'] = [
-                    'id' => $station->getId(),
-                    'name' => $station->getName(),
+                    'id' => $station->id,
+                    'name' => $station->name,
                 ];
                 return $record;
             }
         );
 
         try {
-            $className = (new ReflectionClass(static::class))->getShortName();
+            $className = new ReflectionClass(static::class)->getShortName();
             $this->logger->debug(
                 sprintf('Running Internal Command %s', $className),
                 [

@@ -10,9 +10,8 @@
 
         <data-table
             id="api_keys"
-            ref="$dataTable"
             :fields="fields"
-            :api-url="apiUrl"
+            :provider="itemProvider"
         >
             <template #cell(actions)="{ item }">
                 <div class="btn-group btn-group-sm">
@@ -31,14 +30,14 @@
 
 <script setup lang="ts">
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import {useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-import useHasDatatable from "~/functions/useHasDatatable";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import {ApiKey, HasLinks} from "~/entities/ApiInterfaces.ts";
 import {DeepRequired} from "utility-types";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 const apiUrl = getApiUrl('/admin/api-keys');
 
@@ -66,11 +65,13 @@ const fields: DataTableField<Row>[] = [
     }
 ];
 
-const $dataTable = useTemplateRef('$dataTable');
-const {relist} = useHasDatatable($dataTable);
+const itemProvider = useApiItemProvider<Row>(
+    apiUrl,
+    [QueryKeys.AccountApiKeys]
+);
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete API Key?'),
-    relist
+    () => void itemProvider.refresh()
 );
 </script>

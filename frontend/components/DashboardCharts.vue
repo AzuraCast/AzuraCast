@@ -9,6 +9,7 @@
                     :data="chartsData.average.metrics"
                     :alt="chartsData.average.alt"
                     :aspect-ratio="3"
+                    :options="dashboardChartOptions"
                 />
             </tab>
             <tab :label="$gettext('Unique Listeners')">
@@ -17,6 +18,7 @@
                     :data="chartsData.unique.metrics"
                     :alt="chartsData.unique.alt"
                     :aspect-ratio="3"
+                    :options="dashboardChartOptions"
                 />
             </tab>
         </tabs>
@@ -25,21 +27,39 @@
 
 <script setup lang="ts">
 import TimeSeriesChart from "~/components/Common/Charts/TimeSeriesChart.vue";
-import {useAsyncState} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
+import {useQuery} from "@tanstack/vue-query";
+import {QueryKeys} from "~/entities/Queries.ts";
+import {useLuxon} from "~/vendor/luxon.ts";
 
 const props = defineProps<{
     chartsUrl: string,
 }>();
 
+const {DateTime} = useLuxon();
+
+const dashboardChartOptions = {
+    options: {
+        scales: {
+            x: {
+                min: Number(DateTime.utc().minus({days: 30}).toMillis()),
+            }
+        }
+    }
+};
+
 const {axios} = useAxios();
 
-const {state: chartsData, isLoading: chartsLoading} = useAsyncState(
-    () => axios.get(props.chartsUrl).then((r) => r.data),
-    {
+const {data: chartsData, isLoading: chartsLoading} = useQuery({
+    queryKey: [QueryKeys.Dashboard, 'charts'],
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get(props.chartsUrl, {signal});
+        return data;
+    },
+    placeholderData: () => ({
         average: {
             metrics: [],
             alt: []
@@ -48,6 +68,6 @@ const {state: chartsData, isLoading: chartsLoading} = useAsyncState(
             metrics: [],
             alt: []
         }
-    }
-);
+    })
+});
 </script>

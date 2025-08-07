@@ -43,6 +43,19 @@ final class Liquidsoap extends AbstractLocalAdapter
     }
 
     /**
+     * Returns the internal port used to relay requests and other changes from AzuraCast to LiquidSoap.
+     *
+     * @param Station $station
+     *
+     * @return int The port number to use for this station.
+     */
+    public function getHttpApiPort(Station $station): int
+    {
+        $settings = $station->backend_config;
+        return $settings->telnet_port ?? ($this->getStreamPort($station) - 1);
+    }
+
+    /**
      * Returns the port used for DJs/Streamers to connect to LiquidSoap for broadcasting.
      *
      * @param Station $station
@@ -51,14 +64,14 @@ final class Liquidsoap extends AbstractLocalAdapter
      */
     public function getStreamPort(Station $station): int
     {
-        $djPort = $station->getBackendConfig()->getDjPort();
+        $djPort = $station->backend_config->dj_port;
         if (null !== $djPort) {
             return $djPort;
         }
 
         // Default to frontend port + 5
-        $frontendConfig = $station->getFrontendConfig();
-        $frontendPort = $frontendConfig->getPort() ?? (8000 + (($station->getId() - 1) * 10));
+        $frontendConfig = $station->frontend_config;
+        $frontendPort = $frontendConfig->port ?? (8000 + (($station->id - 1) * 10));
 
         return $frontendPort + 5;
     }
@@ -75,42 +88,33 @@ final class Liquidsoap extends AbstractLocalAdapter
      */
     public function command(Station $station, string $commandStr): array
     {
-        $socketPath = 'unix://' . $station->getRadioConfigDir() . '/liquidsoap.sock';
+        $apiUri = $this->environment->getLocalUri()
+            ->withPort($this->getHttpApiPort($station))
+            ->withPath('/telnet');
 
-        $fp = stream_socket_client(
-            $socketPath,
-            $errno,
-            $errstr,
-            20
-        );
+        $response = $this->httpClient->post($apiUri, [
+            'headers' => [
+                'x-liquidsoap-api-key' => $station->adapter_api_key,
+            ],
+            'body' => $commandStr,
+        ]);
 
-        if (!$fp) {
-            throw new Exception('Telnet failure: ' . $errstr . ' (' . $errno . ')');
-        }
-
-        fwrite($fp, str_replace(["\\'", '&amp;'], ["'", '&'], urldecode($commandStr)) . "\nquit\n");
-
-        $response = [];
-        while (!feof($fp)) {
-            $response[] = trim(fgets($fp, 1024) ?: '');
-        }
-
-        fclose($fp);
-
-        return $response;
+        $responseBody = trim($response->getBody()->getContents());
+        return explode("\n", $responseBody);
     }
 
     /**
      * @inheritdoc
      */
-    public function getCommand(Station $station): ?string
+    public function getCommand(Station $station): string
     {
-        if ($binary = $this->getBinary()) {
-            $configPath = $station->getRadioConfigDir() . '/liquidsoap.liq';
-            return $binary . ' ' . $configPath;
-        }
+        $binary = $this->getBinary();
 
-        return null;
+        return sprintf(
+            '%s %s',
+            escapeshellcmd($binary),
+            escapeshellarg($this->getConfigurationPath($station))
+        );
     }
 
     /**
@@ -225,8 +229,8 @@ final class Liquidsoap extends AbstractLocalAdapter
      */
     public function disconnectStreamer(Station $station): array
     {
-        $currentStreamer = $station->getCurrentStreamer();
-        $disconnectTimeout = $station->getDisconnectDeactivateStreamer();
+        $currentStreamer = $station->current_streamer;
+        $disconnectTimeout = $station->disconnect_deactivate_streamer;
 
         if ($currentStreamer instanceof StationStreamer && $disconnectTimeout > 0) {
             $currentStreamer->deactivateFor($disconnectTimeout);
@@ -243,7 +247,7 @@ final class Liquidsoap extends AbstractLocalAdapter
 
     public function getWebStreamingUrl(Station $station, UriInterface $baseUrl): UriInterface
     {
-        $djMount = $station->getBackendConfig()->getDjMountPoint();
+        $djMount = $station->backend_config->dj_mount_point;
 
         return $baseUrl
             ->withScheme('wss')

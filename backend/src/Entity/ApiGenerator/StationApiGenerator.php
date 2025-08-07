@@ -28,43 +28,43 @@ final class StationApiGenerator
         $backend = $this->adapters->getBackendAdapter($station);
 
         $response = new NowPlayingStation();
-        $response->id = (int)$station->getId();
-        $response->name = (string)$station->getName();
-        $response->shortcode = $station->getShortName();
-        $response->description = (string)$station->getDescription();
-        $response->frontend = $station->getFrontendType()->value;
-        $response->backend = $station->getBackendType()->value;
-        $response->timezone = $station->getTimezone();
-        $response->url = $station->getUrl();
-        $response->is_public = $station->getEnablePublicPage();
+        $response->id = $station->id;
+        $response->name = $station->name;
+        $response->shortcode = $station->short_name;
+        $response->description = (string)$station->description;
+        $response->frontend = $station->frontend_type->value;
+        $response->backend = $station->backend_type->value;
+        $response->timezone = $station->timezone;
+        $response->url = $station->url;
+        $response->is_public = $station->enable_public_page;
 
         $response->public_player_url = new ResolvableUrl(
             $this->router->namedAsUri(
                 'public:index',
-                ['station_id' => $station->getShortName()]
+                ['station_id' => $station->short_name]
             )
         );
         $response->playlist_pls_url = new ResolvableUrl(
             $this->router->namedAsUri(
                 'public:playlist',
-                ['station_id' => $station->getShortName(), 'format' => 'pls']
+                ['station_id' => $station->short_name, 'format' => 'pls']
             )
         );
         $response->playlist_m3u_url = new ResolvableUrl(
             $this->router->namedAsUri(
                 'public:playlist',
-                ['station_id' => $station->getShortName(), 'format' => 'm3u']
+                ['station_id' => $station->short_name, 'format' => 'm3u']
             )
         );
 
         $mounts = [];
         if (
             null !== $frontend
-            && $station->getFrontendType()->supportsMounts()
-            && $station->getMounts()->count() > 0
+            && $station->frontend_type->supportsMounts()
+            && $station->mounts->count() > 0
         ) {
-            foreach ($station->getMounts() as $mount) {
-                if ($showAllMounts || $mount->getIsVisibleOnPublicPages()) {
+            foreach ($station->mounts as $mount) {
+                if ($showAllMounts || $mount->is_visible_on_public_pages) {
                     $mounts[] = $mount->api($frontend, $baseUri);
                 }
             }
@@ -72,8 +72,8 @@ final class StationApiGenerator
         $response->mounts = $mounts;
 
         $remotes = [];
-        foreach ($station->getRemotes() as $remote) {
-            if ($showAllMounts || $remote->getIsVisibleOnPublicPages()) {
+        foreach ($station->remotes as $remote) {
+            if ($showAllMounts || $remote->is_visible_on_public_pages) {
                 $remotes[] = $remote->api(
                     $this->adapters->getRemoteAdapter($remote)
                 );
@@ -89,16 +89,16 @@ final class StationApiGenerator
             default => null
         };
 
-        $response->hls_enabled = $station->getBackendType()->isEnabled() && $station->getEnableHls();
-        $response->hls_is_default = $response->hls_enabled && $station->getBackendConfig()->getHlsIsDefault();
+        $response->hls_enabled = $station->backend_type->isEnabled() && $station->enable_hls;
+        $response->hls_is_default = $response->hls_enabled && $station->backend_config->hls_is_default;
 
         $response->hls_url = (null !== $backend && $response->hls_enabled)
             ? new ResolvableUrl($backend->getHlsUrl($station, $baseUri))
             : null;
 
         $hlsListeners = 0;
-        foreach ($station->getHlsStreams() as $hlsStream) {
-            $hlsListeners += $hlsStream->getListeners();
+        foreach ($station->hls_streams as $hlsStream) {
+            $hlsListeners += $hlsStream->listeners;
         }
         $response->hls_listeners = $hlsListeners;
 

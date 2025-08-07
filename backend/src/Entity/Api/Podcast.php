@@ -74,6 +74,11 @@ final class Podcast
     #[OA\Property]
     public int $art_updated_at = 0;
 
+    #[OA\Property(
+        description: 'The UUIDv5 global unique identifier for this podcast, based on its RSS feed URL.'
+    )]
+    public string $guid;
+
     #[OA\Property]
     public bool $is_published = true;
 

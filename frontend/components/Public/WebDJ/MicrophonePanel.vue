@@ -23,6 +23,8 @@
                                 class="btn btn-danger"
                                 :class="{ active: isPlaying }"
                                 @click="togglePlaying"
+                                :title="(isPlaying) ? $gettext('Disable Microphone') : $gettext('Enable Microphone')"
+                                :aria-label="(isPlaying) ? $gettext('Disable Microphone') : $gettext('Enable Microphone')"
                             >
                                 <icon :icon="IconMic" />
                             </button>

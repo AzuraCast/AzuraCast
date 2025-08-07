@@ -11,13 +11,16 @@ use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
+use App\Message\WritePlaylistFileMessage;
 use Doctrine\ORM\Query;
+use Symfony\Component\Messenger\MessageBus;
 
 final class CheckFolderPlaylistsTask extends AbstractTask
 {
     public function __construct(
         private readonly StationPlaylistMediaRepository $spmRepo,
-        private readonly StationFilesystems $stationFilesystems
+        private readonly StationFilesystems $stationFilesystems,
+        private readonly MessageBus $messageBus,
     ) {
     }
 
@@ -38,7 +41,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
         $this->logger->info(
             'Processing auto-assigning folders for station...',
             [
-                'station' => $station->getName(),
+                'station' => $station->name,
             ]
         );
 
@@ -46,9 +49,9 @@ final class CheckFolderPlaylistsTask extends AbstractTask
 
         $mediaInPlaylistQuery = $this->em->createQuery(
             <<<'DQL'
-                SELECT spm.media_id
+                SELECT IDENTITY(spm.media) AS media_id
                 FROM App\Entity\StationPlaylistMedia spm
-                WHERE spm.playlist_id = :playlist_id
+                WHERE spm.playlist = :playlist
             DQL
         );
 
@@ -59,10 +62,10 @@ final class CheckFolderPlaylistsTask extends AbstractTask
                 WHERE sm.storage_location = :storageLocation
                 AND sm.path LIKE :path
             DQL
-        )->setParameter('storageLocation', $station->getMediaStorageLocation());
+        )->setParameter('storageLocation', $station->media_storage_location);
 
-        foreach ($station->getPlaylists() as $playlist) {
-            if (PlaylistSources::Songs !== $playlist->getSource()) {
+        foreach ($station->playlists as $playlist) {
+            if (PlaylistSources::Songs !== $playlist->source) {
                 continue;
             }
 
@@ -83,21 +86,21 @@ final class CheckFolderPlaylistsTask extends AbstractTask
         Query $mediaInPlaylistQuery,
         Query $mediaInFolderQuery
     ): void {
-        $folders = $playlist->getFolders();
+        $folders = $playlist->folders;
         if (0 === $folders->count()) {
             return;
         }
 
         // Get all media IDs that are already in the playlist.
-        $mediaInPlaylistRaw = $mediaInPlaylistQuery->setParameter('playlist_id', $playlist->getId())
+        $mediaInPlaylistRaw = $mediaInPlaylistQuery->setParameter('playlist', $playlist)
             ->getArrayResult();
         $mediaInPlaylist = array_column($mediaInPlaylistRaw, 'media_id', 'media_id');
 
         foreach ($folders as $folder) {
-            $path = $folder->getPath();
+            $path = $folder->path;
 
             // Verify the folder still exists.
-            if (!$fsMedia->isDir($path)) {
+            if (!$fsMedia->directoryExists($path)) {
                 $this->em->remove($folder);
                 continue;
             }
@@ -124,6 +127,14 @@ final class CheckFolderPlaylistsTask extends AbstractTask
                 }
             }
 
+            if ($addedRecords > 0) {
+                // Write changes to file.
+                $message = new WritePlaylistFileMessage();
+                $message->playlist_id = $playlist->id;
+
+                $this->messageBus->dispatch($message);
+            }
+
             $logMessage = (0 === $addedRecords)
                 ? 'No changes detected in folder.'
                 : sprintf('%d media records added from folder.', $addedRecords);
@@ -131,8 +142,8 @@ final class CheckFolderPlaylistsTask extends AbstractTask
             $this->logger->debug(
                 $logMessage,
                 [
-                    'playlist' => $playlist->getName(),
-                    'folder' => $folder->getPath(),
+                    'playlist' => $playlist->name,
+                    'folder' => $folder->path,
                 ]
             );
         }

@@ -16,9 +16,8 @@
 
         <data-table
             id="station_webhooks"
-            ref="$dataTable"
             :fields="fields"
-            :api-url="listUrl"
+            :provider="listItemProvider"
         >
             <template #cell(name)="{item}">
                 <div class="typography-subheading">
@@ -79,6 +78,13 @@
                         >
                             {{ $gettext('Test') }}
                         </button>
+                        <button
+                            type="button"
+                            class="btn btn-info"
+                            @click="doClone(item.links.clone)"
+                        >
+                            {{ $gettext('Duplicate') }}
+                        </button>
                     </template>
                     <button
                         type="button"
@@ -110,7 +116,6 @@ import {get, map} from "lodash";
 import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useTemplateRef} from "vue";
-import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
@@ -121,6 +126,8 @@ import {useAzuraCastStation} from "~/vendor/azuracast";
 import {getApiUrl, getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import {ApiTaskWithLog, HasLinks, StationWebhook, WebhookTriggers, WebhookTypes} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
 const listUrl = getStationApiUrl('/webhooks');
 
@@ -136,6 +143,17 @@ const fields: DataTableField<Row>[] = [
     {key: 'triggers', label: $gettext('Triggers'), sortable: false},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
+
+const listItemProvider = useApiItemProvider<Row>(
+    listUrl,
+    queryKeyWithStation([
+        QueryKeys.StationWebhooks
+    ])
+);
+
+const relist = () => {
+    void listItemProvider.refresh();
+};
 
 const langTypeDetails = useTypeDetails();
 const langTriggerDetails = useTriggerDetails();
@@ -166,9 +184,6 @@ const getTriggerNames = (triggers: WebhookTriggers[]) => {
     });
 };
 
-const $dataTable = useTemplateRef('$dataTable');
-const {relist} = useHasDatatable($dataTable);
-
 const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
@@ -182,6 +197,13 @@ const doToggle = (url: string) => {
     });
 };
 
+const doClone = (url: string) => {
+    void axios.post(url).then(() => {
+        notifySuccess($gettext('Webhook duplicated.'));
+        relist();
+    });
+};
+
 const $logModal = useTemplateRef('$logModal');
 
 const doTest = async (url: string) => {
@@ -191,6 +213,6 @@ const doTest = async (url: string) => {
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Web Hook?'),
-    relist
+    () => relist()
 );
 </script>

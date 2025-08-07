@@ -78,11 +78,8 @@
         </template>
 
         <data-table
-            ref="$dataTable"
             :fields="syncTaskFields"
-            :items="syncTasks"
-            :loading="syncTasksLoading"
-            handle-client-side
+            :provider="syncTasksItemProvider"
             :show-toolbar="false"
         >
             <template #cell(name)="row">
@@ -137,7 +134,7 @@
             <loading :loading="queueTotalsLoading">
                 <div class="row">
                     <div
-                        v-for="row in queueTotals"
+                        v-for="row in queueTotals ?? []"
                         :key="row.name"
                         class="col"
                     >
@@ -180,7 +177,7 @@
             >
                 <tabs>
                     <tab
-                        v-for="station in stations"
+                        v-for="station in stations ?? []"
                         :key="station.id"
                         :label="station.name"
                     >
@@ -232,7 +229,6 @@
 
 <script setup lang="ts">
 import {useTemplateRef} from "vue";
-import useHasDatatable from "~/functions/useHasDatatable";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
@@ -243,47 +239,19 @@ import {useNotify} from "~/functions/useNotify";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {getApiUrl} from "~/router.ts";
-import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState.ts";
 import Loading from "~/components/Common/Loading.vue";
 import {IconRefresh} from "~/components/Common/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
-import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
 import {ApiAdminDebugQueue, ApiAdminDebugStation, ApiAdminDebugSyncTask} from "~/entities/ApiInterfaces.ts";
+import {useQuery} from "@tanstack/vue-query";
+import {QueryKeys} from "~/entities/Queries.ts";
+import {useQueryItemProvider} from "~/functions/dataTable/useQueryItemProvider.ts";
 
 const listSyncTasksUrl = getApiUrl('/admin/debug/sync-tasks');
 const listQueueTotalsUrl = getApiUrl('/admin/debug/queues');
 const listStationsUrl = getApiUrl('/admin/debug/stations');
 const clearCacheUrl = getApiUrl('/admin/debug/clear-cache');
 const clearQueuesUrl = getApiUrl('/admin/debug/clear-queue');
-
-const {axios} = useAxios();
-
-const {state: syncTasks, isLoading: syncTasksLoading, execute: resetSyncTasks} = useAutoRefreshingAsyncState<
-    ApiAdminDebugSyncTask[]
->(
-    async () => (await axios.get<ApiAdminDebugSyncTask[]>(listSyncTasksUrl.value)).data,
-    [],
-    {
-        timeout: 60000
-    }
-);
-
-const {state: queueTotals, isLoading: queueTotalsLoading, execute: resetQueueTotals} = useAutoRefreshingAsyncState<
-    ApiAdminDebugQueue[]
->(
-    async () => (await axios.get<ApiAdminDebugQueue[]>(listQueueTotalsUrl.value)).data,
-    [],
-    {
-        timeout: 60000
-    }
-);
-
-const {state: stations, isLoading: stationsLoading} = useRefreshableAsyncState<
-    ApiAdminDebugStation[]
->(
-    async () => (await axios.get<ApiAdminDebugStation[]>(listStationsUrl.value)).data,
-    [],
-);
 
 const {$gettext} = useTranslate();
 const {timestampToRelative} = useLuxon();
@@ -307,8 +275,39 @@ const syncTaskFields: DataTableField<ApiAdminDebugSyncTask>[] = [
     {key: 'actions', label: $gettext('Actions')}
 ];
 
-const $dataTable = useTemplateRef('$dataTable');
-useHasDatatable($dataTable);
+const {axios} = useAxios();
+
+const syncTasksQuery = useQuery({
+    queryKey: [QueryKeys.AdminDebug, 'syncTasks'],
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiAdminDebugSyncTask[]>(listSyncTasksUrl.value, {signal})
+        return data;
+    },
+    refetchInterval: 60000
+});
+
+const syncTasksItemProvider = useQueryItemProvider(syncTasksQuery);
+
+const resetSyncTasks = () => {
+    void syncTasksItemProvider.refresh();
+}
+
+const {data: queueTotals, isLoading: queueTotalsLoading, refetch: resetQueueTotals} = useQuery({
+    queryKey: [QueryKeys.AdminDebug, 'queueTotals'],
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiAdminDebugQueue[]>(listQueueTotalsUrl.value, {signal});
+        return data;
+    },
+    refetchInterval: 60000
+});
+
+const {data: stations, isLoading: stationsLoading} = useQuery({
+    queryKey: [QueryKeys.AdminDebug, 'stations'],
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiAdminDebugStation[]>(listStationsUrl.value, {signal});
+        return data;
+    },
+});
 
 const $modal = useTemplateRef('$modal');
 

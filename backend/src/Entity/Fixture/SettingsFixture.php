@@ -18,25 +18,24 @@ final class SettingsFixture extends AbstractFixture
         }
 
         $settings = new Settings();
-        $settings->setBaseUrl((string)(getenv('INIT_BASE_URL') ?: 'http://docker.local'));
-        $settings->setInstanceName((string)(getenv('INIT_INSTANCE_NAME') ?: 'local test'));
-        $settings->setGeoliteLicenseKey((string)(getenv('INIT_GEOLITE_LICENSE_KEY') ?: ''));
-        $settings->setLastFmApiKey((string)(getenv('INIT_LASTFM_API_KEY') ?: ''));
 
-        $settings->setSetupCompleteTime(time());
-        $settings->setPreferBrowserUrl(true);
-        $settings->setUseRadioProxy(true);
-        $settings->setCheckForUpdates(true);
-        $settings->setExternalIp('127.0.0.1');
-        $settings->setEnableAdvancedFeatures(true);
-        $settings->setEnableStaticNowPlaying(true);
+        $settings->base_url = (string)(getenv('INIT_BASE_URL') ?: 'http://docker.local');
+        $settings->instance_name = (string)(getenv('INIT_INSTANCE_NAME') ?: 'local test');
+        $settings->geolite_license_key = (string)(getenv('INIT_GEOLITE_LICENSE_KEY') ?: '');
+        $settings->last_fm_api_key = (string)(getenv('INIT_LASTFM_API_KEY') ?: '');
+
+        $settings->setup_complete_time = time();
+        $settings->prefer_browser_url = true;
+        $settings->use_radio_proxy = true;
+        $settings->check_for_updates = true;
+        $settings->external_ip = '127.0.0.1';
+        $settings->enable_static_nowplaying = true;
 
         if (!empty(getenv('INIT_DEMO_API_KEY') ?: '')) {
-            $settings->setAnalytics(AnalyticsLevel::NoIp);
-            $settings->setCheckForUpdates(false);
+            $settings->analytics = AnalyticsLevel::NoIp;
+            $settings->check_for_updates = false;
 
-            $settings->setPublicCustomJs(
-                <<<'JS'
+            $settings->public_custom_js = <<<'JS'
                 (() => {
                     document.addEventListener('vue-ready', () => {
                         var form = document.getElementById('login-form');
@@ -46,8 +45,7 @@ final class SettingsFixture extends AbstractFixture
                         }
                     });
                 })();
-            JS
-            );
+            JS;
         }
 
         $manager->persist($settings);

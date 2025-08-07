@@ -42,7 +42,7 @@
             </div>
 
             <div
-                v-if="enableAdvancedFeatures && form.enable_hls"
+                v-if="form.enable_hls"
                 class="row g-3 mb-3"
             >
                 <form-group-field
@@ -88,66 +88,33 @@ import BackendDisabled from "~/components/Admin/Stations/Form/Common/BackendDisa
 import {computed} from "vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric} from "@vuelidate/validators";
-import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 import {ApiGenericForm, BackendAdapters} from "~/entities/ApiInterfaces.ts";
 
 const form = defineModel<ApiGenericForm>('form', {required: true});
 
-const {enableAdvancedFeatures} = useAzuraCast();
-
 const {v$, tabClass} = useVuelidateOnFormTab(
     form,
-    computed(() => {
-        let validations: {
-            [key: string | number]: any
-        } = {
-            enable_hls: {},
-            backend_config: {
-                hls_enable_on_public_player: {},
-                hls_is_default: {},
-            },
-        };
-
-        if (enableAdvancedFeatures) {
-            validations = {
-                ...validations,
-                backend_config: {
-                    ...validations.backend_config,
-                    hls_segment_length: {numeric},
-                    hls_segments_in_playlist: {numeric},
-                    hls_segments_overhead: {numeric},
-                },
-            };
-        }
-
-        return validations;
-    }),
-    () => {
-        let blankForm: {
-            [key: string | number]: any
-        } = {
-            enable_hls: false,
-            backend_config: {
-                hls_enable_on_public_player: false,
-                hls_is_default: false,
-            }
-        };
-
-        if (enableAdvancedFeatures) {
-            blankForm = {
-                ...blankForm,
-                backend_config: {
-                    ...blankForm.backend_config,
-                    hls_segment_length: 4,
-                    hls_segments_in_playlist: 5,
-                    hls_segments_overhead: 2,
-                }
-            };
-        }
-
-        return blankForm;
+    {
+        enable_hls: {},
+        backend_config: {
+            hls_enable_on_public_player: {},
+            hls_is_default: {},
+            hls_segment_length: {numeric},
+            hls_segments_in_playlist: {numeric},
+            hls_segments_overhead: {numeric},
+        },
     },
+    () => ({
+        enable_hls: false,
+        backend_config: {
+            hls_enable_on_public_player: false,
+            hls_is_default: false,
+            hls_segment_length: 4,
+            hls_segments_in_playlist: 5,
+            hls_segments_overhead: 2,
+        }
+    }),
 );
 
 const isBackendEnabled = computed(() => {

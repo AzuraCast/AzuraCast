@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
     ORM\Index(name: 'idx_sent_to_autodj', columns: ['sent_to_autodj']),
     ORM\Index(name: 'idx_timestamp_cued', columns: ['timestamp_cued'])
 ]
-class StationQueue implements
+final class StationQueue implements
     Interfaces\SongInterface,
     Interfaces\IdentifiableEntityInterface,
     Interfaces\StationAwareInterface
@@ -26,56 +26,80 @@ class StationQueue implements
     use Traits\HasSongFields;
 
     public const int DAYS_TO_KEEP = 7;
-    public const int QUEUE_LOG_TTL = 86400;
 
     #[ORM\ManyToOne(inversedBy: 'history')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    protected Station $station;
+    public readonly Station $station;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    protected int $station_id;
+    public private(set) int $station_id;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
-    protected ?StationPlaylist $playlist = null;
+    public ?StationPlaylist $playlist = null;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    protected ?int $playlist_id = null;
+    public private(set) ?int $playlist_id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
-    protected ?StationMedia $media = null;
+    public ?StationMedia $media = null {
+        set {
+            $this->media = $value;
 
+            if (null !== $value) {
+                $this->duration = $value->getCalculatedLength();
+            }
+        }
+    }
+
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    protected ?int $media_id = null;
+    public private(set) ?int $media_id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'request_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
-    protected ?StationRequest $request = null;
+    public ?StationRequest $request = null;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    protected ?int $request_id = null;
+    public private(set) ?int $request_id = null;
 
     #[ORM\Column]
-    protected bool $sent_to_autodj = false;
+    public bool $sent_to_autodj = false;
 
     #[ORM\Column]
-    protected bool $is_played = false;
+    public bool $is_played = false {
+        set {
+            if ($value) {
+                $this->sent_to_autodj = true;
+                $this->timestamp_played = Time::nowUtc();
+            }
+
+            $this->is_played = $value;
+        }
+    }
 
     #[ORM\Column]
-    protected bool $is_visible = true;
+    public bool $is_visible = true;
 
     #[ORM\Column(length: 255, nullable: true)]
-    protected ?string $autodj_custom_uri = null;
+    public ?string $autodj_custom_uri = null;
 
     #[ORM\Column(type: 'datetime_immutable', precision: 6)]
-    protected DateTimeImmutable $timestamp_cued;
+    public DateTimeImmutable $timestamp_cued {
+        set (DateTimeImmutable|string|null $value) => Time::toUtcCarbonImmutable($value);
+    }
 
     #[ORM\Column(type: 'datetime_immutable', precision: 6, nullable: true)]
-    protected ?DateTimeImmutable $timestamp_played = null;
+    public ?DateTimeImmutable $timestamp_played = null {
+        set (DateTimeImmutable|string|null $value) => Time::toNullableUtcCarbonImmutable($value);
+    }
 
     #[ORM\Column(type: 'float', nullable: true)]
-    protected ?float $duration = null;
+    public ?float $duration = null;
 
     public function __construct(Station $station, Interfaces\SongInterface $song)
     {
@@ -85,123 +109,9 @@ class StationQueue implements
         $this->timestamp_cued = Time::nowUtc();
     }
 
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
-    public function getPlaylist(): ?StationPlaylist
-    {
-        return $this->playlist;
-    }
-
-    public function setPlaylist(?StationPlaylist $playlist = null): void
-    {
-        $this->playlist = $playlist;
-    }
-
-    public function getMedia(): ?StationMedia
-    {
-        return $this->media;
-    }
-
-    public function setMedia(?StationMedia $media = null): void
-    {
-        $this->media = $media;
-
-        if (null !== $media) {
-            $this->setDuration($media->getCalculatedLength());
-        }
-    }
-
-    public function getRequest(): ?StationRequest
-    {
-        return $this->request;
-    }
-
-    public function setRequest(?StationRequest $request): void
-    {
-        $this->request = $request;
-    }
-
-    public function getAutodjCustomUri(): ?string
-    {
-        return $this->autodj_custom_uri;
-    }
-
-    public function setAutodjCustomUri(?string $autodjCustomUri): void
-    {
-        $this->autodj_custom_uri = $autodjCustomUri;
-    }
-
-    public function getTimestampCued(): DateTimeImmutable
-    {
-        return $this->timestamp_cued;
-    }
-
-    public function setTimestampCued(mixed $timestampCued): void
-    {
-        $this->timestamp_cued = Time::toUtcCarbonImmutable($timestampCued);
-    }
-
-    public function getDuration(): ?float
-    {
-        return $this->duration;
-    }
-
-    public function setDuration(?float $duration): void
-    {
-        $this->duration = $duration;
-    }
-
-    public function getSentToAutodj(): bool
-    {
-        return $this->sent_to_autodj;
-    }
-
-    public function setSentToAutodj(bool $newValue = true): void
-    {
-        $this->sent_to_autodj = $newValue;
-    }
-
-    public function getIsPlayed(): bool
-    {
-        return $this->is_played;
-    }
-
-    public function setIsPlayed(bool $newValue = true): void
-    {
-        if ($newValue) {
-            $this->sent_to_autodj = true;
-            $this->setTimestampPlayed(Time::nowUtc());
-        }
-
-        $this->is_played = $newValue;
-    }
-
-    public function getIsVisible(): bool
-    {
-        return $this->is_visible;
-    }
-
-    public function setIsVisible(bool $isVisible): void
-    {
-        $this->is_visible = $isVisible;
-    }
-
     public function updateVisibility(): void
     {
-        $this->is_visible = !($this->playlist instanceof StationPlaylist) || !$this->playlist->getIsJingle();
-    }
-
-    public function getTimestampPlayed(): ?DateTimeImmutable
-    {
-        return $this->timestamp_played;
-    }
-
-    public function setTimestampPlayed(mixed $timestampPlayed): void
-    {
-        $this->timestamp_played = Time::toNullableUtcCarbonImmutable($timestampPlayed);
+        $this->is_visible = !($this->playlist instanceof StationPlaylist) || !$this->playlist->is_jingle;
     }
 
     public function __toString(): string
@@ -214,15 +124,17 @@ class StationQueue implements
     public static function fromMedia(Station $station, StationMedia $media): self
     {
         $sq = new self($station, $media);
-        $sq->setMedia($media);
+        $sq->media = $media;
+
         return $sq;
     }
 
     public static function fromRequest(StationRequest $request): self
     {
-        $sq = new self($request->getStation(), $request->getTrack());
-        $sq->setRequest($request);
-        $sq->setMedia($request->getTrack());
+        $sq = new self($request->station, $request->track);
+        $sq->request = $request;
+        $sq->media = $request->track;
+
         return $sq;
     }
 }

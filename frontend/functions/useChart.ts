@@ -8,7 +8,7 @@ import {
     registerables
 } from "chart.js";
 import {defaultsDeep} from "lodash";
-import {computed, MaybeRefOrGetter, onMounted, onUnmounted, Ref, toValue, watch} from "vue";
+import {computed, MaybeRefOrGetter, onMounted, onUnmounted, Ref, toRaw, toValue, watch} from "vue";
 import zoomPlugin from "chartjs-plugin-zoom";
 import chartjsColorSchemes from "~/vendor/chartjs_colorschemes.ts";
 
@@ -68,8 +68,8 @@ export default function useChart<
                 aspectRatio: props.aspectRatio ?? 2,
             },
             data: {
-                datasets: props.data,
-                labels: props.labels
+                datasets: toRaw(props.data),
+                labels: toRaw(props.labels)
             }
         }, toValue(defaultOptions), props.options);
     });

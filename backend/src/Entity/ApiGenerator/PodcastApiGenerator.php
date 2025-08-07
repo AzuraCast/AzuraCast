@@ -11,11 +11,15 @@ use App\Entity\Repository\PodcastRepository;
 use App\Entity\Station;
 use App\Http\ServerRequest;
 use App\Utilities\Strings;
+use Psr\Http\Message\UriInterface;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 use Symfony\Component\Intl\Languages;
+use Symfony\Component\Uid\Uuid;
 
 final class PodcastApiGenerator
 {
+    public const string PODCAST_GUID_NAMESPACE = 'ead4c236-bf58-58c6-a2c6-a6b28d128cb6';
+
     /**
      * @var array<string, array<string>>
      */
@@ -35,24 +39,24 @@ final class PodcastApiGenerator
         $station = $request->getStation();
 
         $return = new ApiPodcast();
-        $return->id = $record->getIdRequired();
-        $return->storage_location_id = $record->getStorageLocation()->getIdRequired();
+        $return->id = $record->id;
+        $return->storage_location_id = $record->storage_location->id;
 
-        $return->source = $record->getSource()->value;
-        $return->playlist_id = $record->getPlaylist()?->getIdRequired();
-        $return->playlist_auto_publish = $record->playlistAutoPublish();
+        $return->source = $record->source->value;
+        $return->playlist_id = $record->playlist?->id;
+        $return->playlist_auto_publish = $record->playlist_auto_publish;
 
-        $return->title = $record->getTitle();
-        $return->link = $record->getLink();
+        $return->title = $record->title;
+        $return->link = $record->link;
 
-        $return->description = $record->getDescription();
+        $return->description = $record->description;
         $return->description_short = Strings::truncateText($return->description, 200);
 
-        $return->is_enabled = $record->isEnabled();
+        $return->is_enabled = $record->is_enabled;
 
-        $return->branding_config = $record->getBrandingConfig();
+        $return->branding_config = $record->branding_config;
 
-        $return->language = $record->getLanguage();
+        $return->language = $record->language;
         try {
             $locale = $request->getCustomization()->getLocale();
             $return->language_name = Languages::getName(
@@ -62,15 +66,15 @@ final class PodcastApiGenerator
         } catch (MissingResourceException) {
         }
 
-        $return->author = $record->getAuthor();
-        $return->email = $record->getEmail();
+        $return->author = $record->author;
+        $return->email = $record->email;
 
         $categories = [];
-        foreach ($record->getCategories() as $category) {
+        foreach ($record->categories as $category) {
             $categoryRow = new ApiPodcastCategory();
-            $categoryRow->category = $category->getCategory();
-            $categoryRow->title = $category->getTitle();
-            $categoryRow->subtitle = $category->getSubTitle();
+            $categoryRow->category = $category->category;
+            $categoryRow->title = $category->title;
+            $categoryRow->subtitle = $category->subtitle;
 
             $categoryRow->text = (!empty($categoryRow->subtitle))
                 ? $categoryRow->title . ' - ' . $categoryRow->subtitle
@@ -82,19 +86,19 @@ final class PodcastApiGenerator
 
         $return->is_published = $this->isPublished($record, $station);
 
-        $return->art_updated_at = $record->getArtUpdatedAt();
-        $return->has_custom_art = (0 !== $record->getArtUpdatedAt());
+        $return->art_updated_at = $record->art_updated_at;
+        $return->has_custom_art = (0 !== $record->art_updated_at);
 
-        $return->episodes = $record->getEpisodes()->count();
+        $return->episodes = $record->episodes->count();
 
         $baseRouteParams = [
-            'station_id' => $station->getIdRequired(),
-            'podcast_id' => $record->getIdRequired(),
+            'station_id' => $station->id,
+            'podcast_id' => $record->id,
         ];
 
         $artRouteParams = $baseRouteParams;
         if ($return->has_custom_art) {
-            $artRouteParams['timestamp'] = $record->getArtUpdatedAt();
+            $artRouteParams['timestamp'] = $record->art_updated_at;
         }
 
         $return->art = $router->named(
@@ -102,6 +106,14 @@ final class PodcastApiGenerator
             routeParams: $artRouteParams,
             absolute: !$isInternal
         );
+
+        $feedUri = $router->namedAsUri(
+            routeName: 'public:podcast:feed',
+            routeParams: $baseRouteParams,
+            absolute: true
+        );
+
+        $return->guid = $this->buildPodcastGuid($feedUri);
 
         $return->links = [
             'self' => $router->named(
@@ -119,11 +131,7 @@ final class PodcastApiGenerator
                 routeParams: $baseRouteParams,
                 absolute: !$isInternal
             ),
-            'public_feed' => $router->named(
-                routeName: 'public:podcast:feed',
-                routeParams: $baseRouteParams,
-                absolute: !$isInternal
-            ),
+            'public_feed' => (string)$feedUri,
         ];
 
         return $return;
@@ -133,16 +141,29 @@ final class PodcastApiGenerator
         Podcast $podcast,
         Station $station
     ): bool {
-        if (!isset($this->publishedPodcasts[$station->getShortName()])) {
-            $this->publishedPodcasts[$station->getShortName()] = $this->podcastRepo->getPodcastIdsWithPublishedEpisodes(
+        if (!isset($this->publishedPodcasts[$station->short_name])) {
+            $this->publishedPodcasts[$station->short_name] = $this->podcastRepo->getPodcastIdsWithPublishedEpisodes(
                 $station
             );
         }
 
         return in_array(
-            $podcast->getIdRequired(),
-            $this->publishedPodcasts[$station->getShortName()] ?? [],
+            $podcast->id,
+            $this->publishedPodcasts[$station->short_name] ?? [],
             true
+        );
+    }
+
+    private function buildPodcastGuid(UriInterface $uri): string
+    {
+        $baseUri = rtrim(
+            (string)$uri->withScheme(''),
+            '/'
+        );
+
+        return (string)Uuid::v5(
+            Uuid::fromString(self::PODCAST_GUID_NAMESPACE),
+            $baseUri
         );
     }
 }

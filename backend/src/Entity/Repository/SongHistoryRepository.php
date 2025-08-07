@@ -33,7 +33,7 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
         Station $station,
         ?int $numEntries = null
     ): array {
-        $numEntries ??= $station->getApiHistoryItems();
+        $numEntries ??= $station->api_history_items;
         if (0 === $numEntries) {
             return [];
         }
@@ -75,7 +75,7 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
         Station $station,
         int $listeners
     ): SongHistory {
-        $currentSong = $station->getCurrentSong();
+        $currentSong = $station->current_song;
         if (null === $currentSong) {
             throw new RuntimeException('No track to update.');
         }
@@ -91,26 +91,24 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
         Station $station,
         SongInterface $toCompare
     ): bool {
-        $currentSong = $station->getCurrentSong();
-        return !(null !== $currentSong) || $currentSong->getSongId() !== $toCompare->getSongId();
+        $currentSong = $station->current_song;
+        return !(null !== $currentSong) || $currentSong->song_id !== $toCompare->song_id;
     }
 
     public function changeCurrentSong(
         Station $station,
         SongHistory $newCurrentSong
     ): SongHistory {
-        $previousCurrentSong = $station->getCurrentSong();
+        $previousCurrentSong = $station->current_song;
 
         if (null !== $previousCurrentSong) {
             // Wrapping up processing on the previous SongHistory item (if present).
             $previousCurrentSong->playbackEnded();
 
-            $previousCurrentSong->setUniqueListeners(
-                $this->listenerRepository->getUniqueListeners(
-                    $station,
-                    $previousCurrentSong->getTimestampStart(),
-                    Time::nowUtc()
-                )
+            $previousCurrentSong->unique_listeners = $this->listenerRepository->getUniqueListeners(
+                $station,
+                $previousCurrentSong->timestamp_start,
+                Time::nowUtc()
             );
 
             $this->em->persist($previousCurrentSong);
@@ -119,14 +117,14 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
         $newCurrentSong->setListenersFromLastSong($previousCurrentSong);
         $newCurrentSong->updateVisibility();
 
-        $currentStreamer = $station->getCurrentStreamer();
+        $currentStreamer = $station->current_streamer;
         if (null !== $currentStreamer) {
-            $newCurrentSong->setStreamer($currentStreamer);
+            $newCurrentSong->streamer = $currentStreamer;
         }
 
         $this->em->persist($newCurrentSong);
 
-        $station->setCurrentSong($newCurrentSong);
+        $station->current_song = $newCurrentSong;
         $this->em->persist($station);
 
         return $newCurrentSong;

@@ -3,6 +3,7 @@ import installAxios from "~/vendor/axios";
 import {installTranslate} from "~/vendor/gettext";
 import {installCurrentVueInstance} from "~/vendor/vueInstance";
 import {AzuraCastConstants, setGlobalProps} from "~/vendor/azuracast";
+import installTanstack from "~/vendor/tanstack.ts";
 
 export default function initApp(
     appConfig: Component = {},
@@ -14,6 +15,9 @@ export default function initApp(
 
     /* Track current instance (for programmatic use). */
     installCurrentVueInstance(vueApp);
+
+    /* TanStack Query */
+    installTanstack(vueApp);
 
     (<any>window).vueComponent = async (el: string, globalProps: AzuraCastConstants): Promise<void> => {
         setGlobalProps(globalProps);

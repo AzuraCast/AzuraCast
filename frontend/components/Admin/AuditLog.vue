@@ -18,14 +18,13 @@
         </template>
 
         <data-table
-            ref="$dataTable"
             paginated
             :fields="fields"
-            :api-url="apiUrl"
+            :provider="apiItemProvider"
         >
             <template #cell(operation)="row">
                 <span
-                    v-if="row.item.operation_text === 'insert'"
+                    v-if="row.item.operationText === 'insert'"
                     class="text-success"
                     :title="$gettext('Insert')"
                 >
@@ -35,7 +34,7 @@
                     />
                 </span>
                 <span
-                    v-else-if="row.item.operation_text === 'delete'"
+                    v-else-if="row.item.operationText === 'delete'"
                     class="text-danger"
                     :title="$gettext('Delete')"
                 >
@@ -61,7 +60,7 @@
             </template>
             <template #cell(target)="row">
                 <template v-if="row.item.target">
-                    <small>{{ row.item.target_class }}</small><br>
+                    <small>{{ row.item.targetClass }}</small><br>
                     {{ row.item.target }}
                 </template>
                 <template v-else>
@@ -86,20 +85,21 @@
 </template>
 
 <script setup lang="ts">
-import {computed, nextTick, ref, useTemplateRef, watch} from "vue";
+import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAzuraCast} from "~/vendor/azuracast";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import Icon from "~/components/Common/Icon.vue";
-import useHasDatatable from "~/functions/useHasDatatable";
 import DetailsModal from "~/components/Admin/AuditLog/DetailsModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {getApiUrl} from "~/router";
 import {IconAddCircle, IconRemoveCircle, IconSwapHorizontalCircle} from "~/components/Common/icons";
-import {ApiAdminAuditLog, ApiAdminAuditLogChangeset} from "~/entities/ApiInterfaces.ts";
+import {ApiAdminAuditLogChangeset, AuditLog} from "~/entities/ApiInterfaces.ts";
 import {DeepRequired} from "utility-types";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 const baseApiUrl = getApiUrl('/admin/auditlog');
 
@@ -113,7 +113,9 @@ const dateRange = ref({
 const {$gettext} = useTranslate();
 const {timeConfig} = useAzuraCast();
 
-const fields: DataTableField<ApiAdminAuditLog>[] = [
+type Row = AuditLog;
+
+const fields: DataTableField<Row>[] = [
     {
         key: 'timestamp',
         label: $gettext('Date/Time'),
@@ -143,14 +145,13 @@ const apiUrl = computed(() => {
     return apiUrl.toString();
 });
 
-const $dataTable = useTemplateRef('$dataTable');
-const {navigate} = useHasDatatable($dataTable);
-
-watch(dateRange, () => {
-    void nextTick(() => {
-        navigate();
-    });
-});
+const apiItemProvider = useApiItemProvider<Row>(
+    apiUrl,
+    [
+        QueryKeys.AdminAuditLog,
+        dateRange
+    ]
+);
 
 const $detailsModal = useTemplateRef('$detailsModal');
 

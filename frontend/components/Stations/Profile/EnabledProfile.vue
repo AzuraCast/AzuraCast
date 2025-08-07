@@ -78,8 +78,9 @@ import NowPlayingNotStartedPanel from "~/components/Stations/Profile/NowPlayingN
 import NowPlaying from "~/entities/NowPlaying";
 import {computed} from "vue";
 import {useAxios} from "~/vendor/axios";
-import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
 import {ApiStationProfile, BackendAdapters, FrontendAdapters} from "~/entities/ApiInterfaces.ts";
+import {useQuery} from "@tanstack/vue-query";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
 export interface EnabledProfileProps extends ProfileBackendPanelParentProps,
     ProfileFrontendPanelParentProps,
@@ -105,9 +106,17 @@ const hasActiveBackend = computed(() => {
 
 const {axiosSilent} = useAxios();
 
-const {state: profileInfo} = useAutoRefreshingAsyncState<ApiStationProfile>(
-    async () => (await axiosSilent.get<ApiStationProfile>(props.profileApiUri)).data,
-    {
+const {data: profileInfo} = useQuery<ApiStationProfile>({
+    queryKey: queryKeyWithStation([
+        QueryKeys.StationProfile
+    ], [
+        'services'
+    ]),
+    queryFn: async ({signal}) => {
+        const {data} = await axiosSilent.get(props.profileApiUri, {signal});
+        return data;
+    },
+    placeholderData: () => ({
         station: {
             ...NowPlaying.station
         },
@@ -118,9 +127,7 @@ const {state: profileInfo} = useAutoRefreshingAsyncState<ApiStationProfile>(
             station_needs_restart: false
         },
         schedule: []
-    },
-    {
-        timeout: 15000
-    }
-);
+    }),
+    refetchInterval: 15 * 1000
+});
 </script>

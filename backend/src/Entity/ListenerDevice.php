@@ -4,59 +4,89 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Utilities\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
+use OpenApi\Attributes as OA;
 
-#[ORM\Embeddable]
-class ListenerDevice implements JsonSerializable
+#[
+    ORM\Embeddable,
+    OA\Schema(
+        schema: 'Api_ListenerDevice',
+        type: 'object'
+    )]
+final readonly class ListenerDevice implements JsonSerializable
 {
-    #[ORM\Column(length: 255)]
-    protected ?string $client = null;
+    #[
+        ORM\Column(length: 255),
+        OA\Property(
+            description: 'Summary of the listener client.',
+            example: 'Firefox 121.0, Windows'
+        )
+    ]
+    public ?string $client;
 
-    #[ORM\Column]
-    protected bool $is_browser = false;
+    #[
+        ORM\Column,
+        OA\Property(
+            description: 'If the listener device is likely a browser.',
+            example: true
+        )
+    ]
+    public bool $is_browser;
 
-    #[ORM\Column]
-    protected bool $is_mobile = false;
+    #[
+        ORM\Column,
+        OA\Property(
+            description: 'If the listener device is likely a mobile device.',
+            example: true
+        )
+    ]
+    public bool $is_mobile;
 
-    #[ORM\Column]
-    protected bool $is_bot = false;
+    #[
+        ORM\Column,
+        OA\Property(
+            description: 'If the listener device is likely a crawler.',
+            example: true
+        )
+    ]
+    public bool $is_bot;
 
-    #[ORM\Column(length: 150, nullable: true)]
-    protected ?string $browser_family = null;
+    #[
+        ORM\Column(length: 150, nullable: true),
+        OA\Property(
+            description: 'Summary of the listener browser family.',
+            example: 'Firefox'
+        )
+    ]
+    public ?string $browser_family;
 
-    #[ORM\Column(length: 150, nullable: true)]
-    protected ?string $os_family = null;
+    #[
+        ORM\Column(length: 150, nullable: true),
+        OA\Property(
+            description: 'Summary of the listener OS family.',
+            example: 'Windows'
+        )
+    ]
+    public ?string $os_family;
 
-    public function getClient(): ?string
-    {
-        return $this->client;
+    public function __construct(
+        ?string $client,
+        bool $is_browser,
+        bool $is_mobile,
+        bool $is_bot,
+        ?string $browser_family,
+        ?string $os_family
+    ) {
+        $this->client = $client;
+        $this->is_browser = $is_browser;
+        $this->is_mobile = $is_mobile;
+        $this->is_bot = $is_bot;
+        $this->browser_family = $browser_family;
+        $this->os_family = $os_family;
     }
 
-    public function isBrowser(): bool
-    {
-        return $this->is_browser;
-    }
-
-    public function isMobile(): bool
-    {
-        return $this->is_mobile;
-    }
-
-    public function isBot(): bool
-    {
-        return $this->is_bot;
-    }
-
-    public function getBrowserFamily(): ?string
-    {
-        return $this->browser_family;
-    }
-
-    public function getOsFamily(): ?string
-    {
-        return $this->os_family;
-    }
 
     public function jsonSerialize(): array
     {
@@ -68,5 +98,17 @@ class ListenerDevice implements JsonSerializable
             'browser_family' => $this->browser_family,
             'os_family' => $this->os_family,
         ];
+    }
+
+    public static function fromArray(array $row): self
+    {
+        return new self(
+            client: Types::stringOrNull($row['client'] ?? null),
+            is_browser: Types::bool($row['is_browser'] ?? null),
+            is_mobile: Types::bool($row['is_mobile'] ?? null),
+            is_bot: Types::bool($row['is_bot'] ?? null),
+            browser_family: Types::stringOrNull($row['browser_family'] ?? null),
+            os_family: Types::stringOrNull($row['os_family'] ?? null)
+        );
     }
 }

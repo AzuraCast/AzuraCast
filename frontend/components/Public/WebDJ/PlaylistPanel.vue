@@ -20,14 +20,18 @@
                         type="button"
                         class="btn btn-sm btn-success"
                         @click="play()"
+                        :title="$gettext('Play')"
+                        :aria-label="$gettext('Play')"
                     >
-                        <icon :icon="IconPlayCircle" />
+                        <icon :icon="IconPlayCircle"/>
                     </button>
                     <button
                         v-if="isPlaying && !isPaused"
                         type="button"
                         class="btn btn-sm btn-warning"
                         @click="togglePause()"
+                        :title="$gettext('Pause')"
+                        :aria-label="$gettext('Pause')"
                     >
                         <icon :icon="IconPauseCircle" />
                     </button>
@@ -35,6 +39,8 @@
                         type="button"
                         class="btn btn-sm"
                         @click="previous()"
+                        :title="$gettext('Previous Track')"
+                        :aria-label="$gettext('Previous Track')"
                     >
                         <icon :icon="IconFastRewind" />
                     </button>
@@ -42,6 +48,8 @@
                         type="button"
                         class="btn btn-sm"
                         @click="next()"
+                        :title="$gettext('Next Track')"
+                        :aria-label="$gettext('Next Track')"
                     >
                         <icon :icon="IconFastForward" />
                     </button>
@@ -49,6 +57,8 @@
                         type="button"
                         class="btn btn-sm btn-danger"
                         @click="stop()"
+                        :title="$gettext('Stop')"
+                        :aria-label="$gettext('Stop')"
                     >
                         <icon :icon="IconStop" />
                     </button>

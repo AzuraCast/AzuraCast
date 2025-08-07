@@ -12,23 +12,29 @@
 <script setup lang="ts">
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {useAxios} from "~/vendor/axios.ts";
-import {useAsyncState} from "@vueuse/core";
 import {getStationApiUrl} from "~/router.ts";
 import StationDisabledPanel from "~/components/Stations/Profile/StationDisabledPanel.vue";
 import Loading from "~/components/Common/Loading.vue";
-import EnabledProfile, {EnabledProfileProps} from "~/components/Stations/Profile/EnabledProfile.vue";
+import EnabledProfile from "~/components/Stations/Profile/EnabledProfile.vue";
+import {useQuery} from "@tanstack/vue-query";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
 const {isEnabled} = useAzuraCastStation();
 
 const {axios} = useAxios();
-const {isLoading, state} = useAsyncState<EnabledProfileProps>(
-    async () => {
-        if (isEnabled) {
-            const r = await axios.get(getStationApiUrl('/vue/profile').value);
-            return await r.data;
-        }
-        return null;
+
+const apiUrl = getStationApiUrl('/vue/profile');
+
+const {data: state, isLoading} = useQuery({
+    queryKey: queryKeyWithStation([
+        QueryKeys.StationProfile
+    ], [
+        'profile'
+    ]),
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get(apiUrl.value, {signal});
+        return data;
     },
-    null
-);
+    enabled: isEnabled
+});
 </script>

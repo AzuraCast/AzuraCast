@@ -6,19 +6,29 @@ namespace App\Entity\Interfaces;
 
 interface SongInterface
 {
-    public function getSongId(): string;
+    public string $song_id {
+        get;
+    }
 
-    public function updateSongId(): void;
+    public ?string $text {
+        get;
+        set;
+    }
 
-    public function getText(): ?string;
+    public ?string $artist {
+        get;
+        set;
+    }
 
-    public function setText(?string $text): void;
+    public ?string $title {
+        get;
+        set;
+    }
 
-    public function getArtist(): ?string;
+    public ?string $album {
+        get;
+        set;
+    }
 
-    public function setArtist(?string $artist): void;
-
-    public function getTitle(): ?string;
-
-    public function setTitle(?string $title): void;
+    public function updateMetaFields(): void;
 }

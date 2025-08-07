@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\Console\Command\Dev\GenerateApiDocsCommand;
+use App\Container\EnvironmentAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use App\Version;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Yaml\Yaml;
 
 #[
     OA\Get(
@@ -35,29 +36,48 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class OpenApiAction implements SingleActionInterface
+class OpenApiPublicAction implements SingleActionInterface
 {
-    public function __construct(
-        private readonly Version $version,
-        private readonly GenerateApiDocsCommand $apiDocsCommand
-    ) {
-    }
+    use EnvironmentAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
         array $params
     ): ResponseInterface {
-        $apiBaseUrl = str_replace(
-            '/openapi.yml',
-            '',
-            $request->getRouter()->fromHere(absolute: true)
+        $yamlPath = $this->environment->getBaseDirectory() . '/web/static/openapi.yml';
+        $yamlContents = new Filesystem()->readFile($yamlPath);
+
+        return $this->writeApiWithLocalSite(
+            $yamlContents,
+            $request,
+            $response
+        );
+    }
+
+    protected function writeApiWithLocalSite(
+        string $yamlContents,
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
+        $localApiUrl = $request->getRouter()->named(
+            'api:index:index',
+            absolute: true
         );
 
-        $yaml = $this->apiDocsCommand->generate($this->version->getVersion(), $apiBaseUrl)?->toYaml();
+        /** @var array $yaml */
+        $yaml = Yaml::parse($yamlContents);
+
+        array_unshift(
+            $yaml['servers'],
+            [
+                'url' => $localApiUrl,
+                'description' => 'This Server',
+            ]
+        );
 
         return $response->renderStringAsFile(
-            $yaml ?? '',
+            Yaml::dump($yaml, PHP_INT_MAX),
             'text/x-yaml',
         );
     }

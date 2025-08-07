@@ -36,15 +36,11 @@
         <div class="row">
             <div class="col-md-12">
                 <data-table
-                    id="station_media"
-                    ref="$dataTable"
+                    id="station_media_directories"
                     show-toolbar
                     paginated
                     :fields="fields"
-                    :items="directories"
-                    :loading="isLoading"
-                    handle-client-side
-                    @refresh-clicked="reload()"
+                    :provider="directoryItemProvider"
                 >
                     <template #cell(name)="{item}">
                         <div class="is_dir d-flex align-items-center">
@@ -93,9 +89,11 @@ import Modal from "~/components/Common/Modal.vue";
 import {IconChevronLeft, IconFolder} from "~/components/Common/icons";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchResponse.ts";
-import {useAsyncState} from "@vueuse/core";
 import {MediaSelectedItems} from "~/components/Stations/Media.vue";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import {useQuery} from "@tanstack/vue-query";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import {useQueryItemProvider} from "~/functions/dataTable/useQueryItemProvider.ts";
 
 const props = defineProps<{
     selectedItems: MediaSelectedItems,
@@ -108,6 +106,7 @@ const emit = defineEmits<HasRelistEmit>();
 
 const destinationDirectory = ref<string>('');
 const dirHistory = ref<string[]>([]);
+const isModalVisible = ref(false);
 
 const {$gettext} = useTranslate();
 
@@ -128,23 +127,38 @@ const {show, hide} = useHasModal($modal);
 const onHidden = () => {
     dirHistory.value = [];
     destinationDirectory.value = '';
+    isModalVisible.value = false;
 }
 
 const {axios} = useAxios();
 
 const {handleBatchResponse} = useHandleBatchResponse();
 
-const {state: directories, execute: reload, isLoading} = useAsyncState(
-    () => axios.get(props.listDirectoriesUrl, {
-        params: {
-            currentDirectory: destinationDirectory.value
-        }
-    }).then((r) => r.data.rows),
-    [],
-    {
-        immediate: false
-    }
-);
+const directoriesQuery = useQuery({
+    queryKey: queryKeyWithStation(
+        [
+            QueryKeys.StationMedia
+        ],
+        [
+            'directories',
+            destinationDirectory
+        ]
+    ),
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get(props.listDirectoriesUrl, {
+            signal,
+            params: {
+                currentDirectory: destinationDirectory.value
+            }
+        });
+
+        return data.rows;
+    },
+    staleTime: 60 * 1000,
+    enabled: isModalVisible
+});
+
+const directoryItemProvider = useQueryItemProvider(directoriesQuery);
 
 const doMove = () => {
     void axios.put(props.batchUrl, {
@@ -165,18 +179,9 @@ const doMove = () => {
     });
 };
 
-const $dataTable = useTemplateRef('$dataTable');
-
-const onDirChange = () => {
-    void reload().finally(() => {
-        $dataTable.value?.refresh();
-    });
-}
-
 const enterDirectory = (path: string) => {
     dirHistory.value.push(path);
     destinationDirectory.value = path;
-    onDirChange();
 };
 
 const pageBack = () => {
@@ -188,11 +193,10 @@ const pageBack = () => {
     }
 
     destinationDirectory.value = newDirectory;
-    onDirChange();
 };
 
 const open = () => {
-    void reload();
+    isModalVisible.value = true;
     show();
 }
 

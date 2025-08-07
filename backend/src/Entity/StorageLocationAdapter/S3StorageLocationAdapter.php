@@ -25,14 +25,19 @@ final class S3StorageLocationAdapter extends AbstractStorageLocationLocationAdap
 
     public function getStorageAdapter(): ExtendedAdapterInterface
     {
-        $filteredPath = self::filterPath($this->storageLocation->getPath());
+        $filteredPath = self::filterPath($this->storageLocation->path);
 
-        $bucket = $this->storageLocation->getS3Bucket();
+        $bucket = $this->storageLocation->s3Bucket;
         if (null === $bucket) {
             throw new RuntimeException('Amazon S3 bucket is empty.');
         }
 
-        return new AwsS3Adapter($this->getClient(), $bucket, $filteredPath);
+        return new AwsS3Adapter(
+            client: $this->getClient(),
+            bucket: $bucket,
+            prefix: $filteredPath,
+            options: ['ACL' => null]
+        );
     }
 
     public function validate(): void
@@ -40,7 +45,7 @@ final class S3StorageLocationAdapter extends AbstractStorageLocationLocationAdap
         $client = $this->getClient();
         $client->listObjectsV2(
             [
-                'Bucket' => $this->storageLocation->getS3Bucket(),
+                'Bucket' => $this->storageLocation->s3Bucket,
                 'max-keys' => 1,
             ]
         );
@@ -53,17 +58,14 @@ final class S3StorageLocationAdapter extends AbstractStorageLocationLocationAdap
         $s3Options = array_filter(
             [
                 'credentials' => [
-                    'key' => $this->storageLocation->getS3CredentialKey(),
-                    'secret' => $this->storageLocation->getS3CredentialSecret(),
+                    'key' => $this->storageLocation->s3CredentialKey,
+                    'secret' => $this->storageLocation->s3CredentialSecret,
                 ],
-                'region' => $this->storageLocation->getS3Region(),
-                'version' => $this->storageLocation->getS3Version(),
-                'endpoint' => $this->storageLocation->getS3Endpoint(),
-                'use_path_style_endpoint' => $this->storageLocation->getS3UsePathStyle(),
+                'region' => $this->storageLocation->s3Region,
+                'version' => $this->storageLocation->s3Version,
+                'endpoint' => $this->storageLocation->s3Endpoint,
+                'use_path_style_endpoint' => $this->storageLocation->s3UsePathStyle,
                 'request_checksum_calculation' => 'when_required',
-                'options' => [
-                    'ACL' => '',
-                ],
             ]
         );
         return new S3Client($s3Options);
@@ -71,7 +73,7 @@ final class S3StorageLocationAdapter extends AbstractStorageLocationLocationAdap
 
     public static function getUri(StorageLocation $storageLocation, ?string $suffix = null): string
     {
-        $path = self::applyPath($storageLocation->getPath(), $suffix);
-        return 's3://' . $storageLocation->getS3Bucket() . '/' . ltrim($path, '/');
+        $path = self::applyPath($storageLocation->path, $suffix);
+        return 's3://' . $storageLocation->s3Bucket . '/' . ltrim($path, '/');
     }
 }

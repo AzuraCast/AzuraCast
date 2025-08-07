@@ -43,7 +43,7 @@ final class CheckUpdatesTask extends AbstractTask
         Environment $environment,
         Settings $settings
     ): int {
-        $updateLastRun = $settings->getUpdateLastRun();
+        $updateLastRun = $settings->update_last_run;
 
         return ($updateLastRun !== 0)
             ? $updateLastRun + self::UPDATE_THRESHOLD
@@ -54,14 +54,11 @@ final class CheckUpdatesTask extends AbstractTask
     {
         $settings = $this->readSettings();
 
-        $settings->updateUpdateLastRun();
-        $this->writeSettings($settings);
-
         try {
             $updates = $this->azuracastCentral->checkForUpdates();
 
-            if (!empty($updates)) {
-                $settings->setUpdateResults($updates);
+            if (null !== $updates) {
+                $settings->update_results = $updates;
                 $this->writeSettings($settings);
 
                 $this->logger->info('Successfully checked for updates.', ['results' => $updates]);
@@ -70,6 +67,11 @@ final class CheckUpdatesTask extends AbstractTask
             }
         } catch (TransferException $e) {
             $this->logger->error(sprintf('Error from AzuraCast Central (%d): %s', $e->getCode(), $e->getMessage()));
+
+            // Force re-setting of update data (to update timestamps).
+            $updates = $settings->update_results;
+            $settings->update_results = $updates;
+            $this->writeSettings($settings);
             return;
         }
     }

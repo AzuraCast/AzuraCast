@@ -16,10 +16,9 @@
 
         <data-table
             id="station_remotes"
-            ref="$dataTable"
             paginated
             :fields="fields"
-            :api-url="listUrl"
+            :provider="listItemProvider"
         >
             <template #cell(display_name)="row">
                 <h5 class="m-0">
@@ -65,8 +64,8 @@
     <remote-edit-modal
         ref="$editModal"
         :create-url="listUrl"
-        @relist="relist"
-        @needs-restart="mayNeedRestart"
+        @relist="() => relist()"
+        @needs-restart="() => mayNeedRestart()"
     />
 </template>
 
@@ -77,25 +76,37 @@ import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useTranslate} from "~/vendor/gettext";
 import {useTemplateRef} from "vue";
 import showFormatAndBitrate from "~/functions/showFormatAndBitrate";
-import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import {HasLinks, StationRemote} from "~/entities/ApiInterfaces.ts";
 
 const listUrl = getStationApiUrl('/remotes');
 
 const {$gettext} = useTranslate();
 
-const fields: DataTableField[] = [
+type Row = StationRemote & HasLinks;
+
+const fields: DataTableField<Row>[] = [
     {key: 'display_name', isRowHeader: true, label: $gettext('Name'), sortable: true},
     {key: 'enable_autodj', label: $gettext('AutoDJ'), sortable: true},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const $dataTable = useTemplateRef('$dataTable');
-const {relist} = useHasDatatable($dataTable);
+const listItemProvider = useApiItemProvider<Row>(
+    listUrl,
+    queryKeyWithStation([
+        QueryKeys.StationRemotes
+    ])
+);
+
+const relist = () => {
+    void listItemProvider.refresh();
+};
 
 const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);

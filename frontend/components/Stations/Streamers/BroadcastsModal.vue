@@ -13,7 +13,7 @@
             <broadcasts-modal-toolbar
                 :batch-url="batchUrl"
                 :selected-items="selectedItems"
-                @relist="relist"
+                @relist="() => refresh()"
             />
 
             <data-table
@@ -22,7 +22,7 @@
                 selectable
                 paginated
                 :fields="fields"
-                :api-url="listUrl"
+                :provider="listItemProvider"
                 @row-selected="onRowSelected"
             >
                 <template #cell(download)="row">
@@ -70,20 +70,22 @@ import formatFileSize from "~/functions/formatFileSize";
 import InlinePlayer from "~/components/InlinePlayer.vue";
 import Icon from "~/components/Common/Icon.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
-import {ref, shallowRef, useTemplateRef} from "vue";
+import {computed, ref, shallowRef, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {IconDownload} from "~/components/Common/icons";
-import useHasDatatable from "~/functions/useHasDatatable.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {usePlayerStore, useProvidePlayerStore} from "~/functions/usePlayerStore.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import BroadcastsModalToolbar from "~/components/Stations/Streamers/BroadcastsModalToolbar.vue";
 import {useDialog} from "~/functions/useDialog.ts";
 import {ApiStationStreamerBroadcast} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
+const streamerId = ref<number | null>(null);
 const listUrl = ref<string | null>(null);
 const batchUrl = ref<string | null>(null);
 
@@ -137,12 +139,26 @@ const fields: DataTableField<Row>[] = [
     }
 ];
 
+const listItemProvider = useApiItemProvider(
+    listUrl,
+    queryKeyWithStation([
+        QueryKeys.StationStreamers,
+    ], [
+        'broadcasts',
+        streamerId
+    ]),
+    {
+        enabled: computed(() => listUrl.value !== null),
+    }
+);
+
+const refresh = () => {
+    void listItemProvider.refresh();
+}
+
 const {confirmDelete} = useDialog();
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
-
-const $dataTable = useTemplateRef('$dataTable');
-const {relist} = useHasDatatable($dataTable);
 
 const selectedItems = shallowRef([]);
 
@@ -157,7 +173,7 @@ const doDelete = (url: string) => {
         if (result.value) {
             void axios.delete(url).then((resp) => {
                 notifySuccess(resp.data.message);
-                relist();
+                refresh();
             });
         }
     });
@@ -166,7 +182,8 @@ const doDelete = (url: string) => {
 const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
-const open = (newListUrl: string, newBatchUrl: string) => {
+const open = (newStreamerId: number, newListUrl: string, newBatchUrl: string) => {
+    streamerId.value = newStreamerId;
     listUrl.value = newListUrl;
     batchUrl.value = newBatchUrl;
 
@@ -180,6 +197,7 @@ const {stop} = usePlayerStore();
 const onHidden = () => {
     stop();
 
+    streamerId.value = null;
     listUrl.value = null;
     batchUrl.value = null;
 };

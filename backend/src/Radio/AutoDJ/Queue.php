@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Radio\AutoDJ;
 
+use App\Cache\QueueLogCache;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Entity\Repository\StationQueueRepository;
@@ -11,15 +12,12 @@ use App\Entity\Station;
 use App\Entity\StationQueue;
 use App\Event\Radio\BuildQueue;
 use App\Utilities\Time;
-use App\Utilities\Types;
 use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Monolog\Handler\TestHandler;
-use Monolog\LogRecord;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LogLevel;
-use Psr\SimpleCache\CacheInterface;
 
 /**
  * Public methods related to the AutoDJ Queue process.
@@ -30,10 +28,10 @@ final class Queue
     use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly CacheInterface $cache,
         private readonly EventDispatcherInterface $dispatcher,
         private readonly StationQueueRepository $queueRepo,
         private readonly Scheduler $scheduler,
+        private readonly QueueLogCache $queueLogCache
     ) {
     }
 
@@ -49,12 +47,12 @@ final class Queue
         $expectedCueTime = Time::nowUtc();
 
         // Get expected play time of each item.
-        $currentSong = $station->getCurrentSong();
+        $currentSong = $station->current_song;
         if (null !== $currentSong) {
             $expectedPlayTime = $this->addDurationToTime(
                 $station,
-                $currentSong->getTimestampStart(),
-                $currentSong->getDuration()
+                $currentSong->timestamp_start,
+                $currentSong->duration
             );
 
             if ($expectedPlayTime < $expectedCueTime) {
@@ -64,10 +62,7 @@ final class Queue
             $expectedPlayTime = $expectedCueTime;
         }
 
-        $maxQueueLength = $station->getBackendConfig()->getAutoDjQueueLength();
-        if ($maxQueueLength < 2) {
-            $maxQueueLength = 2;
-        }
+        $maxQueueLength = max($station->backend_config->autodj_queue_length, 2);
 
         $upcomingQueue = $this->queueRepo->getUnplayedQueue($station);
 
@@ -75,11 +70,11 @@ final class Queue
         $queueLength = 0;
 
         foreach ($upcomingQueue as $queueRow) {
-            if ($queueRow->getSentToAutodj()) {
+            if ($queueRow->sent_to_autodj) {
                 $expectedCueTime = $this->addDurationToTime(
                     $station,
-                    $queueRow->getTimestampCued(),
-                    $queueRow->getDuration()
+                    $queueRow->timestamp_cued,
+                    $queueRow->duration
                 );
 
                 if (0 === $queueLength) {
@@ -91,19 +86,19 @@ final class Queue
                     continue;
                 }
 
-                $queueRow->setTimestampCued($expectedCueTime);
-                $expectedCueTime = $this->addDurationToTime($station, $expectedCueTime, $queueRow->getDuration());
+                $queueRow->timestamp_cued = $expectedCueTime;
+                $expectedCueTime = $this->addDurationToTime($station, $expectedCueTime, $queueRow->duration);
 
                 // Only append to queue length for uncued songs.
                 $queueLength++;
             }
 
-            $queueRow->setTimestampPlayed($expectedPlayTime);
+            $queueRow->timestamp_played = $expectedPlayTime;
             $this->em->persist($queueRow);
 
-            $expectedPlayTime = $this->addDurationToTime($station, $expectedPlayTime, $queueRow->getDuration());
+            $expectedPlayTime = $this->addDurationToTime($station, $expectedPlayTime, $queueRow->duration);
 
-            $lastSongId = $queueRow->getSongId();
+            $lastSongId = $queueRow->song_id;
         }
 
         $this->em->flush();
@@ -142,25 +137,25 @@ final class Queue
             }
 
             foreach ($nextSongs as $queueRow) {
-                $queueRow->setTimestampCued($expectedCueTime);
-                $queueRow->setTimestampPlayed($expectedPlayTime);
+                $queueRow->timestamp_cued = $expectedCueTime;
+                $queueRow->timestamp_played = $expectedPlayTime;
                 $queueRow->updateVisibility();
                 $this->em->persist($queueRow);
                 $this->em->flush();
 
-                $this->setQueueRowLog($queueRow, $testHandler->getRecords());
+                $this->queueLogCache->setLog($queueRow, $testHandler->getRecords());
 
-                $lastSongId = $queueRow->getSongId();
+                $lastSongId = $queueRow->song_id;
 
                 $expectedCueTime = $this->addDurationToTime(
                     $station,
                     $expectedCueTime,
-                    $queueRow->getDuration()
+                    $queueRow->duration
                 );
                 $expectedPlayTime = $this->addDurationToTime(
                     $station,
                     $expectedPlayTime,
-                    $queueRow->getDuration()
+                    $queueRow->duration
                 );
 
                 $queueLength++;
@@ -216,20 +211,20 @@ final class Queue
         }
 
         foreach ($nextSongs as $queueRow) {
-            $queueRow->setIsPlayed();
-            $queueRow->setTimestampCued($expectedPlayTime);
-            $queueRow->setTimestampPlayed($expectedPlayTime);
+            $queueRow->is_played = true;
+            $queueRow->timestamp_cued = $expectedPlayTime;
+            $queueRow->timestamp_played = $expectedPlayTime;
             $queueRow->updateVisibility();
 
             $this->em->persist($queueRow);
             $this->em->flush();
 
-            $this->setQueueRowLog($queueRow, $testHandler->getRecords());
+            $this->queueLogCache->setLog($queueRow, $testHandler->getRecords());
 
             $expectedPlayTime = $this->addDurationToTime(
                 $station,
                 $expectedPlayTime,
-                $queueRow->getDuration()
+                $queueRow->duration
             );
         }
 
@@ -243,7 +238,7 @@ final class Queue
     ): CarbonImmutable {
         $duration ??= 1;
 
-        $startNext = $station->getBackendConfig()->getCrossfadeDuration();
+        $startNext = $station->backend_config->getCrossfadeDuration();
 
         $now = CarbonImmutable::instance($now)->addSeconds($duration);
         return ($duration >= $startNext)
@@ -255,44 +250,16 @@ final class Queue
         StationQueue $queueRow,
         DateTimeImmutable $expectedPlayTime
     ): bool {
-        $playlist = $queueRow->getPlaylist();
+        $playlist = $queueRow->playlist;
         if (null === $playlist) {
             return true;
         }
 
-        return $playlist->getIsEnabled() &&
+        return $playlist->is_enabled &&
             $this->scheduler->isPlaylistScheduledToPlayNow(
                 $playlist,
                 $expectedPlayTime,
                 true
             );
-    }
-
-    public function getQueueRowLog(StationQueue $queueRow): ?array
-    {
-        return Types::arrayOrNull(
-            $this->cache->get($this->getQueueRowLogCacheKey($queueRow))
-        );
-    }
-
-    public function setQueueRowLog(StationQueue $queueRow, ?array $log): void
-    {
-        if (null !== $log) {
-            $log = array_map(
-                fn(LogRecord $logRecord) => $logRecord->formatted,
-                $log
-            );
-        }
-
-        $this->cache->set(
-            $this->getQueueRowLogCacheKey($queueRow),
-            $log,
-            StationQueue::QUEUE_LOG_TTL
-        );
-    }
-
-    private function getQueueRowLogCacheKey(StationQueue $queueRow): string
-    {
-        return 'queue_log.' . $queueRow->getIdRequired();
     }
 }

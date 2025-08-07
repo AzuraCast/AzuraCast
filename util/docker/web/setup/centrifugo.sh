@@ -2,7 +2,7 @@
 set -e
 set -x
 
-export CENTRIFUGO_VERSION=6.0.3
+export CENTRIFUGO_VERSION=6.2.4
 
 mkdir -p /tmp/centrifugo
 cd /tmp/centrifugo

@@ -7,6 +7,7 @@ use App\Console\Command;
 return function (App\Event\BuildConsoleCommands $event) {
     $event->addAliases([
         'azuracast:acme:get-certificate' => Command\Acme\GetCertificateCommand::class,
+        'azuracast:acme:reload' => Command\Acme\ReloadCommand::class,
         'azuracast:backup' => Command\Backup\BackupCommand::class,
         'azuracast:restore' => Command\Backup\RestoreCommand::class,
         'azuracast:debug:optimize-tables' => Command\Debug\OptimizeTablesCommand::class,
@@ -38,6 +39,7 @@ return function (App\Event\BuildConsoleCommands $event) {
         'queue:clear' => Command\MessageQueue\ClearCommand::class,
         'cache:clear' => Command\ClearCacheCommand::class,
         'acme:cert' => Command\Acme\GetCertificateCommand::class,
+        'acme:reload' => Command\Acme\ReloadCommand::class,
     ]);
 
     if (!$event->getEnvironment()->isProduction()) {

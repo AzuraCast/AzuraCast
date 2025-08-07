@@ -188,11 +188,11 @@ final class RolesController extends AbstractApiCrudController
         $router = $request->getRouter();
 
         $apiRole = ApiRole::fromRole($record);
-        $apiRole->is_super_admin = $record->getIdRequired() === $this->superAdminRole->getIdRequired();
+        $apiRole->is_super_admin = $record->id === $this->superAdminRole->id;
         $apiRole->links = [
             'self' => $router->fromHere(
                 routeName: $this->resourceRouteName,
-                routeParams: ['id' => $record->getIdRequired()],
+                routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             ),
         ];
@@ -204,7 +204,7 @@ final class RolesController extends AbstractApiCrudController
     {
         if (
             null !== $record
-            && $this->superAdminRole->getIdRequired() === $record->getIdRequired()
+            && $this->superAdminRole->id === $record->id
         ) {
             throw new RuntimeException('Cannot modify the Super Administrator role.');
         }
@@ -214,7 +214,7 @@ final class RolesController extends AbstractApiCrudController
 
     protected function deleteRecord(object $record): void
     {
-        if ($this->superAdminRole->getIdRequired() === $record->getIdRequired()) {
+        if ($this->superAdminRole->id === $record->id) {
             throw new RuntimeException('Cannot remove the Super Administrator role.');
         }
 
@@ -240,7 +240,7 @@ final class RolesController extends AbstractApiCrudController
 
     private function doUpdatePermissions(Role $role, array $newPermissions): void
     {
-        $existingPerms = $role->getPermissions();
+        $existingPerms = $role->permissions;
         if ($existingPerms->count() > 0) {
             foreach ($existingPerms as $perm) {
                 $this->em->remove($perm);

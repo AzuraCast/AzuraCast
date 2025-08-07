@@ -21,7 +21,7 @@
                 :options="triggerOptions"
                 stacked
                 :label="$gettext('Web Hook Triggers')"
-                :description="$gettext('This web hook will only run when the selected event(s) occur on this specific station.')"
+                :description="$gettext('Select the event(s) that will trigger this webhook. If no events are selected, the webhook will run for all applicable events.')"
             />
 
             <!-- @vue-expect-error Vuelidate mistyping -->

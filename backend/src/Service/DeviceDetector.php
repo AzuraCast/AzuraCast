@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Cache\CacheNamespace;
 use App\Service\DeviceDetector\DeviceResult;
 use DeviceDetector\DeviceDetector as ParentDeviceDetector;
 use Psr\Cache\CacheItemPoolInterface;
-use Symfony\Component\Cache\Adapter\ProxyAdapter;
 
 final class DeviceDetector
 {
@@ -21,7 +21,7 @@ final class DeviceDetector
     public function __construct(
         CacheItemPoolInterface $psr6Cache
     ) {
-        $this->psr6Cache = new ProxyAdapter($psr6Cache, 'device_detector.');
+        $this->psr6Cache = CacheNamespace::DeviceDetector->withNamespace($psr6Cache);
 
         $this->dd = new ParentDeviceDetector();
     }

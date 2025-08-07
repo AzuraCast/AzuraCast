@@ -30,6 +30,7 @@ disabled = true
 [engine]
 redis.address = "{{ .Env.REDIS_HOST }}:{{ default .Env.REDIS_PORT "6379" }}"
 redis.db = {{ default .Env.REDIS_DB 0 }}
+redis.prefix = "centrifugo:c"
 type = "redis"
 {{ end }}
 

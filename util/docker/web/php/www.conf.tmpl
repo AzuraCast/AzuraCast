@@ -2,6 +2,13 @@
 error_log = /dev/stderr
 daemonize = no
 
+; Emergency restart threshold - restart FPM if too many children die
+emergency_restart_threshold = 10
+emergency_restart_interval = 1m
+
+; Process control timeout for graceful restarts
+process_control_timeout = 10s
+
 [www]
 user = azuracast
 group = azuracast

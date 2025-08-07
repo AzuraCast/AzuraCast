@@ -1,8 +1,36 @@
 import DataTable from "~/components/Common/DataTable.vue";
-import {ShallowRef} from "vue";
+import {ComputedRef, ShallowRef} from "vue";
 import {ComponentExposed} from "vue-component-type-helpers";
 
+export type DataTableRow = Record<string, any>
+
 export type DataTableTemplateRef = ComponentExposed<typeof DataTable>;
+
+export type DataTableFilterContext = {
+    searchPhrase: string,
+    currentPage: number,
+    sortField: string | null,
+    sortOrder: string | null,
+    paginated: boolean,
+    perPage: number,
+};
+
+export const DATATABLE_DEFAULT_CONTEXT: DataTableFilterContext = {
+    searchPhrase: '',
+    currentPage: 1,
+    sortField: null,
+    sortOrder: null,
+    paginated: false,
+    perPage: 10,
+};
+
+export type DataTableItemProvider<Row extends DataTableRow = DataTableRow> = {
+    rows: ComputedRef<Row[]>,
+    total: ComputedRef<number>,
+    loading: ComputedRef<boolean>,
+    setContext: (ctx: DataTableFilterContext) => void,
+    refresh: (flushCache?: boolean) => Promise<void>,
+};
 
 export default function useHasDatatable($datatableRef: Readonly<ShallowRef<DataTableTemplateRef | null>>) {
     /**

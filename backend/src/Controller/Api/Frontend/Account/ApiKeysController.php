@@ -13,13 +13,14 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Security\SplitToken;
+use App\Utilities\Types;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 /**
  * @template TEntity as ApiKey
- * @extends AbstractApiCrudController<TEntity>
+ * @extends AbstractApiCrudController<ApiKey>
  */
 #[
     OA\Get(
@@ -141,13 +142,16 @@ final class ApiKeysController extends AbstractApiCrudController
     ): ResponseInterface {
         $newKey = SplitToken::generate();
 
+        $parsedBody = (array)$request->getParsedBody();
+
         $record = new ApiKey(
             $request->getUser(),
-            $newKey
+            $newKey,
+            Types::string($parsedBody['comment'] ?? null)
         );
 
-        /** @var TEntity $record */
-        $this->editRecord((array)$request->getParsedBody(), $record);
+        $this->em->persist($record);
+        $this->em->flush();
 
         $return = $this->viewRecord($record, $request);
         $return['key'] = (string)$newKey;

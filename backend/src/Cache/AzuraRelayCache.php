@@ -12,9 +12,11 @@ final class AzuraRelayCache
 {
     private const int CACHE_TTL = 600;
 
-    public function __construct(
-        private readonly CacheItemPoolInterface $cache
-    ) {
+    private readonly CacheItemPoolInterface $cache;
+
+    public function __construct(CacheItemPoolInterface $cache)
+    {
+        $this->cache = CacheNamespace::AzuraRelay->withNamespace($cache);
     }
 
     public function setForRelay(
@@ -39,6 +41,6 @@ final class AzuraRelayCache
 
     private function getCacheItem(Relay $relay): CacheItemInterface
     {
-        return $this->cache->getItem('azurarelay.relay_' . $relay->getIdRequired());
+        return $this->cache->getItem('relay_' . $relay->id);
     }
 }

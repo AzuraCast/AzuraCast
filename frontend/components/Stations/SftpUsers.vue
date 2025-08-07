@@ -14,10 +14,9 @@
 
                 <data-table
                     id="station_sftp_users"
-                    ref="$dataTable"
                     :show-toolbar="false"
                     :fields="fields"
-                    :api-url="listUrl"
+                    :provider="listItemProvider"
                 >
                     <template #cell(actions)="row">
                         <div class="btn-group btn-group-sm">
@@ -69,7 +68,7 @@
         <sftp-users-edit-modal
             ref="$editModal"
             :create-url="listUrl"
-            @relist="relist"
+            @relist="() => relist()"
         />
     </div>
 </template>
@@ -79,12 +78,13 @@ import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import SftpUsersEditModal from "~/components/Stations/SftpUsers/EditModal.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useTemplateRef} from "vue";
-import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
 interface SftpUsersConnectionInfo {
     url: string,
@@ -105,14 +105,24 @@ const fields: DataTableField[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const $dataTable = useTemplateRef('$dataTable');
-const {relist} = useHasDatatable($dataTable);
+const listItemProvider = useApiItemProvider(
+    listUrl,
+    queryKeyWithStation(
+        [
+            QueryKeys.StationSftpUsers
+        ]
+    )
+);
+
+const relist = () => {
+    void listItemProvider.refresh();
+};
 
 const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete SFTP User?'),
-    relist
+    () => relist()
 );
 </script>

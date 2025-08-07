@@ -54,7 +54,7 @@ final class GetArtAction implements SingleActionInterface
         $podcast = $request->getPodcast();
         $station = $request->getStation();
 
-        $podcastPath = Podcast::getArtPath($podcast->getIdRequired());
+        $podcastPath = Podcast::getArtPath($podcast->id);
 
         $fsPodcasts = $this->stationFilesystems->getPodcastsFilesystem($station);
 

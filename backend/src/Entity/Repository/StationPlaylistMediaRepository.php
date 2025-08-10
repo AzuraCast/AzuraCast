@@ -11,6 +11,7 @@ use App\Entity\Enums\PlaylistSources;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
+use App\Entity\StationPlaylistFolder;
 use App\Entity\StationPlaylistMedia;
 use App\Utilities\Time;
 use Carbon\CarbonImmutable;
@@ -119,16 +120,13 @@ final class StationPlaylistMediaRepository extends Repository
      * Add the specified media to the specified playlist.
      * Must flush the EntityManager after using.
      *
-     * @param StationMedia $media
-     * @param StationPlaylist $playlist
-     * @param int $weight
-     *
      * @return int The weight assigned to the newly added record.
      */
     public function addMediaToPlaylist(
         StationMedia $media,
         StationPlaylist $playlist,
-        int $weight = 0
+        int $weight = 0,
+        ?StationPlaylistFolder $folder = null,
     ): int {
         if (PlaylistSources::Songs !== $playlist->source) {
             throw new RuntimeException('This playlist is not meant to contain songs!');
@@ -146,8 +144,19 @@ final class StationPlaylistMediaRepository extends Repository
             ) : null;
 
         if ($record instanceof StationPlaylistMedia) {
+            $changesMade = false;
+
             if (0 !== $weight) {
                 $record->weight = $weight;
+                $changesMade = true;
+            }
+
+            if ($record->folder !== $folder) {
+                $record->folder = $folder;
+                $changesMade = true;
+            }
+
+            if ($changesMade) {
                 $this->em->persist($record);
             }
         } else {
@@ -158,7 +167,7 @@ final class StationPlaylistMediaRepository extends Repository
                 $weight = random_int(1, $weight);
             }
 
-            $record = new StationPlaylistMedia($playlist, $media);
+            $record = new StationPlaylistMedia($playlist, $media, $folder);
             $record->weight = $weight;
             $this->em->persist($record);
         }

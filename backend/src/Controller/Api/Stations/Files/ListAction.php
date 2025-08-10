@@ -11,9 +11,11 @@ use App\Controller\SingleActionInterface;
 use App\Entity\Api\FileList;
 use App\Entity\Api\FileListDir;
 use App\Entity\Api\StationMedia as ApiStationMedia;
+use App\Entity\Api\StationMediaPlaylist;
 use App\Entity\Enums\FileTypes;
 use App\Entity\Station;
 use App\Entity\StationMedia;
+use App\Entity\StationPlaylist;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\RouterInterface;
@@ -218,18 +220,20 @@ final class ListAction implements SingleActionInterface
 
             $folderPlaylists = [];
             foreach ($foldersInDirRaw as $folderRow) {
-                if (!isset($folderPlaylists[$folderRow['path']])) {
-                    $folderPlaylists[$folderRow['path']] = [];
-                }
-
-                $folderPlaylists[$folderRow['path']][] = $folderRow['playlist'];
+                $folderPlaylists[$folderRow['path']] ??= [];
+                $folderPlaylists[$folderRow['path']][] = new StationMediaPlaylist(
+                    id: $folderRow['playlist']['id'],
+                    name: $folderRow['playlist']['name'],
+                    short_name: StationPlaylist::generateShortName($folderRow['playlist']['name']),
+                    folder: $folderRow['path']
+                );
             }
 
             /** @var array<string, FileListDir> $foldersInDir */
             $foldersInDir = array_map(
                 function ($playlists) {
                     $row = new FileListDir();
-                    $row->playlists = ApiStationMedia::aggregatePlaylists($playlists);
+                    $row->playlists = StationMediaPlaylist::aggregate($playlists);
                     return $row;
                 },
                 $folderPlaylists
@@ -405,9 +409,10 @@ final class ListAction implements SingleActionInterface
         // Fetch playlists for all shown media.
         $allPlaylistsRaw = $this->em->createQuery(
             <<<'DQL'
-            SELECT spm, sp
+            SELECT spm, sp, spf
             FROM App\Entity\StationPlaylistMedia spm
             JOIN spm.playlist sp
+            LEFT JOIN spm.folder spf
             WHERE sp.station = :station AND IDENTITY(spm.media) IN (:ids) 
             DQL
         )->setParameter('station', $station)
@@ -417,7 +422,12 @@ final class ListAction implements SingleActionInterface
         $allPlaylists = [];
         foreach ($allPlaylistsRaw as $row) {
             $allPlaylists[$row['media_id']] ??= [];
-            $allPlaylists[$row['media_id']][] = $row['playlist'];
+            $allPlaylists[$row['media_id']][] = new StationMediaPlaylist(
+                id: $row['playlist']['id'],
+                name: $row['playlist']['name'],
+                short_name: StationPlaylist::generateShortName($row['playlist']['name']),
+                folder: $row['folder']['path'] ?? null
+            );
         }
 
         $mediaInDir = [];
@@ -428,7 +438,7 @@ final class ListAction implements SingleActionInterface
                 $row,
                 [],
                 $customFields[$id] ?? [],
-                ApiStationMedia::aggregatePlaylists($allPlaylists[$id] ?? [])
+                StationMediaPlaylist::aggregate($allPlaylists[$id] ?? [])
             );
         }
 

@@ -1112,6 +1112,7 @@ export interface ApiStationMediaPlaylist {
   id?: number;
   readonly name?: string;
   readonly short_name?: string;
+  readonly folder?: string | null;
   readonly count?: number;
 }
 
@@ -1940,18 +1941,42 @@ export type StationHlsStream = HasAutoIncrementId & {
 };
 
 export interface StationMediaMetadata {
-  /** @format float */
+  /**
+   * Value (in dB) to amplify the current track to produce a uniform loudness.
+   * @format float
+   * @example "-1.5"
+   */
   amplify?: number | null;
-  /** @format float */
-  cross_start_next?: number | null;
-  /** @format float */
+  /**
+   * Seconds from the start of the track to end fading in.
+   * @format float
+   * @example "2.0"
+   */
   fade_in?: number | null;
-  /** @format float */
+  /**
+   * Seconds from the end of the track to begin fading out.
+   * @format float
+   * @example "2.0"
+   */
   fade_out?: number | null;
-  /** @format float */
+  /**
+   * Seconds from the start of the track to start playback (cue in).
+   * @format float
+   * @example "3.5"
+   */
   cue_in?: number | null;
-  /** @format float */
+  /**
+   * Seconds from the start of the track to end playback (cue out).
+   * @format float
+   * @example "181.5"
+   */
   cue_out?: number | null;
+  /**
+   * Seconds from the start of the track to begin fading in the next track.
+   * @format float
+   * @example "180.0"
+   */
+  cross_start_next?: number | null;
 }
 
 export type StationMount = HasAutoIncrementId & {

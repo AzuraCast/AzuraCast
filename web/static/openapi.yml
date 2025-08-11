@@ -7677,6 +7677,10 @@ components:
         short_name:
           type: string
           readOnly: true
+        folder:
+          type: string
+          readOnly: true
+          nullable: true
         count:
           type: integer
           readOnly: true

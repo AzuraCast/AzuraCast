@@ -23,7 +23,29 @@ final class StationMediaPlaylist
         #[OA\Property(readOnly: true)]
         public readonly string $short_name,
         #[OA\Property(readOnly: true)]
+        public readonly ?string $folder = null,
+        #[OA\Property(readOnly: true)]
         public int $count = 1
     ) {
+    }
+
+    /**
+     * @param self[] $items
+     * @return self[]
+     */
+    public static function aggregate(array $items): array
+    {
+        $playlists = [];
+        foreach ($items as $item) {
+            $key = $item->folder ? $item->id . '_' . $item->folder : $item->id;
+
+            if (isset($playlists[$key])) {
+                $playlists[$key]->count++;
+            } else {
+                $playlists[$key] = $item;
+            }
+        }
+
+        return array_values($playlists);
     }
 }

@@ -58,6 +58,7 @@ final class StationPlaylistMediaRepository extends Repository
                 DELETE FROM App\Entity\StationPlaylistMedia spm
                 WHERE spm.media = :media
                 AND IDENTITY(spm.playlist) IN (:playlistIds)
+                AND spm.folder IS NULL
                 DQL
             )->setParameter('media', $media)
                 ->setParameter('playlistIds', $toDelete)
@@ -92,8 +93,6 @@ final class StationPlaylistMediaRepository extends Repository
     }
 
     /**
-     * @param StationMedia $media
-     * @param Station|null $station
      * @return array<array-key, int>
      */
     public function getPlaylistsForMedia(

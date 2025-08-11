@@ -10,6 +10,10 @@ release channel, you can take advantage of these new features and fixes.
   starting up a station with custom Liquidsoap code. If you use custom Liquidsoap code, you should evaluate these
   warnings and make changes as needed.
 
+- Playlists assigned to a folder should now be more intuitive; if a track is in a playlist because a parent folder is,
+  the playlist will have a folder icon next to it, and hovering over it will indicate which folder it was set from.
+  Clearing and setting that playlist directly on the media won't work (as it would just get reassigned later).
+
 ## Code Quality/Technical Changes
 
 ## Bug Fixes

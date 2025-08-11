@@ -137,17 +137,6 @@ final class ListAction implements SingleActionInterface
                 ->setParameter('storageLocation', $station->media_storage_location)
                 ->setParameter('path', $pathLike);
 
-            $foldersInDirQuery = $this->em->createQuery(
-                <<<'DQL'
-                    SELECT spf, sp
-                    FROM App\Entity\StationPlaylistFolder spf
-                    JOIN spf.playlist sp
-                    WHERE spf.station = :station
-                    AND spf.path LIKE :path
-                DQL
-            )->setParameter('station', $station)
-                ->setParameter('path', $pathLike);
-
             $unprocessableMediaQuery = $this->em->createQuery(
                 <<<'DQL'
                     SELECT upm
@@ -201,13 +190,15 @@ final class ListAction implements SingleActionInterface
                     $unprocessableMediaRaw = [];
                 }
 
-                $foldersInDirRaw = [];
+                $foldersInDir = [];
+                $foldersAboveDir = [];
             } else {
                 // Avoid loading subfolder media.
                 $mediaQueryBuilder->andWhere('sm.path NOT LIKE :pathWithSubfolders')
                     ->setParameter('pathWithSubfolders', $pathLike . '/%');
 
-                $foldersInDirRaw = $foldersInDirQuery->getArrayResult();
+                $foldersInDir = $this->getFoldersInDir($station, $currentDir);
+                $foldersAboveDir = $this->getFoldersAboveDir($station, $currentDir);
 
                 $unprocessableMediaRaw = $unprocessableMediaQuery->toIterable(
                     [],
@@ -217,27 +208,6 @@ final class ListAction implements SingleActionInterface
 
             // Process all database results.
             $mediaInDir = $this->processMediaInDir($station, $mediaQueryBuilder);
-
-            $folderPlaylists = [];
-            foreach ($foldersInDirRaw as $folderRow) {
-                $folderPlaylists[$folderRow['path']] ??= [];
-                $folderPlaylists[$folderRow['path']][] = new StationMediaPlaylist(
-                    id: $folderRow['playlist']['id'],
-                    name: $folderRow['playlist']['name'],
-                    short_name: StationPlaylist::generateShortName($folderRow['playlist']['name']),
-                    folder: $folderRow['path']
-                );
-            }
-
-            /** @var array<string, FileListDir> $foldersInDir */
-            $foldersInDir = array_map(
-                function ($playlists) {
-                    $row = new FileListDir();
-                    $row->playlists = StationMediaPlaylist::aggregate($playlists);
-                    return $row;
-                },
-                $folderPlaylists
-            );
 
             $unprocessableMedia = [];
             foreach ($unprocessableMediaRaw as $unprocessableRow) {
@@ -293,7 +263,13 @@ final class ListAction implements SingleActionInterface
                 } elseif ($isDir) {
                     $row->type = FileTypes::Directory;
                     $row->text = __('Directory');
-                    $row->dir = $foldersInDir[$row->path] ?? new FileListDir();
+                    $row->dir = new FileListDir();
+                    $row->dir->playlists = StationMediaPlaylist::aggregate(
+                        [
+                            ...$foldersInDir[$row->path] ?? [],
+                            ...$foldersAboveDir,
+                        ]
+                    );
                 } elseif (isset($unprocessableMedia[$row->path])) {
                     $row->type = FileTypes::UnprocessableFile;
                     $row->text = sprintf(
@@ -341,6 +317,87 @@ final class ListAction implements SingleActionInterface
         );
 
         return $paginator->write($response);
+    }
+
+    /**
+     * @param Station $station
+     * @param string $path
+     * @return array<string, StationMediaPlaylist[]>
+     */
+    private function getFoldersInDir(
+        Station $station,
+        string $path
+    ): array {
+        $pathLike = (empty($path))
+            ? '%'
+            : $path . '/%';
+
+        $foldersInDirQuery = $this->em->createQuery(
+            <<<'DQL'
+                SELECT spf, sp
+                FROM App\Entity\StationPlaylistFolder spf
+                JOIN spf.playlist sp
+                WHERE spf.station = :station
+                AND spf.path LIKE :path
+                AND spf.path NOT LIKE :pathWithSubfolders
+            DQL
+        )->setParameter('station', $station)
+            ->setParameter('path', $pathLike)
+            ->setParameter('pathWithSubfolders', $pathLike . '/%');
+
+        $return = [];
+        foreach ($foldersInDirQuery->getArrayResult() as $row) {
+            $return[$row['path']] ??= [];
+            $return[$row['path']][] = new StationMediaPlaylist(
+                id: $row['playlist']['id'],
+                name: $row['playlist']['name'],
+                short_name: StationPlaylist::generateShortName($row['playlist']['name'])
+            );
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param Station $station
+     * @param string $path
+     * @return StationMediaPlaylist[]
+     */
+    private function getFoldersAboveDir(
+        Station $station,
+        string $path
+    ): array {
+        if (empty($path)) {
+            return [];
+        }
+
+        $validPaths = [];
+        $pathsSoFar = [];
+        foreach (explode('/', $path) as $part) {
+            $pathsSoFar[] = $part;
+            $validPaths[] = implode('/', $pathsSoFar);
+        }
+
+        $foldersAboveDirQuery = $this->em->createQuery(
+            <<<'DQL'
+                SELECT spf, sp
+                FROM App\Entity\StationPlaylistFolder spf
+                JOIN spf.playlist sp
+                WHERE spf.station = :station
+                AND spf.path IN (:paths)
+            DQL
+        )->setParameter('station', $station)
+            ->setParameter('paths', $validPaths);
+
+        return array_map(
+            fn(array $row) => new StationMediaPlaylist(
+                id: $row['playlist']['id'],
+                name: $row['playlist']['name'],
+                short_name: StationPlaylist::generateShortName($row['playlist']['name']),
+                folder: $row['path']
+            ),
+            $foldersAboveDirQuery->getArrayResult()
+        );
     }
 
     /**

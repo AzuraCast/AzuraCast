@@ -210,7 +210,7 @@
 
 <script setup lang="ts">
 import {Dropdown} from "bootstrap";
-import {intersection, map} from "lodash";
+import {filter, intersection, map} from "lodash";
 import Icon from "~/components/Common/Icon.vue";
 import {computed, ref, toRef, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -249,7 +249,14 @@ watch(selectedItems, (items) => {
     // Get all playlists that are active on ALL selected items.
     const playlistsForItems = map(items.all, (item) => {
         const itemPlaylists = item.dir?.playlists ?? item.media?.playlists ?? [];
-        return map(itemPlaylists, 'id');
+
+        return map(
+            filter(
+                itemPlaylists,
+                (row) => row.folder === null
+            ),
+            'id'
+        );
     });
 
     // Check the checkboxes for those playlists.

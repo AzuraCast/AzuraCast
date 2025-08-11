@@ -168,56 +168,16 @@
                 </template>
             </template>
             <template #cell(playlists)="{ item }">
-                <template v-if="item.media?.playlists?.length > 0">
-                    <template
-                        v-for="(playlist, index) in item.media.playlists as ApiStationMediaPlaylist[]"
-                        :key="playlist.id"
-                    >
-                        <a
-                            v-if="playlist.folder !== null"
-                            class="btn-search text-nowrap"
-                            href="#"
-                            :title="$gettext(
-                                'This playlist is assigned from the folder %{folder}. Click to view tracks in playlist',
-                                {
-                                    folder: playlist.folder
-                                }
-                            )"
-                            @click.prevent="filter('playlist:'+playlist.short_name)"
-                        >
-                            <Icon :icon="IconFolder" class="sm me-1"/>
-
-                            <span class="text-wrap">
-                                {{ playlist.name }}
-                            </span>
-                        </a>
-                        <a
-                            v-else
-                            class="btn-search"
-                            href="#"
-                            :title="$gettext('View tracks in playlist')"
-                            @click.prevent="filter('playlist:'+playlist.short_name)"
-                        >
-                            {{ playlist.name }}
-                        </a>
-
-                        <span v-if="index+1 < item.media.playlists.length">, </span>
-                    </template>
-                </template>
-                <template v-else-if="item.dir?.playlists?.length > 0">
-                    <template
-                        v-for="(playlist, index) in item.dir.playlists"
-                        :key="playlist.id"
-                    >
-                        <a
-                            class="btn-search"
-                            href="#"
-                            :title="$gettext('View tracks in playlist')"
-                            @click.prevent="filter('playlist:'+playlist.short_name)"
-                        >{{ playlist.name }}</a>
-                        <span v-if="index+1 < item.dir.playlists.length">, </span>
-                    </template>
-                </template>
+                <MediaPlaylists
+                    v-if="item.media?.playlists?.length > 0"
+                    :playlists="item.media?.playlists as ApiStationMediaPlaylist[]"
+                    @filter="filter"
+                />
+                <MediaPlaylists
+                    v-else-if="item.dir?.playlists?.length > 0"
+                    :playlists="item.dir?.playlists as ApiStationMediaPlaylist[]"
+                    @filter="filter"
+                />
                 <template v-else>
                     &nbsp;
                 </template>
@@ -306,6 +266,7 @@ import {
 } from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import MediaPlaylists from "~/components/Stations/Media/MediaPlaylists.vue";
 
 export interface MediaSelectedItems {
     all: ApiFileList[],

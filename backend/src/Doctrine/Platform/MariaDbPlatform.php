@@ -46,6 +46,7 @@ class MariaDbPlatform extends MariaDB1010Platform
     public function createSchemaManager(Connection $connection): MySQLSchemaManager
     {
         return new class ($connection, $this) extends MySQLSchemaManager {
+            // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
             protected function _getPortableTableColumnDefinition(array $tableColumn): Column
             {
                 $column = parent::_getPortableTableColumnDefinition($tableColumn);

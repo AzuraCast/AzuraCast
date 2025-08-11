@@ -8,8 +8,8 @@
             class="btn-search text-nowrap"
             href="#"
             :title="$gettext(
-            'This playlist is assigned from the folder %{folder}. Click to view tracks in playlist',
-        {
+                'This playlist is assigned from the folder %{folder}. Click to view tracks in playlist',
+                {
                     folder: playlist.folder
                 }
             )"

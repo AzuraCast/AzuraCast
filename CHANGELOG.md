@@ -9,6 +9,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Several issues caused by having "Plugin Mode" enabled have been resolved.
+
 ---
 
 # AzuraCast 0.22.0 (Aug 7, 2025)

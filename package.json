@@ -59,7 +59,7 @@
     "@nabla/vite-plugin-eslint": "^2.0.5",
     "@tanstack/eslint-plugin-query": "^5.83.1",
     "@types/bootstrap": "^5.2.6",
-    "@types/eslint__js": "^8.42.3",
+    "@types/eslint__js": "^9.14.0",
     "@types/flowjs__flow.js": "^2.13.3",
     "@types/leaflet": "^1.9.3",
     "@types/lodash": "^4.14.196",

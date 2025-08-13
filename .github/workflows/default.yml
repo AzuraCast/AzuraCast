@@ -182,7 +182,7 @@ jobs:
       - uses: actions/checkout@master
 
       - name: Download built static assets from previous step
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: assets
 

@@ -13,7 +13,7 @@ FROM ghcr.io/azuracast/azuracast.com:builtin@sha256:2dc5aa815818a2df138dee2b2505
 #
 # Icecast-KH with AzuraCast customizations build step
 #
-FROM ghcr.io/azuracast/icecast-kh-ac:2024-02-13 AS icecast
+FROM ghcr.io/azuracast/icecast-kh-ac:2024-05-24 AS icecast
 
 #
 # PHP Extension Installer build step

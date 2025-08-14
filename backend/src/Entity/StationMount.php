@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Api\ResolvableUrl;
-use App\Radio\Enums\AdapterTypeInterface;
+use App\Radio\AutoDJ\EncoderDefinition;
 use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 ]
 final class StationMount implements
     Stringable,
-    Interfaces\StationMountInterface,
+    Interfaces\EncodableInterface,
     Interfaces\StationAwareInterface,
     Interfaces\StationCloneAwareInterface,
     Interfaces\IdentifiableEntityInterface
@@ -228,70 +228,29 @@ final class StationMount implements
         $this->station = $station;
     }
 
-    public function getIsPublic(): bool
+    public function getEncoderDefinition(): ?EncoderDefinition
     {
-        return $this->is_public;
-    }
+        if (!$this->enable_autodj) {
+            return null;
+        }
 
-    public function getEnableAutodj(): bool
-    {
-        return $this->enable_autodj;
-    }
+        $adapterType = $this->station->frontend_type;
+        $frontendConfig = $this->station->frontend_config;
 
-    public function getAutodjFormat(): ?StreamFormats
-    {
-        return $this->autodj_format;
-    }
-
-    public function getAutodjBitrate(): ?int
-    {
-        return $this->autodj_bitrate;
-    }
-
-    public function getAutodjHost(): string
-    {
-        return '127.0.0.1';
-    }
-
-    public function getAutodjPort(): ?int
-    {
-        return $this->station->frontend_config->port;
-    }
-
-    public function getAutodjProtocol(): ?StreamProtocols
-    {
-        return match ($this->getAutodjAdapterType()) {
-            FrontendAdapters::Shoutcast => StreamProtocols::Icy,
-            default => null
-        };
-    }
-
-    public function getAutodjUsername(): string
-    {
-        return '';
-    }
-
-    public function getAutodjPassword(): string
-    {
-        return $this->station->frontend_config->source_pw;
-    }
-
-    public function getAutodjMount(): string
-    {
-        return $this->name;
-    }
-
-    public function getAutodjAdapterType(): AdapterTypeInterface
-    {
-        return $this->station->frontend_type;
-    }
-
-    public function getIsShoutcast(): bool
-    {
-        return match ($this->getAutodjAdapterType()) {
-            FrontendAdapters::Shoutcast => true,
-            default => false
-        };
+        return new EncoderDefinition(
+            format: $this->autodj_format,
+            bitrate: $this->autodj_bitrate,
+            adapterType: $adapterType,
+            host: '127.0.0.1',
+            port: $frontendConfig->port,
+            mount: $this->name,
+            protocol: $adapterType === FrontendAdapters::Shoutcast
+                ? StreamProtocols::Icy
+                : null,
+            username: '',
+            password: $frontendConfig->source_pw,
+            isPublic: $this->is_public
+        );
     }
 
     /**

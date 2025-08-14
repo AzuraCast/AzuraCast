@@ -11,15 +11,13 @@ use App\Entity\Enums\PlaylistRemoteTypes;
 use App\Entity\Enums\PlaylistSources;
 use App\Entity\Enums\PlaylistTypes;
 use App\Entity\Enums\StationBackendPerformanceModes;
-use App\Entity\Interfaces\StationMountInterface;
 use App\Entity\StationBackendConfiguration;
-use App\Entity\StationMount;
 use App\Entity\StationPlaylist;
-use App\Entity\StationRemote;
 use App\Entity\StationSchedule;
 use App\Entity\StationStreamerBroadcast;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
+use App\Radio\AutoDJ\EncoderDefinition;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\AudioProcessingMethods;
 use App\Radio\Enums\CrossfadeModes;
@@ -977,12 +975,10 @@ final class ConfigWriter implements EventSubscriberInterface
         foreach ($station->mounts as $mountRow) {
             $i++;
 
-            /** @var StationMount $mountRow */
-            if (!$mountRow->getEnableAutodj()) {
-                continue;
+            $encoderDefinition = $mountRow->getEncoderDefinition();
+            if (null !== $encoderDefinition) {
+                $lsConfig[] = $this->getOutputString($event, $encoderDefinition, 'local_', $i);
             }
-
-            $lsConfig[] = $this->getOutputString($event, $mountRow, 'local_', $i);
         }
 
         $event->appendLines($lsConfig);
@@ -1077,45 +1073,41 @@ final class ConfigWriter implements EventSubscriberInterface
      */
     private function getOutputString(
         WriteLiquidsoapConfiguration $event,
-        StationMountInterface $mount,
+        EncoderDefinition $definition,
         string $idPrefix,
         int $id
     ): string {
         $station = $event->getStation();
         $charset = $event->getBackendConfig()->charset;
 
-        $format = $mount->getAutodjFormat() ?? StreamFormats::default();
+        $format = $definition->format ?? StreamFormats::default();
         $outputFormat = $this->getOutputFormatString(
             $format,
-            $mount->getAutodjBitrate() ?? 128
+            $definition->bitrate ?? 128
         );
 
         $outputParams = [];
         $outputParams[] = $outputFormat;
         $outputParams[] = 'id="' . $idPrefix . $id . '"';
 
-        $outputParams[] = 'host = "' . self::cleanUpString($mount->getAutodjHost()) . '"';
-        $outputParams[] = 'port = ' . (int)$mount->getAutodjPort();
+        $outputParams[] = 'host = "' . self::cleanUpString($definition->host) . '"';
+        $outputParams[] = 'port = ' . (int)$definition->port;
 
-        $username = $mount->getAutodjUsername();
-        if (!empty($username)) {
-            $outputParams[] = 'user = "' . self::cleanUpString($username) . '"';
+        if (!empty($definition->username)) {
+            $outputParams[] = 'user = "' . self::cleanUpString($definition->username) . '"';
         }
 
-        $password = self::cleanUpString($mount->getAutodjPassword());
+        $password = self::cleanUpString($definition->password);
 
-        $adapterType = $mount->getAutodjAdapterType();
+        $adapterType = $definition->adapterType;
         if (FrontendAdapters::Shoutcast === $adapterType) {
             $password .= ':#' . $id;
         }
 
         $outputParams[] = 'password = "' . $password . '"';
 
-        $protocol = $mount->getAutodjProtocol();
-
-        $mountPoint = $mount->getAutodjMount();
-
-        if (StreamProtocols::Icy === $protocol) {
+        $mountPoint = $definition->mount;
+        if (StreamProtocols::Icy === $definition->protocol) {
             if (!empty($mountPoint)) {
                 $outputParams[] = 'icy_id = ' . $id;
             }
@@ -1129,7 +1121,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $outputParams[] = 'name = "' . self::cleanUpString($station->name) . '"';
 
-        if (!$mount->getIsShoutcast()) {
+        if (!$definition->isShoutcast) {
             $outputParams[] = 'description = "' . self::cleanUpString($station->description) . '"';
         }
         $outputParams[] = 'genre = "' . self::cleanUpString($station->genre) . '"';
@@ -1138,10 +1130,10 @@ final class ConfigWriter implements EventSubscriberInterface
             $outputParams[] = 'url = "' . self::cleanUpString($station->url) . '"';
         }
 
-        $outputParams[] = 'public = ' . ($mount->getIsPublic() ? 'true' : 'false');
+        $outputParams[] = 'public = ' . ($definition->isPublic ? 'true' : 'false');
         $outputParams[] = 'encoding = "' . $charset . '"';
 
-        if (StreamProtocols::Https === $protocol) {
+        if (StreamProtocols::Https === $definition->protocol) {
             $outputParams[] = 'transport=https_transport';
         }
 
@@ -1151,7 +1143,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $outputParams[] = 'radio';
 
-        $outputCommand = ($mount->getIsShoutcast())
+        $outputCommand = ($definition->isShoutcast)
             ? 'output.shoutcast'
             : 'output.icecast';
 
@@ -1197,12 +1189,10 @@ final class ConfigWriter implements EventSubscriberInterface
         foreach ($station->remotes as $remoteRow) {
             $i++;
 
-            /** @var StationRemote $remoteRow */
-            if (!$remoteRow->enable_autodj) {
-                continue;
+            $encoderDefinition = $remoteRow->getEncoderDefinition();
+            if (null !== $encoderDefinition) {
+                $lsConfig[] = $this->getOutputString($event, $encoderDefinition, 'relay_', $i);
             }
-
-            $lsConfig[] = $this->getOutputString($event, $remoteRow, 'relay_', $i);
         }
 
         $event->appendLines($lsConfig);

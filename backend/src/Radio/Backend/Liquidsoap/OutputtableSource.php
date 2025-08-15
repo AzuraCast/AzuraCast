@@ -3,20 +3,18 @@
 
 declare(strict_types=1);
 
-namespace App\Radio\AutoDJ;
+namespace App\Radio\Backend\Liquidsoap;
 
 use App\Radio\Enums\AdapterTypeInterface;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\RemoteAdapters;
-use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
 
-final class EncoderDefinition
+final class OutputtableSource
 {
     public function __construct(
-        public ?StreamFormats $format = null,
-        public ?int $bitrate = null,
+        public EncodingFormat $encoding,
         public AdapterTypeInterface $adapterType = BackendAdapters::None,
         public ?string $host = null,
         public ?int $port = null,

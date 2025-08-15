@@ -32,6 +32,15 @@ enum StreamFormats: string
         };
     }
 
+    public function getFfmpegContainer(): string
+    {
+        return match ($this) {
+            self::Mp3 => 'mp3',
+            self::Aac => 'adts',
+            default => 'ogg'
+        };
+    }
+
     public function sendIcyMetadata(): bool
     {
         return match ($this) {

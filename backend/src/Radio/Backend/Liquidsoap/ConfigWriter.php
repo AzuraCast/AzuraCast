@@ -17,7 +17,6 @@ use App\Entity\StationSchedule;
 use App\Entity\StationStreamerBroadcast;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
-use App\Radio\AutoDJ\EncoderDefinition;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\AudioProcessingMethods;
 use App\Radio\Enums\CrossfadeModes;
@@ -56,6 +55,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 ['writeCrossfadeConfiguration', 25],
                 ['writeHarborConfiguration', 20],
                 ['writePreBroadcastConfiguration', 10],
+                ['writeEncodingConfiguration', 7],
                 ['writeLocalBroadcastConfiguration', 5],
                 ['writeHlsBroadcastConfiguration', 2],
                 ['writeRemoteBroadcastConfiguration', 0],
@@ -635,11 +635,11 @@ final class ConfigWriter implements EventSubscriberInterface
         );
 
         if ($recordLiveStreams) {
-            $recordLiveStreamsFormat = $settings->getRecordStreamsFormatEnum();
-            $recordLiveStreamsBitrate = $settings->record_streams_bitrate;
+            $recordEncoding = $settings->getRecordStreamsEncoding();
+            assert(null !== $recordEncoding);
 
-            $formatString = $this->getOutputFormatString($recordLiveStreamsFormat, $recordLiveStreamsBitrate);
-            $recordExtension = $recordLiveStreamsFormat->getExtension();
+            $formatString = $this->getFullFfmpegString($recordEncoding);
+            $recordExtension = $recordEncoding->format->getExtension();
             $recordPathPrefix = StationStreamerBroadcast::PATH_PREFIX;
 
             $event->appendBlock(
@@ -657,11 +657,11 @@ final class ConfigWriter implements EventSubscriberInterface
                     live,
                     fallible=true,
                     on_close=fun (tempPath) -> begin
-                        path = string.replace(pattern=".tmp$", (fun(_) -> ""), tempPath)
+                        newPath = string.replace(pattern=".tmp$", (fun(_) -> ""), tempPath)
 
-                        log("Recording stopped: Switching from #{tempPath} to #{path}")
+                        log("Recording stopped: Switching from #{tempPath} to #{newPath}")
 
-                        process.run("mv #{tempPath} #{path}")
+                        process.run("mv #{tempPath} #{newPath}")
                         ()
                     end
                 )
@@ -702,6 +702,51 @@ final class ConfigWriter implements EventSubscriberInterface
         $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_PRE_BROADCAST);
     }
 
+    public function writeEncodingConfiguration(WriteLiquidsoapConfiguration $event): void
+    {
+        /*
+         * TODO: Wait for upstream to attempt unified encoding.
+         *
+        $station = $event->getStation();
+
+        // @var Collection<EncodableInterface> $encodables
+        $encodables = [
+            $station->mounts,
+            $station->remotes,
+        ];
+
+        if ($station->enable_hls) {
+            $encodables[] = $station->hls_streams;
+        }
+
+        $encoders = [];
+        foreach ($encodables as $collection) {
+            foreach ($collection as $encodable) {
+                $encoder = $encodable->getEncodingFormat();
+
+                if (null !== $encoder) {
+                    $varName = $encoder->getVariableName('radio');
+                    $encoders[$varName] = $encoder;
+                }
+            }
+        }
+
+        foreach ($encoders as $varName => $encoder) {
+            $varName = self::cleanUpVarName($varName);
+            $audioString = $this->getFfmpegAudioString($encoder);
+
+            $event->appendBlock(
+                <<<LIQ
+                {$varName} = ffmpeg.encode.audio(
+                    %ffmpeg({$audioString}),
+                    radio
+                )
+                LIQ
+            );
+        }
+        */
+    }
+
     public function writeLocalBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void
     {
         $station = $event->getStation();
@@ -719,9 +764,9 @@ final class ConfigWriter implements EventSubscriberInterface
         foreach ($station->mounts as $mountRow) {
             $i++;
 
-            $encoderDefinition = $mountRow->getEncoderDefinition();
-            if (null !== $encoderDefinition) {
-                $lsConfig[] = $this->getOutputString($event, $encoderDefinition, 'local_', $i);
+            $outputtableSource = $mountRow->getOutputtableSource();
+            if (null !== $outputtableSource) {
+                $lsConfig[] = $this->getOutputString($event, $outputtableSource, 'local_', $i);
             }
         }
 
@@ -746,23 +791,13 @@ final class ConfigWriter implements EventSubscriberInterface
         foreach ($station->hls_streams as $hlsStream) {
             $streamVarName = self::cleanUpVarName($hlsStream->name);
 
-            $streamAacProfile = ($hlsStream->format ?? HlsStreamProfiles::default())
-                ->getProfileName();
+            // TODO: Replace with common encoder
+            $outputString = $this->getFullFfmpegString(
+                $hlsStream->getEncodingFormat(),
+                'mpegts'
+            );
 
-            $streamBitrate = $hlsStream->bitrate ?? 128;
-
-            $lsConfig[] = <<<LIQ
-            {$streamVarName} = %ffmpeg(
-                format="mpegts",
-                %audio(
-                    codec="libfdk_aac",
-                    samplerate=44100,
-                    channels=2,
-                    b="{$streamBitrate}k",
-                    profile="{$streamAacProfile}"
-                )
-            )
-            LIQ;
+            $lsConfig[] = $streamVarName . ' = ' . $outputString;
 
             $hlsStreams[] = $streamVarName;
         }
@@ -825,7 +860,7 @@ final class ConfigWriter implements EventSubscriberInterface
         foreach ($station->remotes as $remoteRow) {
             $i++;
 
-            $encoderDefinition = $remoteRow->getEncoderDefinition();
+            $encoderDefinition = $remoteRow->getOutputtableSource();
             if (null !== $encoderDefinition) {
                 $lsConfig[] = $this->getOutputString($event, $encoderDefinition, 'relay_', $i);
             }
@@ -1091,41 +1126,43 @@ final class ConfigWriter implements EventSubscriberInterface
      */
     private function getOutputString(
         WriteLiquidsoapConfiguration $event,
-        EncoderDefinition $definition,
+        OutputtableSource $source,
         string $idPrefix,
         int $id
     ): string {
         $station = $event->getStation();
         $charset = $event->getBackendConfig()->charset;
 
-        $format = $definition->format ?? StreamFormats::default();
-        $outputFormat = $this->getOutputFormatString(
-            $format,
-            $definition->bitrate ?? 128
-        );
+        $encoding = $source->encoding;
 
         $outputParams = [];
-        $outputParams[] = $outputFormat;
+
+        // TODO for common encoding:
+        // $container = $encoding->format->getFfmpegContainer();
+        // $outputParams[] = '%ffmpeg(format="' . $container . '", %audio.copy)';
+
+        $outputParams[] = $this->getFullFfmpegString($encoding);
+
         $outputParams[] = 'id="' . $idPrefix . $id . '"';
 
-        $outputParams[] = 'host = "' . self::cleanUpString($definition->host) . '"';
-        $outputParams[] = 'port = ' . (int)$definition->port;
+        $outputParams[] = 'host = "' . self::cleanUpString($source->host) . '"';
+        $outputParams[] = 'port = ' . (int)$source->port;
 
-        if (!empty($definition->username)) {
-            $outputParams[] = 'user = "' . self::cleanUpString($definition->username) . '"';
+        if (!empty($source->username)) {
+            $outputParams[] = 'user = "' . self::cleanUpString($source->username) . '"';
         }
 
-        $password = self::cleanUpString($definition->password);
+        $password = self::cleanUpString($source->password);
 
-        $adapterType = $definition->adapterType;
+        $adapterType = $source->adapterType;
         if (FrontendAdapters::Shoutcast === $adapterType) {
             $password .= ':#' . $id;
         }
 
         $outputParams[] = 'password = "' . $password . '"';
 
-        $mountPoint = $definition->mount;
-        if (StreamProtocols::Icy === $definition->protocol) {
+        $mountPoint = $source->mount;
+        if (StreamProtocols::Icy === $source->protocol) {
             if (!empty($mountPoint)) {
                 $outputParams[] = 'icy_id = ' . $id;
             }
@@ -1139,7 +1176,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $outputParams[] = 'name = "' . self::cleanUpString($station->name) . '"';
 
-        if (!$definition->isShoutcast) {
+        if (!$source->isShoutcast) {
             $outputParams[] = 'description = "' . self::cleanUpString($station->description) . '"';
         }
         $outputParams[] = 'genre = "' . self::cleanUpString($station->genre) . '"';
@@ -1148,49 +1185,78 @@ final class ConfigWriter implements EventSubscriberInterface
             $outputParams[] = 'url = "' . self::cleanUpString($station->url) . '"';
         }
 
-        $outputParams[] = 'public = ' . ($definition->isPublic ? 'true' : 'false');
+        $outputParams[] = 'public = ' . ($source->isPublic ? 'true' : 'false');
         $outputParams[] = 'encoding = "' . $charset . '"';
 
-        if (StreamProtocols::Https === $definition->protocol) {
-            $outputParams[] = 'transport=https_transport';
+        if (StreamProtocols::Https === $source->protocol) {
+            $outputParams[] = 'transport = https_transport';
         }
 
-        if ($format->sendIcyMetadata()) {
-            $outputParams[] = 'send_icy_metadata=true';
-        }
+        $outputParams[] = 'send_icy_metadata = ' . ($encoding->format->sendIcyMetadata() ? 'true' : 'false');
+
+        // TODO for common encoding:
+        // $outputParams[] = self::cleanUpVarName($encoding->getVariableName('radio'));
 
         $outputParams[] = 'radio';
 
-        $outputCommand = ($definition->isShoutcast)
+        $outputCommand = ($source->isShoutcast)
             ? 'output.shoutcast'
             : 'output.icecast';
 
         return $outputCommand . '(' . implode(', ', $outputParams) . ')';
     }
 
-    private function getOutputFormatString(StreamFormats $format, int $bitrate = 128): string
-    {
-        switch ($format) {
-            case StreamFormats::Aac:
-                $afterburner = ($bitrate >= 160) ? 'true' : 'false';
-                $aot = ($bitrate >= 96) ? 'mpeg4_aac_lc' : 'mpeg4_he_aac_v2';
+    private function getFullFfmpegString(
+        EncodingFormat $encoding,
+        ?string $container = null,
+    ): string {
+        $audioString = $this->getFfmpegAudioString($encoding);
+        $container ??= $encoding->format->getFfmpegContainer();
 
-                return '%fdkaac(channels=2, samplerate=44100, bitrate=' . $bitrate . ', afterburner=' . $afterburner . ', aot="' . $aot . '", sbr_mode=true)';
+        return <<<LIQ
+        %ffmpeg(format="{$container}", {$audioString})
+        LIQ;
+    }
+
+    private function getFfmpegAudioString(
+        EncodingFormat $encoding,
+    ): string {
+        $bitrate = $encoding->bitrate;
+
+        switch ($encoding->format) {
+            case StreamFormats::Aac:
+                $afterburner = ($encoding->bitrate >= 160) ? '1' : '0';
+                $profile = $encoding->subProfile?->getProfileName()
+                    ?? HlsStreamProfiles::default()->getProfileName();
+
+                return <<<LIQ
+                %audio(codec="libfdk_aac", samplerate=44100, channels=2, b="{$bitrate}k", profile="{$profile}", afterburner={$afterburner})
+                LIQ;
 
             case StreamFormats::Ogg:
-                return '%ffmpeg(format="ogg", %audio(codec="libvorbis", samplerate=48000, b="' . $bitrate . 'k", channels=2))';
+                return <<<LIQ
+                %audio(codec="libvorbis", samplerate=48000, b="{$bitrate}k", channels=2)
+                LIQ;
 
             case StreamFormats::Opus:
-                return '%ffmpeg(format="ogg", %audio(codec="libopus", samplerate=48000, b="' . $bitrate . 'k", vbr="constrained", application="audio", channels=2, compression_level=10, cutoff=20000))';
+                return <<<LIQ
+                %audio(codec="libopus", samplerate=48000, b="{$bitrate}k", vbr="constrained", application="audio", channels=2, compression_level=10, cutoff=20000)
+                LIQ;
 
             case StreamFormats::Flac:
-                return '%ogg(%flac(samplerate=48000, channels=2, compression=4, bits_per_sample=24))';
+                return <<<LIQ
+                %audio(codec="flac", channels=2, ar=48000)
+                LIQ;
 
             case StreamFormats::Mp3:
-                return '%mp3(samplerate=44100, stereo=true, bitrate=' . $bitrate . ')';
+                return <<<LIQ
+                %audio(codec="libmp3lame", ac=2, ar=44100, b="{$bitrate}k")
+                LIQ;
 
             default:
-                throw new RuntimeException(sprintf('Unsupported stream format: %s', $format->value));
+                throw new RuntimeException(
+                    sprintf('Unsupported stream format: %s', $encoding->format->value)
+                );
         }
     }
 

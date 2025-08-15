@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Api\ResolvableUrl;
-use App\Radio\AutoDJ\EncoderDefinition;
+use App\Radio\Backend\Liquidsoap\EncodableInterface;
+use App\Radio\Backend\Liquidsoap\EncodingFormat;
+use App\Radio\Backend\Liquidsoap\OutputtableInterface;
+use App\Radio\Backend\Liquidsoap\OutputtableSource;
 use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
@@ -27,7 +30,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 ]
 final class StationMount implements
     Stringable,
-    Interfaces\EncodableInterface,
+    OutputtableInterface,
+    EncodableInterface,
     Interfaces\StationAwareInterface,
     Interfaces\StationCloneAwareInterface,
     Interfaces\IdentifiableEntityInterface
@@ -228,18 +232,30 @@ final class StationMount implements
         $this->station = $station;
     }
 
-    public function getEncoderDefinition(): ?EncoderDefinition
+    public function getEncodingFormat(): ?EncodingFormat
     {
         if (!$this->enable_autodj) {
+            return null;
+        }
+
+        return new EncodingFormat(
+            format: $this->autodj_format ?? StreamFormats::default(),
+            bitrate: $this->autodj_bitrate ?? 128
+        );
+    }
+
+    public function getOutputtableSource(): ?OutputtableSource
+    {
+        $encoding = $this->getEncodingFormat();
+        if (null === $encoding) {
             return null;
         }
 
         $adapterType = $this->station->frontend_type;
         $frontendConfig = $this->station->frontend_config;
 
-        return new EncoderDefinition(
-            format: $this->autodj_format,
-            bitrate: $this->autodj_bitrate,
+        return new OutputtableSource(
+            encoding: $encoding,
             adapterType: $adapterType,
             host: '127.0.0.1',
             port: $frontendConfig->port,

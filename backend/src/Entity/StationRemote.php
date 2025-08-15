@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Api\ResolvableUrl;
-use App\Radio\AutoDJ\EncoderDefinition;
+use App\Radio\Backend\Liquidsoap\EncodableInterface;
+use App\Radio\Backend\Liquidsoap\EncodingFormat;
+use App\Radio\Backend\Liquidsoap\OutputtableInterface;
+use App\Radio\Backend\Liquidsoap\OutputtableSource;
 use App\Radio\Enums\RemoteAdapters;
 use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
@@ -27,7 +30,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 final class StationRemote implements
     Stringable,
     Interfaces\StationAwareInterface,
-    Interfaces\EncodableInterface,
+    OutputtableInterface,
+    EncodableInterface,
     Interfaces\StationCloneAwareInterface,
     Interfaces\IdentifiableEntityInterface
 {
@@ -253,17 +257,29 @@ final class StationRemote implements
         return (RemoteAdapters::AzuraRelay !== $this->type);
     }
 
-    public function getEncoderDefinition(): ?EncoderDefinition
+    public function getEncodingFormat(): ?EncodingFormat
     {
         if (!$this->enable_autodj) {
             return null;
         }
 
+        return new EncodingFormat(
+            format: $this->autodj_format ?? StreamFormats::default(),
+            bitrate: $this->autodj_bitrate ?? 128
+        );
+    }
+
+    public function getOutputtableSource(): ?OutputtableSource
+    {
+        $encoding = $this->getEncodingFormat();
+        if (null === $encoding) {
+            return null;
+        }
+
         $uri = $this->getUrlAsUri();
 
-        return new EncoderDefinition(
-            format: $this->autodj_format,
-            bitrate: $this->autodj_bitrate,
+        return new OutputtableSource(
+            encoding: $encoding,
             adapterType: $this->type,
             host: $uri->getHost(),
             port: $this->source_port ?? $uri->getPort(),

@@ -6,45 +6,40 @@ namespace App\Entity;
 
 use App\Doctrine\AbstractArrayEntity;
 use App\Entity\Enums\StationBackendPerformanceModes;
+use App\Radio\Backend\Liquidsoap\EncodingFormat;
 use App\Radio\Enums\AudioProcessingMethods;
 use App\Radio\Enums\CrossfadeModes;
 use App\Radio\Enums\MasterMePresets;
 use App\Radio\Enums\StreamFormats;
 use App\Utilities\Types;
 use LogicException;
+use OpenApi\Attributes as OA;
 
+#[OA\Schema(schema: "StationBackendConfiguration", type: "object")]
 final class StationBackendConfiguration extends AbstractArrayEntity
 {
-    public string $charset {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true) ?? 'UTF-8';
-        set (?string $value) {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public string $charset = 'UTF-8' {
+        set (?string $value) => Types::string($value, 'UTF-8', true);
     }
 
-    public ?int $dj_port {
-        get => Types::intOrNull($this->get(__PROPERTY__));
-        set (int|string|null $value) {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public ?int $dj_port = null {
+        set (int|string|null $value) => Types::intOrNull($value);
     }
 
-    public ?int $telnet_port {
-        get => Types::intOrNull($this->get(__PROPERTY__));
-        set (int|string|null $value) {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public ?int $telnet_port = null {
+        set (int|string|null $value) => Types::intOrNull($value);
     }
 
-    public bool $record_streams {
-        get => Types::boolOrNull($this->get(__PROPERTY__)) ?? false;
-        set(string|bool $value) {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public bool $record_streams = false {
+        set(string|bool $value) => Types::bool($value, false, true);
     }
 
-    public string $record_streams_format {
-        get => Types::stringOrNull($this->get(__PROPERTY__)) ?? '';
+    #[OA\Property]
+    public string $record_streams_format = '' {
         set (string|StreamFormats|null $value) {
             if ($value instanceof StreamFormats) {
                 $value = $value->value;
@@ -57,7 +52,7 @@ final class StationBackendConfiguration extends AbstractArrayEntity
                 }
             }
 
-            $this->set(__PROPERTY__, $value);
+            $this->record_streams_format = $value ?? '';
         }
     }
 
@@ -66,47 +61,50 @@ final class StationBackendConfiguration extends AbstractArrayEntity
         return StreamFormats::tryFrom($this->record_streams_format) ?? StreamFormats::Mp3;
     }
 
-    public int $record_streams_bitrate {
-        get => Types::intOrNull($this->get(__PROPERTY__)) ?? 128;
-        set (int|string|null $value) {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public int $record_streams_bitrate = 128 {
+        set (int|string|null $value) => Types::int($value, 128);
     }
 
-    public bool $use_manual_autodj {
-        get => Types::boolOrNull($this->get(__PROPERTY__)) ?? false;
-        set (bool|null $value) {
-            $this->set(__PROPERTY__, $value);
+    public function getRecordStreamsEncoding(): ?EncodingFormat
+    {
+        if (!$this->record_streams) {
+            return null;
         }
+
+        return new EncodingFormat(
+            format: $this->getRecordStreamsFormatEnum(),
+            bitrate: $this->record_streams_bitrate,
+            subProfile: null
+        );
+    }
+
+    #[OA\Property]
+    public bool $use_manual_autodj = false {
+        set (bool|null $value) => Types::bool($value, false);
     }
 
     protected const int DEFAULT_QUEUE_LENGTH = 3;
 
-    public int $autodj_queue_length {
-        get => Types::intOrNull($this->get(__PROPERTY__)) ?? self::DEFAULT_QUEUE_LENGTH;
-        set(int|string|null $value) {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public int $autodj_queue_length = self::DEFAULT_QUEUE_LENGTH {
+        set(int|string|null $value) => Types::int($value, self::DEFAULT_QUEUE_LENGTH);
     }
 
-    public string $dj_mount_point {
-        get => Types::stringOrNull($this->get(__PROPERTY__)) ?? '/';
-        set (string|null $value) {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public string $dj_mount_point = '/' {
+        set (string|null $value) => Types::string($value, '/', true);
     }
 
     protected const int DEFAULT_DJ_BUFFER = 5;
 
-    public int $dj_buffer {
-        get => Types::intOrNull($this->get(__PROPERTY__)) ?? self::DEFAULT_DJ_BUFFER;
-        set (int|string|null $value) {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public int $dj_buffer = self::DEFAULT_DJ_BUFFER {
+        set (int|string|null $value) => Types::int($value, self::DEFAULT_DJ_BUFFER);
     }
 
-    public string $audio_processing_method {
-        get => Types::string($this->get(__PROPERTY__));
+    #[OA\Property]
+    public string $audio_processing_method = '' {
         set(string|AudioProcessingMethods|null $value) {
             if ($value instanceof AudioProcessingMethods) {
                 $value = $value->value;
@@ -119,7 +117,7 @@ final class StationBackendConfiguration extends AbstractArrayEntity
                 }
             }
 
-            $this->set(__PROPERTY__, $value);
+            $this->audio_processing_method = $value ?? '';
         }
     }
 
@@ -134,29 +132,23 @@ final class StationBackendConfiguration extends AbstractArrayEntity
         return AudioProcessingMethods::None !== $this->getAudioProcessingMethodEnum();
     }
 
-    public bool $post_processing_include_live {
-        get => Types::bool($this->get(__PROPERTY__));
-        set (bool|string|null $value) {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public bool $post_processing_include_live = false {
+        set (bool|string|null $value) => Types::bool($value, false);
     }
 
-    public ?string $stereo_tool_license_key {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true);
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public ?string $stereo_tool_license_key = null {
+        set => Types::stringOrNull($value, true);
     }
 
-    public ?string $stereo_tool_configuration_path {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true);
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public ?string $stereo_tool_configuration_path = null {
+        set => Types::stringOrNull($value, true);
     }
 
-    public ?string $master_me_preset {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true);
+    #[OA\Property]
+    public ?string $master_me_preset = null {
         set (string|MasterMePresets|null $value) {
             if ($value instanceof MasterMePresets) {
                 $value = $value->value;
@@ -168,7 +160,7 @@ final class StationBackendConfiguration extends AbstractArrayEntity
                 }
             }
 
-            $this->set(__PROPERTY__, $value);
+            $this->master_me_preset = $value;
         }
     }
 
@@ -180,34 +172,19 @@ final class StationBackendConfiguration extends AbstractArrayEntity
 
     protected const int MASTER_ME_DEFAULT_LOUDNESS_TARGET = -16;
 
-    public int $master_me_loudness_target {
-        get => Types::intOrNull($this->get(__PROPERTY__))
-            ?? self::MASTER_ME_DEFAULT_LOUDNESS_TARGET;
-        set (int|string|null $value) {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public int $master_me_loudness_target = self::MASTER_ME_DEFAULT_LOUDNESS_TARGET {
+        set (int|string|null $value) => Types::int($value, self::MASTER_ME_DEFAULT_LOUDNESS_TARGET);
     }
 
-    public bool $enable_replaygain_metadata {
-        get {
-            // AutoCue overrides this functionality.
-            if ($this->enable_auto_cue) {
-                return false;
-            }
-
-            return Types::bool($this->get(__PROPERTY__));
-        }
-        set (bool|string|null $value) {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public bool $enable_replaygain_metadata = false {
+        get => ($this->enable_auto_cue) ? false : $this->enable_replaygain_metadata;
+        set (bool|string|null $value) => Types::bool($value, false, true);
     }
 
-    public string $crossfade_type {
-        get => Types::string($this->get(__PROPERTY__));
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
-    }
+    #[OA\Property]
+    public string $crossfade_type = '';
 
     public function getCrossfadeTypeEnum(): CrossfadeModes
     {
@@ -219,16 +196,14 @@ final class StationBackendConfiguration extends AbstractArrayEntity
         return CrossfadeModes::tryFrom($this->crossfade_type) ?? CrossfadeModes::default();
     }
 
-    protected const int DEFAULT_CROSSFADE_DURATION = 2;
+    protected const float DEFAULT_CROSSFADE_DURATION = 2.0;
 
-    public float $crossfade {
-        get => round(
-            Types::floatOrNull($this->get(__PROPERTY__)) ?? self::DEFAULT_CROSSFADE_DURATION,
+    #[OA\Property]
+    public float $crossfade = self::DEFAULT_CROSSFADE_DURATION {
+        set (float|string|null $value) => round(
+            Types::float($value, self::DEFAULT_CROSSFADE_DURATION),
             1
         );
-        set (float|string|null $value) {
-            $this->set(__PROPERTY__, $value);
-        }
     }
 
     public function getCrossfadeDuration(): float
@@ -250,15 +225,13 @@ final class StationBackendConfiguration extends AbstractArrayEntity
 
     protected const int DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE = 120;
 
-    public int $duplicate_prevention_time_range {
-        get => Types::int($this->get(__PROPERTY__), self::DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE);
-        set (int|string|null $value) {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public int $duplicate_prevention_time_range = self::DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE {
+        set (int|string|null $value) => Types::int($value, self::DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE);
     }
 
-    public string $performance_mode {
-        get => Types::string($this->get(__PROPERTY__));
+    #[OA\Property]
+    public string $performance_mode = '' {
         set(string|StationBackendPerformanceModes|null $value) {
             if ($value instanceof StationBackendPerformanceModes) {
                 $value = $value->value;
@@ -270,7 +243,7 @@ final class StationBackendConfiguration extends AbstractArrayEntity
                 }
             }
 
-            $this->set(__PROPERTY__, $value);
+            $this->performance_mode = $value ?? '';
         }
     }
 
@@ -280,61 +253,41 @@ final class StationBackendConfiguration extends AbstractArrayEntity
             ?? StationBackendPerformanceModes::default();
     }
 
-    public int $hls_segment_length {
-        get => Types::int($this->get(__PROPERTY__), 4);
-        set (int|string|null $value) {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public int $hls_segment_length = 4 {
+        set (int|string|null $value) => Types::int($value, 4);
     }
 
-    public int $hls_segments_in_playlist {
-        get => Types::int($this->get(__PROPERTY__), 5);
-        set (int|string|null $value) {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public int $hls_segments_in_playlist = 5 {
+        set (int|string|null $value) => Types::int($value, 5);
     }
 
-    public int $hls_segments_overhead {
-        get => Types::int($this->get(__PROPERTY__), 2);
-        set (int|string|null $value) {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public int $hls_segments_overhead = 2 {
+        set (int|string|null $value) => Types::int($value, 2);
     }
 
-    public bool $hls_enable_on_public_player {
-        get => Types::bool($this->get(__PROPERTY__));
-        set (bool|string $value) {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public bool $hls_enable_on_public_player = false {
+        set (bool|string $value) => Types::bool($value, false, true);
     }
 
-    public bool $hls_is_default {
-        get => Types::bool($this->get(__PROPERTY__));
-        set (bool|string $value) {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public bool $hls_is_default = false {
+        set (bool|string $value) => Types::bool($value, false, true);
     }
 
-    public string $live_broadcast_text {
-        get => Types::string($this->get(__PROPERTY__), 'Live Broadcast', true);
-        set (string|null $value) {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public string $live_broadcast_text = 'Live Broadcast' {
+        set (string|null $value) => Types::string($value, 'Live Broadcast');
     }
 
-    public bool $enable_auto_cue {
-        get => Types::bool($this->get(__PROPERTY__));
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
-    }
+    #[OA\Property]
+    public bool $enable_auto_cue = false;
 
-    public bool $write_playlists_to_liquidsoap {
-        get => Types::bool($this->get(__PROPERTY__), true);
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
-    }
+    #[OA\Property]
+    public bool $write_playlists_to_liquidsoap = false;
 
     /*
      * Liquidsoap Custom Configuration Sections
@@ -342,60 +295,45 @@ final class StationBackendConfiguration extends AbstractArrayEntity
 
     public const string CUSTOM_TOP = 'custom_config_top';
 
-    public ?string $custom_config_top {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true);
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
-    }
+    #[OA\Property(
+        description: 'Custom Liquidsoap Configuration: Top Section'
+    )]
+    public ?string $custom_config_top = null;
 
     public const string CUSTOM_PRE_PLAYLISTS = 'custom_config_pre_playlists';
 
-    public ?string $custom_config_pre_playlists {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true);
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
-    }
+    #[OA\Property(
+        description: 'Custom Liquidsoap Configuration: Pre-Playlists Section'
+    )]
+    public ?string $custom_config_pre_playlists = null;
 
     public const string CUSTOM_PRE_LIVE = 'custom_config_pre_live';
 
-    public ?string $custom_config_pre_live {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true);
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
-    }
+    #[OA\Property(
+        description: 'Custom Liquidsoap Configuration: Pre-Live Section'
+    )]
+    public ?string $custom_config_pre_live = null;
 
     public const string CUSTOM_PRE_FADE = 'custom_config_pre_fade';
 
-    public ?string $custom_config_pre_fade {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true);
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
-    }
+    #[OA\Property(
+        description: 'Custom Liquidsoap Configuration: Pre-Fade Section'
+    )]
+    public ?string $custom_config_pre_fade = null;
 
     public const string CUSTOM_PRE_BROADCAST = 'custom_config';
 
-    /**
-     * Now used as pre-broadcast custom config
-     */
-    public ?string $custom_config {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true);
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
-    }
+    #[OA\Property(
+        description: 'Custom Liquidsoap Configuration: Pre-Broadcast Section'
+    )]
+    public ?string $custom_config = null;
 
     public const string CUSTOM_BOTTOM = 'custom_config_bottom';
 
-    public ?string $custom_config_bottom {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true);
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
-    }
+    #[OA\Property(
+        description: 'Custom Liquidsoap Configuration: Post-Broadcast Section'
+    )]
+    public ?string $custom_config_bottom = null;
 
     /** @return array<int, string> */
     public static function getCustomConfigurationSections(): array

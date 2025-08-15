@@ -112,7 +112,8 @@ final class SetupCommand extends CommandAbstract
 
         // Update system setting logging when updates were last run.
         $settings = $this->readSettings();
-        $settings->updateUpdateLastRun();
+        $settings->update_results = null;
+
         $this->writeSettings($settings);
 
         if ($update) {

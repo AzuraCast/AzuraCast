@@ -8,6 +8,7 @@ use App\Entity\Podcast;
 use App\Entity\PodcastEpisode;
 use App\Entity\Repository\PodcastEpisodeRepository;
 use App\Entity\Repository\StorageLocationRepository;
+use App\Environment;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -16,28 +17,18 @@ use Symfony\Component\Finder\Finder;
 final class PodcastEpisodeFixture extends AbstractFixture implements DependentFixtureInterface
 {
     public function __construct(
-        protected PodcastEpisodeRepository $episodeRepo,
-        protected StorageLocationRepository $storageLocationRepo
+        private readonly Environment $environment,
+        private readonly PodcastEpisodeRepository $episodeRepo,
+        private readonly StorageLocationRepository $storageLocationRepo
     ) {
     }
 
     public function load(ObjectManager $manager): void
     {
-        $podcastsSkeletonDir = getenv('INIT_PODCASTS_PATH');
-
-        if (empty($podcastsSkeletonDir) || !is_dir($podcastsSkeletonDir)) {
-            return;
-        }
-
         $podcast = $this->getReference('podcast', Podcast::class);
 
         $fs = $this->storageLocationRepo->getAdapter($podcast->storage_location)
             ->getFilesystem();
-
-        $finder = (new Finder())
-            ->files()
-            ->in($podcastsSkeletonDir)
-            ->name('/^.+\.(mp3|aac|ogg|flac)$/i');
 
         $i = 1;
 
@@ -55,8 +46,7 @@ final class PodcastEpisodeFixture extends AbstractFixture implements DependentFi
             'Default Error Message',
         ];
 
-        foreach ($finder as $file) {
-            $filePath = $file->getPathname();
+        foreach ($this->getEpisodePaths() as $filePath) {
             $fileBaseName = basename($filePath);
 
             $tempPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileBaseName;
@@ -87,6 +77,31 @@ final class PodcastEpisodeFixture extends AbstractFixture implements DependentFi
 
             $i++;
         }
+    }
+
+    private function getEpisodePaths(): array
+    {
+        $podcastsSkeletonDir = getenv('INIT_PODCASTS_PATH');
+
+        if (!empty($podcastsSkeletonDir) && is_dir($podcastsSkeletonDir)) {
+            $finder = new Finder()
+                ->files()
+                ->in($podcastsSkeletonDir)
+                ->name('/^.+\.(mp3|aac|ogg|flac)$/i');
+
+            $paths = [];
+            foreach ($finder as $file) {
+                $paths[] = $file->getPathname();
+            }
+
+            if (!empty($paths)) {
+                return $paths;
+            }
+        }
+
+        return [
+            $this->environment->getBaseDirectory() . '/resources/error.mp3',
+        ];
     }
 
     /**

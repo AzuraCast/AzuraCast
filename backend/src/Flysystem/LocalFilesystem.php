@@ -72,7 +72,7 @@ final class LocalFilesystem extends AbstractFilesystem
     }
 
     /** @inheritDoc */
-    public function withLocalFile(string $path, callable $function)
+    public function withLocalFile(string $path, callable $function): mixed
     {
         $localPath = $this->getLocalPath($path);
         return $function($localPath);

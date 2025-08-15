@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 abstract class AbstractArrayEntity implements JsonSerializable, DenormalizableInterface
 {
     /** @var ConfigData */
-    protected array $data = [];
+    protected array $extraData = [];
 
     /**
      * @param ConfigData $data
@@ -47,7 +47,7 @@ abstract class AbstractArrayEntity implements JsonSerializable, DenormalizableIn
         array|self $data
     ): static {
         if ($data instanceof self) {
-            $data = $data->getData();
+            $data = $data->toArray(true) ?? [];
         }
 
         // Only accept hashmap-style data, not lists.
@@ -69,32 +69,29 @@ abstract class AbstractArrayEntity implements JsonSerializable, DenormalizableIn
             if (property_exists($this, $dataKey)) {
                 $this->$dataKey = $dataVal;
             } else {
-                $this->set($dataKey, $dataVal);
+                $this->extraData[$dataKey] = $dataVal;
             }
         }
 
         return $this;
     }
 
-    public function getData(): array
-    {
-        $data = $this->data;
-        ksort($data);
-        return $data;
-    }
-
     /**
      * @return ConfigData|null
      */
-    public function toArray(): ?array
+    public function toArray(bool $rawValue = false): ?array
     {
-        $return = [];
+        $return = ($rawValue) ? $this->extraData : [];
+        $reflClass = new ReflectionClass(static::class);
 
-        foreach (self::getFields() as $dataKey) {
-            $return[$dataKey] = match (true) {
-                property_exists($this, $dataKey) => $this->$dataKey,
-                default => $this->get($dataKey)
-            };
+        foreach ($reflClass->getProperties(ReflectionProperty::IS_PUBLIC) as $reflProp) {
+            if (!$reflProp->isInitialized($this)) {
+                continue;
+            }
+
+            $return[$reflProp->getName()] = $rawValue
+                ? $reflProp->getRawValue($this)
+                : $reflProp->getValue($this);
         }
 
         ksort($return);
@@ -108,16 +105,6 @@ abstract class AbstractArrayEntity implements JsonSerializable, DenormalizableIn
         return $result ?? (object)[];
     }
 
-    protected function get(string $key, mixed $default = null): mixed
-    {
-        return $this->data[$key] ?? $default;
-    }
-
-    protected function set(string $key, mixed $value): void
-    {
-        $this->data[$key] = $value;
-    }
-
     /**
      * @return string[] Valid property names.
      */
@@ -126,7 +113,7 @@ abstract class AbstractArrayEntity implements JsonSerializable, DenormalizableIn
         $reflClass = new ReflectionClass(static::class);
         return array_map(
             fn(ReflectionProperty $reflProp) => $reflProp->getName(),
-            $reflClass->getProperties(ReflectionProperty::IS_VIRTUAL)
+            $reflClass->getProperties(ReflectionProperty::IS_PUBLIC)
         );
     }
 
@@ -145,6 +132,6 @@ abstract class AbstractArrayEntity implements JsonSerializable, DenormalizableIn
             $arrayEntity->fromArray($newData);
         }
 
-        return $arrayEntity->getData();
+        return $arrayEntity->toArray(true);
     }
 }

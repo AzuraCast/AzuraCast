@@ -48,7 +48,7 @@ import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
-import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
+import {ApiGenericForm, HlsStreamProfiles} from "~/entities/ApiInterfaces.ts";
 
 const form = defineModel<ApiGenericForm>('form', {required: true});
 
@@ -63,15 +63,31 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     },
     {
         name: null,
-        format: 'aac',
+        format: HlsStreamProfiles.AacLowComplexity,
         bitrate: 128
     }
 );
 
 const formatOptions = [
     {
-        value: 'aac',
-        text: 'AAC'
+        value: HlsStreamProfiles.AacLowComplexity,
+        text: 'AAC Low Complexity (Default)',
+    },
+    {
+        value: HlsStreamProfiles.AacHighEfficiencyV1,
+        text: 'AAC High Efficiency V1 (HE-AAC)'
+    },
+    {
+        value: HlsStreamProfiles.AacHighEfficiencyV2,
+        text: 'AAC High Efficiency V2 (HE-AACv2)'
+    },
+    {
+        value: HlsStreamProfiles.AacEnhancedLowDelay,
+        text: 'AAC Low Delay (LD)'
+    },
+    {
+        value: HlsStreamProfiles.AacEnhancedLowDelay,
+        text: 'AAC Enhanced Low Delay (ELD)'
     }
 ];
 

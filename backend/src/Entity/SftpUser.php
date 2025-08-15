@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use OpenApi\Attributes as OA;
 use phpseclib3\Crypt\PublicKeyLoader;
+use ReflectionProperty;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use const PASSWORD_ARGON2ID;
@@ -45,8 +46,7 @@ final class SftpUser implements
 
     #[
         OA\Property,
-        ORM\Column(length: 255),
-        Assert\NotBlank
+        ORM\Column(length: 255)
     ]
     public string $password {
         // @phpstan-ignore propertyGetHook.noRead
@@ -92,7 +92,10 @@ final class SftpUser implements
     public function authenticate(?string $password = null, ?string $pubKey = null): bool
     {
         if (!empty($password)) {
-            return password_verify($password, $this->password);
+            $reflProp = new ReflectionProperty($this, 'password');
+            $hash = $reflProp->getRawValue($this);
+
+            return password_verify($password, $hash);
         }
 
         if (!empty($pubKey)) {

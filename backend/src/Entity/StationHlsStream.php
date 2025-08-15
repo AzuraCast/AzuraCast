@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Radio\Backend\Liquidsoap\EncodableInterface;
+use App\Radio\Backend\Liquidsoap\EncodingFormat;
+use App\Radio\Enums\HlsStreamProfiles;
 use App\Radio\Enums\StreamFormats;
 use App\Utilities\Strings;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,7 +25,8 @@ final class StationHlsStream implements
     Stringable,
     Interfaces\StationAwareInterface,
     Interfaces\StationCloneAwareInterface,
-    Interfaces\IdentifiableEntityInterface
+    Interfaces\IdentifiableEntityInterface,
+    EncodableInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -55,9 +59,9 @@ final class StationHlsStream implements
 
     #[
         OA\Property(example: "aac"),
-        ORM\Column(type: 'string', length: 10, nullable: true, enumType: StreamFormats::class)
+        ORM\Column(type: 'string', length: 10, nullable: true, enumType: HlsStreamProfiles::class)
     ]
-    public ?StreamFormats $format = StreamFormats::Aac;
+    public ?HlsStreamProfiles $format = HlsStreamProfiles::AacLowComplexity;
 
     #[
         OA\Property(example: 128),
@@ -85,6 +89,15 @@ final class StationHlsStream implements
     public function __construct(Station $station)
     {
         $this->station = $station;
+    }
+
+    public function getEncodingFormat(): EncodingFormat
+    {
+        return new EncodingFormat(
+            format: StreamFormats::Aac,
+            bitrate: $this->bitrate ?? 128,
+            subProfile: $this->format ?? HlsStreamProfiles::default()
+        );
     }
 
     public function __toString(): string

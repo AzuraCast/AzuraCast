@@ -3,7 +3,7 @@ import installAxios from "~/vendor/axios";
 import {installTranslate} from "~/vendor/gettext";
 import {installCurrentVueInstance} from "~/vendor/vueInstance";
 import {AzuraCastConstants, setGlobalProps} from "~/vendor/azuracast";
-import {VueQueryPlugin} from "@tanstack/vue-query";
+import installTanstack from "~/vendor/tanstack.ts";
 
 export default function initApp(
     appConfig: Component = {},
@@ -17,16 +17,7 @@ export default function initApp(
     installCurrentVueInstance(vueApp);
 
     /* TanStack Query */
-    vueApp.use(VueQueryPlugin, {
-        enableDevtoolsV6Plugin: true,
-        queryClientConfig: {
-            defaultOptions: {
-                queries: {
-                    retryDelay: (attemptIndex) => Math.min(2500 * 2 ** attemptIndex, 30000),
-                },
-            },
-        },
-    });
+    installTanstack(vueApp);
 
     (<any>window).vueComponent = async (el: string, globalProps: AzuraCastConstants): Promise<void> => {
         setGlobalProps(globalProps);

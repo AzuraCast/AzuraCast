@@ -50,12 +50,11 @@ final class GetUpdatesAction implements SingleActionInterface
         try {
             $updates = $this->azuracastCentral->checkForUpdates();
 
-            if (!empty($updates)) {
+            if (null !== $updates) {
                 $settings->update_results = $updates;
-                $settings->updateUpdateLastRun();
                 $this->writeSettings($settings);
 
-                return $response->withJson(UpdateDetails::fromParent($updates));
+                return $response->withJson($updates);
             }
 
             throw new RuntimeException('Error parsing update data response from AzuraCast central.');

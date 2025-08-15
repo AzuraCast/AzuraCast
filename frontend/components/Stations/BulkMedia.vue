@@ -75,8 +75,16 @@
 
                         <div class="block-buttons mt-3">
                             <button
+                                type="button"
+                                class="btn btn-block btn-outline-primary me-2"
+                                @click="doPreview"
+                            >
+                                {{ $gettext('Preview Changes') }}
+                            </button>
+                            <button
                                 type="submit"
-                                class="btn btn-block btn-primary "
+                                class="btn btn-block btn-primary"
+                                :disabled="!previewCompleted"
                             >
                                 {{ $gettext('Import Changes from CSV') }}
                             </button>
@@ -85,6 +93,156 @@
                 </div>
             </section>
         </div>
+
+        <modal
+            id="preview_modal"
+            ref="$previewModal"
+            :title="$gettext('Preview Changes')"
+            size="lg"
+        >
+            <p class="card-text">
+                {{ previewResults.message }}
+            </p>
+
+            <div style="max-height: 400px; overflow-y: scroll;">
+                <table class="table table-striped table-responsive">
+                    <thead>
+                        <tr>
+                            <th class="p-2">
+                                {{ $gettext('Media File') }}
+                            </th>
+                            <th class="p-2">
+                                {{ $gettext('Proposed Changes') }}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            v-for="row in filteredPreviewResults"
+                            :key="row.id"
+                        >
+                            <td
+                                class="p-2"
+                                style="overflow-x: auto;"
+                            >
+                                <b>{{ row.title }}</b><br>
+                                {{ row.artist }}
+                            </td>
+                            <td
+                                class="p-2"
+                                style="overflow-x: auto;"
+                            >
+                                <template v-if="row.error">
+                                    <div class="text-danger">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        {{ row.error }}
+                                    </div>
+                                </template>
+                                <template v-else-if="row.has_changes">
+                                    <div
+                                        v-if="row.changes.metadata"
+                                        class="mb-2"
+                                    >
+                                        <strong>{{ $gettext('Metadata:') }}</strong>
+                                        <ul class="mb-0">
+                                            <li
+                                                v-for="change in row.changes.metadata"
+                                                :key="change.field"
+                                            >
+                                                <strong>{{ change.field }}: </strong>
+                                                <span class="text-muted">{{ change.current || '(empty)' }}</span>
+                                                →
+                                                <span class="text-success">{{ change.new || '(empty)' }}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div
+                                        v-if="row.changes.extra_metadata"
+                                        class="mb-2"
+                                    >
+                                        <strong>{{ $gettext('Extra Metadata:') }}</strong>
+                                        <ul class="mb-0">
+                                            <li
+                                                v-for="change in row.changes.extra_metadata"
+                                                :key="change.field"
+                                            >
+                                                <strong>{{ change.field }}: </strong>
+                                                <span class="text-muted">{{ change.current || '(empty)' }}</span>
+                                                →
+                                                <span class="text-success">{{ change.new || '(empty)' }}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div
+                                        v-if="row.changes.playlists"
+                                        class="mb-2"
+                                    >
+                                        <strong>{{ $gettext('Playlists:') }}</strong>
+                                        <ul class="mb-0">
+                                            <li
+                                                v-if="row.changes.playlists.added && row.changes.playlists.added.length > 0"
+                                            >
+                                                <span class="text-success">
+                                                    <i class="fas fa-plus"></i>
+                                                    {{ $gettext('Add to:') }} {{ row.changes.playlists.added.join(', ') }}
+                                                </span>
+                                            </li>
+                                            <li
+                                                v-if="row.changes.playlists.removed && row.changes.playlists.removed.length > 0"
+                                            >
+                                                <span class="text-danger">
+                                                    <i class="fas fa-minus"></i>
+                                                    {{ $gettext('Remove from:') }} {{ row.changes.playlists.removed.join(', ') }}
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div
+                                        v-if="row.changes.custom_fields"
+                                        class="mb-2"
+                                    >
+                                        <strong>{{ $gettext('Custom Fields:') }}</strong>
+                                        <ul class="mb-0">
+                                            <li
+                                                v-for="change in row.changes.custom_fields"
+                                                :key="change.field"
+                                            >
+                                                <strong>{{ change.field }}: </strong>
+                                                <span class="text-muted">{{ change.current || '(empty)' }}</span>
+                                                →
+                                                <span class="text-success">{{ change.new || '(empty)' }}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </template>
+                                <template v-else>
+                                    <div class="text-muted">
+                                        {{ $gettext('No changes') }}
+                                    </div>
+                                </template>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <template #modal-footer>
+                <button
+                    class="btn btn-secondary"
+                    type="button"
+                    @click="hidePreview"
+                >
+                    {{ $gettext('Cancel') }}
+                </button>
+                <button
+                    class="btn btn-success"
+                    type="button"
+                    @click="proceedWithImport"
+                    :disabled="!previewResults || previewResults.total_changes === 0"
+                >
+                    {{ $gettext('Proceed with Import') }}
+                </button>
+            </template>
+        </modal>
 
         <modal
             id="import_modal"
@@ -155,7 +313,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, useTemplateRef} from "vue";
+import {computed, ref, useTemplateRef} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
@@ -165,9 +323,12 @@ import {getStationApiUrl} from "~/router";
 import {useHasModal} from "~/functions/useHasModal.ts";
 
 const apiUrl = getStationApiUrl('/files/bulk');
+const previewApiUrl = getStationApiUrl('/files/bulk/preview');
 
 const importFile = ref<File | null>(null);
 const importResults = ref<any>(null);
+const previewResults = ref<any>(null);
+const previewCompleted = ref<boolean>(false);
 
 const {notifySuccess, notifyError} = useNotify();
 const {axios} = useAxios();
@@ -175,21 +336,66 @@ const {axios} = useAxios();
 const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
+const $previewModal = useTemplateRef('$previewModal');
+const {show: showPreview, hide: hidePreview} = useHasModal($previewModal);
+
+const filteredPreviewResults = computed(() => {
+    if (!previewResults.value?.previewResults) return [];
+    return previewResults.value.previewResults.filter((row: any) =>
+        row.has_changes || row.error
+    );
+});
+
 const uploaded = (file: File) => {
     importFile.value = file;
+    previewCompleted.value = false;
+    previewResults.value = null;
+};
+
+const doPreview = () => {
+    if (!importFile.value) {
+        notifyError('Please select a CSV file first.');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('import_file', importFile.value);
+
+    void axios.post(previewApiUrl.value, formData).then((resp) => {
+        if (resp.data.success) {
+            previewResults.value = resp.data;
+            previewCompleted.value = true;
+            showPreview();
+        } else {
+            notifyError(resp.data.message || 'Preview failed');
+        }
+    }).catch((error) => {
+        notifyError('Preview failed: ' + (error.response?.data?.message || error.message));
+    });
+};
+
+const proceedWithImport = () => {
+    hidePreview();
+    doSubmit();
 };
 
 const doSubmit = () => {
+    if (!previewCompleted.value) {
+        notifyError('Please preview the changes first.');
+        return;
+    }
+
     const formData = new FormData();
     formData.append('import_file', importFile.value);
 
     void axios.post(apiUrl.value, formData).then((resp) => {
         importFile.value = null;
+        previewCompleted.value = false;
+        previewResults.value = null;
 
         if (resp.data.success) {
             importResults.value = resp.data;
             notifySuccess(resp.data.message);
-
             show();
         } else {
             notifyError(resp.data.message);

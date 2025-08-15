@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Doctrine\Generator\UuidV6Generator;
+use App\Entity\Api\Admin\UpdateDetails;
 use App\Entity\Enums\AnalyticsLevel;
 use App\Entity\Enums\IpSources;
 use App\Enums\SupportedThemes;
@@ -18,7 +19,6 @@ use Psr\Http\Message\UriInterface;
 use RuntimeException;
 use Stringable;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[
     OA\Schema(schema: "Settings", type: "object"),
@@ -118,7 +118,6 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "Days of Playback History to Keep"),
         ORM\Column(type: 'smallint'),
-        Assert\Choice([0, 14, 30, 60, 365, 730]),
         Groups(self::GROUP_GENERAL)
     ]
     public int $history_keep_days = SongHistory::DEFAULT_DAYS_TO_KEEP {
@@ -171,15 +170,25 @@ final class Settings implements Stringable
     ]
     public bool $check_for_updates = true;
 
-    /**
-     * @var mixed[]|null
-     */
     #[
-        OA\Property(description: "Results of the latest update check.", example: ""),
-        ORM\Column(type: 'json', nullable: true),
+        ORM\Column(name: 'update_results', type: 'json', nullable: true),
         Attributes\AuditIgnore
     ]
-    public ?array $update_results = null;
+    private ?array $update_results_raw = null;
+
+    #[OA\Property(description: "Results of the latest update check.", example: "")]
+    public ?UpdateDetails $update_results {
+        get => $this->update_results_raw !== null
+            ? UpdateDetails::fromArray($this->update_results_raw)
+            : null;
+        set(UpdateDetails|array|null $value) {
+            if ($value instanceof UpdateDetails) {
+                $value = get_object_vars($value);
+            }
+            $this->update_results_raw = $value;
+            $this->update_last_run = time();
+        }
+    }
 
     #[
         OA\Property(
@@ -190,11 +199,6 @@ final class Settings implements Stringable
         Attributes\AuditIgnore
     ]
     public int $update_last_run = 0;
-
-    public function updateUpdateLastRun(): void
-    {
-        $this->update_last_run = time();
-    }
 
     #[
         OA\Property(description: "Base Theme for Public Pages", example: "light"),

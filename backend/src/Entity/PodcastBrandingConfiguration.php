@@ -9,17 +9,11 @@ use App\Utilities\Types;
 
 final class PodcastBrandingConfiguration extends AbstractArrayEntity
 {
-    public ?string $public_custom_html {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true);
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
+    public ?string $public_custom_html = null {
+        set => Types::stringOrNull($value, true);
     }
 
-    public bool $enable_op3_prefix {
-        get => Types::bool($this->get(__PROPERTY__), false, true);
-        set(bool|string $value) {
-            $this->set(__PROPERTY__, Types::bool($value, false, true));
-        }
+    public bool $enable_op3_prefix = false {
+        set(bool|string $value) => Types::bool($value, false, true);
     }
 }

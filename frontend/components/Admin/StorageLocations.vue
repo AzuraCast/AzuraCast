@@ -112,11 +112,16 @@ import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
-import {ApiAdminStorageLocation} from "~/entities/ApiInterfaces.ts";
+import {
+    ApiAdminStorageLocation,
+    StorageLocation,
+    StorageLocationAdapters,
+    StorageLocationTypes
+} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
 
-const activeType = ref('station_media');
+const activeType = ref<StorageLocationTypes>(StorageLocationTypes.StationMedia);
 
 const listUrl = getApiUrl('/admin/storage_locations');
 const listUrlForType = computed(() => {
@@ -125,14 +130,16 @@ const listUrlForType = computed(() => {
 
 const {$gettext} = useTranslate();
 
-const fields: DataTableField<ApiAdminStorageLocation>[] = [
+type Row = StorageLocation & ApiAdminStorageLocation;
+
+const fields: DataTableField<Row>[] = [
     {key: 'adapter', label: $gettext('Adapter'), sortable: false},
     {key: 'space', label: $gettext('Space Used'), class: 'text-nowrap', sortable: false},
     {key: 'stations', label: $gettext('Station(s)'), sortable: false},
     {key: 'actions', label: $gettext('Actions'), class: 'shrink', sortable: false}
 ];
 
-const listItemProvider = useApiItemProvider<ApiAdminStorageLocation>(
+const listItemProvider = useApiItemProvider<Row>(
     listUrlForType,
     [
         QueryKeys.AdminStorageLocations,
@@ -146,19 +153,19 @@ const relist = () => {
 
 const tabs = [
     {
-        type: 'station_media',
+        type: StorageLocationTypes.StationMedia,
         title: $gettext('Station Media')
     },
     {
-        type: 'station_recordings',
+        type: StorageLocationTypes.StationRecordings,
         title: $gettext('Station Recordings')
     },
     {
-        type: 'station_podcasts',
+        type: StorageLocationTypes.StationPodcasts,
         title: $gettext('Station Podcasts'),
     },
     {
-        type: 'backup',
+        type: StorageLocationTypes.Backup,
         title: $gettext('Backups')
     }
 ];
@@ -166,27 +173,27 @@ const tabs = [
 const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const setType = (type: string) => {
+const setType = (type: StorageLocationTypes) => {
     activeType.value = type;
 };
 
-const getAdapterName = (adapter: string) => {
+const getAdapterName = (adapter: StorageLocationAdapters) => {
     switch (adapter) {
-        case 'local':
+        case StorageLocationAdapters.Local:
             return $gettext('Local');
 
-        case 's3':
+        case StorageLocationAdapters.S3:
             return $gettext('Remote: S3 Compatible');
 
-        case 'dropbox':
+        case StorageLocationAdapters.Dropbox:
             return $gettext('Remote: Dropbox');
 
-        case 'sftp':
+        case StorageLocationAdapters.Sftp:
             return $gettext('Remote: SFTP');
     }
 };
 
-const getSpaceUsed = (item: ApiAdminStorageLocation) => {
+const getSpaceUsed = (item: Row) => {
     return (item.storageAvailable)
         ? item.storageUsed + ' / ' + item.storageAvailable
         : item.storageUsed;

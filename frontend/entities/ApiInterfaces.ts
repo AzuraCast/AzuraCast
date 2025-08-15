@@ -1243,6 +1243,18 @@ export type ApiStationMedia = ApiHasSongFields &
      * @example "4:00"
      */
     length_text?: string;
+    /**
+     * The star rating for this media (0-5)
+     * @min 0
+     * @max 5
+     * @example 4
+     */
+    rating?: number;
+    /**
+     * Whether this media is marked as a favorite
+     * @example true
+     */
+    is_favorite?: boolean;
     /** A hash-map array represented as an object. */
     custom_fields?: HashMap;
     /** A hash-map array represented as an object. */
@@ -1906,7 +1918,7 @@ export type Station = HasAutoIncrementId & {
   /** @example "Various" */
   genre?: string | null;
   /** @example "/var/azuracast/stations/azuratest_radio" */
-  radio_base_dir?: string | null;
+  radio_base_dir?: string;
   /**
    * Whether listeners can request songs to play on this station.
    * @example true
@@ -1957,7 +1969,7 @@ export type Station = HasAutoIncrementId & {
    * The time zone that station operations should take place in.
    * @example "UTC"
    */
-  timezone?: string | null;
+  timezone?: string;
   /**
    * The maximum bitrate at which a station may broadcast, in Kbps. 0 for unlimited
    * @example 128
@@ -1990,7 +2002,7 @@ export type StationMount = HasAutoIncrementId & {
   /** @example "/radio.mp3" */
   name?: string;
   /** @example "128kbps MP3" */
-  display_name?: string | null;
+  display_name?: string;
   /** @example true */
   is_visible_on_public_pages?: boolean;
   /** @example false */
@@ -2064,7 +2076,7 @@ export type StationPlaylist = HasAutoIncrementId & {
    */
   include_in_on_demand?: boolean;
   /** @example "interrupt,loop_once,single_track,merge" */
-  backend_options?: string | null;
+  backend_options_raw?: string | null;
   /** @example true */
   avoid_duplicates?: boolean;
   /** StationSchedule> */
@@ -2082,7 +2094,7 @@ export type StationSchedule = HasAutoIncrementId & {
    * Array of ISO-8601 days (1 for Monday, 7 for Sunday)
    * @example "0,1,2,3"
    */
-  days?: string | null;
+  days?: number[];
   /** @example false */
   loop_once?: boolean;
 };
@@ -2094,7 +2106,7 @@ export type StationStreamer = HasAutoIncrementId & {
   /** @example "" */
   streamer_password?: string;
   /** @example "Test DJ" */
-  display_name?: string | null;
+  display_name?: string;
   /** @example "This is a test DJ account." */
   comments?: string | null;
   /** @example true */
@@ -2152,7 +2164,7 @@ export type User = HasAutoIncrementId & {
   /** @example "demo@azuracast.com" */
   email?: string;
   /** @example "" */
-  new_password?: string | null;
+  auth_password?: string;
   /** @example "Demo Account" */
   name?: string | null;
   /** @example "en_US" */

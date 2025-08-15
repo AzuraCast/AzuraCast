@@ -185,7 +185,7 @@ final class ListAction implements SingleActionInterface
                         );
                     } elseif ('favorites' === $special) {
                         $mediaQueryBuilder->andWhere('sm.is_favorite = 1');
-                    } elseif (str_starts_with($special, 'rating:')) {
+                    } elseif (null !== $special && str_starts_with($special, 'rating:')) {
                         $ratingValue = (int)substr($special, 7);
                         if ($ratingValue >= 1 && $ratingValue <= 5) {
                             $mediaQueryBuilder->andWhere('sm.rating >= :rating')

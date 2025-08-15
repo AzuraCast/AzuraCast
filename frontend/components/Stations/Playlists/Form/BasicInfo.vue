@@ -19,6 +19,15 @@
                 :description="$gettext('If disabled, the playlist will not be included in radio playback, but can still be managed.')"
             />
 
+            <form-group-field
+                id="form_edit_description"
+                class="col-md-12"
+                :field="v$.description"
+                input-type="textarea"
+                :label="$gettext('Description')"
+                :description="$gettext('An optional description to help identify this playlist.')"
+            />
+
             <form-group-multi-check
                 id="edit_form_source"
                 class="col-md-12"
@@ -245,6 +254,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     {
         name: {required},
         is_enabled: {},
+        description: {},
         include_in_on_demand: {},
         weight: {},
         type: {},
@@ -263,6 +273,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     {
         name: '',
         is_enabled: true,
+        description: '',
         include_in_on_demand: false,
         weight: 3,
         type: 'default',

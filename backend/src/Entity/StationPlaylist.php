@@ -69,6 +69,12 @@ final class StationPlaylist implements
     }
 
     #[
+        OA\Property(example: "A playlist containing my favorite songs"),
+        ORM\Column(type: 'text', nullable: true)
+    ]
+    public ?string $description = null;
+
+    #[
         OA\Property(example: "default"),
         ORM\Column(type: 'string', length: 50, enumType: PlaylistTypes::class)
     ]

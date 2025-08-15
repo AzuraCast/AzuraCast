@@ -48,6 +48,9 @@
                                 <h5 class="m-0">
                                     {{ row.item.name }}
                                 </h5>
+                                <p v-if="row.item.description" class="text-muted mb-1">
+                                    {{ row.item.description }}
+                                </p>
                                 <div class="badges">
                                     <span class="badge text-bg-secondary">
                                         <template v-if="row.item.source === 'songs'">

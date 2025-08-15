@@ -83,18 +83,21 @@ import {getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import {HasLinks, StationRemote} from "~/entities/ApiInterfaces.ts";
 
 const listUrl = getStationApiUrl('/remotes');
 
 const {$gettext} = useTranslate();
 
-const fields: DataTableField[] = [
+type Row = StationRemote & HasLinks;
+
+const fields: DataTableField<Row>[] = [
     {key: 'display_name', isRowHeader: true, label: $gettext('Name'), sortable: true},
     {key: 'enable_autodj', label: $gettext('AutoDJ'), sortable: true},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const listItemProvider = useApiItemProvider(
+const listItemProvider = useApiItemProvider<Row>(
     listUrl,
     queryKeyWithStation([
         QueryKeys.StationRemotes

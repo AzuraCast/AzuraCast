@@ -7,8 +7,9 @@ namespace App\Entity;
 use App\Doctrine\AbstractArrayEntity;
 use App\Utilities\Strings;
 use App\Utilities\Types;
-use LogicException;
+use OpenApi\Attributes as OA;
 
+#[OA\Schema(schema: "StationFrontendConfiguration", type: "object")]
 final class StationFrontendConfiguration extends AbstractArrayEntity
 {
     public function __construct(array $elements = [])
@@ -30,98 +31,60 @@ final class StationFrontendConfiguration extends AbstractArrayEntity
         parent::__construct($elements);
     }
 
-    public ?string $custom_config {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true);
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public ?string $custom_config = null {
+        set => Types::stringOrNull($value, true);
     }
 
-    public string $source_pw {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true)
-            ?? throw new LogicException('Password not generated');
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public string $source_pw;
+
+    #[OA\Property]
+    public string $admin_pw;
+
+    #[OA\Property]
+    public string $relay_pw;
+
+    #[OA\Property]
+    public string $streamer_pw;
+
+    #[OA\Property]
+    public ?int $port = null {
+        set (int|string|null $value) => Types::intOrNull($value);
     }
 
-    public string $admin_pw {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true)
-            ?? throw new LogicException('Password not generated');
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public ?int $max_listeners = null {
+        set (int|string|null $value) => Types::intOrNull($value);
     }
 
-    public string $relay_pw {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true)
-            ?? throw new LogicException('Password not generated');
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public ?string $banned_ips = null {
+        set => Types::stringOrNull($value, true);
     }
 
-    public string $streamer_pw {
-        get => Types::stringOrNull($this->get(__PROPERTY__))
-            ?? throw new LogicException('Password not generated');
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public ?string $banned_user_agents = null {
+        set => Types::stringOrNull($value, true);
     }
 
-    public ?int $port {
-        get => Types::intOrNull($this->get(__PROPERTY__));
-        set (int|string|null $value) {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property(
+        items: new OA\Items(type: 'string'),
+    )]
+    public ?array $banned_countries = null;
+
+    #[OA\Property]
+    public ?string $allowed_ips = null {
+        set => Types::stringOrNull($value, true);
     }
 
-    public ?int $max_listeners {
-        get => Types::intOrNull($this->get(__PROPERTY__));
-        set (int|string|null $value) {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public ?string $sc_license_id = null {
+        set => Types::stringOrNull($value, true);
     }
 
-    public ?string $banned_ips {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true);
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
-    }
-
-    public ?string $banned_user_agents {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true);
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
-    }
-
-    public ?array $banned_countries {
-        get => Types::arrayOrNull($this->get(__PROPERTY__));
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
-    }
-
-    public ?string $allowed_ips {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true);
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
-    }
-
-    public ?string $sc_license_id {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true);
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
-    }
-
-    public ?string $sc_user_id {
-        get => Types::stringOrNull($this->get(__PROPERTY__), true);
-        set {
-            $this->set(__PROPERTY__, $value);
-        }
+    #[OA\Property]
+    public ?string $sc_user_id = null {
+        set => Types::stringOrNull($value, true);
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[
@@ -42,10 +44,24 @@ final class StationPlaylistFolder implements
         set => $this->truncateString($value, 500);
     }
 
+    /** @var Collection<int, StationPlaylistMedia> */
+    #[
+        ORM\OneToMany(targetEntity: StationPlaylistMedia::class, mappedBy: 'folder', fetch: 'EXTRA_LAZY'),
+        ORM\OrderBy(['weight' => 'ASC'])
+    ]
+    public private(set) Collection $media_items;
+
     public function __construct(Station $station, StationPlaylist $playlist, string $path)
     {
         $this->station = $station;
         $this->playlist = $playlist;
         $this->path = $path;
+
+        $this->media_items = new ArrayCollection();
+    }
+
+    public function __clone()
+    {
+        $this->media_items = new ArrayCollection();
     }
 }

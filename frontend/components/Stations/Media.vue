@@ -193,34 +193,16 @@
                 </template>
             </template>
             <template #cell(playlists)="{ item }">
-                <template v-if="item.media?.playlists?.length > 0">
-                    <template
-                        v-for="(playlist, index) in item.media.playlists as ApiStationMediaPlaylist[]"
-                        :key="playlist.id"
-                    >
-                        <a
-                            class="btn-search"
-                            href="#"
-                            :title="$gettext('View tracks in playlist')"
-                            @click.prevent="filter('playlist:'+playlist.short_name)"
-                        >{{ playlist.name }}</a>
-                        <span v-if="index+1 < item.media.playlists.length">, </span>
-                    </template>
-                </template>
-                <template v-else-if="item.dir?.playlists?.length > 0">
-                    <template
-                        v-for="(playlist, index) in item.dir.playlists"
-                        :key="playlist.id"
-                    >
-                        <a
-                            class="btn-search"
-                            href="#"
-                            :title="$gettext('View tracks in playlist')"
-                            @click.prevent="filter('playlist:'+playlist.short_name)"
-                        >{{ playlist.name }}</a>
-                        <span v-if="index+1 < item.dir.playlists.length">, </span>
-                    </template>
-                </template>
+                <MediaPlaylists
+                    v-if="item.media?.playlists?.length > 0"
+                    :playlists="item.media?.playlists as ApiStationMediaPlaylist[]"
+                    @filter="filter"
+                />
+                <MediaPlaylists
+                    v-else-if="item.dir?.playlists?.length > 0"
+                    :playlists="item.dir?.playlists as ApiStationMediaPlaylist[]"
+                    @filter="filter"
+                />
                 <template v-else>
                     &nbsp;
                 </template>
@@ -300,9 +282,16 @@ import {getStationApiUrl} from "~/router";
 import {useRoute, useRouter} from "vue-router";
 import {IconFile, IconFolder, IconImage} from "~/components/Common/icons";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
-import {ApiFileList, ApiStationMediaPlaylist, CustomField, FileTypes} from "~/entities/ApiInterfaces.ts";
+import {
+    ApiFileList,
+    ApiStationMediaPlaylist,
+    CustomField,
+    FileTypes,
+    StorageLocationTypes
+} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import MediaPlaylists from "~/components/Stations/Media/MediaPlaylists.vue";
 
 export interface MediaSelectedItems {
     all: ApiFileList[],
@@ -338,7 +327,7 @@ const uploadUrl = getStationApiUrl('/files/upload');
 const listDirectoriesUrl = getStationApiUrl('/files/directories');
 const mkdirUrl = getStationApiUrl('/files/mkdir');
 const renameUrl = getStationApiUrl('/files/rename');
-const quotaUrl = getStationApiUrl('/quota/station_media');
+const quotaUrl = getStationApiUrl(`/quota/${StorageLocationTypes.StationMedia}`);
 
 const currentDirectory = ref('');
 

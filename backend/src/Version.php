@@ -26,7 +26,7 @@ use Throwable;
 final class Version
 {
     /** @var string The current latest stable version. */
-    public const STABLE_VERSION = '0.21.0';
+    public const STABLE_VERSION = '0.22.0';
 
     private string $repoDir;
 
@@ -150,19 +150,27 @@ final class Version
     /**
      * @return string A textual representation of the current installed version.
      */
-    public function getVersionText(): string
+    public function getVersionText(bool $asHtml = true): string
     {
         $details = $this->getDetails();
         $releaseChannel = $this->getReleaseChannelEnum();
 
         if (ReleaseChannel::RollingRelease === $releaseChannel) {
-            $commitLink = 'https://github.com/AzuraCast/AzuraCast/commit/' . $details['commit'];
-            $commitText = sprintf(
-                '#<a href="%s" target="_blank">%s</a> (%s)',
-                $commitLink,
-                $details['commit_short'],
-                $details['commit_date']
-            );
+            if ($asHtml) {
+                $commitLink = 'https://github.com/AzuraCast/AzuraCast/commit/' . $details['commit'];
+                $commitText = sprintf(
+                    '#<a href="%s" target="_blank">%s</a> (%s)',
+                    $commitLink,
+                    $details['commit_short'],
+                    $details['commit_date']
+                );
+            } else {
+                $commitText = sprintf(
+                    '%s (%s)',
+                    $details['commit_short'],
+                    $details['commit_date']
+                );
+            }
 
             return 'Rolling Release ' . $commitText;
         }

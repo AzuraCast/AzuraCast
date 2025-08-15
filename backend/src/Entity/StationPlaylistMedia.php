@@ -32,6 +32,14 @@ final class StationPlaylistMedia implements JsonSerializable, IdentifiableEntity
     #[ORM\Column(nullable: false, insertable: false, updatable: false)]
     public private(set) int $playlist_id;
 
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'media_items')]
+    #[ORM\JoinColumn(name: 'folder_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    public ?StationPlaylistFolder $folder = null;
+
+    /* TODO Remove direct identifier access. */
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    public private(set) ?int $folder_id = null;
+
     #[ORM\Column]
     public int $weight = 0;
 
@@ -41,10 +49,14 @@ final class StationPlaylistMedia implements JsonSerializable, IdentifiableEntity
     #[ORM\Column]
     public int $last_played = 0;
 
-    public function __construct(StationPlaylist $playlist, StationMedia $media)
-    {
+    public function __construct(
+        StationPlaylist $playlist,
+        StationMedia $media,
+        ?StationPlaylistFolder $folder = null
+    ) {
         $this->playlist = $playlist;
         $this->media = $media;
+        $this->folder = $folder;
     }
 
     public function played(?int $timestamp = null): void
@@ -62,6 +74,7 @@ final class StationPlaylistMedia implements JsonSerializable, IdentifiableEntity
             'id' => $this->playlist->id,
             'name' => $this->playlist->name,
             'weight' => $this->weight,
+            'folder' => $this->folder?->path,
         ];
     }
 

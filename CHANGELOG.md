@@ -5,6 +5,27 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- Liquidsoap is now updated to the Rolling Release build of 2.4.x. This includes a number of bug fixes for critical
+  issues, but also includes some breaking changes. Most of these changes will appear in the logs as warnings when
+  starting up a station with custom Liquidsoap code. If you use custom Liquidsoap code, you should evaluate these
+  warnings and make changes as needed.
+
+- Playlists assigned to a folder should now be more intuitive; if a track is in a playlist because a parent folder is,
+  the playlist will have a folder icon next to it, and hovering over it will indicate which folder it was set from.
+  Clearing and setting that playlist directly on the media won't work (as it would just get reassigned later).
+
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+- Several issues caused by having "Plugin Mode" enabled have been resolved.
+
+---
+
+# AzuraCast 0.22.0 (Aug 7, 2025)
+
+## New Features/Changes
+
 - Liquidsoap is updated to version 2.3.2, including a number of bug fixes.
 
 - You can now specify the message color in Discord webhooks.
@@ -25,6 +46,13 @@ release channel, you can take advantage of these new features and fixes.
   podcast analytics service directly from within AzuraCast. Enable OP3 support on the "Branding" tab of the podcast, and
   all episodes will have their download URLs prefixed by the OP3 analytics URL, which will let you track your audience
   details via the OP3 platform.
+
+- You can now export your station's Liquidsoap configuration (including any custom configuration sections) to an archive
+  file; this archive file contains all of AzuraCast's code and can also be used for diagnosing Liquidsoap errors. You
+  can re-import this file later to apply any custom configuration within the file to the station.
+
+- You can now provide a custom value for the number of days of station history to keep and the number of history items
+  to show on each individual station API response.
 
 ## Code Quality/Technical Changes
 

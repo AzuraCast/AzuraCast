@@ -24,7 +24,7 @@
         >
             <template #cell(operation)="row">
                 <span
-                    v-if="row.item.operation_text === 'insert'"
+                    v-if="row.item.operationText === 'insert'"
                     class="text-success"
                     :title="$gettext('Insert')"
                 >
@@ -34,7 +34,7 @@
                     />
                 </span>
                 <span
-                    v-else-if="row.item.operation_text === 'delete'"
+                    v-else-if="row.item.operationText === 'delete'"
                     class="text-danger"
                     :title="$gettext('Delete')"
                 >
@@ -60,7 +60,7 @@
             </template>
             <template #cell(target)="row">
                 <template v-if="row.item.target">
-                    <small>{{ row.item.target_class }}</small><br>
+                    <small>{{ row.item.targetClass }}</small><br>
                     {{ row.item.target }}
                 </template>
                 <template v-else>
@@ -96,7 +96,7 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {getApiUrl} from "~/router";
 import {IconAddCircle, IconRemoveCircle, IconSwapHorizontalCircle} from "~/components/Common/icons";
-import {ApiAdminAuditLog, ApiAdminAuditLogChangeset} from "~/entities/ApiInterfaces.ts";
+import {ApiAdminAuditLogChangeset, AuditLog} from "~/entities/ApiInterfaces.ts";
 import {DeepRequired} from "utility-types";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
@@ -113,7 +113,9 @@ const dateRange = ref({
 const {$gettext} = useTranslate();
 const {timeConfig} = useAzuraCast();
 
-const fields: DataTableField<ApiAdminAuditLog>[] = [
+type Row = AuditLog;
+
+const fields: DataTableField<Row>[] = [
     {
         key: 'timestamp',
         label: $gettext('Date/Time'),
@@ -143,7 +145,7 @@ const apiUrl = computed(() => {
     return apiUrl.toString();
 });
 
-const apiItemProvider = useApiItemProvider<ApiAdminAuditLog>(
+const apiItemProvider = useApiItemProvider<Row>(
     apiUrl,
     [
         QueryKeys.AdminAuditLog,

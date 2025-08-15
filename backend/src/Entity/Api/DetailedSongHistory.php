@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Entity\Api;
 
 use App\Entity\Api\NowPlaying\SongHistory;
-use App\Traits\LoadFromParentObject;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -14,8 +13,6 @@ use OpenApi\Attributes as OA;
 )]
 final class DetailedSongHistory extends SongHistory
 {
-    use LoadFromParentObject;
-
     #[OA\Property(
         description: 'Number of listeners when the song playback started.',
         example: 94

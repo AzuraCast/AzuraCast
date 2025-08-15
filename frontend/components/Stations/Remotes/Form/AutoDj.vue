@@ -27,14 +27,22 @@
                 :label="$gettext('AutoDJ Format')"
             />
 
-            <bitrate-options
+            <form-group-field
                 v-if="formatSupportsBitrateOptions"
                 id="edit_form_autodj_bitrate"
                 class="col-md-6"
-                :max-bitrate="maxBitrate"
                 :field="v$.autodj_bitrate"
                 :label="$gettext('AutoDJ Bitrate (kbps)')"
-            />
+            >
+                <template #default="{id, model, fieldClass}">
+                    <bitrate-options
+                        :id="id"
+                        v-model="model.$model"
+                        :class="fieldClass"
+                        :max-bitrate="maxBitrate"
+                    />
+                </template>
+            </form-group-field>
 
             <form-group-field
                 id="edit_form_source_port"
@@ -93,7 +101,7 @@ import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
-import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
+import {ApiGenericForm, StreamFormats} from "~/entities/ApiInterfaces.ts";
 
 const form = defineModel<ApiGenericForm>('form', {required: true});
 
@@ -113,7 +121,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     },
     {
         enable_autodj: false,
-        autodj_format: 'mp3',
+        autodj_format: StreamFormats.Mp3,
         autodj_bitrate: 128,
         source_port: null,
         source_mount: null,
@@ -125,28 +133,28 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
 const formatOptions = [
     {
-        value: 'mp3',
+        value: StreamFormats.Mp3,
         text: 'MP3'
     },
     {
-        value: 'ogg',
+        value: StreamFormats.Ogg,
         text: 'OGG Vorbis'
     },
     {
-        value: 'opus',
+        value: StreamFormats.Opus,
         text: 'OGG Opus'
     },
     {
-        value: 'aac',
+        value: StreamFormats.Aac,
         text: 'AAC+ (MPEG4 HE-AAC v2)'
     },
     {
-        value: 'flac',
+        value: StreamFormats.Flac,
         text: 'FLAC (OGG FLAC)'
     }
 ];
 
 const formatSupportsBitrateOptions = computed(() => {
-    return form.value?.autodj_format !== 'flac';
+    return form.value?.autodj_format !== StreamFormats.Flac;
 });
 </script>

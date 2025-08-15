@@ -140,10 +140,10 @@ final class ServicesController
 
         return $response->withJson(
             new StationServiceStatus(
-                null !== $backend && $backend->isRunning($station),
-                null !== $frontend && $frontend->isRunning($station),
-                $station->has_started,
-                $station->needs_restart
+                backend_running: null !== $backend && $backend->isRunning($station),
+                frontend_running: null !== $frontend && $frontend->isRunning($station),
+                station_has_started: $station->has_started,
+                station_needs_restart: $station->needs_restart
             )
         );
     }

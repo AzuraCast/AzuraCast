@@ -17,7 +17,7 @@ rm -rf /tmp/ffmpeg-keyring
 # Configure the APT repos.
 echo "Types: deb
 URIs: https://www.deb-multimedia.org
-Suites: stable
+Suites: oldstable
 Components: main non-free
 Signed-By: /usr/share/keyrings/deb-multimedia-keyring.pgp" >> /etc/apt/sources.list.d/deb-multimedia.sources
 

@@ -259,7 +259,7 @@ import {IconAccountCircle, IconHeadphones, IconInfo, IconSettings, IconWarning} 
 import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
 import {getApiUrl} from "~/router.ts";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import {ApiDashboard, ApiNotification} from "~/entities/ApiInterfaces.ts";
+import {ApiNotification, ApiNowPlaying, HasLinks} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
 import {useQuery} from "@tanstack/vue-query";
@@ -299,6 +299,8 @@ const {data: notifications, isLoading: notificationsLoading} = useQuery<ApiNotif
         return data;
     },
 });
+
+type ApiDashboard = ApiNowPlaying & HasLinks;
 
 const stationFields: DataTableField<ApiDashboard>[] = [
     {

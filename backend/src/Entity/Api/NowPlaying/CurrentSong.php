@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Entity\Api\NowPlaying;
 
 use App\Entity\SongHistory as SongHistoryEntity;
-use App\Traits\LoadFromParentObject;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -15,8 +14,6 @@ use OpenApi\Attributes as OA;
 )]
 final class CurrentSong extends SongHistory
 {
-    use LoadFromParentObject;
-
     #[OA\Property(
         description: 'Elapsed time of the song\'s playback since it started.',
         example: 25

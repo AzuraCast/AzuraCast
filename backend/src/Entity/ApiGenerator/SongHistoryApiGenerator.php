@@ -19,13 +19,19 @@ final class SongHistoryApiGenerator
     ) {
     }
 
+    /**
+     * @template T of SongHistory
+     * @phpstan-param T|null $objectToPopulate
+     * @phpstan-return ($objectToPopulate is not null ? T : SongHistory)
+     */
     public function __invoke(
         SongHistoryEntity $record,
         ?UriInterface $baseUri = null,
         bool $allowRemoteArt = false,
         bool $isNowPlaying = false,
+        ?SongHistory $objectToPopulate = null
     ): SongHistory {
-        $response = new SongHistory();
+        $response = $objectToPopulate ?? new SongHistory();
         $response->sh_id = $record->id;
 
         $response->played_at = CarbonImmutable::instance($record->timestamp_start)
@@ -90,8 +96,10 @@ final class SongHistoryApiGenerator
         SongHistoryEntity $record,
         ?UriInterface $baseUri = null
     ): DetailedSongHistory {
-        $apiHistory = ($this)($record, $baseUri);
-        $response = DetailedSongHistory::fromParent($apiHistory);
+        $response = new DetailedSongHistory();
+
+        $this->__invoke($record, $baseUri, objectToPopulate: $response);
+
         $response->listeners_start = (int)$record->listeners_start;
         $response->listeners_end = (int)$record->listeners_end;
         $response->delta_total = $record->delta_total;

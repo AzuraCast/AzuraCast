@@ -8,6 +8,7 @@ use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Api\Error;
 use App\Entity\Api\StationMedia as ApiStationMedia;
+use App\Entity\Api\StationMediaPlaylist;
 use App\Entity\Api\Status;
 use App\Entity\Api\UploadFile;
 use App\Entity\Repository\CustomFieldRepository;
@@ -214,11 +215,21 @@ final class FilesController extends AbstractStationApiCrudController
     {
         $returnArray = $this->toArray($record);
 
+        $playlists = array_map(
+            fn(array $row) => new StationMediaPlaylist(
+                id: $row['id'],
+                name: $row['name'],
+                short_name: StationPlaylist::generateShortName($row['name']),
+                folder: $row['folder']
+            ),
+            $returnArray['playlists'] ?? []
+        );
+
         $return = ApiStationMedia::fromArray(
             $returnArray,
             $record->extra_metadata->toArray() ?? [],
             $this->customFieldsRepo->getCustomFields($record),
-            ApiStationMedia::aggregatePlaylists($returnArray['playlists'] ?? []),
+            StationMediaPlaylist::aggregate($playlists),
         );
 
         $isInternal = $request->isInternal();

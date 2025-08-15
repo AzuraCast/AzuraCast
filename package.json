@@ -57,6 +57,7 @@
   "devDependencies": {
     "@eslint/js": "^9.8.0",
     "@nabla/vite-plugin-eslint": "^2.0.5",
+    "@tanstack/eslint-plugin-query": "^5.83.1",
     "@types/bootstrap": "^5.2.6",
     "@types/eslint__js": "^8.42.3",
     "@types/flowjs__flow.js": "^2.13.3",
@@ -77,7 +78,7 @@
     "svg.js": "^2.7.1",
     "swagger-typescript-api": "^13.0.3",
     "typescript-eslint": "^8",
-    "vite": "^6",
+    "vite": "^7",
     "vue-eslint-parser": "^10",
     "vue-tsc": "^3"
   }

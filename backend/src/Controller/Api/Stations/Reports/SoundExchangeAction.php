@@ -11,7 +11,10 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\MusicBrainz;
+use App\Utilities\Types;
 use Carbon\CarbonImmutable;
+use Carbon\Exceptions\InvalidFormatException;
+use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
@@ -91,13 +94,27 @@ final class SoundExchangeAction implements SingleActionInterface
         $data['end_date'] ??= $defaultEndDate;
 
         // NOTE: These are valid uses of shiftTimezone.
-        $startDate = CarbonImmutable::parse($data['start_date'] . ' 00:00:00', $tzObject)
-            ->shiftTimezone($tzObject);
+        try {
+            $startDate = CarbonImmutable::createFromFormat('Y-m-d', $data['start_date'], $tzObject)
+                ?->shiftTimezone($tzObject)
+                ?->startOfDay();
+        } catch (InvalidFormatException) {
+            $startDate = null;
+        }
 
-        $endDate = CarbonImmutable::parse($data['end_date'] . ' 23:59:59', $tzObject)
-            ->shiftTimezone($tzObject);
+        try {
+            $endDate = CarbonImmutable::createFromFormat('Y-m-d', $data['end_date'], $tzObject)
+                ?->shiftTimezone($tzObject)
+                ?->endOfDay();
+        } catch (InvalidFormatException) {
+            $endDate = null;
+        }
 
-        $fetchIsrc = 'true' === ($data['fetch_isrc'] ?? 'false');
+        if (null === $startDate || null === $endDate) {
+            throw new InvalidArgumentException('Invalid start/end date.');
+        }
+
+        $fetchIsrc = Types::bool($data['fetch_isrc'] ?? null, false, true);
 
         $export = [
             [
@@ -130,26 +147,22 @@ final class SoundExchangeAction implements SingleActionInterface
 
         $historyRows = $this->em->createQuery(
             <<<'DQL'
-                SELECT sh.song_id AS song_id, sh.text, sh.artist, sh.title, 
+                SELECT sh.song_id AS song_id, sh.text, sh.artist, sh.album, sh.title, 
                     IDENTITY(sh.media) AS media_id, COUNT(sh.id) AS plays,
                     SUM(sh.unique_listeners) AS unique_listeners
                 FROM App\Entity\SongHistory sh
                 WHERE sh.station = :station
                 AND sh.timestamp_start <= :time_end
                 AND sh.timestamp_end >= :time_start
+                AND sh.song_id NOT IN (:ignoredSongIds)
                 GROUP BY sh.song_id
             DQL
         )->setParameter('station', $station)
             ->setParameter('time_start', $startDate)
             ->setParameter('time_end', $endDate)
-            ->getArrayResult();
-
-        // TODO: Fix this (not all song rows have a media_id)
-        $historyRowsById = array_column($historyRows, null, 'media_id');
-
-        // Remove any reference to the "Stream Offline" song.
-        $offlineSongHash = Song::OFFLINE_SONG_ID;
-        unset($historyRowsById[$offlineSongHash]);
+            ->setParameter('ignoredSongIds', [
+                Song::OFFLINE_SONG_ID,
+            ])->getArrayResult();
 
         // Assemble report items
         $stationName = $station->name;
@@ -162,19 +175,23 @@ final class SoundExchangeAction implements SingleActionInterface
             DQL
         );
 
-        foreach ($historyRowsById as $songId => $historyRow) {
-            $songRow = $mediaById[$songId] ?? $historyRow;
+        foreach ($historyRows as $historyRow) {
+            if (!empty($historyRow['media_id']) && isset($mediaById[$historyRow['media_id']])) {
+                $songRow = $mediaById[$historyRow['media_id']];
 
-            // Try to find the ISRC if it's not already listed.
-            if ($fetchIsrc && empty($songRow['isrc'])) {
-                $isrc = $this->findISRC($songRow);
-                $songRow['isrc'] = $isrc;
+                // Try to find the ISRC if it's not already listed.
+                if ($fetchIsrc && empty($songRow['isrc'])) {
+                    $isrc = $this->findISRC($songRow);
+                    $songRow['isrc'] = $isrc;
 
-                if (null !== $isrc && isset($songRow['media_id'])) {
-                    $setIsrcQuery->setParameter('isrc', $isrc)
-                        ->setParameter('media_id', $songRow['media_id'])
-                        ->execute();
+                    if (null !== $isrc) {
+                        $setIsrcQuery->setParameter('isrc', $isrc)
+                            ->setParameter('media_id', $songRow['media_id'])
+                            ->execute();
+                    }
                 }
+            } else {
+                $songRow = $historyRow;
             }
 
             $export[] = [

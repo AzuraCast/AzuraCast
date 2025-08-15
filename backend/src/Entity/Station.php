@@ -129,10 +129,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
     private ?array $frontend_config_raw = null;
 
     #[
-        OA\Property(
-            description: "An array containing station-specific frontend configuration",
-            type: "object"
-        ),
+        OA\Property(description: "An array containing station-specific broadcasting software (frontend) configuration"),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
     public StationFrontendConfiguration $frontend_config {
@@ -162,10 +159,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
     private ?array $backend_config_raw = null;
 
     #[
-        OA\Property(
-            description: "An array containing station-specific backend configuration",
-            type: "object"
-        ),
+        OA\Property(description: "An array containing station-specific AutoDJ (backend) configuration"),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
     public StationBackendConfiguration $backend_config {
@@ -209,6 +203,21 @@ final class Station implements Stringable, IdentifiableEntityInterface
     public function validateAdapterApiKey(string $apiKey): bool
     {
         return hash_equals($apiKey, $this->adapter_api_key ?? '');
+    }
+
+    /**
+     * @return string[] An array of terms to filter from logs and other sensitive displays.
+     */
+    public function getFilteredPasswords(): array
+    {
+        $frontendConfig = $this->frontend_config;
+        return array_filter([
+            $this->adapter_api_key,
+            $frontendConfig->admin_pw,
+            $frontendConfig->relay_pw,
+            $frontendConfig->source_pw,
+            $frontendConfig->streamer_pw,
+        ]);
     }
 
     #[
@@ -463,10 +472,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
     private ?array $branding_config_raw = null;
 
     #[
-        OA\Property(
-            description: "An array containing station-specific branding configuration",
-            type: "object"
-        ),
+        OA\Property(description: "An array containing station-specific branding configuration"),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
     public StationBrandingConfiguration $branding_config {
@@ -650,9 +656,9 @@ final class Station implements Stringable, IdentifiableEntityInterface
     {
         $this->generateAdapterApiKey();
 
-        $this->frontend_config_raw = new StationFrontendConfiguration([])->getData();
-        $this->backend_config_raw = new StationBackendConfiguration([])->getData();
-        $this->branding_config_raw = new StationBrandingConfiguration([])->getData();
+        $this->frontend_config_raw = new StationFrontendConfiguration([])->toArray(true);
+        $this->backend_config_raw = new StationBackendConfiguration([])->toArray(true);
+        $this->branding_config_raw = new StationBrandingConfiguration([])->toArray(true);
 
         $this->frontend_type = FrontendAdapters::default();
         $this->backend_type = BackendAdapters::default();

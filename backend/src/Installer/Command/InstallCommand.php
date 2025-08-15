@@ -249,10 +249,12 @@ final class InstallCommand extends Command
                 $env['AZURACAST_STATION_PORTS'] = implode(',', $stationPorts);
             }
 
-            $azuracastEnv['COMPOSER_PLUGIN_MODE'] = $io->confirm(
-                $azuracastEnvConfig['COMPOSER_PLUGIN_MODE']['name'],
-                $azuracastEnv->getAsBool('COMPOSER_PLUGIN_MODE', false)
-            ) ? 'true' : 'false';
+            if (!$isNewInstall) {
+                $azuracastEnv['COMPOSER_PLUGIN_MODE'] = $io->confirm(
+                    $azuracastEnvConfig['COMPOSER_PLUGIN_MODE']['name'],
+                    $azuracastEnv->getAsBool('COMPOSER_PLUGIN_MODE', false)
+                ) ? 'true' : 'false';
+            }
 
             if (!$isPodman) {
                 $azuracastEnv[Environment::ENABLE_WEB_UPDATER] = $io->confirm(
@@ -357,12 +359,6 @@ final class InstallCommand extends Command
                     $nginxWebDjPorts
                 ) . ')';
             }
-        }
-
-        // Add plugin mode if it's selected.
-        if ($azuracastEnv->getAsBool('COMPOSER_PLUGIN_MODE', false)) {
-            $yaml['services']['web']['volumes'][] = 'www_vendor:/var/azuracast/www/vendor';
-            $yaml['volumes']['www_vendor'] = [];
         }
 
         // Remove privileged-mode settings if not enabled.

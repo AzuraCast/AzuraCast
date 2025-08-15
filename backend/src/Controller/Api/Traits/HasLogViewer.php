@@ -10,6 +10,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
+use SensitiveParameter;
 
 trait HasLogViewer
 {
@@ -20,6 +21,7 @@ trait HasLogViewer
         Response $response,
         string $logPath,
         bool $tailFile = true,
+        #[SensitiveParameter]
         array $filteredTerms = []
     ): ResponseInterface {
         clearstatcache();
@@ -92,6 +94,7 @@ trait HasLogViewer
         string $rawLog,
         bool $cutFirstLine = false,
         bool $cutEmptyLastLine = false,
+        #[SensitiveParameter]
         array $filteredTerms = []
     ): string {
         $logParts = explode("\n", $rawLog);

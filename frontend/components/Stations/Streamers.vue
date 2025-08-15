@@ -13,7 +13,11 @@
                             </h2>
                         </div>
                         <div class="col-md-6 text-end">
-                            <time-zone />
+                            <stations-common-quota
+                                v-if="recordStreams"
+                                :quota-url="quotaUrl"
+                            />
+                            <time-zone v-else/>
                         </div>
                     </div>
                 </template>
@@ -124,14 +128,19 @@ import ScheduleViewTab from "~/components/Stations/Common/ScheduleViewTab.vue";
 import {EventImpl} from "@fullcalendar/core/internal";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
+import {StorageLocationTypes} from "~/entities/ApiInterfaces.ts";
 
 defineProps<{
+    recordStreams: boolean,
     connectionInfo: StreamerConnectionInfo,
 }>();
 
 const listUrl = getStationApiUrl('/streamers');
 const newArtUrl = getStationApiUrl('/streamers/art');
 const scheduleUrl = getStationApiUrl('/streamers/schedule');
+
+const quotaUrl = getStationApiUrl(`/quota/${StorageLocationTypes.StationRecordings}`);
 
 const {$gettext} = useTranslate();
 

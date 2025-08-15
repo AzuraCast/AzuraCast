@@ -6,7 +6,6 @@ namespace App\Entity\Api;
 
 use App\Entity\Api\Traits\HasLinks;
 use App\Entity\Api\Traits\HasSongFields;
-use App\Entity\StationPlaylist;
 use App\OpenApi;
 use App\Utilities\Types;
 use OpenApi\Attributes as OA;
@@ -160,29 +159,5 @@ class StationMedia
         $lengthSec = $lengthInt % 60;
 
         return $lengthMin . ':' . str_pad((string)$lengthSec, 2, '0', STR_PAD_LEFT);
-    }
-
-    /**
-     * @return StationMediaPlaylist[]
-     */
-    public static function aggregatePlaylists(array $rawPlaylists = []): array
-    {
-        /** @var StationMediaPlaylist[] $playlists */
-        $playlists = [];
-        foreach ($rawPlaylists as $playlist) {
-            $playlistId = $playlist['id'];
-
-            if (isset($playlists[$playlistId])) {
-                $playlists[$playlistId]->count++;
-            } else {
-                $playlists[$playlistId] = new StationMediaPlaylist(
-                    $playlistId,
-                    $playlist['name'],
-                    StationPlaylist::generateShortName($playlist['name'])
-                );
-            }
-        }
-
-        return array_values($playlists);
     }
 }

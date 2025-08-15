@@ -43,6 +43,7 @@
                 <button
                     class="btn"
                     :class="(disableSaveButton) ? 'btn-danger' : 'btn-primary'"
+                    :disabled="loading"
                     type="submit"
                     @click="doSubmit"
                 >

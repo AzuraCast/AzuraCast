@@ -43,7 +43,7 @@ final class BatchUtilities
 
         $affectedPlaylists = [];
 
-        if ($fs->isDir($to)) {
+        if ($fs->directoryExists($to)) {
             // Update the paths of all media contained within the directory.
             foreach ($this->iterateMediaInDirectory($storageLocation, $from) as $record) {
                 $record->path = File::renameDirectoryInPath($record->path, $from, $to);

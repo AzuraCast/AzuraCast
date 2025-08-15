@@ -179,12 +179,13 @@ final class StationPlaylist implements
     ]
     public bool $include_in_on_demand = false;
 
-    #[
-        OA\Property(example: "interrupt,loop_once,single_track,merge"),
-        ORM\Column(name: 'backend_options', length: 255, nullable: true)
-    ]
+    #[ORM\Column(name: 'backend_options', length: 255, nullable: true)]
     private ?string $backend_options_raw = '';
 
+    #[OA\Property(
+        items: new OA\Items(type: 'string'),
+        example: "interrupt,loop_once,single_track,merge"
+    )]
     public array $backend_options {
         get => explode(',', $this->backend_options_raw ?? '');
         set {

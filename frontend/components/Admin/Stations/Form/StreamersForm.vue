@@ -42,13 +42,22 @@
                         :label="$gettext('Live Broadcast Recording Format')"
                     />
 
-                    <bitrate-options
+                    <form-group-field
                         id="edit_form_backend_record_streams_bitrate"
                         class="col-md-6"
-                        :max-bitrate="form.max_bitrate"
                         :field="v$.backend_config.record_streams_bitrate"
                         :label="$gettext('Live Broadcast Recording Bitrate (kbps)')"
-                    />
+                    >
+                        <template #default="{id, model, fieldClass, inputAttrs}">
+                            <bitrate-options
+                                :id="id"
+                                v-model="model.$model"
+                                :class="fieldClass"
+                                :input-attrs="inputAttrs"
+                                :max-bitrate="form.max_bitrate"
+                            />
+                        </template>
+                    </form-group-field>
                 </div>
 
                 <div class="row g-3 mb-3">
@@ -133,7 +142,7 @@ import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
-import {ApiGenericForm, BackendAdapters} from "~/entities/ApiInterfaces.ts";
+import {ApiGenericForm, BackendAdapters, StreamFormats} from "~/entities/ApiInterfaces.ts";
 
 const form = defineModel<ApiGenericForm>('form', {required: true});
 
@@ -157,7 +166,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         disconnect_deactivate_streamer: 0,
         backend_config: {
             record_streams: false,
-            record_streams_format: 'mp3',
+            record_streams_format: StreamFormats.Mp3,
             record_streams_bitrate: 128,
             dj_buffer: 5,
             live_broadcast_text: 'Live Broadcast',
@@ -183,19 +192,19 @@ const recordStreamsOptions = computed(() => {
     return [
         {
             text: 'MP3',
-            value: 'mp3',
+            value: StreamFormats.Mp3
         },
         {
             text: 'OGG Vorbis',
-            value: 'ogg',
+            value: StreamFormats.Ogg
         },
         {
             text: 'OGG Opus',
-            value: 'opus',
+            value: StreamFormats.Opus
         },
         {
             text: 'AAC+ (MPEG4 HE-AAC v2)',
-            value: 'aac'
+            value: StreamFormats.Aac
         }
     ];
 });

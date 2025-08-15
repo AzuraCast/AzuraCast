@@ -130,10 +130,7 @@ final class HistoryAction implements SingleActionInterface
         $paginator = Paginator::fromQueryBuilder($qb, $request);
 
         $paginator->setPostprocessor(
-            function ($shRow) {
-                /** @var SongHistory $shRow */
-                return $this->songHistoryApiGenerator->detailed($shRow);
-            }
+            fn(SongHistory $shRow) => $this->songHistoryApiGenerator->detailed($shRow)
         );
 
         return $paginator->write($response);

@@ -41,6 +41,6 @@ final class AzuraRelayCache
 
     private function getCacheItem(Relay $relay): CacheItemInterface
     {
-        return $this->cache->getItem('relay_' . $relay->getIdRequired());
+        return $this->cache->getItem('relay_' . $relay->id);
     }
 }

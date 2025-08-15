@@ -58,39 +58,56 @@ final class MoveBroadcastsTask extends AbstractTask
 
         $stations = $this->storageLocationRepo->getStationsUsingLocation($storageLocation);
         foreach ($stations as $station) {
-            $finder = (new Finder())
+            $finder = new Finder()
                 ->files()
                 ->in($station->getRadioTempDir())
                 ->name(StationStreamerBroadcast::PATH_PREFIX . '_*')
                 ->notName('*.tmp')
-                ->depth(1);
+                ->depth(1)
+                ->sortByChangedTime()
+                ->reverseSorting();
 
             $this->logger->debug('Files', ['files', iterator_to_array($finder, false)]);
 
+            $i = 0;
             foreach ($finder as $file) {
+                $i++;
                 $this->logger->debug('File', ['file' => $file]);
 
                 $recordingPath = $file->getRelativePathname();
 
                 if (!$storageLocation->canHoldFile($file->getSize())) {
-                    $this->logger->error(
-                        'Storage location full; broadcast not moved to storage location. '
-                        . 'Check temporary directory at path to recover file.',
-                        [
-                            'storageLocation' => (string)$storageLocation,
-                            'path' => $recordingPath,
-                        ]
-                    );
+                    // Delete any file that isn't the latest if we're at storage capacity.
+                    if ($i > 1) {
+                        $this->logger->critical(
+                            'Storage location full; removing temporary broadcast.',
+                            [
+                                'storageLocation' => (string)$storageLocation,
+                                'path' => $recordingPath,
+                            ]
+                        );
+
+                        @unlink($file->getPathname());
+                    } else {
+                        $this->logger->error(
+                            'Storage location full; broadcast not moved to storage location. '
+                            . 'Check temporary directory at path to recover file.',
+                            [
+                                'storageLocation' => (string)$storageLocation,
+                                'path' => $recordingPath,
+                            ]
+                        );
+                    }
                     break;
                 }
 
                 $broadcast = $this->broadcastRepo->getOrCreateFromPath($station, $recordingPath);
                 if (null !== $broadcast) {
-                    if (null === $broadcast->getTimestampEnd()) {
+                    if (null === $broadcast->timestampEnd) {
                         $mtime = $file->getMTime();
-                        $broadcast->setTimestampEnd(
-                            $mtime ? CarbonImmutable::createFromTimestampUTC($mtime) : Time::nowUtc()
-                        );
+                        $broadcast->timestampEnd = $mtime
+                            ? CarbonImmutable::createFromTimestampUTC($mtime)
+                            : Time::nowUtc();
                     }
 
                     $this->em->persist($broadcast);

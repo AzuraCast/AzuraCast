@@ -7,6 +7,7 @@ namespace App\Service;
 use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Container\SettingsAwareTrait;
+use App\Entity\Api\Admin\UpdateDetails;
 use App\Version;
 use Exception;
 use GuzzleHttp\Client;
@@ -27,10 +28,8 @@ final class AzuraCastCentral
 
     /**
      * Ping the AzuraCast Central server for updates and return them if there are any.
-     *
-     * @return mixed[]|null
      */
-    public function checkForUpdates(): ?array
+    public function checkForUpdates(): ?UpdateDetails
     {
         $requestBody = [
             'id' => $this->getUniqueIdentifier(),
@@ -67,8 +66,13 @@ final class AzuraCastCentral
             ]);
 
             $updateData = json_decode($updateDataRaw, true, 512, JSON_THROW_ON_ERROR);
+            $updates = $updateData['updates'] ?? null;
 
-            return $updateData['updates'] ?? null;
+            if (empty($updates)) {
+                return null;
+            }
+
+            return UpdateDetails::fromArray($updates);
         } catch (Exception $e) {
             $this->logger->error('Error checking for updates: ' . $e->getMessage());
         }
@@ -78,7 +82,7 @@ final class AzuraCastCentral
 
     public function getUniqueIdentifier(): string
     {
-        return $this->readSettings()->getAppUniqueIdentifier();
+        return $this->readSettings()->app_unique_identifier;
     }
 
     /**
@@ -90,7 +94,7 @@ final class AzuraCastCentral
     {
         $settings = $this->readSettings();
         $ip = ($cached)
-            ? $settings->getExternalIp()
+            ? $settings->external_ip
             : null;
 
         if (empty($ip)) {
@@ -110,7 +114,7 @@ final class AzuraCastCentral
             }
 
             if (!empty($ip) && $cached) {
-                $settings->setExternalIp($ip);
+                $settings->external_ip = $ip;
                 $this->writeSettings($settings);
             }
         }

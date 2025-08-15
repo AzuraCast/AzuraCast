@@ -21,7 +21,7 @@
         <template #default>
             <slot
                 name="default"
-                v-bind="{ id, field, model: modelObject, fieldClass }"
+                v-bind="{ id, field, model: modelObject, fieldClass, inputAttrs }"
             >
                 <textarea
                     v-if="inputType === 'textarea'"
@@ -126,6 +126,7 @@ const slots = defineSlots<{
         model: {
             $model: T
         },
+        inputAttrs?: object,
         fieldClass: string | null
     }) => any,
     description?: () => any,

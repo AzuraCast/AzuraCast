@@ -11,6 +11,7 @@ use App\Controller\Api\Traits\CanSortResults;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Dashboard;
 use App\Entity\Api\NowPlaying\NowPlaying;
+use App\Entity\Api\Traits\HasLinks;
 use App\Entity\ApiGenerator\NowPlayingApiGenerator;
 use App\Entity\Station;
 use App\Enums\StationPermissions;
@@ -32,7 +33,10 @@ use Psr\Http\Message\ResponseInterface;
                 content: new OA\JsonContent(
                     type: 'array',
                     items: new OA\Items(
-                        ref: Dashboard::class
+                        allOf: [
+                            new OA\Schema(ref: NowPlaying::class),
+                            new OA\Schema(ref: HasLinks::class),
+                        ]
                     )
                 )
             ),
@@ -67,7 +71,7 @@ final class StationsAction implements SingleActionInterface
                 'is_enabled' => 1,
             ]),
             static function (Station $station) use ($acl) {
-                return $acl->isAllowed(StationPermissions::View, $station->getId());
+                return $acl->isAllowed(StationPermissions::View, $station->id);
             }
         );
 
@@ -103,20 +107,22 @@ final class StationsAction implements SingleActionInterface
 
         $paginator->setPostprocessor(
             function (NowPlaying $np) use ($router, $listenersEnabled, $acl) {
-                $row = Dashboard::fromParent($np);
-                $row->links = [
+                $links = [
                     'public' => $router->named('public:index', ['station_id' => $np->station->shortcode]),
                     'manage' => $router->named('stations:index:index', ['station_id' => $np->station->id]),
                 ];
 
                 if ($listenersEnabled && $acl->isAllowed(StationPermissions::Reports, $np->station->id)) {
-                    $row->links['listeners'] = $router->named(
+                    $links['listeners'] = $router->named(
                         'stations:reports:listeners',
                         ['station_id' => $np->station->id]
                     );
                 }
 
-                return $row;
+                return [
+                    ...get_object_vars($np),
+                    'links' => $links,
+                ];
             }
         );
 

@@ -125,6 +125,30 @@ use Psr\Http\Message\ResponseInterface;
             new OpenApi\Response\NotFound(),
             new OpenApi\Response\GenericError(),
         ]
+    ),
+    OA\Post(
+        path: '/station/{station_id}/webhook/{id}/clone',
+        operationId: 'cloneWebhook',
+        summary: 'Duplicate a single web hook.',
+        tags: [OpenApi::TAG_STATIONS_WEBHOOKS],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+            new OA\Parameter(
+                name: 'id',
+                description: 'Web Hook ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: StationWebhook::class)
+            ),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
     )
 ]
 final class WebhooksController extends AbstractStationApiCrudController
@@ -182,21 +206,52 @@ final class WebhooksController extends AbstractStationApiCrudController
         $return['links'] = [
             'self' => $router->fromHere(
                 routeName: $this->resourceRouteName,
-                routeParams: ['id' => $record->getIdRequired()],
+                routeParams: ['id' => $record->id],
+                absolute: !$isInternal
+            ),
+            'clone' => $router->fromHere(
+                routeName: 'api:stations:webhook:clone',
+                routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             ),
             'toggle' => $router->fromHere(
                 routeName: 'api:stations:webhook:toggle',
-                routeParams: ['id' => $record->getIdRequired()],
+                routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             ),
             'test' => $router->fromHere(
                 routeName: 'api:stations:webhook:test',
-                routeParams: ['id' => $record->getIdRequired()],
+                routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             ),
         ];
 
         return $return;
+    }
+
+    public function cloneAction(
+        ServerRequest $request,
+        Response $response,
+        array $params
+    ): ResponseInterface {
+        $originalWebhook = $this->getRecord($request, $params);
+
+        if (!$originalWebhook instanceof StationWebhook) {
+            return $response->withStatus(404, 'Web hook not found.');
+        }
+
+        $this->em->detach($originalWebhook);
+
+        $newWebhook = clone $originalWebhook;
+        $newWebhook->name = $originalWebhook->name . ' (Copy)';
+        $newWebhook->is_enabled = false;
+
+        $this->em->persist($newWebhook);
+        $this->em->flush();
+
+        return $response->withJson(
+            $this->viewRecord($newWebhook, $request),
+            201
+        );
     }
 }

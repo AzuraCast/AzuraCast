@@ -33,7 +33,7 @@
     "chartjs-adapter-luxon": "^1.1.0",
     "chartjs-plugin-zoom": "^2.0.0",
     "codemirror": "^6",
-    "codemirror-lang-liquidsoap": "^0.3",
+    "codemirror-lang-liquidsoap": "^0.4",
     "hls.js": "^1.1.5",
     "leaflet": "^1.7.1",
     "leaflet-fullscreen": "^1.0.2",
@@ -57,6 +57,7 @@
   "devDependencies": {
     "@eslint/js": "^9.8.0",
     "@nabla/vite-plugin-eslint": "^2.0.5",
+    "@tanstack/eslint-plugin-query": "^5.83.1",
     "@types/bootstrap": "^5.2.6",
     "@types/eslint__js": "^8.42.3",
     "@types/flowjs__flow.js": "^2.13.3",
@@ -66,7 +67,7 @@
     "@types/nprogress": "^0.2.3",
     "@types/qrcode": "^1.5.2",
     "@types/zxcvbn": "^4.4.5",
-    "@vitejs/plugin-vue": "^5",
+    "@vitejs/plugin-vue": "^6",
     "@vue/eslint-config-typescript": "^14",
     "del": "^8",
     "eslint": "^9",
@@ -77,7 +78,7 @@
     "svg.js": "^2.7.1",
     "swagger-typescript-api": "^13.0.3",
     "typescript-eslint": "^8",
-    "vite": "^6",
+    "vite": "^7",
     "vue-eslint-parser": "^10",
     "vue-tsc": "^3"
   }

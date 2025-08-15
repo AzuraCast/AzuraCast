@@ -83,7 +83,7 @@ import {getStationApiUrl} from "~/router";
 import {IconRemove} from "~/components/Common/icons";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useDialog} from "~/functions/useDialog.ts";
-import {ApiStationQueueDetailed, ApiStatus} from "~/entities/ApiInterfaces.ts";
+import {ApiNowPlayingStationQueue, ApiStationQueueDetailed, ApiStatus} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
@@ -92,7 +92,7 @@ const clearUrl = getStationApiUrl('/queue/clear');
 
 const {$gettext} = useTranslate();
 
-type Row = Required<ApiStationQueueDetailed>;
+type Row = Required<ApiNowPlayingStationQueue & ApiStationQueueDetailed>;
 
 const fields: DataTableField<Row>[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false},

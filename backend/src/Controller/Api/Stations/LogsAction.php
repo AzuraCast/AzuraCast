@@ -94,7 +94,7 @@ final class LogsAction implements SingleActionInterface
                             'self' => $router->named(
                                 'api:stations:log',
                                 [
-                                    'station_id' => $station->getIdRequired(),
+                                    'station_id' => $station->id,
                                     'log' => $row->key,
                                 ]
                             ),
@@ -112,15 +112,6 @@ final class LogsAction implements SingleActionInterface
             throw new Exception('Invalid log file specified.');
         }
 
-        $frontendConfig = $station->getFrontendConfig();
-        $filteredTerms = [
-            $station->getAdapterApiKey(),
-            $frontendConfig->getAdminPassword(),
-            $frontendConfig->getRelayPassword(),
-            $frontendConfig->getSourcePassword(),
-            $frontendConfig->getStreamerPassword(),
-        ];
-
         $logType = $logTypes[$log];
 
         return $this->streamLogToResponse(
@@ -128,7 +119,7 @@ final class LogsAction implements SingleActionInterface
             $response,
             $logType->path,
             $logType->tail,
-            $filteredTerms
+            $station->getFilteredPasswords()
         );
     }
 

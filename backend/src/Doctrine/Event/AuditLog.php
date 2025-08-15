@@ -279,14 +279,19 @@ final class AuditLog implements EventSubscriber
             return (string)$entity;
         }
 
-        if (method_exists($entity, 'getName')) {
-            return $entity->getName();
+        $reflClass = new ReflectionClass($entity);
+
+        if ($reflClass->hasProperty('name')) {
+            $reflProp = $reflClass->getProperty('name');
+            if ($reflProp->isInitialized($entity)) {
+                return (string)$reflProp->getValue($entity);
+            }
         }
 
-        if ($entity instanceof IdentifiableEntityInterface) {
-            $entityId = $entity->getId();
-            if (null !== $entityId) {
-                return (string)$entityId;
+        if ($entity instanceof IdentifiableEntityInterface || $reflClass->hasProperty('id')) {
+            $reflProp = $reflClass->getProperty('id');
+            if ($reflProp->isInitialized($entity)) {
+                return (string)$reflProp->getValue($entity);
             }
         }
 

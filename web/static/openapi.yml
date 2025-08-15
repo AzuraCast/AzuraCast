@@ -5,7 +5,7 @@ info:
   license:
     name: 'GNU Affero General Public License v3.0 or later'
     url: 'https://www.gnu.org/licenses/agpl-3.0.txt'
-  version: 0.21.0
+  version: 0.22.0
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -111,7 +111,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Api_Admin_AuditLog'
+                  $ref: '#/components/schemas/AuditLog'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -1312,7 +1312,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Api_Admin_StorageLocation'
+                  allOf: [{ $ref: '#/components/schemas/StorageLocation' }, { $ref: '#/components/schemas/Api_Admin_StorageLocation' }]
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -1333,7 +1333,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Api_Admin_StorageLocation'
+                allOf:
+                  - { $ref: '#/components/schemas/StorageLocation' }
+                  - { $ref: '#/components/schemas/Api_Admin_StorageLocation' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -1359,7 +1361,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Api_Admin_StorageLocation'
+                allOf:
+                  - { $ref: '#/components/schemas/StorageLocation' }
+                  - { $ref: '#/components/schemas/Api_Admin_StorageLocation' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -1384,7 +1388,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Api_Admin_StorageLocation'
+              $ref: '#/components/schemas/StorageLocation'
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -1888,7 +1892,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Api_Dashboard'
+                  allOf: [{ $ref: '#/components/schemas/Api_NowPlaying' }, { $ref: '#/components/schemas/HasLinks' }]
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -2140,6 +2144,24 @@ paths:
         - 'Stations: Media'
       summary: 'Upload a CSV containing details about all station media.'
       operationId: postStationBulkMediaUpload
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/files/bulk/preview':
+    post:
+      tags:
+        - 'Stations: Media'
+      summary: 'Preview changes from a CSV containing details about all station media.'
+      operationId: postStationBulkMediaPreview
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -2452,13 +2474,39 @@ paths:
         -
           $ref: '#/components/parameters/StationIdRequired'
         -
-          name: id
+          name: media_id
           in: path
           description: 'Media ID'
           required: true
           schema:
             type: integer
             format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessWithDownload'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/file/{song_id}/play':
+    get:
+      tags:
+        - 'Stations: Media'
+      summary: 'Download or play a given file by song_id.'
+      operationId: getPlayFileSongId
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: song_id
+          in: path
+          description: 'Media ID'
+          required: true
+          schema:
+            type: string
+            format: guid
       responses:
         '200':
           $ref: '#/components/responses/SuccessWithDownload'
@@ -2542,7 +2590,7 @@ paths:
         -
           $ref: '#/components/parameters/StationIdRequired'
         -
-          name: id
+          name: media_id
           in: path
           description: 'Media ID'
           required: true
@@ -2571,7 +2619,7 @@ paths:
         -
           $ref: '#/components/parameters/StationIdRequired'
         -
-          name: id
+          name: media_id
           in: path
           description: 'Media ID'
           required: true
@@ -2601,7 +2649,7 @@ paths:
         -
           $ref: '#/components/parameters/StationIdRequired'
         -
-          name: id
+          name: media_id
           in: path
           description: 'Media ID'
           required: true
@@ -2888,6 +2936,24 @@ paths:
         '404':
           $ref: '#/components/responses/RecordNotFound'
       security: []
+  '/station/{station_id}/liquidsoap-config/export':
+    get:
+      tags:
+        - 'Stations: Broadcasting'
+      summary: 'Generate an archive of all Liquidsoap configuration on your station, including custom config.'
+      operationId: exportStationLiquidsoapConfig
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/liquidsoap-config':
     get:
       tags:
@@ -2911,6 +2977,24 @@ paths:
         - 'Stations: Broadcasting'
       summary: 'Save the editable sections of the station Liquidsoap configuration.'
       operationId: putStationLiquidsoapConfig
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/liquidsoap-config/import':
+    post:
+      tags:
+        - 'Stations: Broadcasting'
+      summary: 'Import a previously exported Liquidsoap configuration archive and replace custom config sections.'
+      operationId: importStationLiquidsoapConfig
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -3520,7 +3604,7 @@ paths:
       tags:
         - 'Stations: Playlists'
       summary: 'Import the contents of an uploaded playlist (PLS/M3U) file into the specified playlist.'
-      operationId: getStationPlaylistImport
+      operationId: postStationPlaylistImport
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -3702,7 +3786,7 @@ paths:
     delete:
       tags:
         - 'Stations: Playlists'
-      summary: 'Delete a single playlist relay.'
+      summary: 'Delete a single playlist.'
       operationId: deletePlaylist
       parameters:
         -
@@ -4576,7 +4660,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Api_StationQueueDetailed'
+                  allOf: [{ $ref: App\Entity\StationQueue }, { $ref: '#/components/schemas/Api_StationQueueDetailed' }]
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4606,7 +4690,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Api_StationQueueDetailed'
+                allOf:
+                  - { $ref: App\Entity\StationQueue }
+                  - { $ref: '#/components/schemas/Api_StationQueueDetailed' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4655,7 +4741,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Api_StationRemote'
+                  allOf: [{ $ref: '#/components/schemas/StationRemote' }, { $ref: '#/components/schemas/HasLinks' }]
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4674,14 +4760,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Api_StationRemote'
+              $ref: '#/components/schemas/StationRemote'
       responses:
         '200':
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Api_StationRemote'
+                allOf:
+                  - { $ref: '#/components/schemas/StationRemote' }
+                  - { $ref: '#/components/schemas/HasLinks' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4711,7 +4799,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Api_StationRemote'
+                allOf:
+                  - { $ref: '#/components/schemas/StationRemote' }
+                  - { $ref: '#/components/schemas/HasLinks' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -4738,7 +4828,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Api_StationRemote'
+              $ref: '#/components/schemas/StationRemote'
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -6069,6 +6159,36 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/webhook/{id}/clone':
+    post:
+      tags:
+        - 'Stations: Web Hooks'
+      summary: 'Duplicate a single web hook.'
+      operationId: cloneWebhook
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Web Hook ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationWebhook'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
 components:
   schemas:
     Api_Account_ChangePassword:
@@ -6102,50 +6222,6 @@ components:
           description: 'The current two-factor status for this account.'
           type: boolean
           readOnly: true
-      type: object
-    Api_Admin_AuditLog:
-      required:
-        - id
-        - timestamp
-        - operation
-        - operation_text
-        - class
-        - identifier
-        - target_class
-        - target
-        - user
-        - changes
-      properties:
-        id:
-          type: integer
-        timestamp:
-          type: string
-          format: date-time
-        operation:
-          type: integer
-          enum:
-            - 1
-            - 2
-            - 3
-        operation_text:
-          type: string
-        class:
-          type: string
-        identifier:
-          type: string
-        target_class:
-          type: string
-          nullable: true
-        target:
-          type: string
-          nullable: true
-        user:
-          type: string
-          nullable: true
-        changes:
-          type: array
-          items:
-            $ref: '#/components/schemas/Api_Admin_AuditLogChangeset'
       type: object
     Api_Admin_AuditLogChangeset:
       required:
@@ -6684,119 +6760,6 @@ components:
           $ref: '#/components/schemas/HasLinks'
         -
           properties:
-            id:
-              type: integer
-              example: 1
-            type:
-              description: 'The type of storage location.'
-              type: string
-              example: station_media
-            adapter:
-              description: 'The storage adapter to use for this location.'
-              type: string
-              example: local
-            path:
-              description: 'The local path, if the local adapter is used, or path prefix for S3/remote adapters.'
-              type: string
-              example: /var/azuracast/stations/azuratest_radio/media
-              nullable: true
-            s3CredentialKey:
-              description: 'The credential key for S3 adapters.'
-              type: string
-              example: your-key-here
-              nullable: true
-            s3CredentialSecret:
-              description: 'The credential secret for S3 adapters.'
-              type: string
-              example: your-secret-here
-              nullable: true
-            s3Region:
-              description: 'The region for S3 adapters.'
-              type: string
-              example: your-region
-              nullable: true
-            s3Version:
-              description: 'The API version for S3 adapters.'
-              type: string
-              example: latest
-              nullable: true
-            s3Bucket:
-              description: 'The S3 bucket name for S3 adapters.'
-              type: string
-              example: your-bucket-name
-              nullable: true
-            s3Endpoint:
-              description: 'The optional custom S3 endpoint S3 adapters.'
-              type: string
-              example: 'https://your-region.digitaloceanspaces.com'
-              nullable: true
-            dropboxAppKey:
-              description: 'The optional Dropbox App Key.'
-              type: string
-              example: ''
-              nullable: true
-            dropboxAppSecret:
-              description: 'The optional Dropbox App Secret.'
-              type: string
-              example: ''
-              nullable: true
-            dropboxAuthToken:
-              description: 'The optional Dropbox Auth Token.'
-              type: string
-              example: ''
-              nullable: true
-            sftpHost:
-              description: 'The host for SFTP adapters'
-              type: string
-              example: 127.0.0.1
-              nullable: true
-            sftpUsername:
-              description: 'The username for SFTP adapters'
-              type: string
-              example: root
-              nullable: true
-            sftpPassword:
-              description: 'The password for SFTP adapters'
-              type: string
-              example: abc123
-              nullable: true
-            sftpPort:
-              description: 'The port for SFTP adapters'
-              type: integer
-              example: 20
-              nullable: true
-            sftpPrivateKey:
-              description: 'The private key for SFTP adapters'
-              type: string
-              nullable: true
-            sftpPrivateKeyPassPhrase:
-              description: 'The private key pass phrase for SFTP adapters'
-              type: string
-              nullable: true
-            storageQuota:
-              type: string
-              example: '50 GB'
-              nullable: true
-            storageQuotaBytes:
-              type: string
-              example: '120000'
-              nullable: true
-            storageUsed:
-              type: string
-              example: '1 GB'
-              nullable: true
-            storageUsedBytes:
-              type: string
-              example: '60000'
-              nullable: true
-            storageAvailable:
-              type: string
-              example: '1 GB'
-              nullable: true
-            storageAvailableBytes:
-              type: string
-              example: '120000'
-              nullable: true
             storageUsedPercent:
               type: integer
               example: '75'
@@ -6822,10 +6785,12 @@ components:
           description: 'The stable-equivalent branch your installation currently appears to be on.'
           type: string
           example: 0.20.3
+          nullable: true
         latest_release:
           description: 'The current latest stable release of the software.'
           type: string
           example: 0.20.4
+          nullable: true
         needs_rolling_update:
           description: 'If you are on the Rolling Release, whether your installation needs to be updated.'
           type: boolean
@@ -6851,13 +6816,6 @@ components:
           items:
             type: string
       type: object
-    Api_Dashboard:
-      type: object
-      allOf:
-        -
-          $ref: '#/components/schemas/Api_NowPlaying'
-        -
-          $ref: '#/components/schemas/HasLinks'
     Api_DetailedSongHistory:
       type: object
       allOf:
@@ -7055,70 +7013,6 @@ components:
           $ref: '#/components/schemas/Api_ListenerDevice'
         location:
           $ref: '#/components/schemas/Api_ListenerLocation'
-      type: object
-    Api_ListenerDevice:
-      properties:
-        is_browser:
-          description: 'If the listener device is likely a browser.'
-          type: boolean
-          example: true
-        is_mobile:
-          description: 'If the listener device is likely a mobile device.'
-          type: boolean
-          example: true
-        is_bot:
-          description: 'If the listener device is likely a crawler.'
-          type: boolean
-          example: true
-        client:
-          description: 'Summary of the listener client.'
-          type: string
-          example: 'Firefox 121.0, Windows'
-          nullable: true
-        browser_family:
-          description: 'Summary of the listener browser family.'
-          type: string
-          example: Firefox
-          nullable: true
-        os_family:
-          description: 'Summary of the listener OS family.'
-          type: string
-          example: Windows
-          nullable: true
-      type: object
-    Api_ListenerLocation:
-      properties:
-        city:
-          description: 'The approximate city of the listener.'
-          type: string
-          example: Austin
-          nullable: true
-        region:
-          description: 'The approximate region/state of the listener.'
-          type: string
-          example: Texas
-          nullable: true
-        country:
-          description: 'The approximate country of the listener.'
-          type: string
-          example: 'United States'
-          nullable: true
-        description:
-          description: 'A description of the location.'
-          type: string
-          example: 'Austin, Texas, US'
-        lat:
-          description: Latitude.
-          type: number
-          format: float
-          example: '30.000000'
-          nullable: true
-        lon:
-          description: Latitude.
-          type: number
-          format: float
-          example: '-97.000000'
-          nullable: true
       type: object
     Api_LogContents:
       required:
@@ -7564,6 +7458,9 @@ components:
               type: string
             art_updated_at:
               type: integer
+            guid:
+              description: 'The UUIDv5 global unique identifier for this podcast, based on its RSS feed URL.'
+              type: string
             is_published:
               type: boolean
             episodes:
@@ -7721,11 +7618,11 @@ components:
               type: integer
               example: 1
             unique_id:
-              description: 'A unique identifier associated with this record.'
+              description: "A unique identifier for this specific media item in the station's library. Each entry in the media table has a unique ID, even if it refers to a song that exists elsewhere."
               type: string
               example: 69b536afc7ebbf16457b8645
             song_id:
-              description: "The media file's 32-character unique song identifier hash"
+              description: "The media file's 32-character unique song identifier hash. This hash is based on track metadata, so the same song uploaded multiple times will have the same `song_id`."
               type: string
               example: 9f33bbc912c19603e51be8e0987d076b
             art:
@@ -7780,6 +7677,10 @@ components:
         short_name:
           type: string
           readOnly: true
+        folder:
+          type: string
+          readOnly: true
+          nullable: true
         count:
           type: integer
           readOnly: true
@@ -7842,8 +7743,6 @@ components:
       type: object
       allOf:
         -
-          $ref: '#/components/schemas/Api_NowPlaying_StationQueue'
-        -
           $ref: '#/components/schemas/HasLinks'
         -
           properties:
@@ -7888,83 +7787,6 @@ components:
           type: integer
           nullable: true
       type: object
-    Api_StationRemote:
-      type: object
-      allOf:
-        -
-          $ref: '#/components/schemas/HasLinks'
-        -
-          properties:
-            id:
-              type: integer
-              nullable: true
-            display_name:
-              type: string
-              example: '128kbps MP3'
-              nullable: true
-            is_visible_on_public_pages:
-              type: boolean
-              example: true
-            type:
-              type: string
-              example: icecast
-            is_editable:
-              type: boolean
-              example: 'true'
-            enable_autodj:
-              type: boolean
-              example: false
-            autodj_format:
-              type: string
-              example: mp3
-              nullable: true
-            autodj_bitrate:
-              type: integer
-              example: 128
-              nullable: true
-            custom_listen_url:
-              type: string
-              example: 'https://custom-listen-url.example.com/stream.mp3'
-              nullable: true
-            url:
-              type: string
-              example: 'https://custom-url.example.com'
-            mount:
-              type: string
-              example: /stream.mp3
-              nullable: true
-            admin_password:
-              type: string
-              example: password
-              nullable: true
-            source_port:
-              type: integer
-              example: 8000
-              nullable: true
-            source_mount:
-              type: string
-              example: /
-              nullable: true
-            source_username:
-              type: string
-              example: source
-              nullable: true
-            source_password:
-              type: string
-              example: password
-              nullable: true
-            is_public:
-              type: boolean
-              example: false
-            listeners_unique:
-              description: 'The most recent number of unique listeners.'
-              type: integer
-              example: 10
-            listeners_total:
-              description: 'The most recent number of total (non-unique) listeners.'
-              type: integer
-              example: 12
-          type: object
     Api_StationRequest:
       properties:
         request_id:
@@ -8256,6 +8078,51 @@ components:
             comment:
               type: string
           type: object
+    AuditLog:
+      required:
+        - timestamp
+        - operation
+        - operationText
+        - class
+        - identifier
+        - targetClass
+        - target
+        - changes
+        - user
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            timestamp:
+              type: string
+              format: date-time
+            operation:
+              enum:
+                - 1
+                - 2
+                - 3
+            operationText:
+              type: string
+            class:
+              type: string
+            identifier:
+              type: string
+            targetClass:
+              type: string
+              nullable: true
+            target:
+              type: string
+              nullable: true
+            changes:
+              type: array
+              items:
+                $ref: '#/components/schemas/Api_Admin_AuditLogChangeset'
+            user:
+              type: string
+              nullable: true
+          type: object
     CustomField:
       required:
         - name
@@ -8371,6 +8238,94 @@ components:
         - LessCpu
         - Balanced
         - Disabled
+    StorageLocationAdapters:
+      type: string
+      enum:
+        - local
+        - s3
+        - dropbox
+        - sftp
+      x-enumNames:
+        - Local
+        - S3
+        - Dropbox
+        - Sftp
+    StorageLocationTypes:
+      type: string
+      enum:
+        - backup
+        - station_media
+        - station_recordings
+        - station_podcasts
+      x-enumNames:
+        - Backup
+        - StationMedia
+        - StationRecordings
+        - StationPodcasts
+    Api_ListenerDevice:
+      properties:
+        client:
+          description: 'Summary of the listener client.'
+          type: string
+          example: 'Firefox 121.0, Windows'
+          nullable: true
+        is_browser:
+          description: 'If the listener device is likely a browser.'
+          type: boolean
+          example: true
+        is_mobile:
+          description: 'If the listener device is likely a mobile device.'
+          type: boolean
+          example: true
+        is_bot:
+          description: 'If the listener device is likely a crawler.'
+          type: boolean
+          example: true
+        browser_family:
+          description: 'Summary of the listener browser family.'
+          type: string
+          example: Firefox
+          nullable: true
+        os_family:
+          description: 'Summary of the listener OS family.'
+          type: string
+          example: Windows
+          nullable: true
+      type: object
+    Api_ListenerLocation:
+      properties:
+        description:
+          description: 'A description of the location.'
+          type: string
+          example: 'Austin, Texas, US'
+        region:
+          description: 'The approximate region/state of the listener.'
+          type: string
+          example: Texas
+          nullable: true
+        city:
+          description: 'The approximate city of the listener.'
+          type: string
+          example: Austin
+          nullable: true
+        country:
+          description: 'The approximate country of the listener.'
+          type: string
+          example: 'United States'
+          nullable: true
+        lat:
+          description: Latitude.
+          type: number
+          format: float
+          example: '30.000000'
+          nullable: true
+        lon:
+          description: Longitude.
+          type: number
+          format: float
+          example: '-97.000000'
+          nullable: true
+      type: object
     Relay:
       type: object
       allOf:
@@ -8446,11 +8401,12 @@ components:
           type: boolean
           example: 'true'
         update_results:
-          description: 'Results of the latest update check.'
-          type: array
-          items: {  }
-          example: ''
+          oneOf:
+            -
+              $ref: '#/components/schemas/Api_Admin_UpdateDetails'
           nullable: true
+          description: 'Results of the latest update check.'
+          example: ''
         update_last_run:
           description: 'The UNIX timestamp when updates were last checked.'
           type: integer
@@ -8570,10 +8526,6 @@ components:
           description: 'The UNIX timestamp when the Maxmind Geolite was last downloaded.'
           type: integer
           example: 1609480800
-        enable_advanced_features:
-          description: "Whether to enable 'advanced' functionality in the system that is intended for power users."
-          type: boolean
-          example: false
         mail_enabled:
           description: 'Enable e-mail delivery across the application.'
           type: boolean
@@ -8675,13 +8627,11 @@ components:
             frontend_type:
               $ref: '#/components/schemas/FrontendAdapters'
             frontend_config:
-              description: 'An array containing station-specific frontend configuration'
-              type: object
+              $ref: '#/components/schemas/StationFrontendConfiguration'
             backend_type:
               $ref: '#/components/schemas/BackendAdapters'
             backend_config:
-              description: 'An array containing station-specific backend configuration'
-              type: object
+              $ref: '#/components/schemas/StationBackendConfiguration'
             description:
               type: string
               example: 'A sample radio station.'
@@ -8697,7 +8647,6 @@ components:
             radio_base_dir:
               type: string
               example: /var/azuracast/stations/azuratest_radio
-              nullable: true
             enable_requests:
               description: 'Whether listeners can request songs to play on this station.'
               type: boolean
@@ -8746,7 +8695,6 @@ components:
               description: 'The time zone that station operations should take place in.'
               type: string
               example: UTC
-              nullable: true
             max_bitrate:
               description: 'The maximum bitrate at which a station may broadcast, in Kbps. 0 for unlimited'
               type: integer
@@ -8760,9 +8708,154 @@ components:
               type: integer
               example: 3
             branding_config:
-              description: 'An array containing station-specific branding configuration'
-              type: object
+              $ref: '#/components/schemas/StationBrandingConfiguration'
           type: object
+    StationBackendConfiguration:
+      properties:
+        charset:
+          type: string
+        dj_port:
+          type: integer
+          nullable: true
+        telnet_port:
+          type: integer
+          nullable: true
+        record_streams:
+          type: boolean
+        record_streams_format:
+          type: string
+        record_streams_bitrate:
+          type: integer
+        use_manual_autodj:
+          type: boolean
+        autodj_queue_length:
+          type: integer
+        dj_mount_point:
+          type: string
+        dj_buffer:
+          type: integer
+        audio_processing_method:
+          type: string
+        post_processing_include_live:
+          type: boolean
+        stereo_tool_license_key:
+          type: string
+          nullable: true
+        stereo_tool_configuration_path:
+          type: string
+          nullable: true
+        master_me_preset:
+          type: string
+          nullable: true
+        master_me_loudness_target:
+          type: integer
+        enable_replaygain_metadata:
+          type: boolean
+        crossfade_type:
+          type: string
+        crossfade:
+          type: number
+          format: float
+        duplicate_prevention_time_range:
+          type: integer
+        performance_mode:
+          type: string
+        hls_segment_length:
+          type: integer
+        hls_segments_in_playlist:
+          type: integer
+        hls_segments_overhead:
+          type: integer
+        hls_enable_on_public_player:
+          type: boolean
+        hls_is_default:
+          type: boolean
+        live_broadcast_text:
+          type: string
+        enable_auto_cue:
+          type: boolean
+        write_playlists_to_liquidsoap:
+          type: boolean
+        custom_config_top:
+          description: 'Custom Liquidsoap Configuration: Top Section'
+          type: string
+          nullable: true
+        custom_config_pre_playlists:
+          description: 'Custom Liquidsoap Configuration: Pre-Playlists Section'
+          type: string
+          nullable: true
+        custom_config_pre_live:
+          description: 'Custom Liquidsoap Configuration: Pre-Live Section'
+          type: string
+          nullable: true
+        custom_config_pre_fade:
+          description: 'Custom Liquidsoap Configuration: Pre-Fade Section'
+          type: string
+          nullable: true
+        custom_config:
+          description: 'Custom Liquidsoap Configuration: Pre-Broadcast Section'
+          type: string
+          nullable: true
+        custom_config_bottom:
+          description: 'Custom Liquidsoap Configuration: Post-Broadcast Section'
+          type: string
+          nullable: true
+      type: object
+    StationBrandingConfiguration:
+      properties:
+        default_album_art_url:
+          type: string
+          nullable: true
+        public_custom_css:
+          type: string
+          nullable: true
+        public_custom_js:
+          type: string
+          nullable: true
+        offline_text:
+          type: string
+          nullable: true
+      type: object
+    StationFrontendConfiguration:
+      properties:
+        custom_config:
+          type: string
+          nullable: true
+        source_pw:
+          type: string
+        admin_pw:
+          type: string
+        relay_pw:
+          type: string
+        streamer_pw:
+          type: string
+        port:
+          type: integer
+          nullable: true
+        max_listeners:
+          type: integer
+          nullable: true
+        banned_ips:
+          type: string
+          nullable: true
+        banned_user_agents:
+          type: string
+          nullable: true
+        banned_countries:
+          type: array
+          items:
+            type: string
+          nullable: true
+        allowed_ips:
+          type: string
+          nullable: true
+        sc_license_id:
+          type: string
+          nullable: true
+        sc_user_id:
+          type: string
+          nullable: true
+      type: object
     StationHlsStream:
       type: object
       allOf:
@@ -8774,13 +8867,55 @@ components:
               type: string
               example: aac_lofi
             format:
-              example: aac
+              oneOf:
+                -
+                  $ref: '#/components/schemas/HlsStreamProfiles'
               nullable: true
+              example: aac
             bitrate:
               type: integer
               example: 128
               nullable: true
           type: object
+    StationMediaMetadata:
+      properties:
+        amplify:
+          description: 'Value (in dB) to amplify the current track to produce a uniform loudness.'
+          type: number
+          format: float
+          example: '-1.5'
+          nullable: true
+        fade_in:
+          description: 'Seconds from the start of the track to end fading in.'
+          type: number
+          format: float
+          example: '2.0'
+          nullable: true
+        fade_out:
+          description: 'Seconds from the end of the track to begin fading out.'
+          type: number
+          format: float
+          example: '2.0'
+          nullable: true
+        cue_in:
+          description: 'Seconds from the start of the track to start playback (cue in).'
+          type: number
+          format: float
+          example: '3.5'
+          nullable: true
+        cue_out:
+          description: 'Seconds from the start of the track to end playback (cue out).'
+          type: number
+          format: float
+          example: '181.5'
+          nullable: true
+        cross_start_next:
+          description: 'Seconds from the start of the track to begin fading in the next track.'
+          type: number
+          format: float
+          example: '180.0'
+          nullable: true
+      type: object
     StationMount:
       type: object
       allOf:
@@ -8794,7 +8929,6 @@ components:
             display_name:
               type: string
               example: '128kbps MP3'
-              nullable: true
             is_visible_on_public_pages:
               type: boolean
               example: true
@@ -8823,8 +8957,11 @@ components:
               type: boolean
               example: true
             autodj_format:
-              example: mp3
+              oneOf:
+                -
+                  $ref: '#/components/schemas/StreamFormats'
               nullable: true
+              example: mp3
             autodj_bitrate:
               type: integer
               example: 128
@@ -8902,9 +9039,10 @@ components:
               type: boolean
               example: true
             backend_options:
-              type: string
+              type: array
+              items:
+                type: string
               example: 'interrupt,loop_once,single_track,merge'
-              nullable: true
             avoid_duplicates:
               type: boolean
               example: true
@@ -8916,6 +9054,81 @@ components:
               description: Podcast>
               type: array
               items: {  }
+          type: object
+    StationRemote:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            display_name:
+              type: string
+              example: '128kbps MP3'
+            is_visible_on_public_pages:
+              type: boolean
+              example: true
+            type:
+              $ref: '#/components/schemas/RemoteAdapters'
+            is_editable:
+              type: boolean
+              readOnly: true
+              example: 'true'
+            enable_autodj:
+              type: boolean
+              example: false
+            autodj_format:
+              oneOf:
+                -
+                  $ref: '#/components/schemas/StreamFormats'
+              nullable: true
+              example: mp3
+            autodj_bitrate:
+              type: integer
+              example: 128
+              nullable: true
+            custom_listen_url:
+              type: string
+              example: 'https://custom-listen-url.example.com/stream.mp3'
+              nullable: true
+            url:
+              type: string
+              example: 'https://custom-url.example.com'
+            mount:
+              type: string
+              example: /stream.mp3
+              nullable: true
+            admin_password:
+              type: string
+              example: password
+              nullable: true
+            source_port:
+              type: integer
+              example: 8000
+              nullable: true
+            source_mount:
+              type: string
+              example: /
+              nullable: true
+            source_username:
+              type: string
+              example: source
+              nullable: true
+            source_password:
+              type: string
+              example: password
+              nullable: true
+            is_public:
+              type: boolean
+              example: false
+            listeners_unique:
+              description: 'The most recent number of unique listeners.'
+              type: integer
+              example: 10
+            listeners_total:
+              description: 'The most recent number of total (non-unique) listeners.'
+              type: integer
+              example: 12
           type: object
     StationSchedule:
       type: object
@@ -8932,9 +9145,10 @@ components:
               example: 2200
             days:
               description: 'Array of ISO-8601 days (1 for Monday, 7 for Sunday)'
-              type: string
+              type: array
+              items:
+                type: integer
               example: '0,1,2,3'
-              nullable: true
             loop_once:
               type: boolean
               example: false
@@ -8956,7 +9170,6 @@ components:
             display_name:
               type: string
               example: 'Test DJ'
-              nullable: true
             comments:
               type: string
               example: 'This is a test DJ account.'
@@ -9012,6 +9225,113 @@ components:
               type: array
               items: {  }
           type: object
+    StorageLocation:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            type:
+              $ref: '#/components/schemas/StorageLocationTypes'
+            adapter:
+              $ref: '#/components/schemas/StorageLocationAdapters'
+            path:
+              description: 'The local path, if the local adapter is used, or path prefix for S3/remote adapters.'
+              type: string
+              example: /var/azuracast/stations/azuratest_radio/media
+            s3CredentialKey:
+              description: 'The credential key for S3 adapters.'
+              type: string
+              example: your-key-here
+              nullable: true
+            s3CredentialSecret:
+              description: 'The credential secret for S3 adapters.'
+              type: string
+              example: your-secret-here
+              nullable: true
+            s3Region:
+              description: 'The region for S3 adapters.'
+              type: string
+              example: your-region
+              nullable: true
+            s3Version:
+              description: 'The API version for S3 adapters.'
+              type: string
+              example: latest
+              nullable: true
+            s3Bucket:
+              description: 'The S3 bucket name for S3 adapters.'
+              type: string
+              example: your-bucket-name
+              nullable: true
+            s3Endpoint:
+              description: 'The optional custom S3 endpoint S3 adapters.'
+              type: string
+              example: 'https://your-region.digitaloceanspaces.com'
+              nullable: true
+            dropboxAppKey:
+              description: 'The optional Dropbox App Key.'
+              type: string
+              example: ''
+              nullable: true
+            dropboxAppSecret:
+              description: 'The optional Dropbox App Secret.'
+              type: string
+              example: ''
+              nullable: true
+            dropboxAuthToken:
+              description: 'The optional Dropbox Auth Token.'
+              type: string
+              example: ''
+              nullable: true
+            sftpHost:
+              description: 'The host for SFTP adapters'
+              type: string
+              example: 127.0.0.1
+              nullable: true
+            sftpUsername:
+              description: 'The username for SFTP adapters'
+              type: string
+              example: root
+              nullable: true
+            sftpPassword:
+              description: 'The password for SFTP adapters'
+              type: string
+              example: abc123
+              nullable: true
+            sftpPort:
+              description: 'The port for SFTP adapters'
+              type: integer
+              example: 20
+              nullable: true
+            sftpPrivateKey:
+              description: 'The private key for SFTP adapters'
+              type: string
+              nullable: true
+            sftpPrivateKeyPassPhrase:
+              description: 'The private key pass phrase for SFTP adapters'
+              type: string
+              nullable: true
+            storageQuotaBytes:
+              example: '120000'
+              nullable: true
+            storageQuota:
+              type: string
+              example: '50 GB'
+              nullable: true
+            storageUsedBytes:
+              example: '60000'
+            storageUsed:
+              type: string
+              example: '1 GB'
+            storageAvailableBytes:
+              example: '120000'
+              nullable: true
+            storageAvailable:
+              type: string
+              example: '1 GB'
+          type: object
     HasAutoIncrementId:
       required:
         - id
@@ -9031,6 +9351,9 @@ components:
           type: string
           nullable: true
         title:
+          type: string
+          nullable: true
+        album:
           type: string
           nullable: true
       type: object
@@ -9061,10 +9384,9 @@ components:
             email:
               type: string
               example: demo@azuracast.com
-            new_password:
+            auth_password:
               type: string
               example: ''
-              nullable: true
             name:
               type: string
               example: 'Demo Account'
@@ -9147,6 +9469,7 @@ components:
         - 'manage station mounts'
         - 'manage station remotes'
         - 'manage station media'
+        - 'delete station media'
         - 'manage station automation'
         - 'manage station web hooks'
         - 'manage station podcasts'
@@ -9161,6 +9484,7 @@ components:
         - MountPoints
         - RemoteRelays
         - Media
+        - DeleteMedia
         - Automation
         - WebHooks
         - Podcasts
@@ -9236,6 +9560,16 @@ components:
       x-enumNames:
         - Liquidsoap
         - None
+    CrossfadeModes:
+      type: string
+      enum:
+        - normal
+        - smart
+        - none
+      x-enumNames:
+        - Normal
+        - Smart
+        - Disabled
     FrontendAdapters:
       type: string
       enum:
@@ -9248,6 +9582,20 @@ components:
         - Shoutcast
         - Rsas
         - Remote
+    HlsStreamProfiles:
+      type: string
+      enum:
+        - aac
+        - aac_he
+        - aac_he_v2
+        - aac_ld
+        - aac_eld
+      x-enumNames:
+        - AacLowComplexity
+        - AacHighEfficiencyV1
+        - AacHighEfficiencyV2
+        - AacLowDelay
+        - AacEnhancedLowDelay
     MasterMePresets:
       type: string
       enum:
@@ -9274,6 +9622,20 @@ components:
         - Shoutcast2
         - Icecast
         - AzuraRelay
+    StreamFormats:
+      type: string
+      enum:
+        - mp3
+        - ogg
+        - aac
+        - opus
+        - flac
+      x-enumNames:
+        - Mp3
+        - Ogg
+        - Aac
+        - Opus
+        - Flac
     WebhookTriggers:
       type: string
       enum:

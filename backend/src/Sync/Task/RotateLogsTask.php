@@ -45,7 +45,7 @@ final class RotateLogsTask extends AbstractTask
             try {
                 $this->cleanUpIcecastLog($station);
 
-                if ($station->getEnableHls() && $this->rotateHlsLog($station)) {
+                if ($station->enable_hls && $this->rotateHlsLog($station)) {
                     $hlsRotated = true;
                 }
             } catch (Throwable $e) {
@@ -62,9 +62,9 @@ final class RotateLogsTask extends AbstractTask
         // Rotate the automated backups.
         $settings = $this->readSettings();
 
-        $copiesToKeep = $settings->getBackupKeepCopies();
+        $copiesToKeep = $settings->backup_keep_copies;
         if ($copiesToKeep > 0) {
-            $backupStorageId = (int)$settings->getBackupStorageLocation();
+            $backupStorageId = (int)$settings->backup_storage_location;
 
             if ($backupStorageId > 0) {
                 $storageLocation = $this->storageLocationRepo->findByType(

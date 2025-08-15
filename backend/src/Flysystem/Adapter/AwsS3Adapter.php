@@ -11,6 +11,7 @@ use Aws\Api\DateTimeResult;
 use Aws\S3\S3ClientInterface;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
 use League\Flysystem\AwsS3V3\VisibilityConverter;
+use League\Flysystem\Config;
 use League\Flysystem\PathPrefixer;
 use League\Flysystem\StorageAttributes;
 use League\Flysystem\UnableToRetrieveMetadata;
@@ -68,5 +69,25 @@ final class AwsS3Adapter extends AwsS3V3Adapter implements ExtendedAdapterInterf
             $lastModified,
             $mimetype
         );
+    }
+
+    public function move(string $source, string $destination, Config $config): void
+    {
+        // Special handling for directories.
+        if ($this->directoryExists($source)) {
+            $folderContents = $this->listContents($source, false);
+            foreach ($folderContents as $content) {
+                $this->move(
+                    $content['path'],
+                    str_replace($source, $destination, $content['path']),
+                    $config
+                );
+            }
+
+            $this->deleteDirectory($source);
+            return;
+        }
+
+        parent::move($source, $destination, $config);
     }
 }

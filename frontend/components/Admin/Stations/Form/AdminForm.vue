@@ -29,6 +29,7 @@
                 :field="v$.max_bitrate"
                 :label="$gettext('Maximum Bitrate')"
                 :description="$gettext('The maximum bitrate in which the station allowed to broadcast at, in Kbps. 0 for unlimited.')"
+                input-number
             />
 
             <form-group-field
@@ -37,14 +38,16 @@
                 :field="v$.max_mounts"
                 :label="$gettext('Maximum Mounts')"
                 :description="$gettext('The maximum number of mount points allowed. 0 for unlimited.')"
+                input-number
             />
 
             <form-group-field
                 id="edit_form_max_hls_streams"
                 class="col-md-4"
                 :field="v$.max_hls_streams"
-                :label="$gettext('Maximum Hls Streams')"
+                :label="$gettext('Maximum HLS Streams')"
                 :description="$gettext('The maximum number of HLS streams allowed. 0 for unlimited.')"
+                input-number
             />
         </div>
 

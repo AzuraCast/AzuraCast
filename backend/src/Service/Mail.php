@@ -22,7 +22,7 @@ final class Mail implements MailerInterface
 
     public function isEnabled(): bool
     {
-        return $this->readSettings()->getMailEnabled();
+        return $this->readSettings()->mail_enabled;
     }
 
     public function createMessage(): Email
@@ -30,7 +30,7 @@ final class Mail implements MailerInterface
         $settings = $this->readSettings();
 
         $email = new Email();
-        $email->from(new Address($settings->getMailSenderEmail(), $settings->getMailSenderName()));
+        $email->from(new Address($settings->mail_sender_email ?? '', $settings->mail_sender_name ?? ''));
 
         return $email;
     }

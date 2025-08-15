@@ -140,10 +140,10 @@ final class ServicesController
 
         return $response->withJson(
             new StationServiceStatus(
-                null !== $backend && $backend->isRunning($station),
-                null !== $frontend && $frontend->isRunning($station),
-                $station->getHasStarted(),
-                $station->getNeedsRestart()
+                backend_running: null !== $backend && $backend->isRunning($station),
+                frontend_running: null !== $frontend && $frontend->isRunning($station),
+                station_has_started: $station->has_started,
+                station_needs_restart: $station->needs_restart
             )
         );
     }
@@ -170,7 +170,7 @@ final class ServicesController
         Station $station,
         bool $attemptReload
     ): void {
-        $station->setHasStarted(true);
+        $station->has_started = true;
         $this->em->persist($station);
         $this->em->flush();
 

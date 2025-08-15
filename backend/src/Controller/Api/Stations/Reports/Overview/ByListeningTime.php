@@ -56,7 +56,7 @@ final class ByListeningTime extends AbstractReportAction
                 GROUP BY listener_hash
             SQL,
             [
-                'station_id' => $station->getIdRequired(),
+                'station_id' => $station->id,
                 'start' => $dateRange->start,
                 'end' => $dateRange->end,
             ]

@@ -6,7 +6,6 @@ namespace App\Controller\Api\Admin;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\Api\Traits\AcceptsDateRange;
-use App\Entity\Api\Admin\AuditLog as ApiAuditLog;
 use App\Entity\AuditLog;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -27,7 +26,7 @@ use Psr\Http\Message\ResponseInterface;
                 content: new OA\JsonContent(
                     type: 'array',
                     items: new OA\Items(
-                        ref: ApiAuditLog::class
+                        ref: AuditLog::class
                     )
                 )
             ),
@@ -66,8 +65,6 @@ final class AuditLogAction
         $qb->orderBy('a.timestamp', 'DESC');
 
         $paginator = Paginator::fromQueryBuilder($qb, $request);
-        $paginator->setPostprocessor([ApiAuditLog::class, 'fromRow']);
-
         return $paginator->write($response);
     }
 }

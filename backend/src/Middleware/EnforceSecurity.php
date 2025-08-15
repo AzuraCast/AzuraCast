@@ -34,7 +34,7 @@ final class EnforceSecurity extends AbstractMiddleware
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $alwaysUseSsl = $this->readSettings()->getAlwaysUseSsl();
+        $alwaysUseSsl = $this->readSettings()->always_use_ssl;
 
         // Requests through the internal port (:6010) have this server param set.
         $isInternal = Types::bool($request->getServerParam('IS_INTERNAL'), false, true);

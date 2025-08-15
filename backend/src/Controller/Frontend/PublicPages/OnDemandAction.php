@@ -24,7 +24,7 @@ final class OnDemandAction implements SingleActionInterface
     ): ResponseInterface {
         $station = $request->getStation();
 
-        if (!$station->getEnablePublicPage()) {
+        if (!$station->enable_public_page) {
             throw NotFoundException::station();
         }
 
@@ -48,7 +48,7 @@ final class OnDemandAction implements SingleActionInterface
 
         $router = $request->getRouter();
 
-        $pageClass = 'ondemand station-' . $station->getShortName();
+        $pageClass = 'ondemand station-' . $station->short_name;
         if ($this->isEmbedded($request, $params)) {
             $pageClass .= ' embed';
         }
@@ -66,16 +66,16 @@ final class OnDemandAction implements SingleActionInterface
             component: 'Public/OnDemand',
             id: 'station-on-demand',
             layout: 'minimal',
-            title: __('On-Demand Media') . ' - ' . $station->getName(),
+            title: __('On-Demand Media') . ' - ' . $station->name,
             layoutParams: [
                 'page_class' => $pageClass,
                 'hide_footer' => true,
             ],
             props: [
                 'listUrl' => $router->fromHere('api:stations:ondemand:list'),
-                'showDownloadButton' => $station->getEnableOnDemandDownload(),
+                'showDownloadButton' => $station->enable_on_demand_download,
                 'customFields' => $customFields,
-                'stationName' => $station->getName(),
+                'stationName' => $station->name,
             ]
         );
     }

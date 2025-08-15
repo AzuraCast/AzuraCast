@@ -14,152 +14,61 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'podcast_media'),
     Attributes\Auditable
 ]
-class PodcastMedia implements IdentifiableEntityInterface
+final class PodcastMedia implements IdentifiableEntityInterface
 {
     use Traits\HasUniqueId;
     use Traits\TruncateStrings;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    protected StorageLocation $storage_location;
+    public readonly StorageLocation $storage_location;
 
     #[ORM\OneToOne(inversedBy: 'media')]
     #[ORM\JoinColumn(name: 'episode_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
-    protected ?PodcastEpisode $episode;
+    public ?PodcastEpisode $episode;
 
     #[ORM\Column(length: 200)]
     #[Assert\NotBlank]
-    protected string $original_name;
+    public string $original_name {
+        set => $this->truncateString($value, 200);
+    }
 
-    #[ORM\Column(type: 'decimal', precision: 7, scale: 2)]
-    protected string $length = '0.0';
+    #[ORM\Column(name: 'length', type: 'decimal', precision: 7, scale: 2)]
+    private string $length_str = '0.0';
+
+    public float $length {
+        get => Types::float($this->length_str);
+        set {
+            $lengthMin = floor($value / 60);
+            $lengthSec = (int)$value % 60;
+
+            $this->length_str = (string)$value;
+            $this->length_text = $lengthMin . ':' .
+                str_pad((string)$lengthSec, 2, '0', STR_PAD_LEFT);
+        }
+    }
 
     /** @var string The formatted podcast media's duration (in mm:ss format) */
     #[ORM\Column(length: 10)]
-    protected string $length_text = '0:00';
+    public string $length_text = '0:00';
 
     #[ORM\Column(length: 500)]
     #[Assert\NotBlank]
-    protected string $path;
+    public string $path;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    protected string $mime_type = 'application/octet-stream';
+    public string $mime_type = 'application/octet-stream';
 
     #[ORM\Column]
-    protected int $modified_time = 0;
+    public int $modified_time = 0;
 
     #[ORM\Column]
     #[Attributes\AuditIgnore]
-    protected int $art_updated_at = 0;
+    public int $art_updated_at = 0;
 
     public function __construct(StorageLocation $storageLocation)
     {
         $this->storage_location = $storageLocation;
-    }
-
-    public function getStorageLocation(): StorageLocation
-    {
-        return $this->storage_location;
-    }
-
-    public function getEpisode(): ?PodcastEpisode
-    {
-        return $this->episode;
-    }
-
-    public function setEpisode(?PodcastEpisode $episode): self
-    {
-        $this->episode = $episode;
-
-        return $this;
-    }
-
-    public function getOriginalName(): string
-    {
-        return $this->original_name;
-    }
-
-    public function setOriginalName(string $originalName): self
-    {
-        $this->original_name = $this->truncateString($originalName);
-
-        return $this;
-    }
-
-    public function getLength(): float
-    {
-        return Types::float($this->length);
-    }
-
-    public function setLength(float $length): self
-    {
-        $lengthMin = floor($length / 60);
-        $lengthSec = (int)$length % 60;
-
-        $this->length = (string)$length;
-        $this->length_text = $lengthMin . ':' . str_pad((string)$lengthSec, 2, '0', STR_PAD_LEFT);
-
-        return $this;
-    }
-
-    public function getLengthText(): string
-    {
-        return $this->length_text;
-    }
-
-    public function setLengthText(string $lengthText): self
-    {
-        $this->length_text = $lengthText;
-
-        return $this;
-    }
-
-    public function getPath(): string
-    {
-        return $this->path;
-    }
-
-    public function setPath(string $path): self
-    {
-        $this->path = $path;
-
-        return $this;
-    }
-
-    public function getMimeType(): string
-    {
-        return $this->mime_type;
-    }
-
-    public function setMimeType(string $mimeType): self
-    {
-        $this->mime_type = $mimeType;
-
-        return $this;
-    }
-
-    public function getModifiedTime(): int
-    {
-        return $this->modified_time;
-    }
-
-    public function setModifiedTime(int $modifiedTime): self
-    {
-        $this->modified_time = $modifiedTime;
-
-        return $this;
-    }
-
-    public function getArtUpdatedAt(): int
-    {
-        return $this->art_updated_at;
-    }
-
-    public function setArtUpdatedAt(int $artUpdatedAt): self
-    {
-        $this->art_updated_at = $artUpdatedAt;
-
-        return $this;
     }
 }

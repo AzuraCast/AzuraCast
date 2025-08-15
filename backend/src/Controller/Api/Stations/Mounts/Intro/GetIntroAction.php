@@ -58,7 +58,7 @@ final class GetIntroAction implements SingleActionInterface
         $mount = $this->mountRepo->findForStation($id, $station);
 
         if ($mount instanceof StationMount) {
-            $introPath = $mount->getIntroPath();
+            $introPath = $mount->intro_path;
 
             if (!empty($introPath)) {
                 $fsConfig = StationFilesystems::buildConfigFilesystem($station);

@@ -20,7 +20,7 @@ use Stringable;
     ORM\Entity,
     ORM\Table(name: 'station_streamer_broadcasts')
 ]
-class StationStreamerBroadcast implements IdentifiableEntityInterface, Stringable
+final class StationStreamerBroadcast implements IdentifiableEntityInterface, Stringable
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -31,69 +31,33 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface, Stringabl
         ORM\ManyToOne(inversedBy: 'streamer_broadcasts'),
         ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
     ]
-    protected Station $station;
+    public readonly Station $station;
 
     #[
         ORM\ManyToOne(inversedBy: 'broadcasts'),
         ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
     ]
-    protected StationStreamer $streamer;
+    public readonly StationStreamer $streamer;
 
     #[ORM\Column(name: 'timestamp_start', type: 'datetime_immutable', precision: 6)]
-    protected DateTimeImmutable $timestampStart;
+    public readonly DateTimeImmutable $timestampStart;
 
     #[ORM\Column(name: 'timestamp_end', type: 'datetime_immutable', precision: 6, nullable: true)]
-    protected ?DateTimeImmutable $timestampEnd = null;
+    public ?DateTimeImmutable $timestampEnd = null {
+        set (DateTimeImmutable|string|int|null $value) => Time::toNullableUtcCarbonImmutable($value);
+    }
 
     #[ORM\Column(name: 'recording_path', length: 255, nullable: true)]
-    protected ?string $recordingPath = null;
+    public ?string $recordingPath = null;
 
-    public function __construct(StationStreamer $streamer)
-    {
+    public function __construct(
+        StationStreamer $streamer,
+        DateTimeImmutable|string|int|null $timestampStart = null
+    ) {
         $this->streamer = $streamer;
-        $this->station = $streamer->getStation();
+        $this->station = $streamer->station;
 
-        $this->timestampStart = Time::nowUtc();
-    }
-
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
-    public function getStreamer(): StationStreamer
-    {
-        return $this->streamer;
-    }
-
-    public function getTimestampStart(): DateTimeImmutable
-    {
-        return $this->timestampStart;
-    }
-
-    public function setTimestampStart(mixed $timestampStart): void
-    {
-        $this->timestampStart = Time::toUtcCarbonImmutable($timestampStart);
-    }
-
-    public function getTimestampEnd(): ?DateTimeImmutable
-    {
-        return $this->timestampEnd;
-    }
-
-    public function setTimestampEnd(mixed $timestampEnd): void
-    {
-        $this->timestampEnd = Time::toNullableUtcCarbonImmutable($timestampEnd);
-    }
-
-    public function getRecordingPath(): ?string
-    {
-        return $this->recordingPath;
-    }
-
-    public function setRecordingPath(?string $recordingPath): void
-    {
-        $this->recordingPath = $recordingPath;
+        $this->timestampStart = Time::toNullableUtcCarbonImmutable($timestampStart) ?? Time::nowUtc();
     }
 
     public function __toString(): string

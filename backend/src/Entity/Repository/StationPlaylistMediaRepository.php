@@ -11,6 +11,7 @@ use App\Entity\Enums\PlaylistSources;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
+use App\Entity\StationPlaylistFolder;
 use App\Entity\StationPlaylistMedia;
 use App\Utilities\Time;
 use Carbon\CarbonImmutable;
@@ -56,7 +57,8 @@ final class StationPlaylistMediaRepository extends Repository
                 <<<'DQL'
                 DELETE FROM App\Entity\StationPlaylistMedia spm
                 WHERE spm.media = :media
-                AND spm.playlist_id IN (:playlistIds)
+                AND IDENTITY(spm.playlist) IN (:playlistIds)
+                AND spm.folder IS NULL
                 DQL
             )->setParameter('media', $media)
                 ->setParameter('playlistIds', $toDelete)
@@ -74,12 +76,12 @@ final class StationPlaylistMediaRepository extends Repository
             if (0 === $weight) {
                 $weight = $this->getHighestSongWeight($playlist) + 1;
             }
-            if (PlaylistOrders::Sequential !== $playlist->getOrder()) {
+            if (PlaylistOrders::Sequential !== $playlist->order) {
                 $weight = random_int(1, $weight);
             }
 
             $record = new StationPlaylistMedia($playlist, $media);
-            $record->setWeight($weight);
+            $record->weight = $weight;
             $this->em->persist($record);
 
             $added[$playlistId] = $playlistId;
@@ -91,8 +93,6 @@ final class StationPlaylistMediaRepository extends Repository
     }
 
     /**
-     * @param StationMedia $media
-     * @param Station|null $station
      * @return array<array-key, int>
      */
     public function getPlaylistsForMedia(
@@ -119,35 +119,43 @@ final class StationPlaylistMediaRepository extends Repository
      * Add the specified media to the specified playlist.
      * Must flush the EntityManager after using.
      *
-     * @param StationMedia $media
-     * @param StationPlaylist $playlist
-     * @param int $weight
-     *
      * @return int The weight assigned to the newly added record.
      */
     public function addMediaToPlaylist(
         StationMedia $media,
         StationPlaylist $playlist,
-        int $weight = 0
+        int $weight = 0,
+        ?StationPlaylistFolder $folder = null,
     ): int {
-        if (PlaylistSources::Songs !== $playlist->getSource()) {
+        if (PlaylistSources::Songs !== $playlist->source) {
             throw new RuntimeException('This playlist is not meant to contain songs!');
         }
 
         // Only update existing record for random-order playlists.
-        $isNonSequential = PlaylistOrders::Sequential !== $playlist->getOrder();
+        $isNonSequential = PlaylistOrders::Sequential !== $playlist->order;
 
         $record = ($isNonSequential)
             ? $this->repository->findOneBy(
                 [
-                    'media_id' => $media->getId(),
-                    'playlist_id' => $playlist->getId(),
+                    'media' => $media,
+                    'playlist' => $playlist,
                 ]
             ) : null;
 
         if ($record instanceof StationPlaylistMedia) {
+            $changesMade = false;
+
             if (0 !== $weight) {
-                $record->setWeight($weight);
+                $record->weight = $weight;
+                $changesMade = true;
+            }
+
+            if ($record->folder !== $folder) {
+                $record->folder = $folder;
+                $changesMade = true;
+            }
+
+            if ($changesMade) {
                 $this->em->persist($record);
             }
         } else {
@@ -158,8 +166,8 @@ final class StationPlaylistMediaRepository extends Repository
                 $weight = random_int(1, $weight);
             }
 
-            $record = new StationPlaylistMedia($playlist, $media);
-            $record->setWeight($weight);
+            $record = new StationPlaylistMedia($playlist, $media, $folder);
+            $record->weight = $weight;
             $this->em->persist($record);
         }
 
@@ -173,9 +181,9 @@ final class StationPlaylistMediaRepository extends Repository
                 <<<'DQL'
                     SELECT MAX(e.weight)
                     FROM App\Entity\StationPlaylistMedia e
-                    WHERE e.playlist_id = :playlist_id
+                    WHERE e.playlist = :playlist
                 DQL
-            )->setParameter('playlist_id', $playlist->getId())
+            )->setParameter('playlist', $playlist)
                 ->getSingleScalarResult();
         } catch (NoResultException) {
             $highestWeight = 1;
@@ -198,18 +206,18 @@ final class StationPlaylistMediaRepository extends Repository
     ): array {
         $affectedPlaylists = [];
 
-        $playlists = $media->getPlaylists();
+        $playlists = $media->playlists;
         if (null !== $station) {
             $playlists = $playlists->filter(
                 function (StationPlaylistMedia $spm) use ($station) {
-                    return $spm->getPlaylist()->getStation()->getId() === $station->getId();
+                    return $spm->playlist->station->id === $station->id;
                 }
             );
         }
 
         foreach ($playlists as $spmRow) {
-            $playlist = $spmRow->getPlaylist();
-            $affectedPlaylists[$playlist->getIdRequired()] = $playlist->getIdRequired();
+            $playlist = $spmRow->playlist;
+            $affectedPlaylists[$playlist->id] = $playlist->id;
 
             $this->queueRepo->clearForMediaAndPlaylist($media, $playlist);
 
@@ -249,10 +257,10 @@ final class StationPlaylistMediaRepository extends Repository
             <<<'DQL'
                 UPDATE App\Entity\StationPlaylistMedia e
                 SET e.weight = :weight
-                WHERE e.playlist_id = :playlist_id
+                WHERE e.playlist = :playlist
                 AND e.id = :id
             DQL
-        )->setParameter('playlist_id', $playlist->getId());
+        )->setParameter('playlist', $playlist);
 
         $this->em->wrapInTransaction(
             function () use ($updateQuery, $mapping): void {
@@ -269,11 +277,11 @@ final class StationPlaylistMediaRepository extends Repository
         StationPlaylist $playlist,
         ?CarbonImmutable $now = null
     ): void {
-        if (PlaylistSources::Songs !== $playlist->getSource()) {
+        if (PlaylistSources::Songs !== $playlist->source) {
             throw new InvalidArgumentException('Playlist must contain songs.');
         }
 
-        if (PlaylistOrders::Sequential === $playlist->getOrder()) {
+        if (PlaylistOrders::Sequential === $playlist->order) {
             $this->em->createQuery(
                 <<<'DQL'
                     UPDATE App\Entity\StationPlaylistMedia spm
@@ -282,7 +290,7 @@ final class StationPlaylistMediaRepository extends Repository
                 DQL
             )->setParameter('playlist', $playlist)
                 ->execute();
-        } elseif (PlaylistOrders::Shuffle === $playlist->getOrder()) {
+        } elseif (PlaylistOrders::Shuffle === $playlist->order) {
             $this->em->wrapInTransaction(
                 function () use ($playlist): void {
                     $allSpmRecordsQuery = $this->em->createQuery(
@@ -318,7 +326,7 @@ final class StationPlaylistMediaRepository extends Repository
 
         $now ??= Time::nowUtc();
 
-        $playlist->setQueueResetAt($now);
+        $playlist->queue_reset_at = $now;
         $this->em->persist($playlist);
         $this->em->flush();
     }
@@ -327,8 +335,8 @@ final class StationPlaylistMediaRepository extends Repository
     {
         $now = Time::nowUtc();
 
-        foreach ($station->getPlaylists() as $playlist) {
-            if (PlaylistSources::Songs !== $playlist->getSource()) {
+        foreach ($station->playlists as $playlist) {
+            if (PlaylistSources::Songs !== $playlist->source) {
                 continue;
             }
 
@@ -341,7 +349,7 @@ final class StationPlaylistMediaRepository extends Repository
      */
     public function getQueue(StationPlaylist $playlist): array
     {
-        if (PlaylistSources::Songs !== $playlist->getSource()) {
+        if (PlaylistSources::Songs !== $playlist->source) {
             throw new InvalidArgumentException('Playlist must contain songs.');
         }
 
@@ -352,7 +360,7 @@ final class StationPlaylistMediaRepository extends Repository
             ->where('spm.playlist = :playlist')
             ->setParameter('playlist', $playlist);
 
-        if (PlaylistOrders::Random === $playlist->getOrder()) {
+        if (PlaylistOrders::Random === $playlist->order) {
             $queuedMediaQuery = $queuedMediaQuery->orderBy('RAND()');
         } else {
             $queuedMediaQuery = $queuedMediaQuery->andWhere('spm.is_queued = 1')
@@ -378,11 +386,11 @@ final class StationPlaylistMediaRepository extends Repository
 
     public function isQueueCompletelyFilled(StationPlaylist $playlist): bool
     {
-        if (PlaylistSources::Songs !== $playlist->getSource()) {
+        if (PlaylistSources::Songs !== $playlist->source) {
             return true;
         }
 
-        if (PlaylistOrders::Random === $playlist->getOrder()) {
+        if (PlaylistOrders::Random === $playlist->order) {
             return true;
         }
 
@@ -396,11 +404,11 @@ final class StationPlaylistMediaRepository extends Repository
 
     public function isQueueEmpty(StationPlaylist $playlist): bool
     {
-        if (PlaylistSources::Songs !== $playlist->getSource()) {
+        if (PlaylistSources::Songs !== $playlist->source) {
             return false;
         }
 
-        if (PlaylistOrders::Random === $playlist->getOrder()) {
+        if (PlaylistOrders::Random === $playlist->order) {
             return false;
         }
 

@@ -54,6 +54,6 @@ final class Centrifugo
 
     public function getChannelName(Station $station): string
     {
-        return 'station:' . $station->getShortName();
+        return 'station:' . $station->short_name;
     }
 }

@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'role'),
     Attributes\Auditable
 ]
-class Role implements Stringable, IdentifiableEntityInterface
+final class Role implements Stringable, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -25,15 +25,17 @@ class Role implements Stringable, IdentifiableEntityInterface
         ORM\Column(length: 100),
         Assert\NotBlank
     ]
-    protected string $name;
+    public string $name {
+        set => $this->truncateString($value, 100);
+    }
 
     /** @var Collection<int, User> */
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'roles')]
-    protected Collection $users;
+    public private(set) Collection $users;
 
     /** @var Collection<int, RolePermission> */
     #[ORM\OneToMany(targetEntity: RolePermission::class, mappedBy: 'role')]
-    protected Collection $permissions;
+    public private(set) Collection $permissions;
 
     public function __construct()
     {
@@ -41,30 +43,10 @@ class Role implements Stringable, IdentifiableEntityInterface
         $this->permissions = new ArrayCollection();
     }
 
-    public function getName(): string
+    public function __clone(): void
     {
-        return $this->name;
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $this->truncateString($name, 100);
-    }
-
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    /**
-     * @return Collection<int, RolePermission>
-     */
-    public function getPermissions(): Collection
-    {
-        return $this->permissions;
+        $this->users = new ArrayCollection();
+        $this->permissions = new ArrayCollection();
     }
 
     public function __toString(): string

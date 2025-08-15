@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Notification\Check;
 
 use App\Container\SettingsAwareTrait;
-use App\Entity\Api\Admin\UpdateDetails;
 use App\Entity\Api\Notification;
 use App\Enums\FlashLevels;
 use App\Enums\GlobalPermissions;
@@ -31,16 +30,14 @@ final class UpdateCheck
         }
 
         $settings = $this->readSettings();
-        if (!$settings->getCheckForUpdates()) {
+        if (!$settings->check_for_updates) {
             return;
         }
 
-        $updateDataRaw = $settings->getUpdateResults();
-        if (empty($updateDataRaw)) {
+        $updateData = $settings->update_results;
+        if (null === $updateData) {
             return;
         }
-
-        $updateData = UpdateDetails::fromParent($updateDataRaw);
 
         $router = $event->getRequest()->getRouter();
 

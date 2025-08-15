@@ -31,7 +31,7 @@ final class ListenerAuthAction implements SingleActionInterface
         $station = $request->getStation();
 
         $acl = $request->getAcl();
-        if (!$acl->isAllowed(StationPermissions::View, $station->getId())) {
+        if (!$acl->isAllowed(StationPermissions::View, $station->id)) {
             $authKey = Types::stringOrNull($params['api_auth'], true)
                 ?? Types::stringOrNull($request->getQueryParam('api_auth'), true);
 
@@ -39,8 +39,8 @@ final class ListenerAuthAction implements SingleActionInterface
                 $this->logger->error(
                     'Invalid API key supplied for internal API call.',
                     [
-                        'station_id' => $station->getId(),
-                        'station_name' => $station->getName(),
+                        'station_id' => $station->id,
+                        'station_name' => $station->name,
                     ]
                 );
 

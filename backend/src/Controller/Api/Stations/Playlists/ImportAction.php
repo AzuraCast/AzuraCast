@@ -23,7 +23,7 @@ use Symfony\Component\Filesystem\Path;
 
 #[OA\Post(
     path: '/station/{station_id}/playlist/{id}/import',
-    operationId: 'getStationPlaylistImport',
+    operationId: 'postStationPlaylistImport',
     summary: 'Import the contents of an uploaded playlist (PLS/M3U) file into the specified playlist.',
     tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
     parameters: [
@@ -89,7 +89,7 @@ final class ImportAction implements SingleActionInterface
         $importResults = [];
 
         if (!empty($paths)) {
-            $storageLocation = $request->getStation()->getMediaStorageLocation();
+            $storageLocation = $request->getStation()->media_storage_location;
 
             // Assemble list of station media to match against.
             $mediaLookup = [];
@@ -199,7 +199,7 @@ final class ImportAction implements SingleActionInterface
                 $mediaById = [];
                 foreach ($matchedMediaRaw as $row) {
                     /** @var StationMedia $row */
-                    $mediaById[$row->getId()] = $row;
+                    $mediaById[$row->id] = $row;
                 }
 
                 $weight = $this->spmRepo->getHighestSongWeight($playlist);

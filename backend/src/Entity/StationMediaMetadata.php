@@ -4,84 +4,75 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Doctrine\AbstractArrayEntity;
 use App\Utilities\Time;
 use App\Utilities\Types;
+use OpenApi\Attributes as OA;
 
-class StationMediaMetadata extends AbstractStationConfiguration
+#[OA\Schema(schema: "StationMediaMetadata", type: "object")]
+final class StationMediaMetadata extends AbstractArrayEntity
 {
     public const string AMPLIFY = 'amplify';
 
-    public function getAmplify(): ?float
-    {
-        return Types::floatOrNull($this->get(self::AMPLIFY));
-    }
-
-    public function setAmplify(float|string|null $amplify = null): void
-    {
-        $this->set(self::AMPLIFY, self::getNumericValue($amplify, true));
-    }
-
-    public const string CROSS_START_NEXT = 'cross_start_next';
-
-    public function getCrossStartNext(): ?float
-    {
-        return Types::floatOrNull($this->get(self::CROSS_START_NEXT));
-    }
-
-    public function setCrossStartNext(string|int|float|null $startNext = null): void
-    {
-        $this->set(self::CROSS_START_NEXT, self::getNumericValue($startNext));
+    #[OA\Property(
+        description: 'Value (in dB) to amplify the current track to produce a uniform loudness.',
+        example: '-1.5'
+    )]
+    public ?float $amplify = null {
+        set (float|string|null $value) => self::getNumericValue($value, true);
     }
 
     public const string FADE_IN = 'fade_in';
 
-    public function getFadeIn(): ?float
-    {
-        return Types::floatOrNull($this->get(self::FADE_IN));
-    }
-
-    public function setFadeIn(string|int|float|null $fadeIn = null): void
-    {
-        $this->set(self::FADE_IN, self::getNumericValue($fadeIn));
+    #[OA\Property(
+        description: 'Seconds from the start of the track to end fading in.',
+        example: '2.0'
+    )]
+    public ?float $fade_in = null {
+        set (string|int|float|null $value) => self::getNumericValue($value);
     }
 
     public const string FADE_OUT = 'fade_out';
 
-    public function getFadeOut(): ?float
-    {
-        return Types::floatOrNull($this->get(self::FADE_OUT));
-    }
-
-    public function setFadeOut(string|int|float|null $fadeOut = null): void
-    {
-        $this->set(self::FADE_OUT, self::getNumericValue($fadeOut));
+    #[OA\Property(
+        description: 'Seconds from the end of the track to begin fading out.',
+        example: '2.0'
+    )]
+    public ?float $fade_out = null {
+        set (string|int|float|null $value) => self::getNumericValue($value);
     }
 
     public const string CUE_IN = 'cue_in';
 
-    public function getCueIn(): ?float
-    {
-        return Types::floatOrNull($this->get(self::CUE_IN));
-    }
-
-    public function setCueIn(string|int|float|null $cueIn = null): void
-    {
-        $this->set(self::CUE_IN, self::getNumericValue($cueIn));
+    #[OA\Property(
+        description: 'Seconds from the start of the track to start playback (cue in).',
+        example: '3.5'
+    )]
+    public ?float $cue_in = null {
+        set (string|int|float|null $value) => self::getNumericValue($value);
     }
 
     public const string CUE_OUT = 'cue_out';
 
-    public function getCueOut(): ?float
-    {
-        return Types::floatOrNull($this->get(self::CUE_OUT));
+    #[OA\Property(
+        description: 'Seconds from the start of the track to end playback (cue out).',
+        example: '181.5'
+    )]
+    public ?float $cue_out = null {
+        set (string|int|float|null $value) => self::getNumericValue($value);
     }
 
-    public function setCueOut(string|int|float|null $cueOut = null): void
-    {
-        $this->set(self::CUE_OUT, self::getNumericValue($cueOut));
+    public const string CROSS_START_NEXT = 'cross_start_next';
+
+    #[OA\Property(
+        description: 'Seconds from the start of the track to begin fading in the next track.',
+        example: '180.0'
+    )]
+    public ?float $cross_start_next = null {
+        set (string|int|float|null $value) => self::getNumericValue($value);
     }
 
-    private function getNumericValue(
+    protected static function getNumericValue(
         string|int|float|null $annotation = null,
         bool $allowNegative = false
     ): ?float {

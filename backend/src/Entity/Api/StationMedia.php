@@ -83,6 +83,20 @@ class StationMedia
     public string $length_text = '0:00';
 
     #[OA\Property(
+        description: "The star rating for this media (0-5)",
+        minimum: 0,
+        maximum: 5,
+        example: 4
+    )]
+    public int $rating = 0;
+
+    #[OA\Property(
+        description: "Whether this media is marked as a favorite",
+        example: true
+    )]
+    public bool $is_favorite = false;
+
+    #[OA\Property(
         description: "An object containing all custom fields, with the key being the value name.",
     )]
     public HashMap $custom_fields;
@@ -125,6 +139,9 @@ class StationMedia
         $media->length = Types::int($row['length']);
         $media->length_text = self::getLengthText($row['length']);
         $media->art_updated_at = $row['art_updated_at'];
+
+        $media->rating = Types::int($row['rating'] ?? 0);
+        $media->is_favorite = Types::bool($row['is_favorite'] ?? false);
 
         $media->mtime = Types::int($row['mtime'] ?? 0);
         $media->uploaded_at = Types::int($row['uploaded_at'] ?? 0);

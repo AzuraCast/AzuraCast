@@ -50,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import {required} from "@vuelidate/validators";
+import {required, minValue, maxValue} from "@vuelidate/validators";
 import {defaultTo, forEach, map} from "lodash";
 import MediaFormBasicInfo from "~/components/Stations/Media/Form/BasicInfo.vue";
 import MediaFormAlbumArt from "~/components/Stations/Media/Form/AlbumArt.vue";
@@ -122,6 +122,8 @@ const {
             genre: {},
             lyrics: {},
             isrc: {},
+            rating: {minValue: minValue(0), maxValue: maxValue(5)},
+            is_favorite: {},
             art: {},
             custom_fields: {},
             extra_metadata: {
@@ -152,6 +154,8 @@ const {
             genre: null,
             lyrics: null,
             isrc: null,
+            rating: 0,
+            is_favorite: false,
             custom_fields: {},
             extra_metadata: {
                 amplify: null,

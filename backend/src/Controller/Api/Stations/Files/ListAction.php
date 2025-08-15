@@ -183,6 +183,14 @@ final class ListAction implements SingleActionInterface
                         $mediaQueryBuilder->andWhere(
                             'sm.id NOT IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2)'
                         );
+                    } elseif ('favorites' === $special) {
+                        $mediaQueryBuilder->andWhere('sm.is_favorite = 1');
+                    } elseif (str_starts_with($special, 'rating:')) {
+                        $ratingValue = (int)substr($special, 7);
+                        if ($ratingValue >= 1 && $ratingValue <= 5) {
+                            $mediaQueryBuilder->andWhere('sm.rating >= :rating')
+                                ->setParameter('rating', $ratingValue);
+                        }
                     } elseif (null !== $playlist) {
                         $mediaQueryBuilder->andWhere(
                             'sm.id IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2 '
@@ -363,7 +371,9 @@ final class ListAction implements SingleActionInterface
             'sm.length',
             'sm.mtime',
             'sm.uploaded_at',
-            'sm.art_updated_at'
+            'sm.art_updated_at',
+            'sm.rating',
+            'sm.is_favorite'
         );
 
         /** @var array<array{
@@ -379,7 +389,9 @@ final class ListAction implements SingleActionInterface
          *     length: string,
          *     mtime: int,
          *     uploaded_at: int,
-         *     art_updated_at: int
+         *     art_updated_at: int,
+         *     rating: int,
+         *     is_favorite: bool
          * }> $mediaInDirRaw
          */
         $mediaInDirRaw = $qb->getQuery()->getScalarResult();

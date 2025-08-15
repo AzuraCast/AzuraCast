@@ -59,6 +59,8 @@ final class UploadAction implements SingleActionInterface
         'genre',
         'lyrics',
         'isrc',
+        'rating',
+        'is_favorite',
     ];
 
     public function __construct(

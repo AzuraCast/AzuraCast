@@ -156,6 +156,31 @@
                 </div>
             </template>
             <!-- eslint-disable-next-line -->
+            <template #cell(media.rating)="{ item }">
+                <span v-if="item.media?.rating > 0">
+                    <template v-for="n in 5" :key="n">
+                        <span 
+                            :class="n <= item.media.rating ? 'text-warning' : 'text-muted'"
+                            style="font-size: 14px;"
+                        >
+                            {{ n <= item.media.rating ? '★' : '☆' }}
+                        </span>
+                    </template>
+                </span>
+                <span v-else class="text-muted">-</span>
+            </template>
+            <!-- eslint-disable-next-line -->
+            <template #cell(media.is_favorite)="{ item }">
+                <span 
+                    v-if="item.media?.is_favorite" 
+                    class="text-danger"
+                    style="font-size: 16px;"
+                >
+                    ♥
+                </span>
+                <span v-else>-</span>
+            </template>
+            <!-- eslint-disable-next-line -->
             <template #cell(media.length)="{ item }">
                 {{ item.media?.length_text }}
             </template>
@@ -380,6 +405,8 @@ const fields = computed<DataTableField<Row>[]>(() => {
         {key: 'media.album', label: $gettext('Album'), sortable: true, selectable: true, visible: false},
         {key: 'media.genre', label: $gettext('Genre'), sortable: true, selectable: true, visible: false},
         {key: 'media.isrc', label: $gettext('ISRC'), sortable: true, selectable: true, visible: false},
+        {key: 'media.rating', label: $gettext('Rating'), sortable: true, selectable: true, visible: true},
+        {key: 'media.is_favorite', label: $gettext('Favorite'), sortable: true, selectable: true, visible: true},
         {key: 'media.length', label: $gettext('Length'), sortable: true, selectable: true, visible: true}
     ];
 

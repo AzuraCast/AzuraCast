@@ -191,6 +191,8 @@ final class FilesController extends AbstractStationApiCrudController
                 'genre' => 'e.genre',
                 'length' => 'e.length',
                 'mtime' => 'e.mtime',
+                'rating' => 'e.rating',
+                'is_favorite' => 'e.is_favorite',
             ],
             'e.path'
         );

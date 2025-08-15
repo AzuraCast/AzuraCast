@@ -1192,7 +1192,10 @@ final class ConfigWriter implements EventSubscriberInterface
             $outputParams[] = 'transport = https_transport';
         }
 
-        $outputParams[] = 'send_icy_metadata = ' . ($encoding->format->sendIcyMetadata() ? 'true' : 'false');
+        $sendIcyMetadata = $encoding->format->sendIcyMetadata();
+        if (null !== $sendIcyMetadata) {
+            $outputParams[] = 'send_icy_metadata = ' . ($sendIcyMetadata ? 'true' : 'false');
+        }
 
         // TODO for common encoding:
         // $outputParams[] = self::cleanUpVarName($encoding->getVariableName('radio'));

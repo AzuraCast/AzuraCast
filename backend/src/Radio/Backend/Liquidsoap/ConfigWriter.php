@@ -325,7 +325,7 @@ final class ConfigWriter implements EventSubscriberInterface
                         $playlistScheduleVar = 'rotate(weights=[1,'
                             . $playlist->play_per_songs . '], [' . $playlistVarName . ', radio])';
                     } else {
-                        $delaySeconds = $playlist->play_per_songs * 60;
+                        $delaySeconds = $playlist->play_per_minutes * 60;
                         $delayTrackSensitive = $playlist->backendInterruptOtherSongs() ? 'false' : 'true';
 
                         $playlistScheduleVar = 'fallback(track_sensitive=' . $delayTrackSensitive . ', [delay(' . $delaySeconds . '., ' . $playlistVarName . '), radio])';

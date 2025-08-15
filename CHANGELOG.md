@@ -20,6 +20,12 @@ release channel, you can take advantage of these new features and fixes.
 
 - Several issues caused by having "Plugin Mode" enabled have been resolved.
 
+- Fixed a bug preventing "Max Bitrate/Streams" settings on the Station form from saving correctly.
+
+- Making changes to frontend/backend station configuration will now properly trigger a "needs restart" flag.
+
+- Once-per-X-minutes playlists are again correctly written to Liquidsoap.
+
 ---
 
 # AzuraCast 0.22.0 (Aug 7, 2025)

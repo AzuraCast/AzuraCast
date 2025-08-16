@@ -11,11 +11,8 @@ use App\Entity\Enums\PlaylistRemoteTypes;
 use App\Entity\Enums\PlaylistSources;
 use App\Entity\Enums\PlaylistTypes;
 use App\Entity\Enums\StationBackendPerformanceModes;
-use App\Entity\Interfaces\StationMountInterface;
 use App\Entity\StationBackendConfiguration;
-use App\Entity\StationMount;
 use App\Entity\StationPlaylist;
-use App\Entity\StationRemote;
 use App\Entity\StationSchedule;
 use App\Entity\StationStreamerBroadcast;
 use App\Event\Radio\AnnotateNextSong;
@@ -58,159 +55,13 @@ final class ConfigWriter implements EventSubscriberInterface
                 ['writeCrossfadeConfiguration', 25],
                 ['writeHarborConfiguration', 20],
                 ['writePreBroadcastConfiguration', 10],
+                ['writeEncodingConfiguration', 7],
                 ['writeLocalBroadcastConfiguration', 5],
                 ['writeHlsBroadcastConfiguration', 2],
                 ['writeRemoteBroadcastConfiguration', 0],
                 ['writePostBroadcastConfiguration', -5],
             ],
         ];
-    }
-
-    public function writeCustomConfigurationSection(WriteLiquidsoapConfiguration $event, string $sectionName): void
-    {
-        if ($event->isForEditing()) {
-            $divider = self::getDividerString();
-            $event->appendLines(
-                [
-                    $divider . $sectionName . $divider,
-                ]
-            );
-            return;
-        }
-
-        $settings = $event->getStation()->backend_config;
-        $customConfig = $settings->getCustomConfigurationSection($sectionName);
-
-        if (!empty($customConfig)) {
-            $event->appendLines(
-                [
-                    '# Custom Configuration (Specified in Station Profile)',
-                    '# startcustomconfig(' . $sectionName . ')',
-                    $customConfig,
-                    '# endcustomconfig(' . $sectionName . ')',
-                ]
-            );
-        }
-    }
-
-    public function writePostProcessingSection(WriteLiquidsoapConfiguration $event): void
-    {
-        $station = $event->getStation();
-        $settings = $event->getBackendConfig();
-
-        switch ($settings->getAudioProcessingMethodEnum()) {
-            case AudioProcessingMethods::Liquidsoap:
-                // NRJ normalization
-                $event->appendBlock(
-                    <<<LIQ
-                    # Normalization and Compression
-                    radio = normalize(target = 0., window = 0.03, gain_min = -16., gain_max = 0., radio)
-                    radio = compress.exponential(radio, mu = 1.0)
-                    LIQ
-                );
-                break;
-
-            case AudioProcessingMethods::MasterMe:
-                // MasterMe Presets
-
-                $lines = [
-                    'radio = ladspa.master_me(',
-                ];
-
-                $preset = $settings->getMasterMePresetEnum();
-                $presetOptions = $preset->getOptions();
-
-                if (0 !== ($loudnessTarget = $settings->master_me_loudness_target)) {
-                    $presetOptions['target'] = $loudnessTarget;
-                }
-
-                foreach ($presetOptions as $presetKey => $presetVal) {
-                    $presetVal = match (true) {
-                        is_int($presetVal) => self::toFloat($presetVal, 0),
-                        is_float($presetVal) => self::toFloat($presetVal),
-                        is_bool($presetVal) => ($presetVal) ? 'true' : 'false',
-                        default => $presetVal
-                    };
-
-                    $lines[] = '    ' . $presetKey . ' = ' . $presetVal . ',';
-                }
-
-                $lines[] = '    radio';
-                $lines[] = ')';
-
-                $event->appendLines($lines);
-                break;
-
-            case AudioProcessingMethods::StereoTool:
-                // Stereo Tool processing
-                if (!StereoTool::isReady($station)) {
-                    return;
-                }
-
-                $stereoToolLibraryPath = StereoTool::getLibraryPath();
-                $stereoToolBinary = $stereoToolLibraryPath . '/stereo_tool';
-
-                $stereoToolConfiguration = $station->getRadioConfigDir()
-                    . DIRECTORY_SEPARATOR . $settings->stereo_tool_configuration_path;
-
-                $stereoToolLicenseKey = $settings->stereo_tool_license_key;
-
-                if (is_file($stereoToolBinary)) {
-                    $stereoToolProcess = $stereoToolBinary . ' --silent - - -s ' . $stereoToolConfiguration;
-
-                    if (!empty($stereoToolLicenseKey)) {
-                        $stereoToolProcess .= ' -k "' . $stereoToolLicenseKey . '"';
-                    }
-
-                    $event->appendBlock(
-                        <<<LIQ
-                        # Stereo Tool Pipe
-                        radio = pipe(replay_delay=1.0, process='{$stereoToolProcess}', radio)
-                        LIQ
-                    );
-                } else {
-                    $serverArch = php_uname('m');
-                    $stereoToolLibrary = match ($serverArch) {
-                        'x86' => $stereoToolLibraryPath . '/libStereoTool_intel32.so',
-                        'aarch64', 'arm64' => $stereoToolLibraryPath . '/libStereoTool_arm64.so',
-                        default => $stereoToolLibraryPath . '/libStereoTool_intel64.so',
-                    };
-
-                    if (!file_exists($stereoToolLibrary)) {
-                        // Stereo Tool 10.0 uploaded using a different format.
-                        $is64Bit = in_array($serverArch, ['x86_64', 'arm64'], true);
-                        if ($is64Bit && file_exists($stereoToolLibraryPath . '/libStereoTool_64.so')) {
-                            $stereoToolLibrary = $stereoToolLibraryPath . '/libStereoTool_64.so';
-                        } elseif (file_exists(($stereoToolLibraryPath . '/libStereoTool.so'))) {
-                            $stereoToolLibrary = $stereoToolLibraryPath . '/libStereoTool.so';
-                        } else {
-                            break;
-                        }
-                    }
-
-                    $event->appendBlock(
-                        <<<LIQ
-                        # Stereo Tool Pipe
-                        radio = stereotool(
-                            library_file="{$stereoToolLibrary}",
-                            license_key="{$stereoToolLicenseKey}",
-                            preset="{$stereoToolConfiguration}",
-                            radio
-                        )
-                        LIQ
-                    );
-                }
-                break;
-
-            case AudioProcessingMethods::None:
-                // Noop
-                break;
-        }
-    }
-
-    public static function getDividerString(): string
-    {
-        return chr(7);
     }
 
     public function writeHeaderFunctions(WriteLiquidsoapConfiguration $event): void
@@ -474,7 +325,7 @@ final class ConfigWriter implements EventSubscriberInterface
                         $playlistScheduleVar = 'rotate(weights=[1,'
                             . $playlist->play_per_songs . '], [' . $playlistVarName . ', radio])';
                     } else {
-                        $delaySeconds = $playlist->play_per_songs * 60;
+                        $delaySeconds = $playlist->play_per_minutes * 60;
                         $delayTrackSensitive = $playlist->backendInterruptOtherSongs() ? 'false' : 'true';
 
                         $playlistScheduleVar = 'fallback(track_sensitive=' . $delayTrackSensitive . ', [delay(' . $delaySeconds . '., ' . $playlistVarName . '), radio])';
@@ -637,115 +488,6 @@ final class ConfigWriter implements EventSubscriberInterface
         }
     }
 
-    /**
-     * Given a scheduled playlist, return the time criteria that Liquidsoap can use to determine when to play it.
-     *
-     * @param WriteLiquidsoapConfiguration $event
-     * @param StationSchedule $playlistSchedule
-     * @return string
-     */
-    private function getScheduledPlaylistPlayTime(
-        WriteLiquidsoapConfiguration $event,
-        StationSchedule $playlistSchedule
-    ): string {
-        $startTime = $playlistSchedule->start_time;
-        $endTime = $playlistSchedule->end_time;
-
-        // Handle multi-day playlists.
-        if ($startTime > $endTime) {
-            $playTimes = [
-                self::formatTimeCode($startTime) . '-23h59m59s',
-                '00h00m-' . self::formatTimeCode($endTime),
-            ];
-
-            $playlistScheduleDays = $playlistSchedule->days;
-            if (!empty($playlistScheduleDays) && count($playlistScheduleDays) < 7) {
-                $currentPlayDays = [];
-                $nextPlayDays = [];
-
-                foreach ($playlistScheduleDays as $day) {
-                    $currentPlayDays[] = (($day === 7) ? '0' : $day) . 'w';
-
-                    $day++;
-                    if ($day > 7) {
-                        $day = 1;
-                    }
-                    $nextPlayDays[] = (($day === 7) ? '0' : $day) . 'w';
-                }
-
-                $playTimes[0] = '(' . implode(' or ', $currentPlayDays) . ') and ' . $playTimes[0];
-                $playTimes[1] = '(' . implode(' or ', $nextPlayDays) . ') and ' . $playTimes[1];
-            }
-
-            return '(' . implode(') or (', $playTimes) . ')';
-        }
-
-        // Handle once-per-day playlists.
-        $playTime = ($startTime === $endTime)
-            ? self::formatTimeCode($startTime)
-            : self::formatTimeCode($startTime) . '-' . self::formatTimeCode($endTime);
-
-        $playlistScheduleDays = $playlistSchedule->days;
-        if (!empty($playlistScheduleDays) && count($playlistScheduleDays) < 7) {
-            $playDays = [];
-
-            foreach ($playlistScheduleDays as $day) {
-                $playDays[] = (($day === 7) ? '0' : $day) . 'w';
-            }
-            $playTime = '(' . implode(' or ', $playDays) . ') and ' . $playTime;
-        }
-
-        // Handle start-date and end-date boundaries.
-        $startDate = $playlistSchedule->start_date;
-        $endDate = $playlistSchedule->end_date;
-
-        if (!empty($startDate) || !empty($endDate)) {
-            $tzObject = $event->getStation()->getTimezoneObject();
-
-            $customFunctionBody = [];
-
-            $scheduleMethod = 'schedule_' . $playlistSchedule->id . '_date_range';
-            $customFunctionBody[] = 'def ' . $scheduleMethod . '() =';
-
-            $conditions = [];
-
-            if (!empty($startDate)) {
-                $startDateObj = CarbonImmutable::createFromFormat('Y-m-d', $startDate, $tzObject);
-
-                if (null !== $startDateObj) {
-                    $startDateObj = $startDateObj->setTime(0, 0);
-
-                    $customFunctionBody[] = '    # ' . $startDateObj->__toString();
-                    $customFunctionBody[] = '    range_start = ' . $startDateObj->getTimestamp() . '.';
-                    $conditions[] = 'range_start <= current_time';
-                }
-            }
-
-            if (!empty($endDate)) {
-                $endDateObj = CarbonImmutable::createFromFormat('Y-m-d', $endDate, $tzObject);
-
-                if (null !== $endDateObj) {
-                    $endDateObj = $endDateObj->setTime(23, 59, 59);
-
-                    $customFunctionBody[] = '    # ' . $endDateObj->__toString();
-                    $customFunctionBody[] = '    range_end = ' . $endDateObj->getTimestamp() . '.';
-
-                    $conditions[] = 'current_time <= range_end';
-                }
-            }
-
-            $customFunctionBody[] = '    current_time = time()';
-            $customFunctionBody[] = '    result = (' . implode(' and ', $conditions) . ')';
-            $customFunctionBody[] = '    result';
-            $customFunctionBody[] = 'end';
-            $event->appendLines($customFunctionBody);
-
-            $playTime = $scheduleMethod . '() and ' . $playTime;
-        }
-
-        return $playTime;
-    }
-
     public function writeCrossfadeConfiguration(WriteLiquidsoapConfiguration $event): void
     {
         // Write pre-crossfade section.
@@ -893,11 +635,11 @@ final class ConfigWriter implements EventSubscriberInterface
         );
 
         if ($recordLiveStreams) {
-            $recordLiveStreamsFormat = $settings->getRecordStreamsFormatEnum();
-            $recordLiveStreamsBitrate = $settings->record_streams_bitrate;
+            $recordEncoding = $settings->getRecordStreamsEncoding();
+            assert(null !== $recordEncoding);
 
-            $formatString = $this->getOutputFormatString($recordLiveStreamsFormat, $recordLiveStreamsBitrate);
-            $recordExtension = $recordLiveStreamsFormat->getExtension();
+            $formatString = $this->getFullFfmpegString($recordEncoding);
+            $recordExtension = $recordEncoding->format->getExtension();
             $recordPathPrefix = StationStreamerBroadcast::PATH_PREFIX;
 
             $event->appendBlock(
@@ -915,11 +657,11 @@ final class ConfigWriter implements EventSubscriberInterface
                     live,
                     fallible=true,
                     on_close=fun (tempPath) -> begin
-                        path = string.replace(pattern=".tmp$", (fun(_) -> ""), tempPath)
+                        newPath = string.replace(pattern=".tmp$", (fun(_) -> ""), tempPath)
 
-                        log("Recording stopped: Switching from #{tempPath} to #{path}")
+                        log("Recording stopped: Switching from #{tempPath} to #{newPath}")
 
-                        process.run("mv #{tempPath} #{path}")
+                        process.run("mv #{tempPath} #{newPath}")
                         ()
                     end
                 )
@@ -960,6 +702,51 @@ final class ConfigWriter implements EventSubscriberInterface
         $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_PRE_BROADCAST);
     }
 
+    public function writeEncodingConfiguration(WriteLiquidsoapConfiguration $event): void
+    {
+        /*
+         * TODO: Wait for upstream to attempt unified encoding.
+         *
+        $station = $event->getStation();
+
+        // @var Collection<EncodableInterface> $encodables
+        $encodables = [
+            $station->mounts,
+            $station->remotes,
+        ];
+
+        if ($station->enable_hls) {
+            $encodables[] = $station->hls_streams;
+        }
+
+        $encoders = [];
+        foreach ($encodables as $collection) {
+            foreach ($collection as $encodable) {
+                $encoder = $encodable->getEncodingFormat();
+
+                if (null !== $encoder) {
+                    $varName = $encoder->getVariableName('radio');
+                    $encoders[$varName] = $encoder;
+                }
+            }
+        }
+
+        foreach ($encoders as $varName => $encoder) {
+            $varName = self::cleanUpVarName($varName);
+            $audioString = $this->getFfmpegAudioString($encoder);
+
+            $event->appendBlock(
+                <<<LIQ
+                {$varName} = ffmpeg.encode.audio(
+                    %ffmpeg({$audioString}),
+                    radio
+                )
+                LIQ
+            );
+        }
+        */
+    }
+
     public function writeLocalBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void
     {
         $station = $event->getStation();
@@ -977,12 +764,10 @@ final class ConfigWriter implements EventSubscriberInterface
         foreach ($station->mounts as $mountRow) {
             $i++;
 
-            /** @var StationMount $mountRow */
-            if (!$mountRow->getEnableAutodj()) {
-                continue;
+            $outputtableSource = $mountRow->getOutputtableSource();
+            if (null !== $outputtableSource) {
+                $lsConfig[] = $this->getOutputString($event, $outputtableSource, 'local_', $i);
             }
-
-            $lsConfig[] = $this->getOutputString($event, $mountRow, 'local_', $i);
         }
 
         $event->appendLines($lsConfig);
@@ -1006,23 +791,13 @@ final class ConfigWriter implements EventSubscriberInterface
         foreach ($station->hls_streams as $hlsStream) {
             $streamVarName = self::cleanUpVarName($hlsStream->name);
 
-            $streamAacProfile = ($hlsStream->format ?? HlsStreamProfiles::default())
-                ->getProfileName();
+            // TODO: Replace with common encoder
+            $outputString = $this->getFullFfmpegString(
+                $hlsStream->getEncodingFormat(),
+                'mpegts'
+            );
 
-            $streamBitrate = $hlsStream->bitrate ?? 128;
-
-            $lsConfig[] = <<<LIQ
-            {$streamVarName} = %ffmpeg(
-                format="mpegts",
-                %audio(
-                    codec="libfdk_aac",
-                    samplerate=44100,
-                    channels=2,
-                    b="{$streamBitrate}k",
-                    profile="{$streamAacProfile}"
-                )
-            )
-            LIQ;
+            $lsConfig[] = $streamVarName . ' = ' . $outputString;
 
             $hlsStreams[] = $streamVarName;
         }
@@ -1072,118 +847,6 @@ final class ConfigWriter implements EventSubscriberInterface
         );
     }
 
-    /**
-     * Given outbound broadcast information, produce a suitable LiquidSoap configuration line for the stream.
-     */
-    private function getOutputString(
-        WriteLiquidsoapConfiguration $event,
-        StationMountInterface $mount,
-        string $idPrefix,
-        int $id
-    ): string {
-        $station = $event->getStation();
-        $charset = $event->getBackendConfig()->charset;
-
-        $format = $mount->getAutodjFormat() ?? StreamFormats::default();
-        $outputFormat = $this->getOutputFormatString(
-            $format,
-            $mount->getAutodjBitrate() ?? 128
-        );
-
-        $outputParams = [];
-        $outputParams[] = $outputFormat;
-        $outputParams[] = 'id="' . $idPrefix . $id . '"';
-
-        $outputParams[] = 'host = "' . self::cleanUpString($mount->getAutodjHost()) . '"';
-        $outputParams[] = 'port = ' . (int)$mount->getAutodjPort();
-
-        $username = $mount->getAutodjUsername();
-        if (!empty($username)) {
-            $outputParams[] = 'user = "' . self::cleanUpString($username) . '"';
-        }
-
-        $password = self::cleanUpString($mount->getAutodjPassword());
-
-        $adapterType = $mount->getAutodjAdapterType();
-        if (FrontendAdapters::Shoutcast === $adapterType) {
-            $password .= ':#' . $id;
-        }
-
-        $outputParams[] = 'password = "' . $password . '"';
-
-        $protocol = $mount->getAutodjProtocol();
-
-        $mountPoint = $mount->getAutodjMount();
-
-        if (StreamProtocols::Icy === $protocol) {
-            if (!empty($mountPoint)) {
-                $outputParams[] = 'icy_id = ' . $id;
-            }
-        } else {
-            if (empty($mountPoint)) {
-                $mountPoint = '/';
-            }
-
-            $outputParams[] = 'mount = "' . self::cleanUpString($mountPoint) . '"';
-        }
-
-        $outputParams[] = 'name = "' . self::cleanUpString($station->name) . '"';
-
-        if (!$mount->getIsShoutcast()) {
-            $outputParams[] = 'description = "' . self::cleanUpString($station->description) . '"';
-        }
-        $outputParams[] = 'genre = "' . self::cleanUpString($station->genre) . '"';
-
-        if (!empty($station->url)) {
-            $outputParams[] = 'url = "' . self::cleanUpString($station->url) . '"';
-        }
-
-        $outputParams[] = 'public = ' . ($mount->getIsPublic() ? 'true' : 'false');
-        $outputParams[] = 'encoding = "' . $charset . '"';
-
-        if (StreamProtocols::Https === $protocol) {
-            $outputParams[] = 'transport=https_transport';
-        }
-
-        if ($format->sendIcyMetadata()) {
-            $outputParams[] = 'send_icy_metadata=true';
-        }
-
-        $outputParams[] = 'radio';
-
-        $outputCommand = ($mount->getIsShoutcast())
-            ? 'output.shoutcast'
-            : 'output.icecast';
-
-        return $outputCommand . '(' . implode(', ', $outputParams) . ')';
-    }
-
-    private function getOutputFormatString(StreamFormats $format, int $bitrate = 128): string
-    {
-        switch ($format) {
-            case StreamFormats::Aac:
-                $afterburner = ($bitrate >= 160) ? 'true' : 'false';
-                $aot = ($bitrate >= 96) ? 'mpeg4_aac_lc' : 'mpeg4_he_aac_v2';
-
-                return '%fdkaac(channels=2, samplerate=44100, bitrate=' . $bitrate . ', afterburner=' . $afterburner . ', aot="' . $aot . '", sbr_mode=true)';
-
-            case StreamFormats::Ogg:
-                return '%ffmpeg(format="ogg", %audio(codec="libvorbis", samplerate=48000, b="' . $bitrate . 'k", channels=2))';
-
-            case StreamFormats::Opus:
-                return '%ffmpeg(format="ogg", %audio(codec="libopus", samplerate=48000, b="' . $bitrate . 'k", vbr="constrained", application="audio", channels=2, compression_level=10, cutoff=20000))';
-
-            case StreamFormats::Flac:
-                return '%ogg(%flac(samplerate=48000, channels=2, compression=4, bits_per_sample=24))';
-
-            case StreamFormats::Mp3:
-                return '%mp3(samplerate=44100, stereo=true, bitrate=' . $bitrate . ')';
-
-            default:
-                throw new RuntimeException(sprintf('Unsupported stream format: %s', $format->value));
-        }
-    }
-
     public function writeRemoteBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void
     {
         $station = $event->getStation();
@@ -1197,15 +860,407 @@ final class ConfigWriter implements EventSubscriberInterface
         foreach ($station->remotes as $remoteRow) {
             $i++;
 
-            /** @var StationRemote $remoteRow */
-            if (!$remoteRow->enable_autodj) {
-                continue;
+            $encoderDefinition = $remoteRow->getOutputtableSource();
+            if (null !== $encoderDefinition) {
+                $lsConfig[] = $this->getOutputString($event, $encoderDefinition, 'relay_', $i);
             }
-
-            $lsConfig[] = $this->getOutputString($event, $remoteRow, 'relay_', $i);
         }
 
         $event->appendLines($lsConfig);
+    }
+
+    public function writeCustomConfigurationSection(WriteLiquidsoapConfiguration $event, string $sectionName): void
+    {
+        if ($event->isForEditing()) {
+            $divider = self::getDividerString();
+            $event->appendLines(
+                [
+                    $divider . $sectionName . $divider,
+                ]
+            );
+            return;
+        }
+
+        $settings = $event->getStation()->backend_config;
+        $customConfig = $settings->getCustomConfigurationSection($sectionName);
+
+        if (!empty($customConfig)) {
+            $event->appendLines(
+                [
+                    '# Custom Configuration (Specified in Station Profile)',
+                    '# startcustomconfig(' . $sectionName . ')',
+                    $customConfig,
+                    '# endcustomconfig(' . $sectionName . ')',
+                ]
+            );
+        }
+    }
+
+    public function writePostProcessingSection(WriteLiquidsoapConfiguration $event): void
+    {
+        $station = $event->getStation();
+        $settings = $event->getBackendConfig();
+
+        switch ($settings->getAudioProcessingMethodEnum()) {
+            case AudioProcessingMethods::Liquidsoap:
+                // NRJ normalization
+                $event->appendBlock(
+                    <<<LIQ
+                    # Normalization and Compression
+                    radio = normalize(target = 0., window = 0.03, gain_min = -16., gain_max = 0., radio)
+                    radio = compress.exponential(radio, mu = 1.0)
+                    LIQ
+                );
+                break;
+
+            case AudioProcessingMethods::MasterMe:
+                // MasterMe Presets
+
+                $lines = [
+                    'radio = ladspa.master_me(',
+                ];
+
+                $preset = $settings->getMasterMePresetEnum();
+                $presetOptions = $preset->getOptions();
+
+                if (0 !== ($loudnessTarget = $settings->master_me_loudness_target)) {
+                    $presetOptions['target'] = $loudnessTarget;
+                }
+
+                foreach ($presetOptions as $presetKey => $presetVal) {
+                    $presetVal = match (true) {
+                        is_int($presetVal) => self::toFloat($presetVal, 0),
+                        is_float($presetVal) => self::toFloat($presetVal),
+                        is_bool($presetVal) => ($presetVal) ? 'true' : 'false',
+                        default => $presetVal
+                    };
+
+                    $lines[] = '    ' . $presetKey . ' = ' . $presetVal . ',';
+                }
+
+                $lines[] = '    radio';
+                $lines[] = ')';
+
+                $event->appendLines($lines);
+                break;
+
+            case AudioProcessingMethods::StereoTool:
+                // Stereo Tool processing
+                if (!StereoTool::isReady($station)) {
+                    return;
+                }
+
+                $stereoToolLibraryPath = StereoTool::getLibraryPath();
+                $stereoToolBinary = $stereoToolLibraryPath . '/stereo_tool';
+
+                $stereoToolConfiguration = $station->getRadioConfigDir()
+                    . DIRECTORY_SEPARATOR . $settings->stereo_tool_configuration_path;
+
+                $stereoToolLicenseKey = $settings->stereo_tool_license_key;
+
+                if (is_file($stereoToolBinary)) {
+                    $stereoToolProcess = $stereoToolBinary . ' --silent - - -s ' . $stereoToolConfiguration;
+
+                    if (!empty($stereoToolLicenseKey)) {
+                        $stereoToolProcess .= ' -k "' . $stereoToolLicenseKey . '"';
+                    }
+
+                    $event->appendBlock(
+                        <<<LIQ
+                        # Stereo Tool Pipe
+                        radio = pipe(replay_delay=1.0, process='{$stereoToolProcess}', radio)
+                        LIQ
+                    );
+                } else {
+                    $serverArch = php_uname('m');
+                    $stereoToolLibrary = match ($serverArch) {
+                        'x86' => $stereoToolLibraryPath . '/libStereoTool_intel32.so',
+                        'aarch64', 'arm64' => $stereoToolLibraryPath . '/libStereoTool_arm64.so',
+                        default => $stereoToolLibraryPath . '/libStereoTool_intel64.so',
+                    };
+
+                    if (!file_exists($stereoToolLibrary)) {
+                        // Stereo Tool 10.0 uploaded using a different format.
+                        $is64Bit = in_array($serverArch, ['x86_64', 'arm64'], true);
+                        if ($is64Bit && file_exists($stereoToolLibraryPath . '/libStereoTool_64.so')) {
+                            $stereoToolLibrary = $stereoToolLibraryPath . '/libStereoTool_64.so';
+                        } elseif (file_exists(($stereoToolLibraryPath . '/libStereoTool.so'))) {
+                            $stereoToolLibrary = $stereoToolLibraryPath . '/libStereoTool.so';
+                        } else {
+                            break;
+                        }
+                    }
+
+                    $event->appendBlock(
+                        <<<LIQ
+                        # Stereo Tool Pipe
+                        radio = stereotool(
+                            library_file="{$stereoToolLibrary}",
+                            license_key="{$stereoToolLicenseKey}",
+                            preset="{$stereoToolConfiguration}",
+                            radio
+                        )
+                        LIQ
+                    );
+                }
+                break;
+
+            case AudioProcessingMethods::None:
+                // Noop
+                break;
+        }
+    }
+
+    public static function getDividerString(): string
+    {
+        return chr(7);
+    }
+
+    /**
+     * Given a scheduled playlist, return the time criteria that Liquidsoap can use to determine when to play it.
+     */
+    private function getScheduledPlaylistPlayTime(
+        WriteLiquidsoapConfiguration $event,
+        StationSchedule $playlistSchedule
+    ): string {
+        $startTime = $playlistSchedule->start_time;
+        $endTime = $playlistSchedule->end_time;
+
+        // Handle multi-day playlists.
+        if ($startTime > $endTime) {
+            $playTimes = [
+                self::formatTimeCode($startTime) . '-23h59m59s',
+                '00h00m-' . self::formatTimeCode($endTime),
+            ];
+
+            $playlistScheduleDays = $playlistSchedule->days;
+            if (!empty($playlistScheduleDays) && count($playlistScheduleDays) < 7) {
+                $currentPlayDays = [];
+                $nextPlayDays = [];
+
+                foreach ($playlistScheduleDays as $day) {
+                    $currentPlayDays[] = (($day === 7) ? '0' : $day) . 'w';
+
+                    $day++;
+                    if ($day > 7) {
+                        $day = 1;
+                    }
+                    $nextPlayDays[] = (($day === 7) ? '0' : $day) . 'w';
+                }
+
+                $playTimes[0] = '(' . implode(' or ', $currentPlayDays) . ') and ' . $playTimes[0];
+                $playTimes[1] = '(' . implode(' or ', $nextPlayDays) . ') and ' . $playTimes[1];
+            }
+
+            return '(' . implode(') or (', $playTimes) . ')';
+        }
+
+        // Handle once-per-day playlists.
+        $playTime = ($startTime === $endTime)
+            ? self::formatTimeCode($startTime)
+            : self::formatTimeCode($startTime) . '-' . self::formatTimeCode($endTime);
+
+        $playlistScheduleDays = $playlistSchedule->days;
+        if (!empty($playlistScheduleDays) && count($playlistScheduleDays) < 7) {
+            $playDays = [];
+
+            foreach ($playlistScheduleDays as $day) {
+                $playDays[] = (($day === 7) ? '0' : $day) . 'w';
+            }
+            $playTime = '(' . implode(' or ', $playDays) . ') and ' . $playTime;
+        }
+
+        // Handle start-date and end-date boundaries.
+        $startDate = $playlistSchedule->start_date;
+        $endDate = $playlistSchedule->end_date;
+
+        if (!empty($startDate) || !empty($endDate)) {
+            $tzObject = $event->getStation()->getTimezoneObject();
+
+            $customFunctionBody = [];
+
+            $scheduleMethod = 'schedule_' . $playlistSchedule->id . '_date_range';
+            $customFunctionBody[] = 'def ' . $scheduleMethod . '() =';
+
+            $conditions = [];
+
+            if (!empty($startDate)) {
+                $startDateObj = CarbonImmutable::createFromFormat('Y-m-d', $startDate, $tzObject);
+
+                if (null !== $startDateObj) {
+                    $startDateObj = $startDateObj->setTime(0, 0);
+
+                    $customFunctionBody[] = '    # ' . $startDateObj->__toString();
+                    $customFunctionBody[] = '    range_start = ' . $startDateObj->getTimestamp() . '.';
+                    $conditions[] = 'range_start <= current_time';
+                }
+            }
+
+            if (!empty($endDate)) {
+                $endDateObj = CarbonImmutable::createFromFormat('Y-m-d', $endDate, $tzObject);
+
+                if (null !== $endDateObj) {
+                    $endDateObj = $endDateObj->setTime(23, 59, 59);
+
+                    $customFunctionBody[] = '    # ' . $endDateObj->__toString();
+                    $customFunctionBody[] = '    range_end = ' . $endDateObj->getTimestamp() . '.';
+
+                    $conditions[] = 'current_time <= range_end';
+                }
+            }
+
+            $customFunctionBody[] = '    current_time = time()';
+            $customFunctionBody[] = '    result = (' . implode(' and ', $conditions) . ')';
+            $customFunctionBody[] = '    result';
+            $customFunctionBody[] = 'end';
+            $event->appendLines($customFunctionBody);
+
+            $playTime = $scheduleMethod . '() and ' . $playTime;
+        }
+
+        return $playTime;
+    }
+
+    /**
+     * Given outbound broadcast information, produce a suitable LiquidSoap configuration line for the stream.
+     */
+    private function getOutputString(
+        WriteLiquidsoapConfiguration $event,
+        OutputtableSource $source,
+        string $idPrefix,
+        int $id
+    ): string {
+        $station = $event->getStation();
+        $charset = $event->getBackendConfig()->charset;
+
+        $encoding = $source->encoding;
+
+        $outputParams = [];
+
+        // TODO for common encoding:
+        // $container = $encoding->format->getFfmpegContainer();
+        // $outputParams[] = '%ffmpeg(format="' . $container . '", %audio.copy)';
+
+        $outputParams[] = $this->getFullFfmpegString($encoding);
+
+        $outputParams[] = 'id="' . $idPrefix . $id . '"';
+
+        $outputParams[] = 'host = "' . self::cleanUpString($source->host) . '"';
+        $outputParams[] = 'port = ' . (int)$source->port;
+
+        if (!empty($source->username)) {
+            $outputParams[] = 'user = "' . self::cleanUpString($source->username) . '"';
+        }
+
+        $password = self::cleanUpString($source->password);
+
+        $adapterType = $source->adapterType;
+        if (FrontendAdapters::Shoutcast === $adapterType) {
+            $password .= ':#' . $id;
+        }
+
+        $outputParams[] = 'password = "' . $password . '"';
+
+        $mountPoint = $source->mount;
+        if (StreamProtocols::Icy === $source->protocol) {
+            if (!empty($mountPoint)) {
+                $outputParams[] = 'icy_id = ' . $id;
+            }
+        } else {
+            if (empty($mountPoint)) {
+                $mountPoint = '/';
+            }
+
+            $outputParams[] = 'mount = "' . self::cleanUpString($mountPoint) . '"';
+        }
+
+        $outputParams[] = 'name = "' . self::cleanUpString($station->name) . '"';
+
+        if (!$source->isShoutcast) {
+            $outputParams[] = 'description = "' . self::cleanUpString($station->description) . '"';
+        }
+        $outputParams[] = 'genre = "' . self::cleanUpString($station->genre) . '"';
+
+        if (!empty($station->url)) {
+            $outputParams[] = 'url = "' . self::cleanUpString($station->url) . '"';
+        }
+
+        $outputParams[] = 'public = ' . ($source->isPublic ? 'true' : 'false');
+        $outputParams[] = 'encoding = "' . $charset . '"';
+
+        if (StreamProtocols::Https === $source->protocol) {
+            $outputParams[] = 'transport = https_transport';
+        }
+
+        $sendIcyMetadata = $encoding->format->sendIcyMetadata();
+        if (null !== $sendIcyMetadata) {
+            $outputParams[] = 'send_icy_metadata = ' . ($sendIcyMetadata ? 'true' : 'false');
+        }
+
+        // TODO for common encoding:
+        // $outputParams[] = self::cleanUpVarName($encoding->getVariableName('radio'));
+
+        $outputParams[] = 'radio';
+
+        $outputCommand = ($source->isShoutcast)
+            ? 'output.shoutcast'
+            : 'output.icecast';
+
+        return $outputCommand . '(' . implode(', ', $outputParams) . ')';
+    }
+
+    private function getFullFfmpegString(
+        EncodingFormat $encoding,
+        ?string $container = null,
+    ): string {
+        $audioString = $this->getFfmpegAudioString($encoding);
+        $container ??= $encoding->format->getFfmpegContainer();
+
+        return <<<LIQ
+        %ffmpeg(format="{$container}", {$audioString})
+        LIQ;
+    }
+
+    private function getFfmpegAudioString(
+        EncodingFormat $encoding,
+    ): string {
+        $bitrate = $encoding->bitrate;
+
+        switch ($encoding->format) {
+            case StreamFormats::Aac:
+                $afterburner = ($encoding->bitrate >= 160) ? '1' : '0';
+                $profile = $encoding->subProfile?->getProfileName()
+                    ?? HlsStreamProfiles::default()->getProfileName();
+
+                return <<<LIQ
+                %audio(codec="libfdk_aac", samplerate=44100, channels=2, b="{$bitrate}k", profile="{$profile}", afterburner={$afterburner})
+                LIQ;
+
+            case StreamFormats::Ogg:
+                return <<<LIQ
+                %audio(codec="libvorbis", samplerate=48000, b="{$bitrate}k", channels=2)
+                LIQ;
+
+            case StreamFormats::Opus:
+                return <<<LIQ
+                %audio(codec="libopus", samplerate=48000, b="{$bitrate}k", vbr="constrained", application="audio", channels=2, compression_level=10, cutoff=20000)
+                LIQ;
+
+            case StreamFormats::Flac:
+                return <<<LIQ
+                %audio(codec="flac", channels=2, ar=48000)
+                LIQ;
+
+            case StreamFormats::Mp3:
+                return <<<LIQ
+                %audio(codec="libmp3lame", ac=2, ar=44100, b="{$bitrate}k")
+                LIQ;
+
+            default:
+                throw new RuntimeException(
+                    sprintf('Unsupported stream format: %s', $encoding->format->value)
+                );
+        }
     }
 
     public function writePostBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -1215,9 +1270,6 @@ final class ConfigWriter implements EventSubscriberInterface
 
     /**
      * Convert an integer or float into a Liquidsoap configuration compatible float.
-     *
-     * @param float|int|string $number
-     * @param int $decimals
      */
     public static function toFloat(float|int|string $number, int $decimals = 2): string
     {
@@ -1239,9 +1291,6 @@ final class ConfigWriter implements EventSubscriberInterface
 
     /**
      * Filter a user-supplied string to be a valid LiquidSoap config entry.
-     *
-     * @param string|null $string
-     *
      */
     public static function cleanUpString(?string $string): string
     {
@@ -1250,9 +1299,6 @@ final class ConfigWriter implements EventSubscriberInterface
 
     /**
      * Apply a more aggressive string filtering to variable names used in Liquidsoap.
-     *
-     * @param string $str
-     *
      * @return string The cleaned up, variable-name-friendly string.
      */
     public static function cleanUpVarName(string $str): string

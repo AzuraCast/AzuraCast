@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Api\ResolvableUrl;
-use App\Radio\Enums\AdapterTypeInterface;
+use App\Radio\Backend\Liquidsoap\EncodableInterface;
+use App\Radio\Backend\Liquidsoap\EncodingFormat;
+use App\Radio\Backend\Liquidsoap\OutputtableInterface;
+use App\Radio\Backend\Liquidsoap\OutputtableSource;
 use App\Radio\Enums\RemoteAdapters;
 use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
@@ -27,7 +30,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 final class StationRemote implements
     Stringable,
     Interfaces\StationAwareInterface,
-    Interfaces\StationMountInterface,
+    OutputtableInterface,
+    EncodableInterface,
     Interfaces\StationCloneAwareInterface,
     Interfaces\IdentifiableEntityInterface
 {
@@ -245,24 +249,49 @@ final class StationRemote implements
         $this->station = $station;
     }
 
-    public function getEnableAutodj(): bool
+    /**
+     * @return bool Whether this remote relay can be hand-edited.
+     */
+    public function isEditable(): bool
     {
-        return $this->enable_autodj;
+        return (RemoteAdapters::AzuraRelay !== $this->type);
     }
 
-    public function getAutodjFormat(): ?StreamFormats
+    public function getEncodingFormat(): ?EncodingFormat
     {
-        return $this->autodj_format;
+        if (!$this->enable_autodj) {
+            return null;
+        }
+
+        return new EncodingFormat(
+            format: $this->autodj_format ?? StreamFormats::default(),
+            bitrate: $this->autodj_bitrate ?? 128
+        );
     }
 
-    public function getAutodjBitrate(): ?int
+    public function getOutputtableSource(): ?OutputtableSource
     {
-        return $this->autodj_bitrate;
-    }
+        $encoding = $this->getEncodingFormat();
+        if (null === $encoding) {
+            return null;
+        }
 
-    public function getAutodjUsername(): ?string
-    {
-        return $this->source_username;
+        $uri = $this->getUrlAsUri();
+
+        return new OutputtableSource(
+            encoding: $encoding,
+            adapterType: $this->type,
+            host: $uri->getHost(),
+            port: $this->source_port ?? $uri->getPort(),
+            mount: $this->getAutodjMount(),
+            protocol: match ($this->type) {
+                RemoteAdapters::Shoutcast1, RemoteAdapters::Shoutcast2 => StreamProtocols::Icy,
+                default => ('https' === $uri->getScheme()) ? StreamProtocols::Https : StreamProtocols::Http
+            },
+            username: $this->source_username,
+            password: $this->getAutodjPassword(),
+            isPublic: $this->is_public
+        );
     }
 
     public function getAutodjPassword(): ?string
@@ -295,56 +324,6 @@ final class StationRemote implements
         }
 
         return $this->mount;
-    }
-
-    public function getAutodjHost(): string
-    {
-        return $this->getUrlAsUri()->getHost();
-    }
-
-    /*
-     * StationMountInterface compliance methods
-     */
-
-    public function getAutodjPort(): ?int
-    {
-        return $this->source_port ?? $this->getUrlAsUri()->getPort();
-    }
-
-    public function getAutodjProtocol(): StreamProtocols
-    {
-        $urlScheme = $this->getUrlAsUri()->getScheme();
-
-        return match ($this->getAutodjAdapterType()) {
-            RemoteAdapters::Shoutcast1, RemoteAdapters::Shoutcast2 => StreamProtocols::Icy,
-            default => ('https' === $urlScheme) ? StreamProtocols::Https : StreamProtocols::Http
-        };
-    }
-
-    public function getAutodjAdapterType(): AdapterTypeInterface
-    {
-        return $this->type;
-    }
-
-    public function getIsPublic(): bool
-    {
-        return $this->is_public;
-    }
-
-    /**
-     * @return bool Whether this remote relay can be hand-edited.
-     */
-    public function isEditable(): bool
-    {
-        return (RemoteAdapters::AzuraRelay !== $this->type);
-    }
-
-    public function getIsShoutcast(): bool
-    {
-        return match ($this->getAutodjAdapterType()) {
-            RemoteAdapters::Shoutcast1, RemoteAdapters::Shoutcast2 => true,
-            default => false,
-        };
     }
 
     /**

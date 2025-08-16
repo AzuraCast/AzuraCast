@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Doctrine\AbstractArrayEntity;
 use App\Entity\Enums\StationBackendPerformanceModes;
+use App\Radio\Backend\Liquidsoap\EncodingFormat;
 use App\Radio\Enums\AudioProcessingMethods;
 use App\Radio\Enums\CrossfadeModes;
 use App\Radio\Enums\MasterMePresets;
@@ -63,6 +64,19 @@ final class StationBackendConfiguration extends AbstractArrayEntity
     #[OA\Property]
     public int $record_streams_bitrate = 128 {
         set (int|string|null $value) => Types::int($value, 128);
+    }
+
+    public function getRecordStreamsEncoding(): ?EncodingFormat
+    {
+        if (!$this->record_streams) {
+            return null;
+        }
+
+        return new EncodingFormat(
+            format: $this->getRecordStreamsFormatEnum(),
+            bitrate: $this->record_streams_bitrate,
+            subProfile: null
+        );
     }
 
     #[OA\Property]

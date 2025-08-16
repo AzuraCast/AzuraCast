@@ -127,7 +127,6 @@ abstract class AbstractArrayEntity implements JsonSerializable, DenormalizableIn
         array|self|null $newData
     ): array|null {
         $arrayEntity = new static((array)$sourceData);
-
         if ($newData !== null) {
             $arrayEntity->fromArray($newData);
         }

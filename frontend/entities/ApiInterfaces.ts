@@ -1097,6 +1097,18 @@ export type ApiStationMedia = ApiHasSongFields &
      * @example "4:00"
      */
     length_text?: string;
+    /**
+     * The star rating for this media (0-5)
+     * @min 0
+     * @max 5
+     * @example 4
+     */
+    rating?: number;
+    /**
+     * Whether this media is marked as a favorite
+     * @example true
+     */
+    is_favorite?: boolean;
     /** A hash-map array represented as an object. */
     custom_fields?: HashMap;
     /** A hash-map array represented as an object. */
@@ -2057,7 +2069,7 @@ export type StationPlaylist = HasAutoIncrementId & {
    */
   include_in_on_demand?: boolean;
   /** @example "interrupt,loop_once,single_track,merge" */
-  backend_options?: string[];
+  backend_options?: string | null;
   /** @example true */
   avoid_duplicates?: boolean;
   /** StationSchedule> */

@@ -51,6 +51,34 @@
             :label="$gettext('ISRC')"
             :description="$gettext('International Standard Recording Code, used for licensing reports.')"
         />
+
+        <form-group-field
+            id="edit_form_rating"
+            class="col-md-6"
+            :field="form.rating"
+            input-type="number"
+            :input-attrs="{min: 0, max: 5, step: 1}"
+            :label="$gettext('Star Rating')"
+            :description="$gettext('Rate this song from 0 to 5 stars.')"
+        />
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="form-label">{{ $gettext('Favorite') }}</label>
+                <div class="form-check">
+                    <input
+                        :id="form.is_favorite.$name"
+                        v-model="form.is_favorite.$model"
+                        type="checkbox"
+                        class="form-check-input"
+                        style="width: 1.25rem; height: 1.25rem;"
+                    >
+                    <label :for="form.is_favorite.$name" class="form-check-label ms-2">
+                        {{ $gettext('Mark this song as a favorite.') }}
+                    </label>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 

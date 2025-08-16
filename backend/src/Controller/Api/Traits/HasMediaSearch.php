@@ -35,6 +35,15 @@ trait HasMediaSearch
             $query = trim(str_replace($matches[0] ?? '', '', $query));
         }
 
+        if (str_contains($query, 'rating:')) {
+            preg_match('/rating:(\S*)/', $query, $matches, PREG_UNMATCHED_AS_NULL);
+            if (!empty($matches[1])) {
+                $special = 'rating:' . $matches[1];
+            }
+
+            $query = trim(str_replace($matches[0] ?? '', '', $query));
+        }
+
         if (str_contains($query, 'playlist:')) {
             preg_match('/playlist:(\S*)/', $query, $matches, PREG_UNMATCHED_AS_NULL);
 

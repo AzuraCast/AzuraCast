@@ -59,6 +59,16 @@ final class StationMedia implements
         set => $this->truncateNullableString($value, 15);
     }
 
+    #[ORM\Column(type: 'smallint', nullable: false)]
+    public int $rating = 0 {
+        set (int $value) {
+            $this->rating = max(0, min(5, $value));
+        }
+    }
+
+    #[ORM\Column(type: 'boolean', nullable: false)]
+    public bool $is_favorite = false;
+
     #[ORM\Column(type: 'float', nullable: false)]
     public float $length = 0.0;
 

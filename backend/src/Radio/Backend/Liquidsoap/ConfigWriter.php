@@ -325,7 +325,7 @@ final class ConfigWriter implements EventSubscriberInterface
                         $playlistScheduleVar = 'rotate(weights=[1,'
                             . $playlist->play_per_songs . '], [' . $playlistVarName . ', radio])';
                     } else {
-                        $delaySeconds = $playlist->play_per_songs * 60;
+                        $delaySeconds = $playlist->play_per_minutes * 60;
                         $delayTrackSensitive = $playlist->backendInterruptOtherSongs() ? 'false' : 'true';
 
                         $playlistScheduleVar = 'fallback(track_sensitive=' . $delayTrackSensitive . ', [delay(' . $delaySeconds . '., ' . $playlistVarName . '), radio])';
@@ -1192,7 +1192,10 @@ final class ConfigWriter implements EventSubscriberInterface
             $outputParams[] = 'transport = https_transport';
         }
 
-        $outputParams[] = 'send_icy_metadata = ' . ($encoding->format->sendIcyMetadata() ? 'true' : 'false');
+        $sendIcyMetadata = $encoding->format->sendIcyMetadata();
+        if (null !== $sendIcyMetadata) {
+            $outputParams[] = 'send_icy_metadata = ' . ($sendIcyMetadata ? 'true' : 'false');
+        }
 
         // TODO for common encoding:
         // $outputParams[] = self::cleanUpVarName($encoding->getVariableName('radio'));

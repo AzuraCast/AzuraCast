@@ -77,15 +77,15 @@ import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required} from "@vuelidate/validators";
+import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
+import {required} from "@regle/rules";
 import Tab from "~/components/Common/Tab.vue";
 import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 import RadioWithCustomNumber from "~/components/Common/RadioWithCustomNumber.vue";
 
 const form = defineModel<ApiGenericForm>('form', {required: true});
 
-const {v$, tabClass} = useVuelidateOnFormTab(
+const {v$, tabClass} = useValidatedFormTab(
     form,
     {
         base_url: {required},

@@ -19,14 +19,14 @@
                     id="update_metadata_title"
                     ref="$field"
                     class="col-12"
-                    :field="v$.title"
+                    :field="r$.title"
                     :label="$gettext('Title')"
                 />
 
                 <form-group-field
                     id="update_metadata_artist"
                     class="col-12"
-                    :field="v$.artist"
+                    :field="r$.artist"
                     :label="$gettext('Artist')"
                 />
             </div>
@@ -44,7 +44,7 @@
             <button
                 type="button"
                 class="btn"
-                :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
+                :class="(r$.$invalid) ? 'btn-danger' : 'btn-primary'"
                 @click="doUpdateMetadata"
             >
                 {{ $gettext('Update Metadata') }}
@@ -54,9 +54,8 @@
 </template>
 
 <script setup lang="ts">
-import {required} from "@vuelidate/validators";
+import {required} from "@regle/rules";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {nextTick, useTemplateRef} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
@@ -66,17 +65,21 @@ import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {getStationApiUrl} from "~/router.ts";
 import InfoCard from "~/components/Common/InfoCard.vue";
+import {useResettableRef} from "~/functions/useResettableRef.ts";
+import {useAppRegle} from "~/vendor/regle.ts";
 
 const updateMetadataUrl = getStationApiUrl('/nowplaying/update');
 
-const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
+const {record: form, reset: resetForm} = useResettableRef({
+    title: null,
+    artist: null
+});
+
+const {r$} = useAppRegle(
+    form,
     {
         title: {required},
         artist: {}
-    },
-    {
-        title: null,
-        artist: null
     }
 );
 
@@ -99,14 +102,19 @@ const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 const {$gettext} = useTranslate();
 
-const doUpdateMetadata = () => {
-    ifValid(() => {
-        void axios.post(updateMetadataUrl.value, form.value).then(() => {
-            notifySuccess($gettext('Metadata updated.'));
-        }).finally(() => {
-            hide();
-        });
-    });
+const doUpdateMetadata = async () => {
+    const {valid} = await r$.$validate();
+    if (!valid) {
+        return;
+    }
+
+    try {
+        await axios.post(updateMetadataUrl.value, form.value);
+
+        notifySuccess($gettext('Metadata updated.'));
+    } finally {
+        hide();
+    }
 };
 
 defineExpose({

@@ -38,8 +38,8 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/FormattingInfo.vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required} from "@vuelidate/validators";
+import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
+import {required} from "@regle/rules";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
 import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
@@ -48,7 +48,7 @@ defineProps<WebhookComponentProps>();
 
 const form = defineModel<ApiGenericForm>('form', {required: true});
 
-const {v$, tabClass} = useVuelidateOnFormTab(
+const {v$, tabClass} = useValidatedFormTab(
     form,
     {
         config: {

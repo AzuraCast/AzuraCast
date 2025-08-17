@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
 import Tab from "~/components/Common/Tab.vue";
 import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
@@ -51,7 +51,7 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 
 const form = defineModel<ApiGenericForm>('form', {required: true});
 
-const {v$, tabClass} = useVuelidateOnFormTab(
+const {v$, tabClass} = useValidatedFormTab(
     form,
     {
         branding_config: {

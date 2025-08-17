@@ -3,11 +3,11 @@ import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {
-    useVuelidateOnForm,
+    useValidatedParentForm,
     VuelidateBlankForm,
     VuelidateRef,
     VuelidateValidations
-} from "~/functions/useVuelidateOnForm";
+} from "~/functions/useValidatedParentForm.ts";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {AxiosError, AxiosRequestConfig} from "axios";
 import {GlobalConfig} from "@vuelidate/core";
@@ -102,7 +102,7 @@ export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
         form,
         v$,
         resetForm: originalResetForm
-    } = useVuelidateOnForm(
+    } = useValidatedParentForm(
         validations,
         blankForm,
         options

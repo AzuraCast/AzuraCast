@@ -1,15 +1,16 @@
-import {computed, ComputedRef, WritableComputedRef} from "vue";
+import {computed, ComputedRef, UnwrapNestedRefs, WritableComputedRef} from "vue";
 import {has} from "lodash";
-import {BaseValidation, ValidationRuleCollection} from "@vuelidate/core";
 import {reactiveComputed} from "@vueuse/core";
+import {RegleCustomFieldStatus} from "@regle/core";
+import {useAppRegle} from "~/vendor/regle.ts";
 
 export type ModelFormField = string | number | boolean | Array<any> | null
 
-export type VuelidateField<T = ModelFormField> = BaseValidation<T, ValidationRuleCollection<T>>
+export type ValidatedField<T = ModelFormField> = RegleCustomFieldStatus<typeof useAppRegle, T>
 
 export interface FormFieldProps<T = ModelFormField> {
     modelValue?: T
-    field?: VuelidateField<T>
+    field?: ValidatedField<T>
     required?: boolean,
 }
 
@@ -21,7 +22,7 @@ export function useFormField<T = ModelFormField>(
     initialProps: FormFieldProps<T>,
     emit: FormFieldEmits<T>
 ): {
-    isVuelidateField: ComputedRef<boolean>,
+    isValidatedField: ComputedRef<boolean>,
     model: WritableComputedRef<T>,
     fieldClass: ComputedRef<string | null>,
     isRequired: ComputedRef<boolean>
@@ -31,19 +32,19 @@ export function useFormField<T = ModelFormField>(
         ...initialProps
     })) as FormFieldProps<T>;
 
-    const isVuelidateField = computed(
+    const isValidatedField = computed(
         () => props.field !== undefined
     );
 
     const model: WritableComputedRef<T, T> = computed({
         get() {
             return (props.field)
-                ? props.field.$model
+                ? props.field.$value as T
                 : props.modelValue;
         },
         set(newValue) {
             if (props.field) {
-                props.field.$model = newValue;
+                props.field.$value = newValue as UnwrapNestedRefs<T>;
             } else {
                 emit('update:modelValue', newValue);
             }
@@ -70,12 +71,12 @@ export function useFormField<T = ModelFormField>(
         }
 
         return (props.field !== undefined)
-            ? has(props.field, 'required')
+            ? has(props.field, '$rules.required')
             : false;
     });
 
     return {
-        isVuelidateField,
+        isValidatedField,
         model,
         fieldClass,
         isRequired

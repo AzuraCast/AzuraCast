@@ -15,7 +15,7 @@
 import {map} from "lodash";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {VuelidateObject} from "~/functions/useVuelidateOnForm.ts";
+import {VuelidateObject} from "~/functions/useValidatedParentForm.ts";
 
 const props = defineProps<{
     form: VuelidateObject,

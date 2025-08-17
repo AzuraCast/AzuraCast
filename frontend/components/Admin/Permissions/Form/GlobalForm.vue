@@ -25,9 +25,9 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Tab from "~/components/Common/Tab.vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab.ts";
+import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
-import {required} from "@vuelidate/validators";
+import {required} from "@regle/rules";
 import {DeepPartial} from "utility-types";
 import {ApiAdminRole} from "~/entities/ApiInterfaces.ts";
 
@@ -37,7 +37,7 @@ defineProps<{
 
 const form = defineModel<ApiAdminRole>('form', {required: true});
 
-const {v$} = useVuelidateOnFormTab(
+const {v$} = useValidatedFormTab(
     form,
     {
         'name': {required},

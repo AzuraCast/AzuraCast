@@ -57,7 +57,7 @@
                     <form-group-field
                         id="form_start_date"
                         name="start_date"
-                        :field="v$.start_date"
+                        :field="r$.start_date"
                         input-type="date"
                         class="col mb-3"
                     >
@@ -69,7 +69,7 @@
                     <form-group-field
                         id="form_end_date"
                         name="end_date"
-                        :field="v$.end_date"
+                        :field="r$.end_date"
                         input-type="date"
                         class="col mb-3"
                     >
@@ -81,7 +81,7 @@
                     <form-group-checkbox
                         id="form_edit_fetch_isrc"
                         name="fetch_isrc"
-                        :field="v$.fetch_isrc"
+                        :field="r$.fetch_isrc"
                         class="col-md-12"
                     >
                         <template #label>
@@ -98,7 +98,7 @@
                 <button
                     type="submit"
                     class="btn"
-                    :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
+                    :class="(r$.$invalid) ? 'btn-danger' : 'btn-primary'"
                 >
                     {{ $gettext('Generate Report') }}
                 </button>
@@ -108,14 +108,14 @@
 </template>
 
 <script setup lang="ts">
-import {required} from "@vuelidate/validators";
+import {required} from "@regle/rules";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {getStationApiUrl} from "~/router";
 import CardPage from "~/components/Common/CardPage.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import {useAppRegle} from "~/vendor/regle.ts";
 
 const apiUrl = getStationApiUrl('/reports/soundexchange');
 
@@ -123,16 +123,16 @@ const {now} = useStationDateTimeFormatter();
 
 const lastMonth = now().minus({months: 1});
 
-const {v$} = useVuelidateOnForm(
-    {
-        start_date: {required},
-        end_date: {required},
-        fetch_isrc: {}
-    },
+const {r$} = useAppRegle(
     {
         start_date: lastMonth.startOf('month').toISODate(),
         end_date: lastMonth.endOf('month').toISODate(),
         fetch_isrc: false
+    },
+    {
+        start_date: {required},
+        end_date: {required},
+        fetch_isrc: {}
     }
 );
 </script>

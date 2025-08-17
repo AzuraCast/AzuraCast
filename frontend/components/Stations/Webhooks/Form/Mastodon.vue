@@ -76,8 +76,8 @@ import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required} from "@vuelidate/validators";
+import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
+import {required} from "@regle/rules";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
 import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
@@ -86,7 +86,7 @@ defineProps<WebhookComponentProps>();
 
 const form = defineModel<ApiGenericForm>('form', {required: true});
 
-const {v$, tabClass} = useVuelidateOnFormTab(
+const {v$, tabClass} = useValidatedFormTab(
     form,
     {
         config: {

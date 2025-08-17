@@ -23,7 +23,7 @@
             >
                 <form-group-field
                     id="form_name"
-                    :field="v$.name"
+                    :field="r$.name"
                     autofocus
                     class="mb-3"
                     :label="$gettext('Passkey Nickname')"
@@ -85,7 +85,7 @@
                 <button
                     type="submit"
                     class="btn"
-                    :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
+                    :class="(r$.$invalid) ? 'btn-danger' : 'btn-primary'"
                     @click="doSubmit"
                 >
                     {{ $gettext('Add New Passkey') }}
@@ -98,9 +98,8 @@
 <script setup lang="ts">
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {required} from "@vuelidate/validators";
+import {required} from "@regle/rules";
 import {ref, useTemplateRef} from "vue";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
@@ -108,6 +107,8 @@ import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {getApiUrl} from "~/router.ts";
 import useWebAuthn from "~/functions/useWebAuthn.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import {useResettableRef} from "~/functions/useResettableRef.ts";
+import {useAppRegle} from "~/vendor/regle.ts";
 
 const emit = defineEmits<HasRelistEmit>();
 
@@ -115,14 +116,16 @@ const registerWebAuthnUrl = getApiUrl('/frontend/account/webauthn/register');
 
 const error = ref(null);
 
-const {form, resetForm, v$, validate} = useVuelidateOnForm(
+const {record: form, reset: resetForm} = useResettableRef({
+    name: '',
+    createResponse: null
+});
+
+const {r$} = useAppRegle(
+    form,
     {
         name: {required},
         createResponse: {required}
-    },
-    {
-        name: '',
-        createResponse: null
     }
 );
 
@@ -166,22 +169,24 @@ const selectPasskey = async () => {
 };
 
 const doSubmit = async () => {
-    const isValid = await validate();
+    const isValid = await r$.$validate();
     if (!isValid) {
         return;
     }
 
     error.value = null;
 
-    axios({
-        method: 'PUT',
-        url: registerWebAuthnUrl.value,
-        data: form.value
-    }).then(() => {
+    try {
+        await axios({
+            method: 'PUT',
+            url: registerWebAuthnUrl.value,
+            data: form.value
+        });
+
         hide();
-    }).catch((error) => {
-        error.value = error.response.data.message;
-    });
+    } catch (e) {
+        error.value = e.response.data.message;
+    }
 };
 
 defineExpose({

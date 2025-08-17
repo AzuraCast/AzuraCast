@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import {required} from "@vuelidate/validators";
+import {required} from "@regle/rules";
 import useVuelidate from "@vuelidate/core";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";

@@ -50,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import {required} from "@vuelidate/validators";
+import {required} from "@regle/rules";
 import {defaultTo, forEach, map} from "lodash";
 import MediaFormBasicInfo from "~/components/Stations/Media/Form/BasicInfo.vue";
 import MediaFormAlbumArt from "~/components/Stations/Media/Form/AlbumArt.vue";

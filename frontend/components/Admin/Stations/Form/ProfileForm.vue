@@ -146,8 +146,8 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required, url} from "@vuelidate/validators";
+import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
+import {required, url} from "@regle/rules";
 import Tab from "~/components/Common/Tab.vue";
 import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 import RadioWithCustomNumber from "~/components/Common/RadioWithCustomNumber.vue";
@@ -158,7 +158,7 @@ defineProps<{
 
 const form = defineModel<ApiGenericForm>('form', {required: true});
 
-const {v$, tabClass} = useVuelidateOnFormTab(
+const {v$, tabClass} = useValidatedFormTab(
     form,
     {
         name: {required},

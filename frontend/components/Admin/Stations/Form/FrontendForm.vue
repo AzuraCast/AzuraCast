@@ -172,8 +172,8 @@ import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {numeric, required} from "@vuelidate/validators";
+import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
+import {numeric, required} from "@regle/rules";
 import Tab from "~/components/Common/Tab.vue";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import {ApiGenericForm, FrontendAdapters} from "~/entities/ApiInterfaces.ts";
@@ -186,7 +186,7 @@ const props = defineProps<{
 
 const form = defineModel<ApiGenericForm>('form', {required: true});
 
-const {v$, tabClass} = useVuelidateOnFormTab(
+const {v$, tabClass} = useValidatedFormTab(
     form,
     {
         frontend_type: {required},

@@ -44,8 +44,8 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {map} from "lodash";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required} from "@vuelidate/validators";
+import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
+import {required} from "@regle/rules";
 import Tab from "~/components/Common/Tab.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {ApiGenericForm, HlsStreamProfiles} from "~/entities/ApiInterfaces.ts";
@@ -54,7 +54,7 @@ const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {maxBitrate} = useAzuraCastStation();
 
-const {v$, tabClass} = useVuelidateOnFormTab(
+const {v$, tabClass} = useValidatedFormTab(
     form,
     {
         name: {required},

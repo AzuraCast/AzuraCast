@@ -1,9 +1,9 @@
 import useVuelidate, {GlobalConfig, ValidationArgs} from "@vuelidate/core";
 import {computed, ComputedRef, ModelRef, Ref} from "vue";
-import {useFormTabEventBus, VuelidateRef} from "~/functions/useVuelidateOnForm.ts";
+import {useFormTabEventBus, VuelidateRef} from "~/functions/useValidatedParentForm.ts";
 import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
-export function useVuelidateOnFormTab<
+export function useValidatedFormTab<
     ParentForm extends ApiGenericForm = ApiGenericForm,
     TabForm extends ApiGenericForm = Partial<ParentForm>
 >(

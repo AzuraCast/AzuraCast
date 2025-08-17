@@ -38,8 +38,8 @@ import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {forEach} from "lodash";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {required} from "@vuelidate/validators";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab.ts";
+import {required} from "@regle/rules";
+import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
 import {CustomField} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
@@ -50,7 +50,7 @@ const form = defineModel<CustomField>('form', {required: true});
 
 const {
     v$
-} = useVuelidateOnFormTab(
+} = useValidatedFormTab(
     form,
     {
         'name': {required},

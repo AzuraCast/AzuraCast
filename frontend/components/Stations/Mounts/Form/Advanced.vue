@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {computed} from "vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
 import Tab from "~/components/Common/Tab.vue";
 import {ApiGenericForm, FrontendAdapters} from "~/entities/ApiInterfaces.ts";
 
@@ -48,7 +48,7 @@ const isIcecast = computed(() => {
     return FrontendAdapters.Icecast === props.stationFrontendType;
 });
 
-const {v$, tabClass} = useVuelidateOnFormTab(
+const {v$, tabClass} = useValidatedFormTab(
     form,
     computed(() => {
         const validations: {

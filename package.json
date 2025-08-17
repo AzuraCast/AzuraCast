@@ -25,8 +25,6 @@
     "@regle/core": "^1.7.2",
     "@regle/rules": "^1.7.2",
     "@tanstack/vue-query": "^5.80.7",
-    "@vuelidate/core": "^2.0.0",
-    "@vuelidate/validators": "^2.0.0",
     "@vuepic/vue-datepicker": "^11",
     "@vueuse/core": "^13",
     "axios": "^1",

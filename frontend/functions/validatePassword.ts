@@ -1,4 +1,4 @@
-import {helpers} from "@vuelidate/validators";
+import {helpers} from "@regle/rules";
 import zxcvbn from "zxcvbn";
 
 export default function validatePassword(value: string): boolean {

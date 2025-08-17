@@ -44,8 +44,8 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {email, required} from "@vuelidate/validators";
+import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
+import {email, required} from "@regle/rules";
 import validatePassword from "~/functions/validatePassword";
 import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
@@ -56,7 +56,7 @@ const props = defineProps<{
 
 const form = defineModel<ApiGenericForm>('form', {required: true});
 
-const {v$} = useVuelidateOnFormTab(
+const {v$} = useValidatedFormTab(
     form,
     computed(() => {
         return {

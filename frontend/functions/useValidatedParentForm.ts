@@ -1,10 +1,11 @@
-import useVuelidate, {GlobalConfig, Validation, ValidationArgs} from "@vuelidate/core";
+import {GlobalConfig, Validation, ValidationArgs} from "@vuelidate/core";
 import {useResettableRef} from "~/functions/useResettableRef";
 import {computed, ComputedRef, MaybeRef, unref} from "vue";
 import {useEventBus} from "@vueuse/core";
 import {cloneDeep, merge} from "lodash";
 import {Ref} from "vue-demi";
 import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
+import {useAppRegle} from "~/vendor/regle.ts";
 
 type Form = ApiGenericForm
 
@@ -21,14 +22,14 @@ export function useFormTabEventBus<T extends Form = Form>() {
     return useEventBus<'build', (formPiece: VuelidateBlankForm<Partial<T>>) => void>('form_tabs');
 }
 
-export function useVuelidateOnForm<T extends Form = Form>(
+export function useValidatedParentForm<T extends Form = Form>(
     validations: VuelidateValidations<T> = {} as VuelidateValidations<T>,
     blankForm: VuelidateBlankForm<T> = {} as VuelidateBlankForm<T>,
     options: GlobalConfig = {}
 ): {
     form: Ref<T>,
     resetForm: () => void,
-    v$: VuelidateRef<T>,
+    r$,
     isValid: ComputedRef<boolean>,
     validate: () => Promise<boolean>,
     ifValid: (cb: () => void) => void
@@ -62,21 +63,21 @@ export function useVuelidateOnForm<T extends Form = Form>(
         ? validations(options)
         : validations;
 
-    const v$ = useVuelidate(parsedValidations, form, options);
+    const {r$} = useAppRegle(form, parsedValidations, options);
 
     const resetForm = () => {
         reset();
-        v$.value.$reset();
+        r$.$reset();
     }
 
     const isValid = computed(() => {
-        return !v$.value.$invalid;
+        return !r$.$invalid;
     });
 
     const validate = () => {
-        v$.value.$touch();
+        r$.$touch();
 
-        return v$.value.$validate();
+        return r$.$validate();
     }
 
     const ifValid = (cb: () => void) => {
@@ -92,7 +93,7 @@ export function useVuelidateOnForm<T extends Form = Form>(
     return {
         form,
         resetForm,
-        v$,
+        r$,
         isValid,
         validate,
         ifValid

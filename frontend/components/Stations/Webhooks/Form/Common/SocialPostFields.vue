@@ -62,7 +62,7 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/FormattingInfo.vue";
 import {includes} from "lodash";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
 import {useTranslate} from "~/vendor/gettext";
 import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
@@ -70,7 +70,7 @@ const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const {$gettext} = useTranslate();
 
-const {v$} = useVuelidateOnFormTab(
+const {v$} = useValidatedFormTab(
     form,
     {
         config: {

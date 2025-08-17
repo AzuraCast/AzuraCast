@@ -11,7 +11,7 @@
             <form-group-field
                 id="new_directory_name"
                 ref="$field"
-                :field="v$.newDirectory"
+                :field="r$.newDirectory"
                 :label="$gettext('Directory Name')"
             />
 
@@ -28,7 +28,7 @@
             <button
                 type="button"
                 class="btn"
-                :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
+                :class="(r$.$invalid) ? 'btn-danger' : 'btn-primary'"
                 @click="doMkdir"
             >
                 {{ $gettext('Create Directory') }}
@@ -38,9 +38,8 @@
 </template>
 
 <script setup lang="ts">
-import {required} from "@vuelidate/validators";
+import {required} from "@regle/rules";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {nextTick, useTemplateRef} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
@@ -49,6 +48,8 @@ import Modal from "~/components/Common/Modal.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import {useResettableRef} from "~/functions/useResettableRef.ts";
+import {useAppRegle} from "~/vendor/regle.ts";
 
 const props = defineProps<{
     currentDirectory: string,
@@ -57,12 +58,14 @@ const props = defineProps<{
 
 const emit = defineEmits<HasRelistEmit>();
 
-const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
+const {record: form, reset: resetForm} = useResettableRef({
+    newDirectory: null
+});
+
+const {r$} = useAppRegle(
+    form,
     {
         newDirectory: {required}
-    },
-    {
-        newDirectory: null
     }
 );
 
@@ -85,18 +88,23 @@ const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 const {$gettext} = useTranslate();
 
-const doMkdir = () => {
-    ifValid(() => {
-        void axios.post(props.mkdirUrl, {
+const doMkdir = async () => {
+    const {valid} = await r$.$validate();
+    if (!valid) {
+        return;
+    }
+
+    try {
+        await axios.post(props.mkdirUrl, {
             'currentDirectory': props.currentDirectory,
             'name': form.value.newDirectory
-        }).then(() => {
-            notifySuccess($gettext('New directory created.'));
-        }).finally(() => {
-            emit('relist');
-            hide();
         });
-    });
+
+        notifySuccess($gettext('New directory created.'));
+    } finally {
+        emit('relist');
+        hide();
+    }
 };
 
 defineExpose({

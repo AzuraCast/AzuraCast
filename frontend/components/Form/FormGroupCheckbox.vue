@@ -31,8 +31,8 @@
                 </div>
             </slot>
 
-            <vuelidate-error
-                v-if="isVuelidateField"
+            <validation-error
+                v-if="isValidatedField"
                 :field="field"
             />
         </template>
@@ -52,12 +52,12 @@
 </template>
 
 <script setup lang="ts">
-import VuelidateError from "~/components/Form/VuelidateError.vue";
 import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import {FormFieldEmits, FormFieldProps, useFormField} from "~/components/Form/useFormField";
 import {useSlots} from "vue";
 import FormCheckbox from "~/components/Form/FormCheckbox.vue";
+import ValidationError from "~/components/Form/ValidationError.vue";
 
 type T = boolean | null
 
@@ -83,5 +83,5 @@ const slots = useSlots();
 
 const emit = defineEmits<FormFieldEmits<T>>();
 
-const {model, isVuelidateField, isRequired} = useFormField<T>(props, emit);
+const {model, isValidatedField, isRequired} = useFormField<T>(props, emit);
 </script>

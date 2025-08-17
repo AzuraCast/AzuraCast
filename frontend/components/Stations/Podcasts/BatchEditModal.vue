@@ -63,7 +63,7 @@
 
 <script setup lang="ts">
 import {computed, ref, useTemplateRef} from "vue";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import {useValidatedParentForm} from "~/functions/useValidatedParentForm.ts";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
@@ -87,7 +87,7 @@ const props = defineProps<{
 
 const emit = defineEmits<HasRelistEmit>();
 
-const {v$, resetForm, ifValid} = useVuelidateOnForm();
+const {v$, resetForm, ifValid} = useValidatedParentForm();
 
 const $modal = useTemplateRef('$modal');
 const {show: showModal, hide} = useHasModal($modal);

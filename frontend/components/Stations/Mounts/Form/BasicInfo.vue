@@ -107,8 +107,8 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed} from "vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required} from "@vuelidate/validators";
+import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
+import {required} from "@regle/rules";
 import Tab from "~/components/Common/Tab.vue";
 import {ApiGenericForm, FrontendAdapters} from "~/entities/ApiInterfaces.ts";
 
@@ -126,7 +126,7 @@ const isShoutcast = computed(() => {
     return FrontendAdapters.Shoutcast === props.stationFrontendType;
 });
 
-const {v$, tabClass} = useVuelidateOnFormTab(
+const {v$, tabClass} = useValidatedFormTab(
     form,
     computed(() => {
         const validations: {

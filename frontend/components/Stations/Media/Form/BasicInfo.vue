@@ -56,7 +56,7 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {VuelidateObject} from "~/functions/useVuelidateOnForm.ts";
+import {VuelidateObject} from "~/functions/useValidatedParentForm.ts";
 
 defineProps<{
     form: VuelidateObject

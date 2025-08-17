@@ -77,7 +77,7 @@ import {computed, nextTick, ref, watch} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import {useValidatedParentForm} from "~/functions/useValidatedParentForm.ts";
 import Loading from "~/components/Common/Loading.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import {userAllowed} from "~/acl";
@@ -123,7 +123,7 @@ const emit = defineEmits<{
 
 const showAdminTab = userAllowed(GlobalPermissions.Stations);
 
-const {form, resetForm, v$, ifValid} = useVuelidateOnForm();
+const {form, resetForm, v$, ifValid} = useValidatedParentForm();
 
 const isValid = computed(() => {
     return !v$.value?.$invalid;

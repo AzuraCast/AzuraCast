@@ -71,7 +71,7 @@
                             <fieldset>
                                 <form-group-field
                                     id="edit_form_key"
-                                    :field="v$.key"
+                                    v-model="form.key"
                                 >
                                     <template #label>
                                         {{ $gettext('MaxMind License Key') }}
@@ -105,7 +105,6 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {computed, onMounted, ref} from "vue";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
 import Loading from "~/components/Common/Loading.vue";
@@ -113,20 +112,16 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import {useDialog} from "~/functions/useDialog.ts";
 import {ApiAdminGeoLiteStatus} from "~/entities/ApiInterfaces.ts";
+import {useResettableRef} from "~/functions/useResettableRef.ts";
 
 const apiUrl = getApiUrl('/admin/geolite');
 
 const isLoading = ref(true);
 const version = ref(null);
 
-const {form, v$} = useVuelidateOnForm(
-    {
-        key: {}
-    },
-    {
-        key: null
-    }
-);
+const {record: form} = useResettableRef({
+    key: null
+});
 
 const {$gettext} = useTranslate();
 

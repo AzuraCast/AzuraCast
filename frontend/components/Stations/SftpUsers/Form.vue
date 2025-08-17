@@ -57,9 +57,9 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
 import {computed} from "vue";
-import {required} from "@vuelidate/validators";
+import {required} from "@regle/rules";
 import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
@@ -68,7 +68,7 @@ const props = defineProps<{
 
 const form = defineModel<ApiGenericForm>('form', {required: true});
 
-const {v$} = useVuelidateOnFormTab(
+const {v$} = useValidatedFormTab(
     form,
     computed(() => {
         return {

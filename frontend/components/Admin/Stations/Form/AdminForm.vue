@@ -88,7 +88,7 @@ import {onMounted, reactive, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
 import Tab from "~/components/Common/Tab.vue";
 import {getApiUrl} from "~/router";
 import {ApiFormSimpleOptions, ApiGenericForm} from "~/entities/ApiInterfaces.ts";
@@ -102,7 +102,7 @@ const form = defineModel<ApiGenericForm>('form', {required: true});
 
 const storageLocationApiUrl = getApiUrl('/admin/stations/storage-locations');
 
-const {v$, tabClass} = useVuelidateOnFormTab(
+const {v$, tabClass} = useValidatedFormTab(
     form,
     {
         is_enabled: {},

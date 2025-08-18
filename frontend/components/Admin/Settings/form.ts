@@ -3,12 +3,13 @@ import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {required} from "@regle/rules";
 import {IpSources, Settings} from "~/entities/ApiInterfaces.ts";
 import {defineStore} from "pinia";
+import {FormStoreReturn} from "~/functions/useValidatedParentForm.ts";
 
 type Form = Settings
 
 export const useAdminSettingsForm = defineStore(
     'form-admin-settings',
-    () => {
+    (): FormStoreReturn => {
         const {record: form, reset} = useResettableRef<Form>(
             {
                 base_url: '',

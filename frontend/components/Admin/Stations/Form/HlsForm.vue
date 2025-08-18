@@ -17,7 +17,7 @@
                 <form-group-checkbox
                     id="edit_form_enable_hls"
                     class="col-md-12"
-                    :field="v$.enable_hls"
+                    :field="r$.enable_hls"
                     :label="$gettext('Enable HTTP Live Streaming (HLS)')"
                 />
             </div>
@@ -29,14 +29,14 @@
                 <form-group-checkbox
                     id="edit_form_backend_hls_enable_on_public_player"
                     class="col-md-12"
-                    :field="v$.backend_config.hls_enable_on_public_player"
+                    :field="r$.backend_config.hls_enable_on_public_player"
                     :label="$gettext('Show HLS Stream on Public Player')"
                 />
 
                 <form-group-checkbox
                     id="edit_form_backend_hls_is_default"
                     class="col-md-12"
-                    :field="v$.backend_config.hls_is_default"
+                    :field="r$.backend_config.hls_is_default"
                     :label="$gettext('Make HLS Stream Default in Public Player')"
                 />
             </div>
@@ -48,7 +48,7 @@
                 <form-group-field
                     id="edit_form_backend_hls_segment_length"
                     class="col-md-4"
-                    :field="v$.backend_config.hls_segment_length"
+                    :field="r$.backend_config.hls_segment_length"
                     input-type="number"
                     :input-attrs="{ min: '0', max: '9999' }"
                     advanced
@@ -58,7 +58,7 @@
                 <form-group-field
                     id="edit_form_backend_hls_segments_in_playlist"
                     class="col-md-4"
-                    :field="v$.backend_config.hls_segments_in_playlist"
+                    :field="r$.backend_config.hls_segments_in_playlist"
                     input-type="number"
                     :input-attrs="{ min: '0', max: '60' }"
                     advanced
@@ -68,7 +68,7 @@
                 <form-group-field
                     id="edit_form_backend_hls_segments_overhead"
                     class="col-md-4"
-                    :field="v$.backend_config.hls_segments_overhead"
+                    :field="r$.backend_config.hls_segments_overhead"
                     input-type="number"
                     :input-attrs="{ min: '0', max: '60' }"
                     advanced
@@ -86,36 +86,15 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import BackendDisabled from "~/components/Admin/Stations/Form/Common/BackendDisabled.vue";
 import {computed} from "vue";
-import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
-import {numeric} from "@regle/rules";
 import Tab from "~/components/Common/Tab.vue";
-import {ApiGenericForm, BackendAdapters} from "~/entities/ApiInterfaces.ts";
+import {BackendAdapters} from "~/entities/ApiInterfaces.ts";
+import {storeToRefs} from "pinia";
+import {useAdminStationsForm} from "~/components/Admin/Stations/Form/form.ts";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
+const {r$, form} = storeToRefs(useAdminStationsForm());
 
-const {v$, tabClass} = useValidatedFormTab(
-    form,
-    {
-        enable_hls: {},
-        backend_config: {
-            hls_enable_on_public_player: {},
-            hls_is_default: {},
-            hls_segment_length: {numeric},
-            hls_segments_in_playlist: {numeric},
-            hls_segments_overhead: {numeric},
-        },
-    },
-    () => ({
-        enable_hls: false,
-        backend_config: {
-            hls_enable_on_public_player: false,
-            hls_is_default: false,
-            hls_segment_length: 4,
-            hls_segments_in_playlist: 5,
-            hls_segments_overhead: 2,
-        }
-    }),
-);
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.hlsTab));
 
 const isBackendEnabled = computed(() => {
     return form.value.backend_type !== BackendAdapters.None;

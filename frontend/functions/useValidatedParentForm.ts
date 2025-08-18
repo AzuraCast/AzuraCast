@@ -6,8 +6,15 @@ import {cloneDeep, merge} from "lodash";
 import {Ref} from "vue-demi";
 import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
+import {InferRegleRoot} from "@regle/core";
 
 type Form = ApiGenericForm
+
+export type FormStoreReturn<T extends Form = Form> = {
+    form: Ref<T>,
+    r$: InferRegleRoot<typeof T>
+    $reset: () => void,
+};
 
 type ValidationFunc<T extends Form = Form> = (options: GlobalConfig) => ValidationArgs<T>
 type BlankFormFunc<T extends Form = Form> = (options: GlobalConfig) => T

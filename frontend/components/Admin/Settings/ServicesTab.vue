@@ -31,7 +31,7 @@
                 <form-group-checkbox
                     id="edit_form_check_for_updates"
                     class="col-md-6"
-                    :field="v$.check_for_updates"
+                    :field="r$.check_for_updates"
                     :label="$gettext('Show Update Announcements')"
                     :description="$gettext('Show new releases within your update channel on the AzuraCast homepage.')"
                 />
@@ -52,7 +52,7 @@
                 <form-group-field
                     id="edit_form_acme_domains"
                     class="col-md-6"
-                    :field="v$.acme_domains"
+                    :field="r$.acme_domains"
                     :label="$gettext('Domain Name(s)')"
                     :description="$gettext('All listed domain names should point to this AzuraCast installation. Separate multiple domain names with commas.')"
                 />
@@ -60,7 +60,7 @@
                 <form-group-field
                     id="edit_form_acme_email"
                     class="col-md-6"
-                    :field="v$.acme_email"
+                    :field="r$.acme_email"
                     input-type="email"
                     :label="$gettext('E-mail Address (Optional)')"
                     :description="$gettext('Enter your e-mail address to receive updates about your certificate.')"
@@ -70,13 +70,13 @@
                     <button
                         type="button"
                         class="btn btn-primary btn-sm"
-                        :disabled="v$.$anyDirty"
+                        :disabled="r$.$anyDirty"
                         @click="generateAcmeCert"
                     >
                         <icon :icon="IconBadge" />
                         <span>
                             {{ $gettext('Generate/Renew Certificate') }}
-                            <span v-if="v$.$anyDirty">
+                            <span v-if="r$.$anyDirty">
                                 ({{ $gettext('Save Changes first') }})
                             </span>
                         </span>
@@ -97,7 +97,7 @@
                 <form-group-checkbox
                     id="edit_form_mail_enabled"
                     class="col-md-12"
-                    :field="v$.mail_enabled"
+                    :field="r$.mail_enabled"
                     :label="$gettext('Enable Mail Delivery')"
                 />
             </div>
@@ -109,14 +109,14 @@
                 <form-group-field
                     id="edit_form_mail_sender_name"
                     class="col-md-6"
-                    :field="v$.mail_sender_name"
+                    :field="r$.mail_sender_name"
                     :label="$gettext('Sender Name')"
                 />
 
                 <form-group-field
                     id="edit_form_mail_sender_email"
                     class="col-md-6"
-                    :field="v$.mail_sender_email"
+                    :field="r$.mail_sender_email"
                     input-type="email"
                     :label="$gettext('Sender E-mail Address')"
                 />
@@ -124,14 +124,14 @@
                 <form-group-field
                     id="edit_form_mail_smtp_host"
                     class="col-md-4"
-                    :field="v$.mail_smtp_host"
+                    :field="r$.mail_smtp_host"
                     :label="$gettext('SMTP Host')"
                 />
 
                 <form-group-field
                     id="edit_form_mail_smtp_port"
                     class="col-md-3"
-                    :field="v$.mail_smtp_port"
+                    :field="r$.mail_smtp_port"
                     input-type="number"
                     :label="$gettext('SMTP Port')"
                 />
@@ -139,7 +139,7 @@
                 <form-group-checkbox
                     id="edit_form_mail_smtp_secure"
                     class="col-md-5"
-                    :field="v$.mail_smtp_secure"
+                    :field="r$.mail_smtp_secure"
                     :label="$gettext('Use Secure (TLS) SMTP Connection')"
                     :description="$gettext('Usually enabled for port 465, disabled for ports 587 or 25.')"
                 />
@@ -147,14 +147,14 @@
                 <form-group-field
                     id="edit_form_mail_smtp_username"
                     class="col-md-6"
-                    :field="v$.mail_smtp_username"
+                    :field="r$.mail_smtp_username"
                     :label="$gettext('SMTP Username')"
                 />
 
                 <form-group-field
                     id="edit_form_mail_smtp_password"
                     class="col-md-6"
-                    :field="v$.mail_smtp_password"
+                    :field="r$.mail_smtp_password"
                     input-type="password"
                     :label="$gettext('SMTP Password')"
                 />
@@ -163,13 +163,13 @@
                     <button
                         type="button"
                         class="btn btn-sm btn-primary"
-                        :disabled="v$.$anyDirty"
+                        :disabled="r$.$anyDirty"
                         @click="openTestMessage"
                     >
                         <icon :icon="IconSend" />
                         <span>
                             {{ $gettext('Send Test Message') }}
-                            <span v-if="v$.$anyDirty">
+                            <span v-if="r$.$anyDirty">
                                 ({{ $gettext('Save Changes first') }})
                             </span>
                         </span>
@@ -187,7 +187,7 @@
                 <form-group-multi-check
                     id="edit_form_avatar_service"
                     class="col-md-6"
-                    :field="v$.avatar_service"
+                    :field="r$.avatar_service"
                     :options="avatarServiceOptions"
                     stacked
                     radio
@@ -197,7 +197,7 @@
                 <form-group-field
                     id="edit_form_avatar_default_url"
                     class="col-md-6"
-                    :field="v$.avatar_default_url"
+                    :field="r$.avatar_default_url"
                     :label="$gettext('Default Avatar URL')"
                 />
             </div>
@@ -212,7 +212,7 @@
                 <form-group-checkbox
                     id="use_external_album_art_in_apis"
                     class="col-md-6"
-                    :field="v$.use_external_album_art_in_apis"
+                    :field="r$.use_external_album_art_in_apis"
                 >
                     <template #label>
                         {{ $gettext('Check Web Services for Album Art for "Now Playing" Tracks') }}
@@ -222,14 +222,14 @@
                 <form-group-checkbox
                     id="use_external_album_art_when_processing_media"
                     class="col-md-6"
-                    :field="v$.use_external_album_art_when_processing_media"
+                    :field="r$.use_external_album_art_when_processing_media"
                     :label="$gettext('Check Web Services for Album Art When Uploading Media')"
                 />
 
                 <form-group-field
                     id="edit_form_last_fm_api_key"
                     class="col-md-12"
-                    :field="v$.last_fm_api_key"
+                    :field="r$.last_fm_api_key"
                     :label="$gettext('Last.fm API Key')"
                 >
                     <template #description>
@@ -267,10 +267,12 @@ import {computed, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
 import Tab from "~/components/Common/Tab.vue";
 import {IconBadge, IconSend} from "~/components/Common/icons";
-import {ApiGenericForm, ApiTaskWithLog} from "~/entities/ApiInterfaces.ts";
+import {ApiTaskWithLog} from "~/entities/ApiInterfaces.ts";
+import {useAdminSettingsForm} from "~/components/Admin/Settings/form.ts";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {storeToRefs} from "pinia";
 
 const props = defineProps<{
     releaseChannel: string,
@@ -278,47 +280,8 @@ const props = defineProps<{
     acmeUrl: string,
 }>();
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
-
-const {v$, tabClass} = useValidatedFormTab(
-    form,
-    {
-        check_for_updates: {},
-        acme_email: {},
-        acme_domains: {},
-        mail_enabled: {},
-        mail_sender_name: {},
-        mail_sender_email: {},
-        mail_smtp_host: {},
-        mail_smtp_port: {},
-        mail_smtp_secure: {},
-        mail_smtp_username: {},
-        mail_smtp_password: {},
-        avatar_service: {},
-        avatar_default_url: {},
-        use_external_album_art_in_apis: {},
-        use_external_album_art_when_processing_media: {},
-        last_fm_api_key: {},
-    },
-    {
-        check_for_updates: 1,
-        acme_email: '',
-        acme_domains: '',
-        mail_enabled: false,
-        mail_sender_name: '',
-        mail_sender_email: '',
-        mail_smtp_host: '',
-        mail_smtp_port: '',
-        mail_smtp_secure: '',
-        mail_smtp_username: '',
-        mail_smtp_password: '',
-        avatar_service: 'gravatar',
-        avatar_default_url: '',
-        use_external_album_art_in_apis: false,
-        use_external_album_art_when_processing_media: false,
-        last_fm_api_key: ''
-    }
-);
+const {form, r$} = storeToRefs(useAdminSettingsForm());
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.servicesTab));
 
 const {$gettext} = useTranslate();
 

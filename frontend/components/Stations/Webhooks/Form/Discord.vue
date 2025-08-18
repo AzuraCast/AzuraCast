@@ -101,7 +101,7 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/FormattingInfo.vue";
 import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
-import {helpers, required} from "@regle/rules";
+import {required, withMessage} from "@regle/rules";
 import {useTranslate} from "~/vendor/gettext";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
@@ -111,9 +111,8 @@ defineProps<WebhookComponentProps>();
 
 const form = defineModel<ApiGenericForm>('form', { required: true });
 
-
 const {$gettext} = useTranslate();
-const hexColor = helpers.withMessage(
+const hexColor = withMessage(
     $gettext('This field must be a valid, non-transparent 6-character hex color.'),
     (value: string) => value === '' || /^#?[0-9A-F]{6}$/i.test(value)
 );

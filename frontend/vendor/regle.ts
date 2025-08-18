@@ -89,6 +89,9 @@ export const {useRegle: useAppRegle} = defineRegleConfig({
                 $gettext('This password is too common or insecure.')
             )
         };
+    },
+    modifiers: {
+        autoDirty: false
     }
 });
 

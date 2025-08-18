@@ -1,12 +1,11 @@
 import {computed, ComputedRef, UnwrapNestedRefs, WritableComputedRef} from "vue";
 import {has} from "lodash";
 import {reactiveComputed} from "@vueuse/core";
-import {RegleCustomFieldStatus} from "@regle/core";
-import {useAppRegle} from "~/vendor/regle.ts";
+import {RegleFieldStatus} from "@regle/core";
 
-export type ModelFormField = string | number | boolean | Array<any> | null
+export type ModelFormField = string | number | boolean | Array<any> | null | undefined
 
-export type ValidatedField<T = ModelFormField> = RegleCustomFieldStatus<typeof useAppRegle, T>
+export type ValidatedField<T = ModelFormField> = RegleFieldStatus<T>
 
 export interface FormFieldProps<T = ModelFormField> {
     modelValue?: T
@@ -45,6 +44,7 @@ export function useFormField<T = ModelFormField>(
         set(newValue) {
             if (props.field) {
                 props.field.$value = newValue as UnwrapNestedRefs<T>;
+                props.field.$touch();
             } else {
                 emit('update:modelValue', newValue);
             }

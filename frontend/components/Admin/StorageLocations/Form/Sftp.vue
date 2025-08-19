@@ -7,7 +7,7 @@
             <form-group-field
                 id="form_edit_sftpHost"
                 class="col-md-12 col-lg-6"
-                :field="v$.sftpHost"
+                :field="r$.sftpHost"
                 :label="$gettext('SFTP Host')"
             />
 
@@ -17,28 +17,28 @@
                 input-type="number"
                 min="1"
                 step="1"
-                :field="v$.sftpPort"
+                :field="r$.sftpPort"
                 :label="$gettext('SFTP Port')"
             />
 
             <form-group-field
                 id="form_edit_sftpUsername"
                 class="col-md-12 col-lg-6"
-                :field="v$.sftpUsername"
+                :field="r$.sftpUsername"
                 :label="$gettext('SFTP Username')"
             />
 
             <form-group-field
                 id="form_edit_sftpPassword"
                 class="col-md-12 col-lg-6"
-                :field="v$.sftpPassword"
+                :field="r$.sftpPassword"
                 :label="$gettext('SFTP Password')"
             />
 
             <form-group-field
                 id="form_edit_sftpPrivateKeyPassPhrase"
                 class="col-md-12"
-                :field="v$.sftpPrivateKeyPassPhrase"
+                :field="r$.sftpPrivateKeyPassPhrase"
                 :label="$gettext('SFTP Private Key Pass Phrase')"
             />
 
@@ -46,7 +46,7 @@
                 id="form_edit_sftpPrivateKey"
                 class="col-md-12"
                 input-type="textarea"
-                :field="v$.sftpPrivateKey"
+                :field="r$.sftpPrivateKey"
                 :label="$gettext('SFTP Private Key')"
             />
         </div>
@@ -55,30 +55,14 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
-import {required} from "@regle/rules";
 import Tab from "~/components/Common/Tab.vue";
-import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
+import {useAdminStorageLocationsForm} from "~/components/Admin/StorageLocations/Form/form.ts";
+import {storeToRefs} from "pinia";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {computed} from "vue";
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
+const formStore = useAdminStorageLocationsForm();
+const {r$} = storeToRefs(formStore);
 
-const {v$, tabClass} = useValidatedFormTab(
-    form,
-    {
-        sftpHost: {required},
-        sftpPort: {required},
-        sftpUsername: {required},
-        sftpPassword: {},
-        sftpPrivateKey: {},
-        sftpPrivateKeyPassPhrase: {}
-    },
-    {
-        sftpHost: null,
-        sftpPort: '22',
-        sftpUsername: null,
-        sftpPassword: null,
-        sftpPrivateKey: null,
-        sftpPrivateKeyPassPhrase: null,
-    }
-);
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.sftpTab));
 </script>

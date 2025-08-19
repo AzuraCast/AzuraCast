@@ -4,7 +4,7 @@
         :loading="loading"
         :title="langTitle"
         :error="error"
-        :disable-save-button="v$.$invalid"
+        :disable-save-button="r$.$invalid"
         @submit="doSubmit"
         @hidden="clearContents"
     >
@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, nextTick, useTemplateRef, watch} from "vue";
+import {computed, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import StorageLocationForm from "~/components/Admin/StorageLocations/Form.vue";
@@ -39,7 +39,8 @@ import Sftp from "~/components/Admin/StorageLocations/Form/Sftp.vue";
 import S3 from "~/components/Admin/StorageLocations/Form/S3.vue";
 import Dropbox from "~/components/Admin/StorageLocations/Form/Dropbox.vue";
 import Tabs from "~/components/Common/Tabs.vue";
-import mergeExisting from "~/functions/mergeExisting.ts";
+import {useAdminStorageLocationsForm} from "~/components/Admin/StorageLocations/Form/form.ts";
+import {storeToRefs} from "pinia";
 
 interface StorageLocationsEditModalProps extends BaseEditModalProps {
     type: string
@@ -50,37 +51,27 @@ const emit = defineEmits<BaseEditModalEmits>();
 
 const $modal = useTemplateRef('$modal');
 
+const formStore = useAdminStorageLocationsForm();
+const {form, r$} = storeToRefs(formStore);
+const {$reset: resetForm} = formStore;
+
 const {
     loading,
     error,
     isEditMode,
-    form,
-    v$,
-    resetForm,
     clearContents,
     create,
     edit,
     doSubmit,
     close
 } = useBaseEditModal(
+    form,
     props,
     emit,
     $modal,
+    resetForm,
+    async () => (await r$.$validate()).valid,
     {
-        adapter: {},
-    },
-    {
-        adapter: 'local',
-    },
-    {
-        populateForm: (data, formRef) => {
-            formRef.value.adapter = data.adapter;
-            
-            void nextTick(() => {
-                resetForm();
-                formRef.value = mergeExisting(formRef.value, data);
-            });
-        },
         getSubmittableFormData: (formRef, isEditModeRef) => {
             if (isEditModeRef.value) {
                 return formRef.value;
@@ -93,21 +84,6 @@ const {
         }
     }
 );
-
-watch(
-    () => form.value.adapter,
-    () => {
-        if (!isEditMode.value) {
-            const originalForm = form.value;
-
-            void nextTick(() => {
-                resetForm();
-                form.value = mergeExisting(form.value, originalForm);
-            });
-        }
-
-    }
-)
 
 const {$gettext} = useTranslate();
 

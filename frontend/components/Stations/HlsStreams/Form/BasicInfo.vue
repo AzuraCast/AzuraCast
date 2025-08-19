@@ -7,7 +7,7 @@
             <form-group-field
                 id="edit_form_name"
                 class="col-md-12"
-                :field="v$.name"
+                :field="r$.name"
                 :label="$gettext('Programmatic Name')"
             >
                 <template #description>
@@ -20,7 +20,7 @@
             <form-group-multi-check
                 id="edit_form_format"
                 class="col-md-6"
-                :field="v$.format"
+                :field="r$.format"
                 :options="formatOptions"
                 stacked
                 radio
@@ -30,7 +30,7 @@
             <form-group-multi-check
                 id="edit_form_bitrate"
                 class="col-md-6"
-                :field="v$.bitrate"
+                :field="r$.bitrate"
                 :options="bitrateOptions"
                 stacked
                 radio
@@ -44,29 +44,19 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {map} from "lodash";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
-import {required} from "@regle/rules";
 import Tab from "~/components/Common/Tab.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
-import {ApiGenericForm, HlsStreamProfiles} from "~/entities/ApiInterfaces.ts";
-
-const form = defineModel<ApiGenericForm>('form', {required: true});
+import {HlsStreamProfiles} from "~/entities/ApiInterfaces.ts";
+import {storeToRefs} from "pinia";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {computed} from "vue";
+import {useStationsHlsStreamsForm} from "~/components/Stations/HlsStreams/Form/form.ts";
 
 const {maxBitrate} = useAzuraCastStation();
 
-const {v$, tabClass} = useValidatedFormTab(
-    form,
-    {
-        name: {required},
-        format: {required},
-        bitrate: {required}
-    },
-    {
-        name: null,
-        format: HlsStreamProfiles.AacLowComplexity,
-        bitrate: 128
-    }
-);
+const {r$} = storeToRefs(useStationsHlsStreamsForm());
+
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.basicInfoTab));
 
 const formatOptions = [
     {

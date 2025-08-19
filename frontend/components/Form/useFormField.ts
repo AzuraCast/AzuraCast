@@ -1,5 +1,4 @@
 import {computed, ComputedRef, UnwrapNestedRefs, WritableComputedRef} from "vue";
-import {has} from "lodash";
 import {reactiveComputed} from "@vueuse/core";
 import {RegleFieldStatus} from "@regle/core";
 
@@ -71,7 +70,7 @@ export function useFormField<T = ModelFormField>(
         }
 
         return (props.field !== undefined)
-            ? has(props.field, '$rules.required')
+            ? !!props.field.$rules.required?.$active
             : false;
     });
 

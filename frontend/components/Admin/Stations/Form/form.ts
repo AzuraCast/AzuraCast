@@ -1,25 +1,20 @@
 import {useAppRegle} from "~/vendor/regle.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {
-    ApiGenericForm,
     AudioProcessingMethods,
     BackendAdapters,
     CrossfadeModes,
     FrontendAdapters,
     MasterMePresets,
-    Station,
     StreamFormats
 } from "~/entities/ApiInterfaces.ts";
 import {defineStore} from "pinia";
 import {numeric, required, url} from "@regle/rules";
 
-// TODO: fix this
-type Form = Station & ApiGenericForm
-
 export const useAdminStationsForm = defineStore(
     'form-admin-stations',
     () => {
-        const {record: form, reset} = useResettableRef<Form>({
+        const {record: form, reset} = useResettableRef({
             name: '',
             description: '',
             genre: '',
@@ -122,7 +117,17 @@ export const useAdminStationsForm = defineStore(
                     ],
                     frontendTab: [
                         fields.frontend_type,
-                        fields.frontend_config
+                        fields.frontend_config.sc_license_id,
+                        fields.frontend_config.sc_user_id,
+                        fields.frontend_config.source_pw,
+                        fields.frontend_config.admin_pw,
+                        fields.frontend_config.port,
+                        fields.frontend_config.max_listeners,
+                        fields.frontend_config.custom_config,
+                        fields.frontend_config.banned_ips,
+                        fields.frontend_config.banned_countries,
+                        fields.frontend_config.allowed_ips,
+                        fields.frontend_config.banned_user_agents,
                     ],
                     backendTab: [
                         fields.backend_type,

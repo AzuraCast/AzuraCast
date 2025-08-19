@@ -7,7 +7,7 @@
             <form-group-checkbox
                 id="edit_form_enable_autodj"
                 class="col-md-12"
-                :field="v$.enable_autodj"
+                :field="r$.enable_autodj"
                 :label="$gettext('Enable AutoDJ')"
                 :description="$gettext('If enabled, the AutoDJ will automatically play music to this mount point.')"
             />
@@ -20,7 +20,7 @@
             <form-group-multi-check
                 id="edit_form_autodj_format"
                 class="col-md-6"
-                :field="v$.autodj_format"
+                :field="r$.autodj_format"
                 :options="formatOptions"
                 stacked
                 radio
@@ -32,7 +32,7 @@
                 id="edit_form_autodj_bitrate"
                 class="col-md-6"
                 :label="$gettext('AutoDJ Bitrate (kbps)')"
-                :field="v$.autodj_bitrate"
+                :field="r$.autodj_bitrate"
             >
                 <template #default="{id, model, fieldClass}">
                     <bitrate-options
@@ -51,34 +51,24 @@
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
-import {ApiGenericForm, FrontendAdapters, StreamFormats} from "~/entities/ApiInterfaces.ts";
+import {FrontendAdapters, StreamFormats} from "~/entities/ApiInterfaces.ts";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
+import {storeToRefs} from "pinia";
+import {useStationsMountsForm} from "~/components/Stations/Mounts/Form/form.ts";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 
 defineProps<{
     stationFrontendType: FrontendAdapters
 }>();
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
-
 const {maxBitrate} = useAzuraCastStation();
 
-const {v$, tabClass} = useValidatedFormTab(
-    form,
-    {
-        enable_autodj: {},
-        autodj_format: {},
-        autodj_bitrate: {},
-    },
-    {
-        enable_autodj: true,
-        autodj_format: StreamFormats.Mp3,
-        autodj_bitrate: 128,
-    }
-);
+const {r$, form} = storeToRefs(useStationsMountsForm());
+
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.autoDjTab));
 
 const formatOptions = [
     {

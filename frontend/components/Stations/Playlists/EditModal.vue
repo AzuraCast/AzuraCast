@@ -4,14 +4,14 @@
         :loading="loading"
         :title="langTitle"
         :error="error"
-        :disable-save-button="v$.$invalid"
+        :disable-save-button="r$.$invalid"
         @submit="doSubmit"
         @hidden="clearContents"
     >
         <tabs>
-            <form-basic-info v-model:form="form" />
+            <form-basic-info/>
             <form-schedule v-model:schedule-items="form.schedule_items" />
-            <form-advanced v-model:form="form"/>
+            <form-advanced/>
         </tabs>
     </modal-form>
 </template>
@@ -26,6 +26,9 @@ import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
+import {storeToRefs} from "pinia";
+import {useAppCollectScope} from "~/vendor/regle.ts";
+import {useStationsPlaylistsForm} from "~/components/Stations/Playlists/Form/form.ts";
 
 const props = defineProps<BaseEditModalProps>();
 
@@ -37,27 +40,28 @@ const $modal = useTemplateRef('$modal');
 
 const {notifySuccess} = useNotify();
 
+const formStore = useStationsPlaylistsForm();
+const {form} = storeToRefs(formStore);
+const {$reset: resetForm} = formStore;
+
+const {r$} = useAppCollectScope('stations-playlists');
+
 const {
     loading,
     error,
     isEditMode,
-    form,
-    v$,
     clearContents,
     create,
     edit,
     doSubmit,
     close
 } = useBaseEditModal(
+    form,
     props,
     emit,
     $modal,
-    {
-        schedule_items: {}
-    },
-    {
-        schedule_items: []
-    },
+    resetForm,
+    async () => (await r$.$validate()).valid,
     {
         onSubmitSuccess: () => {
             notifySuccess();

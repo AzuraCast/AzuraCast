@@ -1,6 +1,7 @@
 import {useAppRegle} from "~/vendor/regle.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {
+    ApiGenericForm,
     AudioProcessingMethods,
     BackendAdapters,
     CrossfadeModes,
@@ -12,7 +13,8 @@ import {
 import {defineStore} from "pinia";
 import {numeric, required, url} from "@regle/rules";
 
-type Form = Station
+// TODO: fix this
+type Form = Station & ApiGenericForm
 
 export const useAdminStationsForm = defineStore(
     'form-admin-stations',

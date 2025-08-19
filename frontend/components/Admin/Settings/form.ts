@@ -3,43 +3,40 @@ import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {required} from "@regle/rules";
 import {IpSources, Settings} from "~/entities/ApiInterfaces.ts";
 import {defineStore} from "pinia";
-import {FormStoreReturn} from "~/functions/useValidatedParentForm.ts";
 
 type Form = Settings
 
 export const useAdminSettingsForm = defineStore(
     'form-admin-settings',
-    (): FormStoreReturn => {
-        const {record: form, reset} = useResettableRef<Form>(
-            {
-                base_url: '',
-                instance_name: '',
-                prefer_browser_url: true,
-                use_radio_proxy: true,
-                history_keep_days: 7,
-                enable_static_nowplaying: true,
-                analytics: null,
-                always_use_ssl: false,
-                ip_source: IpSources.Local,
-                api_access_control: '*',
-                check_for_updates: true,
-                acme_email: '',
-                acme_domains: '',
-                mail_enabled: false,
-                mail_sender_name: '',
-                mail_sender_email: '',
-                mail_smtp_host: '',
-                mail_smtp_port: null,
-                mail_smtp_secure: false,
-                mail_smtp_username: '',
-                mail_smtp_password: '',
-                avatar_service: 'gravatar',
-                avatar_default_url: '',
-                use_external_album_art_in_apis: false,
-                use_external_album_art_when_processing_media: false,
-                last_fm_api_key: ''
-            }
-        );
+    () => {
+        const {record: form, reset} = useResettableRef<Form>({
+            base_url: '',
+            instance_name: '',
+            prefer_browser_url: true,
+            use_radio_proxy: true,
+            history_keep_days: 7,
+            enable_static_nowplaying: true,
+            analytics: null,
+            always_use_ssl: false,
+            ip_source: IpSources.Local,
+            api_access_control: '*',
+            check_for_updates: true,
+            acme_email: '',
+            acme_domains: '',
+            mail_enabled: false,
+            mail_sender_name: '',
+            mail_sender_email: '',
+            mail_smtp_host: '',
+            mail_smtp_port: null,
+            mail_smtp_secure: false,
+            mail_smtp_username: '',
+            mail_smtp_password: '',
+            avatar_service: 'gravatar',
+            avatar_default_url: '',
+            use_external_album_art_in_apis: false,
+            use_external_album_art_when_processing_media: false,
+            last_fm_api_key: ''
+        });
 
         const {r$} = useAppRegle(
             form,

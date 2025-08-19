@@ -96,6 +96,6 @@ export const {useRegle: useAppRegle} = defineRegleConfig({
 });
 
 export const {
-    useAppScopedRegle,
-    useAppCollectScope
+    useScopedRegle: useAppScopedRegle,
+    useCollectScope: useAppCollectScope
 } = createScopedUseRegle({customUseRegle: useAppRegle});

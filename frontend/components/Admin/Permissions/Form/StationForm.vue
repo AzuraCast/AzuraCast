@@ -47,7 +47,6 @@ import {find, isEmpty, pickBy} from "lodash";
 import PermissionsFormStationRow from "~/components/Admin/Permissions/Form/StationRow.vue";
 import {computed, toRaw} from "vue";
 import Tab from "~/components/Common/Tab.vue";
-import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
 import {ApiAdminRole} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
@@ -56,20 +55,6 @@ const props = defineProps<{
 }>();
 
 const form = defineModel<ApiAdminRole>('form', {required: true});
-
-useValidatedFormTab(
-    form,
-    {
-        permissions: {
-            station: {}
-        }
-    },
-    () => ({
-        permissions: {
-            station: []
-        }
-    })
-);
 
 const remainingStations = computed(() => {
     const usedStations = form.value.permissions?.station ?? [];

@@ -4,7 +4,7 @@
         :loading="loading"
         :title="langTitle"
         :error="error"
-        :disable-save-button="v$.$invalid"
+        :disable-save-button="r$.$invalid"
         @submit="doSubmit"
         @hidden="clearContents"
     >
@@ -32,19 +32,8 @@ import AdminPermissionsGlobalForm from "~/components/Admin/Permissions/Form/Glob
 import AdminPermissionsStationForm from "~/components/Admin/Permissions/Form/StationForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import {ApiAdminRole, GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
-
-export interface PermissionStation {
-    id: number,
-    permissions: string[]
-}
-
-export interface Permission {
-    name: string,
-    permissions: {
-        global: string[],
-        station: PermissionStation[],
-    }
-}
+import {useResettableRef} from "~/functions/useResettableRef.ts";
+import {useAppCollectScope} from "~/vendor/regle.ts";
 
 interface PermissionsEditModalProps extends BaseEditModalProps {
     stations: Record<number, string>,
@@ -57,21 +46,37 @@ const emit = defineEmits<BaseEditModalEmits>();
 
 const $modal = useTemplateRef('$modal');
 
+type Form = ApiAdminRole;
+
+const {record: form, reset: resetFormRef} = useResettableRef<Form>({
+    name: '',
+    permissions: {
+        global: [],
+        station: [],
+    }
+});
+
+const {r$} = useAppCollectScope('admin-permissions');
+
 const {
     loading,
     error,
     isEditMode,
-    v$,
-    form,
     clearContents,
     create,
     edit,
     doSubmit,
     close
-} = useBaseEditModal<ApiAdminRole>(
+} = useBaseEditModal<Form>(
+    form,
     props,
     emit,
-    $modal
+    $modal,
+    () => {
+        resetFormRef();
+        r$.$reset();
+    },
+    async () => (await r$.$validate()).valid,
 );
 
 const {$gettext} = useTranslate();

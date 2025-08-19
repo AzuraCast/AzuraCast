@@ -135,15 +135,13 @@ interface ConfigRow {
 const sections = ref<string[]>([]);
 const config = ref<ConfigRow[]>([]);
 
-const {record: form, reset: resetForm} = useResettableRef(
-    () => {
-        const blankForm = {};
-        forEach(sections.value, (section) => {
-            blankForm[section] = null;
-        });
-        return blankForm;
-    }
-);
+const {record: form, reset: resetForm} = useResettableRef(() => {
+    const blankForm = {};
+    forEach(sections.value, (section) => {
+        blankForm[section] = null;
+    });
+    return blankForm;
+});
 
 const {r$} = useAppRegle(
     form,

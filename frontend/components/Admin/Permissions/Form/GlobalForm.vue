@@ -4,14 +4,14 @@
             <form-group-field
                 id="edit_form_name"
                 class="col-md-12"
-                :field="v$.name"
+                :field="r$.name"
                 :label="$gettext('Role Name')"
             />
 
             <form-group-multi-check
                 id="edit_form_global_permissions"
                 class="col-md-12"
-                :field="v$.permissions.global"
+                :field="r$.permissions.global"
                 :options="globalPermissions"
                 stacked
                 :label="$gettext('Global Permissions')"
@@ -25,11 +25,10 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Tab from "~/components/Common/Tab.vue";
-import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import {required} from "@regle/rules";
-import {DeepPartial} from "utility-types";
 import {ApiAdminRole} from "~/entities/ApiInterfaces.ts";
+import {useAppScopedRegle} from "~/vendor/regle.ts";
 
 defineProps<{
     globalPermissions: SimpleFormOptionInput,
@@ -37,19 +36,18 @@ defineProps<{
 
 const form = defineModel<ApiAdminRole>('form', {required: true});
 
-const {v$} = useValidatedFormTab(
+const {r$} = useAppScopedRegle(
     form,
     {
-        'name': {required},
-        'permissions': {
-            'global': {},
+        name: {required},
+        permissions: {
+            global: {
+                $each: {}
+            }
         }
     },
-    (): DeepPartial<ApiAdminRole> => ({
-        'name': '',
-        'permissions': {
-            'global': [],
-        }
-    })
+    {
+        namespace: 'admin-permissions'
+    }
 );
 </script>

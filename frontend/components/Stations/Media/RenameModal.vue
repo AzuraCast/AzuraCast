@@ -88,6 +88,8 @@ const onShown = () => {
 
 const onHidden = () => {
     resetForm();
+    r$.$reset();
+    
     file.value = null;
 }
 

@@ -93,8 +93,10 @@ const {r$} = useAppRegle(
 const error = ref(null);
 
 const clearContents = () => {
-    error.value = null;
     resetForm();
+    r$.$reset();
+
+    error.value = null;
 };
 
 const $modal = useTemplateRef('$modal');

@@ -154,6 +154,8 @@ const close = () => {
 
 const open = () => {
     resetForm();
+    r$.$reset();
+    
     loading.value = true;
 
     show();

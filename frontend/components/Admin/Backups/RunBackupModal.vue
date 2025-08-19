@@ -166,6 +166,7 @@ const clearContents = () => {
     error.value = null;
 
     resetForm();
+    r$.$reset();
 }
 
 const onHidden = () => {

@@ -100,6 +100,8 @@ const {r$} = useAppRegle(
 
 const clearContents = () => {
     resetForm();
+    r$.$reset();
+
     error.value = null;
     newKey.value = null;
 };

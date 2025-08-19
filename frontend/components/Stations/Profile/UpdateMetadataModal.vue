@@ -88,6 +88,7 @@ const {hide, show: open} = useHasModal($modal);
 
 const onHidden = () => {
     resetForm();
+    r$.$reset();
 }
 
 const $field = useTemplateRef('$field');

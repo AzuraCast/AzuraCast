@@ -112,6 +112,7 @@ const {record: totp, reset: resetTotp} = useResettableRef({
 const clearContents = () => {
     resetForm();
     resetTotp();
+    r$.$reset();
 
     loading.value = false;
     error.value = null;

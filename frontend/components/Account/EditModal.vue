@@ -97,6 +97,8 @@ const {r$} = useAppRegle(
 
 const clearContents = () => {
     resetForm();
+    r$.$reset();
+    
     loading.value = false;
     error.value = null;
 };

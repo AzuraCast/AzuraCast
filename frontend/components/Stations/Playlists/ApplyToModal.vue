@@ -128,6 +128,7 @@ const clearContents = () => {
 
     resetApplyToResults();
     resetForm();
+    r$.$reset();
 };
 
 const {axios} = useAxios();

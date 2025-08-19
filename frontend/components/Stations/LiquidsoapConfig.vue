@@ -167,6 +167,8 @@ const relist = () => {
         sections.value = resp.data.sections;
 
         resetForm();
+        r$.$reset();
+        
         form.value = mergeExisting(form.value, resp.data.contents);
     }).finally(() => {
         isLoading.value = false;

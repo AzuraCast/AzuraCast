@@ -62,6 +62,7 @@ const {r$} = useAppRegle(
 const clearContents = () => {
     cloneUrl.value = null;
     resetForm();
+    r$.$reset();
 };
 
 const {$gettext} = useTranslate();

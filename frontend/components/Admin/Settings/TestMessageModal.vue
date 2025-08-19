@@ -50,7 +50,7 @@ const props = defineProps<{
     testMessageUrl: string,
 }>();
 
-const {record: form, reset: resetForm} = useResettableRef({
+const {record: form, reset: resetFormRef} = useResettableRef({
     emailAddress: null
 });
 
@@ -60,6 +60,11 @@ const {r$} = useAppRegle(
         emailAddress: {required, email}
     }
 );
+
+const resetForm = () => {
+    resetFormRef();
+    r$.$reset();
+}
 
 const $modal = useTemplateRef('$modal');
 const {show: open, hide} = useHasModal($modal);

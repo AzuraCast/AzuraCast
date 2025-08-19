@@ -78,6 +78,7 @@ const {$gettext} = useTranslate();
 
 const create = (stationName: string, stationCloneUrl: string) => {
     resetForm();
+    r$.$reset();
 
     form.value.name = $gettext(
         '%{station} - Copy',

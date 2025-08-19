@@ -201,6 +201,7 @@ const populateForm = (data: typeof form.value) => {
 
 const relist = () => {
     resetForm();
+    r$.$reset();
 
     isLoading.value = true;
 

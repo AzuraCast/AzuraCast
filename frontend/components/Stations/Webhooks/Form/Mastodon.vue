@@ -63,7 +63,7 @@
             />
         </div>
 
-        <common-social-post-fields/>
+        <common-social-post-fields v-model:form="form"/>
     </tab>
 </template>
 
@@ -76,15 +76,32 @@ import FormMarkup from "~/components/Form/FormMarkup.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
-import {storeToRefs} from "pinia";
-import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
+import {WebhookRecordCommon, WebhookRecordMastodon} from "~/components/Stations/Webhooks/Form/form.ts";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {useAppScopedRegle} from "~/vendor/regle.ts";
+import {required} from "@regle/rules";
 
 defineProps<WebhookComponentProps>();
 
-const {r$} = storeToRefs(useStationsWebhooksForm());
+type ThisWebhookRecord = WebhookRecordCommon & WebhookRecordMastodon;
 
-const tabClass = useFormTabClass(computed(() => r$.value.$groups.mastodonWebhookTab));
+const form = defineModel<ThisWebhookRecord>('form', {required: true});
+
+const {r$} = useAppScopedRegle(
+    form,
+    {
+        config: {
+            instance_url: {required},
+            access_token: {required},
+            visibility: {required}
+        }
+    },
+    {
+        namespace: 'station-webhooks'
+    }
+);
+
+const tabClass = useFormTabClass(r$);
 
 const {$gettext} = useTranslate();
 

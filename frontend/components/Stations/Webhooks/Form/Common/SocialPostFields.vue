@@ -62,13 +62,22 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/FormattingInfo.vue";
 import {includes} from "lodash";
-import {useTranslate} from "~/vendor/gettext";
-import {storeToRefs} from "pinia";
-import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
+import {WebhookRecordCommon, WebhookRecordCommonMessages} from "~/components/Stations/Webhooks/Form/form.ts";
+import {useAppScopedRegle} from "~/vendor/regle.ts";
 
-const {$gettext} = useTranslate();
+type FormWithSocialFields = WebhookRecordCommon & {
+    config: WebhookRecordCommonMessages
+};
 
-const {r$, form} = storeToRefs(useStationsWebhooksForm());
+const form = defineModel<FormWithSocialFields>('form', {required: true});
+
+const {r$} = useAppScopedRegle(
+    form,
+    {},
+    {
+        namespace: 'station-webhooks'
+    }
+);
 
 const hasTrigger = (trigger) => {
     return includes(form.value.triggers, trigger);

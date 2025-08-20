@@ -16,11 +16,13 @@
 
         <tabs v-else>
             <basic-info
+                v-model:form="form"
                 :trigger-details="triggerDetails"
             />
 
             <component
                 :is="formComponent"
+                v-model:form="form"
                 :title="typeTitle"
             />
         </tabs>
@@ -40,7 +42,7 @@ import GoogleAnalyticsV4 from "~/components/Stations/Webhooks/Form/GoogleAnalyti
 import MatomoAnalytics from "~/components/Stations/Webhooks/Form/MatomoAnalytics.vue";
 import Mastodon from "~/components/Stations/Webhooks/Form/Mastodon.vue";
 import {BaseEditModalProps, HasRelistEmit, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {Component, computed, nextTick, provide, useTemplateRef} from "vue";
+import {type Component, computed, nextTick, provide, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {ActiveWebhookTypes, WebhookTriggerDetails, WebhookTypeDetails} from "~/entities/Webhooks";
@@ -51,9 +53,9 @@ import RadioReg from "~/components/Stations/Webhooks/Form/RadioReg.vue";
 import GroupMe from "~/components/Stations/Webhooks/Form/GroupMe.vue";
 import Bluesky from "~/components/Stations/Webhooks/Form/Bluesky.vue";
 import {WebhookTypes} from "~/entities/ApiInterfaces.ts";
-import {storeToRefs} from "pinia";
-import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
+import {useStationWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
+import {useAppCollectScope} from "~/vendor/regle.ts";
 
 export interface WebhookComponentProps {
     title: string
@@ -73,9 +75,14 @@ const emit = defineEmits<HasRelistEmit>();
 
 const $modal = useTemplateRef('$modal');
 
-const formStore = useStationsWebhooksForm();
-const {r$, form, type} = storeToRefs(formStore);
-const {$reset: resetForm, setType} = formStore;
+const {form, resetForm, type, setType} = useStationWebhooksForm();
+
+const {r$} = useAppCollectScope('station-webhooks');
+
+const reset = () => {
+    resetForm();
+    r$.$reset();
+}
 
 const webhookComponents: {
     [key in ActiveWebhookTypes]?: Component
@@ -115,7 +122,7 @@ const {
     loading,
     error,
     isEditMode,
-    clearContents,
+    clearContents: originalClearContents,
     create,
     edit,
     doSubmit,
@@ -125,8 +132,8 @@ const {
     props,
     emit,
     $modal,
-    resetForm,
-    async () => (await r$.value.$validate()).valid,
+    reset,
+    async () => (await r$.$validate()).valid,
     {
         populateForm: (data, formRef) => {
             setType(data.type as WebhookTypes | null);
@@ -135,16 +142,14 @@ const {
             void nextTick(() => {
                 formRef.value = mergeExisting(formRef.value, data);
             });
-        },
-        getSubmittableFormData(formRef, isEditModeRef) {
-            const formData = formRef.value;
-            if (!isEditModeRef.value) {
-                formData.type = type.value as string | null;
-            }
-            return formData;
-        },
+        }
     }
 );
+
+const clearContents = () => {
+    setType(null);
+    originalClearContents();
+};
 
 const {$gettext} = useTranslate();
 
@@ -153,7 +158,7 @@ const langTitle = computed(() => {
         return $gettext('Edit Web Hook');
     }
 
-    return form.value.type
+    return type.value
         ? $gettext('Add Web Hook')
         : $gettext('Select Web Hook Type');
 });

@@ -46,17 +46,28 @@ import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {useTranslate} from "~/vendor/gettext.ts";
 import {getTriggers, WebhookTriggerDetails} from "~/entities/Webhooks.ts";
 import {computed} from "vue";
-import {storeToRefs} from "pinia";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
+import {WebhookRecord} from "~/components/Stations/Webhooks/Form/form.ts";
+import {useAppScopedRegle} from "~/vendor/regle.ts";
+import {required} from "@regle/rules";
 
 const props = defineProps<{
     triggerDetails: WebhookTriggerDetails
 }>();
 
-const {r$, form} = storeToRefs(useStationsWebhooksForm());
+const form = defineModel<WebhookRecord>('form', {required: true});
 
-const tabClass = useFormTabClass(computed(() => r$.value.$groups.basicInfoTab));
+const {r$} = useAppScopedRegle(
+    form,
+    {
+        name: {required}
+    },
+    {
+        namespace: 'station-webhooks'
+    }
+);
+
+const tabClass = useFormTabClass(r$);
 
 const triggersForType = computed(() => {
     return (form.value.type) ? getTriggers(form.value.type) : [];

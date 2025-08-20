@@ -21,7 +21,7 @@
             />
         </div>
 
-        <common-social-post-fields/>
+        <common-social-post-fields v-model:form="form"/>
     </tab>
 </template>
 
@@ -30,14 +30,29 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonSocialPostFields from "~/components/Stations/Webhooks/Form/Common/SocialPostFields.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
-import {storeToRefs} from "pinia";
-import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
+import {WebhookRecordBluesky, WebhookRecordCommon} from "~/components/Stations/Webhooks/Form/form.ts";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {computed} from "vue";
+import {useAppScopedRegle} from "~/vendor/regle.ts";
+import {required} from "@regle/rules";
 
 defineProps<WebhookComponentProps>();
 
-const {r$} = storeToRefs(useStationsWebhooksForm());
+type ThisWebhookRecord = WebhookRecordCommon & WebhookRecordBluesky;
 
-const tabClass = useFormTabClass(computed(() => r$.value.$groups.blueskyWebhookTab));
+const form = defineModel<ThisWebhookRecord>('form', {required: true});
+
+const {r$} = useAppScopedRegle(
+    form,
+    {
+        config: {
+            handle: {required},
+            app_password: {required}
+        }
+    },
+    {
+        namespace: 'station-webhooks'
+    }
+);
+
+const tabClass = useFormTabClass(r$);
 </script>

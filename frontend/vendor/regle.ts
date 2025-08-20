@@ -17,9 +17,13 @@ import {useTranslate} from "~/vendor/gettext.ts";
 import validatePassword from "~/functions/validatePassword.ts";
 
 export const isValidPassword = createRule({
-    // eslint-disable-next-line @typescript-eslint/no-base-to-string
-    validator: (value: unknown) => validatePassword(String(value)),
+    validator: (value: string) => validatePassword(value),
     message: 'This password is too common or insecure.',
+});
+
+export const isValidHexColor = createRule({
+    validator: (value: string) => value === '' || /^#?[0-9A-F]{6}$/i.test(value),
+    message: 'This field must be a valid, non-transparent 6-character hex color.',
 });
 
 export const {useRegle: useAppRegle} = defineRegleConfig({
@@ -87,6 +91,10 @@ export const {useRegle: useAppRegle} = defineRegleConfig({
             isValidPassword: withMessage(
                 isValidPassword,
                 $gettext('This password is too common or insecure.')
+            ),
+            isValidHexColor: withMessage(
+                isValidHexColor,
+                $gettext('This field must be a valid, non-transparent 6-character hex color.')
             )
         };
     },

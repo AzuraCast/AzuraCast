@@ -94,14 +94,29 @@ import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/For
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {storeToRefs} from "pinia";
-import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
+import {WebhookRecordCommon, WebhookRecordDiscord} from "~/components/Stations/Webhooks/Form/form.ts";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {computed} from "vue";
+import {isValidHexColor, useAppScopedRegle} from "~/vendor/regle.ts";
+import {required} from "@regle/rules";
 
 defineProps<WebhookComponentProps>();
 
-const {r$} = storeToRefs(useStationsWebhooksForm());
+type ThisWebhookRecord = WebhookRecordCommon & WebhookRecordDiscord;
 
-const tabClass = useFormTabClass(computed(() => r$.value.$groups.discordWebhookTab));
+const form = defineModel<ThisWebhookRecord>('form', {required: true});
+
+const {r$} = useAppScopedRegle(
+    form,
+    {
+        config: {
+            webhook_url: {required},
+            color: {isValidHexColor},
+        }
+    },
+    {
+        namespace: 'station-webhooks'
+    }
+);
+
+const tabClass = useFormTabClass(r$);
 </script>

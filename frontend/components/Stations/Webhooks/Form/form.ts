@@ -1,18 +1,181 @@
-import {useAppRegle} from "~/vendor/regle.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
-import {defineStore} from "pinia";
-import {createVariant} from "@regle/core";
-import {literal, required, withMessage} from "@regle/rules";
 import {WebhookTypes} from "~/entities/ApiInterfaces.ts";
 import {useTranslate} from "~/vendor/gettext.ts";
 import {ref} from "vue";
+import {merge} from "lodash";
 
-export const useStationsWebhooksForm = defineStore(
-    'form-stations-webhooks',
-    () => {
-        const {$gettext} = useTranslate();
+export type WebhookRecordCommon = {
+    name: string,
+    triggers: string[],
+    config: {
+        rate_limit: number,
+    }
+};
 
-        const defaultMessages = {
+export type WebhookRecordCommonMessages = {
+    message: string,
+    message_song_changed_live: string,
+    message_live_connect: string,
+    message_live_disconnect: string,
+    message_station_offline: string,
+    message_station_online: string,
+}
+
+export type WebhookRecordGeneric = {
+    type: WebhookTypes.Generic,
+    config: {
+        webhook_url: string,
+        basic_auth_username: string,
+        basic_auth_password: string,
+        timeout: number,
+    }
+}
+
+export type WebhookRecordBluesky = {
+    type: WebhookTypes.Bluesky,
+    config: {
+        handle: string,
+        app_password: string
+    } & WebhookRecordCommonMessages
+}
+
+export type WebhookRecordDiscord = {
+    type: WebhookTypes.Discord,
+    config: {
+        webhook_url: string,
+        content: string,
+        title: string,
+        description: string,
+        url: string,
+        author: string,
+        thumbnail: string,
+        footer: string,
+        color: string,
+        include_timestamp: boolean
+    }
+}
+
+export type WebhookRecordEmail = {
+    type: WebhookTypes.Email,
+    config: {
+        to: string,
+        subject: string,
+        message: string
+    }
+}
+
+export type WebhookRecordGetMeRadio = {
+    type: WebhookTypes.GetMeRadio,
+    config: {
+        token: string,
+        station_id: string,
+    }
+}
+
+export type WebhookRecordGoogleAnalyticsV4 = {
+    type: WebhookTypes.GoogleAnalyticsV4,
+    config: {
+        api_secret: string,
+        measurement_id: string
+    }
+}
+
+export type WebhookRecordGroupMe = {
+    type: WebhookTypes.GroupMe,
+    config: {
+        bot_id: string,
+        api: string,
+        text: string
+    }
+}
+
+export type WebhookRecordMastodon = {
+    type: WebhookTypes.Mastodon,
+    config: {
+        instance_url: string,
+        access_token: string,
+        visibility: string
+    } & WebhookRecordCommonMessages
+}
+
+export type WebhookRecordMatomoAnalytics = {
+    type: WebhookTypes.MatomoAnalytics,
+    config: {
+        matomo_url: string,
+        site_id: string,
+        token: string
+    }
+}
+
+export type WebhookRecordRadioDe = {
+    type: WebhookTypes.RadioDe,
+    config: {
+        broadcastsubdomain: string,
+        apikey: string
+    }
+}
+
+export type WebhookRecordRadioReg = {
+    type: WebhookTypes.RadioReg,
+    config: {
+        webhookurl: string,
+        apikey: string
+    }
+}
+
+export type WebhookRecordTelegram = {
+    type: WebhookTypes.Telegram,
+    config: {
+        bot_token: string,
+        chat_id: string,
+        api: string,
+        text: string,
+        parse_mode: string
+    }
+}
+
+export type WebhookRecordTuneIn = {
+    type: WebhookTypes.TuneIn,
+    config: {
+        station_id: string,
+        partner_id: string,
+        partner_key: string
+    }
+}
+
+type WebhookHooks =
+    | WebhookRecordGeneric
+    | WebhookRecordBluesky
+    | WebhookRecordDiscord
+    | WebhookRecordEmail
+    | WebhookRecordGetMeRadio
+    | WebhookRecordGoogleAnalyticsV4
+    | WebhookRecordGroupMe
+    | WebhookRecordMastodon
+    | WebhookRecordMatomoAnalytics
+    | WebhookRecordRadioDe
+    | WebhookRecordRadioReg
+    | WebhookRecordTelegram
+    | WebhookRecordTuneIn
+    | { type: null };
+
+export type WebhookRecord = WebhookRecordCommon & WebhookHooks;
+
+export const useStationWebhooksForm = () => {
+    const {$gettext} = useTranslate();
+
+    const type = ref<WebhookTypes | null>(null);
+
+    const {record: form, reset: resetForm} = useResettableRef<WebhookRecord>(() => {
+        const commonConfig: WebhookRecordCommon = {
+            name: null,
+            triggers: [],
+            config: {
+                rate_limit: 0,
+            }
+        };
+
+        const defaultMessages: WebhookRecordCommonMessages = {
             message: $gettext(
                 'Now playing on %{station}: %{title} by %{artist}! Tune in now: %{url}',
                 {
@@ -61,36 +224,38 @@ export const useStationsWebhooksForm = defineStore(
             )
         };
 
-        const hexColor = withMessage(
-            (value: string) => value === '' || /^#?[0-9A-F]{6}$/i.test(value),
-            $gettext('This field must be a valid, non-transparent 6-character hex color.')
-        );
+        let config: WebhookHooks = {
+            type: null
+        };
 
-        const type = ref<WebhookTypes | null>(null);
-
-        const {record: form, reset} = useResettableRef(() => {
-            let customConfig: Record<string, any> = {};
-
-            switch (type.value) {
-                case WebhookTypes.Generic:
-                    customConfig = {
+        switch (type.value) {
+            case WebhookTypes.Generic:
+                config = {
+                    type: WebhookTypes.Generic,
+                    config: {
                         webhook_url: '',
                         basic_auth_username: '',
                         basic_auth_password: '',
-                        timeout: '5',
-                    };
-                    break;
+                        timeout: 5,
+                    }
+                };
+                break;
 
-                case WebhookTypes.Bluesky:
-                    customConfig = {
+            case WebhookTypes.Bluesky:
+                config = {
+                    type: WebhookTypes.Bluesky,
+                    config: {
                         handle: '',
                         app_password: '',
                         ...defaultMessages
-                    };
-                    break;
+                    }
+                };
+                break;
 
-                case WebhookTypes.Discord:
-                    customConfig = {
+            case WebhookTypes.Discord:
+                config = {
+                    type: WebhookTypes.Discord,
+                    config: {
                         webhook_url: '',
                         content: $gettext(
                             'Now playing on %{station}:',
@@ -104,33 +269,45 @@ export const useStationsWebhooksForm = defineStore(
                         footer: $gettext('Powered by AzuraCast'),
                         color: '#2196F3',
                         include_timestamp: true
-                    };
-                    break;
+                    }
+                };
+                break;
 
-                case WebhookTypes.Email:
-                    customConfig = {
+            case WebhookTypes.Email:
+                config = {
+                    type: WebhookTypes.Email,
+                    config: {
                         to: '',
                         subject: '',
                         message: ''
-                    };
-                    break;
+                    }
+                };
+                break;
 
-                case WebhookTypes.GetMeRadio:
-                    customConfig = {
+            case WebhookTypes.GetMeRadio:
+                config = {
+                    type: WebhookTypes.GetMeRadio,
+                    config: {
                         token: '',
                         station_id: '',
-                    };
-                    break;
+                    }
+                };
+                break;
 
-                case WebhookTypes.GoogleAnalyticsV4:
-                    customConfig = {
+            case WebhookTypes.GoogleAnalyticsV4:
+                config = {
+                    type: WebhookTypes.GoogleAnalyticsV4,
+                    config: {
                         api_secret: '',
                         measurement_id: ''
-                    };
-                    break;
+                    }
+                };
+                break;
 
-                case WebhookTypes.GroupMe:
-                    customConfig = {
+            case WebhookTypes.GroupMe:
+                config = {
+                    type: WebhookTypes.GroupMe,
+                    config: {
                         bot_id: '',
                         api: '',
                         text: $gettext(
@@ -141,42 +318,57 @@ export const useStationsWebhooksForm = defineStore(
                                 artist: '{{ now_playing.song.artist }}'
                             }
                         )
-                    };
-                    break;
+                    }
+                };
+                break;
 
-                case WebhookTypes.Mastodon:
-                    customConfig = {
+            case WebhookTypes.Mastodon:
+                config = {
+                    type: WebhookTypes.Mastodon,
+                    config: {
                         instance_url: '',
                         access_token: '',
                         visibility: 'public',
                         ...defaultMessages
-                    };
-                    break;
+                    }
+                };
+                break;
 
-                case WebhookTypes.MatomoAnalytics:
-                    customConfig = {
+            case WebhookTypes.MatomoAnalytics:
+                config = {
+                    type: WebhookTypes.MatomoAnalytics,
+                    config: {
                         matomo_url: '',
                         site_id: '',
                         token: ''
-                    };
-                    break;
+                    }
+                };
+                break;
 
-                case WebhookTypes.RadioDe:
-                    customConfig = {
+            case WebhookTypes.RadioDe:
+                config = {
+                    type: WebhookTypes.RadioDe,
+                    config: {
                         broadcastsubdomain: '',
                         apikey: ''
-                    };
-                    break;
+                    }
+                };
+                break;
 
-                case WebhookTypes.RadioReg:
-                    customConfig = {
+            case WebhookTypes.RadioReg:
+                config = {
+                    type: WebhookTypes.RadioReg,
+                    config: {
                         webhookurl: '',
                         apikey: ''
-                    };
-                    break;
+                    }
+                };
+                break;
 
-                case WebhookTypes.Telegram:
-                    customConfig = {
+            case WebhookTypes.Telegram:
+                config = {
+                    type: WebhookTypes.Telegram,
+                    config: {
                         bot_token: '',
                         chat_id: '',
                         api: '',
@@ -189,235 +381,34 @@ export const useStationsWebhooksForm = defineStore(
                             }
                         ),
                         parse_mode: 'Markdown'
-                    };
-                    break;
+                    }
+                };
+                break;
 
-                case WebhookTypes.TuneIn:
-                    customConfig = {
+            case WebhookTypes.TuneIn:
+                config = {
+                    type: WebhookTypes.TuneIn,
+                    config: {
                         station_id: '',
                         partner_id: '',
                         partner_key: ''
-                    };
-                    break;
-            }
-
-            return {
-                type: null,
-                name: null,
-                triggers: [],
-                config: {
-                    rate_limit: 0,
-                    ...customConfig
-                }
-            };
-        });
-
-        const {r$} = useAppRegle(
-            form,
-            () => {
-                const variant = createVariant(form, 'type', [
-                    {
-                        type: {literal: literal(WebhookTypes.Generic)},
-                        config: {
-                            webhook_url: {required},
-                        }
-                    },
-                    {
-                        type: {literal: literal(WebhookTypes.Bluesky)},
-                        config: {
-                            handle: {required},
-                            app_password: {required}
-                        }
-                    },
-                    {
-                        type: {literal: literal(WebhookTypes.Discord)},
-                        config: {
-                            webhook_url: {required},
-                            color: {hexColor},
-                        }
-                    },
-                    {
-                        type: {literal: literal(WebhookTypes.Email)},
-                        config: {
-                            to: {required},
-                            subject: {required},
-                            message: {required}
-                        }
-                    },
-                    {
-                        type: {literal: literal(WebhookTypes.GetMeRadio)},
-                        config: {
-                            token: {required},
-                            station_id: {required}
-                        }
-                    },
-                    {
-                        type: {literal: literal(WebhookTypes.GoogleAnalyticsV4)},
-                        config: {
-                            api_secret: {required},
-                            measurement_id: {required}
-                        }
-                    },
-                    {
-                        type: {literal: literal(WebhookTypes.GroupMe)},
-                        config: {
-                            bot_id: {required},
-                            text: {required}
-                        }
-                    },
-                    {
-                        type: {literal: literal(WebhookTypes.Mastodon)},
-                        config: {
-                            instance_url: {required},
-                            access_token: {required},
-                            visibility: {required}
-                        }
-                    },
-                    {
-                        type: {literal: literal(WebhookTypes.MatomoAnalytics)},
-                        config: {
-                            matomo_url: {required},
-                            site_id: {required},
-                        }
-                    },
-                    {
-                        type: {literal: literal(WebhookTypes.RadioDe)},
-                        config: {
-                            broadcastsubdomain: {required},
-                            apikey: {required}
-                        }
-                    },
-                    {
-                        type: {literal: literal(WebhookTypes.RadioReg)},
-                        config: {
-                            webhookurl: {required},
-                            apikey: {required}
-                        }
-                    },
-                    {
-                        type: {literal: literal(WebhookTypes.Telegram)},
-                        config: {
-                            bot_token: {required},
-                            chat_id: {required},
-                            text: {required},
-                            parse_mode: {required}
-                        }
-                    },
-                    {
-                        type: {literal: literal(WebhookTypes.TuneIn)},
-                        config: {
-                            station_id: {required},
-                            partner_id: {required},
-                            partner_key: {required},
-                        }
-                    },
-                    {
-                        type: {required}
                     }
-                ]);
-
-                return {
-                    name: {required},
-                    ...variant.value
                 };
-            },
-            {
-                validationGroups: (fields) => ({
-                    basicInfoTab: [
-                        fields.name,
-                        fields.triggers,
-                        fields.config.rate_limit
-                    ],
-                    genericWebhookTab: [
-                        fields.config.webhook_url,
-                        fields.config.basic_auth_username,
-                        fields.config.basic_auth_password,
-                        fields.config.timeout
-                    ],
-                    blueskyWebhookTab: [
-                        fields.config.handle,
-                        fields.config.app_password
-                    ],
-                    discordWebhookTab: [
-                        fields.config.webhook_url,
-                        fields.config.content,
-                        fields.config.title,
-                        fields.config.description,
-                        fields.config.url,
-                        fields.config.author,
-                        fields.config.thumbnail,
-                        fields.config.footer,
-                        fields.config.color,
-                        fields.config.include_timestamp
-                    ],
-                    emailWebhookTab: [
-                        fields.config.to,
-                        fields.config.subject,
-                        fields.config.message
-                    ],
-                    getMeRadioWebhookTab: [
-                        fields.config.token,
-                        fields.config.station_id,
-                    ],
-                    googleAnalyticsV4WebhookTab: [
-                        fields.config.api_secret,
-                        fields.config.measurement_id
-                    ],
-                    groupMeWebhookTab: [
-                        fields.config.bot_id,
-                        fields.config.api,
-                        fields.config.text
-                    ],
-                    mastodonWebhookTab: [
-                        fields.config.instance_url,
-                        fields.config.access_token,
-                        fields.config.visibility,
-                    ],
-                    matomoAnalyticsWebhookTab: [
-                        fields.config.matomo_url,
-                        fields.config.site_id,
-                        fields.config.token
-                    ],
-                    radioDeWebhookTab: [
-                        fields.config.broadcastsubdomain,
-                        fields.config.apikey
-                    ],
-                    radioRegWebhookTab: [
-                        fields.config.webhookurl,
-                        fields.config.apikey
-                    ],
-                    telegramWebhookTab: [
-                        fields.config.bot_token,
-                        fields.config.chat_id,
-                        fields.config.api,
-                        fields.config.text,
-                        fields.config.parse_mode
-                    ],
-                    tuneinWebhookTab: [
-                        fields.config.station_id,
-                        fields.config.partner_id,
-                        fields.config.partner_key
-                    ]
-                })
-            }
-        );
-
-        const $reset = () => {
-            reset();
-            r$.$reset();
+                break;
         }
 
-        const setType = (newType: WebhookTypes): void => {
-            type.value = newType;
-            $reset();
-        }
+        return merge(commonConfig, config);
+    });
 
-        return {
-            type,
-            setType,
-            form,
-            r$,
-            $reset
-        }
+    const setType = (newType: WebhookTypes): void => {
+        type.value = newType;
+        resetForm();
     }
-);
+
+    return {
+        type,
+        setType,
+        form,
+        resetForm
+    }
+};

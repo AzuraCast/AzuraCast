@@ -78,15 +78,30 @@ import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
-import {storeToRefs} from "pinia";
-import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {WebhookRecordCommon, WebhookRecordTelegram} from "~/components/Stations/Webhooks/Form/form.ts";
+import {useAppScopedRegle} from "~/vendor/regle.ts";
+import {required} from "@regle/rules";
 
 defineProps<WebhookComponentProps>();
 
-const {r$} = storeToRefs(useStationsWebhooksForm());
+type ThisWebhookRecord = WebhookRecordCommon & WebhookRecordTelegram;
 
-const tabClass = useFormTabClass(computed(() => r$.value.$groups.telegramWebhookTab));
+const form = defineModel<ThisWebhookRecord>('form', {required: true});
+
+const {r$} = useAppScopedRegle(
+    form,
+    {
+        config: {
+            bot_token: {required},
+            chat_id: {required},
+            text: {required},
+            parse_mode: {required}
+        }
+    },
+    {
+        namespace: 'station-webhooks'
+    }
+);
 
 const {$gettext} = useTranslate();
 

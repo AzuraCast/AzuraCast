@@ -40,14 +40,30 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/FormattingInfo.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
-import {storeToRefs} from "pinia";
-import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
+import {WebhookRecordCommon, WebhookRecordEmail} from "~/components/Stations/Webhooks/Form/form.ts";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {computed} from "vue";
+import {useAppScopedRegle} from "~/vendor/regle.ts";
+import {required} from "@regle/rules";
 
 defineProps<WebhookComponentProps>();
 
-const {r$} = storeToRefs(useStationsWebhooksForm());
+type ThisWebhookRecord = WebhookRecordCommon & WebhookRecordEmail;
 
-const tabClass = useFormTabClass(computed(() => r$.value.$groups.emailWebhookTab));
+const form = defineModel<ThisWebhookRecord>('form', {required: true});
+
+const {r$} = useAppScopedRegle(
+    form,
+    {
+        config: {
+            to: {required},
+            subject: {required},
+            message: {required}
+        }
+    },
+    {
+        namespace: 'station-webhooks'
+    }
+);
+
+const tabClass = useFormTabClass(r$);
 </script>

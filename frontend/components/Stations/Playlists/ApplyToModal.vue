@@ -119,7 +119,8 @@ const {r$} = useAppRegle(
     form,
     {
         copyPlaylist: {}
-    }
+    },
+    {}
 );
 
 const clearContents = () => {

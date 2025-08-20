@@ -126,7 +126,8 @@ const {r$} = useAppRegle(
     {
         name: {required},
         createResponse: {required}
-    }
+    },
+    {}
 );
 
 const clearContents = () => {

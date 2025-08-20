@@ -80,7 +80,8 @@ const {r$} = useAppRegle(
     {
         title: {required},
         artist: {}
-    }
+    },
+    {}
 );
 
 const $modal = useTemplateRef('$modal');

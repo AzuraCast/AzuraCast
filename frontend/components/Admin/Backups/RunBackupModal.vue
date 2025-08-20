@@ -142,7 +142,8 @@ const {r$} = useAppRegle(
         storage_location: {},
         path: {},
         exclude_media: {}
-    }
+    },
+    {}
 );
 
 const {axios} = useAxios();

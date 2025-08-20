@@ -117,7 +117,8 @@ const {r$} = useAppRegle(
         public_custom_css: {},
         public_custom_js: {},
         offline_text: {}
-    }
+    },
+    {}
 );
 
 const {$gettext} = useTranslate();

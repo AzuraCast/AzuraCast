@@ -92,5 +92,6 @@ const {r$} = useAppRegle(
             isValidPassword
         }
     },
+    {}
 );
 </script>

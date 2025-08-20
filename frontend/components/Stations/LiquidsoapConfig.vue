@@ -111,7 +111,7 @@ import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {forEach} from "lodash";
 import mergeExisting from "~/functions/mergeExisting";
 import InfoCard from "~/components/Common/InfoCard.vue";
-import {computed, onMounted, ref, useTemplateRef} from "vue";
+import {onMounted, ref, useTemplateRef} from "vue";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
@@ -145,13 +145,14 @@ const {record: form, reset: resetForm} = useResettableRef(() => {
 
 const {r$} = useAppRegle(
     form,
-    computed(() => {
+    () => {
         const validations = {};
         forEach(sections.value, (section) => {
             validations[section] = {};
         });
         return validations;
-    })
+    },
+    {}
 );
 
 const isLoading = ref(true);

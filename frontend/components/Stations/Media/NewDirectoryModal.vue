@@ -66,7 +66,8 @@ const {r$} = useAppRegle(
     form,
     {
         newDirectory: {required}
-    }
+    },
+    {}
 );
 
 const $modal = useTemplateRef('$modal');

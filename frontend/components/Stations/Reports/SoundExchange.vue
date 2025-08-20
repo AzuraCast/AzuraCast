@@ -133,6 +133,7 @@ const {r$} = useAppRegle(
         start_date: {required},
         end_date: {required},
         fetch_isrc: {}
-    }
+    },
+    {}
 );
 </script>

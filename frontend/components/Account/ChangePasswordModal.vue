@@ -87,7 +87,8 @@ const {r$} = useAppRegle(
                 $gettext('Must match new password.')
             )
         }
-    }
+    },
+    {}
 );
 
 const error = ref(null);

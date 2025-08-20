@@ -92,7 +92,8 @@ const {r$} = useAppRegle(
         email: {required, email},
         locale: {required},
         show_24_hour_time: {}
-    }
+    },
+    {}
 );
 
 const clearContents = () => {

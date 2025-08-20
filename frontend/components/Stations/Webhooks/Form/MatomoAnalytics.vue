@@ -39,6 +39,7 @@ import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vu
 import {WebhookRecordCommon, WebhookRecordMatomoAnalytics} from "~/components/Stations/Webhooks/Form/form.ts";
 import {useAppScopedRegle} from "~/vendor/regle.ts";
 import {required} from "@regle/rules";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 
 defineProps<WebhookComponentProps>();
 
@@ -58,4 +59,6 @@ const {r$} = useAppScopedRegle(
         namespace: 'station-webhooks'
     }
 );
+
+const tabClass = useFormTabClass(r$);
 </script>

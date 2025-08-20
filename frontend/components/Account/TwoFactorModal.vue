@@ -100,7 +100,8 @@ const {r$} = useAppRegle(
             required,
             minLength: minLength(6)
         }
-    }
+    },
+    {}
 );
 
 const {record: totp, reset: resetTotp} = useResettableRef({

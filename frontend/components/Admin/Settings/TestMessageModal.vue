@@ -58,7 +58,8 @@ const {r$} = useAppRegle(
     form,
     {
         emailAddress: {required, email}
-    }
+    },
+    {}
 );
 
 const resetForm = () => {

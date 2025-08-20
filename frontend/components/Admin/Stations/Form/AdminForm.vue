@@ -102,7 +102,7 @@ const props = defineProps<{
 
 const storageLocationApiUrl = getApiUrl('/admin/stations/storage-locations');
 
-const {r$, form} = storeToRefs(useAdminStationsForm());
+const {r$} = storeToRefs(useAdminStationsForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.adminTab));
 

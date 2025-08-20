@@ -162,16 +162,8 @@ const {record: form, reset: resetForm} = useResettableRef({
 
 const {r$} = useAppRegle(
     form,
-    {
-        public_theme: {},
-        hide_album_art: {},
-        homepage_redirect_url: {},
-        default_album_art_url: {},
-        hide_product_name: {},
-        public_custom_css: {},
-        public_custom_js: {},
-        internal_custom_css: {}
-    }
+    {},
+    {}
 );
 
 const {$gettext} = useTranslate();

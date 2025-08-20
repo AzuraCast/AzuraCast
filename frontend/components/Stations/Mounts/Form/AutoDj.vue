@@ -94,6 +94,6 @@ const formatOptions = [
 ];
 
 const formatSupportsBitrateOptions = computed(() => {
-    return (form.value.autodj_format !== 'flac');
+    return (form.value.autodj_format !== StreamFormats.Flac);
 });
 </script>

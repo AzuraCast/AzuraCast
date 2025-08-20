@@ -68,7 +68,8 @@ const {r$} = useAppRegle(
         name: {required},
         description: {},
         clone: {}
-    }
+    },
+    {}
 );
 
 const $modal = useTemplateRef('$modal');

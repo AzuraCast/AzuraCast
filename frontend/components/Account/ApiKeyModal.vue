@@ -95,7 +95,8 @@ const {r$} = useAppRegle(
     form,
     {
         comment: {required}
-    }
+    },
+    {}
 );
 
 const clearContents = () => {

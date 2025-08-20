@@ -122,7 +122,8 @@ const {r$} = useAppRegle(
         backup_keep_copies: {},
         backup_storage_location: {},
         backup_format: {},
-    }
+    },
+    {}
 );
 
 const formatOptions = computed(() => {

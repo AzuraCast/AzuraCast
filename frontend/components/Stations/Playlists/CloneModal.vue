@@ -56,7 +56,8 @@ const {r$} = useAppRegle(
     {
         name: {required},
         clone: {}
-    }
+    },
+    {}
 );
 
 const clearContents = () => {

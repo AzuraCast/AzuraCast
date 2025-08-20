@@ -7,14 +7,14 @@
             <form-group-field
                 id="form_edit_title"
                 class="col-md-6"
-                :field="v$.title"
+                :field="r$.title"
                 :label="$gettext('Episode')"
             />
 
             <form-group-field
                 id="form_edit_link"
                 class="col-md-6"
-                :field="v$.link"
+                :field="r$.link"
                 :label="$gettext('Website')"
                 :description="$gettext('Typically a website with content about the episode.')"
             />
@@ -22,7 +22,7 @@
             <form-group-field
                 id="form_edit_description"
                 class="col-md-12"
-                :field="v$.description"
+                :field="r$.description"
                 input-type="textarea"
                 :label="$gettext('Description')"
                 :description="$gettext('The description of the episode. The typical maximum amount of text allowed for this is 4000 characters.')"
@@ -31,7 +31,7 @@
             <form-group-field
                 id="form_edit_publish_at"
                 class="col-md-12"
-                :field="v$.publish_at"
+                :field="r$.publish_at"
                 :label="$gettext('Publish At')"
                 :description="$gettext('The date and time when the episode should be published.')"
             >
@@ -47,7 +47,7 @@
             <form-group-checkbox
                 id="form_edit_explicit"
                 class="col-md-12"
-                :field="v$.explicit"
+                :field="r$.explicit"
                 :label="$gettext('Contains explicit content')"
                 :description="$gettext('Indicates the presence of explicit content (explicit language or adult content). Apple Podcasts displays an Explicit parental advisory graphic for your episode if turned on. Episodes containing explicit material aren\'t available in some Apple Podcasts territories.')"
             />
@@ -55,7 +55,7 @@
             <form-group-field
                 id="form_edit_season_number"
                 class="col-md-6"
-                :field="v$.season_number"
+                :field="r$.season_number"
                 input-type="number"
                 :input-attrs="{ step: '1' }"
                 :label="$gettext('Season Number')"
@@ -66,7 +66,7 @@
             <form-group-field
                 id="form_edit_episode_number"
                 class="col-md-6"
-                :field="v$.episode_number"
+                :field="r$.episode_number"
                 input-type="number"
                 :input-attrs="{ step: '1' }"
                 :label="$gettext('Episode Number')"
@@ -80,33 +80,14 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
-import {required} from "@regle/rules";
 import Tab from "~/components/Common/Tab.vue";
 import PublishAtFields from "~/components/Stations/Podcasts/Common/PublishAtFields.vue";
-import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
+import {storeToRefs} from "pinia";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {computed} from "vue";
+import {useStationsPodcastEpisodesForm} from "~/components/Stations/Podcasts/EpisodeForm/form.ts";
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
+const {r$} = storeToRefs(useStationsPodcastEpisodesForm());
 
-const {v$, tabClass} = useValidatedFormTab(
-    form,
-    {
-        title: {required},
-        link: {},
-        description: {required},
-        publish_at: {},
-        explicit: {},
-        season_number: {},
-        episode_number: {}
-    },
-    {
-        title: '',
-        link: '',
-        description: '',
-        publish_at: null,
-        explicit: false,
-        season_number: null,
-        episode_number: null
-    }
-);
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.basicInfoTab));
 </script>

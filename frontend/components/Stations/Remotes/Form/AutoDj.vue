@@ -97,39 +97,19 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
-import {ApiGenericForm, StreamFormats} from "~/entities/ApiInterfaces.ts";
+import {StreamFormats} from "~/entities/ApiInterfaces.ts";
+import {storeToRefs} from "pinia";
+import {useStationsRemotesForm} from "~/components/Stations/Remotes/Form/form.ts";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
+const {r$, form} = storeToRefs(useStationsRemotesForm());
+
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.autoDjTab));
 
 const {maxBitrate} = useAzuraCastStation();
-
-const {v$, tabClass} = useValidatedFormTab(
-    form,
-    {
-        enable_autodj: {},
-        autodj_format: {},
-        autodj_bitrate: {},
-        source_port: {},
-        source_mount: {},
-        source_username: {},
-        source_password: {},
-        is_public: {},
-    },
-    {
-        enable_autodj: false,
-        autodj_format: StreamFormats.Mp3,
-        autodj_bitrate: 128,
-        source_port: null,
-        source_mount: null,
-        source_username: null,
-        source_password: null,
-        is_public: false
-    }
-);
 
 const formatOptions = [
     {

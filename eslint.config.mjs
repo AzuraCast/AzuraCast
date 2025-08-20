@@ -12,6 +12,10 @@ export default defineConfigWithVueTs(
                 varsIgnorePattern: "^_",
             }],
 
+            "@typescript-eslint/unbound-method": ["error", {
+                varsIgnorePattern: "\$reset"
+            }],
+
             "@typescript-eslint/no-redundant-type-constituents": "off",
             "@typescript-eslint/no-explicit-any": "off",
 

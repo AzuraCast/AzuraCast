@@ -7,14 +7,14 @@
             <form-group-field
                 id="form_config_broadcastsubdomain"
                 class="col-md-12"
-                :field="v$.config.broadcastsubdomain"
+                :field="r$.config.broadcastsubdomain"
                 :label="$gettext('Radio.de Broadcast Subdomain')"
             />
 
             <form-group-field
                 id="form_config_apikey"
                 class="col-md-6"
-                :field="v$.config.apikey"
+                :field="r$.config.apikey"
                 :label="$gettext('Radio.de API Key')"
             />
         </div>
@@ -23,29 +23,16 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
-import {required} from "@regle/rules";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
-import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
+import {storeToRefs} from "pinia";
+import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {computed} from "vue";
 
 defineProps<WebhookComponentProps>();
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
+const {r$} = storeToRefs(useStationsWebhooksForm());
 
-const {v$, tabClass} = useValidatedFormTab(
-    form,
-    {
-        config: {
-            broadcastsubdomain: {required},
-            apikey: {required}
-        }
-    },
-    () => ({
-        config: {
-            broadcastsubdomain: '',
-            apikey: ''
-        }
-    })
-);
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.radioDeWebhookTab));
 </script>

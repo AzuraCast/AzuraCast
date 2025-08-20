@@ -7,7 +7,7 @@
             <form-group-field
                 id="form_config_to"
                 class="col-md-12"
-                :field="v$.config.to"
+                :field="r$.config.to"
                 :label="$gettext('Message Recipient(s)')"
                 :description="$gettext('E-mail addresses can be separated by commas.')"
             />
@@ -19,14 +19,14 @@
             <form-group-field
                 id="form_config_subject"
                 class="col-md-12"
-                :field="v$.config.subject"
+                :field="r$.config.subject"
                 :label="$gettext('Message Subject')"
             />
 
             <form-group-field
                 id="form_config_message"
                 class="col-md-12"
-                :field="v$.config.message"
+                :field="r$.config.message"
                 :label="$gettext('Message Body')"
                 input-type="textarea"
                 :input-attrs="{rows: 4}"
@@ -38,31 +38,16 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/FormattingInfo.vue";
-import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
-import {required} from "@regle/rules";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
-import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
+import {storeToRefs} from "pinia";
+import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {computed} from "vue";
 
 defineProps<WebhookComponentProps>();
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
+const {r$} = storeToRefs(useStationsWebhooksForm());
 
-const {v$, tabClass} = useValidatedFormTab(
-    form,
-    {
-        config: {
-            to: {required},
-            subject: {required},
-            message: {required}
-        }
-    },
-    () => ({
-        config: {
-            to: '',
-            subject: '',
-            message: ''
-        }
-    })
-);
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.emailWebhookTab));
 </script>

@@ -25,7 +25,7 @@ export const useAdminStorageLocationsForm = defineStore(
             s3Endpoint: null,
             s3UsePathStyle: false,
             sftpHost: null,
-            sftpPort: '22',
+            sftpPort: 22,
             sftpUsername: null,
             sftpPassword: null,
             sftpPrivateKey: null,
@@ -68,10 +68,7 @@ export const useAdminStorageLocationsForm = defineStore(
                     }
                 ]);
 
-                return {
-
-                    ...variant.value
-                };
+                return variant.value;
             },
             {
                 validationGroups: (fields) => ({

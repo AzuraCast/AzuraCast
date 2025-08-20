@@ -7,7 +7,7 @@
             <form-group-field
                 id="form_edit_name"
                 class="col-md-12"
-                :field="v$.name"
+                :field="r$.name"
                 :label="$gettext('Web Hook Name')"
                 :description="$gettext('Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.')"
             />
@@ -17,7 +17,7 @@
                 v-if="triggersForType.length > 0"
                 id="edit_form_triggers"
                 class="col-md-7"
-                :field="v$.triggers"
+                :field="r$.triggers"
                 :options="triggerOptions"
                 stacked
                 :label="$gettext('Web Hook Triggers')"
@@ -28,7 +28,7 @@
             <form-group-select
                 id="form_config_rate_limit"
                 class="col-md-5"
-                :field="v$.config.rate_limit"
+                :field="r$.config.rate_limit"
                 :options="rateLimitOptions"
                 :label="$gettext('Only Trigger Once Every...')"
                 :description="$gettext('Use this setting to limit the rate of web hooks sent by the system. This can be useful to avoid rate limits on third party services.')"
@@ -41,42 +41,25 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {map, pick} from "lodash";
-import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
-import {required} from "@regle/rules";
 import Tab from "~/components/Common/Tab.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {useTranslate} from "~/vendor/gettext.ts";
 import {getTriggers, WebhookTriggerDetails} from "~/entities/Webhooks.ts";
 import {computed} from "vue";
-import {ApiGenericForm, WebhookTypes} from "~/entities/ApiInterfaces.ts";
+import {storeToRefs} from "pinia";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
 
 const props = defineProps<{
-    type: WebhookTypes | null
     triggerDetails: WebhookTriggerDetails
 }>();
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
+const {r$, form} = storeToRefs(useStationsWebhooksForm());
 
-const {v$, tabClass} = useValidatedFormTab(
-    form,
-    {
-        name: {required},
-        triggers: {},
-        config: {
-            rate_limit: {}
-        }
-    },
-    {
-        name: null,
-        triggers: [],
-        config: {
-            rate_limit: 0
-        }
-    }
-);
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.basicInfoTab));
 
 const triggersForType = computed(() => {
-    return (props.type) ? getTriggers(props.type) : [];
+    return (form.value.type) ? getTriggers(form.value.type) : [];
 });
 
 const triggerOptions = computed(() => {

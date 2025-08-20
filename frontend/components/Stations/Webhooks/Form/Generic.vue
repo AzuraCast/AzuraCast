@@ -39,7 +39,7 @@
             <form-group-field
                 id="form_config_webhook_url"
                 class="col-md-12"
-                :field="v$.config.webhook_url"
+                :field="r$.config.webhook_url"
                 input-type="url"
                 :label="$gettext('Web Hook URL')"
                 :description="$gettext('The URL that will receive the POST messages any time an event is triggered.')"
@@ -48,7 +48,7 @@
             <form-group-field
                 id="form_config_basic_auth_username"
                 class="col-md-6"
-                :field="v$.config.basic_auth_username"
+                :field="r$.config.basic_auth_username"
                 :label="$gettext('Optional: HTTP Basic Authentication Username')"
                 :description="$gettext('If your web hook requires HTTP basic authentication, provide the username here.')"
             />
@@ -56,7 +56,7 @@
             <form-group-field
                 id="form_config_basic_auth_password"
                 class="col-md-6"
-                :field="v$.config.basic_auth_password"
+                :field="r$.config.basic_auth_password"
                 :label="$gettext('Optional: HTTP Basic Authentication Password')"
                 :description="$gettext('If your web hook requires HTTP basic authentication, provide the password here.')"
             />
@@ -64,7 +64,7 @@
             <form-group-field
                 id="form_config_timeout"
                 class="col-md-6"
-                :field="v$.config.timeout"
+                :field="r$.config.timeout"
                 input-type="number"
                 :input-attrs="{ min: '0.0', max: '600.0', step: '0.1' }"
                 :label="$gettext('Optional: Request Timeout (Seconds)')"
@@ -77,33 +77,16 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
-import {useValidatedFormTab} from "~/functions/useValidatedFormTab.ts";
-import {required} from "@regle/rules";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
-import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
+import {storeToRefs} from "pinia";
+import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {computed} from "vue";
 
 defineProps<WebhookComponentProps>();
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
+const {r$} = storeToRefs(useStationsWebhooksForm());
 
-const {v$, tabClass} = useValidatedFormTab(
-    form,
-    {
-        config: {
-            webhook_url: {required},
-            basic_auth_username: {},
-            basic_auth_password: {},
-            timeout: {},
-        }
-    },
-    () => ({
-        config: {
-            webhook_url: '',
-            basic_auth_username: '',
-            basic_auth_password: '',
-            timeout: '5',
-        }
-    })
-);
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.genericWebhookTab));
 </script>

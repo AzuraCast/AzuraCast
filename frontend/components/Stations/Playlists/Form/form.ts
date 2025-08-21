@@ -2,20 +2,35 @@ import {useAppScopedRegle} from "~/vendor/regle.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {defineStore} from "pinia";
 import {required} from "@regle/rules";
+import {
+    PlaylistOrders,
+    PlaylistRemoteTypes,
+    PlaylistSources,
+    PlaylistTypes,
+    StationPlaylist
+} from "~/entities/ApiInterfaces.ts";
+
+export type StationPlaylistsRecord = Required<
+    Omit<
+        StationPlaylist,
+        | 'id'
+        | 'podcasts'
+    >
+>
 
 export const useStationsPlaylistsForm = defineStore(
     'form-stations-playlists',
     () => {
-        const {record: form, reset} = useResettableRef({
+        const {record: form, reset} = useResettableRef<StationPlaylistsRecord>({
             name: '',
             is_enabled: true,
             include_in_on_demand: false,
             weight: 3,
-            type: 'default',
-            source: 'songs',
-            order: 'shuffle',
+            type: PlaylistTypes.Standard,
+            source: PlaylistSources.Songs,
+            order: PlaylistOrders.Shuffle,
             remote_url: null,
-            remote_type: 'stream',
+            remote_type: PlaylistRemoteTypes.Stream,
             remote_buffer: 0,
             is_jingle: false,
             play_per_songs: 0,

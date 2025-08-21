@@ -14,7 +14,12 @@ import {
 import {defineStore} from "pinia";
 import {numeric, required, url} from "@regle/rules";
 
-export type StationRecord = Omit<Required<Station>, 'id'> & {
+export type StationRecord = Omit<
+    Required<Station>,
+    | 'id'
+    | 'is_streamer_live'
+    | 'branding_config'
+> & {
     frontend_config: Required<StationFrontendConfiguration>,
     backend_config: Omit<
         Required<StationBackendConfiguration>,

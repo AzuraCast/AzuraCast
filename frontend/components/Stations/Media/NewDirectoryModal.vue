@@ -58,8 +58,12 @@ const props = defineProps<{
 
 const emit = defineEmits<HasRelistEmit>();
 
-const {record: form, reset: resetForm} = useResettableRef({
-    newDirectory: null
+type NewDirectoryRecord = {
+    newDirectory: string
+}
+
+const {record: form, reset: resetForm} = useResettableRef<NewDirectoryRecord>({
+    newDirectory: ''
 });
 
 const {r$} = useAppRegle(

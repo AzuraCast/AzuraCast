@@ -57,8 +57,12 @@ const emit = defineEmits<HasRelistEmit>();
 
 const file = ref(null);
 
-const {record: form, reset: resetForm} = useResettableRef({
-    newPath: null
+type RenameModalRecord = {
+    newPath: string
+}
+
+const {record: form, reset: resetForm} = useResettableRef<RenameModalRecord>({
+    newPath: ''
 });
 
 const {r$} = useAppRegle(

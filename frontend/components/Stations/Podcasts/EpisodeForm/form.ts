@@ -7,7 +7,20 @@ import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
 
 export type PodcastEpisodeRecord = Omit<
     Required<ApiPodcastEpisode>,
-    'id'
+    | 'id'
+    | 'links'
+    | 'media'
+    | 'created_at'
+    | 'art'
+    | 'storage_location_id'
+    | 'description_short'
+    | 'language_name'
+    | 'has_custom_art'
+    | 'art_updated_at'
+    | 'is_published'
+    | 'has_media'
+    | 'playlist_media_id'
+    | 'playlist_media'
 > & {
     artwork_file: UploadResponseBody | null,
     media_file: UploadResponseBody | null,

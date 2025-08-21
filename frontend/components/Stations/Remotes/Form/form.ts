@@ -6,7 +6,10 @@ import {RemoteAdapters, StationRemote, StreamFormats} from "~/entities/ApiInterf
 
 export type StationRemotesRecord = Omit<
     Required<StationRemote>,
-    'id'
+    | 'id'
+    | 'listeners_unique'
+    | 'listeners_total'
+    | 'is_editable'
 >
 
 export const useStationsRemotesForm = defineStore(

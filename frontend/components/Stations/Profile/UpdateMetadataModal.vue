@@ -70,9 +70,14 @@ import {useAppRegle} from "~/vendor/regle.ts";
 
 const updateMetadataUrl = getStationApiUrl('/nowplaying/update');
 
-const {record: form, reset: resetForm} = useResettableRef({
-    title: null,
-    artist: null
+type UpdateMetadataRecord = {
+    title: string,
+    artist: string
+}
+
+const {record: form, reset: resetForm} = useResettableRef<UpdateMetadataRecord>({
+    title: '',
+    artist: ''
 });
 
 const {r$} = useAppRegle(

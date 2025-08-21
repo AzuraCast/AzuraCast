@@ -50,8 +50,12 @@ const props = defineProps<{
     testMessageUrl: string,
 }>();
 
-const {record: form, reset: resetFormRef} = useResettableRef({
-    emailAddress: null
+type TestMessageRecord = {
+    emailAddress: string
+}
+
+const {record: form, reset: resetFormRef} = useResettableRef<TestMessageRecord>({
+    emailAddress: ''
 });
 
 const {r$} = useAppRegle(

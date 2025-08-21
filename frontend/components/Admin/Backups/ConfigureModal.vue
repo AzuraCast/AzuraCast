@@ -94,6 +94,7 @@ import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
+import {Settings} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     settingsUrl: string,
@@ -104,7 +105,19 @@ const emit = defineEmits<HasRelistEmit>();
 
 const loading = ref(true);
 
-const {record: form, reset: resetForm} = useResettableRef({
+type BackupSettingsRow = Required<
+    Pick<
+        Settings,
+        | 'backup_enabled'
+        | 'backup_time_code'
+        | 'backup_exclude_media'
+        | 'backup_keep_copies'
+        | 'backup_storage_location'
+        | 'backup_format'
+    >
+>
+
+const {record: form, reset: resetForm} = useResettableRef<BackupSettingsRow>({
     backup_enabled: false,
     backup_time_code: null,
     backup_exclude_media: null,
@@ -115,14 +128,7 @@ const {record: form, reset: resetForm} = useResettableRef({
 
 const {r$} = useAppRegle(
     form,
-    {
-        backup_enabled: {},
-        backup_time_code: {},
-        backup_exclude_media: {},
-        backup_keep_copies: {},
-        backup_storage_location: {},
-        backup_format: {},
-    },
+    {},
     {}
 );
 

@@ -4,10 +4,12 @@ import {defineStore} from "pinia";
 import {required, requiredIf} from "@regle/rules";
 import {ref} from "vue";
 import {StationStreamer} from "~/entities/ApiInterfaces.ts";
+import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
 
 export type StationStreamersRecord = Omit<
     Required<StationStreamer>,
-    'id'
+    | 'id'
+    | 'reactivate_at'
 > & {
     artwork_file: UploadResponseBody | null
 }

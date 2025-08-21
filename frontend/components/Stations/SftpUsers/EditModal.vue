@@ -74,6 +74,7 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
 import {required, requiredIf} from "@regle/rules";
+import {SftpUser} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<BaseEditModalProps>();
 
@@ -81,7 +82,11 @@ const emit = defineEmits<BaseEditModalEmits>();
 
 const $modal = useTemplateRef('$modal');
 
-const {record: form, reset: resetFormRef} = useResettableRef(
+type SftpUsersRecord = Required<
+    Omit<SftpUser, 'id'>
+>
+
+const {record: form, reset: resetFormRef} = useResettableRef<SftpUsersRecord>(
     {
         username: '',
         password: null,

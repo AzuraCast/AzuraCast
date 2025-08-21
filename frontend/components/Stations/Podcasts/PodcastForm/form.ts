@@ -2,11 +2,20 @@ import {useAppRegle} from "~/vendor/regle.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {defineStore} from "pinia";
 import {required} from "@regle/rules";
+import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
+import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
+
+export type PodcastRecord = Omit<
+    Required<ApiPodcast>,
+    'id'
+> & {
+    artwork_file: UploadResponseBody | null
+}
 
 export const useStationsPodcastsForm = defineStore(
     'form-stations-podcasts',
     () => {
-        const {record: form, reset} = useResettableRef({
+        const {record: form, reset} = useResettableRef<PodcastRecord>({
             title: '',
             link: '',
             description: '',

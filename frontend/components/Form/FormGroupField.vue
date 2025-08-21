@@ -78,12 +78,14 @@
     </form-group>
 </template>
 
-<script setup lang="ts" generic="T extends string | number | null | undefined = string | number | null | undefined">
+<script setup lang="ts">
 import {computed, nextTick, onMounted, reactive, Reactive, useTemplateRef, WritableComputedRef} from "vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
 import {FormFieldEmits, FormFieldProps, useFormField, ValidatedField} from "~/components/Form/useFormField";
 import ValidationError from "~/components/Form/ValidationError.vue";
+
+type T = string | number | null;
 
 interface FormGroupFieldProps extends FormFieldProps<T>, FormLabelParentProps {
     id: string,

@@ -3,6 +3,14 @@ import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {defineStore} from "pinia";
 import {required, requiredIf} from "@regle/rules";
 import {ref} from "vue";
+import {StationStreamer} from "~/entities/ApiInterfaces.ts";
+
+export type StationStreamersRecord = Omit<
+    Required<StationStreamer>,
+    'id'
+> & {
+    artwork_file: UploadResponseBody | null
+}
 
 export const useStationsStreamersForm = defineStore(
     'form-stations-streamers',
@@ -13,7 +21,7 @@ export const useStationsStreamersForm = defineStore(
             isEditMode.value = newValue;
         };
 
-        const {record: form, reset} = useResettableRef({
+        const {record: form, reset} = useResettableRef<StationStreamersRecord>({
             streamer_username: null,
             streamer_password: null,
             display_name: null,

@@ -2,12 +2,20 @@ import {useAppRegle} from "~/vendor/regle.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {defineStore} from "pinia";
 import {required} from "@regle/rules";
-import {StreamFormats} from "~/entities/ApiInterfaces.ts";
+import {StationMount, StreamFormats} from "~/entities/ApiInterfaces.ts";
+import {DeepRequired} from "utility-types";
+import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
+
+export type StationMountRecord = Omit<
+    DeepRequired<StationMount>, 'id' | 'listeners_unique' | 'listeners_total'
+> & {
+    intro_file: UploadResponseBody | null
+};
 
 export const useStationsMountsForm = defineStore(
     'form-stations-mounts',
     () => {
-        const {record: form, reset} = useResettableRef({
+        const {record: form, reset} = useResettableRef<StationMountRecord>({
             name: null,
             display_name: null,
             is_visible_on_public_pages: true,

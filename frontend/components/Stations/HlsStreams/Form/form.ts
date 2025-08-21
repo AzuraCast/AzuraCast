@@ -1,13 +1,18 @@
 import {useAppRegle} from "~/vendor/regle.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
-import {HlsStreamProfiles} from "~/entities/ApiInterfaces.ts";
+import {HlsStreamProfiles, StationHlsStream} from "~/entities/ApiInterfaces.ts";
 import {defineStore} from "pinia";
 import {required} from "@regle/rules";
+
+export type HlsStreamRecord = Omit<
+    Required<StationHlsStream>,
+    'id'
+>;
 
 export const useStationsHlsStreamsForm = defineStore(
     'form-stations-hls-streams',
     () => {
-        const {record: form, reset} = useResettableRef({
+        const {record: form, reset} = useResettableRef<HlsStreamRecord>({
             name: '',
             format: HlsStreamProfiles.AacLowComplexity,
             bitrate: 128

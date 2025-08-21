@@ -6,15 +6,30 @@ import {
     CrossfadeModes,
     FrontendAdapters,
     MasterMePresets,
+    Station,
+    StationBackendConfiguration,
+    StationFrontendConfiguration,
     StreamFormats
 } from "~/entities/ApiInterfaces.ts";
 import {defineStore} from "pinia";
 import {numeric, required, url} from "@regle/rules";
 
+export type StationRecord = Omit<Required<Station>, 'id'> & {
+    frontend_config: Required<StationFrontendConfiguration>,
+    backend_config: Omit<
+        Required<StationBackendConfiguration>,
+        | 'stereo_tool_configuration_path' | 'custom_config_top' | 'custom_config_pre_playlists'
+        | 'custom_config_pre_live' | 'custom_config_pre_fade' | 'custom_config' | 'custom_config_bottom'
+    >,
+    media_storage_location: string | number,
+    recordings_storage_location: string | number,
+    podcasts_storage_location: string | number,
+}
+
 export const useAdminStationsForm = defineStore(
     'form-admin-stations',
     () => {
-        const {record: form, reset} = useResettableRef({
+        const {record: form, reset} = useResettableRef<StationRecord>({
             name: '',
             description: '',
             genre: '',
@@ -31,8 +46,10 @@ export const useAdminStationsForm = defineStore(
                 sc_user_id: '',
                 source_pw: '',
                 admin_pw: '',
-                port: '',
-                max_listeners: '',
+                relay_pw: '',
+                streamer_pw: '',
+                port: null,
+                max_listeners: null,
                 custom_config: '',
                 banned_ips: '',
                 banned_countries: [],
@@ -51,7 +68,7 @@ export const useAdminStationsForm = defineStore(
                 stereo_tool_license_key: '',
                 enable_auto_cue: false,
                 enable_replaygain_metadata: false,
-                telnet_port: '',
+                telnet_port: null,
                 autodj_queue_length: 3,
                 use_manual_autodj: false,
                 charset: 'UTF-8',
@@ -67,7 +84,7 @@ export const useAdminStationsForm = defineStore(
                 record_streams_bitrate: 128,
                 dj_buffer: 5,
                 live_broadcast_text: 'Live Broadcast',
-                dj_port: '',
+                dj_port: null,
                 dj_mount_point: '/',
             },
             enable_hls: false,

@@ -51,13 +51,15 @@
     </form-group>
 </template>
 
-<script setup lang="ts" generic="T extends boolean | null | undefined = boolean | null | undefined">
+<script setup lang="ts">
 import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import {FormFieldEmits, FormFieldProps, useFormField} from "~/components/Form/useFormField";
 import {useSlots} from "vue";
 import FormCheckbox from "~/components/Form/FormCheckbox.vue";
 import ValidationError from "~/components/Form/ValidationError.vue";
+
+type T = boolean | null;
 
 interface FormGroupCheckboxProps extends FormFieldProps<T>, FormLabelParentProps {
     id: string,

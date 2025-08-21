@@ -2,12 +2,17 @@ import {useAppRegle} from "~/vendor/regle.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {defineStore} from "pinia";
 import {required} from "@regle/rules";
-import {RemoteAdapters, StreamFormats} from "~/entities/ApiInterfaces.ts";
+import {RemoteAdapters, StationRemote, StreamFormats} from "~/entities/ApiInterfaces.ts";
+
+export type StationRemotesRecord = Omit<
+    Required<StationRemote>,
+    'id'
+>
 
 export const useStationsRemotesForm = defineStore(
     'form-stations-remotes',
     () => {
-        const {record: form, reset} = useResettableRef({
+        const {record: form, reset} = useResettableRef<StationRemotesRecord>({
             display_name: null,
             type: RemoteAdapters.Icecast,
             custom_listen_url: null,

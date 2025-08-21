@@ -6,7 +6,7 @@
                 :id="'edit_form_custom_'+field.short_name"
                 :key="field.short_name"
                 class="col-md-6"
-                :field="r$.custom_fields[field.short_name]"
+                :field="r$.custom_fields[field.short_name] as ValidatedField<string | null>"
                 :label="field.name"
             />
         </div>
@@ -19,6 +19,7 @@ import {CustomField} from "~/entities/ApiInterfaces.ts";
 import Tab from "~/components/Common/Tab.vue";
 import {storeToRefs} from "pinia";
 import {useStationsMediaForm} from "~/components/Stations/Media/Form/form.ts";
+import {ValidatedField} from "~/components/Form/useFormField.ts";
 
 defineProps<{
     customFields: CustomField[],

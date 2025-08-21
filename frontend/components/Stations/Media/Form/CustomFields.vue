@@ -6,7 +6,7 @@
                 :id="'edit_form_custom_'+field.short_name"
                 :key="field.short_name"
                 class="col-md-6"
-                :field="r$.custom_fields[field.short_name] as ValidatedField<string | null>"
+                :field="r$.custom_fields[field.short_name] as ValidatedField<string>"
                 :label="field.name"
             />
         </div>

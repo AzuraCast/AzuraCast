@@ -43,6 +43,7 @@ import {map} from "lodash";
 import {NestedFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import {storeToRefs} from "pinia";
 import {useStationsPodcastsForm} from "~/components/Stations/Podcasts/PodcastForm/form.ts";
+import {ApiPodcastCategory} from "~/entities/ApiInterfaces.ts";
 
 interface PodcastEditModalProps extends BaseEditModalProps {
     languageOptions: NestedFormOptionInput,
@@ -91,7 +92,7 @@ const {
         populateForm: (data, formRef) => {
             data.categories = map(
                 data.categories,
-                (row) => row.category
+                (row) => (row as ApiPodcastCategory).category
             );
 
             record.value = mergeExisting(record.value, data as typeof record.value);

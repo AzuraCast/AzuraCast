@@ -323,15 +323,15 @@ const isBackendEnabled = computed(() => {
 });
 
 const isStereoToolEnabled = computed(() => {
-    return form.value?.backend_config?.audio_processing_method === AudioProcessingMethods.StereoTool;
+    return form.value?.backend_config?.audio_processing_method === (AudioProcessingMethods.StereoTool as string);
 });
 
 const isMasterMeEnabled = computed(() => {
-    return form.value?.backend_config?.audio_processing_method === AudioProcessingMethods.MasterMe;
+    return form.value?.backend_config?.audio_processing_method === (AudioProcessingMethods.MasterMe as string);
 });
 
 const isPostProcessingEnabled = computed(() => {
-    return form.value?.backend_config?.audio_processing_method !== AudioProcessingMethods.None;
+    return form.value?.backend_config?.audio_processing_method !== (AudioProcessingMethods.None as string);
 });
 
 const isAutoCueEnabled = computed(() => {

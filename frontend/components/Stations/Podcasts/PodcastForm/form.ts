@@ -19,6 +19,7 @@ export type PodcastRecord = Omit<
     | 'language_name'
     | 'guid'
     | 'is_published'
+    | 'categories'
 > & {
     categories: string[]
     artwork_file: UploadResponseBody | null

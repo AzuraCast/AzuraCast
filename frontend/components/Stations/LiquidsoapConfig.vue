@@ -67,7 +67,7 @@
                         <form-group-field
                             v-if="row.is_field"
                             :id="'form_edit_'+row.field_name"
-                            :field="r$[row.field_name]"
+                            :field="r$[row.field_name] as ValidatedField<string>"
                         >
                             <template #default="{id, model}">
                                 <codemirror-textarea
@@ -121,6 +121,7 @@ import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";
 import ImportModal from "~/components/Stations/LiquidsoapConfig/ImportModal.vue";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
+import {ValidatedField} from "~/components/Form/useFormField.ts";
 
 const settingsUrl = getStationApiUrl('/liquidsoap-config');
 const exportUrl = getStationApiUrl('/liquidsoap-config/export');

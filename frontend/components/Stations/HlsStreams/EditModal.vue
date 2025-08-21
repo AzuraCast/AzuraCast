@@ -4,12 +4,12 @@
         :loading="loading"
         :title="langTitle"
         :error="error"
-        :disable-save-button="v$.$invalid"
+        :disable-save-button="r$.$invalid"
         @submit="doSubmit"
         @hidden="clearContents"
     >
         <tabs content-class="mt-3">
-            <form-basic-info v-model:form="form" />
+            <form-basic-info/>
         </tabs>
     </modal-form>
 </template>
@@ -22,6 +22,8 @@ import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
+import {storeToRefs} from "pinia";
+import {useStationsHlsStreamsForm} from "~/components/Stations/HlsStreams/Form/form.ts";
 
 const props = defineProps<BaseEditModalProps>();
 
@@ -33,23 +35,26 @@ const $modal = useTemplateRef('$modal');
 
 const {notifySuccess} = useNotify();
 
+const formStore = useStationsHlsStreamsForm();
+const {form, r$} = storeToRefs(formStore);
+const {$reset: resetForm} = formStore;
+
 const {
     loading,
     error,
     isEditMode,
-    form,
-    v$,
     clearContents,
     create,
     edit,
     doSubmit,
     close
 } = useBaseEditModal(
+    form,
     props,
     emit,
     $modal,
-    {},
-    {},
+    resetForm,
+    async () => (await r$.value.$validate()).valid,
     {
         onSubmitSuccess: () => {
             notifySuccess();

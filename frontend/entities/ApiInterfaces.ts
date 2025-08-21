@@ -967,8 +967,7 @@ export type ApiPodcast = HasLinks & {
   description?: string;
   description_short?: string;
   is_enabled?: boolean;
-  /** An array containing podcast-specific branding configuration */
-  branding_config?: any[];
+  branding_config?: PodcastBrandingConfiguration;
   language?: string;
   language_name?: string;
   author?: string;
@@ -1496,6 +1495,11 @@ export interface ApiListenerLocation {
   lon?: number | null;
 }
 
+export interface PodcastBrandingConfiguration {
+  public_custom_html?: string | null;
+  enable_op3_prefix?: boolean;
+}
+
 export type Relay = HasAutoIncrementId & {
   /** @example "https://custom-url.example.com" */
   base_url?: string;
@@ -2006,7 +2010,7 @@ export type StationMount = HasAutoIncrementId & {
   autodj_bitrate?: number | null;
   /** @example "https://custom-listen-url.example.com/stream.mp3" */
   custom_listen_url?: string | null;
-  frontend_config?: any[];
+  frontend_config?: string | null;
   /**
    * The most recent number of unique listeners.
    * @example 10
@@ -2202,6 +2206,8 @@ export type StorageLocation = HasAutoIncrementId & {
    * @example "https://your-region.digitaloceanspaces.com"
    */
   s3Endpoint?: string | null;
+  /** @example false */
+  s3UsePathStyle?: boolean | null;
   /**
    * The optional Dropbox App Key.
    * @example ""

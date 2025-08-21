@@ -9,7 +9,7 @@
         <form @submit.prevent="doSendTest">
             <form-group-field
                 id="email_address"
-                :field="v$.emailAddress"
+                :field="r$.emailAddress"
                 autofocus
                 :label="$gettext('E-mail Address')"
             />
@@ -25,7 +25,7 @@
             <button
                 type="button"
                 class="btn"
-                :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
+                :class="(r$.$invalid) ? 'btn-danger' : 'btn-primary'"
                 @click="doSendTest"
             >
                 {{ $gettext('Send Test Message') }}
@@ -35,31 +35,41 @@
 </template>
 
 <script setup lang="ts">
-import {email, required} from "@vuelidate/validators";
+import {email, required} from "@regle/rules";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {useTemplateRef} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Modal from "~/components/Common/Modal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
+import {useResettableRef} from "~/functions/useResettableRef.ts";
+import {useAppRegle} from "~/vendor/regle.ts";
 
 const props = defineProps<{
     testMessageUrl: string,
 }>();
 
-const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
+type TestMessageRecord = {
+    emailAddress: string
+}
+
+const {record: form, reset: resetFormRef} = useResettableRef<TestMessageRecord>({
+    emailAddress: ''
+});
+
+const {r$} = useAppRegle(
+    form,
     {
         emailAddress: {required, email}
     },
-    {
-        emailAddress: null
-    },
-    {
-        $stopPropagation: true
-    }
+    {}
 );
+
+const resetForm = () => {
+    resetFormRef();
+    r$.$reset();
+}
 
 const $modal = useTemplateRef('$modal');
 const {show: open, hide} = useHasModal($modal);
@@ -68,16 +78,21 @@ const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 const {$gettext} = useTranslate();
 
-const doSendTest = () => {
-    ifValid(() => {
-        void axios.post(props.testMessageUrl, {
+const doSendTest = async () => {
+    const {valid} = await r$.$validate();
+    if (!valid) {
+        return;
+    }
+
+    try {
+        await axios.post(props.testMessageUrl, {
             'email': form.value.emailAddress
-        }).then(() => {
-            notifySuccess($gettext('Test message sent.'));
-        }).finally(() => {
-            hide();
         });
-    });
+
+        notifySuccess($gettext('Test message sent.'));
+    } finally {
+        hide();
+    }
 };
 
 defineExpose({

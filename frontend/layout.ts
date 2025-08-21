@@ -4,6 +4,7 @@ import {installTranslate} from "~/vendor/gettext";
 import {installCurrentVueInstance} from "~/vendor/vueInstance";
 import {AzuraCastConstants, setGlobalProps} from "~/vendor/azuracast";
 import installTanstack from "~/vendor/tanstack.ts";
+import {createPinia} from "pinia";
 
 export default function initApp(
     appConfig: Component = {},
@@ -18,6 +19,10 @@ export default function initApp(
 
     /* TanStack Query */
     installTanstack(vueApp);
+
+    /* Pinia */
+    const pinia = createPinia();
+    vueApp.use(pinia);
 
     (<any>window).vueComponent = async (el: string, globalProps: AzuraCastConstants): Promise<void> => {
         setGlobalProps(globalProps);

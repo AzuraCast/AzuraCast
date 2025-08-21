@@ -7,7 +7,7 @@
             <form-group-multi-check
                 id="edit_form_frontend_type"
                 class="col-md-12"
-                :field="v$.frontend_type"
+                :field="r$.frontend_type"
                 :options="frontendTypeOptions"
                 stacked
                 radio
@@ -24,14 +24,14 @@
                 <form-group-field
                     id="edit_form_frontend_sc_license_id"
                     class="col-md-6"
-                    :field="v$.frontend_config.sc_license_id"
+                    :field="r$.frontend_config.sc_license_id"
                     :label="$gettext('Shoutcast License ID')"
                 />
 
                 <form-group-field
                     id="edit_form_frontend_sc_user_id"
                     class="col-md-6"
-                    :field="v$.frontend_config.sc_user_id"
+                    :field="r$.frontend_config.sc_user_id"
                     :label="$gettext('Shoutcast User ID')"
                 />
             </div>
@@ -40,7 +40,7 @@
                 <form-group-field
                     id="edit_form_frontend_source_pw"
                     class="col-md-6"
-                    :field="v$.frontend_config.source_pw"
+                    :field="r$.frontend_config.source_pw"
                     :label="$gettext('Customize Source Password')"
                     :description="$gettext('Leave blank to automatically generate a new password.')"
                 />
@@ -48,7 +48,7 @@
                 <form-group-field
                     id="edit_form_frontend_admin_pw"
                     class="col-md-6"
-                    :field="v$.frontend_config.admin_pw"
+                    :field="r$.frontend_config.admin_pw"
                     :label="$gettext('Customize Administrator Password')"
                     :description="$gettext('Leave blank to automatically generate a new password.')"
                 />
@@ -66,7 +66,7 @@
                     <form-group-field
                         id="edit_form_frontend_port"
                         class="col-md-6"
-                        :field="v$.frontend_config.port"
+                        :field="r$.frontend_config.port"
                         input-type="number"
                         :input-attrs="{min: '0'}"
                         :label="$gettext('Customize Broadcasting Port')"
@@ -76,7 +76,7 @@
                     <form-group-field
                         id="edit_form_max_listeners"
                         class="col-md-6"
-                        :field="v$.frontend_config.max_listeners"
+                        :field="r$.frontend_config.max_listeners"
                         :label="$gettext('Maximum Listeners')"
                         :description="$gettext('Maximum number of total listeners across all streams. Leave blank to use the default.')"
                     />
@@ -86,7 +86,7 @@
                     <div class="col-md-5">
                         <form-group-field
                             id="edit_form_frontend_banned_ips"
-                            :field="v$.frontend_config.banned_ips"
+                            :field="r$.frontend_config.banned_ips"
                             input-type="textarea"
                             :input-attrs="{class: 'text-preformatted'}"
                             :label="$gettext('Banned IP Addresses')"
@@ -95,7 +95,7 @@
 
                         <form-group-field
                             id="edit_form_frontend_allowed_ips"
-                            :field="v$.frontend_config.allowed_ips"
+                            :field="r$.frontend_config.allowed_ips"
                             input-type="textarea"
                             :input-attrs="{class: 'text-preformatted'}"
                             :label="$gettext('Allowed IP Addresses')"
@@ -104,7 +104,7 @@
 
                         <form-group-field
                             id="edit_form_frontend_banned_user_agents"
-                            :field="v$.frontend_config.banned_user_agents"
+                            :field="r$.frontend_config.banned_user_agents"
                             input-type="textarea"
                             :input-attrs="{class: 'text-preformatted'}"
                             :label="$gettext('Banned User Agents')"
@@ -115,7 +115,7 @@
                     <div class="col-md-7">
                         <form-group-select
                             id="edit_form_frontend_banned_countries"
-                            :field="v$.frontend_config.banned_countries"
+                            :field="r$.frontend_config.banned_countries"
                             :options="countries"
                             multiple
                             :label="$gettext('Banned Countries')"
@@ -154,7 +154,7 @@
                     <form-group-field
                         id="edit_form_frontend_custom_config"
                         class="col-md-12"
-                        :field="v$.frontend_config.custom_config"
+                        :field="r$.frontend_config.custom_config"
                         input-type="textarea"
                         :input-attrs="{class: 'text-preformatted', spellcheck: 'false', 'max-rows': 25, rows: 5}"
                         :label="$gettext('Custom Configuration')"
@@ -172,11 +172,12 @@ import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {numeric, required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
-import {ApiGenericForm, FrontendAdapters} from "~/entities/ApiInterfaces.ts";
+import {FrontendAdapters} from "~/entities/ApiInterfaces.ts";
+import {storeToRefs} from "pinia";
+import {useAdminStationsForm} from "~/components/Admin/Stations/Form/form.ts";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 
 const props = defineProps<{
     isRsasInstalled: boolean,
@@ -184,43 +185,9 @@ const props = defineProps<{
     countries: Record<string, string>,
 }>();
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
+const {r$, form} = storeToRefs(useAdminStationsForm());
 
-const {v$, tabClass} = useVuelidateOnFormTab(
-    form,
-    {
-        frontend_type: {required},
-        frontend_config: {
-            sc_license_id: {},
-            sc_user_id: {},
-            source_pw: {},
-            admin_pw: {},
-            port: {numeric},
-            max_listeners: {},
-            custom_config: {},
-            banned_ips: {},
-            banned_countries: {},
-            allowed_ips: {},
-            banned_user_agents: {}
-        },
-    },
-    () => ({
-        frontend_type: FrontendAdapters.Icecast,
-        frontend_config: {
-            sc_license_id: '',
-            sc_user_id: '',
-            source_pw: '',
-            admin_pw: '',
-            port: '',
-            max_listeners: '',
-            custom_config: '',
-            banned_ips: '',
-            banned_countries: [],
-            allowed_ips: '',
-            banned_user_agents: '',
-        },
-    })
-);
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.frontendTab));
 
 const {$gettext} = useTranslate();
 

@@ -7441,9 +7441,7 @@ components:
             is_enabled:
               type: boolean
             branding_config:
-              description: 'An array containing podcast-specific branding configuration'
-              type: array
-              items: {  }
+              $ref: '#/components/schemas/PodcastBrandingConfiguration'
             language:
               type: string
             language_name:
@@ -8326,6 +8324,14 @@ components:
           example: '-97.000000'
           nullable: true
       type: object
+    PodcastBrandingConfiguration:
+      properties:
+        public_custom_html:
+          type: string
+          nullable: true
+        enable_op3_prefix:
+          type: boolean
+      type: object
     Relay:
       type: object
       allOf:
@@ -8971,8 +8977,8 @@ components:
               example: 'https://custom-listen-url.example.com/stream.mp3'
               nullable: true
             frontend_config:
-              type: array
-              items: {  }
+              type: string
+              nullable: true
             listeners_unique:
               description: 'The most recent number of unique listeners.'
               type: integer
@@ -9269,6 +9275,10 @@ components:
               description: 'The optional custom S3 endpoint S3 adapters.'
               type: string
               example: 'https://your-region.digitaloceanspaces.com'
+              nullable: true
+            s3UsePathStyle:
+              type: boolean
+              example: false
               nullable: true
             dropboxAppKey:
               description: 'The optional Dropbox App Key.'

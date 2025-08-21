@@ -33,10 +33,9 @@
             <div class="card-body">
                 <loading :loading="isLoading">
                     <tabs content-class="mt-3">
-                        <settings-general-tab v-model:form="form" />
-                        <settings-security-privacy-tab v-model:form="form" />
+                        <settings-general-tab/>
+                        <settings-security-privacy-tab/>
                         <settings-services-tab
-                            v-model:form="form"
                             :release-channel="releaseChannel"
                             :test-message-url="testMessageUrl"
                             :acme-url="acmeUrl"
@@ -49,7 +48,7 @@
                 <button
                     type="submit"
                     class="btn btn-lg"
-                    :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
+                    :class="(r$.$invalid) ? 'btn-danger' : 'btn-primary'"
                 >
                     <slot name="submitButtonName">
                         {{ $gettext('Save Changes') }}
@@ -69,9 +68,10 @@ import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Loading from "~/components/Common/Loading.vue";
 import Tabs from "~/components/Common/Tabs.vue";
+import {useAdminSettingsForm} from "~/components/Admin/Settings/form.ts";
+import {storeToRefs} from "pinia";
 
 export interface SettingsProps {
     apiUrl: string,
@@ -95,7 +95,9 @@ const emit = defineEmits<{
     (e: 'saved'): void
 }>();
 
-const {form, resetForm, v$, ifValid} = useVuelidateOnForm();
+const formStore = useAdminSettingsForm();
+const {form, r$} = storeToRefs(formStore);
+const {$reset: resetForm} = formStore;
 
 const isLoading = ref(true);
 const error = ref(null);
@@ -122,18 +124,20 @@ onMounted(relist);
 const {notifySuccess} = useNotify();
 const {$gettext} = useTranslate();
 
-const submit = () => {
-    ifValid(() => {
-        void axios({
-            method: 'PUT',
-            url: props.apiUrl,
-            data: form.value
-        }).then(() => {
-            emit('saved');
+const submit = async () => {
+    const {valid} = await r$.value.$validate();
+    if (!valid) {
+        return;
+    }
 
-            notifySuccess($gettext('Changes saved.'));
-            relist();
-        });
+    await axios({
+        method: 'PUT',
+        url: props.apiUrl,
+        data: form.value
     });
+
+    emit('saved');
+    notifySuccess($gettext('Changes saved.'));
+    relist();
 }
 </script>

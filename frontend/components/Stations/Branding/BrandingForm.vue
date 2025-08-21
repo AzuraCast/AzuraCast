@@ -26,7 +26,7 @@
                         <form-group-field
                             id="form_edit_offline_text"
                             class="col-md-6"
-                            :field="v$.offline_text"
+                            :field="r$.offline_text"
                             :label="$gettext('Station Offline Display Text')"
                             :description="$gettext('This will be shown on public player pages if the station is offline. Leave blank to default to a localized version of &quot;%{message}&quot;.', {message: $gettext('Station Offline')})"
                         />
@@ -34,7 +34,7 @@
                         <form-group-field
                             id="form_edit_default_album_art_url"
                             class="col-md-6"
-                            :field="v$.default_album_art_url"
+                            :field="r$.default_album_art_url"
                             :label="$gettext('Default Album Art URL')"
                             :description="$gettext('If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.')"
                         />
@@ -42,7 +42,7 @@
                         <form-group-field
                             id="edit_form_public_custom_css"
                             class="col-md-12"
-                            :field="v$.public_custom_css"
+                            :field="r$.public_custom_css"
                             :label="$gettext('Custom CSS for Public Pages')"
                             :description="$gettext('This CSS will be applied to the station public pages.')"
                         >
@@ -58,7 +58,7 @@
                         <form-group-field
                             id="edit_form_public_custom_js"
                             class="col-md-12"
-                            :field="v$.public_custom_js"
+                            :field="r$.public_custom_js"
                             :label="$gettext('Custom JS for Public Pages')"
                             :description="$gettext('This javascript code will be applied to the station public pages.')"
                         >
@@ -92,8 +92,9 @@ import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Loading from "~/components/Common/Loading.vue";
+import {useResettableRef} from "~/functions/useResettableRef.ts";
+import {useAppRegle} from "~/vendor/regle.ts";
 
 const props = defineProps<{
     profileEditUrl: string
@@ -102,19 +103,22 @@ const props = defineProps<{
 const isLoading = ref(true);
 const error = ref(null);
 
-const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
+const {record: form, reset: resetForm} = useResettableRef({
+    default_album_art_url: "",
+    public_custom_css: "",
+    public_custom_js: "",
+    offline_text: ""
+});
+
+const {r$} = useAppRegle(
+    form,
     {
         default_album_art_url: {},
         public_custom_css: {},
         public_custom_js: {},
         offline_text: {}
     },
-    {
-        default_album_art_url: "",
-        public_custom_css: "",
-        public_custom_js: "",
-        offline_text: ""
-    }
+    {}
 );
 
 const {$gettext} = useTranslate();
@@ -126,6 +130,7 @@ const populateForm = (data: typeof form.value) => {
 
 const relist = () => {
     resetForm();
+    r$.$reset();
 
     isLoading.value = true;
 
@@ -139,18 +144,21 @@ onMounted(relist);
 
 const {notifySuccess} = useNotify();
 
-const submit = () => {
-    ifValid(() => {
-        void axios({
-            method: 'PUT',
-            url: props.profileEditUrl,
-            data: {
-                branding_config: form.value
-            }
-        }).then(() => {
-            notifySuccess();
-            relist();
-        });
+const submit = async () => {
+    const {valid} = await r$.$validate();
+    if (!valid) {
+        return;
+    }
+
+    await axios({
+        method: 'PUT',
+        url: props.profileEditUrl,
+        data: {
+            branding_config: form.value
+        }
     });
+
+    notifySuccess();
+    relist();
 }
 </script>

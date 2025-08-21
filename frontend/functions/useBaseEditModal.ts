@@ -2,15 +2,8 @@ import {computed, ComputedRef, nextTick, Ref, ref, ShallowRef, toRef} from "vue"
 import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
-import {
-    useVuelidateOnForm,
-    VuelidateBlankForm,
-    VuelidateRef,
-    VuelidateValidations
-} from "~/functions/useVuelidateOnForm";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {AxiosError, AxiosRequestConfig} from "axios";
-import {GlobalConfig} from "@vuelidate/core";
 import {ApiError, ApiGenericForm, ApiStatus} from "~/entities/ApiInterfaces.ts";
 import {useMutation, UseMutationOptions, UseMutationReturnType} from "@tanstack/vue-query";
 
@@ -24,53 +17,49 @@ export interface HasRelistEmit {
     (e: 'relist'): void
 }
 
-type AxiosMutateResponse = ApiStatus & Record<string, any>
+type Form = ApiGenericForm
+
+type AxiosMutateResponse = ApiStatus & Form
 
 type MutationOptions = UseMutationOptions<
     AxiosMutateResponse,
     AxiosError<ApiError>,
-    ApiGenericForm
+    Form
 >
 
 type MutationReturn = UseMutationReturnType<
     AxiosMutateResponse,
     AxiosError<ApiError>,
-    ApiGenericForm,
+    Form,
     unknown
 >
 
 export type BaseEditModalEmits = HasRelistEmit;
 
-export interface BaseEditModalOptions<T extends ApiGenericForm = ApiGenericForm> extends GlobalConfig {
-    resetForm?(originalResetForm: () => void): void,
-
-    clearContents?(resetForm: () => void): void,
-
-    populateForm?(data: Partial<T>, form: Ref<T>): void,
-
-    getSubmittableFormData?(form: Ref<T>, isEditMode: ComputedRef<boolean>): ApiGenericForm,
-
-    buildSubmitRequest?(data: ApiGenericForm): AxiosRequestConfig,
-
-    onSubmitSuccess?(
+export interface BaseEditModalOptions<T extends Form = Form> {
+    clearContents?: (resetForm: () => void) => void,
+    populateForm?: (data: Partial<T>, form: Ref<T>) => void,
+    getSubmittableFormData?: (form: Ref<T>, isEditMode: ComputedRef<boolean>) => Form,
+    buildSubmitRequest?: (data: Form) => AxiosRequestConfig,
+    onSubmitSuccess?: (
         data: AxiosMutateResponse,
-        variables: ApiGenericForm,
+        variables: Form,
         context: unknown
-    ): void,
-
-    onSubmitError?(
+    ) => void,
+    onSubmitError?: (
         error: AxiosError<ApiError, any>,
-        variables: ApiGenericForm,
+        variables: Form,
         context: unknown
-    ): void,
+    ) => void,
 }
 
-export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
+export function useBaseEditModal<T extends Form = Form>(
+    form: Ref<T>,
     props: BaseEditModalProps,
     emit: BaseEditModalEmits,
     $modal: Readonly<ShallowRef<ModalFormTemplateRef | null>>,
-    validations?: VuelidateValidations<T>,
-    blankForm?: VuelidateBlankForm<T>,
+    resetForm: () => void,
+    validateForm?: () => Promise<boolean>,
     options: BaseEditModalOptions<T> = {},
     mutationOptions: Partial<MutationOptions> = {},
 ): {
@@ -78,10 +67,7 @@ export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
     error: Ref<any>,
     editUrl: Ref<string | null>,
     isEditMode: ComputedRef<boolean>,
-    form: Ref<T>,
-    v$: VuelidateRef<T>,
     mutation: MutationReturn,
-    resetForm: () => void,
     clearContents: () => void,
     create: () => void,
     edit: (recordUrl: string) => void,
@@ -90,32 +76,13 @@ export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
 } {
     const createUrl = toRef(props, 'createUrl');
 
-    const loading = ref<boolean>(false);
+    const fetchLoading = ref<boolean>(false);
     const error = ref<any>(null);
     const editUrl = ref<string | null>(null);
 
     const isEditMode: ComputedRef<boolean> = computed(() => {
         return editUrl.value !== null;
     });
-
-    const {
-        form,
-        v$,
-        resetForm: originalResetForm
-    } = useVuelidateOnForm(
-        validations,
-        blankForm,
-        options
-    );
-
-    const resetForm = (): void => {
-        if (typeof options.resetForm === 'function') {
-            options.resetForm(originalResetForm);
-            return;
-        }
-
-        originalResetForm();
-    };
 
     const clearContents = (): void => {
         if (typeof options.clearContents === 'function') {
@@ -125,7 +92,7 @@ export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
 
         resetForm();
 
-        loading.value = false;
+        fetchLoading.value = false;
         error.value = null;
         editUrl.value = null;
     };
@@ -153,7 +120,7 @@ export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
     const {axios} = useAxios();
 
     const doLoad = (): void => {
-        loading.value = true;
+        fetchLoading.value = true;
 
         if (!editUrl.value) {
             throw new Error("No edit URL!");
@@ -164,7 +131,7 @@ export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
         }).catch(() => {
             close();
         }).finally(() => {
-            loading.value = false;
+            fetchLoading.value = false;
         });
     };
 
@@ -233,33 +200,34 @@ export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
             error.value = err.response?.data?.message;
         },
         ...mutationOptions
-    })
+    });
 
     const doSubmit = (): void => {
-        v$.value.$touch();
-        v$.value.$validate().then((isValid: boolean) => {
-            if (!isValid) {
-                return;
-            }
+        if (typeof validateForm === 'function') {
+            void validateForm().then((valid) => {
+                if (!valid) {
+                    return;
+                }
 
+                error.value = null;
+                mutation.mutate(getSubmittableFormData());
+            });
+        } else {
             error.value = null;
             mutation.mutate(getSubmittableFormData());
-        });
+        }
     };
 
-    const isLoading = computed(
-        () => loading.value || mutation.isPending.value
+    const loading = computed(
+        () => fetchLoading.value || mutation.isPending.value
     );
 
     return {
-        loading: isLoading,
+        loading,
         error,
         editUrl,
         isEditMode,
-        form,
-        v$,
         mutation,
-        resetForm,
         clearContents,
         create,
         edit,

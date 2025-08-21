@@ -17,7 +17,7 @@
                 <form-group-checkbox
                     id="edit_form_enable_requests"
                     class="col-md-12"
-                    :field="v$.enable_requests"
+                    :field="r$.enable_requests"
                     :label="$gettext('Allow Song Requests')"
                     :description="$gettext('Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable.')"
                 />
@@ -30,7 +30,7 @@
                 <form-group-field
                     id="edit_form_request_delay"
                     class="col-md-6"
-                    :field="v$.request_delay"
+                    :field="r$.request_delay"
                     input-type="number"
                     :input-attrs="{ min: '0', max: '1440' }"
                     :label="$gettext('Request Minimum Delay (Minutes)')"
@@ -40,7 +40,7 @@
                 <form-group-field
                     id="edit_form_request_threshold"
                     class="col-md-6"
-                    :field="v$.request_threshold"
+                    :field="r$.request_threshold"
                     input-type="number"
                     :input-attrs="{ min: '0', max: '1440' }"
                     :label="$gettext('Request Last Played Threshold (Minutes)')"
@@ -58,26 +58,15 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import BackendDisabled from "~/components/Admin/Stations/Form/Common/BackendDisabled.vue";
 import {computed} from "vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {numeric} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
-import {ApiGenericForm, BackendAdapters} from "~/entities/ApiInterfaces.ts";
+import {BackendAdapters} from "~/entities/ApiInterfaces.ts";
+import {storeToRefs} from "pinia";
+import {useAdminStationsForm} from "~/components/Admin/Stations/Form/form.ts";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
+const {r$, form} = storeToRefs(useAdminStationsForm());
 
-const {v$, tabClass} = useVuelidateOnFormTab(
-    form,
-    {
-        enable_requests: {},
-        request_delay: {numeric},
-        request_threshold: {numeric},
-    },
-    {
-        enable_requests: false,
-        request_delay: 5,
-        request_threshold: 15,
-    }
-);
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.requestsTab));
 
 const isBackendEnabled = computed(() => {
     return form.value.backend_type !== BackendAdapters.None;

@@ -84,7 +84,7 @@ import {ref, shallowRef, useTemplateRef, watch} from "vue";
 import {IconPlayCircle, IconStop} from "~/components/Common/icons";
 import {reactiveComputed} from "@vueuse/core";
 import {RegionParams} from "wavesurfer.js/dist/plugins/regions.js";
-import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
+import {StationMediaRecord} from "~/components/Stations/Media/Form/form.ts";
 
 const props = defineProps<{
     duration: number,
@@ -93,7 +93,7 @@ const props = defineProps<{
     waveformCacheUrl?: string,
 }>();
 
-const form = defineModel<ApiGenericForm>('form', {
+const form = defineModel<StationMediaRecord>('form', {
     required: true
 });
 
@@ -108,7 +108,13 @@ const onReady = (duration: number) => {
 };
 
 const cueValues = reactiveComputed(() => {
-    const formValue = form.value?.extra_metadata ?? {};
+    const formValue = form.value?.extra_metadata ?? {
+        cue_in: null,
+        cue_out: null,
+        cross_start_next: null,
+        fade_in: null,
+        fade_out: null
+    };
     const duration = durationRef.value ?? props.duration ?? 0;
 
     return {

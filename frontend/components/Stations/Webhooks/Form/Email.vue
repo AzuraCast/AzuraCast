@@ -7,7 +7,7 @@
             <form-group-field
                 id="form_config_to"
                 class="col-md-12"
-                :field="v$.config.to"
+                :field="r$.config.to"
                 :label="$gettext('Message Recipient(s)')"
                 :description="$gettext('E-mail addresses can be separated by commas.')"
             />
@@ -19,14 +19,14 @@
             <form-group-field
                 id="form_config_subject"
                 class="col-md-12"
-                :field="v$.config.subject"
+                :field="r$.config.subject"
                 :label="$gettext('Message Subject')"
             />
 
             <form-group-field
                 id="form_config_message"
                 class="col-md-12"
-                :field="v$.config.message"
+                :field="r$.config.message"
                 :label="$gettext('Message Body')"
                 input-type="textarea"
                 :input-attrs="{rows: 4}"
@@ -38,17 +38,20 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/FormattingInfo.vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
-import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
+import {WebhookRecordCommon, WebhookRecordEmail} from "~/components/Stations/Webhooks/Form/form.ts";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {useAppScopedRegle} from "~/vendor/regle.ts";
+import {required} from "@regle/rules";
 
 defineProps<WebhookComponentProps>();
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
+type ThisWebhookRecord = WebhookRecordCommon & WebhookRecordEmail;
 
-const {v$, tabClass} = useVuelidateOnFormTab(
+const form = defineModel<ThisWebhookRecord>('form', {required: true});
+
+const {r$} = useAppScopedRegle(
     form,
     {
         config: {
@@ -57,12 +60,10 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             message: {required}
         }
     },
-    () => ({
-        config: {
-            to: '',
-            subject: '',
-            message: ''
-        }
-    })
+    {
+        namespace: 'station-webhooks'
+    }
 );
+
+const tabClass = useFormTabClass(r$);
 </script>

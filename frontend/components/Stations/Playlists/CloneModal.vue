@@ -3,7 +3,7 @@
         id="clone_modal"
         ref="$modal"
         :title="$gettext('Duplicate Playlist')"
-        :disable-save-button="v$.$invalid"
+        :disable-save-button="r$.$invalid"
         @submit="doSubmit"
         @hidden="clearContents"
     >
@@ -11,14 +11,14 @@
             <form-group-field
                 id="form_edit_name"
                 class="col-md-12"
-                :field="v$.name"
+                :field="r$.name"
                 :label="$gettext('New Playlist Name')"
             />
 
             <form-group-multi-check
                 id="form_edit_clone"
                 class="col-md-12"
-                :field="v$.clone"
+                :field="r$.clone"
                 :options="copyOptions"
                 stacked
                 :label="$gettext('Customize Copy')"
@@ -28,15 +28,16 @@
 </template>
 
 <script setup lang="ts">
-import {required} from "@vuelidate/validators";
+import {required} from "@regle/rules";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import {useResettableRef} from "~/functions/useResettableRef.ts";
+import {useAppRegle} from "~/vendor/regle.ts";
 
 const emit = defineEmits<{
     (e: 'relist'): void,
@@ -45,20 +46,24 @@ const emit = defineEmits<{
 
 const cloneUrl = ref<string | null>(null);
 
-const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
+const {record: form, reset: resetForm} = useResettableRef({
+    name: '',
+    clone: []
+});
+
+const {r$} = useAppRegle(
+    form,
     {
-        'name': {required},
-        'clone': {}
+        name: {required},
+        clone: {}
     },
-    {
-        'name': '',
-        'clone': []
-    }
+    {}
 );
 
 const clearContents = () => {
     cloneUrl.value = null;
     resetForm();
+    r$.$reset();
 };
 
 const {$gettext} = useTranslate();
@@ -91,19 +96,22 @@ const open = (name: string, newCloneUrl: string) => {
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const doSubmit = () => {
-    ifValid(() => {
-        void axios({
-            method: 'POST',
-            url: cloneUrl.value,
-            data: form.value
-        }).then(() => {
-            notifySuccess();
-            emit('needs-restart');
-            emit('relist');
-            $modal.value.hide();
-        });
+const doSubmit = async () => {
+    const {valid} = await r$.$validate();
+    if (!valid) {
+        return;
+    }
+
+    await axios({
+        method: 'POST',
+        url: cloneUrl.value,
+        data: form.value
     });
+
+    notifySuccess();
+    emit('needs-restart');
+    emit('relist');
+    $modal.value.hide();
 };
 
 defineExpose({

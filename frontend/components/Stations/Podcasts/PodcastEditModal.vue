@@ -4,20 +4,17 @@
         :loading="loading"
         :title="langTitle"
         :error="error"
-        :disable-save-button="v$.$invalid"
+        :disable-save-button="r$.$invalid"
         @submit="doSubmit"
         @hidden="clearContents"
     >
         <tabs>
             <podcast-form-basic-info
-                v-model:form="form"
                 :categories-options="categoriesOptions"
                 :language-options="languageOptions"
             />
 
-            <podcast-form-source
-                v-model:form="form"
-            />
+            <podcast-form-source/>
 
             <podcast-common-artwork
                 v-model="form.artwork_file"
@@ -25,9 +22,7 @@
                 :new-art-url="newArtUrl"
             />
 
-            <podcast-form-branding
-                v-model:form="form"
-            />
+            <podcast-form-branding/>
         </tabs>
     </modal-form>
 </template>
@@ -46,6 +41,9 @@ import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import {map} from "lodash";
 import {NestedFormOptionInput} from "~/functions/objectToFormOptions.ts";
+import {storeToRefs} from "pinia";
+import {useStationsPodcastsForm} from "~/components/Stations/Podcasts/PodcastForm/form.ts";
+import {ApiPodcastCategory} from "~/entities/ApiInterfaces.ts";
 
 interface PodcastEditModalProps extends BaseEditModalProps {
     languageOptions: NestedFormOptionInput,
@@ -67,38 +65,34 @@ const {record, reset} = useResettableRef({
     }
 });
 
+const formStore = useStationsPodcastsForm();
+const {form, r$} = storeToRefs(formStore);
+const {$reset: resetForm} = formStore;
+
 const {
     loading,
     error,
     isEditMode,
-    form,
-    v$,
     clearContents,
     create,
     edit,
     doSubmit,
     close
 } = useBaseEditModal(
+    form,
     props,
     emit,
     $modal,
-    {
-        artwork_file: {},
-        categories: {}
+    () => {
+        resetForm();
+        reset();
     },
+    async () => (await r$.value.$validate()).valid,
     {
-        artwork_file: null,
-        categories: []
-    },
-    {
-        resetForm: (originalResetForm) => {
-            originalResetForm();
-            reset();
-        },
         populateForm: (data, formRef) => {
             data.categories = map(
                 data.categories,
-                (row) => row.category
+                (row) => (row as ApiPodcastCategory).category
             );
 
             record.value = mergeExisting(record.value, data as typeof record.value);

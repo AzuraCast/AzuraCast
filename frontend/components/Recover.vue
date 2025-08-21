@@ -43,7 +43,7 @@
                         id="password"
                         name="password"
                         label-class="mb-2"
-                        :field="v$.password"
+                        :field="r$.password"
                         input-type="password"
                     >
                         <template #label>
@@ -59,7 +59,7 @@
                         <button
                             type="submit"
                             class="btn btn-primary btn-block"
-                            :disabled="v$.$invalid"
+                            :disabled="r$.$invalid"
                         >
                             {{ $gettext('Recover Account') }}
                         </button>
@@ -73,22 +73,25 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import Icon from "~/components/Common/Icon.vue";
-import validatePassword from "~/functions/validatePassword";
-import {required} from "@vuelidate/validators";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {IconVpnKey} from "~/components/Common/icons";
+import {isValidPassword, useAppRegle} from "~/vendor/regle.ts";
+import {required} from "@regle/rules";
 
 defineProps<{
     csrf: string,
     error?: string,
 }>();
 
-const {v$} = useVuelidateOnForm(
+const {r$} = useAppRegle(
     {
-        password: {required, validatePassword}
+        password: ''
     },
     {
-        password: null,
-    }
-)
+        password: {
+            required,
+            isValidPassword
+        }
+    },
+    {}
+);
 </script>

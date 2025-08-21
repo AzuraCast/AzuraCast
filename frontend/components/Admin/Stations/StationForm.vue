@@ -13,37 +13,27 @@
         >
             <tabs content-class="mt-3">
                 <admin-stations-profile-form
-                    v-model:form="form"
                     :timezones="timezones"
                 />
 
                 <admin-stations-frontend-form
-                    v-model:form="form"
                     :is-rsas-installed="isRsasInstalled"
                     :is-shoutcast-installed="isShoutcastInstalled"
                     :countries="countries"
                 />
 
                 <admin-stations-backend-form
-                    v-model:form="form"
                     :is-stereo-tool-installed="isStereoToolInstalled"
                 />
 
-                <admin-stations-hls-form
-                    v-model:form="form"
-                />
+                <admin-stations-hls-form/>
 
-                <admin-stations-requests-form
-                    v-model:form="form"
-                />
+                <admin-stations-requests-form/>
 
-                <admin-stations-streamers-form
-                    v-model:form="form"
-                />
+                <admin-stations-streamers-form/>
 
                 <admin-stations-admin-form
                     v-if="showAdminTab"
-                    v-model:form="form"
                     :is-edit-mode="isEditMode"
                 />
             </tabs>
@@ -77,11 +67,12 @@ import {computed, nextTick, ref, watch} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Loading from "~/components/Common/Loading.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import {userAllowed} from "~/acl";
 import {GlobalPermissions} from "~/entities/ApiInterfaces.ts";
+import {storeToRefs} from "pinia";
+import {useAdminStationsForm} from "~/components/Admin/Stations/Form/form.ts";
 
 defineOptions({
     inheritAttrs: false
@@ -123,10 +114,12 @@ const emit = defineEmits<{
 
 const showAdminTab = userAllowed(GlobalPermissions.Stations);
 
-const {form, resetForm, v$, ifValid} = useVuelidateOnForm();
+const formStore = useAdminStationsForm();
+const {form, r$} = storeToRefs(formStore);
+const {$reset: resetForm} = formStore;
 
 const isValid = computed(() => {
-    return !v$.value?.$invalid;
+    return !r$.value?.$invalid;
 });
 
 watch(isValid, (newValue) => {
@@ -163,20 +156,25 @@ const doLoad = () => {
     });
 };
 
-const reset = () => {
-    void nextTick(() => {
-        clear();
-        if (props.isEditMode) {
-            doLoad();
-        }
-    });
+const reset = async () => {
+    await nextTick();
+
+    clear();
+    if (props.isEditMode) {
+        doLoad();
+    }
 };
 
-const submit = () => {
-    ifValid(() => {
-        error.value = null;
+const submit = async () => {
+    const {valid} = await r$.value.$validate();
+    if (!valid) {
+        return;
+    }
 
-        axios({
+    error.value = null;
+
+    try {
+        await axios({
             method: (props.isEditMode)
                 ? 'PUT'
                 : 'POST',
@@ -184,13 +182,13 @@ const submit = () => {
                 ? props.editUrl
                 : props.createUrl,
             data: form.value
-        }).then(() => {
-            notifySuccess();
-            emit('submitted');
-        }).catch((err) => {
-            error.value = err.response.data.message;
         });
-    });
+
+        notifySuccess();
+        emit('submitted');
+    } catch (e) {
+        error.value = e.response.data.message;
+    }
 };
 
 defineExpose({

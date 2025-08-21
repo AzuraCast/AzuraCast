@@ -27,7 +27,7 @@
                 <form-group-multi-check
                     :id="'edit_form_station_permissions_'+row.id"
                     class="col-md-12"
-                    :field="v$.permissions"
+                    :field="r$.permissions"
                     :options="stationPermissions"
                     stacked
                     :label="$gettext('Station Permissions')"
@@ -44,8 +44,8 @@ import Icon from "~/components/Common/Icon.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {IconRemove} from "~/components/Common/icons";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
-import useVuelidate from "@vuelidate/core";
 import {ApiAdminRoleStationPermission} from "~/entities/ApiInterfaces.ts";
+import {useAppScopedRegle} from "~/vendor/regle.ts";
 
 type T = ApiAdminRoleStationPermission;
 
@@ -60,11 +60,14 @@ defineEmits<{
 
 const row = defineModel<T>('row', {required: true});
 
-const v$ = useVuelidate<T>(
+const {r$} = useAppScopedRegle(
+    row,
     {
         permissions: {}
     },
-    row
+    {
+        namespace: 'admin-permissions'
+    }
 );
 
 const getStationName = (stationId: number) => {

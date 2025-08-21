@@ -25,7 +25,7 @@
                 <form-group-field
                     id="form_comments"
                     ref="$field"
-                    :field="v$.comment"
+                    :field="r$.comment"
                     autofocus
                     :label="$gettext('API Key Description/Comments')"
                 />
@@ -54,7 +54,7 @@
                     v-if="newKey === null"
                     type="submit"
                     class="btn"
-                    :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
+                    :class="(r$.$invalid) ? 'btn-danger' : 'btn-primary'"
                     @click="doSubmit"
                 >
                     {{ $gettext('Create New Key') }}
@@ -68,14 +68,15 @@
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import AccountApiKeyNewKey from "~/components/Account/ApiKeyNewKey.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {required} from "@vuelidate/validators";
 import {nextTick, ref, useTemplateRef} from "vue";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {ApiAccountNewApiKey} from "~/entities/ApiInterfaces.ts";
+import {useResettableRef} from "~/functions/useResettableRef.ts";
+import {useAppRegle} from "~/vendor/regle.ts";
+import {required} from "@regle/rules";
 
 const props = defineProps<{
     createUrl: string,
@@ -86,17 +87,22 @@ const emit = defineEmits<HasRelistEmit>();
 const error = ref(null);
 const newKey = ref(null);
 
-const {form, resetForm, v$, validate} = useVuelidateOnForm(
+const {record: form, reset: resetForm} = useResettableRef({
+    comment: ''
+});
+
+const {r$} = useAppRegle(
+    form,
     {
         comment: {required}
     },
-    {
-        comment: ''
-    }
+    {}
 );
 
 const clearContents = () => {
     resetForm();
+    r$.$reset();
+
     error.value = null;
     newKey.value = null;
 };
@@ -120,8 +126,8 @@ const onShown = () => {
 const {axios} = useAxios();
 
 const doSubmit = async () => {
-    const isValid = await validate();
-    if (!isValid) {
+    const {valid} = await r$.$validate();
+    if (!valid) {
         return;
     }
 

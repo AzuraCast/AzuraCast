@@ -7,7 +7,7 @@
             <form-group-field
                 id="form_config_bot_token"
                 class="col-md-6"
-                :field="v$.config.bot_token"
+                :field="r$.config.bot_token"
                 :label="$gettext('Bot Token')"
             >
                 <template #description>
@@ -23,7 +23,7 @@
             <form-group-field
                 id="form_config_chat_id"
                 class="col-md-6"
-                :field="v$.config.chat_id"
+                :field="r$.config.chat_id"
                 :label="$gettext('Chat ID')"
                 :description="$gettext('Unique identifier for the target chat or username of the target channel (in the format @channelusername).')"
             />
@@ -31,7 +31,7 @@
             <form-group-field
                 id="form_config_api"
                 class="col-md-6"
-                :field="v$.config.api"
+                :field="r$.config.api"
                 :label="$gettext('Custom API Base URL')"
                 :description="$gettext('Leave blank to use the default Telegram API URL (recommended).')"
             />
@@ -43,7 +43,7 @@
             <form-group-field
                 id="form_config_text"
                 class="col-md-12"
-                :field="v$.config.text"
+                :field="r$.config.text"
                 input-type="textarea"
                 :label="$gettext('Main Message Content')"
             />
@@ -51,7 +51,7 @@
             <form-group-multi-check
                 id="form_config_parse_mode"
                 class="col-md-12"
-                :field="v$.config.parse_mode"
+                :field="r$.config.parse_mode"
                 :options="parseModeOptions"
                 stacked
                 radio
@@ -76,46 +76,37 @@ import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/For
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
-import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
+import {WebhookRecordCommon, WebhookRecordTelegram} from "~/components/Stations/Webhooks/Form/form.ts";
+import {useAppScopedRegle} from "~/vendor/regle.ts";
+import {required} from "@regle/rules";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 
 defineProps<WebhookComponentProps>();
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
+type ThisWebhookRecord = WebhookRecordCommon & WebhookRecordTelegram;
 
-const {$gettext} = useTranslate();
+const form = defineModel<ThisWebhookRecord>('form', {required: true});
 
-const {v$, tabClass} = useVuelidateOnFormTab(
+const {r$} = useAppScopedRegle(
     form,
     {
         config: {
             bot_token: {required},
             chat_id: {required},
-            api: {},
             text: {required},
             parse_mode: {required}
         }
     },
-    () => ({
-        config: {
-            bot_token: '',
-            chat_id: '',
-            api: '',
-            text: $gettext(
-                'Now playing on %{station}: %{title} by %{artist}! Tune in now.',
-                {
-                    station: '{{ station.name }}',
-                    title: '{{ now_playing.song.title }}',
-                    artist: '{{ now_playing.song.artist }}'
-                }
-            ),
-            parse_mode: 'Markdown'
-        }
-    })
+    {
+        namespace: 'station-webhooks'
+    }
 );
+
+const tabClass = useFormTabClass(r$);
+
+const {$gettext} = useTranslate();
 
 const parseModeOptions = computed(() => {
     return [

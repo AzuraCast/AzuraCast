@@ -64,7 +64,7 @@ const emit = defineEmits<BaseEditModalEmits>();
 
 const $modal = useTemplateRef('$modal')
 
-type Form = CustomField;
+type Form = Omit<CustomField, 'id'>;
 
 const {record: form, reset: resetFormRef} = useResettableRef<Form>(
     {
@@ -91,7 +91,7 @@ const {
     edit,
     doSubmit,
     close
-} = useBaseEditModal<Form>(
+} = useBaseEditModal(
     form,
     props,
     emit,

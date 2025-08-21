@@ -5,7 +5,7 @@ import {defineStore} from "pinia";
 import {literal, required} from "@regle/rules";
 import {createVariant} from "@regle/core";
 
-type Form = StorageLocation;
+type Form = Omit<StorageLocation, 'id'>;
 
 export const useAdminStorageLocationsForm = defineStore(
     'form-admin-storage-locations',

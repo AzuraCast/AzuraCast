@@ -100,8 +100,6 @@ const clearContents = () => {
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const {$gettext} = useTranslate();
-
 const cloneOptions = computed(() => {
     return [
         {

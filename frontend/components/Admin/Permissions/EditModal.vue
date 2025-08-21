@@ -31,7 +31,7 @@ import {useTranslate} from "~/vendor/gettext";
 import AdminPermissionsGlobalForm from "~/components/Admin/Permissions/Form/GlobalForm.vue";
 import AdminPermissionsStationForm from "~/components/Admin/Permissions/Form/StationForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
-import {ApiAdminRole, GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
+import {ApiAdminRoleStationPermission, GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppCollectScope} from "~/vendor/regle.ts";
 
@@ -46,9 +46,15 @@ const emit = defineEmits<BaseEditModalEmits>();
 
 const $modal = useTemplateRef('$modal');
 
-type Form = ApiAdminRole;
+export type PermissionsRecord = {
+    name: string;
+    permissions: {
+        global: string[],
+        station: ApiAdminRoleStationPermission[]
+    }
+}
 
-const {record: form, reset: resetFormRef} = useResettableRef<Form>({
+const {record: form, reset: resetFormRef} = useResettableRef<PermissionsRecord>({
     name: '',
     permissions: {
         global: [],
@@ -67,7 +73,7 @@ const {
     edit,
     doSubmit,
     close
-} = useBaseEditModal<Form>(
+} = useBaseEditModal(
     form,
     props,
     emit,

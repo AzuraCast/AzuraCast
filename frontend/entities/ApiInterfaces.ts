@@ -2202,6 +2202,8 @@ export type StorageLocation = HasAutoIncrementId & {
    * @example "https://your-region.digitaloceanspaces.com"
    */
   s3Endpoint?: string | null;
+  /** @example false */
+  s3UsePathStyle?: boolean | null;
   /**
    * The optional Dropbox App Key.
    * @example ""

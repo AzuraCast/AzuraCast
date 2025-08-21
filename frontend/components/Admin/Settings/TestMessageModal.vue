@@ -75,7 +75,7 @@ const {axios} = useAxios();
 const {$gettext} = useTranslate();
 
 const doSendTest = async () => {
-    const {valid} = r$.$validate();
+    const {valid} = await r$.$validate();
     if (!valid) {
         return;
     }

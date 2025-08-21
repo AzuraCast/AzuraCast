@@ -27,14 +27,14 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
-import {WebhookRecordCommon, WebhookRecordGetMeRadio} from "~/components/Stations/Webhooks/Form/form.ts";
+import {WebhookRecordCommon, WebhookRecordGoogleAnalyticsV4} from "~/components/Stations/Webhooks/Form/form.ts";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 import {useAppScopedRegle} from "~/vendor/regle.ts";
 import {required} from "@regle/rules";
 
 defineProps<WebhookComponentProps>();
 
-type ThisWebhookRecord = WebhookRecordCommon & WebhookRecordGetMeRadio;
+type ThisWebhookRecord = WebhookRecordCommon & WebhookRecordGoogleAnalyticsV4;
 
 const form = defineModel<ThisWebhookRecord>('form', {required: true});
 

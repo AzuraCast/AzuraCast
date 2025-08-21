@@ -4,32 +4,22 @@
         :loading="loading"
         :title="$gettext('Edit Media')"
         :error="error"
-        :disable-save-button="v$.$invalid"
+        :disable-save-button="r$.$invalid"
         @submit="doSubmit"
         @hidden="onClose"
     >
         <tabs destroy-on-hide>
-            <tab :label="$gettext('Basic Information')">
-                <media-form-basic-info :form="v$" />
-            </tab>
-            <tab :label="$gettext('Playlists')">
-                <media-form-playlists
-                    :form="v$"
-                    :playlists="playlists"
-                />
-            </tab>
+            <media-form-basic-info/>
+            <media-form-playlists
+                :playlists="playlists"
+            />
             <tab :label="$gettext('Album Art')">
                 <media-form-album-art :album-art-url="record.links.art" />
             </tab>
-            <tab
+            <media-form-custom-fields
                 v-if="customFields.length > 0"
-                :label="$gettext('Custom Fields')"
-            >
-                <media-form-custom-fields
-                    :form="v$"
-                    :custom-fields="customFields"
-                />
-            </tab>
+                :custom-fields="customFields"
+            />
             <tab :label="$gettext('Visual Cue Editor')">
                 <media-form-waveform-editor
                     v-model:form="form"
@@ -39,18 +29,14 @@
                     :waveform-cache-url="record.links.waveform_cache"
                 />
             </tab>
-            <tab :label="$gettext('Advanced')">
-                <media-form-advanced-settings
-                    :form="v$"
-                    :song-length="record.length_text"
-                />
-            </tab>
+            <media-form-advanced-settings
+                :song-length="record.length_text"
+            />
         </tabs>
     </modal-form>
 </template>
 
 <script setup lang="ts">
-import {required} from "@regle/rules";
 import {defaultTo, forEach, map} from "lodash";
 import MediaFormBasicInfo from "~/components/Stations/Media/Form/BasicInfo.vue";
 import MediaFormAlbumArt from "~/components/Stations/Media/Form/AlbumArt.vue";
@@ -59,14 +45,17 @@ import MediaFormAdvancedSettings from "~/components/Stations/Media/Form/Advanced
 import MediaFormPlaylists from "~/components/Stations/Media/Form/Playlists.vue";
 import MediaFormWaveformEditor from "~/components/Stations/Media/Form/WaveformEditor.vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {useTemplateRef} from "vue";
+import {toRef, useTemplateRef} from "vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
-import {ApiStationMedia, CustomField} from "~/entities/ApiInterfaces.ts";
+import {CustomField} from "~/entities/ApiInterfaces.ts";
 import {MediaInitialPlaylist} from "~/components/Stations/Media.vue";
+import {storeToRefs} from "pinia";
+import {useStationsMediaForm} from "~/components/Stations/Media/Form/form.ts";
+import {provideLocal} from "@vueuse/core";
 
 interface MediaEditModalProps extends BaseEditModalProps {
     customFields: CustomField[],
@@ -89,94 +78,29 @@ const {record, reset} = useResettableRef({
 
 const $modal = useTemplateRef('$modal');
 
-type StationMedia = Omit<ApiStationMedia, 'custom_fields' | 'extra_metadata'> & {
-    custom_fields: Record<string, any>,
-    extra_metadata?: {
-        amplify?: number,
-        cross_start_next?: number,
-        fade_in?: number,
-        fade_out?: number,
-        cue_in?: number,
-        cue_out?: number
-    }
-}
+provideLocal('station-media-custom-fields', toRef(props, 'customFields'));
+
+const formStore = useStationsMediaForm();
+const {form, r$} = storeToRefs(formStore);
+const {$reset: resetForm} = formStore;
 
 const {
     loading,
     error,
-    form,
-    v$,
     clearContents,
     edit,
     doSubmit
-} = useBaseEditModal<StationMedia>(
+} = useBaseEditModal(
+    form,
     props,
     emit,
     $modal,
     () => {
-        const validations = {
-            path: {required},
-            title: {},
-            artist: {},
-            album: {},
-            genre: {},
-            lyrics: {},
-            isrc: {},
-            art: {},
-            custom_fields: {},
-            extra_metadata: {
-                amplify: {},
-                cross_start_next: {},
-                fade_in: {},
-                fade_out: {},
-                cue_in: {},
-                cue_out: {}
-            },
-            playlists: {},
-        };
-
-        forEach(props.customFields.slice(), (field: CustomField) => {
-            if (field.short_name) {
-                validations.custom_fields[field.short_name] = {};
-            }
-        });
-
-        return validations;
+        resetForm();
+        reset();
     },
-    () => {
-        const blankForm: StationMedia = {
-            path: null,
-            title: null,
-            artist: null,
-            album: null,
-            genre: null,
-            lyrics: null,
-            isrc: null,
-            custom_fields: {},
-            extra_metadata: {
-                amplify: null,
-                cross_start_next: null,
-                fade_in: null,
-                fade_out: null,
-                cue_in: null,
-                cue_out: null
-            },
-            playlists: [],
-        };
-
-        forEach(props.customFields.slice(), (field: CustomField) => {
-            if (field.short_name) {
-                blankForm.custom_fields[field.short_name] = null;
-            }
-        });
-
-        return blankForm;
-    },
+    async () => (await r$.value.$validate()).valid,
     {
-        resetForm: (originalResetForm) => {
-            originalResetForm();
-            reset();
-        },
         populateForm: (data, form) => {
             record.value = mergeExisting(record.value, data as typeof record.value);
 

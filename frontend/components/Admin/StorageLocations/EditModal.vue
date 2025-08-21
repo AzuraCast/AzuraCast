@@ -70,7 +70,7 @@ const {
     emit,
     $modal,
     resetForm,
-    async () => (await r$.$validate()).valid,
+    async () => (await r$.value.$validate()).valid,
     {
         getSubmittableFormData: (formRef, isEditModeRef) => {
             if (isEditModeRef.value) {

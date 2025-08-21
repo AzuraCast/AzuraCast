@@ -9270,6 +9270,10 @@ components:
               type: string
               example: 'https://your-region.digitaloceanspaces.com'
               nullable: true
+            s3UsePathStyle:
+              type: boolean
+              example: false
+              nullable: true
             dropboxAppKey:
               description: 'The optional Dropbox App Key.'
               type: string

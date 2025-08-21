@@ -126,7 +126,7 @@ const onShown = () => {
 const {axios} = useAxios();
 
 const doSubmit = async () => {
-    const {valid} = r$.$validate();
+    const {valid} = await r$.$validate();
     if (!valid) {
         return;
     }

@@ -65,7 +65,7 @@ import TimeRadios from "~/components/Account/TimeRadios.vue";
 import {useTranslate} from "~/vendor/gettext.ts";
 import {objectToSimpleFormOptions} from "~/functions/objectToFormOptions.ts";
 
-defineProps<{
+const props = defineProps<{
     supportedLocales: Record<string, string>
 }>();
 
@@ -137,7 +137,7 @@ const localeOptions = computed(() => {
 });
 
 const doSubmit = async () => {
-    const {valid} = r$.$validate();
+    const {valid} = await r$.$validate();
     if (!valid) {
         return;
     }

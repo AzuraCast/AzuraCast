@@ -27,14 +27,14 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import {required} from "@regle/rules";
-import {ApiAdminRole} from "~/entities/ApiInterfaces.ts";
 import {useAppScopedRegle} from "~/vendor/regle.ts";
+import {PermissionsRecord} from "~/components/Admin/Permissions/EditModal.vue";
 
 defineProps<{
     globalPermissions: SimpleFormOptionInput,
 }>();
 
-const form = defineModel<ApiAdminRole>('form', {required: true});
+const form = defineModel<PermissionsRecord>('form', {required: true});
 
 const {r$} = useAppScopedRegle(
     form,

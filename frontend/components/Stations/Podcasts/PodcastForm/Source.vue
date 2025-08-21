@@ -71,7 +71,7 @@ import {storeToRefs} from "pinia";
 import {useStationsPodcastsForm} from "~/components/Stations/Podcasts/PodcastForm/form.ts";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 
-const {r$} = storeToRefs(useStationsPodcastsForm());
+const {r$, form} = storeToRefs(useStationsPodcastsForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.sourceTab));
 

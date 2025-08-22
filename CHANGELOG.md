@@ -5,6 +5,12 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Unified Stream Encoding**: We're testing out an exciting feature made possible by Liquidsoap's tight FFmpeg
+  integration: the ability to encode a single audio stream and then output it across multiple platforms without
+  re-encoding it. Previously, if you had, say, a 128kbps AAC stream going to Icecast, a remote relay, and HLS, all three
+  of those streams would encode separately. With this new system, all three will share a single encoder. This has the
+  potential to dramatically reduce CPU consumption for larger stations with no impact in quality.
+
 - Liquidsoap is now updated to the Rolling Release build of 2.4.x. This includes a number of bug fixes for critical
   issues, but also includes some breaking changes. Most of these changes will appear in the logs as warnings when
   starting up a station with custom Liquidsoap code. If you use custom Liquidsoap code, you should evaluate these

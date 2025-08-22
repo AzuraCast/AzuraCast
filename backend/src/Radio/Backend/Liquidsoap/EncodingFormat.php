@@ -37,10 +37,9 @@ final class EncodingFormat
             '_',
             array_filter([
                 $prefix,
-                'encoded',
-                $this->format->value,
-                $this->subProfile?->getProfileName(),
-                $this->bitrate,
+                'enc',
+                $this->subProfile?->getProfileName() ?? $this->format->value,
+                $this->format !== StreamFormats::Flac ? $this->bitrate : null,
             ])
         );
     }

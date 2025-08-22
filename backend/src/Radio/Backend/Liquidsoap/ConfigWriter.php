@@ -704,9 +704,6 @@ final class ConfigWriter implements EventSubscriberInterface
 
     public function writeEncodingConfiguration(WriteLiquidsoapConfiguration $event): void
     {
-        /*
-         * TODO: Wait for upstream to attempt unified encoding.
-         *
         $station = $event->getStation();
 
         // @var Collection<EncodableInterface> $encodables
@@ -744,7 +741,6 @@ final class ConfigWriter implements EventSubscriberInterface
                 LIQ
             );
         }
-        */
     }
 
     public function writeLocalBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -788,31 +784,69 @@ final class ConfigWriter implements EventSubscriberInterface
         // Configure the outbound broadcast.
         $hlsStreams = [];
 
+        // Build the HLS stream encoder destinations.
         foreach ($station->hls_streams as $hlsStream) {
             $streamVarName = self::cleanUpVarName($hlsStream->name);
 
-            // TODO: Replace with common encoder
-            $outputString = $this->getFullFfmpegString(
-                $hlsStream->getEncodingFormat(),
-                'mpegts'
+            $ffmpegStreams = [];
+            foreach ($station->hls_streams as $hlsInnerStream) {
+                $innerStreamVarName = self::cleanUpVarName(
+                    $hlsInnerStream->getEncodingFormat()->getVariableName('hls')
+                );
+
+                $ffmpegStreams[] = ($hlsInnerStream->id === $hlsStream->id)
+                    ? '%' . $innerStreamVarName . '.copy'
+                    : '%' . $innerStreamVarName . '.drop';
+            }
+
+            $hlsStreams[] = sprintf(
+                '("%s", %%ffmpeg(format="mpegts", %s))',
+                $streamVarName,
+                implode(', ', $ffmpegStreams)
             );
-
-            $lsConfig[] = $streamVarName . ' = ' . $outputString;
-
-            $hlsStreams[] = $streamVarName;
         }
 
         if (empty($hlsStreams)) {
             return;
         }
 
-        $lsConfig[] = 'hls_streams = [' . implode(
-            ', ',
-            array_map(
-                static fn($row) => '("' . $row . '", ' . $row . ')',
-                $hlsStreams
-            )
-        ) . ']';
+        $lsConfig[] = 'hls_streams = [' . "\n" . '    ' . implode(
+            ',' . "\n" . '    ',
+            $hlsStreams
+        ) . "\n" . ']';
+
+        // Build an aggregate source composed of the various encoders.
+        $i = 0;
+        $hlsSourceTracks = [];
+
+        foreach ($station->hls_streams as $hlsStream) {
+            $i++;
+
+            $encoding = $hlsStream->getEncodingFormat();
+            $encoderVarName = $encoding->getVariableName('radio');
+            $hlsVarName = $encoding->getVariableName('hls');
+
+            $hlsSourceTracks[] = $hlsVarName . ' = ' . $hlsVarName;
+
+            if ($i === 1) {
+                $hlsSourceTracks[] = 'metadata = hls_m';
+                $hlsSourceTracks[] = 'track_marks = hls_tm';
+
+                $lsConfig[] = sprintf(
+                    'let {audio = %s, metadata = hls_m, track_marks = hls_tm} = source.tracks(%s)',
+                    $hlsVarName,
+                    $encoderVarName
+                );
+            } else {
+                $lsConfig[] = sprintf(
+                    'let {audio = %s} = source.tracks(%s)',
+                    $hlsVarName,
+                    $encoderVarName
+                );
+            }
+        }
+
+        $lsConfig[] = 'hls_radio = source({' . implode(', ', $hlsSourceTracks) . '})';
 
         $event->appendLines($lsConfig);
 
@@ -841,7 +875,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 temp_dir="#{settings.azuracast.temp_path()}",
                 "{$hlsBaseDir}",
                 hls_streams,
-                radio
+                hls_radio
             )
             LIQ
         );
@@ -1137,11 +1171,8 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $outputParams = [];
 
-        // TODO for common encoding:
-        // $container = $encoding->format->getFfmpegContainer();
-        // $outputParams[] = '%ffmpeg(format="' . $container . '", %audio.copy)';
-
-        $outputParams[] = $this->getFullFfmpegString($encoding);
+        $container = $encoding->format->getFfmpegContainer();
+        $outputParams[] = '%ffmpeg(format="' . $container . '", %audio.copy)';
 
         $outputParams[] = 'id="' . $idPrefix . $id . '"';
 
@@ -1197,10 +1228,7 @@ final class ConfigWriter implements EventSubscriberInterface
             $outputParams[] = 'send_icy_metadata = ' . ($sendIcyMetadata ? 'true' : 'false');
         }
 
-        // TODO for common encoding:
-        // $outputParams[] = self::cleanUpVarName($encoding->getVariableName('radio'));
-
-        $outputParams[] = 'radio';
+        $outputParams[] = self::cleanUpVarName($encoding->getVariableName('radio'));
 
         $outputCommand = ($source->isShoutcast)
             ? 'output.shoutcast'

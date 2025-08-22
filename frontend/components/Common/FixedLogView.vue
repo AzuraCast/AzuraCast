@@ -14,11 +14,12 @@
 
 <script setup lang="ts">
 import {ref, toRef, watch} from "vue";
-import {useAxios} from "~/vendor/axios";
+import {useAxios} from "~/vendor/axios.ts";
 import Loading from "~/components/Common/Loading.vue";
 import CodeMirror from "vue-codemirror6";
-import useTheme from "~/functions/theme";
+import {useTheme} from "~/functions/theme.ts";
 import {ApiLogContents} from "~/entities/ApiInterfaces.ts";
+import {storeToRefs} from "pinia";
 
 const props = defineProps<{
     logUrl: string
@@ -27,7 +28,7 @@ const props = defineProps<{
 const isLoading = ref(false);
 const logs = ref('');
 
-const {isDark} = useTheme();
+const {isDark} = storeToRefs(useTheme());
 
 const {axios} = useAxios();
 

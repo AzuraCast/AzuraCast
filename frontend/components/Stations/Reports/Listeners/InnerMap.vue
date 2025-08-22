@@ -13,9 +13,10 @@
 <script setup lang="ts">
 import {onMounted, provide, ShallowRef, shallowRef, useTemplateRef, watch} from "vue";
 import {Control, Icon, Map, map, tileLayer} from "leaflet";
-import useTheme from "~/functions/theme";
+import {useTheme} from "~/functions/theme.ts";
 import "leaflet-fullscreen";
-import {useTranslate} from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext.ts";
+import {storeToRefs} from "pinia";
 
 const $container = useTemplateRef('$container');
 
@@ -23,7 +24,7 @@ const $map = shallowRef<Map | null>(null);
 
 provide<ShallowRef<Map | null>>('map', $map);
 
-const {currentTheme} = useTheme();
+const {currentTheme} = storeToRefs(useTheme());
 const {$gettext} = useTranslate();
 
 onMounted(() => {

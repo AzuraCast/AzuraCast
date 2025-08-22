@@ -176,7 +176,7 @@
 <script setup lang="ts">
 import {nextTick, onMounted, useSlots, watch} from "vue";
 import Icon from "~/components/Common/Icon.vue";
-import useTheme from "~/functions/theme";
+import {useTheme} from "~/functions/theme.ts";
 import {
     IconAccountCircle,
     IconExitToApp,

@@ -1,10 +1,11 @@
 import {computed, ComputedRef, onMounted, ref} from "vue";
 import useOptionalStorage from "~/functions/useOptionalStorage.ts";
-import {createGlobalState} from "@vueuse/core";
+import {defineStore} from "pinia";
 
 type Theme = 'light' | 'dark'
 
-export default createGlobalState(
+export const useTheme = defineStore(
+    'global-theme',
     () => {
         const page: HTMLElement = document.documentElement;
         const currentTheme = ref<Theme | null>(null);

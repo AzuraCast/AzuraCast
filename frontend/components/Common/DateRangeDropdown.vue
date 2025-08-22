@@ -21,12 +21,13 @@
 <script setup lang="ts">
 import VueDatePicker, {VueDatePickerProps} from "@vuepic/vue-datepicker";
 import Icon from "~/components/Common/Icon.vue";
-import useTheme from "~/functions/theme";
-import {useTranslate} from "~/vendor/gettext";
+import {useTheme} from "~/functions/theme.ts";
+import {useTranslate} from "~/vendor/gettext.ts";
 import {computed} from "vue";
-import {useAzuraCast} from "~/vendor/azuracast";
-import {useLuxon} from "~/vendor/luxon";
+import {useAzuraCast} from "~/vendor/azuracast.ts";
+import {useLuxon} from "~/vendor/luxon.ts";
 import {IconDateRange} from "~/components/Common/icons";
+import {storeToRefs} from "pinia";
 
 defineOptions({
     inheritAttrs: false
@@ -46,7 +47,7 @@ const emit = defineEmits<{
     (e: 'update:modelValue', modelValue: DateRange): void
 }>();
 
-const {isDark} = useTheme();
+const {isDark} = storeToRefs(useTheme());
 
 const {localeWithDashes} = useAzuraCast();
 const {DateTime} = useLuxon();

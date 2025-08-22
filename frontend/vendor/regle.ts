@@ -6,6 +6,7 @@ import {
     decimal,
     email,
     integer,
+    isFilled,
     maxLength,
     minLength,
     numeric,
@@ -14,15 +15,21 @@ import {
     withMessage
 } from "@regle/rules";
 import {useTranslate} from "~/vendor/gettext.ts";
-import validatePassword from "~/functions/validatePassword.ts";
+import zxcvbn from "zxcvbn";
 
 export const isValidPassword = createRule({
-    validator: (value: string) => validatePassword(value),
+    validator: (value: string) => {
+        if (!isFilled(value)) {
+            return true;
+        }
+
+        return zxcvbn(value).score > 2;
+    },
     message: 'This password is too common or insecure.',
 });
 
 export const isValidHexColor = createRule({
-    validator: (value: string) => value === '' || /^#?[0-9A-F]{6}$/i.test(value),
+    validator: (value: string) => !isFilled(value) || /^#?[0-9A-F]{6}$/i.test(value),
     message: 'This field must be a valid, non-transparent 6-character hex color.',
 });
 

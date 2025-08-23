@@ -1,10 +1,10 @@
 import initApp from "~/layout";
-import PageWrapper from "~/components/PageWrapper.vue";
 import {installRouter} from "~/vendor/router.js";
 import {createRouter, createWebHistory} from "vue-router";
 import useAdminRoutes from "~/components/Admin/routes.js";
+import DashboardWrapper from "~/components/DashboardWrapper.vue";
 
-initApp(PageWrapper, async (vueApp) => {
+initApp(DashboardWrapper, async (vueApp) => {
     installRouter(
         createRouter({
             history: createWebHistory('/'),
@@ -19,11 +19,7 @@ initApp(PageWrapper, async (vueApp) => {
                     component: () => import('~/components/Account.vue'),
                     name: 'profile:index'
                 },
-                {
-                    path: '/admin',
-                    component: () => import('~/components/Admin/AdminLayout.vue'),
-                    children: useAdminRoutes(),
-                },
+                ...useAdminRoutes(),
                 {
                     path: '/station/:station_id',
                     component: () => import('~/components/Stations/StationsLayout.vue'),

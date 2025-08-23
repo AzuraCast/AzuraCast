@@ -1,11 +1,12 @@
-import {App, Component, createApp, reactive} from "vue";
+import {App, Component, createApp, h, reactive} from "vue";
 import installAxios from "~/vendor/axios";
 import {installTranslate} from "~/vendor/gettext";
 import {installCurrentVueInstance} from "~/vendor/vueInstance";
-import {globalConstantsKey} from "~/vendor/azuracast";
+import {globalConstantsKey, useAzuraCast} from "~/vendor/azuracast";
 import installTanstack from "~/vendor/tanstack.ts";
 import {createPinia} from "pinia";
 import {VueAppGlobals} from "~/entities/ApiInterfaces.ts";
+import AppWrapper from "~/components/Layout/AppWrapper.vue";
 
 export default function initApp(
     appConfig: Component = {},
@@ -13,7 +14,23 @@ export default function initApp(
 ): {
     vueApp: App<Element>
 } {
-    const vueApp: App<Element> = createApp(appConfig);
+    const vueApp: App<Element> = createApp({
+        setup() {
+            const {componentProps} = useAzuraCast();
+            return {
+                componentProps
+            }
+        },
+        render() {
+            return h(
+                AppWrapper,
+                {},
+                {
+                    default: () => h(appConfig, this.componentProps)
+                }
+            );
+        }
+    });
 
     /* Track current instance (for programmatic use). */
     installCurrentVueInstance(vueApp);

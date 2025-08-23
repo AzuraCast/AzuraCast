@@ -7,23 +7,21 @@
     </a>
 
     <header class="navbar bg-primary-dark shadow-sm fixed-top">
-        <template v-if="slots.sidebar">
-            <button
-                id="navbar-toggle"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#sidebar"
-                aria-controls="sidebar"
-                aria-expanded="false"
-                :aria-label="$gettext('Toggle Sidebar')"
-                class="navbar-toggler d-inline-flex d-lg-none me-3"
-            >
-                <icon
-                    :icon="IconMenu"
-                    class="lg"
-                />
-            </button>
-        </template>
-
+        <button
+            id="navbar-toggle"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#sidebar"
+            aria-controls="sidebar"
+            aria-expanded="false"
+            :aria-label="$gettext('Toggle Sidebar')"
+            class="navbar-toggler d-inline-flex d-lg-none me-3"
+        >
+            <icon
+                :icon="IconMenu"
+                class="lg"
+            />
+        </button>
+        
         <router-link
             class="navbar-brand ms-0 me-auto"
             :to="{ name: 'dashboard' }"
@@ -134,34 +132,13 @@
         </div>
     </header>
 
-    <nav
-        v-if="slots.sidebar"
-        id="sidebar"
-        class="navdrawer offcanvas offcanvas-start"
-        tabindex="-1"
-        :aria-label="$gettext('Sidebar')"
-    >
-        <slot name="sidebar" />
-    </nav>
+    <slot/>
 
-    <div
-        id="page-wrapper"
-        :class="[(slots.sidebar) ? 'has-sidebar' : '']"
-    >
-        <main id="main">
-            <div class="container" id="content">
-                <slot />
-
-                <lightbox ref="$lightbox"/>
-            </div>
-        </main>
-
-        <PanelFooter/>
-    </div>
+    <lightbox ref="$lightbox"/>
 </template>
 
 <script setup lang="ts">
-import {nextTick, onMounted, useSlots, useTemplateRef, watch} from "vue";
+import {useTemplateRef} from "vue";
 import Icon from "~/components/Common/Icon.vue";
 import {useTheme} from "~/functions/theme.ts";
 import {
@@ -175,14 +152,12 @@ import {
     IconSettings,
     IconSupport
 } from "~/components/Common/icons";
-import {useProvidePlayerStore} from "~/functions/usePlayerStore.ts";
-import Lightbox from "~/components/Common/Lightbox.vue";
 import {useAzuraCastDashboardGlobals, useAzuraCastUser} from "~/vendor/azuracast.ts";
 import {useProvideLightbox} from "~/vendor/lightbox.ts";
-import PanelFooter from "~/components/Common/PanelFooter.vue";
 import {userAllowed} from "~/acl.ts";
 import {GlobalPermissions} from "~/entities/ApiInterfaces.ts";
 import InlinePlayer from "~/components/InlinePlayer.vue";
+import Lightbox from "~/components/Common/Lightbox.vue";
 
 const {
     instanceName,
@@ -193,34 +168,8 @@ const {displayName} = useAzuraCastUser();
 
 const showAdmin = userAllowed(GlobalPermissions.View);
 
-const slots = useSlots();
-
-const handleSidebar = () => {
-    if (slots.sidebar) {
-        document.body.classList.add('has-sidebar');
-    } else {
-        document.body.classList.remove('has-sidebar');
-    }
-}
-
 const {toggleTheme} = useTheme();
-
-watch(
-    () => slots.sidebar,
-    handleSidebar,
-    {
-        immediate: true
-    }
-);
-
-useProvidePlayerStore('global');
 
 const $lightbox = useTemplateRef('$lightbox');
 useProvideLightbox($lightbox);
-
-onMounted(() => {
-    void nextTick(() => {
-        document.dispatchEvent(new CustomEvent("vue-ready"));
-    });
-});
 </script>

@@ -8,7 +8,7 @@
         role="region"
         :aria-label="$gettext('Account Details')"
     >
-        <user-info-panel ref="$userInfoPanel">
+        <user-info-panel>
             <button
                 type="button"
                 class="btn btn-dark"

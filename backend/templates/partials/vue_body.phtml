@@ -4,7 +4,7 @@
  * @var ?string $id
  * @var array $props
  * @var App\View\GlobalSections $sections
- * @var Doctrine\Common\Collections\ArrayCollection $globalProps
+ * @var App\Entity\Api\Vue\AppGlobals $globalProps
  * @var App\Environment $environment
  */
 
@@ -14,8 +14,8 @@ $jsonFlags = $environment->isProduction()
     ? JSON_THROW_ON_ERROR
     : JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT;
 
-$globalProps->set('componentProps', $props);
-$propsJson = json_encode($globalProps->toArray(), $jsonFlags);
+$globalProps->componentProps = $props;
+$propsJson = json_encode($globalProps, $jsonFlags);
 
 $headScripts = [];
 

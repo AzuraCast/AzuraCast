@@ -1,10 +1,11 @@
-import {App, Component, createApp} from "vue";
+import {App, Component, createApp, reactive} from "vue";
 import installAxios from "~/vendor/axios";
 import {installTranslate} from "~/vendor/gettext";
 import {installCurrentVueInstance} from "~/vendor/vueInstance";
-import {AzuraCastConstants, setGlobalProps} from "~/vendor/azuracast";
+import {globalConstantsKey} from "~/vendor/azuracast";
 import installTanstack from "~/vendor/tanstack.ts";
 import {createPinia} from "pinia";
+import {VueAppGlobals} from "~/entities/ApiInterfaces.ts";
 
 export default function initApp(
     appConfig: Component = {},
@@ -24,8 +25,8 @@ export default function initApp(
     const pinia = createPinia();
     vueApp.use(pinia);
 
-    (<any>window).vueComponent = async (el: string, globalProps: AzuraCastConstants): Promise<void> => {
-        setGlobalProps(globalProps);
+    (<any>window).vueComponent = async (el: string, globalProps: VueAppGlobals): Promise<void> => {
+        vueApp.provide(globalConstantsKey, reactive(globalProps));
 
         /* Gettext */
         await installTranslate(vueApp);

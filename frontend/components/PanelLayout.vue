@@ -24,19 +24,21 @@
             </button>
         </template>
 
-        <a
+        <router-link
             class="navbar-brand ms-0 me-auto"
-            :href="homeUrl"
+            :to="{ name: 'dashboard' }"
         >
             azura<strong>cast</strong>
             <small v-if="instanceName">{{ instanceName }}</small>
-        </a>
+        </router-link>
 
-        <div id="radio-player-controls" />
+        <div id="radio-player-controls">
+            <inline-player class="ms-3"/>
+        </div>
 
         <div class="dropdown ms-3 d-inline-flex align-items-center">
             <div class="me-2">
-                {{ userDisplayName }}
+                {{ displayName }}
             </div>
 
             <button
@@ -54,34 +56,34 @@
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
                 <li>
-                    <a
+                    <router-link
                         class="dropdown-item"
-                        :href="homeUrl"
+                        :to="{ name: 'dashboard' }"
                     >
                         <icon :icon="IconHome" />
                         {{ $gettext('Dashboard') }}
-                    </a>
+                    </router-link>
                 </li>
                 <li class="dropdown-divider">
 &nbsp;
                 </li>
                 <li v-if="showAdmin">
-                    <a
+                    <router-link
                         class="dropdown-item"
-                        :href="adminUrl"
+                        :to="{ name: 'admin:index'}"
                     >
                         <icon :icon="IconSettings" />
                         {{ $gettext('System Administration') }}
-                    </a>
+                    </router-link>
                 </li>
                 <li>
-                    <a
+                    <router-link
                         class="dropdown-item"
-                        :href="profileUrl"
+                        :to="{name: 'profile:index'}"
                     >
                         <icon :icon="IconAccountCircle" />
                         {{ $gettext('My Account') }}
-                    </a>
+                    </router-link>
                 </li>
                 <li>
                     <a
@@ -147,34 +149,19 @@
         :class="[(slots.sidebar) ? 'has-sidebar' : '']"
     >
         <main id="main">
-            <div class="container">
+            <div class="container" id="content">
                 <slot />
+
+                <lightbox ref="$lightbox"/>
             </div>
         </main>
 
-        <footer id="footer">
-            {{ $gettext('Powered by') }}
-            <a
-                href="https://www.azuracast.com/"
-                target="_blank"
-            >AzuraCast</a>
-            &bull;
-            <span v-html="version" />
-            &bull;
-            <span v-html="platform" /><br>
-            {{ $gettext('Like our software?') }}
-            <a
-                href="https://donate.azuracast.com/"
-                target="_blank"
-            >
-                {{ $gettext('Donate to support AzuraCast!') }}
-            </a>
-        </footer>
+        <PanelFooter/>
     </div>
 </template>
 
 <script setup lang="ts">
-import {nextTick, onMounted, useSlots, watch} from "vue";
+import {nextTick, onMounted, useSlots, useTemplateRef, watch} from "vue";
 import Icon from "~/components/Common/Icon.vue";
 import {useTheme} from "~/functions/theme.ts";
 import {
@@ -189,20 +176,22 @@ import {
     IconSupport
 } from "~/components/Common/icons";
 import {useProvidePlayerStore} from "~/functions/usePlayerStore.ts";
+import Lightbox from "~/components/Common/Lightbox.vue";
+import {useAzuraCastDashboardGlobals, useAzuraCastUser} from "~/vendor/azuracast.ts";
+import {useProvideLightbox} from "~/vendor/lightbox.ts";
+import PanelFooter from "~/components/Common/PanelFooter.vue";
+import {userAllowed} from "~/acl.ts";
+import {GlobalPermissions} from "~/entities/ApiInterfaces.ts";
+import InlinePlayer from "~/components/InlinePlayer.vue";
 
-export interface PanelLayoutProps {
-    instanceName: string,
-    userDisplayName: string,
-    homeUrl: string,
-    profileUrl: string,
-    adminUrl: string,
-    logoutUrl: string,
-    showAdmin: boolean,
-    version: string,
-    platform: string
-}
+const {
+    instanceName,
+    logoutUrl
+} = useAzuraCastDashboardGlobals();
 
-defineProps<PanelLayoutProps>();
+const {displayName} = useAzuraCastUser();
+
+const showAdmin = userAllowed(GlobalPermissions.View);
 
 const slots = useSlots();
 
@@ -225,6 +214,9 @@ watch(
 );
 
 useProvidePlayerStore('global');
+
+const $lightbox = useTemplateRef('$lightbox');
+useProvideLightbox($lightbox);
 
 onMounted(() => {
     void nextTick(() => {

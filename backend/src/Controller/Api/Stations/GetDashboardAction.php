@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Api\Stations;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\SettingsAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Enums\StationFeatures;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class StationsAction implements SingleActionInterface
+final class GetDashboardAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
     use SettingsAwareTrait;
@@ -22,12 +23,9 @@ final class StationsAction implements SingleActionInterface
         array $params
     ): ResponseInterface {
         $station = $request->getStation();
-        $view = $request->getView();
         $router = $request->getRouter();
 
-        $globalProps = $view->getGlobalProps();
-
-        $globalProps->set('station', [
+        return $response->withJson([
             'id' => $station->id,
             'name' => $station->name,
             'isEnabled' => $station->is_enabled,
@@ -62,17 +60,5 @@ final class StationsAction implements SingleActionInterface
                 'autoDjQueue' => $station->supportsAutoDjQueue(),
             ],
         ]);
-
-        return $view->renderVuePage(
-            response: $response,
-            component: 'Stations',
-            id: 'stations-index',
-            title: $station->name,
-            props: [
-                'baseUrl' => $router->named('stations:index:index', [
-                    'station_id' => $station->id,
-                ]),
-            ]
-        );
     }
 }

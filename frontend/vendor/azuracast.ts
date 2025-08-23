@@ -1,71 +1,35 @@
-import {PanelLayoutProps} from "~/components/PanelLayout.vue";
-import {GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
+import {VueAppGlobals, VueDashboardGlobals, VueUserGlobals} from "~/entities/ApiInterfaces.ts";
+import {defineStore} from "pinia";
+import {inject, InjectionKey} from "vue";
 
-export interface AzuraCastStationConstants {
-    id: number,
-    name: string | null,
-    shortName: string,
-    isEnabled: boolean,
-    hasStarted: boolean,
-    needsRestart: boolean,
-    timezone: string,
-    offlineText: string | null,
-    maxBitrate: number,
-    maxMounts: number,
-    maxHlsStreams: number,
-    enablePublicPages: boolean,
-    publicPageUrl: string,
-    enableOnDemand: boolean,
-    onDemandUrl: string,
-    webDjUrl: string,
-    enableRequests: boolean,
-    features: Record<string, boolean>
-}
+export const globalConstantsKey: InjectionKey<VueAppGlobals> = Symbol() as InjectionKey<VueAppGlobals>;
 
-export interface AzuraCastUserConstants {
-    id: number | null,
-    displayName: string | null,
-    globalPermissions: GlobalPermissions[],
-    stationPermissions: {
-        [key: number]: StationPermissions[]
+export const useAzuraCastStore = defineStore(
+    'global-props',
+    (): {
+        props: VueAppGlobals
+    } => {
+        return {
+            props: inject(globalConstantsKey)
+        };
     }
-}
+);
 
-export interface AzuraCastConstants {
-    locale: string,
-    localeShort: string,
-    localeWithDashes: string,
-    timeConfig: object,
-    apiCsrf: string | null,
-    enableAdvancedFeatures: boolean,
-    sidebarProps?: Record<string, any>,
-    panelProps?: PanelLayoutProps,
-    componentProps?: Record<string, any>,
-    user?: AzuraCastUserConstants,
-    station?: AzuraCastStationConstants,
-}
+export const useAzuraCast = (): VueAppGlobals => {
+    const {props} = useAzuraCastStore();
+    return props;
+};
 
-let globalProps: AzuraCastConstants;
-
-export function setGlobalProps(newGlobalProps: AzuraCastConstants): void {
-    globalProps = newGlobalProps;
-}
-
-export function useAzuraCast(): AzuraCastConstants {
-    return globalProps;
-}
-
-export function useAzuraCastPanelProps(): PanelLayoutProps {
-    const {panelProps} = useAzuraCast();
-
-    if (!panelProps) {
-        throw new Error("Panel properties are undefined in this request.");
+export const useAzuraCastDashboardGlobals = (): VueDashboardGlobals => {
+    const {dashboardProps} = useAzuraCast();
+    if (!dashboardProps) {
+        throw new Error("Dashboard properties are undefined in this request.");
     }
 
-    return panelProps;
+    return dashboardProps;
 }
 
-export function useAzuraCastUser(): AzuraCastUserConstants {
+export const useAzuraCastUser = (): VueUserGlobals => {
     const {user} = useAzuraCast();
 
     if (!user) {
@@ -73,14 +37,4 @@ export function useAzuraCastUser(): AzuraCastUserConstants {
     }
 
     return user;
-}
-
-export function useAzuraCastStation(): AzuraCastStationConstants {
-    const {station} = useAzuraCast();
-
-    if (!station) {
-        throw Error("Station data is not provided in this request.");
-    }
-
-    return station;
 }

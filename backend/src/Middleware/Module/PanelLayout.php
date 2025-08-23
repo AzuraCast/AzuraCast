@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Middleware\Module;
 
 use App\Container\EnvironmentAwareTrait;
-use App\Enums\GlobalPermissions;
+use App\Container\SettingsAwareTrait;
+use App\Entity\Api\Vue\DashboardGlobals;
 use App\Http\ServerRequest;
 use App\Middleware\AbstractMiddleware;
 use App\Middleware\Auth\ApiAuth;
@@ -19,6 +20,7 @@ use const PHP_MINOR_VERSION;
 final class PanelLayout extends AbstractMiddleware
 {
     use EnvironmentAwareTrait;
+    use SettingsAwareTrait;
 
     public function __construct(
         private readonly Version $version
@@ -29,30 +31,28 @@ final class PanelLayout extends AbstractMiddleware
     {
         $view = $request->getView();
         $customization = $request->getCustomization();
-        $user = $request->getUser();
         $auth = $request->getAuth();
-        $acl = $request->getAcl();
         $router = $request->getRouter();
+
+        $settings = $this->readSettings();
 
         $globalProps = $view->getGlobalProps();
 
         $csrf = $request->getCsrf();
-        $globalProps->set('apiCsrf', $csrf->generate(ApiAuth::API_CSRF_NAMESPACE));
+        $globalProps->apiCsrf = $csrf->generate(ApiAuth::API_CSRF_NAMESPACE);
 
-        $globalProps->set('panelProps', [
-            'instanceName' => $customization->getInstanceName(),
-            'userDisplayName' => $user->getDisplayName(),
-            'homeUrl' => $router->named('dashboard'),
-            'adminUrl' => $router->named('admin:index:index'),
-            'profileUrl' => $router->named('profile:index'),
-            'logoutUrl' => ($auth->isMasqueraded())
+        $globalProps->dashboardProps = new DashboardGlobals(
+            $customization->getInstanceName(),
+            $router->named('dashboard'),
+            ($auth->isMasqueraded())
                 ? $router->named('account:endmasquerade')
                 : $router->named('account:logout'),
-            'showAdmin' => $acl->isAllowed(GlobalPermissions::View),
-            'version' => $this->version->getVersionText(),
-            'platform' => ($this->environment->isDocker() ? 'Docker' : 'Ansible')
-                . ' &bull; PHP ' . PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION,
-        ]);
+            $this->version->getVersionText(),
+            ($this->environment->isDocker() ? 'Docker' : 'Ansible')
+            . ' &bull; PHP ' . PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION,
+            showCharts: $settings->isAnalyticsEnabled(),
+            showAlbumArt: $settings->hide_album_art
+        );
 
         return $handler->handle($request);
     }

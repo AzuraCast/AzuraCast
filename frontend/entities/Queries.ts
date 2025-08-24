@@ -1,8 +1,9 @@
-import {useAzuraCastStation} from "~/vendor/azuracast.ts";
+import {useStationId} from "~/functions/useStationQuery.ts";
 
 export enum QueryKeys {
     Dashboard = 'Dashboard',
 
+    StationGlobals = 'StationGlobals',
     StationHlsStreams = 'StationHlsStreams',
     StationLogs = 'StationLogs',
     StationMedia = 'StationMedia',
@@ -42,7 +43,7 @@ export const queryKeyWithStation = (
     prefix: unknown[],
     suffix?: unknown[]
 ): unknown[] => {
-    const {id} = useAzuraCastStation();
+    const id = useStationId();
 
     const newQueryKeys = [...prefix];
     newQueryKeys.push({station: id});

@@ -98,13 +98,16 @@ import {IconDownload, IconTrendingDown, IconTrendingUp} from "~/components/Commo
 import useHasDatatable from "~/functions/useHasDatatable.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
-import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {toRefs} from "@vueuse/core";
 
 const baseApiUrl = getStationApiUrl('/history');
 
-const {timezone} = useAzuraCastStation();
+const {data: stationData} = useStationQuery();
+const {timezone} = toRefs(stationData);
+
 const {DateTime} = useLuxon();
 const {
     now,

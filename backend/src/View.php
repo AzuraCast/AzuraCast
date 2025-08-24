@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Entity\Api\Vue\AppGlobals;
+use App\Entity\Api\Vue\UserGlobals;
 use App\Entity\User;
 use App\Enums\SupportedLocales;
 use App\Http\RouterInterface;
@@ -11,7 +13,6 @@ use App\Http\ServerRequest;
 use App\Traits\RequestAwareTrait;
 use App\Utilities\Json;
 use App\View\GlobalSections;
-use Doctrine\Common\Collections\ArrayCollection;
 use League\Plates\Engine;
 use League\Plates\Template\Data;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -26,8 +27,7 @@ final class View extends Engine
 
     private GlobalSections $sections;
 
-    /** @var ArrayCollection<string, array|object|string|int|bool> */
-    private ArrayCollection $globalProps;
+    private AppGlobals $globalProps;
 
     public function __construct(
         Customization $customization,
@@ -42,7 +42,7 @@ final class View extends Engine
         );
 
         $this->sections = new GlobalSections();
-        $this->globalProps = new ArrayCollection();
+        $this->globalProps = new AppGlobals();
 
         // Add non-request-dependent content.
         $this->addData(
@@ -180,9 +180,9 @@ final class View extends Engine
             $localeShort = substr($locale, 0, 2);
             $localeWithDashes = str_replace('_', '-', $locale);
 
-            $this->globalProps->set('locale', $locale);
-            $this->globalProps->set('localeShort', $localeShort);
-            $this->globalProps->set('localeWithDashes', $localeWithDashes);
+            $this->globalProps->locale = $locale;
+            $this->globalProps->localeShort = $localeShort;
+            $this->globalProps->localeWithDashes = $localeWithDashes;
 
             // User profile-specific 24-hour display setting.
             $userObj = $request->getAttribute(ServerRequest::ATTR_USER);
@@ -208,15 +208,15 @@ final class View extends Engine
                     }
                 }
 
-                $this->globalProps->set('user', [
-                    'id' => $userObj->id,
-                    'displayName' => $userObj->getDisplayName(),
-                    'globalPermissions' => $globalPermissions,
-                    'stationPermissions' => $stationPermissions,
-                ]);
+                $this->globalProps->user = new UserGlobals(
+                    id: $userObj->id,
+                    displayName: $userObj->getDisplayName(),
+                    globalPermissions: $globalPermissions,
+                    stationPermissions: $stationPermissions,
+                );
             }
 
-            $this->globalProps->set('timeConfig', $timeConfig);
+            $this->globalProps->timeConfig = $timeConfig;
 
             $this->addData($requestData);
         }
@@ -227,8 +227,7 @@ final class View extends Engine
         return $this->sections;
     }
 
-    /** @return ArrayCollection<string, array|object|string|int|bool> */
-    public function getGlobalProps(): ArrayCollection
+    public function getGlobalProps(): AppGlobals
     {
         return $this->globalProps;
     }
@@ -236,7 +235,8 @@ final class View extends Engine
     public function reset(): void
     {
         $this->sections = new GlobalSections();
-        $this->globalProps = new ArrayCollection();
+        $this->globalProps = new AppGlobals();
+
         $this->data = new Data();
     }
 

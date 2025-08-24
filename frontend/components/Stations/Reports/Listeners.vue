@@ -202,10 +202,11 @@ import ListenerFiltersBar from "~/components/Stations/Reports/Listeners/FiltersB
 import {ApiListener} from "~/entities/ApiInterfaces.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
-import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {useQuery, useQueryClient} from "@tanstack/vue-query";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import {useClientItemProvider} from "~/functions/dataTable/useClientItemProvider.ts";
+import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {toRefs} from "@vueuse/core";
 
 defineProps<{
     attribution: string
@@ -217,7 +218,9 @@ const isLive = ref<boolean>(true);
 
 const {DateTime} = useLuxon();
 
-const {timezone} = useAzuraCastStation();
+const {data: stationData} = useStationQuery();
+const {timezone} = toRefs(stationData);
+
 const {
     now,
     formatTimestampAsDateTime

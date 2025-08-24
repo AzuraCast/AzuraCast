@@ -1401,6 +1401,69 @@ export interface ApiUploadedRecordStatus {
   url: string | null;
 }
 
+export interface VueAppGlobals {
+  locale: string;
+  localeShort: string;
+  localeWithDashes: string;
+  timeConfig: object | null;
+  apiCsrf: string | null;
+  dashboardProps: VueDashboardGlobals | null;
+  user: VueUserGlobals | null;
+  componentProps: any[] | null;
+}
+
+export interface VueDashboardGlobals {
+  instanceName: string;
+  homeUrl: string;
+  logoutUrl: string;
+  version: string;
+  platform: string;
+  showCharts: boolean;
+  showAlbumArt: boolean;
+  supportedLocales: Record<string, string>;
+}
+
+export interface VueStationFeatures {
+  media: boolean;
+  sftp: boolean;
+  podcasts: boolean;
+  streamers: boolean;
+  webhooks: boolean;
+  mountPoints: boolean;
+  hlsStreams: boolean;
+  remoteRelays: boolean;
+  customLiquidsoapConfig: boolean;
+  autoDjQueue: boolean;
+}
+
+export interface VueStationGlobals {
+  id: number;
+  name: string | null;
+  shortName: string;
+  isEnabled: boolean;
+  hasStarted: boolean;
+  needsRestart: boolean;
+  timezone: string;
+  offlineText: string | null;
+  maxBitrate: number;
+  maxMounts: number;
+  maxHlsStreams: number;
+  enablePublicPages: boolean;
+  publicPageUrl: string;
+  enableOnDemand: boolean;
+  onDemandUrl: string;
+  webDjUrl: string;
+  enableRequests: boolean;
+  features: VueStationFeatures;
+}
+
+export interface VueUserGlobals {
+  id: number;
+  displayName: string | null;
+  globalPermissions: any[];
+  stationPermissions: any[];
+}
+
 export type ApiKey = HasSplitTokenFields & {
   user?: User;
   comment?: string;

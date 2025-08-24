@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <dashboard-no-sidebar>
         <h2 class="outside-card-header mb-1">
             {{ $gettext('Administration') }}
         </h2>
@@ -88,7 +88,7 @@
                 </loading>
             </div>
         </div>
-    </div>
+    </dashboard-no-sidebar>
 </template>
 
 <script setup lang="ts">
@@ -105,6 +105,7 @@ import Loading from "~/components/Common/Loading.vue";
 import {ApiAdminServerStats} from "~/entities/ApiInterfaces.ts";
 import {useQuery} from "@tanstack/vue-query";
 import {QueryKeys} from "~/entities/Queries.ts";
+import DashboardNoSidebar from "~/components/Layout/DashboardNoSidebar.vue";
 
 const statsUrl = getApiUrl('/admin/server/stats');
 

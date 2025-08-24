@@ -1,6 +1,7 @@
-import {useAzuraCastStation, useAzuraCastUser} from "~/vendor/azuracast.ts";
+import {useAzuraCastUser} from "~/vendor/azuracast.ts";
 import {get, includes} from "lodash";
 import {GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
+import {useStationId} from "~/functions/useStationQuery.ts";
 
 export function userAllowed(permission: GlobalPermissions): boolean {
     try {
@@ -19,8 +20,8 @@ export function userAllowed(permission: GlobalPermissions): boolean {
 export function userAllowedForStation(permission: StationPermissions, id: number | null = null): boolean {
     if (id === null) {
         try {
-            const station = useAzuraCastStation();
-            id = station.id;
+            const stationId = useStationId();
+            id = stationId.value;
         } catch {
             return false;
         }

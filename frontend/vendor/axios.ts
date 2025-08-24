@@ -107,7 +107,6 @@ export default function installAxios(vueApp: App) {
         (error) => {
             handleAxiosError(error);
 
-
             return Promise.reject(error);
         }
     );

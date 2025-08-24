@@ -56,6 +56,9 @@ return static function (RouteCollectorProxy $group) {
             $group->group(
                 '',
                 function (RouteCollectorProxy $group) {
+                    $group->get('/dashboard', Controller\Api\Stations\GetDashboardAction::class)
+                        ->add(new Middleware\Permissions(StationPermissions::View, true));
+
                     $group->map(
                         ['GET', 'POST'],
                         '/nowplaying/update',

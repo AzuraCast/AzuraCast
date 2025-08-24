@@ -10,7 +10,6 @@
 </template>
 
 <script setup lang="ts">
-import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import {getStationApiUrl} from "~/router.ts";
 import StationDisabledPanel from "~/components/Stations/Profile/StationDisabledPanel.vue";
@@ -18,8 +17,11 @@ import Loading from "~/components/Common/Loading.vue";
 import EnabledProfile from "~/components/Stations/Profile/EnabledProfile.vue";
 import {useQuery} from "@tanstack/vue-query";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {toRefs} from "@vueuse/core";
 
-const {isEnabled} = useAzuraCastStation();
+const {data: stationData} = useStationQuery();
+const {isEnabled} = toRefs(stationData);
 
 const {axios} = useAxios();
 

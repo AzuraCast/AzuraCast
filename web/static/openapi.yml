@@ -8064,6 +8064,188 @@ components:
           type: string
           nullable: true
       type: object
+    Vue_AppGlobals:
+      required:
+        - locale
+        - localeShort
+        - localeWithDashes
+        - timeConfig
+        - apiCsrf
+        - dashboardProps
+        - user
+        - componentProps
+      properties:
+        locale:
+          type: string
+        localeShort:
+          type: string
+        localeWithDashes:
+          type: string
+        timeConfig:
+          type: object
+          nullable: true
+        apiCsrf:
+          type: string
+          nullable: true
+        dashboardProps:
+          oneOf:
+            -
+              $ref: '#/components/schemas/Vue_DashboardGlobals'
+          nullable: true
+        user:
+          oneOf:
+            -
+              $ref: '#/components/schemas/Vue_UserGlobals'
+          nullable: true
+        componentProps:
+          type: array
+          items:
+            type: '{}'
+          nullable: true
+      type: object
+    Vue_DashboardGlobals:
+      required:
+        - instanceName
+        - homeUrl
+        - logoutUrl
+        - version
+        - platform
+        - showCharts
+        - showAlbumArt
+        - supportedLocales
+      properties:
+        instanceName:
+          type: string
+        homeUrl:
+          type: string
+        logoutUrl:
+          type: string
+        version:
+          type: string
+        platform:
+          type: string
+        showCharts:
+          type: boolean
+        showAlbumArt:
+          type: boolean
+        supportedLocales:
+          type: object
+          additionalProperties:
+            type: string
+      type: object
+    Vue_StationFeatures:
+      required:
+        - media
+        - sftp
+        - podcasts
+        - streamers
+        - webhooks
+        - mountPoints
+        - hlsStreams
+        - remoteRelays
+        - customLiquidsoapConfig
+        - autoDjQueue
+      properties:
+        media:
+          type: boolean
+        sftp:
+          type: boolean
+        podcasts:
+          type: boolean
+        streamers:
+          type: boolean
+        webhooks:
+          type: boolean
+        mountPoints:
+          type: boolean
+        hlsStreams:
+          type: boolean
+        remoteRelays:
+          type: boolean
+        customLiquidsoapConfig:
+          type: boolean
+        autoDjQueue:
+          type: boolean
+      type: object
+    Vue_StationGlobals:
+      required:
+        - id
+        - name
+        - shortName
+        - isEnabled
+        - hasStarted
+        - needsRestart
+        - timezone
+        - offlineText
+        - maxBitrate
+        - maxMounts
+        - maxHlsStreams
+        - enablePublicPages
+        - publicPageUrl
+        - enableOnDemand
+        - onDemandUrl
+        - webDjUrl
+        - enableRequests
+        - features
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          nullable: true
+        shortName:
+          type: string
+        isEnabled:
+          type: boolean
+        hasStarted:
+          type: boolean
+        needsRestart:
+          type: boolean
+        timezone:
+          type: string
+        offlineText:
+          type: string
+          nullable: true
+        maxBitrate:
+          type: integer
+        maxMounts:
+          type: integer
+        maxHlsStreams:
+          type: integer
+        enablePublicPages:
+          type: boolean
+        publicPageUrl:
+          type: string
+        enableOnDemand:
+          type: boolean
+        onDemandUrl:
+          type: string
+        webDjUrl:
+          type: string
+        enableRequests:
+          type: boolean
+        features:
+          $ref: '#/components/schemas/Vue_StationFeatures'
+      type: object
+    Vue_UserGlobals:
+      required:
+        - id
+        - displayName
+        - globalPermissions
+        - stationPermissions
+      properties:
+        id:
+          type: integer
+        displayName:
+          type: string
+          nullable: true
+        globalPermissions:
+          type: array
+          items: {  }
+        stationPermissions:
+          type: array
+          items: {  }
+      type: object
     ApiKey:
       type: object
       allOf:

@@ -38,8 +38,10 @@ import {userAllowedForStation} from "~/acl.ts";
 import {IconEdit} from "~/components/Common/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
+import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {toRefs} from "@vueuse/core";
 
-const {name} = useAzuraCastStation();
+const {data: stationData} = useStationQuery();
+const {name} = toRefs(stationData);
 </script>

@@ -1,34 +1,37 @@
 <template>
-    <settings-layout>
-        <admin-settings
-            v-bind="props"
-            @saved="onSaved"
-        >
-            <template #preCard>
-                <setup-step :step="3"/>
-            </template>
-            <template #cardTitle>
-                {{ $gettext('Customize AzuraCast Settings') }}
-            </template>
-            <template #cardUpper>
-                <info-card>
-                    {{
-                        $gettext('Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel.')
-                    }}
-                </info-card>
-            </template>
-            <template #submitButtonName>
-                {{ $gettext('Save and Continue') }}
-            </template>
-        </admin-settings>
-    </settings-layout>
+    <dashboard-layout>
+        <dashboard-no-sidebar>
+            <admin-settings
+                v-bind="props"
+                @saved="onSaved"
+            >
+                <template #preCard>
+                    <setup-step :step="3"/>
+                </template>
+                <template #cardTitle>
+                    {{ $gettext('Customize AzuraCast Settings') }}
+                </template>
+                <template #cardUpper>
+                    <info-card>
+                        {{
+                            $gettext('Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel.')
+                        }}
+                    </info-card>
+                </template>
+                <template #submitButtonName>
+                    {{ $gettext('Save and Continue') }}
+                </template>
+            </admin-settings>
+        </dashboard-no-sidebar>
+    </dashboard-layout>
 </template>
 
 <script setup lang="ts">
 import AdminSettings, {SettingsProps} from "~/components/Admin/Settings.vue";
 import SetupStep from "~/components/Setup/SetupStep.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
-import SettingsLayout from "~/components/Setup/SettingsLayout.vue";
+import DashboardLayout from "~/components/Layout/DashboardLayout.vue";
+import DashboardNoSidebar from "~/components/Layout/DashboardNoSidebar.vue";
 
 interface SetupSettingsProps extends SettingsProps {
     continueUrl: string,

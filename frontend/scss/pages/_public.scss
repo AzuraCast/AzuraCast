@@ -36,6 +36,10 @@ body.page-minimal {
   }
 
   &:not(.embed) {
+    #page-wrapper {
+      @extend .container;
+    }
+
     #main {
       display: flex;
       flex-direction: column;

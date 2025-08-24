@@ -7,6 +7,10 @@ import {getApiUrl} from "~/router.ts";
 export function installRouter(router: Router, vueApp: App): void {
     // Add remote prop loading support
     router.beforeEach(async (to, _, next) => {
+        if (to.name) {
+            NProgress.start();
+        }
+
         if (to.meta.remoteUrl) {
             const remoteUrlBase = String(to.meta.remoteUrl as string);
             let remoteUrl: ComputedRef<string>;
@@ -14,26 +18,19 @@ export function installRouter(router: Router, vueApp: App): void {
             if (to.params.station_id) {
                 const stationId = String(to.params.station_id);
                 remoteUrl = getApiUrl(
-                    `/station/${stationId}/${remoteUrlBase}`
+                    `/station/${stationId}${remoteUrlBase}`
                 );
             } else {
                 remoteUrl = getApiUrl(remoteUrlBase);
             }
 
-            const {axios} = useAxios();
+            const {axiosSilent: axios} = useAxios();
             to.meta.state = await axios.get(remoteUrl.value).then(r => r.data);
         }
         next();
     });
 
     // Add NProgress displays
-    router.beforeResolve((to, _, next) => {
-        if (to.name) {
-            NProgress.start();
-        }
-        next();
-    });
-
     router.afterEach(() => {
         NProgress.done();
     });

@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex justify-content-center align-items-center text-center mb-3 mt-2 px-5">
+    <div class="d-flex justify-content-center align-items-center text-center mb-4 px-5">
         <div
             class="rounded border p-2 m-2"
             :class="getStepperClass(1)"

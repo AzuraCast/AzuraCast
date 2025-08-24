@@ -49,10 +49,9 @@ import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
 import SecurityPanel from "~/components/Account/SecurityPanel.vue";
 import ApiKeysPanel from "~/components/Account/ApiKeysPanel.vue";
 import DashboardNoSidebar from "~/components/Layout/DashboardNoSidebar.vue";
+import {useAzuraCastDashboardGlobals} from "~/vendor/azuracast.ts";
 
-defineProps<{
-    supportedLocales: Record<string, string>
-}>();
+const {supportedLocales} = useAzuraCastDashboardGlobals();
 
 const $editModal = useTemplateRef('$editModal');
 
@@ -63,6 +62,4 @@ const doEditProfile = () => {
 const onProfileEdited = () => {
     location.reload();
 };
-</script>
-<script setup lang="ts">
 </script>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\Vue;
 
+use App\Entity\Api\HashMap;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -28,6 +29,13 @@ final class DashboardGlobals
         public bool $showCharts,
         #[OA\Property]
         public bool $showAlbumArt,
+        #[OA\Property(
+            type: 'object',
+            additionalProperties: new OA\AdditionalProperties(
+                type: 'string'
+            )
+        )]
+        public HashMap $supportedLocales,
     ) {
     }
 }

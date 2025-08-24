@@ -6,7 +6,9 @@ namespace App\Middleware\Module;
 
 use App\Container\EnvironmentAwareTrait;
 use App\Container\SettingsAwareTrait;
+use App\Entity\Api\HashMap;
 use App\Entity\Api\Vue\DashboardGlobals;
+use App\Enums\SupportedLocales;
 use App\Http\ServerRequest;
 use App\Middleware\AbstractMiddleware;
 use App\Middleware\Auth\ApiAuth;
@@ -36,6 +38,11 @@ final class PanelLayout extends AbstractMiddleware
 
         $settings = $this->readSettings();
 
+        $supportedLocales = [];
+        foreach (SupportedLocales::cases() as $supportedLocale) {
+            $supportedLocales[$supportedLocale->value] = $supportedLocale->getLocalName();
+        }
+
         $globalProps = $view->getGlobalProps();
 
         $csrf = $request->getCsrf();
@@ -51,7 +58,8 @@ final class PanelLayout extends AbstractMiddleware
             ($this->environment->isDocker() ? 'Docker' : 'Ansible')
             . ' &bull; PHP ' . PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION,
             showCharts: $settings->isAnalyticsEnabled(),
-            showAlbumArt: $settings->hide_album_art
+            showAlbumArt: $settings->hide_album_art,
+            supportedLocales: new HashMap($supportedLocales)
         );
 
         return $handler->handle($request);

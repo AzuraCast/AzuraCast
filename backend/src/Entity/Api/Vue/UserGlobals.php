@@ -18,9 +18,13 @@ final readonly class UserGlobals
         public int $id,
         #[OA\Property]
         public ?string $displayName,
-        #[OA\Property]
+        #[OA\Property(
+            items: new OA\Items()
+        )]
         public array $globalPermissions = [],
-        #[OA\Property]
+        #[OA\Property(
+            items: new OA\Items()
+        )]
         public array $stationPermissions = []
     ) {
     }

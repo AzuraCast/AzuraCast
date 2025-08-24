@@ -8099,6 +8099,8 @@ components:
           nullable: true
         componentProps:
           type: array
+          items:
+            type: '{}'
           nullable: true
       type: object
     Vue_DashboardGlobals:
@@ -8110,6 +8112,7 @@ components:
         - platform
         - showCharts
         - showAlbumArt
+        - supportedLocales
       properties:
         instanceName:
           type: string
@@ -8125,6 +8128,10 @@ components:
           type: boolean
         showAlbumArt:
           type: boolean
+        supportedLocales:
+          type: object
+          additionalProperties:
+            type: string
       type: object
     Vue_StationFeatures:
       required:
@@ -8234,8 +8241,10 @@ components:
           nullable: true
         globalPermissions:
           type: array
+          items: {  }
         stationPermissions:
           type: array
+          items: {  }
       type: object
     ApiKey:
       type: object

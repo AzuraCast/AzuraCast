@@ -28,7 +28,11 @@ final class AppGlobals
         public ?DashboardGlobals $dashboardProps = null,
         #[OA\Property]
         public ?UserGlobals $user = null,
-        #[OA\Property]
+        #[OA\Property(
+            items: new OA\Items(
+                type: '{}'
+            )
+        )]
         public ?array $componentProps = [],
     ) {
     }

@@ -1420,6 +1420,7 @@ export interface VueDashboardGlobals {
   platform: string;
   showCharts: boolean;
   showAlbumArt: boolean;
+  supportedLocales: Record<string, string>;
 }
 
 export interface VueStationFeatures {

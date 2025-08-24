@@ -115,24 +115,24 @@ import EditModal from "~/components/Stations/Webhooks/EditModal.vue";
 import {get, map} from "lodash";
 import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useTemplateRef} from "vue";
+import {computed, useTemplateRef} from "vue";
 import useHasEditModal from "~/functions/useHasEditModal";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import {useTriggerDetails, useTypeDetails} from "~/entities/Webhooks";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useAzuraCastStation} from "~/vendor/azuracast";
 import {getApiUrl, getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import {ApiTaskWithLog, HasLinks, StationWebhook, WebhookTriggers, WebhookTypes} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import {useStationId} from "~/functions/useStationQuery.ts";
 
 const listUrl = getStationApiUrl('/webhooks');
 
-const {id} = useAzuraCastStation();
-const nowPlayingUrl = getApiUrl(`/nowplaying/${id}`);
+const id = useStationId();
+const nowPlayingUrl = getApiUrl(computed(() => `/nowplaying/${id.value}`));
 
 const {$gettext} = useTranslate();
 

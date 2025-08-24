@@ -8126,6 +8126,40 @@ components:
         showAlbumArt:
           type: boolean
       type: object
+    Vue_StationFeatures:
+      required:
+        - media
+        - sftp
+        - podcasts
+        - streamers
+        - webhooks
+        - mountPoints
+        - hlsStreams
+        - remoteRelays
+        - customLiquidsoapConfig
+        - autoDjQueue
+      properties:
+        media:
+          type: boolean
+        sftp:
+          type: boolean
+        podcasts:
+          type: boolean
+        streamers:
+          type: boolean
+        webhooks:
+          type: boolean
+        mountPoints:
+          type: boolean
+        hlsStreams:
+          type: boolean
+        remoteRelays:
+          type: boolean
+        customLiquidsoapConfig:
+          type: boolean
+        autoDjQueue:
+          type: boolean
+      type: object
     Vue_StationGlobals:
       required:
         - id
@@ -8184,7 +8218,7 @@ components:
         enableRequests:
           type: boolean
         features:
-          $ref: '#/components/schemas/HashMap'
+          $ref: '#/components/schemas/Vue_StationFeatures'
       type: object
     Vue_UserGlobals:
       required:

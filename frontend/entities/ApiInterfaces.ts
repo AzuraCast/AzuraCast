@@ -1422,6 +1422,19 @@ export interface VueDashboardGlobals {
   showAlbumArt: boolean;
 }
 
+export interface VueStationFeatures {
+  media: boolean;
+  sftp: boolean;
+  podcasts: boolean;
+  streamers: boolean;
+  webhooks: boolean;
+  mountPoints: boolean;
+  hlsStreams: boolean;
+  remoteRelays: boolean;
+  customLiquidsoapConfig: boolean;
+  autoDjQueue: boolean;
+}
+
 export interface VueStationGlobals {
   id: number;
   name: string | null;
@@ -1440,8 +1453,7 @@ export interface VueStationGlobals {
   onDemandUrl: string;
   webDjUrl: string;
   enableRequests: boolean;
-  /** A hash-map array represented as an object. */
-  features: HashMap;
+  features: VueStationFeatures;
 }
 
 export interface VueUserGlobals {

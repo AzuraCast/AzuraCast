@@ -1,9 +1,10 @@
 import {computed, ComputedRef, MaybeRefOrGetter, toValue} from "vue";
 import {useStationId} from "~/functions/useStationQuery.ts";
 
-export function getApiUrl(suffix: string): ComputedRef<string> {
+export function getApiUrl(suffix: MaybeRefOrGetter<string>): ComputedRef<string> {
     return computed((): string => {
-        return `/api${suffix}`;
+        const suffixValue = toValue(suffix);
+        return `/api${suffixValue}`;
     });
 }
 
@@ -15,16 +16,15 @@ export function getStationApiUrl(
         id = useStationId();
     }
 
-    return computed((): string => {
-        const idValue = toValue(id);
+    return getApiUrl(
+        computed((): string => {
+            const idValue = toValue(id);
+            if (idValue === null) {
+                throw new Error("Can't find station ID!");
+            }
 
-        if (idValue === null) {
-            throw new Error("Can't find station ID!");
-        }
-
-        const suffixValue = toValue(suffix);
-        
-        const stationSuffix = `/station/${idValue}${suffixValue}`;
-        return getApiUrl(stationSuffix).value;
-    });
+            const suffixValue = toValue(suffix);
+            return `/station/${idValue}${suffixValue}`;
+        })
+    );
 }

@@ -226,13 +226,18 @@
                         </div>
                     </template>
                     <template #cell(actions)="{ item }">
-                        <a
+                        <router-link
                             class="btn btn-primary"
-                            :href="item.links.manage"
+                            :to="{
+                                name: 'stations:index',
+                                params: {
+                                    station_id: item.station.id
+                                }
+                            }"
                             role="button"
                         >
                             {{ $gettext('Manage') }}
-                        </a>
+                        </router-link>
                     </template>
                 </data-table>
             </card-page>

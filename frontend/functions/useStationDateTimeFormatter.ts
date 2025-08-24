@@ -1,6 +1,7 @@
 import {useLuxon} from "~/vendor/luxon.ts";
-import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast.ts";
+import {useAzuraCast} from "~/vendor/azuracast.ts";
 import {DateTimeMaybeValid} from "luxon";
+import {useStationQuery} from "~/functions/useStationQuery.ts";
 
 export default function useStationDateTimeFormatter(
     timezone?: string
@@ -9,12 +10,9 @@ export default function useStationDateTimeFormatter(
     const {timeConfig} = useAzuraCast();
 
     if (!timezone) {
-        const station = useAzuraCastStation();
-        if (station) {
-            timezone = station.timezone;
-        } else {
-            throw new Error("Cannot get timezone!");
-        }
+        // TODO: Must be reactive!!
+        const {data: stationData} = useStationQuery();
+        timezone = stationData.value.timezone;
     }
 
     const now = (): DateTimeMaybeValid =>

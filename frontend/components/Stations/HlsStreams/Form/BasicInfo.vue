@@ -45,14 +45,13 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {map} from "lodash";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Tab from "~/components/Common/Tab.vue";
-import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {HlsStreamProfiles} from "~/entities/ApiInterfaces.ts";
 import {storeToRefs} from "pinia";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 import {computed} from "vue";
 import {useStationsHlsStreamsForm} from "~/components/Stations/HlsStreams/Form/form.ts";
-
-const {maxBitrate} = useAzuraCastStation();
+import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {toRefs} from "@vueuse/core";
 
 const {r$} = storeToRefs(useStationsHlsStreamsForm());
 
@@ -81,13 +80,16 @@ const formatOptions = [
     }
 ];
 
-const bitrateOptions = map(
-    [32, 48, 64, 96, 128, 192, 256, 320].filter((bitrate) => maxBitrate === 0 || bitrate <= maxBitrate),
+const {data: stationData} = useStationQuery();
+const {maxBitrate} = toRefs(stationData);
+
+const bitrateOptions = computed(() => map(
+    [32, 48, 64, 96, 128, 192, 256, 320].filter((bitrate) => maxBitrate.value === 0 || bitrate <= maxBitrate.value),
     (val) => {
         return {
             value: val,
             text: String(val)
         }
     },
-);
+));
 </script>

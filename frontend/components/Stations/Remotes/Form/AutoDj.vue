@@ -99,17 +99,19 @@ import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
-import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {StreamFormats} from "~/entities/ApiInterfaces.ts";
 import {storeToRefs} from "pinia";
 import {useStationsRemotesForm} from "~/components/Stations/Remotes/Form/form.ts";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {toRefs} from "@vueuse/core";
 
 const {r$, form} = storeToRefs(useStationsRemotesForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.autoDjTab));
 
-const {maxBitrate} = useAzuraCastStation();
+const {data: stationData} = useStationQuery();
+const {maxBitrate} = toRefs(stationData);
 
 const formatOptions = [
     {

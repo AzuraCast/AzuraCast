@@ -3,6 +3,7 @@ import {installRouter} from "~/vendor/router.js";
 import {createRouter, createWebHistory} from "vue-router";
 import useAdminRoutes from "~/components/Admin/routes.js";
 import DashboardWrapper from "~/components/DashboardWrapper.vue";
+import useStationsRoutes from "~/components/Stations/routes.js";
 
 initApp(DashboardWrapper, async (vueApp) => {
     installRouter(
@@ -20,11 +21,7 @@ initApp(DashboardWrapper, async (vueApp) => {
                     name: 'profile:index'
                 },
                 ...useAdminRoutes(),
-                {
-                    path: '/station/:station_id',
-                    component: () => import('~/components/Stations/StationsLayout.vue'),
-                    // children: useStationsRoutes()
-                }
+                ...useStationsRoutes()
             ]
         }),
         vueApp

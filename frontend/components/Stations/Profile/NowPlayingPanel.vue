@@ -248,7 +248,6 @@ import useNowPlaying from "~/functions/useNowPlaying";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLightbox} from "~/vendor/lightbox";
 import {userAllowedForStation} from "~/acl";
-import {useAzuraCastStation} from "~/vendor/azuracast";
 import {
     IconHeadphones,
     IconLogs,
@@ -262,6 +261,8 @@ import UpdateMetadataModal from "~/components/Stations/Profile/UpdateMetadataMod
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 import {NowPlayingProps} from "~/functions/useNowPlaying.ts";
 import {BackendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
+import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {toRefs} from "@vueuse/core";
 
 export interface ProfileNowPlayingPanelProps extends NowPlayingProps {
     backendType: BackendAdapters,
@@ -275,7 +276,8 @@ defineOptions({
 
 const props = defineProps<ProfileNowPlayingPanelProps>();
 
-const {offlineText} = useAzuraCastStation();
+const {data: stationData} = useStationQuery();
+const {offlineText} = toRefs(stationData);
 
 const {
     np,

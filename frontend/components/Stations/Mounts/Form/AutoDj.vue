@@ -53,18 +53,20 @@ import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
-import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {FrontendAdapters, StreamFormats} from "~/entities/ApiInterfaces.ts";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {storeToRefs} from "pinia";
 import {useStationsMountsForm} from "~/components/Stations/Mounts/Form/form.ts";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {toRefs} from "@vueuse/core";
 
 defineProps<{
     stationFrontendType: FrontendAdapters
 }>();
 
-const {maxBitrate} = useAzuraCastStation();
+const {data: stationData} = useStationQuery();
+const {maxBitrate} = toRefs(stationData);
 
 const {r$, form} = storeToRefs(useStationsMountsForm());
 

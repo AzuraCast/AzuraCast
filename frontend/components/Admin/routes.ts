@@ -1,4 +1,3 @@
-import {getApiUrl} from "~/router.ts";
 import populateComponentRemotely from "~/functions/populateComponentRemotely.ts";
 import {RouteRecordRaw} from "vue-router";
 
@@ -22,7 +21,7 @@ export default function useAdminRoutes(): RouteRecordRaw[] {
                     path: 'settings',
                     name: 'admin:settings:index',
                     component: () => import('~/components/Admin/Settings.vue'),
-                    ...populateComponentRemotely(getApiUrl('/admin/vue/settings'))
+                    ...populateComponentRemotely('/admin/vue/settings')
                 },
                 {
                     path: 'branding',
@@ -33,7 +32,7 @@ export default function useAdminRoutes(): RouteRecordRaw[] {
                     path: 'logs',
                     name: 'admin:logs:index',
                     component: () => import('~/components/Admin/Logs.vue'),
-                    ...populateComponentRemotely(getApiUrl('/admin/vue/logs'))
+                    ...populateComponentRemotely('/admin/vue/logs')
                 },
                 {
                     path: 'storage_locations',
@@ -44,7 +43,7 @@ export default function useAdminRoutes(): RouteRecordRaw[] {
                     path: 'backups',
                     component: () => import('~/components/Admin/Backups.vue'),
                     name: 'admin:backups:index',
-                    ...populateComponentRemotely(getApiUrl('/admin/vue/backups'))
+                    ...populateComponentRemotely('/admin/vue/backups')
                 },
                 {
                     path: 'debug',
@@ -55,19 +54,19 @@ export default function useAdminRoutes(): RouteRecordRaw[] {
                     path: 'updates',
                     component: () => import('~/components/Admin/Updates.vue'),
                     name: 'admin:updates:index',
-                    ...populateComponentRemotely(getApiUrl('/admin/vue/updates'))
+                    ...populateComponentRemotely('/admin/vue/updates')
                 },
                 {
                     path: 'users',
                     component: () => import('~/components/Admin/Users.vue'),
                     name: 'admin:users:index',
-                    ...populateComponentRemotely(getApiUrl('/admin/vue/users'))
+                    ...populateComponentRemotely('/admin/vue/users')
                 },
                 {
                     path: 'permissions',
                     component: () => import('~/components/Admin/Permissions.vue'),
                     name: 'admin:permissions:index',
-                    ...populateComponentRemotely(getApiUrl('/admin/vue/permissions'))
+                    ...populateComponentRemotely('/admin/vue/permissions')
                 },
                 {
                     path: 'auditlog',
@@ -83,13 +82,13 @@ export default function useAdminRoutes(): RouteRecordRaw[] {
                     path: 'stations',
                     component: () => import('~/components/Admin/Stations.vue'),
                     name: 'admin:stations:index',
-                    ...populateComponentRemotely(getApiUrl('/admin/vue/stations'))
+                    ...populateComponentRemotely('/admin/vue/stations')
                 },
                 {
                     path: 'custom_fields',
                     component: () => import('~/components/Admin/CustomFields.vue'),
                     name: 'admin:custom_fields:index',
-                    ...populateComponentRemotely(getApiUrl('/admin/vue/custom_fields'))
+                    ...populateComponentRemotely('/admin/vue/custom_fields')
                 },
                 {
                     path: 'relays',

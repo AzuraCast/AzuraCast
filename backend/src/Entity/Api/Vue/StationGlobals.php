@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\Vue;
 
-use App\Entity\Api\HashMap;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -50,7 +49,7 @@ final readonly class StationGlobals
         #[OA\Property]
         public bool $enableRequests,
         #[OA\Property]
-        public HashMap $features
+        public StationGlobalFeatures $features
     ) {
     }
 }

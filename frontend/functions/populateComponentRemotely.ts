@@ -1,10 +1,9 @@
-import {MaybeRef, toValue} from "vue";
 import {RouteRecord} from "vue-router";
 
-export default function populateComponentRemotely(url: MaybeRef) {
+export default function populateComponentRemotely(apiUrl: string) {
     return {
         meta: {
-            remoteUrl: toValue(url),
+            remoteUrl: apiUrl,
             state: {}
         },
         props: (to: RouteRecord) => {

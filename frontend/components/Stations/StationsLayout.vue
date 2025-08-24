@@ -1,30 +1,25 @@
 <template>
-    <panel-layout v-bind="panelProps">
+    <dashboard-with-sidebar>
         <template #sidebar>
-            <sidebar/>
+            <loading lazy :loading="isFetching">
+                <sidebar/>
+            </loading>
         </template>
         <template #default>
-            <router-view />
-
-            <header-inline-player />
-
-            <lightbox ref="$lightbox" />
+            <loading lazy :loading="isFetching">
+                <router-view/>
+            </loading>
         </template>
-    </panel-layout>
+    </dashboard-with-sidebar>
 </template>
 
 <script setup lang="ts">
-import PanelLayout from "~/components/PanelLayout.vue";
-import {useAzuraCastPanelProps} from "~/vendor/azuracast.ts";
 import Sidebar from "~/components/Stations/Sidebar.vue";
-import Lightbox from "~/components/Common/Lightbox.vue";
-import HeaderInlinePlayer from "~/components/HeaderInlinePlayer.vue";
-import {useTemplateRef} from "vue";
-import {useProvideLightbox} from "~/vendor/lightbox.ts";
+import {useStationQuery} from "~/functions/useStationQuery.ts";
+import Loading from "~/components/Common/Loading.vue";
+import DashboardWithSidebar from "~/components/Layout/DashboardWithSidebar.vue";
 
-const panelProps = useAzuraCastPanelProps();
-
-const $lightbox = useTemplateRef('$lightbox');
-
-useProvideLightbox($lightbox);
+const {
+    isFetching
+} = useStationQuery();
 </script>

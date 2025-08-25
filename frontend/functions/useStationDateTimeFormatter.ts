@@ -2,27 +2,29 @@ import {useLuxon} from "~/vendor/luxon.ts";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
 import {DateTimeMaybeValid} from "luxon";
 import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {MaybeRefOrGetter, toValue} from "vue";
+import {toRefs} from "@vueuse/core";
 
 export default function useStationDateTimeFormatter(
-    timezone?: string
+    timezone?: MaybeRefOrGetter<string>
 ) {
     const {DateTime} = useLuxon();
     const {timeConfig} = useAzuraCast();
 
     if (!timezone) {
-        // TODO: Must be reactive!!
         const {data: stationData} = useStationQuery();
-        timezone = stationData.value.timezone;
+        const {timezone: tz} = toRefs(stationData);
+        timezone = tz;
     }
 
     const now = (): DateTimeMaybeValid =>
-        DateTime.local({zone: timezone});
+        DateTime.local({zone: toValue(timezone)});
 
     const timestampToDateTime = (value: number): DateTimeMaybeValid =>
-        DateTime.fromSeconds(value, {zone: timezone});
+        DateTime.fromSeconds(value, {zone: toValue(timezone)});
 
     const isoToDateTime = (value: string): DateTimeMaybeValid =>
-        DateTime.fromISO(value, {zone: timezone});
+        DateTime.fromISO(value, {zone: toValue(timezone)});
 
     const formatDateTime = (
         value: DateTimeMaybeValid,

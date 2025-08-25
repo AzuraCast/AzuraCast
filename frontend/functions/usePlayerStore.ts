@@ -2,9 +2,9 @@ import {computed, ref, shallowRef} from "vue";
 import getUrlWithoutQuery from "~/functions/getUrlWithoutQuery.ts";
 import {defineStore} from "pinia";
 import useOptionalStorage from "~/functions/useOptionalStorage.ts";
-import useShowVolume from "~/functions/useShowVolume.ts";
 import formatTime from "~/functions/formatTime.ts";
 import {throttle} from "lodash";
+import {useSupported} from "@vueuse/core";
 
 export enum StreamChannel {
     Global = 0,
@@ -43,7 +43,17 @@ export const usePlayerStore = defineStore(
             listenToStorageChanges: false
         });
 
-        const showVolume = useShowVolume();
+        // Logarithmic volume (for smoother volume changes)
+        const logVolume = computed(() => {
+            return Math.min((Math.exp(volume.value / 100) - 1) / (Math.E - 1), 1);
+        });
+
+        // Whether this device can change volume
+        const showVolume = useSupported(() => {
+            const audio = new Audio();
+            audio.volume = 0.5;
+            return audio.volume !== 1;
+        });
 
         const setVolume = (newVolume: number): void => {
             if (showVolume.value) {
@@ -90,8 +100,22 @@ export const usePlayerStore = defineStore(
         const duration = ref<number>(0);
         const durationText = computed(() => formatTime(duration.value));
 
+        const setDuration = throttle(
+            (newDuration: number): void => {
+                duration.value = newDuration;
+            },
+            200
+        );
+
         const currentTime = ref<number>(0);
         const currentTimeText = computed(() => formatTime(currentTime.value));
+
+        const setCurrentTime = throttle(
+            (newCurrentTime: number): void => {
+                currentTime.value = newCurrentTime;
+            },
+            50
+        );
 
         const progress = ref<StreamPosition>({
             position: 0,
@@ -134,6 +158,7 @@ export const usePlayerStore = defineStore(
         return {
             showVolume,
             volume,
+            logVolume,
             setVolume,
             isMuted,
             toggleMute,
@@ -144,8 +169,10 @@ export const usePlayerStore = defineStore(
             stop,
             duration,
             durationText,
+            setDuration,
             currentTime,
             currentTimeText,
+            setCurrentTime,
             progress,
             setPlayPosition,
             seek,

@@ -7,14 +7,13 @@
 </template>
 
 <script setup lang="ts">
-import getLogarithmicVolume from "~/functions/getLogarithmicVolume";
 import Hls from "hls.js";
 import {nextTick, onMounted, onScopeDispose, ref, useTemplateRef, watch} from "vue";
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {storeToRefs} from "pinia";
 
 const playerStore = usePlayerStore();
-const {volume, isMuted, isPlaying, current, duration, progress} = storeToRefs(playerStore);
+const {logVolume, isMuted, isPlaying, current, duration, progress} = storeToRefs(playerStore);
 const {stop: storeStop, setIsPlaying, setPlayPosition} = playerStore;
 
 const $audio = useTemplateRef('$audio');
@@ -22,9 +21,9 @@ const $audio = useTemplateRef('$audio');
 const hls = ref<Hls | null>(null);
 const bc = ref<BroadcastChannel | null>(null);
 
-watch(volume, (newVol) => {
+watch(logVolume, (newVol) => {
     if ($audio.value !== null) {
-        $audio.value.volume = getLogarithmicVolume(newVol);
+        $audio.value.volume = newVol;
     }
 });
 
@@ -89,7 +88,7 @@ const play = () => {
             );
         };
 
-        $audio.value.volume = getLogarithmicVolume(volume.value);
+        $audio.value.volume = logVolume.value;
         $audio.value.muted = isMuted.value;
 
         if (current.value.isHls) {

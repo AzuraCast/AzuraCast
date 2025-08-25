@@ -1,11 +1,5 @@
 <template>
     <div class="radio-player-widget">
-        <audio-player
-            :title="np.now_playing?.song?.text"
-            :volume="volume"
-            :is-muted="isMuted"
-        />
-
         <div class="now-playing-details">
             <div
                 v-if="showAlbumArt && np.now_playing?.song?.art"
@@ -71,9 +65,7 @@
         <div class="radio-controls">
             <play-button
                 class="radio-control-play-button btn-xl"
-                :url="currentStream.url"
-                :is-hls="currentStream.hls"
-                is-stream
+                :stream="activeStream"
             />
 
             <div class="radio-control-select-stream">
@@ -89,7 +81,7 @@
                         aria-haspopup="true"
                         aria-expanded="false"
                     >
-                        {{ currentStream.name }}
+                        {{ activeStream.title }}
                         <span class="caret" />
                     </button>
                     <ul
@@ -103,9 +95,9 @@
                             <button
                                 type="button"
                                 class="dropdown-item"
-                                @click="switchStream(stream)"
+                                @click="setActiveStream(stream)"
                             >
-                                {{ stream.name }}
+                                {{ stream.title }}
                             </button>
                         </li>
                     </ul>
@@ -141,19 +133,17 @@
 </template>
 
 <script setup lang="ts">
-import AudioPlayer from "~/components/Common/AudioPlayer.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
-import {computed, nextTick, onMounted, ref, shallowRef, watch} from "vue";
+import {computed, nextTick, onMounted, ref, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
 import MuteButton from "~/components/Common/MuteButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
-import usePlayerVolume from "~/functions/usePlayerVolume";
-import {usePlayerStore} from "~/functions/usePlayerStore.ts";
+import {blankStreamDescriptor, StreamDescriptor, usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {useEventListener} from "@vueuse/core";
-import useShowVolume from "~/functions/useShowVolume.ts";
 import {ApiNowPlaying} from "~/entities/ApiInterfaces.ts";
 import {NowPlayingProps} from "~/functions/useNowPlaying.ts";
+import {storeToRefs} from "pinia";
 
 export interface PlayerProps extends NowPlayingProps {
     offlineText?: string,
@@ -186,17 +176,9 @@ const {
     currentTrackElapsedDisplay
 } = useNowPlaying(props);
 
-interface CurrentStreamDescriptor {
-    name: string,
-    url: string,
-    hls: boolean,
-}
-
-const currentStream = shallowRef<CurrentStreamDescriptor>({
-    name: '',
-    url: '',
-    hls: false,
-});
+const playerStore = usePlayerStore();
+const {volume, showVolume, isMuted} = storeToRefs(playerStore);
+const {setVolume, toggleMute, toggle} = playerStore;
 
 const enableHls = computed(() => {
     return props.showHls && np.value?.station?.hls_enabled;
@@ -208,67 +190,56 @@ const hlsIsDefault = computed(() => {
 
 const {$gettext} = useTranslate();
 
-const streams = computed<CurrentStreamDescriptor[]>(() => {
-    const allStreams: CurrentStreamDescriptor[] = [];
+const activeStream = ref<StreamDescriptor>(blankStreamDescriptor);
+
+const streams = computed<StreamDescriptor[]>(() => {
+    const allStreams: StreamDescriptor[] = [];
 
     if (enableHls.value) {
         allStreams.push({
-            name: $gettext('HLS'),
+            title: $gettext('HLS'),
             url: np.value?.station?.hls_url,
-            hls: true,
+            isStream: true,
+            isHls: true
         });
     }
 
     np.value?.station?.mounts?.forEach(function (mount) {
         allStreams.push({
-            name: mount.name ?? mount.url,
+            title: mount.name ?? mount.url,
             url: mount.url,
-            hls: false,
+            isStream: true,
+            isHls: false
         });
     });
 
     np.value?.station?.remotes?.forEach(function (remote) {
         allStreams.push({
-            name: remote.name ?? remote.url,
+            title: remote.name ?? remote.url,
             url: remote.url,
-            hls: false,
+            isStream: true,
+            isHls: false
         });
     });
 
     return allStreams;
 });
 
-const volume = usePlayerVolume();
-const showVolume = useShowVolume();
+const setActiveStream = (newStream: StreamDescriptor): void => {
+    activeStream.value = newStream;
+    toggle(newStream);
+};
 
 const urlParamVolume = (new URL(document.location.href)).searchParams.get('volume');
 if (null !== urlParamVolume) {
-    volume.value = Number(urlParamVolume);
+    setVolume(Number(urlParamVolume));
 }
-
-const isMuted = ref(false);
-
-const toggleMute = () => {
-    isMuted.value = !isMuted.value;
-}
-
-const {toggle} = usePlayerStore();
-
-const switchStream = (new_stream: CurrentStreamDescriptor) => {
-    currentStream.value = new_stream;
-
-    toggle({
-        url: new_stream.url,
-        isStream: true,
-        isHls: new_stream.hls
-    });
-};
 
 if (props.autoplay) {
-    const stop = useEventListener(document, "now-playing", () => {
+    const cleanupEvent = useEventListener(document, "now-playing", () => {
         void nextTick(() => {
-            switchStream(currentStream.value);
-            stop();
+            toggle(activeStream.value);
+            cleanupEvent();
         });
     });
 }
@@ -282,11 +253,11 @@ const onNowPlayingUpdated = (np_new: ApiNowPlaying) => {
 
     // Set a "default" current stream if none exists.
     const $streams = streams.value;
-    let $currentStream: CurrentStreamDescriptor | null = currentStream.value;
+    let $currentStream = activeStream.value;
 
-    if ($currentStream.url === '' && $streams.length > 0) {
+    if ($currentStream.url === null && $streams.length > 0) {
         if (hlsIsDefault.value) {
-            currentStream.value = $streams[0];
+            activeStream.value = $streams[0];
         } else {
             $currentStream = null;
 
@@ -302,7 +273,7 @@ const onNowPlayingUpdated = (np_new: ApiNowPlaying) => {
                 $currentStream = $streams[0];
             }
 
-            currentStream.value = $currentStream;
+            activeStream.value = $currentStream;
         }
     }
 };

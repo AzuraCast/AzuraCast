@@ -9,7 +9,10 @@
         @shown="onShown"
         @hidden="onHidden"
     >
-        <inline-player class="text-start bg-primary rounded mb-2 p-1" />
+        <inline-player
+            class="text-start bg-primary rounded mb-2 p-1"
+            :channel="StreamChannel.Modal"
+        />
 
         <table class="table table-striped sortable mb-0">
             <thead>
@@ -39,7 +42,11 @@
                 >
                     <td class="pe-2">
                         <play-button
-                            :url="element.media.links.play"
+                            :stream="{
+                                channel: StreamChannel.Modal,
+                                url: element.media.links.play,
+                                title: element.media.title
+                            }"
                         />
                     </td>
                     <td class="ps-2">
@@ -104,7 +111,7 @@ import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
 import {IconChevronBarDown, IconChevronBarUp, IconChevronDown, IconChevronUp} from "~/components/Common/icons";
 import {useHasModal} from "~/functions/useHasModal.ts";
-import {usePlayerStore, useProvidePlayerStore} from "~/functions/usePlayerStore.ts";
+import {StreamChannel, usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {useDraggable} from "vue-draggable-plus";
 
 const loading = ref(true);
@@ -169,8 +176,6 @@ const moveToTop = (index: number) => {
     media.value.splice(0, 0, currentItem);
     save();
 };
-
-useProvidePlayerStore('reorder');
 
 const {stop} = usePlayerStore();
 

@@ -53,7 +53,10 @@
             <template #cell(play_button)="{item}">
                 <play-button
                     icon-class="lg"
-                    :url="item.links.download"
+                    :stream="{
+                        title: item.title,
+                        url: item.links.download
+                    }"
                 />
             </template>
             <template #cell(art)="{item}">
@@ -118,7 +121,10 @@
                         <div class="flex-shrink-0 pe-2">
                             <play-button
                                 icon-class="lg"
-                                :url="item.links.download"
+                                :stream="{
+                                    title: item.title,
+                                    url: item.links.download
+                                }"
                             />
                         </div>
                         <h5 class="card-title flex-fill m-0">

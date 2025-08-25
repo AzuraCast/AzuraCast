@@ -29,8 +29,11 @@
                         <td class="pe-1">
                             <play-button
                                 class="btn-lg"
-                                :url="mount.url"
-                                is-stream
+                                :stream="{
+                                    url: mount.url,
+                                    title: mount.name,
+                                    isStream: true,
+                                }"
                             />
                         </td>
                         <td class="ps-1">
@@ -77,8 +80,11 @@
                         <td class="pe-1">
                             <play-button
                                 class="btn-lg"
-                                :url="remote.url"
-                                is-stream
+                                :stream="{
+                                    url: remote.url,
+                                    title: remote.name,
+                                    isStream: true,
+                                }"
                             />
                         </td>
                         <td class="ps-1">
@@ -121,9 +127,12 @@
                         <td class="pe-1">
                             <play-button
                                 class="btn-lg"
-                                :url="station.hls_url"
-                                is-stream
-                                is-hls
+                                :stream="{
+                                    url: station.hls_url,
+                                    title: $gettext('HLS'),
+                                    isStream: true,
+                                    isHls: true
+                                }"
                             />
                         </td>
                         <td class="ps-1">

@@ -19,30 +19,39 @@ import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {IconPlayCircle, IconStopCircle} from "~/components/Common/icons";
 import getUrlWithoutQuery from "~/functions/getUrlWithoutQuery.ts";
-import {usePlayerStore} from "~/functions/usePlayerStore.ts";
+import {
+    blankStreamDescriptor,
+    FullStreamDescriptor,
+    StreamDescriptor,
+    usePlayerStore
+} from "~/functions/usePlayerStore.ts";
+import {storeToRefs} from "pinia";
 
-const props = withDefaults(
-    defineProps<{
-        url: string,
-        isStream?: boolean,
-        isHls?: boolean,
-        iconClass?: string
-    }>(),
-    {
-        isStream: false,
-        isHls: false
-    }
-);
+const props = defineProps<{
+    stream: StreamDescriptor,
+    iconClass?: string
+}>();
 
-const {isPlaying, current, toggle: storeToggle} = usePlayerStore();
+const playerStore = usePlayerStore();
+const {isPlaying, current} = storeToRefs(playerStore);
+const {toggle: storeToggle} = playerStore;
 
 const isThisPlaying = computed(() => {
     if (!isPlaying.value) {
         return false;
     }
 
-    const playingUrl = getUrlWithoutQuery(current.value?.url);
-    const thisUrl = getUrlWithoutQuery(props.url);
+    const streamWithDefaults: FullStreamDescriptor = {
+        ...blankStreamDescriptor,
+        ...props.stream,
+    };
+
+    if (streamWithDefaults.channel !== current.value.channel) {
+        return false;
+    }
+
+    const playingUrl = getUrlWithoutQuery(current.value.url);
+    const thisUrl = getUrlWithoutQuery(streamWithDefaults.url);
     return playingUrl === thisUrl;
 });
 
@@ -61,11 +70,7 @@ const iconText = computed(() => {
 });
 
 const toggle = () => {
-    storeToggle({
-        url: props.url,
-        isStream: props.isStream,
-        isHls: props.isHls
-    });
+    storeToggle(props.stream);
 };
 
 defineExpose({

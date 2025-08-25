@@ -8,7 +8,10 @@
         @hidden="onHidden"
     >
         <template v-if="listUrl">
-            <inline-player class="text-start bg-primary rounded mb-2 p-1" />
+            <inline-player
+                class="text-start bg-primary rounded mb-2 p-1"
+                :channel="StreamChannel.Modal"
+            />
 
             <broadcasts-modal-toolbar
                 :batch-url="batchUrl"
@@ -27,7 +30,13 @@
             >
                 <template #cell(download)="row">
                     <template v-if="row.item.recording?.downloadUrl">
-                        <play-button :url="row.item.recording?.downloadUrl"/>
+                        <play-button
+                            :stream="{
+                                channel: StreamChannel.Modal,
+                                url: row.item.recording?.downloadUrl,
+                                title: $gettext('Streamer Broadcast')
+                            }"
+                        />
                         <a
                             class="name btn p-0 ms-2"
                             :href="row.item.recording?.downloadUrl"
@@ -77,7 +86,7 @@ import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {IconDownload} from "~/components/Common/icons";
 import {useHasModal} from "~/functions/useHasModal.ts";
-import {usePlayerStore, useProvidePlayerStore} from "~/functions/usePlayerStore.ts";
+import {StreamChannel, usePlayerStore} from "~/functions/usePlayerStore.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import BroadcastsModalToolbar from "~/components/Stations/Streamers/BroadcastsModalToolbar.vue";
 import {useDialog} from "~/functions/useDialog.ts";
@@ -189,8 +198,6 @@ const open = (newStreamerId: number, newListUrl: string, newBatchUrl: string) =>
 
     show();
 };
-
-useProvidePlayerStore('broadcasts');
 
 const {stop} = usePlayerStore();
 

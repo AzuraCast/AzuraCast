@@ -81,8 +81,11 @@
                     <div class="flex-shrink-0 pe-2">
                         <template v-if="item.type === FileTypes.Media">
                             <play-button
-                                :url="item.media.links.play"
                                 class="btn-lg"
+                                :stream="{
+                                    title: item.text,
+                                    url: item.media.links.play
+                                }"
                             />
                         </template>
                         <template v-else>

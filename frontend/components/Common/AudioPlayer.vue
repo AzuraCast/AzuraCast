@@ -2,52 +2,33 @@
     <audio
         v-if="isPlaying"
         ref="$audio"
-        :title="title"
+        :title="current.title"
     />
 </template>
 
 <script setup lang="ts">
 import getLogarithmicVolume from "~/functions/getLogarithmicVolume";
 import Hls from "hls.js";
-import {computed, nextTick, onMounted, onScopeDispose, ref, toRef, useTemplateRef, watch} from "vue";
+import {nextTick, onMounted, onScopeDispose, ref, useTemplateRef, watch} from "vue";
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
-import {watchThrottled} from "@vueuse/core";
+import {storeToRefs} from "pinia";
 
-const props = withDefaults(
-    defineProps<{
-        title?: string,
-        volume?: number,
-        isMuted?: boolean
-    }>(),
-    {
-        volume: 55,
-        isMuted: false
-    }
-);
-
-const emit = defineEmits<{
-    (e: 'update:duration', value: number): void,
-    (e: 'update:currentTime', value: number): void,
-    (e: 'update:progress', value: number): void
-}>();
+const playerStore = usePlayerStore();
+const {volume, isMuted, isPlaying, current, duration, progress} = storeToRefs(playerStore);
+const {stop: storeStop, setIsPlaying, setPlayPosition} = playerStore;
 
 const $audio = useTemplateRef('$audio');
 
 const hls = ref<Hls | null>(null);
-const duration = ref<number>(0);
-const currentTime = ref<number>(0);
-
-const {isPlaying, current, stop: storeStop} = usePlayerStore();
-
 const bc = ref<BroadcastChannel | null>(null);
 
-watch(toRef(props, 'volume'), (newVol) => {
+watch(volume, (newVol) => {
     if ($audio.value !== null) {
         $audio.value.volume = getLogarithmicVolume(newVol);
     }
 });
 
-watch(toRef(props, 'isMuted'), (newMuted) => {
+watch(isMuted, (newMuted) => {
     if ($audio.value !== null) {
         $audio.value.muted = newMuted;
     }
@@ -64,9 +45,7 @@ const stop = () => {
         hls.value = null;
     }
 
-    duration.value = 0;
-    currentTime.value = 0;
-    isPlaying.value = false;
+    setIsPlaying(false);
 };
 
 const play = () => {
@@ -103,13 +82,15 @@ const play = () => {
 
         $audio.value.ontimeupdate = () => {
             const audioDuration = $audio.value?.duration ?? 0;
-            duration.value = (audioDuration !== Infinity && !isNaN(audioDuration)) ? audioDuration : 0;
 
-            currentTime.value = $audio.value?.currentTime ?? 0;
+            setPlayPosition(
+                (audioDuration !== Infinity && !isNaN(audioDuration)) ? audioDuration : 0,
+                $audio.value?.currentTime ?? 0
+            );
         };
 
-        $audio.value.volume = getLogarithmicVolume(props.volume);
-        $audio.value.muted = props.isMuted;
+        $audio.value.volume = getLogarithmicVolume(volume.value);
+        $audio.value.muted = isMuted.value;
 
         if (current.value.isHls) {
             // HLS playback support
@@ -142,6 +123,12 @@ const play = () => {
     });
 };
 
+watch(progress, (newProgress) => {
+    if (newProgress.isSeek && $audio.value !== null) {
+        $audio.value.currentTime = (newProgress.position / 100) * duration.value;
+    }
+});
+
 watch(current, (newCurrent) => {
     if (newCurrent.url === null) {
         stop();
@@ -149,42 +136,6 @@ watch(current, (newCurrent) => {
         play();
     }
 });
-
-watchThrottled(
-    duration,
-    (newValue) => {
-      emit('update:duration', newValue);
-    },
-    {throttle: 500}
-);
-
-watchThrottled(
-    currentTime,
-    (newValue) => {
-      emit('update:currentTime', newValue);
-    },
-    {throttle: 500}
-);
-
-const progress = computed(() => {
-    return (duration.value !== 0)
-        ? +((currentTime.value / duration.value) * 100).toFixed(2)
-        : 0;
-});
-
-watchThrottled(
-    progress,
-    (newValue) => {
-      emit('update:progress', newValue);
-    },
-    {throttle: 500}
-);
-
-const setProgress = (progress: number) => {
-    if ($audio.value !== null) {
-        $audio.value.currentTime = (progress / 100) * duration.value;
-    }
-};
 
 onMounted(() => {
     // Allow pausing from the mobile metadata update.
@@ -206,11 +157,5 @@ onScopeDispose(() => {
     if (bc.value) {
         bc.value.close()
     }
-});
-
-defineExpose({
-    play,
-    stop,
-    setProgress
 });
 </script>

@@ -8,7 +8,7 @@ FROM mariadb:lts-noble AS mariadb
 #
 # Built-in docs build step
 #
-FROM ghcr.io/azuracast/azuracast.com:builtin@sha256:2dc5aa815818a2df138dee2b25052aebebac2aed89f37b4c523f394fd6bc703f AS docs
+FROM ghcr.io/azuracast/azuracast.com:builtin@sha256:d90d3f746458d3db95da69fa02aedf7b2f090f0edd7cdfca29568c9cf288fe22 AS docs
 
 #
 # Icecast-KH with AzuraCast customizations build step

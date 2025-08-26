@@ -1,12 +1,12 @@
 <template>
     <slot/>
+
+    <audio-player/>
 </template>
 
 <script setup lang="ts">
-import {useProvidePlayerStore} from "~/functions/usePlayerStore.ts";
 import {nextTick, onMounted} from "vue";
-
-useProvidePlayerStore('global');
+import AudioPlayer from "~/components/Common/AudioPlayer.vue";
 
 onMounted(() => {
     void nextTick(() => {

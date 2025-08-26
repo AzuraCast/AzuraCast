@@ -79,10 +79,10 @@ import {useStationQuery} from "~/functions/useStationQuery.ts";
 const menuItems = useStationsMenu();
 
 const {data: stationData} = useStationQuery();
-const {name, hasStarted, needsRestart: initialNeedsRestart} = toRefs(stationData);
+const {name, hasStarted, needsRestart: initialNeedsRestart, timezone} = toRefs(stationData);
 
 const {DateTime} = useLuxon();
-const {now, formatDateTimeAsTime} = useStationDateTimeFormatter();
+const {now, formatDateTimeAsTime} = useStationDateTimeFormatter(timezone);
 
 const clock = ref('');
 

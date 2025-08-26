@@ -6,8 +6,11 @@
         >
             <play-button
                 class="btn-xl"
-                :url="station.listen_url"
-                is-stream
+                :stream="{
+                    url: station.listen_url,
+                    title: station.name,
+                    isStream: true
+                }"
             />
         </div>
         <div class="flex-fill">

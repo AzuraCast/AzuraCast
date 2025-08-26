@@ -1,15 +1,6 @@
 <template>
-    <audio-player
-        ref="$player"
-        :volume="volume"
-        :is-muted="isMuted"
-        @update:duration="onUpdateDuration"
-        @update:current-time="onUpdateCurrentTime"
-        @update:progress="onUpdateProgress"
-    />
-
     <div
-        v-if="isPlaying"
+        v-if="isCurrentChannel && isPlaying"
         v-bind="$attrs"
         class="player-inline"
     >
@@ -22,7 +13,7 @@
             </div>
             <div class="flex-fill mx-2">
                 <input
-                    v-model="progress"
+                    v-model.number="seekPosition"
                     type="range"
                     :title="$gettext('Seek')"
                     class="player-seek-range form-range"
@@ -72,61 +63,50 @@
 </template>
 
 <script setup lang="ts">
-import AudioPlayer from "~/components/Common/AudioPlayer.vue";
-import formatTime from "~/functions/formatTime";
 import Icon from "~/components/Common/Icon.vue";
-import {computed, Ref, ref, useTemplateRef} from "vue";
+import {computed} from "vue";
 import MuteButton from "~/components/Common/MuteButton.vue";
-import usePlayerVolume from "~/functions/usePlayerVolume";
 import {IconStop} from "~/components/Common/icons";
-import {usePlayerStore} from "~/functions/usePlayerStore.ts";
-import useShowVolume from "~/functions/useShowVolume.ts";
+import {StreamChannel, usePlayerStore} from "~/functions/usePlayerStore.ts";
+import {storeToRefs} from "pinia";
 
 defineOptions({
     inheritAttrs: false
 });
 
-const {isPlaying, current, stop} = usePlayerStore();
+const props = withDefaults(
+    defineProps<{
+        channel?: StreamChannel
+    }>(),
+    {
+        channel: StreamChannel.Global
+    }
+);
 
-const volume = usePlayerVolume();
-const isMuted = ref(false);
+const playerStore = usePlayerStore();
+const {
+    isPlaying,
+    current,
+    duration,
+    durationText,
+    currentTimeText,
+    volume,
+    showVolume,
+    isMuted,
+    progress
+} = storeToRefs(playerStore);
+const {stop, seek, toggleMute} = playerStore;
 
-const showVolume = useShowVolume();
+const isCurrentChannel = computed(
+    () => props.channel === current.value.channel
+);
 
-const duration: Ref<number> = ref(0);
-const currentTime: Ref<number> = ref(0);
-const rawProgress: Ref<number> = ref(0);
-
-const onUpdateDuration = (newValue: number) => {
-    duration.value = newValue;
-};
-
-const onUpdateCurrentTime = (newValue: number) => {
-    currentTime.value = newValue;
-};
-
-const onUpdateProgress = (newValue: number) => {
-    rawProgress.value = newValue;
-};
-
-const durationText = computed(() => formatTime(duration.value));
-const currentTimeText = computed(() => formatTime(currentTime.value));
-
-const $player = useTemplateRef('$player');
-
-const progress = computed({
-    get: () => {
-        return rawProgress.value;
-    },
+const seekPosition = computed({
+    get: () => progress.value.position,
     set: (prog) => {
-        $player.value?.setProgress(prog);
-        rawProgress.value = prog;
+        seek(prog);
     }
 });
-
-const toggleMute = () => {
-    isMuted.value = !isMuted.value;
-};
 
 defineExpose({
     stop

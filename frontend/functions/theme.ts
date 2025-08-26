@@ -38,7 +38,6 @@ export const useTheme = defineStore(
             }
         };
 
-
         const isDark: ComputedRef<boolean> = computed((): boolean => currentTheme.value === 'dark');
 
         const isLight: ComputedRef<boolean> = computed((): boolean => currentTheme.value === 'light');

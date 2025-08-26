@@ -156,8 +156,11 @@
                     <template #cell(play_button)="{ item }">
                         <play-button
                             class="file-icon btn-lg"
-                            :url="item.station.listen_url"
-                            is-stream
+                            :stream="{
+                                url: item.station.listen_url,
+                                title: item.station.name,
+                                isStream: true
+                            }"
                         />
                     </template>
                     <template #cell(name)="{ item }">

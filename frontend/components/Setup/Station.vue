@@ -1,7 +1,11 @@
 <template>
-    <setup-layout>
-        <setup-step :step="2"/>
+    <setup-step :step="2"/>
 
+    <section
+        id="content"
+        class="full-height-wrapper"
+        role="main"
+    >
         <section
             class="card"
             role="region"
@@ -36,7 +40,7 @@
                 </admin-stations-form>
             </div>
         </section>
-    </setup-layout>
+    </section>
 </template>
 
 <script setup lang="ts">
@@ -44,7 +48,6 @@ import AdminStationsForm, {StationFormParentProps} from "~/components/Admin/Stat
 import SetupStep from "~/components/Setup/SetupStep.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
 import {onMounted, useTemplateRef} from "vue";
-import SetupLayout from "~/components/Setup/SetupLayout.vue";
 
 interface SetupStationProps extends StationFormParentProps {
     createUrl: string,

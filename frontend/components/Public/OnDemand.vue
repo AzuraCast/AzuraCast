@@ -29,7 +29,10 @@
                 <template #cell(download_url)="row">
                     <play-button
                         class="btn-lg"
-                        :url="row.item.download_url"
+                        :stream="{
+                            title: row.item.media.text,
+                            url: row.item.download_url,
+                        }"
                     />
                     <template v-if="showDownloadButton">
                         <a

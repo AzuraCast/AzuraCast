@@ -1,5 +1,9 @@
 <template>
-    <setup-layout>
+    <section
+        id="content"
+        class="full-height-wrapper"
+        role="main"
+    >
         <admin-settings
             v-bind="props"
             @saved="onSaved"
@@ -21,14 +25,13 @@
                 {{ $gettext('Save and Continue') }}
             </template>
         </admin-settings>
-    </setup-layout>
+    </section>
 </template>
 
 <script setup lang="ts">
 import AdminSettings, {SettingsProps} from "~/components/Admin/Settings.vue";
 import SetupStep from "~/components/Setup/SetupStep.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
-import SetupLayout from "~/components/Setup/SetupLayout.vue";
 
 interface SetupSettingsProps extends SettingsProps {
     continueUrl: string,

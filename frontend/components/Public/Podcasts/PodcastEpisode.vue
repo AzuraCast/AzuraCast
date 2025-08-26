@@ -46,7 +46,10 @@
                     <div class="flex-shrink-0 pe-3">
                         <play-button
                             icon-class="xl"
-                            :url="episode.links.download"
+                            :stream="{
+                                title: episode.title,
+                                url: episode.links.download
+                            }"
                         />
                     </div>
                     <div class="flex-fill">

@@ -62,12 +62,11 @@
 import WaveSurfer from "wavesurfer.js";
 import timelinePlugin from "wavesurfer.js/dist/plugins/timeline.js";
 import regionsPlugin, {RegionParams} from "wavesurfer.js/dist/plugins/regions.js";
-import getLogarithmicVolume from "~/functions/getLogarithmicVolume";
 import {onMounted, onUnmounted, ref, toRef, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
-import usePlayerVolume from "~/functions/usePlayerVolume";
-import useShowVolume from "~/functions/useShowVolume.ts";
 import MuteButton from "~/components/Common/MuteButton.vue";
+import {usePlayerStore} from "~/functions/usePlayerStore.ts";
+import {storeToRefs} from "pinia";
 
 const props = withDefaults(
     defineProps<{
@@ -81,30 +80,20 @@ const props = withDefaults(
     }
 );
 
-const emit = defineEmits<{
-    (e: 'ready', duration: number): void
-}>();
-
 let wavesurfer: WaveSurfer | null = null;
 let wsRegions: regionsPlugin | null = null;
 
-const volume = usePlayerVolume();
-const showVolume = useShowVolume();
-
-const isMuted = ref(false);
-
-const toggleMute = () => {
-    isMuted.value = !isMuted.value;
-}
+const playerStore = usePlayerStore();
+const {showVolume, volume, logVolume, isMuted} = storeToRefs(playerStore);
+const {toggle, toggleMute, setDuration, setCurrentTime} = playerStore;
 
 const zoom = ref(0);
-
 watch(zoom, (val) => {
     wavesurfer?.zoom(val);
 });
 
-watch(volume, (val) => {
-    wavesurfer?.setVolume(getLogarithmicVolume(val));
+watch(logVolume, (val) => {
+    wavesurfer?.setVolume(val);
 });
 
 watch(isMuted, (val) => {
@@ -149,14 +138,25 @@ onMounted(() => {
 
     wsRegions = wavesurfer.registerPlugin(regionsPlugin.create());
 
-    wavesurfer.on('ready', (duration: number) => {
-        wavesurfer.setVolume(getLogarithmicVolume(volume.value));
+    wavesurfer.on('ready', (newDuration: number) => {
+        // Disable any other players.
+        toggle();
+
+        wavesurfer.setVolume(logVolume.value);
 
         if (!isExternalJson.value) {
             cacheWaveformRemotely();
         }
 
-        emit('ready', duration);
+        setDuration(newDuration);
+    });
+
+    wavesurfer.on('decode', (newDuration: number) => {
+        setDuration(newDuration);
+    });
+
+    wavesurfer.on('timeupdate', (newTime: number) => {
+        setCurrentTime(newTime);
     });
 
     axiosSilent.get(props.waveformUrl).then((resp) => {
@@ -204,19 +204,9 @@ const stop = () => {
     wavesurfer?.pause();
 };
 
-const getCurrentTime = () => {
-    return wavesurfer?.getCurrentTime();
-};
-
-const getDuration = () => {
-    return wavesurfer?.getDuration();
-}
-
 defineExpose({
     play,
-    stop,
-    getCurrentTime,
-    getDuration,
+    stop
 })
 </script>
 

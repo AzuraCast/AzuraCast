@@ -138,6 +138,7 @@ final class SetupController
             response: $response,
             component: 'Setup/Station',
             id: 'setup-station',
+            layout: 'minimal',
             title: __('Create a New Radio Station'),
             props: array_merge(
                 $this->stationFormComponent->getProps($request),
@@ -171,6 +172,7 @@ final class SetupController
             response: $response,
             component: 'Setup/Settings',
             id: 'setup-settings',
+            layout: 'minimal',
             title: __('System Settings'),
             props: [
                 ...$this->settingsComponent->getProps($request),

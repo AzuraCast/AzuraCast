@@ -20,8 +20,6 @@ export const useStationQuery = () => {
     return useQuery<VueStationGlobals>({
         queryKey: [QueryKeys.StationGlobals, stationId],
         queryFn: async ({signal}) => {
-            console.log(dashboardUrl.value);
-
             const {data} = await axios.get<VueStationGlobals>(dashboardUrl.value, {signal});
             return data;
         },

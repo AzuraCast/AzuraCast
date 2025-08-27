@@ -346,8 +346,7 @@ type Row = ApiFileList;
 const listItemProvider = useApiItemProvider<Row>(
     listUrl,
     queryKeyWithStation(
-        [QueryKeys.StationMedia],
-        ['files', currentDirectory]
+        [QueryKeys.StationMedia, 'files', currentDirectory]
     ),
     {
         staleTime: 2 * 60 * 1000

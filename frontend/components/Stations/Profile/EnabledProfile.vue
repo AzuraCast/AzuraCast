@@ -108,8 +108,7 @@ const {axiosSilent} = useAxios();
 
 const {data: profileInfo} = useQuery<ApiStationProfile>({
     queryKey: queryKeyWithStation([
-        QueryKeys.StationProfile
-    ], [
+        QueryKeys.StationProfile,
         'services'
     ]),
     queryFn: async ({signal}) => {

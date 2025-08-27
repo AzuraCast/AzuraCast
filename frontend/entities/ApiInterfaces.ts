@@ -1204,11 +1204,6 @@ export interface ApiStationRequest {
   song?: ApiSong;
 }
 
-export interface ApiStationRestartStatus {
-  has_started?: boolean;
-  needs_restart?: boolean;
-}
-
 export interface ApiStationSchedule {
   /**
    * Unique identifier for this schedule entry.

@@ -67,19 +67,16 @@ import SidebarMenu from "~/components/Common/SidebarMenu.vue";
 import {toRefs, useIntervalFn} from "@vueuse/core";
 import {useStationsMenu} from "~/components/Stations/menu";
 import {userAllowedForStation} from "~/acl";
-import {useAxios} from "~/vendor/axios.ts";
-import {getStationApiUrl} from "~/router.ts";
 import {IconEdit} from "~/components/Common/icons.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
-import {useRestartEventBus} from "~/functions/useMayNeedRestart.ts";
-import {ApiStationRestartStatus, StationPermissions} from "~/entities/ApiInterfaces.ts";
+import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationQuery} from "~/functions/useStationQuery.ts";
 
 const menuItems = useStationsMenu();
 
 const {data: stationData} = useStationQuery();
-const {name, hasStarted, needsRestart: initialNeedsRestart, timezone} = toRefs(stationData);
+const {name, hasStarted, needsRestart, timezone} = toRefs(stationData);
 
 const {DateTime} = useLuxon();
 const {now, formatDateTimeAsTime} = useStationDateTimeFormatter(timezone);
@@ -91,22 +88,5 @@ useIntervalFn(() => {
 }, 1000, {
     immediate: true,
     immediateCallback: true
-});
-
-const restartEventBus = useRestartEventBus();
-const restartStatusUrl = getStationApiUrl('/restart-status');
-const needsRestart = ref<boolean>(initialNeedsRestart.value);
-const {axios} = useAxios();
-
-restartEventBus.on((forceRestart: boolean): void => {
-    if (forceRestart) {
-        needsRestart.value = true;
-    } else {
-        void axios.get<Required<ApiStationRestartStatus>>(restartStatusUrl.value).then(
-            ({data}) => {
-                needsRestart.value = data.needs_restart;
-            }
-        );
-    }
 });
 </script>

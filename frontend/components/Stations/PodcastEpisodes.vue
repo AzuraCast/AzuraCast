@@ -256,9 +256,7 @@ const episodesItemProvider = useApiItemProvider(
     computed(() => props.podcast.links.episodes),
     queryKeyWithStation(
         [
-            QueryKeys.StationPodcasts
-        ],
-        [
+            QueryKeys.StationPodcasts,
             computed(() => props.podcast.id),
             'episodes'
         ]

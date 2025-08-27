@@ -2712,26 +2712,6 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
-  '/station/{station_id}/restart-status':
-    get:
-      tags:
-        - 'Stations: General'
-      summary: 'Get the pending restart status for a station.'
-      operationId: getRestartStatus
-      parameters:
-        -
-          $ref: '#/components/parameters/StationIdRequired'
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_StationRestartStatus'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '500':
-          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/history':
     get:
       tags:
@@ -7797,13 +7777,6 @@ components:
           example: /api/station/1/request/1
         song:
           $ref: '#/components/schemas/Api_Song'
-      type: object
-    Api_StationRestartStatus:
-      properties:
-        has_started:
-          type: boolean
-        needs_restart:
-          type: boolean
       type: object
     Api_StationSchedule:
       properties:

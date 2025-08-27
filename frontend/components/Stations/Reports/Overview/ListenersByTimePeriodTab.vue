@@ -137,8 +137,7 @@ const blankChartSection = {
 
 const {data: chartData, isLoading} = useQuery({
     queryKey: queryKeyWithStation([
-        QueryKeys.StationReports
-    ], [
+        QueryKeys.StationReports,
         'listeners_by_time_period',
         resultType,
         dateRange

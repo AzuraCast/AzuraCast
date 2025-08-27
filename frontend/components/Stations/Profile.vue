@@ -29,8 +29,7 @@ const apiUrl = getStationApiUrl('/vue/profile');
 
 const {data: state, isLoading} = useQuery({
     queryKey: queryKeyWithStation([
-        QueryKeys.StationProfile
-    ], [
+        QueryKeys.StationProfile,
         'profile'
     ]),
     queryFn: async ({signal}) => {

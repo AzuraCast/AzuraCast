@@ -134,8 +134,7 @@ const fields: DataTableField[] = [
 const listItemProvider = useApiItemProvider(
     listUrlForType,
     queryKeyWithStation([
-        QueryKeys.StationReports
-    ], [
+        QueryKeys.StationReports,
         'requests',
         activeType
     ])

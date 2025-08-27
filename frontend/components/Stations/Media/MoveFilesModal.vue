@@ -137,9 +137,7 @@ const {handleBatchResponse} = useHandleBatchResponse();
 const directoriesQuery = useQuery({
     queryKey: queryKeyWithStation(
         [
-            QueryKeys.StationMedia
-        ],
-        [
+            QueryKeys.StationMedia,
             'directories',
             destinationDirectory
         ]

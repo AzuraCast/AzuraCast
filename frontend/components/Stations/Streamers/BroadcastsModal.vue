@@ -152,7 +152,6 @@ const listItemProvider = useApiItemProvider(
     listUrl,
     queryKeyWithStation([
         QueryKeys.StationStreamers,
-    ], [
         'broadcasts',
         streamerId
     ]),

@@ -1,8 +1,8 @@
-import {useQuery} from "@tanstack/vue-query";
+import {useQuery, useQueryClient} from "@tanstack/vue-query";
 import {VueStationGlobals} from "~/entities/ApiInterfaces.ts";
 import {computed, ComputedRef} from "vue";
 import {useAxios} from "~/vendor/axios.ts";
-import {QueryKeys} from "~/entities/Queries.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import {useRoute} from "vue-router";
 import {getStationApiUrl} from "~/router.ts";
 
@@ -15,10 +15,15 @@ export const useStationQuery = () => {
     const {axios} = useAxios();
     const stationId = useStationId();
 
-    const dashboardUrl = getStationApiUrl('/dashboard');
+    const dashboardUrl = getStationApiUrl('/dashboard', stationId);
 
     return useQuery<VueStationGlobals>({
-        queryKey: [QueryKeys.StationGlobals, stationId],
+        queryKey: queryKeyWithStation(
+            [
+                QueryKeys.StationGlobals
+            ],
+            stationId
+        ),
         queryFn: async ({signal}) => {
             const {data} = await axios.get<VueStationGlobals>(dashboardUrl.value, {signal});
             return data;
@@ -56,4 +61,15 @@ export const useStationQuery = () => {
             }
         }
     });
+}
+
+export const useClearAllStationQueries = () => {
+    const queryClient = useQueryClient();
+    const stationId = useStationId();
+
+    return async () => {
+        await queryClient.invalidateQueries({
+            queryKey: queryKeyWithStation([], stationId)
+        });
+    }
 }

@@ -345,8 +345,8 @@ const hasFilters: ComputedRef<boolean> = computed(() => {
 
 const listenersQuery = useQuery({
     queryKey: queryKeyWithStation(
-        [QueryKeys.StationReports],
         [
+            QueryKeys.StationReports,
             'listeners',
             computed(() => (isLive.value) ? 'live' : dateRange.value)
         ],
@@ -412,8 +412,10 @@ const listenersItemProvider = useClientItemProvider(
     async (): Promise<void> => {
         await queryClient.invalidateQueries({
             queryKey: queryKeyWithStation(
-                [QueryKeys.StationReports],
-                ['listeners'],
+                [
+                    QueryKeys.StationReports,
+                    'listeners'
+                ],
             )
         });
     }

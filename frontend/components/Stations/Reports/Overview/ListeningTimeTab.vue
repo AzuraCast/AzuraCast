@@ -57,8 +57,7 @@ const {DateTime} = useLuxon();
 
 const metricsQuery = useQuery({
     queryKey: queryKeyWithStation([
-        QueryKeys.StationReports
-    ], [
+        QueryKeys.StationReports,
         'listening_time_metrics',
         dateRange
     ]),

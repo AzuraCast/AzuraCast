@@ -1,8 +1,10 @@
 import {useStationId} from "~/functions/useStationQuery.ts";
+import {ComputedRef} from "vue";
 
 export enum QueryKeys {
     Dashboard = 'Dashboard',
 
+    StationGroup = 'Station',
     StationGlobals = 'StationGlobals',
     StationHlsStreams = 'StationHlsStreams',
     StationLogs = 'StationLogs',
@@ -40,13 +42,20 @@ export enum QueryKeys {
 }
 
 export const queryKeyWithStation = (
-    prefix: unknown[],
-    suffix?: unknown[]
+    suffix?: unknown[],
+    id?: ComputedRef<number>
 ): unknown[] => {
-    const id = useStationId();
+    id ??= useStationId();
 
-    const newQueryKeys = [...prefix];
-    newQueryKeys.push({station: id});
+    const newQueryKeys: unknown[] = [
+        QueryKeys.StationGroup,
+        {
+            station: id
+        }
+    ];
+    newQueryKeys.push({
+        station: id
+    });
 
     if (suffix) {
         newQueryKeys.push(...suffix);

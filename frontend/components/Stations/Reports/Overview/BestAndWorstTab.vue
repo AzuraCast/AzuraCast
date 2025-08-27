@@ -149,8 +149,7 @@ const {DateTime} = useLuxon();
 
 const {data: state, isLoading} = useQuery({
     queryKey: queryKeyWithStation([
-        QueryKeys.StationReports
-    ], [
+        QueryKeys.StationReports,
         'best_and_worst',
         dateRange
     ]),

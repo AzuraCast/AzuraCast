@@ -198,8 +198,7 @@ const exportUrl = computed(() => {
 const listItemProvider = useApiItemProvider(
     apiUrl,
     queryKeyWithStation([
-        QueryKeys.StationReports
-    ], [
+        QueryKeys.StationReports,
         'timeline',
         dateRange
     ])

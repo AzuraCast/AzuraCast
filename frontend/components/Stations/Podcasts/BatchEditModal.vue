@@ -107,8 +107,7 @@ const isModalOpen = ref(false);
 
 const {data: rows, isLoading} = useQuery<ApiPodcastEpisode[]>({
     queryKey: queryKeyWithStation([
-        QueryKeys.StationPodcasts
-    ], [
+        QueryKeys.StationPodcasts,
         computed(() => props.id),
         'batch',
         computed(() => props.selectedItems),

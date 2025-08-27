@@ -10,6 +10,7 @@ use App\Entity\Settings;
 use App\Environment;
 use App\Service\AzuraCastCentral;
 use DateTimeInterface;
+use Throwable;
 
 final class CheckUpdatesTask extends AbstractTask
 {
@@ -53,14 +54,25 @@ final class CheckUpdatesTask extends AbstractTask
     {
         $settings = $this->readSettings();
 
-        $updates = $this->azuracastCentral->checkForUpdates();
+        try {
+            $updates = $this->azuracastCentral->checkForUpdates();
 
-        if (null !== $updates) {
             $settings->update_results = $updates;
             $this->writeSettings($settings);
 
             $this->logger->info('Successfully checked for updates.', ['results' => $updates]);
-        } else {
+        } catch (Throwable $e) {
+            $this->logger->error(
+                sprintf(
+                    'Error checking updates (%d): %s',
+                    $e->getCode(),
+                    $e->getMessage()
+                ),
+                [
+                    'exception' => $e,
+                ]
+            );
+
             // Force re-setting of update data (to update timestamps).
             $updates = $settings->update_results;
             $settings->update_results = $updates;

@@ -56,7 +56,10 @@ final class AzuraCastCentral
             $response = $this->httpClient->request(
                 'POST',
                 self::BASE_URL . '/api/update',
-                ['json' => $requestBody]
+                [
+                    'json' => $requestBody,
+                    'timeout' => 15,
+                ]
             );
 
             $updateDataRaw = $response->getBody()->getContents();

@@ -64,6 +64,22 @@ final class RunAnalyticsTask extends AbstractTask
     {
         $this->analyticsRepo->cleanup();
 
+        // Get the earliest date to pull analytics for (in case of gaps).
+        $now = Time::nowUtc();
+        $startingDay = $this->getStartingDay($now);
+
+        if ($startingDay === null) {
+            $this->logger->error('Skipping analytics; no song history records to pull.');
+            return;
+        }
+
+        $this->logger->info(
+            'Starting analytics update...',
+            [
+                'startingDay' => $startingDay->toDateString(),
+            ]
+        );
+
         // Write all new analytics as a single giant CSV.
         $tempCsvPath = File::generateTempPath('mariadb_analytics.csv');
         new Filesystem()->chmod($tempCsvPath, 0o777);
@@ -82,10 +98,7 @@ final class RunAnalyticsTask extends AbstractTask
             }, $row);
         });
 
-        $now = Time::nowUtc();
-        $startingDay = $now->subDays(3)->startOfDay();// Clear existing analytics in this segment
         $day = clone $startingDay;
-
         while ($day < $now) {
             try {
                 $this->processDay($day, $withListeners, $csv);
@@ -157,6 +170,27 @@ final class RunAnalyticsTask extends AbstractTask
         } finally {
             @unlink($tempCsvPath);
         }
+    }
+
+    private function getStartingDay(CarbonImmutable $now): ?CarbonImmutable
+    {
+        $earliestHistory = $this->historyRepo->getEarliestRecordTime()?->startOfDay();
+        if ($earliestHistory === null) {
+            return null;
+        }
+
+        $latestAnalytics = $this->analyticsRepo->getLatestDayRecord()?->subDays(2)?->startOfDay();
+        if ($latestAnalytics === null) {
+            return $earliestHistory;
+        }
+        
+        return min(
+            max(
+                $latestAnalytics,
+                $earliestHistory
+            ),
+            $now->subDays(2)->startOfDay()
+        );
     }
 
     private function processDay(

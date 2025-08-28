@@ -558,8 +558,6 @@ final class ConfigWriter implements EventSubscriberInterface
             'icy = true',
             'icy_metadata_charset = "' . $charset . '"',
             'metadata_charset = "' . $charset . '"',
-            'on_connect = azuracast.live_connected',
-            'on_disconnect = azuracast.live_disconnected',
         ];
 
         $djBuffer = $settings->dj_buffer;
@@ -578,6 +576,8 @@ final class ConfigWriter implements EventSubscriberInterface
 
             # Live Broadcasting
             live = input.harbor({$harborParams})
+            live.on_connect(synchronous=false, azuracast.live_connected)
+            live.on_disconnect(synchronous=false, azuracast.live_disconnected)
             
             last_live_meta = ref([])
 

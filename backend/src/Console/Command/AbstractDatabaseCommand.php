@@ -84,7 +84,7 @@ abstract class AbstractDatabaseCommand extends CommandAbstract
 
         /** @var string $table */
         foreach ($conn->fetchFirstColumn('SHOW TABLES') as $table) {
-            $conn->executeQuery('DROP TABLE IF EXISTS ' . $conn->quoteIdentifier($table));
+            $conn->executeQuery('DROP TABLE IF EXISTS ' . $conn->quoteSingleIdentifier($table));
         }
 
         $conn->executeQuery('SET FOREIGN_KEY_CHECKS = 1');

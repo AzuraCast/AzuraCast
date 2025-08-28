@@ -202,7 +202,7 @@ final class StationMount implements
     public ?string $intro_path = null;
 
     #[
-        OA\Property(),
+        OA\Property,
         ORM\Column(type: 'text', nullable: true)
     ]
     public ?string $frontend_config = null;

@@ -11,10 +11,10 @@ use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use Psr\Http\Message\ResponseInterface;
 
-final class PlaylistAction implements SingleActionInterface
+final readonly class PlaylistAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly Adapters $adapters,
+        private Adapters $adapters,
     ) {
     }
 

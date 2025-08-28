@@ -24,10 +24,10 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class PutUpdatesAction implements SingleActionInterface
+final readonly class PutUpdatesAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly WebUpdater $webUpdater
+        private WebUpdater $webUpdater
     ) {
     }
 

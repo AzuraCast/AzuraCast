@@ -47,11 +47,11 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class GetArtAction implements SingleActionInterface
+final readonly class GetArtAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationRepository $stationRepo,
-        private readonly StationFilesystems $stationFilesystems
+        private StationRepository $stationRepo,
+        private StationFilesystems $stationFilesystems
     ) {
     }
 

@@ -30,10 +30,10 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class NowPlayingArtAction implements SingleActionInterface
+final readonly class NowPlayingArtAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly NowPlayingCache $nowPlayingCache
+        private NowPlayingCache $nowPlayingCache
     ) {
     }
 

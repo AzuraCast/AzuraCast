@@ -40,7 +40,7 @@ trait HasSongFields
     ]
     public ?string $artist = null {
         get => $this->artist;
-        set => $this->truncateNullableString($value, 255);
+        set => $this->truncateNullableString($value);
     }
 
     #[
@@ -50,7 +50,7 @@ trait HasSongFields
     ]
     public ?string $title = null {
         get => $this->title;
-        set => $this->truncateNullableString($value, 255);
+        set => $this->truncateNullableString($value);
     }
 
     #[

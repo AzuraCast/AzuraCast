@@ -38,12 +38,12 @@ use Symfony\Component\Messenger\MessageBus;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class ReshuffleAction implements SingleActionInterface
+final readonly class ReshuffleAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationPlaylistRepository $playlistRepo,
-        private readonly StationPlaylistMediaRepository $spmRepo,
-        private readonly MessageBus $messageBus,
+        private StationPlaylistRepository $playlistRepo,
+        private StationPlaylistMediaRepository $spmRepo,
+        private MessageBus $messageBus,
     ) {
     }
 

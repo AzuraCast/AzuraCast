@@ -11,10 +11,10 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class LogsAction implements SingleActionInterface
+final readonly class LogsAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationRepository $stationRepo
+        private StationRepository $stationRepo
     ) {
     }
 

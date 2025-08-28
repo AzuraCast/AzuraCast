@@ -47,11 +47,11 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class GetQueueAction implements SingleActionInterface
+final readonly class GetQueueAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationPlaylistRepository $playlistRepo,
-        private readonly StationPlaylistMediaRepository $spmRepo
+        private StationPlaylistRepository $playlistRepo,
+        private StationPlaylistMediaRepository $spmRepo
     ) {
     }
 

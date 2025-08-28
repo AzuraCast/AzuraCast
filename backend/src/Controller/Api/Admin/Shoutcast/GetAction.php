@@ -28,10 +28,10 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class GetAction implements SingleActionInterface
+final readonly class GetAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly Shoutcast $shoutcast,
+        private Shoutcast $shoutcast,
     ) {
     }
 

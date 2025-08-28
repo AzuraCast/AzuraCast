@@ -16,13 +16,13 @@ use App\Service\Mail;
 use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
 
-final class ForgotPasswordAction implements SingleActionInterface
+final readonly class ForgotPasswordAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly UserRepository $userRepo,
-        private readonly UserLoginTokenRepository $loginTokenRepo,
-        private readonly RateLimit $rateLimit,
-        private readonly Mail $mail
+        private UserRepository $userRepo,
+        private UserLoginTokenRepository $loginTokenRepo,
+        private RateLimit $rateLimit,
+        private Mail $mail
     ) {
     }
 

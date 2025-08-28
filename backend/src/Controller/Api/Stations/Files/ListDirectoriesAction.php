@@ -32,10 +32,10 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class ListDirectoriesAction implements SingleActionInterface
+final readonly class ListDirectoriesAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationFilesystems $stationFilesystems
+        private StationFilesystems $stationFilesystems
     ) {
     }
 

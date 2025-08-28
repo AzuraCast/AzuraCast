@@ -300,7 +300,7 @@ final class FilesController extends AbstractStationApiCrudController
 
         // Convert the body into an UploadFile API entity first.
         /** @var UploadFile $apiRecord */
-        $apiRecord = $this->serializer->denormalize($request->getParsedBody(), UploadFile::class, null, []);
+        $apiRecord = $this->serializer->denormalize($request->getParsedBody(), UploadFile::class);
 
         // Validate the UploadFile API record.
         $errors = $this->validator->validate($apiRecord);

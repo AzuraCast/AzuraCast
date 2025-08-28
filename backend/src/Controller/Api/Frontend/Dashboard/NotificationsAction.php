@@ -32,10 +32,10 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class NotificationsAction implements SingleActionInterface
+final readonly class NotificationsAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly CallableEventDispatcherInterface $eventDispatcher,
+        private CallableEventDispatcherInterface $eventDispatcher,
     ) {
     }
 

@@ -10,10 +10,10 @@ use App\Http\ServerRequest;
 use App\Service\IpGeolocation;
 use Psr\Http\Message\ResponseInterface;
 
-final class ListenersAction implements SingleActionInterface
+final readonly class ListenersAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly IpGeolocation $ipGeolocation
+        private IpGeolocation $ipGeolocation
     ) {
     }
 

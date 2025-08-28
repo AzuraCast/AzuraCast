@@ -49,10 +49,10 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class NowPlayingAction implements SingleActionInterface
+final readonly class NowPlayingAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly NowPlayingCache $nowPlayingCache
+        private NowPlayingCache $nowPlayingCache
     ) {
     }
 

@@ -11,11 +11,11 @@ use App\Radio\Adapters;
 use App\VueComponent\StationFormComponent;
 use Psr\Http\Message\ResponseInterface;
 
-final class StationsAction implements SingleActionInterface
+final readonly class StationsAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationFormComponent $stationFormComponent,
-        private readonly Adapters $adapters
+        private StationFormComponent $stationFormComponent,
+        private Adapters $adapters
     ) {
     }
 

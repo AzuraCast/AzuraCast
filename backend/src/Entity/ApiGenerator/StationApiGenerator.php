@@ -11,11 +11,11 @@ use App\Http\Router;
 use App\Radio\Adapters;
 use Psr\Http\Message\UriInterface;
 
-final class StationApiGenerator
+final readonly class StationApiGenerator
 {
     public function __construct(
-        private readonly Adapters $adapters,
-        private readonly Router $router
+        private Adapters $adapters,
+        private Router $router
     ) {
     }
 

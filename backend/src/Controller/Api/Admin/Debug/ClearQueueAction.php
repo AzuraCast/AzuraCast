@@ -39,10 +39,10 @@ use Psr\Http\Message\ResponseInterface;
         ]
     ),
 ]
-final class ClearQueueAction implements SingleActionInterface
+final readonly class ClearQueueAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly QueueManagerInterface $queueManager
+        private QueueManagerInterface $queueManager
     ) {
     }
 

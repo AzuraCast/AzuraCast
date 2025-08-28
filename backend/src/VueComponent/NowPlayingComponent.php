@@ -7,10 +7,10 @@ namespace App\VueComponent;
 use App\Http\ServerRequest;
 use App\Service\Centrifugo;
 
-final class NowPlayingComponent implements VueComponentInterface
+final readonly class NowPlayingComponent implements VueComponentInterface
 {
     public function __construct(
-        private readonly Centrifugo $centrifugo
+        private Centrifugo $centrifugo
     ) {
     }
 

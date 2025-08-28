@@ -10,10 +10,10 @@ use App\Http\ServerRequest;
 use App\VueComponent\SettingsComponent;
 use Psr\Http\Message\ResponseInterface;
 
-final class SettingsAction implements SingleActionInterface
+final readonly class SettingsAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly SettingsComponent $settingsComponent
+        private SettingsComponent $settingsComponent
     ) {
     }
 

@@ -49,11 +49,11 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class PostMediaAction implements SingleActionInterface
+final readonly class PostMediaAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly PodcastEpisodeRepository $episodeRepo,
-        private readonly StationFilesystems $stationFilesystems
+        private PodcastEpisodeRepository $episodeRepo,
+        private StationFilesystems $stationFilesystems
     ) {
     }
 

@@ -12,10 +12,10 @@ use DateTime;
 use DateTimeZone;
 use Symfony\Component\Intl\Countries;
 
-final class StationFormComponent implements VueComponentInterface
+final readonly class StationFormComponent implements VueComponentInterface
 {
     public function __construct(
-        private readonly Adapters $adapters
+        private Adapters $adapters
     ) {
     }
 

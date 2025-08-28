@@ -561,6 +561,7 @@ final class Settings implements Stringable
                         static function ($str) {
                             $str = trim($str);
                             $str = trim($str, '/');
+                            /** @noinspection HttpUrlsUsage */
                             return str_replace(['http://', 'https://'], '', $str);
                         },
                         explode(',', $acmeDomains)

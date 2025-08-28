@@ -10,10 +10,10 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class PermissionsAction implements SingleActionInterface
+final readonly class PermissionsAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationRepository $stationRepo,
+        private StationRepository $stationRepo,
     ) {
     }
 

@@ -33,10 +33,10 @@ use Symfony\Component\Messenger\MessageBus;
         ]
     )
 ]
-final class GenerateCertificateAction implements SingleActionInterface
+final readonly class GenerateCertificateAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly MessageBus $messageBus
+        private MessageBus $messageBus
     ) {
     }
 

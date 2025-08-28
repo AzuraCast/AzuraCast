@@ -37,10 +37,10 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class GetIntroAction implements SingleActionInterface
+final readonly class GetIntroAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationMountRepository $mountRepo,
+        private StationMountRepository $mountRepo,
     ) {
     }
 

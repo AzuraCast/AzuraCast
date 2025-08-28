@@ -8,10 +8,10 @@ use App\Entity\Settings;
 use App\Http\ServerRequest;
 use App\Version;
 
-final class SettingsComponent implements VueComponentInterface
+final readonly class SettingsComponent implements VueComponentInterface
 {
     public function __construct(
-        private readonly Version $version,
+        private Version $version,
     ) {
     }
 

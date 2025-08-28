@@ -36,12 +36,12 @@ use Symfony\Component\Filesystem\Path;
         ]
     )
 ]
-final class ExportAction implements SingleActionInterface
+final readonly class ExportAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly Version $version,
-        private readonly Liquidsoap $liquidsoap
+        private EventDispatcherInterface $eventDispatcher,
+        private Version $version,
+        private Liquidsoap $liquidsoap
     ) {
     }
 

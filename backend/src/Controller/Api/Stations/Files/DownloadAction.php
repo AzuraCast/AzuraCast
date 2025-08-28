@@ -35,10 +35,10 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class DownloadAction implements SingleActionInterface
+final readonly class DownloadAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationFilesystems $stationFilesystems
+        private StationFilesystems $stationFilesystems
     ) {
     }
 

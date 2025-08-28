@@ -36,12 +36,12 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class ProfileAction implements SingleActionInterface
+final readonly class ProfileAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationScheduleRepository $scheduleRepo,
-        private readonly StationApiGenerator $stationApiGenerator,
-        private readonly Adapters $adapters,
+        private StationScheduleRepository $scheduleRepo,
+        private StationApiGenerator $stationApiGenerator,
+        private Adapters $adapters,
     ) {
     }
 

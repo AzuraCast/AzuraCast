@@ -9,10 +9,10 @@ use App\Entity\StationPlaylist;
 use App\Entity\StationQueue;
 use Psr\Http\Message\UriInterface;
 
-final class StationQueueApiGenerator
+final readonly class StationQueueApiGenerator
 {
     public function __construct(
-        private readonly SongApiGenerator $songApiGenerator
+        private SongApiGenerator $songApiGenerator
     ) {
     }
 

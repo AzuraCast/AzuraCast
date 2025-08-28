@@ -48,10 +48,10 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class DeleteMediaAction implements SingleActionInterface
+final readonly class DeleteMediaAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly PodcastEpisodeRepository $episodeRepo,
+        private PodcastEpisodeRepository $episodeRepo,
     ) {
     }
 

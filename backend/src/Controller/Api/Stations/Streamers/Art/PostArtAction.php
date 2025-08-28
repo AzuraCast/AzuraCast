@@ -37,10 +37,10 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class PostArtAction implements SingleActionInterface
+final readonly class PostArtAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationStreamerRepository $streamerRepo,
+        private StationStreamerRepository $streamerRepo,
     ) {
     }
 

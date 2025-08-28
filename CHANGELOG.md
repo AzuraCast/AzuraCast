@@ -22,6 +22,9 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- The hourly analytics process (that writes aggregate data used for charts, etc.) has been rewritten to be significantly
+  optimized for larger installations. This should keep the analytics task from overwhelming installations as easily.
+
 ## Bug Fixes
 
 - Several issues caused by having "Plugin Mode" enabled have been resolved.

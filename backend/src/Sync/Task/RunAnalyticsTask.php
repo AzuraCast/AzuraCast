@@ -24,7 +24,7 @@ final class RunAnalyticsTask extends AbstractTask
 {
     use SettingsAwareTrait;
 
-    public const int MAX_DAYS_PER_TASK = 4;
+    public const int MAX_DAYS_PER_TASK = 5;
 
     public function __construct(
         private readonly AnalyticsRepository $analyticsRepo,
@@ -107,7 +107,7 @@ final class RunAnalyticsTask extends AbstractTask
             $days++;
             if ($days > self::MAX_DAYS_PER_TASK) {
                 $this->logger->info('Reached max days per sync task; will continue in next sync task.');
-                return;
+                break;
             }
 
             try {

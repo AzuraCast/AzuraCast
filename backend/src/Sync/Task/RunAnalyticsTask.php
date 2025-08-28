@@ -83,7 +83,8 @@ final class RunAnalyticsTask extends AbstractTask
         });
 
         $now = Time::nowUtc();
-        $day = $now->subDays(3)->startOfDay();// Clear existing analytics in this segment
+        $startingDay = $now->subDays(3)->startOfDay();// Clear existing analytics in this segment
+        $day = clone $startingDay;
 
         while ($day < $now) {
             try {
@@ -105,40 +106,54 @@ final class RunAnalyticsTask extends AbstractTask
             $day = $day->addDay();
         }
 
-        // Use LOAD DATA INFILE for bulk analytics dumps.
-        $tableName = $this->em->getClassMetadata(Analytics::class)->getTableName();
-        $conn = $this->em->getConnection();
-
-        $csvLoadQuery = sprintf(
-            <<<'SQL'
-                LOAD DATA LOCAL INFILE %s REPLACE
-                INTO TABLE %s 
-                FIELDS TERMINATED BY ','
-                OPTIONALLY ENCLOSED BY '"'
-                LINES TERMINATED BY '\n'
-                (%s)
-            SQL,
-            $conn->quote($tempCsvPath),
-            $conn->quoteSingleIdentifier($tableName),
-            implode(
-                ',',
-                array_map(
-                    fn($col) => $conn->quoteSingleIdentifier($col),
-                    [
-                        'moment',
-                        'station_id',
-                        'type',
-                        'number_min',
-                        'number_max',
-                        'number_avg',
-                        'number_unique',
-                    ]
-                )
-            )
-        );
-
         try {
-            $conn->executeQuery($csvLoadQuery);
+            $this->em->wrapInTransaction(
+                function () use ($tempCsvPath, $startingDay) {
+                    // MariaDB doesn't enforce unique constraints on null values.
+                    $this->em->createQuery(
+                        <<<'DQL'
+                        DELETE FROM App\Entity\Analytics a
+                        WHERE a.moment >= :moment AND a.station IS NULL
+                        DQL,
+                    )->execute([
+                        'moment' => $startingDay,
+                    ]);
+
+                    // Use LOAD DATA INFILE for bulk analytics dumps.
+                    $tableName = $this->em->getClassMetadata(Analytics::class)->getTableName();
+                    $conn = $this->em->getConnection();
+
+                    $csvLoadQuery = sprintf(
+                        <<<'SQL'
+                            LOAD DATA LOCAL INFILE %s REPLACE
+                            INTO TABLE %s 
+                            FIELDS TERMINATED BY ','
+                            OPTIONALLY ENCLOSED BY '"'
+                            LINES TERMINATED BY '\n'
+                            (%s)
+                        SQL,
+                        $conn->quote($tempCsvPath),
+                        $conn->quoteSingleIdentifier($tableName),
+                        implode(
+                            ',',
+                            array_map(
+                                fn($col) => $conn->quoteSingleIdentifier($col),
+                                [
+                                    'moment',
+                                    'station_id',
+                                    'type',
+                                    'number_min',
+                                    'number_max',
+                                    'number_avg',
+                                    'number_unique',
+                                ]
+                            )
+                        )
+                    );
+
+                    $conn->executeQuery($csvLoadQuery);
+                }
+            );
         } finally {
             @unlink($tempCsvPath);
         }

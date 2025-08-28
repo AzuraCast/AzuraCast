@@ -126,7 +126,7 @@ final class RunAnalyticsTask extends AbstractTask
                     $this->em->createQuery(
                         <<<'DQL'
                         DELETE FROM App\Entity\Analytics a
-                        WHERE a.moment >= :moment AND a.station IS NULL
+                        WHERE a.moment >= :moment
                         DQL,
                     )->execute([
                         'moment' => $startingDay,
@@ -183,7 +183,7 @@ final class RunAnalyticsTask extends AbstractTask
         if ($latestAnalytics === null) {
             return $earliestHistory;
         }
-        
+
         return min(
             max(
                 $latestAnalytics,

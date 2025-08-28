@@ -95,7 +95,6 @@ return static function (RouteCollectorProxy $app) {
                 }
             );
         }
-    )->add(Middleware\Module\PanelLayout::class)
-        ->add(Middleware\EnableView::class)
+    )->add(Middleware\EnableView::class)
         ->add(Middleware\RequireLogin::class);
 };

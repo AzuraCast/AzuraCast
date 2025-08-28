@@ -58,12 +58,10 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('setup:register');
 
             $group->map(['GET', 'POST'], '/station', Controller\Frontend\SetupController::class . ':stationAction')
-                ->setName('setup:station')
-                ->add(Middleware\Module\PanelLayout::class);
+                ->setName('setup:station');
 
             $group->map(['GET', 'POST'], '/settings', Controller\Frontend\SetupController::class . ':settingsAction')
-                ->setName('setup:settings')
-                ->add(Middleware\Module\PanelLayout::class);
+                ->setName('setup:settings');
         }
     )->add(Middleware\EnableView::class);
 

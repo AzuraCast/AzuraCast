@@ -47,6 +47,16 @@ final class SetCommand extends CommandAbstract
             $settingValue = json_decode($settingValue, true, 512, JSON_THROW_ON_ERROR);
         }
 
+        $settingValue = match (true) {
+            in_array(strtolower($settingValue), ['true', 'false', 'yes', 'no'], true) => Types::bool(
+                $settingValue,
+                false,
+                true
+            ),
+            is_numeric($settingValue) => Types::int($settingValue),
+            default => $settingValue
+        };
+
         $this->writeSettings([$settingKey => $settingValue]);
 
         $io->success(sprintf('Setting "%s" updated.', $settingKey));

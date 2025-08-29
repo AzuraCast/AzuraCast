@@ -16,6 +16,7 @@ export const useAdminSettingsForm = defineStore(
             use_radio_proxy: true,
             history_keep_days: 7,
             enable_static_nowplaying: true,
+            sync_disabled: false,
             analytics: null,
             always_use_ssl: false,
             ip_source: IpSources.Local,
@@ -53,7 +54,7 @@ export const useAdminSettingsForm = defineStore(
                         fields.prefer_browser_url,
                         fields.use_radio_proxy,
                         fields.history_keep_days,
-                        fields.enable_static_nowplaying
+                        fields.enable_static_nowplaying,
                     ],
                     securityPrivacyTab: [
                         fields.analytics,
@@ -78,6 +79,9 @@ export const useAdminSettingsForm = defineStore(
                         fields.use_external_album_art_in_apis,
                         fields.use_external_album_art_when_processing_media,
                         fields.last_fm_api_key
+                    ],
+                    debuggingTab: [
+                        fields.sync_disabled
                     ]
                 })
             }

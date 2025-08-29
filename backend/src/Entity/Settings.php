@@ -411,7 +411,7 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "Temporarily disable all sync tasks.", example: "false"),
         ORM\Column,
-        Attributes\AuditIgnore
+        Groups(self::GROUP_GENERAL)
     ]
     public bool $sync_disabled = false;
 

@@ -40,6 +40,7 @@
                             :test-message-url="testMessageUrl"
                             :acme-url="acmeUrl"
                         />
+                        <settings-debugging-tab/>
                     </tabs>
                 </loading>
             </div>
@@ -63,6 +64,7 @@
 import SettingsGeneralTab from "~/components/Admin/Settings/GeneralTab.vue";
 import SettingsServicesTab from "~/components/Admin/Settings/ServicesTab.vue";
 import SettingsSecurityPrivacyTab from "~/components/Admin/Settings/SecurityPrivacyTab.vue";
+import SettingsDebuggingTab from "~/components/Admin/Settings/DebuggingTab.vue";
 import {onMounted, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";

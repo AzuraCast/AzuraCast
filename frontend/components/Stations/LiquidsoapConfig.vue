@@ -35,7 +35,7 @@
                 </p>
             </info-card>
 
-            <loading :loading="isLoading">
+            <loading :loading="isLoading" lazy>
                 <div class="card-body">
                     <div class="buttons mb-3">
                         <a

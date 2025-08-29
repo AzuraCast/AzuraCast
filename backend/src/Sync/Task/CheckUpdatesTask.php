@@ -10,7 +10,7 @@ use App\Entity\Settings;
 use App\Environment;
 use App\Service\AzuraCastCentral;
 use DateTimeInterface;
-use GuzzleHttp\Exception\TransferException;
+use Throwable;
 
 final class CheckUpdatesTask extends AbstractTask
 {
@@ -57,22 +57,26 @@ final class CheckUpdatesTask extends AbstractTask
         try {
             $updates = $this->azuracastCentral->checkForUpdates();
 
-            if (null !== $updates) {
-                $settings->update_results = $updates;
-                $this->writeSettings($settings);
+            $settings->update_results = $updates;
+            $this->writeSettings($settings);
 
-                $this->logger->info('Successfully checked for updates.', ['results' => $updates]);
-            } else {
-                $this->logger->error('Error parsing update data response from AzuraCast central.');
-            }
-        } catch (TransferException $e) {
-            $this->logger->error(sprintf('Error from AzuraCast Central (%d): %s', $e->getCode(), $e->getMessage()));
+            $this->logger->info('Successfully checked for updates.', ['results' => $updates]);
+        } catch (Throwable $e) {
+            $this->logger->error(
+                sprintf(
+                    'Error checking updates (%d): %s',
+                    $e->getCode(),
+                    $e->getMessage()
+                ),
+                [
+                    'exception' => $e,
+                ]
+            );
 
             // Force re-setting of update data (to update timestamps).
             $updates = $settings->update_results;
             $settings->update_results = $updates;
             $this->writeSettings($settings);
-            return;
         }
     }
 }

@@ -8,6 +8,7 @@ use App\Entity\Interfaces\SongInterface;
 use App\Entity\SongHistory;
 use App\Entity\Station;
 use App\Utilities\Time;
+use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use RuntimeException;
 
@@ -158,6 +159,22 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
         $avg = round((float)$historyTotals['listeners_avg'], 2);
 
         return [$min, $max, $avg];
+    }
+
+    public function getEarliestRecordTime(): ?CarbonImmutable
+    {
+        $earliestRecord = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sh
+                FROM App\Entity\SongHistory sh
+                ORDER BY sh.timestamp_start ASC
+            DQL
+        )->setMaxResults(1)
+            ->getOneOrNullResult();
+
+        return ($earliestRecord instanceof SongHistory)
+            ? Time::toUtcCarbonImmutable($earliestRecord->timestamp_start)
+            : null;
     }
 
     public function cleanup(int $daysToKeep): void

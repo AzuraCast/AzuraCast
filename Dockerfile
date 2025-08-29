@@ -13,7 +13,7 @@ FROM ghcr.io/azuracast/azuracast.com:builtin@sha256:d90d3f746458d3db95da69fa02ae
 #
 # Icecast-KH with AzuraCast customizations build step
 #
-FROM ghcr.io/azuracast/icecast-kh-ac:2024-05-24 AS icecast
+FROM ghcr.io/azuracast/icecast-kh-ac:2025-08-29 AS icecast
 
 #
 # PHP Extension Installer build step
@@ -38,7 +38,7 @@ COPY --from=icecast /usr/local/share/icecast /usr/local/share/icecast
 #
 # Final build image
 #
-FROM php:8.4-fpm-bookworm AS pre-final
+FROM php:8.4-fpm-trixie AS pre-final
 
 ENV TZ="UTC" \
     LANGUAGE="en_US.UTF-8" \

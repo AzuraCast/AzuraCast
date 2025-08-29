@@ -3,6 +3,7 @@ set -e
 set -x
 
 # Set up deb-multimedia, which has newer versions of ffmpeg and other multimedia libraries than Debian Bookworm.
+apt-get install -y --no-install-recommends gpgv
 
 # Add the trusted keyring file.
 mkdir -p /tmp/ffmpeg-keyring
@@ -17,7 +18,7 @@ rm -rf /tmp/ffmpeg-keyring
 # Configure the APT repos.
 echo "Types: deb
 URIs: https://www.deb-multimedia.org
-Suites: oldstable
+Suites: stable
 Components: main non-free
 Signed-By: /usr/share/keyrings/deb-multimedia-keyring.pgp" >> /etc/apt/sources.list.d/deb-multimedia.sources
 

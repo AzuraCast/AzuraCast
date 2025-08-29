@@ -26,7 +26,7 @@ use Throwable;
 final class Version
 {
     /** @var string The current latest stable version. */
-    public const STABLE_VERSION = '0.22.0';
+    public const STABLE_VERSION = '0.22.1';
 
     private string $repoDir;
 

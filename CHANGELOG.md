@@ -22,16 +22,7 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
-- The hourly analytics process (that writes aggregate data used for charts, etc.) has been rewritten to be significantly
-  optimized for larger installations. This should keep the analytics task from overwhelming installations as easily.
-
 ## Bug Fixes
-
-- Several issues caused by having "Plugin Mode" enabled have been resolved.
-
-- Fixed a bug preventing "Max Bitrate/Streams" settings on the Station form from saving correctly.
-
-- Making changes to frontend/backend station configuration will now properly trigger a "needs restart" flag.
 
 - Once-per-X-minutes playlists are again correctly written to Liquidsoap.
 

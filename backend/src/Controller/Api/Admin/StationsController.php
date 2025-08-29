@@ -337,6 +337,8 @@ class StationsController extends AbstractApiCrudController
         $hlsChanged = (bool)$originalRecord['enable_hls'] !== $station->enable_hls;
         if ($backendChanged || $hlsChanged) {
             $rewriteConfiguration = true;
+        }
+        if ($hlsChanged) {
             $this->stationRepo->resetHls($station);
         }
 

@@ -7,6 +7,7 @@ namespace App\Doctrine;
 use JsonSerializable;
 use ReflectionClass;
 use ReflectionProperty;
+use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizableInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -34,9 +35,8 @@ abstract class AbstractArrayEntity implements JsonSerializable, DenormalizableIn
         ?string $format = null,
         array $context = []
     ): void {
-        if (is_array($data)) {
-            $this->fromArray($data);
-        }
+        // Disabled so that DoctrineEntityNormalizer falls back to setting an array for these values.
+        throw new NotNormalizableValueException('Cannot denormalize into ArrayEntities.');
     }
 
     /**

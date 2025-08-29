@@ -37,6 +37,27 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.22.1 (Aug 29, 2025)
+
+This release backports several important bug fixes from our Rolling Release onto the stable channel.
+
+## Code Quality/Technical Changes
+
+- The hourly analytics process (that writes aggregate data used for charts, etc.) has been rewritten to be significantly
+  optimized for larger installations. This should keep the analytics task from overwhelming installations as easily.
+
+## Bug Fixes
+
+- A bug causing the update checker to fail and retry too frequently has been fixed.
+
+- Several issues caused by having "Plugin Mode" enabled have been resolved.
+
+- Fixed a bug preventing "Max Bitrate/Streams" settings on the Station form from saving correctly.
+
+- Making changes to frontend/backend station configuration will now properly trigger a "needs restart" flag.
+
+---
+
 # AzuraCast 0.22.0 (Aug 7, 2025)
 
 ## New Features/Changes

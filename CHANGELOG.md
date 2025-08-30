@@ -22,6 +22,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- Our Docker image is now built on Debian Trixie (13), the newly released stable version of the Debian OS.
+
 ## Bug Fixes
 
 - Once-per-X-minutes playlists are again correctly written to Liquidsoap.

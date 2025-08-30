@@ -261,6 +261,14 @@ export function useStationsMenu(): ReactiveMenu {
                         visible: userAllowedForStation(StationPermissions.MountPoints) && stationProps.features.hlsStreams
                     },
                     {
+                        key: 'simulcasting',
+                        label: computed(() => $gettext('Simulcasting')),
+                        url: {
+                            name: 'stations:simulcasting:index',
+                        },
+                        visible: userAllowedForStation(StationPermissions.MountPoints) && stationProps.features.liquidsoap
+                    },
+                    {
                         key: 'remotes',
                         label: computed(() => $gettext('Remote Relays')),
                         url: {

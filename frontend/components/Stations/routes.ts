@@ -37,6 +37,11 @@ export default function useStationsRoutes(): RouteRecordRaw[] {
             name: 'stations:hls_streams:index'
         },
         {
+            path: '/simulcasting',
+            component: () => import('~/components/Stations/Simulcasting.vue'),
+            name: 'stations:simulcasting:index'
+        },
+        {
             path: '/ls_config',
             component: () => import('~/components/Stations/LiquidsoapConfig.vue'),
             name: 'stations:util:ls_config'

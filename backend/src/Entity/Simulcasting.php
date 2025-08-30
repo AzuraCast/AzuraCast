@@ -6,42 +6,60 @@ namespace App\Entity;
 
 use App\Entity\Enums\SimulcastingStatus;
 use App\Entity\Repository\SimulcastingRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Attributes as OA;
 
-#[ORM\Entity(repositoryClass: SimulcastingRepository::class)]
-#[ORM\Table(name: 'station_simulcasting')]
+#[
+    OA\Schema(type: "object"),
+    ORM\Entity(repositoryClass: SimulcastingRepository::class),
+    ORM\Table(name: 'station_simulcasting')
+]
 class Simulcasting
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: Types::INTEGER)]
+    #[
+        OA\Property(type: "integer", format: "int64"),
+        ORM\Id,
+        ORM\GeneratedValue,
+        ORM\Column(type: 'integer')
+    ]
     private int $id;
 
-    #[ORM\Column(type: Types::STRING, length: 255)]
+    #[
+        OA\Property(type: 'string', example: 'My Facebook Stream'),
+        ORM\Column(type: 'string', length: 255)
+    ]
     private string $name;
 
-    #[ORM\ManyToOne(targetEntity: Station::class, inversedBy: 'simulcasting_streams')]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    private Station $station;
+    #[
+        OA\Property(type: 'integer', format: 'int64'),
+        ORM\ManyToOne(targetEntity: Station::class, inversedBy: 'simulcasting_streams'),
+        ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
+    ]
+    public Station $station;
 
-    #[ORM\Column(type: Types::STRING, length: 50)]
+    #[
+        OA\Property(type: 'string', example: 'facebook'),
+        ORM\Column(type: 'string', length: 50)
+    ]
     private string $adapter;
 
-    #[ORM\Column(type: Types::STRING, length: 500)]
+    #[
+        OA\Property(type: 'string', example: 'your_stream_key_here'),
+        ORM\Column(type: 'string', length: 500)
+    ]
     private string $stream_key;
 
-    #[ORM\Column(type: Types::STRING, length: 20, enumType: SimulcastingStatus::class)]
+    #[
+        OA\Property(type: 'string', example: 'stopped'),
+        ORM\Column(type: 'string', length: 20, enumType: SimulcastingStatus::class)
+    ]
     private SimulcastingStatus $status;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[
+        OA\Property(type: 'string', nullable: true, example: 'Connection failed'),
+        ORM\Column(type: 'text', nullable: true)
+    ]
     private ?string $error_message = null;
-
-    #[ORM\Column(type: Types\DateTimeImmutable::class)]
-    private \DateTimeImmutable $created_at;
-
-    #[ORM\Column(type: Types\DateTimeImmutable::class)]
-    private \DateTimeImmutable $updated_at;
 
     public function __construct(Station $station, string $name, string $adapter, string $stream_key)
     {
@@ -50,8 +68,6 @@ class Simulcasting
         $this->adapter = $adapter;
         $this->stream_key = $stream_key;
         $this->status = SimulcastingStatus::Stopped;
-        $this->created_at = new \DateTimeImmutable();
-        $this->updated_at = new \DateTimeImmutable();
     }
 
     public function getId(): int
@@ -67,7 +83,6 @@ class Simulcasting
     public function setName(string $name): void
     {
         $this->name = $name;
-        $this->updated_at = new \DateTimeImmutable();
     }
 
     public function getStation(): Station
@@ -83,7 +98,6 @@ class Simulcasting
     public function setAdapter(string $adapter): void
     {
         $this->adapter = $adapter;
-        $this->updated_at = new \DateTimeImmutable();
     }
 
     public function getStreamKey(): string
@@ -94,7 +108,6 @@ class Simulcasting
     public function setStreamKey(string $stream_key): void
     {
         $this->stream_key = $stream_key;
-        $this->updated_at = new \DateTimeImmutable();
     }
 
     public function getStatus(): SimulcastingStatus
@@ -105,7 +118,6 @@ class Simulcasting
     public function setStatus(SimulcastingStatus $status): void
     {
         $this->status = $status;
-        $this->updated_at = new \DateTimeImmutable();
     }
 
     public function getErrorMessage(): ?string
@@ -116,18 +128,9 @@ class Simulcasting
     public function setErrorMessage(?string $error_message): void
     {
         $this->error_message = $error_message;
-        $this->updated_at = new \DateTimeImmutable();
     }
 
-    public function getCreatedAt(): \DateTimeImmutable
-    {
-        return $this->created_at;
-    }
 
-    public function getUpdatedAt(): \DateTimeImmutable
-    {
-        return $this->updated_at;
-    }
 
     public function isRunning(): bool
     {

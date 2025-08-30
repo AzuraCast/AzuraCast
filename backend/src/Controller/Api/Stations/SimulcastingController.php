@@ -139,6 +139,10 @@ final class SimulcastingController extends AbstractStationApiCrudController
             $data['stream_key']
         );
         
+        // Persist and flush the entity to save it to the database
+        $this->em->persist($simulcasting);
+        $this->em->flush();
+        
         return $simulcasting;
     }
 

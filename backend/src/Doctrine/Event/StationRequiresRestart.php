@@ -7,6 +7,7 @@ namespace App\Doctrine\Event;
 use App\Entity\Attributes\AuditIgnore;
 use App\Entity\Enums\AuditLogOperations;
 use App\Entity\Station;
+use App\Entity\Simulcasting;
 use App\Entity\StationHlsStream;
 use App\Entity\StationMount;
 use App\Entity\StationPlaylist;
@@ -57,7 +58,8 @@ final class StationRequiresRestart implements EventSubscriber
         foreach ($collectionsToCheck as [$changeType, $collection]) {
             foreach ($collection as $entity) {
                 if (
-                    ($entity instanceof StationMount)
+                    ($entity instanceof Simulcasting)
+                    || ($entity instanceof StationMount)
                     || ($entity instanceof StationHlsStream)
                     || ($entity instanceof StationRemote && $entity->isEditable())
                     || ($entity instanceof StationPlaylist && $entity->station->backend_config->use_manual_autodj)

@@ -50,42 +50,7 @@
                 :description="$gettext('The stream key provided by the platform.')"
             />
 
-            <div class="row">
-                <div class="col-md-6">
-                    <FormField
-                        id="edit_form_created_at"
-                        :label="$gettext('Created')"
-                        :description="$gettext('When this stream was created.')"
-                    >
-                        <template #default>
-                            <input
-                                type="text"
-                                class="form-control"
-                                :value="formatDate(form.created_at)"
-                                readonly
-                                disabled
-                            />
-                        </template>
-                    </FormField>
-                </div>
-                <div class="col-md-6">
-                    <FormField
-                        id="edit_form_updated_at"
-                        :label="$gettext('Last Updated')"
-                        :description="$gettext('When this stream was last modified.')"
-                    >
-                        <template #default>
-                            <input
-                                type="text"
-                                class="form-control"
-                                :value="formatDate(form.updated_at)"
-                                readonly
-                                disabled
-                            />
-                        </template>
-                    </FormField>
-                </div>
-            </div>
+
 
             <div class="row">
                 <div class="col-md-6">
@@ -158,8 +123,6 @@ interface SimulcastingStream {
     stream_key: string
     status: string
     error_message?: string
-    created_at: string
-    updated_at: string
 }
 
 interface Adapter {
@@ -191,8 +154,6 @@ const form = ref({
     stream_key: '',
     status: 'stopped',
     error_message: '',
-    created_at: '',
-    updated_at: '',
 })
 
 // Validation rules
@@ -232,8 +193,6 @@ const resetForm = (): void => {
         stream_key: '',
         status: 'stopped',
         error_message: '',
-        created_at: '',
-        updated_at: '',
     }
     v$.value.$reset()
 }
@@ -242,10 +201,7 @@ const handleClose = (): void => {
     emit('update:show', false)
 }
 
-const formatDate = (dateString: string): string => {
-    if (!dateString) return ''
-    return new Date(dateString).toLocaleString()
-}
+
 
 const getStatusLabel = (status: string): string => {
     const statusMap: Record<string, string> = {

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Radio\Simulcasting;
 
+use App\Entity\Simulcasting;
+
 class YouTubeSimulcastingAdapter extends AbstractSimulcastingAdapter
 {
     public function getStreamKey(): string

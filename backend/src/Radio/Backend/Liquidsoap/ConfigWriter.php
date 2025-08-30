@@ -61,6 +61,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 ['writeLocalBroadcastConfiguration', 5],
                 ['writeHlsBroadcastConfiguration', 2],
                 ['writeRemoteBroadcastConfiguration', 0],
+                ['writeSimulcastingConfiguration', -2],
                 ['writePostBroadcastConfiguration', -5],
             ],
         ];
@@ -1369,14 +1370,17 @@ final class ConfigWriter implements EventSubscriberInterface
         $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_SIMULCASTING);
 
         $configDir = $station->getRadioConfigDir();
-        $mediaDir = $station->getMediaDirectory();
+        $mediaStorageLocation = $station->media_storage_location;
+        $stationMediaDir = $mediaStorageLocation->adapter->isLocal()
+            ? $mediaStorageLocation->getFilteredPath()
+            : 'api';
         
         $event->appendBlock(
             <<<LIQ
             # Simulcasting Configuration
             # Video and font files for simulcasting
-            simulcast_video_file = "{$mediaDir}/videostream/video.mp4"
-            simulcast_font_file = "{$mediaDir}/videostream/font.ttf"
+            simulcast_video_file = "{$stationMediaDir}/videostream/video.mp4"
+            simulcast_font_file = "{$stationMediaDir}/videostream/font.ttf"
             simulcast_nowplaying_file = "{$configDir}/nowplaying.txt"
             
             # Text overlay styling for now playing information
@@ -1387,25 +1391,25 @@ final class ConfigWriter implements EventSubscriberInterface
             
             # Function to add now playing text overlay
             def add_nowplaying_text(s) =
-              def mkfilter(graph) =
-                let {video = video_track} = source.tracks(s)
-                video_track = ffmpeg.filter.video.input(graph, video_track)
-                video_track =
-                  ffmpeg.filter.drawtext(
-                    fontfile=simulcast_font_file,
-                    fontsize=simulcast_font_size,
-                    x=simulcast_font_x,
-                    y=simulcast_font_y,
-                    fontcolor=simulcast_font_color,
-                    textfile=simulcast_nowplaying_file,
-                    reload=5,
-                    graph,
-                    video_track
-                  )
-                video_track = ffmpeg.filter.video.output(graph, video_track)
-                source({video=video_track})
-              end
-              ffmpeg.filter.create(mkfilter)
+                def mkfilter(graph) =
+                    let {video = video_track} = source.tracks(s)
+                    video_track = ffmpeg.filter.video.input(graph, video_track)
+                    video_track =
+                    ffmpeg.filter.drawtext(
+                        graph,                # 1st: the graph
+                        video_track,          # 2nd: the input video track
+                        fontfile = simulcast_font_file,
+                        fontsize = 50,        # ints are cleaner than strings; adjust as you like
+                        x        = 340,
+                        y        = 990,
+                        fontcolor= simulcast_font_color,
+                        textfile = simulcast_nowplaying_file,
+                        reload   = 5
+                    )
+                    video_track = ffmpeg.filter.video.output(graph, video_track)
+                    source({video = video_track})
+                end
+                ffmpeg.filter.create(mkfilter)
             end
             
             # Build A/V source for simulcasting
@@ -1424,24 +1428,48 @@ final class ConfigWriter implements EventSubscriberInterface
 
         // Add individual simulcasting outputs from adapters
         foreach ($activeStreams as $stream) {
-            $adapter = $stream->getAdapter();
-            if (!$adapter) {
+            try {
+                // Create the adapter instance directly
+                $adapter = $this->createSimulcastingAdapter($stream);
+                
+                $liquidsoapOutput = $adapter->getLiquidsoapOutput($stream, $station);
+                if (!empty($liquidsoapOutput)) {
+                    // Generate the output name that matches what SimulcastingManager expects
+                    $outputName = $this->getSimulcastingOutputName($stream);
+                    
+                    $event->appendLines([
+                        '',
+                        "# Simulcasting: {$stream->getName()}",
+                        "{$outputName} = ",
+                        $liquidsoapOutput,
+                    ]);
+                }
+            } catch (\Exception $e) {
+                // Log the error but continue with other streams
+                error_log("Failed to generate LiquidSoap output for simulcasting stream {$stream->getId()}: " . $e->getMessage());
                 continue;
             }
-
-            $liquidsoapOutput = $adapter->getLiquidsoapOutput($stream, $station);
-            if (!empty($liquidsoapOutput)) {
-                // Generate the output name that matches what SimulcastingManager expects
-                $outputName = $this->getSimulcastingOutputName($stream);
-                
-                $event->appendLines([
-                    '',
-                    "# Simulcasting: {$stream->name}",
-                    "{$outputName} = ",
-                    $liquidsoapOutput,
-                ]);
-            }
         }
+    }
+
+    /**
+     * Create a simulcasting adapter instance for the given stream
+     */
+    private function createSimulcastingAdapter(\App\Entity\Simulcasting $stream): \App\Radio\Simulcasting\AbstractSimulcastingAdapter
+    {
+        $adapterName = $stream->getAdapter();
+        
+        $adapterMap = [
+            'facebook' => \App\Radio\Simulcasting\FacebookSimulcastingAdapter::class,
+            'youtube' => \App\Radio\Simulcasting\YouTubeSimulcastingAdapter::class,
+        ];
+        
+        if (!isset($adapterMap[$adapterName])) {
+            throw new \InvalidArgumentException("Unknown adapter: {$adapterName}");
+        }
+        
+        $adapterClass = $adapterMap[$adapterName];
+        return new $adapterClass($stream);
     }
 
     /**
@@ -1460,11 +1488,11 @@ final class ConfigWriter implements EventSubscriberInterface
         
         switch ($adapter) {
             case 'facebook':
-                return "output.facebook_{$cleanName}_{$streamId}";
+                return "simulcast_facebook_{$cleanName}_{$streamId}";
             case 'youtube':
-                return "output.youtube_{$cleanName}_{$streamId}";
+                return "simulcast_youtube_{$cleanName}_{$streamId}";
             default:
-                return "output.url_{$cleanName}_{$streamId}";
+                return "simulcast_url_{$cleanName}_{$streamId}";
         }
     }
 }

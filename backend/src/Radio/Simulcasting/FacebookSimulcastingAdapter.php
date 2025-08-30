@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Radio\Simulcasting;
 
+use App\Entity\Simulcasting;
+
 class FacebookSimulcastingAdapter extends AbstractSimulcastingAdapter
 {
     public function getStreamKey(): string
@@ -57,9 +59,8 @@ class FacebookSimulcastingAdapter extends AbstractSimulcastingAdapter
         
         return <<<LIQ
         # Facebook Live (RTMPS)
-        fb_url = "{$config['url']}{$config['stream_key']}"
         output.url(
-            url=fb_url,
+            url="{$config['url']}{$config['stream_key']}",
             fallible=true,
             %ffmpeg(
                 format="{$config['format']}",

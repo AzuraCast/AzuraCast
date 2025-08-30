@@ -1,250 +1,136 @@
 <template>
-    <div id="station_simulcasting">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h1 class="h3 mb-0">{{ $gettext('Simulcasting') }}</h1>
-            <button
-                type="button"
-                class="btn btn-primary"
-                @click="showCreateModal = true"
-            >
-                <i class="material-icons" aria-hidden="true">add</i>
-                {{ $gettext('Add Simulcasting Stream') }}
-            </button>
-        </div>
+    <card-page :title="$gettext('Simulcasting')">
+        <template #info>
+            <p class="card-text">
+                {{
+                    $gettext('Simulcasting allows you to broadcast your radio stream to multiple platforms like Facebook Live and YouTube Live simultaneously. Each platform requires its own stream key and configuration.')
+                }}
+            </p>
+        </template>
+        <template #actions>
+            <add-button
+                :text="$gettext('Add Simulcasting Stream')"
+                @click="doCreate"
+            />
+        </template>
 
-        <div v-if="isLoading" class="text-center py-4">
-            <div class="spinner-border" role="status">
-                <span class="visually-hidden">{{ $gettext('Loading...') }}</span>
-            </div>
-        </div>
+        <data-table
+            id="station_simulcasting"
+            :fields="fields"
+            :provider="listItemProvider"
+            paginated
+        >
+            <template #cell(name)="row">
+                <h5 class="m-0">
+                    {{ row.item.name }}
+                </h5>
+                <div v-if="row.item.error_message" class="text-danger small">
+                    {{ row.item.error_message }}
+                </div>
+            </template>
+            <template #cell(adapter)="row">
+                <span class="badge bg-secondary">{{ getAdapterLabel(row.item.adapter) }}</span>
+            </template>
+            <template #cell(status)="row">
+                <span
+                    :class="`badge bg-${getStatusColor(row.item.status)}`"
+                >
+                    {{ getStatusLabel(row.item.status) }}
+                </span>
+            </template>
+            <template #cell(actions)="row">
+                <div class="btn-group btn-group-sm">
+                    <button
+                        v-if="canStart(row.item.status)"
+                        type="button"
+                        class="btn btn-success"
+                        :disabled="isActionLoading(row.item.id, 'start')"
+                        @click="startStream(row.item)"
+                    >
+                        <i class="material-icons" aria-hidden="true">play_arrow</i>
+                        {{ $gettext('Start') }}
+                    </button>
+                    
+                    <button
+                        v-if="canStop(row.item.status)"
+                        type="button"
+                        class="btn btn-warning"
+                        :disabled="isActionLoading(row.item.id, 'stop')"
+                        @click="stopStream(row.item)"
+                    >
+                        <i class="material-icons" aria-hidden="true">stop</i>
+                        {{ $gettext('Stop') }}
+                    </button>
+                    
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        @click="doEdit(row.item.links.self)"
+                    >
+                        {{ $gettext('Edit') }}
+                    </button>
+                    
+                    <button
+                        type="button"
+                        class="btn btn-danger"
+                        @click="doDelete(row.item.links.self)"
+                    >
+                        {{ $gettext('Delete') }}
+                    </button>
+                </div>
+            </template>
+        </data-table>
+    </card-page>
 
-        <div v-else-if="error" class="alert alert-danger">
-            {{ error }}
-        </div>
-
-        <div v-else-if="simulcastingStreams.length === 0" class="text-center py-4">
-            <p class="text-muted">{{ $gettext('No simulcasting streams configured.') }}</p>
-            <button
-                type="button"
-                class="btn btn-primary"
-                @click="showCreateModal = true"
-            >
-                {{ $gettext('Add Your First Stream') }}
-            </button>
-        </div>
-
-        <div v-else class="card">
-            <div class="table-responsive">
-                <table class="table table-striped table-hover mb-0">
-                    <thead>
-                        <tr>
-                            <th>{{ $gettext('Name') }}</th>
-                            <th>{{ $gettext('Adapter') }}</th>
-                            <th>{{ $gettext('Status') }}</th>
-                            <th>{{ $gettext('Actions') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr
-                            v-for="stream in simulcastingStreams"
-                            :key="stream.id"
-                        >
-                            <td>
-                                <strong>{{ stream.name }}</strong>
-                                <div v-if="stream.error_message" class="text-danger small">
-                                    {{ stream.error_message }}
-                                </div>
-                            </td>
-                            <td>
-                                <span class="badge bg-secondary">{{ getAdapterLabel(stream.adapter) }}</span>
-                            </td>
-                            <td>
-                                <span
-                                    :class="`badge bg-${getStatusColor(stream.status)}`"
-                                >
-                                    {{ getStatusLabel(stream.status) }}
-                                </span>
-                            </td>
-                            <td>
-                                <div class="btn-group btn-group-sm">
-                                    <button
-                                        v-if="canStart(stream.status)"
-                                        type="button"
-                                        class="btn btn-success"
-                                        :disabled="isActionLoading(stream.id, 'start')"
-                                        @click="startStream(stream)"
-                                    >
-                                        <i class="material-icons" aria-hidden="true">play_arrow</i>
-                                        {{ $gettext('Start') }}
-                                    </button>
-                                    
-                                    <button
-                                        v-if="canStop(stream.status)"
-                                        type="button"
-                                        class="btn btn-warning"
-                                        :disabled="isActionLoading(stream.id, 'stop')"
-                                        @click="stopStream(stream)"
-                                    >
-                                        <i class="material-icons" aria-hidden="true">stop</i>
-                                        {{ $gettext('Stop') }}
-                                    </button>
-                                    
-                                    <button
-                                        type="button"
-                                        class="btn btn-primary"
-                                        @click="editStream(stream)"
-                                    >
-                                        <i class="material-icons" aria-hidden="true">edit</i>
-                                        {{ $gettext('Edit') }}
-                                    </button>
-                                    
-                                    <button
-                                        type="button"
-                                        class="btn btn-danger"
-                                        @click="deleteStream(stream)"
-                                    >
-                                        <i class="material-icons" aria-hidden="true">delete</i>
-                                        {{ $gettext('Delete') }}
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Create/Edit Modal -->
-        <SimulcastingModal
-            v-model:show="showCreateModal"
-            :stream="editingStream"
-            :adapters="availableAdapters"
-            @saved="handleStreamSaved"
-        />
-
-        <!-- Delete Confirmation Modal -->
-        <ConfirmModal
-            v-model:show="showDeleteModal"
-            :title="$gettext('Delete Simulcasting Stream')"
-            :message="$gettext('Are you sure you want to delete this simulcasting stream? This action cannot be undone.')"
-            :confirm-text="$gettext('Delete')"
-            confirm-variant="danger"
-            @confirm="confirmDelete"
-        />
-    </div>
+    <edit-modal
+        ref="$editModal"
+        :create-url="listUrl"
+        @relist="() => relist()"
+        @needs-restart="() => mayNeedRestart()"
+    />
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
-import { getStationApiUrl } from '~/router'
-import SimulcastingModal from './SimulcastingModal.vue'
-import ConfirmModal from '~/components/Common/ConfirmModal.vue'
+import DataTable from "~/components/Common/DataTable.vue";
+import EditModal from "~/components/Stations/Simulcasting/EditModal.vue";
+import {useTranslate} from "~/vendor/gettext";
+import {useTemplateRef, ref} from "vue";
+import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
+import useHasEditModal from "~/functions/useHasEditModal";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import CardPage from "~/components/Common/CardPage.vue";
+import {getStationApiUrl} from "~/router";
+import AddButton from "~/components/Common/AddButton.vue";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {queryKeyWithStation} from "~/entities/Queries.ts";
 
-interface SimulcastingStream {
-    id: number
-    name: string
-    adapter: string
-    stream_key: string
-    status: string
-    error_message?: string
-    created_at: string
-    updated_at: string
+const listUrl = getStationApiUrl('/simulcasting');
+
+const {$gettext} = useTranslate();
+
+const fields = [
+    {key: 'name', isRowHeader: true, label: $gettext('Name'), sortable: true},
+    {key: 'adapter', label: $gettext('Platform'), sortable: true},
+    {key: 'status', label: $gettext('Status'), sortable: true},
+    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+];
+
+const listItemProvider = useApiItemProvider(
+    listUrl,
+    queryKeyWithStation(['simulcasting'])
+);
+
+const relist = () => {
+    void listItemProvider.refresh();
 }
-
-interface Adapter {
-    name: string
-    description: string
-}
-
-interface Props {
-    stationId: number
-}
-
-const props = defineProps<Props>()
-
-const showCreateModal = ref(false)
-const showDeleteModal = ref(false)
-const editingStream = ref<SimulcastingStream | null>(null)
-const streamToDelete = ref<SimulcastingStream | null>(null)
-const actionLoading = ref<Record<string, boolean>>({})
-
-const queryClient = useQueryClient()
-
-// Fetch simulcasting streams
-const { data: simulcastingStreams = [], isLoading, error } = useQuery({
-    queryKey: ['simulcasting', props.stationId],
-    queryFn: async (): Promise<SimulcastingStream[]> => {
-        const response = await fetch(getStationApiUrl(`/simulcasting`))
-        if (!response.ok) {
-            throw new Error('Failed to fetch simulcasting streams')
-        }
-        return response.json()
-    },
-})
-
-// Fetch available adapters
-const { data: availableAdapters = {} } = useQuery({
-    queryKey: ['simulcasting-adapters', props.stationId],
-    queryFn: async (): Promise<Record<string, Adapter>> => {
-        const response = await fetch(getStationApiUrl(`/simulcasting/adapters`))
-        if (!response.ok) {
-            throw new Error('Failed to fetch adapters')
-        }
-        return response.json()
-    },
-})
-
-// Start stream mutation
-const startMutation = useMutation({
-    mutationFn: async (stream: SimulcastingStream): Promise<void> => {
-        const response = await fetch(getStationApiUrl(`/simulcasting/${stream.id}/start`), {
-            method: 'POST',
-        })
-        if (!response.ok) {
-            throw new Error('Failed to start stream')
-        }
-    },
-    onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['simulcasting', props.stationId] })
-    },
-})
-
-// Stop stream mutation
-const stopMutation = useMutation({
-    mutationFn: async (stream: SimulcastingStream): Promise<void> => {
-        const response = await fetch(getStationApiUrl(`/simulcasting/${stream.id}/stop`), {
-            method: 'POST',
-        })
-        if (!response.ok) {
-            throw new Error('Failed to stop stream')
-        }
-    },
-    onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['simulcasting', props.stationId] })
-    },
-})
-
-// Delete stream mutation
-const deleteMutation = useMutation({
-    mutationFn: async (stream: SimulcastingStream): Promise<void> => {
-        const response = await fetch(getStationApiUrl(`/simulcasting/${stream.id}`), {
-            method: 'DELETE',
-        })
-        if (!response.ok) {
-            throw new Error('Failed to delete stream')
-        }
-    },
-    onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['simulcasting', props.stationId] })
-        showDeleteModal.value = false
-        streamToDelete.value = null
-    },
-})
 
 // Helper functions
 const getAdapterLabel = (adapter: string): string => {
-    return availableAdapters[adapter]?.description || adapter
+    const adapterMap: Record<string, string> = {
+        facebook: 'Facebook Live',
+        youtube: 'YouTube Live',
+    }
+    return adapterMap[adapter] || adapter
 }
 
 const getStatusLabel = (status: string): string => {
@@ -277,59 +163,55 @@ const canStop = (status: string): boolean => {
     return ['running', 'starting'].includes(status)
 }
 
+const actionLoading = ref<Record<string, boolean>>({})
+
 const isActionLoading = (streamId: number, action: string): boolean => {
     return actionLoading.value[`${streamId}-${action}`] || false
 }
 
 // Action handlers
-const startStream = async (stream: SimulcastingStream): Promise<void> => {
+const startStream = async (stream: any): Promise<void> => {
     actionLoading.value[`${stream.id}-start`] = true
     try {
-        await startMutation.mutateAsync(stream)
+        const response = await fetch(getStationApiUrl(`/simulcasting/${stream.id}/start`), {
+            method: 'POST',
+        })
+        if (!response.ok) {
+            throw new Error('Failed to start stream')
+        }
+        relist()
     } finally {
         actionLoading.value[`${stream.id}-start`] = false
     }
 }
 
-const stopStream = async (stream: SimulcastingStream): Promise<void> => {
+const stopStream = async (stream: any): Promise<void> => {
     actionLoading.value[`${stream.id}-stop`] = true
     try {
-        await stopMutation.mutateAsync(stream)
+        const response = await fetch(getStationApiUrl(`/simulcasting/${stream.id}/stop`), {
+            method: 'POST',
+        })
+        if (!response.ok) {
+            throw new Error('Failed to stop stream')
+        }
+        relist()
     } finally {
         actionLoading.value[`${stream.id}-stop`] = false
     }
 }
 
-const editStream = (stream: SimulcastingStream): void => {
-    editingStream.value = { ...stream }
-    showCreateModal.value = true
-}
+const $editModal = useTemplateRef('$editModal');
+const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const deleteStream = (stream: SimulcastingStream): void => {
-    streamToDelete.value = stream
-    showDeleteModal.value = true
-}
+const {mayNeedRestart} = useMayNeedRestart();
 
-const confirmDelete = async (): Promise<void> => {
-    if (streamToDelete.value) {
-        await deleteMutation.mutateAsync(streamToDelete.value)
+const {doDelete} = useConfirmAndDelete(
+    $gettext('Delete Simulcasting Stream?'),
+    () => {
+        mayNeedRestart();
+        relist();
     }
-}
-
-const handleStreamSaved = (): void => {
-    showCreateModal.value = false
-    editingStream.value = null
-    queryClient.invalidateQueries({ queryKey: ['simulcasting', props.stationId] })
-}
-
-// Auto-refresh status every 30 seconds
-onMounted(() => {
-    const interval = setInterval(() => {
-        queryClient.invalidateQueries({ queryKey: ['simulcasting', props.stationId] })
-    }, 30000)
-
-    return () => clearInterval(interval)
-})
+);
 </script>
 
 <style lang="scss" scoped>

@@ -41,6 +41,7 @@ use OpenApi\Attributes as OA;
             new OA\Tag(name: OpenApi::TAG_STATIONS_BROADCASTING),
             new OA\Tag(name: OpenApi::TAG_STATIONS_SONG_REQUESTS),
             new OA\Tag(name: OpenApi::TAG_STATIONS_HLS_STREAMS),
+            new OA\Tag(name: OpenApi::TAG_STATIONS_SIMULCASTING),
             new OA\Tag(name: OpenApi::TAG_STATIONS_MEDIA),
             new OA\Tag(name: OpenApi::TAG_STATIONS_MOUNT_POINTS),
             new OA\Tag(name: OpenApi::TAG_STATIONS_PLAYLISTS),
@@ -181,6 +182,7 @@ final class OpenApi
     public const string TAG_STATIONS_BROADCASTING = 'Stations: Broadcasting';
     public const string TAG_STATIONS_SONG_REQUESTS = 'Stations: Song Requests';
     public const string TAG_STATIONS_HLS_STREAMS = 'Stations: HLS Streams';
+    public const string TAG_STATIONS_SIMULCASTING = 'Stations: Simulcasting';
     public const string TAG_STATIONS_MEDIA = 'Stations: Media';
     public const string TAG_STATIONS_MOUNT_POINTS = 'Stations: Mount Points';
     public const string TAG_STATIONS_PLAYLISTS = 'Stations: Playlists';
@@ -197,6 +199,7 @@ final class OpenApi
         self::TAG_STATIONS_BROADCASTING,
         self::TAG_STATIONS_SONG_REQUESTS,
         self::TAG_STATIONS_HLS_STREAMS,
+        self::TAG_STATIONS_SIMULCASTING,
         self::TAG_STATIONS_MEDIA,
         self::TAG_STATIONS_MOUNT_POINTS,
         self::TAG_STATIONS_PLAYLISTS,

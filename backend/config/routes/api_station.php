@@ -495,6 +495,52 @@ return static function (RouteCollectorProxy $group) {
                     )->add(new Middleware\StationSupportsFeature(StationFeatures::HlsStreams))
                         ->add(new Middleware\Permissions(StationPermissions::MountPoints, true));
 
+                    // Simulcasting
+                    $group->group(
+                        '',
+                        function (RouteCollectorProxy $group) {
+                            $group->get(
+                                '/simulcasting',
+                                Controller\Api\Stations\SimulcastingController::class . ':indexAction'
+                            )->setName('api:stations:simulcasting');
+
+                            $group->post(
+                                '/simulcasting',
+                                Controller\Api\Stations\SimulcastingController::class . ':createAction'
+                            );
+
+                            $group->get(
+                                '/simulcasting/adapters',
+                                Controller\Api\Stations\SimulcastingController::class . ':adaptersAction'
+                            )->setName('api:stations:simulcasting:adapters');
+
+                            $group->get(
+                                '/simulcasting/{id}',
+                                Controller\Api\Stations\SimulcastingController::class . ':getAction'
+                            )->setName('api:stations:simulcasting:stream');
+
+                            $group->put(
+                                '/simulcasting/{id}',
+                                Controller\Api\Stations\SimulcastingController::class . ':updateAction'
+                            );
+
+                            $group->delete(
+                                '/simulcasting/{id}',
+                                Controller\Api\Stations\SimulcastingController::class . ':deleteAction'
+                            );
+
+                            $group->post(
+                                '/simulcasting/{id}/start',
+                                Controller\Api\Stations\SimulcastingController::class . ':startAction'
+                            )->setName('api:stations:simulcasting:start');
+
+                            $group->post(
+                                '/simulcasting/{id}/stop',
+                                Controller\Api\Stations\SimulcastingController::class . ':stopAction'
+                            )->setName('api:stations:simulcasting:stop');
+                        }
+                    )->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
+
                     // Playlist
                     $group->group(
                         '',

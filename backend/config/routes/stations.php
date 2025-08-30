@@ -18,6 +18,7 @@ return static function (RouteCollectorProxy $app) {
                 'stations:fallback' => '/fallback',
                 'stations:files:index' => '/files[/{fspath}]',
                 'stations:hls_streams:index' => '/hls_streams',
+                'stations:simulcasting:index' => '/simulcasting',
                 'stations:util:ls_config' => '/ls_config',
                 'stations:stereo_tool_config' => '/stereo_tool_config',
                 'stations:logs' => '/logs',

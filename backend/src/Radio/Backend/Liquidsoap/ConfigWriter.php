@@ -1354,4 +1354,117 @@ final class ConfigWriter implements EventSubscriberInterface
 
         return false;
     }
+
+    public function writeSimulcastingConfiguration(WriteLiquidsoapConfiguration $event): void
+    {
+        $station = $event->getStation();
+        
+        // Get all simulcasting streams (not just running ones)
+        $activeStreams = $station->simulcasting_streams;
+        
+        if ($activeStreams->isEmpty()) {
+            return;
+        }
+
+        $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_SIMULCASTING);
+
+        $configDir = $station->getRadioConfigDir();
+        $mediaDir = $station->getMediaDirectory();
+        
+        $event->appendBlock(
+            <<<LIQ
+            # Simulcasting Configuration
+            # Video and font files for simulcasting
+            simulcast_video_file = "{$mediaDir}/videostream/video.mp4"
+            simulcast_font_file = "{$mediaDir}/videostream/font.ttf"
+            simulcast_nowplaying_file = "{$configDir}/nowplaying.txt"
+            
+            # Text overlay styling for now playing information
+            simulcast_font_size = "50"
+            simulcast_font_x = "340"
+            simulcast_font_y = "990"
+            simulcast_font_color = "white"
+            
+            # Function to add now playing text overlay
+            def add_nowplaying_text(s) =
+              def mkfilter(graph) =
+                let {video = video_track} = source.tracks(s)
+                video_track = ffmpeg.filter.video.input(graph, video_track)
+                video_track =
+                  ffmpeg.filter.drawtext(
+                    fontfile=simulcast_font_file,
+                    fontsize=simulcast_font_size,
+                    x=simulcast_font_x,
+                    y=simulcast_font_y,
+                    fontcolor=simulcast_font_color,
+                    textfile=simulcast_nowplaying_file,
+                    reload=5,
+                    graph,
+                    video_track
+                  )
+                video_track = ffmpeg.filter.video.output(graph, video_track)
+                source({video=video_track})
+              end
+              ffmpeg.filter.create(mkfilter)
+            end
+            
+            # Build A/V source for simulcasting
+            # Loop the background video, add overlay, then mux with radio audio
+            simulcast_videostream = single(simulcast_video_file)
+            simulcast_videostream = add_nowplaying_text(simulcast_videostream)
+            simulcast_videostream = source.mux.video(video=simulcast_videostream, radio)
+            
+            # Encoding settings for simulcasting
+            simulcast_v_fps = 30
+            simulcast_v_gop = 60
+            simulcast_v_bps = "2500k"
+            simulcast_a_bps = "128k"
+            LIQ
+        );
+
+        // Add individual simulcasting outputs from adapters
+        foreach ($activeStreams as $stream) {
+            $adapter = $stream->getAdapter();
+            if (!$adapter) {
+                continue;
+            }
+
+            $liquidsoapOutput = $adapter->getLiquidsoapOutput($stream, $station);
+            if (!empty($liquidsoapOutput)) {
+                // Generate the output name that matches what SimulcastingManager expects
+                $outputName = $this->getSimulcastingOutputName($stream);
+                
+                $event->appendLines([
+                    '',
+                    "# Simulcasting: {$stream->name}",
+                    "{$outputName} = ",
+                    $liquidsoapOutput,
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Get the LiquidSoap output name for a simulcasting stream
+     * This must match the naming convention used in SimulcastingManager
+     */
+    private function getSimulcastingOutputName(\App\Entity\Simulcasting $stream): string
+    {
+        $adapter = $stream->getAdapter();
+        $streamName = $stream->getName();
+        $streamId = $stream->getId();
+        
+        // Generate a unique output name based on adapter, stream name, and ID
+        $cleanName = preg_replace('/[^a-zA-Z0-9_]/', '_', $streamName);
+        $cleanName = strtolower($cleanName);
+        
+        switch ($adapter) {
+            case 'facebook':
+                return "output.facebook_{$cleanName}_{$streamId}";
+            case 'youtube':
+                return "output.youtube_{$cleanName}_{$streamId}";
+            default:
+                return "output.url_{$cleanName}_{$streamId}";
+        }
+    }
 }

@@ -321,6 +321,20 @@ final class StationBackendConfiguration extends AbstractArrayEntity
     )]
     public ?string $custom_config_bottom = null;
 
+    public const string CUSTOM_HLS = 'custom_hls';
+
+    #[OA\Property(
+        description: 'Custom Liquidsoap Configuration: HLS Section'
+    )]
+    public ?string $custom_hls = null;
+
+    public const string CUSTOM_SIMULCASTING = 'custom_simulcasting';
+
+    #[OA\Property(
+        description: 'Custom Liquidsoap Configuration: Simulcasting Section'
+    )]
+    public ?string $custom_simulcasting = null;
+
     /** @return array<int, string> */
     public static function getCustomConfigurationSections(): array
     {
@@ -331,6 +345,8 @@ final class StationBackendConfiguration extends AbstractArrayEntity
             self::CUSTOM_PRE_LIVE,
             self::CUSTOM_PRE_BROADCAST,
             self::CUSTOM_BOTTOM,
+            self::CUSTOM_HLS,
+            self::CUSTOM_SIMULCASTING,
         ];
     }
 

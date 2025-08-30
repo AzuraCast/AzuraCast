@@ -28,6 +28,7 @@ use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use App\Entity\Simulcasting;
 
 /**
  * @phpstan-import-type ConfigData from AbstractArrayEntity
@@ -624,6 +625,10 @@ final class Station implements Stringable, IdentifiableEntityInterface
     #[ORM\OneToMany(targetEntity: StationHlsStream::class, mappedBy: 'station')]
     public private(set) Collection $hls_streams;
 
+    /** @var Collection<int, Simulcasting> */
+    #[ORM\OneToMany(targetEntity: Simulcasting::class, mappedBy: 'station')]
+    public private(set) Collection $simulcasting_streams;
+
     /** @var Collection<int, StationWebhook> */
     #[ORM\OneToMany(
         targetEntity: StationWebhook::class,
@@ -669,6 +674,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
         $this->mounts = new ArrayCollection();
         $this->remotes = new ArrayCollection();
         $this->hls_streams = new ArrayCollection();
+        $this->simulcasting_streams = new ArrayCollection();
         $this->webhooks = new ArrayCollection();
         $this->streamers = new ArrayCollection();
         $this->streamer_broadcasts = new ArrayCollection();
@@ -849,6 +855,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
         $this->mounts = new ArrayCollection();
         $this->remotes = new ArrayCollection();
         $this->hls_streams = new ArrayCollection();
+        $this->simulcasting_streams = new ArrayCollection();
         $this->webhooks = new ArrayCollection();
         $this->streamers = new ArrayCollection();
         $this->streamer_broadcasts = new ArrayCollection();

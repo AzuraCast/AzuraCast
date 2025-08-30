@@ -8421,3 +8421,135 @@ msgstr ""
 #: /var/azuracast/www/backend/templates/mail/forgot.phtml:12
 msgid "Click the link below to log in to your account."
 msgstr ""
+
+#: frontend/components/Stations/Simulcasting.vue:4
+msgid "Simulcasting"
+msgstr ""
+
+#: frontend/components/Stations/Simulcasting.vue:12
+msgid "Add Simulcasting Stream"
+msgstr ""
+
+#: frontend/components/Stations/Simulcasting.vue:25
+msgid "No simulcasting streams configured."
+msgstr ""
+
+#: frontend/components/Stations/Simulcasting.vue:28
+msgid "Add Your First Stream"
+msgstr ""
+
+#: frontend/components/Stations/Simulcasting.vue:40
+msgid "Name"
+msgstr ""
+
+#: frontend/components/Stations/Simulcasting.vue:41
+msgid "Adapter"
+msgstr ""
+
+#: frontend/components/Stations/Simulcasting.vue:42
+msgid "Status"
+msgstr ""
+
+#: frontend/components/Stations/Simulcasting.vue:43
+msgid "Actions"
+msgstr ""
+
+#: frontend/components/Stations/Simulcasting.vue:67
+msgid "Start"
+msgstr ""
+
+#: frontend/components/Stations/Simulcasting.vue:75
+msgid "Stop"
+msgstr ""
+
+#: frontend/components/Stations/Simulcasting.vue:83
+msgid "Edit"
+msgstr ""
+
+#: frontend/components/Stations/Simulcasting.vue:91
+msgid "Delete"
+msgstr ""
+
+#: frontend/components/Stations/Simulcasting.vue:108
+msgid "Delete Simulcasting Stream"
+msgstr ""
+
+#: frontend/components/Stations/Simulcasting.vue:109
+msgid "Are you sure you want to delete this simulcasting stream? This action cannot be undone."
+msgstr ""
+
+#: frontend/components/Stations/SimulcastingModal.vue:3
+msgid "Edit Simulcasting Stream"
+msgstr ""
+
+#: frontend/components/Stations/SimulcastingModal.vue:4
+msgid "Add Simulcasting Stream"
+msgstr ""
+
+#: frontend/components/Stations/SimulcastingModal.vue:20
+msgid "A name for this simulcasting stream to help you identify it."
+msgstr ""
+
+#: frontend/components/Stations/SimulcastingModal.vue:30
+msgid "Platform"
+msgstr ""
+
+#: frontend/components/Stations/SimulcastingModal.vue:31
+msgid "The platform to stream to."
+msgstr ""
+
+#: frontend/components/Stations/SimulcastingModal.vue:42
+msgid "Select Platform"
+msgstr ""
+
+#: frontend/components/Stations/SimulcastingModal.vue:50
+msgid "Stream Key"
+msgstr ""
+
+#: frontend/components/Stations/SimulcastingModal.vue:51
+msgid "The stream key provided by the platform."
+msgstr ""
+
+#: frontend/components/Stations/SimulcastingModal.vue:58
+msgid "Created"
+msgstr ""
+
+#: frontend/components/Stations/SimulcastingModal.vue:59
+msgid "When this stream was created."
+msgstr ""
+
+#: frontend/components/Stations/SimulcastingModal.vue:66
+msgid "Last Updated"
+msgstr ""
+
+#: frontend/components/Stations/SimulcastingModal.vue:67
+msgid "When this stream was last modified."
+msgstr ""
+
+#: frontend/components/Stations/SimulcastingModal.vue:76
+msgid "Current status of the simulcasting stream."
+msgstr ""
+
+#: frontend/components/Stations/SimulcastingModal.vue:84
+msgid "Error Message"
+msgstr ""
+
+#: frontend/components/Stations/SimulcastingModal.vue:85
+msgid "Last error that occurred with this stream."
+msgstr ""
+
+#: frontend/components/Stations/SimulcastingModal.vue:95
+msgid "Cancel"
+msgstr ""
+
+#: frontend/components/Stations/SimulcastingModal.vue:100
+msgid "Update"
+msgstr ""
+
+#: frontend/components/Stations/SimulcastingModal.vue:100
+msgid "Create"
+msgstr ""
+
+#: frontend/components/Stations/menu.ts:258
+msgid "Simulcasting"
+msgstr ""

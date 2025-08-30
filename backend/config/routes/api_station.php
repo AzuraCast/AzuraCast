@@ -501,7 +501,7 @@ return static function (RouteCollectorProxy $group) {
                         function (RouteCollectorProxy $group) {
                             $group->get(
                                 '/simulcasting',
-                                Controller\Api\Stations\SimulcastingController::class . ':indexAction'
+                                Controller\Api\Stations\SimulcastingController::class . ':listAction'
                             )->setName('api:stations:simulcasting');
 
                             $group->post(
@@ -510,18 +510,13 @@ return static function (RouteCollectorProxy $group) {
                             );
 
                             $group->get(
-                                '/simulcasting/adapters',
-                                Controller\Api\Stations\SimulcastingController::class . ':adaptersAction'
-                            )->setName('api:stations:simulcasting:adapters');
-
-                            $group->get(
                                 '/simulcasting/{id}',
                                 Controller\Api\Stations\SimulcastingController::class . ':getAction'
                             )->setName('api:stations:simulcasting:stream');
 
                             $group->put(
                                 '/simulcasting/{id}',
-                                Controller\Api\Stations\SimulcastingController::class . ':updateAction'
+                                Controller\Api\Stations\SimulcastingController::class . ':editAction'
                             );
 
                             $group->delete(
@@ -539,7 +534,8 @@ return static function (RouteCollectorProxy $group) {
                                 Controller\Api\Stations\SimulcastingController::class . ':stopAction'
                             )->setName('api:stations:simulcasting:stop');
                         }
-                    )->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
+                    )->add(new Middleware\StationSupportsFeature(StationFeatures::CustomLiquidsoapConfig))
+                        ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
                     // Playlist
                     $group->group(

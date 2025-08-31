@@ -45,10 +45,9 @@ import Modal from "~/components/Common/Modal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
+import {getApiUrl} from "~/router.ts";
 
-const props = defineProps<{
-    testMessageUrl: string,
-}>();
+const testMessageUrl = getApiUrl('/admin/send-test-message');
 
 type TestMessageRecord = {
     emailAddress: string
@@ -85,7 +84,7 @@ const doSendTest = async () => {
     }
 
     try {
-        await axios.post(props.testMessageUrl, {
+        await axios.post(testMessageUrl.value, {
             'email': form.value.emailAddress
         });
 

@@ -249,10 +249,7 @@
 
     <streaming-log-modal ref="$acmeModal" />
 
-    <admin-settings-test-message-modal
-        ref="$testMessageModal"
-        :test-message-url="testMessageUrl"
-    />
+    <admin-settings-test-message-modal ref="$testMessageModal"/>
 </template>
 
 <script setup lang="ts">
@@ -273,12 +270,13 @@ import {ApiTaskWithLog} from "~/entities/ApiInterfaces.ts";
 import {useAdminSettingsForm} from "~/components/Admin/Settings/form.ts";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 import {storeToRefs} from "pinia";
+import {getApiUrl} from "~/router.ts";
 
 const props = defineProps<{
-    releaseChannel: string,
-    testMessageUrl: string,
-    acmeUrl: string,
+    releaseChannel: string
 }>();
+
+const acmeUrl = getApiUrl('/admin/acme');
 
 const {form, r$} = storeToRefs(useAdminSettingsForm());
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.servicesTab));
@@ -313,7 +311,7 @@ const $acmeModal = useTemplateRef('$acmeModal');
 const {axios} = useAxios();
 
 const generateAcmeCert = async () => {
-    const {data} = await axios.put<ApiTaskWithLog>(props.acmeUrl);
+    const {data} = await axios.put<ApiTaskWithLog>(acmeUrl.value);
     $acmeModal.value?.show(data.logUrl);
 }
 

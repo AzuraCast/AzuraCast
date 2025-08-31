@@ -37,8 +37,6 @@
                         <settings-security-privacy-tab/>
                         <settings-services-tab
                             :release-channel="releaseChannel"
-                            :test-message-url="testMessageUrl"
-                            :acme-url="acmeUrl"
                         />
                         <settings-debugging-tab/>
                     </tabs>
@@ -74,19 +72,17 @@ import Loading from "~/components/Common/Loading.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import {useAdminSettingsForm} from "~/components/Admin/Settings/form.ts";
 import {storeToRefs} from "pinia";
-
-export interface SettingsProps {
-    apiUrl: string,
-    testMessageUrl: string,
-    acmeUrl: string,
-    releaseChannel?: string
-}
+import {getApiUrl} from "~/router.ts";
 
 defineOptions({
     inheritAttrs: false
 });
 
-const props = withDefaults(
+export interface SettingsProps {
+    releaseChannel?: string
+}
+
+withDefaults(
     defineProps<SettingsProps>(),
     {
         releaseChannel: 'rolling'
@@ -96,6 +92,8 @@ const props = withDefaults(
 const emit = defineEmits<{
     (e: 'saved'): void
 }>();
+
+const apiUrl = getApiUrl('/admin/settings/general');
 
 const formStore = useAdminSettingsForm();
 const {form, r$} = storeToRefs(formStore);
@@ -115,7 +113,7 @@ const relist = () => {
     resetForm();
     isLoading.value = true;
 
-    void axios.get(props.apiUrl).then((resp) => {
+    void axios.get(apiUrl.value).then((resp) => {
         populateForm(resp.data);
         isLoading.value = false;
     });
@@ -134,7 +132,7 @@ const submit = async () => {
 
     await axios({
         method: 'PUT',
-        url: props.apiUrl,
+        url: apiUrl.value,
         data: form.value
     });
 

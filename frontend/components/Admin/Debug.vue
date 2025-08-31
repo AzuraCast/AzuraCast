@@ -331,7 +331,9 @@ const makeDebugCall = async (url: string) => {
 
 const queryClient = useQueryClient();
 
-const doClearClientCache = () => {
-    void queryClient.invalidateQueries();
+const doClearClientCache = async () => {
+    await queryClient.invalidateQueries();
+
+    notifySuccess($gettext('Client-side cache cleared!'));
 }
 </script>

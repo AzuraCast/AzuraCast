@@ -547,8 +547,28 @@ export interface ApiAdminVueBackupProps {
   storageLocations: Record<string, string>;
 }
 
+export interface ApiAdminVueCustomFieldProps {
+  autoAssignTypes: Record<string, string>;
+}
+
+export interface ApiAdminVuePermissionsProps {
+  stations: Record<string, string>;
+  globalPermissions: Record<string, string>;
+  stationPermissions: Record<string, string>;
+}
+
 export interface ApiAdminVueSettingsProps {
   releaseChannel: string;
+}
+
+export interface ApiAdminVueUpdateProps {
+  releaseChannel: string;
+  enableWebUpdates: boolean;
+  initialUpdateInfo: ApiAdminUpdateDetails | null;
+}
+
+export interface ApiAdminVueUsersProps {
+  roles: Record<string, string>;
 }
 
 export interface ApiBatchResult {

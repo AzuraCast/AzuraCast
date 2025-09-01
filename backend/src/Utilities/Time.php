@@ -129,4 +129,39 @@ final class Time
 
         return (float)$seconds;
     }
+
+    public static function getTimezones(): array
+    {
+        $tzSelect = [
+            'UTC' => [
+                'UTC' => 'UTC',
+            ],
+        ];
+
+        $nowUtc = self::nowUtc();
+
+        foreach (
+            DateTimeZone::listIdentifiers(
+                (DateTimeZone::ALL ^ DateTimeZone::ANTARCTICA ^ DateTimeZone::UTC)
+            ) as $tzIdentifier
+        ) {
+            $tz = new DateTimeZone($tzIdentifier);
+            $tzRegion = substr($tzIdentifier, 0, strpos($tzIdentifier, '/') ?: 0) ?: $tzIdentifier;
+            $tzSubregion = str_replace([$tzRegion . '/', '_'], ['', ' '], $tzIdentifier) ?: $tzRegion;
+
+            $offset = $tz->getOffset($nowUtc);
+
+            $offsetPrefix = $offset < 0 ? '-' : '+';
+            $offsetFormatted = gmdate(($offset % 60 === 0) ? 'G' : 'G:i', abs($offset));
+
+            $prettyOffset = ($offset === 0) ? 'UTC' : 'UTC' . $offsetPrefix . $offsetFormatted;
+            if ($tzSubregion !== $tzRegion) {
+                $tzSubregion .= ' (' . $prettyOffset . ')';
+            }
+
+            $tzSelect[$tzRegion][$tzIdentifier] = $tzSubregion;
+        }
+
+        return $tzSelect;
+    }
 }

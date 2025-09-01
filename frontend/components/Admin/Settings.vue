@@ -31,7 +31,7 @@
             </div>
 
             <div class="card-body">
-                <loading :loading="isLoading" lazy>
+                <loading :loading="formLoading || propsLoading" lazy>
                     <tabs content-class="mt-3">
                         <settings-general-tab/>
                         <settings-security-privacy-tab/>
@@ -63,7 +63,7 @@ import SettingsGeneralTab from "~/components/Admin/Settings/GeneralTab.vue";
 import SettingsServicesTab from "~/components/Admin/Settings/ServicesTab.vue";
 import SettingsSecurityPrivacyTab from "~/components/Admin/Settings/SecurityPrivacyTab.vue";
 import SettingsDebuggingTab from "~/components/Admin/Settings/DebuggingTab.vue";
-import {computed, onMounted, ref} from "vue";
+import {onMounted, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/functions/useNotify";
@@ -107,8 +107,6 @@ const {data: props, isLoading: propsLoading} = useQuery<ApiAdminVueSettingsProps
         releaseChannel: 'rolling'
     })
 });
-
-const isLoading = computed(() => formLoading.value || propsLoading.value);
 
 const populateForm = (data: typeof form.value) => {
     resetForm();

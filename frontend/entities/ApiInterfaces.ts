@@ -542,6 +542,11 @@ export interface ApiAdminUpdateDetails {
   can_switch_to_stable?: boolean;
 }
 
+export interface ApiAdminVueBackupProps {
+  isDocker: boolean;
+  storageLocations: Record<string, string>;
+}
+
 export interface ApiAdminVueSettingsProps {
   releaseChannel: string;
 }

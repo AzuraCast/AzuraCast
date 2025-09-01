@@ -19,8 +19,8 @@ export default function useAdminRoutes(): RouteRecordRaw[] {
                 },
                 {
                     path: 'settings',
-                    name: 'admin:settings:index',
-                    component: () => import('~/components/Admin/Settings.vue')
+                    component: () => import('~/components/Admin/Settings.vue'),
+                    name: 'admin:settings:index'
                 },
                 {
                     path: 'branding',
@@ -29,8 +29,8 @@ export default function useAdminRoutes(): RouteRecordRaw[] {
                 },
                 {
                     path: 'logs',
-                    name: 'admin:logs:index',
-                    component: () => import('~/components/Admin/Logs.vue')
+                    component: () => import('~/components/Admin/Logs.vue'),
+                    name: 'admin:logs:index'
                 },
                 {
                     path: 'storage_locations',
@@ -40,8 +40,7 @@ export default function useAdminRoutes(): RouteRecordRaw[] {
                 {
                     path: 'backups',
                     component: () => import('~/components/Admin/Backups.vue'),
-                    name: 'admin:backups:index',
-                    ...populateComponentRemotely('/admin/vue/backups')
+                    name: 'admin:backups:index'
                 },
                 {
                     path: 'debug',

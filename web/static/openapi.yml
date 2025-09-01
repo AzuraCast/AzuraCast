@@ -6811,6 +6811,18 @@ components:
           description: 'Whether you can seamlessly move from the Rolling Release channel to Stable without issues.'
           type: boolean
       type: object
+    Api_Admin_Vue_BackupProps:
+      required:
+        - isDocker
+        - storageLocations
+      properties:
+        isDocker:
+          type: boolean
+        storageLocations:
+          type: object
+          additionalProperties:
+            type: string
+      type: object
     Api_Admin_Vue_SettingsProps:
       required:
         - releaseChannel

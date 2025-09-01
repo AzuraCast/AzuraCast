@@ -69,14 +69,6 @@ const formatOptions = [
     {
         value: HlsStreamProfiles.AacHighEfficiencyV2,
         text: 'AAC High Efficiency V2 (HE-AACv2)'
-    },
-    {
-        value: HlsStreamProfiles.AacEnhancedLowDelay,
-        text: 'AAC Low Delay (LD)'
-    },
-    {
-        value: HlsStreamProfiles.AacEnhancedLowDelay,
-        text: 'AAC Enhanced Low Delay (ELD)'
     }
 ];
 

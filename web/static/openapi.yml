@@ -9780,14 +9780,10 @@ components:
         - aac
         - aac_he
         - aac_he_v2
-        - aac_ld
-        - aac_eld
       x-enumNames:
         - AacLowComplexity
         - AacHighEfficiencyV1
         - AacHighEfficiencyV2
-        - AacLowDelay
-        - AacEnhancedLowDelay
     MasterMePresets:
       type: string
       enum:

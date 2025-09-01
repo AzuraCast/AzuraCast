@@ -66,8 +66,6 @@ export enum HlsStreamProfiles {
   AacLowComplexity = "aac",
   AacHighEfficiencyV1 = "aac_he",
   AacHighEfficiencyV2 = "aac_he_v2",
-  AacLowDelay = "aac_ld",
-  AacEnhancedLowDelay = "aac_eld",
 }
 
 export enum FrontendAdapters {

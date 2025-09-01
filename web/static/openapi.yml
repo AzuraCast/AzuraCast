@@ -6811,6 +6811,13 @@ components:
           description: 'Whether you can seamlessly move from the Rolling Release channel to Stable without issues.'
           type: boolean
       type: object
+    Api_Admin_Vue_SettingsProps:
+      required:
+        - releaseChannel
+      properties:
+        releaseChannel:
+          type: string
+      type: object
     Api_BatchResult:
       required:
         - success

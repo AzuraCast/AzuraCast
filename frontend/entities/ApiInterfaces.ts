@@ -542,6 +542,10 @@ export interface ApiAdminUpdateDetails {
   can_switch_to_stable?: boolean;
 }
 
+export interface ApiAdminVueSettingsProps {
+  releaseChannel: string;
+}
+
 export interface ApiBatchResult {
   success: boolean;
   errors: string[];

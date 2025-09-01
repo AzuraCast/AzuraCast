@@ -13,7 +13,6 @@ use App\Exception\Http\NotLoggedInException;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\VueComponent\SettingsComponent;
 use App\VueComponent\StationFormComponent;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
@@ -29,8 +28,7 @@ final class SetupController
     public function __construct(
         private readonly RolePermissionRepository $permissionRepo,
         private readonly ValidatorInterface $validator,
-        private readonly StationFormComponent $stationFormComponent,
-        private readonly SettingsComponent $settingsComponent
+        private readonly StationFormComponent $stationFormComponent
     ) {
     }
 
@@ -175,7 +173,6 @@ final class SetupController
             layout: 'minimal',
             title: __('System Settings'),
             props: [
-                ...$this->settingsComponent->getProps($request),
                 'continueUrl' => $router->named('dashboard'),
             ],
         );

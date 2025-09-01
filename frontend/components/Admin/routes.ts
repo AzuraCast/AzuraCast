@@ -20,8 +20,7 @@ export default function useAdminRoutes(): RouteRecordRaw[] {
                 {
                     path: 'settings',
                     name: 'admin:settings:index',
-                    component: () => import('~/components/Admin/Settings.vue'),
-                    ...populateComponentRemotely('/admin/vue/settings')
+                    component: () => import('~/components/Admin/Settings.vue')
                 },
                 {
                     path: 'branding',

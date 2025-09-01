@@ -31,12 +31,12 @@
             </div>
 
             <div class="card-body">
-                <loading :loading="isLoading">
+                <loading :loading="isLoading" lazy>
                     <tabs content-class="mt-3">
                         <settings-general-tab/>
                         <settings-security-privacy-tab/>
                         <settings-services-tab
-                            :release-channel="releaseChannel"
+                            :release-channel="props.releaseChannel"
                         />
                         <settings-debugging-tab/>
                     </tabs>
@@ -63,7 +63,7 @@ import SettingsGeneralTab from "~/components/Admin/Settings/GeneralTab.vue";
 import SettingsServicesTab from "~/components/Admin/Settings/ServicesTab.vue";
 import SettingsSecurityPrivacyTab from "~/components/Admin/Settings/SecurityPrivacyTab.vue";
 import SettingsDebuggingTab from "~/components/Admin/Settings/DebuggingTab.vue";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/functions/useNotify";
@@ -73,36 +73,42 @@ import Tabs from "~/components/Common/Tabs.vue";
 import {useAdminSettingsForm} from "~/components/Admin/Settings/form.ts";
 import {storeToRefs} from "pinia";
 import {getApiUrl} from "~/router.ts";
+import {useQuery} from "@tanstack/vue-query";
+import {QueryKeys} from "~/entities/Queries.ts";
+import {ApiAdminVueSettingsProps} from "~/entities/ApiInterfaces.ts";
 
 defineOptions({
     inheritAttrs: false
 });
-
-export interface SettingsProps {
-    releaseChannel?: string
-}
-
-withDefaults(
-    defineProps<SettingsProps>(),
-    {
-        releaseChannel: 'rolling'
-    }
-);
 
 const emit = defineEmits<{
     (e: 'saved'): void
 }>();
 
 const apiUrl = getApiUrl('/admin/settings/general');
+const propsUrl = getApiUrl('/admin/vue/settings');
 
 const formStore = useAdminSettingsForm();
 const {form, r$} = storeToRefs(formStore);
 const {$reset: resetForm} = formStore;
 
-const isLoading = ref(true);
+const formLoading = ref(true);
 const error = ref(null);
 
 const {axios} = useAxios();
+
+const {data: props, isLoading: propsLoading} = useQuery<ApiAdminVueSettingsProps>({
+    queryKey: [QueryKeys.AdminSettings, 'props'],
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiAdminVueSettingsProps>(propsUrl.value, {signal});
+        return data;
+    },
+    placeholderData: () => ({
+        releaseChannel: 'rolling'
+    })
+});
+
+const isLoading = computed(() => formLoading.value || propsLoading.value);
 
 const populateForm = (data: typeof form.value) => {
     resetForm();
@@ -111,11 +117,11 @@ const populateForm = (data: typeof form.value) => {
 
 const relist = () => {
     resetForm();
-    isLoading.value = true;
+    formLoading.value = true;
 
     void axios.get(apiUrl.value).then((resp) => {
         populateForm(resp.data);
-        isLoading.value = false;
+        formLoading.value = false;
     });
 };
 

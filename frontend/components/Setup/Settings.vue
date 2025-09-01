@@ -4,10 +4,7 @@
         class="full-height-wrapper"
         role="main"
     >
-        <admin-settings
-            v-bind="props"
-            @saved="onSaved"
-        >
+        <admin-settings @saved="onSaved">
             <template #preCard>
                 <setup-step :step="3"/>
             </template>
@@ -29,15 +26,13 @@
 </template>
 
 <script setup lang="ts">
-import AdminSettings, {SettingsProps} from "~/components/Admin/Settings.vue";
+import AdminSettings from "~/components/Admin/Settings.vue";
 import SetupStep from "~/components/Setup/SetupStep.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
 
-interface SetupSettingsProps extends SettingsProps {
-    continueUrl: string,
-}
-
-const props = defineProps<SetupSettingsProps>();
+const props = defineProps<{
+    continueUrl: string
+}>();
 
 const onSaved = () => {
     window.location.href = props.continueUrl;

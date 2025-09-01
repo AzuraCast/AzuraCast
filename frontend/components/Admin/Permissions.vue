@@ -14,61 +14,63 @@
             />
         </template>
 
-        <data-table
-            id="permissions"
-            paginated
-            :fields="fields"
-            :provider="listItemProvider"
-        >
-            <template #cell(permissions)="{item}">
-                <div v-if="item.permissions.global.length > 0">
-                    <b>{{ $gettext('Global') }}:</b>
-                    {{ getGlobalPermissionNames(item.permissions.global).join(', ') }}
-                </div>
-                <div
-                    v-for="(stationRow) in item.permissions.station"
-                    :key="stationRow.id"
-                >
-                    <b>{{ getStationName(stationRow.id) }}:</b>
-                    {{ getStationPermissionNames(stationRow.permissions).join(', ') }}
-                </div>
-                <div v-if="item.permissions.global.length === 0 && item.permissions.station.length === 0">
-                    &nbsp;
-                </div>
-            </template>
-            <template #cell(actions)="{item}">
-                <div
-                    v-if="!item.is_super_admin"
-                    class="btn-group btn-group-sm"
-                >
-                    <button
-                        type="button"
-                        class="btn btn-primary"
-                        @click="doEdit(item.links.self)"
+        <loading :loading="propsLoading" lazy>
+            <data-table
+                id="permissions"
+                paginated
+                :fields="fields"
+                :provider="listItemProvider"
+            >
+                <template #cell(permissions)="{item}">
+                    <div v-if="item.permissions.global.length > 0">
+                        <b>{{ $gettext('Global') }}:</b>
+                        {{ getGlobalPermissionNames(item.permissions.global).join(', ') }}
+                    </div>
+                    <div
+                        v-for="(stationRow) in item.permissions.station"
+                        :key="stationRow.id"
                     >
-                        {{ $gettext('Edit') }}
-                    </button>
-                    <button
-                        v-if="item.id !== 1"
-                        type="button"
-                        class="btn btn-danger"
-                        @click="doDelete(item.links.self)"
+                        <b>{{ getStationName(stationRow.id) }}:</b>
+                        {{ getStationPermissionNames(stationRow.permissions).join(', ') }}
+                    </div>
+                    <div v-if="item.permissions.global.length === 0 && item.permissions.station.length === 0">
+                        &nbsp;
+                    </div>
+                </template>
+                <template #cell(actions)="{item}">
+                    <div
+                        v-if="!item.is_super_admin"
+                        class="btn-group btn-group-sm"
                     >
-                        {{ $gettext('Delete') }}
-                    </button>
-                </div>
-            </template>
-        </data-table>
-    </card-page>
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            @click="doEdit(item.links.self)"
+                        >
+                            {{ $gettext('Edit') }}
+                        </button>
+                        <button
+                            v-if="item.id !== 1"
+                            type="button"
+                            class="btn btn-danger"
+                            @click="doDelete(item.links.self)"
+                        >
+                            {{ $gettext('Delete') }}
+                        </button>
+                    </div>
+                </template>
+            </data-table>
 
-    <edit-modal
-        ref="$editModal"
-        :create-url="listUrl"
-        :station-permissions="stationPermissions"
-        :stations="stations"
-        :global-permissions="globalPermissions"
-        @relist="() => relist()"
-    />
+            <edit-modal
+                ref="$editModal"
+                :create-url="listUrl"
+                :station-permissions="props.stationPermissions"
+                :stations="props.stations"
+                :global-permissions="props.globalPermissions"
+                @relist="() => relist()"
+            />
+        </loading>
+    </card-page>
 </template>
 
 <script setup lang="ts">
@@ -83,17 +85,35 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import {DeepRequired} from "utility-types";
-import {ApiAdminRole, GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
+import {
+    ApiAdminRole,
+    ApiAdminVuePermissionsProps,
+    GlobalPermissions,
+    StationPermissions
+} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
+import {useQuery} from "@tanstack/vue-query";
+import {useAxios} from "~/vendor/axios.ts";
+import Loading from "~/components/Common/Loading.vue";
 
-const props = defineProps<{
-    stations: Record<number, string>,
-    globalPermissions: Record<GlobalPermissions, string>,
-    stationPermissions: Record<StationPermissions, string>,
-}>();
-
+const propsUrl = getApiUrl('/admin/vue/permissions');
 const listUrl = getApiUrl('/admin/roles');
+
+const {axios} = useAxios();
+
+const {data: props, isLoading: propsLoading} = useQuery<ApiAdminVuePermissionsProps>({
+    queryKey: [QueryKeys.AdminPermissions, 'props'],
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiAdminVuePermissionsProps>(propsUrl.value, {signal});
+        return data;
+    },
+    placeholderData: () => ({
+        stations: {},
+        globalPermissions: {},
+        stationPermissions: {}
+    })
+});
 
 const {$gettext} = useTranslate();
 
@@ -116,18 +136,18 @@ const relist = () => {
 
 const getGlobalPermissionNames = (permissions: GlobalPermissions[]) => {
     return filter(map(permissions, (permission) => {
-        return get(props.globalPermissions, permission, null);
+        return get(props.value.globalPermissions, permission, null);
     }));
 };
 
 const getStationPermissionNames = (permissions: StationPermissions[]) => {
     return filter(map(permissions, (permission) => {
-        return get(props.stationPermissions, permission, null);
+        return get(props.value.stationPermissions, permission, null);
     }));
 };
 
 const getStationName = (stationId: number) => {
-    return get(props.stations, stationId, null);
+    return get(props.value.stations, stationId, null);
 };
 
 const $editModal = useTemplateRef('$editModal');

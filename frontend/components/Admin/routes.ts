@@ -50,20 +50,17 @@ export default function useAdminRoutes(): RouteRecordRaw[] {
                 {
                     path: 'updates',
                     component: () => import('~/components/Admin/Updates.vue'),
-                    name: 'admin:updates:index',
-                    ...populateComponentRemotely('/admin/vue/updates')
+                    name: 'admin:updates:index'
                 },
                 {
                     path: 'users',
                     component: () => import('~/components/Admin/Users.vue'),
-                    name: 'admin:users:index',
-                    ...populateComponentRemotely('/admin/vue/users')
+                    name: 'admin:users:index'
                 },
                 {
                     path: 'permissions',
                     component: () => import('~/components/Admin/Permissions.vue'),
                     name: 'admin:permissions:index',
-                    ...populateComponentRemotely('/admin/vue/permissions')
                 },
                 {
                     path: 'auditlog',
@@ -85,7 +82,6 @@ export default function useAdminRoutes(): RouteRecordRaw[] {
                     path: 'custom_fields',
                     component: () => import('~/components/Admin/CustomFields.vue'),
                     name: 'admin:custom_fields:index',
-                    ...populateComponentRemotely('/admin/vue/custom_fields')
                 },
                 {
                     path: 'relays',

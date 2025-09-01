@@ -39,6 +39,7 @@ export enum QueryKeys {
     AdminSettings = 'AdminSettings',
     AdminStations = 'AdminStations',
     AdminStorageLocations = 'AdminStorageLocations',
+    AdminUpdates = 'AdminUpdates',
     AdminUsers = 'AdminUsers',
 }
 

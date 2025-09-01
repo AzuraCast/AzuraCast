@@ -1,55 +1,57 @@
 <template>
-    <card-page :title="$gettext('Custom Fields')">
-        <template #info>
-            <p class="card-text">
-                {{
-                    $gettext('Create custom fields to store extra metadata about each media file uploaded to your station libraries.')
-                }}
-            </p>
-        </template>
-        <template #actions>
-            <add-button
-                :text="$gettext('Add Custom Field')"
-                @click="doCreate"
-            />
-        </template>
-
-        <data-table
-            id="custom_fields"
-            :fields="fields"
-            :show-toolbar="false"
-            :provider="itemProvider"
-        >
-            <template #cell(name)="{ item }">
-                {{ item.name }} <code>{{ item.short_name }}</code>
+    <loading :loading="propsLoading" lazy>
+        <card-page :title="$gettext('Custom Fields')">
+            <template #info>
+                <p class="card-text">
+                    {{
+                        $gettext('Create custom fields to store extra metadata about each media file uploaded to your station libraries.')
+                    }}
+                </p>
             </template>
-            <template #cell(actions)="{ item }">
-                <div class="btn-group btn-group-sm">
-                    <button
-                        type="button"
-                        class="btn btn-primary"
-                        @click="doEdit(item.links.self)"
-                    >
-                        {{ $gettext('Edit') }}
-                    </button>
-                    <button
-                        type="button"
-                        class="btn btn-danger"
-                        @click="doDelete(item.links.self)"
-                    >
-                        {{ $gettext('Delete') }}
-                    </button>
-                </div>
+            <template #actions>
+                <add-button
+                    :text="$gettext('Add Custom Field')"
+                    @click="doCreate"
+                />
             </template>
-        </data-table>
-    </card-page>
 
-    <edit-modal
-        ref="$editModal"
-        :create-url="listUrl"
-        :auto-assign-types="autoAssignTypes"
-        @relist="() => relist()"
-    />
+            <data-table
+                id="custom_fields"
+                :fields="fields"
+                :show-toolbar="false"
+                :provider="itemProvider"
+            >
+                <template #cell(name)="{ item }">
+                    {{ item.name }} <code>{{ item.short_name }}</code>
+                </template>
+                <template #cell(actions)="{ item }">
+                    <div class="btn-group btn-group-sm">
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            @click="doEdit(item.links.self)"
+                        >
+                            {{ $gettext('Edit') }}
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-danger"
+                            @click="doDelete(item.links.self)"
+                        >
+                            {{ $gettext('Delete') }}
+                        </button>
+                    </div>
+                </template>
+            </data-table>
+        </card-page>
+
+        <edit-modal
+            ref="$editModal"
+            :create-url="listUrl"
+            :auto-assign-types="props.autoAssignTypes"
+            @relist="() => relist()"
+        />
+    </loading>
 </template>
 
 <script setup lang="ts">
@@ -64,15 +66,25 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import {DeepRequired} from "utility-types";
-import {CustomField, HasLinks} from "~/entities/ApiInterfaces.ts";
+import {ApiAdminVueCustomFieldProps, CustomField, HasLinks} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
+import {useQuery} from "@tanstack/vue-query";
+import {useAxios} from "~/vendor/axios.ts";
+import Loading from "~/components/Common/Loading.vue";
 
-const props = defineProps<{
-    autoAssignTypes: Record<string, string>,
-}>();
-
+const propsUrl = getApiUrl('/admin/vue/custom_fields');
 const listUrl = getApiUrl('/admin/custom_fields');
+
+const {axios} = useAxios();
+
+const {data: props, isLoading: propsLoading} = useQuery<ApiAdminVueCustomFieldProps>({
+    queryKey: [QueryKeys.AdminCustomFields, 'props'],
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiAdminVueCustomFieldProps>(propsUrl.value, {signal});
+        return data;
+    }
+});
 
 const {$gettext} = useTranslate();
 
@@ -90,7 +102,7 @@ const fields: DataTableField<Row>[] = [
         label: $gettext('Auto-Assign Value'),
         sortable: false,
         formatter: (value) => {
-            return get(props.autoAssignTypes, value, $gettext('None'));
+            return get(props.value?.autoAssignTypes ?? {}, value, $gettext('None'));
         }
     },
     {
@@ -104,7 +116,8 @@ const fields: DataTableField<Row>[] = [
 const itemProvider = useApiItemProvider(
     listUrl,
     [
-        QueryKeys.AdminCustomFields
+        QueryKeys.AdminCustomFields,
+        'data'
     ]
 );
 

@@ -1378,44 +1378,12 @@ final class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(
             <<<LIQ
             # Simulcasting Configuration
-            # Video and font files for simulcasting
+            # Video file for simulcasting
             simulcast_video_file = "{$stationMediaDir}/videostream/video.mp4"
-            simulcast_font_file = "{$stationMediaDir}/videostream/font.ttf"
-            simulcast_nowplaying_file = "{$configDir}/nowplaying.txt"
-            
-            # Text overlay styling for now playing information
-            simulcast_font_size = "50"
-            simulcast_font_x = "340"
-            simulcast_font_y = "990"
-            simulcast_font_color = "white"
-            
-            # Function to add now playing text overlay
-            def add_nowplaying_text(s) =
-                def mkfilter(graph) =
-                    let {video = video_track} = source.tracks(s)
-                    video_track = ffmpeg.filter.video.input(graph, video_track)
-                    video_track =
-                    ffmpeg.filter.drawtext(
-                        graph,                # 1st: the graph
-                        video_track,          # 2nd: the input video track
-                        fontfile = simulcast_font_file,
-                        fontsize = 50,        # ints are cleaner than strings; adjust as you like
-                        x        = 340,
-                        y        = 990,
-                        fontcolor= simulcast_font_color,
-                        textfile = simulcast_nowplaying_file,
-                        reload   = 5
-                    )
-                    video_track = ffmpeg.filter.video.output(graph, video_track)
-                    source({video = video_track})
-                end
-                ffmpeg.filter.create(mkfilter)
-            end
             
             # Build A/V source for simulcasting
-            # Loop the background video, add overlay, then mux with radio audio
+            # Loop the background video and mux with radio audio
             simulcast_videostream = single(simulcast_video_file)
-            simulcast_videostream = add_nowplaying_text(simulcast_videostream)
             simulcast_videostream = source.mux.video(video=simulcast_videostream, radio)
             
             # Encoding settings for simulcasting

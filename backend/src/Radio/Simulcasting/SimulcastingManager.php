@@ -77,14 +77,14 @@ class SimulcastingManager
                 throw new RuntimeException('Adapter configuration is invalid');
             }
 
-            // Validate that required video files exist
-            $videoErrors = $this->liquidsoapService->validateVideoFiles($station);
-            if (!empty($videoErrors)) {
-                // Try to create default video files
-                if (!$this->liquidsoapService->createDefaultVideoFiles($station)) {
-                    throw new RuntimeException('Required video files missing and could not be created: ' . implode(', ', $videoErrors));
-                }
-            }
+            // // Validate that required video files exist
+            // $videoErrors = $this->liquidsoapService->validateVideoFiles($station);
+            // if (!empty($videoErrors)) {
+            //     // Try to create default video files
+            //     if (!$this->liquidsoapService->createDefaultVideoFiles($station)) {
+            //         throw new RuntimeException('Required video files missing and could not be created: ' . implode(', ', $videoErrors));
+            //     }
+            // }
 
             $this->logger->info('Starting simulcasting stream', [
                 'station_id' => $station->id,
@@ -95,7 +95,8 @@ class SimulcastingManager
             // Update status to Starting
             $simulcasting->setStatus(\App\Entity\Enums\SimulcastingStatus::Starting);
             $simulcasting->setErrorMessage(null);
-            $this->entityManager->flush();
+            $this->em->persist($simulcasting);
+            $this->em->flush();
 
             // Get the output name for this simulcasting stream
             $outputName = $this->getLiquidSoapOutputName($simulcasting);
@@ -106,7 +107,8 @@ class SimulcastingManager
             if (!empty($result) && !str_contains(implode(' ', $result), 'error')) {
                 // Success - update status to Running
                 $simulcasting->setStatus(\App\Entity\Enums\SimulcastingStatus::Running);
-                $this->entityManager->flush();
+                $this->em->persist($simulcasting);
+                $this->em->flush();
                 
                 $this->logger->info('Simulcasting stream started successfully', [
                     'station_id' => $station->id,
@@ -121,7 +123,8 @@ class SimulcastingManager
                 $errorMsg = implode(' ', $result);
                 $simulcasting->setStatus(\App\Entity\Enums\SimulcastingStatus::Error);
                 $simulcasting->setErrorMessage("Failed to start stream: {$errorMsg}");
-                $this->entityManager->flush();
+                $this->em->persist($simulcasting);
+                $this->em->flush();
                 
                 $this->logger->error('Failed to start simulcasting stream', [
                     'station_id' => $station->id,
@@ -160,7 +163,8 @@ class SimulcastingManager
 
             // Update status to Stopping
             $simulcasting->setStatus(\App\Entity\Enums\SimulcastingStatus::Stopping);
-            $this->entityManager->flush();
+            $this->em->persist($simulcasting);
+            $this->em->flush();
 
             // Get the output name for this simulcasting stream
             $outputName = $this->getLiquidSoapOutputName($simulcasting);
@@ -171,7 +175,8 @@ class SimulcastingManager
             if (!empty($result) && !str_contains(implode(' ', $result), 'error')) {
                 // Success - update status to Stopped
                 $simulcasting->setStatus(\App\Entity\Enums\SimulcastingStatus::Stopped);
-                $this->entityManager->flush();
+                $this->em->persist($simulcasting);
+                $this->em->flush();
                 
                 $this->logger->info('Simulcasting stream stopped successfully', [
                     'station_id' => $station->id,
@@ -186,7 +191,8 @@ class SimulcastingManager
                 $errorMsg = implode(' ', $result);
                 $simulcasting->setStatus(\App\Entity\Enums\SimulcastingStatus::Error);
                 $simulcasting->setErrorMessage("Failed to stop stream: {$errorMsg}");
-                $this->entityManager->flush();
+                $this->em->persist($simulcasting);
+                $this->em->flush();
                 
                 $this->logger->error('Failed to stop simulcasting stream', [
                     'station_id' => $station->id,
@@ -228,11 +234,11 @@ class SimulcastingManager
         
         switch ($adapter) {
             case 'facebook':
-                return "output.facebook_{$cleanName}_{$streamId}";
+                return "simulcast_facebook_{$cleanName}_{$streamId}";
             case 'youtube':
-                return "output.youtube_{$cleanName}_{$streamId}";
+                return "simulcast_youtube_{$cleanName}_{$streamId}";
             default:
-                return "output.url_{$cleanName}_{$streamId}";
+                return "simulcast_url_{$cleanName}_{$streamId}";
         }
     }
 

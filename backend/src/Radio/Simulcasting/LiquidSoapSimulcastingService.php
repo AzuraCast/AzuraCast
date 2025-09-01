@@ -195,7 +195,7 @@ final class LiquidSoapSimulcastingService
     public function validateVideoFiles(Station $station): array
     {
         $errors = [];
-        $mediaDir = $station->getMediaDirectory();
+        $mediaDir = $station->media_storage_location->getFilteredPath();
         
         $requiredFiles = [
             'video.mp4' => $mediaDir . '/videostream/video.mp4',
@@ -217,7 +217,7 @@ final class LiquidSoapSimulcastingService
     public function createDefaultVideoFiles(Station $station): bool
     {
         try {
-            $mediaDir = $station->getMediaDirectory();
+            $mediaDir = $station->media_storage_location->getFilteredPath();
             $videoDir = $mediaDir . '/videostream';
             
             // Create videostream directory if it doesn't exist

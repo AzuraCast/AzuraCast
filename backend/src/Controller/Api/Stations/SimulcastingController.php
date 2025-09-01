@@ -6,8 +6,11 @@ namespace App\Controller\Api\Stations;
 
 use App\Entity\Simulcasting;
 use App\Exception\ValidationException;
+use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
+use App\Radio\Backend\Liquidsoap;
+use App\Radio\Simulcasting\SimulcastingManager;
 use OpenApi\Attributes as OA;
 
 /** @extends AbstractStationApiCrudController<Simulcasting> */
@@ -125,7 +128,16 @@ use OpenApi\Attributes as OA;
 final class SimulcastingController extends AbstractStationApiCrudController
 {
     protected string $entityClass = Simulcasting::class;
-    protected string $resourceRouteName = 'api:stations:simulcasting';
+    protected string $resourceRouteName = 'api:stations:simulcasting:stream';
+
+    public function __construct(
+        \Symfony\Component\Serializer\Serializer $serializer,
+        \Symfony\Component\Validator\Validator\ValidatorInterface $validator,
+        private readonly SimulcastingManager $simulcastingManager,
+        private readonly Liquidsoap $liquidsoap
+    ) {
+        parent::__construct($serializer, $validator);
+    }
 
     protected function createRecord(ServerRequest $request, array $data): object
     {
@@ -167,23 +179,33 @@ final class SimulcastingController extends AbstractStationApiCrudController
             new OpenApi\Response\NotFound(),
         ]
     )]
-    public function startAction(ServerRequest $request, array $params): \Psr\Http\Message\ResponseInterface
+    public function startAction(ServerRequest $request, Response $response, array $params): \Psr\Http\Message\ResponseInterface
     {
         $station = $request->getStation();
         $simulcastingId = (int) $params['id'];
 
         $simulcasting = $this->em->find(Simulcasting::class, $simulcastingId);
 
-        if (!$simulcasting || $simulcasting->getStation()->getId() !== $station->getId()) {
-            return $this->renderError($request, $this->response, 'Simulcasting stream not found', [], 404);
+        if (!$simulcasting || $simulcasting->getStation()->id !== $station->id) {
+            return $response->withStatus(404)
+                ->withJson(\App\Entity\Api\Error::notFound());
         }
 
-        // Start the simulcasting stream
-        $simulcasting->setStatus(\App\Entity\Enums\SimulcastingStatus::Starting);
-        $this->em->persist($simulcasting);
-        $this->em->flush();
+        // Start the simulcasting stream using SimulcastingManager
+        $success = $this->simulcastingManager->startSimulcasting($simulcasting, $this->liquidsoap);
+        
+        if (!$success) {
+            return $response->withStatus(500)
+                ->withJson([
+                    'code' => 500,
+                    'type' => 'Error',
+                    'message' => 'Failed to start simulcasting stream',
+                    'success' => false
+                ]);
+        }
 
-        return $this->renderSuccess($request, $this->response, $simulcasting);
+        $return = $this->viewRecord($simulcasting, $request);
+        return $response->withJson($return);
     }
 
     #[OA\Post(
@@ -207,22 +229,32 @@ final class SimulcastingController extends AbstractStationApiCrudController
             new OpenApi\Response\NotFound(),
         ]
     )]
-    public function stopAction(ServerRequest $request, array $params): \Psr\Http\Message\ResponseInterface
+    public function stopAction(ServerRequest $request, Response $response, array $params): \Psr\Http\Message\ResponseInterface
     {
         $station = $request->getStation();
         $simulcastingId = (int) $params['id'];
 
         $simulcasting = $this->em->find(Simulcasting::class, $simulcastingId);
 
-        if (!$simulcasting || $simulcasting->getStation()->getId() !== $station->getId()) {
-            return $this->renderError($request, $this->response, 'Simulcasting stream not found', [], 404);
+        if (!$simulcasting || $simulcasting->getStation()->id !== $station->id) {
+            return $response->withStatus(404)
+                ->withJson(\App\Entity\Api\Error::notFound());
         }
 
-        // Stop the simulcasting stream
-        $simulcasting->setStatus(\App\Entity\Enums\SimulcastingStatus::Stopped);
-        $this->em->persist($simulcasting);
-        $this->em->flush();
+        // Stop the simulcasting stream using SimulcastingManager
+        $success = $this->simulcastingManager->stopSimulcasting($simulcasting, $this->liquidsoap);
+        
+        if (!$success) {
+            return $response->withStatus(500)
+                ->withJson([
+                    'code' => 500,
+                    'type' => 'Error',
+                    'message' => 'Failed to stop simulcasting stream',
+                    'success' => false
+                ]);
+        }
 
-        return $this->renderSuccess($request, $this->response, $simulcasting);
+        $return = $this->viewRecord($simulcasting, $request);
+        return $response->withJson($return);
     }
 }

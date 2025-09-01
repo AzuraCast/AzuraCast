@@ -44,10 +44,10 @@
                         v-if="canStart(row.item.status)"
                         type="button"
                         class="btn btn-success"
-                        :disabled="isActionLoading(row.item.id, 'start')"
+                        :disabled="isActionLoading(row.item?.id, 'start')"
                         @click="startStream(row.item)"
                     >
-                        <i class="material-icons" aria-hidden="true">play_arrow</i>
+                        <icon :icon="IconPlay" />
                         {{ $gettext('Start') }}
                     </button>
                     
@@ -55,10 +55,10 @@
                         v-if="canStop(row.item.status)"
                         type="button"
                         class="btn btn-warning"
-                        :disabled="isActionLoading(row.item.id, 'stop')"
+                        :disabled="isActionLoading(row.item?.id, 'stop')"
                         @click="stopStream(row.item)"
                     >
-                        <i class="material-icons" aria-hidden="true">stop</i>
+                        <icon :icon="IconStop" />
                         {{ $gettext('Stop') }}
                     </button>
                     
@@ -103,10 +103,14 @@ import {getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {queryKeyWithStation} from "~/entities/Queries.ts";
+import Icon from "~/components/Common/Icon.vue";
+import {IconPlay, IconStop} from "~/components/Common/icons";
+import {useAxios} from "~/vendor/axios";
 
 const listUrl = getStationApiUrl('/simulcasting');
 
 const {$gettext} = useTranslate();
+const {axios} = useAxios();
 
 const fields = [
     {key: 'name', isRowHeader: true, label: $gettext('Name'), sortable: true},
@@ -171,14 +175,17 @@ const isActionLoading = (streamId: number, action: string): boolean => {
 
 // Action handlers
 const startStream = async (stream: any): Promise<void> => {
+    if (!stream || !stream.id) {
+        console.error('Stream object is missing ID:', stream)
+        return
+    }
+    
     actionLoading.value[`${stream.id}-start`] = true
     try {
-        const response = await fetch(getStationApiUrl(`/simulcasting/${stream.id}/start`), {
-            method: 'POST',
-        })
-        if (!response.ok) {
-            throw new Error('Failed to start stream')
-        }
+        const url = getStationApiUrl(`/simulcasting/${stream.id}/start`)
+        console.log('Making request to:', url?.value || url)
+        
+        await axios.post(url?.value || url)
         relist()
     } finally {
         actionLoading.value[`${stream.id}-start`] = false
@@ -186,14 +193,17 @@ const startStream = async (stream: any): Promise<void> => {
 }
 
 const stopStream = async (stream: any): Promise<void> => {
+    if (!stream || !stream.id) {
+        console.error('Stream object is missing ID:', stream)
+        return
+    }
+    
     actionLoading.value[`${stream.id}-stop`] = true
     try {
-        const response = await fetch(getStationApiUrl(`/simulcasting/${stream.id}/stop`), {
-            method: 'POST',
-        })
-        if (!response.ok) {
-            throw new Error('Failed to stop stream')
-        }
+        const url = getStationApiUrl(`/simulcasting/${stream.id}/stop`)
+        console.log('Making request to:', url?.value || url)
+        
+        await axios.post(url?.value || url)
         relist()
     } finally {
         actionLoading.value[`${stream.id}-stop`] = false

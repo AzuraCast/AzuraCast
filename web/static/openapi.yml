@@ -690,9 +690,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Api_LogType'
+                $ref: '#/components/schemas/Api_Admin_LogList'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -6363,6 +6361,20 @@ components:
           type: string
           nullable: true
       type: object
+    Api_Admin_LogList:
+      required:
+        - globalLogs
+        - stationLogs
+      properties:
+        globalLogs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Api_LogType'
+        stationLogs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Api_Admin_StationLogList'
+      type: object
     Api_Admin_Permission:
       required:
         - id
@@ -6724,6 +6736,21 @@ components:
         version:
           type: string
           nullable: true
+      type: object
+    Api_Admin_StationLogList:
+      required:
+        - id
+        - name
+        - logs
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Api_LogType'
       type: object
     Api_Admin_StereoToolStatus:
       required:

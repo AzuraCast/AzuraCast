@@ -315,6 +315,11 @@ export interface ApiAdminGeoLiteStatus {
   key: string | null;
 }
 
+export interface ApiAdminLogList {
+  globalLogs: ApiLogType[];
+  stationLogs: ApiAdminStationLogList[];
+}
+
 export interface ApiAdminPermission {
   id: string;
   name: string;
@@ -490,6 +495,12 @@ export type ApiAdminServiceData = HasLinks & {
 
 export interface ApiAdminShoutcastStatus {
   version: string | null;
+}
+
+export interface ApiAdminStationLogList {
+  id: number;
+  name: string;
+  logs: ApiLogType[];
 }
 
 export interface ApiAdminStereoToolStatus {

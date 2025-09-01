@@ -31,8 +31,7 @@ export default function useAdminRoutes(): RouteRecordRaw[] {
                 {
                     path: 'logs',
                     name: 'admin:logs:index',
-                    component: () => import('~/components/Admin/Logs.vue'),
-                    ...populateComponentRemotely('/admin/vue/logs')
+                    component: () => import('~/components/Admin/Logs.vue')
                 },
                 {
                     path: 'storage_locations',

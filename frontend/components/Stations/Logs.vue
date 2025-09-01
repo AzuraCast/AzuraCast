@@ -15,11 +15,12 @@
                     </h2>
                 </div>
 
-                <log-list
-                    :query-key="logsQueryKey"
-                    :url="logsUrl"
-                    @view="viewLog"
-                />
+                <loading :loading="isLoading" lazy>
+                    <log-list
+                        :logs="data"
+                        @view="viewLog"
+                    />
+                </loading>
             </section>
 
             <streaming-log-modal ref="$modal" />
@@ -82,11 +83,25 @@ import {useTemplateRef} from "vue";
 import {getStationApiUrl} from "~/router";
 import {IconSupport} from "~/components/Common/icons.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import {useQuery} from "@tanstack/vue-query";
+import {ApiLogType} from "~/entities/ApiInterfaces.ts";
+import {useAxios} from "~/vendor/axios.ts";
+import Loading from "~/components/Common/Loading.vue";
 
 const logsUrl = getStationApiUrl('/logs');
-const logsQueryKey = queryKeyWithStation([
-    QueryKeys.StationLogs
-]);
+
+const {axios} = useAxios();
+
+const {data, isLoading} = useQuery<ApiLogType[]>({
+    queryKey: queryKeyWithStation([
+        QueryKeys.StationLogs
+    ]),
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiLogType[]>(logsUrl.value, {signal});
+        return data;
+    },
+    placeholderData: () => []
+});
 
 const $modal = useTemplateRef('$modal');
 

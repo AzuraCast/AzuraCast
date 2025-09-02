@@ -21,22 +21,22 @@
                     {{ $gettext('Server:') }}
                 </dt>
                 <dd>
-                    <code>{{ connectionInfo.serverUrl }}</code>
+                    <code>{{ connectionServerUrl }}</code>
                 </dd>
-                <dd v-if="connectionInfo.ip">
+                <dd v-if="connectionIp">
                     {{ $gettext('You may need to connect directly via your IP address:') }}
-                    <code>{{ connectionInfo.ip }}</code>
+                    <code>{{ connectionIp }}</code>
                 </dd>
 
                 <dt class="mb-1">
                     {{ $gettext('Port:') }}
                 </dt>
-                <dd><code>{{ connectionInfo.streamPort }}</code></dd>
+                <dd><code>{{ connectionStreamPort }}</code></dd>
 
                 <dt class="mb-1">
                     {{ $gettext('Mount Name:') }}
                 </dt>
-                <dd><code>{{ connectionInfo.djMountPoint }}</code></dd>
+                <dd><code>{{ connectionDjMountPoint }}</code></dd>
             </dl>
         </div>
         <div class="card-body">
@@ -48,20 +48,20 @@
                     {{ $gettext('Server:') }}
                 </dt>
                 <dd>
-                    <code>{{ connectionInfo.serverUrl }}</code>
+                    <code>{{ connectionServerUrl }}</code>
                 </dd>
-                <dd v-if="connectionInfo.ip">
+                <dd v-if="connectionIp">
                     {{ $gettext('You may need to connect directly via your IP address:') }}
-                    <code>{{ connectionInfo.ip }}</code>
+                    <code>{{ connectionIp }}</code>
                 </dd>
 
                 <dt class="mb-1">
                     {{ $gettext('Port:') }}
                 </dt>
-                <dd><code>{{ connectionInfo.streamPort }}</code></dd>
+                <dd><code>{{ connectionStreamPort }}</code></dd>
                 <dd>
                     {{ $gettext('For some clients, use port:') }}
-                    <code>{{ connectionInfo.streamPort + 1 }}</code>
+                    <code>{{ connectionStreamPort + 1 }}</code>
                 </dd>
 
                 <dt class="mb-1">
@@ -90,14 +90,7 @@
 </template>
 
 <script setup lang="ts">
-export interface StreamerConnectionInfo {
-    serverUrl: string,
-    streamPort: number,
-    ip: string | null,
-    djMountPoint: string,
-}
+import {ApiStationsVueStreamersProps} from "~/entities/ApiInterfaces.ts";
 
-defineProps<{
-    connectionInfo: StreamerConnectionInfo
-}>();
+defineProps<ApiStationsVueStreamersProps>();
 </script>

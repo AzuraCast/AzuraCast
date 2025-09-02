@@ -8002,6 +8002,41 @@ components:
         downloadUrl:
           type: string
       type: object
+    Api_Stations_Vue_SftpUsersProps:
+      required:
+        - connectionUrl
+        - connectionIp
+        - connectionPort
+      properties:
+        connectionUrl:
+          type: string
+        connectionIp:
+          type: string
+          nullable: true
+        connectionPort:
+          type: integer
+      type: object
+    Api_Stations_Vue_StreamersProps:
+      required:
+        - recordStreams
+        - connectionServerUrl
+        - connectionStreamPort
+        - connectionIp
+        - connectionDjMountPoint
+      properties:
+        recordStreams:
+          type: boolean
+        connectionServerUrl:
+          type: string
+        connectionStreamPort:
+          type: integer
+          nullable: true
+        connectionIp:
+          type: string
+          nullable: true
+        connectionDjMountPoint:
+          type: string
+      type: object
     Api_Status:
       required:
         - success

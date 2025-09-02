@@ -6,6 +6,7 @@ namespace App\Controller\Api\Stations\Vue;
 
 use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Stations\Vue\StreamersProps;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\AzuraCastCentral;
@@ -32,14 +33,14 @@ final class StreamersAction implements SingleActionInterface
 
         $serverUrl = ($settings->getBaseUrlAsUri() ?? $request->getRouter()->getBaseUrl())->getHost();
 
-        return $response->withJson([
-            'recordStreams' => $backendConfig->record_streams,
-            'connectionInfo' => [
-                'serverUrl' => $serverUrl,
-                'streamPort' => $backendConfig->dj_port,
-                'ip' => $this->acCentral->getIp(),
-                'djMountPoint' => $backendConfig->dj_mount_point,
-            ],
-        ]);
+        return $response->withJson(
+            new StreamersProps(
+                recordStreams: $backendConfig->record_streams,
+                connectionServerUrl: $serverUrl,
+                connectionStreamPort: $backendConfig->dj_port,
+                connectionIp: $this->acCentral->getIp(),
+                connectionDjMountPoint: $backendConfig->dj_mount_point,
+            )
+        );
     }
 }

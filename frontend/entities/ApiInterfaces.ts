@@ -1328,6 +1328,20 @@ export interface ApiStationStreamerBroadcastRecording {
   downloadUrl: string;
 }
 
+export interface ApiStationsVueSftpUsersProps {
+  connectionUrl: string;
+  connectionIp: string | null;
+  connectionPort: number;
+}
+
+export interface ApiStationsVueStreamersProps {
+  recordStreams: boolean;
+  connectionServerUrl: string;
+  connectionStreamPort: number | null;
+  connectionIp: string | null;
+  connectionDjMountPoint: string;
+}
+
 export interface ApiStatus {
   /** @example true */
   success: boolean;

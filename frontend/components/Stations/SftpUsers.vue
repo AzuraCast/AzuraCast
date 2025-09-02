@@ -45,22 +45,24 @@
                 :title="$gettext('Connection Information')"
             >
                 <div class="card-body">
-                    <dl>
-                        <dt class="mb-1">
-                            {{ $gettext('Server:') }}
-                        </dt>
-                        <dd><code>{{ connectionInfo.url }}</code></dd>
+                    <loading :loading="propsLoading" lazy>
+                        <dl>
+                            <dt class="mb-1">
+                                {{ $gettext('Server:') }}
+                            </dt>
+                            <dd><code>{{ props.connectionUrl }}</code></dd>
 
-                        <dd v-if="connectionInfo.ip">
-                            {{ $gettext('You may need to connect directly to your IP address:') }}
-                            <code>{{ connectionInfo.ip }}</code>
-                        </dd>
+                            <dd v-if="props.connectionIp">
+                                {{ $gettext('You may need to connect directly to your IP address:') }}
+                                <code>{{ props.connectionIp }}</code>
+                            </dd>
 
-                        <dt class="mb-1">
-                            {{ $gettext('Port:') }}
-                        </dt>
-                        <dd><code>{{ connectionInfo.port }}</code></dd>
-                    </dl>
+                            <dt class="mb-1">
+                                {{ $gettext('Port:') }}
+                            </dt>
+                            <dd><code>{{ props.connectionPort }}</code></dd>
+                        </dl>
+                    </loading>
                 </div>
             </card-page>
         </div>
@@ -85,16 +87,27 @@ import {getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import {useAxios} from "~/vendor/axios.ts";
+import {useQuery} from "@tanstack/vue-query";
+import {ApiStationsVueSftpUsersProps} from "~/entities/ApiInterfaces.ts";
+import Loading from "~/components/Common/Loading.vue";
 
-interface SftpUsersConnectionInfo {
-    url: string,
-    ip: string | null,
-    port: number
-}
+const propsUrl = getStationApiUrl('/vue/sftp_users');
 
-defineProps<{
-    connectionInfo: SftpUsersConnectionInfo,
-}>();
+const {axios} = useAxios();
+
+const {data: props, isLoading: propsLoading} = useQuery<ApiStationsVueSftpUsersProps>({
+    queryKey: queryKeyWithStation(
+        [
+            QueryKeys.StationSftpUsers,
+            'props'
+        ]
+    ),
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiStationsVueSftpUsersProps>(propsUrl.value, {signal});
+        return data;
+    }
+});
 
 const listUrl = getStationApiUrl('/sftp-users');
 
@@ -109,7 +122,8 @@ const listItemProvider = useApiItemProvider(
     listUrl,
     queryKeyWithStation(
         [
-            QueryKeys.StationSftpUsers
+            QueryKeys.StationSftpUsers,
+            'data'
         ]
     )
 );

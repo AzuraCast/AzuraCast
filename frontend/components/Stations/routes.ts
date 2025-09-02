@@ -144,14 +144,12 @@ export default function useStationsRoutes(): RouteRecordRaw[] {
                 {
                     path: 'sftp_users',
                     component: () => import('~/components/Stations/SftpUsers.vue'),
-                    name: 'stations:sftp_users:index',
-                    ...populateComponentRemotely('/vue/sftp_users')
+                    name: 'stations:sftp_users:index'
                 },
                 {
                     path: 'streamers',
                     component: () => import('~/components/Stations/Streamers.vue'),
-                    name: 'stations:streamers:index',
-                    ...populateComponentRemotely('/vue/streamers')
+                    name: 'stations:streamers:index'
                 },
                 {
                     path: 'webhooks',

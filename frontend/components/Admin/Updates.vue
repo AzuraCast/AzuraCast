@@ -171,6 +171,8 @@ import Loading from "~/components/Common/Loading.vue";
 const propsUrl = getApiUrl('/admin/vue/updates');
 const updatesApiUrl = getApiUrl('/admin/updates');
 
+const {axios} = useAxios();
+
 const {data: props, isLoading: propsLoading} = useQuery<ApiAdminVueUpdateProps>({
     queryKey: [QueryKeys.AdminUpdates, 'props'],
     queryFn: async ({signal}) => {
@@ -208,8 +210,6 @@ const needsUpdates = computed(() => {
 });
 
 const {notifySuccess} = useNotify();
-const {axios} = useAxios();
-
 const {showAlert} = useDialog();
 
 const doUpdate = async () => {

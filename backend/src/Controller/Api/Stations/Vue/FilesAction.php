@@ -6,6 +6,7 @@ namespace App\Controller\Api\Stations\Vue;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Stations\Vue\FilesProps;
 use App\Entity\Enums\PlaylistSources;
 use App\Entity\Repository\CustomFieldRepository;
 use App\Http\Response;
@@ -42,11 +43,13 @@ final class FilesAction implements SingleActionInterface
 
         $backendEnum = $station->backend_type;
 
-        return $response->withJson([
-            'initialPlaylists' => $playlists,
-            'customFields' => $this->customFieldRepo->fetchArray(),
-            'validMimeTypes' => MimeType::getProcessableTypes(),
-            'supportsImmediateQueue' => $backendEnum->isEnabled(),
-        ]);
+        return $response->withJson(
+            new FilesProps(
+                initialPlaylists: $playlists,
+                customFields: $this->customFieldRepo->fetchArray(),
+                validMimeTypes: MimeType::getProcessableTypes(),
+                supportsImmediateQueue: $backendEnum->isEnabled()
+            )
+        );
     }
 }

@@ -29,9 +29,8 @@ export default function useStationsRoutes(): RouteRecordRaw[] {
                 },
                 {
                     path: 'files/:path?',
-                    component: () => import('~/components/Stations/Media.vue'),
-                    name: 'stations:files:index',
-                    ...populateComponentRemotely('/vue/files')
+                    component: () => import('~/components/Stations/MediaWrapper.vue'),
+                    name: 'stations:files:index'
                 },
                 {
                     path: 'hls_streams',

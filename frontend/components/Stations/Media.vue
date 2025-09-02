@@ -263,6 +263,7 @@ import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter
 import {
     ApiFileList,
     ApiStationMediaPlaylist,
+    ApiStationsVueFilesProps,
     CustomField,
     FileTypes,
     StorageLocationTypes
@@ -278,25 +279,9 @@ export interface MediaSelectedItems {
     directories: string[]
 }
 
-export interface MediaInitialPlaylist {
-    id: number,
-    name: string
-}
+const props = defineProps<ApiStationsVueFilesProps>();
 
-const props = withDefaults(
-    defineProps<{
-        initialPlaylists?: MediaInitialPlaylist[],
-        customFields?: CustomField[],
-        validMimeTypes?: string[],
-        supportsImmediateQueue?: boolean,
-    }>(),
-    {
-        initialPlaylists: () => [],
-        customFields: () => [],
-        validMimeTypes: () => [],
-        supportsImmediateQueue: true
-    }
-);
+export type MediaInitialPlaylist = ApiStationsVueFilesProps['initialPlaylists'][number];
 
 const {data: stationData} = useStationQuery();
 const showSftp = computed(() => stationData.value.features.sftp);

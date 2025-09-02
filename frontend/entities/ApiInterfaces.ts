@@ -1328,6 +1328,17 @@ export interface ApiStationStreamerBroadcastRecording {
   downloadUrl: string;
 }
 
+export interface ApiStationsVueFilesProps {
+  initialPlaylists: {
+    /** @format int64 */
+    id: number;
+    name: string;
+  }[];
+  customFields: CustomField[];
+  validMimeTypes: string[];
+  supportsImmediateQueue: boolean;
+}
+
 export interface ApiStationsVuePodcastsProps {
   languageOptions: Record<string, string>;
   categoriesOptions: ApiFormNestedOptions;

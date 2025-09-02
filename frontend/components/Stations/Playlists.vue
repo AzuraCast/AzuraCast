@@ -322,10 +322,8 @@ import ScheduleViewTab from "~/components/Stations/Common/ScheduleViewTab.vue";
 import {EventImpl} from "@fullcalendar/core/internal";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
-
-const props = defineProps<{
-    useManualAutoDj: boolean
-}>();
+import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {toRefs} from "@vueuse/core";
 
 const listUrl = getStationApiUrl('/playlists');
 const scheduleUrl = getStationApiUrl('/playlists/schedule');
@@ -401,8 +399,11 @@ const doApplyTo = (url: string) => {
 
 const {mayNeedRestart: originalMayNeedRestart} = useMayNeedRestart();
 
+const {data: stationData} = useStationQuery();
+const {useManualAutoDj} = toRefs(stationData);
+
 const mayNeedRestart = () => {
-    if (!props.useManualAutoDj) {
+    if (!useManualAutoDj.value) {
         return;
     }
 

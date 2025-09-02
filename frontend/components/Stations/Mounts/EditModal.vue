@@ -10,10 +10,10 @@
     >
         <tabs>
             <mount-form-basic-info
-                :station-frontend-type="stationFrontendType"
+                :station-frontend-type="frontendType"
             />
             <mount-form-auto-dj
-                :station-frontend-type="stationFrontendType"
+                :station-frontend-type="frontendType"
             />
             <mount-form-intro
                 v-model="form.intro_file"
@@ -22,7 +22,7 @@
                 :edit-intro-url="record.links.intro"
             />
             <mount-form-advanced
-                :station-frontend-type="stationFrontendType"
+                :station-frontend-type="frontendType"
             />
         </tabs>
     </modal-form>
@@ -41,18 +41,21 @@ import {useTranslate} from "~/vendor/gettext";
 import {useResettableRef} from "~/functions/useResettableRef";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
-import {FrontendAdapters} from "~/entities/ApiInterfaces.ts";
 import {storeToRefs} from "pinia";
 import {useStationsMountsForm} from "~/components/Stations/Mounts/Form/form.ts";
+import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {toRefs} from "@vueuse/core";
 
 const props = defineProps<BaseEditModalProps & {
-    stationFrontendType: FrontendAdapters,
     newIntroUrl: string
 }>();
 
 const emit = defineEmits<BaseEditModalEmits & {
     (e: 'needs-restart'): void
 }>();
+
+const {data: stationData} = useStationQuery();
+const {frontendType} = toRefs(stationData);
 
 const $modal = useTemplateRef('$modal');
 

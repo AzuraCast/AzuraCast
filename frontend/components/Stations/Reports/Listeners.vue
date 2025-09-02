@@ -177,7 +177,7 @@
                 </div>
                 <div
                     class="card-body card-padding-sm text-muted"
-                    v-html="attribution"
+                    v-html="ipGeoAttribution"
                 />
             </div>
         </div>
@@ -208,10 +208,6 @@ import {useClientItemProvider} from "~/functions/dataTable/useClientItemProvider
 import {useStationQuery} from "~/functions/useStationQuery.ts";
 import {toRefs} from "@vueuse/core";
 
-defineProps<{
-    attribution: string
-}>();
-
 const apiUrl = getStationApiUrl('/listeners');
 
 const isLive = ref<boolean>(true);
@@ -219,7 +215,7 @@ const isLive = ref<boolean>(true);
 const {DateTime} = useLuxon();
 
 const {data: stationData} = useStationQuery();
-const {timezone} = toRefs(stationData);
+const {timezone, ipGeoAttribution} = toRefs(stationData);
 
 const {
     now,

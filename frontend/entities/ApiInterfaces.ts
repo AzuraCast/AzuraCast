@@ -1450,10 +1450,12 @@ export interface VueDashboardGlobals {
   homeUrl: string;
   logoutUrl: string;
   version: string;
+  isDocker: boolean;
   platform: string;
   showCharts: boolean;
   showAlbumArt: boolean;
   supportedLocales: Record<string, string>;
+  analyticsLevel: AnalyticsLevel;
 }
 
 export interface VueStationFeatures {
@@ -1488,6 +1490,11 @@ export interface VueStationGlobals {
   webDjUrl: string;
   enableRequests: boolean;
   features: VueStationFeatures;
+  ipGeoAttribution: string;
+  backendType: BackendAdapters;
+  frontendType: FrontendAdapters;
+  canReload: boolean;
+  useManualAutoDj: boolean;
 }
 
 export interface VueUserGlobals {

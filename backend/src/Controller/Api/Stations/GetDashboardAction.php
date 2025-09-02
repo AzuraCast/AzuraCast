@@ -12,12 +12,18 @@ use App\Entity\Api\Vue\StationGlobals;
 use App\Enums\StationFeatures;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Service\IpGeolocation;
 use Psr\Http\Message\ResponseInterface;
 
 final class GetDashboardAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
     use SettingsAwareTrait;
+
+    public function __construct(
+        private IpGeolocation $ipGeolocation
+    ) {
+    }
 
     public function __invoke(
         ServerRequest $request,
@@ -26,6 +32,8 @@ final class GetDashboardAction implements SingleActionInterface
     ): ResponseInterface {
         $station = $request->getStation();
         $router = $request->getRouter();
+
+        $backendConfig = $station->backend_config;
 
         $result = new StationGlobals(
             id: $station->id,
@@ -60,7 +68,12 @@ final class GetDashboardAction implements SingleActionInterface
                 remoteRelays: StationFeatures::RemoteRelays->supportedForStation($station),
                 customLiquidsoapConfig: StationFeatures::CustomLiquidsoapConfig->supportedForStation($station),
                 autoDjQueue: $station->supportsAutoDjQueue(),
-            )
+            ),
+            ipGeoAttribution: $this->ipGeolocation->getAttribution(),
+            backendType: $station->backend_type,
+            frontendType: $station->frontend_type,
+            canReload: $station->frontend_type->supportsReload(),
+            useManualAutoDj: $backendConfig->use_manual_autodj
         );
 
         return $response->withJson($result);

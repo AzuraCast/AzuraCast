@@ -58,8 +58,7 @@ export default function useStationsRoutes(): RouteRecordRaw[] {
                 {
                     path: 'playlists',
                     component: () => import('~/components/Stations/Playlists.vue'),
-                    name: 'stations:playlists:index',
-                    ...populateComponentRemotely('/vue/playlists')
+                    name: 'stations:playlists:index'
                 },
                 {
                     path: 'podcasts',
@@ -95,7 +94,6 @@ export default function useStationsRoutes(): RouteRecordRaw[] {
                     path: 'mounts',
                     component: () => import('~/components/Stations/Mounts.vue'),
                     name: 'stations:mounts:index',
-                    ...populateComponentRemotely('/vue/mounts')
                 },
                 {
                     path: 'profile/edit',
@@ -117,7 +115,6 @@ export default function useStationsRoutes(): RouteRecordRaw[] {
                     path: 'reports/overview',
                     component: () => import('~/components/Stations/Reports/Overview.vue'),
                     name: 'stations:reports:overview',
-                    ...populateComponentRemotely('/vue/reports/overview')
                 },
                 {
                     path: 'reports/timeline',
@@ -128,7 +125,6 @@ export default function useStationsRoutes(): RouteRecordRaw[] {
                     path: 'reports/listeners',
                     component: () => import('~/components/Stations/Reports/Listeners.vue'),
                     name: 'stations:reports:listeners',
-                    ...populateComponentRemotely('/vue/reports/listeners')
                 },
                 {
                     path: 'reports/soundexchange',
@@ -143,8 +139,7 @@ export default function useStationsRoutes(): RouteRecordRaw[] {
                 {
                     path: 'restart',
                     component: () => import('~/components/Stations/Restart.vue'),
-                    name: 'stations:restart:index',
-                    ...populateComponentRemotely('/vue/restart')
+                    name: 'stations:restart:index'
                 },
                 {
                     path: 'sftp_users',

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Api\Vue;
 
 use App\Entity\Api\HashMap;
+use App\Entity\Enums\AnalyticsLevel;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -24,6 +25,8 @@ final class DashboardGlobals
         #[OA\Property]
         public string $version,
         #[OA\Property]
+        public bool $isDocker,
+        #[OA\Property]
         public string $platform,
         #[OA\Property]
         public bool $showCharts,
@@ -36,6 +39,8 @@ final class DashboardGlobals
             )
         )]
         public HashMap $supportedLocales,
+        #[OA\Property]
+        public AnalyticsLevel $analyticsLevel,
     ) {
     }
 }

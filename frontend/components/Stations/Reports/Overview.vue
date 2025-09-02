@@ -101,10 +101,11 @@ import Tab from "~/components/Common/Tab.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useStationQuery} from "~/functions/useStationQuery.ts";
 import {toRefs} from "@vueuse/core";
+import {useAzuraCastDashboardGlobals} from "~/vendor/azuracast.ts";
+import {AnalyticsLevel} from "~/entities/ApiInterfaces.ts";
 
-defineProps<{
-    showFullAnalytics: boolean
-}>();
+const {analyticsLevel} = useAzuraCastDashboardGlobals();
+const showFullAnalytics = analyticsLevel === AnalyticsLevel.All;
 
 const listenersByTimePeriodUrl = getStationApiUrl('/reports/overview/charts');
 const bestAndWorstUrl = getStationApiUrl('/reports/overview/best-and-worst');

@@ -9,6 +9,7 @@ use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\HashMap;
 use App\Entity\Api\Vue\DashboardGlobals;
+use App\Entity\Enums\AnalyticsLevel;
 use App\Enums\SupportedLocales;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -49,17 +50,19 @@ final class DashboardAction implements SingleActionInterface
         $globalProps->apiCsrf = $csrf->generate(ApiAuth::API_CSRF_NAMESPACE);
 
         $globalProps->dashboardProps = new DashboardGlobals(
-            $customization->getInstanceName(),
-            $router->named('dashboard'),
-            ($auth->isMasqueraded())
+            instanceName: $customization->getInstanceName(),
+            homeUrl: $router->named('dashboard'),
+            logoutUrl: ($auth->isMasqueraded())
                 ? $router->named('account:endmasquerade')
                 : $router->named('account:logout'),
-            $this->version->getVersionText(),
-            ($this->environment->isDocker() ? 'Docker' : 'Ansible')
+            version: $this->version->getVersionText(),
+            isDocker: $this->environment->isDocker(),
+            platform: ($this->environment->isDocker() ? 'Docker' : 'Ansible')
             . ' &bull; PHP ' . PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION,
             showCharts: $settings->isAnalyticsEnabled(),
             showAlbumArt: !$settings->hide_album_art,
-            supportedLocales: new HashMap($supportedLocales)
+            supportedLocales: new HashMap($supportedLocales),
+            analyticsLevel: $settings->analytics ?? AnalyticsLevel::default()
         );
 
         return $view->renderVuePage(

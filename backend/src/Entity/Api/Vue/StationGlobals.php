@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\Vue;
 
+use App\Radio\Enums\BackendAdapters;
+use App\Radio\Enums\FrontendAdapters;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -49,7 +51,17 @@ final readonly class StationGlobals
         #[OA\Property]
         public bool $enableRequests,
         #[OA\Property]
-        public StationGlobalFeatures $features
+        public StationGlobalFeatures $features,
+        #[OA\Property]
+        public string $ipGeoAttribution,
+        #[OA\Property]
+        public BackendAdapters $backendType,
+        #[OA\Property]
+        public FrontendAdapters $frontendType,
+        #[OA\Property]
+        public bool $canReload,
+        #[OA\Property]
+        public bool $useManualAutoDj
     ) {
     }
 }

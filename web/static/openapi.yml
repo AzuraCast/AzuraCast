@@ -8181,10 +8181,12 @@ components:
         - homeUrl
         - logoutUrl
         - version
+        - isDocker
         - platform
         - showCharts
         - showAlbumArt
         - supportedLocales
+        - analyticsLevel
       properties:
         instanceName:
           type: string
@@ -8194,6 +8196,8 @@ components:
           type: string
         version:
           type: string
+        isDocker:
+          type: boolean
         platform:
           type: string
         showCharts:
@@ -8204,6 +8208,8 @@ components:
           type: object
           additionalProperties:
             type: string
+        analyticsLevel:
+          $ref: '#/components/schemas/AnalyticsLevel'
       type: object
     Vue_StationFeatures:
       required:
@@ -8259,6 +8265,11 @@ components:
         - webDjUrl
         - enableRequests
         - features
+        - ipGeoAttribution
+        - backendType
+        - frontendType
+        - canReload
+        - useManualAutoDj
       properties:
         id:
           type: integer
@@ -8298,6 +8309,16 @@ components:
           type: boolean
         features:
           $ref: '#/components/schemas/Vue_StationFeatures'
+        ipGeoAttribution:
+          type: string
+        backendType:
+          $ref: '#/components/schemas/BackendAdapters'
+        frontendType:
+          $ref: '#/components/schemas/FrontendAdapters'
+        canReload:
+          type: boolean
+        useManualAutoDj:
+          type: boolean
       type: object
     Vue_UserGlobals:
       required:

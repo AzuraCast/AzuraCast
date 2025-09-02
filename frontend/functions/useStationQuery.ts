@@ -1,5 +1,5 @@
 import {useQuery, useQueryClient} from "@tanstack/vue-query";
-import {VueStationGlobals} from "~/entities/ApiInterfaces.ts";
+import {BackendAdapters, FrontendAdapters, VueStationGlobals} from "~/entities/ApiInterfaces.ts";
 import {computed, ComputedRef} from "vue";
 import {useAxios} from "~/vendor/axios.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
@@ -58,7 +58,12 @@ export const useStationQuery = () => {
                 remoteRelays: false,
                 customLiquidsoapConfig: false,
                 autoDjQueue: false
-            }
+            },
+            ipGeoAttribution: 'N/A',
+            backendType: BackendAdapters.None,
+            frontendType: FrontendAdapters.Remote,
+            canReload: false,
+            useManualAutoDj: false
         }
     });
 }

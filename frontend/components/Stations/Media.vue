@@ -270,6 +270,7 @@ import {
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import MediaPlaylists from "~/components/Stations/Media/MediaPlaylists.vue";
+import {useStationQuery} from "~/functions/useStationQuery.ts";
 
 export interface MediaSelectedItems {
     all: ApiFileList[],
@@ -287,17 +288,18 @@ const props = withDefaults(
         initialPlaylists?: MediaInitialPlaylist[],
         customFields?: CustomField[],
         validMimeTypes?: string[],
-        showSftp?: boolean,
         supportsImmediateQueue?: boolean,
     }>(),
     {
         initialPlaylists: () => [],
         customFields: () => [],
         validMimeTypes: () => [],
-        showSftp: true,
         supportsImmediateQueue: true
     }
 );
+
+const {data: stationData} = useStationQuery();
+const showSftp = computed(() => stationData.value.features.sftp);
 
 const listUrl = getStationApiUrl('/files/list');
 const batchUrl = getStationApiUrl('/files/batch');

@@ -110,12 +110,12 @@ import {ref} from "vue";
 import {getStationApiUrl} from "~/router";
 import {useRouter} from "vue-router";
 import {useDialog} from "~/functions/useDialog.ts";
-import {useClearAllStationQueries} from "~/functions/useStationQuery.ts";
+import {useClearAllStationQueries, useStationQuery} from "~/functions/useStationQuery.ts";
 import {ApiStatus} from "~/entities/ApiInterfaces.ts";
+import {toRefs} from "@vueuse/core";
 
-defineProps<{
-    canReload: boolean,
-}>();
+const {data: stationData} = useStationQuery();
+const {canReload} = toRefs(stationData);
 
 const reloadUrl = getStationApiUrl('/reload');
 const restartUrl = getStationApiUrl('/restart');

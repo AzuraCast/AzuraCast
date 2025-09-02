@@ -28,6 +28,7 @@
                     class="col-md-6"
                     :field="r$.backup_time_code"
                     :label="$gettext('Scheduled Backup Time')"
+                    :description="$gettext('Backup times are always in UTC.')"
                 >
                     <template #default="{id, model, fieldClass}">
                         <time-code

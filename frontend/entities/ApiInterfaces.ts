@@ -1328,6 +1328,11 @@ export interface ApiStationStreamerBroadcastRecording {
   downloadUrl: string;
 }
 
+export interface ApiStationsVuePodcastsProps {
+  languageOptions: Record<string, string>;
+  categoriesOptions: ApiFormNestedOptions;
+}
+
 export interface ApiStationsVueSftpUsersProps {
   connectionUrl: string;
   connectionIp: string | null;

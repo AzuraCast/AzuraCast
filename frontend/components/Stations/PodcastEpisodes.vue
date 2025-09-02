@@ -1,160 +1,162 @@
 <template>
-    <card-page>
-        <template #header>
-            <div class="row align-items-center">
-                <div class="col-md-7">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0 pe-3">
-                            <album-art :src="podcast.art" />
-                        </div>
-                        <div class="flex-fill">
-                            <h2 class="card-title">
-                                {{ podcast.title }}
-                            </h2>
-                            <h4 class="card-subtitle">
-                                {{ $gettext('Episodes') }}
-                            </h4>
+    <loading :loading="isLoading" lazy>
+        <card-page>
+            <template #header>
+                <div class="row align-items-center">
+                    <div class="col-md-7">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0 pe-3">
+                                <album-art :src="podcast.art"/>
+                            </div>
+                            <div class="flex-fill">
+                                <h2 class="card-title">
+                                    {{ podcast.title }}
+                                </h2>
+                                <h4 class="card-subtitle">
+                                    {{ $gettext('Episodes') }}
+                                </h4>
+                            </div>
                         </div>
                     </div>
+                    <div class="col-md-5 text-end">
+                        <stations-common-quota
+                            ref="$quota"
+                            :quota-url="quotaUrl"
+                        />
+                    </div>
                 </div>
-                <div class="col-md-5 text-end">
-                    <stations-common-quota
-                        ref="$quota"
-                        :quota-url="quotaUrl"
-                    />
-                </div>
-            </div>
-        </template>
-        <template
-            v-if="!podcastIsManual"
-            #info
-        >
-            <p class="card-text">
-                {{
-                    $gettext('This podcast is automatically synchronized with a playlist. Episodes cannot be manually added or removed via this panel.')
-                }}
-            </p>
-        </template>
-        <template #actions>
-            <router-link
-                class="btn btn-secondary"
-                :to="{name: 'stations:podcasts:index'}"
+            </template>
+            <template
+                v-if="!podcastIsManual"
+                #info
             >
-                <icon :icon="IconChevronLeft" />
-                {{ $gettext('All Podcasts') }}
-            </router-link>
+                <p class="card-text">
+                    {{
+                        $gettext('This podcast is automatically synchronized with a playlist. Episodes cannot be manually added or removed via this panel.')
+                    }}
+                </p>
+            </template>
+            <template #actions>
+                <router-link
+                    class="btn btn-secondary"
+                    :to="{name: 'stations:podcasts:index'}"
+                >
+                    <icon :icon="IconChevronLeft"/>
+                    {{ $gettext('All Podcasts') }}
+                </router-link>
 
-            <add-button
-                v-if="podcastIsManual"
-                :text="$gettext('Add Episode')"
-                @click="doCreate"
+                <add-button
+                    v-if="podcastIsManual"
+                    :text="$gettext('Add Episode')"
+                    @click="doCreate"
+                />
+            </template>
+
+            <episodes-toolbar
+                :batch-url="podcast.links.batch"
+                :selected-items="selectedItems"
+                :podcast-is-manual="podcastIsManual"
+                @relist="relist"
+                @batch-edit="doBatchEdit"
             />
-        </template>
 
-        <episodes-toolbar
-            :batch-url="podcast.links.batch"
-            :selected-items="selectedItems"
-            :podcast-is-manual="podcastIsManual"
+            <data-table
+                id="station_podcast_episodes"
+                ref="$dataTable"
+                selectable
+                paginated
+                select-fields
+                :fields="fields"
+                :provider="episodesItemProvider"
+                @row-selected="onRowSelected"
+            >
+                <template #cell(art)="{item}">
+                    <album-art :src="item.art"/>
+                </template>
+                <template #cell(title)="{item}">
+                    <h5 class="m-0">
+                        {{ item.title }}
+                    </h5>
+                    <div v-if="item.is_published">
+                        <a
+                            :href="item.links.public"
+                            target="_blank"
+                        >{{ $gettext('Public Page') }}</a>
+                    </div>
+                    <div
+                        v-else
+                        class="badges"
+                    >
+                        <span class="badge text-bg-info">
+                            {{ $gettext('Unpublished') }}
+                        </span>
+                    </div>
+                </template>
+                <template #cell(media)="{item}">
+                    <template v-if="item.media">
+                        <span>{{ item.media.original_name }}</span>
+                        <br>
+                        <small>{{ item.media.length_text }}</small>
+                    </template>
+                    <template v-else-if="item.playlist_media">
+                        <span>{{ item.playlist_media.text }}</span>
+                    </template>
+                    <template v-else>
+                        &nbsp;
+                    </template>
+                </template>
+                <template #cell(is_published)="{item}">
+                    <span v-if="item.is_published">
+                        {{ $gettext('Yes') }}
+                    </span>
+                    <span v-else>
+                        {{ $gettext('No') }}
+                    </span>
+                </template>
+                <template #cell(explicit)="{item}">
+                    <span
+                        v-if="item.explicit"
+                        class="badge text-bg-danger"
+                    >{{ $gettext('Explicit') }}</span>
+                    <span v-else>&nbsp;</span>
+                </template>
+                <template #cell(actions)="{item}">
+                    <div class="btn-group btn-group-sm">
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            @click="doEdit(item.links.self)"
+                        >
+                            {{ $gettext('Edit') }}
+                        </button>
+                        <button
+                            v-if="podcastIsManual"
+                            type="button"
+                            class="btn btn-danger"
+                            @click="doDelete(item.links.self)"
+                        >
+                            {{ $gettext('Delete') }}
+                        </button>
+                    </div>
+                </template>
+            </data-table>
+        </card-page>
+
+        <edit-modal
+            ref="$editEpisodeModal"
+            :podcast="podcast"
+            :create-url="podcast.links.episodes"
             @relist="relist"
-            @batch-edit="doBatchEdit"
         />
 
-        <data-table
-            id="station_podcast_episodes"
-            ref="$dataTable"
-            selectable
-            paginated
-            select-fields
-            :fields="fields"
-            :provider="episodesItemProvider"
-            @row-selected="onRowSelected"
-        >
-            <template #cell(art)="{item}">
-                <album-art :src="item.art" />
-            </template>
-            <template #cell(title)="{item}">
-                <h5 class="m-0">
-                    {{ item.title }}
-                </h5>
-                <div v-if="item.is_published">
-                    <a
-                        :href="item.links.public"
-                        target="_blank"
-                    >{{ $gettext('Public Page') }}</a>
-                </div>
-                <div
-                    v-else
-                    class="badges"
-                >
-                    <span class="badge text-bg-info">
-                        {{ $gettext('Unpublished') }}
-                    </span>
-                </div>
-            </template>
-            <template #cell(media)="{item}">
-                <template v-if="item.media">
-                    <span>{{ item.media.original_name }}</span>
-                    <br>
-                    <small>{{ item.media.length_text }}</small>
-                </template>
-                <template v-else-if="item.playlist_media">
-                    <span>{{ item.playlist_media.text }}</span>
-                </template>
-                <template v-else>
-&nbsp;
-                </template>
-            </template>
-            <template #cell(is_published)="{item}">
-                <span v-if="item.is_published">
-                    {{ $gettext('Yes') }}
-                </span>
-                <span v-else>
-                    {{ $gettext('No') }}
-                </span>
-            </template>
-            <template #cell(explicit)="{item}">
-                <span
-                    v-if="item.explicit"
-                    class="badge text-bg-danger"
-                >{{ $gettext('Explicit') }}</span>
-                <span v-else>&nbsp;</span>
-            </template>
-            <template #cell(actions)="{item}">
-                <div class="btn-group btn-group-sm">
-                    <button
-                        type="button"
-                        class="btn btn-primary"
-                        @click="doEdit(item.links.self)"
-                    >
-                        {{ $gettext('Edit') }}
-                    </button>
-                    <button
-                        v-if="podcastIsManual"
-                        type="button"
-                        class="btn btn-danger"
-                        @click="doDelete(item.links.self)"
-                    >
-                        {{ $gettext('Delete') }}
-                    </button>
-                </div>
-            </template>
-        </data-table>
-    </card-page>
-
-    <edit-modal
-        ref="$editEpisodeModal"
-        :podcast="podcast"
-        :create-url="podcast.links.episodes"
-        @relist="relist"
-    />
-
-    <batch-edit-modal
-        ref="$batchEditModal"
-        :id="podcast.id"
-        :batch-url="podcast.links.batch"
-        :selected-items="selectedItems"
-        @relist="relist"
-    />
+        <batch-edit-modal
+            ref="$batchEditModal"
+            :id="podcast.id"
+            :batch-url="podcast.links.batch"
+            :selected-items="selectedItems"
+            @relist="relist"
+        />
+    </loading>
 </template>
 
 <script setup lang="ts">
@@ -164,7 +166,7 @@ import Icon from "~/components/Common/Icon.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {computed, shallowRef, toRef, useTemplateRef} from "vue";
+import {computed, shallowRef, useTemplateRef} from "vue";
 import AddButton from "~/components/Common/AddButton.vue";
 import {IconChevronLeft} from "~/components/Common/icons";
 import {getStationApiUrl} from "~/router.ts";
@@ -178,10 +180,10 @@ import BatchEditModal from "~/components/Stations/Podcasts/BatchEditModal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
-
-const props = defineProps<{
-    podcast: ApiPodcast
-}>();
+import {useAxios} from "~/vendor/axios.ts";
+import {useQuery} from "@tanstack/vue-query";
+import {useRoute} from "vue-router";
+import Loading from "~/components/Common/Loading.vue";
 
 const quotaUrl = getStationApiUrl('/quota/station_podcasts');
 
@@ -249,24 +251,44 @@ const fields: DataTableField[] = [
     }
 ];
 
+const {params} = useRoute();
+const podcastId = computed(() => params.podcast_id as string);
 
-const podcast = toRef(props, 'podcast');
+const podcastUrl = getStationApiUrl(computed(() => `/podcast/${podcastId.value}`));
+
+const {axios} = useAxios();
+
+const {data: podcast, isSuccess, isLoading} = useQuery<ApiPodcast>({
+    queryKey: queryKeyWithStation(
+        [
+            QueryKeys.StationPodcasts,
+            podcastId
+        ]
+    ),
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiPodcast>(podcastUrl.value, {signal});
+        return data;
+    }
+});
 
 const episodesItemProvider = useApiItemProvider(
-    computed(() => props.podcast.links.episodes),
+    computed(() => podcast.value.links.episodes),
     queryKeyWithStation(
         [
             QueryKeys.StationPodcasts,
-            computed(() => props.podcast.id),
+            podcastId,
             'episodes'
         ]
-    )
+    ),
+    {
+        enabled: isSuccess
+    }
 );
 
 const {refresh} = episodesItemProvider;
 
 const podcastIsManual = computed(() => {
-    return props.podcast.source == 'manual';
+    return podcast.value?.source == 'manual';
 });
 
 const $quota = useTemplateRef('$quota');

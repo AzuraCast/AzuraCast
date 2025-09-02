@@ -8002,6 +8002,18 @@ components:
         downloadUrl:
           type: string
       type: object
+    Api_Stations_Vue_PodcastsProps:
+      required:
+        - languageOptions
+        - categoriesOptions
+      properties:
+        languageOptions:
+          type: object
+          additionalProperties:
+            type: string
+        categoriesOptions:
+          $ref: '#/components/schemas/Api_Form_NestedOptions'
+      type: object
     Api_Stations_Vue_SftpUsersProps:
       required:
         - connectionUrl

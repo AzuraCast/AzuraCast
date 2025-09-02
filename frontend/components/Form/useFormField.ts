@@ -70,7 +70,7 @@ export function useFormField<T = ModelFormField>(
         }
 
         return (props.field !== undefined)
-            ? !!props.field.$rules.required?.$active
+            ? !!props.field.$rules?.required?.$active
             : false;
     });
 

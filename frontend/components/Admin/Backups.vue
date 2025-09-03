@@ -178,6 +178,8 @@ const listUrl = getApiUrl('/admin/backups');
 const runBackupUrl = getApiUrl('/admin/backups/run');
 const settingsUrl = getApiUrl('/admin/settings/backup');
 
+const {axios} = useAxios();
+
 const {data: props, isLoading: propsLoading} = useQuery<ApiAdminVueBackupProps>({
     queryKey: [QueryKeys.AdminBackups, 'props'],
     queryFn: async ({signal}) => {
@@ -246,8 +248,6 @@ const itemProvider = useApiItemProvider<Row>(
     listUrl,
     [QueryKeys.AdminBackups]
 );
-
-const {axios} = useAxios();
 
 const relist = async () => {
     await reloadSettings();

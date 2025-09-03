@@ -559,6 +559,20 @@ export interface ApiAdminVueSettingsProps {
   releaseChannel: string;
 }
 
+export interface ApiAdminVueStationsFormProps {
+  timezones: Record<string, string>;
+  countries: Record<string, string>;
+  isRsasInstalled: boolean;
+  isShoutcastInstalled: boolean;
+  isStereoToolInstalled: boolean;
+}
+
+export interface ApiAdminVueStationsProps {
+  formProps: ApiAdminVueStationsFormProps;
+  frontendTypes: object;
+  backendTypes: object;
+}
+
 export interface ApiAdminVueUpdateProps {
   releaseChannel: string;
   enableWebUpdates: boolean;

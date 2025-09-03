@@ -1,4 +1,3 @@
-import populateComponentRemotely from "~/functions/populateComponentRemotely.ts";
 import {RouteRecordRaw} from "vue-router";
 
 export default function useStationsRoutes(): RouteRecordRaw[] {
@@ -82,8 +81,7 @@ export default function useStationsRoutes(): RouteRecordRaw[] {
                 {
                     path: 'profile/edit',
                     component: () => import('~/components/Stations/ProfileEdit.vue'),
-                    name: 'stations:profile:edit',
-                    ...populateComponentRemotely('/vue/profile/edit')
+                    name: 'stations:profile:edit'
                 },
                 {
                     path: 'queue',

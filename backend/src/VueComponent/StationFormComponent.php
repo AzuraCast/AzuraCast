@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\VueComponent;
 
+use App\Entity\Api\Admin\Vue\StationsFormProps;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use App\Radio\Enums\FrontendAdapters;
@@ -18,16 +19,16 @@ final readonly class StationFormComponent implements VueComponentInterface
     ) {
     }
 
-    public function getProps(ServerRequest $request): array
+    public function getProps(ServerRequest $request): StationsFormProps
     {
         $installedFrontends = $this->adapters->listFrontendAdapters(true);
 
-        return [
-            'timezones' => Time::getTimezones(),
-            'isShoutcastInstalled' => isset($installedFrontends[FrontendAdapters::Shoutcast->value]),
-            'isRsasInstalled' => isset($installedFrontends[FrontendAdapters::Rsas->value]),
-            'isStereoToolInstalled' => StereoTool::isInstalled(),
-            'countries' => Countries::getNames(),
-        ];
+        return new StationsFormProps(
+            timezones: Time::getTimezones(),
+            countries: Countries::getNames(),
+            isRsasInstalled: isset($installedFrontends[FrontendAdapters::Rsas->value]),
+            isShoutcastInstalled: isset($installedFrontends[FrontendAdapters::Shoutcast->value]),
+            isStereoToolInstalled: StereoTool::isInstalled()
+        );
     }
 }

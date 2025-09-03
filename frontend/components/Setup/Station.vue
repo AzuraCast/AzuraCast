@@ -28,8 +28,7 @@
 
             <div class="card-body">
                 <admin-stations-form
-                    v-bind="props"
-                    ref="$adminForm"
+                    v-bind="formProps"
                     :is-edit-mode="false"
                     :create-url="createUrl"
                     @submitted="onSubmitted"
@@ -44,23 +43,18 @@
 </template>
 
 <script setup lang="ts">
-import AdminStationsForm, {StationFormParentProps} from "~/components/Admin/Stations/StationForm.vue";
+import AdminStationsForm from "~/components/Admin/Stations/StationForm.vue";
 import SetupStep from "~/components/Setup/SetupStep.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
-import {onMounted, useTemplateRef} from "vue";
+import {ApiAdminVueStationsFormProps} from "~/entities/ApiInterfaces.ts";
 
-interface SetupStationProps extends StationFormParentProps {
+interface SetupStationProps {
+    formProps: ApiAdminVueStationsFormProps,
     createUrl: string,
     continueUrl: string,
 }
 
 const props = defineProps<SetupStationProps>();
-
-const $adminForm = useTemplateRef('$adminForm');
-
-onMounted(() => {
-    $adminForm.value?.reset();
-});
 
 const onSubmitted = () => {
     window.location.href = props.continueUrl;

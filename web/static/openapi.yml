@@ -6858,6 +6858,42 @@ components:
         releaseChannel:
           type: string
       type: object
+    Api_Admin_Vue_StationsFormProps:
+      required:
+        - timezones
+        - countries
+        - isRsasInstalled
+        - isShoutcastInstalled
+        - isStereoToolInstalled
+      properties:
+        timezones:
+          type: object
+          additionalProperties:
+            type: string
+        countries:
+          type: object
+          additionalProperties:
+            type: string
+        isRsasInstalled:
+          type: boolean
+        isShoutcastInstalled:
+          type: boolean
+        isStereoToolInstalled:
+          type: boolean
+      type: object
+    Api_Admin_Vue_StationsProps:
+      required:
+        - formProps
+        - frontendTypes
+        - backendTypes
+      properties:
+        formProps:
+          $ref: '#/components/schemas/Api_Admin_Vue_StationsFormProps'
+        frontendTypes:
+          type: object
+        backendTypes:
+          type: object
+      type: object
     Api_Admin_Vue_UpdateProps:
       required:
         - releaseChannel

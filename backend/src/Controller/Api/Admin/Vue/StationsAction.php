@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin\Vue;
 
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Admin\Vue\StationsProps;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
@@ -25,12 +26,10 @@ final readonly class StationsAction implements SingleActionInterface
         array $params
     ): ResponseInterface {
         return $response->withJson(
-            array_merge(
-                $this->stationFormComponent->getProps($request),
-                [
-                    'frontendTypes' => $this->adapters->listFrontendAdapters(),
-                    'backendTypes' => $this->adapters->listBackendAdapters(),
-                ]
+            new StationsProps(
+                formProps: $this->stationFormComponent->getProps($request),
+                frontendTypes: $this->adapters->listFrontendAdapters(),
+                backendTypes: $this->adapters->listBackendAdapters()
             )
         );
     }

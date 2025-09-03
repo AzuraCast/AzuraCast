@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Vue;
 
-use App\Container\EntityManagerAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -13,8 +12,6 @@ use Psr\Http\Message\ResponseInterface;
 
 final class ProfileEditAction implements SingleActionInterface
 {
-    use EntityManagerAwareTrait;
-
     public function __construct(
         private readonly StationFormComponent $stationFormComponent
     ) {
@@ -25,15 +22,6 @@ final class ProfileEditAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $router = $request->getRouter();
-
-        return $response->withJson(
-            array_merge(
-                $this->stationFormComponent->getProps($request),
-                [
-                    'editUrl' => $router->fromHere('api:stations:profile:edit'),
-                ]
-            )
-        );
+        return $response->withJson($this->stationFormComponent->getProps($request));
     }
 }

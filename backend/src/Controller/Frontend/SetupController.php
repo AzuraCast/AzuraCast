@@ -138,13 +138,11 @@ final class SetupController
             id: 'setup-station',
             layout: 'minimal',
             title: __('Create a New Radio Station'),
-            props: array_merge(
-                $this->stationFormComponent->getProps($request),
-                [
-                    'createUrl' => $router->named('api:admin:stations'),
-                    'continueUrl' => $router->named('setup:settings'),
-                ]
-            )
+            props: [
+                'formProps' => $this->stationFormComponent->getProps($request),
+                'createUrl' => $router->named('api:admin:stations'),
+                'continueUrl' => $router->named('setup:settings'),
+            ]
         );
     }
 

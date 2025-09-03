@@ -1,4 +1,3 @@
-import populateComponentRemotely from "~/functions/populateComponentRemotely.ts";
 import {RouteRecordRaw} from "vue-router";
 
 export default function useAdminRoutes(): RouteRecordRaw[] {
@@ -75,8 +74,7 @@ export default function useAdminRoutes(): RouteRecordRaw[] {
                 {
                     path: 'stations',
                     component: () => import('~/components/Admin/Stations.vue'),
-                    name: 'admin:stations:index',
-                    ...populateComponentRemotely('/admin/vue/stations')
+                    name: 'admin:stations:index'
                 },
                 {
                     path: 'custom_fields',

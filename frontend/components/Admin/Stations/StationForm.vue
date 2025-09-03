@@ -63,14 +63,14 @@ import AdminStationsAdminForm from "~/components/Admin/Stations/Form/AdminForm.v
 import AdminStationsHlsForm from "~/components/Admin/Stations/Form/HlsForm.vue";
 import AdminStationsRequestsForm from "~/components/Admin/Stations/Form/RequestsForm.vue";
 import AdminStationsStreamersForm from "~/components/Admin/Stations/Form/StreamersForm.vue";
-import {computed, nextTick, ref, watch} from "vue";
+import {computed, nextTick, onMounted, ref, watch} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
 import Loading from "~/components/Common/Loading.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import {userAllowed} from "~/acl";
-import {GlobalPermissions} from "~/entities/ApiInterfaces.ts";
+import {ApiAdminVueStationsFormProps, GlobalPermissions} from "~/entities/ApiInterfaces.ts";
 import {storeToRefs} from "pinia";
 import {useAdminStationsForm} from "~/components/Admin/Stations/Form/form.ts";
 
@@ -78,17 +78,7 @@ defineOptions({
     inheritAttrs: false
 });
 
-export interface StationFormParentProps {
-    // Profile
-    timezones: Record<string, string>,
-    // Frontend
-    isRsasInstalled?: boolean,
-    isShoutcastInstalled?: boolean,
-    isStereoToolInstalled?: boolean,
-    countries: Record<string, string>
-}
-
-interface StationFormProps extends StationFormParentProps {
+interface StationFormProps extends ApiAdminVueStationsFormProps {
     createUrl?: string,
     editUrl?: string,
     isEditMode: boolean,
@@ -106,7 +96,6 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-    (e: 'error', error: string): void,
     (e: 'submitted'): void,
     (e: 'loadingUpdate', loading: boolean): void,
     (e: 'validUpdate', valid: boolean): void
@@ -144,16 +133,15 @@ const clear = () => {
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const doLoad = () => {
+const doLoad = async () => {
     isLoading.value = true;
 
-    axios.get(props.editUrl).then(({data}) => {
+    try {
+        const {data} = await axios.get(props.editUrl);
         form.value = mergeExisting(form.value, data);
-    }).catch((err) => {
-        emit('error', err);
-    }).finally(() => {
+    } finally {
         isLoading.value = false;
-    });
+    }
 };
 
 const reset = async () => {
@@ -161,9 +149,15 @@ const reset = async () => {
 
     clear();
     if (props.isEditMode) {
-        doLoad();
+        void doLoad();
     }
 };
+
+onMounted(() => {
+    if (!props.isModal) {
+        void reset();
+    }
+});
 
 const submit = async () => {
     const {valid} = await r$.value.$validate();

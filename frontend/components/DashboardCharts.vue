@@ -68,6 +68,7 @@ const {data: chartsData, isLoading: chartsLoading} = useQuery({
             metrics: [],
             alt: []
         }
-    })
+    }),
+    staleTime: 60 * 60 * 1000
 });
 </script>

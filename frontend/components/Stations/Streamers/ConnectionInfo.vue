@@ -55,14 +55,16 @@
                     <code>{{ connectionIp }}</code>
                 </dd>
 
-                <dt class="mb-1">
-                    {{ $gettext('Port:') }}
-                </dt>
-                <dd><code>{{ connectionStreamPort }}</code></dd>
-                <dd>
-                    {{ $gettext('For some clients, use port:') }}
-                    <code>{{ connectionStreamPort + 1 }}</code>
-                </dd>
+                <template v-if="connectionStreamPort !== null">
+                    <dt class="mb-1">
+                        {{ $gettext('Port:') }}
+                    </dt>
+                    <dd><code>{{ connectionStreamPort }}</code></dd>
+                    <dd>
+                        {{ $gettext('For some clients, use port:') }}
+                        <code>{{ connectionStreamPort + 1 }}</code>
+                    </dd>
+                </template>
 
                 <dt class="mb-1">
                     {{ $gettext('Password:') }}

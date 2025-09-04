@@ -76,38 +76,40 @@ const handleBatchResponse = (
     }
 }
 
-const doBatch = (
+const doBatch = async (
     action: BatchAction,
     successMessage: string,
     errorMessage: string
 ) => {
-    void axios.put<ApiGenericBatchResult>(props.batchUrl, {
+    const {data} = await axios.put<ApiGenericBatchResult>(props.batchUrl, {
         'do': action,
         'rows': map(props.selectedItems, 'id')
-    }).then(({data}) => {
-        handleBatchResponse(data, successMessage, errorMessage);
-        emit('relist');
     });
+
+    handleBatchResponse(data, successMessage, errorMessage);
+    emit('relist');
 };
 
 const {confirmDelete} = useDialog();
 
-const doDelete = () => {
-    void confirmDelete({
+const doDelete = async () => {
+    const {value} = await confirmDelete({
         title: $gettext(
             'Delete %{num} broadcasts?',
             {
                 num: String(props.selectedItems.length)
             }
         ),
-    }).then((result) => {
-        if (result.value) {
-            doBatch(
-                'delete',
-                $gettext('Broadcasts removed:'),
-                $gettext('Error removing broadcasts:')
-            );
-        }
     });
+
+    if (!value) {
+        return;
+    }
+
+    await doBatch(
+        'delete',
+        $gettext('Broadcasts removed:'),
+        $gettext('Error removing broadcasts:')
+    );
 };
 </script>

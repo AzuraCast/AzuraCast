@@ -1,5 +1,5 @@
 <template>
-    <loading :loading="isLoading">
+    <loading :loading="isLoading" lazy>
         <fieldset>
             <legend>
                 {{ $gettext('Listeners by Listening Time') }}
@@ -7,6 +7,7 @@
 
             <pie-chart
                 style="width: 100%;"
+                v-if="stats"
                 :data="stats.chart.datasets"
                 :labels="stats.chart.labels"
                 :alt="stats.chart.alt"
@@ -64,7 +65,7 @@ type ChartData = {
     }
 }
 
-const metricsQuery = useQuery<ChartData>({
+const {data: stats, isLoading, refetch} = useQuery<ChartData>({
     queryKey: queryKeyWithStation([
         QueryKeys.StationReports,
         'listening_time_metrics',
@@ -89,8 +90,6 @@ const metricsQuery = useQuery<ChartData>({
         }
     })
 });
-
-const {data: stats, isLoading, refetch} = metricsQuery;
 
 const metricsItemProvider = useClientItemProvider(
     computed(() => stats.value?.all ?? []),

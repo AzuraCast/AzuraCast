@@ -25,7 +25,7 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="state">
                             <tr
                                 v-for="row in state.bestAndWorst.best"
                                 :key="row.song.id"
@@ -65,7 +65,7 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="state">
                             <tr
                                 v-for="row in state.bestAndWorst.worst"
                                 :key="row.song.id"
@@ -105,7 +105,7 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="state">
                             <tr
                                 v-for="row in state.mostPlayed"
                                 :key="row.song.id"

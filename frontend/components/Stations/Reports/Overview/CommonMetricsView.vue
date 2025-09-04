@@ -12,6 +12,7 @@
 
                     <pie-chart
                         style="width: 100%;"
+                        v-if="stats"
                         :data="stats.top_listeners.datasets"
                         :labels="stats.top_listeners.labels"
                         :alt="stats.top_listeners.alt"
@@ -26,6 +27,7 @@
 
                     <pie-chart
                         style="width: 100%;"
+                        v-if="stats"
                         :data="stats.top_connected_time.datasets"
                         :labels="stats.top_connected_time.labels"
                         :alt="stats.top_connected_time.alt"
@@ -40,7 +42,6 @@
             paginated
             :fields="fields"
             :provider="metricsItemProvider"
-            :items="stats.all"
         >
             <template #cell(connected_seconds_calc)="row">
                 {{ formatTime(row.item.connected_seconds) }}

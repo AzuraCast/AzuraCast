@@ -9,7 +9,6 @@ import {
     DefaultError,
     keepPreviousData,
     QueryFunction,
-    SkipToken,
     useQuery,
     useQueryClient,
     UseQueryOptions,
@@ -29,7 +28,7 @@ export type DataTableApiItemProvider<Row extends DataTableRow = DataTableRow> = 
 };
 
 export function useApiItemProvider<Row extends DataTableRow = DataTableRow>(
-    apiUrl: MaybeRef<string>,
+    apiUrl: MaybeRef<string | null>,
     queryKey: unknown[],
     queryOptions?: Partial<UseQueryOptions<ItemProviderResponse<Row>>>,
     requestConfigFn?: (config: AxiosRequestConfig) => AxiosRequestConfig,
@@ -51,7 +50,15 @@ export function useApiItemProvider<Row extends DataTableRow = DataTableRow>(
 
     const {axios} = useAxios();
 
-    const queryFn: QueryFunction<ItemProviderResponse<Row>> | SkipToken = async ({signal}) => {
+    const queryFn: QueryFunction<ItemProviderResponse<Row>> = async ({signal}) => {
+        const currentApiUrl = toValue(apiUrl);
+        if (currentApiUrl === null) {
+            return {
+                total: 0,
+                rows: [],
+            };
+        }
+
         const queryParams: {
             [key: string]: any
         } = {
@@ -89,7 +96,7 @@ export function useApiItemProvider<Row extends DataTableRow = DataTableRow>(
         }
 
         const {data} = await axios.get<ItemProviderResponse<Row>>(
-            toValue(apiUrl),
+            currentApiUrl,
             requestConfig
         );
 
@@ -104,20 +111,29 @@ export function useApiItemProvider<Row extends DataTableRow = DataTableRow>(
         };
     };
 
-    const query = useQuery({
+    const query = useQuery<ItemProviderResponse<Row>>({
         queryKey: compositeQueryKey,
         queryFn,
         staleTime: 30 * 1000,
         placeholderData: keepPreviousData,
+        enabled: computed(() => toValue(apiUrl) !== null),
         ...queryOptions
     });
 
     const rows = computed(() => {
-        return query.data?.value?.rows ?? [];
+        if (query.isSuccess.value) {
+            return query.data.value!.rows;
+        }
+
+        return [];
     });
 
     const total = computed(() => {
-        return query.data?.value?.total ?? 0;
+        if (query.isSuccess.value) {
+            return query.data.value!.total;
+        }
+
+        return 0;
     });
 
     const loading = computed<boolean>(() => {
@@ -126,7 +142,7 @@ export function useApiItemProvider<Row extends DataTableRow = DataTableRow>(
 
     const queryClient = useQueryClient();
 
-    const refresh = async (flush: boolean): Promise<void> => {
+    const refresh = async (flush?: boolean): Promise<void> => {
         if (flush) {
             flushCache.value = true;
         }

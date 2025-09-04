@@ -14,6 +14,7 @@
             />
 
             <broadcasts-modal-toolbar
+                v-if="batchUrl !== null"
                 :batch-url="batchUrl"
                 :selected-items="selectedItems"
                 @relist="() => refresh()"
@@ -79,7 +80,7 @@ import formatFileSize from "~/functions/formatFileSize";
 import InlinePlayer from "~/components/InlinePlayer.vue";
 import Icon from "~/components/Common/Icon.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
-import {computed, ref, shallowRef, useTemplateRef} from "vue";
+import {ref, shallowRef, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
@@ -102,7 +103,7 @@ const {$gettext} = useTranslate();
 
 const {formatIsoAsDateTime} = useStationDateTimeFormatter();
 
-type Row = ApiStationStreamerBroadcast;
+type Row = Required<ApiStationStreamerBroadcast>;
 
 const fields: DataTableField<Row>[] = [
     {
@@ -148,16 +149,13 @@ const fields: DataTableField<Row>[] = [
     }
 ];
 
-const listItemProvider = useApiItemProvider(
+const listItemProvider = useApiItemProvider<Row>(
     listUrl,
     queryKeyWithStation([
         QueryKeys.StationStreamers,
         'broadcasts',
         streamerId
-    ]),
-    {
-        enabled: computed(() => listUrl.value !== null),
-    }
+    ])
 );
 
 const refresh = () => {
@@ -168,7 +166,7 @@ const {confirmDelete} = useDialog();
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const selectedItems = shallowRef([]);
+const selectedItems = shallowRef<Row[]>([]);
 
 const onRowSelected = (items: Row[]) => {
     selectedItems.value = items;

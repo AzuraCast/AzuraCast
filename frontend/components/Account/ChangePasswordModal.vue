@@ -63,10 +63,6 @@ const emit = defineEmits<HasRelistEmit>();
 
 const changePasswordUrl = getApiUrl('/frontend/account/password');
 
-const passwordsMatch = (value, siblings) => {
-    return siblings.new_password === value;
-};
-
 const {$gettext} = useTranslate();
 
 const {record: form, reset: resetForm} = useResettableRef({
@@ -83,7 +79,9 @@ const {r$} = useAppRegle(
         new_password2: {
             required,
             passwordsMatch: withMessage(
-                passwordsMatch,
+                (value, siblings) => {
+                    return siblings.new_password === value;
+                },
                 $gettext('Must match new password.')
             )
         }

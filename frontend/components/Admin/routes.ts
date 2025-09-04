@@ -58,7 +58,7 @@ export default function useAdminRoutes(): RouteRecordRaw[] {
                 },
                 {
                     path: 'permissions',
-                    component: () => import('~/components/Admin/Permissions.vue'),
+                    component: () => import('~/components/Admin/PermissionsWrapper.vue'),
                     name: 'admin:permissions:index',
                 },
                 {

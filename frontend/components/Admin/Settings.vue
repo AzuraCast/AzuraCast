@@ -32,7 +32,7 @@
 
             <div class="card-body">
                 <loading :loading="formLoading || propsLoading" lazy>
-                    <tabs content-class="mt-3">
+                    <tabs v-if="props" content-class="mt-3">
                         <settings-general-tab/>
                         <settings-security-privacy-tab/>
                         <settings-services-tab

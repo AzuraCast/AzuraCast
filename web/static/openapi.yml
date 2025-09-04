@@ -8438,20 +8438,15 @@ components:
       required:
         - id
         - displayName
-        - globalPermissions
-        - stationPermissions
+        - permissions
       properties:
         id:
           type: integer
         displayName:
           type: string
           nullable: true
-        globalPermissions:
-          type: array
-          items: {  }
-        stationPermissions:
-          type: array
-          items: {  }
+        permissions:
+          $ref: '#/components/schemas/Api_Admin_RolePermissions'
       type: object
     ApiKey:
       type: object

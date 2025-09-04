@@ -58,19 +58,37 @@ const {axios} = useAxios();
 
 const userUrl = getApiUrl('/frontend/account/me');
 
-const {data: user, refetch} = useQuery({
+type Row = {
+    name: string | null,
+    email: string,
+    avatar: {
+        url_32: string,
+        url_64: string,
+        url_128: string,
+        service_name: string,
+        service_url: string
+    },
+    roles: {
+        id: number,
+        name: string
+    }[]
+}
+
+const {data: user, refetch} = useQuery<Row>({
     queryKey: [QueryKeys.AccountIndex, 'profile'],
     queryFn: async ({signal}) => {
-        const {data} = await axios.get(userUrl.value, {signal});
+        const {data} = await axios.get<Row>(userUrl.value, {signal});
         return data;
     },
     placeholderData: () => ({
         name: null,
-        email: null,
+        email: '',
         avatar: {
-            url_128: null,
-            service_name: null,
-            service_url: null
+            url_32: '',
+            url_64: '',
+            url_128: '',
+            service_name: '',
+            service_url: ''
         },
         roles: [],
     }),

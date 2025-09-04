@@ -45,6 +45,7 @@ final class RolePermission implements
     #[ORM\Column(length: 50)]
     public readonly string $action_name;
 
+
     public function __construct(
         Role $role,
         ?Station $station,

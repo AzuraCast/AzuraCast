@@ -69,7 +69,7 @@ import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue
 import AccountApiKeyNewKey from "~/components/Account/ApiKeyNewKey.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {nextTick, ref, useTemplateRef} from "vue";
-import {useAxios} from "~/vendor/axios";
+import {isApiError, useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
@@ -84,8 +84,8 @@ const props = defineProps<{
 
 const emit = defineEmits<HasRelistEmit>();
 
-const error = ref(null);
-const newKey = ref(null);
+const error = ref<string | null>(null);
+const newKey = ref<string | null>(null);
 
 const {record: form, reset: resetForm} = useResettableRef({
     comment: ''
@@ -140,8 +140,12 @@ const doSubmit = async () => {
         );
 
         newKey.value = data.key;
-    } catch (error) {
-        error.value = error.response.data.message;
+    } catch (e) {
+        if (isApiError(e)) {
+            error.value = e.response.data.message;
+        } else {
+            error.value = String(e);
+        }
     }
 
     emit('relist');

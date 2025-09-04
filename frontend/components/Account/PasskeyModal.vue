@@ -100,7 +100,7 @@ import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {required} from "@regle/rules";
 import {ref, useTemplateRef} from "vue";
-import {useAxios} from "~/vendor/axios";
+import {isApiError, useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
@@ -109,14 +109,20 @@ import useWebAuthn from "~/functions/useWebAuthn.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
+import {isObject} from "@vueuse/core";
 
 const emit = defineEmits<HasRelistEmit>();
 
 const registerWebAuthnUrl = getApiUrl('/frontend/account/webauthn/register');
 
-const error = ref(null);
+const error = ref<string | null>(null);
 
-const {record: form, reset: resetForm} = useResettableRef({
+type PasskeyRow = {
+    name: string,
+    createResponse: string | null
+}
+
+const {record: form, reset: resetForm} = useResettableRef<PasskeyRow>({
     name: '',
     createResponse: null
 });
@@ -159,12 +165,13 @@ const selectPasskey = async () => {
     const registerArgs = await axios.get(registerWebAuthnUrl.value).then(r => r.data);
 
     try {
-        form.value.createResponse = await doRegister(registerArgs);
+        const createResponse = await doRegister(registerArgs);
+        form.value.createResponse = JSON.stringify(createResponse);
     } catch (err) {
-        if (err.name === 'InvalidStateError') {
+        if (isObject(err) && 'name' in err && err.name === 'InvalidStateError') {
             error.value = 'Error: Authenticator was probably already registered by user';
         } else {
-            error.value = err;
+            error.value = String(err);
         }
 
         throw err;
@@ -172,23 +179,32 @@ const selectPasskey = async () => {
 };
 
 const doSubmit = async () => {
-    const isValid = await r$.$validate();
-    if (!isValid) {
+    const {valid, data} = await r$.$validate();
+    if (!valid) {
         return;
     }
 
     error.value = null;
 
     try {
+        const submitData = {
+            name: data.name,
+            createResponse: JSON.parse(data.createResponse)
+        };
+
         await axios({
             method: 'PUT',
             url: registerWebAuthnUrl.value,
-            data: form.value
+            data: submitData
         });
 
         hide();
-    } catch (e) {
-        error.value = e.response.data.message;
+    } catch (e: any) {
+        if (isApiError(e)) {
+            error.value = e.response.data.message;
+        } else {
+            error.value = 'An error occurred.';
+        }
     }
 };
 

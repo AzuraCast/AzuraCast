@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/prefer-promise-reject-errors */
 
-import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
+import axios, {AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse} from "axios";
 import {App, InjectionKey} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
 import {useNProgress} from "~/vendor/nprogress.ts";
 import injectRequired from "~/functions/injectRequired.ts";
+import {ApiError} from "~/entities/ApiInterfaces.ts";
 
 const injectKey: InjectionKey<AxiosInstance> = Symbol() as InjectionKey<AxiosInstance>;
 const injectKeySilent: InjectionKey<AxiosInstance> = Symbol() as InjectionKey<AxiosInstance>;
@@ -21,6 +22,22 @@ export const useAxios = (): UseAxios => ({
     axios: injectRequired<AxiosInstance>(injectKey),
     axiosSilent: injectRequired<AxiosInstance>(injectKeySilent)
 });
+
+type AxiosApiError<D = any> = Omit<AxiosError<ApiError, D>, 'response'> & {
+    response: AxiosResponse<ApiError, D>
+}
+
+export function isApiError(payload: any): payload is AxiosApiError {
+    if (axios.isAxiosError(payload)) {
+        if ('response' in payload && payload.response) {
+            if ('data' in payload.response) {
+                return 'success' in payload.response.data && 'message' in payload.response.data;
+            }
+        }
+    }
+
+    return false;
+}
 
 export default function installAxios(vueApp: App) {
     // Configure auto-CSRF on requests
@@ -43,9 +60,10 @@ export default function installAxios(vueApp: App) {
         }
 
         let notifyMessage = $gettext('An error occurred and your request could not be completed.');
-        if (error.response) {
+
+        if (isApiError(error)) {
             // Request made and server responded
-            const responseJson = error.response.data ?? {};
+            const responseJson = error.response.data;
 
             // Immediately redirect back to login page if the HTTP request returns a 403 NotLoggedIn error.
             if (responseJson.type === "NotLoggedInException") {

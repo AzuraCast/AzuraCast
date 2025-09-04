@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Entity\Api\Admin\RolePermissions;
+use App\Entity\Api\Admin\RoleStationPermission;
 use App\Entity\Api\Vue\AppGlobals;
 use App\Entity\Api\Vue\UserGlobals;
 use App\Entity\User;
@@ -195,24 +197,33 @@ final class View extends Engine
                 $timeConfig->hourCycle = $userObj->show_24_hour_time ? 'h23' : 'h12';
 
                 $globalPermissions = [];
-                $stationPermissions = [];
-
+                $stationPermissionsRaw = [];
                 foreach ($userObj->roles as $role) {
                     foreach ($role->permissions as $permission) {
                         $station = $permission->station;
                         if (null !== $station) {
-                            $stationPermissions[$station->id][] = $permission->action_name;
+                            $stationPermissionsRaw[$station->id][] = $permission->action_name;
                         } else {
                             $globalPermissions[] = $permission->action_name;
                         }
                     }
                 }
 
+                $stationPermissions = [];
+                foreach ($stationPermissionsRaw as $stationId => $stationPerms) {
+                    $stationPermissions[] = new RoleStationPermission(
+                        id: $stationId,
+                        permissions: $stationPerms
+                    );
+                }
+
                 $this->globalProps->user = new UserGlobals(
                     id: $userObj->id,
                     displayName: $userObj->getDisplayName(),
-                    globalPermissions: $globalPermissions,
-                    stationPermissions: $stationPermissions,
+                    permissions: new RolePermissions(
+                        global: $globalPermissions,
+                        station: $stationPermissions
+                    )
                 );
             }
 

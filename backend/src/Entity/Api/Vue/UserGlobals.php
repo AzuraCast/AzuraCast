@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\Vue;
 
+use App\Entity\Api\Admin\RolePermissions;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -18,14 +19,8 @@ final readonly class UserGlobals
         public int $id,
         #[OA\Property]
         public ?string $displayName,
-        #[OA\Property(
-            items: new OA\Items()
-        )]
-        public array $globalPermissions = [],
-        #[OA\Property(
-            items: new OA\Items()
-        )]
-        public array $stationPermissions = []
+        #[OA\Property]
+        public RolePermissions $permissions,
     ) {
     }
 }

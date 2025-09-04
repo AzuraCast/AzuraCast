@@ -20,20 +20,22 @@
                         <div class="flex-shrink-0 pt-1">
                             <icon
                                 class="lg"
+                                v-if="panel.icon"
                                 :icon="panel.icon"
                             />
                         </div>
                     </div>
 
                     <div class="list-group list-group-flush">
-                        <router-link
-                            v-for="item in panel.items"
-                            :key="item.key"
-                            :to="item.url"
-                            class="list-group-item list-group-item-action"
-                        >
-                            {{ item.label }}
-                        </router-link>
+                        <template v-for="item in panel.items" :key="item.key">
+                            <router-link
+                                v-if="item.url"
+                                :to="item.url"
+                                class="list-group-item list-group-item-action"
+                            >
+                                {{ item.label }}
+                            </router-link>
+                        </template>
                     </div>
                 </section>
             </div>
@@ -49,7 +51,10 @@
                     :loading="isLoading"
                     lazy
                 >
-                    <memory-stats-panel :memory-stats="stats.memory"/>
+                    <memory-stats-panel
+                        v-if="stats && stats.memory"
+                        :memory-stats="stats.memory"
+                    />
                 </loading>
             </div>
 
@@ -58,7 +63,10 @@
                     :loading="isLoading"
                     lazy
                 >
-                    <disk-usage-panel :disk-stats="stats.disk"/>
+                    <disk-usage-panel
+                        v-if="stats && stats.disk"
+                        :disk-stats="stats.disk"
+                    />
                 </loading>
             </div>
         </div>
@@ -69,7 +77,10 @@
                     :loading="isLoading"
                     lazy
                 >
-                    <cpu-stats-panel :cpu-stats="stats.cpu"/>
+                    <cpu-stats-panel
+                        v-if="stats && stats.cpu"
+                        :cpu-stats="stats.cpu"
+                    />
                 </loading>
             </div>
 
@@ -84,7 +95,10 @@
                     :loading="isLoading"
                     lazy
                 >
-                    <network-stats-panel :network-stats="stats.network"/>
+                    <network-stats-panel
+                        v-if="stats && stats.network"
+                        :network-stats="stats.network"
+                    />
                 </loading>
             </div>
         </div>

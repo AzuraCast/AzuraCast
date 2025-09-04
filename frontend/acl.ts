@@ -1,17 +1,17 @@
 import {useAzuraCastUser} from "~/vendor/azuracast.ts";
-import {get, includes} from "lodash";
+import {find, includes} from "lodash";
 import {GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationId} from "~/functions/useStationQuery.ts";
 
 export function userAllowed(permission: GlobalPermissions): boolean {
     try {
-        const {globalPermissions} = useAzuraCastUser();
+        const {permissions} = useAzuraCastUser();
 
-        if (includes(globalPermissions, GlobalPermissions.All)) {
+        if (includes(permissions.global, GlobalPermissions.All)) {
             return true;
         }
 
-        return includes(globalPermissions, permission);
+        return includes(permissions.global, permission);
     } catch {
         return false;
     }
@@ -32,14 +32,22 @@ export function userAllowedForStation(permission: StationPermissions, id: number
     }
 
     try {
-        const {stationPermissions} = useAzuraCastUser();
-        const thisStationPermissions = get(stationPermissions, id, []);
+        const {permissions} = useAzuraCastUser();
 
-        if (includes(thisStationPermissions, StationPermissions.All)) {
+        const thisStationPermissions = find(
+            permissions.station,
+            (row) => row.id === id
+        );
+
+        if (thisStationPermissions === undefined) {
+            return false;
+        }
+
+        if (includes(thisStationPermissions.permissions, StationPermissions.All)) {
             return true;
         }
 
-        return includes(thisStationPermissions, permission);
+        return includes(thisStationPermissions.permissions, permission);
     } catch {
         return false;
     }

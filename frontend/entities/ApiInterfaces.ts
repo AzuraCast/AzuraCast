@@ -1544,8 +1544,7 @@ export interface VueStationGlobals {
 export interface VueUserGlobals {
   id: number;
   displayName: string | null;
-  globalPermissions: any[];
-  stationPermissions: any[];
+  permissions: ApiAdminRolePermissions;
 }
 
 export type ApiKey = HasSplitTokenFields & {

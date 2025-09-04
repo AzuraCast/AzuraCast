@@ -124,13 +124,19 @@ const props = defineProps<{
 
 const emit = defineEmits<HasRelistEmit>();
 
-const logUrl = ref(null);
-const error = ref(null);
+const logUrl = ref<string | null>(null);
+const error = ref<string | null>(null);
 
 const $modal = useTemplateRef('$modal');
 const {show: open, hide} = useHasModal($modal);
 
-const {record: form, reset: resetForm} = useResettableRef({
+type Row = {
+    storage_location: number | null,
+    path: string,
+    exclude_media: boolean
+}
+
+const {record: form, reset: resetForm} = useResettableRef<Row>({
     storage_location: null,
     path: '',
     exclude_media: false,

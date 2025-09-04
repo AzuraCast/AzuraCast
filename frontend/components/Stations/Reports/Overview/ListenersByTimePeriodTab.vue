@@ -129,7 +129,13 @@ const {DateTime} = useLuxon();
 
 const resultType = ref('average');
 
-const blankChartSection = {
+type ChartData = {
+    labels: any[],
+    metrics: any[],
+    alt: any[]
+}
+
+const blankChartSection: ChartData = {
     labels: [],
     metrics: [],
     alt: []

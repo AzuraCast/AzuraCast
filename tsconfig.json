@@ -31,7 +31,7 @@
     "noUnusedLocals": false,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": false
+    "noImplicitAny": true
   },
   "include": [
     "frontend/**/*.ts",

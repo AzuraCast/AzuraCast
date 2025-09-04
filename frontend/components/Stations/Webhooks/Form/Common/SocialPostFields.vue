@@ -79,7 +79,7 @@ const {r$} = useAppScopedRegle(
     }
 );
 
-const hasTrigger = (trigger) => {
+const hasTrigger = (trigger: string) => {
     return includes(form.value.triggers, trigger);
 };
 </script>

@@ -7,6 +7,15 @@ import {forEach} from "lodash";
 import {injectLocal} from "@vueuse/core";
 import {Ref} from "vue";
 
+export type StationMediaMetadata = {
+    amplify: number | null,
+    cross_start_next: number | null,
+    fade_in: number | null,
+    fade_out: number | null,
+    cue_in: number | null,
+    cue_out: number | null
+}
+
 export type StationMediaRecord =
     Required<Omit<
         ApiStationMedia,
@@ -24,16 +33,9 @@ export type StationMediaRecord =
         | 'custom_fields'
         | 'extra_metadata'
     >> & {
-    custom_fields: Record<string, any>,
-    extra_metadata: {
-        amplify: number | null,
-        cross_start_next: number | null,
-        fade_in: number | null,
-        fade_out: number | null,
-        cue_in: number | null,
-        cue_out: number | null
+        custom_fields: Record<string, any>,
+        extra_metadata: StationMediaMetadata
     }
-}
 
 export const useStationsMediaForm = defineStore(
     'form-stations-media',

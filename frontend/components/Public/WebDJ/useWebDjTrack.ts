@@ -76,9 +76,9 @@ export function useWebDjTrack() {
     let trackGainNode: GainNode | null = null;
     let passThroughNode: ScriptProcessorNode | null = null;
 
-    const setTrackGain = (newGain) => {
+    const setTrackGain = (newGain: number) => {
         if (trackGainNode?.gain?.value) {
-            trackGainNode.gain.value = parseFloat(newGain) / 100.0;
+            trackGainNode.gain.value = Number(newGain) / 100.0;
         }
     };
 

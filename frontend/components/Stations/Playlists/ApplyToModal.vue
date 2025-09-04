@@ -94,7 +94,20 @@ const fields: DataTableField[] = [
 const loading = ref<boolean>(true);
 const applyToUrl = ref<string | null>(null);
 
-const {record: applyToResults, reset: resetApplyToResults} = useResettableRef({
+type ApplyToDirectory = {
+    path: string,
+    name: string
+}
+
+type ApplyToRow = {
+    playlist: {
+        id: number | null,
+        name: string
+    },
+    directories: ApplyToDirectory[]
+}
+
+const {record: applyToResults, reset: resetApplyToResults} = useResettableRef<ApplyToRow>({
     playlist: {
         id: null,
         name: ''
@@ -106,8 +119,8 @@ const itemProvider = useClientItemProvider(
     computed(() => applyToResults.value.directories)
 );
 
-const selectedDirs = ref([]);
-const onRowSelected = (items) => {
+const selectedDirs = ref<string[]>([]);
+const onRowSelected = (items: ApplyToDirectory[]) => {
     selectedDirs.value = map(items, 'path');
 };
 

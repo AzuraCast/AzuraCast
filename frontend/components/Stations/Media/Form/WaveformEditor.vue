@@ -83,7 +83,7 @@ import {shallowRef, useTemplateRef, watch} from "vue";
 import {IconPlayCircle, IconStop} from "~/components/Common/icons";
 import {reactiveComputed} from "@vueuse/core";
 import {RegionParams} from "wavesurfer.js/dist/plugins/regions.js";
-import {StationMediaRecord} from "~/components/Stations/Media/Form/form.ts";
+import {StationMediaMetadata, StationMediaRecord} from "~/components/Stations/Media/Form/form.ts";
 import {storeToRefs} from "pinia";
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 
@@ -108,7 +108,8 @@ const {
 const regions = shallowRef<RegionParams[]>([]);
 
 const cueValues = reactiveComputed(() => {
-    const formValue = form.value?.extra_metadata ?? {
+    const formValue: StationMediaMetadata = form.value?.extra_metadata ?? {
+        amplify: null,
         cue_in: null,
         cue_out: null,
         cross_start_next: null,

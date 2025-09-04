@@ -82,7 +82,7 @@ export default function useStationDateTimeFormatter(
         ? formatDateTimeAsTime(isoToDateTime(value), format)
         : '';
 
-    const formatIsoAsRelative = (value) =>
+    const formatIsoAsRelative = (value: any) =>
         (value)
             ? formatDateTimeAsRelative(isoToDateTime(value))
             : '';

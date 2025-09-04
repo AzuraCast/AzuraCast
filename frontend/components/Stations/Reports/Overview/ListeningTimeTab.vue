@@ -55,7 +55,16 @@ const dateRange = toRef(props, 'dateRange');
 const {axios} = useAxios();
 const {DateTime} = useLuxon();
 
-const metricsQuery = useQuery({
+type ChartData = {
+    all: any[],
+    chart: {
+        labels: any[],
+        datasets: any[],
+        alt: any[]
+    }
+}
+
+const metricsQuery = useQuery<ChartData>({
     queryKey: queryKeyWithStation([
         QueryKeys.StationReports,
         'listening_time_metrics',

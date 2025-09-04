@@ -67,7 +67,7 @@
                         <form-group-field
                             v-if="row.is_field"
                             :id="'form_edit_'+row.field_name"
-                            :field="r$[row.field_name] as ValidatedField<string>"
+                            :field="r$[row.field_name]"
                         >
                             <template #default="{id, model}">
                                 <codemirror-textarea
@@ -108,7 +108,6 @@
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
-import {forEach} from "lodash";
 import mergeExisting from "~/functions/mergeExisting";
 import InfoCard from "~/components/Common/InfoCard.vue";
 import {onMounted, ref, useTemplateRef} from "vue";
@@ -121,38 +120,51 @@ import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";
 import ImportModal from "~/components/Stations/LiquidsoapConfig/ImportModal.vue";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
-import {ValidatedField} from "~/components/Form/useFormField.ts";
+import {StationBackendConfiguration} from "~/entities/ApiInterfaces.ts";
 
 const settingsUrl = getStationApiUrl('/liquidsoap-config');
 const exportUrl = getStationApiUrl('/liquidsoap-config/export');
 const importUrl = getStationApiUrl('/liquidsoap-config/import');
 
-interface ConfigRow {
-    is_field: boolean,
-    field_name: string,
-    markup?: string
+type ConfigSectionNames =
+    | 'custom_config_top'
+    | 'custom_config_pre_playlists'
+    | 'custom_config_pre_live'
+    | 'custom_config_pre_fade'
+    | 'custom_config'
+    | 'custom_config_bottom';
+
+type ConfigRow = {
+    is_field: true,
+    field_name: ConfigSectionNames,
+    markup?: never
+} | {
+    is_field: false,
+    field_name?: never,
+    markup: string
 }
 
-const sections = ref<string[]>([]);
 const config = ref<ConfigRow[]>([]);
 
-const {record: form, reset: resetForm} = useResettableRef(() => {
-    const blankForm = {};
-    forEach(sections.value, (section) => {
-        blankForm[section] = null;
-    });
-    return blankForm;
-});
+type ConfigSections = Required<Pick<
+    StationBackendConfiguration,
+    ConfigSectionNames
+>>
+
+const sections = ref<string[]>([]);
+
+const {record: form, reset: resetForm} = useResettableRef<ConfigSections>(() => ({
+    custom_config_top: null,
+    custom_config_pre_playlists: null,
+    custom_config_pre_live: null,
+    custom_config_pre_fade: null,
+    custom_config: null,
+    custom_config_bottom: null
+}));
 
 const {r$} = useAppRegle(
     form,
-    () => {
-        const validations = {};
-        forEach(sections.value, (section) => {
-            validations[section] = {};
-        });
-        return validations;
-    },
+    {},
     {}
 );
 

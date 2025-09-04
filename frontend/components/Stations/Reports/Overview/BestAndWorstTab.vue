@@ -147,7 +147,15 @@ const {axios} = useAxios();
 
 const {DateTime} = useLuxon();
 
-const {data: state, isLoading} = useQuery({
+type StatsData = {
+    bestAndWorst: {
+        best: any[],
+        worst: any[]
+    },
+    mostPlayed: any[]
+}
+
+const {data: state, isLoading} = useQuery<StatsData>({
     queryKey: queryKeyWithStation([
         QueryKeys.StationReports,
         'best_and_worst',

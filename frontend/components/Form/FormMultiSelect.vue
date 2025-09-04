@@ -18,6 +18,6 @@ defineProps<{
 }>();
 
 const model = defineModel<T>({
-    default: () => [],
+    default: () => [] as any[],
 });
 </script>

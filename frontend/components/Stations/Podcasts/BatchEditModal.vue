@@ -94,7 +94,7 @@ const {show: showModal, hide} = useHasModal($modal);
 
 const {axios} = useAxios();
 
-const blankRow = {
+const blankRow: ApiPodcastEpisode = {
     id: null,
     title: null,
     publish_at: null,

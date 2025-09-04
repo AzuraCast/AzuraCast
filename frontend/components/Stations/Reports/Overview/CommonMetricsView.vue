@@ -89,7 +89,21 @@ const dateRange = toRef(props, 'dateRange');
 const {axios} = useAxios();
 const {DateTime} = useLuxon();
 
-const metricsQuery = useQuery({
+type ChartData = {
+    all: any[],
+    top_listeners: {
+        labels: any[],
+        datasets: any[],
+        alt: any[]
+    },
+    top_connected_time: {
+        labels: any[],
+        datasets: any[],
+        alt: any[]
+    },
+}
+
+const metricsQuery = useQuery<ChartData>({
     queryKey: queryKeyWithStation([
         QueryKeys.StationReports,
         'common_metrics',

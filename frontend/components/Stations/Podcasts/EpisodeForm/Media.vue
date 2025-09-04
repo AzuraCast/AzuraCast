@@ -82,7 +82,7 @@ const targetUrl = computed(() => {
         : props.newMediaUrl;
 });
 
-const onFileSuccess = (_file, message: UploadResponseBody | null) => {
+const onFileSuccess = (_file: any, message: UploadResponseBody | null) => {
     hasMedia.value = true;
 
     if (!props.editMediaUrl && message) {

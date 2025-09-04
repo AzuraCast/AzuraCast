@@ -80,7 +80,7 @@ const targetUrl = computed(() => {
         : props.newIntroUrl;
 });
 
-const onFileSuccess = (_file, message: UploadResponseBody | null) => {
+const onFileSuccess = (_file: any, message: UploadResponseBody | null) => {
     hasIntro.value = true;
 
     if (!props.editIntroUrl && message) {

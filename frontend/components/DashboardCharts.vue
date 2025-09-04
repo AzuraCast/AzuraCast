@@ -53,7 +53,18 @@ const dashboardChartOptions = {
 
 const {axios} = useAxios();
 
-const {data: chartsData, isLoading: chartsLoading} = useQuery({
+type ChartData = {
+    average: {
+        metrics: any[],
+        alt: any[]
+    },
+    unique: {
+        metrics: any[],
+        alt: any[]
+    }
+}
+
+const {data: chartsData, isLoading: chartsLoading} = useQuery<ChartData>({
     queryKey: [QueryKeys.Dashboard, 'charts'],
     queryFn: async ({signal}) => {
         const {data} = await axios.get(props.chartsUrl, {signal});

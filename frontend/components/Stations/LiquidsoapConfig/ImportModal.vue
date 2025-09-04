@@ -66,9 +66,9 @@ const props = defineProps<{
 
 const emit = defineEmits<HasRelistEmit>();
 
-const configFile = ref(null);
+const configFile = ref<File | null>(null);
 
-const uploaded = (file) => {
+const uploaded = (file: File) => {
     configFile.value = file;
 }
 

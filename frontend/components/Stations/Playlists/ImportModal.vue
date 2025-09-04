@@ -111,20 +111,20 @@ import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
 const emit = defineEmits<HasRelistEmit>();
 
-const importPlaylistUrl = ref(null);
-const playlistFile = ref(null);
+const importPlaylistUrl = ref<string | null>(null);
+const playlistFile = ref<File | null>(null);
 const overwritePlaylist = ref(false);
 
 const results = ref(null);
 
-const uploaded = (file) => {
+const uploaded = (file: File) => {
     playlistFile.value = file;
 }
 
 const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
-const open = (newImportPlaylistUrl) => {
+const open = (newImportPlaylistUrl: string) => {
     playlistFile.value = null;
     overwritePlaylist.value = false;
 

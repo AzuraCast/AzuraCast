@@ -457,7 +457,7 @@ const onFiltered = (newFilter: string) => {
 
 const $renameModal = useTemplateRef('$renameModal');
 
-const rename = (path) => {
+const rename = (path: string) => {
     $renameModal.value?.open(path);
 };
 

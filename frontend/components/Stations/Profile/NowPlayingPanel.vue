@@ -261,7 +261,7 @@ import UpdateMetadataModal from "~/components/Stations/Profile/UpdateMetadataMod
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 import {NowPlayingProps} from "~/functions/useNowPlaying.ts";
 import {BackendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
-import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
 import {toRefs} from "@vueuse/core";
 
 export interface ProfileNowPlayingPanelProps extends NowPlayingProps {
@@ -276,7 +276,7 @@ defineOptions({
 
 const props = defineProps<ProfileNowPlayingPanelProps>();
 
-const {data: stationData} = useStationQuery();
+const stationData = useStationData();
 const {offlineText} = toRefs(stationData);
 
 const {

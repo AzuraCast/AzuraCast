@@ -15,6 +15,7 @@
         <div class="card-body">
             <loading :loading="propsLoading" lazy>
                 <admin-stations-form
+                    v-if="props"
                     v-bind="props"
                     is-edit-mode
                     :edit-url="editUrl"

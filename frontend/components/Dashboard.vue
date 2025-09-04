@@ -29,7 +29,7 @@
                     </router-link>
                 </user-info-panel>
 
-                <template v-if="!notificationsLoading && notifications.length > 0">
+                <template v-if="!notificationsLoading && notifications && notifications.length > 0">
                     <div
                         v-for="notification in notifications"
                         :key="notification.title"
@@ -198,7 +198,7 @@
                     <template #cell(now_playing)="{ item }">
                         <div class="d-flex align-items-center">
                             <album-art
-                                v-if="showAlbumArt"
+                                v-if="showAlbumArt && item.now_playing?.song?.art !== null"
                                 :src="item.now_playing.song.art"
                                 class="flex-shrink-0 pe-3"
                             />
@@ -210,20 +210,20 @@
                                 {{ $gettext('Station Offline') }}
                             </div>
                             <div
-                                v-else-if="item.now_playing.song.title !== ''"
+                                v-else-if="item.now_playing?.song?.title !== ''"
                                 class="flex-fill"
                             >
                                 <strong><span class="nowplaying-title">
-                                    {{ item.now_playing.song.title }}
+                                    {{ item.now_playing?.song?.title }}
                                 </span></strong><br>
-                                <span class="nowplaying-artist">{{ item.now_playing.song.artist }}</span>
+                                <span class="nowplaying-artist">{{ item.now_playing?.song?.artist }}</span>
                             </div>
                             <div
                                 v-else
                                 class="flex-fill"
                             >
                                 <strong><span class="nowplaying-title">
-                                    {{ item.now_playing.song.text }}
+                                    {{ item.now_playing?.song?.text }}
                                 </span></strong>
                             </div>
                         </div>
@@ -301,7 +301,7 @@ const {data: notifications, isLoading: notificationsLoading} = useQuery<ApiNotif
     },
 });
 
-type ApiDashboard = ApiNowPlaying & HasLinks;
+type ApiDashboard = ApiNowPlaying & Required<HasLinks>;
 
 const stationFields: DataTableField<ApiDashboard>[] = [
     {

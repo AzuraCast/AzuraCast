@@ -11,6 +11,43 @@ export const useStationId = (): ComputedRef<number | null> => {
     return computed(() => Number(params.station_id) ?? null);
 }
 
+const blankStationGlobals: VueStationGlobals = {
+    id: 0,
+    name: null,
+    shortName: 'loading',
+    isEnabled: false,
+    hasStarted: false,
+    needsRestart: false,
+    timezone: 'UTC',
+    offlineText: null,
+    maxBitrate: 0,
+    maxMounts: 0,
+    maxHlsStreams: 0,
+    enablePublicPages: true,
+    publicPageUrl: '',
+    enableOnDemand: false,
+    onDemandUrl: '',
+    webDjUrl: '',
+    enableRequests: false,
+    features: {
+        media: false,
+        sftp: false,
+        podcasts: false,
+        streamers: false,
+        webhooks: false,
+        mountPoints: false,
+        hlsStreams: false,
+        remoteRelays: false,
+        customLiquidsoapConfig: false,
+        autoDjQueue: false
+    },
+    ipGeoAttribution: 'N/A',
+    backendType: BackendAdapters.None,
+    frontendType: FrontendAdapters.Remote,
+    canReload: false,
+    useManualAutoDj: false
+};
+
 export const useStationQuery = () => {
     const {axios} = useAxios();
     const stationId = useStationId();
@@ -29,44 +66,14 @@ export const useStationQuery = () => {
             return data;
         },
         staleTime: 10 * 60 * 1000,
-        placeholderData: {
-            id: 0,
-            name: null,
-            shortName: 'loading',
-            isEnabled: false,
-            hasStarted: false,
-            needsRestart: false,
-            timezone: 'UTC',
-            offlineText: null,
-            maxBitrate: 0,
-            maxMounts: 0,
-            maxHlsStreams: 0,
-            enablePublicPages: true,
-            publicPageUrl: '',
-            enableOnDemand: false,
-            onDemandUrl: '',
-            webDjUrl: '',
-            enableRequests: false,
-            features: {
-                media: false,
-                sftp: false,
-                podcasts: false,
-                streamers: false,
-                webhooks: false,
-                mountPoints: false,
-                hlsStreams: false,
-                remoteRelays: false,
-                customLiquidsoapConfig: false,
-                autoDjQueue: false
-            },
-            ipGeoAttribution: 'N/A',
-            backendType: BackendAdapters.None,
-            frontendType: FrontendAdapters.Remote,
-            canReload: false,
-            useManualAutoDj: false
-        }
+        placeholderData: blankStationGlobals
     });
 }
+
+export const useStationData = () => {
+    const {data} = useStationQuery();
+    return computed<VueStationGlobals>(() => data.value ?? blankStationGlobals);
+};
 
 export const useClearAllStationQueries = () => {
     const queryClient = useQueryClient();

@@ -80,7 +80,7 @@ defineOptions({
 
 interface StationFormProps extends ApiAdminVueStationsFormProps {
     createUrl?: string,
-    editUrl?: string,
+    editUrl?: string | null,
     isEditMode: boolean,
     isModal?: boolean
 }
@@ -91,6 +91,7 @@ const props = withDefaults(
         isRsasInstalled: false,
         isShoutcastInstalled: false,
         isStereoToolInstalled: false,
+        editUrl: null,
         isModal: false
     }
 );

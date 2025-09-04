@@ -43,7 +43,7 @@ import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import {storeToRefs} from "pinia";
 import {useStationsMountsForm} from "~/components/Stations/Mounts/Form/form.ts";
-import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
 import {toRefs} from "@vueuse/core";
 
 const props = defineProps<BaseEditModalProps & {
@@ -54,7 +54,7 @@ const emit = defineEmits<BaseEditModalEmits & {
     (e: 'needs-restart'): void
 }>();
 
-const {data: stationData} = useStationQuery();
+const stationData = useStationData();
 const {frontendType} = toRefs(stationData);
 
 const $modal = useTemplateRef('$modal');

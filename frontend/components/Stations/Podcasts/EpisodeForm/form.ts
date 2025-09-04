@@ -5,8 +5,8 @@ import {required} from "@regle/rules";
 import {ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
 import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
 
-export type PodcastEpisodeRecord = Omit<
-    Required<ApiPodcastEpisode>,
+export type PodcastEpisodeRecord = Required<Omit<
+    ApiPodcastEpisode,
     | 'id'
     | 'links'
     | 'media'
@@ -17,11 +17,13 @@ export type PodcastEpisodeRecord = Omit<
     | 'language_name'
     | 'has_custom_art'
     | 'art_updated_at'
+    | 'publish_at'
     | 'is_published'
     | 'has_media'
     | 'playlist_media_id'
     | 'playlist_media'
-> & {
+>> & {
+    publish_at: number | null,
     artwork_file: UploadResponseBody | null,
     media_file: UploadResponseBody | null,
 }

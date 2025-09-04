@@ -4,7 +4,36 @@ import {required} from "@regle/rules";
 import {IpSources, Settings} from "~/entities/ApiInterfaces.ts";
 import {defineStore} from "pinia";
 
-type Form = Settings
+type Form = Required<Pick<
+    Settings,
+    | 'base_url'
+    | 'instance_name'
+    | 'prefer_browser_url'
+    | 'use_radio_proxy'
+    | 'history_keep_days'
+    | 'enable_static_nowplaying'
+    | 'sync_disabled'
+    | 'analytics'
+    | 'always_use_ssl'
+    | 'ip_source'
+    | 'api_access_control'
+    | 'check_for_updates'
+    | 'acme_email'
+    | 'acme_domains'
+    | 'mail_enabled'
+    | 'mail_sender_name'
+    | 'mail_sender_email'
+    | 'mail_smtp_host'
+    | 'mail_smtp_port'
+    | 'mail_smtp_secure'
+    | 'mail_smtp_username'
+    | 'mail_smtp_password'
+    | 'avatar_service'
+    | 'avatar_default_url'
+    | 'use_external_album_art_in_apis'
+    | 'use_external_album_art_when_processing_media'
+    | 'last_fm_api_key'
+>>
 
 export const useAdminSettingsForm = defineStore(
     'form-admin-settings',
@@ -28,7 +57,7 @@ export const useAdminSettingsForm = defineStore(
             mail_sender_name: '',
             mail_sender_email: '',
             mail_smtp_host: '',
-            mail_smtp_port: null,
+            mail_smtp_port: 0,
             mail_smtp_secure: false,
             mail_smtp_username: '',
             mail_smtp_password: '',

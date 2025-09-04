@@ -127,6 +127,7 @@ import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
 import {usePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
+import {ApiPodcastRow} from "~/components/Public/Podcasts/usePodcastQuery.ts";
 
 const {groupLayout, stationId} = usePodcastGlobals();
 
@@ -134,13 +135,13 @@ const apiUrl = getStationApiUrl('/public/podcasts', stationId);
 
 const {$gettext} = useTranslate();
 
-const fields: DataTableField<ApiPodcast>[] = [
+const fields: DataTableField<ApiPodcastRow>[] = [
     {key: 'art', label: '', sortable: false, class: 'shrink pe-0'},
     {key: 'title', label: $gettext('Podcast'), sortable: true},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const podcastsItemProvider = useApiItemProvider<ApiPodcast>(
+const podcastsItemProvider = useApiItemProvider<ApiPodcastRow>(
     apiUrl,
     [
         QueryKeys.PublicPodcasts,

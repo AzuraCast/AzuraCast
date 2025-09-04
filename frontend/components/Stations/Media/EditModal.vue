@@ -51,7 +51,7 @@ import Tab from "~/components/Common/Tab.vue";
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
-import {CustomField} from "~/entities/ApiInterfaces.ts";
+import {ApiStationMedia, CustomField} from "~/entities/ApiInterfaces.ts";
 import {MediaInitialPlaylist} from "~/components/Stations/Media.vue";
 import {storeToRefs} from "pinia";
 import {useStationsMediaForm} from "~/components/Stations/Media/Form/form.ts";
@@ -65,14 +65,21 @@ interface MediaEditModalProps extends BaseEditModalProps {
 const props = defineProps<MediaEditModalProps>();
 const emit = defineEmits<BaseEditModalEmits>();
 
-const {record, reset} = useResettableRef({
-    length: null,
-    length_text: null,
+type MediaMeta = Required<Pick<
+    ApiStationMedia,
+    | 'length'
+    | 'length_text'
+    | 'links'
+>>
+
+const {record, reset} = useResettableRef<MediaMeta>({
+    length: 0,
+    length_text: '',
     links: {
-        art: null,
-        waveform: null,
-        waveform_cache: null,
-        play: null
+        art: '',
+        waveform: '',
+        waveform_cache: '',
+        play: ''
     }
 });
 

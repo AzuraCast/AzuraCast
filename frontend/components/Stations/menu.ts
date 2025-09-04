@@ -16,12 +16,12 @@ import {
 } from "~/components/Common/icons.ts";
 import {reactiveComputed} from "@vueuse/core";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
-import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
 
 export function useStationsMenu(): ReactiveMenu {
     const {$gettext} = useTranslate();
 
-    const {data: station} = useStationQuery();
+    const station = useStationData();
 
     // Reuse this variable to avoid multiple calls.
     const userCanManageMedia = userAllowedForStation(StationPermissions.Media);
@@ -178,7 +178,7 @@ export function useStationsMenu(): ReactiveMenu {
                     {
                         key: 'webdj',
                         label: computed(() => $gettext('Web DJ')),
-                        url: station.value.webDjUrl,
+                        url: station.value?.webDjUrl,
                         external: true,
                         visible: station.value.enablePublicPages
                     }

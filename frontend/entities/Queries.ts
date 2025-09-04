@@ -45,7 +45,7 @@ export enum QueryKeys {
 
 export const queryKeyWithStation = (
     suffix?: unknown[],
-    id?: ComputedRef<number>
+    id?: ComputedRef<number | null>
 ): unknown[] => {
     id ??= useStationId();
 

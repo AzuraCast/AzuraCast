@@ -1,4 +1,4 @@
-import {createRule, createScopedUseRegle, defineRegleConfig} from "@regle/core";
+import {createRule, createScopedUseRegle, defineRegleConfig, Maybe} from "@regle/core";
 import {
     alpha,
     alphaNum,
@@ -18,7 +18,7 @@ import {useTranslate} from "~/vendor/gettext.ts";
 import zxcvbn from "zxcvbn";
 
 export const isValidPassword = createRule({
-    validator: (value: string) => {
+    validator: (value: Maybe<string>) => {
         if (!isFilled(value)) {
             return true;
         }
@@ -29,7 +29,7 @@ export const isValidPassword = createRule({
 });
 
 export const isValidHexColor = createRule({
-    validator: (value: string) => !isFilled(value) || /^#?[0-9A-F]{6}$/i.test(value),
+    validator: (value: Maybe<string>) => !isFilled(value) || /^#?[0-9A-F]{6}$/i.test(value),
     message: 'This field must be a valid, non-transparent 6-character hex color.',
 });
 

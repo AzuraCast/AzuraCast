@@ -24,9 +24,9 @@ export const useStationsStreamersForm = defineStore(
         };
 
         const {record: form, reset} = useResettableRef<StationStreamersRecord>({
-            streamer_username: null,
-            streamer_password: null,
-            display_name: null,
+            streamer_username: '',
+            streamer_password: '',
+            display_name: '',
             comments: null,
             is_active: true,
             enforce_schedule: false,

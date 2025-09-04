@@ -136,7 +136,7 @@ const nowPlayingUrl = getApiUrl(computed(() => `/nowplaying/${id.value}`));
 
 const {$gettext} = useTranslate();
 
-type Row = StationWebhook & HasLinks;
+type Row = Required<StationWebhook & HasLinks>;
 
 const fields: DataTableField<Row>[] = [
     {key: 'name', isRowHeader: true, label: $gettext('Name/Type'), sortable: true},

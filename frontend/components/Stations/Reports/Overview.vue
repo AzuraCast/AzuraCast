@@ -99,7 +99,7 @@ import {getStationApiUrl} from "~/router";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
-import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
 import {toRefs} from "@vueuse/core";
 import {useAzuraCastDashboardGlobals} from "~/vendor/azuracast.ts";
 import {AnalyticsLevel} from "~/entities/ApiInterfaces.ts";
@@ -115,7 +115,7 @@ const byCountryUrl = getStationApiUrl('/reports/overview/by-country');
 const byClientUrl = getStationApiUrl('/reports/overview/by-client');
 const listeningTimeUrl = getStationApiUrl('/reports/overview/by-listening-time');
 
-const {data: stationData} = useStationQuery();
+const stationData = useStationData();
 const {timezone} = toRefs(stationData);
 
 const {now} = useStationDateTimeFormatter();

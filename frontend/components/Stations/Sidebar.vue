@@ -71,11 +71,11 @@ import {IconEdit} from "~/components/Common/icons.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
-import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
 
 const menuItems = useStationsMenu();
 
-const {data: stationData} = useStationQuery();
+const stationData = useStationData();
 const {name, hasStarted, needsRestart, timezone} = toRefs(stationData);
 
 const {DateTime} = useLuxon();

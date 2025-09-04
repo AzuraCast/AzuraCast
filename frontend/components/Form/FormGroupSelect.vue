@@ -72,7 +72,7 @@ import FormSelect from "~/components/Form/FormSelect.vue";
 import FormMultiSelect from "~/components/Form/FormMultiSelect.vue";
 import ValidationError from "~/components/Form/ValidationError.vue";
 
-interface FormGroupSelectProps extends FormFieldProps<T>, FormLabelParentProps {
+type FormGroupSelectProps = FormFieldProps<T> & FormLabelParentProps & {
     id: string,
     name?: string,
     label?: string,

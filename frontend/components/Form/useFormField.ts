@@ -6,11 +6,15 @@ export type ModelFormField = string | number | boolean | Array<any> | null | und
 
 export type ValidatedField<T = ModelFormField> = RegleFieldStatus<T>
 
-export interface FormFieldProps<T = ModelFormField> {
-    modelValue?: T
-    field?: ValidatedField<T>
-    required?: boolean,
-}
+export type FormFieldProps<T = ModelFormField> = {
+    required?: boolean
+} & ({
+    modelValue: T,
+    field?: never
+} | {
+    field: ValidatedField<T>
+    modelValue?: never
+})
 
 export interface FormFieldEmits<T = ModelFormField> {
     (e: 'update:modelValue', value: T): void
@@ -36,7 +40,7 @@ export function useFormField<T = ModelFormField>(
 
     const model: WritableComputedRef<T, T> = computed({
         get() {
-            return (props.field)
+            return (props.field !== undefined)
                 ? props.field.$value as T
                 : props.modelValue;
         },

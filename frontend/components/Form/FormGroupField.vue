@@ -87,7 +87,7 @@ import ValidationError from "~/components/Form/ValidationError.vue";
 
 type T = string | number | null;
 
-interface FormGroupFieldProps extends FormFieldProps<T>, FormLabelParentProps {
+type FormGroupFieldProps = FormFieldProps<T> & FormLabelParentProps & {
     id: string,
     name?: string,
     label?: string,

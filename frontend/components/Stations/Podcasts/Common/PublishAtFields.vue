@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import {ref, watch} from "vue";
 import {useLuxon} from "~/vendor/luxon.ts";
-import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
 import {toRefs} from "@vueuse/core";
 
 defineProps<{
@@ -39,7 +39,7 @@ const publishTime = ref<string>('');
 
 const {DateTime} = useLuxon();
 
-const {data: stationData} = useStationQuery();
+const stationData = useStationData();
 const {timezone} = toRefs(stationData);
 
 watch(model, (publishAt) => {

@@ -1,6 +1,7 @@
 import {VueAppGlobals, VueDashboardGlobals, VueUserGlobals} from "~/entities/ApiInterfaces.ts";
 import {defineStore} from "pinia";
-import {inject, InjectionKey} from "vue";
+import {InjectionKey} from "vue";
+import injectRequired from "~/functions/injectRequired.ts";
 
 export const globalConstantsKey: InjectionKey<VueAppGlobals> = Symbol() as InjectionKey<VueAppGlobals>;
 
@@ -10,7 +11,7 @@ export const useAzuraCastStore = defineStore(
         props: VueAppGlobals
     } => {
         return {
-            props: inject(globalConstantsKey)
+            props: injectRequired(globalConstantsKey)
         };
     }
 );

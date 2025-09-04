@@ -22,7 +22,7 @@ export function useLuxon(): UseLuxon {
 
         return DateTime.fromSeconds(timestamp).toRelative({
             ...timeConfig
-        });
+        }) ?? '';
     }
 
     return {

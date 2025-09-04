@@ -61,7 +61,7 @@ import ValidationError from "~/components/Form/ValidationError.vue";
 
 type T = boolean | null;
 
-interface FormGroupCheckboxProps extends FormFieldProps<T>, FormLabelParentProps {
+type FormGroupCheckboxProps = FormFieldProps<T> & FormLabelParentProps & {
     id: string,
     name?: string,
     label?: string,

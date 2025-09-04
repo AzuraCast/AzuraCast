@@ -1,7 +1,7 @@
 import {useLuxon} from "~/vendor/luxon.ts";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
 import {DateTimeMaybeValid} from "luxon";
-import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
 import {MaybeRefOrGetter, toValue} from "vue";
 import {toRefs} from "@vueuse/core";
 
@@ -12,7 +12,7 @@ export default function useStationDateTimeFormatter(
     const {timeConfig} = useAzuraCast();
 
     if (!timezone) {
-        const {data: stationData} = useStationQuery();
+        const stationData = useStationData();
         const {timezone: tz} = toRefs(stationData);
         timezone = tz;
     }

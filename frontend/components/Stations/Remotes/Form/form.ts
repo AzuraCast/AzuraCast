@@ -16,10 +16,10 @@ export const useStationsRemotesForm = defineStore(
     'form-stations-remotes',
     () => {
         const {record: form, reset} = useResettableRef<StationRemotesRecord>({
-            display_name: null,
+            display_name: '',
             type: RemoteAdapters.Icecast,
             custom_listen_url: null,
-            url: null,
+            url: '',
             mount: null,
             admin_password: null,
             is_visible_on_public_pages: true,

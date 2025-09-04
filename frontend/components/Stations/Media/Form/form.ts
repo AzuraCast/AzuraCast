@@ -7,7 +7,23 @@ import {forEach} from "lodash";
 import {injectLocal} from "@vueuse/core";
 import {Ref} from "vue";
 
-export type StationMediaRecord = Omit<ApiStationMedia, 'custom_fields' | 'extra_metadata'> & {
+export type StationMediaRecord =
+    Required<Omit<
+        ApiStationMedia,
+        | 'id'
+        | 'length'
+        | 'length_text'
+        | 'text'
+        | 'links'
+        | 'unique_id'
+        | 'song_id'
+        | 'mtime'
+        | 'uploaded_at'
+        | 'art'
+        | 'art_updated_at'
+        | 'custom_fields'
+        | 'extra_metadata'
+    >> & {
     custom_fields: Record<string, any>,
     extra_metadata: {
         amplify: number | null,

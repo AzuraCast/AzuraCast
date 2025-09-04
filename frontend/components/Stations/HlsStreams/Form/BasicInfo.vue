@@ -50,7 +50,7 @@ import {storeToRefs} from "pinia";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 import {computed} from "vue";
 import {useStationsHlsStreamsForm} from "~/components/Stations/HlsStreams/Form/form.ts";
-import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
 import {toRefs} from "@vueuse/core";
 
 const {r$} = storeToRefs(useStationsHlsStreamsForm());
@@ -72,7 +72,7 @@ const formatOptions = [
     }
 ];
 
-const {data: stationData} = useStationQuery();
+const stationData = useStationData();
 const {maxBitrate} = toRefs(stationData);
 
 const bitrateOptions = computed(() => map(

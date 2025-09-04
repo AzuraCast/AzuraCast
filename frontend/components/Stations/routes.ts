@@ -63,7 +63,7 @@ export default function useStationsRoutes(): RouteRecordRaw[] {
                 },
                 {
                     path: 'podcast/:podcast_id',
-                    component: () => import('~/components/Stations/PodcastEpisodes.vue'),
+                    component: () => import('~/components/Stations/PodcastEpisodesWrapper.vue'),
                     name: 'stations:podcast:episodes'
                 },
                 {

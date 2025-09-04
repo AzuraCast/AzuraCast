@@ -100,12 +100,12 @@ import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter
 import {useLuxon} from "~/vendor/luxon.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
-import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
 import {toRefs} from "@vueuse/core";
 
 const baseApiUrl = getStationApiUrl('/history');
 
-const {data: stationData} = useStationQuery();
+const stationData = useStationData();
 const {timezone} = toRefs(stationData);
 
 const {DateTime} = useLuxon();

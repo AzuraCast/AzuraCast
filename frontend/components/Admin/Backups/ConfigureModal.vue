@@ -95,7 +95,7 @@ import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
-import {Settings} from "~/entities/ApiInterfaces.ts";
+import {BackupSettings} from "~/components/Admin/BackupsWrapper.vue";
 
 const props = defineProps<{
     settingsUrl: string,
@@ -106,25 +106,15 @@ const emit = defineEmits<HasRelistEmit>();
 
 const loading = ref(true);
 
-type BackupSettingsRow = Required<
-    Pick<
-        Settings,
-        | 'backup_enabled'
-        | 'backup_time_code'
-        | 'backup_exclude_media'
-        | 'backup_keep_copies'
-        | 'backup_storage_location'
-        | 'backup_format'
-    >
->
+type BackupSettingsRow = Omit<BackupSettings, 'backup_last_run' | 'backup_last_output'>;
 
 const {record: form, reset: resetForm} = useResettableRef<BackupSettingsRow>({
     backup_enabled: false,
     backup_time_code: null,
-    backup_exclude_media: null,
-    backup_keep_copies: null,
+    backup_exclude_media: false,
+    backup_keep_copies: 2,
     backup_storage_location: null,
-    backup_format: null,
+    backup_format: null
 });
 
 const {r$} = useAppRegle(

@@ -27,7 +27,7 @@ import Schedule from "~/components/Common/ScheduleView.vue";
 import {Calendar, EventClickArg} from "@fullcalendar/core";
 import {EventImpl} from "@fullcalendar/core/internal";
 import {useTemplateRef} from "vue";
-import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
 import {toRefs} from "@vueuse/core";
 
 defineProps<{
@@ -38,7 +38,7 @@ const emit = defineEmits<{
     click: [event: EventImpl]
 }>();
 
-const {data: stationData} = useStationQuery();
+const stationData = useStationData();
 const {timezone} = toRefs(stationData);
 
 const onClick = (arg: EventClickArg) => {

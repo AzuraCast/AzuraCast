@@ -84,7 +84,7 @@
                                 class="btn-lg"
                                 :stream="{
                                     title: item.text,
-                                    url: item.media.links.play
+                                    url: item.media!.links.play
                                 }"
                             />
                         </template>
@@ -116,7 +116,7 @@
                                 class="name"
                                 href="#"
                                 :title="item.text"
-                                @click.prevent="changeDirectory(item.path)"
+                                @click.prevent="changeDirectory(item.path!)"
                             >
                                 {{ item.path_short }}
                             </a>
@@ -172,12 +172,12 @@
             </template>
             <template #cell(playlists)="{ item }">
                 <MediaPlaylists
-                    v-if="item.media?.playlists?.length > 0"
+                    v-if="item.type === FileTypes.Media"
                     :playlists="item.media?.playlists as ApiStationMediaPlaylist[]"
                     @filter="filter"
                 />
                 <MediaPlaylists
-                    v-else-if="item.dir?.playlists?.length > 0"
+                    v-else-if="item.type === FileTypes.Directory"
                     :playlists="item.dir?.playlists as ApiStationMediaPlaylist[]"
                     @filter="filter"
                 />
@@ -271,20 +271,22 @@ import {
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import MediaPlaylists from "~/components/Stations/Media/MediaPlaylists.vue";
-import {useStationQuery} from "~/functions/useStationQuery.ts";
-
-export interface MediaSelectedItems {
-    all: ApiFileList[],
-    files: string[],
-    directories: string[]
-}
+import {useStationData} from "~/functions/useStationQuery.ts";
 
 const props = defineProps<ApiStationsVueFilesProps>();
 
 export type MediaInitialPlaylist = ApiStationsVueFilesProps['initialPlaylists'][number];
 
-const {data: stationData} = useStationQuery();
-const showSftp = computed(() => stationData.value.features.sftp);
+export type MediaRow = Required<ApiFileList>;
+
+export type MediaSelectedItems = {
+    all: MediaRow[],
+    files: string[],
+    directories: string[]
+}
+
+const stationData = useStationData();
+const showSftp = computed(() => stationData.value.features.sftp ?? false);
 
 const listUrl = getStationApiUrl('/files/list');
 const batchUrl = getStationApiUrl('/files/batch');
@@ -328,9 +330,7 @@ const {$gettext} = useTranslate();
 
 const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
 
-type Row = ApiFileList;
-
-const listItemProvider = useApiItemProvider<Row>(
+const listItemProvider = useApiItemProvider<MediaRow>(
     listUrl,
     queryKeyWithStation(
         [QueryKeys.StationMedia, 'files', currentDirectory]
@@ -344,8 +344,8 @@ const listItemProvider = useApiItemProvider<Row>(
     }
 );
 
-const fields = computed<DataTableField<Row>[]>(() => {
-    const fields: DataTableField<Row>[] = [
+const fields = computed<DataTableField<MediaRow>[]>(() => {
+    const fields: DataTableField<MediaRow>[] = [
         {key: 'path', isRowHeader: true, label: $gettext('Name'), sortable: true},
         {key: 'media.title', label: $gettext('Title'), sortable: true, selectable: true, visible: false},
         {
@@ -419,7 +419,7 @@ const selectedItems = ref<MediaSelectedItems>({
 
 const searchPhrase = ref('');
 
-const onRowSelected = (items: ApiFileList[]) => {
+const onRowSelected = (items: MediaRow[]) => {
     const splitItems = partition(items, (row) => row.type === FileTypes.Directory);
 
     selectedItems.value = {

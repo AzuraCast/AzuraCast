@@ -38,7 +38,7 @@ export default function useAdminRoutes(): RouteRecordRaw[] {
                 },
                 {
                     path: 'backups',
-                    component: () => import('~/components/Admin/Backups.vue'),
+                    component: () => import('~/components/Admin/BackupsWrapper.vue'),
                     name: 'admin:backups:index'
                 },
                 {

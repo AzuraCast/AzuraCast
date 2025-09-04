@@ -141,6 +141,7 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Loading from "~/components/Common/Loading.vue";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
+import {Settings} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     apiUrl: string,
@@ -149,8 +150,19 @@ const props = defineProps<{
 const isLoading = ref(true);
 const error = ref(null);
 
-const {record: form, reset: resetForm} = useResettableRef({
-    public_theme: '',
+type BrandingSettings = Required<Pick<Settings,
+    | 'public_theme'
+    | 'hide_album_art'
+    | 'homepage_redirect_url'
+    | 'default_album_art_url'
+    | 'hide_product_name'
+    | 'public_custom_css'
+    | 'public_custom_js'
+    | 'internal_custom_css'
+>>
+
+const {record: form, reset: resetForm} = useResettableRef<BrandingSettings>({
+    public_theme: null,
     hide_album_art: false,
     homepage_redirect_url: '',
     default_album_art_url: '',

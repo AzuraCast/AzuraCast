@@ -89,7 +89,7 @@ type SftpUsersRecord = Required<
 const {record: form, reset: resetFormRef} = useResettableRef<SftpUsersRecord>(
     {
         username: '',
-        password: null,
+        password: '',
         publicKeys: null
     }
 );

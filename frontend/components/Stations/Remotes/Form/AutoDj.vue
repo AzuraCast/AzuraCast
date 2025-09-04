@@ -103,14 +103,14 @@ import {StreamFormats} from "~/entities/ApiInterfaces.ts";
 import {storeToRefs} from "pinia";
 import {useStationsRemotesForm} from "~/components/Stations/Remotes/Form/form.ts";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
 import {toRefs} from "@vueuse/core";
 
 const {r$, form} = storeToRefs(useStationsRemotesForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.autoDjTab));
 
-const {data: stationData} = useStationQuery();
+const stationData = useStationData();
 const {maxBitrate} = toRefs(stationData);
 
 const formatOptions = [

@@ -76,7 +76,7 @@ import {useSlots} from "vue";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import ValidationError from "~/components/Form/ValidationError.vue";
 
-interface FormGroupMultiCheckProps extends FormFieldProps<T>, FormLabelParentProps {
+type FormGroupMultiCheckProps = FormFieldProps<T> & FormLabelParentProps & {
     id: string,
     name?: string,
     label?: string,

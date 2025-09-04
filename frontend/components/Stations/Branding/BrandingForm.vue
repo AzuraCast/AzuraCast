@@ -95,6 +95,7 @@ import {useTranslate} from "~/vendor/gettext";
 import Loading from "~/components/Common/Loading.vue";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
+import {StationBrandingConfiguration} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     profileEditUrl: string
@@ -103,7 +104,9 @@ const props = defineProps<{
 const isLoading = ref(true);
 const error = ref(null);
 
-const {record: form, reset: resetForm} = useResettableRef({
+type Row = Required<StationBrandingConfiguration>;
+
+const {record: form, reset: resetForm} = useResettableRef<Row>({
     default_album_art_url: "",
     public_custom_css: "",
     public_custom_js: "",

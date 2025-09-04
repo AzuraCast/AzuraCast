@@ -168,7 +168,7 @@ export const useStationWebhooksForm = () => {
 
     const {record: form, reset: resetForm} = useResettableRef<WebhookRecord>(() => {
         const commonConfig: WebhookRecordCommon = {
-            name: null,
+            name: '',
             triggers: [],
             config: {
                 rate_limit: 0,
@@ -400,7 +400,7 @@ export const useStationWebhooksForm = () => {
         return merge(commonConfig, config);
     });
 
-    const setType = (newType: WebhookTypes): void => {
+    const setType = (newType: WebhookTypes | null): void => {
         type.value = newType;
         resetForm();
     }

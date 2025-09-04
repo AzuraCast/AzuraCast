@@ -40,7 +40,7 @@ import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 import {objectToSimpleFormOptions, SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import {pausableWatch, WatchPausableReturn} from "@vueuse/core";
 
-interface RadioCustomNumberProps extends FormFieldProps<T> {
+type RadioCustomNumberProps = FormFieldProps<T> & {
     id: string,
     name?: string,
     inputAttrs?: object,

@@ -16,8 +16,8 @@ export const useStationsMountsForm = defineStore(
     'form-stations-mounts',
     () => {
         const {record: form, reset} = useResettableRef<StationMountRecord>({
-            name: null,
-            display_name: null,
+            name: '',
+            display_name: '',
             is_visible_on_public_pages: true,
             is_default: false,
             relay_url: null,

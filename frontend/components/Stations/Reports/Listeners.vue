@@ -205,7 +205,7 @@ import {useLuxon} from "~/vendor/luxon.ts";
 import {useQuery, useQueryClient} from "@tanstack/vue-query";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import {useClientItemProvider} from "~/functions/dataTable/useClientItemProvider.ts";
-import {useStationQuery} from "~/functions/useStationQuery.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
 import {toRefs} from "@vueuse/core";
 
 const apiUrl = getStationApiUrl('/listeners');
@@ -214,7 +214,7 @@ const isLive = ref<boolean>(true);
 
 const {DateTime} = useLuxon();
 
-const {data: stationData} = useStationQuery();
+const stationData = useStationData();
 const {timezone, ipGeoAttribution} = toRefs(stationData);
 
 const {

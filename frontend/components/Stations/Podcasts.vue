@@ -99,8 +99,8 @@
             ref="$editPodcastModal"
             :create-url="listUrl"
             :new-art-url="newArtUrl"
-            :language-options="props.languageOptions"
-            :categories-options="props.categoriesOptions"
+            :language-options="props!.languageOptions"
+            :categories-options="props!.categoriesOptions"
             @relist="relist"
         />
     </loading>

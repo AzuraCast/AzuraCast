@@ -13,6 +13,7 @@
             >
                 <icon
                     class="navdrawer-nav-icon"
+                    v-if="category.icon"
                     :icon="category.icon"
                 />
                 <span class="might-overflow">{{ category.label }}</span>
@@ -25,6 +26,7 @@
             >
                 <icon
                     class="navdrawer-nav-icon"
+                    v-if="category.icon"
                     :icon="category.icon"
                 />
                 <span class="might-overflow">{{ category.label }}</span>
@@ -93,8 +95,8 @@ defineProps<{
 
 const currentRoute = useRoute();
 
-const isRouteLink = (url: MenuRouteUrl): url is MenuRouteBasedUrl => {
-    return (typeof (url) !== 'undefined')
+const isRouteLink = (url?: MenuRouteUrl): url is MenuRouteBasedUrl => {
+    return (url !== undefined)
         && (typeof (url) !== 'string');
 };
 

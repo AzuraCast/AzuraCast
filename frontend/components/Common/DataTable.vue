@@ -393,7 +393,7 @@ const currentPage = ref<number>(DATATABLE_DEFAULT_CONTEXT.currentPage);
 const sortField = ref<DataTableField<Row> | null>(null);
 const sortOrder = ref<string | null>(null);
 
-const activeDetailsRow = shallowRef<Row>(null);
+const activeDetailsRow = shallowRef<Row | null>(null);
 
 watch(visibleItems, () => {
     selectedRows.value = [];
@@ -410,8 +410,8 @@ const allFields = computed<RowFields>(() => {
             sortable: false,
             selectable: false,
             visible: true,
-            class: null,
-            formatter: null,
+            class: undefined,
+            formatter: undefined,
             sorter: (row: Row): string => get(row, field.key),
             ...field
         };
@@ -655,7 +655,7 @@ const responsiveClass = computed(() => {
 });
 
 const getColumnValue = (field: DataTableField<Row>, row: Row): string => {
-    const columnValue = get(row, field.key, null);
+    const columnValue = get(row, field.key, '');
 
     return (field.formatter)
         ? field.formatter(columnValue, field.key, row)

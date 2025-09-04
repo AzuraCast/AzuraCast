@@ -53,17 +53,19 @@ export function useClientItemProvider<Row extends DataTableRow = DataTableRow>(
     const rows = computed(() => {
         let itemsOnPage = filteredItems.value;
 
-        if (context.value.sortField) {
+        const { sortField, sortOrder } = context.value;
+
+        if (sortField !== null) {
             const collator = new Intl.Collator(localeShort, {numeric: true, sensitivity: 'base'});
 
             itemsOnPage = itemsOnPage.sort(
                 (a, b) => collator.compare(
-                    get(a, context.value.sortField, null),
-                    get(b, context.value.sortField, null)
+                    get(a, sortField, ''),
+                    get(b, sortField, '')
                 )
             );
 
-            if (context.value.sortOrder === 'desc') {
+            if (sortOrder === 'desc') {
                 itemsOnPage = itemsOnPage.reverse();
             }
         }

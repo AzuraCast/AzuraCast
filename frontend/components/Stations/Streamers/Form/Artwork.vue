@@ -21,7 +21,7 @@
                 </form-group>
             </div>
             <div
-                v-if="src && src !== ''"
+                v-if="isString(src) && src !== ''"
                 class="col-md-4"
             >
                 <img
@@ -51,6 +51,7 @@ import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
+import { isString } from "lodash";
 
 const props = defineProps<{
     artworkSrc: string,
@@ -61,7 +62,7 @@ const props = defineProps<{
 const model = defineModel<UploadResponseBody | null>();
 
 const artworkSrc = toRef(props, 'artworkSrc');
-const localSrc = ref(null);
+const localSrc = ref<string | ArrayBuffer | null>(null);
 
 const src = computed(() => {
     return localSrc.value ?? artworkSrc.value;

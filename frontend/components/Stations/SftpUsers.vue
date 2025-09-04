@@ -46,7 +46,7 @@
             >
                 <div class="card-body">
                     <loading :loading="propsLoading" lazy>
-                        <dl>
+                        <dl v-if="props">
                             <dt class="mb-1">
                                 {{ $gettext('Server:') }}
                             </dt>

@@ -5,6 +5,7 @@ import {ApiNowPlaying} from "~/entities/ApiInterfaces.ts";
 import {getApiUrl} from "~/router.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import formatTime from "~/functions/formatTime.ts";
+import { filter, isUndefined, omitBy } from "lodash";
 
 export interface NowPlayingProps {
     stationShortName: string,
@@ -45,13 +46,13 @@ export default function useNowPlaying(initialProps: NowPlayingProps) {
 
         // Update the browser metadata for browsers that support it (i.e. Mobile Chrome)
         if ('mediaSession' in navigator) {
-            navigator.mediaSession.metadata = new MediaMetadata({
+            navigator.mediaSession.metadata = new MediaMetadata(omitBy({
                 title: np_new.now_playing.song?.title ?? undefined,
                 artist: np_new.now_playing.song?.artist ?? undefined,
                 artwork: [
                     {src: np_new.now_playing.song?.art ?? undefined}
                 ]
-            });
+            }, isUndefined));
 
             const setPositionState = (duration: number, position: number): void => {
                 if (position <= duration) {

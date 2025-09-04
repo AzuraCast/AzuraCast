@@ -15,7 +15,7 @@
                         <div class="col-md-6 text-end">
                             <loading :loading="propsLoading" lazy>
                                 <stations-common-quota
-                                    v-if="props.recordStreams"
+                                    v-if="props && props.recordStreams"
                                     :quota-url="quotaUrl"
                                 />
                                 <time-zone v-else/>
@@ -97,7 +97,7 @@
         </div>
         <div class="col-md-4">
             <loading :loading="propsLoading" lazy>
-                <connection-info v-bind="props"/>
+                <connection-info v-if="props" v-bind="props"/>
             </loading>
         </div>
 

@@ -13,10 +13,10 @@ export function useWebDjTrack() {
 
     const trackGain = ref(55);
     const trackPassThrough = ref(false);
-    const position = ref(null);
+    const position = ref<number | null>(null);
     const volume = ref(0);
 
-    const source = ref(null);
+    const source = ref<any>(null);
 
     const createControlsNode = () => {
         const bufferLog = Math.log(Number(bufferSize.value));

@@ -42,7 +42,7 @@ import ModalForm from "~/components/Common/ModalForm.vue";
 import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
-import {useAxios} from "~/vendor/axios";
+import {isApiError, useAxios} from "~/vendor/axios";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
@@ -53,8 +53,8 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 const emit = defineEmits<HasRelistEmit>();
 
 const loading = ref(true);
-const cloneUrl = ref(null);
-const error = ref(null);
+const cloneUrl = ref<string | null>(null);
+const error = ref<string | null>(null);
 
 const {record: form, reset: resetForm} = useResettableRef({
     name: '',
@@ -150,9 +150,14 @@ const doSubmit = async () => {
     error.value = null;
 
     try {
+        const currentCloneUrl = cloneUrl.value;
+        if (currentCloneUrl === null) {
+            return;
+        }
+
         await axios({
             method: 'POST',
-            url: cloneUrl.value,
+            url: currentCloneUrl,
             data: form.value
         });
 
@@ -160,7 +165,11 @@ const doSubmit = async () => {
         emit('relist');
         hide();
     } catch (e) {
-        error.value = e.response.data.message;
+        if (isApiError(e)) {
+            error.value = e.response.data.message;
+        } else {
+            error.value = 'An unexpected error occurred.';
+        }
     }
 };
 

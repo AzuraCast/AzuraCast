@@ -28,6 +28,7 @@ import {useAzuraCast} from "~/vendor/azuracast.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
 import {IconDateRange} from "~/components/Common/icons";
 import {storeToRefs} from "pinia";
+import { isString, isUndefined } from "lodash";
 
 defineOptions({
     inheritAttrs: false
@@ -71,10 +72,21 @@ const dateRange = computed({
 
 const {$gettext} = useTranslate();
 
+const getTimezone = (options?: Partial<VueDatePickerProps>): string => {
+    if (options !== undefined && 'timezone' in options && options.timezone) {
+        if (isString(options.timezone)) {
+            return options.timezone;
+        }
+        if ('timezone' in options.timezone && isString(options.timezone.timezone)) {
+            return options.timezone.timezone;
+        }
+    }
+
+    return 'UTC';
+}
+
 const ranges = computed(() => {
-    const tz: string = (props.options && "timezone" in props.options)
-        ? (typeof props.options.timezone === "string" ? props.options.timezone : props.options.timezone.timezone)
-        : 'UTC';
+    const tz = getTimezone(props.options);
 
     const nowTz = DateTime.now().setZone(tz);
     const nowAtMidnightDate = nowTz.endOf('day').toJSDate();

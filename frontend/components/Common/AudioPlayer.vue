@@ -2,7 +2,7 @@
     <audio
         v-if="isPlaying"
         ref="$audio"
-        :title="current.title"
+        :title="current.title ?? undefined"
     />
 </template>
 
@@ -11,6 +11,7 @@ import Hls from "hls.js";
 import {nextTick, onMounted, onScopeDispose, ref, useTemplateRef, watch} from "vue";
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {storeToRefs} from "pinia";
+import { isString } from "lodash";
 
 const playerStore = usePlayerStore();
 const {logVolume, isMuted, isPlaying, current, duration, progress} = storeToRefs(playerStore);
@@ -64,7 +65,11 @@ const play = () => {
         }
 
         // Handle audio errors.
-        $audio.value.onerror = (e: Event) => {
+        $audio.value.onerror = (e: string | Event) => {
+            if (isString(e)) {
+                return;
+            }
+
             const eventTarget = e.target as HTMLAudioElement;
 
             if (eventTarget.error?.code === MediaError.MEDIA_ERR_NETWORK && $audio.value?.src) {
@@ -91,25 +96,27 @@ const play = () => {
         $audio.value.volume = logVolume.value;
         $audio.value.muted = isMuted.value;
 
-        if (current.value.isHls) {
-            // HLS playback support
-            if (Hls.isSupported()) {
-                hls.value = new Hls();
-                hls.value.loadSource(current.value.url);
-                hls.value.attachMedia($audio.value);
-            } else if ($audio.value.canPlayType('application/vnd.apple.mpegurl')) {
-                $audio.value.src = current.value.url;
+        if (current.value.url !== null) {
+            if (current.value.isHls) {
+                // HLS playback support
+                if (Hls.isSupported()) {
+                    hls.value = new Hls();
+                    hls.value.loadSource(current.value.url);
+                    hls.value.attachMedia($audio.value);
+                } else if ($audio.value.canPlayType('application/vnd.apple.mpegurl')) {
+                    $audio.value.src = current.value.url;
+                } else {
+                    console.log('Your browser does not support HLS.');
+                }
             } else {
-                console.log('Your browser does not support HLS.');
-            }
-        } else {
-            // Standard streams
-            $audio.value.src = current.value.url;
+                // Standard streams
+                $audio.value.src = current.value.url;
 
-            // Firefox caches the downloaded stream, this causes playback issues.
-            // Giving the browser a new url on each start bypasses the old cache/buffer
-            if (navigator.userAgent.includes("Firefox")) {
-                $audio.value.src += "?refresh=" + Date.now();
+                // Firefox caches the downloaded stream, this causes playback issues.
+                // Giving the browser a new url on each start bypasses the old cache/buffer
+                if (navigator.userAgent.includes("Firefox")) {
+                    $audio.value.src += "?refresh=" + Date.now();
+                }
             }
         }
 

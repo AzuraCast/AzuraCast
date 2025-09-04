@@ -117,9 +117,13 @@ import {useResettableRef} from "~/functions/useResettableRef.ts";
 const apiUrl = getApiUrl('/admin/geolite');
 
 const isLoading = ref(true);
-const version = ref(null);
+const version = ref<string | null>(null);
 
-const {record: form} = useResettableRef({
+type Row = {
+    key: string | null
+}
+
+const {record: form} = useResettableRef<Row>({
     key: null
 });
 
@@ -129,7 +133,7 @@ const langInstalledVersion = computed(() => {
     return $gettext(
         'GeoLite version "%{version}" is currently installed.',
         {
-            version: version.value
+            version: version.value ?? 'N/A'
         }
     );
 });

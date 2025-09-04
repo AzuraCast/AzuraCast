@@ -172,7 +172,7 @@
                             @click.stop="sort(column)"
                         >
                             <slot
-                                :name="'header('+column.key+')'"
+                                :name="`header(${column.key})`"
                                 v-bind="column"
                             >
                                 <div class="d-flex align-items-center">
@@ -247,7 +247,7 @@
                                 :class="column.class"
                             >
                                 <slot
-                                    :name="'cell('+column.key+')'"
+                                    :name="`cell(${column.key})`"
                                     :column="column"
                                     :item="row"
                                     :is-active="isActiveDetailRow(row)"
@@ -349,6 +349,7 @@ const props = withDefaults(defineProps<DataTableProps<Row>>(), {
 });
 
 const slots = defineSlots<{
+    [key: `header(${string})`]: (props: DataTableField<Row>) => any,
     [key: `cell(${string})`]: (props: {
         column: DataTableField<Row>,
         item: Row,

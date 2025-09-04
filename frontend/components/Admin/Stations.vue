@@ -100,7 +100,7 @@ import {useDialog} from "~/functions/useDialog.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
 import {useQuery} from "@tanstack/vue-query";
-import {ApiAdminVueStationsProps} from "~/entities/ApiInterfaces.ts";
+import {ApiAdminVueStationsProps, HasLinks, Station} from "~/entities/ApiInterfaces.ts";
 import Loading from "~/components/Common/Loading.vue";
 
 const listUrl = getApiUrl('/admin/stations');
@@ -119,7 +119,9 @@ const {data: props, isLoading: propsLoading} = useQuery<ApiAdminVueStationsProps
 
 const {$gettext} = useTranslate();
 
-const fields: DataTableField[] = [
+type Row = Required<Station & HasLinks>;
+
+const fields: DataTableField<Row>[] = [
     {
         key: 'name',
         isRowHeader: true,
@@ -150,7 +152,7 @@ const fields: DataTableField[] = [
     }
 ];
 
-const listItemProvider = useApiItemProvider(
+const listItemProvider = useApiItemProvider<Row>(
     listUrl,
     [
         QueryKeys.AdminStations,
@@ -174,7 +176,7 @@ const doClone = (stationName: string, url: string) => {
 const {showAlert} = useDialog();
 const {notifySuccess} = useNotify();
 
-const doToggle = async (station) => {
+const doToggle = async (station: Row) => {
     const {value} = await showAlert((station.is_enabled)
         ? {
             title: $gettext('Disable station?'),

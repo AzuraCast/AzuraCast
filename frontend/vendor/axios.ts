@@ -27,7 +27,7 @@ type AxiosApiError<D = any> = Omit<AxiosError<ApiError, D>, 'response'> & {
     response: AxiosResponse<ApiError, D>
 }
 
-export function isApiError(payload: any): payload is AxiosApiError {
+export const isApiError = (payload: any): payload is AxiosApiError => {
     if (axios.isAxiosError(payload)) {
         if ('response' in payload && payload.response) {
             if ('data' in payload.response) {
@@ -37,7 +37,7 @@ export function isApiError(payload: any): payload is AxiosApiError {
     }
 
     return false;
-}
+};
 
 export default function installAxios(vueApp: App) {
     // Configure auto-CSRF on requests

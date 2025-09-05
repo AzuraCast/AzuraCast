@@ -89,7 +89,7 @@ const listUrl = getStationApiUrl('/remotes');
 
 const {$gettext} = useTranslate();
 
-type Row = StationRemote & HasLinks;
+type Row = Required<StationRemote & HasLinks>;
 
 const fields: DataTableField<Row>[] = [
     {key: 'display_name', isRowHeader: true, label: $gettext('Name'), sortable: true},

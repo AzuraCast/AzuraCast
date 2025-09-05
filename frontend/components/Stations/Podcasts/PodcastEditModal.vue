@@ -59,9 +59,9 @@ const $modal = useTemplateRef('$modal');
 
 const {record, reset} = useResettableRef({
     has_custom_art: false,
-    art: null,
+    art: '',
     links: {
-        art: null
+        art: ''
     }
 });
 

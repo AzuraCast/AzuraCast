@@ -272,12 +272,13 @@ import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import MediaPlaylists from "~/components/Stations/Media/MediaPlaylists.vue";
 import {useStationData} from "~/functions/useStationQuery.ts";
+import { DeepRequired } from "utility-types";
 
 const props = defineProps<ApiStationsVueFilesProps>();
 
 export type MediaInitialPlaylist = ApiStationsVueFilesProps['initialPlaylists'][number];
 
-export type MediaRow = Required<ApiFileList>;
+export type MediaRow = DeepRequired<ApiFileList>;
 
 export type MediaSelectedItems = {
     all: MediaRow[],

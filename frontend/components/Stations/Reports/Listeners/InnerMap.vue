@@ -3,26 +3,25 @@
         id="leaflet-container"
         ref="$container"
     >
-        <slot
-            v-if="$map"
-            :map="$map"
-        />
+        <slot v-if="$map"/>
     </div>
 </template>
 
 <script setup lang="ts">
-import {onMounted, provide, ShallowRef, shallowRef, useTemplateRef, watch} from "vue";
+import {onMounted, shallowRef, useTemplateRef, watch} from "vue";
 import {Control, Icon, Map, map, tileLayer} from "leaflet";
 import {useTheme} from "~/functions/theme.ts";
 import "leaflet-fullscreen";
 import {useTranslate} from "~/vendor/gettext.ts";
 import {storeToRefs} from "pinia";
+import {useMap} from "~/components/Stations/Reports/Listeners/useMap.ts";
 
 const $container = useTemplateRef('$container');
 
 const $map = shallowRef<Map | null>(null);
 
-provide<ShallowRef<Map | null>>('map', $map);
+const {provideMap} = useMap();
+provideMap($map);
 
 const {currentTheme} = storeToRefs(useTheme());
 const {$gettext} = useTranslate();
@@ -32,7 +31,7 @@ onMounted(() => {
 
     // Init map
     const mapObj = map(
-        $container.value
+        $container.value!
     );
     mapObj.setView([40, 0], 1);
 

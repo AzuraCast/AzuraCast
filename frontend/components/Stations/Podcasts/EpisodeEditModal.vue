@@ -44,7 +44,7 @@ import {storeToRefs} from "pinia";
 import {useStationsPodcastEpisodesForm} from "~/components/Stations/Podcasts/EpisodeForm/form.ts";
 
 interface EpisodeEditModalProps extends BaseEditModalProps {
-    podcast: ApiPodcast
+    podcast: Required<ApiPodcast>
 }
 
 const props = defineProps<EpisodeEditModalProps>();
@@ -65,9 +65,9 @@ const {record, reset} = useResettableRef({
     has_media: false,
     media: null,
     links: {
-        art: null,
-        media: null,
-        download: null,
+        art: '',
+        media: '',
+        download: '',
     }
 });
 

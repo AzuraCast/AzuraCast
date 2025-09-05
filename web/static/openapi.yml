@@ -7025,7 +7025,8 @@ components:
       properties:
         playlists:
           type: array
-          items: {  }
+          items:
+            $ref: '#/components/schemas/Api_StationMediaPlaylist'
       type: object
     Api_Form_Option:
       required:

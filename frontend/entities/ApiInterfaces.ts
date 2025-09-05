@@ -653,7 +653,7 @@ export type ApiFileList = HasLinks & {
 };
 
 export interface ApiFileListDir {
-  playlists?: any[];
+  playlists?: ApiStationMediaPlaylist[];
 }
 
 export interface ApiFormOption {

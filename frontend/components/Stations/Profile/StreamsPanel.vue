@@ -137,6 +137,7 @@
                         </td>
                         <td class="ps-1">
                             <a
+                                v-if="station.hls_url"
                                 :href="station.hls_url"
                                 target="_blank"
                             >{{ station.hls_url }}</a>

@@ -28,19 +28,30 @@ import InnerMap from "~/components/Stations/Reports/Listeners/InnerMap.vue";
 import MapPoint from "~/components/Stations/Reports/Listeners/MapPoint.vue";
 import {computed} from "vue";
 import {filter} from "lodash";
+import {ApiListener} from "~/entities/ApiInterfaces.ts";
+import {DeepRequired} from "utility-types";
+
+type Row = DeepRequired<ApiListener>;
 
 const props = withDefaults(
     defineProps<{
-        listeners: Array<any>
+        listeners: Row[]
     }>(),
     {
         listeners: () => []
     }
 );
 
-const visibleListeners = computed(() => {
+type VisibleRow = Omit<Row, 'location'> & {
+    location: Omit<Row["location"], 'lat' | 'lon'> & {
+        lat: number,
+        lon: number,
+    }
+};
+
+const visibleListeners = computed<VisibleRow[]>(() => {
     return filter(props.listeners, function (l) {
         return null !== l.location.lat && null !== l.location.lon;
-    });
+    }) as VisibleRow[];
 });
 </script>

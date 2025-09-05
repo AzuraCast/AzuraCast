@@ -65,7 +65,7 @@ const reloadArt = () => {
 }
 watch(toRef(props, 'artworkSrc'), reloadArt);
 
-const localSrc = ref(null);
+const localSrc = ref<string | null>(null);
 
 const src = computed(() => {
     return localSrc.value ?? artworkSrc.value;
@@ -80,7 +80,7 @@ const uploaded = (file: File | null) => {
 
     const fileReader = new FileReader();
     fileReader.addEventListener('load', () => {
-        localSrc.value = fileReader.result;
+        localSrc.value = fileReader.result as string | null;
     }, false);
     fileReader.readAsDataURL(file);
 

@@ -52,16 +52,14 @@ import {required} from "@regle/rules";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import PublishAtFields from "~/components/Stations/Podcasts/Common/PublishAtFields.vue";
-import {ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
 import {useAppScopedRegle} from "~/vendor/regle.ts";
-
-type T = Partial<ApiPodcastEpisode>;
+import { BatchPodcastEpisode } from "./BatchEditModal.vue";
 
 defineProps<{
     index: number,
 }>();
 
-const row = defineModel<T>('row');
+const row = defineModel<BatchPodcastEpisode>('row');
 
 const {r$} = useAppScopedRegle(
     row,

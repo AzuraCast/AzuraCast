@@ -79,6 +79,16 @@ import {useQuery} from "@tanstack/vue-query";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import {useAppCollectScope} from "~/vendor/regle.ts";
 
+export type BatchPodcastEpisode = Required<Pick<
+    ApiPodcastEpisode,
+    | 'id'
+    | 'title'
+    | 'publish_at'
+    | 'explicit'
+    | 'season_number'
+    | 'episode_number'
+>>;
+
 const props = defineProps<{
     id: string,
     batchUrl: string,
@@ -94,10 +104,10 @@ const {show: showModal, hide} = useHasModal($modal);
 
 const {axios} = useAxios();
 
-const blankRow: ApiPodcastEpisode = {
-    id: null,
-    title: null,
-    publish_at: null,
+const blankRow: BatchPodcastEpisode = {
+    id: '',
+    title: '',
+    publish_at: 0,
     explicit: false,
     season_number: null,
     episode_number: null
@@ -105,7 +115,7 @@ const blankRow: ApiPodcastEpisode = {
 
 const isModalOpen = ref(false);
 
-const {data: rows, isLoading} = useQuery<ApiPodcastEpisode[]>({
+const {data: rows, isLoading} = useQuery<BatchPodcastEpisode[]>({
     queryKey: queryKeyWithStation([
         QueryKeys.StationPodcasts,
         computed(() => props.id),

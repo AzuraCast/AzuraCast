@@ -121,7 +121,7 @@ export function useApiItemProvider<Row extends DataTableRow = DataTableRow>(
     });
 
     const rows = computed(() => {
-        if (query.isSuccess.value) {
+        if (query.data.value) {
             return query.data.value.rows;
         }
 
@@ -129,7 +129,7 @@ export function useApiItemProvider<Row extends DataTableRow = DataTableRow>(
     });
 
     const total = computed(() => {
-        if (query.isSuccess.value) {
+        if (query.data.value) {
             return query.data.value.total;
         }
 

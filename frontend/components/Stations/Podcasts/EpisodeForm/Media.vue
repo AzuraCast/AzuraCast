@@ -73,7 +73,7 @@ const props = defineProps<{
 
 const model = defineModel<UploadResponseBody | null>();
 
-const hasMedia = ref(null);
+const hasMedia = ref<boolean | null>(null);
 syncRef(toRef(props, 'recordHasMedia'), hasMedia, {direction: 'ltr'});
 
 const targetUrl = computed(() => {

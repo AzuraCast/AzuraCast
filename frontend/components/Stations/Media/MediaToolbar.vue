@@ -220,6 +220,7 @@ import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchRe
 import {useNotify} from "~/functions/useNotify.ts";
 import {useDialog} from "~/functions/useDialog.ts";
 import {MediaInitialPlaylist, MediaSelectedItems} from "~/components/Stations/Media.vue";
+import { ApiStationMediaPlaylist } from "~/entities/ApiInterfaces";
 
 const props = defineProps<{
     currentDirectory: string,
@@ -242,13 +243,13 @@ const hasSelectedItems = computed(() => {
     return selectedItems.value.all.length > 0;
 });
 
-const checkedPlaylists = ref([]);
+const checkedPlaylists = ref<(number | string)[]>([]);
 const newPlaylist = ref('');
 
 watch(selectedItems, (items) => {
     // Get all playlists that are active on ALL selected items.
     const playlistsForItems = map(items.all, (item) => {
-        const itemPlaylists = item.dir?.playlists ?? item.media?.playlists ?? [];
+        const itemPlaylists = (item.dir?.playlists ?? item.media?.playlists ?? []) as Required<ApiStationMediaPlaylist>[];
 
         return map(
             filter(
@@ -357,7 +358,7 @@ const $playlistDropdown = useTemplateRef('$playlistDropdown');
 
 const setPlaylists = () => {
     if ($playlistDropdown.value) {
-        Dropdown.getInstance($playlistDropdown.value).hide();
+        Dropdown.getInstance($playlistDropdown.value)?.hide();
     }
 
     if (hasSelectedItems.value) {

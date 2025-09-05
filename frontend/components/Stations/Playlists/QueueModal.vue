@@ -66,9 +66,11 @@ import Modal from "~/components/Common/Modal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {ApiStationPlaylistQueue} from "~/entities/ApiInterfaces.ts";
 
+type MediaRow = Required<ApiStationPlaylistQueue>;
+
 const loading = ref<boolean>(true);
 const queueUrl = ref<string | null>(null);
-const media = ref<ApiStationPlaylistQueue[]>([]);
+const media = ref<MediaRow[]>([]);
 
 const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
@@ -80,7 +82,7 @@ const open = async (newQueueUrl: string) => {
     loading.value = true;
 
     try {
-        const {data} = await axios.get<ApiStationPlaylistQueue[]>(newQueueUrl);
+        const {data} = await axios.get<MediaRow[]>(newQueueUrl);
         media.value = data;
     } finally {
         loading.value = false;
@@ -98,7 +100,9 @@ const {notifySuccess} = useNotify();
 const {$gettext} = useTranslate();
 
 const doClear = async () => {
-    await axios.delete(queueUrl.value);
+    if (queueUrl.value) {
+        await axios.delete(queueUrl.value);
+    }
 
     notifySuccess($gettext('Playlist queue cleared.'));
     hide();

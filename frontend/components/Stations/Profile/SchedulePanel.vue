@@ -55,7 +55,7 @@ defineOptions({
 });
 
 const props = defineProps<{
-    scheduleItems: ApiStationSchedule[]
+    scheduleItems: Required<ApiStationSchedule>[]
 }>();
 
 const {DateTime} = useLuxon();
@@ -65,7 +65,7 @@ const {
     formatDateTime
 } = useStationDateTimeFormatter();
 
-interface ScheduleWithDetails extends ApiStationSchedule {
+type ScheduleWithDetails = Required<ApiStationSchedule> & {
     time_until: string,
     start_formatted: string,
     end_formatted: string
@@ -80,7 +80,7 @@ const processedScheduleItems = computed<ScheduleWithDetails[]>(() => {
 
         const newRow: ScheduleWithDetails = {
             ...row,
-            time_until: startMoment.toRelative({round: false}),
+            time_until: startMoment.toRelative({round: false}) ?? 'N/A',
             start_formatted: formatDateTime(
                 startMoment,
                 startMoment.hasSame(nowTz, 'day')

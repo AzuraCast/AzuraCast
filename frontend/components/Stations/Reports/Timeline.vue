@@ -180,8 +180,16 @@ const apiUrl = computed(() => {
     const apiUrl = new URL(baseApiUrl.value, document.location.href);
 
     const apiUrlParams = apiUrl.searchParams;
-    apiUrlParams.set('start', DateTime.fromJSDate(dateRange.value.startDate).toISO());
-    apiUrlParams.set('end', DateTime.fromJSDate(dateRange.value.endDate).toISO());
+
+    const startDate = DateTime.fromJSDate(dateRange.value.startDate);
+    if (startDate.isValid) {
+        apiUrlParams.set('start', startDate.toISO());
+    }
+
+    const endDate = DateTime.fromJSDate(dateRange.value.endDate);
+    if (endDate.isValid) {
+        apiUrlParams.set('end', endDate.toISO());
+    }
 
     return apiUrl.toString();
 });

@@ -1,7 +1,7 @@
 <template>
     <profile-header
         v-bind="props"
-        :station="profileInfo.station"
+        :station="profile.station"
     />
 
     <div
@@ -15,11 +15,11 @@
                 />
 
                 <profile-schedule
-                    :schedule-items="profileInfo.schedule"
+                    :schedule-items="profile.schedule"
                 />
 
                 <profile-streams
-                    :station="profileInfo.station"
+                    :station="profile.station"
                 />
             </template>
             <template v-else>
@@ -45,15 +45,15 @@
             <template v-if="hasActiveFrontend">
                 <profile-frontend
                     v-bind="props"
-                    :frontend-running="profileInfo.services.frontend_running"
+                    :frontend-running="profile.services.frontend_running"
                 />
             </template>
 
             <template v-if="hasActiveBackend">
                 <profile-backend
                     v-bind="props"
-                    :has-started="profileInfo.services.station_has_started"
-                    :backend-running="profileInfo.services.backend_running"
+                    :has-started="profile.services.station_has_started"
+                    :backend-running="profile.services.backend_running"
                 />
             </template>
             <template v-else>
@@ -75,12 +75,9 @@ import ProfileFrontend, {ProfileFrontendPanelParentProps} from "~/components/Sta
 import ProfileBackendNone from "~/components/Stations/Profile/BackendNonePanel.vue";
 import ProfileBackend, {ProfileBackendPanelParentProps} from "~/components/Stations/Profile/BackendPanel.vue";
 import NowPlayingNotStartedPanel from "~/components/Stations/Profile/NowPlayingNotStartedPanel.vue";
-import NowPlaying from "~/entities/NowPlaying";
 import {computed} from "vue";
-import {useAxios} from "~/vendor/axios";
 import {ApiStationProfile, BackendAdapters, FrontendAdapters} from "~/entities/ApiInterfaces.ts";
-import {useQuery} from "@tanstack/vue-query";
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import {DeepRequired} from "utility-types";
 
 export interface EnabledProfileProps extends ProfileBackendPanelParentProps,
     ProfileFrontendPanelParentProps,
@@ -89,9 +86,9 @@ export interface EnabledProfileProps extends ProfileBackendPanelParentProps,
     ProfileRequestPanelProps,
     ProfilePublicPagesPanelProps,
     ProfileStreamersPanelProps {
-    profileApiUri: string,
     stationSupportsRequests: boolean,
-    stationSupportsStreamers: boolean
+    stationSupportsStreamers: boolean,
+    profile: DeepRequired<ApiStationProfile>
 }
 
 const props = defineProps<EnabledProfileProps>();
@@ -102,31 +99,5 @@ const hasActiveFrontend = computed(() => {
 
 const hasActiveBackend = computed(() => {
     return props.backendType !== BackendAdapters.None;
-});
-
-const {axiosSilent} = useAxios();
-
-const {data: profileInfo} = useQuery<ApiStationProfile>({
-    queryKey: queryKeyWithStation([
-        QueryKeys.StationProfile,
-        'services'
-    ]),
-    queryFn: async ({signal}) => {
-        const {data} = await axiosSilent.get(props.profileApiUri, {signal});
-        return data;
-    },
-    placeholderData: () => ({
-        station: {
-            ...NowPlaying.station
-        },
-        services: {
-            backend_running: false,
-            frontend_running: false,
-            station_has_started: false,
-            station_needs_restart: false
-        },
-        schedule: []
-    }),
-    refetchInterval: 15 * 1000
 });
 </script>

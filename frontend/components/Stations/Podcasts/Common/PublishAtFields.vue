@@ -45,11 +45,13 @@ const {timezone} = toRefs(stationData);
 watch(model, (publishAt) => {
     if (publishAt !== null) {
         const publishDateTime = DateTime.fromSeconds(Number(publishAt), {zone: timezone.value});
-        publishDate.value = publishDateTime.toISODate();
-        publishTime.value = publishDateTime.toISOTime({
-            suppressMilliseconds: true,
-            includeOffset: false
-        });
+        if (publishDateTime.isValid) {
+            publishDate.value = publishDateTime.toISODate();
+            publishTime.value = publishDateTime.toISOTime({
+                suppressMilliseconds: true,
+                includeOffset: false
+            });
+        }
     } else {
         publishDate.value = '';
         publishTime.value = '';

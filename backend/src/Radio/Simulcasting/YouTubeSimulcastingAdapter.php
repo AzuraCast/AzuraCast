@@ -55,11 +55,14 @@ class YouTubeSimulcastingAdapter extends AbstractSimulcastingAdapter
     public function getLiquidsoapOutput(Simulcasting $simulcasting, \App\Entity\Station $station): string
     {
         $config = $this->getConfiguration();
+        $outputName = "simulcast_youtube_{$this->getCleanStreamName($simulcasting)}_{$simulcasting->getId()}";
         
         return <<<LIQ
-        # YouTube Live (HLS ingest)
-        output.youtube.live.hls(
+        # YouTube Live (HLS ingest) - Controllable source
+        {$outputName} = output.youtube.live.hls(
+            id="{$outputName}",
             key="{$config['stream_key']}",
+            start=false,
             fallible=true,
             %ffmpeg(
                 format="{$config['format']}",
@@ -81,6 +84,48 @@ class YouTubeSimulcastingAdapter extends AbstractSimulcastingAdapter
             ),
             simulcast_videostream
         )
+
+        # Telnet aliases to control it
+        server.register(
+        "{$outputName}_start",
+        fun(_) -> begin
+            {$outputName}.start();     # <- call with ()
+            "OK\n"
+        end
+        )
+
+        server.register(
+        "{$outputName}_stop",
+        fun(_) -> begin
+            {$outputName}.stop();      # <- call with ()
+            "OK\n"
+        end
+        )
+
+        server.register(
+        "{$outputName}_active",
+        fun(_) ->
+            if {$outputName}.is_active() then "true\n" else "false\n" end
+        )
+
+        # Build a status string from available fields
+        server.register(
+        "{$outputName}_status",
+        fun(_) ->
+            "id=" ^ {$outputName}.id()
+            ^ " active="  ^ (if {$outputName}.is_active()  then "true" else "false" end)
+            ^ " up="      ^ (if {$outputName}.is_up()      then "true" else "false" end)
+            ^ " started=" ^ (if {$outputName}.is_started() then "true" else "false" end)
+            ^ " ready="   ^ (if {$outputName}.is_ready()   then "true" else "false" end)
+            ^ "\n"
+        )
         LIQ;
+    }
+    
+    private function getCleanStreamName(Simulcasting $simulcasting): string
+    {
+        $streamName = $simulcasting->getName();
+        $cleanName = preg_replace('/[^a-zA-Z0-9_]/', '_', $streamName);
+        return strtolower($cleanName);
     }
 }

@@ -77,14 +77,14 @@ class SimulcastingManager
                 throw new RuntimeException('Adapter configuration is invalid');
             }
 
-            // // Validate that required video files exist
-            // $videoErrors = $this->liquidsoapService->validateVideoFiles($station);
-            // if (!empty($videoErrors)) {
-            //     // Try to create default video files
-            //     if (!$this->liquidsoapService->createDefaultVideoFiles($station)) {
-            //         throw new RuntimeException('Required video files missing and could not be created: ' . implode(', ', $videoErrors));
-            //     }
-            // }
+            // Validate that required video files exist
+            $videoErrors = $this->liquidsoapService->validateVideoFiles($station);
+            if (!empty($videoErrors)) {
+                // Try to create default video files
+                if (!$this->liquidsoapService->createDefaultVideoFiles($station)) {
+                    throw new RuntimeException('Required video files missing and could not be created: ' . implode(', ', $videoErrors));
+                }
+            }
 
             $this->logger->info('Starting simulcasting stream', [
                 'station_id' => $station->id,
@@ -106,9 +106,9 @@ class SimulcastingManager
             
             if (!empty($result) && !str_contains(implode(' ', $result), 'error')) {
                 // Success - update status to Running
-                $simulcasting->setStatus(\App\Entity\Enums\SimulcastingStatus::Running);
-                $this->em->persist($simulcasting);
-                $this->em->flush();
+                // $simulcasting->setStatus(\App\Entity\Enums\SimulcastingStatus::Running);
+                // $this->em->persist($simulcasting);
+                // $this->em->flush();
                 
                 $this->logger->info('Simulcasting stream started successfully', [
                     'station_id' => $station->id,
@@ -174,9 +174,9 @@ class SimulcastingManager
             
             if (!empty($result) && !str_contains(implode(' ', $result), 'error')) {
                 // Success - update status to Stopped
-                $simulcasting->setStatus(\App\Entity\Enums\SimulcastingStatus::Stopped);
-                $this->em->persist($simulcasting);
-                $this->em->flush();
+                // $simulcasting->setStatus(\App\Entity\Enums\SimulcastingStatus::Stopped);
+                // $this->em->persist($simulcasting);
+                // $this->em->flush();
                 
                 $this->logger->info('Simulcasting stream stopped successfully', [
                     'station_id' => $station->id,

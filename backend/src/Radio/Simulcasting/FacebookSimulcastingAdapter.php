@@ -56,16 +56,23 @@ class FacebookSimulcastingAdapter extends AbstractSimulcastingAdapter
     public function getLiquidsoapOutput(Simulcasting $simulcasting, \App\Entity\Station $station): string
     {
         $config = $this->getConfiguration();
-        
+        $outputName = "simulcast_facebook_{$this->getCleanStreamName($simulcasting)}_{$simulcasting->getId()}";
+        $instanceId = $simulcasting->getId();
+
         return <<<LIQ
-        # Facebook Live (RTMPS)
-        output.url(
+        # Facebook Live (RTMPS) - Controllable source
+        {$outputName} = output.url(
+            id="{$outputName}",
             url="{$config['url']}{$config['stream_key']}",
+            start=false,
             fallible=true,
+            restart_delay = null(),
+            
             %ffmpeg(
                 format="{$config['format']}",
                 %video.raw(
                     codec="{$config['video_codec']}",
+                    filters_video="setpts=N/(TB*25),fps=25,format=yuv420p,scale=1280:720,setsar=1",
                     pixel_format="yuv420p",
                     b=simulcast_v_bps,
                     preset="veryfast",
@@ -82,6 +89,47 @@ class FacebookSimulcastingAdapter extends AbstractSimulcastingAdapter
             ),
             simulcast_videostream
         )
+
+        # Telnet aliases to control it
+        server.register(
+        "{$outputName}_start",
+        fun(_) -> begin
+            {$outputName}.start();     # <- call with ()
+            "OK"
+        end
+        )
+
+        server.register(
+        "{$outputName}_stop",
+        fun(_) -> begin
+            {$outputName}.stop();      # <- call with ()
+            "OK"
+        end
+        )
+
+        server.register(
+        "{$outputName}_active",
+        fun(_) ->
+            if {$outputName}.is_active() then "true" else "false" end
+        )
+
+        server.register(
+        "{$outputName}_status",
+        fun(_) ->
+            "id=" ^ {$outputName}.id()
+            ^ " active="  ^ (if {$outputName}.is_active()  then "true" else "false" end)
+            ^ " up="      ^ (if {$outputName}.is_up()      then "true" else "false" end)
+            ^ " started=" ^ (if {$outputName}.is_started() then "true" else "false" end)
+            ^ " ready="   ^ (if {$outputName}.is_ready()   then "true" else "false" end)
+            ^ ""
+        )
         LIQ;
+    }
+    
+    private function getCleanStreamName(Simulcasting $simulcasting): string
+    {
+        $streamName = $simulcasting->getName();
+        $cleanName = preg_replace('/[^a-zA-Z0-9_]/', '_', $streamName);
+        return strtolower($cleanName);
     }
 }

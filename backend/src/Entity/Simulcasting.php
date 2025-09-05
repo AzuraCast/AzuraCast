@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Attributes\AuditIgnore;
 use App\Entity\Enums\SimulcastingStatus;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Repository\SimulcastingRepository;

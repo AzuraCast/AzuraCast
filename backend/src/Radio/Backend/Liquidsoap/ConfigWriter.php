@@ -1378,19 +1378,44 @@ final class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(
             <<<LIQ
             # Simulcasting Configuration
-            # Video file for simulcasting
+            # ==========================
+
+            # Post simulcast events to AzuraCast API
+            # Required keys in m: "instance_id", "event"
+            # Optional key: "reason"
+            def azuracast.simulcast_notify(m) =
+                def f() =
+                    j = json()
+
+                    # required
+                    j.add("instance_id", list.assoc("instance_id", m))
+                    j.add("event",       list.assoc("event", m))
+
+                    # optional reason
+                    if list.assoc.mem("reason", m) then
+                        j.add("reason", list.assoc("reason", m))
+                    end
+
+                    _ = azuracast.api_call("simulcast",json.stringify(compact=true, j))
+                end
+
+                thread.run(fast=false, f)
+            end
+
+
+            # Video and font files for simulcasting
             simulcast_video_file = "{$stationMediaDir}/videostream/video.mp4"
             
             # Build A/V source for simulcasting
-            # Loop the background video and mux with radio audio
+            # Loop the background video, add overlay, then mux with radio audio
             simulcast_videostream = single(simulcast_video_file)
             simulcast_videostream = source.mux.video(video=simulcast_videostream, radio)
             
             # Encoding settings for simulcasting
-            simulcast_v_fps = 30
-            simulcast_v_gop = 60
-            simulcast_v_bps = "2500k"
-            simulcast_a_bps = "128k"
+            simulcast_v_fps = 25
+            simulcast_v_gop = 50
+            simulcast_v_bps = "300k"
+            simulcast_a_bps = "96k"
             LIQ
         );
 
@@ -1408,7 +1433,6 @@ final class ConfigWriter implements EventSubscriberInterface
                     $event->appendLines([
                         '',
                         "# Simulcasting: {$stream->getName()}",
-                        "{$outputName} = ",
                         $liquidsoapOutput,
                     ]);
                 }

@@ -72,9 +72,9 @@ type FormGroupCheckboxProps = FormFieldProps<T> & FormLabelParentProps & {
 const props = withDefaults(
     defineProps<FormGroupCheckboxProps>(),
     {
-        name: null,
-        label: null,
-        description: null,
+        name: '',
+        label: '',
+        description: '',
         inputAttrs: () => ({})
     }
 );

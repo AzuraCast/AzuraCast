@@ -76,8 +76,8 @@ const optionsWithCustom = computed(() => {
     return parsedOptions;
 });
 
-const radioField = ref<"custom" | T>(null);
-const customField = ref<T>(null);
+const radioField = ref<"custom" | T | null>(null);
+const customField = ref<T | null>(null);
 
 const watchers: WatchPausableReturn[] = [];
 

@@ -2,7 +2,7 @@
     <code-mirror
         v-model="textValue"
         basic
-        :lang="lang"
+        :lang="lang ?? undefined"
         :dark="isDark"
     />
 </template>

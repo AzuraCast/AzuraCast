@@ -106,7 +106,9 @@ const onButtonClick = (value: boolean) => {
 };
 
 onMounted(() => {
-    bsModal = new Modal($modal.value);
-    bsModal.show();
+    if ($modal.value) {
+        bsModal = new Modal($modal.value);
+        bsModal.show();
+    }
 });
 </script>

@@ -59,6 +59,7 @@ import Modal from "~/components/Common/Modal.vue";
 import FormFile from "~/components/Form/FormFile.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import {ApiStatus} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     importUrl: string
@@ -78,19 +79,23 @@ const {show: open, hide} = useHasModal($modal);
 const {notifySuccess, notifyError} = useNotify();
 const {axios} = useAxios();
 
-const doSubmit = () => {
+const doSubmit = async () => {
+    if (!configFile.value) {
+        return;
+    }
+
     const formData = new FormData();
     formData.append('file', configFile.value);
 
-    void axios.post(props.importUrl, formData).then((resp) => {
-        if (resp.data.success) {
-            notifySuccess(resp.data.message);
-        } else {
-            notifyError(resp.data.message);
-        }
+    const {data} = await axios.post<ApiStatus>(props.importUrl, formData);
 
-        hide();
-    });
+    if (data.success) {
+        notifySuccess(data.message);
+    } else {
+        notifyError(data.message);
+    }
+
+    hide();
 };
 
 const onHidden = () => {

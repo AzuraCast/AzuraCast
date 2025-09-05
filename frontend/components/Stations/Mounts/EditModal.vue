@@ -64,7 +64,7 @@ const {notifySuccess} = useNotify();
 const {record, reset} = useResettableRef({
     intro_path: null,
     links: {
-        intro: null
+        intro: ''
     }
 });
 

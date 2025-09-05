@@ -55,7 +55,7 @@ const props = defineProps<{
 
 const emit = defineEmits<HasRelistEmit>();
 
-const file = ref(null);
+const file = ref<string | null>(null);
 
 type RenameModalRecord = {
     newPath: string

@@ -47,8 +47,8 @@ withDefaults(
         description?: string
     }>(),
     {
-        label: null,
-        description: null
+        label: '',
+        description: ''
     }
 );
 

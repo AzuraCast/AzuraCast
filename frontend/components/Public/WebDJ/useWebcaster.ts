@@ -22,7 +22,7 @@ export const [useProvideWebcaster, useInjectWebcaster] = createRequiredInjection
         const metadata = shallowRef<WebcasterMetadata | null>(null);
         const isConnected = ref(false);
 
-        let socket: WebSocket | null = null;
+        let socket: WebSocket;
 
         const sendMetadata = (data: WebcasterMetadata) => {
             metadata.value = data;

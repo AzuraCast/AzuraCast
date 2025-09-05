@@ -142,7 +142,7 @@ onMounted(() => {
         // Disable any other players.
         toggle();
 
-        wavesurfer.setVolume(logVolume.value);
+        wavesurfer?.setVolume(logVolume.value);
 
         if (!isExternalJson.value) {
             cacheWaveformRemotely();
@@ -164,14 +164,14 @@ onMounted(() => {
 
         if (waveformJson) {
             isExternalJson.value = true;
-            void wavesurfer.load(props.audioUrl, waveformJson);
+            void wavesurfer?.load(props.audioUrl, waveformJson);
         } else {
             isExternalJson.value = false;
-            void wavesurfer.load(props.audioUrl);
+            void wavesurfer?.load(props.audioUrl);
         }
     }).catch(() => {
         isExternalJson.value = false;
-        void wavesurfer.load(props.audioUrl);
+        void wavesurfer?.load(props.audioUrl);
     });
 });
 

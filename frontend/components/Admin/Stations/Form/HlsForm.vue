@@ -105,6 +105,6 @@ const tabClassWithBackend = computed(() => {
         return tabClass.value;
     }
 
-    return (isBackendEnabled.value) ? null : 'text-muted';
+    return (isBackendEnabled.value) ? '' : 'text-muted';
 });
 </script>

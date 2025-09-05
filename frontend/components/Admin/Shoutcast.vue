@@ -91,7 +91,7 @@ import {ApiAdminShoutcastStatus} from "~/entities/ApiInterfaces.ts";
 const apiUrl = getApiUrl('/admin/shoutcast');
 
 const isLoading = ref(true);
-const version = ref(null);
+const version = ref<string | null>(null);
 
 const {$gettext} = useTranslate();
 
@@ -99,7 +99,7 @@ const langInstalledVersion = computed(() => {
     return $gettext(
         'Shoutcast version "%{version}" is currently installed.',
         {
-            version: version.value
+            version: version.value ?? 'N/A'
         }
     );
 });

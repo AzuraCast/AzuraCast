@@ -65,7 +65,7 @@ import AdminStationsRequestsForm from "~/components/Admin/Stations/Form/Requests
 import AdminStationsStreamersForm from "~/components/Admin/Stations/Form/StreamersForm.vue";
 import {computed, nextTick, onMounted, ref, watch} from "vue";
 import {useNotify} from "~/functions/useNotify";
-import {useAxios} from "~/vendor/axios";
+import {isApiError, useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
 import Loading from "~/components/Common/Loading.vue";
 import Tabs from "~/components/Common/Tabs.vue";
@@ -122,7 +122,7 @@ watch(isLoading, (newValue) => {
     emit('loadingUpdate', newValue);
 });
 
-const error = ref(null);
+const error = ref<string | null>(null);
 
 const clear = () => {
     resetForm();
@@ -182,7 +182,11 @@ const submit = async () => {
         notifySuccess();
         emit('submitted');
     } catch (e) {
-        error.value = e.response.data.message;
+        if (isApiError(e)) {
+            error.value = e.response.data.message;
+        } else {
+            error.value = 'An unexpected error occurred.';
+        }
     }
 };
 

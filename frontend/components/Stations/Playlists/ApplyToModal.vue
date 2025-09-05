@@ -164,7 +164,7 @@ const {notifySuccess} = useNotify();
 
 const save = async () => {
     const {valid} = await r$.$validate();
-    if (!valid) {
+    if (!valid || !applyToUrl.value) {
         return;
     }
 

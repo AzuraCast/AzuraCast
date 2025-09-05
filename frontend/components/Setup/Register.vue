@@ -114,7 +114,7 @@ import {email, required} from "@regle/rules";
 withDefaults(
     defineProps<{
         csrf: string,
-        error?: string
+        error?: string | null
     }>(),
     {
         error: null

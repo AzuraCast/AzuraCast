@@ -53,14 +53,24 @@ const {isDark} = storeToRefs(useTheme());
 const {localeWithDashes} = useAzuraCast();
 const {DateTime} = useLuxon();
 
-const dateRange = computed({
+type DateRangeTuple = Date[] | null;
+
+const dateRange = computed<DateRangeTuple>({
     get() {
+        if (!props.modelValue) {
+            return null;
+        }
+
         return [
-            props.modelValue?.startDate ?? null,
-            props.modelValue?.endDate ?? null,
+            props.modelValue.startDate,
+            props.modelValue.endDate,
         ]
     },
     set(newValue) {
+        if (newValue === null) {
+            return;
+        }
+
         const newRange = {
             startDate: newValue[0],
             endDate: newValue[1]

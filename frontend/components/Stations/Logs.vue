@@ -92,12 +92,14 @@ const logsUrl = getStationApiUrl('/logs');
 
 const {axios} = useAxios();
 
-const {data, isLoading} = useQuery<ApiLogType[]>({
+type ApiLogRow = Required<ApiLogType>
+
+const {data, isLoading} = useQuery<ApiLogRow[]>({
     queryKey: queryKeyWithStation([
         QueryKeys.StationLogs
     ]),
     queryFn: async ({signal}) => {
-        const {data} = await axios.get<ApiLogType[]>(logsUrl.value, {signal});
+        const {data} = await axios.get<ApiLogRow[]>(logsUrl.value, {signal});
         return data;
     },
     placeholderData: () => []

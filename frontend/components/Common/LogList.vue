@@ -17,7 +17,7 @@
 import {ApiLogType} from "~/entities/ApiInterfaces.ts";
 
 defineProps<{
-    logs: ApiLogType[]
+    logs: Required<ApiLogType>[]
 }>();
 
 const emit = defineEmits<{

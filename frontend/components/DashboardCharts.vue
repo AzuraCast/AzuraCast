@@ -1,8 +1,9 @@
 <template>
     <loading
         :loading="chartsLoading"
+        lazy
     >
-        <tabs>
+        <tabs v-if="chartsData">
             <tab :label="$gettext('Average Listeners')">
                 <time-series-chart
                     style="width: 100%;"

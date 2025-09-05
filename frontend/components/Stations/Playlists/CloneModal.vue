@@ -90,7 +90,7 @@ const open = (name: string, newCloneUrl: string) => {
         {name: name}
     );
 
-    $modal.value.show();
+    $modal.value?.show();
 };
 
 const {notifySuccess} = useNotify();
@@ -98,7 +98,7 @@ const {axios} = useAxios();
 
 const doSubmit = async () => {
     const {valid} = await r$.$validate();
-    if (!valid) {
+    if (!valid || !cloneUrl.value) {
         return;
     }
 
@@ -111,7 +111,7 @@ const doSubmit = async () => {
     notifySuccess();
     emit('needs-restart');
     emit('relist');
-    $modal.value.hide();
+    $modal.value?.hide();
 };
 
 defineExpose({

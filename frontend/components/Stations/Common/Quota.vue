@@ -47,14 +47,14 @@ const emit = defineEmits<{
 
 const loading = ref(true);
 const quota = shallowRef<Quota>({
-    used: null,
-    used_bytes: null,
-    used_percent: null,
-    available: null,
-    available_bytes: null,
+    used: '',
+    used_bytes: '',
+    used_percent: 0,
+    available: '',
+    available_bytes: '',
     quota: null,
     quota_bytes: null,
-    is_full: null,
+    is_full: false,
     num_files: null
 });
 

@@ -238,7 +238,9 @@ const isSeeking = ref(false);
 
 const seekingPosition = computed({
     get: () => {
-        return (100.0 * (position.value / Number(duration.value)));
+        return (position.value !== null)
+            ? (100.0 * (position.value / Number(duration.value)))
+            : 0;
     },
     set: (val) => {
         if (!isSeeking.value || !source.value) {

@@ -84,9 +84,9 @@ type FormGroupSelectProps = FormFieldProps<T> & FormLabelParentProps & {
 const props = withDefaults(
     defineProps<FormGroupSelectProps>(),
     {
-        name: null,
-        label: null,
-        description: null,
+        name: '',
+        label: '',
+        description: '',
         multiple: false
     }
 );

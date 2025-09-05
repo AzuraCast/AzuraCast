@@ -6,6 +6,7 @@
         >
             <loading :loading="isLoading" lazy>
                 <log-list
+                    v-if="data"
                     :logs="data.globalLogs"
                     @view="viewLog"
                 />
@@ -13,7 +14,7 @@
         </card-page>
 
         <card-page
-            v-if="data.stationLogs.length > 0"
+            v-if="data && data.stationLogs.length > 0"
             header-id="hdr_logs_by_station"
             :title="$gettext('Logs by Station')"
         >
@@ -52,15 +53,18 @@ import {useAxios} from "~/vendor/axios.ts";
 import {useQuery} from "@tanstack/vue-query";
 import {ApiAdminLogList} from "~/entities/ApiInterfaces.ts";
 import Loading from "~/components/Common/Loading.vue";
+import { DeepRequired } from "utility-types";
 
 const {axios} = useAxios();
 
 const systemLogsUrl = getApiUrl('/admin/logs');
 
-const {data, isLoading} = useQuery<ApiAdminLogList>({
+type LogListRow = DeepRequired<ApiAdminLogList>
+
+const {data, isLoading} = useQuery<LogListRow>({
     queryKey: [QueryKeys.AdminDebug, 'logs'],
     queryFn: async ({signal}) => {
-        const {data} = await axios.get<ApiAdminLogList>(systemLogsUrl.value, {signal});
+        const {data} = await axios.get<LogListRow>(systemLogsUrl.value, {signal});
         return data;
     },
     placeholderData: () => ({

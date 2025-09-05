@@ -108,6 +108,14 @@ import Modal from "~/components/Common/Modal.vue";
 import FormFile from "~/components/Form/FormFile.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import {ApiStatus} from "~/entities/ApiInterfaces.ts";
+
+type BatchImportResult = Required<ApiStatus> & {
+    import_results: {
+        path: string,
+        match: string | null
+    }[]
+}
 
 const emit = defineEmits<HasRelistEmit>();
 
@@ -115,7 +123,7 @@ const importPlaylistUrl = ref<string | null>(null);
 const playlistFile = ref<File | null>(null);
 const overwritePlaylist = ref(false);
 
-const results = ref(null);
+const results = ref<BatchImportResult | null>(null);
 
 const uploaded = (file: File) => {
     playlistFile.value = file;
@@ -135,20 +143,24 @@ const open = (newImportPlaylistUrl: string) => {
 const {notifySuccess, notifyError} = useNotify();
 const {axios} = useAxios();
 
-const doSubmit = () => {
+const doSubmit = async () => {
+    if (playlistFile.value === null || importPlaylistUrl.value === null) {
+        return;
+    }
+
     const formData = new FormData();
     formData.append('playlist_file', playlistFile.value);
 
-    void axios.post(importPlaylistUrl.value, formData).then((resp) => {
-        if (resp.data.success) {
-            results.value = resp.data;
+    const {data} = await axios.post<BatchImportResult>(importPlaylistUrl.value, formData);
 
-            notifySuccess(resp.data.message);
-        } else {
-            notifyError(resp.data.message);
-            hide();
-        }
-    });
+    if (data.success) {
+        results.value = data;
+
+        notifySuccess(data.message);
+    } else {
+        notifyError(data.message);
+        hide();
+    }
 };
 
 const onHidden = () => {

@@ -211,7 +211,7 @@ onMounted(() => {
     });
 
     flow.on('filesSubmitted', () => {
-        flow.upload();
+        flow?.upload();
     });
 
     flow.on('fileProgress', (file: OriginalFlowFile) => {

@@ -60,7 +60,7 @@ const updateLogs = () => {
             logs.value = logs.value + data.contents + "\n";
             if (scrollToBottom.value && $textarea.value) {
                 void nextTick(() => {
-                    $textarea.value.scrollTop = $textarea.value?.scrollHeight;
+                    $textarea.value!.scrollTop = $textarea.value?.scrollHeight ?? 0;
                 });
             }
         }

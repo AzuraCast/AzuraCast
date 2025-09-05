@@ -198,7 +198,8 @@
                     <template #cell(now_playing)="{ item }">
                         <div class="d-flex align-items-center">
                             <album-art
-                                v-if="showAlbumArt && item.now_playing?.song?.art !== null"
+                                v-if="showAlbumArt && item.now_playing &&
+                                    item.now_playing.song && item.now_playing.song.art"
                                 :src="item.now_playing.song.art"
                                 class="flex-shrink-0 pe-3"
                             />

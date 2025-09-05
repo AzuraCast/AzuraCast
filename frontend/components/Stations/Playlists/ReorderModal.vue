@@ -113,12 +113,18 @@ import {IconChevronBarDown, IconChevronBarUp, IconChevronDown, IconChevronUp} fr
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {StreamChannel, usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {useDraggable} from "vue-draggable-plus";
+import {ApiStationMedia} from "~/entities/ApiInterfaces.ts";
+
+type StationPlaylistMedia = {
+    id: number,
+    media: Required<ApiStationMedia>
+}
 
 const loading = ref(true);
 const reorderUrl = ref<string | null>(null);
 
 const $tbody = useTemplateRef('$tbody');
-const media = ref([]);
+const media = ref<StationPlaylistMedia[]>([]);
 
 const $modal = useTemplateRef('$modal');
 const {show} = useHasModal($modal);
@@ -139,7 +145,11 @@ const open = (newReorderUrl: string) => {
 const {notifySuccess} = useNotify();
 const {$gettext} = useTranslate();
 
-const save = () => {
+const save = async () => {
+    if (!reorderUrl.value) {
+        return;
+    }
+
     const newOrder: Record<number, number> = {};
     let i = 0;
 
@@ -148,33 +158,32 @@ const save = () => {
         newOrder[row.id] = i;
     });
 
-    void axios.put(reorderUrl.value, {'order': newOrder}).then(() => {
-        notifySuccess($gettext('Playlist order set.'));
-    });
+    await axios.put(reorderUrl.value, {'order': newOrder});
+    notifySuccess($gettext('Playlist order set.'));
 };
 
 const moveDown = (index: number) => {
     const currentItem = media.value.splice(index, 1)[0];
     media.value.splice(index + 1, 0, currentItem);
-    save();
+    void save();
 };
 
 const moveToBottom = (index: number) => {
     const currentItem = media.value.splice(index, 1)[0];
     media.value.splice(media.value.length, 0, currentItem);
-    save();
+    void save();
 };
 
 const moveUp = (index: number) => {
     const currentItem = media.value.splice(index, 1)[0];
     media.value.splice(index - 1, 0, currentItem);
-    save();
+    void save();
 };
 
 const moveToTop = (index: number) => {
     const currentItem = media.value.splice(index, 1)[0];
     media.value.splice(0, 0, currentItem);
-    save();
+    void save();
 };
 
 const {stop} = usePlayerStore();
@@ -182,7 +191,7 @@ const {stop} = usePlayerStore();
 const onShown = () => {
     useDraggable($tbody, media, {
         onEnd() {
-            save();
+            void save();
         }
     });
 };

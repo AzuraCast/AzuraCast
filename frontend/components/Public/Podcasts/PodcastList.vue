@@ -69,7 +69,7 @@
         :provider="podcastsItemProvider"
         paginated
     >
-        <template #item="{item}: {item: ApiPodcast}">
+        <template #item="{item}">
             <div class="card mb-4">
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title m-0 flex-fill">
@@ -123,7 +123,6 @@ import {useTranslate} from "~/vendor/gettext.ts";
 import {IconRss} from "~/components/Common/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
 import GridLayout from "~/components/Common/GridLayout.vue";
-import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
 import {usePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";

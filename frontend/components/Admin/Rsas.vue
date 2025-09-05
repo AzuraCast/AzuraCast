@@ -142,7 +142,7 @@ const apiUrl = getApiUrl('/admin/rsas');
 const licenseUrl = getApiUrl('/admin/rsas/license');
 
 const isLoading = ref(true);
-const version = ref(null);
+const version = ref<string | null>(null);
 const hasLicense = ref(false);
 
 const {$gettext} = useTranslate();
@@ -151,7 +151,7 @@ const langInstalledVersion = computed(() => {
     return $gettext(
         'RSAS version "%{version}" is currently installed.',
         {
-            version: version.value
+            version: version.value ?? 'N/A'
         }
     );
 });

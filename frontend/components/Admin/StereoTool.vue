@@ -148,7 +148,7 @@ import {ApiAdminStereoToolStatus} from "~/entities/ApiInterfaces.ts";
 const apiUrl = getApiUrl('/admin/stereo_tool');
 
 const isLoading = ref(true);
-const version = ref(null);
+const version = ref<string | null>(null);
 
 const {$gettext} = useTranslate();
 
@@ -156,15 +156,17 @@ const langInstalledVersion = computed(() => {
     return $gettext(
         'Stereo Tool version %{version} is currently installed.',
         {
-            version: version.value
+            version: version.value ?? 'N/A'
         }
     );
 });
 
 const {notifyError} = useNotify();
 
-const onError = (_: unknown, message: string) => {
-    notifyError(message);
+const onError = (_: unknown, message: string | null) => {
+    if (message !== null) {
+        notifyError(message);
+    }
 };
 
 const {axios} = useAxios();

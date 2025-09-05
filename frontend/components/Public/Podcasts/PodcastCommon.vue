@@ -35,9 +35,9 @@
 </template>
 
 <script setup lang="ts">
-import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
+import { ApiPodcastRow } from "./usePodcastQuery";
 
 defineProps<{
-    podcast: ApiPodcast
+    podcast: ApiPodcastRow
 }>();
 </script>

@@ -54,7 +54,7 @@ import {email, required} from "@regle/rules";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {computed, ref, useTemplateRef} from "vue";
 import {useNotify} from "~/functions/useNotify";
-import {useAxios} from "~/vendor/axios";
+import {isApiError, useAxios} from "~/vendor/axios";
 import {getApiUrl} from "~/router.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
@@ -76,7 +76,7 @@ const emit = defineEmits<{
 const userUrl = getApiUrl('/frontend/account/me');
 
 const loading = ref(true);
-const error = ref(null);
+const error = ref<string | null>(null);
 
 const {record: form, reset: resetForm} = useResettableRef({
     name: '',
@@ -155,7 +155,11 @@ const doSubmit = async () => {
         emit('reload');
         hide();
     } catch (e) {
-        error.value = e.response.data.message;
+        if (isApiError(e)) {
+            error.value = e.response.data.message;
+        } else {
+            error.value = String(e);
+        }
     }
 };
 

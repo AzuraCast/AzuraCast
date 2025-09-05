@@ -60,7 +60,9 @@ const servicesUrl = getApiUrl('/admin/services');
 
 const {axios, axiosSilent} = useAxios();
 
-const {data: services, isLoading} = useQuery<ApiAdminServiceData[]>({
+type ServiceDataRow = Required<ApiAdminServiceData>;
+
+const {data: services, isLoading} = useQuery<ServiceDataRow[]>({
     queryKey: [QueryKeys.AdminIndex, 'services'],
     queryFn: async ({signal}) => {
         const {data} = await axiosSilent.get(servicesUrl.value, {signal});

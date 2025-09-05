@@ -112,7 +112,7 @@ const {audioInputs} = useDevicesList({
     constraints: {audio: true, video: false}
 });
 
-const device = ref(null);
+const device = ref<string | null>(null);
 watch(audioInputs, (inputs) => {
     if (device.value === null) {
         device.value = inputs[0]?.deviceId;
@@ -122,14 +122,22 @@ watch(audioInputs, (inputs) => {
 let destination: AudioNode | null = null;
 
 const createSource = () => {
+    if (destination === null) {
+        return;
+    }
+
     if (source.value != null) {
         source.value.disconnect(destination);
     }
 
-    createMicrophoneSource(device.value, (newSource) => {
-        source.value = newSource;
-        newSource.connect(destination);
-    });
+    if (device.value) {
+        createMicrophoneSource(device.value, (newSource) => {
+            source.value = newSource;
+            if (destination !== null) {
+                newSource.connect(destination);
+            }
+        });
+    }
 };
 
 watch(device, () => {

@@ -74,7 +74,7 @@
                     header-id="hdr_update_via_web"
                     :title="$gettext('Update AzuraCast via Web')"
                 >
-                    <template v-if="props.enableWebUpdates">
+                    <template v-if="props && props.enableWebUpdates">
                         <div class="card-body">
                             <p class="card-text">
                                 {{
@@ -99,7 +99,7 @@
                     </template>
 
                     <template
-                        v-if="props.enableWebUpdates"
+                        v-if="props && props.enableWebUpdates"
                         #footer_actions
                     >
                         <router-link

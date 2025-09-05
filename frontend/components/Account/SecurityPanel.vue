@@ -26,7 +26,7 @@
         </template>
 
         <loading :loading="securityLoading">
-            <div class="card-body">
+            <div class="card-body" v-if="security">
                 <h5>
                     {{ $gettext('Two-Factor Authentication') }}
                     <enabled-badge :enabled="security.two_factor_enabled"/>

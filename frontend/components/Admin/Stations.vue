@@ -69,6 +69,7 @@
         </card-page>
 
         <admin-stations-edit-modal
+            v-if="props"
             v-bind="props.formProps"
             ref="$editModal"
             :create-url="listUrl"

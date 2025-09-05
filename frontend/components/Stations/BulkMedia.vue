@@ -384,6 +384,10 @@ const doSubmit = () => {
         notifyError('Please preview the changes first.');
         return;
     }
+    if (!importFile.value) {
+        notifyError('No file provided.');
+        return;
+    }
 
     const formData = new FormData();
     formData.append('import_file', importFile.value);

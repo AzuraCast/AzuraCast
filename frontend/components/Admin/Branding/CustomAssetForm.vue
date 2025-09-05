@@ -3,6 +3,7 @@
         <div class="flex-shrink-0">
             <a
                 v-lightbox
+                v-if="url"
                 :href="url"
                 target="_blank"
             >

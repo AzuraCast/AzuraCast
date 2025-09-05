@@ -108,7 +108,7 @@ import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import StreamingLogView from "~/components/Common/StreamingLogView.vue";
 import {ref, useTemplateRef} from "vue";
-import {useAxios} from "~/vendor/axios";
+import {isApiError, useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
@@ -163,8 +163,12 @@ const submit = async () => {
     try {
         const {data} = await axios.post<ApiTaskWithLog>(props.runBackupUrl, form.value);
         logUrl.value = data.logUrl;
-    } catch (error) {
-        error.value = error.response.data.message
+    } catch (e) {
+        if (isApiError(e)) {
+            error.value = e.response.data.message;
+        } else {
+            error.value = String(e);
+        }
     }
 };
 

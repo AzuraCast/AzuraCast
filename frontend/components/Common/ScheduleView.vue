@@ -35,7 +35,13 @@ const props = defineProps<{
 
 const $calendar = useTemplateRef('$calendar');
 
-const getCalendarApi = (): Calendar => $calendar.value?.getApi();
+const getCalendarApi = (): Calendar => {
+    if ($calendar.value) {
+        return $calendar.value?.getApi();
+    } else {
+        throw new Error('Calendar unavailable');
+    }
+}
 
 defineExpose({
     getCalendarApi

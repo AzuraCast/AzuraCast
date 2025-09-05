@@ -17,6 +17,7 @@
 
                 <loading :loading="isLoading" lazy>
                     <log-list
+                        v-if="data"
                         :logs="data"
                         @view="viewLog"
                     />

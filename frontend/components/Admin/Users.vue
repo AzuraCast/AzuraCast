@@ -70,6 +70,7 @@
         </card-page>
 
         <edit-modal
+            v-if="props"
             ref="$editModal"
             :create-url="listUrl"
             :roles="props.roles"

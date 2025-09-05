@@ -86,7 +86,12 @@ const baseAuthUrl = 'https://www.dropbox.com/oauth2/authorize';
 
 const authUrl = computed(() => {
     const params = new URLSearchParams();
-    params.append('client_id', form.value?.dropboxAppKey);
+
+    const clientId = form.value?.dropboxAppKey;
+    if (clientId) {
+        params.append('client_id', clientId);
+    }
+
     params.append('response_type', 'code');
     params.append('token_access_type', 'offline');
 

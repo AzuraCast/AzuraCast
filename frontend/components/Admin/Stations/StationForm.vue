@@ -135,6 +135,10 @@ const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const doLoad = async () => {
+    if (!props.editUrl) {
+        return;
+    }
+
     isLoading.value = true;
 
     try {
@@ -161,8 +165,10 @@ onMounted(() => {
 });
 
 const submit = async () => {
+    const apiUrl = (props.isEditMode) ? props.editUrl : props.createUrl;
+
     const {valid} = await r$.value.$validate();
-    if (!valid) {
+    if (!valid || !apiUrl) {
         return;
     }
 
@@ -173,9 +179,7 @@ const submit = async () => {
             method: (props.isEditMode)
                 ? 'PUT'
                 : 'POST',
-            url: (props.isEditMode)
-                ? props.editUrl
-                : props.createUrl,
+            url: apiUrl,
             data: form.value
         });
 
@@ -185,7 +189,7 @@ const submit = async () => {
         if (isApiError(e)) {
             error.value = e.response.data.message;
         } else {
-            error.value = 'An unexpected error occurred.';
+            error.value = String(e);
         }
     }
 };

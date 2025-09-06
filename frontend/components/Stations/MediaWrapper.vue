@@ -1,6 +1,6 @@
 <template>
     <loading :loading="propsLoading" lazy>
-        <media v-bind="props"/>
+        <media v-if="props" v-bind="props"/>
     </loading>
 </template>
 
@@ -12,12 +12,15 @@ import {useQuery} from "@tanstack/vue-query";
 import Loading from "~/components/Common/Loading.vue";
 import {getStationApiUrl} from "~/router.ts";
 import Media from "~/components/Stations/Media.vue";
+import {DeepRequired} from "utility-types";
 
 const propsUrl = getStationApiUrl('/vue/files');
 
 const {axios} = useAxios();
 
-const {data: props, isLoading: propsLoading} = useQuery<ApiStationsVueFilesProps>({
+type FilesProps = DeepRequired<ApiStationsVueFilesProps>
+
+const {data: props, isLoading: propsLoading} = useQuery<FilesProps>({
     queryKey: queryKeyWithStation(
         [
             QueryKeys.StationMedia,
@@ -25,7 +28,7 @@ const {data: props, isLoading: propsLoading} = useQuery<ApiStationsVueFilesProps
         ]
     ),
     queryFn: async ({signal}) => {
-        const {data} = await axios.get<ApiStationsVueFilesProps>(propsUrl.value, {signal});
+        const {data} = await axios.get<FilesProps>(propsUrl.value, {signal});
         return data;
     }
 });

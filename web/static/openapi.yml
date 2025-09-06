@@ -7820,7 +7820,6 @@ components:
           description: 'ID of the StationPlaylistMedia record associating this track with the playlist'
           type: integer
           example: 1
-          nullable: true
         media_id:
           description: 'ID of the StationPlaylistMedia record associating this track with the playlist'
           type: integer

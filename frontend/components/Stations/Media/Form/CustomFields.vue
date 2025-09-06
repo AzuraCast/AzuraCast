@@ -22,7 +22,7 @@ import {useStationsMediaForm} from "~/components/Stations/Media/Form/form.ts";
 import {ValidatedField} from "~/components/Form/useFormField.ts";
 
 defineProps<{
-    customFields: CustomField[],
+    customFields: Required<CustomField>[],
 }>();
 
 const {r$} = storeToRefs(useStationsMediaForm());

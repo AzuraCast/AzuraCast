@@ -53,7 +53,8 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import PublishAtFields from "~/components/Stations/Podcasts/Common/PublishAtFields.vue";
 import {useAppScopedRegle} from "~/vendor/regle.ts";
-import { BatchPodcastEpisode } from "./BatchEditModal.vue";
+import {BatchPodcastEpisode} from "./BatchEditModal.vue";
+import {Ref} from "vue";
 
 defineProps<{
     index: number,
@@ -62,7 +63,7 @@ defineProps<{
 const row = defineModel<BatchPodcastEpisode>('row');
 
 const {r$} = useAppScopedRegle(
-    row,
+    row as Ref<BatchPodcastEpisode>,
     {
         id: {required},
         title: {required},

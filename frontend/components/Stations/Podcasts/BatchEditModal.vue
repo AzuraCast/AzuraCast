@@ -27,7 +27,7 @@
                                 <th>{{ $gettext('Episode Number') }}</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="rows">
                             <batch-edit-row
                                 v-for="(row, index) in rows"
                                 :key="row.id"

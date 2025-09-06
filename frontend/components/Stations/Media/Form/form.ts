@@ -4,8 +4,8 @@ import {defineStore} from "pinia";
 import {required} from "@regle/rules";
 import {ApiStationMedia, CustomField} from "~/entities/ApiInterfaces.ts";
 import {forEach} from "lodash";
-import {injectLocal} from "@vueuse/core";
-import {Ref} from "vue";
+import {InjectionKey, Ref} from "vue";
+import injectRequired from "~/functions/injectRequired";
 
 export type StationMediaMetadata = {
     amplify: number | null,
@@ -37,14 +37,16 @@ export type StationMediaRecord =
         extra_metadata: StationMediaMetadata
     }
 
+export const customFieldsKey = Symbol() as InjectionKey<Ref<CustomField[]>>;
+
 export const useStationsMediaForm = defineStore(
     'form-stations-media',
     () => {
-        const customFields: Ref<CustomField[]> = injectLocal('station-media-custom-fields');
+        const customFields: Ref<CustomField[]> = injectRequired(customFieldsKey);
 
         const {record: form, reset} = useResettableRef<StationMediaRecord>(() => {
             const blankForm: StationMediaRecord = {
-                path: null,
+                path: "",
                 title: null,
                 artist: null,
                 album: null,
@@ -106,6 +108,7 @@ export const useStationsMediaForm = defineStore(
         }
 
         return {
+            customFields,
             form,
             r$,
             $reset

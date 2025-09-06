@@ -124,6 +124,7 @@
                         <template v-else-if="item.type === FileTypes.Media">
                             <a
                                 class="name"
+                                v-if="item.media"
                                 :href="item.media.links.play"
                                 target="_blank"
                                 :title="item.text"
@@ -274,7 +275,7 @@ import MediaPlaylists from "~/components/Stations/Media/MediaPlaylists.vue";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import { DeepRequired } from "utility-types";
 
-const props = defineProps<ApiStationsVueFilesProps>();
+const props = defineProps<DeepRequired<ApiStationsVueFilesProps>>();
 
 export type MediaInitialPlaylist = ApiStationsVueFilesProps['initialPlaylists'][number];
 

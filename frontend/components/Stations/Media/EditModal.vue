@@ -54,11 +54,11 @@ import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {ApiStationMedia, CustomField} from "~/entities/ApiInterfaces.ts";
 import {MediaInitialPlaylist} from "~/components/Stations/Media.vue";
 import {storeToRefs} from "pinia";
-import {useStationsMediaForm} from "~/components/Stations/Media/Form/form.ts";
+import {customFieldsKey, useStationsMediaForm} from "~/components/Stations/Media/Form/form.ts";
 import {provideLocal} from "@vueuse/core";
 
 interface MediaEditModalProps extends BaseEditModalProps {
-    customFields: CustomField[],
+    customFields: Required<CustomField>[],
     playlists: MediaInitialPlaylist[]
 }
 
@@ -85,7 +85,7 @@ const {record, reset} = useResettableRef<MediaMeta>({
 
 const $modal = useTemplateRef('$modal');
 
-provideLocal('station-media-custom-fields', toRef(props, 'customFields'));
+provideLocal(customFieldsKey, toRef(props, 'customFields'));
 
 const formStore = useStationsMediaForm();
 const {form, r$} = storeToRefs(formStore);

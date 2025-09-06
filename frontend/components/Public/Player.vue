@@ -90,7 +90,7 @@
                     >
                         <li
                             v-for="stream in streams"
-                            :key="stream.url"
+                            :key="stream.url ?? stream.title ?? 'Stream'"
                         >
                             <button
                                 type="button"
@@ -253,7 +253,7 @@ const onNowPlayingUpdated = (np_new: ApiNowPlaying) => {
 
     // Set a "default" current stream if none exists.
     const $streams = streams.value;
-    let $currentStream = activeStream.value;
+    let $currentStream: StreamDescriptor | null = activeStream.value;
 
     if ($currentStream.url === null && $streams.length > 0) {
         if (hlsIsDefault.value) {

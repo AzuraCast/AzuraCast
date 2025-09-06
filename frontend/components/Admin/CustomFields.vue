@@ -47,6 +47,7 @@
 
         <edit-modal
             ref="$editModal"
+            v-if="props"
             :create-url="listUrl"
             :auto-assign-types="props.autoAssignTypes"
             @relist="() => relist()"

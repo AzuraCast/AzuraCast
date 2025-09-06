@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import {defaultTo, forEach, map} from "lodash";
+import {forEach, map} from "lodash";
 import MediaFormBasicInfo from "~/components/Stations/Media/Form/BasicInfo.vue";
 import MediaFormAlbumArt from "~/components/Stations/Media/Form/AlbumArt.vue";
 import MediaFormCustomFields from "~/components/Stations/Media/Form/CustomFields.vue";
@@ -116,10 +116,10 @@ const {
             newForm.custom_fields = {};
 
             forEach(props.customFields.slice(), (field) => {
-                newForm.custom_fields[field.short_name] = defaultTo(
-                    data.custom_fields[field.short_name],
-                    null
-                );
+                newForm.custom_fields[field.short_name] =
+                    (data.custom_fields && data.custom_fields[field.short_name])
+                    ? data.custom_fields[field.short_name]
+                    : null;
             });
 
             form.value = newForm;

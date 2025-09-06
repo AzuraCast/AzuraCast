@@ -71,6 +71,7 @@ export const useAdminStorageLocationsForm = defineStore(
                 return variant.value;
             },
             {
+                // @ts-expect-error Variants and validationGroups don't play well.
                 validationGroups: (fields) => ({
                     generalTab: [
                         fields.adapter,

@@ -92,7 +92,7 @@ const {
         populateForm: (data, formRef) => {
             data.categories = map(
                 data.categories,
-                (row) => (row as ApiPodcastCategory).category
+                (row) => (row as unknown as Required<ApiPodcastCategory>).category
             );
 
             record.value = mergeExisting(record.value, data as typeof record.value);

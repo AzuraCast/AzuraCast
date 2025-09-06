@@ -76,24 +76,6 @@ import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {useClientItemProvider} from "~/functions/dataTable/useClientItemProvider.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
 
-const emit = defineEmits<HasRelistEmit>();
-
-const $modal = useTemplateRef('$modal');
-const {show, hide} = useHasModal($modal);
-
-const {$gettext} = useTranslate();
-
-const fields: DataTableField[] = [
-    {
-        key: 'name',
-        isRowHeader: true,
-        label: $gettext('Directory')
-    }
-];
-
-const loading = ref<boolean>(true);
-const applyToUrl = ref<string | null>(null);
-
 type ApplyToDirectory = {
     path: string,
     name: string
@@ -107,6 +89,24 @@ type ApplyToRow = {
     directories: ApplyToDirectory[]
 }
 
+const emit = defineEmits<HasRelistEmit>();
+
+const $modal = useTemplateRef('$modal');
+const {show, hide} = useHasModal($modal);
+
+const {$gettext} = useTranslate();
+
+const fields: DataTableField<ApplyToDirectory>[] = [
+    {
+        key: 'name',
+        isRowHeader: true,
+        label: $gettext('Directory')
+    }
+];
+
+const loading = ref<boolean>(true);
+const applyToUrl = ref<string | null>(null);
+
 const {record: applyToResults, reset: resetApplyToResults} = useResettableRef<ApplyToRow>({
     playlist: {
         id: null,
@@ -115,7 +115,7 @@ const {record: applyToResults, reset: resetApplyToResults} = useResettableRef<Ap
     directories: [],
 });
 
-const itemProvider = useClientItemProvider(
+const itemProvider = useClientItemProvider<ApplyToDirectory>(
     computed(() => applyToResults.value.directories)
 );
 

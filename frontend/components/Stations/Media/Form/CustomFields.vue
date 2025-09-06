@@ -6,7 +6,7 @@
                 :id="'edit_form_custom_'+field.short_name"
                 :key="field.short_name"
                 class="col-md-6"
-                :field="r$.custom_fields[field.short_name] as ValidatedField<string>"
+                :field="getCustomField(field)"
                 :label="field.name"
             />
         </div>
@@ -26,4 +26,9 @@ defineProps<{
 }>();
 
 const {r$} = storeToRefs(useStationsMediaForm());
+
+const getCustomField = (field: Required<CustomField>): ValidatedField<string> => {
+    // @ts-expect-error This is kinda weird magic.
+    return r$.value.custom_fields[field.short_name];
+};
 </script>

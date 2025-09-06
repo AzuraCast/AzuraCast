@@ -173,7 +173,7 @@ const handleValidationResponse = async (validateResp: ProcessedValidateResponse)
 
 const logInWithPasskey = async () => {
     if (validateArgs.value === null) {
-        validateArgs.value = await axios.get(props.webAuthnUrl).then(r => r.data);
+        validateArgs.value = (await axios.get<object>(props.webAuthnUrl)).data;
     }
 
     try {
@@ -191,7 +191,7 @@ onMounted(async () => {
     }
 
     // Call WebAuthn authentication
-    validateArgs.value = await axios.get(props.webAuthnUrl).then(r => r.data);
+    validateArgs.value = (await axios.get<object>(props.webAuthnUrl)).data;
 
     try {
         const validateResp = await doValidate(validateArgs.value, true);

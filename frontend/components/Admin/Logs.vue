@@ -51,20 +51,17 @@ import {QueryKeys} from "~/entities/Queries.ts";
 import {getApiUrl} from "~/router.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import {useQuery} from "@tanstack/vue-query";
-import {ApiAdminLogList} from "~/entities/ApiInterfaces.ts";
 import Loading from "~/components/Common/Loading.vue";
-import { DeepRequired } from "utility-types";
+import {LogListRequired} from "~/entities/AdminLogs.ts";
 
 const {axios} = useAxios();
 
 const systemLogsUrl = getApiUrl('/admin/logs');
 
-type LogListRow = DeepRequired<ApiAdminLogList>
-
-const {data, isLoading} = useQuery<LogListRow>({
+const {data, isLoading} = useQuery<LogListRequired>({
     queryKey: [QueryKeys.AdminDebug, 'logs'],
     queryFn: async ({signal}) => {
-        const {data} = await axios.get<LogListRow>(systemLogsUrl.value, {signal});
+        const {data} = await axios.get<LogListRequired>(systemLogsUrl.value, {signal});
         return data;
     },
     placeholderData: () => ({

@@ -82,15 +82,10 @@ import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
-import {DeepRequired} from "utility-types";
-import {
-    ApiAdminRole,
-    ApiAdminVuePermissionsProps,
-    GlobalPermissions,
-    StationPermissions
-} from "~/entities/ApiInterfaces.ts";
+import {ApiAdminVuePermissionsProps, GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
+import {AdminRoleRequired} from "~/entities/AdminPermissions.ts";
 
 const props = defineProps<ApiAdminVuePermissionsProps>();
 
@@ -98,15 +93,13 @@ const listUrl = getApiUrl('/admin/roles');
 
 const {$gettext} = useTranslate();
 
-type Row = DeepRequired<ApiAdminRole>
-
-const fields: DataTableField<Row>[] = [
+const fields: DataTableField<AdminRoleRequired>[] = [
     {key: 'name', isRowHeader: true, label: $gettext('Role Name'), sortable: true},
     {key: 'permissions', label: $gettext('Permissions'), sortable: false},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const listItemProvider = useApiItemProvider<Row>(
+const listItemProvider = useApiItemProvider<AdminRoleRequired>(
     listUrl,
     [QueryKeys.AdminPermissions]
 );

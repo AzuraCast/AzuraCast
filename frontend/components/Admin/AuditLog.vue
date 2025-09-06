@@ -97,7 +97,6 @@ import {useLuxon} from "~/vendor/luxon";
 import {getApiUrl} from "~/router";
 import {IconAddCircle, IconRemoveCircle, IconSwapHorizontalCircle} from "~/components/Common/icons";
 import {ApiAdminAuditLogChangeset, AuditLog} from "~/entities/ApiInterfaces.ts";
-import {DeepRequired} from "utility-types";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
 
@@ -163,9 +162,7 @@ const apiItemProvider = useApiItemProvider<Row>(
 
 const $detailsModal = useTemplateRef('$detailsModal');
 
-type AuditLogChanges = DeepRequired<ApiAdminAuditLogChangeset>
-
-const showDetails = (changes: AuditLogChanges[]) => {
+const showDetails = (changes: ApiAdminAuditLogChangeset[]) => {
     $detailsModal.value?.open(changes);
 }
 </script>

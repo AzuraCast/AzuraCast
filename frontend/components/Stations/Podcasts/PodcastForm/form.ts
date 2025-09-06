@@ -2,28 +2,7 @@ import {useAppRegle} from "~/vendor/regle.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {defineStore} from "pinia";
 import {required} from "@regle/rules";
-import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
-import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
-import {DeepRequired} from "utility-types";
-
-export type PodcastRecord = Omit<
-    DeepRequired<ApiPodcast>,
-    | 'id'
-    | 'links'
-    | 'art'
-    | 'art_updated_at'
-    | 'has_custom_art'
-    | 'episodes'
-    | 'storage_location_id'
-    | 'description_short'
-    | 'language_name'
-    | 'guid'
-    | 'is_published'
-    | 'categories'
-> & {
-    categories: string[]
-    artwork_file: UploadResponseBody | null
-}
+import {PodcastRecord} from "~/entities/Podcasts.ts";
 
 export const useStationsPodcastsForm = defineStore(
     'form-stations-podcasts',

@@ -66,7 +66,6 @@ import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
-import {DeepRequired} from "utility-types";
 import {ApiAdminVueCustomFieldProps, CustomField, HasLinks} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
@@ -89,7 +88,7 @@ const {data: props, isLoading: propsLoading} = useQuery<ApiAdminVueCustomFieldPr
 
 const {$gettext} = useTranslate();
 
-type Row = DeepRequired<CustomField & HasLinks>
+type Row = Required<CustomField & HasLinks>
 
 const fields: DataTableField<Row>[] = [
     {

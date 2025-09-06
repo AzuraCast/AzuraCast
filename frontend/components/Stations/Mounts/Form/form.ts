@@ -3,11 +3,10 @@ import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {defineStore} from "pinia";
 import {required} from "@regle/rules";
 import {StationMount, StreamFormats} from "~/entities/ApiInterfaces.ts";
-import {DeepRequired} from "utility-types";
 import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
 
 export type StationMountRecord = Omit<
-    DeepRequired<StationMount>, 'id' | 'listeners_unique' | 'listeners_total'
+    Required<StationMount>, 'id' | 'listeners_unique' | 'listeners_total'
 > & {
     intro_file: UploadResponseBody | null
 };

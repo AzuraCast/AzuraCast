@@ -20,8 +20,7 @@ import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import {toRefs} from "@vueuse/core";
 import NowPlaying from "~/entities/NowPlaying.ts";
-import {ApiStationProfile} from "~/entities/ApiInterfaces.ts";
-import {DeepRequired} from "utility-types";
+import {StationProfileRequired} from "~/entities/StationProfile.ts";
 
 const stationData = useStationData();
 const {isEnabled} = toRefs(stationData);
@@ -45,7 +44,7 @@ const {data: props, isLoading: propsLoading} = useQuery<EnabledProfileProps>({
 
 const {axiosSilent} = useAxios();
 
-const {data: profile} = useQuery<DeepRequired<ApiStationProfile>>({
+const {data: profile} = useQuery<StationProfileRequired>({
     queryKey: queryKeyWithStation([
         QueryKeys.StationProfile,
         'profile'

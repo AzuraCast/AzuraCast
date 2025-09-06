@@ -262,7 +262,6 @@ import {useRoute, useRouter} from "vue-router";
 import {IconFile, IconFolder, IconImage} from "~/components/Common/icons";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {
-    ApiFileList,
     ApiStationMediaPlaylist,
     ApiStationsVueFilesProps,
     CustomField,
@@ -273,13 +272,13 @@ import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import MediaPlaylists from "~/components/Stations/Media/MediaPlaylists.vue";
 import {useStationData} from "~/functions/useStationQuery.ts";
-import { DeepRequired } from "utility-types";
+import {FileListRequired, StationsVueFilesPropsRequired} from "~/entities/StationMedia.ts";
 
-const props = defineProps<DeepRequired<ApiStationsVueFilesProps>>();
+const props = defineProps<StationsVueFilesPropsRequired>();
 
 export type MediaInitialPlaylist = ApiStationsVueFilesProps['initialPlaylists'][number];
 
-export type MediaRow = DeepRequired<ApiFileList>;
+export type MediaRow = FileListRequired;
 
 export type MediaSelectedItems = {
     all: MediaRow[],

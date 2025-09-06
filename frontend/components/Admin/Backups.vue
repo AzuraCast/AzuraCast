@@ -159,7 +159,6 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {getApiUrl} from "~/router";
 import {IconLogs, IconSend, IconSettings} from "~/components/Common/icons";
-import {DeepRequired} from "utility-types";
 import {ApiAdminBackup, ApiAdminVueBackupProps} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
@@ -180,7 +179,7 @@ const {$gettext} = useTranslate();
 const {timeConfig} = useAzuraCast();
 const {DateTime, timestampToRelative} = useLuxon();
 
-type Row = DeepRequired<ApiAdminBackup>
+type Row = Required<ApiAdminBackup>
 
 const fields: DataTableField<Row>[] = [
     {

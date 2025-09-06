@@ -76,8 +76,8 @@ import ProfileBackendNone from "~/components/Stations/Profile/BackendNonePanel.v
 import ProfileBackend, {ProfileBackendPanelParentProps} from "~/components/Stations/Profile/BackendPanel.vue";
 import NowPlayingNotStartedPanel from "~/components/Stations/Profile/NowPlayingNotStartedPanel.vue";
 import {computed} from "vue";
-import {ApiStationProfile, BackendAdapters, FrontendAdapters} from "~/entities/ApiInterfaces.ts";
-import {DeepRequired} from "utility-types";
+import {BackendAdapters, FrontendAdapters} from "~/entities/ApiInterfaces.ts";
+import {StationProfileRequired} from "~/entities/StationProfile.ts";
 
 export interface EnabledProfileProps extends ProfileBackendPanelParentProps,
     ProfileFrontendPanelParentProps,
@@ -88,7 +88,7 @@ export interface EnabledProfileProps extends ProfileBackendPanelParentProps,
     ProfileStreamersPanelProps {
     stationSupportsRequests: boolean,
     stationSupportsStreamers: boolean,
-    profile: DeepRequired<ApiStationProfile>
+    profile: StationProfileRequired
 }
 
 const props = defineProps<EnabledProfileProps>();

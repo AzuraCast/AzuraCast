@@ -35,7 +35,6 @@ import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import {ApiKey, HasLinks} from "~/entities/ApiInterfaces.ts";
-import {DeepRequired} from "utility-types";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
 
@@ -43,7 +42,7 @@ const apiUrl = getApiUrl('/admin/api-keys');
 
 const {$gettext} = useTranslate();
 
-type Row = DeepRequired<ApiKey & HasLinks>
+type Row = Required<ApiKey & HasLinks>
 
 const fields: DataTableField<Row>[] = [
     {

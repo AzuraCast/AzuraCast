@@ -67,7 +67,6 @@ import {useTemplateRef} from "vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import {useTranslate} from "~/vendor/gettext.ts";
 import {getApiUrl} from "~/router.ts";
-import {DeepRequired} from "utility-types";
 import {ApiKey, HasLinks} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
@@ -76,7 +75,7 @@ const apiKeysApiUrl = getApiUrl('/frontend/account/api-keys');
 
 const {$gettext} = useTranslate();
 
-type Row = DeepRequired<ApiKey & HasLinks>
+type Row = Required<ApiKey & HasLinks>
 
 const apiKeyFields: DataTableField<Row>[] = [
     {

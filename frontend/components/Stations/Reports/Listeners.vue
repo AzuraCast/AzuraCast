@@ -199,7 +199,6 @@ import {ListenerFilters, ListenerTypeFilters} from "~/components/Stations/Report
 import {filter} from "lodash";
 import formatTime from "~/functions/formatTime.ts";
 import ListenerFiltersBar from "~/components/Stations/Reports/Listeners/FiltersBar.vue";
-import {ApiListener} from "~/entities/ApiInterfaces.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
 import {useQuery, useQueryClient} from "@tanstack/vue-query";
@@ -207,7 +206,7 @@ import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import {useClientItemProvider} from "~/functions/dataTable/useClientItemProvider.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import {toRefs} from "@vueuse/core";
-import {DeepRequired} from "utility-types";
+import {ListenerRequired} from "~/entities/StationReports.ts";
 
 const apiUrl = getStationApiUrl('/listeners');
 
@@ -241,7 +240,7 @@ const filters: Ref<ListenerFilters> = ref({
 
 const {$gettext} = useTranslate();
 
-type Row = DeepRequired<ApiListener>;
+type Row = ListenerRequired;
 
 const fields: DataTableField<Row>[] = [
     {

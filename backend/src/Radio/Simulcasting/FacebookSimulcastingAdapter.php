@@ -61,18 +61,17 @@ class FacebookSimulcastingAdapter extends AbstractSimulcastingAdapter
 
         return <<<LIQ
         # Facebook Live (RTMPS) - Controllable source
+        # Stefan from Liquidsoap IRC is a fucking GOD!
         {$outputName} = output.url(
             id="{$outputName}",
             url="{$config['url']}{$config['stream_key']}",
             start=false,
             fallible=true,
             restart_delay = null(),
-            
             %ffmpeg(
                 format="{$config['format']}",
-                %video.raw(
+                %video(
                     codec="{$config['video_codec']}",
-                    filters_video="setpts=N/(TB*25),fps=25,format=yuv420p,scale=1280:720,setsar=1",
                     pixel_format="yuv420p",
                     b=simulcast_v_bps,
                     preset="veryfast",

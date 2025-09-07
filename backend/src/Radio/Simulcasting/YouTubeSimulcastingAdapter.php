@@ -44,11 +44,12 @@ class YouTubeSimulcastingAdapter extends AbstractSimulcastingAdapter
     public function getConfiguration(): array
     {
         return [
-            'type' => 'hls',
+            'type' => 'rtmp',
             'stream_key' => $this->getStreamKey(),
-            'format' => 'mpegts',
+            'format' => 'flv',
             'video_codec' => 'libx264',
             'audio_codec' => 'aac',
+            'url' => 'rtmp://a.rtmp.youtube.com/live2/',
         ];
     }
 
@@ -58,39 +59,42 @@ class YouTubeSimulcastingAdapter extends AbstractSimulcastingAdapter
         $outputName = "simulcast_youtube_{$this->getCleanStreamName($simulcasting)}_{$simulcasting->getId()}";
         
         return <<<LIQ
-        # YouTube Live (HLS ingest) - Controllable source
-        {$outputName} = output.youtube.live.hls(
+        # YouTube Live (RTMP) - Controllable source
+        # Stefan from Liquidsoap IRC is a fucking GOD!
+        {$outputName} = output.url(
             id="{$outputName}",
-            key="{$config['stream_key']}",
+            url="{$config['url']}{$config['stream_key']}",
             start=false,
             fallible=true,
+            restart_delay = null(),
             %ffmpeg(
-                format="{$config['format']}",
-                %video.raw(
-                    codec="{$config['video_codec']}",
-                    pixel_format="yuv420p",
-                    b=simulcast_v_bps,
-                    preset="veryfast",
-                    r=simulcast_v_fps,
-                    g=simulcast_v_gop
+                format="flv",
+                    %video(
+                        codec="libx264",
+                        pixel_format="yuv420p",
+                        b=simulcast_v_bps,
+                        preset="superfast",
+                        r=simulcast_v_fps,
+                        g=simulcast_v_gop
+                    ),
+                    %audio(
+                        codec="aac",
+                        samplerate=44100,
+                        channels=2,
+                        b=simulcast_a_bps,
+                        profile="aac_low"
+                    )
                 ),
-                %audio(
-                    codec="{$config['audio_codec']}",
-                    samplerate=44100,
-                    channels=2,
-                    b=simulcast_a_bps,
-                    profile="aac_low"
-                )
-            ),
-            simulcast_videostream
-        )
+                simulcast_videostream
+            
+            )
 
         # Telnet aliases to control it
         server.register(
         "{$outputName}_start",
         fun(_) -> begin
             {$outputName}.start();     # <- call with ()
-            "OK\n"
+            "OK"
         end
         )
 
@@ -98,17 +102,16 @@ class YouTubeSimulcastingAdapter extends AbstractSimulcastingAdapter
         "{$outputName}_stop",
         fun(_) -> begin
             {$outputName}.stop();      # <- call with ()
-            "OK\n"
+            "OK"
         end
         )
 
         server.register(
         "{$outputName}_active",
         fun(_) ->
-            if {$outputName}.is_active() then "true\n" else "false\n" end
+            if {$outputName}.is_active() then "true" else "false" end
         )
 
-        # Build a status string from available fields
         server.register(
         "{$outputName}_status",
         fun(_) ->
@@ -117,7 +120,7 @@ class YouTubeSimulcastingAdapter extends AbstractSimulcastingAdapter
             ^ " up="      ^ (if {$outputName}.is_up()      then "true" else "false" end)
             ^ " started=" ^ (if {$outputName}.is_started() then "true" else "false" end)
             ^ " ready="   ^ (if {$outputName}.is_ready()   then "true" else "false" end)
-            ^ "\n"
+            ^ ""
         )
         LIQ;
     }

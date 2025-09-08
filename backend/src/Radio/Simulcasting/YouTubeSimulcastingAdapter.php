@@ -86,7 +86,6 @@ class YouTubeSimulcastingAdapter extends AbstractSimulcastingAdapter
                     )
                 ),
                 simulcast_videostream
-            
             )
 
         # Telnet aliases to control it

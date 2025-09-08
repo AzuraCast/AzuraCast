@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\Attributes\AuditIgnore;
 use App\Entity\Enums\SimulcastingStatus;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Repository\SimulcastingRepository;
 use App\Entity\Traits\HasAutoIncrementId;
+use App\Utilities\Strings;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 
@@ -17,9 +17,15 @@ use OpenApi\Attributes as OA;
     ORM\Entity(repositoryClass: SimulcastingRepository::class),
     ORM\Table(name: 'station_simulcasting')
 ]
-class Simulcasting implements IdentifiableEntityInterface
+class Simulcasting implements 
+Stringable,
+Interfaces\StationAwareInterface,
+Interfaces\StationCloneAwareInterface,
+Interfaces\IdentifiableEntityInterface
 {
-    use HasAutoIncrementId;
+    use Traits\HasAutoIncrementId;
+    use Traits\TruncateStrings;
+    use Traits\TruncateInts;
 
     #[
         OA\Property(type: 'string', example: 'My Facebook Stream'),
@@ -48,13 +54,15 @@ class Simulcasting implements IdentifiableEntityInterface
 
     #[
         OA\Property(type: 'string', example: 'stopped'),
-        ORM\Column(type: 'string', length: 20, enumType: SimulcastingStatus::class)
+        ORM\Column(type: 'string', length: 20, enumType: SimulcastingStatus::class),
+        Attributes\AuditIgnore
     ]
     public SimulcastingStatus $status;
 
     #[
         OA\Property(type: 'string', nullable: true, example: 'Connection failed'),
-        ORM\Column(type: 'text', nullable: true)
+        ORM\Column(type: 'text', nullable: true),
+        Attributes\AuditIgnore
     ]
     public ?string $error_message = null;
 

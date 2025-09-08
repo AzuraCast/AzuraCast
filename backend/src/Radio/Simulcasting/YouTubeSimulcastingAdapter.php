@@ -44,12 +44,13 @@ class YouTubeSimulcastingAdapter extends AbstractSimulcastingAdapter
         return <<<LIQ
         # YouTube Live (RTMP) - Controllable source
         # Stefan from Liquidsoap IRC is a fucking GOD!
+        retry_count_{$outputName} = ref(0)
         {$outputName} = output.url(
             id="{$outputName}",
             url="{$config['url']}{$config['stream_key']}",
             start=false,
             fallible=true,
-            restart_delay=null(),
+            restart_delay=0.3,
             %ffmpeg(
                 format="flv",
                 %video(
@@ -71,6 +72,7 @@ class YouTubeSimulcastingAdapter extends AbstractSimulcastingAdapter
             simulcast_videostream,
             # Callbacks
             on_start = fun() -> begin
+                retry_count_{$outputName} := 0
                 azuracast.simulcast_notify([
                     ("instance_id", "{$instanceId}"),
                     ("event", "started")
@@ -82,14 +84,16 @@ class YouTubeSimulcastingAdapter extends AbstractSimulcastingAdapter
                     ("event", "stopped")
                 ])
             end,
-            # 'e' is an error record: e.kind, e.message, e.trace
             on_error = fun(e) -> begin
+                retry_count_{$outputName} := retry_count_{$outputName}() + 1
+                if retry_count_{$outputName}() >= 3 then 
+                     ignore(server.execute("{$outputName}_stop"))
+                end
                 azuracast.simulcast_notify([
                     ("instance_id", "{$instanceId}"),
                     ("event", "errored"),
                     ("reason", e.message)
                 ])
-                # No return value here; retries are handled by restart_delay
             end
         )
 

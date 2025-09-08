@@ -62,12 +62,13 @@ class FacebookSimulcastingAdapter extends AbstractSimulcastingAdapter
         return <<<LIQ
         # Facebook Live (RTMPS) - Controllable source
         # Stefan from Liquidsoap IRC is a fucking GOD!
+        retry_count_{$outputName} = ref(0)
         {$outputName} = output.url(
             id="{$outputName}",
             url="{$config['url']}{$config['stream_key']}",
             start=false,
             fallible=true,
-            restart_delay = null(),
+            restart_delay = 0.3,
             %ffmpeg(
                 format="{$config['format']}",
                 %video(
@@ -86,7 +87,32 @@ class FacebookSimulcastingAdapter extends AbstractSimulcastingAdapter
                     profile="aac_low"
                 )
             ),
-            simulcast_videostream
+            simulcast_videostream,
+            # Callbacks
+            on_start = fun() -> begin
+                retry_count_{$outputName} := 0
+                azuracast.simulcast_notify([
+                    ("instance_id", "{$instanceId}"),
+                    ("event", "started")
+                ])
+            end,
+            on_stop = fun() -> begin
+                azuracast.simulcast_notify([
+                    ("instance_id", "{$instanceId}"),
+                    ("event", "stopped")
+                ])
+            end,
+            on_error = fun(e) -> begin
+                retry_count_{$outputName} := retry_count_{$outputName}() + 1
+                if retry_count_{$outputName}() >= 3 then 
+                     ignore(server.execute("{$outputName}_stop"))
+                end
+                azuracast.simulcast_notify([
+                    ("instance_id", "{$instanceId}"),
+                    ("event", "errored"),
+                    ("reason", e.message)
+                ])
+            end
         )
 
         # Telnet aliases to control it

@@ -76,11 +76,7 @@ final class SimulcastNotificationAction implements SingleActionInterface
         $newStatus = $this->mapEventToStatus($event);
         if ($newStatus) {
             $simulcasting->setStatus($newStatus);
-            
-            // Clear error message for successful events
-            if (in_array($event, ['started', 'stopped'])) {
-                $simulcasting->setErrorMessage(null);
-            }
+            $simulcasting->setErrorMessage(null);
             
             // Set error message for error events
             if ($event === 'errored' && $reason) {

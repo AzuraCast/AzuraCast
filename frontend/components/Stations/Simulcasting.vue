@@ -14,12 +14,6 @@
             />
         </template>
 
-        <!-- Polling status indicator -->
-        <div class="alert alert-info d-flex align-items-center mb-3">
-            <i class="fas fa-sync-alt fa-spin me-2"></i>
-            <span>{{ $gettext('Monitoring simulcast streams for status updates...') }}</span>
-        </div>
-
         <data-table
             id="station_simulcasting"
             :fields="fields"
@@ -100,7 +94,7 @@
 import DataTable from "~/components/Common/DataTable.vue";
 import EditModal from "~/components/Stations/Simulcasting/EditModal.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useTemplateRef, computed, toValue} from "vue";
+import {useTemplateRef, computed, toValue, ref} from "vue";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
@@ -137,8 +131,11 @@ const listItemProvider = useApiItemProvider(
 // Check if there are any active streams for visual indicator
 const hasActiveStreams = computed(() => {
     const rows = listItemProvider.rows.value;
+    if (!Array.isArray(rows)) {
+        return false;
+    }
     return rows.some((stream: any) => 
-        ['running', 'starting', 'stopping'].includes(stream.status)
+        stream && stream.status && ['running', 'starting', 'stopping'].includes(stream.status)
     );
 });
 
@@ -191,6 +188,10 @@ const isActionLoading = (streamId: number, action: string): boolean => {
     return actionLoading.value[`${streamId}-${action}`] || false
 }
 
+const setActionLoading = (streamId: number, action: string, loading: boolean): void => {
+    actionLoading.value[`${streamId}-${action}`] = loading
+}
+
 // Action handlers
 const startStream = async (stream: any): Promise<void> => {
     if (!stream || !stream.id) {
@@ -198,15 +199,17 @@ const startStream = async (stream: any): Promise<void> => {
         return
     }
     
-    actionLoading.value[`${stream.id}-start`] = true
+    setActionLoading(stream.id, 'start', true)
     try {
         const url = getStationApiUrl(`/simulcasting/${stream.id}/start`)
         console.log('Making request to:', url?.value || url)
         
         await axios.post(toValue(url))
         relist()
+    } catch (error) {
+        console.error('Failed to start stream:', error)
     } finally {
-        actionLoading.value[`${stream.id}-start`] = false
+        setActionLoading(stream.id, 'start', false)
     }
 }
 
@@ -216,15 +219,17 @@ const stopStream = async (stream: any): Promise<void> => {
         return
     }
     
-    actionLoading.value[`${stream.id}-stop`] = true
+    setActionLoading(stream.id, 'stop', true)
     try {
         const url = getStationApiUrl(`/simulcasting/${stream.id}/stop`)
         console.log('Making request to:', url?.value || url)
         
         await axios.post(toValue(url))
         relist()
+    } catch (error) {
+        console.error('Failed to stop stream:', error)
     } finally {
-        actionLoading.value[`${stream.id}-stop`] = false
+        setActionLoading(stream.id, 'stop', false)
     }
 }
 

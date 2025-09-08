@@ -7,3 +7,4 @@
 3. error mechanism is rather dirty since liquidsoap consider stopping the output on certain conditions as an error:
 Avutil.Error(Container closed!)
 
+4. i want to add a block to the dashboard/profile page to show the status of the simulcast instances however this will require a constant pull requests to the server which can be heavy, trying to think of alternatives.

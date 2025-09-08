@@ -14,6 +14,12 @@
             />
         </template>
 
+        <!-- Polling status indicator -->
+        <div class="alert alert-info d-flex align-items-center mb-3">
+            <i class="fas fa-sync-alt fa-spin me-2"></i>
+            <span>{{ $gettext('Monitoring simulcast streams for status updates...') }}</span>
+        </div>
+
         <data-table
             id="station_simulcasting"
             :fields="fields"
@@ -94,7 +100,7 @@
 import DataTable from "~/components/Common/DataTable.vue";
 import EditModal from "~/components/Stations/Simulcasting/EditModal.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useTemplateRef, ref} from "vue";
+import {useTemplateRef, computed, toValue} from "vue";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
@@ -121,8 +127,20 @@ const fields = [
 
 const listItemProvider = useApiItemProvider(
     listUrl,
-    queryKeyWithStation(['simulcasting'])
+    queryKeyWithStation(['simulcasting']),
+    {
+        refetchInterval: 5000, // Always poll every 5 seconds
+        refetchIntervalInBackground: true, // Continue polling when tab is not active
+    }
 );
+
+// Check if there are any active streams for visual indicator
+const hasActiveStreams = computed(() => {
+    const rows = listItemProvider.rows.value;
+    return rows.some((stream: any) => 
+        ['running', 'starting', 'stopping'].includes(stream.status)
+    );
+});
 
 const relist = () => {
     void listItemProvider.refresh();
@@ -185,7 +203,7 @@ const startStream = async (stream: any): Promise<void> => {
         const url = getStationApiUrl(`/simulcasting/${stream.id}/start`)
         console.log('Making request to:', url?.value || url)
         
-        await axios.post(url?.value || url)
+        await axios.post(toValue(url))
         relist()
     } finally {
         actionLoading.value[`${stream.id}-start`] = false
@@ -203,7 +221,7 @@ const stopStream = async (stream: any): Promise<void> => {
         const url = getStationApiUrl(`/simulcasting/${stream.id}/stop`)
         console.log('Making request to:', url?.value || url)
         
-        await axios.post(url?.value || url)
+        await axios.post(toValue(url))
         relist()
     } finally {
         actionLoading.value[`${stream.id}-stop`] = false

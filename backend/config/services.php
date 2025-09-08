@@ -556,11 +556,4 @@ return [
         );
     },
 
-    // Simulcasting services
-    App\Radio\Simulcasting\SimulcastingManager::class => DI\autowire()
-        ->constructorParameter('liquidsoapService', DI\get('App\Radio\Simulcasting\LiquidSoapSimulcastingService')),
-    
-    App\Radio\Simulcasting\LiquidSoapSimulcastingService::class => DI\autowire()
-        ->constructorParameter('logger', DI\get(Psr\Log\LoggerInterface::class))
-        ->constructorParameter('liquidsoap', DI\get(App\Radio\Backend\Liquidsoap::class)),
 ];

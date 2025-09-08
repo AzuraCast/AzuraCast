@@ -65,5 +65,25 @@ class SimulcastingRepository extends EntityRepository
             ->getQuery()
             ->execute();
     }
+
+    /**
+     * Stop all simulcast instances for a station by setting their status to stopped
+     * This also clears any error messages
+     */
+    public function stopAllForStation(Station $station): void
+    {
+        $this->createQueryBuilder('s')
+            ->update(Simulcasting::class, 's')
+            ->set('s.status', ':status')
+            ->set('s.error_message', ':errorMessage')
+            ->where('s.station = :station')
+            ->andWhere('s.status IN (:activeStatuses)')
+            ->setParameter('status', 'stopped')
+            ->setParameter('errorMessage', null)
+            ->setParameter('station', $station)
+            ->setParameter('activeStatuses', ['running', 'starting', 'stopping', 'error'])
+            ->getQuery()
+            ->execute();
+    }
 }
 

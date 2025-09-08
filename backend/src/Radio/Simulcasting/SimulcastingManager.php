@@ -23,8 +23,7 @@ class SimulcastingManager
     ];
 
     public function __construct(
-        private readonly LoggerInterface $logger,
-        private readonly LiquidSoapSimulcastingService $liquidsoapService
+        private readonly LoggerInterface $logger
     ) {
     }
 
@@ -78,12 +77,10 @@ class SimulcastingManager
             }
 
             // Validate that required video files exist
-            $videoErrors = $this->liquidsoapService->validateVideoFiles($station);
+            $videoErrors = $this->validateVideoFiles($station);
             if (!empty($videoErrors)) {
                 // Try to create default video files
-                if (!$this->liquidsoapService->createDefaultVideoFiles($station)) {
-                    throw new RuntimeException('Required video files missing and could not be created: ' . implode(', ', $videoErrors));
-                }
+                throw new RuntimeException('Required video files missing and could not be created: ' . implode(', ', $videoErrors));
             }
 
             $this->logger->info('Starting simulcasting stream', [
@@ -102,13 +99,9 @@ class SimulcastingManager
             $outputName = $this->getLiquidSoapOutputName($simulcasting);
             
             // Send start command to LiquidSoap via telnet API
-            $result = $liquidsoap->command($station, "{$outputName}.start");
+            $result = $liquidsoap->command($station, "{$outputName}_start");
             
             if (!empty($result) && !str_contains(implode(' ', $result), 'error')) {
-                // Success - update status to Running
-                // $simulcasting->setStatus(\App\Entity\Enums\SimulcastingStatus::Running);
-                // $this->em->persist($simulcasting);
-                // $this->em->flush();
                 
                 $this->logger->info('Simulcasting stream started successfully', [
                     'station_id' => $station->id,
@@ -170,13 +163,9 @@ class SimulcastingManager
             $outputName = $this->getLiquidSoapOutputName($simulcasting);
             
             // Send stop command to LiquidSoap via telnet API
-            $result = $liquidsoap->command($station, "{$outputName}.stop");
+            $result = $liquidsoap->command($station, "{$outputName}_stop");
             
             if (!empty($result) && !str_contains(implode(' ', $result), 'error')) {
-                // Success - update status to Stopped
-                // $simulcasting->setStatus(\App\Entity\Enums\SimulcastingStatus::Stopped);
-                // $this->em->persist($simulcasting);
-                // $this->em->flush();
                 
                 $this->logger->info('Simulcasting stream stopped successfully', [
                     'station_id' => $station->id,
@@ -242,13 +231,50 @@ class SimulcastingManager
         }
     }
 
-    public function getStreamsStatus(Station $station): array
-    {
-        return $this->liquidsoapService->getStreamsStatus($station);
-    }
-
     public function validateAdapter(string $adapterName): bool
     {
         return isset(self::ADAPTER_MAP[$adapterName]);
+    }
+
+    /**
+     * Stop all simulcast instances for a station
+     */
+    public function stopAllForStation(Station $station): void
+    {
+        $this->logger->info('Stopping all simulcast instances for station restart', [
+            'station_id' => $station->id,
+            'station_name' => $station->name,
+        ]);
+
+        // Use the repository to efficiently update all active simulcast instances
+        $simulcastingRepo = $this->em->getRepository(\App\Entity\Simulcasting::class);
+        $simulcastingRepo->stopAllForStation($station);
+
+        $this->logger->info('All simulcast instances stopped for station restart', [
+            'station_id' => $station->id,
+            'station_name' => $station->name,
+        ]);
+    }
+
+    /**
+     * Validate that required video files exist for simulcasting
+     */
+    private function validateVideoFiles(Station $station): array
+    {
+        $errors = [];
+        $simulcastStorageDir = '/var/azuracast/storage/simulcast';
+        
+        $requiredFiles = [
+            'video.mp4' => $simulcastStorageDir . '/video.mp4',
+            'font.ttf' => $simulcastStorageDir . '/font.ttf',
+        ];
+        
+        foreach ($requiredFiles as $filename => $filepath) {
+            if (!file_exists($filepath)) {
+                $errors[] = "Required file missing: {$filename} (expected at: {$filepath})";
+            }
+        }
+        
+        return $errors;
     }
 }

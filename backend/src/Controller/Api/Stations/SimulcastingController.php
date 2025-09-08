@@ -158,6 +158,7 @@ final class SimulcastingController extends AbstractStationApiCrudController
         return $simulcasting;
     }
 
+    # TODO: Check that users who have no permissions to the station cannot start simulcasting streams
     #[OA\Post(
         path: '/station/{station_id}/simulcasting/{id}/start',
         operationId: 'startSimulcasting',
@@ -200,7 +201,7 @@ final class SimulcastingController extends AbstractStationApiCrudController
                     'code' => 500,
                     'type' => 'Error',
                     'message' => 'Failed to start simulcasting stream',
-                    'success' => false
+                    'success' => $success
                 ]);
         }
 

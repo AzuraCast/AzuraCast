@@ -17,12 +17,6 @@ abstract class AbstractSimulcastingAdapter
 
     abstract public function getStreamKey(): string;
 
-    abstract public function getStatus(): string;
-
-    abstract public function run(): bool;
-
-    abstract public function stop(): bool;
-
     abstract public function getAdapterName(): string;
 
     abstract public function getAdapterDescription(): string;

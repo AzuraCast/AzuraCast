@@ -1370,10 +1370,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_SIMULCASTING);
 
         $configDir = $station->getRadioConfigDir();
-        $mediaStorageLocation = $station->media_storage_location;
-        $stationMediaDir = $mediaStorageLocation->adapter->isLocal()
-            ? $mediaStorageLocation->getFilteredPath()
-            : 'api';
+        $simulcastStorageDir = '/var/azuracast/storage/simulcast';
         
         $event->appendBlock(
             <<<LIQ
@@ -1402,9 +1399,18 @@ final class ConfigWriter implements EventSubscriberInterface
                 thread.run(fast=false, f)
             end
 
+            # Reset all simulcast instances for this station
+            def azuracast.reset_simulcast_instances() =
+                def f() =
+                    j = json()
+                    j.add("action", "reset_all")
+                    _ = azuracast.api_call("simulcast", json.stringify(compact=true, j))
+                end
+                thread.run(fast=false, f)
+            end
 
             # Video and font files for simulcasting
-            simulcast_video_file = "{$stationMediaDir}/videostream/video.mp4"
+            simulcast_video_file = "{$simulcastStorageDir}/video.mp4"
             
             # Build A/V source for simulcasting
             # Loop the background video, add overlay, then mux with radio audio
@@ -1416,6 +1422,8 @@ final class ConfigWriter implements EventSubscriberInterface
             simulcast_v_gop = 50
             simulcast_v_bps = "300k"
             simulcast_a_bps = "96k"
+            
+            azuracast.reset_simulcast_instances()
             LIQ
         );
 

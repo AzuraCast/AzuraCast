@@ -13,24 +13,6 @@ class YouTubeSimulcastingAdapter extends AbstractSimulcastingAdapter
         return $this->simulcasting->getStreamKey();
     }
 
-    public function getStatus(): string
-    {
-        return $this->simulcasting->getStatus()->value;
-    }
-
-    public function run(): bool
-    {
-        // This will be controlled via LiquidSoap configuration
-        // The actual implementation is in the LiquidSoap script
-        return true;
-    }
-
-    public function stop(): bool
-    {
-        // This will be controlled via LiquidSoap configuration
-        return true;
-    }
-
     public function getAdapterName(): string
     {
         return 'youtube';
@@ -57,6 +39,7 @@ class YouTubeSimulcastingAdapter extends AbstractSimulcastingAdapter
     {
         $config = $this->getConfiguration();
         $outputName = "simulcast_youtube_{$this->getCleanStreamName($simulcasting)}_{$simulcasting->getId()}";
+        $instanceId = $simulcasting->getId();
         
         return <<<LIQ
         # YouTube Live (RTMP) - Controllable source
@@ -66,27 +49,49 @@ class YouTubeSimulcastingAdapter extends AbstractSimulcastingAdapter
             url="{$config['url']}{$config['stream_key']}",
             start=false,
             fallible=true,
-            restart_delay = null(),
+            restart_delay=null(),
             %ffmpeg(
                 format="flv",
-                    %video(
-                        codec="libx264",
-                        pixel_format="yuv420p",
-                        b=simulcast_v_bps,
-                        preset="superfast",
-                        r=simulcast_v_fps,
-                        g=simulcast_v_gop
-                    ),
-                    %audio(
-                        codec="aac",
-                        samplerate=44100,
-                        channels=2,
-                        b=simulcast_a_bps,
-                        profile="aac_low"
-                    )
+                %video(
+                    codec="libx264",
+                    pixel_format="yuv420p",
+                    b=simulcast_v_bps,
+                    preset="superfast",
+                    r=simulcast_v_fps,
+                    g=simulcast_v_gop
                 ),
-                simulcast_videostream
-            )
+                %audio(
+                    codec="aac",
+                    samplerate=44100,
+                    channels=2,
+                    b=simulcast_a_bps,
+                    profile="aac_low"
+                )
+            ),
+            simulcast_videostream,
+            # Callbacks
+            on_start = fun() -> begin
+                azuracast.simulcast_notify([
+                    ("instance_id", "{$instanceId}"),
+                    ("event", "started")
+                ])
+            end,
+            on_stop = fun() -> begin
+                azuracast.simulcast_notify([
+                    ("instance_id", "{$instanceId}"),
+                    ("event", "stopped")
+                ])
+            end,
+            # 'e' is an error record: e.kind, e.message, e.trace
+            on_error = fun(e) -> begin
+                azuracast.simulcast_notify([
+                    ("instance_id", "{$instanceId}"),
+                    ("event", "errored"),
+                    ("reason", e.message)
+                ])
+                # No return value here; retries are handled by restart_delay
+            end
+        )
 
         # Telnet aliases to control it
         server.register(

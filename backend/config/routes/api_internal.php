@@ -14,6 +14,12 @@ return static function (RouteCollectorProxy $group) {
             $group->group(
                 '/{station_id}',
                 function (RouteCollectorProxy $group) {
+                    // Simulcast notification endpoint (must come before the generic liquidsoap route)
+                    $group->post(
+                        '/liquidsoap/simulcast',
+                        Controller\Api\Internal\SimulcastNotificationAction::class
+                    )->setName('api:internal:liquidsoap:simulcast');
+
                     $group->map(
                         ['GET', 'POST'],
                         '/liquidsoap/{action}',

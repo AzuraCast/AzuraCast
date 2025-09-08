@@ -9,6 +9,7 @@ use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Repository\SimulcastingRepository;
 use App\Entity\Traits\HasAutoIncrementId;
 use App\Utilities\Strings;
+use Stringable;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 
@@ -39,6 +40,15 @@ Interfaces\IdentifiableEntityInterface
         ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
     ]
     public Station $station;
+
+    public function setStation(Station $station): void
+    {
+        $this->station = $station;
+    }
+
+    /* TODO Remove direct identifier access. */
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    public private(set) int $station_id;
 
     #[
         OA\Property(type: 'string', example: 'facebook'),
@@ -150,6 +160,11 @@ Interfaces\IdentifiableEntityInterface
     public function hasError(): bool
     {
         return $this->status === SimulcastingStatus::Error;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }
 

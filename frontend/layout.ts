@@ -26,7 +26,7 @@ export default function initApp(
                 AppWrapper,
                 {},
                 {
-                    default: () => h(appConfig, this.componentProps)
+                    default: () => h(appConfig, this.componentProps, {})
                 }
             );
         }

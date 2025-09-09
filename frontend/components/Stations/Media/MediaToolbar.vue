@@ -210,7 +210,7 @@
 
 <script setup lang="ts">
 import {Dropdown} from "bootstrap";
-import {filter, intersection, map} from "lodash";
+import {filter, intersection, map} from "es-toolkit/compat";
 import Icon from "~/components/Common/Icon.vue";
 import {computed, ref, toRef, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";

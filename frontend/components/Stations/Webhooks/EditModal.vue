@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import TypeSelect from "~/components/Stations/Webhooks/Form/TypeSelect.vue";
 import BasicInfo from "~/components/Stations/Webhooks/Form/BasicInfo.vue";
-import {get} from "lodash";
+import {get} from "es-toolkit/compat";
 import Generic from "~/components/Stations/Webhooks/Form/Generic.vue";
 import Email from "~/components/Stations/Webhooks/Form/Email.vue";
 import Tunein from "~/components/Stations/Webhooks/Form/Tunein.vue";

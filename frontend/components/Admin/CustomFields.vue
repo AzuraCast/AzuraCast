@@ -58,7 +58,7 @@
 <script setup lang="ts">
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import EditModal from "~/components/Admin/CustomFields/EditModal.vue";
-import {get} from "lodash";
+import {get} from "es-toolkit/compat";
 import {useTranslate} from "~/vendor/gettext";
 import {useTemplateRef} from "vue";
 import useHasEditModal from "~/functions/useHasEditModal";

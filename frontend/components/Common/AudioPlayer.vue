@@ -11,7 +11,7 @@ import Hls from "hls.js";
 import {nextTick, onMounted, onScopeDispose, ref, useTemplateRef, watch} from "vue";
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {storeToRefs} from "pinia";
-import { isString } from "lodash";
+import {isString} from "es-toolkit/compat";
 
 const playerStore = usePlayerStore();
 const {logVolume, isMuted, isPlaying, current, duration, progress} = storeToRefs(playerStore);

@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import {map} from "lodash";
+import {map} from "es-toolkit/compat";
 import {computed} from "vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";

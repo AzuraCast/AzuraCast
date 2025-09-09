@@ -190,7 +190,7 @@ import formatTime from "~/functions/formatTime";
 import {computed, ref, watch} from "vue";
 import {useWebDjTrack} from "~/components/Public/WebDJ/useWebDjTrack";
 import {useTranslate} from "~/vendor/gettext";
-import {forEach} from "lodash";
+import {forEach} from "es-toolkit/compat";
 import {useInjectMixer} from "~/components/Public/WebDJ/useMixerValue";
 import {usePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
 import {TagLibProcessResult, useWebDjSource, WebDjFilePointer} from "~/components/Public/WebDJ/useWebDjSource";

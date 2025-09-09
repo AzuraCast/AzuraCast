@@ -290,7 +290,7 @@
 </template>
 
 <script setup lang="ts" generic="Row extends DataTableRow = DataTableRow">
-import {filter, forEach, get, includes, indexOf, isEmpty, map, some} from "lodash";
+import {filter, forEach, get, includes, indexOf, isEmpty, map, some} from "es-toolkit/compat";
 import Icon from "~/components/Common/Icon.vue";
 import {computed, ref, shallowRef, toRaw, watch} from "vue";
 import {watchDebounced} from "@vueuse/core";

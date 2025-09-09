@@ -61,7 +61,7 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/FormattingInfo.vue";
-import {includes} from "lodash";
+import {includes} from "es-toolkit/compat";
 import {WebhookRecordCommon, WebhookRecordCommonMessages} from "~/components/Stations/Webhooks/Form/form.ts";
 import {useAppScopedRegle} from "~/vendor/regle.ts";
 

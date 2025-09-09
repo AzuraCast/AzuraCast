@@ -2,7 +2,7 @@ import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {WebhookTypes} from "~/entities/ApiInterfaces.ts";
 import {useTranslate} from "~/vendor/gettext.ts";
 import {ref} from "vue";
-import {merge} from "lodash";
+import {merge} from "es-toolkit/compat";
 
 export type WebhookRecordCommon = {
     name: string,

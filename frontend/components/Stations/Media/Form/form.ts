@@ -3,7 +3,7 @@ import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {defineStore} from "pinia";
 import {required} from "@regle/rules";
 import {ApiStationMedia, CustomField} from "~/entities/ApiInterfaces.ts";
-import {forEach} from "lodash";
+import {forEach} from "es-toolkit/compat";
 import {InjectionKey, Ref} from "vue";
 import injectRequired from "~/functions/injectRequired";
 

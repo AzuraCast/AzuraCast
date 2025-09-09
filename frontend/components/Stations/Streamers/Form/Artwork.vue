@@ -51,7 +51,7 @@ import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
-import { isString } from "lodash";
+import {isString} from "es-toolkit/compat";
 
 const props = defineProps<{
     artworkSrc: string,

@@ -24,7 +24,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import {IconDelete} from "~/components/Common/icons";
 import {computed, h, toRef, VNode} from "vue";
-import {forEach, map} from "lodash";
+import {forEach, map} from "es-toolkit/compat";
 import {useNotify} from "~/functions/useNotify.ts";
 import {useDialog} from "~/functions/useDialog.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";

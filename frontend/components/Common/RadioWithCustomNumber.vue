@@ -35,7 +35,7 @@
 <script setup lang="ts" generic="T = string | number | null">
 import {FormFieldProps} from "~/components/Form/useFormField";
 import {computed, nextTick, ref, toRef, useSlots} from "vue";
-import {find} from "lodash";
+import {find} from "es-toolkit/compat";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 import {objectToSimpleFormOptions, SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import {pausableWatch, WatchPausableReturn} from "@vueuse/core";

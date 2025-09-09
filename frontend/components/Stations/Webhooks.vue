@@ -112,7 +112,7 @@
 <script setup lang="ts">
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import EditModal from "~/components/Stations/Webhooks/EditModal.vue";
-import {get, map} from "lodash";
+import {get, map} from "es-toolkit/compat";
 import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed, useTemplateRef} from "vue";

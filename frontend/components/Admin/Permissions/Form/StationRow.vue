@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import {get} from "lodash";
+import {get} from "es-toolkit/compat";
 import Icon from "~/components/Common/Icon.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {IconRemove} from "~/components/Common/icons";

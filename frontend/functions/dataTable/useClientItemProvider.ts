@@ -5,7 +5,7 @@ import {
     DataTableRow
 } from "~/functions/useHasDatatable.ts";
 import {computed, MaybeRefOrGetter, shallowRef, toValue} from "vue";
-import {filter, get, slice} from "lodash";
+import {filter, get, slice} from "es-toolkit/compat";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
 
 export function useClientItemProvider<Row extends DataTableRow = DataTableRow>(

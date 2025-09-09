@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import {forEach, map} from "lodash";
+import {forEach, map} from "es-toolkit/compat";
 import MediaFormBasicInfo from "~/components/Stations/Media/Form/BasicInfo.vue";
 import MediaFormAlbumArt from "~/components/Stations/Media/Form/AlbumArt.vue";
 import MediaFormCustomFields from "~/components/Stations/Media/Form/CustomFields.vue";

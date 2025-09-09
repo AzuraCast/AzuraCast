@@ -1,5 +1,5 @@
 import {MaybeRefOrGetter, Ref, ref, toValue} from "vue";
-import {cloneDeep} from "lodash";
+import {cloneDeep} from "es-toolkit/compat";
 
 export function useResettableRef<T = any>(
     original: MaybeRefOrGetter<T>

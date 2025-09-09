@@ -5,7 +5,7 @@ import {ApiNowPlaying} from "~/entities/ApiInterfaces.ts";
 import {getApiUrl} from "~/router.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import formatTime from "~/functions/formatTime.ts";
-import {isUndefined, omitBy} from "lodash";
+import {isUndefined, omitBy} from "es-toolkit/compat";
 
 export interface NowPlayingProps {
     stationShortName: string,

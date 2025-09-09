@@ -2,7 +2,7 @@ import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
 import {getStationApiUrl} from "~/router.ts";
 import {useRouter} from "vue-router";
-import {set} from "lodash";
+import {set} from "es-toolkit/compat";
 import {useNotify} from "~/functions/useNotify";
 import {useDialog} from "~/functions/useDialog.ts";
 import {Ref} from "vue";

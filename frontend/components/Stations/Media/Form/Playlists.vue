@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import {map} from "lodash";
+import {map} from "es-toolkit/compat";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {storeToRefs} from "pinia";

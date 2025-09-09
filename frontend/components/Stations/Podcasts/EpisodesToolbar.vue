@@ -38,7 +38,7 @@ import {useAxios} from "~/vendor/axios";
 import {IconDelete, IconEdit} from "~/components/Common/icons";
 import {computed, toRef} from "vue";
 import useHandlePodcastBatchResponse from "~/components/Stations/Podcasts/useHandlePodcastBatchResponse.ts";
-import {map} from "lodash";
+import {map} from "es-toolkit/compat";
 import {useDialog} from "~/functions/useDialog.ts";
 import {ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
 

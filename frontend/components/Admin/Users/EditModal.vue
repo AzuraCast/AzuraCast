@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import {map} from "lodash";
+import {map} from "es-toolkit/compat";
 import {computed, ref, useTemplateRef, watch} from "vue";
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {useTranslate} from "~/vendor/gettext";

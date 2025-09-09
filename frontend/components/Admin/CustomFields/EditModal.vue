@@ -53,7 +53,6 @@ import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
-import {forEach} from "lodash";
 
 interface CustomFieldsEditModalProps extends BaseEditModalProps {
     autoAssignTypes: Record<string, string>
@@ -113,12 +112,12 @@ const autoAssignOptions = computed(() => {
         }
     ];
 
-    forEach(props.autoAssignTypes, (typeName, typeKey) => {
+    for (const typeKey in props.autoAssignTypes) {
         autoAssignOptions.push({
-            text: typeName,
+            text: props.autoAssignTypes[typeKey],
             value: typeKey
         });
-    });
+    }
 
     return autoAssignOptions;
 });

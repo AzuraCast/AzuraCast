@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {map} from "lodash";
+import {map} from "es-toolkit/compat";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {HlsStreamProfiles} from "~/entities/ApiInterfaces.ts";

@@ -85,7 +85,7 @@
 <script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
 import {useRoute} from "vue-router";
-import {some} from "lodash";
+import {some} from "es-toolkit/compat";
 import {IconOpenInNew} from "~/components/Common/icons.ts";
 import {MenuCategory, MenuRouteBasedUrl, MenuRouteUrl, MenuSubCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
 

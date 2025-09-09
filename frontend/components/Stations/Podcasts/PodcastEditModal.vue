@@ -39,7 +39,7 @@ import {useResettableRef} from "~/functions/useResettableRef";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
-import {map} from "lodash";
+import {map} from "es-toolkit/compat";
 import {NestedFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import {storeToRefs} from "pinia";
 import {useStationsPodcastsForm} from "~/components/Stations/Podcasts/PodcastForm/form.ts";

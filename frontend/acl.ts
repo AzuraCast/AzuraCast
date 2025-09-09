@@ -1,5 +1,5 @@
 import {useAzuraCastUser} from "~/vendor/azuracast.ts";
-import {find, includes} from "lodash";
+import {find, includes} from "es-toolkit/compat";
 import {GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationId} from "~/functions/useStationQuery.ts";
 

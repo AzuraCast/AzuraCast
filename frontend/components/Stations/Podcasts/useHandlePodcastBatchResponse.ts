@@ -1,4 +1,4 @@
-import {forEach} from "lodash";
+import {forEach} from "es-toolkit/compat";
 import {h, VNode} from "vue";
 import {useNotify} from "~/functions/useNotify.ts";
 

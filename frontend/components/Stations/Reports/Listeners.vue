@@ -196,7 +196,7 @@ import {getStationApiUrl} from "~/router";
 import {IconDesktopWindows, IconDownload, IconRouter, IconSmartphone} from "~/components/Common/icons";
 import useHasDatatable from "~/functions/useHasDatatable";
 import {ListenerFilters, ListenerTypeFilters} from "~/components/Stations/Reports/Listeners/listenerFilters.ts";
-import {filter} from "lodash";
+import {filter} from "es-toolkit/compat";
 import formatTime from "~/functions/formatTime.ts";
 import ListenerFiltersBar from "~/components/Stations/Reports/Listeners/FiltersBar.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";

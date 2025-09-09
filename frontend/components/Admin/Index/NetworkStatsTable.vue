@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import {get, omit} from "lodash";
+import {get, omit} from "es-toolkit/compat";
 import {computed} from "vue";
 import {
     ApiAdminServerStatsNetworkInterfaceReceived,

@@ -69,7 +69,7 @@ import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue
 import {useHasModal} from "~/functions/useHasModal.ts";
 import Loading from "~/components/Common/Loading.vue";
 import useHandlePodcastBatchResponse from "~/components/Stations/Podcasts/useHandlePodcastBatchResponse.ts";
-import {map} from "lodash";
+import {map} from "es-toolkit/compat";
 import {useTranslate} from "~/vendor/gettext.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
 import BatchEditRow from "~/components/Stations/Podcasts/BatchEditRow.vue";

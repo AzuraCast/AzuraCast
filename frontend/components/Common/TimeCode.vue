@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import {computed} from "vue";
-import {padStart} from "lodash";
+import {padStart} from "es-toolkit/compat";
 
 const props = withDefaults(
     defineProps<{

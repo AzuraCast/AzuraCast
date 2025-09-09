@@ -30,7 +30,7 @@
 import InnerMap from "~/components/Stations/Reports/Listeners/InnerMap.vue";
 import MapPoint from "~/components/Stations/Reports/Listeners/MapPoint.vue";
 import {computed} from "vue";
-import {filter} from "lodash";
+import {filter} from "es-toolkit/compat";
 import {ListenerRequired} from "~/entities/StationReports.ts";
 
 const props = withDefaults(

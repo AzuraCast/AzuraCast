@@ -58,7 +58,6 @@
 <script setup lang="ts">
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import EditModal from "~/components/Admin/CustomFields/EditModal.vue";
-import {get} from "es-toolkit/compat";
 import {useTranslate} from "~/vendor/gettext";
 import {useTemplateRef} from "vue";
 import useHasEditModal from "~/functions/useHasEditModal";
@@ -102,7 +101,7 @@ const fields: DataTableField<Row>[] = [
         label: $gettext('Auto-Assign Value'),
         sortable: false,
         formatter: (value) => {
-            return get(props.value?.autoAssignTypes ?? {}, value, $gettext('None'));
+            return props.value?.autoAssignTypes[value] ?? $gettext('None');
         }
     },
     {

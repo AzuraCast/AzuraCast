@@ -28,7 +28,7 @@ import {useAzuraCast} from "~/vendor/azuracast.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
 import {IconDateRange} from "~/components/Common/icons";
 import {storeToRefs} from "pinia";
-import {isString} from "es-toolkit/compat";
+import {isString} from "es-toolkit";
 
 defineOptions({
     inheritAttrs: false

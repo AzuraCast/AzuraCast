@@ -137,7 +137,7 @@
 import Icon from "~/components/Common/Icon.vue";
 import {useTemplateRef} from "vue";
 import CpuStatsHelpModal from "~/components/Admin/Index/CpuStatsHelpModal.vue";
-import {upperFirst} from "es-toolkit/compat";
+import {upperFirst} from "es-toolkit";
 import {IconInfo} from "~/components/Common/icons.ts";
 import {ApiAdminServerStatsCpuStats} from "~/entities/ApiInterfaces.ts";
 

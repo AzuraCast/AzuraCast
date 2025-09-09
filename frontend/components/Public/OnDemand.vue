@@ -56,7 +56,6 @@
 <script setup lang="ts">
 import InlinePlayer from "~/components/InlinePlayer.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import {forEach} from "es-toolkit/compat";
 import Icon from "~/components/Common/Icon.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -114,7 +113,7 @@ const fields: DataTableField[] = [
     }
 ];
 
-forEach(props.customFields.slice(), (field) => {
+for (const field of props.customFields.slice()) {
     fields.push({
         key: field.display_key,
         label: field.label,
@@ -123,7 +122,7 @@ forEach(props.customFields.slice(), (field) => {
         visible: false,
         formatter: (_value, _key, item) => item.media.custom_fields[field.key]
     });
-});
+}
 
 const listItemProvider = useApiItemProvider(
     props.listUrl,

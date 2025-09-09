@@ -3,7 +3,7 @@ import getUrlWithoutQuery from "~/functions/getUrlWithoutQuery.ts";
 import {defineStore} from "pinia";
 import useOptionalStorage from "~/functions/useOptionalStorage.ts";
 import formatTime from "~/functions/formatTime.ts";
-import {throttle} from "es-toolkit/compat";
+import {throttle} from "es-toolkit";
 import {useSupported} from "@vueuse/core";
 
 export enum StreamChannel {

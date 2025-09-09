@@ -1,6 +1,6 @@
 import isObject from "~/functions/isObject";
 import {toRaw} from "vue";
-import {cloneDeep} from "es-toolkit/compat";
+import {cloneDeep} from "es-toolkit";
 
 /*
  * A "deep" merge that only merges items from the source into the destination that already exist in the destination.

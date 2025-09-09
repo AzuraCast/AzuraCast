@@ -1,5 +1,4 @@
 import {useAzuraCastUser} from "~/vendor/azuracast.ts";
-import {find, includes} from "es-toolkit/compat";
 import {GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationId} from "~/functions/useStationQuery.ts";
 
@@ -7,11 +6,11 @@ export function userAllowed(permission: GlobalPermissions): boolean {
     try {
         const {permissions} = useAzuraCastUser();
 
-        if (includes(permissions.global, GlobalPermissions.All)) {
+        if (permissions.global.indexOf(GlobalPermissions.All) !== -1) {
             return true;
         }
 
-        return includes(permissions.global, permission);
+        return permissions.global.indexOf(permission) !== -1;
     } catch {
         return false;
     }
@@ -34,8 +33,7 @@ export function userAllowedForStation(permission: StationPermissions, id: number
     try {
         const {permissions} = useAzuraCastUser();
 
-        const thisStationPermissions = find(
-            permissions.station,
+        const thisStationPermissions = permissions.station.find(
             (row) => row.id === id
         );
 
@@ -43,11 +41,11 @@ export function userAllowedForStation(permission: StationPermissions, id: number
             return false;
         }
 
-        if (includes(thisStationPermissions.permissions, StationPermissions.All)) {
+        if (thisStationPermissions.permissions.indexOf(StationPermissions.All) !== 1) {
             return true;
         }
 
-        return includes(thisStationPermissions.permissions, permission);
+        return thisStationPermissions.permissions.indexOf(permission) !== -1;
     } catch {
         return false;
     }

@@ -290,7 +290,7 @@
 </template>
 
 <script setup lang="ts" generic="Row extends DataTableRow = DataTableRow">
-import {filter, forEach, get, includes, indexOf, isEmpty, map, some} from "es-toolkit/compat";
+import {filter, forEach, get, isEmpty, some} from "es-toolkit/compat";
 import Icon from "~/components/Common/Icon.vue";
 import {computed, ref, shallowRef, toRaw, watch} from "vue";
 import {watchDebounced} from "@vueuse/core";
@@ -306,6 +306,7 @@ import {
     DataTableItemProvider,
     DataTableRow
 } from "~/functions/useHasDatatable.ts";
+import {isString} from "es-toolkit";
 
 export interface DataTableField<Row extends DataTableRow = DataTableRow> {
     key: string,
@@ -404,7 +405,7 @@ type RowField = DataTableField<Row>
 type RowFields = RowField[]
 
 const allFields = computed<RowFields>(() => {
-    return map(props.fields, (field: RowField): RowField => {
+    return props.fields.map((field: RowField): RowField => {
         return {
             isRowHeader: false,
             sortable: false,
@@ -424,7 +425,7 @@ const selectableFields = computed<RowFields>(() => {
     });
 });
 
-const selectableFieldOptions = computed<SimpleFormOptionInput>(() => map(selectableFields.value, (field) => {
+const selectableFieldOptions = computed<SimpleFormOptionInput>(() => selectableFields.value.map((field) => {
     return {
         value: field.key,
         text: field.label
@@ -443,7 +444,7 @@ const settings = useOptionalStorage(
         sortBy: null,
         sortDesc: false,
         perPage: props.defaultPerPage,
-        visibleFieldKeys: map(defaultSelectableFields.value, (field) => field.key),
+        visibleFieldKeys: defaultSelectableFields.value.map((field) => field.key),
     },
     {
         mergeDefaults: true
@@ -457,11 +458,11 @@ const visibleFieldKeys = computed({
             return settingsKeys;
         }
 
-        return map(defaultSelectableFields.value, (field) => field.key);
+        return defaultSelectableFields.value.map((field) => field.key);
     },
     set: (newValue) => {
         if (isEmpty(newValue)) {
-            newValue = map(defaultSelectableFields.value, (field) => field.key);
+            newValue = defaultSelectableFields.value.map((field) => field.key);
         }
 
         settings.value.visibleFieldKeys = newValue;
@@ -511,7 +512,7 @@ const visibleFields = computed<DataTableField<Row>[]>(() => {
             return true;
         }
 
-        return includes(visibleFieldsKeysValue, field.key);
+        return visibleFieldsKeysValue.indexOf(field.key) !== -1;
     });
 });
 
@@ -577,12 +578,12 @@ const isAllChecked = computed<boolean>(() => {
     }
 
     return !some(visibleItems.value, (currentVisibleRow) => {
-        return indexOf(selectedRows.value, currentVisibleRow) < 0;
+        return selectedRows.value.indexOf(currentVisibleRow) === -1;
     });
 });
 
 const isRowChecked = (row: Row) => {
-    return indexOf(selectedRows.value, row) >= 0;
+    return selectedRows.value.indexOf(row) !== -1;
 };
 
 const columnCount = computed(() => {
@@ -613,7 +614,7 @@ const checkRow = (row: Row) => {
     const newSelectedRows = selectedRows.value.slice();
 
     if (isRowChecked(row)) {
-        const index = indexOf(newSelectedRows, row);
+        const index = newSelectedRows.indexOf(row);
         if (index >= 0) {
             newSelectedRows.splice(index, 1);
         }
@@ -647,7 +648,7 @@ const toggleDetails = (row: Row) => {
 };
 
 const responsiveClass = computed(() => {
-    if (typeof props.responsive === 'string') {
+    if (isString(props.responsive)) {
         return props.responsive;
     }
 

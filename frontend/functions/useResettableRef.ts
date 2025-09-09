@@ -1,5 +1,5 @@
 import {MaybeRefOrGetter, Ref, ref, toValue} from "vue";
-import {cloneDeep} from "es-toolkit/compat";
+import {cloneDeep} from "es-toolkit";
 
 export function useResettableRef<T = any>(
     original: MaybeRefOrGetter<T>

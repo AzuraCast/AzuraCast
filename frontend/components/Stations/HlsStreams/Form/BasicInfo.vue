@@ -42,7 +42,6 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {map} from "es-toolkit/compat";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {HlsStreamProfiles} from "~/entities/ApiInterfaces.ts";
@@ -75,13 +74,13 @@ const formatOptions = [
 const stationData = useStationData();
 const {maxBitrate} = toRefs(stationData);
 
-const bitrateOptions = computed(() => map(
-    [32, 48, 64, 96, 128, 192, 256, 320].filter((bitrate) => maxBitrate.value === 0 || bitrate <= maxBitrate.value),
-    (val) => {
-        return {
+const defaultBitrateOptions = [32, 48, 64, 96, 128, 192, 256, 320];
+
+const bitrateOptions = computed(() =>
+    defaultBitrateOptions.filter((bitrate) => maxBitrate.value === 0 || bitrate <= maxBitrate.value)
+        .map((val) => ({
             value: val,
             text: String(val)
-        }
-    },
-));
+        }))
+);
 </script>

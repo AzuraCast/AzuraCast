@@ -190,7 +190,6 @@ import formatTime from "~/functions/formatTime";
 import {computed, ref, watch} from "vue";
 import {useWebDjTrack} from "~/components/Public/WebDJ/useWebDjTrack";
 import {useTranslate} from "~/vendor/gettext";
-import {forEach} from "es-toolkit/compat";
 import {useInjectMixer} from "~/components/Public/WebDJ/useMixerValue";
 import {usePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
 import {TagLibProcessResult, useWebDjSource, WebDjFilePointer} from "~/components/Public/WebDJ/useWebDjSource";
@@ -284,7 +283,7 @@ const langHeader = computed(() => {
 const onFileSelected = (e: Event) => {
     const eventTarget = e.target as HTMLInputElement;
 
-    forEach(eventTarget.files, (file: File) => {
+    for (const file of eventTarget.files ?? []) {
         // @ts-expect-error Weird custom function from taglib. Don't worry about it.
         file.readTaglibMetadata((data: TagLibProcessResult) => {
             files.value.push({
@@ -293,7 +292,7 @@ const onFileSelected = (e: Event) => {
                 metadata: data.metadata || {title: '', artist: ''}
             });
         });
-    });
+    }
 }
 
 interface PlayOptions {

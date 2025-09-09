@@ -74,7 +74,7 @@
 <script setup lang="ts">
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import EditModal from "~/components/Admin/Permissions/EditModal.vue";
-import {filter, get, map} from "es-toolkit/compat";
+import {isEmpty} from "es-toolkit/compat";
 import {useTranslate} from "~/vendor/gettext";
 import {useTemplateRef} from "vue";
 import useHasEditModal from "~/functions/useHasEditModal";
@@ -109,19 +109,23 @@ const relist = () => {
 }
 
 const getGlobalPermissionNames = (permissions: GlobalPermissions[]) => {
-    return filter(map(permissions, (permission) => {
-        return get(props.globalPermissions, permission, null);
-    }));
+    return permissions.map(
+        (permission) => props.globalPermissions[permission] ?? null
+    ).filter(
+        (row) => !isEmpty(row)
+    );
 };
 
 const getStationPermissionNames = (permissions: StationPermissions[]) => {
-    return filter(map(permissions, (permission) => {
-        return get(props.stationPermissions, permission, null);
-    }));
+    return permissions.map(
+        (permission) => props.stationPermissions[permission] ?? null
+    ).filter(
+        (row) => !isEmpty(row)
+    );
 };
 
 const getStationName = (stationId: number) => {
-    return get(props.stations, stationId, null);
+    return props.stations[stationId] ?? null;
 };
 
 const $editModal = useTemplateRef('$editModal');

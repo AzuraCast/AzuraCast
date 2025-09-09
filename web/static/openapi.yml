@@ -6476,6 +6476,9 @@ components:
               readOnly: true
           type: object
     Api_Admin_RolePermissions:
+      required:
+        - global
+        - station
       properties:
         global:
           type: array

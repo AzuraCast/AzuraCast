@@ -392,8 +392,8 @@ export type ApiAdminRole = HasLinks & {
 };
 
 export interface ApiAdminRolePermissions {
-  global?: GlobalPermissions[];
-  station?: ApiAdminRoleStationPermission[];
+  global: GlobalPermissions[];
+  station: ApiAdminRoleStationPermission[];
 }
 
 export interface ApiAdminRoleStationPermission {

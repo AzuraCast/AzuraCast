@@ -3,7 +3,7 @@
         id="leaflet-container"
         ref="$container"
     >
-        <slot v-if="$map"/>
+        <slot v-if="$map" :map="$map"/>
     </div>
 </template>
 
@@ -14,14 +14,16 @@ import {useTheme} from "~/functions/theme.ts";
 import "leaflet-fullscreen";
 import {useTranslate} from "~/vendor/gettext.ts";
 import {storeToRefs} from "pinia";
-import {useMap} from "~/components/Stations/Reports/Listeners/useMap.ts";
+
+defineSlots<{
+    default: (props: {
+        map: Map
+    }) => any,
+}>();
 
 const $container = useTemplateRef('$container');
 
 const $map = shallowRef<Map | null>(null);
-
-const {provideMap} = useMap();
-provideMap($map);
 
 const {currentTheme} = storeToRefs(useTheme());
 const {$gettext} = useTranslate();

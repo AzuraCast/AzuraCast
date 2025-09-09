@@ -5,21 +5,18 @@
 </template>
 
 <script setup lang="ts">
-import {onUnmounted, useTemplateRef, watch} from "vue";
-import {LatLngTuple, marker, Popup} from "leaflet";
-import {useMap} from "~/components/Stations/Reports/Listeners/useMap.ts";
+import {onUnmounted, toRef, useTemplateRef, watch} from "vue";
+import {LatLngTuple, Map, marker, Popup} from "leaflet";
 
 const props = defineProps<{
+    map: Map,
     position: LatLngTuple
 }>();
-
-const {injectMap} = useMap();
-const $map = injectMap();
 
 const mapMarker = marker(props.position);
 
 watch(
-    $map,
+    toRef(props, 'map'),
     (mapRef) => {
         if (mapRef !== null) {
             mapMarker.addTo(mapRef);

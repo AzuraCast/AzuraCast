@@ -28,7 +28,7 @@ export default defineConfig({
             output: {
                 manualChunks: {
                     vue: ['vue'],
-                    lodash: ['lodash'],
+                    estoolkit: ['es-toolkit'],
                     leaflet: ['leaflet'],
                     hlsjs: ['hls.js'],
                     zxcvbn: ['zxcvbn']

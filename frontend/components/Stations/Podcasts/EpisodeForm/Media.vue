@@ -92,11 +92,11 @@ const onFileSuccess = (_file: any, message: UploadResponseBody | null) => {
 
 const {axios} = useAxios();
 
-const deleteMedia = () => {
+const deleteMedia = async () => {
     if (props.editMediaUrl) {
-        void axios.delete(props.editMediaUrl).then(() => {
-            hasMedia.value = false;
-        });
+        await axios.delete(props.editMediaUrl);
+
+        hasMedia.value = false;
     } else {
         hasMedia.value = false;
         model.value = null;

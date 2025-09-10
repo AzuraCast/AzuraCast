@@ -73,7 +73,7 @@ const src = computed(() => {
 
 const {axios} = useAxios();
 
-const uploaded = (file: File | null) => {
+const uploaded = async (file: File | null) => {
     if (null === file) {
         return;
     }
@@ -88,18 +88,17 @@ const uploaded = (file: File | null) => {
     const formData = new FormData();
     formData.append('art', file);
 
-    void axios.post(url, formData).then((resp) => {
-        model.value = resp.data;
-        reloadArt();
-    });
+    const {data} = await axios.post(url, formData);
+    model.value = data;
+    reloadArt();
 };
 
-const deleteArt = () => {
+const deleteArt = async () => {
     if (props.artworkSrc) {
-        void axios.delete(props.artworkSrc).then(() => {
-            reloadArt();
-            localSrc.value = null;
-        });
+        await axios.delete(props.artworkSrc);
+
+        reloadArt();
+        localSrc.value = null;
     } else {
         reloadArt();
         localSrc.value = null;

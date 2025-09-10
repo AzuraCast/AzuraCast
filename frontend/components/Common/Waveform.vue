@@ -127,7 +127,7 @@ const cacheWaveformRemotely = () => {
     void axiosSilent.post(props.waveformCacheUrl, dataToCache);
 };
 
-onMounted(() => {
+onMounted(async () => {
     wavesurfer = WaveSurfer.create({
         container: '#waveform_container',
         waveColor: '#2196f3',
@@ -159,20 +159,21 @@ onMounted(() => {
         setCurrentTime(newTime);
     });
 
-    axiosSilent.get(props.waveformUrl).then((resp) => {
-        const waveformJson = resp?.data?.data ?? null;
+    try {
+        const {data} = await axiosSilent.get(props.waveformUrl);
+        const waveformJson = data?.data ?? null;
 
         if (waveformJson) {
             isExternalJson.value = true;
-            void wavesurfer?.load(props.audioUrl, waveformJson);
+            await wavesurfer?.load(props.audioUrl, waveformJson);
         } else {
             isExternalJson.value = false;
-            void wavesurfer?.load(props.audioUrl);
+            await wavesurfer?.load(props.audioUrl);
         }
-    }).catch(() => {
+    } catch {
         isExternalJson.value = false;
-        void wavesurfer?.load(props.audioUrl);
-    });
+        await wavesurfer?.load(props.audioUrl);
+    }
 });
 
 watch(

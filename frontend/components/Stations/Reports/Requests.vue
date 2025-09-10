@@ -165,30 +165,33 @@ const {confirmDelete} = useDialog();
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const doDelete = (url: string) => {
-    void confirmDelete({
+const doDelete = async (url: string) => {
+    const {value} = await confirmDelete({
         title: $gettext('Delete Request?'),
-    }).then((result) => {
-        if (result.value) {
-            void axios.delete(url).then((resp) => {
-                notifySuccess(resp.data.message);
-                refresh();
-            });
-        }
     });
+
+    if (!value) {
+        return;
+    }
+
+    const {data} = await axios.delete(url);
+    notifySuccess(data.message);
+    refresh();
 };
 
-const doClear = () => {
-    void confirmDelete({
+const doClear = async () => {
+    const {value} = await confirmDelete({
         title: $gettext('Clear All Pending Requests?'),
         confirmButtonText: $gettext('Clear'),
-    }).then((result) => {
-        if (result.value) {
-            void axios.post(clearUrl.value).then((resp) => {
-                notifySuccess(resp.data.message);
-                refresh();
-            });
-        }
     });
+
+    if (!value) {
+        return;
+    }
+
+    const {data} = await axios.post(clearUrl.value);
+
+    notifySuccess(data.message);
+    refresh();
 };
 </script>

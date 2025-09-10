@@ -11,17 +11,17 @@ export default function useMakeApiCall(
     const {showAlert} = useDialog();
     const {notify} = useNotify();
 
-    return () => {
-        void showAlert(options).then((result) => {
-            if (!result.value) {
-                return;
-            }
+    return async () => {
+        const {value} = await showAlert(options);
 
-            void axios.post(uri).then(({data}) => {
-                notify(data.formatted_message, {
-                    variant: (data.success) ? 'success' : 'warning'
-                });
-            });
+        if (!value) {
+            return;
+        }
+
+        const {data} = await axios.post(uri);
+
+        notify(data.formatted_message, {
+            variant: (data.success) ? 'success' : 'warning'
         });
     };
 }

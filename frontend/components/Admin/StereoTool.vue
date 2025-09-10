@@ -171,26 +171,30 @@ const onError = (_: unknown, message: string | null) => {
 
 const {axios} = useAxios();
 
-const relist = () => {
+const relist = async () => {
     isLoading.value = true;
 
-    void axios.get<ApiAdminStereoToolStatus>(apiUrl.value).then((resp) => {
-        version.value = resp.data.version;
-        isLoading.value = false;
-    });
+    const {data} = await axios.get<ApiAdminStereoToolStatus>(apiUrl.value);
+
+    version.value = data.version;
+    isLoading.value = false;
 };
 
 const {confirmDelete} = useDialog();
 
-const doDelete = () => {
-    void confirmDelete({
+const doDelete = async () => {
+    const {value} = await confirmDelete({
         title: $gettext('Uninstall Stereo Tool?'),
         confirmButtonText: $gettext('Uninstall')
-    }).then((result) => {
-        if (result.value) {
-            void axios.delete(apiUrl.value).then(relist);
-        }
     });
+
+    if (!value) {
+        return;
+    }
+
+    await axios.delete(apiUrl.value);
+
+    await relist();
 }
 
 onMounted(relist);

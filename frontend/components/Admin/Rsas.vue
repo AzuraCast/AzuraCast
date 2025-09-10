@@ -158,28 +158,32 @@ const langInstalledVersion = computed(() => {
 
 const {axios} = useAxios();
 
-const relist = () => {
+const relist = async () => {
     isLoading.value = true;
 
-    void axios.get<ApiAdminRsasStatus>(apiUrl.value).then(({data}) => {
-        version.value = data.version;
-        hasLicense.value = data.hasLicense;
+    const {data} = await axios.get<ApiAdminRsasStatus>(apiUrl.value);
 
-        isLoading.value = false;
-    });
+    version.value = data.version;
+    hasLicense.value = data.hasLicense;
+
+    isLoading.value = false;
 };
 
 const {confirmDelete} = useDialog();
 
-const doRemoveLicense = () => {
-    void confirmDelete({
+const doRemoveLicense = async () => {
+    const {value} = await confirmDelete({
         title: $gettext('Remove RSAS license key?'),
         confirmButtonText: $gettext('Remove License Key')
-    }).then((result) => {
-        if (result.value) {
-            void axios.delete(licenseUrl.value).then(relist);
-        }
     });
+
+    if (!value) {
+        return;
+    }
+
+    await axios.delete(licenseUrl.value);
+
+    await relist();
 }
 
 onMounted(relist);

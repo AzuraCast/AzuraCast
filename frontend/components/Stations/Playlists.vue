@@ -413,13 +413,13 @@ const mayNeedRestart = () => {
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const doModify = (url: string) => {
-    void axios.put(url).then((resp) => {
-        mayNeedRestart();
+const doModify = async (url: string) => {
+    const {data} = await axios.put(url);
 
-        notifySuccess(resp.data.message);
-        relist();
-    });
+    mayNeedRestart();
+
+    notifySuccess(data.message);
+    relist();
 };
 
 const {doDelete} = useConfirmAndDelete(

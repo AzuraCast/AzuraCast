@@ -154,27 +154,29 @@ export default function useNowPlaying(initialProps: NowPlayingProps) {
             }
         };
 
-        const checkNowPlaying = () => {
-            axiosSilent.get(nowPlayingUri.value, axiosNoCacheConfig).then((response) => {
-                setNowPlaying(response.data);
+        const checkNowPlaying = async () => {
+            try {
+                const {data} = await axiosSilent.get(nowPlayingUri.value, axiosNoCacheConfig);
+                setNowPlaying(data);
 
-                setTimeout(checkNowPlaying, (!document.hidden) ? 15000 : 30000);
-            }).catch(() => {
-                setTimeout(checkNowPlaying, (!document.hidden) ? 30000 : 120000);
-            });
+                setTimeout(() => void checkNowPlaying(), (!document.hidden) ? 15000 : 30000);
+            } catch {
+                setTimeout(() => void checkNowPlaying(), (!document.hidden) ? 30000 : 120000);
+            }
         };
 
-        const checkTime = () => {
-            void axiosSilent.get(timeUri.value, axiosNoCacheConfig).then((response) => {
-                currentTime.value = response.data.timestamp;
-            }).finally(() => {
-                setTimeout(checkTime, (!document.hidden) ? 300000 : 600000);
-            });
+        const checkTime = async () => {
+            try {
+                const {data} = await axiosSilent.get(timeUri.value, axiosNoCacheConfig);
+                currentTime.value = data.timestamp;
+            } finally {
+                setTimeout(() => void checkTime(), (!document.hidden) ? 300000 : 600000);
+            }
         };
 
         onMounted(() => {
-            checkTime();
-            checkNowPlaying();
+            void checkTime();
+            void checkNowPlaying();
         });
     }
 

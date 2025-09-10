@@ -43,7 +43,6 @@
 </template>
 
 <script setup lang="ts">
-import {map} from "es-toolkit/compat";
 import {computed} from "vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
@@ -74,7 +73,7 @@ type ScheduleWithDetails = Required<ApiStationSchedule> & {
 const processedScheduleItems = computed<ScheduleWithDetails[]>(() => {
     const nowTz = now();
 
-    return map(props.scheduleItems, (row) => {
+    return props.scheduleItems.map((row) => {
         const startMoment = timestampToDateTime(row.start_timestamp);
         const endMoment = timestampToDateTime(row.end_timestamp);
 

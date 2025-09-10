@@ -6,6 +6,7 @@ import {set} from "es-toolkit/compat";
 import {useNotify} from "~/functions/useNotify";
 import {useDialog} from "~/functions/useDialog.ts";
 import {Ref} from "vue";
+import {ApiStatus} from "~/entities/ApiInterfaces.ts";
 
 export default function useToggleFeature(
     feature: string,
@@ -19,10 +20,10 @@ export default function useToggleFeature(
 
     const profileEditUrl = getStationApiUrl('/profile/edit');
 
-    return () => {
+    return async () => {
         const newValue: boolean = !currentValue.value;
 
-        void showAlert({
+        const {value} = await showAlert({
             title: (newValue)
                 ? $gettext('Enable feature?')
                 : $gettext('Disable feature?'),
@@ -32,19 +33,21 @@ export default function useToggleFeature(
             confirmButtonClass: (newValue)
                 ? 'btn-success'
                 : 'btn-danger'
-        }).then((result) => {
-            if (result.value) {
-                const remoteData = {};
-                set(remoteData, feature, newValue);
-
-                void axios.put(
-                    profileEditUrl.value,
-                    remoteData
-                ).then((resp) => {
-                    notifySuccess(resp.data.message);
-                    router.go(0);
-                });
-            }
         });
+
+        if (!value) {
+            return;
+        }
+
+        const remoteData = {};
+        set(remoteData, feature, newValue);
+
+        const {data} = await axios.put<ApiStatus>(
+            profileEditUrl.value,
+            remoteData
+        );
+
+        notifySuccess(data.message);
+        router.go(0);
     };
 }

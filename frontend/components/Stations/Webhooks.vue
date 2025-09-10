@@ -190,18 +190,18 @@ const {doCreate, doEdit} = useHasEditModal($editModal);
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const doToggle = (url: string) => {
-    void axios.put(url).then((resp) => {
-        notifySuccess(resp.data.message);
-        relist();
-    });
+const doToggle = async (url: string) => {
+    const {data} = await axios.put(url);
+
+    notifySuccess(data.message);
+    relist();
 };
 
-const doClone = (url: string) => {
-    void axios.post(url).then(() => {
-        notifySuccess($gettext('Webhook duplicated.'));
-        relist();
-    });
+const doClone = async (url: string) => {
+    await axios.post(url);
+
+    notifySuccess($gettext('Webhook duplicated.'));
+    relist();
 };
 
 const $logModal = useTemplateRef('$logModal');

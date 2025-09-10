@@ -70,8 +70,8 @@ export function useBaseEditModal<T extends Form = Form>(
     mutation: MutationReturn,
     clearContents: () => void,
     create: () => void,
-    edit: (recordUrl: string) => void,
-    doSubmit: () => void,
+    edit: (recordUrl: string) => Promise<void>,
+    doSubmit: () => Promise<void>,
     close: () => void
 } {
     const createUrl = toRef(props, 'createUrl');
@@ -119,32 +119,33 @@ export function useBaseEditModal<T extends Form = Form>(
     const {notifySuccess} = useNotify();
     const {axios} = useAxios();
 
-    const doLoad = (): void => {
+    const doLoad = async (): Promise<void> => {
         fetchLoading.value = true;
 
         if (!editUrl.value) {
             throw new Error("No edit URL!");
         }
 
-        axios.get(editUrl.value).then((resp) => {
-            populateForm(resp.data);
-        }).catch(() => {
+        try {
+            const {data} = await axios.get(editUrl.value);
+            populateForm(data);
+        } catch {
             close();
-        }).finally(() => {
+        } finally {
             fetchLoading.value = false;
-        });
+        }
     };
 
-    const edit = (recordUrl: string): void => {
+    const edit = async (recordUrl: string): Promise<void> => {
         clearContents();
 
         editUrl.value = recordUrl;
         $modal.value?.show();
 
-        void nextTick(() => {
-            resetForm();
-            doLoad();
-        })
+        await nextTick();
+
+        resetForm();
+        await doLoad();
     };
 
     const getSubmittableFormData = (): ApiGenericForm => {
@@ -202,16 +203,16 @@ export function useBaseEditModal<T extends Form = Form>(
         ...mutationOptions
     });
 
-    const doSubmit = (): void => {
+    const doSubmit = async (): Promise<void> => {
         if (typeof validateForm === 'function') {
-            void validateForm().then((valid) => {
-                if (!valid) {
-                    return;
-                }
+            const valid = await validateForm();
 
-                error.value = null;
-                mutation.mutate(getSubmittableFormData());
-            });
+            if (!valid) {
+                return;
+            }
+
+            error.value = null;
+            mutation.mutate(getSubmittableFormData());
         } else {
             error.value = null;
             mutation.mutate(getSubmittableFormData());

@@ -154,10 +154,12 @@ const open = (newApplyToUrl: string) => {
     loading.value = true;
     show();
 
-    void axios.get(newApplyToUrl).then((resp) => {
-        applyToResults.value = resp.data;
+    void (async () => {
+        const {data} = await axios.get(newApplyToUrl);
+
+        applyToResults.value = data;
         loading.value = false;
-    });
+    })();
 };
 
 const {notifySuccess} = useNotify();

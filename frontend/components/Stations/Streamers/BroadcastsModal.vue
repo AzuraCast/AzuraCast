@@ -172,17 +172,19 @@ const onRowSelected = (items: Row[]) => {
     selectedItems.value = items;
 };
 
-const doDelete = (url: string) => {
-    void confirmDelete({
+const doDelete = async (url: string) => {
+    const {value} = await confirmDelete({
         title: $gettext('Delete Broadcast?'),
-    }).then((result) => {
-        if (result.value) {
-            void axios.delete(url).then((resp) => {
-                notifySuccess(resp.data.message);
-                refresh();
-            });
-        }
     });
+
+    if (!value) {
+        return;
+    }
+
+    const {data} = await axios.delete(url);
+
+    notifySuccess(data.message);
+    refresh();
 };
 
 const $modal = useTemplateRef('$modal');

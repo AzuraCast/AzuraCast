@@ -203,16 +203,16 @@ const populateForm = (data: typeof form.value) => {
     form.value = mergeExisting(form.value, data);
 };
 
-const relist = () => {
+const relist = async () => {
     resetForm();
     r$.$reset();
 
     isLoading.value = true;
 
-    void axios.get(props.apiUrl).then((resp) => {
-        populateForm(resp.data);
-        isLoading.value = false;
-    });
+    const {data} = await axios.get(props.apiUrl);
+
+    populateForm(data);
+    isLoading.value = false;
 }
 
 onMounted(relist);
@@ -232,6 +232,6 @@ const submit = async () => {
     });
 
     notifySuccess($gettext('Changes saved.'));
-    relist();
+    await relist();
 }
 </script>

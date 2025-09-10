@@ -48,14 +48,16 @@ const stop = () => {
 
 tryOnScopeDispose(stop);
 
-const updateLogs = () => {
-    void axiosSilent.request<ApiLogContents>({
-        method: 'GET',
-        url: props.logUrl,
-        params: {
-            position: currentLogPosition.value
-        }
-    }).then(({data}) => {
+const updateLogs = async () => {
+    try {
+        const {data} = await axiosSilent.request<ApiLogContents>({
+            method: 'GET',
+            url: props.logUrl,
+            params: {
+                position: currentLogPosition.value
+            }
+        });
+
         if (data.contents !== '') {
             logs.value = logs.value + data.contents + "\n";
             if (scrollToBottom.value && $textarea.value) {
@@ -70,9 +72,9 @@ const updateLogs = () => {
         if (data.eof) {
             stop();
         }
-    }).finally(() => {
+    } finally {
         isLoading.value = false;
-    });
+    }
 };
 
 watch(toRef(props, 'logUrl'), (newLogUrl) => {
@@ -82,8 +84,8 @@ watch(toRef(props, 'logUrl'), (newLogUrl) => {
     stop();
 
     if ('' !== newLogUrl) {
-        updateInterval = setInterval(updateLogs, 2500);
-        updateLogs();
+        updateInterval = setInterval(() => void updateLogs(), 2500);
+        void updateLogs();
     }
 }, {immediate: true});
 

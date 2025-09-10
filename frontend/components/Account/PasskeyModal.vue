@@ -162,7 +162,7 @@ const onHidden = () => {
 const {axios} = useAxios();
 
 const selectPasskey = async () => {
-    const registerArgs = await axios.get(registerWebAuthnUrl.value).then(r => r.data);
+    const {data: registerArgs} = await axios.get(registerWebAuthnUrl.value);
 
     try {
         const createResponse = await doRegister(registerArgs);

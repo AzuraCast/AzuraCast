@@ -125,19 +125,24 @@ const {hide, show} = useHasModal($modal);
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const open = () => {
+const doOpen = async () => {
     clearContents();
 
     loading.value = true;
 
     show();
 
-    axios.put(props.twoFactorUrl).then((resp) => {
-        totp.value = resp.data;
+    try {
+        const {data} = await axios.put(props.twoFactorUrl);
+        totp.value = data;
         loading.value = false;
-    }).catch(() => {
+    } catch {
         hide();
-    });
+    }
+};
+
+const open = () => {
+    void doOpen();
 };
 
 const doSubmit = async () => {

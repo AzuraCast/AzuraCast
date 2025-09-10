@@ -110,17 +110,22 @@ const {show, hide} = useHasModal($modal);
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const open = () => {
+const doOpen = async () => {
     clearContents();
 
     show();
 
-    axios.get(userUrl.value).then((resp) => {
-        form.value = mergeExisting(form.value, resp.data);
+    try {
+        const {data} = await axios.get(userUrl.value);
+        form.value = mergeExisting(form.value, data);
         loading.value = false;
-    }).catch(() => {
+    } catch {
         hide();
-    });
+    }
+}
+
+const open = () => {
+    void doOpen();
 };
 
 const {$gettext} = useTranslate();

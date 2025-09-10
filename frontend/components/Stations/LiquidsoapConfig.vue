@@ -174,19 +174,21 @@ const {mayNeedRestart} = useMayNeedRestart();
 
 const {axios} = useAxios();
 
-const relist = () => {
+const relist = async () => {
     isLoading.value = true;
-    void axios.get(settingsUrl.value).then((resp) => {
-        config.value = resp.data.config;
-        sections.value = resp.data.sections;
+
+    try {
+        const {data} = await axios.get(settingsUrl.value);
+        config.value = data.config;
+        sections.value = data.sections;
 
         resetForm();
         r$.$reset();
-        
-        form.value = mergeExisting(form.value, resp.data.contents);
-    }).finally(() => {
+
+        form.value = mergeExisting(form.value, data.contents);
+    } finally {
         isLoading.value = false;
-    });
+    }
 };
 
 onMounted(relist);
@@ -196,17 +198,19 @@ const {notifySuccess} = useNotify();
 const submit = async () => {
     const {valid} = await r$.$validate();
 
-    if (valid) {
-        await axios({
-            method: 'PUT',
-            url: settingsUrl.value,
-            data: form.value,
-        });
-
-        notifySuccess();
-        mayNeedRestart();
-        relist();
+    if (!valid) {
+        return;
     }
+
+    await axios({
+        method: 'PUT',
+        url: settingsUrl.value,
+        data: form.value,
+    });
+
+    notifySuccess();
+    mayNeedRestart();
+    await relist();
 }
 
 const $importModal = useTemplateRef('$importModal');

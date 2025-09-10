@@ -25,7 +25,7 @@
             <button
                 type="button"
                 class="btn btn-sm btn-primary"
-                @click="doSubmitRequest(row.item.request_url)"
+                @click="submitRequest(row.item.request_url)"
             >
                 {{ $gettext('Request') }}
             </button>
@@ -44,6 +44,7 @@ import {useNotify} from "~/functions/useNotify";
 import {RequestsProps} from "~/components/Public/Requests.vue";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
+import {ApiStatus} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<RequestsProps>();
 
@@ -134,15 +135,19 @@ const pageOptions = [10, 25];
 const {notifySuccess, notifyError} = useNotify();
 const {axios} = useAxios();
 
-const doSubmitRequest = (url: string) => {
-    void axios.post(url).then((resp) => {
-        if (resp.data.success) {
-            notifySuccess(resp.data.message);
+const doSubmitRequest = async (url: string) => {
+    try {
+        const {data} = await axios.post<ApiStatus>(url);
+
+        if (data.success) {
+            notifySuccess(data.message);
         } else {
-            notifyError(resp.data.message);
+            notifyError(data.message);
         }
-    }).finally(() => {
+    } finally {
         emit('submitted');
-    });
+    }
 };
+
+const submitRequest = (url: string) => void doSubmitRequest(url);
 </script>

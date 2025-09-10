@@ -128,7 +128,7 @@ const {
 );
 
 const open = (editRecordUrl: string) => {
-    edit(editRecordUrl);
+    void edit(editRecordUrl);
 };
 
 const onClose = () => {

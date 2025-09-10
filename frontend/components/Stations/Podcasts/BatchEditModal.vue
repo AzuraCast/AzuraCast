@@ -161,7 +161,7 @@ const doBatchEdit = async () => {
 
     const {data} = await axios.put(props.batchUrl, {
         'do': 'edit',
-        'episodes': map(props.selectedItems, 'id'),
+        'episodes': props.selectedItems.map((row) => row.id),
         'records': rows.value
     });
 

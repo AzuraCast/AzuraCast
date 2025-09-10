@@ -136,10 +136,11 @@ const open = (newReorderUrl: string) => {
     loading.value = true;
     show();
 
-    void axios.get(newReorderUrl).then((resp) => {
-        media.value = resp.data;
+    void (async () => {
+        const {data} = await axios.get(newReorderUrl);
+        media.value = data;
         loading.value = false;
-    });
+    })();
 };
 
 const {notifySuccess} = useNotify();

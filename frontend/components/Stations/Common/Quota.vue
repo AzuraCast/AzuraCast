@@ -106,13 +106,13 @@ const langSpaceUsed = computed(() => {
 
 const {axios} = useAxios();
 
-const update = () => {
-    void axios.get<Quota>(props.quotaUrl).then((resp) => {
-        quota.value = resp.data;
-        loading.value = false;
+const update = async () => {
+    const {data} = await axios.get<Quota>(props.quotaUrl);
 
-        emit('updated', quota.value);
-    });
+    quota.value = data;
+    loading.value = false;
+
+    emit('updated', quota.value);
 }
 
 onMounted(update);

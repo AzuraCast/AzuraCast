@@ -158,23 +158,25 @@ const directoriesQuery = useQuery({
 
 const directoryItemProvider = useQueryItemProvider(directoriesQuery);
 
-const doMove = () => {
-    void axios.put(props.batchUrl, {
-        'do': 'move',
-        'currentDirectory': props.currentDirectory,
-        'directory': destinationDirectory.value,
-        'files': props.selectedItems.files,
-        'dirs': props.selectedItems.directories
-    }).then(({data}) => {
+const doMove = async () => {
+    try {
+        const {data} = await axios.put(props.batchUrl, {
+            'do': 'move',
+            'currentDirectory': props.currentDirectory,
+            'directory': destinationDirectory.value,
+            'files': props.selectedItems.files,
+            'dirs': props.selectedItems.directories
+        });
+
         handleBatchResponse(
             data,
             $gettext('Files moved:'),
             $gettext('Error moving files:')
         );
-    }).finally(() => {
+    } finally {
         hide();
         emit('relist');
-    });
+    }
 };
 
 const enterDirectory = (path: string) => {

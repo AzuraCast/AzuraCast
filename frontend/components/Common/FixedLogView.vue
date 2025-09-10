@@ -37,16 +37,20 @@ watch(toRef(props, 'logUrl'), (newLogUrl) => {
     logs.value = '';
 
     if (null !== newLogUrl) {
-        void axios.request<ApiLogContents>({
-            method: 'GET',
-            url: props.logUrl
-        }).then(({data}) => {
-            if (data.contents !== '') {
-                logs.value = data.contents;
+        void (async () => {
+            try {
+                const {data} = await axios.request<ApiLogContents>({
+                    method: 'GET',
+                    url: props.logUrl
+                });
+
+                if (data.contents !== '') {
+                    logs.value = data.contents;
+                }
+            } finally {
+                isLoading.value = false;
             }
-        }).finally(() => {
-            isLoading.value = false;
-        });
+        })();
     }
 }, {immediate: true});
 

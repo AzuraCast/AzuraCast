@@ -140,41 +140,44 @@ const langInstalledVersion = computed(() => {
 
 const {axios} = useAxios();
 
-const doFetch = () => {
+const doFetch = async () => {
     isLoading.value = true;
 
-    void axios.get<ApiAdminGeoLiteStatus>(apiUrl.value).then(({data}) => {
-        form.value.key = data.key;
-        version.value = data.version;
-        isLoading.value = false;
-    });
+    const {data} = await axios.get<ApiAdminGeoLiteStatus>(apiUrl.value);
+    form.value.key = data.key;
+    version.value = data.version;
+    isLoading.value = false;
 };
 
 onMounted(doFetch);
 
-const doUpdate = () => {
+const doUpdate = async () => {
     isLoading.value = true;
 
-    void axios.post<ApiAdminGeoLiteStatus>(apiUrl.value, {
-        geolite_license_key: form.value.key
-    }).then(({data}) => {
+    try {
+        const {data} = await axios.post<ApiAdminGeoLiteStatus>(apiUrl.value, {
+            geolite_license_key: form.value.key
+        });
+
         version.value = data.version;
-    }).finally(() => {
+    } finally {
         isLoading.value = false;
-    });
+    }
 };
 
 const {confirmDelete} = useDialog();
 
-const doDelete = () => {
-    void confirmDelete({
+const doDelete = async () => {
+    const {value} = await confirmDelete({
         title: $gettext('Remove GeoLite license key?'),
         confirmButtonText: $gettext('Remove Key')
-    }).then((result) => {
-        if (result.value) {
-            form.value.key = null;
-            doUpdate();
-        }
     });
+
+    if (!value) {
+        return;
+    }
+
+    form.value.key = null;
+    await doUpdate();
 }
 </script>

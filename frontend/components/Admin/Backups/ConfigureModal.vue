@@ -150,20 +150,26 @@ const close = () => {
     hide();
 };
 
-const open = () => {
+const doOpen = async () => {
     resetForm();
     r$.$reset();
-    
+
     loading.value = true;
 
     show();
 
-    axios.get(props.settingsUrl).then((resp) => {
-        form.value = mergeExisting(form.value, resp.data);
+    try {
+        const {data} = await axios.get(props.settingsUrl);
+
+        form.value = mergeExisting(form.value, data);
         loading.value = false;
-    }).catch(() => {
+    } catch {
         close();
-    });
+    }
+};
+
+const open = () => {
+    void doOpen();
 };
 
 const {notifySuccess} = useNotify();

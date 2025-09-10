@@ -106,13 +106,13 @@ const langInstalledVersion = computed(() => {
 
 const {axios} = useAxios();
 
-const relist = () => {
+const relist = async () => {
     isLoading.value = true;
 
-    void axios.get<ApiAdminShoutcastStatus>(apiUrl.value).then(({data}) => {
-        version.value = data.version;
-        isLoading.value = false;
-    });
+    const {data} = await axios.get<ApiAdminShoutcastStatus>(apiUrl.value);
+
+    version.value = data.version;
+    isLoading.value = false;
 };
 
 onMounted(relist);

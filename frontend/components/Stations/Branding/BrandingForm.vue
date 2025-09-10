@@ -131,16 +131,16 @@ const populateForm = (data: typeof form.value) => {
     form.value = mergeExisting(form.value, data);
 };
 
-const relist = () => {
+const relist = async () => {
     resetForm();
     r$.$reset();
 
     isLoading.value = true;
 
-    void axios.get(props.profileEditUrl).then((resp) => {
-        populateForm(resp.data.branding_config);
-        isLoading.value = false;
-    });
+    const {data} = await axios.get(props.profileEditUrl);
+
+    populateForm(data.branding_config);
+    isLoading.value = false;
 }
 
 onMounted(relist);
@@ -162,6 +162,6 @@ const submit = async () => {
     });
 
     notifySuccess();
-    relist();
+    await relist();
 }
 </script>

@@ -74,9 +74,8 @@ const {data: services, isLoading} = useQuery<ServiceDataRow[]>({
 
 const {notifySuccess} = useNotify();
 
-const doRestart = (serviceUrl: string) => {
-    void axios.post(serviceUrl).then((resp) => {
-        notifySuccess(resp.data.message);
-    });
+const doRestart = async (serviceUrl: string) => {
+    const {data} = await axios.post(serviceUrl);
+    notifySuccess(data.message);
 };
 </script>

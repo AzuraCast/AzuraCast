@@ -1,88 +1,107 @@
 import {useTranslate} from "~/vendor/gettext";
-import {h, render, VNode} from "vue";
-import {Toast as BSToast} from "bootstrap";
-import Toast from "~/components/Common/Toast.vue";
-import {currentVueInstance} from "~/vendor/vueInstance";
+import {ref, VNode} from "vue";
+import {defineStore} from "pinia";
+import {FlashLevels} from "~/entities/ApiInterfaces.ts";
+import {useAzuraCast} from "~/vendor/azuracast.ts";
+import {remove} from "es-toolkit";
 
 type ToastMessage = string | VNode[]
 
-export interface ToastProps {
-    message: ToastMessage,
-    title?: string,
-    variant?: string,
+type ToastOptions = {
+    title?: string | null,
+    variant?: FlashLevels,
 }
 
-export function createToast(props: ToastProps) {
-    let slot: Array<any>;
-    if (Array.isArray(props.message)) {
-        slot = props.message
-        props.message = "";
-    }
-
-    const defaultSlot = () => {
-        return slot
-    };
-
-    const vNode = h(Toast, props, defaultSlot);
-    vNode.appContext = currentVueInstance._context;
-
-    const newDiv = document.createElement('div');
-    newDiv.style.display = "contents";
-    document.querySelector('.toast-container')?.appendChild(newDiv);
-
-    render(vNode, newDiv);
-
-    return new BSToast(vNode.el as unknown as HTMLElement);
-}
+export type ToastProps = ToastOptions & {
+    id: string,
+    message?: string,
+    slot?: VNode[],
+};
 
 /* Composition API BootstrapVue utilities */
-export function useNotify() {
-    const {$gettext} = useTranslate();
+export const useNotify = defineStore(
+    'global-toasts',
+    () => {
+        const {notifications} = useAzuraCast();
 
-    const notify = (
-        message: ToastMessage,
-        options: Partial<ToastProps> = {}
-    ): void => {
-        if (document.hidden) {
-            return;
+        const getRandomId = () => Math.random().toString(36);
+
+        const initialToasts: ToastProps[] = notifications.map(
+            (row) => {
+                return {
+                    id: getRandomId(),
+                    ...row
+                }
+            }
+        );
+
+        const toasts = ref<ToastProps[]>(initialToasts);
+
+        const {$gettext} = useTranslate();
+
+        const notify = (
+            message: ToastMessage,
+            options: ToastOptions = {}
+        ): void => {
+            if (document.hidden) {
+                return;
+            }
+
+            const toast: ToastProps = {
+                id: getRandomId(),
+                ...options
+            };
+
+            if (Array.isArray(message)) {
+                toast.slot = message;
+            } else {
+                toast.message = message;
+            }
+
+            toasts.value.push(toast);
+        };
+
+        const notifyError = (
+            message?: ToastMessage,
+            options: ToastOptions = {}
+        ): void => {
+            message ??= $gettext('An error occurred and your request could not be completed.');
+
+            const defaults = {
+                variant: FlashLevels.Error
+            };
+
+            notify(message, {...defaults, ...options});
+        };
+
+        const notifySuccess = (
+            message?: ToastMessage,
+            options: ToastOptions = {}
+        ): void => {
+            message ??= $gettext('Changes saved.');
+
+            const defaults = {
+                variant: FlashLevels.Success
+            };
+
+            notify(message, {...defaults, ...options});
+        };
+
+        const removeToast = (
+            id: string
+        ): void => {
+            remove(
+                toasts.value,
+                (toast) => toast.id === id
+            );
         }
 
-        const toast = createToast({
-            ...options,
-            message
-        });
-        toast.show();
-    };
-
-    const notifyError = (
-        message?: ToastMessage,
-        options: Partial<ToastProps> = {}
-    ): void => {
-        message ??= $gettext('An error occurred and your request could not be completed.');
-
-        const defaults = {
-            variant: 'danger'
+        return {
+            toasts,
+            notify,
+            notifyError,
+            notifySuccess,
+            removeToast
         };
-
-        notify(message, {...defaults, ...options});
-    };
-
-    const notifySuccess = (
-        message?: ToastMessage,
-        options: Partial<ToastProps> = {}
-    ): void => {
-        message ??= $gettext('Changes saved.');
-
-        const defaults = {
-            variant: 'success'
-        };
-
-        notify(message, {...defaults, ...options});
-    };
-
-    return {
-        notify,
-        notifyError,
-        notifySuccess
-    };
-}
+    },
+);

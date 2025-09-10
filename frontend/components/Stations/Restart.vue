@@ -111,7 +111,7 @@ import {getStationApiUrl} from "~/router";
 import {useRouter} from "vue-router";
 import {useDialog} from "~/functions/useDialog.ts";
 import {useClearAllStationQueries, useStationData} from "~/functions/useStationQuery.ts";
-import {ApiStatus} from "~/entities/ApiInterfaces.ts";
+import {ApiStatus, FlashLevels} from "~/entities/ApiInterfaces.ts";
 import {toRefs} from "@vueuse/core";
 
 const stationData = useStationData();
@@ -139,7 +139,7 @@ const makeApiCall = async (uri: string) => {
     try {
         const {data} = await axios.post<ApiStatus>(uri);
         notify(data.formatted_message, {
-            variant: (data.success) ? 'success' : 'warning'
+            variant: (data.success) ? FlashLevels.Success : FlashLevels.Warning
         });
 
         await delay(2000);

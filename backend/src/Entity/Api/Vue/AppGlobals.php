@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\Vue;
 
+use App\Entity\Api\ToastNotification;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -28,6 +29,12 @@ final class AppGlobals
         public ?DashboardGlobals $dashboardProps = null,
         #[OA\Property]
         public ?UserGlobals $user = null,
+        #[OA\Property(
+            items: new OA\Items(
+                ref: ToastNotification::class
+            )
+        )]
+        public array $notifications = [],
         #[OA\Property(
             items: new OA\Items(
                 type: '{}'

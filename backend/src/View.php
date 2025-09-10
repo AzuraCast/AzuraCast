@@ -6,12 +6,15 @@ namespace App;
 
 use App\Entity\Api\Admin\RolePermissions;
 use App\Entity\Api\Admin\RoleStationPermission;
+use App\Entity\Api\ToastNotification;
 use App\Entity\Api\Vue\AppGlobals;
 use App\Entity\Api\Vue\UserGlobals;
 use App\Entity\User;
+use App\Enums\FlashLevels;
 use App\Enums\SupportedLocales;
 use App\Http\RouterInterface;
 use App\Http\ServerRequest;
+use App\Session\Flash;
 use App\Traits\RequestAwareTrait;
 use App\Utilities\Json;
 use App\View\GlobalSections;
@@ -160,12 +163,28 @@ final class View extends Engine
                 'request' => $request,
                 'auth' => $request->getAttribute(ServerRequest::ATTR_AUTH),
                 'acl' => $request->getAttribute(ServerRequest::ATTR_ACL),
-                'flash' => $request->getAttribute(ServerRequest::ATTR_SESSION_FLASH),
             ];
 
             $router = $request->getAttribute(ServerRequest::ATTR_ROUTER);
             if (null !== $router) {
                 $requestData['router'] = $router;
+            }
+
+            $flash = $request->getAttribute(ServerRequest::ATTR_SESSION_FLASH);
+            if ($flash instanceof Flash) {
+                $requestData['flash'] = $flash;
+
+                $messages = $flash->getMessages();
+                if (count($messages) > 0) {
+                    $this->globalProps->notifications = array_map(
+                        fn(array $message) => new ToastNotification(
+                            message: $message['text'],
+                            title: $message['title'] ?? null,
+                            variant: FlashLevels::tryFrom($message['variant']) ?? FlashLevels::Info
+                        ),
+                        $messages
+                    );
+                }
             }
 
             $customization = $request->getAttribute(ServerRequest::ATTR_CUSTOMIZATION);

@@ -186,7 +186,9 @@ final class SetupController
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        $request->getFlash()->error('<b>' . __('Setup has already been completed!') . '</b>');
+        $request->getFlash()->error(
+            message: __('Setup has already been completed!')
+        );
 
         return $response->withRedirect($request->getRouter()->named('dashboard'));
     }

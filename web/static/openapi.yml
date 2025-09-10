@@ -8183,6 +8183,20 @@ components:
           type: string
           example: '2012-12-25T16:30:00.000000Z'
       type: object
+    Api_ToastNotification:
+      required:
+        - message
+        - title
+        - variant
+      properties:
+        message:
+          type: string
+        title:
+          type: string
+          nullable: true
+        variant:
+          $ref: '#/components/schemas/FlashLevels'
+      type: object
     HasLinks:
       properties:
         links:
@@ -8262,6 +8276,7 @@ components:
         - apiCsrf
         - dashboardProps
         - user
+        - notifications
         - componentProps
       properties:
         locale:
@@ -8286,6 +8301,10 @@ components:
             -
               $ref: '#/components/schemas/Vue_UserGlobals'
           nullable: true
+        notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Api_ToastNotification'
         componentProps:
           type: array
           items:

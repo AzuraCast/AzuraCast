@@ -5,6 +5,8 @@
         role="alert"
         aria-live="assertive"
         aria-atomic="true"
+        ref="$toast"
+        v-on="eventListeners"
     >
         <template v-if="title">
             <div
@@ -46,12 +48,30 @@
 </template>
 
 <script setup lang="ts">
-import {ToastProps} from "~/functions/useNotify.ts";
+import {ToastProps, useNotify} from "~/functions/useNotify.ts";
+import {onMounted, useTemplateRef} from "vue";
+import {Toast as BSToast} from "bootstrap";
+import {FlashLevels} from "~/entities/ApiInterfaces.ts";
 
-withDefaults(
+const props = withDefaults(
     defineProps<ToastProps>(),
     {
-        variant: 'info',
+        variant: FlashLevels.Info,
     }
 );
+
+const {removeToast} = useNotify();
+
+const $toast = useTemplateRef('$toast');
+
+const eventListeners = {
+    ['hidden.bs.toast']: () => {
+        removeToast(props.id);
+    },
+};
+
+onMounted(() => {
+    const toast = new BSToast($toast.value!);
+    toast.show();
+});
 </script>

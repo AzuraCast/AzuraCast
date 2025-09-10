@@ -1418,6 +1418,12 @@ export interface ApiTime {
   utc_json: string;
 }
 
+export interface ApiToastNotification {
+  message: string;
+  title: string | null;
+  variant: FlashLevels;
+}
+
 export interface HasLinks {
   readonly links?: Record<string, string>;
 }
@@ -1486,6 +1492,7 @@ export interface VueAppGlobals {
   apiCsrf: string | null;
   dashboardProps: VueDashboardGlobals | null;
   user: VueUserGlobals | null;
+  notifications: ApiToastNotification[];
   componentProps: any[] | null;
 }
 

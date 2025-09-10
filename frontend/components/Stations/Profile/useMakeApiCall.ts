@@ -2,6 +2,7 @@ import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import {useDialog} from "~/functions/useDialog.ts";
 import {DialogOptions} from "~/components/Common/Dialog.vue";
+import {FlashLevels} from "~/entities/ApiInterfaces.ts";
 
 export default function useMakeApiCall(
     uri: string,
@@ -21,7 +22,7 @@ export default function useMakeApiCall(
         const {data} = await axios.post(uri);
 
         notify(data.formatted_message, {
-            variant: (data.success) ? 'success' : 'warning'
+            variant: (data.success) ? FlashLevels.Success : FlashLevels.Warning
         });
     };
 }

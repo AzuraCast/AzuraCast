@@ -1,6 +1,5 @@
 <template>
     <div
-        v-if="isActive"
         v-bind="$attrs"
         ref="$modal"
         class="modal modal-md fade"
@@ -45,23 +44,11 @@
 
 <script setup lang="ts">
 import {Modal} from "bootstrap";
-import {onMounted, ref, useTemplateRef} from "vue";
+import {onMounted, useTemplateRef} from "vue";
+import {DialogOptions, useDialog} from "~/functions/useDialog.ts";
 
-export interface DialogOptions {
-    title: string,
-    confirmButtonText: string,
-    confirmButtonClass?: string,
-    cancelButtonText: string,
-    cancelButtonClass?: string,
-    focusCancel?: boolean
-}
-
-export interface DialogResponse {
-    value: boolean
-}
-
-export interface DialogComponentProps extends DialogOptions {
-    resolvePromise(body: DialogResponse): void
+type DialogComponentProps = DialogOptions & {
+    id: string
 }
 
 const props = withDefaults(defineProps<DialogComponentProps>(), {
@@ -70,13 +57,7 @@ const props = withDefaults(defineProps<DialogComponentProps>(), {
     focusCancel: false
 });
 
-const isActive = ref(true);
-
-const sendResult = (value: boolean = true) => {
-    props.resolvePromise({
-        value: value
-    });
-}
+const {resolveDialog, removeDialog} = useDialog();
 
 let bsModal: Modal | null = null;
 const $modal = useTemplateRef('$modal');
@@ -85,11 +66,16 @@ const $confirmButton = useTemplateRef('$confirmButton');
 
 const eventListeners = {
     ['hide.bs.modal']: () => {
-        sendResult(false);
+        resolveDialog(
+            props.id,
+            {
+                value: false
+            }
+        );
     },
     ['hidden.bs.modal']: () => {
         bsModal?.dispose();
-        isActive.value = false;
+        removeDialog(props.id);
     },
     ['shown.bs.modal']: () => {
         if (props.focusCancel) {
@@ -101,14 +87,18 @@ const eventListeners = {
 };
 
 const onButtonClick = (value: boolean) => {
-    sendResult(value);
+    resolveDialog(
+        props.id,
+        {
+            value
+        }
+    );
+
     bsModal?.hide();
 };
 
 onMounted(() => {
-    if ($modal.value) {
-        bsModal = new Modal($modal.value);
-        bsModal.show();
-    }
+    bsModal = new Modal($modal.value!);
+    bsModal.show();
 });
 </script>

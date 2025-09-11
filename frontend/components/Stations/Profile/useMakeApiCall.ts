@@ -1,7 +1,6 @@
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
-import {useDialog} from "~/functions/useDialog.ts";
-import {DialogOptions} from "~/components/Common/Dialog.vue";
+import {DialogOptions, useDialog} from "~/functions/useDialog.ts";
 import {FlashLevels} from "~/entities/ApiInterfaces.ts";
 
 export default function useMakeApiCall(

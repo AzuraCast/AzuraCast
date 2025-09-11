@@ -75,7 +75,6 @@ final class ProfileAction implements SingleActionInterface
             'enableStreamers' => $station->enable_streamers,
             'enablePublicPage' => $station->enable_public_page,
             'enableOnDemand' => $station->enable_on_demand,
-            'profileApiUri' => $router->fromHere('api:stations:profile'),
             'hasStarted' => $station->has_started,
 
             // Header

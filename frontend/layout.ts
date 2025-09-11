@@ -1,7 +1,6 @@
 import {App, Component, createApp, h, reactive} from "vue";
 import installAxios from "~/vendor/axios";
 import {installTranslate} from "~/vendor/gettext";
-import {installCurrentVueInstance} from "~/vendor/vueInstance";
 import {globalConstantsKey, useAzuraCast} from "~/vendor/azuracast";
 import installTanstack from "~/vendor/tanstack.ts";
 import {createPinia} from "pinia";
@@ -31,9 +30,6 @@ export default function initApp(
             );
         }
     });
-
-    /* Track current instance (for programmatic use). */
-    installCurrentVueInstance(vueApp);
 
     /* TanStack Query */
     installTanstack(vueApp);

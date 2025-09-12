@@ -103,6 +103,12 @@ server {
         proxy_pass http://centrifugo/connection/uni_$1?$args;
     }
 
+    # Websocket/SSE Simulcast Status Updates
+    location ~ ^/api/live/simulcast/(\w+)$ {
+        include proxy_params;
+        proxy_pass http://centrifugo/connection/uni_$1?$args;
+    }
+
     # Default clean URL routing
     location / {
         try_files $uri @clean_url;

@@ -1,9 +1,9 @@
 <template>
     <Teleport to="body">
         <dialog-row v-for="row in dialogs"
-                :key="row.id"
-                :id="row.id"
-                v-bind="row.options"
+                    :key="row.id"
+                    :id="row.id"
+                    v-bind="row.options"
         />
     </Teleport>
 </template>

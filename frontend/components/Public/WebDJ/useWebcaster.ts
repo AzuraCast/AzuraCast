@@ -1,5 +1,5 @@
 import {ref, shallowRef} from "vue";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useTranslate} from "~/vendor/gettext";
 import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
 

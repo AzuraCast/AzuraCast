@@ -35,10 +35,10 @@
 import Icon from "~/components/Common/Icon.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
-import {IconDelete, IconEdit} from "~/components/Common/icons";
+import {IconDelete, IconEdit} from "~/components/Common/Icons/icons.ts";
 import {computed, toRef} from "vue";
 import useHandlePodcastBatchResponse from "~/components/Stations/Podcasts/useHandlePodcastBatchResponse.ts";
-import {useDialog} from "~/functions/useDialog.ts";
+import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
 
 const props = withDefaults(

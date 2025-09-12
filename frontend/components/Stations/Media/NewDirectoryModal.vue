@@ -41,7 +41,7 @@
 import {required} from "@regle/rules";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {nextTick, useTemplateRef} from "vue";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";

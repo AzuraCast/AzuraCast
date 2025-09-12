@@ -166,7 +166,7 @@ import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed, shallowRef, toRef, useTemplateRef} from "vue";
 import AddButton from "~/components/Common/AddButton.vue";
-import {IconChevronLeft} from "~/components/Common/icons";
+import {IconChevronLeft} from "~/components/Common/Icons/icons.ts";
 import {getStationApiUrl} from "~/router.ts";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import {ApiPodcast, ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";

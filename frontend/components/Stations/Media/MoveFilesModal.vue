@@ -86,7 +86,7 @@ import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
-import {IconChevronLeft, IconFolder} from "~/components/Common/icons";
+import {IconChevronLeft, IconFolder} from "~/components/Common/Icons/icons.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchResponse.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";

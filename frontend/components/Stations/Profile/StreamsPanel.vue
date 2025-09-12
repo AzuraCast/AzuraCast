@@ -182,9 +182,9 @@
 
 <script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
-import PlayButton from "~/components/Common/PlayButton.vue";
+import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {IconDownload, IconHeadphones} from "~/components/Common/icons";
+import {IconDownload, IconHeadphones} from "~/components/Common/Icons/icons.ts";
 import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
 
 const profileData = useStationProfileData();

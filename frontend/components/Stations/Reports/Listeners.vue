@@ -193,7 +193,7 @@ import {computed, ComputedRef, Ref, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import {getStationApiUrl} from "~/router";
-import {IconDesktopWindows, IconDownload, IconRouter, IconSmartphone} from "~/components/Common/icons";
+import {IconDesktopWindows, IconDownload, IconRouter, IconSmartphone} from "~/components/Common/Icons/icons.ts";
 import useHasDatatable from "~/functions/useHasDatatable";
 import {ListenerFilters, ListenerTypeFilters} from "~/components/Stations/Reports/Listeners/listenerFilters.ts";
 import {filter} from "es-toolkit/compat";

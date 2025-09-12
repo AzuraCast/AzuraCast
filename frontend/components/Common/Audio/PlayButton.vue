@@ -17,7 +17,7 @@
 import Icon from "~/components/Common/Icon.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {IconPlayCircle, IconStopCircle} from "~/components/Common/icons";
+import {IconPlayCircle, IconStopCircle} from "~/components/Common/Icons/icons.ts";
 import getUrlWithoutQuery from "~/functions/getUrlWithoutQuery.ts";
 import {
     blankStreamDescriptor,

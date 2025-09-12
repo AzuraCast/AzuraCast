@@ -94,7 +94,7 @@ import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import {computed, nextTick, ref, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {getStationApiUrl} from "~/router";
-import {IconDownload, IconTrendingDown, IconTrendingUp} from "~/components/Common/icons";
+import {IconDownload, IconTrendingDown, IconTrendingUp} from "~/components/Common/Icons/icons.ts";
 import useHasDatatable from "~/functions/useHasDatatable.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";

@@ -67,7 +67,7 @@ import SidebarMenu from "~/components/Common/SidebarMenu.vue";
 import {toRefs, useIntervalFn} from "@vueuse/core";
 import {useStationsMenu} from "~/components/Stations/menu";
 import {userAllowedForStation} from "~/acl";
-import {IconEdit} from "~/components/Common/icons.ts";
+import {IconEdit} from "~/components/Common/Icons/icons.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";

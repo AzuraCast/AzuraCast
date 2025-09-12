@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
-import {IconArrowRight} from "~/components/Common/icons";
+import {IconArrowRight} from "~/components/Common/Icons/icons.ts";
 
 const props = withDefaults(
     defineProps<{

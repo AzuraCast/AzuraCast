@@ -1,6 +1,6 @@
 <template>
     <Teleport to="body">
-        <Dialog v-for="row in dialogs"
+        <dialog-row v-for="row in dialogs"
                 :key="row.id"
                 :id="row.id"
                 v-bind="row.options"
@@ -9,8 +9,8 @@
 </template>
 
 <script setup lang="ts">
-import {useDialog} from "~/functions/useDialog.ts";
-import Dialog from "~/components/Common/Dialog.vue";
+import {useDialog} from "./useDialog.ts";
+import DialogRow from "./DialogRow.vue";
 import {storeToRefs} from "pinia";
 
 const dialogStore = useDialog();

@@ -113,7 +113,7 @@ import InfoCard from "~/components/Common/InfoCard.vue";
 import {onMounted, ref, useTemplateRef} from "vue";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import Loading from "~/components/Common/Loading.vue";
 import {getStationApiUrl} from "~/router";
 import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";

@@ -1,6 +1,6 @@
 import {forEach} from "es-toolkit/compat";
 import {h, VNode} from "vue";
-import {useNotify} from "~/functions/useNotify.ts";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 
 interface BatchResponse {
     success: boolean,

@@ -107,7 +107,7 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import Icon from "~/components/Common/Icon.vue";
 import {reactive} from "vue";
-import {IconMail, IconVpnKey} from "~/components/Common/icons";
+import {IconMail, IconVpnKey} from "~/components/Common/Icons/icons.ts";
 import {isValidPassword, useAppRegle} from "~/vendor/regle.ts";
 import {email, required} from "@regle/rules";
 

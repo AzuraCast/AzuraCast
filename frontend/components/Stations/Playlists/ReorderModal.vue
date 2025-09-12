@@ -102,14 +102,14 @@
 
 <script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
-import PlayButton from "~/components/Common/PlayButton.vue";
+import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import InlinePlayer from "~/components/InlinePlayer.vue";
 import {ref, useTemplateRef} from "vue";
 import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
-import {IconChevronBarDown, IconChevronBarUp, IconChevronDown, IconChevronUp} from "~/components/Common/icons";
+import {IconChevronBarDown, IconChevronBarUp, IconChevronDown, IconChevronUp} from "~/components/Common/Icons/icons.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {StreamChannel, usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {useDraggable} from "vue-draggable-plus";

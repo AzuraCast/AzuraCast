@@ -45,7 +45,7 @@
 <script setup lang="ts">
 import {Modal} from "bootstrap";
 import {onMounted, useTemplateRef} from "vue";
-import {DialogOptions, useDialog} from "~/functions/useDialog.ts";
+import {DialogOptions, useDialog} from "./useDialog.ts";
 
 type DialogComponentProps = DialogOptions & {
     id: string

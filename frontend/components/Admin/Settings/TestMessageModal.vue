@@ -38,7 +38,7 @@
 import {email, required} from "@regle/rules";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {useTemplateRef} from "vue";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";

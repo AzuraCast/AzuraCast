@@ -265,7 +265,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Tab from "~/components/Common/Tab.vue";
-import {IconBadge, IconSend} from "~/components/Common/icons";
+import {IconBadge, IconSend} from "~/components/Common/Icons/icons.ts";
 import {ApiTaskWithLog} from "~/entities/ApiInterfaces.ts";
 import {useAdminSettingsForm} from "~/components/Admin/Settings/form.ts";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";

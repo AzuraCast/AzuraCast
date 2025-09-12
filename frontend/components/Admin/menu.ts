@@ -2,7 +2,7 @@ import {useTranslate} from "~/vendor/gettext.ts";
 import {userAllowed} from "~/acl.ts";
 import filterMenu, {MenuCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
 import {computed} from "vue";
-import {IconGroups, IconRadio, IconRouter} from "~/components/Common/icons.ts";
+import {IconGroups, IconRadio, IconRouter} from "~/components/Common/Icons/icons.ts";
 import {reactiveComputed} from "@vueuse/core";
 import {GlobalPermissions} from "~/entities/ApiInterfaces.ts";
 

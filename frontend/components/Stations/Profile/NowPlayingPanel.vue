@@ -256,7 +256,7 @@ import {
     IconSkipNext,
     IconUpdate,
     IconVolumeOff
-} from "~/components/Common/icons";
+} from "~/components/Common/Icons/icons.ts";
 import UpdateMetadataModal from "~/components/Stations/Profile/UpdateMetadataModal.vue";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 import {BackendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";

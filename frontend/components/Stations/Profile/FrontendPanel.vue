@@ -176,7 +176,7 @@ import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
 import {userAllowedForStation} from "~/acl";
 import useOptionalStorage from "~/functions/useOptionalStorage";
-import {IconMoreHoriz, IconPlay, IconStop, IconUpdate} from "~/components/Common/icons";
+import {IconMoreHoriz, IconPlay, IconStop, IconUpdate} from "~/components/Common/Icons/icons.ts";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 import {FrontendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {getStationApiUrl} from "~/router.ts";

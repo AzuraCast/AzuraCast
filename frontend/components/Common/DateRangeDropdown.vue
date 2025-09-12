@@ -26,7 +26,7 @@ import {useTranslate} from "~/vendor/gettext.ts";
 import {computed} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
-import {IconDateRange} from "~/components/Common/icons";
+import {IconDateRange} from "~/components/Common/Icons/icons.ts";
 import {storeToRefs} from "pinia";
 import {isString} from "es-toolkit";
 

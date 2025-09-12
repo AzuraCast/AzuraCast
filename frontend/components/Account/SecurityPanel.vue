@@ -126,7 +126,7 @@
 
 <script setup lang="ts">
 
-import {IconAdd, IconLock, IconLockOpen, IconVpnKey} from "~/components/Common/icons.ts";
+import {IconAdd, IconLock, IconLockOpen, IconVpnKey} from "~/components/Common/Icons/icons.ts";
 import CardPage from "~/components/Common/CardPage.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import Icon from "~/components/Common/Icon.vue";

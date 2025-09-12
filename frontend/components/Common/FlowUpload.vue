@@ -70,7 +70,7 @@ import {onMounted, onUnmounted, reactive, useTemplateRef} from "vue";
 import Flow from "@flowjs/flow.js";
 import {useAzuraCast} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
-import {IconUpload} from "~/components/Common/icons";
+import {IconUpload} from "~/components/Common/Icons/icons.ts";
 
 export interface UploadResponseBody {
     originalFilename: string,

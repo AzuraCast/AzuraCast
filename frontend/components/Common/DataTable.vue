@@ -298,7 +298,13 @@ import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 import FormCheckbox from "~/components/Form/FormCheckbox.vue";
 import Pagination from "~/components/Common/Pagination.vue";
 import useOptionalStorage from "~/functions/useOptionalStorage";
-import {IconArrowDropDown, IconArrowDropUp, IconFilterList, IconRefresh, IconSearch} from "~/components/Common/icons";
+import {
+    IconArrowDropDown,
+    IconArrowDropUp,
+    IconFilterList,
+    IconRefresh,
+    IconSearch
+} from "~/components/Common/Icons/icons.ts";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import {
     DATATABLE_DEFAULT_CONTEXT,

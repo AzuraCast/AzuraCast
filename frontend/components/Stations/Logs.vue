@@ -82,7 +82,7 @@ import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
 import LogList from "~/components/Common/LogList.vue";
 import {useTemplateRef} from "vue";
 import {getStationApiUrl} from "~/router";
-import {IconSupport} from "~/components/Common/icons.ts";
+import {IconSupport} from "~/components/Common/Icons/icons.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import {useQuery} from "@tanstack/vue-query";
 import {ApiLogType} from "~/entities/ApiInterfaces.ts";

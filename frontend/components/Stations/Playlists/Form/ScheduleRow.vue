@@ -111,7 +111,7 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
-import {IconRemove} from "~/components/Common/icons";
+import {IconRemove} from "~/components/Common/Icons/icons.ts";
 import {useAppScopedRegle} from "~/vendor/regle.ts";
 
 interface PlaylistScheduleRow {

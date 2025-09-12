@@ -64,7 +64,7 @@ import timelinePlugin from "wavesurfer.js/dist/plugins/timeline.js";
 import regionsPlugin, {RegionParams} from "wavesurfer.js/dist/plugins/regions.js";
 import {onMounted, onUnmounted, ref, toRef, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
-import MuteButton from "~/components/Common/MuteButton.vue";
+import MuteButton from "~/components/Common/Audio/MuteButton.vue";
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {storeToRefs} from "pinia";
 

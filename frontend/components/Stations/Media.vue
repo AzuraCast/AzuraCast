@@ -251,7 +251,7 @@ import EditModal from "~/components/Stations/Media/EditModal.vue";
 import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
 import Icon from "~/components/Common/Icon.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
-import PlayButton from "~/components/Common/PlayButton.vue";
+import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed, ref, useTemplateRef, watch} from "vue";
 import {forEach, map, partition} from "es-toolkit/compat";
@@ -259,7 +259,7 @@ import formatFileSize from "~/functions/formatFileSize";
 import InfoCard from "~/components/Common/InfoCard.vue";
 import {getStationApiUrl} from "~/router";
 import {useRoute, useRouter} from "vue-router";
-import {IconFile, IconFolder, IconImage} from "~/components/Common/icons";
+import {IconFile, IconFolder, IconImage} from "~/components/Common/Icons/icons.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {
     ApiStationMediaPlaylist,

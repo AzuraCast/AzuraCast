@@ -1,6 +1,6 @@
 import {computed, ComputedRef, nextTick, Ref, ref, ShallowRef, toRef} from "vue";
 import mergeExisting from "~/functions/mergeExisting";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {AxiosError, AxiosRequestConfig} from "axios";

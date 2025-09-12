@@ -43,7 +43,7 @@
 <script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
 import {useTemplateRef} from "vue";
-import {IconEdit} from "~/components/Common/icons";
+import {IconEdit} from "~/components/Common/Icons/icons.ts";
 import AccountEditModal from "~/components/Account/EditModal.vue";
 import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
 import SecurityPanel from "~/components/Account/SecurityPanel.vue";

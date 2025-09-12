@@ -73,7 +73,7 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {minLength, required} from "@regle/rules";
 import {ref, useTemplateRef} from "vue";
 import {useResettableRef} from "~/functions/useResettableRef";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {isApiError, useAxios} from "~/vendor/axios";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import QrCode from "~/components/Account/QrCode.vue";

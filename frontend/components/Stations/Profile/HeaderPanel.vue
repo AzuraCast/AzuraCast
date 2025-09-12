@@ -44,9 +44,9 @@
 
 <script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
-import PlayButton from "~/components/Common/PlayButton.vue";
+import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import {userAllowedForStation} from "~/acl";
-import {IconEdit} from "~/components/Common/icons";
+import {IconEdit} from "~/components/Common/Icons/icons.ts";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";

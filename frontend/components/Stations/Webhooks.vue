@@ -117,7 +117,7 @@ import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed, useTemplateRef} from "vue";
 import useHasEditModal from "~/functions/useHasEditModal";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import {useTriggerDetails, useTypeDetails} from "~/entities/Webhooks";

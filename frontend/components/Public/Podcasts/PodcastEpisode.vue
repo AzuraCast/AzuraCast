@@ -80,7 +80,7 @@
 
 <script setup lang="ts">
 import AlbumArt from "~/components/Common/AlbumArt.vue";
-import PlayButton from "~/components/Common/PlayButton.vue";
+import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import PodcastCommon from "~/components/Public/Podcasts/PodcastCommon.vue";
 import {usePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";

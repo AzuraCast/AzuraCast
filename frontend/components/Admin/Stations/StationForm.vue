@@ -64,7 +64,7 @@ import AdminStationsHlsForm from "~/components/Admin/Stations/Form/HlsForm.vue";
 import AdminStationsRequestsForm from "~/components/Admin/Stations/Form/RequestsForm.vue";
 import AdminStationsStreamersForm from "~/components/Admin/Stations/Form/StreamersForm.vue";
 import {computed, nextTick, onMounted, ref, watch} from "vue";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {isApiError, useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
 import Loading from "~/components/Common/Loading.vue";

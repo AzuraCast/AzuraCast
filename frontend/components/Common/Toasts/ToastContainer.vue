@@ -13,9 +13,9 @@
 </template>
 
 <script setup lang="ts">
-import {useNotify} from "~/functions/useNotify.ts";
+import {useNotify} from "./useNotify.ts";
 import {storeToRefs} from "pinia";
-import Toast from "~/components/Common/Toast.vue";
+import Toast from "./Toast.vue";
 
 const notifyStore = useNotify();
 const {toasts} = storeToRefs(notifyStore);

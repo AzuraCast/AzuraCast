@@ -65,7 +65,7 @@
 
 <script setup lang="ts">
 import {ListenerFilters, ListenerTypeFilters} from "~/components/Stations/Reports/Listeners/listenerFilters.ts";
-import {IconClearAll} from "~/components/Common/icons.ts";
+import {IconClearAll} from "~/components/Common/Icons/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
 
 const filters = defineModel<ListenerFilters>('filters', {required: true});

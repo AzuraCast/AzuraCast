@@ -13,7 +13,7 @@ import {
     IconPodcasts,
     IconPublic,
     IconReport
-} from "~/components/Common/icons.ts";
+} from "~/components/Common/Icons/icons.ts";
 import {reactiveComputed} from "@vueuse/core";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";

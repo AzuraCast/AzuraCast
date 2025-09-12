@@ -73,7 +73,7 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import Icon from "~/components/Common/Icon.vue";
-import {IconVpnKey} from "~/components/Common/icons";
+import {IconVpnKey} from "~/components/Common/Icons/icons.ts";
 import {isValidPassword, useAppRegle} from "~/vendor/regle.ts";
 import {required} from "@regle/rules";
 

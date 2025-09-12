@@ -135,7 +135,7 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed, onMounted, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Loading from "~/components/Common/Loading.vue";

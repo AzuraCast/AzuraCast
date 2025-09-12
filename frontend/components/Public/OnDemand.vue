@@ -57,10 +57,10 @@
 import InlinePlayer from "~/components/InlinePlayer.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import Icon from "~/components/Common/Icon.vue";
-import PlayButton from "~/components/Common/PlayButton.vue";
+import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import {useTranslate} from "~/vendor/gettext";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
-import {IconDownload} from "~/components/Common/icons";
+import {IconDownload} from "~/components/Common/Icons/icons.ts";
 import FullHeightCard from "~/components/Public/FullHeightCard.vue";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";

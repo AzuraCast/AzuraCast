@@ -133,11 +133,11 @@
 </template>
 
 <script setup lang="ts">
-import PlayButton from "~/components/Common/PlayButton.vue";
+import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import {computed, nextTick, onMounted, ref, toRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
-import MuteButton from "~/components/Common/MuteButton.vue";
+import MuteButton from "~/components/Common/Audio/MuteButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {blankStreamDescriptor, StreamDescriptor, usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {useEventListener} from "@vueuse/core";

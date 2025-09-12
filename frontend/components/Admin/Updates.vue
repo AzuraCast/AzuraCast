@@ -157,12 +157,12 @@
 import {computed} from "vue";
 import Icon from "~/components/Common/Icon.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
-import {IconInfo, IconSync, IconUpdate, IconUpload} from "~/components/Common/icons";
-import {useDialog} from "~/functions/useDialog.ts";
+import {IconInfo, IconSync, IconUpdate, IconUpload} from "~/components/Common/Icons/icons.ts";
+import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {ApiAdminUpdateDetails, ApiAdminVueUpdateProps} from "~/entities/ApiInterfaces.ts";
 import {useQuery} from "@tanstack/vue-query";
 import {QueryKeys} from "~/entities/Queries.ts";

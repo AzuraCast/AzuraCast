@@ -14,4 +14,4 @@
 
 <script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
-import {IconError} from "~/components/Common/icons";</script>
+import {IconError} from "~/components/Common/Icons/icons.ts";</script>

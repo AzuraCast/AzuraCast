@@ -87,7 +87,7 @@ import FlowUpload from "~/components/Common/FlowUpload.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
 import {onMounted, ref} from "vue";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";

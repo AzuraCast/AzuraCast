@@ -86,7 +86,7 @@
 import Icon from "~/components/Common/Icon.vue";
 import {useRoute} from "vue-router";
 import {some} from "es-toolkit/compat";
-import {IconOpenInNew} from "~/components/Common/icons.ts";
+import {IconOpenInNew} from "~/components/Common/Icons/icons.ts";
 import {MenuCategory, MenuRouteBasedUrl, MenuRouteUrl, MenuSubCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
 
 defineProps<{

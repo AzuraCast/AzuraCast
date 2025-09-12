@@ -13,7 +13,7 @@
 import Icon from "~/components/Common/Icon.vue";
 import {computed, toRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {IconVolumeDown, IconVolumeOff, IconVolumeUp} from "~/components/Common/icons";
+import {IconVolumeDown, IconVolumeOff, IconVolumeUp} from "~/components/Common/Icons/icons.ts";
 
 const props = defineProps<{
     volume: number,

@@ -3,7 +3,7 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse} from "axios";
 import {App, InjectionKey} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
 import {useNProgress} from "~/vendor/nprogress.ts";
 import injectRequired from "~/functions/injectRequired.ts";

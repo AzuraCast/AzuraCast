@@ -95,7 +95,7 @@ import DetailsModal from "~/components/Admin/AuditLog/DetailsModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {getApiUrl} from "~/router";
-import {IconAddCircle, IconRemoveCircle, IconSwapHorizontalCircle} from "~/components/Common/icons";
+import {IconAddCircle, IconRemoveCircle, IconSwapHorizontalCircle} from "~/components/Common/Icons/icons.ts";
 import {ApiAdminAuditLogChangeset, AuditLog} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";

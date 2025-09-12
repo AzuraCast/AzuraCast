@@ -151,7 +151,7 @@ import {
     IconMenuOpen,
     IconSettings,
     IconSupport
-} from "~/components/Common/icons";
+} from "~/components/Common/Icons/icons.ts";
 import {useAzuraCastDashboardGlobals, useAzuraCastUser} from "~/vendor/azuracast.ts";
 import {useProvideLightbox} from "~/vendor/lightbox.ts";
 import {userAllowed} from "~/acl.ts";

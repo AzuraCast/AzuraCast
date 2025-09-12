@@ -33,7 +33,7 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useResettableRef} from "~/functions/useResettableRef.ts";

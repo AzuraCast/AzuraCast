@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import {ToastProps, useNotify} from "~/functions/useNotify.ts";
+import {ToastProps, useNotify} from "./useNotify.ts";
 import {onMounted, useTemplateRef} from "vue";
 import {Toast as BSToast} from "bootstrap";
 import {FlashLevels} from "~/entities/ApiInterfaces.ts";

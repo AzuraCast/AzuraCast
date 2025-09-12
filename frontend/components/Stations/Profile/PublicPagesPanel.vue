@@ -126,7 +126,7 @@ import EmbedModal from "~/components/Stations/Profile/EmbedModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {userAllowedForStation} from "~/acl";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
-import {IconBranding, IconCheck, IconClose, IconCode} from "~/components/Common/icons";
+import {IconBranding, IconCheck, IconClose, IconCode} from "~/components/Common/Icons/icons.ts";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";

@@ -132,7 +132,7 @@ import {useAxios} from "~/vendor/axios";
 import SongText from "~/components/Stations/Reports/Overview/SongText.vue";
 import Loading from "~/components/Common/Loading.vue";
 import {useLuxon} from "~/vendor/luxon";
-import {IconChevronDown, IconChevronUp} from "~/components/Common/icons";
+import {IconChevronDown, IconChevronUp} from "~/components/Common/Icons/icons.ts";
 import {DateRange} from "~/components/Stations/Reports/Overview/CommonMetricsView.vue";
 import {useQuery} from "@tanstack/vue-query";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";

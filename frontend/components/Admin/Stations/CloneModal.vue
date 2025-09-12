@@ -41,7 +41,7 @@ import {required} from "@regle/rules";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {isApiError, useAxios} from "~/vendor/axios";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";

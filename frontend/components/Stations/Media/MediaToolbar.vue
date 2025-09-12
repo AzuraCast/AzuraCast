@@ -215,10 +215,10 @@ import Icon from "~/components/Common/Icon.vue";
 import {computed, ref, toRef, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
-import {IconClearAll, IconDelete, IconFolder, IconMoreHoriz, IconMove} from "~/components/Common/icons";
+import {IconClearAll, IconDelete, IconFolder, IconMoreHoriz, IconMove} from "~/components/Common/Icons/icons.ts";
 import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchResponse.ts";
-import {useNotify} from "~/functions/useNotify.ts";
-import {useDialog} from "~/functions/useDialog.ts";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
+import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {MediaInitialPlaylist, MediaSelectedItems} from "~/components/Stations/Media.vue";
 import {ApiStationMediaPlaylist} from "~/entities/ApiInterfaces";
 

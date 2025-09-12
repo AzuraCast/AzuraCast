@@ -194,7 +194,13 @@ import {useInjectMixer} from "~/components/Public/WebDJ/useMixerValue";
 import {usePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
 import {TagLibProcessResult, useWebDjSource, WebDjFilePointer} from "~/components/Public/WebDJ/useWebDjSource";
 import {useInjectWebcaster} from "~/components/Public/WebDJ/useWebcaster";
-import {IconFastForward, IconFastRewind, IconPauseCircle, IconPlayCircle, IconStop} from "~/components/Common/icons";
+import {
+    IconFastForward,
+    IconFastRewind,
+    IconPauseCircle,
+    IconPlayCircle,
+    IconStop
+} from "~/components/Common/Icons/icons.ts";
 
 const props = defineProps<{
     id: string

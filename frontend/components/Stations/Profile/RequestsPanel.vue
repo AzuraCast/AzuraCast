@@ -60,7 +60,7 @@ import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {userAllowedForStation} from "~/acl";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
-import {IconCheck, IconClose, IconLogs} from "~/components/Common/icons";
+import {IconCheck, IconClose, IconLogs} from "~/components/Common/Icons/icons.ts";
 import {computed} from "vue";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";

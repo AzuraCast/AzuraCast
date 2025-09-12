@@ -1,6 +1,6 @@
 import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/functions/useNotify";
-import {DialogOptions, useDialog} from "~/functions/useDialog.ts";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
+import {DialogOptions, useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {FlashLevels} from "~/entities/ApiInterfaces.ts";
 import {MaybeRef, nextTick, toValue} from "vue";
 import {useClearProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";

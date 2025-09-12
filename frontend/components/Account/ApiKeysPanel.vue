@@ -58,7 +58,7 @@
 
 <script setup lang="ts">
 
-import {IconAdd} from "~/components/Common/icons.ts";
+import {IconAdd} from "~/components/Common/Icons/icons.ts";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import Icon from "~/components/Common/Icon.vue";

@@ -2,16 +2,15 @@
     <slot/>
 
     <audio-player/>
-
     <toast-container/>
     <dialog-container/>
 </template>
 
 <script setup lang="ts">
 import {nextTick, onMounted} from "vue";
-import AudioPlayer from "~/components/Common/AudioPlayer.vue";
-import ToastContainer from "~/components/Common/ToastContainer.vue";
-import DialogContainer from "~/components/Common/DialogContainer.vue";
+import AudioPlayer from "~/components/Common/Audio/AudioPlayer.vue";
+import ToastContainer from "~/components/Common/Toasts/ToastContainer.vue";
+import DialogContainer from "~/components/Common/Dialogs/DialogContainer.vue";
 
 onMounted(async () => {
     await nextTick();

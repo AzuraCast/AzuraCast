@@ -22,11 +22,11 @@
 import Icon from "~/components/Common/Icon.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
-import {IconDelete} from "~/components/Common/icons";
+import {IconDelete} from "~/components/Common/Icons/icons.ts";
 import {computed, h, toRef, VNode} from "vue";
 import {forEach, map} from "es-toolkit/compat";
-import {useNotify} from "~/functions/useNotify.ts";
-import {useDialog} from "~/functions/useDialog.ts";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
+import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {ApiGenericBatchResult} from "~/entities/ApiInterfaces.ts";
 

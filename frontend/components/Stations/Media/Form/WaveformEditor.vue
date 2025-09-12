@@ -77,10 +77,10 @@
 </template>
 
 <script setup lang="ts">
-import WaveformComponent from "~/components/Common/Waveform.vue";
+import WaveformComponent from "~/components/Common/Audio/Waveform.vue";
 import Icon from "~/components/Common/Icon.vue";
 import {shallowRef, useTemplateRef, watch} from "vue";
-import {IconPlayCircle, IconStop} from "~/components/Common/icons";
+import {IconPlayCircle, IconStop} from "~/components/Common/Icons/icons.ts";
 import {reactiveComputed} from "@vueuse/core";
 import {RegionParams} from "wavesurfer.js/dist/plugins/regions.js";
 import {StationMediaMetadata, StationMediaRecord} from "~/components/Stations/Media/Form/form.ts";

@@ -16,92 +16,92 @@ interface SimulcastSsePayload {
 
 export default function useSimulcastStatus(initialProps: SimulcastStatusProps) {
     const props = reactiveComputed(() => ({
-        useSse: true,
+        useSse: false,
         ...initialProps
     }));
 
     const simulcastStreams = shallowRef<any[]>([]);
-    const lastUpdate = ref<number>(0);
+    const isConnected = ref<boolean>(false);
 
     const updateStream = (stream: any) => {
         const existingIndex = simulcastStreams.value.findIndex(s => s.id === stream.id);
         if (existingIndex >= 0) {
-            simulcastStreams.value[existingIndex] = stream;
+            // Create new array to trigger reactivity
+            const newStreams = [...simulcastStreams.value];
+            newStreams[existingIndex] = stream;
+            simulcastStreams.value = newStreams;
         } else {
-            simulcastStreams.value.push(stream);
+            // Create new array to trigger reactivity
+            simulcastStreams.value = [...simulcastStreams.value, stream];
         }
-        lastUpdate.value = Date.now();
     };
 
-    if (props.useSse) {
-        const sseBaseUri = getApiUrl('/live/simulcast/sse');
-        const sseUriParams = new URLSearchParams({
-            "cf_connect": JSON.stringify({
-                "subs": {
-                    [`simulcast:${props.stationShortName}`]: {
-                        "recover": true
-                    },
-                }
-            }),
-        });
-        const sseUri = sseBaseUri.value + '?' + sseUriParams.toString();
+    // Set up SSE connection reactively based on useSse prop
+    watch(
+        () => props.useSse,
+        (useSse) => {
+            if (useSse) {
+                const sseBaseUri = getApiUrl('/live/simulcast/sse');
+                const channelName = `simulcast:${props.stationShortName}`;
+                
+                const sseUriParams = new URLSearchParams({
+                    "cf_connect": JSON.stringify({
+                        "subs": {
+                            [channelName]: {
+                                "recover": true
+                            },
+                        }
+                    }),
+                });
+                const sseUri = sseBaseUri.value + '?' + sseUriParams.toString();
 
-        const handleSseData = (ssePayload: SimulcastSsePayload) => {
-            const jsonData = ssePayload.data;
-            if (jsonData.simulcast && jsonData.simulcast.id) {
-                updateStream(jsonData.simulcast);
-            }
-        };
-
-        const {data} = useEventSource(sseUri);
-        watch(data, (dataRaw: string | null) => {
-            if (!dataRaw) {
-                return;
-            }
-
-            const jsonData = JSON.parse(dataRaw);
-
-            if ('connect' in jsonData) {
-                const connectData = jsonData.connect;
-                // Handle initial cached data
-                for (const subName in connectData.subs) {
-                    const sub = connectData.subs[subName];
-                    if ('publications' in sub && sub.publications.length > 0) {
-                        sub.publications.forEach((initialRow: SimulcastSsePayload) => handleSseData(initialRow));
+                const handleSseData = (ssePayload: SimulcastSsePayload) => {
+                    const jsonData = ssePayload.data;
+                    if (jsonData.simulcast && jsonData.simulcast.id) {
+                        updateStream(jsonData.simulcast);
                     }
-                }
-            } else if ('pub' in jsonData) {
-                handleSseData(jsonData.pub);
+                };
+
+                const {data, status, error} = useEventSource(sseUri);
+                
+                // Watch connection status
+                watch(status, (newStatus) => {
+                    isConnected.value = newStatus === 'open';
+                });
+                
+                watch(error, (err) => {
+                    console.error('SSE Error:', err);
+                });
+                
+                watch(data, (dataRaw: string | null) => {
+                    if (!dataRaw) {
+                        return;
+                    }
+
+                    const jsonData = JSON.parse(dataRaw);
+
+                    if ('connect' in jsonData) {
+                        isConnected.value = true;
+                        const connectData = jsonData.connect;
+                        // Handle initial cached data
+                        for (const subName in connectData.subs) {
+                            const sub = connectData.subs[subName];
+                            if ('publications' in sub && sub.publications.length > 0) {
+                                sub.publications.forEach((initialRow: SimulcastSsePayload) => handleSseData(initialRow));
+                            }
+                        }
+                    } else if ('pub' in jsonData) {
+                        handleSseData(jsonData.pub);
+                    }
+                });
             }
-        });
-    }
-
-    // Computed properties
-    const activeStreams = computed(() => {
-        return simulcastStreams.value.filter(stream => 
-            ['running', 'starting', 'stopping'].includes(stream.status)
-        );
-    });
-
-    const errorStreams = computed(() => {
-        return simulcastStreams.value.filter(stream => stream.status === 'error');
-    });
-
-    const hasActiveStreams = computed(() => {
-        return activeStreams.value.length > 0;
-    });
-
-    const hasErrors = computed(() => {
-        return errorStreams.value.length > 0;
-    });
+        },
+        { immediate: true }
+    );
 
     return {
         simulcastStreams,
-        activeStreams,
-        errorStreams,
-        hasActiveStreams,
-        hasErrors,
-        lastUpdate,
-        updateStream
+        updateStream,
+        isConnected
     };
 }

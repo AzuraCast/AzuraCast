@@ -7,16 +7,13 @@
                 }}
             </p>
         </template>
+        <template #warning>
+            {{
+                $gettext('Please note that simulcasting is very CPU and bandwidth intensive.')
+            }}
+        </template>
         <template #actions>
             <div class="d-flex align-items-center gap-2">
-                <small v-if="simulcastStatus.simulcastStreams.value.length > 0" class="text-success">
-                    <icon :icon="IconBroadcast" class="me-1" />
-                    {{ $gettext('Live Updates') }}
-                </small>
-                <small v-else class="text-muted">
-                    <icon :icon="IconRefresh" class="me-1" />
-                    {{ $gettext('Polling') }}
-                </small>
                 <add-button
                     :text="$gettext('Add Simulcasting Stream')"
                     @click="doCreate"
@@ -104,7 +101,7 @@
 import DataTable from "~/components/Common/DataTable.vue";
 import EditModal from "~/components/Stations/Simulcasting/EditModal.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useTemplateRef, ref, computed, toValue} from "vue";
+import {useTemplateRef, ref, computed, toValue, watch} from "vue";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
@@ -112,12 +109,13 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {queryKeyWithStation} from "~/entities/Queries.ts";
 import Icon from "~/components/Common/Icon.vue";
 import {IconPlay, IconStop, IconBroadcast, IconRefresh} from "~/components/Common/icons";
 import {useAxios} from "~/vendor/axios";
 import useSimulcastStatus from "~/functions/useSimulcastStatus.ts";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
+import {useQuery} from "@tanstack/vue-query";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
 const listUrl = getStationApiUrl('/simulcasting');
 const station = useAzuraCastStation();
@@ -132,19 +130,46 @@ const fields = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-// Try SSE first, fallback to polling
+// We need it to determine if we should use SSE or polling
+const apiUrl = getStationApiUrl('/vue/profile');
+const {data: state, isLoading} = useQuery({
+    queryKey: queryKeyWithStation([
+        QueryKeys.StationProfile
+    ], [
+        'profile'
+    ]),
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get(apiUrl.value, {signal});
+        return data;
+    }
+});
+
+
+// Wait for settings to load before deciding on SSE vs polling
 const simulcastStatus = useSimulcastStatus({
     stationShortName: station.shortName,
-    useSse: true
+    useSse: computed(() => state.value?.useSse ?? false),
 });
+
+// Create a reactive ref for polling interval
+const pollingInterval = ref<number | false>(5000);
 
 const baseProvider = useApiItemProvider(
     listUrl,
     queryKeyWithStation(['simulcasting']),
     {
-        refetchInterval: simulcastStatus.simulcastStreams.value.length > 0 ? false : 5000, // Disable polling if SSE is working
+        refetchInterval: pollingInterval, // Use reactive ref
         refetchIntervalInBackground: true,
     }
+);
+
+// Disable polling when SSE is connected and working
+watch(
+    () => simulcastStatus.isConnected.value,
+    (isConnected) => {
+        pollingInterval.value = isConnected ? false : 5000;
+    },
+    { immediate: true }
 );
 
 // Create a custom provider that uses merged data
@@ -239,11 +264,11 @@ const startStream = async (stream: any): Promise<void> => {
     
     actionLoading.value[`${stream.id}-start`] = true
     try {
-        const url = getStationApiUrl(`/simulcasting/${stream.id}/start`)
-        console.log('Making request to:', url?.value || url)
-        
+        const url = getStationApiUrl(`/simulcasting/${stream.id}/start`)        
         await axios.post(toValue(url))
-        relist()
+        if (!simulcastStatus.isConnected.value) {
+            relist()
+        }
     } finally {
         actionLoading.value[`${stream.id}-start`] = false
     }
@@ -257,11 +282,11 @@ const stopStream = async (stream: any): Promise<void> => {
     
     actionLoading.value[`${stream.id}-stop`] = true
     try {
-        const url = getStationApiUrl(`/simulcasting/${stream.id}/stop`)
-        console.log('Making request to:', url?.value || url)
-        
+        const url = getStationApiUrl(`/simulcasting/${stream.id}/stop`)        
         await axios.post(toValue(url))
-        relist()
+        if (!simulcastStatus.isConnected.value) {
+            relist()
+        }
     } finally {
         actionLoading.value[`${stream.id}-stop`] = false
     }

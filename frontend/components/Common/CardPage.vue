@@ -20,6 +20,9 @@
         <info-card v-if="slots.info">
             <slot name="info" />
         </info-card>
+        <warning-card v-if="slots.warning">
+            <slot name="warning" />
+        </warning-card>
         <div
             v-if="slots.actions"
             class="card-body buttons"
@@ -40,6 +43,7 @@
 
 <script setup lang="ts">
 import InfoCard from "~/components/Common/InfoCard.vue";
+import WarningCard from "~/components/Common/WarningCard.vue";
 
 withDefaults(
     defineProps<{

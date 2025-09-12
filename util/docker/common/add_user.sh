@@ -20,7 +20,9 @@ mkdir -p /var/azuracast/www /var/azuracast/stations /var/azuracast/www_tmp \
   /var/azuracast/storage/stereo_tool \
   /var/azuracast/storage/geoip \
   /var/azuracast/storage/sftpgo \
-  /var/azuracast/storage/acme
+  /var/azuracast/storage/acme \
+  /var/azuracast/storage/simulcast
+  
 
 chown -R azuracast:azuracast /var/azuracast
 chmod -R 777 /var/azuracast/www_tmp

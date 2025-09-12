@@ -1377,6 +1377,13 @@ final class ConfigWriter implements EventSubscriberInterface
             # Simulcasting Configuration
             # ==========================
 
+            # Video and font files for simulcasting
+            simulcast_video_file = "{$simulcastStorageDir}/video.mp4"
+            simulcast_font_file = "{$simulcastStorageDir}/font.ttf"
+            simulcast_font_size = 35
+            simulcast_font_x = 50
+            simulcast_font_y = 50
+
             # Post simulcast events to AzuraCast API
             # Required keys in m: "instance_id", "event"
             # Optional key: "reason"
@@ -1409,18 +1416,43 @@ final class ConfigWriter implements EventSubscriberInterface
                 thread.run(fast=false, f)
             end
 
-            # Video and font files for simulcasting
-            simulcast_video_file = "{$simulcastStorageDir}/video.mp4"
+            simulcast_nowplaying = ref("")
+
+            def update_nowplaying(m)
+ 
+            if string.length(m["artist"]) <= 0 then
+                    if string.contains(substring=" - ", m["title"]) then
+                        let (a, t) = string.split.first(separator=" - ", m["title"])
+                        simulcast_nowplaying := a ^ " - " ^ t
+                    end
+                else
+                    simulcast_nowplaying := m["artist"] ^ " - " ^ m["title"]
+                end
+
+            end
+
+            radio.on_metadata(fun(m) -> thread.run(fast=false, {update_nowplaying(m)}))
+
             
             # Build A/V source for simulcasting
             # Loop the background video, add overlay, then mux with radio audio
             simulcast_videostream = single(simulcast_video_file)
             simulcast_videostream = source.mux.video(video=simulcast_videostream, radio)
+            simulcast_videostream = video.add_text(
+                                        font=simulcast_font_file, 
+                                        size=simulcast_font_size, 
+                                        color=0xFFFFFF, 
+                                        x=simulcast_font_x, 
+                                        y=simulcast_font_y, 
+                                        speed=0,
+                                        {simulcast_nowplaying()}, 
+                                        simulcast_videostream
+                                    )
             
             # Encoding settings for simulcasting
             simulcast_v_fps = 25
             simulcast_v_gop = 50
-            simulcast_v_bps = "300k"
+            simulcast_v_bps = "2500k"
             simulcast_a_bps = "96k"
             
             azuracast.reset_simulcast_instances()

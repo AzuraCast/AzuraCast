@@ -21,9 +21,9 @@
         </div>
 
         <div class="col-lg-5">
-            <profile-requests v-if="stationData.features.requests"/>
+            <profile-requests v-if="hasActiveBackend"/>
 
-            <profile-streamers v-if="stationData.features.streamers"/>
+            <profile-streamers v-if="hasActiveBackend"/>
 
             <template v-if="hasActiveFrontend">
                 <profile-frontend/>

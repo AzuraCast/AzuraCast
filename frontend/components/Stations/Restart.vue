@@ -113,6 +113,7 @@ import {useDialog} from "~/functions/useDialog.ts";
 import {useClearAllStationQueries, useStationData} from "~/functions/useStationQuery.ts";
 import {ApiStatus, FlashLevels} from "~/entities/ApiInterfaces.ts";
 import {toRefs} from "@vueuse/core";
+import {delay} from "es-toolkit";
 
 const stationData = useStationData();
 const {canReload} = toRefs(stationData);
@@ -131,8 +132,6 @@ const router = useRouter();
 
 const clearAllStationQueries = useClearAllStationQueries();
 
-const delay = (duration: number) => new Promise(resolve => setTimeout(resolve, duration));
-
 const makeApiCall = async (uri: string) => {
     isLoading.value = true;
 
@@ -148,7 +147,7 @@ const makeApiCall = async (uri: string) => {
             name: 'stations:index'
         });
 
-        void clearAllStationQueries();
+        await clearAllStationQueries();
     } finally {
         isLoading.value = false;
     }

@@ -78,6 +78,19 @@ export const useStationData = () => {
     return computed<VueStationGlobals>(() => data.value ?? blankStationGlobals);
 };
 
+export const useClearStationGlobalsQuery = () => {
+    const queryClient = useQueryClient();
+    const stationId = useStationId();
+
+    return async () => {
+        await queryClient.invalidateQueries({
+            queryKey: queryKeyWithStation([
+                QueryKeys.StationGlobals
+            ], stationId)
+        });
+    }
+}
+
 export const useClearAllStationQueries = () => {
     const queryClient = useQueryClient();
     const stationId = useStationId();

@@ -1,11 +1,11 @@
 import {useAxios} from "~/vendor/axios.ts";
 import {getStationApiUrl} from "~/router.ts";
-import {useQuery} from "@tanstack/vue-query";
+import {useQuery, useQueryClient} from "@tanstack/vue-query";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import {StationProfileRequired} from "~/entities/StationProfile.ts";
 import NowPlaying from "~/entities/NowPlaying.ts";
 import {ApiStationsVueProfileProps} from "~/entities/ApiInterfaces.ts";
-import {useStationData} from "~/functions/useStationQuery.ts";
+import {useStationData, useStationId} from "~/functions/useStationQuery.ts";
 import {computed} from "vue";
 import {toRefs} from "@vueuse/core";
 
@@ -104,3 +104,15 @@ export const useStationProfileData = () => {
     });
 };
 
+export const useClearProfileData = () => {
+    const queryClient = useQueryClient();
+    const stationId = useStationId();
+
+    return async () => {
+        await queryClient.invalidateQueries({
+            queryKey: queryKeyWithStation([
+                QueryKeys.StationProfile
+            ], stationId)
+        });
+    };
+}

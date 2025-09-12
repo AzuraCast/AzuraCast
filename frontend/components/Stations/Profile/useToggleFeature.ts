@@ -1,12 +1,13 @@
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
 import {getStationApiUrl} from "~/router.ts";
-import {useRouter} from "vue-router";
 import {set} from "es-toolkit/compat";
 import {useNotify} from "~/functions/useNotify";
 import {useDialog} from "~/functions/useDialog.ts";
-import {Ref} from "vue";
+import {nextTick, Ref} from "vue";
 import {ApiStatus} from "~/entities/ApiInterfaces.ts";
+import {useClearStationGlobalsQuery} from "~/functions/useStationQuery.ts";
+import {useClearProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
 
 export default function useToggleFeature(
     feature: string,
@@ -16,9 +17,11 @@ export default function useToggleFeature(
     const {showAlert} = useDialog();
     const {notifySuccess} = useNotify();
     const {$gettext} = useTranslate();
-    const router = useRouter();
 
     const profileEditUrl = getStationApiUrl('/profile/edit');
+
+    const clearStationGlobalsQuery = useClearStationGlobalsQuery();
+    const clearProfileData = useClearProfileData();
 
     return async () => {
         const newValue: boolean = !currentValue.value;
@@ -48,6 +51,12 @@ export default function useToggleFeature(
         );
 
         notifySuccess(data.message);
-        router.go(0);
+
+        await nextTick();
+
+        await Promise.all([
+            clearStationGlobalsQuery(),
+            clearProfileData()
+        ]);
     };
 }

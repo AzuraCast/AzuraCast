@@ -259,7 +259,13 @@ import DashboardCharts from "~/components/DashboardCharts.vue";
 import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
 import useOptionalStorage from "~/functions/useOptionalStorage";
-import {IconAccountCircle, IconHeadphones, IconInfo, IconSettings, IconWarning} from "~/components/Common/Icons/icons.ts";
+import {
+    IconAccountCircle,
+    IconHeadphones,
+    IconInfo,
+    IconSettings,
+    IconWarning
+} from "~/components/Common/Icons/icons.ts";
 import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
 import {getApiUrl} from "~/router.ts";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";

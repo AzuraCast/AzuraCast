@@ -1,10 +1,10 @@
-import {ref, shallowRef, watch} from "vue";
+import {ComputedRef, ref, shallowRef, watch} from "vue";
 import {reactiveComputed, useEventSource} from "@vueuse/core";
 import {getApiUrl} from "~/router.ts";
 
 export interface SimulcastStatusProps {
     stationShortName: string,
-    useSse?: boolean
+    useSse?: ComputedRef<boolean>
 }
 
 interface SimulcastSsePayload {
@@ -66,7 +66,7 @@ export default function useSimulcastStatus(initialProps: SimulcastStatusProps) {
                 
                 // Watch connection status
                 watch(status, (newStatus) => {
-                    isConnected.value = newStatus === 'open';
+                    isConnected.value = newStatus === 'OPEN';
                 });
                 
                 watch(error, (err) => {

@@ -8,10 +8,20 @@
             </p>
         </template>
         <template #actions>
-            <add-button
-                :text="$gettext('Add Simulcasting Stream')"
-                @click="doCreate"
-            />
+            <div class="d-flex align-items-center gap-2">
+                <small v-if="simulcastStatus.simulcastStreams.value.length > 0" class="text-success">
+                    <icon :icon="IconBroadcast" class="me-1" />
+                    {{ $gettext('Live Updates') }}
+                </small>
+                <small v-else class="text-muted">
+                    <icon :icon="IconRefresh" class="me-1" />
+                    {{ $gettext('Polling') }}
+                </small>
+                <add-button
+                    :text="$gettext('Add Simulcasting Stream')"
+                    @click="doCreate"
+                />
+            </div>
         </template>
 
         <data-table
@@ -94,7 +104,7 @@
 import DataTable from "~/components/Common/DataTable.vue";
 import EditModal from "~/components/Stations/Simulcasting/EditModal.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useTemplateRef, computed, toValue, ref} from "vue";
+import {useTemplateRef, ref, computed, toValue} from "vue";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
@@ -104,10 +114,13 @@ import AddButton from "~/components/Common/AddButton.vue";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {queryKeyWithStation} from "~/entities/Queries.ts";
 import Icon from "~/components/Common/Icon.vue";
-import {IconPlay, IconStop} from "~/components/Common/icons";
+import {IconPlay, IconStop, IconBroadcast, IconRefresh} from "~/components/Common/icons";
 import {useAxios} from "~/vendor/axios";
+import useSimulcastStatus from "~/functions/useSimulcastStatus.ts";
+import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 
 const listUrl = getStationApiUrl('/simulcasting');
+const station = useAzuraCastStation();
 
 const {$gettext} = useTranslate();
 const {axios} = useAxios();
@@ -119,29 +132,58 @@ const fields = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const listItemProvider = useApiItemProvider(
+// Try SSE first, fallback to polling
+const simulcastStatus = useSimulcastStatus({
+    stationShortName: station.shortName,
+    useSse: true
+});
+
+const baseProvider = useApiItemProvider(
     listUrl,
     queryKeyWithStation(['simulcasting']),
     {
-        refetchInterval: 5000, // Always poll every 5 seconds
-        refetchIntervalInBackground: true, // Continue polling when tab is not active
+        refetchInterval: simulcastStatus.simulcastStreams.value.length > 0 ? false : 5000, // Disable polling if SSE is working
+        refetchIntervalInBackground: true,
     }
 );
 
-// Check if there are any active streams for visual indicator
-const hasActiveStreams = computed(() => {
-    const rows = listItemProvider.rows.value;
-    if (!Array.isArray(rows)) {
-        return false;
-    }
-    return rows.some((stream: any) => 
-        stream && stream.status && ['running', 'starting', 'stopping'].includes(stream.status)
-    );
-});
+// Create a custom provider that uses merged data
+const listItemProvider = computed(() => ({
+    ...baseProvider,
+    rows: mergedRows,
+    // Keep other provider properties but override rows with merged data
+}));
 
 const relist = () => {
-    void listItemProvider.refresh();
+    void baseProvider.refresh();
 }
+
+// Merge SSE data with API data for real-time updates
+const mergedRows = computed(() => {
+    const apiRows = baseProvider.rows.value || [];
+    const sseStreams = simulcastStatus.simulcastStreams.value;
+    
+    if (sseStreams.length === 0) {
+        return apiRows;
+    }
+    
+    // Create a map of SSE streams by ID for quick lookup
+    const sseMap = new Map(sseStreams.map(stream => [stream.id, stream]));
+    
+    // Merge API data with SSE updates
+    return apiRows.map(apiRow => {
+        const sseUpdate = sseMap.get(apiRow.id);
+        if (sseUpdate) {
+            return {
+                ...apiRow,
+                status: sseUpdate.status,
+                error_message: sseUpdate.error_message,
+                // Keep other API data but update status-related fields
+            };
+        }
+        return apiRow;
+    });
+});
 
 // Helper functions
 const getAdapterLabel = (adapter: string): string => {
@@ -188,10 +230,6 @@ const isActionLoading = (streamId: number, action: string): boolean => {
     return actionLoading.value[`${streamId}-${action}`] || false
 }
 
-const setActionLoading = (streamId: number, action: string, loading: boolean): void => {
-    actionLoading.value[`${streamId}-${action}`] = loading
-}
-
 // Action handlers
 const startStream = async (stream: any): Promise<void> => {
     if (!stream || !stream.id) {
@@ -199,17 +237,15 @@ const startStream = async (stream: any): Promise<void> => {
         return
     }
     
-    setActionLoading(stream.id, 'start', true)
+    actionLoading.value[`${stream.id}-start`] = true
     try {
         const url = getStationApiUrl(`/simulcasting/${stream.id}/start`)
         console.log('Making request to:', url?.value || url)
         
         await axios.post(toValue(url))
         relist()
-    } catch (error) {
-        console.error('Failed to start stream:', error)
     } finally {
-        setActionLoading(stream.id, 'start', false)
+        actionLoading.value[`${stream.id}-start`] = false
     }
 }
 
@@ -219,17 +255,15 @@ const stopStream = async (stream: any): Promise<void> => {
         return
     }
     
-    setActionLoading(stream.id, 'stop', true)
+    actionLoading.value[`${stream.id}-stop`] = true
     try {
         const url = getStationApiUrl(`/simulcasting/${stream.id}/stop`)
         console.log('Making request to:', url?.value || url)
         
         await axios.post(toValue(url))
         relist()
-    } catch (error) {
-        console.error('Failed to stop stream:', error)
     } finally {
-        setActionLoading(stream.id, 'stop', false)
+        actionLoading.value[`${stream.id}-stop`] = false
     }
 }
 

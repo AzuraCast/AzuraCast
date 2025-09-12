@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Container\EnvironmentAwareTrait;
+use App\Entity\Simulcasting;
 use App\Entity\Station;
 use GuzzleHttp\Client;
 
@@ -55,5 +56,19 @@ final class Centrifugo
     public function getChannelName(Station $station): string
     {
         return 'station:' . $station->short_name;
+    }
+
+    public function publishSimulcastStatus(Station $station, Simulcasting $simulcasting): void
+    {
+        $this->send([
+            'method' => 'publish',
+            'params' => [
+                'channel' => 'simulcast:' . $station->short_name,
+                'data' => [
+                    'simulcast' => $simulcasting,
+                    'current_time' => time(),
+                ],
+            ],
+        ]);
     }
 }

@@ -11,6 +11,7 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Simulcasting\SimulcastingManager;
+use App\Service\Centrifugo;
 use OpenApi\Attributes as OA;
 
 /** @extends AbstractStationApiCrudController<Simulcasting> */
@@ -134,7 +135,8 @@ final class SimulcastingController extends AbstractStationApiCrudController
         \Symfony\Component\Serializer\Serializer $serializer,
         \Symfony\Component\Validator\Validator\ValidatorInterface $validator,
         private readonly SimulcastingManager $simulcastingManager,
-        private readonly Liquidsoap $liquidsoap
+        private readonly Liquidsoap $liquidsoap,
+        private readonly Centrifugo $centrifugo
     ) {
         parent::__construct($serializer, $validator);
     }
@@ -205,6 +207,11 @@ final class SimulcastingController extends AbstractStationApiCrudController
                 ]);
         }
 
+        // Publish SSE update
+        if ($this->centrifugo->isSupported()) {
+            $this->centrifugo->publishSimulcastStatus($station, $simulcasting);
+        }
+
         $return = $this->viewRecord($simulcasting, $request);
         return $response->withJson($return);
     }
@@ -253,6 +260,11 @@ final class SimulcastingController extends AbstractStationApiCrudController
                     'message' => 'Failed to stop simulcasting stream',
                     'success' => false
                 ]);
+        }
+
+        // Publish SSE update
+        if ($this->centrifugo->isSupported()) {
+            $this->centrifugo->publishSimulcastStatus($station, $simulcasting);
         }
 
         $return = $this->viewRecord($simulcasting, $request);

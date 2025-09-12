@@ -11,6 +11,7 @@ use App\Entity\Enums\SimulcastingStatus;
 use App\Entity\Simulcasting;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Service\Centrifugo;
 use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
 
@@ -18,6 +19,11 @@ final class SimulcastNotificationAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
     use LoggerAwareTrait;
+
+    public function __construct(
+        private readonly Centrifugo $centrifugo
+    ) {
+    }
 
     public function __invoke(
         ServerRequest $request,
@@ -85,6 +91,11 @@ final class SimulcastNotificationAction implements SingleActionInterface
 
             $this->em->persist($simulcasting);
             $this->em->flush();
+
+            // Publish SSE update
+            if ($this->centrifugo->isSupported()) {
+                $this->centrifugo->publishSimulcastStatus($station, $simulcasting);
+            }
 
             $this->logger->info('Simulcast status updated', [
                 'station_id' => $station->id,

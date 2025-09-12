@@ -61,7 +61,7 @@
 import {IconAdd} from "~/components/Common/Icons/icons.ts";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import AccountApiKeyModal from "~/components/Account/ApiKeyModal.vue";
 import {useTemplateRef} from "vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";

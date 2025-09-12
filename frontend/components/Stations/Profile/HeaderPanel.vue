@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import {userAllowedForStation} from "~/acl";
 import {IconEdit} from "~/components/Common/Icons/icons.ts";

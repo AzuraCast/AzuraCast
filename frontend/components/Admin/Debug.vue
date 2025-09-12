@@ -248,7 +248,7 @@ import Tab from "~/components/Common/Tab.vue";
 import {getApiUrl} from "~/router.ts";
 import Loading from "~/components/Common/Loading.vue";
 import {IconRefresh} from "~/components/Common/Icons/icons.ts";
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import {ApiAdminDebugQueue, ApiAdminDebugStation, ApiAdminDebugSyncTask} from "~/entities/ApiInterfaces.ts";
 import {useQuery, useQueryClient} from "@tanstack/vue-query";
 import {QueryKeys} from "~/entities/Queries.ts";

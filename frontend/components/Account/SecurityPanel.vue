@@ -129,7 +129,7 @@
 import {IconAdd, IconLock, IconLockOpen, IconVpnKey} from "~/components/Common/Icons/icons.ts";
 import CardPage from "~/components/Common/CardPage.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import Loading from "~/components/Common/Loading.vue";
 import AccountTwoFactorModal from "~/components/Account/TwoFactorModal.vue";
 import AccountChangePasswordModal from "~/components/Account/ChangePasswordModal.vue";

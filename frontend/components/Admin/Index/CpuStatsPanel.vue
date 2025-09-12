@@ -134,7 +134,7 @@
     <cpu-stats-help-modal ref="$cpuStatsHelpModal" />
 </template>
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import {useTemplateRef} from "vue";
 import CpuStatsHelpModal from "~/components/Admin/Index/CpuStatsHelpModal.vue";
 import {upperFirst} from "es-toolkit";

@@ -78,7 +78,7 @@
 
 <script setup lang="ts">
 import WaveformComponent from "~/components/Common/Audio/Waveform.vue";
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import {shallowRef, useTemplateRef, watch} from "vue";
 import {IconPlayCircle, IconStop} from "~/components/Common/Icons/icons.ts";
 import {reactiveComputed} from "@vueuse/core";

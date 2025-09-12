@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import {get} from "es-toolkit/compat";
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {IconRemove} from "~/components/Common/Icons/icons.ts";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";

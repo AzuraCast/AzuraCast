@@ -186,7 +186,7 @@
 
 <script setup lang="ts">
 import StationReportsListenersMap from "~/components/Stations/Reports/Listeners/Map.vue";
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown, {DateRange} from "~/components/Common/DateRangeDropdown.vue";
 import {computed, ComputedRef, Ref, ref, useTemplateRef} from "vue";

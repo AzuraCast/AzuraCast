@@ -139,7 +139,7 @@
 
 <script setup lang="ts">
 import {useTemplateRef} from "vue";
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import {useTheme} from "~/functions/theme.ts";
 import {
     IconAccountCircle,

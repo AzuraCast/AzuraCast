@@ -169,7 +169,7 @@
 
 <script setup lang="ts">
 import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton.vue";
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";

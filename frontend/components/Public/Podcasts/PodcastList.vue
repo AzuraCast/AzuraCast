@@ -121,7 +121,7 @@ import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import {getStationApiUrl} from "~/router.ts";
 import {useTranslate} from "~/vendor/gettext.ts";
 import {IconRss} from "~/components/Common/Icons/icons.ts";
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import GridLayout from "~/components/Common/GridLayout.vue";
 import {usePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";

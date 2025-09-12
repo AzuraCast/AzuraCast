@@ -119,7 +119,7 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import {computed, useTemplateRef} from "vue";
 import EmbedModal from "~/components/Stations/Profile/EmbedModal.vue";

@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import {ApiStationMediaPlaylist} from "~/entities/ApiInterfaces.ts";
 import {IconFolder} from "~/components/Common/Icons/icons.ts";
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 
 defineProps<{
     playlists: ApiStationMediaPlaylist[]

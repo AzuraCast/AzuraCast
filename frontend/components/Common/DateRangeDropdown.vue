@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import VueDatePicker, {VueDatePickerProps} from "@vuepic/vue-datepicker";
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import {useTheme} from "~/functions/theme.ts";
 import {useTranslate} from "~/vendor/gettext.ts";
 import {computed} from "vue";

@@ -101,7 +101,7 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import InlinePlayer from "~/components/InlinePlayer.vue";
 import {ref, useTemplateRef} from "vue";

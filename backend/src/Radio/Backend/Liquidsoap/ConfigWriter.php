@@ -1424,11 +1424,15 @@ final class ConfigWriter implements EventSubscriberInterface
                     if string.contains(substring=" - ", m["title"]) then
                         let (a, t) = string.split.first(separator=" - ", m["title"])
                         simulcast_nowplaying := a ^ " - " ^ t
+                    else
+                        simulcast_nowplaying := m["title"]
                     end
                 else
                     simulcast_nowplaying := m["artist"] ^ " - " ^ m["title"]
                 end
 
+                print("Updating nowplaying: ============================")
+                print(m)
             end
 
             radio.on_metadata(fun(m) -> thread.run(fast=false, {update_nowplaying(m)}))

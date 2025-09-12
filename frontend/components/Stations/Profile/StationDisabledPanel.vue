@@ -2,7 +2,7 @@
     <div class="outside-card-header d-flex align-items-center">
         <div class="flex-fill">
             <h2 class="display-6 m-0">
-                {{ name }}
+                {{ stationData.name }}
             </h2>
         </div>
         <div
@@ -40,8 +40,6 @@ import Icon from "~/components/Common/Icon.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
-import {toRefs} from "@vueuse/core";
 
 const stationData = useStationData();
-const {name} = toRefs(stationData);
 </script>

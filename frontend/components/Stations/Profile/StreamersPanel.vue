@@ -6,14 +6,14 @@
                 class="card-title"
             >
                 {{ $gettext('Streamers/DJs') }}
-                <enabled-badge :enabled="enableStreamers" />
+                <enabled-badge :enabled="stationData.enableStreamers"/>
             </h3>
         </template>
         <template
             v-if="userAllowedForStation(StationPermissions.Streamers) || userAllowedForStation(StationPermissions.Profile)"
             #footer_actions
         >
-            <template v-if="enableStreamers">
+            <template v-if="stationData.enableStreamers">
                 <router-link
                     v-if="userAllowedForStation(StationPermissions.Streamers)"
                     class="btn btn-link text-primary"
@@ -60,21 +60,14 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {userAllowedForStation} from "~/acl";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
 import {IconCheck, IconClose, IconSettings} from "~/components/Common/icons";
-import {toRef} from "vue";
+import {computed} from "vue";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
 
-export interface ProfileStreamersPanelProps {
-    enableStreamers: boolean,
-}
-
-defineOptions({
-    inheritAttrs: false
-});
-
-const props = defineProps<ProfileStreamersPanelProps>();
+const stationData = useStationData();
 
 const toggleStreamers = useToggleFeature(
     'enable_streamers',
-    toRef(props, 'enableStreamers')
+    computed(() => stationData.value.enableStreamers)
 );
 </script>

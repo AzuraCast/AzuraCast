@@ -9,7 +9,7 @@
                 class="card-title"
             >
                 {{ $gettext('AutoDJ Service') }}
-                <running-badge :running="backendRunning" />
+                <running-badge :running="profileData.services.backendRunning"/>
                 <br>
                 <small>{{ backendName }}</small>
             </h3>
@@ -40,7 +40,7 @@
         </div>
 
         <template
-            v-if="userAllowedForStation(StationPermissions.Broadcasting) && hasStarted"
+            v-if="userAllowedForStation(StationPermissions.Broadcasting) && stationData.hasStarted"
             #footer_actions
         >
             <button
@@ -54,7 +54,7 @@
                 </span>
             </button>
             <button
-                v-if="!backendRunning"
+                v-if="!profileData.services.backendRunning"
                 type="button"
                 class="btn btn-link text-success"
                 @click="doStart()"
@@ -65,7 +65,7 @@
                 </span>
             </button>
             <button
-                v-if="backendRunning"
+                v-if="profileData.services.backendRunning"
                 type="button"
                 class="btn btn-link text-danger"
                 @click="doStop()"
@@ -89,26 +89,16 @@ import {userAllowedForStation} from "~/acl";
 import {IconPlay, IconStop, IconUpdate} from "~/components/Common/icons";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 import {BackendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
+import {getStationApiUrl} from "~/router.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
+import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
 
-export interface ProfileBackendPanelParentProps {
-    numSongs: number,
-    numPlaylists: number,
-    backendType: BackendAdapters,
-    backendRestartUri: string,
-    backendStartUri: string,
-    backendStopUri: string,
-}
+const stationData = useStationData();
+const profileData = useStationProfileData();
 
-defineOptions({
-    inheritAttrs: false
-});
-
-interface ProfileBackendPanelProps extends ProfileBackendPanelParentProps {
-    backendRunning: boolean,
-    hasStarted: boolean,
-}
-
-const props = defineProps<ProfileBackendPanelProps>();
+const backendRestartUri = getStationApiUrl('/backend/restart');
+const backendStartUri = getStationApiUrl('/backend/start');
+const backendStopUri = getStationApiUrl('/backend/stop');
 
 const {$gettext, $ngettext} = useTranslate();
 
@@ -116,18 +106,18 @@ const langTotalTracks = computed(() => {
     const numSongs = $ngettext(
         '%{numSongs} uploaded song',
         '%{numSongs} uploaded songs',
-        props.numSongs,
+        profileData.value.numSongs,
         {
-            numSongs: String(props.numSongs)
+            numSongs: String(profileData.value.numSongs)
         }
     );
 
     const numPlaylists = $ngettext(
         '%{numPlaylists} playlist',
         '%{numPlaylists} playlists',
-        props.numPlaylists,
+        profileData.value.numPlaylists,
         {
-            numPlaylists: String(props.numPlaylists)
+            numPlaylists: String(profileData.value.numPlaylists)
         }
     );
 
@@ -141,14 +131,14 @@ const langTotalTracks = computed(() => {
 });
 
 const backendName = computed(() => {
-    if (props.backendType === BackendAdapters.Liquidsoap) {
+    if (stationData.value.backendType === BackendAdapters.Liquidsoap) {
         return 'Liquidsoap';
     }
     return '';
 });
 
 const doRestart = useMakeApiCall(
-    props.backendRestartUri,
+    backendRestartUri,
     {
         title: $gettext('Restart service?'),
         confirmButtonText: $gettext('Restart')
@@ -156,7 +146,7 @@ const doRestart = useMakeApiCall(
 );
 
 const doStart = useMakeApiCall(
-    props.backendStartUri,
+    backendStartUri,
     {
         title: $gettext('Start service?'),
         confirmButtonText: $gettext('Start'),
@@ -165,7 +155,7 @@ const doStart = useMakeApiCall(
 );
 
 const doStop = useMakeApiCall(
-    props.backendStopUri,
+    backendStopUri,
     {
         title: $gettext('Stop service?'),
         confirmButtonText: $gettext('Stop'),

@@ -15,6 +15,7 @@ const blankStationGlobals: VueStationGlobals = {
     id: 0,
     name: null,
     shortName: 'loading',
+    description: '',
     isEnabled: false,
     hasStarted: false,
     needsRestart: false,
@@ -27,6 +28,7 @@ const blankStationGlobals: VueStationGlobals = {
     publicPageUrl: '',
     enableOnDemand: false,
     onDemandUrl: '',
+    enableStreamers: false,
     webDjUrl: '',
     enableRequests: false,
     features: {
@@ -35,6 +37,7 @@ const blankStationGlobals: VueStationGlobals = {
         podcasts: false,
         streamers: false,
         webhooks: false,
+        requests: false,
         mountPoints: false,
         hlsStreams: false,
         remoteRelays: false,

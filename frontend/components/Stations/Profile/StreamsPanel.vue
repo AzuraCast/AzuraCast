@@ -9,7 +9,7 @@
                 <col style="width: 78%;">
                 <col style="width: 20%;">
             </colgroup>
-            <template v-if="station.mounts.length > 0">
+            <template v-if="profileData.station.mounts.length > 0">
                 <thead>
                     <tr>
                         <th colspan="2">
@@ -22,7 +22,7 @@
                 </thead>
                 <tbody>
                     <tr
-                        v-for="mount in station.mounts"
+                        v-for="mount in profileData.station.mounts"
                         :key="mount.id"
                         class="align-middle"
                     >
@@ -60,7 +60,7 @@
                 </tbody>
             </template>
 
-            <template v-if="station.remotes.length > 0">
+            <template v-if="profileData.station.remotes.length > 0">
                 <thead>
                     <tr>
                         <th colspan="2">
@@ -73,7 +73,7 @@
                 </thead>
                 <tbody>
                     <tr
-                        v-for="remote in station.remotes"
+                        v-for="remote in profileData.station.remotes"
                         :key="remote.id"
                         class="align-middle"
                     >
@@ -111,7 +111,7 @@
                 </tbody>
             </template>
 
-            <template v-if="station.hls_enabled">
+            <template v-if="profileData.station.hls_enabled">
                 <thead>
                     <tr>
                         <th colspan="2">
@@ -128,7 +128,7 @@
                             <play-button
                                 class="btn-lg"
                                 :stream="{
-                                    url: station.hls_url,
+                                    url: profileData.station.hls_url,
                                     title: $gettext('HLS'),
                                     isStream: true,
                                     isHls: true
@@ -137,10 +137,10 @@
                         </td>
                         <td class="ps-1">
                             <a
-                                v-if="station.hls_url"
-                                :href="station.hls_url"
+                                v-if="profileData.station.hls_url"
+                                :href="profileData.station.hls_url"
                                 target="_blank"
-                            >{{ station.hls_url }}</a>
+                            >{{ profileData.station.hls_url }}</a>
                         </td>
                         <td class="ps-1 text-end">
                             <icon
@@ -148,7 +148,7 @@
                                 :icon="IconHeadphones"
                             />
                             <span class="listeners-total ps-1">
-                                {{ station.hls_listeners }}
+                                {{ profileData.station.hls_listeners }}
                                 {{ $gettext('Unique') }}
                             </span>
                         </td>
@@ -160,7 +160,7 @@
         <template #footer_actions>
             <a
                 class="btn btn-link text-primary"
-                :href="station.playlist_pls_url"
+                :href="profileData.station.playlist_pls_url"
             >
                 <icon :icon="IconDownload" />
                 <span>
@@ -169,7 +169,7 @@
             </a>
             <a
                 class="btn btn-link text-primary"
-                :href="station.playlist_m3u_url"
+                :href="profileData.station.playlist_m3u_url"
             >
                 <icon :icon="IconDownload" />
                 <span>
@@ -185,13 +185,7 @@ import Icon from "~/components/Common/Icon.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {IconDownload, IconHeadphones} from "~/components/Common/icons";
-import {ApiNowPlayingStation} from "~/entities/ApiInterfaces.ts";
+import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
 
-defineOptions({
-    inheritAttrs: false
-});
-
-defineProps<{
-    station: ApiNowPlayingStation
-}>();
+const profileData = useStationProfileData();
 </script>

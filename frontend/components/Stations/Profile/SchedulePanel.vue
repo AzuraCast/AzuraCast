@@ -48,14 +48,11 @@ import CardPage from "~/components/Common/CardPage.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
 import {ApiStationSchedule} from "~/entities/ApiInterfaces.ts";
+import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
+import {toRefs} from "@vueuse/core";
 
-defineOptions({
-    inheritAttrs: false
-});
-
-const props = defineProps<{
-    scheduleItems: Required<ApiStationSchedule>[]
-}>();
+const profileData = useStationProfileData();
+const {schedule} = toRefs(profileData);
 
 const {DateTime} = useLuxon();
 const {
@@ -73,7 +70,7 @@ type ScheduleWithDetails = Required<ApiStationSchedule> & {
 const processedScheduleItems = computed<ScheduleWithDetails[]>(() => {
     const nowTz = now();
 
-    return props.scheduleItems.map((row) => {
+    return schedule.value.map((row) => {
         const startMoment = timestampToDateTime(row.start_timestamp);
         const endMoment = timestampToDateTime(row.end_timestamp);
 

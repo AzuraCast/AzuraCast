@@ -15,13 +15,9 @@ final readonly class StationServiceStatus
 {
     public function __construct(
         #[OA\Property(example: true)]
-        public bool $backend_running,
+        public bool $backendRunning,
         #[OA\Property(example: true)]
-        public bool $frontend_running,
-        #[OA\Property(example: true)]
-        public bool $station_has_started,
-        #[OA\Property(example: true)]
-        public bool $station_needs_restart
+        public bool $frontendRunning
     ) {
     }
 }

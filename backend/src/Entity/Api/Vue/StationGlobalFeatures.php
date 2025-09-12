@@ -25,6 +25,8 @@ final readonly class StationGlobalFeatures
         #[OA\Property]
         public bool $webhooks = false,
         #[OA\Property]
+        public bool $requests = false,
+        #[OA\Property]
         public bool $mountPoints = false,
         #[OA\Property]
         public bool $hlsStreams = false,

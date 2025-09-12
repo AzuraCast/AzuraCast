@@ -39,6 +39,7 @@ final class GetDashboardAction implements SingleActionInterface
             id: $station->id,
             name: $station->name,
             shortName: $station->short_name,
+            description: $station->description,
             isEnabled: $station->is_enabled,
             hasStarted: $station->has_started,
             needsRestart: $station->needs_restart,
@@ -51,6 +52,7 @@ final class GetDashboardAction implements SingleActionInterface
             publicPageUrl: $router->named('public:index', ['station_id' => $station->short_name]),
             enableOnDemand: $station->enable_on_demand,
             onDemandUrl: $router->named('public:ondemand', ['station_id' => $station->short_name]),
+            enableStreamers: $station->enable_streamers,
             webDjUrl: (string)($router->namedAsUri(
                 routeName: 'public:dj',
                 routeParams: ['station_id' => $station->short_name],
@@ -63,6 +65,7 @@ final class GetDashboardAction implements SingleActionInterface
                 podcasts: StationFeatures::Podcasts->supportedForStation($station),
                 streamers: StationFeatures::Streamers->supportedForStation($station),
                 webhooks: StationFeatures::Webhooks->supportedForStation($station),
+                requests: StationFeatures::Requests->supportedForStation($station),
                 mountPoints: StationFeatures::MountPoints->supportedForStation($station),
                 hlsStreams: StationFeatures::HlsStreams->supportedForStation($station),
                 remoteRelays: StationFeatures::RemoteRelays->supportedForStation($station),

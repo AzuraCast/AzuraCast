@@ -1,12 +1,12 @@
 <template>
     <dashboard-with-sidebar>
         <template #sidebar>
-            <loading lazy :loading="isFetching">
+            <loading lazy :loading="isLoading || isPlaceholderData">
                 <sidebar/>
             </loading>
         </template>
         <template #default>
-            <loading lazy :loading="isFetching">
+            <loading lazy :loading="isLoading || isPlaceholderData">
                 <router-view/>
             </loading>
         </template>
@@ -20,6 +20,7 @@ import Loading from "~/components/Common/Loading.vue";
 import DashboardWithSidebar from "~/components/Layout/DashboardWithSidebar.vue";
 
 const {
-    isFetching
+    isLoading,
+    isPlaceholderData
 } = useStationQuery();
 </script>

@@ -2,9 +2,10 @@ import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import {DialogOptions, useDialog} from "~/functions/useDialog.ts";
 import {FlashLevels} from "~/entities/ApiInterfaces.ts";
+import {MaybeRef, toValue} from "vue";
 
 export default function useMakeApiCall(
-    uri: string,
+    uri: MaybeRef<string>,
     options: Partial<DialogOptions> = {},
 ) {
     const {axios} = useAxios();
@@ -18,7 +19,7 @@ export default function useMakeApiCall(
             return;
         }
 
-        const {data} = await axios.post(uri);
+        const {data} = await axios.post(toValue(uri));
 
         notify(data.formatted_message, {
             variant: (data.success) ? FlashLevels.Success : FlashLevels.Warning

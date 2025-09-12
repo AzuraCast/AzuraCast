@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\VueComponent;
 
+use App\Entity\Api\NowPlaying\Vue\NowPlayingProps;
 use App\Http\ServerRequest;
 use App\Service\Centrifugo;
 
@@ -22,7 +23,7 @@ final readonly class NowPlayingComponent implements VueComponentInterface
         $backendConfig = $station->backend_config;
 
         return [
-            ...$this->getDataProps($request),
+            'nowPlayingProps' => $this->getDataProps($request),
             'offlineText' => $station->branding_config->offline_text,
             'showAlbumArt' => !$customization->hideAlbumArt(),
             'autoplay' => !empty($request->getQueryParam('autoplay')),
@@ -30,15 +31,15 @@ final readonly class NowPlayingComponent implements VueComponentInterface
         ];
     }
 
-    public function getDataProps(ServerRequest $request): array
+    public function getDataProps(ServerRequest $request): NowPlayingProps
     {
         $station = $request->getStation();
         $customization = $request->getCustomization();
 
-        return [
-            'stationShortName' => $station->short_name,
-            'useStatic' => $customization->useStaticNowPlaying(),
-            'useSse' => $customization->useStaticNowPlaying() && $this->centrifugo->isSupported(),
-        ];
+        return new NowPlayingProps(
+            stationShortName: $station->short_name,
+            useStatic: $customization->useStaticNowPlaying(),
+            useSse: $customization->useStaticNowPlaying() && $this->centrifugo->isSupported()
+        );
     }
 }

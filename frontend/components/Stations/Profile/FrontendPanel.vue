@@ -11,7 +11,7 @@
             >
                 {{ $gettext('Broadcasting Service') }}
 
-                <running-badge :running="frontendRunning" />
+                <running-badge :running="profileData.services.frontendRunning"/>
                 <br>
                 <small>{{ frontendName }}</small>
             </h3>
@@ -27,7 +27,7 @@
                         <tr class="align-middle">
                             <td>
                                 <a
-                                    :href="frontendAdminUri"
+                                    :href="profileData.frontendAdminUri"
                                     target="_blank"
                                 >
                                     {{ $gettext('Administration') }}
@@ -40,12 +40,12 @@
                                 </div>
                                 <div>
                                     {{ $gettext('Password:') }}
-                                    <span class="text-monospace">{{ frontendAdminPassword }}</span>
+                                    <span class="text-monospace">{{ profileData.frontendAdminPassword }}</span>
                                 </div>
                             </td>
                             <td class="px-0">
                                 <copy-to-clipboard-button
-                                    :text="frontendAdminPassword"
+                                    :text="profileData.frontendAdminPassword"
                                     hide-text
                                 />
                             </td>
@@ -58,7 +58,7 @@
                                 class="ps-0"
                                 colspan="2"
                             >
-                                {{ frontendPort }}
+                                {{ profileData.frontendPort }}
                                 <div
                                     v-if="isShoutcast"
                                     class="form-text"
@@ -80,12 +80,12 @@
                                 </div>
                                 <div>
                                     {{ $gettext('Password:') }}
-                                    <span class="text-monospace">{{ frontendSourcePassword }}</span>
+                                    <span class="text-monospace">{{ profileData.frontendSourcePassword }}</span>
                                 </div>
                             </td>
                             <td class="px-0">
                                 <copy-to-clipboard-button
-                                    :text="frontendSourcePassword"
+                                    :text="profileData.frontendSourcePassword"
                                     hide-text
                                 />
                             </td>
@@ -101,12 +101,12 @@
                                 </div>
                                 <div>
                                     {{ $gettext('Password:') }}
-                                    <span class="text-monospace">{{ frontendRelayPassword }}</span>
+                                    <span class="text-monospace">{{ profileData.frontendRelayPassword }}</span>
                                 </div>
                             </td>
                             <td class="px-0">
                                 <copy-to-clipboard-button
-                                    :text="frontendRelayPassword"
+                                    :text="profileData.frontendRelayPassword"
                                     hide-text
                                 />
                             </td>
@@ -129,7 +129,7 @@
                     {{ langShowHideCredentials }}
                 </span>
             </a>
-            <template v-if="hasStarted">
+            <template v-if="stationData.hasStarted">
                 <button
                     type="button"
                     class="btn btn-link text-secondary"
@@ -141,7 +141,7 @@
                     </span>
                 </button>
                 <button
-                    v-if="!frontendRunning"
+                    v-if="!profileData.services.frontendRunning"
                     type="button"
                     class="btn btn-link text-success"
                     @click="doStart()"
@@ -152,7 +152,7 @@
                     </span>
                 </button>
                 <button
-                    v-if="frontendRunning"
+                    v-if="profileData.services.frontendRunning"
                     type="button"
                     class="btn btn-link text-danger"
                     @click="doStop()"
@@ -179,29 +179,16 @@ import useOptionalStorage from "~/functions/useOptionalStorage";
 import {IconMoreHoriz, IconPlay, IconStop, IconUpdate} from "~/components/Common/icons";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 import {FrontendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
+import {getStationApiUrl} from "~/router.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
+import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
 
-export interface ProfileFrontendPanelParentProps {
-    frontendType: FrontendAdapters,
-    frontendAdminUri: string,
-    frontendAdminPassword: string,
-    frontendSourcePassword: string,
-    frontendRelayPassword: string,
-    frontendPort: number,
-    frontendRestartUri: string,
-    frontendStartUri: string,
-    frontendStopUri: string,
-    hasStarted: boolean
-}
+const stationData = useStationData();
+const profileData = useStationProfileData();
 
-defineOptions({
-    inheritAttrs: false
-});
-
-interface ProfileFrontendPanelProps extends ProfileFrontendPanelParentProps {
-    frontendRunning: boolean,
-}
-
-const props = defineProps<ProfileFrontendPanelProps>();
+const frontendRestartUri = getStationApiUrl('/frontend/restart');
+const frontendStartUri = getStationApiUrl('/frontend/start');
+const frontendStopUri = getStationApiUrl('/frontend/stop');
 
 const credentialsVisible = useOptionalStorage<boolean>('station_show_frontend_credentials', false);
 
@@ -214,7 +201,7 @@ const langShowHideCredentials = computed(() => {
 });
 
 const frontendName = computed(() => {
-    switch (props.frontendType) {
+    switch (stationData.value.frontendType) {
         case FrontendAdapters.Icecast:
             return 'Icecast';
 
@@ -230,11 +217,11 @@ const frontendName = computed(() => {
 });
 
 const isShoutcast = computed(() => {
-    return props.frontendType === FrontendAdapters.Shoutcast;
+    return stationData.value.frontendType === FrontendAdapters.Shoutcast;
 });
 
 const doRestart = useMakeApiCall(
-    props.frontendRestartUri,
+    frontendRestartUri,
     {
         title: $gettext('Restart service?'),
         confirmButtonText: $gettext('Restart')
@@ -242,7 +229,7 @@ const doRestart = useMakeApiCall(
 );
 
 const doStart = useMakeApiCall(
-    props.frontendStartUri,
+    frontendStartUri,
     {
         title: $gettext('Start service?'),
         confirmButtonText: $gettext('Start'),
@@ -251,7 +238,7 @@ const doStart = useMakeApiCall(
 );
 
 const doStop = useMakeApiCall(
-    props.frontendStopUri,
+    frontendStopUri,
     {
         title: $gettext('Stop service?'),
         confirmButtonText: $gettext('Stop'),

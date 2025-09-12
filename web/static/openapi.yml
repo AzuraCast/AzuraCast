@@ -7530,6 +7530,19 @@ components:
         listeners:
           $ref: '#/components/schemas/Api_NowPlaying_Listeners'
       type: object
+    Api_NowPlaying_Vue_Props:
+      required:
+        - stationShortName
+        - useStatic
+        - useSse
+      properties:
+        stationShortName:
+          type: string
+        useStatic:
+          type: boolean
+        useSse:
+          type: boolean
+      type: object
     Api_Podcast:
       type: object
       allOf:
@@ -7964,21 +7977,13 @@ components:
       type: object
     Api_StationServiceStatus:
       required:
-        - backend_running
-        - frontend_running
-        - station_has_started
-        - station_needs_restart
+        - backendRunning
+        - frontendRunning
       properties:
-        backend_running:
+        backendRunning:
           type: boolean
           example: true
-        frontend_running:
-          type: boolean
-          example: true
-        station_has_started:
-          type: boolean
-          example: true
-        station_needs_restart:
+        frontendRunning:
           type: boolean
           example: true
       type: object
@@ -8083,6 +8088,68 @@ components:
             type: string
         categoriesOptions:
           $ref: '#/components/schemas/Api_Form_NestedOptions'
+      type: object
+    Api_Stations_Vue_ProfileProps:
+      required:
+        - nowPlayingProps
+        - publicPageUri
+        - publicPageEmbedUri
+        - publicWebDjUri
+        - publicOnDemandUri
+        - publicPodcastsUri
+        - publicScheduleUri
+        - publicOnDemandEmbedUri
+        - publicRequestEmbedUri
+        - publicHistoryEmbedUri
+        - publicScheduleEmbedUri
+        - publicPodcastsEmbedUri
+        - frontendAdminUri
+        - frontendAdminPassword
+        - frontendSourcePassword
+        - frontendRelayPassword
+        - frontendPort
+        - numSongs
+        - numPlaylists
+      properties:
+        nowPlayingProps:
+          $ref: '#/components/schemas/Api_NowPlaying_Vue_Props'
+        publicPageUri:
+          type: string
+        publicPageEmbedUri:
+          type: string
+        publicWebDjUri:
+          type: string
+        publicOnDemandUri:
+          type: string
+        publicPodcastsUri:
+          type: string
+        publicScheduleUri:
+          type: string
+        publicOnDemandEmbedUri:
+          type: string
+        publicRequestEmbedUri:
+          type: string
+        publicHistoryEmbedUri:
+          type: string
+        publicScheduleEmbedUri:
+          type: string
+        publicPodcastsEmbedUri:
+          type: string
+        frontendAdminUri:
+          type: string
+        frontendAdminPassword:
+          type: string
+        frontendSourcePassword:
+          type: string
+        frontendRelayPassword:
+          type: string
+        frontendPort:
+          type: integer
+          nullable: true
+        numSongs:
+          type: integer
+        numPlaylists:
+          type: integer
       type: object
     Api_Stations_Vue_SftpUsersProps:
       required:
@@ -8354,6 +8421,7 @@ components:
         - podcasts
         - streamers
         - webhooks
+        - requests
         - mountPoints
         - hlsStreams
         - remoteRelays
@@ -8369,6 +8437,8 @@ components:
         streamers:
           type: boolean
         webhooks:
+          type: boolean
+        requests:
           type: boolean
         mountPoints:
           type: boolean
@@ -8386,6 +8456,7 @@ components:
         - id
         - name
         - shortName
+        - description
         - isEnabled
         - hasStarted
         - needsRestart
@@ -8398,6 +8469,7 @@ components:
         - publicPageUrl
         - enableOnDemand
         - onDemandUrl
+        - enableStreamers
         - webDjUrl
         - enableRequests
         - features
@@ -8414,6 +8486,9 @@ components:
           nullable: true
         shortName:
           type: string
+        description:
+          type: string
+          nullable: true
         isEnabled:
           type: boolean
         hasStarted:
@@ -8439,6 +8514,8 @@ components:
           type: boolean
         onDemandUrl:
           type: string
+        enableStreamers:
+          type: boolean
         webDjUrl:
           type: string
         enableRequests:

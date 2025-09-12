@@ -23,6 +23,8 @@ final readonly class StationGlobals
         #[OA\Property]
         public string $shortName,
         #[OA\Property]
+        public ?string $description,
+        #[OA\Property]
         public bool $isEnabled,
         #[OA\Property]
         public bool $hasStarted,
@@ -46,6 +48,8 @@ final readonly class StationGlobals
         public bool $enableOnDemand,
         #[OA\Property]
         public string $onDemandUrl,
+        #[OA\Property]
+        public bool $enableStreamers,
         #[OA\Property]
         public string $webDjUrl,
         #[OA\Property]

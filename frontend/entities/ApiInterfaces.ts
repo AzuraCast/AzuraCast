@@ -1008,6 +1008,12 @@ export interface ApiNowPlayingStationRemote {
   listeners: ApiNowPlayingListeners;
 }
 
+export interface ApiNowPlayingVueProps {
+  stationShortName: string;
+  useStatic: boolean;
+  useSse: boolean;
+}
+
 export type ApiPodcast = HasLinks & {
   id?: string;
   storage_location_id?: number;
@@ -1311,13 +1317,9 @@ export interface ApiStationSchedule {
 
 export interface ApiStationServiceStatus {
   /** @example true */
-  backend_running: boolean;
+  backendRunning: boolean;
   /** @example true */
-  frontend_running: boolean;
-  /** @example true */
-  station_has_started: boolean;
-  /** @example true */
-  station_needs_restart: boolean;
+  frontendRunning: boolean;
 }
 
 export interface ApiStationStreamer {
@@ -1356,6 +1358,28 @@ export interface ApiStationsVueFilesProps {
 export interface ApiStationsVuePodcastsProps {
   languageOptions: Record<string, string>;
   categoriesOptions: ApiFormNestedOptions;
+}
+
+export interface ApiStationsVueProfileProps {
+  nowPlayingProps: ApiNowPlayingVueProps;
+  publicPageUri: string;
+  publicPageEmbedUri: string;
+  publicWebDjUri: string;
+  publicOnDemandUri: string;
+  publicPodcastsUri: string;
+  publicScheduleUri: string;
+  publicOnDemandEmbedUri: string;
+  publicRequestEmbedUri: string;
+  publicHistoryEmbedUri: string;
+  publicScheduleEmbedUri: string;
+  publicPodcastsEmbedUri: string;
+  frontendAdminUri: string;
+  frontendAdminPassword: string;
+  frontendSourcePassword: string;
+  frontendRelayPassword: string;
+  frontendPort: number | null;
+  numSongs: number;
+  numPlaylists: number;
 }
 
 export interface ApiStationsVueSftpUsersProps {
@@ -1515,6 +1539,7 @@ export interface VueStationFeatures {
   podcasts: boolean;
   streamers: boolean;
   webhooks: boolean;
+  requests: boolean;
   mountPoints: boolean;
   hlsStreams: boolean;
   remoteRelays: boolean;
@@ -1526,6 +1551,7 @@ export interface VueStationGlobals {
   id: number;
   name: string | null;
   shortName: string;
+  description: string | null;
   isEnabled: boolean;
   hasStarted: boolean;
   needsRestart: boolean;
@@ -1538,6 +1564,7 @@ export interface VueStationGlobals {
   publicPageUrl: string;
   enableOnDemand: boolean;
   onDemandUrl: string;
+  enableStreamers: boolean;
   webDjUrl: string;
   enableRequests: boolean;
   features: VueStationFeatures;

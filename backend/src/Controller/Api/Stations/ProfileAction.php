@@ -61,10 +61,8 @@ final readonly class ProfileAction implements SingleActionInterface
         $apiResponse->station = $this->stationApiGenerator->__invoke($station, $baseUri, true);
 
         $apiResponse->services = new StationServiceStatus(
-            backend_running: null !== $backend && $backend->isRunning($station),
-            frontend_running: null !== $frontend && $frontend->isRunning($station),
-            station_has_started: $station->has_started,
-            station_needs_restart: $station->needs_restart
+            backendRunning: null !== $backend && $backend->isRunning($station),
+            frontendRunning: null !== $frontend && $frontend->isRunning($station),
         );
 
         $apiResponse->schedule = $this->scheduleRepo->getUpcomingSchedule($station);

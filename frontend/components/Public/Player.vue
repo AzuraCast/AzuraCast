@@ -134,18 +134,18 @@
 
 <script setup lang="ts">
 import PlayButton from "~/components/Common/PlayButton.vue";
-import {computed, nextTick, onMounted, ref, watch} from "vue";
+import {computed, nextTick, onMounted, ref, toRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
 import MuteButton from "~/components/Common/MuteButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {blankStreamDescriptor, StreamDescriptor, usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {useEventListener} from "@vueuse/core";
-import {ApiNowPlaying} from "~/entities/ApiInterfaces.ts";
-import {NowPlayingProps} from "~/functions/useNowPlaying.ts";
+import {ApiNowPlaying, ApiNowPlayingVueProps} from "~/entities/ApiInterfaces.ts";
 import {storeToRefs} from "pinia";
 
-export interface PlayerProps extends NowPlayingProps {
+export interface PlayerProps {
+    nowPlayingProps: ApiNowPlayingVueProps,
     offlineText?: string,
     showHls?: boolean,
     showAlbumArt?: boolean,
@@ -174,7 +174,7 @@ const {
     currentTrackPercent,
     currentTrackDurationDisplay,
     currentTrackElapsedDisplay
-} = useNowPlaying(props);
+} = useNowPlaying(toRef(props, 'nowPlayingProps'));
 
 const playerStore = usePlayerStore();
 const {volume, showVolume, isMuted} = storeToRefs(playerStore);

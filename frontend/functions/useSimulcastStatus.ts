@@ -1,4 +1,4 @@
-import {computed, onMounted, ref, shallowRef, watch} from "vue";
+import {ref, shallowRef, watch} from "vue";
 import {reactiveComputed, useEventSource} from "@vueuse/core";
 import {getApiUrl} from "~/router.ts";
 

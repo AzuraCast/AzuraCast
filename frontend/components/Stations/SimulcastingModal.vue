@@ -286,7 +286,7 @@ const handleSubmit = async (): Promise<void> => {
         emit('update:show', false)
         
         // Invalidate queries to refresh the list
-        queryClient.invalidateQueries({ queryKey: ['simulcasting'] })
+        await queryClient.invalidateQueries({ queryKey: ['simulcasting'] })
     } catch (error) {
         console.error('Failed to save simulcasting stream:', error)
         // You might want to show an error message to the user here

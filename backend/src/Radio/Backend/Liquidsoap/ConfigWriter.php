@@ -1383,60 +1383,6 @@ final class ConfigWriter implements EventSubscriberInterface
             simulcast_font_size = 35
             simulcast_font_x = 50
             simulcast_font_y = 50
-
-            # Post simulcast events to AzuraCast API
-            # Required keys in m: "instance_id", "event"
-            # Optional key: "reason"
-            def azuracast.simulcast_notify(m) =
-                def f() =
-                    j = json()
-
-                    # required
-                    j.add("instance_id", list.assoc("instance_id", m))
-                    j.add("event",       list.assoc("event", m))
-
-                    # optional reason
-                    if list.assoc.mem("reason", m) then
-                        j.add("reason", list.assoc("reason", m))
-                    end
-
-                    _ = azuracast.api_call("simulcast",json.stringify(compact=true, j))
-                end
-
-                thread.run(fast=false, f)
-            end
-
-            # Reset all simulcast instances for this station
-            def azuracast.reset_simulcast_instances() =
-                def f() =
-                    j = json()
-                    j.add("action", "reset_all")
-                    _ = azuracast.api_call("simulcast", json.stringify(compact=true, j))
-                end
-                thread.run(fast=false, f)
-            end
-
-            simulcast_nowplaying = ref("")
-
-            def update_nowplaying(m)
- 
-            if string.length(m["artist"]) <= 0 then
-                    if string.contains(substring=" - ", m["title"]) then
-                        let (a, t) = string.split.first(separator=" - ", m["title"])
-                        simulcast_nowplaying := a ^ " - " ^ t
-                    else
-                        simulcast_nowplaying := m["title"]
-                    end
-                else
-                    simulcast_nowplaying := m["artist"] ^ " - " ^ m["title"]
-                end
-
-                print("Updating nowplaying: ============================")
-                print(m)
-            end
-
-            radio.on_metadata(fun(m) -> thread.run(fast=false, {update_nowplaying(m)}))
-
             
             # Build A/V source for simulcasting
             # Loop the background video, add overlay, then mux with radio audio

@@ -110,7 +110,7 @@ import {getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import Icon from "~/components/Common/Icon.vue";
-import {IconPlay, IconStop, IconBroadcast, IconRefresh} from "~/components/Common/icons";
+import {IconPlay, IconStop} from "~/components/Common/icons";
 import {useAxios} from "~/vendor/axios";
 import useSimulcastStatus from "~/functions/useSimulcastStatus.ts";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";

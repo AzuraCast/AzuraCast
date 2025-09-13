@@ -8,7 +8,7 @@
         <form @submit.prevent="handleSubmit">
             <div class="row">
                 <div class="col-md-6">
-                    <FormField
+                    <form-group-field
                         id="edit_form_name"
                         :field="v$.name"
                         :label="$gettext('Name')"
@@ -16,13 +16,13 @@
                     />
                 </div>
                 <div class="col-md-6">
-                    <FormField
+                    <form-group-field
                         id="edit_form_adapter"
                         :field="v$.adapter"
                         :label="$gettext('Platform')"
                         :description="$gettext('The platform to stream to.')"
                     >
-                        <template #default="slotProps">
+                        <template #default="slotProps: any">
                             <select
                                 :id="slotProps.id"
                                 v-model="form.adapter"
@@ -39,11 +39,11 @@
                                 </option>
                             </select>
                         </template>
-                    </FormField>
+                    </form-group-field>
                 </div>
             </div>
 
-            <FormField
+            <form-group-field
                 id="edit_form_stream_key"
                 :field="v$.stream_key"
                 :label="$gettext('Stream Key')"
@@ -54,7 +54,7 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <FormField
+                    <form-group-field
                         id="edit_form_status"
                         :label="$gettext('Status')"
                         :description="$gettext('Current status of the simulcasting stream.')"
@@ -66,10 +66,10 @@
                                 {{ getStatusLabel(form.status) }}
                             </span>
                         </template>
-                    </FormField>
+                    </form-group-field>
                 </div>
                 <div class="col-md-6" v-if="form.error_message">
-                    <FormField
+                    <form-group-field
                         id="edit_form_error_message"
                         :label="$gettext('Error Message')"
                         :description="$gettext('Last error that occurred with this stream.')"
@@ -79,7 +79,7 @@
                                 {{ form.error_message }}
                             </div>
                         </template>
-                    </FormField>
+                    </form-group-field>
                 </div>
             </div>
         </form>
@@ -114,7 +114,7 @@ import { required, minLength, maxLength } from '@vuelidate/validators'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { getStationApiUrl } from '~/router'
 import Modal from '~/components/Common/Modal.vue'
-import FormField from '~/components/Form/FormField.vue'
+import FormGroupField from '~/components/Form/FormGroupField.vue'
 
 interface SimulcastingStream {
     id: number
@@ -172,7 +172,13 @@ const isFormValid = computed(() => !v$.value.$invalid)
 // Watch for stream changes
 watch(() => props.stream, (newStream) => {
     if (newStream) {
-        form.value = { ...newStream }
+        form.value = { 
+            name: newStream.name,
+            adapter: newStream.adapter,
+            stream_key: newStream.stream_key,
+            status: newStream.status,
+            error_message: newStream.error_message || ''
+        }
     } else {
         resetForm()
     }
@@ -228,7 +234,7 @@ const getStatusColor = (status: string): string => {
 // Create mutation
 const createMutation = useMutation({
     mutationFn: async (data: typeof form.value): Promise<SimulcastingStream> => {
-        const response = await fetch(getStationApiUrl('/simulcasting'), {
+        const response = await fetch(getStationApiUrl('/simulcasting').value, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -249,7 +255,7 @@ const createMutation = useMutation({
 // Update mutation
 const updateMutation = useMutation({
     mutationFn: async (data: typeof form.value): Promise<SimulcastingStream> => {
-        const response = await fetch(getStationApiUrl(`/simulcasting/${props.stream?.id}`), {
+        const response = await fetch(getStationApiUrl(`/simulcasting/${props.stream?.id}`).value, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

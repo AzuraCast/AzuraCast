@@ -132,7 +132,7 @@ const fields = [
 
 // We need it to determine if we should use SSE or polling
 const apiUrl = getStationApiUrl('/vue/profile');
-const {data: state, isLoading} = useQuery({
+const {data: state} = useQuery({
     queryKey: queryKeyWithStation([
         QueryKeys.StationProfile
     ], [

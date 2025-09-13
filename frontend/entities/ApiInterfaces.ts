@@ -1765,6 +1765,21 @@ export type SftpUser = HasAutoIncrementId & {
   publicKeys?: string | null;
 };
 
+export type Simulcasting = HasAutoIncrementId & {
+  /** @example "My Facebook Stream" */
+  name?: string;
+  /** @format int64 */
+  station?: number;
+  /** @example "facebook" */
+  adapter?: string;
+  /** @example "your_stream_key_here" */
+  stream_key?: string;
+  /** @example "stopped" */
+  status?: string;
+  /** @example "Connection failed" */
+  error_message?: string | null;
+};
+
 export type Station = HasAutoIncrementId & {
   /**
    * The full display name of the station.
@@ -1905,6 +1920,10 @@ export interface StationBackendConfiguration {
   custom_config?: string | null;
   /** Custom Liquidsoap Configuration: Post-Broadcast Section */
   custom_config_bottom?: string | null;
+  /** Custom Liquidsoap Configuration: HLS Section */
+  custom_hls?: string | null;
+  /** Custom Liquidsoap Configuration: Simulcasting Section */
+  custom_simulcasting?: string | null;
 }
 
 export interface StationBrandingConfiguration {
@@ -1940,18 +1959,42 @@ export type StationHlsStream = HasAutoIncrementId & {
 };
 
 export interface StationMediaMetadata {
-  /** @format float */
+  /**
+   * Value (in dB) to amplify the current track to produce a uniform loudness.
+   * @format float
+   * @example "-1.5"
+   */
   amplify?: number | null;
-  /** @format float */
-  cross_start_next?: number | null;
-  /** @format float */
+  /**
+   * Seconds from the start of the track to end fading in.
+   * @format float
+   * @example "2.0"
+   */
   fade_in?: number | null;
-  /** @format float */
+  /**
+   * Seconds from the end of the track to begin fading out.
+   * @format float
+   * @example "2.0"
+   */
   fade_out?: number | null;
-  /** @format float */
+  /**
+   * Seconds from the start of the track to start playback (cue in).
+   * @format float
+   * @example "3.5"
+   */
   cue_in?: number | null;
-  /** @format float */
+  /**
+   * Seconds from the start of the track to end playback (cue out).
+   * @format float
+   * @example "181.5"
+   */
   cue_out?: number | null;
+  /**
+   * Seconds from the start of the track to begin fading in the next track.
+   * @format float
+   * @example "180.0"
+   */
+  cross_start_next?: number | null;
 }
 
 export type StationMount = HasAutoIncrementId & {

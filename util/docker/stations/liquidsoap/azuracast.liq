@@ -765,5 +765,3 @@ def update_nowplaying(m)
         simulcast_nowplaying := m["artist"] ^ " - " ^ m["title"]
     end
 end
-
-radio.on_metadata(fun(m) -> thread.run(fast=false, {update_nowplaying(m)}))

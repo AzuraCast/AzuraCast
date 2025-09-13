@@ -1377,6 +1377,8 @@ final class ConfigWriter implements EventSubscriberInterface
             # Simulcasting Configuration
             # ==========================
 
+            radio.on_metadata(fun(m) -> thread.run(fast=false, {update_nowplaying(m)}))
+
             # Video and font files for simulcasting
             simulcast_video_file = "{$simulcastStorageDir}/video.mp4"
             simulcast_font_file = "{$simulcastStorageDir}/font.ttf"

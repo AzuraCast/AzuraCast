@@ -136,7 +136,7 @@ class YouTubeSimulcastingAdapter extends AbstractSimulcastingAdapter
     private function getCleanStreamName(Simulcasting $simulcasting): string
     {
         $streamName = $simulcasting->getName();
-        $cleanName = preg_replace('/[^a-zA-Z0-9_]/', '_', $streamName);
+        $cleanName = preg_replace('/[^a-zA-Z0-9_]/', '_', (string) $streamName) ?? '';
         return strtolower($cleanName);
     }
 }

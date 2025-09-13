@@ -1467,7 +1467,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $streamId = $stream->getId();
         
         // Generate a unique output name based on adapter, stream name, and ID
-        $cleanName = preg_replace('/[^a-zA-Z0-9_]/', '_', $streamName);
+        $cleanName = preg_replace('/[^a-zA-Z0-9_]/', '_', (string) $streamName) ?? '';
         $cleanName = strtolower($cleanName);
         
         switch ($adapter) {

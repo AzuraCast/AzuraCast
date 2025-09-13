@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Radio\Simulcasting;
 
 use App\Entity\Simulcasting;
+use App\Entity\Station;
 
 class FacebookSimulcastingAdapter extends AbstractSimulcastingAdapter
 {
@@ -53,7 +54,7 @@ class FacebookSimulcastingAdapter extends AbstractSimulcastingAdapter
         ];
     }
 
-    public function getLiquidsoapOutput(Simulcasting $simulcasting, \App\Entity\Station $station): string
+    public function getLiquidsoapOutput(Simulcasting $simulcasting, Station $station): string
     {
         $config = $this->getConfiguration();
         $outputName = "simulcast_facebook_{$this->getCleanStreamName($simulcasting)}_{$simulcasting->getId()}";
@@ -150,7 +151,7 @@ class FacebookSimulcastingAdapter extends AbstractSimulcastingAdapter
         )
         LIQ;
     }
-    
+
     private function getCleanStreamName(Simulcasting $simulcasting): string
     {
         $streamName = $simulcasting->getName();

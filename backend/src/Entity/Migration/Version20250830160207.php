@@ -22,5 +22,4 @@ final class Version20250830160207 extends AbstractMigration
     {
         $this->addSql('ALTER TABLE station_simulcasting ADD created_at DATETIME NOT NULL, ADD updated_at DATETIME NOT NULL');
     }
-
 }

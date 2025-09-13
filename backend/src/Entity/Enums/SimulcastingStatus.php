@@ -49,4 +49,3 @@ enum SimulcastingStatus: string
         return in_array($this, [self::Running, self::Starting]);
     }
 }
-

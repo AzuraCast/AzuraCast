@@ -7,6 +7,7 @@ namespace App\Service;
 use App\Container\EnvironmentAwareTrait;
 use App\Entity\Simulcasting;
 use App\Entity\Station;
+use Exception;
 use GuzzleHttp\Client;
 
 final class Centrifugo
@@ -53,7 +54,7 @@ final class Centrifugo
                 ]
             );
             error_log('Centrifugo: Successfully sent data, response: ' . $response->getBody());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             error_log('Centrifugo: Error sending data: ' . $e->getMessage());
             throw $e;
         }
@@ -76,9 +77,10 @@ final class Centrifugo
                 ],
             ],
         ];
-        
-        error_log('Centrifugo: Publishing simulcast status for station ' . $station->short_name . ' to channel: simulcast:' . $station->short_name . ' with data: ' . json_encode($data));
-        
+
+        error_log('Centrifugo: Publishing simulcast status for station ' . $station->short_name .
+        ' to channel: simulcast:' . $station->short_name . ' with data: ' . json_encode($data));
+
         $this->send($data);
     }
 
@@ -88,7 +90,7 @@ final class Centrifugo
             'id' => $simulcasting->getId(),
             'name' => $simulcasting->getName(),
             'status' => $simulcasting->getStatus()->value,
-            'error_message' => $simulcasting->getErrorMessage()
+            'error_message' => $simulcasting->getErrorMessage(),
         ];
     }
 }

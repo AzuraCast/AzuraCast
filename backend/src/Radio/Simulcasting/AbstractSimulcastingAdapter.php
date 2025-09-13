@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Radio\Simulcasting;
 
 use App\Entity\Simulcasting;
+use App\Entity\Station;
 
 abstract class AbstractSimulcastingAdapter
 {
@@ -23,7 +24,7 @@ abstract class AbstractSimulcastingAdapter
 
     abstract public function getConfiguration(): array;
 
-    abstract public function getLiquidsoapOutput(Simulcasting $simulcasting, \App\Entity\Station $station): string;
+    abstract public function getLiquidsoapOutput(Simulcasting $simulcasting, Station $station): string;
 
     public function getSimulcasting(): Simulcasting
     {
@@ -33,7 +34,7 @@ abstract class AbstractSimulcastingAdapter
     public function validateConfiguration(): array
     {
         $errors = [];
-        
+
         if (empty($this->getStreamKey())) {
             $errors[] = 'Stream key is required';
         }

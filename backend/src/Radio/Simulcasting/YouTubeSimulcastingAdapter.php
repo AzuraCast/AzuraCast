@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Radio\Simulcasting;
 
 use App\Entity\Simulcasting;
+use App\Entity\Station;
 
 class YouTubeSimulcastingAdapter extends AbstractSimulcastingAdapter
 {
@@ -35,12 +36,12 @@ class YouTubeSimulcastingAdapter extends AbstractSimulcastingAdapter
         ];
     }
 
-    public function getLiquidsoapOutput(Simulcasting $simulcasting, \App\Entity\Station $station): string
+    public function getLiquidsoapOutput(Simulcasting $simulcasting, Station $station): string
     {
         $config = $this->getConfiguration();
         $outputName = "simulcast_youtube_{$this->getCleanStreamName($simulcasting)}_{$simulcasting->getId()}";
         $instanceId = $simulcasting->getId();
-        
+
         return <<<LIQ
         # YouTube Live (RTMP) - Controllable source
         # Stefan from Liquidsoap IRC is a fucking GOD!
@@ -132,7 +133,7 @@ class YouTubeSimulcastingAdapter extends AbstractSimulcastingAdapter
         )
         LIQ;
     }
-    
+
     private function getCleanStreamName(Simulcasting $simulcasting): string
     {
         $streamName = $simulcasting->getName();

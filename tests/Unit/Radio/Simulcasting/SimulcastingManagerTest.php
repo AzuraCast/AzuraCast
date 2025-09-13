@@ -9,8 +9,8 @@ use App\Entity\Simulcasting;
 use App\Entity\Station;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\BackendAdapters;
-use App\Radio\Simulcasting\SimulcastingManager;
 use App\Radio\Simulcasting\LiquidSoapSimulcastingService;
+use App\Radio\Simulcasting\SimulcastingManager;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
@@ -24,7 +24,7 @@ class SimulcastingManagerTest extends TestCase
     {
         $this->logger = $this->createMock(LoggerInterface::class);
         $this->liquidsoapService = $this->createMock(LiquidSoapSimulcastingService::class);
-        
+
         $this->manager = new SimulcastingManager(
             $this->logger,
             $this->liquidsoapService
@@ -34,10 +34,10 @@ class SimulcastingManagerTest extends TestCase
     public function testGetAvailableAdapters(): void
     {
         $adapters = $this->manager->getAvailableAdapters();
-        
+
         $this->assertArrayHasKey('facebook', $adapters);
         $this->assertArrayHasKey('youtube', $adapters);
-        
+
         $this->assertEquals('Facebook Live', $adapters['facebook']['description']);
         $this->assertEquals('YouTube Live', $adapters['youtube']['description']);
     }
@@ -53,19 +53,19 @@ class SimulcastingManagerTest extends TestCase
     {
         $station = $this->createMock(Station::class);
         $station->method('getBackendType')->willReturn(BackendAdapters::None);
-        
+
         $simulcasting = $this->createMock(Simulcasting::class);
         $simulcasting->method('getStation')->willReturn($station);
         $simulcasting->method('getId')->willReturn(1);
         $simulcasting->method('getAdapter')->willReturn('facebook');
-        
+
         $liquidsoap = $this->createMock(Liquidsoap::class);
-        
+
         $this->logger->expects($this->once())
             ->method('error');
-        
+
         $result = $this->manager->startSimulcasting($simulcasting, $liquidsoap);
-        
+
         $this->assertFalse($result);
     }
 
@@ -74,27 +74,27 @@ class SimulcastingManagerTest extends TestCase
         $station = $this->createMock(Station::class);
         $station->method('getBackendType')->willReturn(BackendAdapters::Liquidsoap);
         $station->method('getId')->willReturn(1);
-        
+
         $simulcasting = $this->createMock(Simulcasting::class);
         $simulcasting->method('getStation')->willReturn($station);
         $simulcasting->method('getId')->willReturn(1);
         $simulcasting->method('getAdapter')->willReturn('facebook');
-        
+
         $liquidsoap = $this->createMock(Liquidsoap::class);
-        
+
         $this->liquidsoapService->expects($this->once())
             ->method('validateVideoFiles')
             ->willReturn([]);
-        
+
         $this->liquidsoapService->expects($this->once())
             ->method('startStream')
             ->willReturn(true);
-        
+
         $this->logger->expects($this->once())
             ->method('info');
-        
+
         $result = $this->manager->startSimulcasting($simulcasting, $liquidsoap);
-        
+
         $this->assertTrue($result);
     }
 
@@ -102,30 +102,30 @@ class SimulcastingManagerTest extends TestCase
     {
         $station = $this->createMock(Station::class);
         $station->method('getId')->willReturn(1);
-        
+
         $simulcasting = $this->createMock(Simulcasting::class);
         $simulcasting->method('getStation')->willReturn($station);
         $simulcasting->method('getId')->willReturn(1);
         $simulcasting->method('getAdapter')->willReturn('facebook');
-        
+
         $liquidsoap = $this->createMock(Liquidsoap::class);
-        
+
         $this->liquidsoapService->expects($this->once())
             ->method('stopStream')
             ->willReturn(true);
-        
+
         $this->logger->expects($this->once())
             ->method('info');
-        
+
         $result = $this->manager->stopSimulcasting($simulcasting, $liquidsoap);
-        
+
         $this->assertTrue($result);
     }
 
     public function testGetStreamsStatus(): void
     {
         $station = $this->createMock(Station::class);
-        
+
         $expectedStatus = [
             [
                 'id' => 1,
@@ -136,15 +136,14 @@ class SimulcastingManagerTest extends TestCase
                 'error_message' => null,
             ],
         ];
-        
+
         $this->liquidsoapService->expects($this->once())
             ->method('getStreamsStatus')
             ->with($station)
             ->willReturn($expectedStatus);
-        
+
         $result = $this->manager->getStreamsStatus($station);
-        
+
         $this->assertEquals($expectedStatus, $result);
     }
 }
-

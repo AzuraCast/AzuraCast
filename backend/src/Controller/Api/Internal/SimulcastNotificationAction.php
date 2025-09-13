@@ -41,7 +41,7 @@ final class SimulcastNotificationAction implements SingleActionInterface
             ]);
 
             // Use the repository to reset all instances
-            $simulcastingRepo = $this->em->getRepository(\App\Entity\Simulcasting::class);
+            $simulcastingRepo = $this->em->getRepository(Simulcasting::class);
             $simulcastingRepo->stopAllForStation($station);
 
             return $response->withJson(['success' => true, 'message' => 'All simulcast instances reset']);
@@ -83,7 +83,7 @@ final class SimulcastNotificationAction implements SingleActionInterface
         if ($newStatus) {
             $simulcasting->setStatus($newStatus);
             $simulcasting->setErrorMessage(null);
-            
+
             // Set error message for error events
             if ($event === 'errored' && $reason) {
                 $simulcasting->setErrorMessage($reason);

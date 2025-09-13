@@ -32,7 +32,7 @@ final class Version20241201000000 extends AbstractMigration
             INDEX IDX_STATION_SIMULCASTING_STATION (station_id),
             PRIMARY KEY(id)
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_general_ci` ENGINE = InnoDB');
-        
+
         $this->addSql('ALTER TABLE station_simulcasting ADD CONSTRAINT FK_STATION_SIMULCASTING_STATION 
             FOREIGN KEY (station_id) REFERENCES station (id) ON DELETE CASCADE');
     }
@@ -43,4 +43,3 @@ final class Version20241201000000 extends AbstractMigration
         $this->addSql('DROP TABLE station_simulcasting');
     }
 }
-

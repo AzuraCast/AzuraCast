@@ -86,4 +86,3 @@ class SimulcastingRepository extends EntityRepository
             ->execute();
     }
 }
-

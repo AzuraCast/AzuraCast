@@ -12,6 +12,7 @@ use App\Entity\Enums\PlaylistSources;
 use App\Entity\Enums\PlaylistTypes;
 use App\Entity\Enums\StationBackendPerformanceModes;
 use App\Entity\Interfaces\StationMountInterface;
+use App\Entity\Simulcasting;
 use App\Entity\StationBackendConfiguration;
 use App\Entity\StationMount;
 use App\Entity\StationPlaylist;
@@ -29,9 +30,14 @@ use App\Radio\Enums\LiquidsoapQueues;
 use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
 use App\Radio\FallbackFile;
+use App\Radio\Simulcasting\AbstractSimulcastingAdapter;
+use App\Radio\Simulcasting\FacebookSimulcastingAdapter;
+use App\Radio\Simulcasting\YouTubeSimulcastingAdapter;
 use App\Radio\StereoTool;
 use App\Utilities\Types;
 use Carbon\CarbonImmutable;
+use Exception;
+use InvalidArgumentException;
 use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -1359,10 +1365,10 @@ final class ConfigWriter implements EventSubscriberInterface
     public function writeSimulcastingConfiguration(WriteLiquidsoapConfiguration $event): void
     {
         $station = $event->getStation();
-        
+
         // Get all simulcasting streams (not just running ones)
         $activeStreams = $station->simulcasting_streams;
-        
+
         if ($activeStreams->isEmpty()) {
             return;
         }
@@ -1371,7 +1377,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $configDir = $station->getRadioConfigDir();
         $simulcastStorageDir = '/var/azuracast/storage/simulcast';
-        
+
         $event->appendBlock(
             <<<LIQ
             # Simulcasting Configuration
@@ -1416,19 +1422,19 @@ final class ConfigWriter implements EventSubscriberInterface
             try {
                 // Create the adapter instance directly
                 $adapter = $this->createSimulcastingAdapter($stream);
-                
+
                 $liquidsoapOutput = $adapter->getLiquidsoapOutput($stream, $station);
                 if (!empty($liquidsoapOutput)) {
                     // Generate the output name that matches what SimulcastingManager expects
                     $outputName = $this->getSimulcastingOutputName($stream);
-                    
+
                     $event->appendLines([
                         '',
                         "# Simulcasting: {$stream->getName()}",
                         $liquidsoapOutput,
                     ]);
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // Log the error but continue with other streams
                 error_log("Failed to generate LiquidSoap output for simulcasting stream {$stream->getId()}: " . $e->getMessage());
                 continue;
@@ -1439,19 +1445,19 @@ final class ConfigWriter implements EventSubscriberInterface
     /**
      * Create a simulcasting adapter instance for the given stream
      */
-    private function createSimulcastingAdapter(\App\Entity\Simulcasting $stream): \App\Radio\Simulcasting\AbstractSimulcastingAdapter
+    private function createSimulcastingAdapter(Simulcasting $stream): AbstractSimulcastingAdapter
     {
         $adapterName = $stream->getAdapter();
-        
+
         $adapterMap = [
-            'facebook' => \App\Radio\Simulcasting\FacebookSimulcastingAdapter::class,
-            'youtube' => \App\Radio\Simulcasting\YouTubeSimulcastingAdapter::class,
+            'facebook' => FacebookSimulcastingAdapter::class,
+            'youtube' => YouTubeSimulcastingAdapter::class,
         ];
-        
+
         if (!isset($adapterMap[$adapterName])) {
-            throw new \InvalidArgumentException("Unknown adapter: {$adapterName}");
+            throw new InvalidArgumentException("Unknown adapter: {$adapterName}");
         }
-        
+
         $adapterClass = $adapterMap[$adapterName];
         return new $adapterClass($stream);
     }
@@ -1460,16 +1466,16 @@ final class ConfigWriter implements EventSubscriberInterface
      * Get the LiquidSoap output name for a simulcasting stream
      * This must match the naming convention used in SimulcastingManager
      */
-    private function getSimulcastingOutputName(\App\Entity\Simulcasting $stream): string
+    private function getSimulcastingOutputName(Simulcasting $stream): string
     {
         $adapter = $stream->getAdapter();
         $streamName = $stream->getName();
         $streamId = $stream->getId();
-        
+
         // Generate a unique output name based on adapter, stream name, and ID
         $cleanName = preg_replace('/[^a-zA-Z0-9_]/', '_', (string) $streamName) ?? '';
         $cleanName = strtolower($cleanName);
-        
+
         switch ($adapter) {
             case 'facebook':
                 return "simulcast_facebook_{$cleanName}_{$streamId}";

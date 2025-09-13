@@ -24,5 +24,4 @@ final class Version20250830155323 extends AbstractMigration
         $this->addSql('ALTER TABLE station_simulcasting CHANGE created_at created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', CHANGE updated_at updated_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\'');
         $this->addSql('ALTER TABLE station_simulcasting RENAME INDEX idx_575ea95521bdb235 TO IDX_STATION_SIMULCASTING_STATION');
     }
-
 }

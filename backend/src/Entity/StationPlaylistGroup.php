@@ -10,72 +10,64 @@ use JsonSerializable;
 
 #[
     ORM\Entity,
-    ORM\Table(name: 'station_playlist_group')
+    ORM\Table(name: 'station_playlist_group'),
+    Attributes\Auditable
 ]
-class StationPlaylistGroup implements JsonSerializable, IdentifiableEntityInterface
+final class StationPlaylistGroup implements JsonSerializable, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
 
+    #[
+        ORM\ManyToOne(inversedBy: 'playlist_groups'),
+        ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
+    ]
+    public Station $station;
+
+    public function setStation(Station $station): void
+    {
+        $this->station = $station;
+    }
+
+    /* TODO Remove direct identifier access. */
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    public private(set) int $station_id;
+
     #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'playlists')]
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    protected StationPlaylist $playlist;
+    public StationPlaylist $playlist;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    protected int $playlist_id;
+    public private(set) int $playlist_id;
 
     #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'playlist_groups')]
     #[ORM\JoinColumn(name: 'playlist_group_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    protected StationPlaylist $playlist_group;
+    public StationPlaylist $playlist_group;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    protected int $playlist_group_id;
+    public private(set) int $playlist_group_id;
 
     #[ORM\Column]
-    protected int $weight = 0;
+    public int $weight = 0;
 
     #[ORM\Column]
-    protected bool $is_queued = true;
+    public bool $is_queued = true;
 
     #[ORM\Column]
-    protected int $last_played = 0;
+    public int $last_played = 0;
 
-    public function __construct(StationPlaylist $playlist, StationPlaylist $playlistGroup)
-    {
+    public function __construct(
+        Station $station,
+        StationPlaylist $playlist,
+        StationPlaylist $playlistGroup
+    ) {
+        $this->station = $station;
         $this->playlist = $playlist;
         $this->playlist_group = $playlistGroup;
     }
 
-    public function getPlaylist(): StationPlaylist
-    {
-        return $this->playlist;
-    }
-
-    public function setPlaylist(StationPlaylist $playlist): void
-    {
-        $this->playlist = $playlist;
-    }
-
-    public function getPlaylistGroup(): StationPlaylist
-    {
-        return $this->playlist_group;
-    }
-
-    public function getWeight(): int
-    {
-        return $this->weight;
-    }
-
-    public function setWeight(int $weight): void
-    {
-        $this->weight = $weight;
-    }
-
-    public function getLastPlayed(): int
-    {
-        return $this->last_played;
-    }
-
-    public function played(int $timestamp = null): void
+    public function played(?int $timestamp = null): void
     {
         $this->last_played = $timestamp ?? time();
         $this->is_queued = false;
@@ -87,8 +79,8 @@ class StationPlaylistGroup implements JsonSerializable, IdentifiableEntityInterf
     public function jsonSerialize(): array
     {
         return [
-            'id'     => $this->playlist->getId(),
-            'name'   => $this->playlist->getName(),
+            'id'     => $this->playlist->id,
+            'name'   => $this->playlist->name,
             'weight' => $this->weight,
         ];
     }

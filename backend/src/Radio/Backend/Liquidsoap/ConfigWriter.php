@@ -126,33 +126,33 @@ final class ConfigWriter implements EventSubscriberInterface
             <<<LIQ
             # AzuraCast Common Runtime Functions
             %include "{$commonLibPath}"
-            
+
             settings.server.log.level := {$logLevel}
             init.daemon.pidfile.path := "{$pidfile}"
-            
+
             settings.init.compact_before_start := true
-            
-            environment.set("TZ", "{$stationTz}") 
-            
+
+            environment.set("TZ", "{$stationTz}")
+
             settings.azuracast.liquidsoap_api_port := {$httpApiPort}
             settings.azuracast.api_url := "{$stationApiUrl}"
             settings.azuracast.api_key := "{$stationApiAuth}"
             settings.azuracast.media_path := "{$stationMediaDir}"
             settings.azuracast.fallback_path := "{$fallbackPath}"
             settings.azuracast.temp_path := "{$tempPath}"
-            
+
             settings.azuracast.compute_autocue := {$useComputeAutocue}
-            
+
             settings.azuracast.default_fade := {$defaultFade}
             settings.azuracast.default_cross := {$defaultCross}
             settings.azuracast.enable_crossfade := {$enableCrossfade}
             settings.azuracast.crossfade_type := "{$crossfadeType}"
-            
+
             settings.azuracast.live_broadcast_text := "{$liveBroadcastText}"
-            
+
             # Start HTTP API Server
             azuracast.start_http_api()
-            
+
             LIQ
         );
 
@@ -257,7 +257,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     . self::cleanUpString($playlist->remote_url)
                     . '")';
                 $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFunc;
-            } elseif (PlaylistSources::Playlists) {
+            } elseif (PlaylistSources::Playlists === $playlist->source) {
                 // @TODO: Do we need to handle anything here?
             } else {
                 // Special handling for Remote Stream URLs.
@@ -505,7 +505,7 @@ final class ConfigWriter implements EventSubscriberInterface
             <<<LIQ
             # Allow Telnet to skip the current track.
             azuracast.utilities.add_skip_command(radio)
-            
+
             # Apply amplification metadata (if supplied)
             # This can be disabled by setting:
             #   settings.azuracast.apply_amplify := false
@@ -531,7 +531,7 @@ final class ConfigWriter implements EventSubscriberInterface
             <<<LS
             # Log current metadata for debugging.
             source.methods(radio).on_metadata(synchronous=false, azuracast.log_meta)
-            
+
             # Apply crossfade.
             radio = azuracast.apply_crossfade(radio)
             LS
@@ -585,7 +585,7 @@ final class ConfigWriter implements EventSubscriberInterface
             live = input.harbor({$harborParams})
             live.on_connect(synchronous=false, azuracast.live_connected)
             live.on_disconnect(synchronous=false, azuracast.live_disconnected)
-            
+
             last_live_meta = ref([])
 
             def insert_missing(m) =
@@ -600,13 +600,13 @@ final class ConfigWriter implements EventSubscriberInterface
                 updates
             end
             live = metadata.map(insert_missing, live)
-            
+
             live = insert_metadata(live)
             def insert_latest_live_metadata() =
                 log("Inserting last live meta: #{last_live_meta()}")
                 live.insert_metadata(last_live_meta())
             end
-            
+
             radio = fallback(
                 id="live_fallback",
                 track_sensitive=true,
@@ -616,7 +616,7 @@ final class ConfigWriter implements EventSubscriberInterface
                         log("executing transition to live")
                         insert_latest_live_metadata()
                         s
-                    end, 
+                    end,
                     fun (_, s) -> begin
                         s
                     end
@@ -696,7 +696,7 @@ final class ConfigWriter implements EventSubscriberInterface
             <<<LIQ
             # Add Fallback
             radio = azuracast.add_fallback(radio)
-            
+
             # Send metadata changes back to AzuraCast
             source.methods(radio).on_metadata(synchronous=false, azuracast.send_feedback)
 

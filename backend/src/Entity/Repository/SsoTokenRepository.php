@@ -7,6 +7,7 @@ namespace App\Entity\Repository;
 use App\Entity\SsoToken;
 use App\Entity\User;
 use App\Security\SplitToken;
+use InvalidArgumentException;
 
 /**
  * @extends AbstractSplitTokenRepository<SsoToken>
@@ -28,7 +29,7 @@ final class SsoTokenRepository extends AbstractSplitTokenRepository
         if ($token === null) {
             $token = SplitToken::generate();
         }
-        
+
         $ssoToken = new SsoToken(
             user: $user,
             token: $token,
@@ -50,7 +51,7 @@ final class SsoTokenRepository extends AbstractSplitTokenRepository
     {
         try {
             $userSuppliedToken = SplitToken::fromKeyString($tokenString);
-        } catch (\InvalidArgumentException) {
+        } catch (InvalidArgumentException) {
             return null;
         }
 

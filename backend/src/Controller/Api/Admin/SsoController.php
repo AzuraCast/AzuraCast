@@ -13,6 +13,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\SsoService;
+use Exception;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -36,7 +37,7 @@ final class SsoController
         path: '/admin/sso/generate',
         operationId: 'adminGenerateSsoToken',
         summary: 'Generate a new SSO token for a user.',
-        description: 'Creates a one-time, time-limited login token that can be used for SSO integration with external systems like WHMCS.',
+        description: 'Creates a one-time, time-limited login token/url.',
         tags: [OpenApi::TAG_ADMIN],
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(
@@ -69,7 +70,7 @@ final class SsoController
                         description: 'IP address that will be using the token (for audit purposes).',
                         example: '192.168.1.100',
                         format: 'ipv4'
-                    )
+                    ),
                 ]
             )
         ),
@@ -102,6 +103,7 @@ final class SsoController
                 ]);
             }
 
+            /** @var array{user_id: int, comment?: string, expires_in?: int, ip_address?: string|null} $data */
             $userId = (int) $data['user_id'];
             $comment = $data['comment'] ?? 'SSO Login';
             $expiresIn = (int) ($data['expires_in'] ?? 300); // 5 minutes default
@@ -153,7 +155,7 @@ final class SsoController
                 'success' => true,
                 'data' => $result,
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error('SSO token generation failed', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -182,7 +184,7 @@ final class SsoController
                 in: 'path',
                 required: true,
                 schema: new OA\Schema(type: 'integer', example: 123)
-            )
+            ),
         ],
         responses: [
             new OpenApi\Response\Success(
@@ -194,7 +196,7 @@ final class SsoController
                             property: 'data',
                             type: 'array',
                             items: new OA\Items(ref: '#/components/schemas/Api_Admin_SsoTokenList')
-                        )
+                        ),
                     ]
                 )
             ),
@@ -235,7 +237,7 @@ final class SsoController
                 'success' => true,
                 'data' => $result,
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error('Failed to list SSO tokens', [
                 'user_id' => $request->getAttribute('user_id'),
                 'error' => $e->getMessage(),
@@ -264,7 +266,7 @@ final class SsoController
                 in: 'path',
                 required: true,
                 schema: new OA\Schema(type: 'integer', example: 123)
-            )
+            ),
         ],
         responses: [
             new OpenApi\Response\Success(
@@ -283,11 +285,11 @@ final class SsoController
                                     properties: [
                                         new OA\Property(property: 'id', type: 'integer', example: 123),
                                         new OA\Property(property: 'email', type: 'string', example: 'user@example.com'),
-                                        new OA\Property(property: 'name', type: 'string', example: 'User Name')
+                                        new OA\Property(property: 'name', type: 'string', example: 'User Name'),
                                     ]
-                                )
+                                ),
                             ]
-                        )
+                        ),
                     ]
                 )
             ),
@@ -323,7 +325,7 @@ final class SsoController
                     ],
                 ],
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error('Failed to revoke SSO tokens', [
                 'user_id' => $request->getAttribute('user_id'),
                 'error' => $e->getMessage(),
@@ -355,9 +357,9 @@ final class SsoController
                             property: 'data',
                             type: 'object',
                             properties: [
-                                new OA\Property(property: 'cleaned_count', type: 'integer', example: 5)
+                                new OA\Property(property: 'cleaned_count', type: 'integer', example: 5),
                             ]
-                        )
+                        ),
                     ]
                 )
             ),
@@ -376,7 +378,7 @@ final class SsoController
                     'cleaned_count' => $cleanedCount,
                 ],
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error('Failed to cleanup SSO tokens', [
                 'error' => $e->getMessage(),
             ]);

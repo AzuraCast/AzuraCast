@@ -24,5 +24,4 @@ final class Version20250913155248 extends AbstractMigration
         $this->addSql('ALTER TABLE sso_tokens DROP FOREIGN KEY FK_F0143299A76ED395');
         $this->addSql('DROP TABLE sso_tokens');
     }
-
 }

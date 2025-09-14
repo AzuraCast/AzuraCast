@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Command;
 
 use App\Service\SsoService;
+use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -62,7 +63,7 @@ final class SsoCleanupCommand extends Command
             }
 
             return Command::SUCCESS;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $io->error('Failed to clean up SSO tokens: ' . $e->getMessage());
             return Command::FAILURE;
         }

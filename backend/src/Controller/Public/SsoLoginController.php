@@ -7,6 +7,7 @@ namespace App\Controller\Public;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\SsoService;
+use Exception;
 use Mezzio\Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -48,7 +49,7 @@ final class SsoLoginController
 
             // Redirect to dashboard or specified redirect URL
             $redirectUrl = $request->getQueryParam('redirect', '/dashboard');
-            
+
             // Validate redirect URL to prevent open redirects
             if (!$this->isValidRedirectUrl($redirectUrl)) {
                 $redirectUrl = '/dashboard';
@@ -60,7 +61,7 @@ final class SsoLoginController
             ]);
 
             return $response->withRedirect($redirectUrl);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error('SSO login failed', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -93,8 +94,13 @@ final class SsoLoginController
     /**
      * Render error page for SSO login failures.
      */
-    private function renderError(ServerRequest $request, Response $response, string $message, array $details = [], int $status = 400): ResponseInterface
-    {
+    private function renderError(
+        ServerRequest $request,
+        Response $response,
+        string $message,
+        array $details = [],
+        int $status = 400
+    ): ResponseInterface {
         $errorData = [
             'success' => false,
             'error' => $message,

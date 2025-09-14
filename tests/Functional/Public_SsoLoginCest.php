@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Functional;
 
 use App\Entity\User;
+use App\Security\SplitToken;
 use App\Service\SsoService;
 use FunctionalTester;
 
@@ -37,7 +38,7 @@ class Public_SsoLoginCest extends CestAbstract
         $I->assertNotNull($token);
 
         // Create the full token string
-        $splitToken = new \App\Security\SplitToken();
+        $splitToken = new SplitToken();
         $splitToken->identifier = $token->id;
         $splitToken->verifier = $token->verifier;
 
@@ -92,7 +93,7 @@ class Public_SsoLoginCest extends CestAbstract
         sleep(2);
 
         // Create the full token string
-        $splitToken = new \App\Security\SplitToken();
+        $splitToken = new SplitToken();
         $splitToken->identifier = $token->id;
         $splitToken->verifier = $token->verifier;
 
@@ -143,7 +144,7 @@ class Public_SsoLoginCest extends CestAbstract
         $I->assertNotNull($token);
 
         // Create the full token string
-        $splitToken = new \App\Security\SplitToken();
+        $splitToken = new SplitToken();
         $splitToken->identifier = $token->id;
         $splitToken->verifier = $token->verifier;
 

@@ -30,7 +30,7 @@ final readonly class SsoTokenResponse
                         new OA\Property(property: 'revoked_count', type: 'integer', example: 3),
                         new OA\Property(property: 'cleaned_count', type: 'integer', example: 5),
                     ]
-                )
+                ),
             ]
         )]
         public mixed $data = null,

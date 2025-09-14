@@ -320,10 +320,16 @@ return static function (RouteCollectorProxy $group) {
                     $group->post('/generate', Controller\Api\Admin\SsoController::class . ':generateToken')
                         ->setName('api:admin:sso:generate');
 
-                    $group->get('/user/{user_id}/tokens', Controller\Api\Admin\SsoController::class . ':listTokens')
+                    $group->get(
+                        '/user/{user_id}/tokens',
+                        Controller\Api\Admin\SsoController::class . ':listTokens'
+                    )
                         ->setName('api:admin:sso:user:tokens');
 
-                    $group->delete('/user/{user_id}/tokens', Controller\Api\Admin\SsoController::class . ':revokeTokens')
+                    $group->delete(
+                        '/user/{user_id}/tokens',
+                        Controller\Api\Admin\SsoController::class . ':revokeTokens'
+                    )
                         ->setName('api:admin:sso:user:revoke');
 
                     $group->delete('/cleanup', Controller\Api\Admin\SsoController::class . ':cleanupTokens')

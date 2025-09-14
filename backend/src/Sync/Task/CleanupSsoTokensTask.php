@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Sync\Task;
 
 use App\Service\SsoService;
+use Exception;
 
 final class CleanupSsoTokensTask extends AbstractTask
 {
@@ -32,7 +33,7 @@ final class CleanupSsoTokensTask extends AbstractTask
             } else {
                 $this->logger->debug('SSO token cleanup completed - no expired tokens found');
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error('SSO token cleanup failed', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),

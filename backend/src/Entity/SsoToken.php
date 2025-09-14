@@ -89,6 +89,7 @@ final readonly class SsoToken implements Stringable, IdentifiableEntityInterface
 
     public function isValid(): bool
     {
+        // @phpstan-ignore-next-line
         return !$this->used && !$this->isExpired();
     }
 

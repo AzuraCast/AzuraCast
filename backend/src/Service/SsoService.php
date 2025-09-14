@@ -11,6 +11,7 @@ use App\Entity\User;
 use App\Http\RouterInterface;
 use App\Security\SplitToken;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Psr\Log\LoggerInterface;
 
 final class SsoService
@@ -26,7 +27,7 @@ final class SsoService
 
     /**
      * Generate a new SSO token for a user.
-     * 
+     *
      * @return array{token: SsoToken, tokenString: string}|null
      */
     public function generateToken(
@@ -69,7 +70,7 @@ final class SsoService
                 'token' => $token,
                 'tokenString' => (string) $splitToken,
             ];
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error('SSO token generation failed', [
                 'user_id' => $userId,
                 'error' => $e->getMessage(),
@@ -104,7 +105,7 @@ final class SsoService
             ]);
 
             return $token->user;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error('SSO token validation failed', [
                 'token_string' => substr($tokenString, 0, 8) . '...',
                 'error' => $e->getMessage(),
@@ -187,7 +188,7 @@ final class SsoService
     private function cleanupUserTokens(User $user): void
     {
         $existingTokens = $this->ssoTokenRepo->getActiveTokensForUser($user);
-        
+
         // Keep only the 5 most recent tokens
         if (count($existingTokens) >= 5) {
             $tokensToRemove = array_slice($existingTokens, 5);

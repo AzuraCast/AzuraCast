@@ -79,8 +79,8 @@ final class StationPlaylistGroup implements JsonSerializable, IdentifiableEntity
     public function jsonSerialize(): array
     {
         return [
-            'id'     => $this->playlist->id,
-            'name'   => $this->playlist->name,
+            'id' => $this->playlist->id,
+            'name' => $this->playlist->name,
             'weight' => $this->weight,
         ];
     }

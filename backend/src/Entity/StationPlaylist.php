@@ -272,15 +272,36 @@ final class StationPlaylist implements
     /** @var Collection<int, StationPlaylist> */
     #[
         ORM\OneToMany(targetEntity: StationPlaylistGroup::class, mappedBy: 'playlist', fetch: 'EXTRA_LAZY'),
-        ORM\OrderBy(['weight' => 'ASC'])
+        ORM\OrderBy(['weight' => 'ASC']),
+        DeepNormalize(true),
+        Serializer\MaxDepth(1)
     ]
-    protected Collection $playlists;
+    public private(set) Collection $playlists;
 
     /** @var Collection<int, StationPlaylist> */
     #[
-        ORM\OneToMany(targetEntity: StationPlaylistGroup::class, mappedBy: 'playlist_group', fetch: 'EXTRA_LAZY')
+        ORM\OneToMany(targetEntity: StationPlaylistGroup::class, mappedBy: 'playlist_group', fetch: 'EXTRA_LAZY'),
+        DeepNormalize(true),
+        Serializer\MaxDepth(1)
     ]
-    protected Collection $playlist_groups;
+    public private(set) Collection $playlist_groups;
+    // @TODO: putting general notes regarding playlist groups here for now
+    // -----------------------------------------------------------------------------
+    // - Need to ensure that all places apart from the the autodj / scheduling stuff know about playlist groups
+    //      - The APIs that include anything with playlists need to be checked
+    //          - Identify which exactly and make notes on what needs to be done there
+    // - Biggest plays with work needed: UI
+    //      - Need to make it possible to create playlist groups itself
+    //      - Need to make it possible to add playlists & media to playlist groups
+    //          - Need to prevent playlist groups to be added to self
+    //          - Do we need to prevent playlists that are already part of the playlist group from being added again?
+    //              - Probably not(?), could be wanted to say "sequentially play A then B, then C, then A again, etc..."
+    //      - What to do with the schedule page?
+    //          - How should we represent grouped playlists exactly?
+    //          - Probably like regular playlists there too, maybe different color or with an icon?
+    //          - Maybe add a hover tooltip / card that shows the list of the sub-playlists?
+    //      - Need to make it possible to see & sort playlist group contents liek with sequential playlists
+    // - Need to handle playlists internal queue for playlist groups
 
     public function __construct(Station $station)
     {
@@ -332,32 +353,6 @@ final class StationPlaylist implements
 
         // Remote stream playlists aren't supported by the AzuraCast AutoDJ.
         return PlaylistRemoteTypes::Playlist === $this->remote_type;
-    }
-
-    /**
-     * @return Collection<int, StationPlaylistGroup>
-     */
-    public function getPlaylistGroups(): Collection
-    {
-        // @TODO: putting general notes regarding playlist groups here for now
-        // -----------------------------------------------------------------------------
-        // - Need to ensure that all places apart from the the autodj / scheduling stuff know about playlist groups
-        //      - The APIs that include anything with playlists need to be checked
-        //          - Identify which exactly and make notes on what needs to be done there
-        // - Biggest plays with work needed: UI
-        //      - Need to make it possible to create playlist groups itself
-        //      - Need to make it possible to add playlists & media to playlist groups
-        //          - Need to prevent playlist groups to be added to self
-        //          - Do we need to prevent playlists that are already part of the playlist group from being added again?
-        //              - Probably not(?), could be wanted to say "sequentially play A then B, then C, then A again, etc..."
-        //      - What to do with the schedule page?
-        //          - How should we represent grouped playlists exactly?
-        //          - Probably like regular playlists there too, maybe different color or with an icon?
-        //          - Maybe add a hover tooltip / card that shows the list of the sub-playlists?
-        //      - Need to make it possible to see & sort playlist group contents liek with sequential playlists
-        // - Need to handle playlists internal queue for playlist groups
-
-        return $this->playlist_groups;
     }
 
     public function __clone()

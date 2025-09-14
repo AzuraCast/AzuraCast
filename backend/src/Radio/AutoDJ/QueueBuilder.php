@@ -21,12 +21,8 @@ use App\Entity\StationPlaylistMedia;
 use App\Entity\StationQueue;
 use App\Event\Radio\BuildQueue;
 use App\Radio\PlaylistParser;
-<<<<<<< HEAD
-use Carbon\CarbonInterface;
-use Doctrine\Common\Collections\Collection;
-=======
 use DateTimeImmutable;
->>>>>>> cdcb55c50f5144a948a5755da33547e61ee729f5
+use Doctrine\Common\Collections\Collection;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -73,21 +69,7 @@ final class QueueBuilder implements EventSubscriberInterface
         $station = $event->getStation();
         $expectedPlayTime = $event->getExpectedPlayTime();
 
-<<<<<<< HEAD
-        $activePlaylistsByType = $this->assembleActivePlaylistsByType($event, $station->getPlaylists());
-=======
-        $activePlaylistsByType = [];
-        foreach ($station->playlists as $playlist) {
-            /** @var StationPlaylist $playlist */
-            if ($playlist->isPlayable($event->isInterrupting())) {
-                $type = $playlist->type->value;
-
-                $subType = ($playlist->schedule_items->count() > 0) ? 'scheduled' : 'unscheduled';
-                $activePlaylistsByType[$type . '_' . $subType][$playlist->id] = $playlist;
-            }
-        }
-
->>>>>>> cdcb55c50f5144a948a5755da33547e61ee729f5
+        $activePlaylistsByType = $this->assembleActivePlaylistsByType($event, $station->playlists);
         if (empty($activePlaylistsByType)) {
             $this->logger->warning('No valid playlists detected. Skipping AutoDJ calculations.');
             return;
@@ -184,15 +166,15 @@ final class QueueBuilder implements EventSubscriberInterface
 
         foreach ($playlists as $playlist) {
             // @DEV: playlists that are part of a playlist group are not included in general playout rotation
-            if ($skipGroupedPlaylists && $playlist->getPlaylistGroups() > 0) {
+            if ($skipGroupedPlaylists && $playlist->playlist_groups > 0) {
                 continue;
             }
 
             if ($playlist->isPlayable($event->isInterrupting())) {
-                $type = $playlist->getType()->value;
+                $type = $playlist->type->value;
 
-                $subType = ($playlist->getScheduleItems()->count() > 0) ? 'scheduled' : 'unscheduled';
-                $activePlaylistsByType[$type . '_' . $subType][$playlist->getId()] = $playlist;
+                $subType = ($playlist->schedule_items->count() > 0) ? 'scheduled' : 'unscheduled';
+                $activePlaylistsByType[$type . '_' . $subType][$playlist->id] = $playlist;
             }
         }
 
@@ -236,7 +218,7 @@ final class QueueBuilder implements EventSubscriberInterface
     private function assembleEligiblePlaylistsAndPlaylistsLog(
         array $activePlaylistsByType,
         string $currentPlaylistType,
-        CarbonInterface $expectedPlayTime
+        DateTimeImmutable $expectedPlayTime
     ): array {
         $eligiblePlaylists = [];
         $logPlaylists = [];
@@ -298,12 +280,12 @@ final class QueueBuilder implements EventSubscriberInterface
     private function playSongFromPlaylistGroup(
         StationPlaylist $playlistGroup,
         array $recentSongHistory,
-        CarbonInterface $expectedPlayTime,
+        DateTimeImmutable $expectedPlayTime,
         bool $allowDuplicates = false
     ): StationQueue|array|null {
         // @TODO: iterate over entries, only one type of content shall be present, other playlists or media
         // - Need to handle the PlaylistOrders here to first decide what to do next
-        $selectedPlaylist = match ($playlistGroup->getOrder()) {
+        $selectedPlaylist = match ($playlistGroup->order) {
             PlaylistOrders::Random => $this->getRandomPlaylistFromPlaylistGroup(),
             PlaylistOrders::Sequential => $this->getSequentialPlaylistFromPlaylistGroup(),
             PlaylistOrders::Shuffle => $this->getShuffledPlaylistFromPlaylistGroup()
@@ -315,7 +297,7 @@ final class QueueBuilder implements EventSubscriberInterface
 
         // @DEV: Playlists that contain playlists need to recursively resolve down until they reach a playlist that
         // is a media containing one in order to continue on with selecting something to play
-        if ($selectedPlaylist->getPlaylists()->count() > 0) {
+        if ($selectedPlaylist->playlists->count() > 0) {
             $selectedPlaylist = $this->playSongFromPlaylistGroup(
                 $selectedPlaylist,
                 $recentSongHistory,
@@ -336,17 +318,17 @@ final class QueueBuilder implements EventSubscriberInterface
             $queueEntry = $this->makeQueueFromApi($validTrack, $selectedPlaylist, $expectedPlayTime);
 
             if (null !== $queueEntry) {
-                $selectedPlaylist->setPlayedAt($expectedPlayTime->getTimestamp());
+                $selectedPlaylist->played_at = $expectedPlayTime;
                 $this->em->persist($selectedPlaylist);
                 return $queueEntry;
             }
         }
 
         $this->logger->warning(
-            sprintf('Playlist "%s" did not return a playable track.', $selectedPlaylist->getName()),
+            sprintf('Playlist "%s" did not return a playable track.', $selectedPlaylist->name),
             [
-                'playlist_id' => $selectedPlaylist->getId(),
-                'playlist_order' => $selectedPlaylist->getOrder()->value,
+                'playlist_id' => $selectedPlaylist->id,
+                'playlist_order' => $selectedPlaylist->order->value,
                 'allow_duplicates' => $allowDuplicates,
             ]
         );
@@ -395,7 +377,7 @@ final class QueueBuilder implements EventSubscriberInterface
             // - they should get checked in the playSongFromPlaylist
 
         // @TODO: handle playlist groups
-        if (PlaylistSources::Playlists === $playlist->getSource()) {
+        if (PlaylistSources::Playlists === $playlist->source) {
             // @TODO: First need to define valid settings for playlist groups
             // - wouldn't allow advanced backend options at all
             //      - this would make handling groups much too hard imho as we would neet to figure out how to translate this into LS code

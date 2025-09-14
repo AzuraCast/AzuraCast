@@ -26,7 +26,8 @@ return static function (RouteCollectorProxy $app) {
     )->setName('public:sw');
 
     $app->get('/sso/login', Controller\Public\SsoLoginController::class . ':login')
-        ->setName('public:sso:login');
+        ->setName('public:sso:login')
+        ->add(Middleware\InjectSession::class);
 
     $app->group(
         '/public/{station_id}',

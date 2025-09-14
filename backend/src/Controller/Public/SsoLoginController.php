@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Public;
 
-use App\Auth;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\SsoService;
+use Mezzio\Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
@@ -15,7 +15,6 @@ final class SsoLoginController
 {
     public function __construct(
         private readonly SsoService $ssoService,
-        private readonly Auth $auth,
         private readonly LoggerInterface $logger,
     ) {
     }
@@ -37,8 +36,15 @@ final class SsoLoginController
                 return $this->renderError($request, $response, 'Invalid or expired SSO token', [], 401);
             }
 
-            // Log the user in
-            $this->auth->setUser($user, true);
+            // Log the user in by setting session data
+            $session = $request->getAttribute(ServerRequest::ATTR_SESSION);
+            if ($session instanceof SessionInterface) {
+                $session->set('user_id', $user->id);
+                // Set is_login_complete based on whether user has 2FA enabled
+                $isLoginComplete = null === $user->two_factor_secret;
+                $session->set('is_login_complete', $isLoginComplete);
+                // Note: Session regeneration removed temporarily to avoid timing issues
+            }
 
             // Redirect to dashboard or specified redirect URL
             $redirectUrl = $request->getQueryParam('redirect', '/dashboard');
@@ -47,6 +53,11 @@ final class SsoLoginController
             if (!$this->isValidRedirectUrl($redirectUrl)) {
                 $redirectUrl = '/dashboard';
             }
+
+            $this->logger->info('SSO login: Redirecting to URL', [
+                'redirect_url' => $redirectUrl,
+                'user_id' => $user->id,
+            ]);
 
             return $response->withRedirect($redirectUrl);
         } catch (\Exception $e) {

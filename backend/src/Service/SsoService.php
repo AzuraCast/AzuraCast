@@ -8,6 +8,7 @@ use App\Entity\Repository\SsoTokenRepository;
 use App\Entity\Repository\UserRepository;
 use App\Entity\SsoToken;
 use App\Entity\User;
+use App\Http\RouterInterface;
 use App\Security\SplitToken;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -19,18 +20,21 @@ final class SsoService
         private readonly SsoTokenRepository $ssoTokenRepo,
         private readonly UserRepository $userRepo,
         private readonly LoggerInterface $logger,
+        private readonly RouterInterface $router,
     ) {
     }
 
     /**
      * Generate a new SSO token for a user.
+     * 
+     * @return array{token: SsoToken, tokenString: string}|null
      */
     public function generateToken(
         int $userId,
         string $comment = '',
         int $expiresIn = 300,
         ?string $ipAddress = null
-    ): ?SsoToken {
+    ): ?array {
         try {
             $user = $this->userRepo->find($userId);
             if (!$user instanceof User) {
@@ -43,11 +47,14 @@ final class SsoService
             // Clean up any existing tokens for this user to prevent accumulation
             $this->cleanupUserTokens($user);
 
+            // Generate the token first to get the string
+            $splitToken = SplitToken::generate();
             $token = $this->ssoTokenRepo->createToken(
                 user: $user,
                 comment: $comment,
                 expiresIn: $expiresIn,
-                ipAddress: $ipAddress
+                ipAddress: $ipAddress,
+                token: $splitToken
             );
 
             $this->logger->info('SSO token generated successfully', [
@@ -58,7 +65,10 @@ final class SsoService
                 'ip_address' => $ipAddress,
             ]);
 
-            return $token;
+            return [
+                'token' => $token,
+                'tokenString' => (string) $splitToken,
+            ];
         } catch (\Exception $e) {
             $this->logger->error('SSO token generation failed', [
                 'user_id' => $userId,
@@ -181,25 +191,13 @@ final class SsoService
     }
 
     /**
-     * Generate a full SSO URL for a user.
+     * Generate a full SSO URL for a token string.
      */
-    public function generateSsoUrl(
-        int $userId,
-        string $baseUrl,
-        string $comment = '',
-        int $expiresIn = 300,
-        ?string $ipAddress = null
-    ): ?string {
-        // Find the user
-        $user = $this->userRepo->find($userId);
-        if (!$user) {
-            return null;
-        }
-
-        // Generate a new token and return its URL
-        $splitToken = SplitToken::generate();
-        $token = $this->ssoTokenRepo->createToken($user, $comment, $expiresIn, $ipAddress, $splitToken);
-
-        return $baseUrl . '/sso/login?token=' . urlencode((string) $splitToken);
+    public function generateSsoUrl(string $tokenString): string
+    {
+        return $this->router->named(
+            routeName: 'public:sso:login',
+            absolute: true
+        ) . '?token=' . urlencode($tokenString);
     }
 }

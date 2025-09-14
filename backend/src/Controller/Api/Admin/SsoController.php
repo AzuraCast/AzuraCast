@@ -117,29 +117,25 @@ final class SsoController
             }
 
             // Generate token
-            $token = $this->ssoService->generateToken(
+            $tokenResult = $this->ssoService->generateToken(
                 userId: $userId,
                 comment: $comment,
                 expiresIn: $expiresIn,
                 ipAddress: $ipAddress
             );
 
-            if (!$token) {
+            if (!$tokenResult) {
                 return $response->withStatus(500)->withJson([
                     'success' => false,
                     'error' => 'Failed to generate SSO token',
                 ]);
             }
 
+            $token = $tokenResult['token'];
+            $tokenString = $tokenResult['tokenString'];
+
             // Generate full SSO URL
-            $baseUrl = $request->getScheme() . '://' . $request->getHeaderLine('Host');
-            $ssoUrl = $this->ssoService->generateSsoUrl(
-                userId: $userId,
-                baseUrl: $baseUrl,
-                comment: $comment,
-                expiresIn: $expiresIn,
-                ipAddress: $ipAddress
-            );
+            $ssoUrl = $this->ssoService->generateSsoUrl($tokenString);
 
             $result = [
                 'token_id' => $token->id,
@@ -392,24 +388,24 @@ final class SsoController
         }
     }
 
-    private function getValidationConstraints(): array
+    private function getValidationConstraints(): Assert\Collection
     {
-        return [
-            'user_id' => [
-                new Assert\NotBlank([
-                    'message' => 'User ID is required',
-                ]),
-                new Assert\Type([
-                    'type' => 'integer',
-                    'message' => 'User ID must be an integer',
-                ]),
-                new Assert\GreaterThan([
-                    'value' => 0,
-                    'message' => 'User ID must be greater than 0',
-                ]),
-            ],
-            'comment' => [
-                new Assert\Optional([
+        return new Assert\Collection([
+            'fields' => [
+                'user_id' => [
+                    new Assert\NotBlank([
+                        'message' => 'User ID is required',
+                    ]),
+                    new Assert\Type([
+                        'type' => 'integer',
+                        'message' => 'User ID must be an integer',
+                    ]),
+                    new Assert\GreaterThan([
+                        'value' => 0,
+                        'message' => 'User ID must be greater than 0',
+                    ]),
+                ],
+                'comment' => new Assert\Optional([
                     new Assert\Type([
                         'type' => 'string',
                         'message' => 'Comment must be a string',
@@ -419,9 +415,7 @@ final class SsoController
                         'maxMessage' => 'Comment cannot exceed {{ limit }} characters',
                     ]),
                 ]),
-            ],
-            'expires_in' => [
-                new Assert\Optional([
+                'expires_in' => new Assert\Optional([
                     new Assert\Type([
                         'type' => 'integer',
                         'message' => 'Expires in must be an integer',
@@ -429,13 +423,10 @@ final class SsoController
                     new Assert\Range([
                         'min' => 60,
                         'max' => 3600,
-                        'minMessage' => 'Expires in must be at least {{ limit }} seconds',
-                        'maxMessage' => 'Expires in cannot exceed {{ limit }} seconds',
+                        'notInRangeMessage' => 'Expires in must be between {{ min }} and {{ max }} seconds',
                     ]),
                 ]),
-            ],
-            'ip_address' => [
-                new Assert\Optional([
+                'ip_address' => new Assert\Optional([
                     new Assert\Type([
                         'type' => 'string',
                         'message' => 'IP address must be a string',
@@ -445,6 +436,7 @@ final class SsoController
                     ]),
                 ]),
             ],
-        ];
+            'allowExtraFields' => false,
+        ]);
     }
 }

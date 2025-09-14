@@ -10,19 +10,19 @@
             <h6 class="mb-1 text-center">
                 {{ $gettext('Total Disk Space') }}
                 :
-                {{ stats.disk.readable.total }}
+                {{ diskStats.total_readable }}
             </h6>
 
             <div
                 class="progress h-20 mb-3 mt-2"
                 role="progressbar"
-                :aria-label="stats.disk.readable.used"
+                :aria-label="diskStats.used_readable"
                 aria-valuemin="0"
-                :aria-valuemax="stats.disk.bytes.total"
+                :aria-valuemax="diskStats.total_bytes"
             >
                 <div
                     class="progress-bar text-bg-primary"
-                    :style="{ width: getPercent(stats.disk.bytes.used, stats.disk.bytes.total) }"
+                    :style="{ width: getPercent(diskStats.used_bytes, diskStats.total_bytes) }"
                 />
             </div>
 
@@ -32,7 +32,7 @@
 
                     {{ $gettext('Used') }}
                     :
-                    {{ stats.disk.readable.used }}
+                    {{ diskStats.used_readable }}
                 </div>
             </div>
         </div>
@@ -40,14 +40,13 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-    stats: {
-        type: Object,
-        required: true
-    }
-});
+import {ApiAdminServerStatsStorageStats} from "~/entities/ApiInterfaces.ts";
 
-const getPercent = (amount, total) => {
-    return ((amount / total) * 100) + '%';
+defineProps<{
+    diskStats: ApiAdminServerStatsStorageStats
+}>();
+
+const getPercent = (amount: string | number, total: string | number) => {
+    return ((Number(amount) / Number(total)) * 100) + '%';
 }
 </script>

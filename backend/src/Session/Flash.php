@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Session;
 
+use App\Enums\FlashLevels;
 use Mezzio\Session\SessionInterface;
 
 /**
@@ -22,60 +23,66 @@ final class Flash
 
     public function success(
         string $message,
-        bool $saveInSession = true
+        ?string $title = null
     ): void {
-        $this->addMessage($message, FlashLevels::Success, $saveInSession);
+        $this->addMessage(
+            message: $message,
+            title: $title,
+            level: FlashLevels::Success
+        );
     }
 
     public function warning(
         string $message,
-        bool $saveInSession = true
+        ?string $title = null
     ): void {
-        $this->addMessage($message, FlashLevels::Warning, $saveInSession);
+        $this->addMessage(
+            message: $message,
+            title: $title,
+            level: FlashLevels::Warning
+        );
     }
 
     public function error(
         string $message,
-        bool $saveInSession = true
+        ?string $title = null
     ): void {
-        $this->addMessage($message, FlashLevels::Error, $saveInSession);
+        $this->addMessage(
+            message: $message,
+            title: $title,
+            level: FlashLevels::Error
+        );
     }
 
     public function info(
         string $message,
-        bool $saveInSession = true
+        ?string $title = null
     ): void {
-        $this->addMessage($message, FlashLevels::Info, $saveInSession);
+        $this->addMessage(
+            message: $message,
+            title: $title,
+            level: FlashLevels::Info
+        );
     }
 
-    public function addMessage(
+    private function addMessage(
         string $message,
-        FlashLevels $level = FlashLevels::Info,
-        bool $saveInSession = true
+        ?string $title,
+        FlashLevels $level,
     ): void {
         $messageRow = [
+            'title' => $title,
             'text' => $message,
-            'color' => $level->value,
+            'variant' => $level->value,
         ];
 
         $this->getMessages();
         $this->messages[] = $messageRow;
 
-        if ($saveInSession) {
-            $messages = (array)$this->session->get(self::SESSION_KEY);
-            $messages[] = $messageRow;
+        $messages = (array)$this->session->get(self::SESSION_KEY);
+        $messages[] = $messageRow;
 
-            $this->session->set(self::SESSION_KEY, $messages);
-        }
-    }
-
-    /**
-     * Indicate whether messages are currently pending display.
-     */
-    public function hasMessages(): bool
-    {
-        $messages = $this->getMessages();
-        return (count($messages) > 0);
+        $this->session->set(self::SESSION_KEY, $messages);
     }
 
     /**

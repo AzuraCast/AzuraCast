@@ -7,9 +7,27 @@ namespace App\Controller\Api\Stations\Reports\Overview;
 use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Intl\Countries;
 
+#[OA\Get(
+    path: '/station/{station_id}/reports/overview/by-country',
+    operationId: 'getStationReportByCountry',
+    summary: 'Get the "Listeners by Country" report for a station.',
+    tags: [OpenApi::TAG_STATIONS_REPORTS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+    ],
+    responses: [
+        // TODO API Response
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class ByCountry extends AbstractReportAction
 {
     public function __invoke(
@@ -45,9 +63,9 @@ final class ByCountry extends AbstractReportAction
                 GROUP BY l.location_country
             SQL,
             [
-                'station_id' => $station->getIdRequired(),
-                'start' => $dateRange->getStartTimestamp(),
-                'end' => $dateRange->getEndTimestamp(),
+                'station_id' => $station->id,
+                'start' => $dateRange->start,
+                'end' => $dateRange->end,
             ]
         );
 

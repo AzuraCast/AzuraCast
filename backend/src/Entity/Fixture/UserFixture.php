@@ -19,30 +19,28 @@ final class UserFixture extends AbstractFixture implements DependentFixtureInter
 
         if (!empty($adminEmail) && !empty($adminPassword)) {
             $demoUser = new User();
-            $demoUser->setEmail('demo@azuracast.com');
+            $demoUser->email = 'demo@azuracast.com';
             $demoUser->setNewPassword('demo');
-            $demoUser->setName('AzuraCast Demo User');
+            $demoUser->name = 'AzuraCast Demo User';
 
-            /** @var Role $demoRole */
-            $demoRole = $this->getReference('demo_role');
-            $demoUser->getRoles()->add($demoRole);
+            $demoRole = $this->getReference('demo_role', Role::class);
+            $demoUser->roles->add($demoRole);
 
             $manager->persist($demoUser);
 
             $this->addReference('demo_user', $demoUser);
 
             $adminUser = new User();
-            $adminUser->setEmail($adminEmail);
-            $adminUser->setName('System Administrator');
+            $adminUser->email = $adminEmail;
+            $adminUser->name = 'System Administrator';
             $adminUser->setNewPassword($adminPassword);
 
-            /** @var Role $adminRole */
-            $adminRole = $this->getReference('admin_role');
-            $adminUser->getRoles()->add($adminRole);
+            $adminRole = $this->getReference('admin_role', Role::class);
+            $adminUser->roles->add($adminRole);
 
             $admin2faSecret = getenv('INIT_ADMIN_2FA_SECRET');
             if (!empty($admin2faSecret)) {
-                $adminUser->setTwoFactorSecret($admin2faSecret);
+                $adminUser->two_factor_secret = $admin2faSecret;
             }
 
             $manager->persist($adminUser);

@@ -9,8 +9,6 @@ max_execution_time={{ default .Env.PHP_MAX_EXECUTION_TIME "30" }}
 [opcache]
 opcache.enable=1
 opcache.enable_cli=1
-opcache.jit_buffer_size=100M
-opcache.jit=tracing
 
 {{if eq .Env.APPLICATION_ENV "production"}}
 opcache.revalidate_freq={{ default .Env.PHP_OPCACHE_REVALIDATE_FREQUENCY "60" }}

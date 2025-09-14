@@ -7,7 +7,7 @@
             <form-group-multi-check
                 id="form_edit_adapter"
                 class="col-md-12"
-                :field="v$.adapter"
+                :field="r$.adapter"
                 :options="adapterOptions"
                 stacked
                 radio
@@ -17,7 +17,7 @@
             <form-group-field
                 id="form_edit_path"
                 class="col-md-12"
-                :field="v$.path"
+                :field="r$.path"
                 :label="$gettext('Path/Suffix')"
                 :description="$gettext('For local filesystems, this is the base path of the directory. For remote filesystems, this is the folder prefix.')"
             />
@@ -25,7 +25,7 @@
             <form-group-field
                 id="form_edit_storageQuota"
                 class="col-md-12"
-                :field="v$.storageQuota"
+                :field="r$.storageQuota"
             >
                 <template #label>
                     {{ $gettext('Storage Quota') }}
@@ -45,53 +45,35 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
+import {StorageLocationAdapters} from "~/entities/ApiInterfaces.ts";
+import {useAdminStorageLocationsForm} from "~/components/Admin/StorageLocations/Form/form.ts";
+import {storeToRefs} from "pinia";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    }
-});
+const formStore = useAdminStorageLocationsForm();
+const {r$} = storeToRefs(formStore);
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
-
-const {v$, tabClass} = useVuelidateOnFormTab(
-    {
-        adapter: {required},
-        path: {},
-        storageQuota: {},
-    },
-    form,
-    {
-        adapter: 'local',
-        path: '',
-        storageQuota: '',
-    }
-);
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.generalTab));
 
 const {$gettext} = useTranslate();
 
 const adapterOptions = computed(() => {
     return [
         {
-            value: 'local',
+            value: StorageLocationAdapters.Local,
             text: $gettext('Local Filesystem')
         },
         {
-            value: 's3',
+            value: StorageLocationAdapters.S3,
             text: $gettext('Remote: S3 Compatible')
         },
         {
-            value: 'dropbox',
+            value: StorageLocationAdapters.Dropbox,
             text: $gettext('Remote: Dropbox')
         },
         {
-            value: 'sftp',
+            value: StorageLocationAdapters.Sftp,
             text: $gettext('Remote: SFTP')
         }
     ];

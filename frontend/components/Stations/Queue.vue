@@ -15,9 +15,8 @@
 
         <data-table
             id="station_queue"
-            ref="$datatable"
             :fields="fields"
-            :api-url="listUrl"
+            :provider="listItemProvider"
             :hide-on-loading="false"
         >
             <template #cell(actions)="row">
@@ -71,72 +70,80 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '../Common/DataTable.vue';
-import QueueLogsModal from './Queue/LogsModal.vue';
-import Icon from "~/components/Common/Icon.vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import QueueLogsModal from "~/components/Stations/Queue/LogsModal.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {computed, ref} from "vue";
+import {useTemplateRef} from "vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
-import {useSweetAlert} from "~/vendor/sweetalert";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getStationApiUrl} from "~/router";
-import {IconRemove} from "~/components/Common/icons";
-import {useIntervalFn} from "@vueuse/core";
+import {IconRemove} from "~/components/Common/Icons/icons.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
+import {ApiNowPlayingStationQueue, ApiStationQueueDetailed, ApiStatus} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
 const listUrl = getStationApiUrl('/queue');
 const clearUrl = getStationApiUrl('/queue/clear');
 
 const {$gettext} = useTranslate();
 
-const fields: DataTableField[] = [
+type Row = Required<ApiNowPlayingStationQueue & ApiStationQueueDetailed>;
+
+const fields: DataTableField<Row>[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false},
     {key: 'song_title', isRowHeader: true, label: $gettext('Song Title'), sortable: false},
     {key: 'played_at', label: $gettext('Expected to Play at'), sortable: false},
     {key: 'source', label: $gettext('Source'), sortable: false}
 ];
 
+const listItemProvider = useApiItemProvider(
+    listUrl,
+    queryKeyWithStation([QueryKeys.StationQueue]),
+    {
+        refetchInterval: 30000
+    }
+);
+
+const relist = () => {
+    void listItemProvider.refresh();
+};
+
 const {
     formatTimestampAsTime,
     formatTimestampAsRelative
 } = useStationDateTimeFormatter();
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {relist} = useHasDatatable($datatable);
+const $logsModal = useTemplateRef('$logsModal');
 
-useIntervalFn(
-    relist,
-    computed(() => (document.hidden) ? 60000 : 30000)
-);
-
-const $logsModal = ref<InstanceType<typeof QueueLogsModal> | null>(null);
-const doShowLogs = (logs) => {
+const doShowLogs = (logs: string[]) => {
     $logsModal.value?.show(logs);
 };
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Queue Item?'),
-    relist
+    () => relist()
 );
 
-const {confirmDelete} = useSweetAlert();
+const {confirmDelete} = useDialog();
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const doClear = () => {
-    confirmDelete({
+const doClear = async () => {
+    const {value} = await confirmDelete({
         title: $gettext('Clear Upcoming Song Queue?'),
         confirmButtonText: $gettext('Clear'),
-    }).then((result) => {
-        if (result.value) {
-            axios.post(clearUrl.value).then((resp) => {
-                notifySuccess(resp.data.message);
-                relist();
-            });
-        }
     });
+
+    if (value) {
+        const {data} = await axios.post<ApiStatus>(clearUrl.value);
+
+        notifySuccess(data.message);
+        relist();
+    }
 }
 </script>

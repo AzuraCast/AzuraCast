@@ -27,7 +27,7 @@ trait UsesWebAuthnTrait
             $router = $request->getRouter();
 
             $this->webAuthn = new WebAuthn(
-                $settings->getInstanceName() ?? 'AzuraCast',
+                $settings->instance_name ?? 'AzuraCast',
                 $router->getBaseUrl()->getHost()
             );
         }

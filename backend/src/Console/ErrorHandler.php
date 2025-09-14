@@ -8,6 +8,7 @@ use App\Container\LoggerAwareTrait;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleErrorEvent;
 use Symfony\Component\Console\Event\ConsoleTerminateEvent;
+use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class ErrorHandler implements EventSubscriberInterface
@@ -52,7 +53,7 @@ final class ErrorHandler implements EventSubscriberInterface
         $command = $event->getCommand();
         $commandName = (null !== $command) ? $command->getName() : 'Unknown';
 
-        $exception = $event->getError();
+        $exception = FlattenException::createFromThrowable($event->getError());
 
         $message = sprintf(
             '%s: %s (uncaught exception) at %s line %s while running console command `%s`',

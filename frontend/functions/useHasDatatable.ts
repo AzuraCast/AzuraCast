@@ -1,9 +1,42 @@
 import DataTable from "~/components/Common/DataTable.vue";
-import {Ref} from "vue";
+import {ComputedRef, ShallowRef} from "vue";
+import {ComponentExposed} from "vue-component-type-helpers";
 
-export type DataTableTemplateRef = InstanceType<typeof DataTable> | null;
+export type DataTableRow = Record<string, any>
 
-export default function useHasDatatable($datatableRef: Ref<DataTableTemplateRef>) {
+export type DataTableTemplateRef<Row extends DataTableRow = DataTableRow> = ComponentExposed<
+    typeof DataTable<Row>
+>;
+
+export type DataTableFilterContext = {
+    searchPhrase: string,
+    currentPage: number,
+    sortField: string | null,
+    sortOrder: string | null,
+    paginated: boolean,
+    perPage: number,
+};
+
+export const DATATABLE_DEFAULT_CONTEXT: DataTableFilterContext = {
+    searchPhrase: '',
+    currentPage: 1,
+    sortField: null,
+    sortOrder: null,
+    paginated: false,
+    perPage: 10,
+};
+
+export type DataTableItemProvider<Row extends DataTableRow = DataTableRow> = {
+    rows: ComputedRef<Row[]>,
+    total: ComputedRef<number>,
+    loading: ComputedRef<boolean>,
+    setContext: (ctx: DataTableFilterContext) => void,
+    refresh: (flushCache?: boolean) => Promise<void>,
+};
+
+export default function useHasDatatable<Row extends DataTableRow = DataTableRow>(
+    $datatableRef: Readonly<ShallowRef<DataTableTemplateRef<Row> | null>>
+) {
     /**
      * Reset selected rows, active row, and trigger data reload.
      */
@@ -35,19 +68,10 @@ export default function useHasDatatable($datatableRef: Ref<DataTableTemplateRef>
         return $datatableRef.value?.setFilter(newTerm);
     }
 
-    /**
-     * Either set the specified row as active, or disable it if it already is active.
-     * @param row
-     */
-    const toggleDetails = (row) => {
-        return $datatableRef.value?.toggleDetails(row);
-    };
-
     return {
         refresh,
         relist,
         navigate,
-        setFilter,
-        toggleDetails
+        setFilter
     };
 }

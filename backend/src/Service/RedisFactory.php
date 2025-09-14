@@ -34,6 +34,10 @@ final class RedisFactory
             } else {
                 $this->instance->connect($settings['host'], $settings['port'], 15);
             }
+
+            if (0 !== $settings['db']) {
+                $this->instance->select($settings['db']);
+            }
         }
 
         return $this->instance;

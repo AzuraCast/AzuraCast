@@ -5,30 +5,36 @@
 </template>
 
 <script setup lang="ts">
-import {inject, onUnmounted, ref, watch} from 'vue';
-import {marker} from 'leaflet';
+import {onUnmounted, toRef, useTemplateRef, watch} from "vue";
+import {LatLngTuple, Map, marker, Popup} from "leaflet";
 
-const props = defineProps({
-    position: {
-        type: Array,
-        required: true
-    }
-});
-
-const $map = inject('map');
-const map = $map.value;
+const props = defineProps<{
+    map: Map,
+    position: LatLngTuple
+}>();
 
 const mapMarker = marker(props.position);
-mapMarker.addTo(map);
 
-const popup = new L.Popup();
-const $content = ref<HTMLDivElement | null>(null);
+watch(
+    toRef(props, 'map'),
+    (mapRef) => {
+        if (mapRef !== null) {
+            mapMarker.addTo(mapRef);
+        }
+    },
+    {immediate: true}
+);
+
+const popup = new Popup();
+const $content = useTemplateRef('$content');
 
 watch(
     $content,
     (newContent) => {
-        popup.setContent(newContent);
-        mapMarker.bindPopup(popup);
+        if (newContent !== null) {
+            popup.setContent(newContent);
+            mapMarker.bindPopup(popup);
+        }
     },
     {immediate: true}
 );

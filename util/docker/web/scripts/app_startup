@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+if [ `whoami` != 'azuracast' ]; then
+    exec gosu azuracast app_startup
+fi
+
+# Wait for initial services to become available
+uptime_wait redis || exit 1
+uptime_wait db || exit 1
+
+# Run initial app setup steps before spinning up other services
+azuracast_cli azuracast:setup --init || exit 1
+azuracast_cli azuracast:acme:get-certificate || true
+
+# Start PHP-FPM and Centrifugo
+supervisorctl start php-fpm
+supervisorctl start centrifugo
+
+# Delay to allow PHP-FPM to spin up
+sleep 2
+
+# Start nginx
+supervisorctl start nginx
+
+# Wait for nginx to be available and not return 502's
+uptime_wait nginx
+
+supervisorctl start all
+
+exit 0

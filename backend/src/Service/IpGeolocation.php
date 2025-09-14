@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Cache\CacheNamespace;
 use Exception;
 use MaxMind\Db\Reader;
 use Psr\Cache\CacheItemPoolInterface;
 use RuntimeException;
-use Symfony\Component\Cache\Adapter\ProxyAdapter;
 
 final class IpGeolocation
 {
@@ -24,7 +24,7 @@ final class IpGeolocation
 
     public function __construct(CacheItemPoolInterface $psr6Cache)
     {
-        $this->psr6Cache = new ProxyAdapter($psr6Cache, 'ip_geo.');
+        $this->psr6Cache = CacheNamespace::IpGeo->withNamespace($psr6Cache);
     }
 
     private function initialize(): void
@@ -35,13 +35,13 @@ final class IpGeolocation
 
         $this->isInitialized = true;
 
+        /** @var class-string<IpGeolocator\IpGeolocatorInterface>[] $readers */
         $readers = [
             IpGeolocator\GeoLite::class,
             IpGeolocator\DbIp::class,
         ];
 
         foreach ($readers as $reader) {
-            /** @var IpGeolocator\IpGeolocatorInterface $reader */
             if ($reader::isAvailable()) {
                 $this->reader = $reader::getReader();
                 $this->readerShortName = $reader::getReaderShortName();

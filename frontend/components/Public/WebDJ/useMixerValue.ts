@@ -1,7 +1,7 @@
-import { createInjectionState } from "@vueuse/core";
-import { ref } from "vue";
+import {ref} from "vue";
+import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
 
-export const [useProvideMixer, useInjectMixer] = createInjectionState(
+export const [useProvideMixer, useInjectMixer] = createRequiredInjectionState(
     (initialValue: number) => {
         const mixer = ref<number>(initialValue);
 

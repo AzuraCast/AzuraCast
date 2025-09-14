@@ -43,18 +43,16 @@
 </template>
 
 <script setup lang="ts">
-import {map} from "lodash";
 import {computed} from "vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
+import {ApiStationSchedule} from "~/entities/ApiInterfaces.ts";
+import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
+import {toRefs} from "@vueuse/core";
 
-const props = defineProps({
-    scheduleItems: {
-        type: Array<any>,
-        required: true
-    }
-});
+const profileData = useStationProfileData();
+const {schedule} = toRefs(profileData);
 
 const {DateTime} = useLuxon();
 const {
@@ -63,30 +61,37 @@ const {
     formatDateTime
 } = useStationDateTimeFormatter();
 
-const processedScheduleItems = computed(() => {
+type ScheduleWithDetails = Required<ApiStationSchedule> & {
+    time_until: string,
+    start_formatted: string,
+    end_formatted: string
+}
+
+const processedScheduleItems = computed<ScheduleWithDetails[]>(() => {
     const nowTz = now();
 
-    return map(props.scheduleItems, (row) => {
+    return schedule.value.map((row) => {
         const startMoment = timestampToDateTime(row.start_timestamp);
         const endMoment = timestampToDateTime(row.end_timestamp);
 
-        row.time_until = startMoment.toRelative();
+        const newRow: ScheduleWithDetails = {
+            ...row,
+            time_until: startMoment.toRelative({round: false}) ?? 'N/A',
+            start_formatted: formatDateTime(
+                startMoment,
+                startMoment.hasSame(nowTz, 'day')
+                    ? DateTime.TIME_SIMPLE
+                    : DateTime.DATETIME_MED
+            ),
+            end_formatted: formatDateTime(
+                endMoment,
+                endMoment.hasSame(startMoment, 'day')
+                    ? DateTime.TIME_SIMPLE
+                    : DateTime.DATETIME_MED
+            )
+        };
 
-        row.start_formatted = formatDateTime(
-            startMoment,
-            startMoment.hasSame(nowTz, 'day')
-                ? DateTime.TIME_SIMPLE
-                : DateTime.DATETIME_MED
-        );
-
-        row.end_formatted = formatDateTime(
-            endMoment,
-            endMoment.hasSame(startMoment, 'day')
-                ? DateTime.TIME_SIMPLE
-                : DateTime.DATETIME_MED
-        );
-
-        return row;
+        return newRow;
     });
 });
 </script>

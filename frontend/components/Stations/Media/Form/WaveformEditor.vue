@@ -7,9 +7,10 @@
 
     <waveform-component
         ref="$waveform"
+        :regions="regions"
         :audio-url="audioUrl"
         :waveform-url="waveformUrl"
-        @ready="updateRegions"
+        :waveform-cache-url="waveformCacheUrl"
     />
 
     <div class="buttons mt-3">
@@ -76,27 +77,55 @@
 </template>
 
 <script setup lang="ts">
-import WaveformComponent from '~/components/Common/Waveform.vue';
-import Icon from '~/components/Common/Icon.vue';
-import {ref} from "vue";
-import {IconPlayCircle, IconStop} from "~/components/Common/icons";
+import WaveformComponent from "~/components/Common/Audio/Waveform.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
+import {shallowRef, useTemplateRef, watch} from "vue";
+import {IconPlayCircle, IconStop} from "~/components/Common/Icons/icons.ts";
+import {reactiveComputed} from "@vueuse/core";
+import {RegionParams} from "wavesurfer.js/dist/plugins/regions.js";
+import {StationMediaMetadata, StationMediaRecord} from "~/components/Stations/Media/Form/form.ts";
+import {storeToRefs} from "pinia";
+import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    audioUrl: {
-        type: String,
-        required: true
-    },
-    waveformUrl: {
-        type: String,
-        required: true
-    }
+const props = defineProps<{
+    duration: number,
+    audioUrl: string,
+    waveformUrl: string,
+    waveformCacheUrl?: string,
+}>();
+
+const form = defineModel<StationMediaRecord>('form', {
+    required: true
 });
 
-const $waveform = ref<InstanceType<typeof WaveformComponent> | null>(null);
+const $waveform = useTemplateRef('$waveform');
+
+const {
+    duration: durationRef,
+    currentTime: currentTimeRef
+} = storeToRefs(usePlayerStore());
+
+const regions = shallowRef<RegionParams[]>([]);
+
+const cueValues = reactiveComputed(() => {
+    const formValue: StationMediaMetadata = form.value?.extra_metadata ?? {
+        amplify: null,
+        cue_in: null,
+        cue_out: null,
+        cross_start_next: null,
+        fade_in: null,
+        fade_out: null
+    };
+    const duration = durationRef.value ?? props.duration ?? 0;
+
+    return {
+        cue_in: formValue.cue_in ?? 0,
+        cue_out: formValue.cue_out ?? duration,
+        cross_start_next: formValue.cross_start_next ?? 0,
+        fade_in: formValue.fade_in ?? 0,
+        fade_out: formValue.fade_out ?? 0,
+    };
+});
 
 const playAudio = () => {
     $waveform.value?.play();
@@ -107,64 +136,77 @@ const stopAudio = () => {
 };
 
 const updateRegions = () => {
-    const duration = $waveform.value?.getDuration();
-
-    const cue_in = props.form.cue_in ?? 0;
-    const cue_out = props.form.cue_out ?? duration;
-    const fade_start_next = props.form.fade_start_next ?? 0;
-    const fade_in = props.form.fade_in ?? 0;
-    const fade_out = props.form.fade_out ?? 0;
-
-    $waveform.value?.clearRegions();
+    const {cue_in, cue_out, cross_start_next, fade_in, fade_out} = cueValues;
+    const newRegions: RegionParams[] = [];
 
     // Create cue region
-    $waveform.value?.addRegion(cue_in, cue_out, 'hsla(207,90%,54%,0.4)');
+    newRegions.push({
+        start: cue_in,
+        end: cue_out,
+        color: 'hsla(207,90%,54%,0.4)'
+    });
 
     // Create fade start next region
-    if (fade_start_next > cue_in) {
-        $waveform.value?.addRegion(fade_start_next, cue_out, 'hsla(29,100%,48%,0.4)');
+    if (cross_start_next > cue_in) {
+        newRegions.push({
+            start: cross_start_next,
+            end: cue_out,
+            color: 'hsla(29,100%,48%,0.4)'
+        });
     }
 
     // Create fade regions
     if (fade_in) {
-        $waveform.value?.addRegion(cue_in, fade_in + cue_in, 'hsla(351,100%,48%,0.4)');
+        newRegions.push({
+            start: cue_in,
+            end: fade_in + cue_in,
+            color: 'hsla(351,100%,48%,0.4)'
+        });
     }
+
     if (fade_out) {
-        $waveform.value?.addRegion(cue_out - fade_out, cue_out, 'hsla(351,100%,48%,0.4)');
+        newRegions.push({
+            start: cue_out - fade_out,
+            end: cue_out,
+            color: 'hsla(351,100%,48%,0.4)'
+        });
     }
+
+    regions.value = newRegions;
 };
 
-const waveformToFloat = (value) => Math.round((value) * 10) / 10;
+watch(cueValues, () => {
+    updateRegions()
+}, {
+    immediate: true
+});
+
+const waveformToFloat = (value: number) => Math.round((value) * 10) / 10;
 
 const setCueIn = () => {
-    props.form.cue_in = waveformToFloat($waveform.value?.getCurrentTime());
-    updateRegions();
+    form.value.extra_metadata.cue_in = waveformToFloat(currentTimeRef.value);
 };
 
 const setCueOut = () => {
-    props.form.cue_out = waveformToFloat($waveform.value?.getCurrentTime());
-    updateRegions();
+    form.value.extra_metadata.cue_out = waveformToFloat(currentTimeRef.value);
 };
 
 const setFadeStartNext = () => {
-    props.form.fade_start_next = waveformToFloat($waveform.value?.getCurrentTime());
-    updateRegions();
+    form.value.extra_metadata.cross_start_next = waveformToFloat(currentTimeRef.value);
 };
 
 const setFadeIn = () => {
-    const currentTime = $waveform.value?.getCurrentTime();
-    const cue_in = props.form.cue_in ?? 0;
+    const currentTime = currentTimeRef.value ?? 0;
+    const cue_in = form.value.extra_metadata.cue_in ?? 0;
 
-    props.form.fade_in = waveformToFloat(currentTime - cue_in);
-    updateRegions();
+    form.value.extra_metadata.fade_in = waveformToFloat(currentTime - cue_in);
 }
 
 const setFadeOut = () => {
-    const currentTime = $waveform.value?.getCurrentTime();
-    const duration = $waveform.value?.getDuration();
-    const cue_out = props.form.cue_out ?? duration;
+    const currentTime = currentTimeRef.value ?? 0;
+    const duration = durationRef.value;
+    const cue_out = form.value.extra_metadata.cue_out ?? duration ?? 0;
 
-    props.form.fade_out = waveformToFloat(cue_out - currentTime);
-    updateRegions();
+    form.value.extra_metadata.fade_out = waveformToFloat(cue_out - currentTime);
 };
 </script>

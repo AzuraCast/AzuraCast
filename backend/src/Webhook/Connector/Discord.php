@@ -7,6 +7,8 @@ namespace App\Webhook\Connector;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
+use App\Utilities\Time;
+use App\Utilities\Types;
 
 /*
  * https://discordapp.com/developers/docs/resources/webhook#execute-webhook
@@ -71,7 +73,7 @@ final class Discord extends AbstractConnector
         NowPlaying $np,
         array $triggers
     ): void {
-        $config = $webhook->getConfig();
+        $config = $webhook->config ?? [];
 
         $webhookUrl = $this->getValidUrl($config['webhook_url']);
 
@@ -87,19 +89,34 @@ final class Discord extends AbstractConnector
             'author' => $config['author'] ?? '',
             'thumbnail' => $config['thumbnail'] ?? '',
             'footer' => $config['footer'] ?? '',
+            'color' => $config['color'] ?? '',
         ];
 
         $vars = $this->replaceVariables($rawVars, $np);
 
+        // Convert hex color to decimal if valid. Otherwise use default.
+        $colorInput = ltrim(trim($vars['color'] ?? ''), '#');
+        if (!empty($colorInput) && preg_match('/^[0-9A-F]{6}$/i', $colorInput)) {
+            $colorDecimal = hexdec(ltrim($colorInput, '#'));
+        } else {
+            $colorDecimal = 2201331; // #2196f3
+        }
+
         // Compose webhook
+        $includeTimestamp = Types::bool($config['include_timestamp'] ?? false, false, true);
+
         $embed = array_filter(
             [
                 'title' => $vars['title'] ?? '',
                 'description' => $vars['description'] ?? '',
                 'url' => $this->getValidUrl($vars['url']) ?? '',
-                'color' => 2201331, // #2196f3
+                'color' => $colorDecimal,
             ]
         );
+
+        if ($includeTimestamp) {
+            $embed['timestamp'] = Time::nowUtc()->toAtomString();
+        }
 
         if (!empty($vars['author'])) {
             $embed['author'] = [

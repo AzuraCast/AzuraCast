@@ -9,14 +9,34 @@ use App\Entity\StationBackendConfiguration;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Radio\Backend\Liquidsoap\ConfigWriter;
+use OpenApi\Attributes as OA;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 
-final class GetAction implements SingleActionInterface
+#[
+    OA\Get(
+        path: '/station/{station_id}/liquidsoap-config',
+        operationId: 'getStationLiquidsoapConfig',
+        summary: 'Get the generated and editable sections of the station Liquidsoap configuration.',
+        tags: [OpenApi::TAG_STATIONS_BROADCASTING],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            // TODO: API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
+final readonly class GetAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly EventDispatcherInterface $eventDispatcher,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -54,7 +74,7 @@ final class GetAction implements SingleActionInterface
             $tok = strtok($tokens);
         }
 
-        $backendConfig = $request->getStation()->getBackendConfig();
+        $backendConfig = $request->getStation()->backend_config;
 
         $contents = [];
         foreach ($configSections as $field) {

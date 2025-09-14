@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Radio\Enums;
 
+use OpenApi\Attributes as OA;
+
+#[OA\Schema(type: 'string')]
 enum StreamFormats: string
 {
     case Mp3 = 'mp3';
@@ -29,11 +32,20 @@ enum StreamFormats: string
         };
     }
 
-    public function sendIcyMetadata(): bool
+    public function getFfmpegContainer(): string
     {
         return match ($this) {
-            self::Opus, self::Flac => true,
-            default => false,
+            self::Mp3 => 'mp3',
+            self::Aac => 'adts',
+            default => 'ogg'
+        };
+    }
+
+    public function sendIcyMetadata(): ?bool
+    {
+        return match ($this) {
+            self::Flac => true,
+            default => null,
         };
     }
 

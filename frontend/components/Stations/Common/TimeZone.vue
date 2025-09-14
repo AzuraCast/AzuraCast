@@ -8,7 +8,9 @@
 </template>
 
 <script setup lang="ts">
-import {useAzuraCastStation} from "~/vendor/azuracast";
+import {useStationData} from "~/functions/useStationQuery.ts";
+import {toRefs} from "@vueuse/core";
 
-const {timezone} = useAzuraCastStation();
+const stationData = useStationData();
+const {timezone} = toRefs(stationData);
 </script>

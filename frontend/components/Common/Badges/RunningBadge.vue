@@ -9,12 +9,9 @@
 import {computed} from "vue";
 import {useGettext} from "vue3-gettext";
 
-const props = defineProps({
-    running: {
-        type: Boolean,
-        required: true
-    }
-});
+const props = defineProps<{
+    running: boolean,
+}>();
 
 const badgeClass = computed(() => {
     return (props.running)

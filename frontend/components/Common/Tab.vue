@@ -9,22 +9,9 @@
 </template>
 
 <script setup lang="ts">
-import {useTabChild} from "~/functions/tabs.ts";
+import {TabChildProps, useTabChild} from "~/functions/tabs.ts";
 
-const props = defineProps({
-    id: {
-        type: [String, Number],
-        default: null
-    },
-    label: {
-        type: String,
-        required: true
-    },
-    itemHeaderClass: {
-        type: [String, Function, Array],
-        default: () => null
-    }
-});
+const props = defineProps<TabChildProps>();
 
 const {computedId, isActive, isLazy} = useTabChild(props);
 </script>

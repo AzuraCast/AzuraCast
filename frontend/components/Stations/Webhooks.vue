@@ -16,9 +16,8 @@
 
         <data-table
             id="station_webhooks"
-            ref="$datatable"
             :fields="fields"
-            :api-url="listUrl"
+            :provider="listItemProvider"
         >
             <template #cell(name)="{item}">
                 <div class="typography-subheading">
@@ -79,6 +78,13 @@
                         >
                             {{ $gettext('Test') }}
                         </button>
+                        <button
+                            type="button"
+                            class="btn btn-info"
+                            @click="doClone(item.links.clone)"
+                        >
+                            {{ $gettext('Duplicate') }}
+                        </button>
                     </template>
                     <button
                         type="button"
@@ -104,91 +110,109 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
-import EditModal from './Webhooks/EditModal.vue';
-import {get, map} from 'lodash';
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import EditModal from "~/components/Stations/Webhooks/EditModal.vue";
+import {get} from "es-toolkit/compat";
 import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {ref} from "vue";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
-import useHasEditModal, {EditModalTemplateRef} from "~/functions/useHasEditModal";
-import {useNotify} from "~/functions/useNotify";
+import {computed, useTemplateRef} from "vue";
+import useHasEditModal from "~/functions/useHasEditModal";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import {useTriggerDetails, useTypeDetails} from "~/entities/Webhooks";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useAzuraCastStation} from "~/vendor/azuracast";
 import {getApiUrl, getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
+import {ApiTaskWithLog, HasLinks, StationWebhook, WebhookTriggers, WebhookTypes} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import {useStationId} from "~/functions/useStationQuery.ts";
 
 const listUrl = getStationApiUrl('/webhooks');
 
-const {id} = useAzuraCastStation();
-const nowPlayingUrl = getApiUrl(`/nowplaying/${id}`);
+const id = useStationId();
+const nowPlayingUrl = getApiUrl(computed(() => `/nowplaying/${id.value}`));
 
 const {$gettext} = useTranslate();
 
-const fields: DataTableField[] = [
+type Row = Required<StationWebhook & HasLinks>;
+
+const fields: DataTableField<Row>[] = [
     {key: 'name', isRowHeader: true, label: $gettext('Name/Type'), sortable: true},
     {key: 'triggers', label: $gettext('Triggers'), sortable: false},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
+const listItemProvider = useApiItemProvider<Row>(
+    listUrl,
+    queryKeyWithStation([
+        QueryKeys.StationWebhooks
+    ])
+);
+
+const relist = () => {
+    void listItemProvider.refresh();
+};
+
 const langTypeDetails = useTypeDetails();
 const langTriggerDetails = useTriggerDetails();
 
-const langToggleButton = (record) => {
+const langToggleButton = (record: Row) => {
     return (record.is_enabled)
         ? $gettext('Disable')
         : $gettext('Enable');
 };
 
-const getToggleVariant = (record) => {
+const getToggleVariant = (record: Row) => {
     return (record.is_enabled)
         ? 'btn-warning'
         : 'btn-success';
 };
 
-const isWebhookSupported = (key) => {
+const isWebhookSupported = (key: WebhookTypes) => {
     return (key in langTypeDetails);
 }
 
-const getWebhookName = (key) => {
+const getWebhookName = (key: WebhookTypes) => {
     return get(langTypeDetails, [key, 'title'], '');
 };
 
-const getTriggerNames = (triggers) => {
-    return map(triggers, (trigger) => {
+const getTriggerNames = (triggers: WebhookTriggers[]) => {
+    return triggers.map((trigger) => {
         return get(langTriggerDetails, [trigger, 'title'], '');
     });
 };
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {relist} = useHasDatatable($datatable);
-
-const $editModal = ref<EditModalTemplateRef>(null);
+const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const doToggle = (url) => {
-    axios.put(url).then((resp) => {
-        notifySuccess(resp.data.message);
-        relist();
-    });
+const doToggle = async (url: string) => {
+    const {data} = await axios.put(url);
+
+    notifySuccess(data.message);
+    relist();
 };
 
-const $logModal = ref<InstanceType<typeof StreamingLogModal> | null>(null);
+const doClone = async (url: string) => {
+    await axios.post(url);
 
-const doTest = (url) => {
-    axios.put(url).then((resp) => {
-        $logModal.value?.show(resp.data.links.log);
-    });
+    notifySuccess($gettext('Webhook duplicated.'));
+    relist();
+};
+
+const $logModal = useTemplateRef('$logModal');
+
+const doTest = async (url: string) => {
+    const {data} = await axios.put<ApiTaskWithLog>(url);
+    $logModal.value?.show(data.logUrl);
 };
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Web Hook?'),
-    relist
+    () => relist()
 );
 </script>

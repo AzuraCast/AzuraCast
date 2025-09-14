@@ -12,7 +12,7 @@
                 <form-group-multi-check
                     id="edit_form_analytics"
                     class="col-md-12"
-                    :field="v$.analytics"
+                    :field="r$.analytics"
                     :options="analyticsOptions"
                     radio
                     stacked
@@ -31,12 +31,12 @@
                 <form-group-checkbox
                     id="edit_form_always_use_ssl"
                     class="col-md-12"
-                    :field="v$.always_use_ssl"
+                    :field="r$.always_use_ssl"
                     :label="$gettext('Always Use HTTPS')"
                 >
                     <template #description>
                         {{
-                            $gettext('Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.')
+                            $gettext('Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited (HSTS).')
                         }}
                     </template>
                 </form-group-checkbox>
@@ -44,7 +44,7 @@
                 <form-group-multi-check
                     id="edit_form_ip_source"
                     class="col-md-6"
-                    :field="v$.ip_source"
+                    :field="r$.ip_source"
                     :options="ipSourceOptions"
                     stacked
                     radio
@@ -55,7 +55,7 @@
                 <form-group-field
                     id="edit_form_api_access_control"
                     class="col-md-6"
-                    :field="v$.api_access_control"
+                    :field="r$.api_access_control"
                 >
                     <template #label>
                         {{ $gettext('API "Access-Control-Allow-Origin" Header') }}
@@ -85,36 +85,13 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
+import {useAdminSettingsForm} from "~/components/Admin/Settings/form.ts";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {storeToRefs} from "pinia";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    }
-});
-
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
-
-const {v$, tabClass} = useVuelidateOnFormTab(
-    {
-        analytics: {required},
-        always_use_ssl: {},
-        ip_source: {},
-        api_access_control: {},
-    },
-    form,
-    {
-        analytics: null,
-        always_use_ssl: false,
-        ip_source: 'local',
-        api_access_control: '*',
-    }
-);
+const {r$} = storeToRefs(useAdminSettingsForm());
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.securityPrivacyTab));
 
 const {$gettext} = useTranslate();
 

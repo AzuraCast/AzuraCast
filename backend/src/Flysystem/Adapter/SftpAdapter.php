@@ -27,8 +27,8 @@ final class SftpAdapter extends LeagueSftpAdapter implements ExtendedAdapterInte
     public function __construct(
         private readonly ConnectionProvider $connectionProvider,
         string $root,
-        VisibilityConverter $visibilityConverter = null,
-        MimeTypeDetector $mimeTypeDetector = null
+        ?VisibilityConverter $visibilityConverter = null,
+        ?MimeTypeDetector $mimeTypeDetector = null
     ) {
         $this->visibilityConverter = $visibilityConverter ?: new PortableVisibilityConverter();
         $this->prefixer = new PathPrefixer($root);

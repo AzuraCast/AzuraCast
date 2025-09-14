@@ -4,14 +4,12 @@
         :loading="loading"
         :title="langTitle"
         :error="error"
-        :disable-save-button="v$.$invalid"
+        :disable-save-button="r$.$invalid"
         @submit="doSubmit"
         @hidden="clearContents"
     >
         <tabs>
-            <episode-form-basic-info
-                v-model:form="form"
-            />
+            <episode-form-basic-info/>
 
             <episode-form-media
                 v-if="podcastIsManual"
@@ -31,24 +29,27 @@
 </template>
 
 <script setup lang="ts">
-import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo.vue';
-import PodcastCommonArtwork from './Common/Artwork.vue';
-import EpisodeFormMedia from './EpisodeForm/Media.vue';
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, ref} from "vue";
+import EpisodeFormBasicInfo from "~/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue";
+import PodcastCommonArtwork from "~/components/Stations/Podcasts/Common/Artwork.vue";
+import EpisodeFormMedia from "~/components/Stations/Podcasts/EpisodeForm/Media.vue";
+import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, useTemplateRef} from "vue";
 import {useResettableRef} from "~/functions/useResettableRef";
 import mergeExisting from "~/functions/mergeExisting";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
+import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
+import {storeToRefs} from "pinia";
+import {useStationsPodcastEpisodesForm} from "~/components/Stations/Podcasts/EpisodeForm/form.ts";
 
-const props = defineProps({
-    ...baseEditModalProps,
-    podcast: {
-        type: Object,
-        required: true
-    }
-});
+interface EpisodeEditModalProps extends BaseEditModalProps {
+    podcast: Required<ApiPodcast>
+}
+
+const props = defineProps<EpisodeEditModalProps>();
+
+const emit = defineEmits<BaseEditModalEmits>();
 
 const newArtUrl = computed(() => props.podcast.links.episode_new_art);
 const newMediaUrl = computed(() => props.podcast.links.episode_new_media);
@@ -56,9 +57,7 @@ const podcastIsManual = computed(() => {
     return props.podcast.source == 'manual';
 });
 
-const emit = defineEmits(['relist']);
-
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 
 const {record, reset} = useResettableRef({
     has_custom_art: false,
@@ -66,39 +65,38 @@ const {record, reset} = useResettableRef({
     has_media: false,
     media: null,
     links: {
-        art: null,
-        media: null,
-        download: null,
+        art: '',
+        media: '',
+        download: '',
     }
 });
+
+const formStore = useStationsPodcastEpisodesForm();
+const {form, r$} = storeToRefs(formStore);
+const {$reset: resetForm} = formStore;
 
 const {
     loading,
     error,
     isEditMode,
-    form,
-    v$,
     clearContents,
     create,
     edit,
     doSubmit,
     close
 } = useBaseEditModal(
+    form,
     props,
     emit,
     $modal,
-    {},
-    {
-        artwork_file: null,
-        media_file: null
+    () => {
+        resetForm();
+        reset();
     },
+    async () => (await r$.value.$validate()).valid,
     {
-        resetForm: (originalResetForm) => {
-            originalResetForm();
-            reset();
-        },
         populateForm: (data, formRef) => {
-            record.value = mergeExisting(record.value, data);
+            record.value = mergeExisting(record.value, data as typeof record.value);
             formRef.value = mergeExisting(formRef.value, data);
         },
     },

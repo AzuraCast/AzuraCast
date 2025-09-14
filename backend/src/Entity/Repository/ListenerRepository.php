@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Container\LoggerAwareTrait;
+use App\Doctrine\Platform\MariaDbPlatform;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity\Listener;
@@ -13,8 +14,8 @@ use App\Entity\Traits\TruncateStrings;
 use App\Service\DeviceDetector;
 use App\Service\IpGeolocation;
 use App\Utilities\File;
-use Carbon\CarbonImmutable;
-use DateTimeInterface;
+use App\Utilities\Time;
+use DateTimeImmutable;
 use DI\Attribute\Inject;
 use Doctrine\DBAL\Connection;
 use League\Csv\Writer;
@@ -55,30 +56,24 @@ final class ListenerRepository extends Repository
      * Get the number of unique listeners for a station during a specified time period.
      *
      * @param Station $station
-     * @param DateTimeInterface|int $start
-     * @param DateTimeInterface|int $end
+     * @param DateTimeImmutable $start
+     * @param DateTimeImmutable $end
+     * @return int
      */
     public function getUniqueListeners(
         Station $station,
-        DateTimeInterface|int $start,
-        DateTimeInterface|int $end
+        DateTimeImmutable $start,
+        DateTimeImmutable $end
     ): int {
-        if ($start instanceof DateTimeInterface) {
-            $start = $start->getTimestamp();
-        }
-        if ($end instanceof DateTimeInterface) {
-            $end = $end->getTimestamp();
-        }
-
         return (int)$this->em->createQuery(
             <<<'DQL'
                 SELECT COUNT(DISTINCT l.listener_hash)
                 FROM App\Entity\Listener l
-                WHERE l.station_id = :station_id
+                WHERE l.station = :station
                 AND l.timestamp_start <= :time_end
                 AND l.timestamp_end >= :time_start
             DQL
-        )->setParameter('station_id', $station->getId())
+        )->setParameter('station', $station)
             ->setParameter('time_end', $end)
             ->setParameter('time_start', $start)
             ->getSingleScalarResult();
@@ -88,12 +83,12 @@ final class ListenerRepository extends Repository
     {
         $query = $this->em->createQuery(
             <<<'DQL'
-                    SELECT l
-                    FROM App\Entity\Listener l
-                    WHERE l.station = :station
-                    AND l.timestamp_end = 0
-                    ORDER BY l.timestamp_start ASC
-                DQL
+                SELECT l
+                FROM App\Entity\Listener l
+                WHERE l.station = :station
+                AND l.timestamp_end IS NULL
+                ORDER BY l.timestamp_start ASC
+            DQL
         )->setParameter('station', $station);
 
         return $query->toIterable([], $query::HYDRATE_ARRAY);
@@ -114,7 +109,7 @@ final class ListenerRepository extends Repository
                         SELECT l.id, l.listener_hash
                         FROM App\Entity\Listener l
                         WHERE l.station = :station
-                        AND l.timestamp_end = 0
+                        AND l.timestamp_end IS NULL
                     DQL
                 )->setParameter('station', $station);
 
@@ -138,7 +133,7 @@ final class ListenerRepository extends Repository
                             SET l.timestamp_end = :time
                             WHERE l.id IN (:ids)
                         DQL
-                    )->setParameter('time', time())
+                    )->setParameter('time', Time::nowUtc())
                         ->setParameter('ids', array_values($existingClients))
                         ->execute();
                 }
@@ -152,7 +147,7 @@ final class ListenerRepository extends Repository
         array &$existingClients
     ): void {
         $tempCsvPath = File::generateTempPath('mariadb_listeners.csv');
-        (new Filesystem())->chmod($tempCsvPath, 0o777);
+        new Filesystem()->chmod($tempCsvPath, 0o777);
 
         $csv = Writer::createFromPath($tempCsvPath);
         $csv->setEscape('');
@@ -169,6 +164,7 @@ final class ListenerRepository extends Repository
         });
 
         $csvColumns = null;
+        $now = Time::nowUtc()->format(MariaDbPlatform::DB_DATETIME_FORMAT);
 
         foreach ($clients as $client) {
             $identifier = Listener::calculateListenerHash($client);
@@ -178,7 +174,7 @@ final class ListenerRepository extends Repository
                 unset($existingClients[$identifier]);
             } else {
                 // Create a new record.
-                $record = $this->batchAddRow($station, $client);
+                $record = $this->batchAddRow($station, $client, $now);
 
                 if (null === $csvColumns) {
                     $csvColumns = array_keys($record);
@@ -204,11 +200,11 @@ final class ListenerRepository extends Repository
                 (%s)
             SQL,
             $this->conn->quote($tempCsvPath),
-            $this->conn->quoteIdentifier($this->tableName),
+            $this->conn->quoteSingleIdentifier($this->tableName),
             implode(
                 ',',
                 array_map(
-                    fn($col) => $this->conn->quoteIdentifier($col),
+                    fn($col) => $this->conn->quoteSingleIdentifier($col),
                     $csvColumns
                 )
             )
@@ -224,12 +220,11 @@ final class ListenerRepository extends Repository
         $this->ipGeolocation->saveCache();
     }
 
-    private function batchAddRow(Station $station, Client $client): array
+    private function batchAddRow(Station $station, Client $client, string $now): array
     {
         $record = [
-            'station_id' => $station->getId(),
-            'timestamp_start' => time(),
-            'timestamp_end' => 0,
+            'station_id' => $station->id,
+            'timestamp_start' => $now,
             'listener_uid' => (int)$client->uid,
             'listener_user_agent' => $this->truncateString($client->userAgent ?? ''),
             'listener_ip' => $client->ip,
@@ -324,15 +319,12 @@ final class ListenerRepository extends Repository
 
     public function cleanup(int $daysToKeep): void
     {
-        $threshold = CarbonImmutable::now()
-            ->subDays($daysToKeep)
-            ->getTimestamp();
+        $threshold = Time::nowUtc()->subDays($daysToKeep);
 
         $this->em->createQuery(
             <<<'DQL'
                 DELETE FROM App\Entity\Listener sh
-                WHERE sh.timestamp_start != 0
-                AND sh.timestamp_start <= :threshold
+                WHERE sh.timestamp_start <= :threshold
             DQL
         )->setParameter('threshold', $threshold)
             ->execute();

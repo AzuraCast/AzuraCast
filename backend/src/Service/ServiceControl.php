@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Container\EnvironmentAwareTrait;
+use App\Entity\Api\Admin\ServiceData;
 use App\Exception\SupervisorException;
-use App\Service\ServiceControl\ServiceData;
 use InvalidArgumentException;
 use Supervisor\Exception\Fault\BadNameException;
 use Supervisor\Exception\Fault\NotRunningException;

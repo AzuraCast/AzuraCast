@@ -10,6 +10,12 @@ use App\Middleware;
 use Slim\Routing\RouteCollectorProxy;
 
 return static function (RouteCollectorProxy $group) {
+    $group->get(
+        '/prometheus',
+        Controller\Api\PrometheusAction::class
+    )->setName('api:prometheus')
+        ->add(new Middleware\Permissions(GlobalPermissions::View));
+
     $group->group(
         '/admin',
         function (RouteCollectorProxy $group) {
@@ -194,6 +200,26 @@ return static function (RouteCollectorProxy $group) {
                     $group->post(
                         '/geolite',
                         Controller\Api\Admin\GeoLite\PostAction::class
+                    );
+
+                    $group->get(
+                        '/rsas',
+                        Controller\Api\Admin\Rsas\GetAction::class
+                    )->setName('api:admin:rsas');
+
+                    $group->post(
+                        '/rsas',
+                        Controller\Api\Admin\Rsas\PostAction::class
+                    );
+
+                    $group->post(
+                        '/rsas/license',
+                        Controller\Api\Admin\Rsas\PostLicenseAction::class
+                    )->setName('api:admin:rsas-license');
+
+                    $group->delete(
+                        '/rsas/license',
+                        Controller\Api\Admin\Rsas\DeleteLicenseAction::class
                     );
 
                     $group->get(

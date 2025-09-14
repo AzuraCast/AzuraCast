@@ -4,7 +4,7 @@
         :loading="loading"
         :title="$gettext('Enable Two-Factor Authentication')"
         :error="error"
-        :disable-save-button="v$.$invalid"
+        :disable-save-button="r$.$invalid"
         no-enforce-focus
         @submit="doSubmit"
         @hidden="clearContents"
@@ -34,7 +34,7 @@
                 <form-fieldset>
                     <form-group-field
                         id="form_otp"
-                        :field="v$.otp"
+                        :field="r$.otp"
                         autofocus
                         :label="$gettext('Code from Authenticator App')"
                         :description="$gettext('Enter the current code provided by your authenticator app to verify that it\'s working correctly.')"
@@ -70,38 +70,38 @@ import ModalForm from "~/components/Common/ModalForm.vue";
 import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton.vue";
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {minLength, required} from "@vuelidate/validators";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {ref} from "vue";
+import {minLength, required} from "@regle/rules";
+import {ref, useTemplateRef} from "vue";
 import {useResettableRef} from "~/functions/useResettableRef";
-import {useNotify} from "~/functions/useNotify";
-import {useAxios} from "~/vendor/axios";
-import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
+import {isApiError, useAxios} from "~/vendor/axios";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import QrCode from "~/components/Account/QrCode.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
+import {useAppRegle} from "~/vendor/regle.ts";
 
-const props = defineProps({
-    twoFactorUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    twoFactorUrl: string,
+}>();
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const loading = ref(true);
-const error = ref(null);
+const error = ref<string | null>(null);
 
-const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
+const {record: form, reset: resetForm} = useResettableRef({
+    otp: ''
+});
+
+const {r$} = useAppRegle(
+    form,
     {
         otp: {
             required,
             minLength: minLength(6)
         }
     },
-    {
-        otp: ''
-    }
+    {}
 );
 
 const {record: totp, reset: resetTotp} = useResettableRef({
@@ -113,51 +113,66 @@ const {record: totp, reset: resetTotp} = useResettableRef({
 const clearContents = () => {
     resetForm();
     resetTotp();
+    r$.$reset();
 
     loading.value = false;
     error.value = null;
 };
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {hide, show} = useHasModal($modal);
 
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const open = () => {
+const doOpen = async () => {
     clearContents();
 
     loading.value = true;
 
     show();
 
-    axios.put(props.twoFactorUrl).then((resp) => {
-        totp.value = resp.data;
+    try {
+        const {data} = await axios.put(props.twoFactorUrl);
+        totp.value = data;
         loading.value = false;
-    }).catch(() => {
+    } catch {
         hide();
-    });
+    }
 };
 
-const doSubmit = () => {
-    ifValid(() => {
-        error.value = null;
+const open = () => {
+    void doOpen();
+};
 
-        axios({
+const doSubmit = async () => {
+    const {valid} = await r$.$validate();
+    if (!valid) {
+        return;
+    }
+
+    error.value = null;
+
+    try {
+        await axios({
             method: 'PUT',
             url: props.twoFactorUrl,
             data: {
                 secret: totp.value.secret,
                 otp: form.value.otp
             }
-        }).then(() => {
-            notifySuccess();
-            emit('relist');
-            hide();
-        }).catch((error) => {
-            error.value = error.response.data.message;
         });
-    });
+
+        notifySuccess();
+        emit('relist');
+        hide();
+    } catch (e) {
+        if (isApiError(e)) {
+            error.value = e.response.data.message;
+        } else {
+            error.value = String(e);
+        }
+    }
 };
 
 defineExpose({

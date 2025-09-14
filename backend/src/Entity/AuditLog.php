@@ -4,45 +4,89 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Api\Admin\AuditLogChangeset;
 use App\Entity\Enums\AuditLogOperations;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
+use App\Utilities\Time;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Attributes as OA;
 
 #[
     ORM\Entity(readOnly: true),
     ORM\Table(name: 'audit_log'),
-    ORM\Index(name: 'idx_search', columns: ['class', 'user', 'identifier'])
+    ORM\Index(name: 'idx_search', columns: ['class', 'user', 'identifier']),
+    OA\Schema(
+        required: ['*'],
+        properties: [
+
+        ],
+        type: 'object'
+    )
 ]
-class AuditLog implements IdentifiableEntityInterface
+final class AuditLog implements IdentifiableEntityInterface, \JsonSerializable
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
     protected static ?string $currentUser = null;
 
-    #[ORM\Column]
-    protected int $timestamp;
+    #[
+        ORM\Column(type: 'datetime_immutable', precision: 6),
+        OA\Property(type: 'string', format: 'date-time')
+    ]
+    public readonly DateTimeImmutable $timestamp;
 
-    #[ORM\Column(type: 'smallint', enumType: AuditLogOperations::class)]
-    protected AuditLogOperations $operation;
+    #[
+        ORM\Column(type: 'smallint', enumType: AuditLogOperations::class),
+        OA\Property(enum: AuditLogOperations::class)
+    ]
+    public readonly AuditLogOperations $operation;
 
-    #[ORM\Column(length: 255)]
-    protected string $class;
+    #[OA\Property]
+    public string $operationText {
+        get => $this->operation->getName();
+    }
 
-    #[ORM\Column(length: 255)]
-    protected string $identifier;
+    #[
+        ORM\Column(length: 255),
+        OA\Property
+    ]
+    public readonly string $class;
 
-    #[ORM\Column(name: 'target_class', length: 255, nullable: true)]
-    protected ?string $targetClass;
+    #[
+        ORM\Column(length: 255),
+        OA\Property
+    ]
+    public readonly string $identifier;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    protected ?string $target;
+    #[
+        ORM\Column(name: 'target_class', length: 255, nullable: true),
+        OA\Property
+    ]
+    public readonly ?string $targetClass;
 
-    #[ORM\Column(type: 'json')]
-    protected array $changes;
+    #[
+        ORM\Column(length: 255, nullable: true),
+        OA\Property
+    ]
+    public readonly ?string $target;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    protected ?string $user;
+    #[
+        ORM\Column(type: 'json'),
+        OA\Property(
+            items: new OA\Items(
+                ref: AuditLogChangeset::class
+            )
+        )
+    ]
+    public readonly array $changes;
+
+    #[
+        ORM\Column(length: 255, nullable: true),
+        OA\Property
+    ]
+    public readonly ?string $user;
 
     public function __construct(
         AuditLogOperations $operation,
@@ -52,14 +96,14 @@ class AuditLog implements IdentifiableEntityInterface
         ?string $target,
         array $changes
     ) {
-        $this->timestamp = time();
-        $this->user = self::$currentUser;
+        $this->timestamp = Time::nowUtc();
+        $this->user = $this->truncateNullableString(self::$currentUser);
 
         $this->operation = $operation;
-        $this->class = $this->filterClassName($class) ?? '';
-        $this->identifier = $identifier;
-        $this->targetClass = $this->filterClassName($targetClass);
-        $this->target = $target;
+        $this->class = $this->truncateString($this->filterClassName($class) ?? '');
+        $this->identifier = $this->truncateString($identifier);
+        $this->targetClass = $this->truncateNullableString($this->filterClassName($targetClass));
+        $this->target = $this->truncateNullableString($target);
         $this->changes = $changes;
     }
 
@@ -90,46 +134,34 @@ class AuditLog implements IdentifiableEntityInterface
             : null;
     }
 
-    public function getTimestamp(): int
+    public function jsonSerialize(): array
     {
-        return $this->timestamp;
-    }
+        $changes = [];
+        foreach ($this->changes as $fieldName => [$fieldPrevious, $fieldNew]) {
+            $changes[] = new AuditLogChangeset(
+                field: $fieldName,
+                from: json_encode(
+                    $fieldPrevious,
+                    JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT
+                ),
+                to: json_encode(
+                    $fieldNew,
+                    JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT
+                )
+            );
+        }
 
-    public function getOperation(): AuditLogOperations
-    {
-        return $this->operation;
-    }
-
-    public function getClass(): string
-    {
-        return $this->class;
-    }
-
-    public function getIdentifier(): string
-    {
-        return $this->identifier;
-    }
-
-    public function getTargetClass(): ?string
-    {
-        return $this->targetClass;
-    }
-
-    public function getTarget(): ?string
-    {
-        return $this->target;
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function getChanges(): array
-    {
-        return $this->changes;
-    }
-
-    public function getUser(): ?string
-    {
-        return $this->user;
+        return [
+            'id' => $this->id,
+            'timestamp' => $this->timestamp->format(Time::JS_ISO8601_FORMAT),
+            'operation' => $this->operation->value,
+            'operationText' => $this->operationText,
+            'class' => $this->class,
+            'identifier' => $this->identifier,
+            'targetClass' => $this->targetClass,
+            'target' => $this->target,
+            'user' => $this->user,
+            'changes' => $changes,
+        ];
     }
 }

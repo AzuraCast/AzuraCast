@@ -1,7 +1,6 @@
 <template>
     <flow-upload
-        :target-url="uploadUrl"
-        :flow-configuration="flowConfiguration"
+        :target-url="targetUrl"
         :valid-mime-types="validMimeTypes"
         allow-multiple
         @complete="onFlowUpload"
@@ -10,39 +9,31 @@
 </template>
 
 <script setup lang="ts">
-import FlowUpload from '~/components/Common/FlowUpload.vue';
+import FlowUpload from "~/components/Common/FlowUpload.vue";
+import {computed} from "vue";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
-const props = defineProps({
-    uploadUrl: {
-        type: String,
-        required: true
-    },
-    currentDirectory: {
-        type: String,
-        required: true
-    },
-    searchPhrase: {
-        type: String,
-        required: true
-    },
-    validMimeTypes: {
-        type: Array,
-        default() {
-            return ['audio/*'];
-        }
+const props = withDefaults(
+    defineProps<{
+        uploadUrl: string,
+        currentDirectory: string,
+        searchPhrase: string,
+        validMimeTypes?: string[]
+    }>(),
+    {
+        validMimeTypes: () => ['audio/*']
     }
+);
+
+const emit = defineEmits<HasRelistEmit>();
+
+const targetUrl = computed(() => {
+    const url = new URL(props.uploadUrl, document.location.href);
+    url.searchParams.set('currentDirectory', props.currentDirectory);
+    url.searchParams.set('searchPhrase', props.searchPhrase);
+
+    return url.toString();
 });
-
-const emit = defineEmits(['relist']);
-
-const flowConfiguration = {
-    query: () => {
-        return {
-            'currentDirectory': props.currentDirectory,
-            'searchPhrase': props.searchPhrase
-        };
-    }
-};
 
 const onFlowUpload = () => {
     emit('relist');

@@ -9,11 +9,10 @@ use Generator;
 
 final class GetSyncTasks
 {
+    /** @var class-string<AbstractTask>[] */
     private array $tasks = [];
 
-    /**
-     * @return Generator|class-string<AbstractTask>[]
-     */
+    /** @return Generator<class-string<AbstractTask>> */
     public function getTasks(): Generator
     {
         yield from $this->tasks;

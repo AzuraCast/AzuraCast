@@ -8,6 +8,7 @@ use App\Doctrine\Repository;
 use App\Entity\Station;
 use App\Entity\StationStreamer;
 use App\Entity\StationStreamerBroadcast;
+use App\Utilities\Time;
 use Carbon\CarbonImmutable;
 
 /**
@@ -19,7 +20,7 @@ final class StationStreamerBroadcastRepository extends Repository
 
     public function getLatestBroadcast(Station $station): ?StationStreamerBroadcast
     {
-        $currentStreamer = $station->getCurrentStreamer();
+        $currentStreamer = $station->current_streamer;
         if (null === $currentStreamer) {
             return null;
         }
@@ -47,9 +48,9 @@ final class StationStreamerBroadcastRepository extends Repository
                 UPDATE App\Entity\StationStreamerBroadcast ssb
                 SET ssb.timestampEnd = :time
                 WHERE ssb.station = :station
-                AND ssb.timestampEnd = 0
+                AND ssb.timestampEnd IS NULL
             DQL
-        )->setParameter('time', time())
+        )->setParameter('time', Time::nowUtc())
             ->setParameter('station', $station)
             ->execute();
     }
@@ -63,7 +64,7 @@ final class StationStreamerBroadcastRepository extends Repository
     {
         return $this->repository->findBy([
             'station' => $station,
-            'timestampEnd' => 0,
+            'timestampEnd' => null,
         ]);
     }
 
@@ -118,19 +119,18 @@ final class StationStreamerBroadcastRepository extends Repository
             AND ssb.recordingPath IS NULL  
             DQL
         )->setParameter('streamer', $streamer)
-            ->setParameter('start', $startTime->subMinute()->getTimestamp())
-            ->setParameter('end', $startTime->addMinute()->getTimestamp())
+            ->setParameter('start', $startTime->subMinute())
+            ->setParameter('end', $startTime->addMinute())
             ->setMaxResults(1)
             ->getOneOrNullResult();
 
         if (null === $record) {
-            $record = new StationStreamerBroadcast($streamer);
+            $record = new StationStreamerBroadcast($streamer, $startTime);
         }
 
         assert($record instanceof StationStreamerBroadcast);
 
-        $record->setTimestampStart($startTime->getTimestamp());
-        $record->setRecordingPath($recordingPath);
+        $record->recordingPath = $recordingPath;
         return $record;
     }
 }

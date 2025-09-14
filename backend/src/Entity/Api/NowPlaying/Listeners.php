@@ -8,6 +8,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_NowPlaying_Listeners',
+    required: ['*'],
     type: 'object'
 )]
 final class Listeners

@@ -34,7 +34,7 @@ final class Email extends AbstractConnector
             throw new RuntimeException('E-mail delivery is not currently enabled. Skipping webhook delivery...');
         }
 
-        $config = $webhook->getConfig();
+        $config = $webhook->config ?? [];
         $emailTo = Types::stringOrNull($config['to'], true);
         $emailSubject = Types::stringOrNull($config['subject'], true);
         $emailBody = Types::stringOrNull($config['message'], true);

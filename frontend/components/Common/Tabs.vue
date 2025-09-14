@@ -37,28 +37,20 @@
 
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
-import {useTabParent} from "~/functions/tabs.ts";
+import {TabParentProps, useTabParent} from "~/functions/tabs.ts";
 
-const props = defineProps({
-    modelValue: {
-        type: String,
-        default: null
-    },
-    navTabsClass: {
-        type: [String, Function, Array],
-        default: () => 'nav-tabs'
-    },
-    contentClass: {
-        type: [String, Function, Array],
-        default: () => 'mt-3'
-    },
-    destroyOnHide: {
-        type: Boolean,
-        default: false
+const props = withDefaults(
+    defineProps<TabParentProps>(),
+    {
+        navTabsClass: 'nav-tabs',
+        contentClass: 'mt-3',
+        destroyOnHide: false,
     }
-});
+);
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{
+    (e: 'update:modelValue', value: string): void
+}>();
 
 const activeId = ref(props.modelValue);
 

@@ -42,7 +42,7 @@ final class GenerateCommand extends CommandAbstract
 
         // Run the JS generator
         $this->passThruProcess(
-            $io,
+            $output,
             ['npm', 'run', 'generate-locales'],
             $this->environment->getBaseDirectory()
         );
@@ -51,7 +51,7 @@ final class GenerateCommand extends CommandAbstract
         $frontendJsFile = $exportDir . '/frontend.pot';
 
         if (is_file($frontendJsFile)) {
-            $translations = (new PoLoader())->loadFile($frontendJsFile, $translations);
+            $translations = new PoLoader()->loadFile($frontendJsFile, $translations);
             @unlink($frontendJsFile);
         }
 
@@ -100,8 +100,12 @@ final class GenerateCommand extends CommandAbstract
             }
         }
 
-
-        $io->success('Locales generated.');
+        $io->success(
+            sprintf(
+                'Locales generated (%d total strings).',
+                $translations->count()
+            )
+        );
         return 0;
     }
 }

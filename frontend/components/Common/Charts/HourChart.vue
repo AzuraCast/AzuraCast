@@ -2,7 +2,7 @@
     <canvas ref="$canvas">
         <slot>
             <chart-alt-values
-                v-if="alt.length > 0"
+                v-if="alt && alt.length > 0"
                 :alt="alt"
             />
         </slot>
@@ -11,45 +11,35 @@
 
 <script setup lang="ts">
 import {useTranslate} from "~/vendor/gettext";
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
-import useChart, {chartProps, ChartTemplateRef} from "~/functions/useChart";
+import useChart, {ChartProps} from "~/functions/useChart";
 
-const props = defineProps({
-    ...chartProps,
-    labels: {
-        type: Array,
-        default: () => {
-            return [];
-        }
-    }
-});
+const props = defineProps<ChartProps>();
 
-const $canvas = ref<ChartTemplateRef>(null);
+const $canvas = useTemplateRef('$canvas');
+
 const {$gettext} = useTranslate();
 
-useChart(
+useChart<'bar'>(
     props,
     $canvas,
     {
         type: 'bar',
         options: {
-            aspectRatio: props.aspectRatio,
             scales: {
                 x: {
-                    scaleLabel: {
+                    title: {
                         display: true,
-                        labelString: $gettext('Hour')
+                        text: $gettext('Hour')
                     }
                 },
                 y: {
-                    scaleLabel: {
+                    title: {
                         display: true,
-                        labelString: $gettext('Listeners')
+                        text: $gettext('Listeners')
                     },
-                    ticks: {
-                        min: 0
-                    }
+                    min: 0
                 }
             }
         }

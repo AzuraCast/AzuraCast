@@ -39,7 +39,7 @@ final class GenerateRawNowPlaying extends Event
      */
     public function getRemotes(): Traversable
     {
-        return $this->station->getRemotes();
+        return $this->station->remotes;
     }
 
     public function getRemoteAdapter(StationRemote $remote): AbstractRemote

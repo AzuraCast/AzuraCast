@@ -5,7 +5,7 @@ set -x
 install-php-extensions @composer \
   gd curl xml zip \
   gmp pdo_mysql mbstring intl \
-  redis maxminddb \
+  redis maxminddb uuid \
   ffi sockets
 
 rm -rf /usr/local/etc/php-fpm.d/*

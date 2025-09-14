@@ -9,14 +9,62 @@ use App\Controller\SingleActionInterface;
 use App\Entity\Song;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Service\MusicBrainz;
+use App\Utilities\Types;
 use Carbon\CarbonImmutable;
+use Carbon\Exceptions\InvalidFormatException;
+use InvalidArgumentException;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
 /**
  * Produce a report in SoundExchange (the US webcaster licensing agency) format.
  */
+#[OA\Get(
+    path: '/station/{station_id}/reports/soundexchange',
+    operationId: 'getStationSoundExchangeReport',
+    summary: 'Generate a SoundExchange royalty report.',
+    tags: [OpenApi::TAG_STATIONS_REPORTS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        new OA\Parameter(
+            name: 'start_date',
+            in: 'query',
+            required: false,
+            schema: new OA\Schema(
+                type: 'string',
+                format: 'date'
+            )
+        ),
+        new OA\Parameter(
+            name: 'end_date',
+            in: 'query',
+            required: false,
+            schema: new OA\Schema(
+                type: 'string',
+                format: 'date'
+            )
+        ),
+    ],
+    responses: [
+        new OpenApi\Response\SuccessWithDownload(
+            description: 'Success',
+            content: new OA\MediaType(
+                mediaType: 'text/plain',
+                schema: new OA\Schema(
+                    description: 'A CSV report for the given time range.',
+                    type: 'string',
+                    format: 'binary'
+                )
+            )
+        ),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class SoundExchangeAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
@@ -45,13 +93,28 @@ final class SoundExchangeAction implements SingleActionInterface
         $data['start_date'] ??= $defaultStartDate;
         $data['end_date'] ??= $defaultEndDate;
 
-        $startDate = CarbonImmutable::parse($data['start_date'] . ' 00:00:00', $tzObject)
-            ->shiftTimezone($tzObject);
+        // NOTE: These are valid uses of shiftTimezone.
+        try {
+            $startDate = CarbonImmutable::createFromFormat('Y-m-d', $data['start_date'], $tzObject)
+                ?->shiftTimezone($tzObject)
+                ?->startOfDay();
+        } catch (InvalidFormatException) {
+            $startDate = null;
+        }
 
-        $endDate = CarbonImmutable::parse($data['end_date'] . ' 23:59:59', $tzObject)
-            ->shiftTimezone($tzObject);
+        try {
+            $endDate = CarbonImmutable::createFromFormat('Y-m-d', $data['end_date'], $tzObject)
+                ?->shiftTimezone($tzObject)
+                ?->endOfDay();
+        } catch (InvalidFormatException) {
+            $endDate = null;
+        }
 
-        $fetchIsrc = 'true' === ($data['fetch_isrc'] ?? 'false');
+        if (null === $startDate || null === $endDate) {
+            throw new InvalidArgumentException('Invalid start/end date.');
+        }
+
+        $fetchIsrc = Types::bool($data['fetch_isrc'] ?? null, false, true);
 
         $export = [
             [
@@ -77,35 +140,32 @@ final class SoundExchangeAction implements SingleActionInterface
                 AND sp.station IS NULL OR sp.station = :station
             DQL
         )->setParameter('station', $station)
-            ->setParameter('storageLocation', $station->getMediaStorageLocation())
+            ->setParameter('storageLocation', $station->media_storage_location)
             ->getArrayResult();
 
         $mediaById = array_column($allMedia, null, 'id');
 
         $historyRows = $this->em->createQuery(
             <<<'DQL'
-                SELECT sh.song_id AS song_id, sh.text, sh.artist, sh.title, sh.media_id, COUNT(sh.id) AS plays,
+                SELECT sh.song_id AS song_id, sh.text, sh.artist, sh.album, sh.title, 
+                    IDENTITY(sh.media) AS media_id, COUNT(sh.id) AS plays,
                     SUM(sh.unique_listeners) AS unique_listeners
                 FROM App\Entity\SongHistory sh
                 WHERE sh.station = :station
                 AND sh.timestamp_start <= :time_end
                 AND sh.timestamp_end >= :time_start
+                AND sh.song_id NOT IN (:ignoredSongIds)
                 GROUP BY sh.song_id
             DQL
         )->setParameter('station', $station)
-            ->setParameter('time_start', $startDate->getTimestamp())
-            ->setParameter('time_end', $endDate->getTimestamp())
-            ->getArrayResult();
-
-        // TODO: Fix this (not all song rows have a media_id)
-        $historyRowsById = array_column($historyRows, null, 'media_id');
-
-        // Remove any reference to the "Stream Offline" song.
-        $offlineSongHash = Song::OFFLINE_SONG_ID;
-        unset($historyRowsById[$offlineSongHash]);
+            ->setParameter('time_start', $startDate)
+            ->setParameter('time_end', $endDate)
+            ->setParameter('ignoredSongIds', [
+                Song::OFFLINE_SONG_ID,
+            ])->getArrayResult();
 
         // Assemble report items
-        $stationName = $station->getName();
+        $stationName = $station->name;
 
         $setIsrcQuery = $this->em->createQuery(
             <<<'DQL'
@@ -115,19 +175,23 @@ final class SoundExchangeAction implements SingleActionInterface
             DQL
         );
 
-        foreach ($historyRowsById as $songId => $historyRow) {
-            $songRow = $mediaById[$songId] ?? $historyRow;
+        foreach ($historyRows as $historyRow) {
+            if (!empty($historyRow['media_id']) && isset($mediaById[$historyRow['media_id']])) {
+                $songRow = $mediaById[$historyRow['media_id']];
 
-            // Try to find the ISRC if it's not already listed.
-            if ($fetchIsrc && empty($songRow['isrc'])) {
-                $isrc = $this->findISRC($songRow);
-                $songRow['isrc'] = $isrc;
+                // Try to find the ISRC if it's not already listed.
+                if ($fetchIsrc && empty($songRow['isrc'])) {
+                    $isrc = $this->findISRC($songRow);
+                    $songRow['isrc'] = $isrc;
 
-                if (null !== $isrc && isset($songRow['media_id'])) {
-                    $setIsrcQuery->setParameter('isrc', $isrc)
-                        ->setParameter('media_id', $songRow['media_id'])
-                        ->execute();
+                    if (null !== $isrc) {
+                        $setIsrcQuery->setParameter('isrc', $isrc)
+                            ->setParameter('media_id', $songRow['media_id'])
+                            ->execute();
+                    }
                 }
+            } else {
+                $songRow = $historyRow;
             }
 
             $export[] = [
@@ -155,7 +219,7 @@ final class SoundExchangeAction implements SingleActionInterface
         $exportTxt = implode("\n", $exportTxtRaw);
 
         // Example: WABC01012009-31012009_A.txt
-        $exportFilename = strtoupper($station->getShortName())
+        $exportFilename = strtoupper($station->short_name)
             . $startDate->format('dmY') . '-'
             . $endDate->format('dmY') . '_A.txt';
 

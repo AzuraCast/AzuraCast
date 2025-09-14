@@ -11,7 +11,7 @@
             <form-group-field
                 id="new_directory_name"
                 ref="$field"
-                :field="v$.newPath"
+                :field="r$.newPath"
                 :label="$gettext('New File Name')"
             />
 
@@ -28,7 +28,7 @@
             <button
                 type="button"
                 class="btn"
-                :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
+                :class="(r$.$invalid) ? 'btn-danger' : 'btn-primary'"
                 @click="doRename"
             >
                 {{ $gettext('Rename') }}
@@ -38,36 +38,42 @@
 </template>
 
 <script setup lang="ts">
-import {required} from '@vuelidate/validators';
+import {required} from "@regle/rules";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {nextTick, ref} from "vue";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import {nextTick, ref, useTemplateRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import {useResettableRef} from "~/functions/useResettableRef.ts";
+import {useAppRegle} from "~/vendor/regle.ts";
 
-const props = defineProps({
-    renameUrl: {
-        type: String,
-        required: true
-    }
+const props = defineProps<{
+    renameUrl: string
+}>();
+
+const emit = defineEmits<HasRelistEmit>();
+
+const file = ref<string | null>(null);
+
+type RenameModalRecord = {
+    newPath: string
+}
+
+const {record: form, reset: resetForm} = useResettableRef<RenameModalRecord>({
+    newPath: ''
 });
 
-const emit = defineEmits(['relist']);
-
-const file = ref(null);
-
-const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
+const {r$} = useAppRegle(
+    form,
     {
         newPath: {required}
     },
-    {
-        newPath: null
-    }
+    {}
 );
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
 const open = (filePath: string): void => {
@@ -77,31 +83,38 @@ const open = (filePath: string): void => {
     show();
 }
 
-const $field = ref<InstanceType<typeof FormGroupField> | null>(null);
+const $field = useTemplateRef('$field');
 
 const onShown = () => {
-    nextTick(() => {
+    void nextTick(() => {
         $field.value?.focus();
     });
 };
 
 const onHidden = () => {
     resetForm();
+    r$.$reset();
+    
     file.value = null;
 }
 
 const {axios} = useAxios();
 
-const doRename = () => {
-    ifValid(() => {
-        axios.put(props.renameUrl, {
+const doRename = async () => {
+    const {valid} = await r$.$validate();
+    if (!valid) {
+        return;
+    }
+
+    try {
+        await axios.put(props.renameUrl, {
             file: file.value,
             ...form.value
-        }).finally(() => {
-            hide();
-            emit('relist');
         });
-    });
+    } finally {
+        hide();
+        emit('relist');
+    }
 };
 
 defineExpose({

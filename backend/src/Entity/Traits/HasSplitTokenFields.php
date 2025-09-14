@@ -8,37 +8,31 @@ use App\Entity\Attributes\AuditIgnore;
 use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Security\SplitToken;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Attributes as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+#[OA\Schema(
+    type: 'object'
+)]
 trait HasSplitTokenFields
 {
+    #[OA\Property(
+        readOnly: true
+    )]
     #[ORM\Column(length: 16)]
     #[ORM\Id]
     #[Groups([
         EntityGroupsInterface::GROUP_ID,
         EntityGroupsInterface::GROUP_ALL,
     ])]
-    protected string $id;
+    public readonly string $id;
 
+    #[OA\Property(
+        readOnly: true
+    )]
     #[ORM\Column(length: 128)]
     #[AuditIgnore]
-    protected string $verifier;
-
-    protected function setFromToken(SplitToken $token): void
-    {
-        $this->id = $token->identifier;
-        $this->verifier = $token->hashVerifier();
-    }
-
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    public function getIdRequired(): string
-    {
-        return $this->id;
-    }
+    protected readonly string $verifier;
 
     public function verify(SplitToken $userSuppliedToken): bool
     {

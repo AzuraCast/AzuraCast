@@ -13,7 +13,7 @@ tmp/cache/*---*
 .gitinfo
 
 # Local development files.
-/config/routes.dev.php
+/backend/config/routes.dev.php
 /env.ini
 /app/env.ini
 /app/.env
@@ -25,6 +25,7 @@ tmp/cache/*---*
 !/util/local_ssl/.gitkeep
 /web/static/yarn-error.log
 /util/package_usage_report*
+/auth.json
 
 # Composer-generated content
 /vendor/*
@@ -35,6 +36,7 @@ tmp/cache/*---*
 /web/static/vite_dist/**/*
 !/web/static/vite_dist/.gitkeep
 /translations/frontend.pot
+/eslint_report.json
 
 # Ansible deployment files
 /ansible/

@@ -7,7 +7,7 @@
             <form-group-checkbox
                 id="edit_form_enable_autodj"
                 class="col-md-12"
-                :field="v$.enable_autodj"
+                :field="r$.enable_autodj"
                 :label="$gettext('Broadcast AutoDJ to Remote Station')"
                 :description="$gettext('If enabled, the AutoDJ on this installation will automatically play music to this mount point.')"
             />
@@ -20,25 +20,34 @@
             <form-group-multi-check
                 id="edit_form_autodj_format"
                 class="col-md-6"
-                :field="v$.autodj_format"
+                :field="r$.autodj_format"
                 :options="formatOptions"
                 stacked
                 radio
                 :label="$gettext('AutoDJ Format')"
             />
 
-            <bitrate-options
+            <form-group-field
                 v-if="formatSupportsBitrateOptions"
                 id="edit_form_autodj_bitrate"
                 class="col-md-6"
-                :field="v$.autodj_bitrate"
+                :field="r$.autodj_bitrate"
                 :label="$gettext('AutoDJ Bitrate (kbps)')"
-            />
+            >
+                <template #default="{id, model, fieldClass}">
+                    <bitrate-options
+                        :id="id"
+                        v-model="model.$model"
+                        :class="fieldClass"
+                        :max-bitrate="maxBitrate"
+                    />
+                </template>
+            </form-group-field>
 
             <form-group-field
                 id="edit_form_source_port"
                 class="col-md-6"
-                :field="v$.source_port"
+                :field="r$.source_port"
                 :label="$gettext('Remote Station Source Port')"
                 :description="$gettext('If the port you broadcast to is different from the stream URL, specify the source port here.')"
             />
@@ -46,7 +55,7 @@
             <form-group-field
                 id="edit_form_source_mount"
                 class="col-md-6"
-                :field="v$.source_mount"
+                :field="r$.source_mount"
                 :label="$gettext('Remote Station Source Mountpoint/SID')"
                 :description="$gettext('If the mountpoint (i.e. /radio.mp3) or Shoutcast SID (i.e. 2) you broadcast to is different from the stream URL, specify the source mount point here.')"
             />
@@ -54,7 +63,7 @@
             <form-group-field
                 id="edit_form_source_username"
                 class="col-md-6"
-                :field="v$.source_username"
+                :field="r$.source_username"
                 :label="$gettext('Remote Station Source Username')"
                 :description="$gettext('If you are broadcasting using AutoDJ, enter the source username here. This may be blank.')"
             />
@@ -62,7 +71,7 @@
             <form-group-field
                 id="edit_form_source_password"
                 class="col-md-6"
-                :field="v$.source_password"
+                :field="r$.source_password"
                 :label="$gettext('Remote Station Source Password')"
                 :description="$gettext('If you are broadcasting using AutoDJ, enter the source password here.')"
             />
@@ -70,7 +79,7 @@
             <form-group-checkbox
                 id="edit_form_is_public"
                 class="col-md-6"
-                :field="v$.is_public"
+                :field="r$.is_public"
             >
                 <template #label>
                     {{ $gettext('Publish to "Yellow Pages" Directories') }}
@@ -88,69 +97,46 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
+import {StreamFormats} from "~/entities/ApiInterfaces.ts";
+import {storeToRefs} from "pinia";
+import {useStationsRemotesForm} from "~/components/Stations/Remotes/Form/form.ts";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
+import {toRefs} from "@vueuse/core";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    }
-});
+const {r$, form} = storeToRefs(useStationsRemotesForm());
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.autoDjTab));
 
-const {v$, tabClass} = useVuelidateOnFormTab(
-    {
-        enable_autodj: {},
-        autodj_format: {},
-        autodj_bitrate: {},
-        source_port: {},
-        source_mount: {},
-        source_username: {},
-        source_password: {},
-        is_public: {},
-    },
-    form,
-    {
-        enable_autodj: false,
-        autodj_format: 'mp3',
-        autodj_bitrate: 128,
-        source_port: null,
-        source_mount: null,
-        source_username: null,
-        source_password: null,
-        is_public: false
-    }
-);
+const stationData = useStationData();
+const {maxBitrate} = toRefs(stationData);
 
 const formatOptions = [
     {
-        value: 'mp3',
+        value: StreamFormats.Mp3,
         text: 'MP3'
     },
     {
-        value: 'ogg',
+        value: StreamFormats.Ogg,
         text: 'OGG Vorbis'
     },
     {
-        value: 'opus',
+        value: StreamFormats.Opus,
         text: 'OGG Opus'
     },
     {
-        value: 'aac',
+        value: StreamFormats.Aac,
         text: 'AAC+ (MPEG4 HE-AAC v2)'
     },
     {
-        value: 'flac',
+        value: StreamFormats.Flac,
         text: 'FLAC (OGG FLAC)'
     }
 ];
 
 const formatSupportsBitrateOptions = computed(() => {
-    return form.value?.autodj_format !== 'flac';
+    return form.value?.autodj_format !== StreamFormats.Flac;
 });
 </script>

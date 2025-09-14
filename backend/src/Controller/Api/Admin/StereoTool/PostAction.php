@@ -8,11 +8,13 @@ use App\Controller\SingleActionInterface;
 use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Radio\StereoTool;
 use App\Service\Flow;
 use App\Utilities\File;
 use FFI;
 use InvalidArgumentException;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -21,6 +23,18 @@ use RuntimeException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
+#[OA\Post(
+    path: '/admin/stereo_tool',
+    operationId: 'postStereoTool',
+    summary: 'Upload a new Stereo Tool binary.',
+    requestBody: new OA\RequestBody(ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD),
+    tags: [OpenApi::TAG_ADMIN],
+    responses: [
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class PostAction implements SingleActionInterface
 {
     public function __invoke(
@@ -44,25 +58,29 @@ final class PostAction implements SingleActionInterface
         switch (strtolower(pathinfo($flowResponse->getClientFilename(), PATHINFO_EXTENSION))) {
             case 'zip':
                 $destTempPath = sys_get_temp_dir() . '/uploads/new_stereo_tool';
-                $fsUtils->remove($destTempPath);
-                $fsUtils->mkdir($destTempPath);
 
-                $process = new Process([
-                    'unzip',
-                    '-o',
-                    $sourceTempPath,
-                ]);
-                $process->setWorkingDirectory($destTempPath);
-                $process->setTimeout(600.0);
+                try {
+                    $fsUtils->remove($destTempPath);
+                    $fsUtils->mkdir($destTempPath);
 
-                $process->run();
+                    $process = new Process([
+                        'unzip',
+                        '-o',
+                        $sourceTempPath,
+                    ]);
+                    $process->setWorkingDirectory($destTempPath);
+                    $process->setTimeout(600.0);
 
-                $flowResponse->delete();
+                    $process->run();
 
-                $version = $this->processZipDir($destTempPath, $libraryPath, $fsUtils);
+                    $flowResponse->delete();
 
-                $fsUtils->dumpFile($libraryPath . '/' . StereoTool::VERSION_FILE, $version);
-                $fsUtils->remove($destTempPath);
+                    $version = $this->processZipDir($destTempPath, $libraryPath, $fsUtils);
+
+                    $fsUtils->dumpFile($libraryPath . '/' . StereoTool::VERSION_FILE, $version);
+                } finally {
+                    $fsUtils->remove($destTempPath);
+                }
                 break;
 
             case 'so':

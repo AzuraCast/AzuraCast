@@ -68,6 +68,7 @@
 
                         <flow-upload
                             :target-url="apiUrl"
+                            :valid-mime-types="['.tar.gz']"
                             @complete="relist"
                         />
                     </div>
@@ -85,31 +86,33 @@ import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
+import {ApiAdminShoutcastStatus} from "~/entities/ApiInterfaces.ts";
 
 const apiUrl = getApiUrl('/admin/shoutcast');
 
 const isLoading = ref(true);
-const version = ref(null);
+const version = ref<string | null>(null);
 
 const {$gettext} = useTranslate();
 
 const langInstalledVersion = computed(() => {
     return $gettext(
-        'Shoutcast version "%{ version }" is currently installed.',
+        'Shoutcast version "%{version}" is currently installed.',
         {
-            version: version.value
+            version: version.value ?? 'N/A'
         }
     );
 });
 
 const {axios} = useAxios();
 
-const relist = () => {
+const relist = async () => {
     isLoading.value = true;
-    axios.get(apiUrl.value).then((resp) => {
-        version.value = resp.data.version;
-        isLoading.value = false;
-    });
+
+    const {data} = await axios.get<ApiAdminShoutcastStatus>(apiUrl.value);
+
+    version.value = data.version;
+    isLoading.value = false;
 };
 
 onMounted(relist);

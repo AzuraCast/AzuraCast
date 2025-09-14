@@ -38,15 +38,16 @@
 
 <script setup lang="ts">
 import Modal from "~/components/Common/Modal.vue";
-import {ref} from "vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {ref, useTemplateRef} from "vue";
+import {useHasModal} from "~/functions/useHasModal.ts";
+import {ApiAdminAuditLogChangeset} from "~/entities/ApiInterfaces.ts";
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show} = useHasModal($modal);
 
-const changes = ref(null);
+const changes = ref<ApiAdminAuditLogChangeset[] | null>(null);
 
-const open = (newChanges) => {
+const open = (newChanges: ApiAdminAuditLogChangeset[]) => {
     changes.value = newChanges;
     show();
 };

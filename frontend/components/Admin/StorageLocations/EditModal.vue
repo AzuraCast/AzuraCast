@@ -4,7 +4,7 @@
         :loading="loading"
         :title="langTitle"
         :error="error"
-        :disable-save-button="v$.$invalid"
+        :disable-save-button="r$.$invalid"
         @submit="doSubmit"
         @hidden="clearContents"
     >
@@ -30,63 +30,47 @@
 </template>
 
 <script setup lang="ts">
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, ref} from "vue";
+import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import StorageLocationForm from "./Form.vue";
+import StorageLocationForm from "~/components/Admin/StorageLocations/Form.vue";
 import Sftp from "~/components/Admin/StorageLocations/Form/Sftp.vue";
 import S3 from "~/components/Admin/StorageLocations/Form/S3.vue";
 import Dropbox from "~/components/Admin/StorageLocations/Form/Dropbox.vue";
 import Tabs from "~/components/Common/Tabs.vue";
+import {useAdminStorageLocationsForm} from "~/components/Admin/StorageLocations/Form/form.ts";
+import {storeToRefs} from "pinia";
 
-const props = defineProps({
-    ...baseEditModalProps,
-    type: {
-        type: String,
-        required: true
-    }
-});
+interface StorageLocationsEditModalProps extends BaseEditModalProps {
+    type: string
+}
 
-const emit = defineEmits(['relist']);
+const props = defineProps<StorageLocationsEditModalProps>();
+const emit = defineEmits<BaseEditModalEmits>();
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
+
+const formStore = useAdminStorageLocationsForm();
+const {form, r$} = storeToRefs(formStore);
+const {$reset: resetForm} = formStore;
 
 const {
     loading,
     error,
     isEditMode,
-    form,
-    v$,
     clearContents,
     create,
     edit,
     doSubmit,
     close
 } = useBaseEditModal(
+    form,
     props,
     emit,
     $modal,
-    {},
-    {
-        // These have to be defined here because the sub-items conditionally render.
-        dropboxAppKey: null,
-        dropboxAppSecret: null,
-        dropboxAuthToken: null,
-        s3CredentialKey: null,
-        s3CredentialSecret: null,
-        s3Region: null,
-        s3Version: 'latest',
-        s3Bucket: null,
-        s3Endpoint: null,
-        s3UsePathStyle: false,
-        sftpHost: null,
-        sftpPort: '22',
-        sftpUsername: null,
-        sftpPassword: null,
-        sftpPrivateKey: null,
-        sftpPrivateKeyPassPhrase: null,
-    },
+    resetForm,
+    async () => (await r$.value.$validate()).valid,
     {
         getSubmittableFormData: (formRef, isEditModeRef) => {
             if (isEditModeRef.value) {

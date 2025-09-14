@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
-final class StationPlaylistImportResult extends Status
+final readonly class StationPlaylistImportResult extends Status
 {
-    public array $import_results = [];
+    public array $import_results;
 
     public function __construct(
         bool $success = true,

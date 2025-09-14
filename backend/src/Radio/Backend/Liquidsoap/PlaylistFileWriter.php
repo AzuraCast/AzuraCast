@@ -50,17 +50,21 @@ final class PlaylistFileWriter implements EventSubscriberInterface
             return;
         }
 
+        $station = $playlist->station;
+        if (!$station->backend_type->isEnabled()) {
+            return;
+        }
+
         // @DEV: to prevent increased nesting I've switched to early returns here;
         // also can't write playlist files for playlist groups
         // they are not really representable in simple .pls file
-        if (PlaylistSources::Playlists === $playlist->getSource()) {
+        if (PlaylistSources::Playlists === $playlist->source) {
             return;
         }
 
         $this->writePlaylistFile($playlist);
 
         $playlistVarName = ConfigWriter::getPlaylistVariableName($playlist);
-        $station = $playlist->getStation();
 
         try {
             $this->liquidsoap->command($station, $playlistVarName . '.reload');
@@ -70,7 +74,7 @@ final class PlaylistFileWriter implements EventSubscriberInterface
                 [
                     'message' => $e->getMessage(),
                     'playlist' => $playlistVarName,
-                    'station' => $station->getId(),
+                    'station' => $station->id,
                 ]
             );
         }
@@ -106,8 +110,8 @@ final class PlaylistFileWriter implements EventSubscriberInterface
             }
         }
 
-        foreach ($station->getPlaylists() as $playlist) {
-            if (!$playlist->getIsEnabled()) {
+        foreach ($station->playlists as $playlist) {
+            if (!$playlist->is_enabled) {
                 continue;
             }
 
@@ -117,13 +121,13 @@ final class PlaylistFileWriter implements EventSubscriberInterface
 
     private function writePlaylistFile(StationPlaylist $playlist): void
     {
-        $station = $playlist->getStation();
+        $station = $playlist->station;
 
         $this->logger->info(
             'Writing playlist file to disk...',
             [
-                'station' => $station->getName(),
-                'playlist' => $playlist->getName(),
+                'station' => $station->name,
+                'playlist' => $playlist->name,
             ]
         );
 
@@ -164,7 +168,7 @@ final class PlaylistFileWriter implements EventSubscriberInterface
 
     public static function getPlaylistFilePath(StationPlaylist $playlist): string
     {
-        return $playlist->getStation()->getRadioPlaylistsDir() . '/'
+        return $playlist->station->getRadioPlaylistsDir() . '/'
             . ConfigWriter::getPlaylistVariableName($playlist) . '.m3u';
     }
 }

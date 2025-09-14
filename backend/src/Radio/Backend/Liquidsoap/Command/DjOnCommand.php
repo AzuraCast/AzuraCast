@@ -18,7 +18,7 @@ final class DjOnCommand extends AbstractCommand
         Station $station,
         bool $asAutoDj = false,
         array $payload = []
-    ): bool|string {
+    ): bool {
         $user = $payload['user'] ?? '';
 
         $this->logger->notice(

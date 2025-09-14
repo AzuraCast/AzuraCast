@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
 
-bool() {
-    case "$1" in
-    Y* | y* | true | TRUE | 1) return 0 ;;
-    esac
-    return 1
-}
-
 if [ $(whoami) != 'azuracast' ]; then
     echo 'This script must be run as the "azuracast" user. Rerunning...'
     exec gosu azuracast azuracast_install "$@"
@@ -17,11 +10,7 @@ echo "AzuraCast Setup"
 APPLICATION_ENV="${APPLICATION_ENV:-production}"
 echo "(Environment: $APPLICATION_ENV)"
 
-if [ "$APPLICATION_ENV" = "production" ]; then
-    if bool "$COMPOSER_PLUGIN_MODE"; then
-        composer update --no-dev --optimize-autoloader
-    fi
-else
+if [ "$APPLICATION_ENV" != "production" ]; then
     if [ "$APPLICATION_ENV" = "testing" ]; then
         sudo mkdir -p vendor
         sudo chmod -R 0744 vendor

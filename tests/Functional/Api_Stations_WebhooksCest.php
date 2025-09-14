@@ -21,7 +21,7 @@ class Api_Stations_WebhooksCest extends CestAbstract
 
         $this->testCrudApi(
             $I,
-            '/api/station/' . $station->getId() . '/webhooks',
+            '/api/station/' . $station->id . '/webhooks',
             [
                 'type' => WebhookTypes::Generic->value,
                 'name' => 'Test Webhook',

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
+use App\Utilities\Time;
+
 final class CleanupRelaysTask extends AbstractTask
 {
     public static function getSchedulePattern(): string
@@ -14,7 +16,7 @@ final class CleanupRelaysTask extends AbstractTask
     public function run(bool $force = false): void
     {
         // Relays should update every 15 seconds, so be fairly aggressive with this.
-        $threshold = time() - 90;
+        $threshold = Time::nowUtc()->subSeconds(90);
 
         $this->em->createQuery(
             <<<'DQL'

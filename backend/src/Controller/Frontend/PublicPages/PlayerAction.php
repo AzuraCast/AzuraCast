@@ -36,7 +36,7 @@ final class PlayerAction implements SingleActionInterface
 
         $station = $request->getStation();
 
-        if (!$station->getEnablePublicPage()) {
+        if (!$station->enable_public_page) {
             throw NotFoundException::station();
         }
 
@@ -48,7 +48,7 @@ final class PlayerAction implements SingleActionInterface
         // Render embedded player.
         if ($embed) {
             $pageClasses = [];
-            $pageClasses[] = 'page-station-public-player-embed station-' . $station->getShortName();
+            $pageClasses[] = 'page-station-public-player-embed station-' . $station->short_name;
             $pageClasses[] = ('social' === ($params['embed'] ?? null)) ? 'embed-social' : 'embed';
 
             $view = $request->getView();
@@ -64,7 +64,7 @@ final class PlayerAction implements SingleActionInterface
                 component: 'Public/Player',
                 id: 'station-nowplaying',
                 layout: 'minimal',
-                title: $station->getName(),
+                title: $station->name,
                 layoutParams: [
                     'page_class' => implode(' ', $pageClasses),
                     'hide_footer' => true,
@@ -75,25 +75,24 @@ final class PlayerAction implements SingleActionInterface
 
         $props['downloadPlaylistUri'] = $router->named(
             'public:playlist',
-            ['station_id' => $station->getShortName(), 'format' => 'pls']
+            ['station_id' => $station->short_name, 'format' => 'pls']
         );
 
         // Auto-redirect requests from players to the playlist (PLS) download.
         $userAgent = strtolower($request->getHeaderLine('User-Agent'));
         $players = ['mpv', 'player', 'vlc', 'applecoremedia'];
-        foreach ($players as $player) {
-            if (str_contains($userAgent, $player)) {
-                return $response->withRedirect($props['downloadPlaylistUri']);
-            }
+
+        if (array_any($players, fn($player) => str_contains($userAgent, $player))) {
+            return $response->withRedirect($props['downloadPlaylistUri']);
         }
 
         // Render full page player.
-        $props['stationName'] = $station->getName();
-        $props['enableRequests'] = $station->getEnableRequests();
+        $props['stationName'] = $station->name;
+        $props['enableRequests'] = $station->enable_requests;
 
         $props['requestListUri'] = $router->named(
             'api:requests:list',
-            ['station_id' => $station->getId()]
+            ['station_id' => $station->id]
         );
         $props['customFields'] = $this->customFieldRepo->fetchArray();
 
@@ -105,7 +104,7 @@ final class PlayerAction implements SingleActionInterface
                 'props' => $props,
                 'nowPlayingArtUri' => $router->named(
                     routeName: 'api:nowplaying:art',
-                    routeParams: ['station_id' => $station->getShortName(), 'timestamp' => time()],
+                    routeParams: ['station_id' => $station->short_name, 'timestamp' => time()],
                     absolute: true
                 ),
             ]

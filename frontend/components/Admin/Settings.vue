@@ -31,16 +31,14 @@
             </div>
 
             <div class="card-body">
-                <loading :loading="isLoading">
-                    <tabs content-class="mt-3">
-                        <settings-general-tab v-model:form="form" />
-                        <settings-security-privacy-tab v-model:form="form" />
+                <loading :loading="formLoading || propsLoading" lazy>
+                    <tabs v-if="props" content-class="mt-3">
+                        <settings-general-tab/>
+                        <settings-security-privacy-tab/>
                         <settings-services-tab
-                            v-model:form="form"
-                            :release-channel="releaseChannel"
-                            :test-message-url="testMessageUrl"
-                            :acme-url="acmeUrl"
+                            :release-channel="props.releaseChannel"
                         />
+                        <settings-debugging-tab/>
                     </tabs>
                 </loading>
             </div>
@@ -49,7 +47,7 @@
                 <button
                     type="submit"
                     class="btn btn-lg"
-                    :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
+                    :class="(r$.$invalid) ? 'btn-danger' : 'btn-primary'"
                 >
                     <slot name="submitButtonName">
                         {{ $gettext('Save Changes') }}
@@ -61,45 +59,68 @@
 </template>
 
 <script setup lang="ts">
-import SettingsGeneralTab from "./Settings/GeneralTab.vue";
-import SettingsServicesTab from "./Settings/ServicesTab.vue";
+import SettingsGeneralTab from "~/components/Admin/Settings/GeneralTab.vue";
+import SettingsServicesTab from "~/components/Admin/Settings/ServicesTab.vue";
 import SettingsSecurityPrivacyTab from "~/components/Admin/Settings/SecurityPrivacyTab.vue";
+import SettingsDebuggingTab from "~/components/Admin/Settings/DebuggingTab.vue";
 import {onMounted, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useTranslate} from "~/vendor/gettext";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Loading from "~/components/Common/Loading.vue";
-import settingsProps from "~/components/Admin/settingsProps";
 import Tabs from "~/components/Common/Tabs.vue";
+import {useAdminSettingsForm} from "~/components/Admin/Settings/form.ts";
+import {storeToRefs} from "pinia";
+import {getApiUrl} from "~/router.ts";
+import {useQuery} from "@tanstack/vue-query";
+import {QueryKeys} from "~/entities/Queries.ts";
+import {ApiAdminVueSettingsProps} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    ...settingsProps
+defineOptions({
+    inheritAttrs: false
 });
 
-const emit = defineEmits(['saved']);
+const emit = defineEmits<{
+    (e: 'saved'): void
+}>();
 
-const {form, resetForm, v$, ifValid} = useVuelidateOnForm();
+const apiUrl = getApiUrl('/admin/settings/general');
+const propsUrl = getApiUrl('/admin/vue/settings');
 
-const isLoading = ref(true);
+const formStore = useAdminSettingsForm();
+const {form, r$} = storeToRefs(formStore);
+const {$reset: resetForm} = formStore;
+
+const formLoading = ref(true);
 const error = ref(null);
 
 const {axios} = useAxios();
 
-const populateForm = (data) => {
+const {data: props, isLoading: propsLoading} = useQuery<ApiAdminVueSettingsProps>({
+    queryKey: [QueryKeys.AdminSettings, 'props'],
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiAdminVueSettingsProps>(propsUrl.value, {signal});
+        return data;
+    },
+    placeholderData: () => ({
+        releaseChannel: 'rolling'
+    })
+});
+
+const populateForm = (data: typeof form.value) => {
     resetForm();
     form.value = mergeExisting(form.value, data);
 };
 
-const relist = () => {
+const relist = async () => {
     resetForm();
-    isLoading.value = true;
+    formLoading.value = true;
 
-    axios.get(props.apiUrl).then((resp) => {
-        populateForm(resp.data);
-        isLoading.value = false;
-    });
+    const {data} = await axios.get(apiUrl.value);
+
+    populateForm(data);
+    formLoading.value = false;
 };
 
 onMounted(relist);
@@ -107,18 +128,20 @@ onMounted(relist);
 const {notifySuccess} = useNotify();
 const {$gettext} = useTranslate();
 
-const submit = () => {
-    ifValid(() => {
-        axios({
-            method: 'PUT',
-            url: props.apiUrl,
-            data: form.value
-        }).then(() => {
-            emit('saved');
+const submit = async () => {
+    const {valid} = await r$.value.$validate();
+    if (!valid) {
+        return;
+    }
 
-            notifySuccess($gettext('Changes saved.'));
-            relist();
-        });
+    await axios({
+        method: 'PUT',
+        url: apiUrl.value,
+        data: form.value
     });
+
+    emit('saved');
+    notifySuccess($gettext('Changes saved.'));
+    await relist();
 }
 </script>

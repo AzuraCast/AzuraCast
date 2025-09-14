@@ -13,12 +13,37 @@ use App\Entity\Repository\StationPlaylistRepository;
 use App\Entity\StationMedia;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Radio\PlaylistParser;
 use App\Utilities\File;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Filesystem\Path;
 
+#[OA\Post(
+    path: '/station/{station_id}/playlist/{id}/import',
+    operationId: 'postStationPlaylistImport',
+    summary: 'Import the contents of an uploaded playlist (PLS/M3U) file into the specified playlist.',
+    tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        new OA\Parameter(
+            name: 'id',
+            description: 'Playlist ID',
+            in: 'path',
+            required: true,
+            schema: new OA\Schema(type: 'integer', format: 'int64')
+        ),
+    ],
+    responses: [
+        // TODO API Response
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class ImportAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
@@ -64,7 +89,7 @@ final class ImportAction implements SingleActionInterface
         $importResults = [];
 
         if (!empty($paths)) {
-            $storageLocation = $request->getStation()->getMediaStorageLocation();
+            $storageLocation = $request->getStation()->media_storage_location;
 
             // Assemble list of station media to match against.
             $mediaLookup = [];
@@ -174,7 +199,7 @@ final class ImportAction implements SingleActionInterface
                 $mediaById = [];
                 foreach ($matchedMediaRaw as $row) {
                     /** @var StationMedia $row */
-                    $mediaById[$row->getId()] = $row;
+                    $mediaById[$row->id] = $row;
                 }
 
                 $weight = $this->spmRepo->getHighestSongWeight($playlist);

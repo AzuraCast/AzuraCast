@@ -30,7 +30,7 @@ final class FileAttributes extends AbstractAttributes
         parent::__construct($path, $visibility, $lastModified, $extraMetadata);
     }
 
-    public function fileSize(): ?int
+    public function fileSize(): int
     {
         $fileSize = is_callable($this->fileSize)
             ? ($this->fileSize)($this->path)
@@ -43,7 +43,7 @@ final class FileAttributes extends AbstractAttributes
         return $fileSize;
     }
 
-    public function mimeType(): ?string
+    public function mimeType(): string
     {
         $mimeType = is_callable($this->mimeType)
             ? ($this->mimeType)($this->path)

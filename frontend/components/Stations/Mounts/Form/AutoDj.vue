@@ -7,7 +7,7 @@
             <form-group-checkbox
                 id="edit_form_enable_autodj"
                 class="col-md-12"
-                :field="v$.enable_autodj"
+                :field="r$.enable_autodj"
                 :label="$gettext('Enable AutoDJ')"
                 :description="$gettext('If enabled, the AutoDJ will automatically play music to this mount point.')"
             />
@@ -20,20 +20,29 @@
             <form-group-multi-check
                 id="edit_form_autodj_format"
                 class="col-md-6"
-                :field="v$.autodj_format"
+                :field="r$.autodj_format"
                 :options="formatOptions"
                 stacked
                 radio
                 :label="$gettext('AutoDJ Format')"
             />
 
-            <bitrate-options
+            <form-group-field
                 v-if="formatSupportsBitrateOptions"
                 id="edit_form_autodj_bitrate"
                 class="col-md-6"
-                :field="v$.autodj_bitrate"
                 :label="$gettext('AutoDJ Bitrate (kbps)')"
-            />
+                :field="r$.autodj_bitrate"
+            >
+                <template #default="{id, model, fieldClass}">
+                    <bitrate-options
+                        :id="id"
+                        v-model="model.$model"
+                        :class="fieldClass"
+                        :max-bitrate="maxBitrate"
+                    />
+                </template>
+            </form-group-field>
         </div>
     </tab>
 </template>
@@ -42,63 +51,51 @@
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
+import {FrontendAdapters, StreamFormats} from "~/entities/ApiInterfaces.ts";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import {storeToRefs} from "pinia";
+import {useStationsMountsForm} from "~/components/Stations/Mounts/Form/form.ts";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
+import {toRefs} from "@vueuse/core";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    stationFrontendType: {
-        type: String,
-        required: true
-    }
-});
+defineProps<{
+    stationFrontendType: FrontendAdapters
+}>();
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+const stationData = useStationData();
+const {maxBitrate} = toRefs(stationData);
 
-const {v$, tabClass} = useVuelidateOnFormTab(
-    {
-        enable_autodj: {},
-        autodj_format: {},
-        autodj_bitrate: {},
-    },
-    form,
-    {
-        enable_autodj: true,
-        autodj_format: 'mp3',
-        autodj_bitrate: 128,
-    }
-);
+const {r$, form} = storeToRefs(useStationsMountsForm());
+
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.autoDjTab));
 
 const formatOptions = [
     {
-        value: 'mp3',
+        value: StreamFormats.Mp3,
         text: 'MP3'
     },
     {
-        value: 'ogg',
+        value: StreamFormats.Ogg,
         text: 'OGG Vorbis'
     },
     {
-        value: 'opus',
+        value: StreamFormats.Opus,
         text: 'OGG Opus'
     },
     {
-        value: 'aac',
+        value: StreamFormats.Aac,
         text: 'AAC+ (MPEG4 HE-AAC v2)'
     },
     {
-        value: 'flac',
+        value: StreamFormats.Flac,
         text: 'FLAC (OGG FLAC)'
     }
 ];
 
 const formatSupportsBitrateOptions = computed(() => {
-    return (props.form.autodj_format !== 'flac');
+    return (form.value.autodj_format !== StreamFormats.Flac);
 });
 </script>

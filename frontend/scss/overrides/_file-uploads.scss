@@ -1,11 +1,42 @@
 div.flow-upload {
+  div.upload-progress {
+    padding: 4px 0;
+
+    & > div {
+      padding: 3px 0;
+    }
+
+    .error {
+      color: #a00;
+    }
+
+    .progress {
+      margin-bottom: 5px;
+
+      .progress-bar {
+        border-bottom-width: 10px;
+
+        &::after {
+          height: 10px;
+        }
+      }
+    }
+  }
+
   div.file-drop-target {
+    padding: 25px 0;
+    text-align: center;
     border: 4px dashed var(--bs-secondary-bg);
-    color: #5e5e5e;
+    color: var(--bs-secondary-color);
 
     &.drag_over {
-      border: 4px dashed var(--bs-tertiary-color);
-      color: $text-muted;
+      cursor: move;
+      border-color: var(--bs-primary-bg);
+      color: var(--bs-primary-color);
+    }
+
+    input {
+      display: inline;
     }
   }
 }

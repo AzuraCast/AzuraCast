@@ -6,6 +6,7 @@ namespace App\Controller\Api\Stations\Fallback;
 
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
+use App\Entity\Api\UploadedRecordStatus;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -16,20 +17,20 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/fallback',
     operationId: 'getStationFallback',
-    description: 'Get the custom fallback track for a station.',
-    security: OpenApi::API_KEY_SECURITY,
-    tags: ['Stations: General'],
+    summary: 'Get the custom fallback track for a station.',
+    tags: [OpenApi::TAG_STATIONS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
     ],
     responses: [
-        new OA\Response(
-            response: 200,
-            description: 'Success'
+        new OpenApi\Response\Success(
+            content: new OA\JsonContent(
+                ref: UploadedRecordStatus::class
+            )
         ),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
     ]
 )]
 final class GetFallbackAction implements SingleActionInterface
@@ -44,7 +45,7 @@ final class GetFallbackAction implements SingleActionInterface
 
         $download = ($params['do'] ?? null) === 'download';
 
-        $fallbackPath = $station->getFallbackPath();
+        $fallbackPath = $station->fallback_path;
         if (!empty($fallbackPath)) {
             $fsConfig = StationFilesystems::buildConfigFilesystem($station);
             if ($fsConfig->fileExists($fallbackPath)) {
@@ -58,14 +59,14 @@ final class GetFallbackAction implements SingleActionInterface
                     );
                 }
 
-                return $response->withJson([
-                    'hasRecord' => true,
-                    'links' => [
-                        'download' => $router->fromHere(
+                return $response->withJson(
+                    new UploadedRecordStatus(
+                        true,
+                        $router->fromHere(
                             routeParams: ['do' => 'download']
-                        ),
-                    ],
-                ]);
+                        )
+                    )
+                );
             }
         }
 
@@ -74,11 +75,11 @@ final class GetFallbackAction implements SingleActionInterface
                 ->withJson(Error::notFound());
         }
 
-        return $response->withJson([
-            'hasRecord' => false,
-            'links' => [
-                'download' => null,
-            ],
-        ]);
+        return $response->withJson(
+            new UploadedRecordStatus(
+                false,
+                null,
+            )
+        );
     }
 }

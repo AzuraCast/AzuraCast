@@ -6,14 +6,37 @@ namespace App\Controller\Api\Admin\Debug;
 
 use App\Container\LoggerAwareTrait;
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Admin\Debug\LogResult;
 use App\Entity\Repository\StationQueueRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Radio\AutoDJ\Queue;
 use Monolog\Handler\TestHandler;
 use Monolog\Level;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[
+    OA\Put(
+        path: '/admin/debug/station/{station_id}/clearqueue',
+        operationId: 'adminDebugClearStationQueue',
+        summary: 'Clear the upcoming song queue and generate a new one.',
+        tags: [OpenApi::TAG_ADMIN_DEBUG],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    ref: LogResult::class
+                )
+            ),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
+        ]
+    ),
+]
 final class ClearStationQueueAction implements SingleActionInterface
 {
     use LoggerAwareTrait;
@@ -42,8 +65,8 @@ final class ClearStationQueueAction implements SingleActionInterface
             $this->logger->popHandler();
         }
 
-        return $response->withJson([
-            'logs' => $testHandler->getRecords(),
-        ]);
+        return $response->withJson(
+            LogResult::fromTestHandlerRecords($testHandler->getRecords())
+        );
     }
 }

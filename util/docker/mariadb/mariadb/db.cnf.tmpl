@@ -10,5 +10,11 @@ max_connections = {{ default .Env.MYSQL_MAX_CONNECTIONS "100" }}
 innodb_buffer_pool_size = {{ default .Env.MYSQL_INNODB_BUFFER_POOL_SIZE "128M" }}
 innodb_log_file_size = {{ default .Env.MYSQL_INNODB_LOG_FILE_SIZE "16M" }}
 
+# Reduce connection logging verbosity
+log_warnings = 1
+
+# Improve connection handling for PHP processes
+skip_name_resolve = ON
+
 [client]
 default-character-set=utf8mb4

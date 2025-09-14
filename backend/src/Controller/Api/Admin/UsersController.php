@@ -15,7 +15,6 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Utilities\Types;
-use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -24,47 +23,40 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/admin/users',
         operationId: 'getUsers',
-        description: 'List all current users in the system.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Administration: Users'],
+        summary: 'List all current users in the system.',
+        tags: [OpenApi::TAG_ADMIN_USERS],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/User')
+                    items: new OA\Items(ref: User::class)
                 )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Post(
         path: '/admin/users',
         operationId: 'addUser',
-        description: 'Create a new user.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Create a new user.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/User')
+            content: new OA\JsonContent(ref: User::class)
         ),
-        tags: ['Administration: Users'],
+        tags: [OpenApi::TAG_ADMIN_USERS],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/User')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: User::class)
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Get(
         path: '/admin/user/{id}',
         operationId: 'getUser',
-        description: 'Retrieve details for a single current user.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Administration: Users'],
+        summary: 'Retrieve details for a single current user.',
+        tags: [OpenApi::TAG_ADMIN_USERS],
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -75,25 +67,22 @@ use Psr\Http\Message\ResponseInterface;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/User')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: User::class)
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Put(
         path: '/admin/user/{id}',
         operationId: 'editUser',
-        description: 'Update details of a single user.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Update details of a single user.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/User')
+            content: new OA\JsonContent(ref: User::class)
         ),
-        tags: ['Administration: Users'],
+        tags: [OpenApi::TAG_ADMIN_USERS],
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -104,18 +93,17 @@ use Psr\Http\Message\ResponseInterface;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Delete(
         path: '/admin/user/{id}',
         operationId: 'deleteUser',
-        description: 'Delete a single user.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Administration: Users'],
+        summary: 'Delete a single user.',
+        tags: [OpenApi::TAG_ADMIN_USERS],
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -126,10 +114,10 @@ use Psr\Http\Message\ResponseInterface;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]
@@ -173,10 +161,6 @@ class UsersController extends AbstractApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
-        if (!($record instanceof User)) {
-            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
-        }
-
         $return = $this->toArray($record);
 
         $isInternal = $request->isInternal();
@@ -184,18 +168,18 @@ class UsersController extends AbstractApiCrudController
         $csrf = $request->getCsrf();
         $currentUser = $request->getUser();
 
-        $return['is_me'] = $currentUser->getIdRequired() === $record->getIdRequired();
+        $return['is_me'] = $currentUser->id === $record->id;
 
         $return['links'] = [
             'self' => $router->fromHere(
                 routeName: $this->resourceRouteName,
-                routeParams: ['id' => $record->getIdRequired()],
+                routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             ),
             'masquerade' => $router->fromHere(
                 routeName: 'account:masquerade',
                 routeParams: [
-                    'id' => $record->getIdRequired(),
+                    'id' => $record->id,
                     'csrf' => $csrf->generate(MasqueradeAction::CSRF_NAMESPACE),
                 ],
                 absolute: !$isInternal
@@ -218,7 +202,7 @@ class UsersController extends AbstractApiCrudController
         }
 
         $currentUser = $request->getUser();
-        if ($record->getId() === $currentUser->getId()) {
+        if ($record->id === $currentUser->id) {
             return $response->withStatus(403)
                 ->withJson(new Error(403, __('You cannot modify yourself.')));
         }
@@ -231,8 +215,6 @@ class UsersController extends AbstractApiCrudController
     protected function fromArray(array $data, ?object $record = null, array $context = []): object
     {
         $record = parent::fromArray($data, $record, $context);
-
-        assert($record instanceof User);
 
         if (isset($data['new_password'])) {
             $record->setNewPassword(Types::stringOrNull($data['new_password'], true));
@@ -254,7 +236,7 @@ class UsersController extends AbstractApiCrudController
         }
 
         $currentUser = $request->getUser();
-        if ($record->getId() === $currentUser->getId()) {
+        if ($record->id === $currentUser->id) {
             return $response->withStatus(403)
                 ->withJson(new Error(403, __('You cannot remove yourself.')));
         }

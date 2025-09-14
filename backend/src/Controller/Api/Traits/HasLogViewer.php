@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Traits;
 
+use App\Entity\Api\LogContents;
 use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
+use SensitiveParameter;
 
 trait HasLogViewer
 {
@@ -19,6 +21,7 @@ trait HasLogViewer
         Response $response,
         string $logPath,
         bool $tailFile = true,
+        #[SensitiveParameter]
         array $filteredTerms = []
     ): ResponseInterface {
         clearstatcache();
@@ -35,17 +38,17 @@ trait HasLogViewer
             );
 
             return $response->withJson(
-                [
-                    'contents' => $logContents,
-                    'eof' => true,
-                ]
+                new LogContents(
+                    $logContents,
+                    true
+                )
             );
         }
 
         $params = $request->getQueryParams();
         $lastViewedSize = (int)($params['position'] ?? 0);
 
-        $logSize = filesize($logPath);
+        $logSize = filesize($logPath) ?: 0;
         if ($lastViewedSize > $logSize) {
             $lastViewedSize = $logSize;
         }
@@ -79,11 +82,11 @@ trait HasLogViewer
         }
 
         return $response->withJson(
-            [
-                'contents' => $logContents,
-                'position' => $logSize,
-                'eof' => false,
-            ]
+            new LogContents(
+                $logContents,
+                false,
+                $logSize
+            )
         );
     }
 
@@ -91,6 +94,7 @@ trait HasLogViewer
         string $rawLog,
         bool $cutFirstLine = false,
         bool $cutEmptyLastLine = false,
+        #[SensitiveParameter]
         array $filteredTerms = []
     ): string {
         $logParts = explode("\n", $rawLog);

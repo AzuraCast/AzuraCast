@@ -8,14 +8,34 @@ use App\Controller\SingleActionInterface;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Utilities\Types;
 use League\Flysystem\StorageAttributes;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-final class ListDirectoriesAction implements SingleActionInterface
+#[
+    OA\Get(
+        path: '/station/{station_id}/files/directories',
+        operationId: 'getStationFileDirectories',
+        summary: 'List directories in a station media library for moving/renaming.',
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            // TODO: API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
+final readonly class ListDirectoriesAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationFilesystems $stationFilesystems
+        private StationFilesystems $stationFilesystems
     ) {
     }
 

@@ -56,6 +56,9 @@ return static function (RouteCollectorProxy $group) {
             $group->group(
                 '',
                 function (RouteCollectorProxy $group) {
+                    $group->get('/dashboard', Controller\Api\Stations\GetDashboardAction::class)
+                        ->add(new Middleware\Permissions(StationPermissions::View, true));
+
                     $group->map(
                         ['GET', 'POST'],
                         '/nowplaying/update',
@@ -198,7 +201,7 @@ return static function (RouteCollectorProxy $group) {
                                             $group->delete(
                                                 '',
                                                 Controller\Api\Stations\PodcastEpisodesController::class
-                                                . ':deleteAction'
+                                                    . ':deleteAction'
                                             );
 
                                             $group->get(
@@ -248,6 +251,11 @@ return static function (RouteCollectorProxy $group) {
                     )->setName('api:stations:media:waveform')
                         ->add(new Middleware\Cache\SetStaticFileCache());
 
+                    $group->post(
+                        '/waveform/{media_id:[a-zA-Z0-9\-]+}',
+                        Controller\Api\Stations\Waveform\PostCacheWaveformAction::class
+                    )->setName('api:stations:media:waveform-cache');
+
                     $group->post('/art/{media_id:[a-zA-Z0-9]+}', Controller\Api\Stations\Art\PostArtAction::class)
                         ->add(new Middleware\Permissions(StationPermissions::Media, true));
 
@@ -291,7 +299,10 @@ return static function (RouteCollectorProxy $group) {
                                     $group->get('/bulk', Controller\Api\Stations\BulkMedia\DownloadAction::class)
                                         ->setName('api:stations:files:bulk');
 
-                                    $group->post('/bulk', Controller\Api\Stations\BulkMedia\UploadAction::class);
+                                    $group->post(
+                                        '/bulk[/{preview:preview}]',
+                                        Controller\Api\Stations\BulkMedia\UploadAction::class
+                                    );
 
                                     $group->get('/download', Controller\Api\Stations\Files\DownloadAction::class)
                                         ->setName('api:stations:files:download');
@@ -310,25 +321,25 @@ return static function (RouteCollectorProxy $group) {
                                     $group->get(
                                         '',
                                         Controller\Api\Stations\FilesController::class . ':getAction'
-                                    )->setName('api:stations:file');
+                                    )->setName('api:stations:file')
+                                        ->add(new Middleware\Permissions(StationPermissions::Media, true));
 
                                     $group->put(
                                         '',
                                         Controller\Api\Stations\FilesController::class . ':editAction'
-                                    );
+                                    )->add(new Middleware\Permissions(StationPermissions::Media, true));
 
                                     $group->delete(
                                         '',
                                         Controller\Api\Stations\FilesController::class . ':deleteAction'
-                                    );
+                                    )->add(new Middleware\Permissions(StationPermissions::DeleteMedia, true));
 
                                     $group->get('/play', Controller\Api\Stations\Files\PlayAction::class)
                                         ->setName('api:stations:files:play');
                                 }
                             );
                         }
-                    )->add(new Middleware\StationSupportsFeature(StationFeatures::Media))
-                        ->add(new Middleware\Permissions(StationPermissions::Media, true));
+                    )->add(new Middleware\StationSupportsFeature(StationFeatures::Media));
 
                     // SFTP Users
                     $group->group(
@@ -729,7 +740,7 @@ return static function (RouteCollectorProxy $group) {
                                     $group->get(
                                         '/broadcast/{broadcast_id}/download',
                                         Controller\Api\Stations\Streamers\BroadcastsController::class
-                                        . ':downloadAction'
+                                            . ':downloadAction'
                                     )->setName('api:stations:streamer:broadcast:download');
 
                                     $group->delete(
@@ -751,10 +762,6 @@ return static function (RouteCollectorProxy $group) {
                         }
                     )->add(new Middleware\StationSupportsFeature(StationFeatures::Streamers))
                         ->add(new Middleware\Permissions(StationPermissions::Streamers, true));
-
-                    $group->get('/restart-status', Controller\Api\Stations\GetRestartStatusAction::class)
-                        ->setName('api:stations:restart-status')
-                        ->add(new Middleware\Permissions(StationPermissions::View, true));
 
                     $group->get('/status', Controller\Api\Stations\ServicesController::class . ':statusAction')
                         ->setName('api:stations:status')
@@ -831,6 +838,11 @@ return static function (RouteCollectorProxy $group) {
                                         Controller\Api\Stations\WebhooksController::class . ':deleteAction'
                                     );
 
+                                    $group->post(
+                                        '/clone',
+                                        Controller\Api\Stations\WebhooksController::class . ':cloneAction'
+                                    )->setName('api:stations:webhook:clone');
+
                                     $group->put(
                                         '/toggle',
                                         Controller\Api\Stations\Webhooks\ToggleAction::class
@@ -864,6 +876,16 @@ return static function (RouteCollectorProxy $group) {
                                 '',
                                 Controller\Api\Stations\LiquidsoapConfig\PutAction::class
                             );
+
+                            $group->get(
+                                '/export',
+                                Controller\Api\Stations\LiquidsoapConfig\ExportAction::class
+                            )->setName('api:stations:liquidsoap-config:export');
+
+                            $group->post(
+                                '/import',
+                                Controller\Api\Stations\LiquidsoapConfig\ImportAction::class
+                            )->setName('api:stations:liquidsoap-config:import');
                         }
                     )->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 

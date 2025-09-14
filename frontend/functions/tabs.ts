@@ -1,4 +1,21 @@
-import {InjectionKey, UnwrapNestedRefs, computed, inject, onBeforeMount, onBeforeUnmount, provide, reactive, watch} from "vue";
+import {computed, InjectionKey, onBeforeMount, onBeforeUnmount, provide, reactive, UnwrapNestedRefs, watch} from "vue";
+import injectRequired from "~/functions/injectRequired.ts";
+import {reactiveComputed} from "@vueuse/core";
+
+type VueClass = string | Record<string, boolean> | VueClass[];
+
+export interface TabChildProps {
+    id?: string | number,
+    label: string,
+    itemHeaderClass?: VueClass
+}
+
+export interface TabParentProps {
+    modelValue?: string,
+    navTabsClass?: VueClass,
+    contentClass?: VueClass,
+    destroyOnHide?: boolean
+}
 
 interface TabChild {
     computedId: string,
@@ -7,7 +24,7 @@ interface TabChild {
 
 interface TabParent {
     lazy: boolean,
-    active: string,
+    active: string | null,
     tabs: TabChild[],
     add (tab: TabChild): void,
     update(computedId: string, data: TabChild): void,
@@ -16,7 +33,16 @@ interface TabParent {
 
 const tabStateKey: InjectionKey<UnwrapNestedRefs<TabParent>> = Symbol() as InjectionKey<UnwrapNestedRefs<TabParent>>;
 
-export function useTabParent(props) {
+export function useTabParent(originalProps: TabParentProps) {
+    const props = reactiveComputed<
+        Required<
+            Pick<TabParentProps, 'destroyOnHide'>
+        > & Omit<TabParentProps, 'destroyOnHide'>
+    >(() => ({
+        destroyOnHide: false,
+        ...originalProps,
+    }));
+
     const state = reactive<TabParent>({
         lazy: props.destroyOnHide,
         active: null,
@@ -25,11 +51,11 @@ export function useTabParent(props) {
             this.tabs.push(tab)
         },
         update(computedId: string, data: TabChild): void {
-            const tabIndex = this.tabs.findIndex((tab) => tab.computedId === computedId);
+            const tabIndex = this.tabs.findIndex((tab: TabChild) => tab.computedId === computedId);
             this.tabs[tabIndex] = data;
         },
         delete(computedId: string): void {
-            const tabIndex = this.tabs.findIndex((tab) => tab.computedId === computedId)
+            const tabIndex = this.tabs.findIndex((tab: TabChild) => tab.computedId === computedId)
             this.tabs.splice(tabIndex, 1)
         }
     });
@@ -38,31 +64,35 @@ export function useTabParent(props) {
     return state;
 }
 
-export function useTabChild(props) {
-    const tabState = inject(tabStateKey);
+export function useTabChild(props: TabChildProps) {
+    const tabState = injectRequired(tabStateKey);
 
-    const computedId = props.id ?? props.label.toLowerCase().replace(/ /g, "-");
+    const computedId = computed(() => {
+        return String(
+            props.id ?? props.label.toLowerCase().replace(/ /g, "-")
+        );
+    });
 
     const isLazy = tabState.lazy;
 
     const isActive = computed(() => {
-        return tabState.active === computedId;
+        return tabState.active === computedId.value;
     });
 
     watch(
         () => ({...props}),
-        () => tabState.update(computedId, {
+        () => tabState.update(computedId.value, {
             ...props,
-            computedId: computedId
+            computedId: computedId.value
         })
     );
 
     onBeforeMount(() => tabState.add({
         ...props,
-        computedId: computedId
+        computedId: computedId.value
     }));
 
-    onBeforeUnmount(() => tabState.delete(computedId));
+    onBeforeUnmount(() => tabState.delete(computedId.value));
 
     return {
         computedId,

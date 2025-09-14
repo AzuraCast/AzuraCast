@@ -57,34 +57,20 @@
 </template>
 
 <script setup lang="ts">
-import FlowUpload from '~/components/Common/FlowUpload.vue';
-
+import FlowUpload, {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
 import {computed, toRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import Tab from "~/components/Common/Tab.vue";
 
-const props = defineProps({
-    modelValue: {
-        type: Object,
-        default: null
-    },
-    recordHasIntro: {
-        type: Boolean,
-        required: true
-    },
-    editIntroUrl: {
-        type: String,
-        default: null
-    },
-    newIntroUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    recordHasIntro: boolean,
+    editIntroUrl?: string,
+    newIntroUrl: string,
+}>();
 
-const emit = defineEmits(['update:modelValue']);
+const model = defineModel<UploadResponseBody | null>();
 
 const hasIntro = toRef(props, 'recordHasIntro');
 
@@ -94,25 +80,23 @@ const targetUrl = computed(() => {
         : props.newIntroUrl;
 });
 
-const onFileSuccess = (_file, message) => {
+const onFileSuccess = (_file: any, message: UploadResponseBody | null) => {
     hasIntro.value = true;
 
-    if (!props.editIntroUrl) {
-        emit('update:modelValue', message);
+    if (!props.editIntroUrl && message) {
+        model.value = message;
     }
 };
 
 const {axios} = useAxios();
 
-const deleteIntro = () => {
+const deleteIntro = async () => {
     if (props.editIntroUrl) {
-        axios.delete(props.editIntroUrl).then(() => {
-            hasIntro.value = false;
-        });
+        await axios.delete(props.editIntroUrl);
+        hasIntro.value = false;
     } else {
         hasIntro.value = false;
-
-        emit('update:modelValue', null);
+        model.value = null;
     }
 };
 </script>

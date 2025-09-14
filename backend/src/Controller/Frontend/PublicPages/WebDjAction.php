@@ -13,10 +13,10 @@ use App\Radio\Adapters;
 use League\Plates\Template\Template;
 use Psr\Http\Message\ResponseInterface;
 
-final class WebDjAction implements SingleActionInterface
+final readonly class WebDjAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly Adapters $adapters,
+        private Adapters $adapters,
     ) {
     }
 
@@ -27,7 +27,7 @@ final class WebDjAction implements SingleActionInterface
     ): ResponseInterface {
         $station = $request->getStation();
 
-        if (!$station->getEnablePublicPage()) {
+        if (!$station->enable_public_page) {
             throw NotFoundException::station();
         }
 
@@ -60,12 +60,13 @@ final class WebDjAction implements SingleActionInterface
             component: 'Public/WebDJ',
             id: 'webdj',
             layout: 'minimal',
-            title: __('Web DJ') . ' - ' . $station->getName(),
+            title: __('Web DJ') . ' - ' . $station->name,
             layoutParams: [
-                'page_class' => 'dj station-' . $station->getShortName(),
+                'page_class' => 'dj station-' . $station->short_name,
             ],
             props: [
                 'baseUri' => $wssUrl,
+                'stationName' => $station->name,
             ],
         );
     }

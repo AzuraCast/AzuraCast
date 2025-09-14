@@ -18,9 +18,8 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/mount/{id}/intro',
     operationId: 'getMountIntro',
-    description: 'Get the intro track for a mount point.',
-    security: OpenApi::API_KEY_SECURITY,
-    tags: ['Stations: Mount Points'],
+    summary: 'Get the intro track for a mount point.',
+    tags: [OpenApi::TAG_STATIONS_MOUNT_POINTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(
@@ -32,19 +31,16 @@ use Psr\Http\Message\ResponseInterface;
         ),
     ],
     responses: [
-        new OA\Response(
-            response: 200,
-            description: 'Success'
-        ),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        new OpenApi\Response\SuccessWithDownload(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
     ]
 )]
-final class GetIntroAction implements SingleActionInterface
+final readonly class GetIntroAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationMountRepository $mountRepo,
+        private StationMountRepository $mountRepo,
     ) {
     }
 
@@ -62,7 +58,7 @@ final class GetIntroAction implements SingleActionInterface
         $mount = $this->mountRepo->findForStation($id, $station);
 
         if ($mount instanceof StationMount) {
-            $introPath = $mount->getIntroPath();
+            $introPath = $mount->intro_path;
 
             if (!empty($introPath)) {
                 $fsConfig = StationFilesystems::buildConfigFilesystem($station);

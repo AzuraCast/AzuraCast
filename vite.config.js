@@ -2,7 +2,7 @@ import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import {glob} from "glob";
 import {resolve} from "path";
-import eslint from "vite-plugin-eslint";
+import eslintPlugin from "@nabla/vite-plugin-eslint";
 
 const inputs = glob.sync('./frontend/js/pages/**/*.js').reduce((acc, path) => {
     // vue/pages/Admin/Index becomes AdminIndex
@@ -20,6 +20,7 @@ console.log(inputs);
 
 // https://vitejs.dev/config/
 export default defineConfig({
+    root: resolve(__dirname, './frontend/'),
     base: '/static/vite_dist',
     build: {
         rollupOptions: {
@@ -27,7 +28,7 @@ export default defineConfig({
             output: {
                 manualChunks: {
                     vue: ['vue'],
-                    lodash: ['lodash'],
+                    estoolkit: ['es-toolkit'],
                     leaflet: ['leaflet'],
                     hlsjs: ['hls.js'],
                     zxcvbn: ['zxcvbn']
@@ -62,11 +63,24 @@ export default defineConfig({
         chunkSizeWarningLimit: '1m',
         outDir: resolve(__dirname, './web/static/vite_dist')
     },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                quietDeps: true,
+                silenceDeprecations: ['legacy-js-api', 'import']
+            }
+        }
+    },
     server: {
         strictPort: true,
         host: true,
+        allowedHosts: true,
         fs: {
-            allow: ['..']
+            allow: [
+                resolve(__dirname, './frontend/'),
+                resolve(__dirname, './node_modules/'),
+                resolve(__dirname, './translations/')
+            ]
         }
     },
     resolve: {
@@ -78,8 +92,6 @@ export default defineConfig({
     },
     plugins: [
         vue(),
-        eslint({
-            fix: true
-        })
+        eslintPlugin(),
     ],
 })

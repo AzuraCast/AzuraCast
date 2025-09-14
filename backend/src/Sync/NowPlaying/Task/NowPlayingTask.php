@@ -19,7 +19,6 @@ use App\Message;
 use App\Nginx\HlsListeners;
 use App\Radio\Adapters;
 use App\Webhook\Enums\WebhookTriggers;
-use DeepCopy\DeepCopy;
 use Exception;
 use GuzzleHttp\Promise\Utils;
 use NowPlaying\Result\Result;
@@ -65,7 +64,7 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
 
     public function run(Station $station): void
     {
-        if (!$station->getIsEnabled()) {
+        if (!$station->is_enabled) {
             return;
         }
 
@@ -97,8 +96,8 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
         $this->logger->debug(
             'Final NowPlaying Response for Station',
             [
-                'id' => $station->getId(),
-                'name' => $station->getName(),
+                'id' => $station->id,
+                'name' => $station->name,
                 'np' => $npResult,
             ]
         );
@@ -184,9 +183,7 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
         NowPlaying $npOriginal,
         ?NowPlaying $npOld
     ): void {
-        /** @var NowPlaying $np */
-        $np = (new DeepCopy())->copy($npOriginal);
-        $np->resolveUrls($this->router->getBaseUrl());
+        $np = $npOriginal->withResolvedUrls($this->router->getBaseUrl());
         $np->cache = 'event';
 
         $triggers = [];
@@ -202,6 +199,9 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
                 $triggers[] = WebhookTriggers::LiveConnect->value;
             } elseif ($npOld->live->is_live && !$np->live->is_live) {
                 $triggers[] = WebhookTriggers::LiveDisconnect->value;
+            } elseif ($npOld->live->streamer_name != $np->live->streamer_name) {
+                // Trigger the live-connect webhook if the streamer name changes but live status does not.
+                $triggers[] = WebhookTriggers::LiveConnect->value;
             }
 
             if ($npOld->is_online && !$np->is_online) {
@@ -220,7 +220,7 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
         }
 
         $message = new Message\DispatchWebhookMessage();
-        $message->station_id = $station->getIdRequired();
+        $message->station_id = $station->id;
         $message->np = $np;
         $message->triggers = $triggers;
 

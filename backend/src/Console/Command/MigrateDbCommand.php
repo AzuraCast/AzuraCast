@@ -51,13 +51,19 @@ final class MigrateDbCommand extends AbstractDatabaseCommand
         $io->section(__('Running database migrations...'));
 
         try {
+            $originalVerbosity = $output->getVerbosity();
+            if ($originalVerbosity <= OutputInterface::VERBOSITY_VERY_VERBOSE) {
+                $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
+            }
+
+            set_time_limit(0);
+
             $this->runCommand(
                 $output,
-                'migrations:migrate',
-                [
-                    '--allow-no-migration' => true,
-                ]
+                'migrations:migrate --allow-no-migration'
             );
+
+            $output->setVerbosity($originalVerbosity);
         } catch (Exception $e) {
             // Rollback to the DB dump from earlier.
             $io->error(
@@ -69,7 +75,7 @@ final class MigrateDbCommand extends AbstractDatabaseCommand
 
             return $this->tryEmergencyRestore($io, $dbDumpPath);
         } finally {
-            (new Filesystem())->remove($dbDumpPath);
+            new Filesystem()->remove($dbDumpPath);
         }
 
         $io->newLine();

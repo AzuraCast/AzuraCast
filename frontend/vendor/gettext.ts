@@ -2,7 +2,7 @@ import {createGettext, Language} from "vue3-gettext";
 import {App} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
 
-let gettext;
+let gettext: Language;
 
 export function useTranslate(): Language {
     return gettext;
@@ -16,6 +16,7 @@ export async function installTranslate(vueApp: App): Promise<void> {
 
     gettext = createGettext({
         defaultLanguage: locale,
+        // @ts-expect-error TS can't analyze the Vite meta
         translations: (localePath in translations) ?
             await translations[localePath]()
             : {},

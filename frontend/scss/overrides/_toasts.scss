@@ -1,5 +1,11 @@
 body.page-full {
-  div.toast-container.top-0 {
-    top: $header-nav-height !important;
+  div.toast-container {
+    &.top-0 {
+      top: $header-nav-height !important;
+    }
+
+    div.toast-body {
+      word-break: break-word;
+    }
   }
 }

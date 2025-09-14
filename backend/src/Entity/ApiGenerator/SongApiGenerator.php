@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\ApiGenerator;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Entity\Api\ResolvableUrl;
 use App\Entity\Api\Song;
 use App\Entity\Interfaces\SongInterface;
 use App\Entity\Repository\CustomFieldRepository;
@@ -37,25 +38,27 @@ final class SongApiGenerator
         bool $isNowPlaying = false,
     ): Song {
         $response = new Song();
-        $response->id = $song->getSongId();
-        $response->text = $song->getText() ?? '';
-        $response->artist = $song->getArtist() ?? '';
-        $response->title = $song->getTitle() ?? '';
+        $response->id = $song->song_id;
+        $response->text = $song->text ?? '';
+        $response->artist = $song->artist ?? '';
+        $response->title = $song->title ?? '';
+        $response->album = $song->album ?? '';
 
         if ($song instanceof StationMedia) {
-            $response->album = $song->getAlbum() ?? '';
-            $response->genre = $song->getGenre() ?? '';
-            $response->isrc = $song->getIsrc() ?? '';
-            $response->lyrics = $song->getLyrics() ?? '';
+            $response->genre = $song->genre ?? '';
+            $response->isrc = $song->isrc ?? '';
+            $response->lyrics = $song->lyrics ?? '';
 
-            $response->custom_fields = $this->getCustomFields($song->getId());
+            $response->custom_fields = $this->getCustomFields($song->id);
         } else {
             $response->custom_fields = $this->getCustomFields();
         }
 
-        $response->art = UriResolver::resolve(
-            $baseUri ?? $this->router->getBaseUrl(),
-            $this->getAlbumArtUrl($song, $station, $allowRemoteArt, $isNowPlaying)
+        $response->art = new ResolvableUrl(
+            UriResolver::resolve(
+                $baseUri ?? $this->router->getBaseUrl(),
+                $this->getAlbumArtUrl($song, $station, $allowRemoteArt, $isNowPlaying)
+            )
         );
 
         return $response;
@@ -69,11 +72,11 @@ final class SongApiGenerator
     ): UriInterface {
         if (null !== $station && $song instanceof StationMedia) {
             $routeParams = [
-                'station_id' => $station->getShortName(),
-                'media_id' => $song->getUniqueId(),
+                'station_id' => $station->short_name,
+                'media_id' => $song->unique_id,
             ];
 
-            $mediaUpdatedTimestamp = $song->getArtUpdatedAt();
+            $mediaUpdatedTimestamp = $song->art_updated_at;
             if (0 !== $mediaUpdatedTimestamp) {
                 $routeParams['timestamp'] = $mediaUpdatedTimestamp;
             }
@@ -92,14 +95,14 @@ final class SongApiGenerator
         }
 
         if ($isNowPlaying && null !== $station) {
-            $currentStreamer = $station->getCurrentStreamer();
-            if (null !== $currentStreamer && 0 !== $currentStreamer->getArtUpdatedAt()) {
+            $currentStreamer = $station->current_streamer;
+            if (null !== $currentStreamer && 0 !== $currentStreamer->art_updated_at) {
                 return $this->router->namedAsUri(
                     routeName: 'api:stations:streamer:art',
                     routeParams: [
-                        'station_id' => $station->getShortName(),
-                        'id' => $currentStreamer->getIdRequired(),
-                        'timestamp' => $currentStreamer->getArtUpdatedAt(),
+                        'station_id' => $station->short_name,
+                        'id' => $currentStreamer->id,
+                        'timestamp' => $currentStreamer->art_updated_at,
                     ],
                 );
             }
@@ -123,9 +126,9 @@ final class SongApiGenerator
         if ($mediaId !== null) {
             $mediaFieldsRaw = $this->em->createQuery(
                 <<<'DQL'
-                    SELECT smcf.field_id, smcf.value
+                    SELECT IDENTITY(smcf.field) AS field_id, smcf.value
                     FROM App\Entity\StationMediaCustomField smcf
-                    WHERE smcf.media_id = :media_id
+                    WHERE IDENTITY(smcf.media) = :media_id
                 DQL
             )->setParameter('media_id', $mediaId)
                 ->getArrayResult();

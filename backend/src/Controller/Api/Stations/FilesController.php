@@ -7,6 +7,8 @@ namespace App\Controller\Api\Stations;
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Api\Error;
+use App\Entity\Api\StationMedia as ApiStationMedia;
+use App\Entity\Api\StationMediaPlaylist;
 use App\Entity\Api\Status;
 use App\Entity\Api\UploadFile;
 use App\Entity\Repository\CustomFieldRepository;
@@ -26,6 +28,7 @@ use App\Radio\Backend\Liquidsoap;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -36,57 +39,50 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/station/{station_id}/files',
         operationId: 'getFiles',
-        description: 'List all current uploaded files.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Media'],
+        summary: 'List all current uploaded files.',
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/StationMedia')
+                    items: new OA\Items(ref: ApiStationMedia::class)
                 )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Post(
         path: '/station/{station_id}/files',
         operationId: 'addFile',
-        description: 'Upload a new file.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Upload a new file.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_UploadFile')
+            content: new OA\JsonContent(ref: UploadFile::class)
         ),
-        tags: ['Stations: Media'],
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/StationMedia')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: ApiStationMedia::class)
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Get(
         path: '/station/{station_id}/file/{id}',
         operationId: 'getFile',
-        description: 'Retrieve details for a single file.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Media'],
+        summary: 'Retrieve details for a single file.',
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
-                name: 'id',
+                name: 'media_id',
                 description: 'Media ID',
                 in: 'path',
                 required: true,
@@ -94,29 +90,26 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/StationMedia')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: ApiStationMedia::class)
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Put(
         path: '/station/{station_id}/file/{id}',
         operationId: 'editFile',
-        description: 'Update details of a single file.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Update details of a single file.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/StationMedia')
+            content: new OA\JsonContent(ref: ApiStationMedia::class)
         ),
-        tags: ['Stations: Media'],
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
-                name: 'id',
+                name: 'media_id',
                 description: 'Media ID',
                 in: 'path',
                 required: true,
@@ -124,22 +117,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Delete(
         path: '/station/{station_id}/file/{id}',
         operationId: 'deleteFile',
-        description: 'Delete a single file.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Media'],
+        summary: 'Delete a single file.',
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
-                name: 'id',
+                name: 'media_id',
                 description: 'Media ID',
                 in: 'path',
                 required: true,
@@ -147,10 +139,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]
@@ -181,7 +173,7 @@ final class FilesController extends AbstractStationApiCrudController
         Response $response,
         array $params
     ): ResponseInterface {
-        $storageLocation = $this->getStation($request)->getMediaStorageLocation();
+        $storageLocation = $this->getStation($request)->media_storage_location;
 
         $qb = $this->em->createQueryBuilder()
             ->select('e')
@@ -217,6 +209,80 @@ final class FilesController extends AbstractStationApiCrudController
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
 
+    protected function viewRecord(object $record, ServerRequest $request): ApiStationMedia
+    {
+        $returnArray = $this->toArray($record);
+
+        $playlists = array_map(
+            fn(array $row) => new StationMediaPlaylist(
+                id: $row['id'],
+                name: $row['name'],
+                short_name: StationPlaylist::generateShortName($row['name']),
+                folder: $row['folder']
+            ),
+            $returnArray['playlists'] ?? []
+        );
+
+        $return = ApiStationMedia::fromArray(
+            $returnArray,
+            $record->extra_metadata->toArray() ?? [],
+            $this->customFieldsRepo->getCustomFields($record),
+            StationMediaPlaylist::aggregate($playlists),
+        );
+
+        $isInternal = $request->isInternal();
+        $router = $request->getRouter();
+
+        $routeParams = [
+            'media_id' => $record->unique_id,
+        ];
+
+        if (0 !== $record->art_updated_at) {
+            $routeParams['timestamp'] = $record->art_updated_at;
+        }
+
+        $return->art = $router->fromHere(
+            'api:stations:media:art',
+            routeParams: $routeParams,
+            absolute: !$isInternal
+        );
+
+        $return->links = [
+            'self' => $router->fromHere(
+                routeName: $this->resourceRouteName,
+                routeParams: ['id' => $record->id],
+                absolute: !$isInternal
+            ),
+            'play' => $router->fromHere(
+                'api:stations:files:play',
+                ['id' => $record->id],
+                absolute: true
+            ),
+            'art' => $router->fromHere(
+                'api:stations:media:art',
+                ['media_id' => $record->id],
+                absolute: !$isInternal
+            ),
+            'waveform' => $router->fromHere(
+                'api:stations:media:waveform',
+                [
+                    'media_id' => $record->unique_id,
+                    'timestamp' => $record->art_updated_at,
+                ],
+                absolute: !$isInternal
+            ),
+            'waveform_cache' => $router->fromHere(
+                'api:stations:media:waveform-cache',
+                [
+                    'media_id' => $record->unique_id,
+                ],
+                absolute: !$isInternal
+            ),
+        ];
+
+        return $return;
+    }
+
     public function createAction(
         ServerRequest $request,
         Response $response,
@@ -224,7 +290,7 @@ final class FilesController extends AbstractStationApiCrudController
     ): ResponseInterface {
         $station = $this->getStation($request);
 
-        $mediaStorage = $station->getMediaStorageLocation();
+        $mediaStorage = $station->media_storage_location;
         if ($mediaStorage->isStorageFull()) {
             return $response->withStatus(500)
                 ->withJson(new Error(500, __('This station is out of available storage space.')));
@@ -234,7 +300,7 @@ final class FilesController extends AbstractStationApiCrudController
 
         // Convert the body into an UploadFile API entity first.
         /** @var UploadFile $apiRecord */
-        $apiRecord = $this->serializer->denormalize($request->getParsedBody(), UploadFile::class, null, []);
+        $apiRecord = $this->serializer->denormalize($request->getParsedBody(), UploadFile::class);
 
         // Validate the UploadFile API record.
         $errors = $this->validator->validate($apiRecord);
@@ -244,7 +310,7 @@ final class FilesController extends AbstractStationApiCrudController
 
         // Write file to temp path.
         $tempPath = $station->getRadioTempDir() . '/' . $apiRecord->getSanitizedFilename();
-        file_put_contents($tempPath, $apiRecord->getFileContents());
+        new Filesystem()->dumpFile($tempPath, $apiRecord->getFileContents());
 
         // Process temp path as regular media record.
         $record = $this->mediaProcessor->processAndUpload(
@@ -284,13 +350,13 @@ final class FilesController extends AbstractStationApiCrudController
 
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
-        $oldPath = $record->getPath();
+        $oldPath = $record->path;
         $isRenamed = (isset($data['path']) && $data['path'] !== $oldPath);
 
         $record = $this->fromArray($data, $record);
 
         if ($isRenamed) {
-            $fsMedia->move($oldPath, $record->getPath());
+            $fsMedia->move($oldPath, $record->path);
         }
 
         $errors = $this->validator->validate($record);
@@ -298,41 +364,39 @@ final class FilesController extends AbstractStationApiCrudController
             throw ValidationException::fromValidationErrors($errors);
         }
 
-        if ($record instanceof StationMedia) {
-            $this->mediaRepo->writeToFile($record);
-            $this->em->persist($record);
-            $this->em->flush();
+        $this->mediaRepo->writeToFile($record);
+        $this->em->persist($record);
+        $this->em->flush();
 
-            if (null !== $customFields) {
-                $this->customFieldsRepo->setCustomFields($record, $customFields);
+        if (null !== $customFields) {
+            $this->customFieldsRepo->setCustomFields($record, $customFields);
+        }
+
+        if (null !== $playlists) {
+            $playlistsToAssign = [];
+            foreach ($playlists as $newPlaylist) {
+                if (is_array($newPlaylist)) {
+                    $playlistsToAssign[(int)$newPlaylist['id']] = $newPlaylist['weight'] ?? 0;
+                } else {
+                    $playlistsToAssign[(int)$newPlaylist] = 0;
+                }
             }
 
-            if (null !== $playlists) {
-                $playlistsToAssign = [];
-                foreach ($playlists as $newPlaylist) {
-                    if (is_array($newPlaylist)) {
-                        $playlistsToAssign[(int)$newPlaylist['id']] = $newPlaylist['weight'] ?? 0;
-                    } else {
-                        $playlistsToAssign[(int)$newPlaylist] = 0;
-                    }
-                }
+            $affectedPlaylistIds = $this->playlistMediaRepo->setPlaylistsForMedia(
+                $record,
+                $station,
+                $playlistsToAssign
+            );
 
-                $affectedPlaylistIds = $this->playlistMediaRepo->setPlaylistsForMedia(
-                    $record,
-                    $station,
-                    $playlistsToAssign
-                );
+            // Handle playlist changes.
+            $backend = $this->adapters->getBackendAdapter($station);
+            if ($backend instanceof Liquidsoap) {
+                foreach ($affectedPlaylistIds as $playlistId => $playlistRow) {
+                    // Instruct the message queue to start a new "write playlist to file" task.
+                    $message = new WritePlaylistFileMessage();
+                    $message->playlist_id = $playlistId;
 
-                // Handle playlist changes.
-                $backend = $this->adapters->getBackendAdapter($station);
-                if ($backend instanceof Liquidsoap) {
-                    foreach ($affectedPlaylistIds as $playlistId => $playlistRow) {
-                        // Instruct the message queue to start a new "write playlist to file" task.
-                        $message = new WritePlaylistFileMessage();
-                        $message->playlist_id = $playlistId;
-
-                        $this->messageBus->dispatch($message);
-                    }
+                    $this->messageBus->dispatch($message);
                 }
             }
         }
@@ -343,7 +407,7 @@ final class FilesController extends AbstractStationApiCrudController
     protected function createRecord(ServerRequest $request, array $data): object
     {
         $station = $request->getStation();
-        $mediaStorage = $station->getMediaStorageLocation();
+        $mediaStorage = $station->media_storage_location;
 
         return $this->editRecord(
             $data,
@@ -366,10 +430,14 @@ final class FilesController extends AbstractStationApiCrudController
 
         $station = $request->getStation();
 
-        $mediaStorage = $station->getMediaStorageLocation();
+        $mediaStorage = $station->media_storage_location;
         $repo = $this->em->getRepository($this->entityClass);
 
         foreach (['id', 'unique_id', 'song_id'] as $field) {
+            if ($field === 'id' && !is_numeric($id)) {
+                continue;
+            }
+
             $record = $repo->findOneBy(
                 [
                     'storage_location' => $mediaStorage,
@@ -388,12 +456,10 @@ final class FilesController extends AbstractStationApiCrudController
     /** @inheritDoc */
     protected function toArray(object $record, array $context = []): array
     {
-        $row = parent::toArray($record, $context);
-
-        if ($record instanceof StationMedia) {
-            $row['custom_fields'] = $this->customFieldsRepo->getCustomFields($record);
-        }
-        return $row;
+        return [
+            ...parent::toArray($record, $context),
+            'custom_fields' => $this->customFieldsRepo->getCustomFields($record),
+        ];
     }
 
     /**
@@ -401,10 +467,6 @@ final class FilesController extends AbstractStationApiCrudController
      */
     protected function deleteRecord(object $record): void
     {
-        if (!($record instanceof StationMedia)) {
-            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
-        }
-
         // Delete the media file off the filesystem.
         // Write new PLS playlist configuration.
         foreach ($this->mediaRepo->remove($record, true) as $playlistId => $playlistRecord) {
@@ -413,7 +475,7 @@ final class FilesController extends AbstractStationApiCrudController
                 continue;
             }
 
-            $backend = $this->adapters->getBackendAdapter($playlist->getStation());
+            $backend = $this->adapters->getBackendAdapter($playlist->station);
             if ($backend instanceof Liquidsoap) {
                 // Instruct the message queue to start a new "write playlist to file" task.
                 $message = new WritePlaylistFileMessage();

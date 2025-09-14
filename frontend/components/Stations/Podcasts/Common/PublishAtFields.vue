@@ -23,37 +23,35 @@
 </template>
 
 <script setup lang="ts">
-import {ref, toRef, watch} from "vue";
+import {ref, watch} from "vue";
 import {useLuxon} from "~/vendor/luxon.ts";
-import {useAzuraCastStation} from "~/vendor/azuracast.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
+import {toRefs} from "@vueuse/core";
 
-const props = defineProps({
-    id: {
-        type: String,
-        required: true,
-    },
-    modelValue: {
-        type: Number,
-        default: null
-    }
-});
+defineProps<{
+    id: string
+}>();
 
-const emit = defineEmits(['update:modelValue']);
+const model = defineModel<string | number | null>();
 
 const publishDate = ref<string>('');
 const publishTime = ref<string>('');
 
 const {DateTime} = useLuxon();
-const {timezone} = useAzuraCastStation();
 
-watch(toRef(props, 'modelValue'), (publishAt) => {
+const stationData = useStationData();
+const {timezone} = toRefs(stationData);
+
+watch(model, (publishAt) => {
     if (publishAt !== null) {
-        const publishDateTime = DateTime.fromSeconds(publishAt, {zone: timezone});
-        publishDate.value = publishDateTime.toISODate();
-        publishTime.value = publishDateTime.toISOTime({
-            suppressMilliseconds: true,
-            includeOffset: false
-        });
+        const publishDateTime = DateTime.fromSeconds(Number(publishAt), {zone: timezone.value});
+        if (publishDateTime.isValid) {
+            publishDate.value = publishDateTime.toISODate();
+            publishTime.value = publishDateTime.toISOTime({
+                suppressMilliseconds: true,
+                includeOffset: false
+            });
+        }
     } else {
         publishDate.value = '';
         publishTime.value = '';
@@ -65,11 +63,11 @@ watch(toRef(props, 'modelValue'), (publishAt) => {
 const updatePublishAt = () => {
     if (publishDate.value.length > 0 && publishTime.value.length > 0) {
         const publishDateTimeString = publishDate.value + 'T' + publishTime.value;
-        const publishDateTime = DateTime.fromISO(publishDateTimeString, {zone: timezone});
+        const publishDateTime = DateTime.fromISO(publishDateTimeString, {zone: timezone.value});
 
-        emit('update:modelValue', publishDateTime.toSeconds());
+        model.value = publishDateTime.toSeconds();
     } else {
-        emit('update:modelValue', null);
+        model.value = null;
     }
 }
 
@@ -78,6 +76,10 @@ watch(publishDate, () => {
 });
 
 watch(publishTime, () => {
+    updatePublishAt();
+});
+
+watch(timezone, () => {
     updatePublishAt();
 });
 </script>

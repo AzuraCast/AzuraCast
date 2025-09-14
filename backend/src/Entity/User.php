@@ -8,7 +8,6 @@ use App\Auth;
 use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\OpenApi;
-use App\Utilities\Strings;
 use App\Validator\Constraints\UniqueEntity;
 use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,6 +15,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use OTPHP\Factory;
+use ReflectionException;
+use ReflectionProperty;
+use SensitiveParameter;
 use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -30,7 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     Attributes\Auditable,
     UniqueEntity(fields: ['email'])
 ]
-class User implements Stringable, IdentifiableEntityInterface
+final class User implements Stringable, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -42,33 +44,75 @@ class User implements Stringable, IdentifiableEntityInterface
         Assert\Email,
         Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected string $email;
-
-    #[
-        ORM\Column(length: 255, nullable: false),
-        Attributes\AuditIgnore
-    ]
-    protected string $auth_password = '';
+    public string $email;
 
     #[
         OA\Property(example: ""),
-        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
+        ORM\Column(length: 255, nullable: false),
+        Attributes\AuditIgnore
     ]
-    protected ?string $new_password = null;
+    public string $auth_password = '' {
+        // @phpstan-ignore propertyGetHook.noRead
+        get => '';
+        // @phpstan-ignore propertySetHook.noAssign
+        set (string|null $value) {
+            $userPassword = trim($value ?? '');
+
+            if (!empty($userPassword)) {
+                $this->auth_password = password_hash($userPassword, PASSWORD_ARGON2ID);
+            }
+        }
+    }
+
+    public function verifyPassword(
+        #[SensitiveParameter]
+        string $password
+    ): bool {
+        try {
+            $reflProp = new ReflectionProperty($this, 'auth_password');
+            $hash = $reflProp->getRawValue($this);
+
+            if (password_verify($password, $hash)) {
+                if (password_needs_rehash($this->auth_password, PASSWORD_ARGON2ID)) {
+                    $this->auth_password = $password;
+                }
+                return true;
+            }
+
+            return false;
+        } catch (ReflectionException) {
+            return false;
+        }
+    }
+
+    /**
+     * Legacy setter for new password.
+     */
+    public function setNewPassword(
+        #[SensitiveParameter]
+        string|null $password
+    ): void {
+        $this->auth_password = $password;
+    }
 
     #[
         OA\Property(example: "Demo Account"),
         ORM\Column(length: 100, nullable: true),
         Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?string $name = null;
+    public ?string $name = null {
+        set => $this->truncateNullableString($value, 100);
+    }
 
     #[
         OA\Property(example: "en_US"),
         ORM\Column(length: 25, nullable: true),
         Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?string $locale = null;
+    public ?string $locale = null {
+        set => $this->truncateNullableString($value, 25);
+    }
 
     #[
         OA\Property(example: true),
@@ -76,7 +120,7 @@ class User implements Stringable, IdentifiableEntityInterface
         Attributes\AuditIgnore,
         Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?bool $show_24_hour_time = null;
+    public ?bool $show_24_hour_time = null;
 
     #[
         OA\Property(example: "A1B2C3D4"),
@@ -84,7 +128,9 @@ class User implements Stringable, IdentifiableEntityInterface
         Attributes\AuditIgnore,
         Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?string $two_factor_secret = null;
+    public ?string $two_factor_secret = null {
+        set => $this->truncateNullableString($value);
+    }
 
     #[
         OA\Property(example: OpenApi::SAMPLE_TIMESTAMP),
@@ -92,7 +138,7 @@ class User implements Stringable, IdentifiableEntityInterface
         Attributes\AuditIgnore,
         Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected int $created_at;
+    public readonly int $created_at;
 
     #[
         OA\Property(example: OpenApi::SAMPLE_TIMESTAMP),
@@ -100,7 +146,7 @@ class User implements Stringable, IdentifiableEntityInterface
         Attributes\AuditIgnore,
         Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected int $updated_at;
+    public int $updated_at;
 
     /** @var Collection<int, Role> */
     #[
@@ -113,7 +159,7 @@ class User implements Stringable, IdentifiableEntityInterface
         DeepNormalize(true),
         Serializer\MaxDepth(1)
     ]
-    protected Collection $roles;
+    public private(set) Collection $roles;
 
     /** @var Collection<int, ApiKey> */
     #[
@@ -121,7 +167,7 @@ class User implements Stringable, IdentifiableEntityInterface
         Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
         DeepNormalize(true)
     ]
-    protected Collection $api_keys;
+    public private(set) Collection $api_keys;
 
     /** @var Collection<int, UserPasskey> */
     #[
@@ -129,7 +175,7 @@ class User implements Stringable, IdentifiableEntityInterface
         Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
         DeepNormalize(true)
     ]
-    protected Collection $passkeys;
+    public private(set) Collection $passkeys;
 
     /** @var Collection<int, UserLoginToken> */
     #[
@@ -137,7 +183,7 @@ class User implements Stringable, IdentifiableEntityInterface
         Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
         DeepNormalize(true)
     ]
-    protected Collection $login_tokens;
+    public private(set) Collection $login_tokens;
 
     public function __construct()
     {
@@ -146,6 +192,7 @@ class User implements Stringable, IdentifiableEntityInterface
 
         $this->roles = new ArrayCollection();
         $this->api_keys = new ArrayCollection();
+        $this->passkeys = new ArrayCollection();
         $this->login_tokens = new ArrayCollection();
     }
 
@@ -165,75 +212,6 @@ class User implements Stringable, IdentifiableEntityInterface
         return $this->name ?? $this->email;
     }
 
-    public function setName(?string $name = null): void
-    {
-        $this->name = $this->truncateNullableString($name, 100);
-    }
-
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): void
-    {
-        $this->email = $this->truncateString($email, 100);
-    }
-
-    public function verifyPassword(string $password): bool
-    {
-        if (password_verify($password, $this->auth_password)) {
-            if (password_needs_rehash($this->auth_password, PASSWORD_ARGON2ID)) {
-                $this->setNewPassword($password);
-            }
-            return true;
-        }
-
-        return false;
-    }
-
-    public function setNewPassword(?string $password): void
-    {
-        if (null !== $password && trim($password)) {
-            $this->auth_password = password_hash($password, PASSWORD_ARGON2ID);
-        }
-    }
-
-    public function generateRandomPassword(): void
-    {
-        $this->setNewPassword(Strings::generatePassword());
-    }
-
-    public function getLocale(): ?string
-    {
-        return $this->locale;
-    }
-
-    public function setLocale(?string $locale = null): void
-    {
-        $this->locale = $locale;
-    }
-
-    public function getShow24HourTime(): ?bool
-    {
-        return $this->show_24_hour_time;
-    }
-
-    public function setShow24HourTime(?bool $show24HourTime): void
-    {
-        $this->show_24_hour_time = $show24HourTime;
-    }
-
-    public function getTwoFactorSecret(): ?string
-    {
-        return $this->two_factor_secret;
-    }
-
-    public function setTwoFactorSecret(?string $twoFactorSecret = null): void
-    {
-        $this->two_factor_secret = $twoFactorSecret;
-    }
-
     public function verifyTwoFactor(string $otp): bool
     {
         if (empty($this->two_factor_secret)) {
@@ -246,42 +224,16 @@ class User implements Stringable, IdentifiableEntityInterface
         return Factory::loadFromProvisioningUri($this->two_factor_secret)->verify($otp, null, Auth::TOTP_WINDOW);
     }
 
-    public function getCreatedAt(): int
+    public function __clone(): void
     {
-        return $this->created_at;
-    }
-
-    public function getUpdatedAt(): int
-    {
-        return $this->updated_at;
-    }
-
-    /**
-     * @return Collection<int, Role>
-     */
-    public function getRoles(): Collection
-    {
-        return $this->roles;
-    }
-
-    /**
-     * @return Collection<int, ApiKey>
-     */
-    public function getApiKeys(): Collection
-    {
-        return $this->api_keys;
-    }
-
-    /**
-     * @return Collection<int, UserPasskey>
-     */
-    public function getPasskeys(): Collection
-    {
-        return $this->passkeys;
+        $this->roles = new ArrayCollection();
+        $this->api_keys = new ArrayCollection();
+        $this->passkeys = new ArrayCollection();
+        $this->login_tokens = new ArrayCollection();
     }
 
     public function __toString(): string
     {
-        return $this->getName() . ' (' . $this->getEmail() . ')';
+        return $this->name . ' (' . $this->email . ')';
     }
 }

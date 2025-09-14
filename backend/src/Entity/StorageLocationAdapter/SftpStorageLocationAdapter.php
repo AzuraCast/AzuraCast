@@ -18,19 +18,19 @@ final class SftpStorageLocationAdapter extends AbstractStorageLocationLocationAd
 
     public function getStorageAdapter(): ExtendedAdapterInterface
     {
-        $filteredPath = self::filterPath($this->storageLocation->getPath());
+        $filteredPath = self::filterPath($this->storageLocation->path);
         return new SftpAdapter($this->getSftpConnectionProvider(), $filteredPath);
     }
 
     private function getSftpConnectionProvider(): SftpConnectionProvider
     {
         return new SftpConnectionProvider(
-            $this->storageLocation->getSftpHost() ?? '',
-            $this->storageLocation->getSftpUsername() ?? '',
-            $this->storageLocation->getSftpPassword(),
-            $this->storageLocation->getSftpPrivateKey(),
-            $this->storageLocation->getSftpPrivateKeyPassPhrase(),
-            $this->storageLocation->getSftpPort() ?? 22
+            $this->storageLocation->sftpHost ?? '',
+            $this->storageLocation->sftpUsername ?? '',
+            $this->storageLocation->sftpPassword,
+            $this->storageLocation->sftpPrivateKey,
+            $this->storageLocation->sftpPrivateKeyPassPhrase,
+            $this->storageLocation->sftpPort ?? 22
         );
     }
 }

@@ -9,12 +9,36 @@ use App\Entity\Api\Status;
 use App\Entity\Repository\StationPlaylistRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-final class ToggleAction implements SingleActionInterface
+#[OA\Put(
+    path: '/station/{station_id}/playlist/{id}/toggle',
+    operationId: 'putTogglePlaylist',
+    summary: 'Toggle a playlist between enabled and disabled status.',
+    tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        new OA\Parameter(
+            name: 'id',
+            description: 'Playlist ID',
+            in: 'path',
+            required: true,
+            schema: new OA\Schema(type: 'integer', format: 'int64')
+        ),
+    ],
+    responses: [
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
+final readonly class ToggleAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationPlaylistRepository $playlistRepo
+        private StationPlaylistRepository $playlistRepo
     ) {
     }
 
@@ -28,8 +52,8 @@ final class ToggleAction implements SingleActionInterface
 
         $record = $this->playlistRepo->requireForStation($id, $request->getStation());
 
-        $newValue = !$record->getIsEnabled();
-        $record->setIsEnabled($newValue);
+        $newValue = !$record->is_enabled;
+        $record->is_enabled = $newValue;
 
         $em = $this->playlistRepo->getEntityManager();
         $em->persist($record);

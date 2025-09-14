@@ -38,7 +38,7 @@ final class MatomoAnalytics extends AbstractConnector
         NowPlaying $np,
         array $triggers
     ): void {
-        $config = $webhook->getConfig();
+        $config = $webhook->config ?? [];
 
         $matomoUrl = Types::stringOrNull($config['matomo_url'], true);
         $siteId = Types::intOrNull($config['site_id']);
@@ -48,24 +48,24 @@ final class MatomoAnalytics extends AbstractConnector
         }
 
         // Get listen URLs for each mount point.
-        $radioPort = $station->getFrontendConfig()->getPort();
+        $radioPort = $station->frontend_config->port;
 
         $baseUri = $this->router->getBaseUrl();
 
         $mountUrls = [];
         $mountNames = [];
-        foreach ($station->getMounts() as $mount) {
-            $mountUrl = $baseUri->withPath('/radio/' . $radioPort . $mount->getName());
-            $mountUrls[$mount->getId()] = (string)$mountUrl;
-            $mountNames[$mount->getId()] = (string)$mount;
+        foreach ($station->mounts as $mount) {
+            $mountUrl = $baseUri->withPath('/radio/' . $radioPort . $mount->name);
+            $mountUrls[$mount->id] = (string)$mountUrl;
+            $mountNames[$mount->id] = (string)$mount;
         }
 
         $remoteUrls = [];
         $remoteNames = [];
-        foreach ($station->getRemotes() as $remote) {
-            $remoteUrl = $baseUri->withPath('/radio/remote' . $remote->getMount());
-            $remoteUrls[$remote->getId()] = (string)$remoteUrl;
-            $remoteNames[$remote->getId()] = (string)$remote;
+        foreach ($station->remotes as $remote) {
+            $remoteUrl = $baseUri->withPath('/radio/remote' . $remote->mount);
+            $remoteUrls[$remote->id] = (string)$remoteUrl;
+            $remoteNames[$remote->id] = (string)$remote;
         }
 
         // Build Matomo URI
@@ -76,7 +76,7 @@ final class MatomoAnalytics extends AbstractConnector
 
         $apiToken = Types::stringOrNull($config['token'], true);
 
-        $stationName = $station->getName();
+        $stationName = $station->name;
 
         // Get all current listeners
         $liveListeners = $this->listenerRepo->iterateLiveListenersArray($station);

@@ -38,7 +38,7 @@
             <form-group-field
                 id="form_config_instance_url"
                 class="col-md-6"
-                :field="v$.config.instance_url"
+                :field="r$.config.instance_url"
                 :label="$gettext('Mastodon Instance URL')"
                 :description="$gettext('If your Mastodon username is &quot;@test@example.com&quot;, enter &quot;example.com&quot;.')"
             />
@@ -46,18 +46,16 @@
             <form-group-field
                 id="form_config_access_token"
                 class="col-md-6"
-                :field="v$.config.access_token"
+                :field="r$.config.access_token"
                 :label="$gettext('Access Token')"
             />
-
-            <common-rate-limit-fields v-model:form="form" />
         </div>
 
         <div class="row g-3 mb-3">
             <form-group-multi-check
                 id="form_config_visibility"
                 class="col-md-12"
-                :field="v$.config.visibility"
+                :field="r$.config.visibility"
                 :options="visibilityOptions"
                 stacked
                 radio
@@ -65,40 +63,32 @@
             />
         </div>
 
-        <common-social-post-fields
-            v-model:form="form"
-        />
+        <common-social-post-fields v-model:form="form"/>
     </tab>
 </template>
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import CommonRateLimitFields from "./Common/RateLimitFields.vue";
-import CommonSocialPostFields from "./Common/SocialPostFields.vue";
+import CommonSocialPostFields from "~/components/Stations/Webhooks/Form/Common/SocialPostFields.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
+import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
+import {WebhookRecordCommon, WebhookRecordMastodon} from "~/components/Stations/Webhooks/Form/form.ts";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {useAppScopedRegle} from "~/vendor/regle.ts";
+import {required} from "@regle/rules";
 
-const props = defineProps({
-    title: {
-        type: String,
-        required: true
-    },
-    form: {
-        type: Object,
-        required: true
-    }
-});
+defineProps<WebhookComponentProps>();
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+type ThisWebhookRecord = WebhookRecordCommon & WebhookRecordMastodon;
 
-const {v$, tabClass} = useVuelidateOnFormTab(
+const form = defineModel<ThisWebhookRecord>('form', {required: true});
+
+const {r$} = useAppScopedRegle(
+    form,
     {
         config: {
             instance_url: {required},
@@ -106,15 +96,12 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             visibility: {required}
         }
     },
-    form,
     {
-        config: {
-            instance_url: '',
-            access_token: '',
-            visibility: 'public',
-        }
+        namespace: 'station-webhooks'
     }
 );
+
+const tabClass = useFormTabClass(r$);
 
 const {$gettext} = useTranslate();
 

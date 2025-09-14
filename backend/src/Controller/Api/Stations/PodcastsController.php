@@ -16,7 +16,6 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\Flow\UploadedFile;
 use App\Utilities\Types;
-use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -27,55 +26,48 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/station/{station_id}/podcasts',
         operationId: 'getPodcasts',
-        description: 'List all current podcasts.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Podcasts'],
+        summary: 'List all current podcasts.',
+        tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_Podcast')
+                    items: new OA\Items(ref: ApiPodcast::class)
                 )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Post(
         path: '/station/{station_id}/podcasts',
         operationId: 'addPodcast',
-        description: 'Create a new podcast.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Create a new podcast.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_Podcast')
+            content: new OA\JsonContent(ref: ApiPodcast::class)
         ),
-        tags: ['Stations: Podcasts'],
+        tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_Podcast')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: ApiPodcast::class)
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Get(
         path: '/station/{station_id}/podcast/{id}',
         operationId: 'getPodcast',
-        description: 'Retrieve details for a single podcast.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Podcasts'],
+        summary: 'Retrieve details for a single podcast.',
+        tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -87,25 +79,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_Podcast')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: ApiPodcast::class)
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Put(
         path: '/station/{station_id}/podcast/{id}',
         operationId: 'editPodcast',
-        description: 'Update details of a single podcast.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Update details of a single podcast.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_Podcast')
+            content: new OA\JsonContent(ref: ApiPodcast::class)
         ),
-        tags: ['Stations: Podcasts'],
+        tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -117,18 +106,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Delete(
         path: '/station/{station_id}/podcast/{id}',
         operationId: 'deletePodcast',
-        description: 'Delete a single podcast.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Podcasts'],
+        summary: 'Delete a single podcast.',
+        tags: [OpenApi::TAG_STATIONS_PODCASTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -140,10 +128,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]
@@ -176,7 +164,7 @@ final class PodcastsController extends AbstractApiCrudController
             ->leftJoin('p.categories', 'pc')
             ->where('p.storage_location = :storageLocation')
             ->orderBy('p.title', 'ASC')
-            ->setParameter('storageLocation', $station->getPodcastsStorageLocation());
+            ->setParameter('storageLocation', $station->podcasts_storage_location);
 
         $queryBuilder = $this->searchQueryBuilder(
             $request,
@@ -207,7 +195,7 @@ final class PodcastsController extends AbstractApiCrudController
         /** @var Podcast $record */
         $record = $this->editRecord(
             $data,
-            new Podcast($station->getPodcastsStorageLocation())
+            new Podcast($station->podcasts_storage_location)
         );
 
         if (!empty($data['artwork_file'])) {
@@ -231,18 +219,14 @@ final class PodcastsController extends AbstractApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): ApiPodcast
     {
-        if (!($record instanceof Podcast)) {
-            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
-        }
-
         $isInternal = $request->isInternal();
         $router = $request->getRouter();
 
         $return = $this->podcastApiGen->__invoke($record, $request);
 
         $baseRouteParams = [
-            'station_id' => $request->getStation()->getIdRequired(),
-            'podcast_id' => $record->getIdRequired(),
+            'station_id' => $request->getStation()->id,
+            'podcast_id' => $record->id,
         ];
 
         $artRouteParams = $baseRouteParams;
@@ -317,7 +301,7 @@ final class PodcastsController extends AbstractApiCrudController
         $record = parent::fromArray($data, $record, $context);
 
         if (null !== $newCategories) {
-            $categories = $record->getCategories();
+            $categories = $record->categories;
             if ($categories->count() > 0) {
                 foreach ($categories as $existingCategories) {
                     $this->em->remove($existingCategories);

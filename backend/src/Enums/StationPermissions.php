@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
+use OpenApi\Attributes as OA;
+
+#[OA\Schema(type: 'string')]
 enum StationPermissions: string implements PermissionInterface
 {
     case All = 'administer all';
@@ -16,6 +19,7 @@ enum StationPermissions: string implements PermissionInterface
     case MountPoints = 'manage station mounts';
     case RemoteRelays = 'manage station remotes';
     case Media = 'manage station media';
+    case DeleteMedia = 'delete station media';
     case Automation = 'manage station automation';
     case WebHooks = 'manage station web hooks';
     case Podcasts = 'manage station podcasts';
@@ -33,6 +37,7 @@ enum StationPermissions: string implements PermissionInterface
             self::MountPoints => __('Manage Station Mount Points'),
             self::RemoteRelays => __('Manage Station Remote Relays'),
             self::Media => __('Manage Station Media'),
+            self::DeleteMedia => __('Delete Station Media'),
             self::Automation => __('Manage Station Automation'),
             self::WebHooks => __('Manage Station Web Hooks'),
             self::Podcasts => __('Manage Station Podcasts'),

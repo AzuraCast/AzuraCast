@@ -108,23 +108,19 @@
 import TimeSeriesChart from "~/components/Common/Charts/TimeSeriesChart.vue";
 import HourChart from "~/components/Common/Charts/HourChart.vue";
 import PieChart from "~/components/Common/Charts/PieChart.vue";
-import {computed, ref, toRef, watch} from "vue";
-import {useAsyncState, useMounted} from "@vueuse/core";
+import {computed, ref, toRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {useTranslate} from "~/vendor/gettext.ts";
+import {DateRange} from "~/components/Stations/Reports/Overview/CommonMetricsView.vue";
+import {useQuery} from "@tanstack/vue-query";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
-const props = defineProps({
-    dateRange: {
-        type: Object,
-        required: true
-    },
-    apiUrl: {
-        type: String,
-        required: true
-    },
-});
+const props = defineProps<{
+    dateRange: DateRange,
+    apiUrl: string,
+}>();
 
 const dateRange = toRef(props, 'dateRange');
 const {axios} = useAxios();
@@ -133,21 +129,37 @@ const {DateTime} = useLuxon();
 
 const resultType = ref('average');
 
-const blankChartSection = {
+type ChartData = {
+    labels: any[],
+    metrics: any[],
+    alt: any[]
+}
+
+const blankChartSection: ChartData = {
     labels: [],
     metrics: [],
     alt: []
 };
 
-const {state: chartData, isLoading, execute: relist} = useAsyncState(
-    () => axios.get(props.apiUrl, {
-        params: {
-            type: resultType.value,
-            start: DateTime.fromJSDate(dateRange.value.startDate).toISO(),
-            end: DateTime.fromJSDate(dateRange.value.endDate).toISO()
-        }
-    }).then(r => r.data),
-    {
+const {data: chartData, isLoading} = useQuery({
+    queryKey: queryKeyWithStation([
+        QueryKeys.StationReports,
+        'listeners_by_time_period',
+        resultType,
+        dateRange
+    ]),
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get(props.apiUrl, {
+            signal,
+            params: {
+                type: resultType.value,
+                start: DateTime.fromJSDate(dateRange.value.startDate).toISO(),
+                end: DateTime.fromJSDate(dateRange.value.endDate).toISO()
+            }
+        });
+        return data;
+    },
+    placeholderData: () => ({
         daily: {...blankChartSection},
         day_of_week: {...blankChartSection},
         hourly: {
@@ -160,11 +172,8 @@ const {state: chartData, isLoading, execute: relist} = useAsyncState(
             day5: {...blankChartSection},
             day6: {...blankChartSection},
         }
-    },
-    {
-        shallow: true
-    }
-);
+    })
+});
 
 const currentHour = ref('all');
 
@@ -183,19 +192,5 @@ const currentHourOptions = computed(() => ({
 
 const currentHourlyChart = computed(() => {
     return chartData.value?.hourly[currentHour.value];
-});
-
-const isMounted = useMounted();
-
-watch(dateRange, () => {
-    if (isMounted.value) {
-        relist();
-    }
-});
-
-watch(resultType, () => {
-    if (isMounted.value) {
-        relist();
-    }
 });
 </script>

@@ -1,6 +1,6 @@
-import {forEach} from "lodash";
-import {h} from "vue";
-import {useNotify} from "~/functions/useNotify.ts";
+import {forEach} from "es-toolkit/compat";
+import {h, VNode} from "vue";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 
 interface BatchEpisode {
     id: string,
@@ -8,10 +8,10 @@ interface BatchEpisode {
 }
 
 interface BatchResponse {
-    success: bool,
+    success: boolean,
     episodes: BatchEpisode[],
     errors: string[],
-    records?: array | null
+    records?: object[] | null
 }
 
 export default function useHandlePodcastBatchResponse() {
@@ -23,7 +23,7 @@ export default function useHandlePodcastBatchResponse() {
         errorMessage: string
     ): void => {
         if (data.success) {
-            const itemNameNodes = [];
+            const itemNameNodes: VNode[] = [];
             forEach(data.episodes, (item) => {
                 itemNameNodes.push(h('div', {}, item.title));
             });
@@ -32,7 +32,7 @@ export default function useHandlePodcastBatchResponse() {
                 title: successMessage
             });
         } else {
-            const itemErrorNodes = [];
+            const itemErrorNodes: VNode[] = [];
             forEach(data.errors, (err) => {
                 itemErrorNodes.push(h('div', {}, err));
             })

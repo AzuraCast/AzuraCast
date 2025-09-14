@@ -60,11 +60,8 @@ final class LoginAction implements SingleActionInterface
                 $this->rateLimit->checkRequestRateLimit($request, 'login', 30, 5);
             } catch (RateLimitExceededException) {
                 $flash->error(
-                    sprintf(
-                        '<b>%s</b><br>%s',
-                        __('Too many login attempts'),
-                        __('You have attempted to log in too many times. Please wait 30 seconds and try again.')
-                    ),
+                    message: __('You have attempted to log in too many times. Please wait 30 seconds and try again.'),
+                    title: __('Too many login attempts'),
                 );
 
                 return $response->withRedirect($request->getUri()->getPath());
@@ -100,17 +97,15 @@ final class LoginAction implements SingleActionInterface
                 // Redirect to complete setup if it's not completed yet.
                 if (!$settings->isSetupComplete()) {
                     $flash->success(
-                        sprintf(
-                            '<b>%s</b><br>%s',
-                            __('Logged in successfully.'),
-                            __('Complete the setup process to get started.')
-                        ),
+                        message: __('Complete the setup process to get started.'),
+                        title: __('Logged in successfully.'),
                     );
                     return $response->withRedirect($request->getRouter()->named('setup:index'));
                 }
 
                 $flash->success(
-                    '<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(),
+                    message: $user->email,
+                    title: __('Logged in successfully.')
                 );
 
                 $referrer = Types::stringOrNull($session->get('login_referrer'), true);
@@ -120,7 +115,8 @@ final class LoginAction implements SingleActionInterface
             }
 
             $flash->error(
-                '<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),
+                message: __('Your credentials could not be verified.'),
+                title: __('Login unsuccessful')
             );
 
             return $response->withRedirect((string)$request->getUri());

@@ -8,6 +8,7 @@
             :aria-label="title"
             :class="'modal-'+size"
             aria-hidden="true"
+            v-on="eventListeners"
         >
             <div class="modal-dialog">
                 <div
@@ -32,7 +33,10 @@
                             @click.prevent="hide"
                         />
                     </div>
-                    <div class="modal-body">
+                    <div
+                        v-if="slots['default']"
+                        class="modal-body"
+                    >
                         <loading :loading="busy">
                             <slot name="default" />
                         </loading>
@@ -50,81 +54,64 @@
 </template>
 
 <script setup lang="ts">
-import Modal from 'bootstrap/js/src/modal';
-import {onMounted, ref, useSlots, watch} from 'vue';
+import {Modal} from "bootstrap";
+import {onMounted, onUnmounted, ref, useSlots, useTemplateRef, watch} from "vue";
 import Loading from "~/components/Common/Loading.vue";
-import {useEventListener} from "@vueuse/core";
 
 const slots = useSlots();
 
-const props = defineProps({
-    active: {
-        type: Boolean,
-        default: false
-    },
-    busy: {
-        type: Boolean,
-        default: false
-    },
-    size: {
-        type: String,
-        default: 'md'
-    },
-    title: {
-        type: String,
-        default: null
+const props = withDefaults(
+    defineProps<{
+        active?: boolean,
+        busy?: boolean,
+        size?: string,
+        title?: string,
+    }>(),
+    {
+        active: false,
+        busy: false,
+        size: 'md'
     }
-});
+);
 
-const emit = defineEmits([
-    'shown',
-    'hidden',
-    'update:active'
-]);
+const emit = defineEmits<{
+    (e: 'shown'): void,
+    (e: 'hidden'): void,
+    (e: 'update:active', active: boolean): void
+}>();
 
-const isActive = ref(props.active);
+const isActive = ref<boolean>(props.active);
 watch(isActive, (newActive) => {
     emit('update:active', newActive);
 });
 
-let bsModal = null;
-const $modal = ref<HTMLDivElement | null>(null);
+let bsModal: Modal | null = null;
+const $modal = useTemplateRef('$modal');
 
 onMounted(() => {
-    bsModal = new Modal($modal.value);
+    if ($modal.value) {
+        bsModal = new Modal($modal.value);
+    }
 });
 
-useEventListener(
-    $modal,
-    'hide.bs.modal',
-    () => {
+onUnmounted(() => {
+    bsModal?.dispose();
+});
+
+const eventListeners = {
+    ['hide.bs.modal']: () => {
         isActive.value = false;
-    }
-);
-
-useEventListener(
-    $modal,
-    'show.bs.modal',
-    () => {
-        isActive.value = true;
-    }
-);
-
-useEventListener(
-    $modal,
-    'hidden.bs.modal',
-    () => {
+    },
+    ['hidden.bs.modal']: () => {
         emit('hidden');
-    }
-);
-
-useEventListener(
-    $modal,
-    'shown.bs.modal',
-    () => {
+    },
+    ['show.bs.modal']: () => {
+        isActive.value = true;
+    },
+    ['shown.bs.modal']: () => {
         emit('shown');
-    }
-);
+    },
+};
 
 const show = () => {
     bsModal?.show();

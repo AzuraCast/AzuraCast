@@ -9,13 +9,37 @@ use App\Entity\Repository\StationMediaRepository;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-final class DownloadAction implements SingleActionInterface
+#[OA\Get(
+    path: '/station/{station_id}/ondemand/download/{media_id}',
+    operationId: 'getStationOnDemandDownload',
+    summary: 'Download an on-demand playlist file by media unique ID.',
+    security: [],
+    tags: [OpenApi::TAG_PUBLIC_STATIONS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        new OA\Parameter(
+            name: 'media_id',
+            description: 'The media unique ID to download.',
+            in: 'path',
+            required: true,
+            schema: new OA\Schema(type: 'string'),
+        ),
+    ],
+    responses: [
+        new OpenApi\Response\SuccessWithDownload(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
+final readonly class DownloadAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationMediaRepository $mediaRepo,
-        private readonly StationFilesystems $stationFilesystems,
+        private StationMediaRepository $mediaRepo,
+        private StationFilesystems $stationFilesystems,
     ) {
     }
 
@@ -34,6 +58,6 @@ final class DownloadAction implements SingleActionInterface
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
         set_time_limit(600);
-        return $response->streamFilesystemFile($fsMedia, $media->getPath());
+        return $response->streamFilesystemFile($fsMedia, $media->path);
     }
 }

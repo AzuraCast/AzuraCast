@@ -7,7 +7,7 @@
             <form-group-field
                 id="edit_form_name"
                 class="col-md-12"
-                :field="v$.name"
+                :field="r$.name"
                 :label="$gettext('Programmatic Name')"
             >
                 <template #description>
@@ -20,7 +20,7 @@
             <form-group-multi-check
                 id="edit_form_format"
                 class="col-md-6"
-                :field="v$.format"
+                :field="r$.format"
                 :options="formatOptions"
                 stacked
                 radio
@@ -30,7 +30,7 @@
             <form-group-multi-check
                 id="edit_form_bitrate"
                 class="col-md-6"
-                :field="v$.bitrate"
+                :field="r$.bitrate"
                 :options="bitrateOptions"
                 stacked
                 radio
@@ -42,51 +42,45 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {map} from "lodash";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required} from "@vuelidate/validators";
-import {useVModel} from "@vueuse/core";
 import Tab from "~/components/Common/Tab.vue";
+import {HlsStreamProfiles} from "~/entities/ApiInterfaces.ts";
+import {storeToRefs} from "pinia";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {computed} from "vue";
+import {useStationsHlsStreamsForm} from "~/components/Stations/HlsStreams/Form/form.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
+import {toRefs} from "@vueuse/core";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    }
-});
+const {r$} = storeToRefs(useStationsHlsStreamsForm());
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
-
-const {v$, tabClass} = useVuelidateOnFormTab(
-    {
-        name: {required},
-        format: {required},
-        bitrate: {required}
-    },
-    form,
-    {
-        name: null,
-        format: 'aac',
-        bitrate: 128
-    }
-);
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.basicInfoTab));
 
 const formatOptions = [
     {
-        value: 'aac',
-        text: 'AAC'
+        value: HlsStreamProfiles.AacLowComplexity,
+        text: 'AAC Low Complexity (Default)',
+    },
+    {
+        value: HlsStreamProfiles.AacHighEfficiencyV1,
+        text: 'AAC High Efficiency V1 (HE-AAC)'
+    },
+    {
+        value: HlsStreamProfiles.AacHighEfficiencyV2,
+        text: 'AAC High Efficiency V2 (HE-AACv2)'
     }
 ];
 
-const bitrateOptions = map(
-    [32, 48, 64, 96, 128, 192, 256, 320],
-    (val) => {
-        return {
+const stationData = useStationData();
+const {maxBitrate} = toRefs(stationData);
+
+const defaultBitrateOptions = [32, 48, 64, 96, 128, 192, 256, 320];
+
+const bitrateOptions = computed(() =>
+    defaultBitrateOptions.filter((bitrate) => maxBitrate.value === 0 || bitrate <= maxBitrate.value)
+        .map((val) => ({
             value: val,
-            text: val
-        }
-    },
+            text: String(val)
+        }))
 );
 </script>

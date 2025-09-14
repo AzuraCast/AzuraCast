@@ -10,16 +10,15 @@
 
         <data-table
             id="api_keys"
-            ref="$datatable"
             :fields="fields"
-            :api-url="apiUrl"
+            :provider="itemProvider"
         >
-            <template #cell(actions)="row">
+            <template #cell(actions)="{ item }">
                 <div class="btn-group btn-group-sm">
                     <button
                         type="button"
                         class="btn btn-sm btn-danger"
-                        @click="doDelete(row.item.links.self)"
+                        @click="doDelete(item.links.self)"
                     >
                         {{ $gettext('Delete') }}
                     </button>
@@ -30,19 +29,22 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
-import {ref} from "vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import {useTranslate} from "~/vendor/gettext";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
+import {ApiKey, HasLinks} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 const apiUrl = getApiUrl('/admin/api-keys');
 
 const {$gettext} = useTranslate();
 
-const fields: DataTableField[] = [
+type Row = Required<ApiKey & HasLinks>
+
+const fields: DataTableField<Row>[] = [
     {
         key: 'comment',
         isRowHeader: true,
@@ -62,11 +64,13 @@ const fields: DataTableField[] = [
     }
 ];
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {relist} = useHasDatatable($datatable);
+const itemProvider = useApiItemProvider<Row>(
+    apiUrl,
+    [QueryKeys.AccountApiKeys]
+);
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete API Key?'),
-    relist
+    () => void itemProvider.refresh()
 );
 </script>

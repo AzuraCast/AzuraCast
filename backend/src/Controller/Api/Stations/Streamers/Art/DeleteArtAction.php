@@ -9,12 +9,36 @@ use App\Entity\Api\Status;
 use App\Entity\Repository\StationStreamerRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-final class DeleteArtAction implements SingleActionInterface
+#[OA\Delete(
+    path: '/station/{station_id}/streamer/{id}/art',
+    operationId: 'deleteStreamerArt',
+    summary: 'Removes the default album art for a streamer.',
+    tags: [OpenApi::TAG_STATIONS_STREAMERS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        new OA\Parameter(
+            name: 'id',
+            description: 'Streamer ID',
+            in: 'path',
+            required: true,
+            schema: new OA\Schema(type: 'integer', format: 'int64')
+        ),
+    ],
+    responses: [
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
+final readonly class DeleteArtAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationStreamerRepository $streamerRepo
+        private StationStreamerRepository $streamerRepo
     ) {
     }
 

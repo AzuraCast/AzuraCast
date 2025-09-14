@@ -19,10 +19,32 @@ use App\Exception\StorageLocationFullException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\MediaProcessor;
+use App\OpenApi;
 use App\Service\Flow;
 use App\Utilities\Types;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[
+    OA\Post(
+        path: '/station/{station_id}/files/upload',
+        operationId: 'postUploadFile',
+        summary: 'Upload and process a new media file.',
+        requestBody: new OA\RequestBody(
+            ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD
+        ),
+        tags: [OpenApi::TAG_STATIONS_MEDIA],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class FlowUploadAction implements SingleActionInterface
 {
     use LoggerAwareTrait;
@@ -44,7 +66,7 @@ final class FlowUploadAction implements SingleActionInterface
         $allParams = $request->getParams();
         $station = $request->getStation();
 
-        $mediaStorage = $station->getMediaStorageLocation();
+        $mediaStorage = $station->media_storage_location;
         $mediaStorage->errorIfFull();
 
         $flowResponse = Flow::process($request, $response, $station->getRadioTempDir());
@@ -54,7 +76,7 @@ final class FlowUploadAction implements SingleActionInterface
 
         $currentDir = Types::string($request->getParam('currentDirectory'));
 
-        $destPath = $flowResponse->getClientFilename();
+        $destPath = $flowResponse->getClientFullPath();
         if (!empty($currentDir)) {
             $destPath = $currentDir . '/' . $destPath;
         }
@@ -87,7 +109,7 @@ final class FlowUploadAction implements SingleActionInterface
         if ($stationMedia instanceof StationMedia) {
             if (!empty($allParams['searchPhrase'])) {
                 // If the user is looking at a playlist's contents, add uploaded media to that playlist.
-                [$searchPhrase, $playlist] = $this->parseSearchQuery(
+                [, $playlist] = $this->parseSearchQuery(
                     $station,
                     $allParams['searchPhrase']
                 );

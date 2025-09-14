@@ -19,6 +19,11 @@ class SupervisorException extends Exception
         SupervisorLibException $e,
         string $processName
     ): self {
+        $statusCode = $e->getCode();
+        if ($statusCode < 100 || $statusCode >= 600) {
+            $statusCode = 500;
+        }
+
         if ($e instanceof SupervisorBadNameException) {
             $headline = sprintf(
                 __('%s is not recognized as a service.'),
@@ -28,7 +33,7 @@ class SupervisorException extends Exception
 
             $eNew = new BadNameException(
                 $headline . '; ' . $body,
-                $e->getCode(),
+                $statusCode,
                 $e
             );
         } elseif ($e instanceof AlreadyStartedException) {
@@ -40,7 +45,7 @@ class SupervisorException extends Exception
 
             $eNew = new AlreadyRunningException(
                 $headline . '; ' . $body,
-                $e->getCode(),
+                $statusCode,
                 $e
             );
         } elseif ($e instanceof SupervisorNotRunningException) {
@@ -52,7 +57,7 @@ class SupervisorException extends Exception
 
             $eNew = new NotRunningException(
                 $headline . '; ' . $body,
-                $e->getCode(),
+                $statusCode,
                 $e
             );
         } else {
@@ -68,7 +73,7 @@ class SupervisorException extends Exception
 
             $eNew = new self(
                 $headline,
-                $e->getCode(),
+                $statusCode,
                 $e
             );
         }

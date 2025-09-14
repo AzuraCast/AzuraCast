@@ -2,7 +2,7 @@
     <canvas ref="$canvas">
         <slot>
             <chart-alt-values
-                v-if="alt.length > 0"
+                v-if="alt && alt.length > 0"
                 :alt="alt"
             />
         </slot>
@@ -10,28 +10,34 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {computed, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
-import useChart, {chartProps, ChartTemplateRef} from "~/functions/useChart";
+import useChart, {ChartProps} from "~/functions/useChart";
 import {useLuxon} from "~/vendor/luxon";
 
-const props = defineProps({
-    ...chartProps,
-});
+interface TimeSeriesChartProps extends ChartProps<'line'> {
+    tz?: string,
+}
 
-const $canvas = ref<ChartTemplateRef>(null);
+const props = withDefaults(
+    defineProps<TimeSeriesChartProps>(),
+    {
+        tz: 'UTC'
+    }
+);
+
+const $canvas = useTemplateRef('$canvas');
 
 const {$gettext} = useTranslate();
 const {DateTime} = useLuxon();
 
-useChart(
+useChart<'line'>(
     props,
     $canvas,
-    {
+    computed(() => ({
         type: 'line',
         options: {
-            aspectRatio: props.aspectRatio,
             datasets: {
                 line: {
                     spanGaps: true,
@@ -43,20 +49,55 @@ useChart(
                     // Container for pan options
                     pan: {
                         enabled: true,
-                        mode: 'x'
+                        mode: 'x',
+                    },
+                    limits: {
+                        x: {
+                            max: Number(DateTime.local({zone: props.tz}).toMillis()),
+                        }
+                    }
+                }, 
+                tooltip: {
+                    intersect: false,
+                    mode: 'index',
+                    callbacks: {
+                        title: function (ctx) {
+                            const title: string[] = [];
+
+                            ctx.forEach((ctxRow) => {
+                                title.push(
+                                    DateTime.fromMillis(ctxRow.parsed.x).setZone(props.tz)?.toLocaleString(DateTime.DATE_SHORT)
+                                );
+                            });
+
+                            return title.join(', ');
+                        },
+                        label: function (ctx) {
+                            let label = ctx.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+
+                            label += ctx.parsed.y.toFixed(2);
+
+                            return label;
+                        }
                     }
                 }
             },
             scales: {
                 x: {
                     type: 'time',
-                    distribution: 'linear',
                     display: true,
-                    min: DateTime.now().minus({days: 30}).toJSDate(),
-                    max: DateTime.now().toJSDate(),
+                    max: Number(DateTime.local({ zone: props.tz }).toMillis()),
+                    adapters: {
+                        date: {
+                            setZone: true,
+                            zone: props.tz
+                        }
+                    },
                     time: {
-                        unit: 'day',
-                        tooltipFormat: DateTime.DATE_SHORT,
+                        unit: 'day'
                     },
                     ticks: {
                         source: 'data',
@@ -65,30 +106,14 @@ useChart(
                 },
                 y: {
                     display: true,
-                    scaleLabel: {
+                    title: {
                         display: true,
-                        labelString: $gettext('Listeners')
+                        text: $gettext('Listeners')
                     },
-                    ticks: {
-                        min: 0
-                    }
-                }
-            },
-            tooltips: {
-                intersect: false,
-                mode: 'index',
-                callbacks: {
-                    label: function (tooltipItem, myData) {
-                        let label = myData.datasets[tooltipItem.datasetIndex].label || '';
-                        if (label) {
-                            label += ': ';
-                        }
-                        label += parseFloat(tooltipItem.value).toFixed(2);
-                        return label;
-                    }
+                    min: 0
                 }
             }
         }
-    }
+    }))
 );
 </script>

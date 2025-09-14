@@ -167,6 +167,16 @@
                                 {{ $gettext('Reprocess') }}
                             </button>
                         </li>
+                        <li>
+                            <button
+                                type="button"
+                                class="dropdown-item"
+                                :title="$gettext('Remove any extra metadata (fade points, cue points, etc.) from the selected media')"
+                                @click="doClearExtra"
+                            >
+                                {{ $gettext('Clear Extra Metadata') }}
+                            </button>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -199,44 +209,33 @@
 </template>
 
 <script setup lang="ts">
-import {Dropdown} from 'bootstrap';
-import {intersection, map} from 'lodash';
-import Icon from '~/components/Common/Icon.vue';
-import '~/vendor/sweetalert';
-import {computed, ref, toRef, watch} from "vue";
+import {Dropdown} from "bootstrap";
+import {filter, intersection, map} from "es-toolkit/compat";
+import Icon from "~/components/Common/Icons/Icon.vue";
+import {computed, ref, toRef, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
-import {useSweetAlert} from "~/vendor/sweetalert";
-import {IconClearAll, IconDelete, IconFolder, IconMoreHoriz, IconMove} from "~/components/Common/icons";
+import {IconClearAll, IconDelete, IconFolder, IconMoreHoriz, IconMove} from "~/components/Common/Icons/icons.ts";
 import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchResponse.ts";
-import {useNotify} from "~/functions/useNotify.ts";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
+import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
+import {MediaInitialPlaylist, MediaSelectedItems} from "~/components/Stations/Media.vue";
+import {ApiStationMediaPlaylist} from "~/entities/ApiInterfaces";
 
-const props = defineProps({
-    currentDirectory: {
-        type: String,
-        required: true
-    },
-    selectedItems: {
-        type: Object,
-        required: true
-    },
-    playlists: {
-        type: Array,
-        default: () => {
-            return [];
-        }
-    },
-    batchUrl: {
-        type: String,
-        required: true
-    },
-    supportsImmediateQueue: {
-        type: Boolean,
-        required: true
-    }
-});
+const props = defineProps<{
+    currentDirectory: string,
+    selectedItems: MediaSelectedItems,
+    playlists?: MediaInitialPlaylist[],
+    batchUrl: string,
+    supportsImmediateQueue: boolean
+}>();
 
-const emit = defineEmits(['relist', 'add-playlist', 'move-files', 'create-directory']);
+const emit = defineEmits<{
+    (e: 'relist'): void,
+    (e: 'add-playlist', playlist: any): void,
+    (e: 'move-files'): void,
+    (e: 'create-directory'): void
+}>();
 
 const selectedItems = toRef(props, 'selectedItems');
 
@@ -244,20 +243,28 @@ const hasSelectedItems = computed(() => {
     return selectedItems.value.all.length > 0;
 });
 
-const checkedPlaylists = ref([]);
+const checkedPlaylists = ref<(number | string)[]>([]);
 const newPlaylist = ref('');
 
 watch(selectedItems, (items) => {
     // Get all playlists that are active on ALL selected items.
     const playlistsForItems = map(items.all, (item) => {
-        return map(item.playlists, 'id');
+        const itemPlaylists = (item.dir?.playlists ?? item.media?.playlists ?? []) as Required<ApiStationMediaPlaylist>[];
+
+        return map(
+            filter(
+                itemPlaylists,
+                (row) => row.folder === null
+            ),
+            'id'
+        );
     });
 
     // Check the checkboxes for those playlists.
     checkedPlaylists.value = intersection(...playlistsForItems);
 });
 
-watch(newPlaylist, (text) => {
+watch(newPlaylist, (text: string) => {
     if (text !== '') {
         if (!checkedPlaylists.value.includes('new')) {
             checkedPlaylists.value.push('new');
@@ -276,24 +283,24 @@ const notifyNoFiles = () => {
     notifyError($gettext('No files selected.'));
 }
 
-const doBatch = (action, successMessage, errorMessage) => {
+const doBatch = async (action: string, successMessage: string, errorMessage: string) => {
     if (hasSelectedItems.value) {
-        axios.put(props.batchUrl, {
+        const {data} = await axios.put(props.batchUrl, {
             'do': action,
             'current_directory': props.currentDirectory,
             'files': selectedItems.value.files,
             'dirs': selectedItems.value.directories
-        }).then(({data}) => {
-            handleBatchResponse(data, successMessage, errorMessage);
-            emit('relist');
         });
+
+        handleBatchResponse(data, successMessage, errorMessage);
+        emit('relist');
     } else {
         notifyNoFiles();
     }
 };
 
 const doImmediateQueue = () => {
-    doBatch(
+    void doBatch(
         'immediate',
         $gettext('Files played immediately:'),
         $gettext('Error queueing files:')
@@ -301,7 +308,7 @@ const doImmediateQueue = () => {
 };
 
 const doQueue = () => {
-    doBatch(
+    void doBatch(
         'queue',
         $gettext('Files queued for playback:'),
         $gettext('Error queueing files:')
@@ -309,70 +316,81 @@ const doQueue = () => {
 };
 
 const doReprocess = () => {
-    doBatch(
+    void doBatch(
         'reprocess',
         $gettext('Files marked for reprocessing:'),
         $gettext('Error reprocessing files:')
     );
 };
 
-const {confirmDelete} = useSweetAlert();
-
-const doDelete = () => {
-    const numFiles = selectedItems.value.all.length;
-    const buttonConfirmText = $gettext(
-        'Delete %{ num } media files?',
-        {num: numFiles}
+const doClearExtra = () => {
+    void doBatch(
+        'clear-extra',
+        $gettext('Extra metadata cleared for files:'),
+        $gettext('Error reprocessing files:')
     );
-
-    confirmDelete({
-        title: buttonConfirmText,
-    }).then((result) => {
-        if (result.value) {
-            doBatch(
-                'delete',
-                $gettext('Files removed:'),
-                $gettext('Error removing files:')
-            );
-        }
-    });
 };
 
-const $playlistDropdown = ref<InstanceType<typeof HTMLDivElement> | null>(null);
+const {confirmDelete} = useDialog();
 
-const setPlaylists = () => {
+const doDelete = async () => {
+    const numFiles = selectedItems.value.all.length;
+    const buttonConfirmText = $gettext(
+        'Delete %{num} media files?',
+        {num: String(numFiles)}
+    );
+
+    const {value} = await confirmDelete({
+        title: buttonConfirmText,
+        confirmButtonText: $gettext('Delete')
+    });
+
+    if (!value) {
+        return;
+    }
+
+    await doBatch(
+        'delete',
+        $gettext('Files removed:'),
+        $gettext('Error removing files:')
+    );
+};
+
+const $playlistDropdown = useTemplateRef('$playlistDropdown');
+
+const setPlaylists = async () => {
     if ($playlistDropdown.value) {
-        Dropdown.getInstance($playlistDropdown.value).hide();
+        Dropdown.getInstance($playlistDropdown.value)?.hide();
     }
 
     if (hasSelectedItems.value) {
-        axios.put(props.batchUrl, {
+        const {data} = await axios.put(props.batchUrl, {
             'do': 'playlist',
             'playlists': checkedPlaylists.value,
             'new_playlist_name': newPlaylist.value,
             'currentDirectory': props.currentDirectory,
             'files': selectedItems.value.files,
             'dirs': selectedItems.value.directories
-        }).then(({data}) => {
-            handleBatchResponse(
-                data,
-                (checkedPlaylists.value.length > 0)
-                    ? $gettext('Playlists updated for selected files:')
-                    : $gettext('Playlists cleared for selected files:'),
-                $gettext('Error updating playlists:')
-            );
+        });
 
-            if (data.success) {
-                if (data.record) {
-                    emit('add-playlist', data.record);
-                }
+        handleBatchResponse(
+            data,
+            (checkedPlaylists.value.length > 0)
+                ? $gettext('Playlists updated for selected files:')
+                : $gettext('Playlists cleared for selected files:'),
+            $gettext('Error updating playlists:')
+        );
 
-                checkedPlaylists.value = [];
-                newPlaylist.value = '';
+        if (data.success) {
+            if (data.record) {
+                emit('add-playlist', data.record);
             }
 
-            emit('relist');
-        });
+            checkedPlaylists.value = [];
+            newPlaylist.value = '';
+        }
+
+        emit('relist');
     } else {
         notifyNoFiles();
     }
@@ -382,7 +400,7 @@ const clearPlaylists = () => {
     checkedPlaylists.value = [];
     newPlaylist.value = '';
 
-    setPlaylists();
+    void setPlaylists();
 };
 
 const moveFiles = () => {

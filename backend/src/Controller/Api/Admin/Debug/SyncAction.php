@@ -7,21 +7,49 @@ namespace App\Controller\Api\Admin\Debug;
 use App\Console\Command\Sync\SingleTaskCommand;
 use App\Container\LoggerAwareTrait;
 use App\Controller\SingleActionInterface;
-use App\Event\GetSyncTasks;
+use App\Entity\Api\Admin\Debug\LogResult;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use Monolog\Handler\TestHandler;
 use Monolog\Level;
-use Psr\EventDispatcher\EventDispatcherInterface;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[
+    OA\Put(
+        path: '/admin/debug/sync/{task}',
+        operationId: 'adminDebugRunSyncTask',
+        summary: 'Manually run a scheduled synchronized task by name.',
+        tags: [OpenApi::TAG_ADMIN_DEBUG],
+        parameters: [
+            new OA\Parameter(
+                name: 'task',
+                description: 'Synchronized task (either class name or "all").',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(
+                    type: 'string'
+                )
+            ),
+        ],
+        responses: [
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    ref: LogResult::class
+                )
+            ),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
+        ]
+    ),
+]
 final class SyncAction implements SingleActionInterface
 {
     use LoggerAwareTrait;
 
     public function __construct(
-        private readonly SingleTaskCommand $taskCommand,
-        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly SingleTaskCommand $taskCommand
     ) {
     }
 
@@ -38,21 +66,16 @@ final class SyncAction implements SingleActionInterface
 
         try {
             if ('all' === $task) {
-                $syncTasksEvent = new GetSyncTasks();
-                $this->eventDispatcher->dispatch($syncTasksEvent);
-                foreach ($syncTasksEvent->getTasks() as $taskClass) {
-                    $this->taskCommand->runTask($taskClass, true);
-                }
+                $this->taskCommand->runAllTasks(true);
             } else {
-                /** @var class-string $task */
                 $this->taskCommand->runTask($task, true);
             }
         } finally {
             $this->logger->popHandler();
         }
 
-        return $response->withJson([
-            'logs' => $testHandler->getRecords(),
-        ]);
+        return $response->withJson(
+            LogResult::fromTestHandlerRecords($testHandler->getRecords())
+        );
     }
 }

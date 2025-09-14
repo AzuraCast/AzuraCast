@@ -6,12 +6,9 @@ namespace App\Entity;
 
 use App\Entity\Enums\AnalyticsIntervals;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
-use Carbon\CarbonImmutable;
+use App\Utilities\Time;
 use DateTimeImmutable;
-use DateTimeInterface;
-use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
-use RuntimeException;
 
 #[
     ORM\Entity(readOnly: true),
@@ -19,37 +16,34 @@ use RuntimeException;
     ORM\Index(name: 'search_idx', columns: ['type', 'moment']),
     ORM\UniqueConstraint(name: 'stats_unique_idx', columns: ['station_id', 'type', 'moment'])
 ]
-class Analytics implements IdentifiableEntityInterface
+final class Analytics implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
-    protected ?Station $station = null;
-
-    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    protected ?int $station_id = null;
+    public readonly ?Station $station;
 
     #[ORM\Column(type: 'string', length: 15, enumType: AnalyticsIntervals::class)]
-    protected AnalyticsIntervals $type;
+    public readonly AnalyticsIntervals $type;
 
-    #[ORM\Column(type: 'datetime_immutable')]
-    protected DateTimeImmutable $moment;
-
-    #[ORM\Column]
-    protected int $number_min;
+    #[ORM\Column(type: 'datetime_immutable', precision: 0)]
+    public readonly DateTimeImmutable $moment;
 
     #[ORM\Column]
-    protected int $number_max;
+    public readonly int $number_min;
+
+    #[ORM\Column]
+    public readonly int $number_max;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    protected string $number_avg;
+    public readonly string $number_avg;
 
     #[ORM\Column(nullable: true)]
-    protected ?int $number_unique = null;
+    public readonly ?int $number_unique;
 
     public function __construct(
-        DateTimeInterface $moment,
+        mixed $moment,
         ?Station $station = null,
         AnalyticsIntervals $type = AnalyticsIntervals::Daily,
         int $numberMin = 0,
@@ -57,9 +51,7 @@ class Analytics implements IdentifiableEntityInterface
         float $numberAvg = 0,
         ?int $numberUnique = null
     ) {
-        $utc = new DateTimeZone('UTC');
-
-        $this->moment = CarbonImmutable::parse($moment, $utc)->shiftTimezone($utc);
+        $this->moment = Time::toUtcCarbonImmutable($moment);
 
         $this->station = $station;
         $this->type = $type;
@@ -70,48 +62,8 @@ class Analytics implements IdentifiableEntityInterface
         $this->number_unique = $numberUnique;
     }
 
-    public function getStation(): ?Station
-    {
-        return $this->station;
-    }
-
-    public function getType(): AnalyticsIntervals
-    {
-        return $this->type;
-    }
-
-    public function getMoment(): CarbonImmutable
-    {
-        return CarbonImmutable::instance($this->moment);
-    }
-
-    public function getMomentInStationTimeZone(): CarbonImmutable
-    {
-        if (null === $this->station) {
-            throw new RuntimeException('Cannot get moment in station timezone; no station associated.');
-        }
-
-        $tz = $this->station->getTimezoneObject();
-        return CarbonImmutable::instance($this->moment)->shiftTimezone($tz);
-    }
-
-    public function getNumberMin(): int
-    {
-        return $this->number_min;
-    }
-
-    public function getNumberMax(): int
-    {
-        return $this->number_max;
-    }
-
     public function getNumberAvg(): float
     {
         return round((float)$this->number_avg, 2);
-    }
-
-    public function getNumberUnique(): ?int
-    {
-        return $this->number_unique;
     }
 }

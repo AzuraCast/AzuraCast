@@ -6,17 +6,17 @@
                 class="card-title"
             >
                 {{ $gettext('Song Requests') }}
-                <enabled-badge :enabled="enableRequests" />
+                <enabled-badge :enabled="stationData.enableRequests"/>
             </h3>
         </template>
 
         <template
-            v-if="userAllowedForStation(StationPermission.Broadcasting) || userAllowedForStation(StationPermission.Profile)"
+            v-if="userAllowedForStation(StationPermissions.Broadcasting) || userAllowedForStation(StationPermissions.Profile)"
             #footer_actions
         >
-            <template v-if="enableRequests">
+            <template v-if="stationData.enableRequests">
                 <router-link
-                    v-if="userAllowedForStation(StationPermission.Broadcasting)"
+                    v-if="userAllowedForStation(StationPermissions.Broadcasting)"
                     class="btn btn-link text-primary"
                     :to="{name: 'stations:reports:requests'}"
                 >
@@ -26,7 +26,7 @@
                     </span>
                 </router-link>
                 <button
-                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    v-if="userAllowedForStation(StationPermissions.Profile)"
                     type="button"
                     class="btn btn-link text-danger"
                     @click="toggleRequests"
@@ -39,7 +39,7 @@
             </template>
             <template v-else>
                 <button
-                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    v-if="userAllowedForStation(StationPermissions.Profile)"
                     type="button"
                     class="btn btn-link text-success"
                     @click="toggleRequests"
@@ -55,17 +55,20 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/Common/Icon.vue';
-import requestsPanelProps from "~/components/Stations/Profile/requestsPanelProps";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {StationPermission, userAllowedForStation} from "~/acl";
+import {userAllowedForStation} from "~/acl";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
-import {IconCheck, IconClose, IconLogs} from "~/components/Common/icons";
+import {IconCheck, IconClose, IconLogs} from "~/components/Common/Icons/icons.ts";
+import {computed} from "vue";
+import {StationPermissions} from "~/entities/ApiInterfaces.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
 
-const props = defineProps({
-    ...requestsPanelProps
-});
+const stationData = useStationData();
 
-const toggleRequests = useToggleFeature('enable_requests', !props.enableRequests);
+const toggleRequests = useToggleFeature(
+    'enable_requests',
+    computed(() => stationData.value.enableRequests)
+);
 </script>

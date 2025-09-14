@@ -6,14 +6,12 @@ namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
-use App\Entity\Api\StationRemote as ApiStationRemote;
+use App\Entity\Api\Traits\HasLinks;
 use App\Entity\StationRemote;
 use App\Exception\Http\PermissionDeniedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use App\Utilities\Types;
-use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -22,55 +20,58 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/station/{station_id}/remotes',
         operationId: 'getRelays',
-        description: 'List all current remote relays.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Remote Relays'],
+        summary: 'List all current remote relays.',
+        tags: [OpenApi::TAG_STATIONS_REMOTE_RELAYS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_StationRemote')
+                    items: new OA\Items(
+                        allOf: [
+                            new OA\Schema(ref: StationRemote::class),
+                            new OA\Schema(ref: HasLinks::class),
+                        ]
+                    )
                 )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Post(
         path: '/station/{station_id}/remotes',
         operationId: 'addRelay',
-        description: 'Create a new remote relay.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Create a new remote relay.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_StationRemote')
+            content: new OA\JsonContent(ref: StationRemote::class)
         ),
-        tags: ['Stations: Remote Relays'],
+        tags: [OpenApi::TAG_STATIONS_REMOTE_RELAYS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_StationRemote')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    allOf: [
+                        new OA\Schema(ref: StationRemote::class),
+                        new OA\Schema(ref: HasLinks::class),
+                    ]
+                )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Get(
         path: '/station/{station_id}/remote/{id}',
         operationId: 'getRelay',
-        description: 'Retrieve details for a single remote relay.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Remote Relays'],
+        summary: 'Retrieve details for a single remote relay.',
+        tags: [OpenApi::TAG_STATIONS_REMOTE_RELAYS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -82,25 +83,27 @@ use Psr\Http\Message\ResponseInterface;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_StationRemote')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    allOf: [
+                        new OA\Schema(ref: StationRemote::class),
+                        new OA\Schema(ref: HasLinks::class),
+                    ]
+                )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Put(
         path: '/station/{station_id}/remote/{id}',
         operationId: 'editRelay',
-        description: 'Update details of a single remote relay.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Update details of a single remote relay.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/Api_StationRemote')
+            content: new OA\JsonContent(ref: StationRemote::class)
         ),
-        tags: ['Stations: Remote Relays'],
+        tags: [OpenApi::TAG_STATIONS_REMOTE_RELAYS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -112,18 +115,17 @@ use Psr\Http\Message\ResponseInterface;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Delete(
         path: '/station/{station_id}/remote/{id}',
         operationId: 'deleteRelay',
-        description: 'Delete a single remote relay.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Remote Relays'],
+        summary: 'Delete a single remote relay.',
+        tags: [OpenApi::TAG_STATIONS_REMOTE_RELAYS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -135,10 +137,10 @@ use Psr\Http\Message\ResponseInterface;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]
@@ -182,35 +184,6 @@ final class RemotesController extends AbstractStationApiCrudController
         );
 
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
-    }
-
-    protected function viewRecord(object $record, ServerRequest $request): ApiStationRemote
-    {
-        if (!($record instanceof StationRemote)) {
-            throw new InvalidArgumentException(
-                sprintf('Record must be an instance of %s.', StationRemote::class)
-            );
-        }
-
-        $returnArray = $this->toArray($record);
-
-        $return = new ApiStationRemote();
-        $return->fromParentObject($returnArray);
-
-        $isInternal = Types::bool($request->getParam('internal'), false, true);
-        $router = $request->getRouter();
-
-        $return->is_editable = $record->isEditable();
-
-        $return->links = [
-            'self' => $router->fromHere(
-                routeName: $this->resourceRouteName,
-                routeParams: ['id' => $record->getIdRequired()],
-                absolute: !$isInternal
-            ),
-        ];
-
-        return $return;
     }
 
     protected function getRecord(ServerRequest $request, array $params): ?object

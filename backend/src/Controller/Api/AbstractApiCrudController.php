@@ -12,7 +12,6 @@ use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
-use App\Utilities\Types;
 use Doctrine\ORM\Query;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
@@ -55,7 +54,7 @@ abstract class AbstractApiCrudController
         ServerRequest $request,
         Response $response,
         Query $query,
-        callable $postProcessor = null
+        ?callable $postProcessor = null
     ): ResponseInterface {
         $paginator = Paginator::fromQuery($query, $request);
 
@@ -123,14 +122,14 @@ abstract class AbstractApiCrudController
 
         $return = $this->toArray($record);
 
-        $isInternal = Types::bool($request->getParam('internal'), false, true);
+        $isInternal = $request->isInternal();
         $router = $request->getRouter();
 
         if ($record instanceof IdentifiableEntityInterface) {
             $return['links'] = [
                 'self' => $router->fromHere(
                     routeName: $this->resourceRouteName,
-                    routeParams: ['id' => $record->getIdRequired()],
+                    routeParams: ['id' => $record->id],
                     absolute: !$isInternal
                 ),
             ];
@@ -171,12 +170,12 @@ abstract class AbstractApiCrudController
      */
     protected function displayShortenedObject(object $object): mixed
     {
-        if (method_exists($object, 'getName')) {
-            return $object->getName();
+        if (property_exists($object, 'name')) {
+            return $object->name;
         }
 
         if ($object instanceof IdentifiableEntityInterface) {
-            return $object->getIdRequired();
+            return $object->id;
         }
 
         if ($object instanceof Stringable) {

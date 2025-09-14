@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Interfaces\IdentifiableEntityInterface;
+use App\Utilities\Time;
 use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use Stringable;
@@ -18,7 +20,7 @@ use Stringable;
     ORM\Entity,
     ORM\Table(name: 'station_streamer_broadcasts')
 ]
-class StationStreamerBroadcast implements IdentifiableEntityInterface, Stringable
+final class StationStreamerBroadcast implements IdentifiableEntityInterface, Stringable
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -29,78 +31,45 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface, Stringabl
         ORM\ManyToOne(inversedBy: 'streamer_broadcasts'),
         ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
     ]
-    protected Station $station;
+    public readonly Station $station;
 
     #[
         ORM\ManyToOne(inversedBy: 'broadcasts'),
         ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
     ]
-    protected StationStreamer $streamer;
+    public readonly StationStreamer $streamer;
 
-    #[ORM\Column(name: 'timestamp_start')]
-    protected int $timestampStart = 0;
+    #[ORM\Column(name: 'timestamp_start', type: 'datetime_immutable', precision: 6)]
+    public readonly DateTimeImmutable $timestampStart;
 
-    #[ORM\Column(name: 'timestamp_end')]
-    protected int $timestampEnd = 0;
+    #[ORM\Column(name: 'timestamp_end', type: 'datetime_immutable', precision: 6, nullable: true)]
+    public ?DateTimeImmutable $timestampEnd = null {
+        set (DateTimeImmutable|string|int|null $value) => Time::toNullableUtcCarbonImmutable($value);
+    }
 
     #[ORM\Column(name: 'recording_path', length: 255, nullable: true)]
-    protected ?string $recordingPath = null;
+    public ?string $recordingPath = null;
 
-    public function __construct(StationStreamer $streamer)
-    {
+    public function __construct(
+        StationStreamer $streamer,
+        DateTimeImmutable|string|int|null $timestampStart = null
+    ) {
         $this->streamer = $streamer;
-        $this->station = $streamer->getStation();
+        $this->station = $streamer->station;
 
-        $this->timestampStart = time();
-    }
-
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
-    public function getStreamer(): StationStreamer
-    {
-        return $this->streamer;
-    }
-
-    public function getTimestampStart(): int
-    {
-        return $this->timestampStart;
-    }
-
-    public function setTimestampStart(int $timestampStart): void
-    {
-        $this->timestampStart = $timestampStart;
-    }
-
-    public function getTimestampEnd(): int
-    {
-        return $this->timestampEnd;
-    }
-
-    public function setTimestampEnd(int $timestampEnd): void
-    {
-        $this->timestampEnd = $timestampEnd;
-    }
-
-    public function getRecordingPath(): ?string
-    {
-        return $this->recordingPath;
-    }
-
-    public function setRecordingPath(?string $recordingPath): void
-    {
-        $this->recordingPath = $recordingPath;
+        $this->timestampStart = Time::toNullableUtcCarbonImmutable($timestampStart) ?? Time::nowUtc();
     }
 
     public function __toString(): string
     {
-        return (CarbonImmutable::createFromTimestamp($this->timestampStart, 'UTC'))->toAtomString()
-            . '-'
-            . (0 !== $this->timestampEnd
-                ? (CarbonImmutable::createFromTimestamp($this->timestampEnd, 'UTC'))->toAtomString()
-                : 'Now'
-            );
+        $timestampEnd = (null !== $this->timestampEnd)
+            ? CarbonImmutable::instance($this->timestampEnd)
+            : null;
+
+        return sprintf(
+            "%s-%s",
+            CarbonImmutable::instance($this->timestampStart)->toAtomString(),
+            $timestampEnd?->toAtomString() ?? 'Now'
+        );
     }
 }

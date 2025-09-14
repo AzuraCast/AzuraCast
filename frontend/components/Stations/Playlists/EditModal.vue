@@ -4,64 +4,64 @@
         :loading="loading"
         :title="langTitle"
         :error="error"
-        :disable-save-button="v$.$invalid"
+        :disable-save-button="r$.$invalid"
         @submit="doSubmit"
         @hidden="clearContents"
     >
         <tabs>
-            <form-basic-info v-model:form="form" />
+            <form-basic-info/>
             <form-schedule v-model:schedule-items="form.schedule_items" />
-            <form-advanced
-                v-if="enableAdvancedFeatures"
-                v-model:form="form"
-            />
+            <form-advanced/>
         </tabs>
     </modal-form>
 </template>
 
 <script setup lang="ts">
-import FormBasicInfo from './Form/BasicInfo.vue';
-import FormSchedule from './Form/Schedule.vue';
-import FormAdvanced from './Form/Advanced.vue';
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, ref} from "vue";
+import FormBasicInfo from "~/components/Stations/Playlists/Form/BasicInfo.vue";
+import FormSchedule from "~/components/Stations/Playlists/Form/Schedule.vue";
+import FormAdvanced from "~/components/Stations/Playlists/Form/Advanced.vue";
+import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {useAzuraCast} from "~/vendor/azuracast";
 import Tabs from "~/components/Common/Tabs.vue";
+import {storeToRefs} from "pinia";
+import {useAppCollectScope} from "~/vendor/regle.ts";
+import {useStationsPlaylistsForm} from "~/components/Stations/Playlists/Form/form.ts";
 
-const props = defineProps({
-    ...baseEditModalProps
-});
+const props = defineProps<BaseEditModalProps>();
 
-const {enableAdvancedFeatures} = useAzuraCast();
+const emit = defineEmits<BaseEditModalEmits & {
+    (e: 'needs-restart'): void
+}>();
 
-const emit = defineEmits(['relist', 'needs-restart']);
-
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 
 const {notifySuccess} = useNotify();
+
+const formStore = useStationsPlaylistsForm();
+const {form} = storeToRefs(formStore);
+const {$reset: resetForm} = formStore;
+
+const {r$} = useAppCollectScope('stations-playlists');
 
 const {
     loading,
     error,
     isEditMode,
-    form,
-    v$,
     clearContents,
     create,
     edit,
     doSubmit,
     close
 } = useBaseEditModal(
+    form,
     props,
     emit,
     $modal,
-    {},
-    {
-        schedule_items: []
-    },
+    resetForm,
+    async () => (await r$.$validate()).valid,
     {
         onSubmitSuccess: () => {
             notifySuccess();

@@ -11,8 +11,11 @@
                 <div class="flex-shrink">
                     <date-range-dropdown
                         v-model="dateRange"
-                        time-picker
-                        :tz="timezone"
+                        :options="{
+                            enableTimePicker: true,
+                            timezone: timezone
+                        }"
+                        class="btn-dark"
                     />
                 </div>
             </div>
@@ -84,26 +87,25 @@
 
 <script setup lang="ts">
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
-import ListenersByTimePeriodTab from "./Overview/ListenersByTimePeriodTab.vue";
-import BestAndWorstTab from "./Overview/BestAndWorstTab.vue";
-import BrowsersTab from "./Overview/BrowsersTab.vue";
-import CountriesTab from "./Overview/CountriesTab.vue";
-import StreamsTab from "./Overview/StreamsTab.vue";
-import ClientsTab from "./Overview/ClientsTab.vue";
+import ListenersByTimePeriodTab from "~/components/Stations/Reports/Overview/ListenersByTimePeriodTab.vue";
+import BestAndWorstTab from "~/components/Stations/Reports/Overview/BestAndWorstTab.vue";
+import BrowsersTab from "~/components/Stations/Reports/Overview/BrowsersTab.vue";
+import CountriesTab from "~/components/Stations/Reports/Overview/CountriesTab.vue";
+import StreamsTab from "~/components/Stations/Reports/Overview/StreamsTab.vue";
+import ClientsTab from "~/components/Stations/Reports/Overview/ClientsTab.vue";
 import ListeningTimeTab from "~/components/Stations/Reports/Overview/ListeningTimeTab.vue";
 import {ref} from "vue";
 import {getStationApiUrl} from "~/router";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
-import {useAzuraCastStation} from "~/vendor/azuracast.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
+import {toRefs} from "@vueuse/core";
+import {useAzuraCastDashboardGlobals} from "~/vendor/azuracast.ts";
+import {AnalyticsLevel} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    showFullAnalytics: {
-        type: Boolean,
-        required: true
-    }
-});
+const {analyticsLevel} = useAzuraCastDashboardGlobals();
+const showFullAnalytics = analyticsLevel === AnalyticsLevel.All;
 
 const listenersByTimePeriodUrl = getStationApiUrl('/reports/overview/charts');
 const bestAndWorstUrl = getStationApiUrl('/reports/overview/best-and-worst');
@@ -113,7 +115,8 @@ const byCountryUrl = getStationApiUrl('/reports/overview/by-country');
 const byClientUrl = getStationApiUrl('/reports/overview/by-client');
 const listeningTimeUrl = getStationApiUrl('/reports/overview/by-listening-time');
 
-const {timezone} = useAzuraCastStation();
+const stationData = useStationData();
+const {timezone} = toRefs(stationData);
 
 const {now} = useStationDateTimeFormatter();
 

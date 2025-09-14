@@ -8,15 +8,14 @@ use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Enums\PlaylistSources;
+use App\Entity\Station;
 use App\Entity\StationPlaylist;
 use App\Entity\StationSchedule;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use App\Utilities\Types;
-use Carbon\CarbonInterface;
+use App\Utilities\DateRange;
 use Doctrine\ORM\AbstractQuery;
-use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -26,53 +25,46 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     OA\Get(
         path: '/station/{station_id}/playlists',
         operationId: 'getPlaylists',
-        description: 'List all current playlists.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Playlists'],
+        summary: 'List all current playlists.',
+        tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/StationPlaylist')
+                    items: new OA\Items(ref: StationPlaylist::class)
                 )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Post(
         path: '/station/{station_id}/playlists',
         operationId: 'addPlaylist',
-        description: 'Create a new playlist.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Create a new playlist.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/StationPlaylist')
+            content: new OA\JsonContent(ref: StationPlaylist::class)
         ),
-        tags: ['Stations: Playlists'],
+        tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/StationPlaylist')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: StationPlaylist::class)
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Get(
         path: '/station/{station_id}/playlist/{id}',
         operationId: 'getPlaylist',
-        description: 'Retrieve details for a single playlist.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Playlists'],
+        summary: 'Retrieve details for a single playlist.',
+        tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -84,25 +76,22 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/StationPlaylist')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(ref: StationPlaylist::class)
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Put(
         path: '/station/{station_id}/playlist/{id}',
         operationId: 'editPlaylist',
-        description: 'Update details of a single playlist.',
-        security: OpenApi::API_KEY_SECURITY,
+        summary: 'Update details of a single playlist.',
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/StationPlaylist')
+            content: new OA\JsonContent(ref: StationPlaylist::class)
         ),
-        tags: ['Stations: Playlists'],
+        tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -114,18 +103,17 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Delete(
         path: '/station/{station_id}/playlist/{id}',
         operationId: 'deletePlaylist',
-        description: 'Delete a single playlist relay.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Playlists'],
+        summary: 'Delete a single playlist.',
+        tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -137,10 +125,10 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]
@@ -213,24 +201,23 @@ final class PlaylistsController extends AbstractScheduledEntityController
             $response,
             $scheduleItems,
             function (
+                Station $station,
                 StationSchedule $scheduleItem,
-                CarbonInterface $start,
-                CarbonInterface $end
+                DateRange $dateRange
             ) use (
-                $request,
-                $station
+                $request
             ) {
                 /** @var StationPlaylist $playlist */
-                $playlist = $scheduleItem->getPlaylist();
+                $playlist = $scheduleItem->playlist;
 
                 return [
-                    'id' => $playlist->getId(),
-                    'title' => $playlist->getName(),
-                    'start' => $start->toIso8601String(),
-                    'end' => $end->toIso8601String(),
+                    'id' => $playlist->id,
+                    'title' => $playlist->name,
+                    'start' => $dateRange->start->toIso8601String(),
+                    'end' => $dateRange->end->toIso8601String(),
                     'edit_url' => $request->getRouter()->named(
                         'api:stations:playlist',
-                        ['station_id' => $station->getId(), 'id' => $playlist->getId()]
+                        ['station_id' => $station->id, 'id' => $playlist->id]
                     ),
                 ];
             }
@@ -242,10 +229,6 @@ final class PlaylistsController extends AbstractScheduledEntityController
      */
     protected function viewRecord(object $record, ServerRequest $request): array
     {
-        if (!($record instanceof $this->entityClass)) {
-            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
-        }
-
         /** @var StationPlaylist $record */
 
         $return = $this->toArray($record);
@@ -266,65 +249,65 @@ final class PlaylistsController extends AbstractScheduledEntityController
         $return['num_songs'] = $songTotals['num_songs'];
         $return['total_length'] = round((float)$songTotals['total_length']);
 
-        $isInternal = Types::bool($request->getParam('internal'), false, true);
+        $isInternal = $request->isInternal();
         $router = $request->getRouter();
 
         $return['links'] = [
             'self' => $router->fromHere(
                 routeName: $this->resourceRouteName,
-                routeParams: ['id' => $record->getId()],
+                routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             ),
             'toggle' => $router->fromHere(
                 routeName: 'api:stations:playlist:toggle',
-                routeParams: ['id' => $record->getId()],
+                routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             ),
             'clone' => $router->fromHere(
                 routeName: 'api:stations:playlist:clone',
-                routeParams: ['id' => $record->getId()],
+                routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             ),
         ];
 
-        if (PlaylistSources::Songs === $record->getSource()) {
-            if (PlaylistOrders::Sequential === $record->getOrder()) {
+        if (PlaylistSources::Songs === $record->source) {
+            if (PlaylistOrders::Sequential === $record->order) {
                 $return['links']['order'] = $router->fromHere(
                     routeName: 'api:stations:playlist:order',
-                    routeParams: ['id' => $record->getId()],
+                    routeParams: ['id' => $record->id],
                     absolute: !$isInternal
                 );
             }
 
-            if (PlaylistOrders::Random !== $record->getOrder()) {
+            if (PlaylistOrders::Random !== $record->order) {
                 $return['links']['queue'] = $router->fromHere(
                     routeName: 'api:stations:playlist:queue',
-                    routeParams: ['id' => $record->getId()],
+                    routeParams: ['id' => $record->id],
                     absolute: !$isInternal
                 );
             }
 
             $return['links']['import'] = $router->fromHere(
                 routeName: 'api:stations:playlist:import',
-                routeParams: ['id' => $record->getId()],
+                routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             );
 
             $return['links']['reshuffle'] = $router->fromHere(
                 routeName: 'api:stations:playlist:reshuffle',
-                routeParams: ['id' => $record->getId()],
+                routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             );
 
             $return['links']['applyto'] = $router->fromHere(
                 routeName: 'api:stations:playlist:applyto',
-                routeParams: ['id' => $record->getId()],
+                routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             );
 
             $return['links']['empty'] = $router->fromHere(
                 routeName: 'api:stations:playlist:empty',
-                routeParams: ['id' => $record->getId()],
+                routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             );
         }
@@ -332,7 +315,7 @@ final class PlaylistsController extends AbstractScheduledEntityController
         foreach (['pls', 'm3u'] as $format) {
             $return['links']['export'][$format] = $router->fromHere(
                 routeName: 'api:stations:playlist:export',
-                routeParams: ['id' => $record->getId(), 'format' => $format],
+                routeParams: ['id' => $record->id, 'format' => $format],
                 absolute: !$isInternal
             );
         }

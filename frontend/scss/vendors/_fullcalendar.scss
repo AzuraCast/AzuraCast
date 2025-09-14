@@ -3,6 +3,22 @@
   --fc-page-bg-color: var(--bs-body-bg);
 }
 
-.fc th {
-  background: var(--bs-secondary-bg);
+.fc,
+.fc-theme-bootstrap5 {
+  th {
+    background: var(--bs-secondary-bg);
+  }
+
+  .fc-list, .fc-scrollgrid, td, th {
+    border: 1px solid var(--bs-secondary-bg);
+  }
+
+  .fc-theme-bootstrap5-shaded {
+    background: var(--bs-secondary-bg);
+  }
+
+  .fc-toolbar.fc-header-toolbar {
+    padding: 1rem;
+    margin-bottom: 0;
+  }
 }

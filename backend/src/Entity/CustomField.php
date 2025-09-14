@@ -14,12 +14,17 @@ use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[
-    OA\Schema(type: 'object'),
+    OA\Schema(
+        required: [
+            'name',
+        ],
+        type: 'object'
+    ),
     ORM\Entity,
     ORM\Table(name: 'custom_field'),
     Attributes\Auditable
 ]
-class CustomField implements Stringable, IdentifiableEntityInterface
+final class CustomField implements Stringable, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -29,7 +34,15 @@ class CustomField implements Stringable, IdentifiableEntityInterface
         ORM\Column(length: 255),
         Assert\NotBlank
     ]
-    protected string $name;
+    public string $name {
+        set {
+            $this->name = $this->truncateString($value);
+
+            if (empty($this->short_name) && !empty($value)) {
+                $this->short_name = self::generateShortName($value);
+            }
+        }
+    }
 
     #[
         OA\Property(
@@ -37,7 +50,12 @@ class CustomField implements Stringable, IdentifiableEntityInterface
         ),
         ORM\Column(length: 100, nullable: false)
     ]
-    protected string $short_name;
+    public string $short_name {
+        get => !empty($this->short_name)
+            ? $this->short_name
+            : self::generateShortName($this->name);
+        set => $this->truncateString(trim($value), 100);
+    }
 
     #[
         OA\Property(
@@ -45,59 +63,22 @@ class CustomField implements Stringable, IdentifiableEntityInterface
         ),
         ORM\Column(length: 100, nullable: true)
     ]
-    protected ?string $auto_assign = null;
+    public ?string $auto_assign = null {
+        set => $this->truncateNullableString($value, 100);
+    }
 
     /** @var Collection<int, StationMediaCustomField> */
     #[ORM\OneToMany(targetEntity: StationMediaCustomField::class, mappedBy: 'field')]
-    protected Collection $media_fields;
+    public private(set) Collection $media_fields;
 
     public function __construct()
     {
         $this->media_fields = new ArrayCollection();
     }
 
-    public function getName(): string
+    public function __clone(): void
     {
-        return $this->name;
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $this->truncateString($name);
-
-        if (empty($this->short_name) && !empty($name)) {
-            $this->setShortName(self::generateShortName($name));
-        }
-    }
-
-    public function getShortName(): string
-    {
-        return (!empty($this->short_name))
-            ? $this->short_name
-            : self::generateShortName($this->name);
-    }
-
-    public function setShortName(string $shortName): void
-    {
-        $shortName = trim($shortName);
-        if (!empty($shortName)) {
-            $this->short_name = $this->truncateString($shortName, 100);
-        }
-    }
-
-    public function getAutoAssign(): ?string
-    {
-        return $this->auto_assign;
-    }
-
-    public function hasAutoAssign(): bool
-    {
-        return !empty($this->auto_assign);
-    }
-
-    public function setAutoAssign(?string $autoAssign): void
-    {
-        $this->auto_assign = $autoAssign;
+        $this->media_fields = new ArrayCollection();
     }
 
     public function __toString(): string

@@ -8,8 +8,8 @@ use App\Console\Application;
 use App\Container\SettingsAwareTrait;
 use App\Entity\StationSchedule;
 use App\Message;
+use App\Utilities\Time;
 use Carbon\CarbonImmutable;
-use Carbon\CarbonInterface;
 use Symfony\Component\Messenger\MessageBus;
 
 final class RunBackupTask extends AbstractTask
@@ -50,7 +50,7 @@ final class RunBackupTask extends AbstractTask
             $resultOutput = 'Exited with code ' . $resultCode . ":\n" . $resultOutput;
 
             $settings = $this->readSettings();
-            $settings->setBackupLastOutput($resultOutput);
+            $settings->backup_last_output = $resultOutput;
             $this->writeSettings($settings);
         }
     }
@@ -90,25 +90,26 @@ final class RunBackupTask extends AbstractTask
     public function run(bool $force = false): void
     {
         $settings = $this->readSettings();
-        if (!$settings->getBackupEnabled()) {
+        if (!$settings->backup_enabled) {
             $this->logger->debug('Automated backups disabled; skipping...');
             return;
         }
 
-        $nowUtc = CarbonImmutable::now('UTC');
+        $utc = Time::getUtc();
+        $nowUtc = Time::nowUtc();
 
         $threshold = $nowUtc->subDay()->getTimestamp();
-        $lastRun = $settings->getBackupLastRun();
+        $lastRun = $settings->backup_last_run;
 
         if ($lastRun <= $threshold) {
             // Check if the backup time matches (if it's set).
-            $backupTimecode = $settings->getBackupTimeCode();
+            $backupTimecode = $settings->backup_time_code;
 
             if (null !== $backupTimecode && '' !== $backupTimecode) {
                 $isWithinTimecode = false;
-                $backupDt = StationSchedule::getDateTime($backupTimecode, $nowUtc);
+                $backupDt = StationSchedule::getDateTime($backupTimecode, $utc, $nowUtc);
 
-                /** @var CarbonInterface[] $backupTimesToCheck */
+                /** @var CarbonImmutable[] $backupTimesToCheck */
                 $backupTimesToCheck = [
                     $backupDt->subDay(),
                     $backupDt,
@@ -129,17 +130,17 @@ final class RunBackupTask extends AbstractTask
             }
 
             // Trigger a new backup.
-            $storageLocationId = $settings->getBackupStorageLocation() ?? 0;
+            $storageLocationId = $settings->backup_storage_location ?? 0;
             if ($storageLocationId <= 0) {
                 $storageLocationId = null;
             }
 
-            $pathExt = $settings->getBackupFormat() ?? 'zip';
+            $pathExt = $settings->backup_format ?? 'zip';
 
             $message = new Message\BackupMessage();
             $message->storageLocationId = $storageLocationId;
             $message->path = 'automatic_backup_' . $nowUtc->format('Ymd_His') . '.' . $pathExt;
-            $message->excludeMedia = $settings->getBackupExcludeMedia();
+            $message->excludeMedia = $settings->backup_exclude_media;
 
             $this->messageBus->dispatch($message);
         }

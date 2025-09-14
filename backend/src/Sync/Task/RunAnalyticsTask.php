@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Sync\Task;
 
 use App\Container\SettingsAwareTrait;
+use App\Doctrine\Platform\MariaDbPlatform;
 use App\Entity\Analytics;
 use App\Entity\Enums\AnalyticsIntervals;
 use App\Entity\Enums\AnalyticsLevel;
@@ -12,11 +13,18 @@ use App\Entity\Repository\AnalyticsRepository;
 use App\Entity\Repository\ListenerRepository;
 use App\Entity\Repository\SongHistoryRepository;
 use App\Entity\Station;
+use App\Utilities\File;
+use App\Utilities\Time;
 use Carbon\CarbonImmutable;
+use League\Csv\Writer;
+use Symfony\Component\Filesystem\Filesystem;
+use Throwable;
 
 final class RunAnalyticsTask extends AbstractTask
 {
     use SettingsAwareTrait;
+
+    public const int MAX_DAYS_PER_TASK = 5;
 
     public function __construct(
         private readonly AnalyticsRepository $analyticsRepo,
@@ -37,7 +45,7 @@ final class RunAnalyticsTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        switch ($this->readSettings()->getAnalytics()) {
+        switch ($this->readSettings()->analytics ?? AnalyticsLevel::default()) {
             case AnalyticsLevel::None:
                 $this->purgeListeners();
                 $this->purgeAnalytics();
@@ -56,42 +64,152 @@ final class RunAnalyticsTask extends AbstractTask
 
     private function updateAnalytics(bool $withListeners): void
     {
-        $stationsRaw = $this->em->getRepository(Station::class)
-            ->findAll();
-
-        /** @var Station[] $stations */
-        $stations = [];
-        foreach ($stationsRaw as $station) {
-            /** @var Station $station */
-            $stations[$station->getId()] = $station;
-        }
-
-        $now = CarbonImmutable::now('UTC');
-        $day = $now->subDays(5)->startOfDay();// Clear existing analytics in this segment
-
         $this->analyticsRepo->cleanup();
 
+        // Get the earliest date to pull analytics for (in case of gaps).
+        $now = Time::nowUtc();
+        $startingDay = $this->getStartingDay($now);
+
+        if ($startingDay === null) {
+            $this->logger->error('Skipping analytics; no song history records to pull.');
+            return;
+        }
+
+        $this->logger->info(
+            'Starting analytics update...',
+            [
+                'startingDay' => $startingDay->toDateString(),
+            ]
+        );
+
+        // Write all new analytics as a single giant CSV.
+        $tempCsvPath = File::generateTempPath('mariadb_analytics.csv');
+        new Filesystem()->chmod($tempCsvPath, 0o777);
+
+        $csv = Writer::createFromPath($tempCsvPath);
+        $csv->setEscape('');
+        $csv->addFormatter(function ($row) {
+            return array_map(function ($col) {
+                if (null === $col) {
+                    return '\N';
+                }
+
+                return is_string($col)
+                    ? str_replace('"', '""', $col)
+                    : $col;
+            }, $row);
+        });
+
+        $day = clone $startingDay;
+        $days = 0;
+
         while ($day < $now) {
+            $days++;
+            if ($days > self::MAX_DAYS_PER_TASK) {
+                $this->logger->info('Reached max days per sync task; will continue in next sync task.');
+                break;
+            }
+
+            try {
+                $this->processDay($day, $withListeners, $csv);
+            } catch (Throwable $e) {
+                $this->logger->error(
+                    sprintf(
+                        'Error processing analytics for day "%s": %s',
+                        $day->toDateString(),
+                        $e->getMessage()
+                    ),
+                    [
+                        'exception' => $e,
+                    ]
+                );
+            }
+
+            $this->em->clear();
+            $day = $day->addDay();
+        }
+
+        try {
             $this->em->wrapInTransaction(
-                function () use ($day, $stations, $withListeners): void {
-                    $this->processDay($day, $stations, $withListeners);
+                function () use ($tempCsvPath, $startingDay) {
+                    // MariaDB doesn't enforce unique constraints on null values.
+                    $this->em->createQuery(
+                        <<<'DQL'
+                        DELETE FROM App\Entity\Analytics a
+                        WHERE a.moment >= :moment
+                        DQL,
+                    )->execute([
+                        'moment' => $startingDay,
+                    ]);
+
+                    // Use LOAD DATA INFILE for bulk analytics dumps.
+                    $tableName = $this->em->getClassMetadata(Analytics::class)->getTableName();
+                    $conn = $this->em->getConnection();
+
+                    $csvLoadQuery = sprintf(
+                        <<<'SQL'
+                            LOAD DATA LOCAL INFILE %s REPLACE
+                            INTO TABLE %s 
+                            FIELDS TERMINATED BY ','
+                            OPTIONALLY ENCLOSED BY '"'
+                            LINES TERMINATED BY '\n'
+                            (%s)
+                        SQL,
+                        $conn->quote($tempCsvPath),
+                        $conn->quoteSingleIdentifier($tableName),
+                        implode(
+                            ',',
+                            array_map(
+                                fn($col) => $conn->quoteSingleIdentifier($col),
+                                [
+                                    'moment',
+                                    'station_id',
+                                    'type',
+                                    'number_min',
+                                    'number_max',
+                                    'number_avg',
+                                    'number_unique',
+                                ]
+                            )
+                        )
+                    );
+
+                    $conn->executeQuery($csvLoadQuery);
                 }
             );
-
-            $day = $day->addDay();
+        } finally {
+            @unlink($tempCsvPath);
         }
     }
 
-    /**
-     * @param CarbonImmutable $day
-     * @param Station[] $stations
-     * @param bool $withListeners
-     */
+    private function getStartingDay(CarbonImmutable $now): ?CarbonImmutable
+    {
+        $earliestHistory = $this->historyRepo->getEarliestRecordTime()?->startOfDay();
+        if ($earliestHistory === null) {
+            return null;
+        }
+
+        $latestAnalytics = $this->analyticsRepo->getLatestDayRecord()?->subDays(2)?->startOfDay();
+        if ($latestAnalytics === null) {
+            return $earliestHistory;
+        }
+
+        return min(
+            max(
+                $latestAnalytics,
+                $earliestHistory
+            ),
+            $now->subDays(2)->startOfDay()
+        );
+    }
+
     private function processDay(
         CarbonImmutable $day,
-        array $stations,
-        bool $withListeners
+        bool $withListeners,
+        Writer $csv,
     ): void {
+        $stations = $this->em->getRepository(Station::class)->findAll();
+
         for ($hour = 0; $hour <= 23; $hour++) {
             $hourUtc = $day->setTime($hour, 0);
 
@@ -108,8 +226,8 @@ final class RunAnalyticsTask extends AbstractTask
 
                 [$min, $max, $avg] = $this->historyRepo->getStatsByTimeRange(
                     $station,
-                    $start->getTimestamp(),
-                    $end->getTimestamp()
+                    $start,
+                    $end
                 );
 
                 $unique = null;
@@ -120,23 +238,16 @@ final class RunAnalyticsTask extends AbstractTask
                     $hourlyUniqueListeners += $unique;
                 }
 
-                $this->analyticsRepo->clearSingleMetric(
-                    AnalyticsIntervals::Hourly,
-                    $hourUtc,
-                    $station
-                );
-
-                $hourlyRow = new Analytics(
-                    $hourUtc,
-                    $station,
-                    AnalyticsIntervals::Hourly,
+                $csv->insertOne([
+                    Time::toUtcCarbonImmutable($hourUtc)
+                        ->format(MariaDbPlatform::DB_DATETIME_FORMAT),
+                    $station->id,
+                    AnalyticsIntervals::Hourly->value,
                     $min,
                     $max,
                     $avg,
-                    $unique
-                );
-
-                $this->em->persist($hourlyRow);
+                    $unique,
+                ]);
 
                 if (null === $hourlyMin) {
                     $hourlyMin = $min;
@@ -154,22 +265,16 @@ final class RunAnalyticsTask extends AbstractTask
             }
 
             // Post the all-stations hourly totals.
-            $this->analyticsRepo->clearSingleMetric(
-                AnalyticsIntervals::Hourly,
-                $hourUtc
-            );
-
-            $hourlyAllStationsRow = new Analytics(
-                $hourUtc,
+            $csv->insertOne([
+                Time::toUtcCarbonImmutable($hourUtc)
+                    ->format(MariaDbPlatform::DB_DATETIME_FORMAT),
                 null,
-                AnalyticsIntervals::Hourly,
+                AnalyticsIntervals::Hourly->value,
                 $hourlyMin ?? 0,
                 $hourlyMax ?? 0,
                 $hourlyAverage,
-                $hourlyUniqueListeners
-            );
-
-            $this->em->persist($hourlyAllStationsRow);
+                $hourlyUniqueListeners,
+            ]);
         }
 
         // Aggregate daily totals.
@@ -185,8 +290,8 @@ final class RunAnalyticsTask extends AbstractTask
 
             [$dailyStationMin, $dailyStationMax, $dailyStationAverage] = $this->historyRepo->getStatsByTimeRange(
                 $station,
-                $stationDayStart->getTimestamp(),
-                $stationDayEnd->getTimestamp()
+                $stationDayStart,
+                $stationDayEnd
             );
 
             if (null === $dailyMin) {
@@ -215,41 +320,29 @@ final class RunAnalyticsTask extends AbstractTask
                 $dailyUniqueListeners += $dailyStationUnique;
             }
 
-            $this->analyticsRepo->clearSingleMetric(
-                AnalyticsIntervals::Daily,
-                $day,
-                $station
-            );
-
-            $dailyStationRow = new Analytics(
-                $day,
-                $station,
-                AnalyticsIntervals::Daily,
+            $csv->insertOne([
+                Time::toUtcCarbonImmutable($day)
+                    ->format(MariaDbPlatform::DB_DATETIME_FORMAT),
+                $station->id,
+                AnalyticsIntervals::Daily->value,
                 $dailyStationMin,
                 $dailyStationMax,
                 $dailyStationAverage,
-                $dailyStationUnique
-            );
-
-            $this->em->persist($dailyStationRow);
+                $dailyStationUnique,
+            ]);
         }
 
         // Post the all-stations daily total.
-        $this->analyticsRepo->clearSingleMetric(
-            AnalyticsIntervals::Daily,
-            $day
-        );
-
-        $dailyAllStationsRow = new Analytics(
-            $day,
+        $csv->insertOne([
+            Time::toUtcCarbonImmutable($day)
+                ->format(MariaDbPlatform::DB_DATETIME_FORMAT),
             null,
-            AnalyticsIntervals::Daily,
+            AnalyticsIntervals::Daily->value,
             $dailyMin ?? 0,
             $dailyMax ?? 0,
             $dailyAverage,
-            $dailyUniqueListeners
-        );
-        $this->em->persist($dailyAllStationsRow);
+            $dailyUniqueListeners,
+        ]);
     }
 
     private function purgeAnalytics(): void

@@ -7,14 +7,46 @@ namespace App\Controller\Api\Stations\Podcasts\Episodes;
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\PodcastEpisode as ApiPodcastEpisode;
 use App\Entity\ApiGenerator\PodcastEpisodeApiGenerator;
 use App\Entity\Enums\PodcastSources;
 use App\Entity\PodcastEpisode;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Paginator;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[OA\Get(
+    path: '/station/{station_id}/public/podcast/{podcast_id}/episodes',
+    operationId: 'getStationPublicPodcastEpisodes',
+    summary: 'List all visible episodes for a given podcast.',
+    security: [],
+    tags: [OpenApi::TAG_PUBLIC_STATIONS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        new OA\Parameter(
+            name: 'podcast_id',
+            description: 'Podcast ID',
+            in: 'path',
+            required: true,
+            schema: new OA\Schema(type: 'string')
+        ),
+    ],
+    responses: [
+        new OpenApi\Response\Success(
+            content: new OA\JsonContent(
+                type: 'array',
+                items: new OA\Items(
+                    ref: ApiPodcastEpisode::class
+                )
+            )
+        ),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class ListEpisodesAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;

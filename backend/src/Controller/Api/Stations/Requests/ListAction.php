@@ -24,23 +24,22 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/station/{station_id}/requests',
         operationId: 'getRequestableSongs',
-        description: 'Return a list of requestable songs.',
-        tags: ['Stations: Song Requests'],
+        summary: 'Return a list of requestable songs.',
+        security: [],
+        tags: [OpenApi::TAG_PUBLIC_STATIONS],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_StationRequest')
+                    items: new OA\Items(ref: StationRequest::class)
                 )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]
@@ -74,16 +73,14 @@ final class ListAction extends AbstractSearchableListAction
             function (StationMedia $media) use ($station, $router) {
                 $row = new StationRequest();
                 $row->song = ($this->songApiGenerator)($media, $station, $router->getBaseUrl());
-                $row->request_id = $media->getUniqueId();
+                $row->request_id = $media->unique_id;
                 $row->request_url = $router->named(
                     'api:requests:submit',
                     [
-                        'station_id' => $station->getId(),
-                        'media_id' => $media->getUniqueId(),
+                        'station_id' => $station->id,
+                        'media_id' => $media->unique_id,
                     ]
                 );
-
-                $row->resolveUrls($router->getBaseUrl());
 
                 return $row;
             }
@@ -99,7 +96,7 @@ final class ListAction extends AbstractSearchableListAction
     private function getPlaylists(
         Station $station
     ): array {
-        $item = $this->psr6Cache->getItem('station_' . $station->getIdRequired() . '_requestable_playlists');
+        $item = $this->psr6Cache->getItem('station_' . $station->id . '_requestable_playlists');
 
         if (!$item->isHit()) {
             $playlists = $this->em->createQuery(
@@ -117,7 +114,7 @@ final class ListAction extends AbstractSearchableListAction
             /** @var StationPlaylist $playlist */
             foreach ($playlists as $playlist) {
                 if ($this->scheduler->isPlaylistScheduledToPlayNow($playlist, $now, true)) {
-                    $ids[] = $playlist->getIdRequired();
+                    $ids[] = $playlist->id;
                 }
             }
 

@@ -13,7 +13,13 @@
                             </h2>
                         </div>
                         <div class="col-md-6 text-end">
-                            <time-zone />
+                            <loading :loading="propsLoading" lazy>
+                                <stations-common-quota
+                                    v-if="props && props.recordStreams"
+                                    :quota-url="quotaUrl"
+                                />
+                                <time-zone v-else/>
+                            </loading>
                         </div>
                     </div>
                 </template>
@@ -35,9 +41,8 @@
 
                                 <data-table
                                     id="station_streamers"
-                                    ref="$datatable"
                                     :fields="fields"
-                                    :api-url="listUrl"
+                                    :provider="listItemProvider"
                                 >
                                     <template #cell(art)="row">
                                         <album-art :src="row.item.art" />
@@ -65,7 +70,7 @@
                                             <button
                                                 type="button"
                                                 class="btn btn-secondary"
-                                                @click="doShowBroadcasts(row.item.links.broadcasts, row.item.links.broadcasts_batch)"
+                                                @click="doShowBroadcasts(row.item.id, row.item.links.broadcasts, row.item.links.broadcasts_batch)"
                                             >
                                                 {{ $gettext('Broadcasts') }}
                                             </button>
@@ -81,67 +86,79 @@
                                 </data-table>
                             </div>
                         </tab>
-                        <tab :label="$gettext('Schedule View')">
-                            <div class="card-body-flush">
-                                <schedule
-                                    ref="$schedule"
-                                    :timezone="timezone"
-                                    :schedule-url="scheduleUrl"
-                                    @click="doCalendarClick"
-                                />
-                            </div>
-                        </tab>
+                        <schedule-view-tab
+                            ref="$scheduleTab"
+                            :schedule-url="scheduleUrl"
+                            @click="doCalendarClick"
+                        />
                     </tabs>
                 </div>
             </card-page>
         </div>
         <div class="col-md-4">
-            <connection-info :connection-info="connectionInfo" />
+            <loading :loading="propsLoading" lazy>
+                <connection-info v-if="props" v-bind="props"/>
+            </loading>
         </div>
 
         <edit-modal
             ref="$editModal"
             :create-url="listUrl"
-            :station-time-zone="timezone"
             :new-art-url="newArtUrl"
-            @relist="relist"
+            @relist="() => relist()"
         />
+
         <broadcasts-modal ref="$broadcastsModal" />
     </div>
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import EditModal from './Streamers/EditModal.vue';
-import BroadcastsModal from './Streamers/BroadcastsModal.vue';
-import Schedule from '~/components/Common/ScheduleView.vue';
-import ConnectionInfo from "./Streamers/ConnectionInfo.vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import EditModal from "~/components/Stations/Streamers/EditModal.vue";
+import BroadcastsModal from "~/components/Stations/Streamers/BroadcastsModal.vue";
+import ConnectionInfo from "~/components/Stations/Streamers/ConnectionInfo.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {ref} from "vue";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
-import useHasEditModal, {EditModalTemplateRef} from "~/functions/useHasEditModal";
+import {useTemplateRef} from "vue";
+import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useAzuraCastStation} from "~/vendor/azuracast";
 import {getStationApiUrl} from "~/router";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 import AddButton from "~/components/Common/AddButton.vue";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
+import ScheduleViewTab from "~/components/Stations/Common/ScheduleViewTab.vue";
+import {EventImpl} from "@fullcalendar/core/internal";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
+import {ApiStationsVueStreamersProps, StorageLocationTypes} from "~/entities/ApiInterfaces.ts";
+import {useAxios} from "~/vendor/axios.ts";
+import {useQuery} from "@tanstack/vue-query";
+import Loading from "~/components/Common/Loading.vue";
 
-const props = defineProps({
-    connectionInfo: {
-        type: Object,
-        required: true
-    }
-});
-
+const propsUrl = getStationApiUrl('/vue/streamers');
 const listUrl = getStationApiUrl('/streamers');
 const newArtUrl = getStationApiUrl('/streamers/art');
 const scheduleUrl = getStationApiUrl('/streamers/schedule');
 
-const {timezone} = useAzuraCastStation();
+const quotaUrl = getStationApiUrl(`/quota/${StorageLocationTypes.StationRecordings}`);
+
+const {axios} = useAxios();
+
+const {data: props, isLoading: propsLoading} = useQuery<ApiStationsVueStreamersProps>({
+    queryKey: queryKeyWithStation(
+        [
+            QueryKeys.StationSftpUsers,
+            'props'
+        ]
+    ),
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiStationsVueStreamersProps>(propsUrl.value, {signal});
+        return data;
+    }
+});
 
 const {$gettext} = useTranslate();
 
@@ -153,24 +170,35 @@ const fields: DataTableField[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {relist} = useHasDatatable($datatable);
+const listItemProvider = useApiItemProvider(
+    listUrl,
+    queryKeyWithStation([
+        QueryKeys.StationStreamers
+    ])
+);
 
-const $editModal = ref<EditModalTemplateRef>(null);
+const $scheduleTab = useTemplateRef('$scheduleTab');
+
+const relist = () => {
+    void listItemProvider.refresh();
+    $scheduleTab.value?.refresh();
+}
+
+const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const doCalendarClick = (event) => {
+const doCalendarClick = (event: EventImpl) => {
     doEdit(event.extendedProps.edit_url);
 };
 
-const $broadcastsModal = ref<InstanceType<typeof BroadcastsModal> | null>(null);
+const $broadcastsModal = useTemplateRef('$broadcastsModal');
 
-const doShowBroadcasts = (listUrl, batchUrl) => {
-    $broadcastsModal.value?.open(listUrl, batchUrl);
+const doShowBroadcasts = (id: number, listUrl: string, batchUrl: string) => {
+    $broadcastsModal.value?.open(id, listUrl, batchUrl);
 };
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Streamer?'),
-    relist
+    () => relist()
 );
 </script>

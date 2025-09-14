@@ -1,2 +1,3 @@
 0 * * * * * * azuracast_cli azuracast:sync:run
 0 30 */6 * * * * temp_cleanup
+0 15 23 * * * * azuracast_update_blocklist

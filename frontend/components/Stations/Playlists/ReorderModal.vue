@@ -6,9 +6,13 @@
         :title="$gettext('Reorder Playlist')"
         :busy="loading"
         hide-footer
+        @shown="onShown"
         @hidden="onHidden"
     >
-        <inline-player class="text-start bg-primary rounded mb-2 p-1" />
+        <inline-player
+            class="text-start bg-primary rounded mb-2 p-1"
+            :channel="StreamChannel.Modal"
+        />
 
         <table class="table table-striped sortable mb-0">
             <thead>
@@ -30,110 +34,124 @@
                     </th>
                 </tr>
             </thead>
-            <draggable
-                v-model="media"
-                tag="tbody"
-                item-key="id"
-                @change="save"
-            >
-                <template #item="{element, index}">
-                    <tr class="align-middle">
-                        <td class="pe-2">
-                            <play-button
-                                :url="element.media.links.play"
-                            />
-                        </td>
-                        <td class="ps-2">
-                            <span class="typography-subheading">{{ element.media.title }}</span>
-                        </td>
-                        <td>{{ element.media.artist }}</td>
-                        <td>{{ element.media.album }}</td>
-                        <td>
-                            <div class="btn-group btn-group-sm">
-                                <button
-                                    v-if="index+1 < media.length"
-                                    type="button"
-                                    class="btn btn-secondary"
-                                    :title="$gettext('Move to Bottom')"
-                                    @click.prevent="moveToBottom(index)"
-                                >
-                                    <icon :icon="IconChevronBarDown" />
-                                </button>
-                                <button
-                                    v-if="index+1 < media.length"
-                                    type="button"
-                                    class="btn btn-primary"
-                                    :title="$gettext('Move Down')"
-                                    @click.prevent="moveDown(index)"
-                                >
-                                    <icon :icon="IconChevronDown" />
-                                </button>
-                                <button
-                                    v-if="index > 0"
-                                    type="button"
-                                    class="btn btn-primary"
-                                    :title="$gettext('Move Up')"
-                                    @click.prevent="moveUp(index)"
-                                >
-                                    <icon :icon="IconChevronUp" />
-                                </button>
-                                <button
-                                    v-if="index > 0"
-                                    type="button"
-                                    class="btn btn-secondary"
-                                    :title="$gettext('Move to Top')"
-                                    @click.prevent="moveToTop(index)"
-                                >
-                                    <icon :icon="IconChevronBarUp" />
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                </template>
-            </draggable>
+            <tbody ref="$tbody">
+                <tr
+                    v-for="(element, index) in media"
+                    :key="element.media.id"
+                    class="align-middle"
+                >
+                    <td class="pe-2">
+                        <play-button
+                            :stream="{
+                                channel: StreamChannel.Modal,
+                                url: element.media.links.play,
+                                title: element.media.title
+                            }"
+                        />
+                    </td>
+                    <td class="ps-2">
+                        <span class="typography-subheading">{{ element.media.title }}</span>
+                    </td>
+                    <td>{{ element.media.artist }}</td>
+                    <td>{{ element.media.album }}</td>
+                    <td>
+                        <div class="btn-group btn-group-sm">
+                            <button
+                                v-if="index+1 < media.length"
+                                type="button"
+                                class="btn btn-secondary"
+                                :title="$gettext('Move to Bottom')"
+                                @click.prevent="moveToBottom(index)"
+                            >
+                                <icon :icon="IconChevronBarDown"/>
+                            </button>
+                            <button
+                                v-if="index+1 < media.length"
+                                type="button"
+                                class="btn btn-primary"
+                                :title="$gettext('Move Down')"
+                                @click.prevent="moveDown(index)"
+                            >
+                                <icon :icon="IconChevronDown"/>
+                            </button>
+                            <button
+                                v-if="index > 0"
+                                type="button"
+                                class="btn btn-primary"
+                                :title="$gettext('Move Up')"
+                                @click.prevent="moveUp(index)"
+                            >
+                                <icon :icon="IconChevronUp"/>
+                            </button>
+                            <button
+                                v-if="index > 0"
+                                type="button"
+                                class="btn btn-secondary"
+                                :title="$gettext('Move to Top')"
+                                @click.prevent="moveToTop(index)"
+                            >
+                                <icon :icon="IconChevronBarUp"/>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
         </table>
     </modal>
 </template>
 
 <script setup lang="ts">
-import Draggable from 'vuedraggable';
-import Icon from '~/components/Common/Icon.vue';
-import PlayButton from "~/components/Common/PlayButton.vue";
-import InlinePlayer from '~/components/InlinePlayer.vue';
-import {ref} from "vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
+import PlayButton from "~/components/Common/Audio/PlayButton.vue";
+import InlinePlayer from "~/components/InlinePlayer.vue";
+import {ref, useTemplateRef} from "vue";
 import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
-import {IconChevronBarDown, IconChevronBarUp, IconChevronDown, IconChevronUp} from "~/components/Common/icons";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
-import {usePlayerStore, useProvidePlayerStore} from "~/functions/usePlayerStore.ts";
+import {IconChevronBarDown, IconChevronBarUp, IconChevronDown, IconChevronUp} from "~/components/Common/Icons/icons.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
+import {StreamChannel, usePlayerStore} from "~/functions/usePlayerStore.ts";
+import {useDraggable} from "vue-draggable-plus";
+import {ApiStationMedia} from "~/entities/ApiInterfaces.ts";
+
+type StationPlaylistMedia = {
+    id: number,
+    media: Required<ApiStationMedia>
+}
 
 const loading = ref(true);
-const reorderUrl = ref(null);
-const media = ref([]);
+const reorderUrl = ref<string | null>(null);
 
-const $modal = ref<ModalTemplateRef>(null);
+const $tbody = useTemplateRef('$tbody');
+const media = ref<StationPlaylistMedia[]>([]);
+
+const $modal = useTemplateRef('$modal');
 const {show} = useHasModal($modal);
 
 const {axios} = useAxios();
 
-const open = (newReorderUrl) => {
+const open = (newReorderUrl: string) => {
     reorderUrl.value = newReorderUrl;
     loading.value = true;
     show();
 
-    axios.get(newReorderUrl).then((resp) => {
-        media.value = resp.data;
+    void (async () => {
+        const {data} = await axios.get(newReorderUrl);
+        media.value = data;
         loading.value = false;
-    });
+    })();
 };
 
 const {notifySuccess} = useNotify();
 const {$gettext} = useTranslate();
 
-const save = () => {
-    const newOrder = {};
+const save = async () => {
+    if (!reorderUrl.value) {
+        return;
+    }
+
+    const newOrder: Record<number, number> = {};
     let i = 0;
 
     media.value.forEach((row) => {
@@ -141,38 +159,43 @@ const save = () => {
         newOrder[row.id] = i;
     });
 
-    axios.put(reorderUrl.value, {'order': newOrder}).then(() => {
-        notifySuccess($gettext('Playlist order set.'));
-    });
+    await axios.put(reorderUrl.value, {'order': newOrder});
+    notifySuccess($gettext('Playlist order set.'));
 };
 
-const moveDown = (index) => {
+const moveDown = (index: number) => {
     const currentItem = media.value.splice(index, 1)[0];
     media.value.splice(index + 1, 0, currentItem);
-    save();
+    void save();
 };
 
-const moveToBottom = (index) => {
+const moveToBottom = (index: number) => {
     const currentItem = media.value.splice(index, 1)[0];
     media.value.splice(media.value.length, 0, currentItem);
-    save();
+    void save();
 };
 
-const moveUp = (index) => {
+const moveUp = (index: number) => {
     const currentItem = media.value.splice(index, 1)[0];
     media.value.splice(index - 1, 0, currentItem);
-    save();
+    void save();
 };
 
-const moveToTop = (index) => {
+const moveToTop = (index: number) => {
     const currentItem = media.value.splice(index, 1)[0];
     media.value.splice(0, 0, currentItem);
-    save();
+    void save();
 };
 
-useProvidePlayerStore('reorder');
-
 const {stop} = usePlayerStore();
+
+const onShown = () => {
+    useDraggable($tbody, media, {
+        onEnd() {
+            void save();
+        }
+    });
+};
 
 const onHidden = () => {
     stop();

@@ -7,10 +7,10 @@ namespace App\Sync\NowPlaying\Task;
 use App\Entity\Station;
 use App\Radio\AutoDJ;
 
-final class BuildQueueTask implements NowPlayingTaskInterface
+final readonly class BuildQueueTask implements NowPlayingTaskInterface
 {
     public function __construct(
-        private readonly AutoDJ\Queue $queue
+        private AutoDJ\Queue $queue
     ) {
     }
 

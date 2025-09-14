@@ -43,7 +43,7 @@
                                 type="button"
                                 class="btn btn-warning"
                                 :disabled="isLoading"
-                                @click="makeApiCall(reloadUrl)"
+                                @click="doReload"
                             >
                                 {{ $gettext('Reload Configuration') }}
                             </button>
@@ -91,7 +91,7 @@
                             type="button"
                             class="btn btn-warning"
                             :disabled="isLoading"
-                            @click="makeApiCall(restartUrl)"
+                            @click="doRestart"
                         >
                             {{ $gettext('Restart Broadcasting') }}
                         </button>
@@ -104,19 +104,19 @@
 
 <script setup lang="ts">
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
-import {useSweetAlert} from "~/vendor/sweetalert";
 import {ref} from "vue";
 import {getStationApiUrl} from "~/router";
 import {useRouter} from "vue-router";
+import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
+import {useClearAllStationQueries, useStationData} from "~/functions/useStationQuery.ts";
+import {ApiStatus, FlashLevels} from "~/entities/ApiInterfaces.ts";
+import {toRefs} from "@vueuse/core";
+import {delay} from "es-toolkit";
 
-const props = defineProps({
-    canReload: {
-        type: Boolean,
-        required: true,
-    }
-});
+const stationData = useStationData();
+const {canReload} = toRefs(stationData);
 
 const reloadUrl = getStationApiUrl('/reload');
 const restartUrl = getStationApiUrl('/restart');
@@ -124,39 +124,60 @@ const restartUrl = getStationApiUrl('/restart');
 const isLoading = ref(false);
 
 const {axios} = useAxios();
-const {showAlert} = useSweetAlert();
+const {showAlert} = useDialog();
 const {notify} = useNotify();
 const {$gettext} = useTranslate();
 
 const router = useRouter();
 
-const makeApiCall = (uri) => {
-    showAlert({
-        title: $gettext('Are you sure?')
-    }).then((result) => {
-        if (!result.value) {
-            return;
-        }
+const clearAllStationQueries = useClearAllStationQueries();
 
-        isLoading.value = true;
+const makeApiCall = async (uri: string) => {
+    isLoading.value = true;
 
-        axios.post(uri).then((resp) => {
-            notify(resp.data.formatted_message, {
-                variant: (resp.data.success) ? 'success' : 'warning'
-            });
-
-            setTimeout(
-                async () => {
-                    await router.push({
-                        name: 'stations:index'
-                    });
-                    await router.go(0);
-                },
-                2000
-            );
-        }).finally(() => {
-            isLoading.value = false;
+    try {
+        const {data} = await axios.post<ApiStatus>(uri);
+        notify(data.formatted_message, {
+            variant: (data.success) ? FlashLevels.Success : FlashLevels.Warning
         });
-    });
+
+        await delay(2000);
+
+        await router.push({
+            name: 'stations:index'
+        });
+
+        await clearAllStationQueries();
+    } finally {
+        isLoading.value = false;
+    }
 };
+
+const doReload = async () => {
+    const {value} = await showAlert({
+        title: $gettext('Are you sure?'),
+        confirmButtonClass: 'btn-warning',
+        confirmButtonText: $gettext('Reload Configuration')
+    });
+
+    if (!value) {
+        return;
+    }
+
+    await makeApiCall(reloadUrl.value);
+}
+
+const doRestart = async () => {
+    const {value} = await showAlert({
+        title: $gettext('Are you sure?'),
+        confirmButtonClass: 'btn-warning',
+        confirmButtonText: $gettext('Restart Broadcasting')
+    });
+
+    if (!value) {
+        return;
+    }
+
+    await makeApiCall(restartUrl.value);
+}
 </script>

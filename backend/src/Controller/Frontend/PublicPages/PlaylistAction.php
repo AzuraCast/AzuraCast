@@ -11,10 +11,10 @@ use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use Psr\Http\Message\ResponseInterface;
 
-final class PlaylistAction implements SingleActionInterface
+final readonly class PlaylistAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly Adapters $adapters,
+        private Adapters $adapters,
     ) {
     }
 
@@ -33,9 +33,9 @@ final class PlaylistAction implements SingleActionInterface
 
         $fa = $this->adapters->getFrontendAdapter($station);
         if (null !== $fa) {
-            foreach ($station->getMounts() as $mount) {
+            foreach ($station->mounts as $mount) {
                 /** @var StationMount $mount */
-                if (!$mount->getIsVisibleOnPublicPages()) {
+                if (!$mount->is_visible_on_public_pages) {
                     continue;
                 }
 
@@ -43,14 +43,14 @@ final class PlaylistAction implements SingleActionInterface
 
                 $streamUrls[] = $streamUrl;
                 $streams[] = [
-                    'name' => $station->getName() . ' - ' . $mount->getDisplayName(),
+                    'name' => $station->name . ' - ' . $mount->display_name,
                     'url' => $streamUrl,
                 ];
             }
         }
 
-        foreach ($station->getRemotes() as $remote) {
-            if (!$remote->getIsVisibleOnPublicPages()) {
+        foreach ($station->remotes as $remote) {
+            if (!$remote->is_visible_on_public_pages) {
                 continue;
             }
 
@@ -59,23 +59,23 @@ final class PlaylistAction implements SingleActionInterface
 
             $streamUrls[] = $streamUrl;
             $streams[] = [
-                'name' => $station->getName() . ' - ' . $remote->getDisplayName(),
+                'name' => $station->name . ' - ' . $remote->display_name,
                 'url' => $streamUrl,
             ];
         }
 
-        if ($station->getEnableHls() && $station->getBackendType()->isEnabled()) {
+        if ($station->enable_hls && $station->backend_type->isEnabled()) {
             $backend = $this->adapters->getBackendAdapter($station);
-            $backendConfig = $station->getBackendConfig();
+            $backendConfig = $station->backend_config;
 
-            if (null !== $backend && $backendConfig->getHlsEnableOnPublicPlayer()) {
+            if (null !== $backend && $backendConfig->hls_enable_on_public_player) {
                 $streamUrl = $backend->getHlsUrl($station);
                 $streamRow = [
-                    'name' => $station->getName() . ' - HLS',
+                    'name' => $station->name . ' - HLS',
                     'url' => (string)$streamUrl,
                 ];
 
-                if ($backendConfig->getHlsIsDefault()) {
+                if ($backendConfig->hls_is_default) {
                     array_unshift($streamUrls, $streamUrl);
                     array_unshift($streams, $streamRow);
                 } else {
@@ -94,7 +94,7 @@ final class PlaylistAction implements SingleActionInterface
                 $response->getBody()->write($m3uFile);
                 return $response
                     ->withHeader('Content-Type', 'audio/x-mpegurl')
-                    ->withHeader('Content-Disposition', 'attachment; filename=' . $station->getShortName() . '.m3u');
+                    ->withHeader('Content-Disposition', 'attachment; filename=' . $station->short_name . '.m3u');
 
             // PLS Playlist Format
             case 'pls':
@@ -118,7 +118,7 @@ final class PlaylistAction implements SingleActionInterface
                 $response->getBody()->write(implode("\n", $output));
                 return $response
                     ->withHeader('Content-Type', 'audio/x-scpls')
-                    ->withHeader('Content-Disposition', 'attachment; filename=' . $station->getShortName() . '.pls');
+                    ->withHeader('Content-Disposition', 'attachment; filename=' . $station->short_name . '.pls');
         }
     }
 }

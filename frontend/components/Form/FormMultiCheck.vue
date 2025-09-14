@@ -1,7 +1,7 @@
 <template>
     <div>
         <div
-            v-for="option in options"
+            v-for="option in parsedOptions"
             :key="option.value"
             class="form-check"
             :class="!stacked ? 'form-check-inline' : ''"
@@ -34,41 +34,30 @@
     </div>
 </template>
 
-<script setup lang="ts">
-import {useVModel} from "@vueuse/core";
+<script setup lang="ts" generic="T = ModelFormField">
+import {objectToSimpleFormOptions, SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
+import {ModelFormField} from "~/components/Form/useFormField.ts";
+import {toRef} from "vue";
 
-const props = defineProps({
-    modelValue: {
-        type: [String, Number, Boolean, Array],
-        required: true
-    },
-    id: {
-        type: String,
-        required: true
-    },
-    name: {
-        type: String,
-        default: (props) => props.id
-    },
-    fieldClass: {
-        type: String,
-        default: null,
-    },
-    options: {
-        type: Array<any>,
-        required: true
-    },
-    radio: {
-        type: Boolean,
-        default: false
-    },
-    stacked: {
-        type: Boolean,
-        default: false
-    },
+const props = withDefaults(
+    defineProps<{
+        id: string,
+        name?: string,
+        fieldClass?: string,
+        options: SimpleFormOptionInput,
+        radio?: boolean,
+        stacked?: boolean
+    }>(),
+    {
+        name: (props) => props.id,
+        radio: false,
+        stacked: false,
+    }
+)
+
+const value = defineModel<T>({
+    default: null
 });
 
-const emit = defineEmits(['update:modelValue']);
-
-const value = useVModel(props, 'modelValue', emit);
+const parsedOptions = objectToSimpleFormOptions(toRef(props, 'options'));
 </script>

@@ -16,10 +16,9 @@
 
         <data-table
             id="station_hls_streams"
-            ref="$dataTable"
             :fields="fields"
+            :provider="listItemProvider"
             paginated
-            :api-url="listUrl"
         >
             <template #cell(name)="row">
                 <h5 class="m-0">
@@ -56,23 +55,24 @@
     <edit-modal
         ref="$editModal"
         :create-url="listUrl"
-        @relist="relist"
-        @needs-restart="mayNeedRestart"
+        @relist="() => relist()"
+        @needs-restart="() => mayNeedRestart()"
     />
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable.vue';
-import EditModal from './HlsStreams/EditModal.vue';
+import DataTable from "~/components/Common/DataTable.vue";
+import EditModal from "~/components/Stations/HlsStreams/EditModal.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
-import useHasEditModal, {EditModalTemplateRef} from "~/functions/useHasEditModal";
+import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
 const listUrl = getStationApiUrl('/hls_streams');
 
@@ -85,18 +85,24 @@ const fields = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const upper = (data) => {
-    const upper = [];
+const listItemProvider = useApiItemProvider(
+    listUrl,
+    queryKeyWithStation([QueryKeys.StationHlsStreams])
+);
+
+const relist = () => {
+    void listItemProvider.refresh();
+}
+
+const upper = (data: string) => {
+    const upper: string[] = [];
     data.split(' ').forEach((word) => {
         upper.push(word.toUpperCase());
     });
     return upper.join(' ');
 };
 
-const $dataTable = ref<DataTableTemplateRef>(null);
-const {relist} = useHasDatatable($dataTable);
-
-const $editModal = ref<EditModalTemplateRef>(null);
+const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const {mayNeedRestart} = useMayNeedRestart();

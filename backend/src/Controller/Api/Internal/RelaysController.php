@@ -16,6 +16,7 @@ use App\Entity\StationRemote;
 use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Radio\Adapters;
 use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\RemoteAdapters;
@@ -27,15 +28,13 @@ use Psr\Http\Message\ResponseInterface;
         path: '/internal/relays',
         operationId: 'internalGetRelayDetails',
         description: "Returns all necessary information to relay all 'relayable' stations.",
-        tags: ['Administration: Relays'],
+        tags: [OpenApi::TAG_ADMIN],
         parameters: [],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_Admin_Relay')
+                    items: new OA\Items(ref: ApiRelay::class)
                 )
             ),
         ]
@@ -58,37 +57,34 @@ final class RelaysController
     ): ResponseInterface {
         $stations = $this->getManageableStations($request);
 
-        $router = $request->getRouter();
-
         $return = [];
         foreach ($stations as $station) {
             $row = new ApiRelay();
-            $row->id = $station->getIdRequired();
-            $row->name = $station->getName();
-            $row->shortcode = $station->getShortName();
-            $row->description = $station->getDescription();
-            $row->url = $station->getUrl();
-            $row->genre = $station->getGenre();
+            $row->id = $station->id;
+            $row->name = $station->name;
+            $row->shortcode = $station->short_name;
+            $row->description = $station->description;
+            $row->url = $station->url;
+            $row->genre = $station->genre;
 
-            $row->type = $station->getFrontendType()->value;
+            $row->type = $station->frontend_type->value;
 
-            $frontendConfig = $station->getFrontendConfig();
-            $row->port = $frontendConfig->getPort();
-            $row->relay_pw = $frontendConfig->getRelayPassword();
-            $row->admin_pw = $frontendConfig->getAdminPassword();
+            $frontendConfig = $station->frontend_config;
+            $row->port = $frontendConfig->port;
+            $row->relay_pw = $frontendConfig->relay_pw;
+            $row->admin_pw = $frontendConfig->admin_pw;
 
             $mounts = [];
 
             $fa = $this->adapters->getFrontendAdapter($station);
-            if (null !== $fa && $station->getMounts()->count() > 0) {
-                foreach ($station->getMounts() as $mount) {
+            if (null !== $fa && $station->mounts->count() > 0) {
+                foreach ($station->mounts as $mount) {
                     /** @var StationMount $mount */
                     $mounts[] = $mount->api($fa);
                 }
             }
 
             $row->mounts = $mounts;
-            $row->resolveUrls($router->getBaseUrl());
 
             $return[] = $row;
         }
@@ -119,7 +115,7 @@ final class RelaysController
         return array_filter(
             $allStations,
             static function (Station $station) use ($acl) {
-                return $acl->isAllowed(StationPermissions::Broadcasting, $station->getId());
+                return $acl->isAllowed(StationPermissions::Broadcasting, $station->id);
             }
         );
     }
@@ -144,27 +140,26 @@ final class RelaysController
             $relay = new Relay($baseUrl);
         }
 
-        $relay->setName($body['name'] ?? 'Relay');
-        $relay->setIsVisibleOnPublicPages($body['is_visible_on_public_pages'] ?? true);
-        $relay->setUpdatedAt(time());
+        $relay->name = $body['name'] ?? 'Relay';
+        $relay->is_visible_on_public_pages = $body['is_visible_on_public_pages'] ?? true;
 
         $this->em->persist($relay);
 
         // List existing remotes to avoid duplication.
         $existingRemotes = [];
 
-        foreach ($relay->getRemotes() as $remote) {
+        foreach ($relay->remotes as $remote) {
             /** @var StationRemote $remote */
-            $existingRemotes[$remote->getStation()->getId()][$remote->getMount()] = $remote;
+            $existingRemotes[$remote->station->id][$remote->mount] = $remote;
         }
 
         // Iterate through all remotes that *should* exist.
         foreach ($this->getManageableStations($request) as $station) {
-            $stationId = $station->getId();
+            $stationId = $station->id;
 
-            foreach ($station->getMounts() as $mount) {
+            foreach ($station->mounts as $mount) {
                 /** @var StationMount $mount */
-                $mountPath = $mount->getName();
+                $mountPath = $mount->name;
 
                 if (isset($existingRemotes[$stationId][$mountPath])) {
                     /** @var StationRemote $remote */
@@ -175,14 +170,14 @@ final class RelaysController
                     $remote = new StationRemote($station);
                 }
 
-                $remote->setRelay($relay);
-                $remote->setType(RemoteAdapters::AzuraRelay);
-                $remote->setDisplayName($mount->getDisplayName() . ' (' . $relay->getName() . ')');
-                $remote->setIsVisibleOnPublicPages($relay->getIsVisibleOnPublicPages());
-                $remote->setAutodjBitrate($mount->getAutodjBitrate());
-                $remote->setAutodjFormat($mount->getAutodjFormat());
-                $remote->setUrl($relay->getBaseUrl());
-                $remote->setMount($mount->getName());
+                $remote->relay = $relay;
+                $remote->type = RemoteAdapters::AzuraRelay;
+                $remote->display_name = $mount->display_name . ' (' . $relay->name . ')';
+                $remote->is_visible_on_public_pages = $relay->is_visible_on_public_pages;
+                $remote->autodj_bitrate = $mount->autodj_bitrate;
+                $remote->autodj_format = $mount->autodj_format;
+                $remote->url = $relay->base_url;
+                $remote->mount = $mount->name;
 
                 $this->em->persist($remote);
             }

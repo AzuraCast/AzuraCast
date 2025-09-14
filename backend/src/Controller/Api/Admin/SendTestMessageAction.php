@@ -10,19 +10,34 @@ use App\Entity\Api\Status;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Service\Mail;
 use App\Utilities\Types;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Required;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final class SendTestMessageAction implements SingleActionInterface
+#[
+    OA\Post(
+        path: '/admin/send-test-message',
+        operationId: 'adminSendTestEmail',
+        summary: 'Send a test e-mail to confirm mail delivery settings.',
+        tags: [OpenApi::TAG_ADMIN],
+        responses: [
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
+        ]
+    ),
+]
+final readonly class SendTestMessageAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly ValidatorInterface $validator,
-        private readonly Mail $mail,
+        private ValidatorInterface $validator,
+        private Mail $mail,
     ) {
     }
 

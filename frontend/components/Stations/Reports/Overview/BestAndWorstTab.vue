@@ -25,7 +25,7 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="state">
                             <tr
                                 v-for="row in state.bestAndWorst.best"
                                 :key="row.song.id"
@@ -65,7 +65,7 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="state">
                             <tr
                                 v-for="row in state.bestAndWorst.worst"
                                 :key="row.song.id"
@@ -105,7 +105,7 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="state">
                             <tr
                                 v-for="row in state.mostPlayed"
                                 :key="row.song.id"
@@ -126,52 +126,57 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
-import {useAsyncState, useMounted} from "@vueuse/core";
-import {toRef, watch} from "vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
+import {toRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import SongText from "~/components/Stations/Reports/Overview/SongText.vue";
 import Loading from "~/components/Common/Loading.vue";
 import {useLuxon} from "~/vendor/luxon";
-import {IconChevronDown, IconChevronUp} from "~/components/Common/icons";
+import {IconChevronDown, IconChevronUp} from "~/components/Common/Icons/icons.ts";
+import {DateRange} from "~/components/Stations/Reports/Overview/CommonMetricsView.vue";
+import {useQuery} from "@tanstack/vue-query";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
-const props = defineProps({
-    dateRange: {
-        type: Object,
-        required: true
-    },
-    apiUrl: {
-        type: String,
-        required: true
-    },
-});
+const props = defineProps<{
+    dateRange: DateRange,
+    apiUrl: string,
+}>();
 
 const dateRange = toRef(props, 'dateRange');
 const {axios} = useAxios();
 
 const {DateTime} = useLuxon();
 
-const {state, isLoading, execute: relist} = useAsyncState(
-    () => axios.get(props.apiUrl, {
-        params: {
-            start: DateTime.fromJSDate(dateRange.value.startDate).toISO(),
-            end: DateTime.fromJSDate(dateRange.value.endDate).toISO()
-        }
-    }).then(r => r.data),
-    {
+type StatsData = {
+    bestAndWorst: {
+        best: any[],
+        worst: any[]
+    },
+    mostPlayed: any[]
+}
+
+const {data: state, isLoading} = useQuery<StatsData>({
+    queryKey: queryKeyWithStation([
+        QueryKeys.StationReports,
+        'best_and_worst',
+        dateRange
+    ]),
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get(props.apiUrl, {
+            signal,
+            params: {
+                start: DateTime.fromJSDate(dateRange.value.startDate).toISO(),
+                end: DateTime.fromJSDate(dateRange.value.endDate).toISO()
+            }
+        });
+        return data;
+    },
+    placeholderData: () => ({
         bestAndWorst: {
             best: [],
             worst: []
         },
         mostPlayed: []
-    }
-);
-
-const isMounted = useMounted();
-
-watch(dateRange, () => {
-    if (isMounted.value) {
-        relist();
-    }
+    }),
 });
 </script>

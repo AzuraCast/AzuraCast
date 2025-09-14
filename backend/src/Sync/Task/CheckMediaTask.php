@@ -21,6 +21,7 @@ use App\Message\ReprocessMediaMessage;
 use App\MessageQueue\QueueManagerInterface;
 use App\MessageQueue\QueueNames;
 use App\Radio\Quota;
+use App\Utilities\Types;
 use Brick\Math\BigInteger;
 use Doctrine\ORM\AbstractQuery;
 use League\Flysystem\FilesystemException;
@@ -111,10 +112,12 @@ final class CheckMediaTask extends AbstractTask
         foreach ($fsIterator as $file) {
             try {
                 $size = $file->fileSize();
-                if (null !== $size) {
-                    $totalSize = $totalSize->plus($size);
-                }
+                $totalSize = $totalSize->plus($size);
             } catch (UnableToRetrieveMetadata) {
+                continue;
+            }
+
+            if ($size === 0) {
                 continue;
             }
 
@@ -137,7 +140,7 @@ final class CheckMediaTask extends AbstractTask
             }
         }
 
-        $storageLocation->setStorageUsed($totalSize);
+        $storageLocation->storageUsed = $totalSize;
         $this->em->persist($storageLocation);
         $this->em->flush();
 
@@ -184,7 +187,7 @@ final class CheckMediaTask extends AbstractTask
 
         foreach ($coverFiles as $folderHash => $coverFile) {
             $message = new ProcessCoverArtMessage();
-            $message->storage_location_id = $storageLocation->getIdRequired();
+            $message->storage_location_id = $storageLocation->id;
             $message->path = $coverFile[StorageAttributes::ATTRIBUTE_PATH];
             $message->folder_hash = $folderHash;
 
@@ -214,15 +217,12 @@ final class CheckMediaTask extends AbstractTask
             if (isset($musicFiles[$pathHash])) {
                 $fileInfo = $musicFiles[$pathHash];
                 $mtime = $fileInfo[StorageAttributes::ATTRIBUTE_LAST_MODIFIED] ?? 0;
+                $mediaProcessedAt = Types::int($mediaRow['mtime']);
 
-                if (
-                    empty($mediaRow['unique_id'])
-                    || StationMedia::needsReprocessing($mtime, (int)$mediaRow['mtime'])
-                ) {
+                if ($mtime > $mediaProcessedAt) {
                     $message = new ReprocessMediaMessage();
-                    $message->storage_location_id = $storageLocation->getIdRequired();
+                    $message->storage_location_id = $storageLocation->id;
                     $message->media_id = (int)$mediaRow['id'];
-                    $message->force = empty($mediaRow['unique_id']);
 
                     $this->messageBus->dispatch($message);
                     $stats['updated']++;
@@ -266,9 +266,9 @@ final class CheckMediaTask extends AbstractTask
                 $fileInfo = $musicFiles[$pathHash];
                 $mtime = $fileInfo[StorageAttributes::ATTRIBUTE_LAST_MODIFIED] ?? 0;
 
-                if (UnprocessableMedia::needsReprocessing($mtime, $unprocessableRow['mtime'] ?? 0)) {
+                if (UnprocessableMedia::needsReprocessing($mtime, Types::int($unprocessableRow['mtime']))) {
                     $message = new AddNewMediaMessage();
-                    $message->storage_location_id = $storageLocation->getIdRequired();
+                    $message->storage_location_id = $storageLocation->id;
                     $message->path = $unprocessableRow['path'];
 
                     $this->messageBus->dispatch($message);
@@ -296,7 +296,7 @@ final class CheckMediaTask extends AbstractTask
             $path = $newMusicFile[StorageAttributes::ATTRIBUTE_PATH];
 
             $message = new AddNewMediaMessage();
-            $message->storage_location_id = $storageLocation->getIdRequired();
+            $message->storage_location_id = $storageLocation->id;
             $message->path = $path;
 
             $this->messageBus->dispatch($message);

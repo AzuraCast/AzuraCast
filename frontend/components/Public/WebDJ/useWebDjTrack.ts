@@ -1,3 +1,5 @@
+// noinspection JSDeprecatedSymbols
+
 import {computed, ref, watch} from "vue";
 import {useInjectWebDjNode} from "~/components/Public/WebDJ/useWebDjNode";
 
@@ -11,10 +13,10 @@ export function useWebDjTrack() {
 
     const trackGain = ref(55);
     const trackPassThrough = ref(false);
-    const position = ref(null);
+    const position = ref<number | null>(null);
     const volume = ref(0);
 
-    const source = ref(null);
+    const source = ref<any>(null);
 
     const createControlsNode = () => {
         const bufferLog = Math.log(Number(bufferSize.value));
@@ -70,17 +72,16 @@ export function useWebDjTrack() {
         return newSource;
     };
 
-    let controlsNode = null;
-    let trackGainNode = null;
-    let passThroughNode = null;
+    let controlsNode: ScriptProcessorNode | null = null;
+    let trackGainNode: GainNode | null = null;
+    let passThroughNode: ScriptProcessorNode | null = null;
 
-    const setTrackGain = (newGain) => {
-        if (null === trackGainNode) {
-            return;
+    const setTrackGain = (newGain: number) => {
+        if (trackGainNode?.gain?.value) {
+            trackGainNode.gain.value = Number(newGain) / 100.0;
         }
-
-        trackGainNode.gain.value = parseFloat(newGain) / 100.0;
     };
+
     watch(trackGain, setTrackGain);
 
     const prepare = () => {
@@ -95,7 +96,7 @@ export function useWebDjTrack() {
         passThroughNode.connect(context.value.destination);
         trackGainNode.connect(passThroughNode);
 
-        context.value.resume();
+        void context.value.resume();
 
         return trackGainNode;
     }

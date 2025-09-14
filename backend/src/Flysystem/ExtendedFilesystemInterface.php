@@ -34,10 +34,6 @@ interface ExtendedFilesystemInterface extends FilesystemOperator
      */
     public function getMetadata(string $path): StorageAttributes;
 
-    public function isDir(string $path): bool;
-
-    public function isFile(string $path): bool;
-
     /**
      * Call a callable function with a path that is guaranteed to be a local path, even if
      * this filesystem is a remote one, by copying to a temporary directory first in the
@@ -48,7 +44,7 @@ interface ExtendedFilesystemInterface extends FilesystemOperator
      *
      * @return mixed
      */
-    public function withLocalFile(string $path, callable $function);
+    public function withLocalFile(string $path, callable $function): mixed;
 
     /**
      * @param string $localPath

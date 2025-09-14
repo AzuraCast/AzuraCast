@@ -12,12 +12,61 @@ use App\Entity\StationStreamerBroadcast;
 use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Utilities\Types;
 use Doctrine\ORM\Query;
 use InvalidArgumentException;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
+#[OA\Post(
+    path: '/station/{station_id}/streamer/{id}/broadcasts/batch',
+    operationId: 'postStationStreamerBroadcastsBatch',
+    summary: 'Perform batch actions on the specified broadcasts.',
+    requestBody: new OA\RequestBody(
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(
+                    property: 'do',
+                    description: 'The action to take with the specified rows.',
+                    type: 'string',
+                    enum: ['delete']
+                ),
+                new OA\Property(
+                    property: 'rows',
+                    description: 'The IDs to perform batch actions on.',
+                    type: 'array',
+                    items: new OA\Items(
+                        type: 'integer',
+                        format: 'int64'
+                    ),
+                ),
+            ]
+        )
+    ),
+    tags: [OpenApi::TAG_STATIONS_STREAMERS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        new OA\Parameter(
+            name: 'id',
+            description: 'Streamer ID',
+            in: 'path',
+            required: true,
+            schema: new OA\Schema(type: 'integer', format: 'int64')
+        ),
+    ],
+    responses: [
+        new OpenApi\Response\Success(
+            content: new OA\JsonContent(
+                ref: GenericBatchResult::class
+            )
+        ),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class BatchAction extends BroadcastsController implements SingleActionInterface
 {
     private const int BATCH_SIZE = 50;
@@ -76,14 +125,14 @@ final class BatchAction extends BroadcastsController implements SingleActionInte
         $rows = ReadWriteBatchIteratorAggregate::fromQuery($rowsQuery, self::BATCH_SIZE);
 
         foreach ($rows as $row) {
-            $id = $row->getIdRequired();
+            $id = $row->id;
             $result->records[] = [
                 'id' => $id,
                 'title' => (string)$row,
             ];
 
             try {
-                $recordingPath = $row->getRecordingPath();
+                $recordingPath = $row->recordingPath;
                 if (!empty($recordingPath)) {
                     $fsRecordings->delete($recordingPath);
                 }

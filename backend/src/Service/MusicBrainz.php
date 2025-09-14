@@ -85,22 +85,23 @@ final class MusicBrainz
     ): array {
         $query = [];
 
-        if (!empty($song->getTitle())) {
-            $query[] = $this->quoteQuery($song->getTitle());
+        if (!empty($song->title)) {
+            $query[] = $this->quoteQuery($song->title);
         }
 
-        if (!empty($song->getArtist())) {
-            $query[] = 'artist:' . $this->quoteQuery($song->getArtist());
+        if (!empty($song->artist)) {
+            $query[] = 'artist:' . $this->quoteQuery($song->artist);
+        }
+
+        if (!empty($song->album)) {
+            $advancedQuery[] = 'release:' . $this->quoteQuery($song->album);
         }
 
         if ($song instanceof StationMedia) {
             $advancedQuery = $query;
 
-            if (!empty($song->getAlbum())) {
-                $advancedQuery[] = 'release:' . $this->quoteQuery($song->getAlbum());
-            }
-            if (!empty($song->getIsrc())) {
-                $advancedQuery[] = 'isrc:' . $this->quoteQuery($song->getIsrc());
+            if (!empty($song->isrc)) {
+                $advancedQuery[] = 'isrc:' . $this->quoteQuery($song->isrc);
             }
 
             if (count($advancedQuery) > count($query)) {

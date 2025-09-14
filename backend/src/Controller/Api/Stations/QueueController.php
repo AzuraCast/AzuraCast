@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Cache\QueueLogCache;
 use App\Entity\Api\StationQueueDetailed;
 use App\Entity\Api\Status;
 use App\Entity\ApiGenerator\StationQueueApiGenerator;
@@ -12,9 +13,7 @@ use App\Entity\StationQueue;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use App\Radio\AutoDJ\Queue;
 use App\Utilities\Types;
-use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -25,32 +24,33 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     OA\Get(
         path: '/station/{station_id}/queue',
         operationId: 'getQueue',
-        description: 'Return information about the upcoming song playback queue.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Queue'],
+        summary: 'Return information about the upcoming song playback queue.',
+        tags: [OpenApi::TAG_STATIONS_QUEUE],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
+            new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/Api_StationQueueDetailed')
+                    items: new OA\Items(
+                        allOf: [
+                            new OA\Schema(ref: StationQueue::class),
+                            new OA\Schema(ref: StationQueueDetailed::class),
+                        ]
+                    )
                 )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Get(
         path: '/station/{station_id}/queue/{id}',
         operationId: 'getQueueItem',
-        description: 'Retrieve details of a single queued item.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Queue'],
+        summary: 'Retrieve details of a single queued item.',
+        tags: [OpenApi::TAG_STATIONS_QUEUE],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -62,22 +62,24 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_StationQueueDetailed')
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    allOf: [
+                        new OA\Schema(ref: StationQueue::class),
+                        new OA\Schema(ref: StationQueueDetailed::class),
+                    ]
+                )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     ),
     OA\Delete(
         path: '/station/{station_id}/queue/{id}',
         operationId: 'deleteQueueItem',
-        description: 'Delete a single queued item.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Stations: Queue'],
+        summary: 'Delete a single queued item.',
+        tags: [OpenApi::TAG_STATIONS_QUEUE],
         parameters: [
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
@@ -89,10 +91,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             ),
         ],
         responses: [
-            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]
@@ -104,7 +106,7 @@ final class QueueController extends AbstractStationApiCrudController
     public function __construct(
         private readonly StationQueueApiGenerator $queueApiGenerator,
         private readonly StationQueueRepository $queueRepo,
-        private readonly Queue $queue,
+        private readonly QueueLogCache $queueLogCache,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
@@ -132,42 +134,32 @@ final class QueueController extends AbstractStationApiCrudController
         );
     }
 
-    /**
-     * @param object $record
-     * @param ServerRequest $request
-     */
-    protected function viewRecord(object $record, ServerRequest $request): StationQueueDetailed
+    protected function viewRecord(object $record, ServerRequest $request): array
     {
-        if (!($record instanceof $this->entityClass)) {
-            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
-        }
-
+        $isInternal = $request->isInternal();
         $router = $request->getRouter();
 
-        /** @var StationQueue $record */
-        $row = ($this->queueApiGenerator)($record);
-        $row->resolveUrls($router->getBaseUrl());
-
-        $isInternal = Types::bool($request->getParam('internal'), false, true);
+        $row = $this->queueApiGenerator->__invoke($record);
 
         $apiResponse = new StationQueueDetailed();
-        $apiResponse->fromParentObject($row);
-
-        $apiResponse->sent_to_autodj = $record->getSentToAutodj();
-        $apiResponse->is_played = $record->getIsPlayed();
-        $apiResponse->autodj_custom_uri = $record->getAutodjCustomUri();
-        $apiResponse->log = $this->queue->getQueueRowLog($record);
+        $apiResponse->sent_to_autodj = $record->sent_to_autodj;
+        $apiResponse->is_played = $record->is_played;
+        $apiResponse->autodj_custom_uri = $record->autodj_custom_uri;
+        $apiResponse->log = $this->queueLogCache->getLog($record);
 
         $apiResponse->links = [
             'self' => $router->fromHere(
                 $this->resourceRouteName,
-                ['id' => $record->getId()],
+                ['id' => $record->id],
                 [],
                 !$isInternal
             ),
         ];
 
-        return $apiResponse;
+        return [
+            ...get_object_vars($row),
+            ...get_object_vars($apiResponse),
+        ];
     }
 
     public function clearAction(

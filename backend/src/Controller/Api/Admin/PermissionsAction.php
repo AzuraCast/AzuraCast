@@ -6,6 +6,8 @@ namespace App\Controller\Api\Admin;
 
 use App\Acl;
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Admin\Permission;
+use App\Entity\Api\Admin\Permissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -16,24 +18,23 @@ use Psr\Http\Message\ResponseInterface;
     OA\Get(
         path: '/admin/permissions',
         operationId: 'getPermissions',
-        description: 'Return a list of all available permissions.',
-        security: OpenApi::API_KEY_SECURITY,
-        tags: ['Administration: Roles'],
+        summary: 'Return a list of all available permissions.',
+        tags: [OpenApi::TAG_ADMIN_ROLES],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success' // TODO: Response Body
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    ref: Permissions::class
+                )
             ),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
         ]
     )
 ]
-final class PermissionsAction implements SingleActionInterface
+final readonly class PermissionsAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly Acl $acl,
+        private Acl $acl,
     ) {
     }
 
@@ -42,16 +43,27 @@ final class PermissionsAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $permissions = [];
-        foreach ($this->acl->listPermissions() as $group => $actions) {
-            foreach ($actions as $actionId => $actionName) {
-                $permissions[$group][] = [
-                    'id' => $actionId,
-                    'name' => $actionName,
-                ];
-            }
-        }
+        $rawPermissions = $this->acl->listPermissions();
 
-        return $response->withJson($permissions);
+        $callback = fn(string $id, string $name) => new Permission($id, $name);
+
+        $globalPermissions = array_map(
+            $callback,
+            array_keys($rawPermissions['global']),
+            array_values($rawPermissions['global'])
+        );
+
+        $stationPermissions = array_map(
+            $callback,
+            array_keys($rawPermissions['station']),
+            array_values($rawPermissions['station'])
+        );
+
+        return $response->withJson(
+            new Permissions(
+                $globalPermissions,
+                $stationPermissions
+            )
+        );
     }
 }

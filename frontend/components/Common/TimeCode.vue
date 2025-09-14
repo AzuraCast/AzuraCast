@@ -11,28 +11,32 @@
 
 <script setup lang="ts">
 import {computed} from "vue";
-import {isEmpty, padStart} from 'lodash';
+import {padStart} from "es-toolkit/compat";
 
-const props = defineProps({
-    modelValue: {
-        type: String,
-        default: null
+const props = withDefaults(
+    defineProps<{
+        modelValue?: string | number | null
+    }>(),
+    {
+        modelValue: null,
     }
-});
+);
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{
+    (e: 'update:modelValue', value: number | null): void
+}>();
 
-const parseTimeCode = (timeCode) => {
+const parseTimeCode = (timeCode: string | number | null) => {
     if (timeCode !== '' && timeCode !== null) {
-        timeCode = padStart(timeCode, 4, '0');
+        timeCode = padStart(String(timeCode), 4, '0');
         return timeCode.substring(0, 2) + ':' + timeCode.substring(2);
     }
 
     return null;
 }
 
-const convertToTimeCode = (time) => {
-    if (isEmpty(time)) {
+const convertToTimeCode = (time: string | null): number | null => {
+    if (time === null || time === '') {
         return null;
     }
 
@@ -45,7 +49,10 @@ const timeCode = computed({
         return parseTimeCode(props.modelValue);
     },
     set: (newValue) => {
-        emit('update:modelValue', convertToTimeCode(newValue));
+        const newTimeCode = convertToTimeCode(newValue);
+        if (newTimeCode !== null) {
+            emit('update:modelValue', newTimeCode);
+        }
     }
 });
 </script>

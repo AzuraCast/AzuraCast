@@ -7,41 +7,38 @@
         </div>
 
         <div class="list-group list-group-flush">
-            <a
-                v-for="type in types"
-                :key="type.key"
-                class="list-group-item list-group-item-action"
-                href="#"
-                @click.prevent="selectType(type.key)"
-            >
-                <h6 class="font-weight-bold mb-0">
-                    {{ type.title }}
-                </h6>
-                <p class="card-text small">
-                    {{ type.description }}
-                </p>
-            </a>
+            <template v-for="(type, key) in types" :key="key as string">
+                <a
+                    v-if="type"
+                    class="list-group-item list-group-item-action"
+                    href="#"
+                    @click.prevent="selectType(key)"
+                >
+                    <h6 class="font-weight-bold mb-0">
+                        {{ type.title }}
+                    </h6>
+                    <p class="card-text small">
+                        {{ type.description }}
+                    </p>
+                </a>
+            </template>
         </div>
     </section>
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-    title: {
-        type: String,
-        required: true
-    },
-    types: {
-        type: Array,
-        required: true
-    }
-});
+import {ActiveWebhookTypes, WebhookTypeDetails} from "~/entities/Webhooks.ts";
 
-const emit = defineEmits([
-    'select'
-]);
+defineProps<{
+    title: string,
+    types: Partial<WebhookTypeDetails>
+}>();
 
-const selectType = (type) => {
+const emit = defineEmits<{
+    (e: 'select', type: ActiveWebhookTypes): void
+}>();
+
+const selectType = (type: ActiveWebhookTypes) => {
     emit('select', type);
 }
 </script>

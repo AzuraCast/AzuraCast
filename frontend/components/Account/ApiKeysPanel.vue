@@ -31,17 +31,16 @@
 
         <data-table
             id="account_api_keys"
-            ref="$dataTable"
             :show-toolbar="false"
             :fields="apiKeyFields"
-            :api-url="apiKeysApiUrl"
+            :provider="apiKeyItemProvider"
         >
-            <template #cell(actions)="row">
+            <template #cell(actions)="{ item }">
                 <div class="btn-group btn-group-sm">
                     <button
                         type="button"
                         class="btn btn-danger"
-                        @click="deleteApiKey(row.item.links.self)"
+                        @click="deleteApiKey(item.links.self)"
                     >
                         {{ $gettext('Delete') }}
                     </button>
@@ -53,28 +52,32 @@
     <account-api-key-modal
         ref="$apiKeyModal"
         :create-url="apiKeysApiUrl"
-        @relist="relist"
+        @relist="() => refreshApiKeys()"
     />
 </template>
 
 <script setup lang="ts">
 
-import {IconAdd} from "~/components/Common/icons.ts";
+import {IconAdd} from "~/components/Common/Icons/icons.ts";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import AccountApiKeyModal from "~/components/Account/ApiKeyModal.vue";
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import {useTranslate} from "~/vendor/gettext.ts";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 import {getApiUrl} from "~/router.ts";
+import {ApiKey, HasLinks} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
 
 const apiKeysApiUrl = getApiUrl('/frontend/account/api-keys');
 
 const {$gettext} = useTranslate();
 
-const apiKeyFields: DataTableField[] = [
+type Row = Required<ApiKey & HasLinks>
+
+const apiKeyFields: DataTableField<Row>[] = [
     {
         key: 'comment',
         isRowHeader: true,
@@ -89,17 +92,25 @@ const apiKeyFields: DataTableField[] = [
     }
 ];
 
-const $apiKeyModal = ref<InstanceType<typeof AccountApiKeyModal> | null>(null);
+const apiKeyItemProvider = useApiItemProvider<Row>(
+    apiKeysApiUrl,
+    [
+        QueryKeys.AdminApiKeys
+    ]
+);
+
+const refreshApiKeys = () => {
+    void apiKeyItemProvider.refresh();
+};
+
+const $apiKeyModal = useTemplateRef('$apiKeyModal');
 
 const createApiKey = () => {
     $apiKeyModal.value?.create();
 };
 
-const $dataTable = ref<DataTableTemplateRef>(null);
-const {relist} = useHasDatatable($dataTable);
-
 const {doDelete: deleteApiKey} = useConfirmAndDelete(
     $gettext('Delete API Key?'),
-    relist
+    () => refreshApiKeys()
 );
 </script>

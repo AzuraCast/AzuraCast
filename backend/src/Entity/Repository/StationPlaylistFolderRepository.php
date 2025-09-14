@@ -69,7 +69,7 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
                 DELETE FROM App\Entity\StationPlaylistFolder spf
                 WHERE spf.station = :station 
                 AND spf.path = :path
-                AND spf.playlist_id IN (:playlistIds)
+                AND IDENTITY(spf.playlist) IN (:playlistIds)
             DQL
             )->setParameter('station', $station)
                 ->setParameter('path', $path)
@@ -116,7 +116,7 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
     ): array {
         return $this->em->createQuery(
             <<<'DQL'
-                SELECT spf.playlist_id
+                SELECT IDENTITY(spf.playlist) AS playlist_id
                 FROM App\Entity\StationPlaylistFolder spf
                 WHERE spf.station = :station AND spf.path = :path
             DQL

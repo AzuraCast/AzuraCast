@@ -17,24 +17,28 @@ final class ApiKeyFixture extends AbstractFixture implements DependentFixtureInt
     {
         $demoApiKey = getenv('INIT_DEMO_API_KEY');
 
-        if (!empty($demoApiKey) && $this->hasReference('demo_user')) {
-            /** @var User $demoUser */
-            $demoUser = $this->getReference('demo_user');
+        if (!empty($demoApiKey) && $this->hasReference('demo_user', User::class)) {
+            $demoUser = $this->getReference('demo_user', User::class);
 
-            $apiKey = new ApiKey($demoUser, SplitToken::fromKeyString($demoApiKey));
-            $apiKey->setComment('Demo User');
+            $apiKey = new ApiKey(
+                $demoUser,
+                SplitToken::fromKeyString($demoApiKey),
+                'Demo User'
+            );
 
             $manager->persist($apiKey);
         }
 
         $adminApiKey = getenv('INIT_ADMIN_API_KEY');
 
-        if (!empty($adminApiKey) && $this->hasReference('admin_user')) {
-            /** @var User $adminUser */
-            $adminUser = $this->getReference('admin_user');
+        if (!empty($adminApiKey) && $this->hasReference('admin_user', User::class)) {
+            $adminUser = $this->getReference('admin_user', User::class);
 
-            $apiKey = new ApiKey($adminUser, SplitToken::fromKeyString($adminApiKey));
-            $apiKey->setComment('Administrator');
+            $apiKey = new ApiKey(
+                $adminUser,
+                SplitToken::fromKeyString($adminApiKey),
+                'Administrator'
+            );
 
             $manager->persist($apiKey);
         }

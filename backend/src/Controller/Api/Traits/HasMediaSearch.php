@@ -12,6 +12,13 @@ trait HasMediaSearch
 {
     use EntityManagerAwareTrait;
 
+    /**
+     * @return array{
+     *     string,
+     *     StationPlaylist|null,
+     *     string|null
+     * }
+     */
     private function parseSearchQuery(
         Station $station,
         string $query
@@ -21,7 +28,7 @@ trait HasMediaSearch
 
         if (str_contains($query, 'special:')) {
             preg_match('/special:(\S*)/', $query, $matches, PREG_UNMATCHED_AS_NULL);
-            if ($matches[1]) {
+            if (!empty($matches[1])) {
                 $special = $matches[1];
             }
 
@@ -31,7 +38,7 @@ trait HasMediaSearch
         if (str_contains($query, 'playlist:')) {
             preg_match('/playlist:(\S*)/', $query, $matches, PREG_UNMATCHED_AS_NULL);
 
-            if ($matches[1]) {
+            if (!empty($matches[1])) {
                 $playlistId = $matches[1];
 
                 if (!is_numeric($playlistId)) {

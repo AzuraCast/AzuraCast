@@ -7,9 +7,27 @@ namespace App\Controller\Api\Stations\Reports\Overview;
 use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Utilities\Types;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[OA\Get(
+    path: '/station/{station_id}/reports/overview/by-listening-time',
+    operationId: 'getStationReportByListeningTime',
+    summary: 'Get the "Listeners by Listening Time" report for a station.',
+    tags: [OpenApi::TAG_STATIONS_REPORTS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+    ],
+    responses: [
+        // TODO API Response
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class ByListeningTime extends AbstractReportAction
 {
     public function __invoke(
@@ -38,9 +56,9 @@ final class ByListeningTime extends AbstractReportAction
                 GROUP BY listener_hash
             SQL,
             [
-                'station_id' => $station->getIdRequired(),
-                'start' => $dateRange->getStartTimestamp(),
-                'end' => $dateRange->getEndTimestamp(),
+                'station_id' => $station->id,
+                'start' => $dateRange->start,
+                'end' => $dateRange->end,
             ]
         );
 

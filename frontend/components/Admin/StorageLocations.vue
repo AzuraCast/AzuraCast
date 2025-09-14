@@ -36,10 +36,9 @@
 
         <data-table
             id="admin_storage_locations"
-            ref="$datatable"
             :show-toolbar="false"
             :fields="fields"
-            :api-url="listUrlForType"
+            :provider="listItemProvider"
         >
             <template #cell(actions)="{item}">
                 <div class="btn-group btn-group-sm">
@@ -68,7 +67,7 @@
                 </p>
             </template>
             <template #cell(stations)="{item}">
-                {{ item.stations.join(', ') }}
+                {{ item.stations?.join(', ') }}
             </template>
             <template #cell(space)="{item}">
                 <template v-if="item.storageAvailable">
@@ -76,7 +75,7 @@
                         class="progress h-20 mb-3"
                         role="progressbar"
                         :aria-label="item.storageUsedPercent+'%'"
-                        :aria-valuenow="item.storageUsedPercent"
+                        :aria-valuenow="item.storageUsedPercent ?? undefined"
                         aria-valuemin="0"
                         aria-valuemax="100"
                     >
@@ -99,23 +98,30 @@
         ref="$editModal"
         :create-url="listUrl"
         :type="activeType"
-        @relist="relist"
+        @relist="() => relist()"
     />
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
-import EditModal from './StorageLocations/EditModal.vue';
-import {computed, nextTick, ref} from "vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import EditModal from "~/components/Admin/StorageLocations/EditModal.vue";
+import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
-import useHasEditModal, {EditModalTemplateRef} from "~/functions/useHasEditModal";
+import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
+import {
+    ApiAdminStorageLocation,
+    StorageLocation,
+    StorageLocationAdapters,
+    StorageLocationTypes
+} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
 
-const activeType = ref('station_media');
+const activeType = ref<StorageLocationTypes>(StorageLocationTypes.StationMedia);
 
 const listUrl = getApiUrl('/admin/storage_locations');
 const listUrlForType = computed(() => {
@@ -124,67 +130,79 @@ const listUrlForType = computed(() => {
 
 const {$gettext} = useTranslate();
 
-const fields: DataTableField[] = [
+type Row = Required<StorageLocation & ApiAdminStorageLocation>;
+
+const fields: DataTableField<Row>[] = [
     {key: 'adapter', label: $gettext('Adapter'), sortable: false},
     {key: 'space', label: $gettext('Space Used'), class: 'text-nowrap', sortable: false},
     {key: 'stations', label: $gettext('Station(s)'), sortable: false},
     {key: 'actions', label: $gettext('Actions'), class: 'shrink', sortable: false}
 ];
 
+const listItemProvider = useApiItemProvider<Row>(
+    listUrlForType,
+    [
+        QueryKeys.AdminStorageLocations,
+        activeType,
+    ]
+);
+
+const relist = () => {
+    void listItemProvider.refresh();
+}
+
 const tabs = [
     {
-        type: 'station_media',
+        type: StorageLocationTypes.StationMedia,
         title: $gettext('Station Media')
     },
     {
-        type: 'station_recordings',
+        type: StorageLocationTypes.StationRecordings,
         title: $gettext('Station Recordings')
     },
     {
-        type: 'station_podcasts',
+        type: StorageLocationTypes.StationPodcasts,
         title: $gettext('Station Podcasts'),
     },
     {
-        type: 'backup',
+        type: StorageLocationTypes.Backup,
         title: $gettext('Backups')
     }
 ];
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {relist} = useHasDatatable($datatable);
-
-const $editModal = ref<EditModalTemplateRef>(null);
+const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const setType = (type) => {
+const setType = (type: StorageLocationTypes) => {
     activeType.value = type;
-    nextTick(relist);
 };
 
-const getAdapterName = (adapter) => {
+const getAdapterName = (adapter: StorageLocationAdapters) => {
     switch (adapter) {
-        case 'local':
+        case StorageLocationAdapters.Local:
             return $gettext('Local');
 
-        case 's3':
+        case StorageLocationAdapters.S3:
             return $gettext('Remote: S3 Compatible');
 
-        case 'dropbox':
+        case StorageLocationAdapters.Dropbox:
             return $gettext('Remote: Dropbox');
 
-        case 'sftp':
+        case StorageLocationAdapters.Sftp:
             return $gettext('Remote: SFTP');
     }
 };
 
-const getSpaceUsed = (item) => {
+const getSpaceUsed = (item: Row) => {
     return (item.storageAvailable)
         ? item.storageUsed + ' / ' + item.storageAvailable
         : item.storageUsed;
 };
 
-const getProgressVariant = (percent) => {
-    if (percent > 85) {
+const getProgressVariant = (percent: number | null) => {
+    if (percent === null) {
+        return '';
+    } else if (percent > 85) {
         return 'text-bg-danger';
     } else if (percent > 65) {
         return 'text-bg-warning';
@@ -195,6 +213,6 @@ const getProgressVariant = (percent) => {
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Storage Location?'),
-    relist
+    () => relist()
 );
 </script>

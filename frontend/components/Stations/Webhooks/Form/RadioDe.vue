@@ -7,14 +7,14 @@
             <form-group-field
                 id="form_config_broadcastsubdomain"
                 class="col-md-12"
-                :field="v$.config.broadcastsubdomain"
+                :field="r$.config.broadcastsubdomain"
                 :label="$gettext('Radio.de Broadcast Subdomain')"
             />
 
             <form-group-field
                 id="form_config_apikey"
                 class="col-md-6"
-                :field="v$.config.apikey"
+                :field="r$.config.apikey"
                 :label="$gettext('Radio.de API Key')"
             />
         </div>
@@ -23,38 +23,31 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
+import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
+import {WebhookRecordCommon, WebhookRecordRadioDe} from "~/components/Stations/Webhooks/Form/form.ts";
+import {useAppScopedRegle} from "~/vendor/regle.ts";
+import {required} from "@regle/rules";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 
-const props = defineProps({
-    title: {
-        type: String,
-        required: true
-    },
-    form: {
-        type: Object,
-        required: true
-    }
-});
+defineProps<WebhookComponentProps>();
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+type ThisWebhookRecord = WebhookRecordCommon & WebhookRecordRadioDe;
 
-const {v$, tabClass} = useVuelidateOnFormTab(
+const form = defineModel<ThisWebhookRecord>('form', {required: true});
+
+const {r$} = useAppScopedRegle(
+    form,
     {
         config: {
             broadcastsubdomain: {required},
             apikey: {required}
         }
     },
-    form,
     {
-        config: {
-            broadcastsubdomain: '',
-            apikey: ''
-        }
+        namespace: 'station-webhooks'
     }
 );
+
+const tabClass = useFormTabClass(r$);
 </script>

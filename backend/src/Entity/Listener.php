@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use NowPlaying\Result\Client;
 
@@ -15,202 +16,94 @@ use NowPlaying\Result\Client;
     ORM\Index(name: 'idx_statistics_os', columns: ['device_os_family']),
     ORM\Index(name: 'idx_statistics_browser', columns: ['device_browser_family'])
 ]
-class Listener implements
+final class Listener implements
     Interfaces\IdentifiableEntityInterface,
     Interfaces\StationAwareInterface
 {
     use Traits\HasAutoIncrementId;
-    use Traits\TruncateStrings;
 
     #[ORM\ManyToOne(inversedBy: 'history')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    protected Station $station;
+    public readonly Station $station;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    protected int $station_id;
+    public private(set) int $station_id;
 
     #[ORM\ManyToOne(targetEntity: StationMount::class)]
     #[ORM\JoinColumn(name: 'mount_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
-    protected ?StationMount $mount = null;
+    public readonly ?StationMount $mount;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    protected ?int $mount_id = null;
+    public private(set) ?int $mount_id = null;
 
     #[ORM\ManyToOne(targetEntity: StationRemote::class)]
     #[ORM\JoinColumn(name: 'remote_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
-    protected ?StationRemote $remote = null;
+    public readonly ?StationRemote $remote;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    protected ?int $remote_id = null;
+    public private(set) ?int $remote_id = null;
 
     #[ORM\ManyToOne(targetEntity: StationHlsStream::class)]
     #[ORM\JoinColumn(name: 'hls_stream_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
-    protected ?StationHlsStream $hls_stream = null;
+    public readonly ?StationHlsStream $hls_stream;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    protected ?int $hls_stream_id = null;
+    public private(set) ?int $hls_stream_id = null;
 
     #[ORM\Column]
-    protected int $listener_uid;
+    public int $listener_uid;
 
     #[ORM\Column(length: 45)]
-    protected string $listener_ip;
+    public string $listener_ip;
 
     #[ORM\Column(length: 255)]
-    protected string $listener_user_agent;
+    public string $listener_user_agent;
 
     #[ORM\Column(length: 32)]
-    protected string $listener_hash;
+    public string $listener_hash;
 
-    #[ORM\Column]
-    protected int $timestamp_start;
+    #[ORM\Column(type: 'datetime_immutable', precision: 6)]
+    public DateTimeImmutable $timestamp_start;
 
-    #[ORM\Column]
-    protected int $timestamp_end;
+    #[ORM\Column(type: 'datetime_immutable', precision: 6, nullable: true)]
+    public ?DateTimeImmutable $timestamp_end;
 
     #[ORM\Embedded(class: ListenerLocation::class, columnPrefix: 'location_')]
-    protected ListenerLocation $location;
+    public ListenerLocation $location;
 
     #[ORM\Embedded(class: ListenerDevice::class, columnPrefix: 'device_')]
-    protected ListenerDevice $device;
+    public ListenerDevice $device;
 
-    public function __construct(Station $station, Client $client)
-    {
+    public function __construct(
+        Station $station,
+        ?StationMount $mount,
+        ?StationRemote $remote,
+        ?StationHlsStream $hls_stream,
+        int $listener_uid,
+        string $listener_ip,
+        string $listener_user_agent,
+        string $listener_hash,
+        DateTimeImmutable $timestamp_start,
+        ?DateTimeImmutable $timestamp_end,
+        ListenerLocation $location,
+        ListenerDevice $device
+    ) {
         $this->station = $station;
-
-        $this->timestamp_start = time();
-        $this->timestamp_end = 0;
-
-        $this->listener_uid = (int)$client->uid;
-        $this->listener_user_agent = $this->truncateString($client->userAgent);
-        $this->listener_ip = $client->ip;
-        $this->listener_hash = self::calculateListenerHash($client);
-
-        $this->location = new ListenerLocation();
-        $this->device = new ListenerDevice();
-    }
-
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
-    public function getMount(): ?StationMount
-    {
-        return $this->mount;
-    }
-
-    public function getMountId(): ?int
-    {
-        return $this->mount_id;
-    }
-
-    public function setMount(?StationMount $mount): void
-    {
         $this->mount = $mount;
-    }
-
-    public function getRemote(): ?StationRemote
-    {
-        return $this->remote;
-    }
-
-    public function getRemoteId(): ?int
-    {
-        return $this->remote_id;
-    }
-
-    public function setRemote(?StationRemote $remote): void
-    {
         $this->remote = $remote;
-    }
-
-    public function getHlsStream(): ?StationHlsStream
-    {
-        return $this->hls_stream;
-    }
-
-    public function getHlsStreamId(): ?int
-    {
-        return $this->hls_stream_id;
-    }
-
-    public function setHlsStream(?StationHlsStream $hlsStream): void
-    {
-        $this->hls_stream = $hlsStream;
-    }
-
-    public function getListenerUid(): int
-    {
-        return $this->listener_uid;
-    }
-
-    public function getListenerIp(): string
-    {
-        return $this->listener_ip;
-    }
-
-    public function getListenerUserAgent(): string
-    {
-        return $this->listener_user_agent;
-    }
-
-    public function getListenerHash(): string
-    {
-        return $this->listener_hash;
-    }
-
-    public function getTimestampStart(): int
-    {
-        return $this->timestamp_start;
-    }
-
-    public function getTimestamp(): int
-    {
-        return $this->timestamp_start;
-    }
-
-    public function getTimestampEnd(): int
-    {
-        return $this->timestamp_end;
-    }
-
-    public function setTimestampEnd(int $timestampEnd): void
-    {
-        $this->timestamp_end = $timestampEnd;
-    }
-
-    public function getConnectedSeconds(): int
-    {
-        return $this->timestamp_end - $this->timestamp_start;
-    }
-
-    public function getLocation(): ListenerLocation
-    {
-        return $this->location;
-    }
-
-    public function getDevice(): ListenerDevice
-    {
-        return $this->device;
-    }
-
-    /**
-     * Filter clients to exclude any listeners that shouldn't be included (i.e. relays).
-     *
-     * @param array $clients
-     *
-     * @return mixed[]
-     */
-    public static function filterClients(array $clients): array
-    {
-        return array_filter(
-            $clients,
-            static function ($client) {
-                // Ignore clients with the "Icecast" UA as those are relays and not listeners.
-                return !(false !== stripos($client['user_agent'], 'Icecast'));
-            }
-        );
+        $this->hls_stream = $hls_stream;
+        $this->listener_uid = $listener_uid;
+        $this->listener_ip = $listener_ip;
+        $this->listener_user_agent = $listener_user_agent;
+        $this->listener_hash = $listener_hash;
+        $this->timestamp_start = $timestamp_start;
+        $this->timestamp_end = $timestamp_end;
+        $this->location = $location;
+        $this->device = $device;
     }
 
     public static function getListenerSeconds(array $intervals): int

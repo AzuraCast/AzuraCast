@@ -11,8 +11,32 @@ use App\Entity\StationMedia;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[OA\Get(
+    path: '/station/{station_id}/ondemand',
+    operationId: 'getStationOnDemand',
+    summary: 'List all tracks available on-demand for this station.',
+    security: [],
+    tags: [OpenApi::TAG_PUBLIC_STATIONS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+    ],
+    responses: [
+        new OpenApi\Response\Success(
+            content: new OA\JsonContent(
+                type: 'array',
+                items: new OA\Items(
+                    ref: StationOnDemand::class
+                )
+            )
+        ),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class ListAction extends AbstractSearchableListAction
 {
     public function __invoke(
@@ -35,7 +59,7 @@ final class ListAction extends AbstractSearchableListAction
             function (StationMedia $media) use ($station, $router) {
                 $row = new StationOnDemand();
 
-                $row->track_id = $media->getUniqueId();
+                $row->track_id = $media->unique_id;
                 $row->media = ($this->songApiGenerator)(
                     song: $media,
                     station: $station
@@ -44,12 +68,10 @@ final class ListAction extends AbstractSearchableListAction
                 $row->download_url = $router->named(
                     'api:stations:ondemand:download',
                     [
-                        'station_id' => $station->getId(),
-                        'media_id' => $media->getUniqueId(),
+                        'station_id' => $station->id,
+                        'media_id' => $media->unique_id,
                     ]
                 );
-
-                $row->resolveUrls($router->getBaseUrl());
 
                 return $row;
             }
@@ -67,7 +89,7 @@ final class ListAction extends AbstractSearchableListAction
     ): array {
         $item = $this->psr6Cache->getItem(
             urlencode(
-                'station_' . $station->getIdRequired() . '_on_demand_playlists'
+                'station_' . $station->id . '_on_demand_playlists'
             )
         );
 

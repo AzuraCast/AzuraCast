@@ -3,6 +3,7 @@
         <div class="flex-shrink-0">
             <a
                 v-lightbox
+                v-if="url"
                 :href="url"
                 target="_blank"
             >
@@ -46,42 +47,34 @@ import Loading from "~/components/Common/Loading.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
 import {useLightbox} from "~/vendor/lightbox";
+import {ApiUploadedRecordStatus} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    id: {
-        type: String,
-        required: true
-    },
-    apiUrl: {
-        type: String,
-        required: true
-    },
-    caption: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    id: string,
+    apiUrl: string,
+    caption: string,
+}>();
 
-const isLoading = ref(true);
-const isUploaded = ref(false);
-const url = ref(null);
+const isLoading = ref<boolean>(true);
+const isUploaded = ref<boolean>(false);
+const url = ref<string | null>(null);
 
 const {axios} = useAxios();
 
-const relist = () => {
+const relist = async () => {
     isLoading.value = true;
 
-    axios.get(props.apiUrl).then((resp) => {
-        isUploaded.value = resp.data.is_uploaded;
-        url.value = resp.data.url;
+    const {data} = await axios.get<ApiUploadedRecordStatus>(props.apiUrl);
 
-        isLoading.value = false;
-    });
+    isUploaded.value = data.hasRecord;
+    url.value = data.url;
+
+    isLoading.value = false;
 };
 
 onMounted(relist);
 
-const uploaded = (newFile) => {
+const uploaded = async (newFile: File | null) => {
     if (null === newFile) {
         return;
     }
@@ -89,15 +82,19 @@ const uploaded = (newFile) => {
     const formData = new FormData();
     formData.append('file', newFile);
 
-    axios.post(props.apiUrl, formData).finally(() => {
-        relist();
-    });
+    try {
+        await axios.post(props.apiUrl, formData);
+    } finally {
+        await relist();
+    }
 };
 
-const clear = () => {
-    axios.delete(props.apiUrl).finally(() => {
-        relist();
-    });
+const clear = async () => {
+    try {
+        await axios.delete(props.apiUrl);
+    } finally {
+        await relist();
+    }
 };
 
 const {vLightbox} = useLightbox();

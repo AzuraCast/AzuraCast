@@ -6,6 +6,7 @@ namespace App\Controller\Api\Admin\Vue;
 
 use App\Container\EnvironmentAwareTrait;
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Admin\Vue\BackupProps;
 use App\Entity\Enums\StorageLocationTypes;
 use App\Entity\Repository\StorageLocationRepository;
 use App\Http\Response;
@@ -26,11 +27,13 @@ final class BackupsAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        return $response->withJson([
-            'isDocker' => $this->environment->isDocker(),
-            'storageLocations' => $this->storageLocationRepo->fetchSelectByType(
-                StorageLocationTypes::Backup
-            ),
-        ]);
+        return $response->withJson(
+            new BackupProps(
+                isDocker: $this->environment->isDocker(),
+                storageLocations: $this->storageLocationRepo->fetchSelectByType(
+                    StorageLocationTypes::Backup
+                ),
+            )
+        );
     }
 }

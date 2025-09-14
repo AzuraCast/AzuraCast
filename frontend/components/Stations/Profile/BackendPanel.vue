@@ -9,7 +9,7 @@
                 class="card-title"
             >
                 {{ $gettext('AutoDJ Service') }}
-                <running-badge :running="backendRunning" />
+                <running-badge :running="profileData.services.backendRunning"/>
                 <br>
                 <small>{{ backendName }}</small>
             </h3>
@@ -21,7 +21,7 @@
             </p>
 
             <div
-                v-if="userAllowedForStation(StationPermission.Media)"
+                v-if="userAllowedForStation(StationPermissions.Media)"
                 class="buttons"
             >
                 <router-link
@@ -40,13 +40,13 @@
         </div>
 
         <template
-            v-if="userAllowedForStation(StationPermission.Broadcasting) && hasStarted"
+            v-if="userAllowedForStation(StationPermissions.Broadcasting) && stationData.hasStarted"
             #footer_actions
         >
             <button
                 type="button"
                 class="btn btn-link text-secondary"
-                @click="makeApiCall(backendRestartUri)"
+                @click="doRestart()"
             >
                 <icon :icon="IconUpdate" />
                 <span>
@@ -54,10 +54,10 @@
                 </span>
             </button>
             <button
-                v-if="!backendRunning"
+                v-if="!profileData.services.backendRunning"
                 type="button"
                 class="btn btn-link text-success"
-                @click="makeApiCall(backendStartUri)"
+                @click="doStart()"
             >
                 <icon :icon="IconPlay" />
                 <span>
@@ -65,10 +65,10 @@
                 </span>
             </button>
             <button
-                v-if="backendRunning"
+                v-if="profileData.services.backendRunning"
                 type="button"
                 class="btn btn-link text-danger"
-                @click="makeApiCall(backendStopUri)"
+                @click="doStop()"
             >
                 <icon :icon="IconStop" />
                 <span>
@@ -80,25 +80,25 @@
 </template>
 
 <script setup lang="ts">
-import {BackendAdapter} from '~/entities/RadioAdapters';
-import Icon from '~/components/Common/Icon.vue';
+import Icon from "~/components/Common/Icons/Icon.vue";
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";
-import backendPanelProps from "~/components/Stations/Profile/backendPanelProps";
 import CardPage from "~/components/Common/CardPage.vue";
-import {StationPermission, userAllowedForStation} from "~/acl";
-import {IconPlay, IconStop, IconUpdate} from "~/components/Common/icons";
+import {userAllowedForStation} from "~/acl";
+import {IconPlay, IconStop, IconUpdate} from "~/components/Common/Icons/icons.ts";
+import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
+import {BackendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
+import {getStationApiUrl} from "~/router.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
+import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
 
-const props = defineProps({
-    ...backendPanelProps,
-    backendRunning: {
-        type: Boolean,
-        required: true
-    }
-});
+const stationData = useStationData();
+const profileData = useStationProfileData();
 
-const emit = defineEmits(['api-call']);
+const backendRestartUri = getStationApiUrl('/backend/restart');
+const backendStartUri = getStationApiUrl('/backend/start');
+const backendStopUri = getStationApiUrl('/backend/stop');
 
 const {$gettext, $ngettext} = useTranslate();
 
@@ -106,15 +106,19 @@ const langTotalTracks = computed(() => {
     const numSongs = $ngettext(
         '%{numSongs} uploaded song',
         '%{numSongs} uploaded songs',
-        props.numSongs,
-        {numSongs: props.numSongs}
+        profileData.value.numSongs,
+        {
+            numSongs: String(profileData.value.numSongs)
+        }
     );
 
     const numPlaylists = $ngettext(
         '%{numPlaylists} playlist',
         '%{numPlaylists} playlists',
-        props.numPlaylists,
-        {numPlaylists: props.numPlaylists}
+        profileData.value.numPlaylists,
+        {
+            numPlaylists: String(profileData.value.numPlaylists)
+        }
     );
 
     return $gettext(
@@ -127,13 +131,35 @@ const langTotalTracks = computed(() => {
 });
 
 const backendName = computed(() => {
-    if (props.backendType === BackendAdapter.Liquidsoap) {
+    if (stationData.value.backendType === BackendAdapters.Liquidsoap) {
         return 'Liquidsoap';
     }
     return '';
 });
 
-const makeApiCall = (uri) => {
-    emit('api-call', uri);
-};
+const doRestart = useMakeApiCall(
+    backendRestartUri,
+    {
+        title: $gettext('Restart service?'),
+        confirmButtonText: $gettext('Restart')
+    }
+);
+
+const doStart = useMakeApiCall(
+    backendStartUri,
+    {
+        title: $gettext('Start service?'),
+        confirmButtonText: $gettext('Start'),
+        confirmButtonClass: 'btn-success'
+    }
+);
+
+const doStop = useMakeApiCall(
+    backendStopUri,
+    {
+        title: $gettext('Stop service?'),
+        confirmButtonText: $gettext('Stop'),
+        confirmButtonClass: 'btn-danger'
+    }
+);
 </script>

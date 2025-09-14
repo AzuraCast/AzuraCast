@@ -41,6 +41,7 @@ server {
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         fastcgi_param DOCUMENT_ROOT $realpath_root;
+        fastcgi_param IS_INTERNAL true;
         include fastcgi_params;
 
         fastcgi_read_timeout 600;

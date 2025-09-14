@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Doctrine;
 
-use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Closure;
 use Doctrine\ORM\Decorator\EntityManagerDecorator;
 use Doctrine\ORM\ORMInvalidArgumentException;
@@ -27,26 +26,6 @@ final class DecoratedEntityManager extends EntityManagerDecorator implements Rel
     {
         if (!$this->wrapped->isOpen()) {
             $this->wrapped = ($this->createEm)();
-        }
-    }
-
-    /**
-     * Preventing a situation where duplicate rows are created.
-     * @see https://github.com/doctrine/orm/issues/8007
-     *
-     * @inheritDoc
-     */
-    public function persist($object): void
-    {
-        if ($object instanceof IdentifiableEntityInterface) {
-            $oldId = $object->getId();
-            $this->wrapped->persist($object);
-
-            if (null !== $oldId && $oldId !== $object->getId()) {
-                throw ORMInvalidArgumentException::detachedEntityCannot($object, 'persisted - ID changed by Doctrine');
-            }
-        } else {
-            $this->wrapped->persist($object);
         }
     }
 

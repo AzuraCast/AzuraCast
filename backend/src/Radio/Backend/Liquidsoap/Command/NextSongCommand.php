@@ -18,10 +18,9 @@ final class NextSongCommand extends AbstractCommand
         Station $station,
         bool $asAutoDj = false,
         array $payload = []
-    ): string|bool {
-        return $this->annotations->annotateNextSong(
-            $station,
-            $asAutoDj
-        );
+    ): array {
+        return [
+            'uri' => $this->annotations->annotateNextSong($station, $asAutoDj),
+        ];
     }
 }

@@ -5,16 +5,40 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin\Debug;
 
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Admin\Debug\DebugQueue;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\MessageQueue\QueueManagerInterface;
 use App\MessageQueue\QueueNames;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-final class ListQueuesAction implements SingleActionInterface
+#[
+    OA\Get(
+        path: '/admin/debug/queues',
+        operationId: 'getAdminDebugQueues',
+        summary: 'List all message queues.',
+        tags: [OpenApi::TAG_ADMIN_DEBUG],
+        responses: [
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(
+                        ref: DebugQueue::class
+                    )
+                )
+            ),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
+final readonly class ListQueuesAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly QueueManagerInterface $queueManager,
+        private QueueManagerInterface $queueManager,
     ) {
     }
 
@@ -24,14 +48,14 @@ final class ListQueuesAction implements SingleActionInterface
 
         $queueTotals = [];
         foreach (QueueNames::cases() as $queue) {
-            $queueTotals[] = [
-                'name' => $queue->value,
-                'count' => $this->queueManager->getQueueCount($queue),
-                'url' => $router->named(
+            $queueTotals[] = new DebugQueue(
+                $queue->value,
+                $this->queueManager->getQueueCount($queue),
+                $router->named(
                     'api:admin:debug:clear-queue',
                     ['queue' => $queue->value]
-                ),
-            ];
+                )
+            );
         }
 
         return $response->withJson($queueTotals);

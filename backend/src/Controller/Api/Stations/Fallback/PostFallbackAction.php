@@ -17,23 +17,23 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Post(
     path: '/station/{station_id}/fallback',
     operationId: 'postStationFallback',
-    description: 'Update the custom fallback track for the station.',
-    security: OpenApi::API_KEY_SECURITY,
-    tags: ['Stations: General'],
+    summary: 'Update the custom fallback track for the station.',
+    requestBody: new OA\RequestBody(ref: OpenApi::REF_REQUEST_BODY_FLOW_FILE_UPLOAD),
+    tags: [OpenApi::TAG_STATIONS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
     ],
     responses: [
-        new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
     ]
 )]
-final class PostFallbackAction implements SingleActionInterface
+final readonly class PostFallbackAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationRepository $stationRepo
+        private StationRepository $stationRepo
     ) {
     }
 

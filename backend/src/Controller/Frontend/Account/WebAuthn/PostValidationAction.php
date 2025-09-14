@@ -53,13 +53,14 @@ final class PostValidationAction
         } catch (Throwable $e) {
             $flash = $request->getFlash();
             $flash->error(
-                '<b>' . __('Login unsuccessful') . '</b><br>' . $e->getMessage(),
+                message: $e->getMessage(),
+                title: __('Login unsuccessful')
             );
 
             return $response->withRedirect($request->getRouter()->named('dashboard'));
         }
 
-        $user = $record->getUser();
+        $user = $record->user;
 
         $auth = $request->getAuth();
         $auth->setUser($user, true);
@@ -74,7 +75,8 @@ final class PostValidationAction
 
         $flash = $request->getFlash();
         $flash->success(
-            '<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(),
+            message: $user->email,
+            title: __('Logged in successfully.'),
         );
 
         $referrer = $session->get('login_referrer');

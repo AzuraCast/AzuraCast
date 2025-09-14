@@ -46,11 +46,7 @@ final class Podcast
     #[OA\Property]
     public bool $is_enabled = true;
 
-    #[OA\Property(
-        description: "An array containing podcast-specific branding configuration",
-        type: "array",
-        items: new OA\Items()
-    )]
+    #[OA\Property(description: "An array containing podcast-specific branding configuration")]
     public PodcastBrandingConfiguration $branding_config;
 
     #[OA\Property]
@@ -73,6 +69,11 @@ final class Podcast
 
     #[OA\Property]
     public int $art_updated_at = 0;
+
+    #[OA\Property(
+        description: 'The UUIDv5 global unique identifier for this podcast, based on its RSS feed URL.'
+    )]
+    public string $guid;
 
     #[OA\Property]
     public bool $is_published = true;

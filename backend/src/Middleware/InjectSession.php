@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use App\Cache\CacheNamespace;
 use App\Container\SettingsAwareTrait;
 use App\Environment;
 use App\Http\ServerRequest;
@@ -16,7 +17,6 @@ use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
-use Symfony\Component\Cache\Adapter\ProxyAdapter;
 
 /**
  * Inject the session object into the request.
@@ -31,16 +31,14 @@ final class InjectSession extends AbstractMiddleware
         CacheItemPoolInterface $psrCache,
         private readonly Environment $environment
     ) {
-        if ($environment->isCli()) {
-            $psrCache = new ArrayAdapter();
-        }
-
-        $this->cachePool = new ProxyAdapter($psrCache, 'session.');
+        $this->cachePool = $environment->isCli()
+            ? new ArrayAdapter()
+            : CacheNamespace::Session->withNamespace($psrCache);
     }
 
     public function getSessionPersistence(ServerRequest $request): SessionPersistenceInterface
     {
-        $alwaysUseSsl = $this->readSettings()->getAlwaysUseSsl();
+        $alwaysUseSsl = $this->readSettings()->always_use_ssl;
         $isHttpsUrl = ('https' === $request->getUri()->getScheme());
 
         return new CacheSessionPersistence(

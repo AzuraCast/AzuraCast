@@ -9,12 +9,12 @@ export default function usePodcastRoutes(): RouteRecordRaw[] {
         },
         {
             path: '/podcast/:podcast_id',
-            component: () => import('~/components/Public/Podcasts/Podcast.vue'),
+            component: () => import('~/components/Public/Podcasts/PodcastWrapper.vue'),
             name: 'public:podcast'
         },
         {
             path: '/podcast/:podcast_id/episode/:episode_id',
-            component: () => import('~/components/Public/Podcasts/PodcastEpisode.vue'),
+            component: () => import('~/components/Public/Podcasts/PodcastEpisodeWrapper.vue'),
             name: 'public:podcast:episode'
         }
     ];

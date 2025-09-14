@@ -22,13 +22,13 @@ final class ScheduleAction implements SingleActionInterface
     ): ResponseInterface {
         $station = $request->getStation();
 
-        if (!$station->getEnablePublicPage()) {
+        if (!$station->enable_public_page) {
             throw NotFoundException::station();
         }
 
         $router = $request->getRouter();
 
-        $pageClass = 'schedule station-' . $station->getShortName();
+        $pageClass = 'schedule station-' . $station->short_name;
         if ($this->isEmbedded($request, $params)) {
             $pageClass .= ' embed';
         }
@@ -47,17 +47,17 @@ final class ScheduleAction implements SingleActionInterface
             component: 'Public/Schedule',
             id: 'station-schedule',
             layout: 'minimal',
-            title: __('Schedule') . ' - ' . $station->getName(),
+            title: __('Schedule') . ' - ' . $station->name,
             layoutParams: [
                 'page_class' => $pageClass,
                 'hide_footer' => true,
             ],
             props: [
                 'scheduleUrl' => $router->named('api:stations:schedule', [
-                    'station_id' => $station->getId(),
+                    'station_id' => $station->id,
                 ]),
-                'stationName' => $station->getName(),
-                'stationTimeZone' => $station->getTimezone(),
+                'stationName' => $station->name,
+                'stationTimeZone' => $station->timezone,
             ],
         );
     }

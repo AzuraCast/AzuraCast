@@ -9,7 +9,7 @@
         <div class="card-body">
             <tabs>
                 <tab
-                    v-for="netInterface in stats.network"
+                    v-for="netInterface in networkStats"
                     :key="netInterface.interface_name"
                     :label="netInterface.interface_name"
                 >
@@ -19,20 +19,14 @@
                                 {{ $gettext('Received') }}
                             </h5>
 
-                            <network-stats-table
-                                :fields="getNetworkInterfaceTableFields(netInterface.received)"
-                                :data="getNetworkInterfaceTableItems(netInterface.received)"
-                            />
+                            <network-stats-table :row="netInterface.received"/>
                         </div>
                         <div class="col">
                             <h5 class="mb-1 text-center">
                                 {{ $gettext('Transmitted') }}
                             </h5>
 
-                            <network-stats-table
-                                :fields="getNetworkInterfaceTableFields(netInterface.transmitted)"
-                                :data="getNetworkInterfaceTableItems(netInterface.transmitted)"
-                            />
+                            <network-stats-table :row="netInterface.transmitted"/>
                         </div>
                     </div>
                 </tab>
@@ -44,29 +38,10 @@
 <script setup lang="ts">
 import Tab from "~/components/Common/Tab.vue";
 import Tabs from "~/components/Common/Tabs.vue";
-import {isObject} from "lodash";
 import NetworkStatsTable from "~/components/Admin/Index/NetworkStatsTable.vue";
+import {ApiAdminServerStatsNetworkInterfaceStats} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps<{
-    stats: object
+defineProps<{
+    networkStats: ApiAdminServerStatsNetworkInterfaceStats[]
 }>();
-
-const getNetworkInterfaceTableFields = (interfaceData) => Object.keys(interfaceData);
-
-const getNetworkInterfaceTableItems = (interfaceData) => {
-    const item = {};
-
-    Object.entries(interfaceData).forEach((data) => {
-        const key = data[0];
-        let value: any = data[1];
-
-        if (isObject(value)) {
-            value = value.readable + '/s';
-        }
-
-        item[key] = value;
-    });
-
-    return [item];
-};
 </script>

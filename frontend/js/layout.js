@@ -1,6 +1,6 @@
-import '~/scss/style.scss';
+import "~/scss/style.scss";
 
-import * as bootstrap from 'bootstrap';
+import * as bootstrap from "bootstrap";
 
 const ready = (callback) => {
     if (document.readyState !== "loading") callback();
@@ -32,12 +32,6 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () 
 });
 
 ready(() => {
-    // Toasts
-    document.querySelectorAll('.toast-notification').forEach((el) => {
-        const toast = new bootstrap.Toast(el);
-        toast.show();
-    });
-
     // If in a frame, notify the parent frame of the frame dimensions.
     if (window.self !== window.top) {
         let docHeight = 0;

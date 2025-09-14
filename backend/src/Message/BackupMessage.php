@@ -26,7 +26,7 @@ final class BackupMessage extends AbstractUniqueMessage
         return 'BackupMessage';
     }
 
-    public function getTtl(): ?float
+    public function getTtl(): float
     {
         return 86400;
     }

@@ -15,21 +15,20 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import {refAutoReset, useClipboard} from "@vueuse/core";
 import {useTranslate} from "~/vendor/gettext";
-import {IconCopy} from "~/components/Common/icons";
+import {IconCopy} from "~/components/Common/Icons/icons.ts";
 
-const props = defineProps({
-    text: {
-        type: String,
-        required: true,
-    },
-    hideText: {
-        type: Boolean,
-        default: false
+const props = withDefaults(
+    defineProps<{
+        text: string,
+        hideText?: boolean
+    }>(),
+    {
+        hideText: false,
     }
-});
+);
 
 const {$gettext} = useTranslate();
 
@@ -40,8 +39,8 @@ const copyText = refAutoReset(
 
 const clipboard = useClipboard({legacy: true});
 
-const doCopy = () => {
-    clipboard.copy(props.text);
+const doCopy = async () => {
+    await clipboard.copy(props.text);
     copyText.value = $gettext('Copied!');
 };
 </script>

@@ -7,6 +7,7 @@ namespace App\Controller\Api\Admin\Vue;
 use App\Container\EnvironmentAwareTrait;
 use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Admin\Vue\UpdateProps;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\WebUpdater;
@@ -36,10 +37,12 @@ final class UpdatesAction implements SingleActionInterface
             $enableWebUpdates = false;
         }
 
-        return $response->withJson([
-            'releaseChannel' => $this->version->getReleaseChannelEnum()->value,
-            'initialUpdateInfo' => $settings->getUpdateResults(),
-            'enableWebUpdates' => $enableWebUpdates,
-        ]);
+        return $response->withJson(
+            new UpdateProps(
+                releaseChannel: $this->version->getReleaseChannelEnum()->value,
+                enableWebUpdates: $enableWebUpdates,
+                initialUpdateInfo: $settings->update_results
+            )
+        );
     }
 }

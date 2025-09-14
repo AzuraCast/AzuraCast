@@ -6,6 +6,7 @@ namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\HasScheduleDisplay;
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\StationSchedule;
 use App\Entity\ApiGenerator\ScheduleApiGenerator;
 use App\Entity\Repository\StationScheduleRepository;
 use App\Http\Response;
@@ -21,8 +22,9 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/schedule',
     operationId: 'getSchedule',
-    description: 'Return upcoming and currently ongoing schedule entries.',
-    tags: ['Stations: Schedules'],
+    summary: 'Return upcoming and currently ongoing schedule entries.',
+    security: [],
+    tags: [OpenApi::TAG_PUBLIC_STATIONS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(
@@ -41,16 +43,14 @@ use Psr\Http\Message\ResponseInterface;
         ),
     ],
     responses: [
-        new OA\Response(
-            response: 200,
-            description: 'Success',
+        new OpenApi\Response\Success(
             content: new OA\JsonContent(
                 type: 'array',
-                items: new OA\Items(ref: '#/components/schemas/Api_StationSchedule')
+                items: new OA\Items(ref: StationSchedule::class)
             )
         ),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
     ]
 )]
 final class ScheduleAction implements SingleActionInterface
@@ -78,20 +78,18 @@ final class ScheduleAction implements SingleActionInterface
         if (isset($queryParams['start'])) {
             $dateRange = $this->getDateRange($request, $tz);
 
-            $cacheKey = 'api_station_' . $station->getId() . '_schedule_'
-                . $dateRange->getStart()->format('Ymd') . '-'
-                . $dateRange->getEnd()->format('Ymd');
+            $cacheKey = 'api_station_' . $station->id . '_schedule_'
+                . $dateRange->format('Ymd', '-');
 
             $cacheItem = $this->psr6Cache->getItem(urlencode($cacheKey));
 
             if (!$cacheItem->isHit()) {
-                $nowTz = CarbonImmutable::now($station->getTimezoneObject());
                 $events = $this->scheduleRepo->getAllScheduledItemsForStation($station);
 
                 $cacheItem->set(
                     $this->getEvents(
+                        $station,
                         $dateRange,
-                        $nowTz,
                         $this->scheduler,
                         $events,
                         [$this->scheduleApiGenerator, '__invoke']
@@ -108,10 +106,10 @@ final class ScheduleAction implements SingleActionInterface
                 $now = CarbonImmutable::parse($queryParams['now'], $tz)
                     ->setTimezone($tz);
 
-                $cacheKey = 'api_station_' . $station->getId() . '_schedule_' . $now->format('Ymd_gia');
+                $cacheKey = 'api_station_' . $station->id . '_schedule_' . $now->format('Ymd_gia');
             } else {
                 $now = CarbonImmutable::now($tz);
-                $cacheKey = 'api_station_' . $station->getId() . '_schedule_upcoming';
+                $cacheKey = 'api_station_' . $station->id . '_schedule_upcoming';
             }
 
             $cacheItem = $this->psr6Cache->getItem(urlencode($cacheKey));

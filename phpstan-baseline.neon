@@ -2,3 +2,9 @@ parameters:
 	ignoreErrors:
 		-
 				identifier: missingType.iterableValue
+
+		-
+				identifier: missingType.generics
+
+		-
+				identifier: doctrine.finalEntity

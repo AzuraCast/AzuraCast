@@ -4,18 +4,18 @@
         :loading="loading"
         :title="langTitle"
         :error="error"
-        :disable-save-button="v$.$invalid"
+        :disable-save-button="r$.$invalid"
         @submit="doSubmit"
         @hidden="clearContents"
     >
         <tabs content-class="mt-3">
             <admin-permissions-global-form
-                :form="v$"
+                v-model:form="form"
                 :global-permissions="globalPermissions"
             />
 
             <admin-permissions-station-form
-                :form="v$"
+                v-model:form="form"
                 :stations="stations"
                 :station-permissions="stationPermissions"
             />
@@ -25,96 +25,64 @@
 
 <script setup lang="ts">
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {computed, ref} from "vue";
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, useTemplateRef} from "vue";
+import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {useTranslate} from "~/vendor/gettext";
-import {required} from '@vuelidate/validators';
-import AdminPermissionsGlobalForm from "./Form/GlobalForm.vue";
-import AdminPermissionsStationForm from "./Form/StationForm.vue";
-import {forEach, map} from 'lodash';
+import AdminPermissionsGlobalForm from "~/components/Admin/Permissions/Form/GlobalForm.vue";
+import AdminPermissionsStationForm from "~/components/Admin/Permissions/Form/StationForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
+import {ApiAdminRoleStationPermission, GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
+import {useResettableRef} from "~/functions/useResettableRef.ts";
+import {useAppCollectScope} from "~/vendor/regle.ts";
 
-const props = defineProps({
-    ...baseEditModalProps,
-    stations: {
-        type: Object,
-        required: true
-    },
-    globalPermissions: {
-        type: Object,
-        required: true
-    },
-    stationPermissions: {
-        type: Object,
-        required: true
+interface PermissionsEditModalProps extends BaseEditModalProps {
+    stations: Record<number, string>,
+    globalPermissions: Record<GlobalPermissions, string>,
+    stationPermissions: Record<StationPermissions, string>,
+}
+
+const props = defineProps<PermissionsEditModalProps>();
+const emit = defineEmits<BaseEditModalEmits>();
+
+const $modal = useTemplateRef('$modal');
+
+export type PermissionsRecord = {
+    name: string;
+    permissions: {
+        global: string[],
+        station: ApiAdminRoleStationPermission[]
+    }
+}
+
+const {record: form, reset: resetFormRef} = useResettableRef<PermissionsRecord>({
+    name: '',
+    permissions: {
+        global: [],
+        station: [],
     }
 });
 
-const emit = defineEmits(['relist']);
-
-const $modal = ref<ModalFormTemplateRef>(null);
+const {r$} = useAppCollectScope('admin-permissions');
 
 const {
     loading,
     error,
     isEditMode,
-    v$,
     clearContents,
     create,
     edit,
     doSubmit,
     close
 } = useBaseEditModal(
+    form,
     props,
     emit,
     $modal,
-    {
-        'name': {required},
-        'permissions': {
-            'global': {},
-            'station': {},
-        }
+    () => {
+        resetFormRef();
+        r$.$reset();
     },
-    {
-        'name': '',
-        'permissions': {
-            'global': [],
-            'station': [],
-        }
-    },
-    {
-        populateForm(data, formRef) {
-            formRef.value = {
-                name: data.name,
-                permissions: {
-                    global: data.permissions.global,
-                    station: map(data.permissions.station, (permissions, stationId) => {
-                        return {
-                            'station_id': stationId,
-                            'permissions': permissions
-                        };
-                    })
-                }
-            };
-        },
-        getSubmittableFormData(formRef) {
-            const formValue = formRef.value;
-
-            const formReturn = {
-                name: formValue.name,
-                permissions: {
-                    global: formValue.permissions.global,
-                    station: {}
-                }
-            };
-
-            forEach(formValue.permissions.station, (row) => {
-                formReturn.permissions.station[row.station_id] = row.permissions;
-            });
-
-            return formReturn;
-        },
-    }
+    async () => (await r$.$validate()).valid,
 );
 
 const {$gettext} = useTranslate();

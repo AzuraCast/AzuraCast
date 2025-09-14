@@ -76,7 +76,7 @@ final class StorageLocationRepository extends Repository
         }
 
         foreach ($this->findAllByType($type) as $storageLocation) {
-            $select[$storageLocation->getId()] = (string)$storageLocation;
+            $select[$storageLocation->id] = (string)$storageLocation;
         }
 
         return $select;
@@ -91,7 +91,7 @@ final class StorageLocationRepository extends Repository
                 StorageLocationTypes::Backup,
                 StorageLocationAdapters::Local
             );
-            $record->setPath(StorageLocation::DEFAULT_BACKUPS_PATH);
+            $record->path = StorageLocation::DEFAULT_BACKUPS_PATH;
             $this->em->persist($record);
         }
 
@@ -109,7 +109,7 @@ final class StorageLocationRepository extends Repository
             ->select('s')
             ->from(Station::class, 's');
 
-        switch ($storageLocation->getType()) {
+        switch ($storageLocation->type) {
             case StorageLocationTypes::StationMedia:
                 $qb->where('s.media_storage_location = :storageLocation')
                     ->setParameter('storageLocation', $storageLocation);
@@ -134,7 +134,7 @@ final class StorageLocationRepository extends Repository
 
     public function getAdapter(StorageLocation $storageLocation): StorageLocationAdapterInterface
     {
-        $adapterClass = $storageLocation->getAdapter()->getAdapterClass();
+        $adapterClass = $storageLocation->adapter->getAdapterClass();
 
         if (!$this->di->has($adapterClass)) {
             throw new InvalidArgumentException(sprintf('Class not found: %s', $adapterClass));

@@ -67,34 +67,36 @@
 
         <data-table
             id="station_media"
-            ref="$datatable"
+            ref="$dataTable"
             selectable
             paginated
             select-fields
             :fields="fields"
-            :api-url="listUrl"
-            :request-config="requestConfig"
+            :provider="listItemProvider"
             @row-selected="onRowSelected"
             @filtered="onFiltered"
         >
-            <template #cell(path)="row">
+            <template #cell(path)="{ item }">
                 <div class="d-flex align-items-center">
                     <div class="flex-shrink-0 pe-2">
-                        <template v-if="row.item.media.is_playable">
+                        <template v-if="item.type === FileTypes.Media">
                             <play-button
-                                :url="row.item.media.links.play"
                                 class="btn-lg"
+                                :stream="{
+                                    title: item.text,
+                                    url: item.media!.links.play
+                                }"
                             />
                         </template>
                         <template v-else>
                             <span
-                                v-if="row.item.is_dir"
+                                v-if="item.type === FileTypes.Directory"
                                 class="file-icon"
                             >
                                 <icon :icon="IconFolder" />
                             </span>
                             <span
-                                v-else-if="row.item.is_cover_art"
+                                v-else-if="item.type === FileTypes.CoverArt"
                                 class="file-icon"
                             >
                                 <icon :icon="IconImage" />
@@ -109,90 +111,87 @@
                     </div>
 
                     <div class="flex-fill">
-                        <template v-if="row.item.is_dir">
+                        <template v-if="item.type === FileTypes.Directory">
                             <a
                                 class="name"
                                 href="#"
-                                :title="row.item.name"
-                                @click.prevent="changeDirectory(row.item.path)"
+                                :title="item.text"
+                                @click.prevent="changeDirectory(item.path!)"
                             >
-                                {{ row.item.path_short }}
+                                {{ item.path_short }}
                             </a>
                         </template>
-                        <template v-else-if="row.item.media.is_playable">
+                        <template v-else-if="item.type === FileTypes.Media">
                             <a
                                 class="name"
-                                :href="row.item.media.links.play"
+                                v-if="item.media"
+                                :href="item.media.links.play"
                                 target="_blank"
-                                :title="row.item.name"
+                                :title="item.text"
                             >
-                                {{ row.item.text }}
+                                {{ item.text }}
                             </a>
                         </template>
                         <template v-else>
                             <a
                                 class="name"
-                                :href="row.item.links.download"
+                                :href="item.links.download"
                                 target="_blank"
-                                :title="row.item.text"
+                                :title="item.text"
                             >
-                                {{ row.item.path_short }}
+                                {{ item.path_short }}
                             </a>
                         </template>
                         <br>
-                        <small v-if="row.item.media.is_playable">{{ row.item.path_short }}</small>
-                        <small v-else>{{ row.item.text }}</small>
+                        <small v-if="item.type === FileTypes.Media">{{ item.path_short }}</small>
+                        <small v-else>{{ item.text }}</small>
                     </div>
 
                     <album-art
-                        v-if="row.item.media.art"
-                        :src="row.item.media.art"
+                        v-if="item.media?.art"
+                        :src="item.media.art"
                         class="flex-shrink-1 ps-2"
                     />
                     <album-art
-                        v-else-if="row.item.is_cover_art"
-                        :src="row.item.links.download"
+                        v-else-if="item.type === FileTypes.CoverArt"
+                        :src="item.links.download"
                         class="flex-shrink-1 ps-2"
                     />
                 </div>
             </template>
             <!-- eslint-disable-next-line -->
-            <template #cell(media.length)="row">
-                {{ row.item.media.length_text }}
+            <template #cell(media.length)="{ item }">
+                {{ item.media?.length_text }}
             </template>
-            <template #cell(size)="row">
-                <template v-if="!row.item.size">
+            <template #cell(size)="{ item }">
+                <template v-if="!item.size">
                     &nbsp;
                 </template>
                 <template v-else>
-                    {{ formatFileSize(row.item.size) }}
+                    {{ formatFileSize(item.size) }}
                 </template>
             </template>
-            <template #cell(playlists)="row">
-                <template v-if="row.item.playlists.length > 0">
-                    <template
-                        v-for="(playlist, index) in row.item.playlists"
-                        :key="playlist.id"
-                    >
-                        <a
-                            class="btn-search"
-                            href="#"
-                            :title="$gettext('View tracks in playlist')"
-                            @click.prevent="filter('playlist:'+playlist.short_name)"
-                        >{{ playlist.name }}</a>
-                        <span v-if="index+1 < row.item.playlists.length">, </span>
-                    </template>
-                </template>
+            <template #cell(playlists)="{ item }">
+                <MediaPlaylists
+                    v-if="item.type === FileTypes.Media"
+                    :playlists="item.media?.playlists as ApiStationMediaPlaylist[]"
+                    @filter="filter"
+                />
+                <MediaPlaylists
+                    v-else-if="item.type === FileTypes.Directory"
+                    :playlists="item.dir?.playlists as ApiStationMediaPlaylist[]"
+                    @filter="filter"
+                />
                 <template v-else>
                     &nbsp;
                 </template>
             </template>
-            <template #cell(commands)="row">
-                <template v-if="row.item.media.links.edit">
+            <template #cell(commands)="{ item }">
+                <template v-if="item.media?.links?.self">
                     <button
                         type="button"
                         class="btn btn-sm btn-primary"
-                        @click="edit(row.item.media.links.edit, row.item.media.links.art, row.item.media.links.play, row.item.media.links.waveform)"
+                        @click="edit(item.media.links.self)"
                     >
                         {{ $gettext('Edit') }}
                     </button>
@@ -201,7 +200,7 @@
                     <button
                         type="button"
                         class="btn btn-sm btn-primary"
-                        @click="rename(row.item.path)"
+                        @click="rename(item.path)"
                     >
                         {{ $gettext('Rename') }}
                     </button>
@@ -241,54 +240,54 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import MediaToolbar from './Media/MediaToolbar.vue';
-import Breadcrumb from './Media/Breadcrumb.vue';
-import FileUpload from './Media/FileUpload.vue';
-import NewDirectoryModal from './Media/NewDirectoryModal.vue';
-import MoveFilesModal from './Media/MoveFilesModal.vue';
-import RenameModal from './Media/RenameModal.vue';
-import EditModal from './Media/EditModal.vue';
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import MediaToolbar from "~/components/Stations/Media/MediaToolbar.vue";
+import Breadcrumb from "~/components/Stations/Media/Breadcrumb.vue";
+import FileUpload from "~/components/Stations/Media/FileUpload.vue";
+import NewDirectoryModal from "~/components/Stations/Media/NewDirectoryModal.vue";
+import MoveFilesModal from "~/components/Stations/Media/MoveFilesModal.vue";
+import RenameModal from "~/components/Stations/Media/RenameModal.vue";
+import EditModal from "~/components/Stations/Media/EditModal.vue";
 import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
-import Icon from '~/components/Common/Icon.vue';
-import AlbumArt from '~/components/Common/AlbumArt.vue';
-import PlayButton from "~/components/Common/PlayButton.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
+import AlbumArt from "~/components/Common/AlbumArt.vue";
+import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {computed, ref, watch} from "vue";
-import {forEach, map, partition} from "lodash";
-import formatFileSize from "../../functions/formatFileSize";
+import {computed, ref, useTemplateRef, watch} from "vue";
+import {forEach, map, partition} from "es-toolkit/compat";
+import formatFileSize from "~/functions/formatFileSize";
 import InfoCard from "~/components/Common/InfoCard.vue";
 import {getStationApiUrl} from "~/router";
 import {useRoute, useRouter} from "vue-router";
-import {IconFile, IconFolder, IconImage} from "~/components/Common/icons";
-import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import {IconFile, IconFolder, IconImage} from "~/components/Common/Icons/icons.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import {
+    ApiStationMediaPlaylist,
+    ApiStationsVueFilesProps,
+    CustomField,
+    FileTypes,
+    StorageLocationTypes
+} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import MediaPlaylists from "~/components/Stations/Media/MediaPlaylists.vue";
+import {useStationData} from "~/functions/useStationQuery.ts";
+import {FileListRequired, StationsVueFilesPropsRequired} from "~/entities/StationMedia.ts";
 
-const props = defineProps({
-    initialPlaylists: {
-        type: Array,
-        required: false,
-        default: () => []
-    },
-    customFields: {
-        type: Array,
-        required: false,
-        default: () => []
-    },
-    validMimeTypes: {
-        type: Array,
-        required: false,
-        default: () => []
-    },
-    showSftp: {
-        type: Boolean,
-        default: true
-    },
-    supportsImmediateQueue: {
-        type: Boolean,
-        required: true
-    }
-});
+const props = defineProps<StationsVueFilesPropsRequired>();
+
+export type MediaInitialPlaylist = ApiStationsVueFilesProps['initialPlaylists'][number];
+
+export type MediaRow = FileListRequired;
+
+export type MediaSelectedItems = {
+    all: MediaRow[],
+    files: string[],
+    directories: string[]
+}
+
+const stationData = useStationData();
+const showSftp = computed(() => stationData.value.features.sftp ?? false);
 
 const listUrl = getStationApiUrl('/files/list');
 const batchUrl = getStationApiUrl('/files/batch');
@@ -296,14 +295,58 @@ const uploadUrl = getStationApiUrl('/files/upload');
 const listDirectoriesUrl = getStationApiUrl('/files/directories');
 const mkdirUrl = getStationApiUrl('/files/mkdir');
 const renameUrl = getStationApiUrl('/files/rename');
-const quotaUrl = getStationApiUrl('/quota/station_media');
+const quotaUrl = getStationApiUrl(`/quota/${StorageLocationTypes.StationMedia}`);
+
+const currentDirectory = ref('');
+
+const isFilterString = (str: string) =>
+    (str.substring(0, 9) === 'playlist:' || str.substring(0, 8) === 'special:');
+
+const router = useRouter();
+const route = useRoute();
+
+watch(
+    () => route.params,
+    async (newParams) => {
+        let path = newParams.path ?? '';
+        if (Array.isArray(path)) {
+            path = path.join('');
+        }
+
+        if (isFilterString(path)) {
+            await router.push({
+                name: 'stations:files:index',
+            });
+            filter(path);
+        } else {
+            currentDirectory.value = path;
+        }
+    },
+    {
+        immediate: true
+    }
+);
 
 const {$gettext} = useTranslate();
 
 const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
 
-const fields = computed<DataTableField[]>(() => {
-    const fields: DataTableField[] = [
+const listItemProvider = useApiItemProvider<MediaRow>(
+    listUrl,
+    queryKeyWithStation(
+        [QueryKeys.StationMedia, 'files', currentDirectory]
+    ),
+    {
+        staleTime: 2 * 60 * 1000
+    },
+    (config) => {
+        config.params.currentDirectory = currentDirectory.value;
+        return config;
+    }
+);
+
+const fields = computed<DataTableField<MediaRow>[]>(() => {
+    const fields: DataTableField<MediaRow>[] = [
         {key: 'path', isRowHeader: true, label: $gettext('Name'), sortable: true},
         {key: 'media.title', label: $gettext('Title'), sortable: true, selectable: true, visible: false},
         {
@@ -319,9 +362,9 @@ const fields = computed<DataTableField[]>(() => {
         {key: 'media.length', label: $gettext('Length'), sortable: true, selectable: true, visible: true}
     ];
 
-    forEach({...props.customFields}, (field) => {
+    forEach({...props.customFields}, (field: CustomField) => {
         fields.push({
-            key: 'media.custom_fields[' + field.id + ']',
+            key: 'media.custom_fields[' + field.short_name + ']',
             label: field.name,
             sortable: true,
             selectable: true,
@@ -340,6 +383,22 @@ const fields = computed<DataTableField[]>(() => {
             visible: true
         },
         {
+            key: 'media.uploaded_at',
+            label: $gettext('Uploaded Time'),
+            sortable: true,
+            formatter: (value) => formatTimestampAsDateTime(value),
+            selectable: true,
+            visible: false
+        },
+        {
+            key: 'media.mtime',
+            label: $gettext('Last Processed Time'),
+            sortable: true,
+            formatter: (value) => formatTimestampAsDateTime(value),
+            selectable: true,
+            visible: false
+        },
+        {
             key: 'playlists',
             label: $gettext('Playlists'),
             sortable: false,
@@ -352,17 +411,17 @@ const fields = computed<DataTableField[]>(() => {
     return fields;
 });
 
-const playlists = ref(props.initialPlaylists);
-const selectedItems = ref({
+const playlists = ref<MediaInitialPlaylist[]>(props.initialPlaylists);
+const selectedItems = ref<MediaSelectedItems>({
     all: [],
     files: [],
     directories: []
 });
-const currentDirectory = ref('');
+
 const searchPhrase = ref('');
 
-const onRowSelected = (items) => {
-    const splitItems = partition(items, 'is_dir');
+const onRowSelected = (items: MediaRow[]) => {
+    const splitItems = partition(items, (row) => row.type === FileTypes.Directory);
 
     selectedItems.value = {
         all: items,
@@ -371,92 +430,64 @@ const onRowSelected = (items) => {
     };
 };
 
-const $datatable = ref<DataTableTemplateRef>(null);
+const $dataTable = useTemplateRef('$dataTable');
 
 const onTriggerNavigate = () => {
-    $datatable.value?.navigate();
+    $dataTable.value?.navigate();
 };
 
-const filter = (newFilter) => {
-    $datatable.value?.setFilter(newFilter);
+const filter = (newFilter: string) => {
+    $dataTable.value?.setFilter(newFilter);
 };
 
-const $quota = ref<InstanceType<typeof StationsCommonQuota> | null>(null);
+const $quota = useTemplateRef('$quota');
 
 const onTriggerRelist = () => {
+    void listItemProvider.refresh(true);
+
     $quota.value?.update();
-    $datatable.value?.relist();
 };
 
-const onAddPlaylist = (row) => {
+const onAddPlaylist = (row: MediaInitialPlaylist) => {
     playlists.value.push(row);
 };
 
-const onFiltered = (newFilter) => {
+const onFiltered = (newFilter: string) => {
     searchPhrase.value = newFilter;
 };
 
-const $renameModal = ref<InstanceType<typeof RenameModal> | null>(null);
+const $renameModal = useTemplateRef('$renameModal');
 
-const rename = (path) => {
+const rename = (path: string) => {
     $renameModal.value?.open(path);
 };
 
-const $editModal = ref<InstanceType<typeof EditModal> | null>(null);
+const $editModal = useTemplateRef('$editModal');
 
-const edit = (recordUrl, albumArtUrl, audioUrl, waveformUrl) => {
-    $editModal.value?.open(recordUrl, albumArtUrl, audioUrl, waveformUrl);
+const edit = (recordUrl: string) => {
+    $editModal.value?.open(recordUrl);
 };
 
-const $newDirectoryModal = ref<InstanceType<typeof NewDirectoryModal> | null>(null);
+const $newDirectoryModal = useTemplateRef('$newDirectoryModal');
 
 const createDirectory = () => {
     $newDirectoryModal.value?.open();
 }
 
-const $moveFilesModal = ref<InstanceType<typeof MoveFilesModal> | null>(null);
+const $moveFilesModal = useTemplateRef('$moveFilesModal');
 
 const moveFiles = () => {
     $moveFilesModal.value?.open();
 }
 
-const requestConfig = (config) => {
-    config.params.currentDirectory = currentDirectory.value;
-    return config;
-};
-
-const isFilterString = (str) =>
-    (str.substring(0, 9) === 'playlist:' || str.substring(0, 8) === 'special:');
-
-const router = useRouter();
-const route = useRoute();
-
-const changeDirectory = (newDir) => {
-    router.push({
+const changeDirectory = (newDir: string) => {
+    void router.push({
         name: 'stations:files:index',
         params: {
             path: newDir
         }
     });
+
+    onTriggerNavigate();
 };
-
-watch(
-    () => route.params,
-    async (newParams) => {
-        const path = newParams.path ?? '';
-
-        if (isFilterString(path)) {
-            await router.push({
-                name: 'stations:files:index',
-            });
-            filter(path);
-        } else {
-            currentDirectory.value = path;
-            onTriggerNavigate();
-        }
-    },
-    {
-        immediate: true
-    }
-);
 </script>

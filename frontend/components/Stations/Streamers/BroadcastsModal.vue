@@ -8,29 +8,39 @@
         @hidden="onHidden"
     >
         <template v-if="listUrl">
-            <inline-player class="text-start bg-primary rounded mb-2 p-1" />
+            <inline-player
+                class="text-start bg-primary rounded mb-2 p-1"
+                :channel="StreamChannel.Modal"
+            />
 
             <broadcasts-modal-toolbar
+                v-if="batchUrl !== null"
                 :batch-url="batchUrl"
                 :selected-items="selectedItems"
-                @relist="relist"
+                @relist="() => refresh()"
             />
 
             <data-table
                 id="station_streamer_broadcasts"
-                ref="$datatable"
+                ref="$dataTable"
                 selectable
                 paginated
                 :fields="fields"
-                :api-url="listUrl"
+                :provider="listItemProvider"
                 @row-selected="onRowSelected"
             >
                 <template #cell(download)="row">
-                    <template v-if="row.item.recording?.links?.download">
-                        <play-button :url="row.item.recording?.links?.download" />
+                    <template v-if="row.item.recording?.downloadUrl">
+                        <play-button
+                            :stream="{
+                                channel: StreamChannel.Modal,
+                                url: row.item.recording?.downloadUrl,
+                                title: $gettext('Streamer Broadcast')
+                            }"
+                        />
                         <a
                             class="name btn p-0 ms-2"
-                            :href="row.item.recording?.links?.download"
+                            :href="row.item.recording?.downloadUrl"
                             target="_blank"
                             :title="$gettext('Download')"
                         >
@@ -65,33 +75,37 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import formatFileSize from '~/functions/formatFileSize';
-import InlinePlayer from '~/components/InlinePlayer.vue';
-import Icon from '~/components/Common/Icon.vue';
-import PlayButton from "~/components/Common/PlayButton.vue";
-import '~/vendor/sweetalert';
-import {ref, shallowRef} from "vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import formatFileSize from "~/functions/formatFileSize";
+import InlinePlayer from "~/components/InlinePlayer.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
+import PlayButton from "~/components/Common/Audio/PlayButton.vue";
+import {ref, shallowRef, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useSweetAlert} from "~/vendor/sweetalert";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
-import {IconDownload} from "~/components/Common/icons";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
-import {usePlayerStore, useProvidePlayerStore} from "~/functions/usePlayerStore.ts";
+import {IconDownload} from "~/components/Common/Icons/icons.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
+import {StreamChannel, usePlayerStore} from "~/functions/usePlayerStore.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import BroadcastsModalToolbar from "~/components/Stations/Streamers/BroadcastsModalToolbar.vue";
+import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
+import {ApiStationStreamerBroadcast} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
-const listUrl = ref(null);
-const batchUrl = ref(null);
+const streamerId = ref<number | null>(null);
+const listUrl = ref<string | null>(null);
+const batchUrl = ref<string | null>(null);
 
 const {$gettext} = useTranslate();
 
-const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
+const {formatIsoAsDateTime} = useStationDateTimeFormatter();
 
-const fields: DataTableField[] = [
+type Row = Required<ApiStationStreamerBroadcast>;
+
+const fields: DataTableField<Row>[] = [
     {
         key: 'download',
         label: ' ',
@@ -102,7 +116,7 @@ const fields: DataTableField[] = [
         key: 'timestampStart',
         label: $gettext('Start Time'),
         sortable: false,
-        formatter: (value) => formatTimestampAsDateTime(value),
+        formatter: (value) => formatIsoAsDateTime(value),
         class: 'ps-3'
     },
     {
@@ -110,9 +124,9 @@ const fields: DataTableField[] = [
         label: $gettext('End Time'),
         sortable: false,
         formatter: (value) => {
-            return value === 0
+            return value === null
                 ? $gettext('Live')
-                : formatTimestampAsDateTime(value);
+                : formatIsoAsDateTime(value);
         }
     },
     {
@@ -135,49 +149,61 @@ const fields: DataTableField[] = [
     }
 ];
 
-const {confirmDelete} = useSweetAlert();
+const listItemProvider = useApiItemProvider<Row>(
+    listUrl,
+    queryKeyWithStation([
+        QueryKeys.StationStreamers,
+        'broadcasts',
+        streamerId
+    ])
+);
+
+const refresh = () => {
+    void listItemProvider.refresh();
+}
+
+const {confirmDelete} = useDialog();
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {relist} = useHasDatatable($datatable);
+const selectedItems = shallowRef<Row[]>([]);
 
-const selectedItems = shallowRef([]);
-
-const onRowSelected = (items) => {
+const onRowSelected = (items: Row[]) => {
     selectedItems.value = items;
 };
 
-const doDelete = (url) => {
-    confirmDelete({
-        title: $gettext('Delete Broadcast?')
-    }).then((result) => {
-        if (result.value) {
-            axios.delete(url).then((resp) => {
-                notifySuccess(resp.data.message);
-                relist();
-            });
-        }
+const doDelete = async (url: string) => {
+    const {value} = await confirmDelete({
+        title: $gettext('Delete Broadcast?'),
     });
+
+    if (!value) {
+        return;
+    }
+
+    const {data} = await axios.delete(url);
+
+    notifySuccess(data.message);
+    refresh();
 };
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
-const open = (newListUrl, newBatchUrl) => {
+const open = (newStreamerId: number, newListUrl: string, newBatchUrl: string) => {
+    streamerId.value = newStreamerId;
     listUrl.value = newListUrl;
     batchUrl.value = newBatchUrl;
 
     show();
 };
 
-useProvidePlayerStore('broadcasts');
-
 const {stop} = usePlayerStore();
 
 const onHidden = () => {
     stop();
 
+    streamerId.value = null;
     listUrl.value = null;
     batchUrl.value = null;
 };

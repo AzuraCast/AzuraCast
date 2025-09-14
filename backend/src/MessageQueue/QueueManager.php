@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\MessageQueue;
 
+use App\Cache\CacheNamespace;
 use App\Service\RedisFactory;
 use Symfony\Component\Messenger\Bridge\Redis\Transport\Connection;
 use Symfony\Component\Messenger\Bridge\Redis\Transport\RedisTransport;
@@ -52,7 +53,7 @@ final class QueueManager extends AbstractQueueManager
             $this->connections[$queueName] = new Connection(
                 [
                     'lazy' => true,
-                    'stream' => 'messages.' . $queueName,
+                    'stream' => CacheNamespace::Messages->value . ':' . $queueName,
                     'delete_after_ack' => true,
                     'redeliver_timeout' => 43200,
                     'claim_interval' => 86400,

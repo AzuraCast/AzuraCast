@@ -21,7 +21,14 @@
                         class="btn btn-sm btn-primary"
                         @click="makeDebugCall(clearCacheUrl)"
                     >
-                        {{ $gettext('Clear Cache') }}
+                        {{ $gettext('Clear Server Cache') }}
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-primary"
+                        @click="doClearClientCache"
+                    >
+                        {{ $gettext('Clear Client Cache') }}
                     </button>
                 </template>
             </card-page>
@@ -78,11 +85,8 @@
         </template>
 
         <data-table
-            ref="$datatable"
             :fields="syncTaskFields"
-            :items="syncTasks"
-            :loading="syncTasksLoading"
-            handle-client-side
+            :provider="syncTasksItemProvider"
             :show-toolbar="false"
         >
             <template #cell(name)="row">
@@ -137,7 +141,7 @@
             <loading :loading="queueTotalsLoading">
                 <div class="row">
                     <div
-                        v-for="row in queueTotals"
+                        v-for="row in queueTotals ?? []"
                         :key="row.name"
                         class="col"
                     >
@@ -180,7 +184,7 @@
             >
                 <tabs>
                     <tab
-                        v-for="station in stations"
+                        v-for="station in stations ?? []"
                         :key="station.id"
                         :label="station.name"
                     >
@@ -231,23 +235,24 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
+import {useTemplateRef} from "vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
 import TaskOutputModal from "~/components/Admin/Debug/TaskOutputModal.vue";
 import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {getApiUrl} from "~/router.ts";
-import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState.ts";
 import Loading from "~/components/Common/Loading.vue";
-import {IconRefresh} from "~/components/Common/icons.ts";
-import Icon from "~/components/Common/Icon.vue";
-import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
+import {IconRefresh} from "~/components/Common/Icons/icons.ts";
+import Icon from "~/components/Common/Icons/Icon.vue";
+import {ApiAdminDebugQueue, ApiAdminDebugStation, ApiAdminDebugSyncTask} from "~/entities/ApiInterfaces.ts";
+import {useQuery, useQueryClient} from "@tanstack/vue-query";
+import {QueryKeys} from "~/entities/Queries.ts";
+import {useQueryItemProvider} from "~/functions/dataTable/useQueryItemProvider.ts";
 
 const listSyncTasksUrl = getApiUrl('/admin/debug/sync-tasks');
 const listQueueTotalsUrl = getApiUrl('/admin/debug/queues');
@@ -255,33 +260,10 @@ const listStationsUrl = getApiUrl('/admin/debug/stations');
 const clearCacheUrl = getApiUrl('/admin/debug/clear-cache');
 const clearQueuesUrl = getApiUrl('/admin/debug/clear-queue');
 
-const {axios} = useAxios();
-
-const {state: syncTasks, isLoading: syncTasksLoading, execute: resetSyncTasks} = useAutoRefreshingAsyncState(
-    () => axios.get(listSyncTasksUrl.value).then(r => r.data),
-    [],
-    {
-        timeout: 60000
-    }
-);
-
-const {state: queueTotals, isLoading: queueTotalsLoading, execute: resetQueueTotals} = useAutoRefreshingAsyncState(
-    () => axios.get(listQueueTotalsUrl.value).then(r => r.data),
-    [],
-    {
-        timeout: 60000
-    }
-);
-
-const {state: stations, isLoading: stationsLoading} = useRefreshableAsyncState(
-    () => axios.get(listStationsUrl.value).then(r => r.data),
-    [],
-);
-
 const {$gettext} = useTranslate();
 const {timestampToRelative} = useLuxon();
 
-const syncTaskFields: DataTableField[] = [
+const syncTaskFields: DataTableField<ApiAdminDebugSyncTask>[] = [
     {key: 'name', isRowHeader: true, label: $gettext('Task Name'), sortable: true},
     {
         key: 'time',
@@ -300,20 +282,58 @@ const syncTaskFields: DataTableField[] = [
     {key: 'actions', label: $gettext('Actions')}
 ];
 
-const $datatable = ref<DataTableTemplateRef>(null);
-useHasDatatable($datatable);
+const {axios} = useAxios();
 
-const $modal = ref<InstanceType<typeof TaskOutputModal> | null>(null);
+const syncTasksQuery = useQuery({
+    queryKey: [QueryKeys.AdminDebug, 'syncTasks'],
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiAdminDebugSyncTask[]>(listSyncTasksUrl.value, {signal})
+        return data;
+    },
+    refetchInterval: 60000
+});
+
+const syncTasksItemProvider = useQueryItemProvider(syncTasksQuery);
+
+const resetSyncTasks = () => {
+    void syncTasksItemProvider.refresh();
+}
+
+const {data: queueTotals, isLoading: queueTotalsLoading, refetch: resetQueueTotals} = useQuery({
+    queryKey: [QueryKeys.AdminDebug, 'queueTotals'],
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiAdminDebugQueue[]>(listQueueTotalsUrl.value, {signal});
+        return data;
+    },
+    refetchInterval: 60000
+});
+
+const {data: stations, isLoading: stationsLoading} = useQuery({
+    queryKey: [QueryKeys.AdminDebug, 'stations'],
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiAdminDebugStation[]>(listStationsUrl.value, {signal});
+        return data;
+    },
+});
+
+const $modal = useTemplateRef('$modal');
 
 const {notifySuccess} = useNotify();
 
-const makeDebugCall = (url) => {
-    axios.put(url).then((resp) => {
-        if (resp.data.logs) {
-            $modal.value?.open(resp.data.logs);
-        } else {
-            notifySuccess(resp.data.message);
-        }
-    });
+const makeDebugCall = async (url: string) => {
+    const {data} = await axios.put(url);
+    if (data.logs) {
+        $modal.value?.open(data.logs);
+    } else {
+        notifySuccess(data.message);
+    }
+}
+
+const queryClient = useQueryClient();
+
+const doClearClientCache = async () => {
+    await queryClient.invalidateQueries();
+
+    notifySuccess($gettext('Client-side cache cleared!'));
 }
 </script>

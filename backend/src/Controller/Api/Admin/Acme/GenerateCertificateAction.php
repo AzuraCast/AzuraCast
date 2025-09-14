@@ -5,17 +5,38 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin\Acme;
 
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\TaskWithLog;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\GenerateAcmeCertificate;
+use App\OpenApi;
 use App\Utilities\File;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
 
-final class GenerateCertificateAction implements SingleActionInterface
+#[
+    OA\Put(
+        path: '/admin/acme',
+        operationId: 'putAdminGenerateAcmeCert',
+        summary: 'Generate or renew ACME certificate.',
+        tags: [OpenApi::TAG_ADMIN],
+        responses: [
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    ref: TaskWithLog::class
+                )
+            ),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
+final readonly class GenerateCertificateAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly MessageBus $messageBus
+        private MessageBus $messageBus
     ) {
     }
 
@@ -33,14 +54,9 @@ final class GenerateCertificateAction implements SingleActionInterface
 
         $router = $request->getRouter();
         return $response->withJson(
-            [
-                'success' => true,
-                'links' => [
-                    'log' => $router->fromHere('api:admin:acme-log', [
-                        'path' => basename($tempFile),
-                    ]),
-                ],
-            ]
+            new TaskWithLog($router->fromHere('api:admin:acme-log', [
+                'path' => basename($tempFile),
+            ]))
         );
     }
 }

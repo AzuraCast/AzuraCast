@@ -6,6 +6,7 @@ namespace App\Controller\Api\Stations\StereoTool;
 
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
+use App\Entity\Api\UploadedRecordStatus;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -16,20 +17,20 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Get(
     path: '/station/{station_id}/stereo-tool-configuration',
     operationId: 'getStereoToolConfiguration',
-    description: 'Get the Stereo Tool configuration file for a station.',
-    security: OpenApi::API_KEY_SECURITY,
-    tags: ['Stations: Broadcasting'],
+    summary: 'Get the Stereo Tool configuration file for a station.',
+    tags: [OpenApi::TAG_STATIONS_BROADCASTING],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
     ],
     responses: [
-        new OA\Response(
-            response: 200,
-            description: 'Success'
+        new OpenApi\Response\Success(
+            content: new OA\JsonContent(
+                ref: UploadedRecordStatus::class
+            )
         ),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
     ]
 )]
 final class GetStereoToolConfigurationAction implements SingleActionInterface
@@ -44,7 +45,7 @@ final class GetStereoToolConfigurationAction implements SingleActionInterface
 
         $download = ($params['do'] ?? null) === 'download';
 
-        $stereoToolConfigurationPath = $station->getBackendConfig()->getStereoToolConfigurationPath();
+        $stereoToolConfigurationPath = $station->backend_config->stereo_tool_configuration_path;
 
         if (!empty($stereoToolConfigurationPath)) {
             $fsConfig = StationFilesystems::buildConfigFilesystem($station);
@@ -59,12 +60,12 @@ final class GetStereoToolConfigurationAction implements SingleActionInterface
                     );
                 }
 
-                return $response->withJson([
-                    'hasRecord' => true,
-                    'links' => [
-                        'download' => $router->fromHere(routeParams: ['do' => 'download']),
-                    ],
-                ]);
+                return $response->withJson(
+                    new UploadedRecordStatus(
+                        true,
+                        $router->fromHere(routeParams: ['do' => 'download'])
+                    )
+                );
             }
         }
 
@@ -73,11 +74,11 @@ final class GetStereoToolConfigurationAction implements SingleActionInterface
                 ->withJson(Error::notFound());
         }
 
-        return $response->withJson([
-            'hasRecord' => false,
-            'links' => [
-                'download' => null,
-            ],
-        ]);
+        return $response->withJson(
+            new UploadedRecordStatus(
+                false,
+                null
+            )
+        );
     }
 }

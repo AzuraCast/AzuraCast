@@ -50,23 +50,14 @@ import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
 import Tab from "~/components/Common/Tab.vue";
+import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
 
-const props = defineProps({
-    modelValue: {
-        type: Object,
-        default: null
-    },
-    artworkSrc: {
-        type: String,
-        default: null
-    },
-    newArtUrl: {
-        type: String,
-        required: true
-    },
-});
+const props = defineProps<{
+    artworkSrc?: string,
+    newArtUrl: string
+}>();
 
-const emit = defineEmits(['update:modelValue']);
+const model = defineModel<UploadResponseBody | null>();
 
 const artworkSrc = ref(props.artworkSrc);
 const reloadArt = () => {
@@ -74,7 +65,7 @@ const reloadArt = () => {
 }
 watch(toRef(props, 'artworkSrc'), reloadArt);
 
-const localSrc = ref(null);
+const localSrc = ref<string | null>(null);
 
 const src = computed(() => {
     return localSrc.value ?? artworkSrc.value;
@@ -82,14 +73,14 @@ const src = computed(() => {
 
 const {axios} = useAxios();
 
-const uploaded = (file) => {
+const uploaded = async (file: File | null) => {
     if (null === file) {
         return;
     }
 
     const fileReader = new FileReader();
     fileReader.addEventListener('load', () => {
-        localSrc.value = fileReader.result;
+        localSrc.value = fileReader.result as string | null;
     }, false);
     fileReader.readAsDataURL(file);
 
@@ -97,18 +88,17 @@ const uploaded = (file) => {
     const formData = new FormData();
     formData.append('art', file);
 
-    axios.post(url, formData).then((resp) => {
-        emit('update:modelValue', resp.data);
-        reloadArt();
-    });
+    const {data} = await axios.post(url, formData);
+    model.value = data;
+    reloadArt();
 };
 
-const deleteArt = () => {
+const deleteArt = async () => {
     if (props.artworkSrc) {
-        axios.delete(props.artworkSrc).then(() => {
-            reloadArt();
-            localSrc.value = null;
-        });
+        await axios.delete(props.artworkSrc);
+
+        reloadArt();
+        localSrc.value = null;
     } else {
         reloadArt();
         localSrc.value = null;

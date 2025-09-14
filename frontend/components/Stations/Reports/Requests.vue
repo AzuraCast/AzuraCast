@@ -50,20 +50,19 @@
         </div>
 
         <data-table
-            id="station_queue"
-            ref="$datatable"
+            id="station_requests"
             :fields="fields"
-            :api-url="listUrlForType"
+            :provider="listItemProvider"
         >
             <template #cell(timestamp)="row">
-                {{ formatTimestampAsDateTime(row.item.timestamp) }}
+                {{ formatIsoAsDateTime(row.item.timestamp) }}
             </template>
             <template #cell(played_at)="row">
-                <span v-if="row.item.played_at === 0">
+                <span v-if="row.item.played_at === null">
                     {{ $gettext('Not Played') }}
                 </span>
                 <span v-else>
-                    {{ formatTimestampAsDateTime(row.item.played_at) }}
+                    {{ formatIsoAsDateTime(row.item.played_at) }}
                 </span>
             </template>
             <template #cell(song_title)="row">
@@ -93,22 +92,30 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import Icon from "~/components/Common/Icon.vue";
-import {computed, nextTick, ref} from "vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
+import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useSweetAlert} from "~/vendor/sweetalert";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import {getStationApiUrl} from "~/router";
-import {IconRemove} from "~/components/Common/icons";
-import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import {IconRemove} from "~/components/Common/Icons/icons.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+
+type RequestType = "pending" | "history";
+
+interface TypeTabs {
+    type: RequestType,
+    title: string
+}
 
 const listUrl = getStationApiUrl('/reports/requests');
 const clearUrl = getStationApiUrl('/reports/requests/clear');
 
-const activeType = ref('pending');
+const activeType = ref<RequestType>('pending');
 
 const listUrlForType = computed(() => {
     return listUrl.value + '?type=' + activeType.value;
@@ -124,7 +131,20 @@ const fields: DataTableField[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false}
 ];
 
-const tabs = [
+const listItemProvider = useApiItemProvider(
+    listUrlForType,
+    queryKeyWithStation([
+        QueryKeys.StationReports,
+        'requests',
+        activeType
+    ])
+);
+
+const refresh = () => {
+    void listItemProvider.refresh();
+}
+
+const tabs: TypeTabs[] = [
     {
         type: 'pending',
         title: $gettext('Pending Requests')
@@ -135,47 +155,43 @@ const tabs = [
     }
 ];
 
-const $datatable = ref<DataTableTemplateRef>(null);
-
-const relist = () => {
-    $datatable.value?.refresh();
-};
-
-const setType = (type) => {
+const setType = (type: RequestType) => {
     activeType.value = type;
-    nextTick(relist);
 };
 
-const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
+const {formatIsoAsDateTime} = useStationDateTimeFormatter();
 
-const {confirmDelete} = useSweetAlert();
+const {confirmDelete} = useDialog();
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const doDelete = (url) => {
-    confirmDelete({
+const doDelete = async (url: string) => {
+    const {value} = await confirmDelete({
         title: $gettext('Delete Request?'),
-    }).then((result) => {
-        if (result.value) {
-            axios.delete(url).then((resp) => {
-                notifySuccess(resp.data.message);
-                relist();
-            });
-        }
     });
+
+    if (!value) {
+        return;
+    }
+
+    const {data} = await axios.delete(url);
+    notifySuccess(data.message);
+    refresh();
 };
 
-const doClear = () => {
-    confirmDelete({
+const doClear = async () => {
+    const {value} = await confirmDelete({
         title: $gettext('Clear All Pending Requests?'),
         confirmButtonText: $gettext('Clear'),
-    }).then((result) => {
-        if (result.value) {
-            axios.post(clearUrl.value).then((resp) => {
-                notifySuccess(resp.data.message);
-                relist();
-            });
-        }
     });
+
+    if (!value) {
+        return;
+    }
+
+    const {data} = await axios.post(clearUrl.value);
+
+    notifySuccess(data.message);
+    refresh();
 };
 </script>

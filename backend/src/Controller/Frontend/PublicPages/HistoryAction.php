@@ -11,10 +11,10 @@ use App\Http\ServerRequest;
 use App\VueComponent\NowPlayingComponent;
 use Psr\Http\Message\ResponseInterface;
 
-final class HistoryAction implements SingleActionInterface
+final readonly class HistoryAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly NowPlayingComponent $nowPlayingComponent
+        private NowPlayingComponent $nowPlayingComponent
     ) {
     }
 
@@ -25,7 +25,7 @@ final class HistoryAction implements SingleActionInterface
     ): ResponseInterface {
         $station = $request->getStation();
 
-        if (!$station->getEnablePublicPage()) {
+        if (!$station->enable_public_page) {
             throw NotFoundException::station();
         }
 
@@ -42,9 +42,9 @@ final class HistoryAction implements SingleActionInterface
             component: 'Public/History',
             id: 'song-history',
             layout: 'minimal',
-            title: __('History') . ' - ' . $station->getName(),
+            title: __('History') . ' - ' . $station->name,
             layoutParams: [
-                'page_class' => 'embed station-' . $station->getShortName(),
+                'page_class' => 'embed station-' . $station->short_name,
                 'hide_footer' => true,
             ],
             props: $this->nowPlayingComponent->getProps($request),

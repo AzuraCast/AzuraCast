@@ -12,8 +12,33 @@ use App\Entity\Repository\StationPlaylistRepository;
 use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[OA\Get(
+    path: '/station/{station_id}/playlist/{id}/order',
+    operationId: 'getStationPlaylistOrder',
+    summary: 'Get the current order of sequential tracks in the specified playlist.',
+    tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        new OA\Parameter(
+            name: 'id',
+            description: 'Playlist ID',
+            in: 'path',
+            required: true,
+            schema: new OA\Schema(type: 'integer', format: 'int64')
+        ),
+    ],
+    responses: [
+        // TODO API Response
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class GetOrderAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
@@ -35,8 +60,8 @@ final class GetOrderAction implements SingleActionInterface
         $record = $this->playlistRepo->requireForStation($id, $station);
 
         if (
-            PlaylistSources::Songs !== $record->getSource()
-            || PlaylistOrders::Sequential !== $record->getOrder()
+            PlaylistSources::Songs !== $record->source
+            || PlaylistOrders::Sequential !== $record->order
         ) {
             throw new Exception(__('This playlist is not a sequential playlist.'));
         }
@@ -46,7 +71,7 @@ final class GetOrderAction implements SingleActionInterface
                 SELECT spm, sm
                 FROM App\Entity\StationPlaylistMedia spm
                 JOIN spm.media sm
-                WHERE spm.playlist_id = :playlist_id
+                WHERE IDENTITY(spm.playlist) = :playlist_id
                 ORDER BY spm.weight ASC
             DQL
         )->setParameter('playlist_id', $id)
@@ -60,7 +85,7 @@ final class GetOrderAction implements SingleActionInterface
                     $row['media']['links'] = [
                         'play' => $router->named(
                             'api:stations:files:play',
-                            ['station_id' => $station->getIdRequired(), 'id' => $row['media']['unique_id']],
+                            ['station_id' => $station->id, 'id' => $row['media']['unique_id']],
                             [],
                             true
                         ),

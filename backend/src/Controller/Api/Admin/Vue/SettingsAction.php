@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin\Vue;
 
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Admin\Vue\SettingsProps;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\VueComponent\SettingsComponent;
+use App\Version;
 use Psr\Http\Message\ResponseInterface;
 
-final class SettingsAction implements SingleActionInterface
+final readonly class SettingsAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly SettingsComponent $settingsComponent
+        private Version $version,
     ) {
     }
 
@@ -22,6 +23,10 @@ final class SettingsAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        return $response->withJson($this->settingsComponent->getProps($request));
+        return $response->withJson(
+            new SettingsProps(
+                releaseChannel: $this->version->getReleaseChannelEnum()->value
+            )
+        );
     }
 }

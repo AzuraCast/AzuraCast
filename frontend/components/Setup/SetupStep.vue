@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex justify-content-center align-items-center text-center mb-3 mt-2 px-5">
+    <div class="d-flex justify-content-center align-items-center text-center mb-4 px-5">
         <div
             class="rounded border p-2 m-2"
             :class="getStepperClass(1)"
@@ -37,17 +37,19 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
-import {IconArrowRight} from "~/components/Common/icons";
+import Icon from "~/components/Common/Icons/Icon.vue";
+import {IconArrowRight} from "~/components/Common/Icons/icons.ts";
 
-const props = defineProps({
-    step: {
-        type: Number,
-        default: 1
+const props = withDefaults(
+    defineProps<{
+        step: number
+    }>(),
+    {
+        step: 1
     }
-});
+);
 
-const getStepperClass = (currentStep) => {
+const getStepperClass = (currentStep: number) => {
     if (props.step === currentStep) {
         return ['text-primary-emphasis', 'bg-primary-subtle', 'border-primary-subtle'];
     } else {

@@ -21,17 +21,17 @@ final class HlsListeners
         Station $station,
         bool $includeClients = false
     ): Result {
-        if (!$station->getEnableHls()) {
+        if (!$station->enable_hls) {
             return $np;
         }
 
-        $hlsStreams = $station->getHlsStreams();
+        $hlsStreams = $station->hls_streams;
         if (0 === $hlsStreams->count()) {
             $this->logger->error('No HLS streams.');
             return $np;
         }
 
-        $thresholdSecs = $station->getBackendConfig()->getHlsSegmentLength() * 2;
+        $thresholdSecs = $station->backend_config->hls_segment_length * 2;
         $timestamp = time() - $thresholdSecs;
 
         $hlsLogFile = ConfigWriter::getHlsLogFile($station);
@@ -45,8 +45,8 @@ final class HlsListeners
         $streamsByName = [];
         $clientsByStream = [];
         foreach ($hlsStreams as $hlsStream) {
-            $streamsByName[$hlsStream->getName()] = $hlsStream->getIdRequired();
-            $clientsByStream[$hlsStream->getName()] = 0;
+            $streamsByName[$hlsStream->name] = $hlsStream->id;
+            $clientsByStream[$hlsStream->name] = 0;
         }
 
         $allClients = [];
@@ -82,8 +82,8 @@ final class HlsListeners
         }
 
         foreach ($hlsStreams as $hlsStream) {
-            $numClients = (int)$clientsByStream[$hlsStream->getName()];
-            $hlsStream->setListeners($numClients);
+            $numClients = (int)$clientsByStream[$hlsStream->name];
+            $hlsStream->listeners = $numClients;
             $this->em->persist($hlsStream);
         }
 

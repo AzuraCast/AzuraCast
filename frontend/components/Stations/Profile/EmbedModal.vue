@@ -93,17 +93,17 @@
 </template>
 
 <script setup lang="ts">
-import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton.vue';
-import {computed, ref} from "vue";
+import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton.vue";
+import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import embedModalProps from "./embedModalProps";
 import Modal from "~/components/Common/Modal.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
+import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
 
-const props = defineProps({
-    ...embedModalProps
-});
+const stationData = useStationData();
+const profileData = useStationProfileData();
 
 const selectedType = ref('player');
 const selectedTheme = ref('light');
@@ -130,14 +130,14 @@ const types = computed(() => {
         }
     ];
 
-    if (props.stationSupportsRequests && props.enableRequests) {
+    if (stationData.value.features.requests && stationData.value.enableRequests) {
         types.push({
             value: 'requests',
             text: $gettext('Requests')
         });
     }
 
-    if (props.enableOnDemand) {
+    if (stationData.value.enableOnDemand) {
         types.push({
             value: 'ondemand',
             text: $gettext('On-Demand Media')
@@ -167,23 +167,23 @@ const themes = computed(() => {
 const baseEmbedUrl = computed(() => {
     switch (selectedType.value) {
         case 'history':
-            return props.publicHistoryEmbedUri;
+            return profileData.value.publicHistoryEmbedUri;
 
         case 'ondemand':
-            return props.publicOnDemandEmbedUri;
+            return profileData.value.publicOnDemandEmbedUri;
 
         case 'requests':
-            return props.publicRequestEmbedUri;
+            return profileData.value.publicRequestEmbedUri;
 
         case 'schedule':
-            return props.publicScheduleEmbedUri;
+            return profileData.value.publicScheduleEmbedUri;
 
         case 'podcasts':
-            return props.publicPodcastsEmbedUri;
+            return profileData.value.publicPodcastsEmbedUri;
 
         case 'player':
         default:
-            return props.publicPageEmbedUri;
+            return profileData.value.publicPageEmbedUri;
     }
 });
 
@@ -220,7 +220,7 @@ const embedCode = computed(() => {
     return '<iframe src="' + embedUrl.value + '" frameborder="0" allowtransparency="true" style="width: 100%; min-height: ' + embedHeight.value + '; border: 0;"></iframe>';
 });
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show: open} = useHasModal($modal);
 
 defineExpose({

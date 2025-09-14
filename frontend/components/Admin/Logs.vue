@@ -4,27 +4,30 @@
             header-id="hdr_system_logs"
             :title="$gettext('System Logs')"
         >
-            <log-list
-                :url="systemLogsUrl"
-                @view="viewLog"
-            />
+            <loading :loading="isLoading" lazy>
+                <log-list
+                    v-if="data"
+                    :logs="data.globalLogs"
+                    @view="viewLog"
+                />
+            </loading>
         </card-page>
 
         <card-page
-            v-if="stationLogs.length > 0"
+            v-if="data && data.stationLogs.length > 0"
             header-id="hdr_logs_by_station"
             :title="$gettext('Logs by Station')"
         >
             <div class="card-body">
                 <tabs content-class="mt-3">
                     <tab
-                        v-for="row in stationLogs"
+                        v-for="row in data.stationLogs"
                         :key="row.id"
                         :label="row.name"
                     >
                         <div class="card-body-flush">
                             <log-list
-                                :url="row.url"
+                                :logs="row.logs"
                                 @view="viewLog"
                             />
                         </div>
@@ -40,27 +43,36 @@
 <script setup lang="ts">
 import LogList from "~/components/Common/LogList.vue";
 import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
-import {Ref, ref} from "vue";
+import {useTemplateRef} from "vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
+import {QueryKeys} from "~/entities/Queries.ts";
+import {getApiUrl} from "~/router.ts";
+import {useAxios} from "~/vendor/axios.ts";
+import {useQuery} from "@tanstack/vue-query";
+import Loading from "~/components/Common/Loading.vue";
+import {LogListRequired} from "~/entities/AdminLogs.ts";
 
-defineProps({
-    systemLogsUrl: {
-        type: String,
-        required: true,
+const {axios} = useAxios();
+
+const systemLogsUrl = getApiUrl('/admin/logs');
+
+const {data, isLoading} = useQuery<LogListRequired>({
+    queryKey: [QueryKeys.AdminDebug, 'logs'],
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<LogListRequired>(systemLogsUrl.value, {signal});
+        return data;
     },
-    stationLogs: {
-        type: Array,
-        default: () => {
-            return [];
-        }
-    }
+    placeholderData: () => ({
+        globalLogs: [],
+        stationLogs: []
+    })
 });
 
-const $modal: Ref<InstanceType<typeof StreamingLogModal> | null> = ref(null);
+const $modal = useTemplateRef('$modal');
 
-const viewLog = (url, isStreaming) => {
+const viewLog = (url: string, isStreaming: boolean) => {
     $modal.value?.show(url, isStreaming);
 };
 </script>

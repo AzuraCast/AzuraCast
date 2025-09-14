@@ -30,13 +30,13 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
 
     public function __construct(
         protected AdapterFactory $adapterFactory,
-        protected Client $httpClient,
         protected StationMountRepository $stationMountRepo,
         SupervisorInterface $supervisor,
         EventDispatcherInterface $dispatcher,
-        Router $router
+        Router $router,
+        Client $httpClient,
     ) {
-        parent::__construct($supervisor, $dispatcher, $router);
+        parent::__construct($supervisor, $dispatcher, $router, $httpClient);
     }
 
     /**
@@ -51,7 +51,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
      * @param Station $station
      * @param UriInterface|null $baseUrl
      */
-    public function getStreamUrl(Station $station, UriInterface $baseUrl = null): UriInterface
+    public function getStreamUrl(Station $station, ?UriInterface $baseUrl = null): UriInterface
     {
         $defaultMount = $this->stationMountRepo->getDefaultMount($station);
 
@@ -73,21 +73,17 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
         }
 
         $publicUrl = $this->getPublicUrl($station, $baseUrl);
-        return $publicUrl->withPath($publicUrl->getPath() . $mount->getName());
+        return $publicUrl->withPath($publicUrl->getPath() . $mount->name);
     }
 
     public function getPublicUrl(Station $station, ?UriInterface $baseUrl = null): UriInterface
     {
-        $radioPort = $station->getFrontendConfig()->getPort();
+        $radioPort = $station->frontend_config->port;
         $baseUrl ??= $this->router->getBaseUrl();
 
-        $useRadioProxy = $this->readSettings()->getUseRadioProxy();
+        $useRadioProxy = $this->readSettings()->use_radio_proxy;
 
-        if (
-            $useRadioProxy
-            || 'https' === $baseUrl->getScheme()
-            || (!$this->environment->isProduction() && !$this->environment->isDocker())
-        ) {
+        if ($useRadioProxy || !$this->environment->isProduction()) {
             // Web proxy support.
             return $baseUrl
                 ->withPath($baseUrl->getPath() . CustomUrls::getListenUrl($station));
@@ -99,7 +95,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
             ->withPath('');
     }
 
-    abstract public function getAdminUrl(Station $station, UriInterface $baseUrl = null): UriInterface;
+    abstract public function getAdminUrl(Station $station, ?UriInterface $baseUrl = null): UriInterface;
 
     public function getNowPlaying(Station $station, bool $includeClients = true): Result
     {
@@ -107,12 +103,18 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
     }
 
     /**
-     * @param string $customConfigRaw
+     * @param string|null $customConfigRaw
      *
      * @return mixed[]|false
      */
-    protected function processCustomConfig(string $customConfigRaw): array|false
+    protected function processCustomConfig(?string $customConfigRaw): array|false
     {
+        $customConfigRaw = trim($customConfigRaw ?? '');
+
+        if (empty($customConfigRaw)) {
+            return false;
+        }
+
         try {
             if (str_starts_with($customConfigRaw, '{')) {
                 return json_decode($customConfigRaw, true, 512, JSON_THROW_ON_ERROR);
@@ -144,7 +146,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
         $bannedUserAgents = array_filter(
             array_map(
                 'trim',
-                explode("\n", $station->getFrontendConfig()->getBannedUserAgents() ?? '')
+                explode("\n", $station->frontend_config->banned_user_agents ?? '')
             )
         );
 
@@ -173,7 +175,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
 
     protected function getBannedIps(Station $station): array
     {
-        return $this->getIpsAsArray($station->getFrontendConfig()->getBannedIps());
+        return $this->getIpsAsArray($station->frontend_config->banned_ips);
     }
 
     protected function getIpsAsArray(?string $ipString): array

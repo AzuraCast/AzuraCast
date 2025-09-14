@@ -10,8 +10,26 @@ use App\Entity\Repository\StationMountRepository;
 use App\Entity\Repository\StationRemoteRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[OA\Get(
+    path: '/station/{station_id}/reports/overview/by-stream',
+    operationId: 'getStationReportByStream',
+    summary: 'Get the "Listeners by Stream" report for a station.',
+    tags: [OpenApi::TAG_STATIONS_REPORTS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+    ],
+    responses: [
+        // TODO API Response
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class ByStream extends AbstractReportAction
 {
     public function __construct(
@@ -60,9 +78,9 @@ final class ByStream extends AbstractReportAction
                 GROUP BY l.stream_id
             SQL,
             [
-                'station_id' => $station->getIdRequired(),
-                'start' => $dateRange->getStartTimestamp(),
-                'end' => $dateRange->getEndTimestamp(),
+                'station_id' => $station->id,
+                'start' => $dateRange->start,
+                'end' => $dateRange->end,
             ]
         );
 

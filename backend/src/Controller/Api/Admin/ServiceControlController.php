@@ -4,17 +4,64 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Entity\Api\Admin\ServiceData;
 use App\Entity\Api\Status;
+use App\Entity\CustomField;
 use App\Enums\GlobalPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Service\ServiceControl;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-final class ServiceControlController
+#[
+    OA\Get(
+        path: '/admin/services',
+        operationId: 'getServiceDetails',
+        summary: 'List the status of essential system services.',
+        tags: [OpenApi::TAG_ADMIN],
+        responses: [
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(
+                        ref: ServiceData::class
+                    )
+                )
+            ),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
+        ]
+    ),
+    OA\Post(
+        path: '/admin/services/restart/{service}',
+        operationId: 'restartService',
+        summary: 'Restart the specified service.',
+        requestBody: new OA\RequestBody(
+            content: new OA\JsonContent(ref: CustomField::class)
+        ),
+        tags: [OpenApi::TAG_ADMIN],
+        parameters: [
+            new OA\Parameter(
+                name: 'service',
+                description: 'Service name.',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string')
+            ),
+        ],
+        responses: [
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
+final readonly class ServiceControlController
 {
     public function __construct(
-        private readonly ServiceControl $serviceControl
+        private ServiceControl $serviceControl
     ) {
     }
 
@@ -23,24 +70,23 @@ final class ServiceControlController
         Response $response
     ): ResponseInterface {
         $router = $request->getRouter();
-
         $canRestart = $request->getAcl()->isAllowed(GlobalPermissions::All);
 
-        $result = [];
-        foreach ($this->serviceControl->getServices() as $service) {
-            $row = $service->toArray();
+        $result = array_map(
+            function (ServiceData $row) use ($router, $canRestart) {
+                $row->links = [];
 
-            $row['links'] = [];
+                if ($canRestart) {
+                    $row->links['restart'] = $router->fromHere(
+                        'api:admin:services:restart',
+                        ['service' => $row->name]
+                    );
+                }
 
-            if ($canRestart) {
-                $row['links']['restart'] = $router->fromHere(
-                    'api:admin:services:restart',
-                    ['service' => $service->name]
-                );
-            }
-
-            $result[] = $row;
-        }
+                return $row;
+            },
+            $this->serviceControl->getServices()
+        );
 
         return $response->withJson($result);
     }

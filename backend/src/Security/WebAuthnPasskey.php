@@ -6,11 +6,11 @@ namespace App\Security;
 
 use stdClass;
 
-final class WebAuthnPasskey
+final readonly class WebAuthnPasskey
 {
     public function __construct(
-        protected readonly string $id,
-        protected readonly string $publicKeyPem
+        protected string $id,
+        protected string $publicKeyPem
     ) {
     }
 

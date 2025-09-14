@@ -5,7 +5,7 @@
     >
         <template v-if="quota.available">
             <div
-                class="progress h-20 mb-3"
+                class="progress h-20 mb-2"
                 role="progressbar"
                 :aria-label="quota.used_percent+'%'"
                 :aria-valuenow="quota.used_percent"
@@ -30,30 +30,31 @@
 </template>
 
 <script setup lang="ts">
-import mergeExisting from "~/functions/mergeExisting";
 import {computed, onMounted, ref, shallowRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
+import {ApiStationQuota} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    quotaUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    quotaUrl: string,
+}>();
 
-const emit = defineEmits(['updated']);
+type Quota = Required<ApiStationQuota>;
+
+const emit = defineEmits<{
+    (e: 'updated', quota: Quota): void
+}>();
 
 const loading = ref(true);
-const quota = shallowRef({
-    used: null,
-    used_bytes: null,
-    used_percent: null,
-    available: null,
-    available_bytes: null,
+const quota = shallowRef<Quota>({
+    used: '',
+    used_bytes: '',
+    used_percent: 0,
+    available: '',
+    available_bytes: '',
     quota: null,
     quota_bytes: null,
-    is_full: null,
+    is_full: false,
     num_files: null
 });
 
@@ -70,7 +71,7 @@ const progressVariant = computed(() => {
 const {$gettext, $ngettext} = useTranslate();
 
 const langSpaceUsed = computed(() => {
-    let langSpaceUsed;
+    let langSpaceUsed: string;
 
     if (quota.value.available) {
         langSpaceUsed = $gettext(
@@ -94,7 +95,7 @@ const langSpaceUsed = computed(() => {
             '%{filesCount} File',
             '%{filesCount} Files',
             quota.value.num_files,
-            {filesCount: quota.value.num_files}
+            {filesCount: String(quota.value.num_files)}
         );
 
         return langSpaceUsed + ' (' + langNumFiles + ')';
@@ -105,13 +106,13 @@ const langSpaceUsed = computed(() => {
 
 const {axios} = useAxios();
 
-const update = () => {
-    axios.get(props.quotaUrl).then((resp) => {
-        quota.value = mergeExisting(quota.value, resp.data);
-        loading.value = false;
+const update = async () => {
+    const {data} = await axios.get<Quota>(props.quotaUrl);
 
-        emit('updated', quota.value);
-    });
+    quota.value = data;
+    loading.value = false;
+
+    emit('updated', quota.value);
 }
 
 onMounted(update);

@@ -15,40 +15,44 @@
                     :disabled="dirHistory.length === 0"
                     @click="pageBack"
                 >
-                    <icon :icon="IconChevronLeft" />
+                    <icon :icon="IconChevronLeft"/>
                     <span>
                         {{ $gettext('Back') }}
                     </span>
                 </button>
             </div>
             <div class="flex-fill m-2 m-md-0 text-end">
-                <h6 class="m-0">
-                    {{ destinationDirectory }}
-                </h6>
+                <h5 class="m-0">
+                    <small>{{ $gettext('Selected directory:') }}</small><br>
+                    <template v-if="destinationDirectory">
+                        {{ destinationDirectory }}
+                    </template>
+                    <template v-else>
+                        {{ $gettext('Base Directory') }}
+                    </template>
+                </h5>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <data-table
-                    id="station_media"
-                    ref="$datatable"
-                    :show-toolbar="false"
-                    :selectable="false"
+                    id="station_media_directories"
+                    show-toolbar
+                    paginated
                     :fields="fields"
-                    :api-url="listDirectoriesUrl"
-                    :request-config="requestConfig"
+                    :provider="directoryItemProvider"
                 >
-                    <template #cell(directory)="row">
+                    <template #cell(name)="{item}">
                         <div class="is_dir d-flex align-items-center">
                             <span class="file-icon me-2">
-                                <icon :icon="IconFolder" />
+                                <icon :icon="IconFolder"/>
                             </span>
 
                             <a
                                 href="#"
-                                @click.prevent="enterDirectory(row.item.path)"
+                                @click.prevent="enterDirectory(item.path)"
                             >
-                                {{ row.item.name }}
+                                {{ item.name }}
                             </a>
                         </div>
                     </template>
@@ -66,6 +70,7 @@
             <button
                 type="button"
                 class="btn btn-primary"
+                :disabled="props.selectedItems.all.length === 0"
                 @click="doMove"
             >
                 {{ $gettext('Move to Directory') }}
@@ -75,92 +80,108 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import Icon from '~/components/Common/Icon.vue';
-import {computed, ref} from "vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
+import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
-import {IconChevronLeft, IconFolder} from "~/components/Common/icons";
-import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {IconChevronLeft, IconFolder} from "~/components/Common/Icons/icons.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchResponse.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import {useQuery} from "@tanstack/vue-query";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import {useQueryItemProvider} from "~/functions/dataTable/useQueryItemProvider.ts";
+import {MediaSelectedItems} from "~/components/Stations/Media.vue";
 
-const props = defineProps({
-    selectedItems: {
-        type: Object,
-        required: true
-    },
-    currentDirectory: {
-        type: String,
-        required: true
-    },
-    batchUrl: {
-        type: String,
-        required: true
-    },
-    listDirectoriesUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    selectedItems: MediaSelectedItems,
+    currentDirectory: string,
+    batchUrl: string,
+    listDirectoriesUrl: string,
+}>();
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
-const destinationDirectory = ref('');
-const dirHistory = ref([]);
+const destinationDirectory = ref<string>('');
+const dirHistory = ref<string[]>([]);
+const isModalVisible = ref(false);
 
 const {$gettext} = useTranslate();
 
 const fields: DataTableField[] = [
-    {key: 'directory', label: $gettext('Directory'), sortable: false}
+    {key: 'name', label: $gettext('Directory'), sortable: true}
 ];
 
 const langHeader = computed(() => {
     return $gettext(
-        'Move %{ num } File(s) to',
-        {num: props.selectedItems.all.length}
+        'Move %{num} File(s) to',
+        {num: String(props.selectedItems.all.length)}
     );
 });
 
-const $modal = ref<ModalTemplateRef>(null);
-const {show: open, hide} = useHasModal($modal);
+const $modal = useTemplateRef('$modal');
+const {show, hide} = useHasModal($modal);
 
 const onHidden = () => {
     dirHistory.value = [];
     destinationDirectory.value = '';
+    isModalVisible.value = false;
 }
 
 const {axios} = useAxios();
 
 const {handleBatchResponse} = useHandleBatchResponse();
 
-const doMove = () => {
-    (props.selectedItems.all.length) && axios.put(props.batchUrl, {
+const directoriesQuery = useQuery({
+    queryKey: queryKeyWithStation(
+        [
+            QueryKeys.StationMedia,
+            'directories',
+            destinationDirectory
+        ]
+    ),
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get(props.listDirectoriesUrl, {
+            signal,
+            params: {
+                currentDirectory: destinationDirectory.value
+            }
+        });
+
+        return data.rows;
+    },
+    staleTime: 60 * 1000,
+    enabled: isModalVisible
+});
+
+const directoryItemProvider = useQueryItemProvider(directoriesQuery);
+
+const doMove = async () => {
+    try {
+        const {data} = await axios.put(props.batchUrl, {
             'do': 'move',
             'currentDirectory': props.currentDirectory,
             'directory': destinationDirectory.value,
             'files': props.selectedItems.files,
             'dirs': props.selectedItems.directories
-    }).then(({data}) => {
+        });
+
         handleBatchResponse(
             data,
             $gettext('Files moved:'),
             $gettext('Error moving files:')
         );
-    }).finally(() => {
+    } finally {
         hide();
         emit('relist');
-    });
+    }
 };
 
-const $datatable = ref<DataTableTemplateRef>(null);
-
-const enterDirectory = (path) => {
+const enterDirectory = (path: string) => {
     dirHistory.value.push(path);
     destinationDirectory.value = path;
-
-    $datatable.value?.refresh();
 };
 
 const pageBack = () => {
@@ -172,13 +193,12 @@ const pageBack = () => {
     }
 
     destinationDirectory.value = newDirectory;
-    $datatable.value?.refresh();
 };
 
-const requestConfig = (config) => {
-    config.params.currentDirectory = destinationDirectory.value;
-    return config;
-};
+const open = () => {
+    isModalVisible.value = true;
+    show();
+}
 
 defineExpose({
     open

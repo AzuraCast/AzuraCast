@@ -1,17 +1,30 @@
-import {useAzuraCastStation} from "~/vendor/azuracast.ts";
-import {computed, ComputedRef} from "vue";
+import {computed, ComputedRef, MaybeRefOrGetter, toValue} from "vue";
+import {useStationId} from "~/functions/useStationQuery.ts";
 
-export function getApiUrl(suffix: string): ComputedRef<string> {
+export function getApiUrl(suffix: MaybeRefOrGetter<string>): ComputedRef<string> {
     return computed((): string => {
-        return `/api${suffix}`;
+        const suffixValue = toValue(suffix);
+        return `/api${suffixValue}`;
     });
 }
 
-export function getStationApiUrl(suffix: string): ComputedRef<string> {
-    const {id} = useAzuraCastStation();
+export function getStationApiUrl(
+    suffix: MaybeRefOrGetter<string>,
+    id?: MaybeRefOrGetter<string | number | null>
+): ComputedRef<string> {
+    if (!id) {
+        id = useStationId();
+    }
 
-    return computed((): string => {
-        const stationSuffix = `/station/${id}${suffix}`;
-        return getApiUrl(stationSuffix).value;
-    });
+    return getApiUrl(
+        computed((): string => {
+            const idValue = toValue(id);
+            if (idValue === null) {
+                throw new Error("Can't find station ID!");
+            }
+
+            const suffixValue = toValue(suffix);
+            return `/station/${idValue}${suffixValue}`;
+        })
+    );
 }

@@ -27,7 +27,7 @@ final class StationRemoteRepository extends AbstractStationBasedRepository
 
         foreach ($remotes as $remote) {
             /** @var StationRemote $remote */
-            $displayNames[$remote->getId()] = $remote->getDisplayName();
+            $displayNames[$remote->id] = $remote->display_name;
         }
 
         return $displayNames;

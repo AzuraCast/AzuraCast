@@ -11,16 +11,17 @@
 </template>
 <script setup lang="ts">
 import Modal from "~/components/Common/Modal.vue";
-import {ref, Ref} from "vue";
+import {ref, useTemplateRef} from "vue";
 import TaskOutput from "~/components/Admin/Debug/TaskOutput.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
+import {ApiAdminDebugLogEntry} from "~/entities/ApiInterfaces.ts";
 
-const $modal: Ref<ModalTemplateRef> = ref(null);
+const $modal = useTemplateRef('$modal');
 const {show} = useHasModal($modal);
 
-const logOutput: Ref<Array<object>> = ref([]);
+const logOutput = ref<ApiAdminDebugLogEntry[]>([]);
 
-const open = (newLogOutput: Array<object>) => {
+const open = (newLogOutput: ApiAdminDebugLogEntry[]) => {
     logOutput.value = newLogOutput;
     show();
 }

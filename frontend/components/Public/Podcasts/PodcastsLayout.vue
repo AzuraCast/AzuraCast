@@ -1,32 +1,36 @@
 <template>
-    <minimal-layout>
-        <full-height-card>
-            <template #header>
-                <div class="d-flex align-items-center">
-                    <div class="flex-shrink">
-                        <h2 class="card-title py-2">
-                            <slot name="title">
-                                {{ name }}
-                            </slot>
-                        </h2>
-                    </div>
-                    <div class="flex-fill text-end">
-                        <inline-player ref="player" />
-                    </div>
+    <full-height-card>
+        <template #header>
+            <div class="d-flex align-items-center">
+                <div class="flex-shrink">
+                    <h2 class="card-title py-2">
+                        <slot name="title">
+                            {{ stationName }}
+                        </slot>
+                    </h2>
                 </div>
-            </template>
+                <div class="flex-fill text-end">
+                    <inline-player ref="player"/>
+                </div>
+            </div>
+        </template>
 
-            <template #default>
-                <router-view />
-            </template>
-        </full-height-card>
-    </minimal-layout>
+        <template #default>
+            <router-view/>
+        </template>
+    </full-height-card>
 </template>
 <script setup lang="ts">
 import FullHeightCard from "~/components/Public/FullHeightCard.vue";
 import InlinePlayer from "~/components/InlinePlayer.vue";
-import {useAzuraCastStation} from "~/vendor/azuracast.ts";
-import MinimalLayout from "~/components/MinimalLayout.vue";
+import {PodcastLayoutProps, useProvidePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
 
-const {name} = useAzuraCastStation();
+const props = withDefaults(
+    defineProps<PodcastLayoutProps>(),
+    {
+        groupLayout: 'table'
+    }
+);
+
+useProvidePodcastGlobals(props);
 </script>

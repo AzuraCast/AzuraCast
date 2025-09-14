@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App;
 
 use App\Enums\ReleaseChannel;
-use DateTime;
-use DateTimeZone;
+use App\Utilities\Time;
+use Carbon\CarbonImmutable;
 use Dotenv\Dotenv;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Process\Process;
@@ -26,7 +26,7 @@ use Throwable;
 final class Version
 {
     /** @var string The current latest stable version. */
-    public const string STABLE_VERSION = '0.20.1';
+    public const STABLE_VERSION = '0.22.1';
 
     private string $repoDir;
 
@@ -71,8 +71,7 @@ final class Version
                 ];
 
                 if (!empty($rawDetails['commit_date_raw'])) {
-                    $commitDate = new DateTime($rawDetails['commit_date_raw']);
-                    $commitDate->setTimezone(new DateTimeZone('UTC'));
+                    $commitDate = CarbonImmutable::parse($rawDetails['commit_date_raw'], Time::getUtc());
 
                     $details['commit_timestamp'] = $commitDate->getTimestamp();
                     $details['commit_date'] = $commitDate->format('Y-m-d G:i');
@@ -151,19 +150,27 @@ final class Version
     /**
      * @return string A textual representation of the current installed version.
      */
-    public function getVersionText(): string
+    public function getVersionText(bool $asHtml = true): string
     {
         $details = $this->getDetails();
         $releaseChannel = $this->getReleaseChannelEnum();
 
         if (ReleaseChannel::RollingRelease === $releaseChannel) {
-            $commitLink = 'https://github.com/AzuraCast/AzuraCast/commit/' . $details['commit'];
-            $commitText = sprintf(
-                '#<a href="%s" target="_blank">%s</a> (%s)',
-                $commitLink,
-                $details['commit_short'],
-                $details['commit_date']
-            );
+            if ($asHtml) {
+                $commitLink = 'https://github.com/AzuraCast/AzuraCast/commit/' . $details['commit'];
+                $commitText = sprintf(
+                    '#<a href="%s" target="_blank">%s</a> (%s)',
+                    $commitLink,
+                    $details['commit_short'],
+                    $details['commit_date']
+                );
+            } else {
+                $commitText = sprintf(
+                    '%s (%s)',
+                    $details['commit_short'],
+                    $details['commit_date']
+                );
+            }
 
             return 'Rolling Release ' . $commitText;
         }

@@ -4,18 +4,16 @@
         :loading="loading"
         :title="langTitle"
         :error="error"
-        :disable-save-button="v$.$invalid"
+        :disable-save-button="r$.$invalid"
         @submit="doSubmit"
         @hidden="clearContents"
     >
         <tabs>
             <mount-form-basic-info
-                v-model:form="form"
-                :station-frontend-type="stationFrontendType"
+                :station-frontend-type="frontendType"
             />
             <mount-form-auto-dj
-                v-model:form="form"
-                :station-frontend-type="stationFrontendType"
+                :station-frontend-type="frontendType"
             />
             <mount-form-intro
                 v-model="form.intro_file"
@@ -24,82 +22,78 @@
                 :edit-intro-url="record.links.intro"
             />
             <mount-form-advanced
-                v-if="enableAdvancedFeatures"
-                v-model:form="form"
-                :station-frontend-type="stationFrontendType"
+                :station-frontend-type="frontendType"
             />
         </tabs>
     </modal-form>
 </template>
 
 <script setup lang="ts">
-import MountFormBasicInfo from './Form/BasicInfo.vue';
-import MountFormAutoDj from './Form/AutoDj.vue';
-import MountFormAdvanced from './Form/Advanced.vue';
-import MountFormIntro from "./Form/Intro.vue";
+import MountFormBasicInfo from "~/components/Stations/Mounts/Form/BasicInfo.vue";
+import MountFormAutoDj from "~/components/Stations/Mounts/Form/AutoDj.vue";
+import MountFormAdvanced from "~/components/Stations/Mounts/Form/Advanced.vue";
+import MountFormIntro from "~/components/Stations/Mounts/Form/Intro.vue";
 import mergeExisting from "~/functions/mergeExisting";
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, ref} from "vue";
-import {useNotify} from "~/functions/useNotify";
+import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, useTemplateRef} from "vue";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useTranslate} from "~/vendor/gettext";
 import {useResettableRef} from "~/functions/useResettableRef";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {useAzuraCast} from "~/vendor/azuracast";
 import Tabs from "~/components/Common/Tabs.vue";
+import {storeToRefs} from "pinia";
+import {useStationsMountsForm} from "~/components/Stations/Mounts/Form/form.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
+import {toRefs} from "@vueuse/core";
 
-const props = defineProps({
-    ...baseEditModalProps,
-    stationFrontendType: {
-        type: String,
-        required: true
-    },
-    newIntroUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<BaseEditModalProps & {
+    newIntroUrl: string
+}>();
 
-const {enableAdvancedFeatures} = useAzuraCast();
+const emit = defineEmits<BaseEditModalEmits & {
+    (e: 'needs-restart'): void
+}>();
 
-const emit = defineEmits(['relist', 'needs-restart']);
+const stationData = useStationData();
+const {frontendType} = toRefs(stationData);
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 
 const {notifySuccess} = useNotify();
 
 const {record, reset} = useResettableRef({
     intro_path: null,
     links: {
-        intro: null
+        intro: ''
     }
 });
+
+const formStore = useStationsMountsForm();
+const {form, r$} = storeToRefs(formStore);
+const {$reset: resetForm} = formStore;
 
 const {
     loading,
     error,
     isEditMode,
-    form,
-    v$,
     clearContents,
     create,
     edit,
     doSubmit,
     close
 } = useBaseEditModal(
+    form,
     props,
     emit,
     $modal,
-    {},
-    {
-        intro_file: null
+    () => {
+        resetForm();
+        reset();
     },
+    async () => (await r$.value.$validate()).valid,
     {
-        resetForm: (originalResetForm) => {
-            originalResetForm();
-            reset();
-        },
         populateForm: (data, formRef) => {
-            record.value = data;
+            record.value = mergeExisting(record.value, data as typeof record.value);
             formRef.value = mergeExisting(formRef.value, data);
         },
         onSubmitSuccess: () => {

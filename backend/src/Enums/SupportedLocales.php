@@ -10,7 +10,9 @@ use App\Http\ServerRequest;
 use Gettext\Translator;
 use Gettext\TranslatorFunctions;
 use Locale;
+use OpenApi\Attributes as OA;
 
+#[OA\Schema(type: 'string')]
 enum SupportedLocales: string
 {
     case English = 'en_US.UTF-8';
@@ -41,7 +43,7 @@ enum SupportedLocales: string
             self::Dutch => 'Nederlands',
             self::French => 'Français',
             self::German => 'Deutsch',
-            self::Greek => 'ελληνικά',
+            self::Greek => 'Ελληνικά',
             self::Italian => 'Italiano',
             self::Japanese => '日本語',
             self::Korean => '한국어',
@@ -133,8 +135,8 @@ enum SupportedLocales: string
         // Prefer user-based profile locale.
         try {
             $user = $request->getUser();
-            if (!empty($user->getLocale()) && 'default' !== $user->getLocale()) {
-                $possibleLocales[] = $user->getLocale();
+            if (!empty($user->locale) && 'default' !== $user->locale) {
+                $possibleLocales[] = $user->locale;
             }
         } catch (InvalidRequestAttribute) {
         }

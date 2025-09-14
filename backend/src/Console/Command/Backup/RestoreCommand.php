@@ -91,7 +91,7 @@ final class RestoreCommand extends AbstractDatabaseCommand
         switch ($fileExt) {
             case 'tzst':
                 $this->passThruProcess(
-                    $io,
+                    $output,
                     [
                         'tar',
                         '-I',
@@ -106,7 +106,7 @@ final class RestoreCommand extends AbstractDatabaseCommand
             case 'gz':
             case 'tgz':
                 $this->passThruProcess(
-                    $io,
+                    $output,
                     [
                         'tar',
                         'zxvf',
@@ -119,7 +119,7 @@ final class RestoreCommand extends AbstractDatabaseCommand
             case 'zip':
             default:
                 $this->passThruProcess(
-                    $io,
+                    $output,
                     [
                         'unzip',
                         '-o',
@@ -135,23 +135,32 @@ final class RestoreCommand extends AbstractDatabaseCommand
         // Handle DB dump
         $io->section('Importing database...');
 
-        $tmpDirMariadb = '/tmp/azuracast_backup_mariadb';
+        $pathDbDump = self::DB_BACKUP_PATH;
+        $tmpDirMariadb = dirname($pathDbDump);
 
         try {
-            $pathDbDump = $tmpDirMariadb . '/db.sql';
             $this->restoreDatabaseDump($io, $pathDbDump);
         } catch (Exception $e) {
             $io->getErrorStyle()->error($e->getMessage());
             return 1;
+        } finally {
+            new Filesystem()->remove($tmpDirMariadb);
         }
 
-        (new Filesystem())->remove($tmpDirMariadb);
         $io->newLine();
 
         // Update from current version to latest.
         $io->section('Running standard updates...');
 
-        $this->runCommand($output, 'azuracast:setup', ['--update' => true]);
+        $this->runCommand(
+            $output,
+            'azuracast:settings:set sync_disabled true',
+        );
+
+        $this->runCommand(
+            $output,
+            'azuracast:setup --update'
+        );
 
         $endTime = microtime(true);
         $timeDiff = $endTime - $startTime;

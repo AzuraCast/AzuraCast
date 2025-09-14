@@ -6,6 +6,8 @@ namespace App\Radio\AutoDJ;
 
 use App\Container\LoggerAwareTrait;
 use App\Entity\Api\StationPlaylistQueue;
+use Carbon\CarbonImmutable;
+use DateTimeInterface;
 
 /**
  * @phpstan-type PlayedTrack array{
@@ -13,7 +15,7 @@ use App\Entity\Api\StationPlaylistQueue;
  *     text: string|null,
  *     artist: string|null,
  *     title: string|null,
- *     timestamp_played: int
+ *     timestamp_played: CarbonImmutable|int
  * }
  */
 final class DuplicatePrevention
@@ -52,7 +54,12 @@ final class DuplicatePrevention
             $songId = $playedTrack['song_id'];
 
             if (!isset($latestSongIdsPlayed[$songId])) {
-                $latestSongIdsPlayed[$songId] = $playedTrack['timestamp_played'];
+                $timestampPlayed = $playedTrack['timestamp_played'];
+                if ($timestampPlayed instanceof DateTimeInterface) {
+                    $timestampPlayed = $timestampPlayed->getTimestamp();
+                }
+
+                $latestSongIdsPlayed[$songId] = $timestampPlayed;
             }
         }
 
@@ -96,21 +103,19 @@ final class DuplicatePrevention
 
             ksort($mediaIdsByTimePlayed);
 
+            // Pull the lowest value, which corresponds to the least recently played song.
             $validTrack = array_shift($mediaIdsByTimePlayed);
 
-            // Pull the lowest value, which corresponds to the least recently played song.
-            if (null !== $validTrack) {
-                $this->logger->warning(
-                    'No way to avoid same title OR same artist; using least recently played song.',
-                    [
-                        'media_id' => $validTrack->media_id,
-                        'title' => $validTrack->title,
-                        'artist' => $validTrack->artist,
-                    ]
-                );
+            $this->logger->warning(
+                'No way to avoid same title OR same artist; using least recently played song.',
+                [
+                    'media_id' => $validTrack->media_id,
+                    'title' => $validTrack->title,
+                    'artist' => $validTrack->artist,
+                ]
+            );
 
-                return $validTrack;
-            }
+            return $validTrack;
         }
 
         return null;

@@ -1,29 +1,26 @@
 <template>
-    <panel-layout v-bind="panelProps">
+    <dashboard-with-sidebar>
         <template #sidebar>
-            <sidebar v-bind="sidebarProps" />
+            <loading lazy :loading="isLoading || isPlaceholderData">
+                <sidebar/>
+            </loading>
         </template>
         <template #default>
-            <router-view />
-
-            <header-inline-player />
-
-            <lightbox ref="$lightbox" />
+            <loading lazy :loading="isLoading || isPlaceholderData">
+                <router-view/>
+            </loading>
         </template>
-    </panel-layout>
+    </dashboard-with-sidebar>
 </template>
 
 <script setup lang="ts">
-import PanelLayout from "~/components/PanelLayout.vue";
-import {useAzuraCast} from "~/vendor/azuracast.ts";
 import Sidebar from "~/components/Stations/Sidebar.vue";
-import Lightbox from "~/components/Common/Lightbox.vue";
-import HeaderInlinePlayer from "~/components/HeaderInlinePlayer.vue";
-import {ref} from "vue";
-import {LightboxTemplateRef, useProvideLightbox} from "~/vendor/lightbox.ts";
+import {useStationQuery} from "~/functions/useStationQuery.ts";
+import Loading from "~/components/Common/Loading.vue";
+import DashboardWithSidebar from "~/components/Layout/DashboardWithSidebar.vue";
 
-const {panelProps, sidebarProps} = useAzuraCast();
-
-const $lightbox = ref<LightboxTemplateRef>(null);
-useProvideLightbox($lightbox);
+const {
+    isLoading,
+    isPlaceholderData
+} = useStationQuery();
 </script>

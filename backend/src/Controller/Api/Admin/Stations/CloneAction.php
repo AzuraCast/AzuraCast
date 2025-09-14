@@ -9,20 +9,75 @@ use App\Controller\Api\Admin\StationsController;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Status;
 use App\Entity\Interfaces\StationCloneAwareInterface;
-use App\Entity\RolePermission;
 use App\Entity\Station;
 use App\Entity\StationPlaylist;
-use App\Entity\StationPlaylistFolder;
-use App\Entity\StationPlaylistMedia;
-use App\Entity\StationSchedule;
 use App\Entity\StationStreamer;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use DeepCopy;
+use App\OpenApi;
 use Doctrine\Common\Collections\Collection;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
+#[
+    OA\Post(
+        path: '/admin/station/{id}/clone',
+        operationId: 'postAdminStationsClone',
+        summary: 'Clone a station, preserving certain settings.',
+        requestBody: new OA\RequestBody(
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(
+                        property: 'name',
+                        description: 'The name of the newly cloned station.',
+                        type: 'string'
+                    ),
+                    new OA\Property(
+                        property: 'description',
+                        description: 'The description of the newly cloned station.',
+                        type: 'string'
+                    ),
+                    new OA\Property(
+                        property: 'clone',
+                        description: 'Which parts of the original station to clone.',
+                        type: 'array',
+                        items: new OA\Items(
+                            type: 'string',
+                            enum: [
+                                CloneAction::CLONE_MEDIA_STORAGE,
+                                CloneAction::CLONE_RECORDINGS_STORAGE,
+                                CloneAction::CLONE_PODCASTS_STORAGE,
+                                CloneAction::CLONE_PLAYLISTS,
+                                CloneAction::CLONE_MOUNTS,
+                                CloneAction::CLONE_REMOTES,
+                                CloneAction::CLONE_STREAMERS,
+                                CloneAction::CLONE_PERMISSIONS,
+                                CloneAction::CLONE_WEBHOOKS,
+                            ]
+                        ),
+                    ),
+                ]
+            )
+        ),
+        tags: [OpenApi::TAG_ADMIN_STATIONS],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'Station ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class CloneAction extends StationsController implements SingleActionInterface
 {
     use EnvironmentAwareTrait;
@@ -47,60 +102,46 @@ final class CloneAction extends StationsController implements SingleActionInterf
         ini_set('memory_limit', '-1');
 
         $record = $this->getRecord($request, $params);
+        assert($record instanceof Station);
+
         $data = (array)$request->getParsedBody();
 
         $toClone = $data['clone'];
 
-        $copier = new DeepCopy\DeepCopy();
-        $copier->addFilter(
-            new DeepCopy\Filter\Doctrine\DoctrineProxyFilter(),
-            new DeepCopy\Matcher\Doctrine\DoctrineProxyMatcher()
-        );
-        $copier->addFilter(
-            new DeepCopy\Filter\SetNullFilter(),
-            new DeepCopy\Matcher\PropertyNameMatcher('id')
-        );
-        $copier->addFilter(
-            new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
-            new DeepCopy\Matcher\PropertyTypeMatcher(Collection::class)
-        );
+        $this->em->detach($record);
 
-        $copier->addFilter(
-            new DeepCopy\Filter\KeepFilter(),
-            new DeepCopy\Matcher\PropertyMatcher(RolePermission::class, 'role')
-        );
-        $copier->addFilter(
-            new DeepCopy\Filter\KeepFilter(),
-            new DeepCopy\Matcher\PropertyMatcher(StationPlaylistMedia::class, 'media')
-        );
-
-        /** @var Station $record */
-        /** @var Station $newStation */
-        $newStation = $copier->copy($record);
-
-        $newStation->setName($data['name'] ?? ($newStation->getName() . ' - Copy'));
-        $newStation->setDescription($data['description'] ?? $newStation->getDescription());
-
-        if (in_array(self::CLONE_MEDIA_STORAGE, $toClone, true)) {
-            $newStation->setMediaStorageLocation($record->getMediaStorageLocation());
-        }
-        if (in_array(self::CLONE_RECORDINGS_STORAGE, $toClone, true)) {
-            $newStation->setRecordingsStorageLocation($record->getRecordingsStorageLocation());
-        }
-        if (in_array(self::CLONE_PODCASTS_STORAGE, $toClone, true)) {
-            $newStation->setPodcastsStorageLocation($record->getPodcastsStorageLocation());
-        }
+        $newStation = clone $record;
+        $newStation->name = $data['name'] ?? ($newStation->name . ' - Copy');
+        $newStation->description = $data['description'] ?? $newStation->description;
 
         // Set new radio base directory
         $stationBaseDir = $this->environment->getStationDirectory();
-        $newStation->setRadioBaseDir($stationBaseDir . '/' . $newStation->getShortName());
+        $newStation->radio_base_dir = $stationBaseDir . '/' . $newStation->short_name;
+
+        if (in_array(self::CLONE_MEDIA_STORAGE, $toClone, true)) {
+            $newStation->media_storage_location = $record->media_storage_location;
+        } else {
+            $newStation->createMediaStorageLocation();
+        }
+
+        if (in_array(self::CLONE_RECORDINGS_STORAGE, $toClone, true)) {
+            $newStation->recordings_storage_location = $record->recordings_storage_location;
+        } else {
+            $newStation->createRecordingsStorageLocation();
+        }
+
+        if (in_array(self::CLONE_PODCASTS_STORAGE, $toClone, true)) {
+            $newStation->podcasts_storage_location = $record->podcasts_storage_location;
+        } else {
+            $newStation->createPodcastsStorageLocation();
+        }
 
         $newStation->ensureDirectoriesExist();
 
         // Persist all newly created records (and relations).
-        $this->em->persist($newStation->getMediaStorageLocation());
-        $this->em->persist($newStation->getRecordingsStorageLocation());
-        $this->em->persist($newStation->getPodcastsStorageLocation());
+        $this->em->persist($newStation->media_storage_location);
+        $this->em->persist($newStation->recordings_storage_location);
+        $this->em->persist($newStation->podcasts_storage_location);
         $this->em->persist($newStation);
         $this->em->flush();
         $this->em->clear();
@@ -111,43 +152,45 @@ final class CloneAction extends StationsController implements SingleActionInterf
                 StationPlaylist $newPlaylist,
                 Station $newStation
             ) use (
-                $copier,
                 $toClone
             ): void {
-                foreach ($oldPlaylist->getScheduleItems() as $oldScheduleItem) {
-                    /** @var StationSchedule $newScheduleItem */
-                    $newScheduleItem = $copier->copy($oldScheduleItem);
-                    $newScheduleItem->setPlaylist($newPlaylist);
+                foreach ($oldPlaylist->schedule_items as $oldScheduleItem) {
+                    $this->em->detach($oldScheduleItem);
+
+                    $newScheduleItem = clone $oldScheduleItem;
+                    $newScheduleItem->playlist = $newPlaylist;
 
                     $this->em->persist($newScheduleItem);
                 }
 
                 if (in_array(self::CLONE_MEDIA_STORAGE, $toClone, true)) {
-                    foreach ($oldPlaylist->getFolders() as $oldPlaylistFolder) {
-                        /** @var StationPlaylistFolder $newPlaylistFolder */
-                        $newPlaylistFolder = $copier->copy($oldPlaylistFolder);
-                        $newPlaylistFolder->setStation($newStation);
-                        $newPlaylistFolder->setPlaylist($newPlaylist);
+                    foreach ($oldPlaylist->folders as $oldPlaylistFolder) {
+                        $this->em->detach($oldPlaylistFolder);
+
+                        $newPlaylistFolder = clone $oldPlaylistFolder;
+                        $newPlaylistFolder->station = $newStation;
+                        $newPlaylistFolder->playlist = $newPlaylist;
                         $this->em->persist($newPlaylistFolder);
                     }
 
-                    foreach ($oldPlaylist->getMediaItems() as $oldMediaItem) {
-                        /** @var StationPlaylistMedia $newMediaItem */
-                        $newMediaItem = $copier->copy($oldMediaItem);
+                    foreach ($oldPlaylist->media_items as $oldMediaItem) {
+                        $this->em->detach($oldMediaItem);
 
-                        $newMediaItem->setPlaylist($newPlaylist);
+                        $newMediaItem = clone $oldMediaItem;
+
+                        $newMediaItem->playlist = $newPlaylist;
                         $this->em->persist($newMediaItem);
                     }
                 }
             };
 
             $record = $this->em->refetch($record);
-            $this->cloneCollection($record->getPlaylists(), $newStation, $copier, $afterCloning);
+            $this->cloneCollection($record->playlists, $newStation, $afterCloning);
         }
 
         if (in_array(self::CLONE_MOUNTS, $toClone, true)) {
             $record = $this->em->refetch($record);
-            $this->cloneCollection($record->getMounts(), $newStation, $copier);
+            $this->cloneCollection($record->mounts, $newStation);
         } else {
             $newStation = $this->em->refetch($newStation);
             $this->stationRepo->resetMounts($newStation);
@@ -155,7 +198,7 @@ final class CloneAction extends StationsController implements SingleActionInterf
 
         if (in_array(self::CLONE_REMOTES, $toClone, true)) {
             $record = $this->em->refetch($record);
-            $this->cloneCollection($record->getRemotes(), $newStation, $copier);
+            $this->cloneCollection($record->remotes, $newStation);
         }
 
         if (in_array(self::CLONE_STREAMERS, $toClone, true)) {
@@ -165,29 +208,28 @@ final class CloneAction extends StationsController implements SingleActionInterf
                 StationStreamer $oldStreamer,
                 StationStreamer $newStreamer,
                 Station $station
-            ) use (
-                $copier
             ): void {
-                foreach ($oldStreamer->getScheduleItems() as $oldScheduleItem) {
-                    /** @var StationSchedule $newScheduleItem */
-                    $newScheduleItem = $copier->copy($oldScheduleItem);
-                    $newScheduleItem->setStreamer($newStreamer);
+                foreach ($oldStreamer->schedule_items as $oldScheduleItem) {
+                    $this->em->detach($oldScheduleItem);
+
+                    $newScheduleItem = clone $oldScheduleItem;
+                    $newScheduleItem->streamer = $newStreamer;
 
                     $this->em->persist($newScheduleItem);
                 }
             };
 
-            $this->cloneCollection($record->getStreamers(), $newStation, $copier, $afterCloning);
+            $this->cloneCollection($record->streamers, $newStation, $afterCloning);
         }
 
         if (in_array(self::CLONE_PERMISSIONS, $toClone, true)) {
             $record = $this->em->refetch($record);
-            $this->cloneCollection($record->getPermissions(), $newStation, $copier);
+            $this->cloneCollection($record->permissions, $newStation);
         }
 
         if (in_array(self::CLONE_WEBHOOKS, $toClone, true)) {
             $record = $this->em->refetch($record);
-            $this->cloneCollection($record->getWebhooks(), $newStation, $copier);
+            $this->cloneCollection($record->webhooks, $newStation);
         }
 
         // Clear the EntityManager for later functions.
@@ -206,20 +248,21 @@ final class CloneAction extends StationsController implements SingleActionInterf
     }
 
     /**
-     * @template T of mixed
+     * @template T of StationCloneAwareInterface
      * @param Collection<int, T> $collection
      */
     private function cloneCollection(
         Collection $collection,
         Station $newStation,
-        DeepCopy\DeepCopy $copier,
         ?callable $afterCloning = null
     ): void {
         $newStation = $this->em->refetch($newStation);
 
         foreach ($collection as $oldRecord) {
+            $this->em->detach($oldRecord);
+
             /** @var StationCloneAwareInterface $newRecord */
-            $newRecord = $copier->copy($oldRecord);
+            $newRecord = clone $oldRecord;
             $newRecord->setStation($newStation);
 
             $this->em->persist($newRecord);

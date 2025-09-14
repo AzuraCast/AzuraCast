@@ -10,8 +10,33 @@ use App\Entity\Repository\StationPlaylistFolderRepository;
 use App\Entity\Repository\StationPlaylistRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[OA\Put(
+    path: '/station/{station_id}/playlist/{id}/apply-to',
+    operationId: 'putStationPlaylistApplyTo',
+    summary: 'Apply the specified playlist to the specified directories.',
+    tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        new OA\Parameter(
+            name: 'id',
+            description: 'Playlist ID',
+            in: 'path',
+            required: true,
+            schema: new OA\Schema(type: 'integer', format: 'int64')
+        ),
+    ],
+    responses: [
+        // TODO API Response
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
 final class PutApplyToAction extends AbstractClonableAction implements SingleActionInterface
 {
     public function __construct(
@@ -41,7 +66,7 @@ final class PutApplyToAction extends AbstractClonableAction implements SingleAct
             if ($clone) {
                 $playlist = $this->clone(
                     $record,
-                    $record->getName() . ' - ' . $directory
+                    $record->name . ' - ' . $directory
                 );
             } else {
                 $playlist = $record;
@@ -51,7 +76,7 @@ final class PutApplyToAction extends AbstractClonableAction implements SingleAct
                 $station,
                 $directory,
                 [
-                    $playlist->getIdRequired() => 0,
+                    $playlist->id => 0,
                 ]
             );
         }

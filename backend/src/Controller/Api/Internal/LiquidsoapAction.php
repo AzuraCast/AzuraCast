@@ -12,6 +12,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Backend\Liquidsoap\Command\AbstractCommand;
 use App\Radio\Enums\LiquidsoapCommands;
+use App\Utilities\Types;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
@@ -27,8 +28,7 @@ final class LiquidsoapAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        /** @var string $action */
-        $action = $params['action'];
+        $action = Types::string($params['action'] ?? '');
 
         $station = $request->getStation();
         $asAutoDj = $request->hasHeader('X-Liquidsoap-Api-Key');
@@ -36,7 +36,7 @@ final class LiquidsoapAction implements SingleActionInterface
 
         try {
             $acl = $request->getAcl();
-            if (!$acl->isAllowed(StationPermissions::View, $station->getIdRequired())) {
+            if (!$acl->isAllowed(StationPermissions::View, $station->id)) {
                 $authKey = $request->getHeaderLine('X-Liquidsoap-Api-Key');
                 if (!$station->validateAdapterApiKey($authKey)) {
                     throw new RuntimeException('Invalid API key.');
@@ -51,8 +51,9 @@ final class LiquidsoapAction implements SingleActionInterface
             /** @var AbstractCommand $commandObj */
             $commandObj = $this->di->get($command->getClass());
 
-            $result = $commandObj->run($station, $asAutoDj, $payload);
-            $response->getBody()->write($result);
+            return $response->withJson(
+                $commandObj->run($station, $asAutoDj, $payload)
+            );
         } catch (Throwable $e) {
             $this->logger->error(
                 sprintf(
@@ -67,10 +68,13 @@ final class LiquidsoapAction implements SingleActionInterface
                 ]
             );
 
-            return $response->withStatus(400)
-                ->write('false');
+            return $response->withStatus(400)->withJson(
+                [
+                    'message' => $e->getMessage(),
+                    'file' => basename($e->getFile()),
+                    'line' => $e->getLine(),
+                ]
+            );
         }
-
-        return $response;
     }
 }

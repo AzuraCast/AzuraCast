@@ -11,10 +11,10 @@ use InvalidArgumentException;
 use PhpIP\IP;
 use PhpIP\IPBlock;
 
-final class BlocklistParser
+final readonly class BlocklistParser
 {
     public function __construct(
-        private readonly IpGeolocation $ipGeolocation
+        private IpGeolocation $ipGeolocation
     ) {
     }
 
@@ -44,11 +44,11 @@ final class BlocklistParser
 
     private function hasAllowedIps(Station $station): bool
     {
-        if (FrontendAdapters::Remote === $station->getFrontendType()) {
+        if (FrontendAdapters::Remote === $station->frontend_type) {
             return false;
         }
 
-        $allowedIps = trim($station->getFrontendConfig()->getAllowedIps() ?? '');
+        $allowedIps = trim($station->frontend_config->allowed_ips ?? '');
         return !empty($allowedIps);
     }
 
@@ -56,11 +56,11 @@ final class BlocklistParser
         Station $station,
         string $ip
     ): bool {
-        if (FrontendAdapters::Remote === $station->getFrontendType()) {
+        if (FrontendAdapters::Remote === $station->frontend_type) {
             return false;
         }
 
-        $allowedIps = $station->getFrontendConfig()->getAllowedIps() ?? '';
+        $allowedIps = $station->frontend_config->allowed_ips ?? '';
         return $this->isIpInList($ip, $allowedIps);
     }
 
@@ -68,11 +68,11 @@ final class BlocklistParser
         Station $station,
         string $ip
     ): bool {
-        if (FrontendAdapters::Remote === $station->getFrontendType()) {
+        if (FrontendAdapters::Remote === $station->frontend_type) {
             return false;
         }
 
-        $bannedIps = $station->getFrontendConfig()->getBannedIps() ?? '';
+        $bannedIps = $station->frontend_config->banned_ips ?? '';
         return $this->isIpInList($ip, $bannedIps);
     }
 
@@ -110,11 +110,11 @@ final class BlocklistParser
         Station $station,
         string $listenerIp
     ): bool {
-        if (FrontendAdapters::Remote === $station->getFrontendType()) {
+        if (FrontendAdapters::Remote === $station->frontend_type) {
             return false;
         }
 
-        $bannedCountries = $station->getFrontendConfig()->getBannedCountries() ?? [];
+        $bannedCountries = $station->frontend_config->banned_countries ?? [];
         if (empty($bannedCountries)) {
             return false;
         }
@@ -129,21 +129,18 @@ final class BlocklistParser
         Station $station,
         string $listenerUserAgent
     ): bool {
-        if (FrontendAdapters::Remote === $station->getFrontendType()) {
+        if (FrontendAdapters::Remote === $station->frontend_type) {
             return false;
         }
 
-        $bannedUserAgents = $station->getFrontendConfig()->getBannedUserAgents() ?? '';
+        $bannedUserAgents = $station->frontend_config->banned_user_agents ?? '';
         if (empty($bannedUserAgents)) {
             return false;
         }
 
-        foreach (array_filter(array_map('trim', explode("\n", $bannedUserAgents))) as $userAgent) {
-            if (fnmatch($userAgent, $listenerUserAgent)) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any(
+            array_filter(array_map('trim', explode("\n", $bannedUserAgents))),
+            fn($userAgent) => fnmatch($userAgent, $listenerUserAgent)
+        );
     }
 }

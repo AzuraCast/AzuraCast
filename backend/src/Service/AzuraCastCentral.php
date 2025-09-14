@@ -7,9 +7,12 @@ namespace App\Service;
 use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Container\SettingsAwareTrait;
+use App\Entity\Api\Admin\UpdateDetails;
 use App\Version;
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
+use RuntimeException;
 
 final class AzuraCastCentral
 {
@@ -27,10 +30,8 @@ final class AzuraCastCentral
 
     /**
      * Ping the AzuraCast Central server for updates and return them if there are any.
-     *
-     * @return mixed[]|null
      */
-    public function checkForUpdates(): ?array
+    public function checkForUpdates(): UpdateDetails
     {
         $requestBody = [
             'id' => $this->getUniqueIdentifier(),
@@ -53,27 +54,35 @@ final class AzuraCastCentral
             ]
         );
 
-        try {
-            $response = $this->httpClient->request(
-                'POST',
-                self::BASE_URL . '/api/update',
-                ['json' => $requestBody]
-            );
+        $response = $this->httpClient->request(
+            'POST',
+            self::BASE_URL . '/api/update',
+            [
+                RequestOptions::HTTP_ERRORS => true,
+                RequestOptions::JSON => $requestBody,
+                RequestOptions::TIMEOUT => 15,
+            ]
+        );
 
-            $updateDataRaw = $response->getBody()->getContents();
+        $updateDataRaw = $response->getBody()->getContents();
 
-            $updateData = json_decode($updateDataRaw, true, 512, JSON_THROW_ON_ERROR);
-            return $updateData['updates'] ?? null;
-        } catch (Exception $e) {
-            $this->logger->error('Error checking for updates: ' . $e->getMessage());
+        $this->logger->debug('Update response body.', [
+            'response' => $updateDataRaw,
+        ]);
+
+        $updateData = json_decode($updateDataRaw, true, 512, JSON_THROW_ON_ERROR);
+        $updates = $updateData['updates'] ?? null;
+
+        if (empty($updates)) {
+            throw new RuntimeException('Central server did not send update information.');
         }
 
-        return null;
+        return UpdateDetails::fromArray($updates);
     }
 
     public function getUniqueIdentifier(): string
     {
-        return $this->readSettings()->getAppUniqueIdentifier();
+        return $this->readSettings()->app_unique_identifier;
     }
 
     /**
@@ -85,7 +94,7 @@ final class AzuraCastCentral
     {
         $settings = $this->readSettings();
         $ip = ($cached)
-            ? $settings->getExternalIp()
+            ? $settings->external_ip
             : null;
 
         if (empty($ip)) {
@@ -105,7 +114,7 @@ final class AzuraCastCentral
             }
 
             if (!empty($ip) && $cached) {
-                $settings->setExternalIp($ip);
+                $settings->external_ip = $ip;
                 $this->writeSettings($settings);
             }
         }

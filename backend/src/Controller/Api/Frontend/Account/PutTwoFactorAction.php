@@ -11,12 +11,29 @@ use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use InvalidArgumentException;
+use OpenApi\Attributes as OA;
 use OTPHP\TOTP;
 use ParagonIE\ConstantTime\Base32;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
+#[
+    OA\Put(
+        path: '/frontend/account/two-factor',
+        operationId: 'putAccountTwoFactor',
+        summary: 'Register a new two-factor authentication method.',
+        tags: [OpenApi::TAG_ACCOUNTS],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class PutTwoFactorAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
@@ -43,12 +60,12 @@ final class PutTwoFactorAction implements SingleActionInterface
             $user = $request->getUser();
 
             $totp = TOTP::create($secret);
-            $totp->setLabel($user->getEmail() ?: 'AzuraCast');
+            $totp->setLabel($user->email ?: 'AzuraCast');
 
             if (!empty($params['otp'])) {
                 if ($totp->verify($params['otp'], null, Auth::TOTP_WINDOW)) {
                     $user = $this->em->refetch($user);
-                    $user->setTwoFactorSecret($totp->getProvisioningUri());
+                    $user->two_factor_secret = $totp->getProvisioningUri();
 
                     $this->em->persist($user);
                     $this->em->flush();

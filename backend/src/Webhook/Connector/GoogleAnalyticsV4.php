@@ -24,7 +24,7 @@ final class GoogleAnalyticsV4 extends AbstractGoogleAnalyticsConnector
         NowPlaying $np,
         array $triggers
     ): void {
-        $config = $webhook->getConfig();
+        $config = $webhook->config ?? [];
 
         $apiSecret = Types::stringOrNull($config['api_secret'], true);
         $measurementId = Types::stringOrNull($config['measurement_id'], true);

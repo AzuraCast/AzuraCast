@@ -14,10 +14,27 @@ use App\Enums\GlobalPermissions;
 use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use Carbon\CarbonImmutable;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
 
+#[
+    OA\Put(
+        path: '/frontend/dashboard/charts',
+        operationId: 'getDashboardCharts',
+        summary: 'Get the measurements for the dashboard charts.',
+        tags: [OpenApi::TAG_MISC],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class ChartsAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
@@ -48,15 +65,15 @@ final class ChartsAction implements SingleActionInterface
             $this->em->getRepository(Station::class)->findAll(),
             static function ($station) use ($acl) {
                 /** @var Station $station */
-                return $station->getIsEnabled() &&
-                    $acl->isAllowed(StationPermissions::View, $station->getId());
+                return $station->is_enabled &&
+                    $acl->isAllowed(StationPermissions::View, $station->id);
             }
         );
 
         // Generate unique cache ID for stations.
         $stationIds = [];
         foreach ($stations as $station) {
-            $stationId = $station->getId();
+            $stationId = $station->id;
             $stationIds[$stationId] = $stationId;
         }
         $cacheName = 'homepage_metrics_' . implode(',', $stationIds);
@@ -68,9 +85,9 @@ final class ChartsAction implements SingleActionInterface
 
             $stats = $this->em->createQuery(
                 <<<'DQL'
-                    SELECT a.station_id, a.moment, a.number_avg, a.number_unique
+                    SELECT IDENTITY(a.station) AS station_id, a.moment, a.number_avg, a.number_unique
                     FROM App\Entity\Analytics a
-                    WHERE a.station_id IN (:stations)
+                    WHERE IDENTITY(a.station) IN (:stations)
                     AND a.type = :type
                     AND a.moment >= :threshold
                 DQL
@@ -135,7 +152,7 @@ final class ChartsAction implements SingleActionInterface
             }
 
             foreach ($stations as $station) {
-                $stationsInMetric[$station->getId()] = $station->getName();
+                $stationsInMetric[$station->id] = $station->name;
             }
 
             $stationStats = [

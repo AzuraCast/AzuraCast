@@ -1,12 +1,11 @@
 <template>
     <data-table
         id="public_requests"
-        ref="datatable"
         paginated
         select-fields
         :page-options="pageOptions"
         :fields="fields"
-        :api-url="requestListUri"
+        :provider="requestListItemProvider"
     >
         <template #cell(name)="row">
             <div class="d-flex align-items-center">
@@ -26,7 +25,7 @@
             <button
                 type="button"
                 class="btn btn-sm btn-primary"
-                @click="doSubmitRequest(row.item.request_url)"
+                @click="submitRequest(row.item.request_url)"
             >
                 {{ $gettext('Request') }}
             </button>
@@ -35,25 +34,28 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import {forEach} from 'lodash';
-import AlbumArt from '~/components/Common/AlbumArt.vue';
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import {forEach} from "es-toolkit/compat";
+import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/functions/useNotify";
-import requestsProps from "~/components/Public/Requests/requestsProps.ts";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
+import {RequestsProps} from "~/components/Public/Requests.vue";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
+import {ApiStatus} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    ...requestsProps
-});
+const props = defineProps<RequestsProps>();
 
-const emit = defineEmits(['submitted']);
+const emit = defineEmits<{
+    (e: 'submitted'): void
+}>();
 
 const {$gettext} = useTranslate();
 
 const fields = computed<DataTableField[]>(() => {
-    const fields = [
+    const fields: DataTableField[] = [
         {
             key: 'name',
             isRowHeader: true,
@@ -107,26 +109,45 @@ const fields = computed<DataTableField[]>(() => {
     });
 
     fields.push(
-        {key: 'actions', label: $gettext('Actions'), class: 'shrink', sortable: false}
+        {
+            key: 'actions',
+            label: $gettext('Actions'),
+            class: 'shrink',
+            sortable: false
+        }
     );
 
     return fields;
 });
+
+const requestListItemProvider = useApiItemProvider(
+    props.requestListUri,
+    [
+        QueryKeys.PublicRequests
+    ],
+    {
+        staleTime: 60 * 1000
+    }
+);
 
 const pageOptions = [10, 25];
 
 const {notifySuccess, notifyError} = useNotify();
 const {axios} = useAxios();
 
-const doSubmitRequest = (url) => {
-    axios.post(url).then((resp) => {
-        if (resp.data.success) {
-            notifySuccess(resp.data.message);
+const doSubmitRequest = async (url: string) => {
+    try {
+        const {data} = await axios.post<ApiStatus>(url);
+
+        if (data.success) {
+            notifySuccess(data.message);
         } else {
-            notifyError(resp.data.message);
+            notifyError(data.message);
         }
-    }).finally(() => {
+    } finally {
         emit('submitted');
-    });
+    }
 };
+
+const submitRequest = (url: string) => void doSubmitRequest(url);
 </script>

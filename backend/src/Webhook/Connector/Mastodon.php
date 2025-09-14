@@ -15,21 +15,13 @@ use App\Utilities\Urls;
  */
 final class Mastodon extends AbstractSocialConnector
 {
-    protected function getRateLimitTime(StationWebhook $webhook): ?int
-    {
-        $config = $webhook->getConfig();
-        $rateLimitSeconds = Types::int($config['rate_limit'] ?? null);
-
-        return max(10, $rateLimitSeconds);
-    }
-
     public function dispatch(
         Station $station,
         StationWebhook $webhook,
         NowPlaying $np,
         array $triggers
     ): void {
-        $config = $webhook->getConfig();
+        $config = $webhook->config ?? [];
 
         $instanceUrl = Types::stringOrNull($config['instance_url'], true);
         $accessToken = Types::stringOrNull($config['access_token'], true);

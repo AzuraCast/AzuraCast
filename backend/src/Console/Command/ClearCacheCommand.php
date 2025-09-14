@@ -35,11 +35,10 @@ final class ClearCacheCommand extends CommandAbstract
 
         // Clear cached system settings.
         $settings = $this->readSettings();
-        $settings->updateUpdateLastRun();
-        $settings->setUpdateResults(null);
+        $settings->update_results = null;
 
-        if ('127.0.0.1' !== $settings->getExternalIp()) {
-            $settings->setExternalIp(null);
+        if ('127.0.0.1' !== $settings->external_ip) {
+            $settings->external_ip = null;
         }
 
         $this->writeSettings($settings);

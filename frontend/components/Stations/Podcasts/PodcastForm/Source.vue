@@ -7,7 +7,7 @@
             <form-group-multi-check
                 id="edit_form_source"
                 class="col-md-12"
-                :field="v$.source"
+                :field="r$.source"
                 :options="sourceOptions"
                 stacked
                 radio
@@ -37,7 +37,7 @@
                         <form-group-select
                             id="form_edit_playlist_id"
                             class="col-md-12"
-                            :field="v$.playlist_id"
+                            :field="r$.playlist_id"
                             :options="playlistOptions"
                             :label="$gettext('Select Playlist')"
                         />
@@ -45,7 +45,7 @@
                         <form-group-checkbox
                             id="form_edit_playlist_auto_publish"
                             class="col-md-12"
-                            :field="v$.playlist_auto_publish"
+                            :field="r$.playlist_auto_publish"
                             :label="$gettext('Automatically Publish New Episodes')"
                             :description="$gettext('Whether new episodes should be marked as published or held for review as unpublished.')"
                         />
@@ -58,42 +58,22 @@
 
 <script setup lang="ts">
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {useTranslate} from "~/vendor/gettext.ts";
-import {onMounted, ref, shallowRef} from "vue";
+import {computed, onMounted, ref, shallowRef} from "vue";
 import {useAxios} from "~/vendor/axios.ts";
-import objectToFormOptions from "~/functions/objectToFormOptions.ts";
 import {getStationApiUrl} from "~/router.ts";
 import Loading from "~/components/Common/Loading.vue";
+import {ApiFormSimpleOptions} from "~/entities/ApiInterfaces.ts";
+import {storeToRefs} from "pinia";
+import {useStationsPodcastsForm} from "~/components/Stations/Podcasts/PodcastForm/form.ts";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 
-const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    }
-});
+const {r$, form} = storeToRefs(useStationsPodcastsForm());
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
-
-const {v$, tabClass} = useVuelidateOnFormTab(
-    {
-        source: {required},
-        playlist_id: {},
-        playlist_auto_publish: {}
-    },
-    form,
-    {
-        source: 'manual',
-        playlist_id: null,
-        playlist_auto_publish: true,
-    }
-);
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.sourceTab));
 
 const {$gettext} = useTranslate();
 
@@ -110,18 +90,19 @@ const sourceOptions = [
     }
 ];
 
-const playlistsLoading = ref(true);
-const playlistOptions = shallowRef([]);
+const playlistsLoading = ref<boolean>(true);
+const playlistOptions = shallowRef<ApiFormSimpleOptions>([]);
 
 const {axios} = useAxios();
 const playlistsApiUrl = getStationApiUrl('/podcasts/playlists');
 
-const loadPlaylists = () => {
-    axios.get(playlistsApiUrl.value).then((resp) => {
-        playlistOptions.value = objectToFormOptions(resp.data);
-    }).finally(() => {
+const loadPlaylists = async () => {
+    try {
+        const {data} = await axios.get<ApiFormSimpleOptions>(playlistsApiUrl.value);
+        playlistOptions.value = data;
+    } finally {
         playlistsLoading.value = false;
-    });
+    }
 };
 
 onMounted(loadPlaylists);

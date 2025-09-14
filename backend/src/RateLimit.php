@@ -4,19 +4,24 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Cache\CacheNamespace;
 use App\Container\EnvironmentAwareTrait;
+use App\Container\LoggerAwareTrait;
 use App\Entity\Repository\SettingsRepository;
 use App\Exception\Http\RateLimitExceededException;
 use App\Http\ServerRequest;
 use App\Lock\LockFactory;
+use PhpIP\IP;
 use Psr\Cache\CacheItemPoolInterface;
-use Symfony\Component\Cache\Adapter\ProxyAdapter;
+use Symfony\Component\Lock\Exception\LockAcquiringException;
+use Symfony\Component\Lock\Exception\LockConflictedException;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\RateLimiter\Storage\CacheStorage;
 
 final class RateLimit
 {
     use EnvironmentAwareTrait;
+    use LoggerAwareTrait;
 
     private CacheItemPoolInterface $psr6Cache;
 
@@ -25,7 +30,7 @@ final class RateLimit
         private readonly SettingsRepository $settingsRepo,
         CacheItemPoolInterface $cacheItemPool
     ) {
-        $this->psr6Cache = new ProxyAdapter($cacheItemPool, 'ratelimit.');
+        $this->psr6Cache = CacheNamespace::RateLimit->withNamespace($cacheItemPool);
     }
 
     /**
@@ -47,10 +52,26 @@ final class RateLimit
         }
 
         $ip = $this->settingsRepo->readSettings()->getIp($request);
-        $ipKey = str_replace([':', '.'], '_', $ip);
 
-        if (!$this->checkRateLimit($groupName, $ipKey, $interval, $limit)) {
-            throw new RateLimitExceededException($request);
+        $ipObj = IP::create($ip);
+        if ($ipObj->isReserved()) {
+            $this->logger->warning(
+                sprintf(
+                    'User IP (%s) is internal; IP detection may not be properly configured. '
+                    . 'Falling back to global rate limits.',
+                    $ip,
+                )
+            );
+
+            if (!$this->checkRateLimit($groupName, 'global', $interval, $limit * 10)) {
+                throw new RateLimitExceededException($request);
+            }
+        } else {
+            $ipKey = str_replace([':', '.'], '_', $ip);
+
+            if (!$this->checkRateLimit($groupName, $ipKey, $interval, $limit)) {
+                throw new RateLimitExceededException($request);
+            }
         }
     }
 
@@ -69,9 +90,13 @@ final class RateLimit
             'limit' => $limit,
         ];
 
-        $rateLimiterFactory = new RateLimiterFactory($config, $cacheStore, $this->lockFactory);
-        $rateLimiter = $rateLimiterFactory->create($key);
+        try {
+            $rateLimiterFactory = new RateLimiterFactory($config, $cacheStore, $this->lockFactory);
+            $rateLimiter = $rateLimiterFactory->create($key);
 
-        return $rateLimiter->consume()->isAccepted();
+            return $rateLimiter->consume()->isAccepted();
+        } catch (LockConflictedException | LockAcquiringException) {
+            return false;
+        }
     }
 }

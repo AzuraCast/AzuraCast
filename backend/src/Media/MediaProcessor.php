@@ -79,7 +79,7 @@ final class MediaProcessor
 
                 $this->mediaRepo->loadFromFile($record, $localPath, $fs);
 
-                $record->setMtime(time());
+                $record->mtime = time();
                 $this->em->persist($record);
                 $this->em->flush();
 
@@ -121,7 +121,7 @@ final class MediaProcessor
     ): ?StationMedia {
         if ($pathOrMedia instanceof StationMedia) {
             $record = $pathOrMedia;
-            $path = $pathOrMedia->getPath();
+            $path = $pathOrMedia->path;
         } else {
             $record = null;
             $path = $pathOrMedia;
@@ -136,7 +136,7 @@ final class MediaProcessor
                     $created = true;
                 }
 
-                $reprocessed = $this->processMedia($storageLocation, $record, $force);
+                $reprocessed = $this->processMedia($storageLocation, $record, $force || $created);
 
                 if ($created || $reprocessed) {
                     $this->em->flush();
@@ -175,7 +175,7 @@ final class MediaProcessor
         bool $force = false
     ): bool {
         $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
-        $path = $media->getPath();
+        $path = $media->path;
 
         if (!$fs->fileExists($path)) {
             throw CannotProcessMediaException::forPath(
@@ -184,10 +184,11 @@ final class MediaProcessor
             );
         }
 
-        $mediaMtime = $fs->lastModified($path);
+        $fileModified = $fs->lastModified($path);
+        $mediaProcessedAt = $media->mtime;
 
         // No need to update if all of these conditions are true.
-        if (!$force && !$media->needsReprocessing($mediaMtime)) {
+        if (!$force && $fileModified <= $mediaProcessedAt) {
             return false;
         }
 
@@ -198,7 +199,7 @@ final class MediaProcessor
             }
         );
 
-        $media->setMtime($mediaMtime);
+        $media->mtime = time() + 5;
         $this->em->persist($media);
 
         return true;

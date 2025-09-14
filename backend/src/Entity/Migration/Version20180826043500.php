@@ -50,7 +50,7 @@ final class Version20180826043500 extends AbstractMigration
         ];
 
         $sqlLines = [
-            'ALTER DATABASE ' . $this->connection->quoteIdentifier(
+            'ALTER DATABASE ' . $this->connection->quoteSingleIdentifier(
                 $dbName
             ) . ' CHARACTER SET = utf8mb4 COLLATE = ' . $collate,
             'ALTER TABLE `song_history` DROP FOREIGN KEY FK_2AD16164A0BDB2F3',
@@ -62,7 +62,7 @@ final class Version20180826043500 extends AbstractMigration
 
         foreach ($tables as $tableName) {
             $this->addSql(
-                'ALTER TABLE ' . $this->connection->quoteIdentifier(
+                'ALTER TABLE ' . $this->connection->quoteSingleIdentifier(
                     $tableName
                 ) . ' CONVERT TO CHARACTER SET utf8mb4 COLLATE ' . $collate
             );

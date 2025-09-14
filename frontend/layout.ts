@@ -1,21 +1,45 @@
-import {App, createApp} from "vue";
+import {App, Component, createApp, h, reactive} from "vue";
 import installAxios from "~/vendor/axios";
 import {installTranslate} from "~/vendor/gettext";
-import {installCurrentVueInstance} from "~/vendor/vueInstance";
-import {AzuraCastConstants, setGlobalProps} from "~/vendor/azuracast";
+import {globalConstantsKey, useAzuraCast} from "~/vendor/azuracast";
+import installTanstack from "~/vendor/tanstack.ts";
+import {createPinia} from "pinia";
+import {VueAppGlobals} from "~/entities/ApiInterfaces.ts";
+import AppWrapper from "~/components/Layout/AppWrapper.vue";
 
-interface InitApp {
+export default function initApp(
+    appConfig: Component = {},
+    appCallback?: (app: App<Element>) => Promise<void>
+): {
     vueApp: App<Element>
-}
+} {
+    const vueApp: App<Element> = createApp({
+        setup() {
+            const {componentProps} = useAzuraCast();
+            return {
+                componentProps
+            }
+        },
+        render() {
+            return h(
+                AppWrapper,
+                {},
+                {
+                    default: () => h(appConfig, this.componentProps, {})
+                }
+            );
+        }
+    });
 
-export default function initApp(appConfig = {}, appCallback = null): InitApp {
-    const vueApp: App<Element> = createApp(appConfig);
+    /* TanStack Query */
+    installTanstack(vueApp);
 
-    /* Track current instance (for programmatic use). */
-    installCurrentVueInstance(vueApp);
+    /* Pinia */
+    const pinia = createPinia();
+    vueApp.use(pinia);
 
-    (<any>window).vueComponent = async (el: string, globalProps: AzuraCastConstants): Promise<void> => {
-        setGlobalProps(globalProps);
+    (<any>window).vueComponent = async (el: string, globalProps: VueAppGlobals): Promise<void> => {
+        vueApp.provide(globalConstantsKey, reactive(globalProps));
 
         /* Gettext */
         await installTranslate(vueApp);

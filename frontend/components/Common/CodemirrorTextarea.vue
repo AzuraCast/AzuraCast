@@ -2,29 +2,43 @@
     <code-mirror
         v-model="textValue"
         basic
-        :lang="lang"
+        :lang="lang ?? undefined"
         :dark="isDark"
     />
 </template>
 
 <script setup lang="ts">
 import CodeMirror from "vue-codemirror6";
-import {useVModel} from "@vueuse/core";
 import {computed} from "vue";
 import {css} from "@codemirror/lang-css";
 import {javascript} from "@codemirror/lang-javascript";
 import {html} from "@codemirror/lang-html";
 import {liquidsoap} from "codemirror-lang-liquidsoap";
-import useTheme from "~/functions/theme";
+import {storeToRefs} from "pinia";
+import {useTheme} from "~/functions/theme.ts";
 
 const props = defineProps<{
-    modelValue: string | null,
+    modelValue?: string | number | null,
     mode: string
 }>();
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{
+    (e: 'update:modelValue', modelValue: string | null): void
+}>();
 
-const textValue = useVModel(props, 'modelValue', emit);
+const textValue = computed({
+    get() {
+        const value = props.modelValue ?? null;
+        if (value === null) {
+            return "";
+        }
+
+        return String(value);
+    },
+    set(newValue) {
+        emit('update:modelValue', newValue);
+    }
+});
 
 const lang = computed(() => {
     switch (props.mode) {
@@ -41,5 +55,5 @@ const lang = computed(() => {
     }
 });
 
-const {isDark} = useTheme();
+const {isDark} = storeToRefs(useTheme());
 </script>

@@ -25,20 +25,20 @@
                         <form-group-select
                             id="edit_form_storage_location"
                             class="col-md-12"
-                            :field="v$.storage_location"
-                            :options="storageLocationOptions"
+                            :field="r$.storage_location"
+                            :options="storageLocations"
                             :label="$gettext('Storage Location')"
                         />
 
                         <form-group-field
                             id="edit_form_path"
                             class="col-md-12"
-                            :field="v$.path"
+                            :field="r$.path"
                             :label="$gettext('File Name')"
                         >
                             <template #description>
                                 {{
-                                    $gettext('This will be the file name for your backup, include the extension for file type you wish to use.')
+                                    $gettext('This will be the file name for your backup, include the extension for file type you wish to use. Leave blank to have a name generated automatically.')
                                 }}
                                 <br>
                                 <strong>
@@ -60,7 +60,7 @@
                         <form-group-checkbox
                             id="edit_form_exclude_media"
                             class="col-md-12"
-                            :field="v$.exclude_media"
+                            :field="r$.exclude_media"
                             :label="$gettext('Exclude Media from Backup')"
                             :description="$gettext('This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.')"
                         />
@@ -90,7 +90,7 @@
                 <button
                     v-if="logUrl === null"
                     class="btn"
-                    :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
+                    :class="(r$.$invalid) ? 'btn-danger' : 'btn-primary'"
                     type="submit"
                     @click="submit"
                 >
@@ -106,67 +106,70 @@ import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import objectToFormOptions from "~/functions/objectToFormOptions";
 import StreamingLogView from "~/components/Common/StreamingLogView.vue";
-import {computed, ref} from "vue";
-import {useAxios} from "~/vendor/axios";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import {ref, useTemplateRef} from "vue";
+import {isApiError, useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import {ApiTaskWithLog} from "~/entities/ApiInterfaces.ts";
+import {useResettableRef} from "~/functions/useResettableRef.ts";
+import {useAppRegle} from "~/vendor/regle.ts";
 
-const props = defineProps({
-    runBackupUrl: {
-        type: String,
-        required: true
-    },
-    storageLocations: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    runBackupUrl: string,
+    storageLocations: Record<number, string>,
+}>();
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
-const storageLocationOptions = computed(() => {
-    return objectToFormOptions(props.storageLocations);
-});
+const logUrl = ref<string | null>(null);
+const error = ref<string | null>(null);
 
-const logUrl = ref(null);
-const error = ref(null);
-
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show: open, hide} = useHasModal($modal);
 
-const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
+type Row = {
+    storage_location: number | null,
+    path: string,
+    exclude_media: boolean
+}
+
+const {record: form, reset: resetForm} = useResettableRef<Row>({
+    storage_location: null,
+    path: '',
+    exclude_media: false,
+});
+
+const {r$} = useAppRegle(
+    form,
     {
-        'storage_location': {},
-        'path': {},
-        'exclude_media': {}
+        storage_location: {},
+        path: {},
+        exclude_media: {}
     },
-    {
-        storage_location: null,
-        path: '',
-        exclude_media: false,
-    }
+    {}
 );
 
 const {axios} = useAxios();
 
-const submit = () => {
-    ifValid(() => {
-        error.value = null;
+const submit = async () => {
+    const {valid} = await r$.$validate();
+    if (!valid) {
+        return;
+    }
 
-        axios({
-            method: 'POST',
-            url: props.runBackupUrl,
-            data: form.value
-        }).then((resp) => {
-            logUrl.value = resp.data.links.log;
-        }).catch((error) => {
-            error.value = error.response.data.message;
-        });
-    });
+    try {
+        const {data} = await axios.post<ApiTaskWithLog>(props.runBackupUrl, form.value);
+        logUrl.value = data.logUrl;
+    } catch (e) {
+        if (isApiError(e)) {
+            error.value = e.response.data.message;
+        } else {
+            error.value = String(e);
+        }
+    }
 };
 
 const clearContents = () => {
@@ -174,6 +177,7 @@ const clearContents = () => {
     error.value = null;
 
     resetForm();
+    r$.$reset();
 }
 
 const onHidden = () => {

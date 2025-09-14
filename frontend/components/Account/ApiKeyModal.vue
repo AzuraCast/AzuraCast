@@ -6,6 +6,7 @@
         centered
         :title="$gettext('Add API Key')"
         no-enforce-focus
+        @shown="onShown"
         @hidden="clearContents"
     >
         <template #default>
@@ -23,7 +24,8 @@
             >
                 <form-group-field
                     id="form_comments"
-                    :field="v$.comment"
+                    ref="$field"
+                    :field="r$.comment"
                     autofocus
                     :label="$gettext('API Key Description/Comments')"
                 />
@@ -49,9 +51,10 @@
                     {{ $gettext('Close') }}
                 </button>
                 <button
+                    v-if="newKey === null"
                     type="submit"
                     class="btn"
-                    :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
+                    :class="(r$.$invalid) ? 'btn-danger' : 'btn-primary'"
                     @click="doSubmit"
                 >
                     {{ $gettext('Create New Key') }}
@@ -63,43 +66,48 @@
 
 <script setup lang="ts">
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
-import AccountApiKeyNewKey from "./ApiKeyNewKey.vue";
+import AccountApiKeyNewKey from "~/components/Account/ApiKeyNewKey.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {required} from '@vuelidate/validators';
-import {ref} from "vue";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {useAxios} from "~/vendor/axios";
+import {nextTick, ref, useTemplateRef} from "vue";
+import {isApiError, useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import {ApiAccountNewApiKey} from "~/entities/ApiInterfaces.ts";
+import {useResettableRef} from "~/functions/useResettableRef.ts";
+import {useAppRegle} from "~/vendor/regle.ts";
+import {required} from "@regle/rules";
 
-const props = defineProps({
-    createUrl: {
-        type: String,
-        required: true
-    }
+const props = defineProps<{
+    createUrl: string,
+}>();
+
+const emit = defineEmits<HasRelistEmit>();
+
+const error = ref<string | null>(null);
+const newKey = ref<string | null>(null);
+
+const {record: form, reset: resetForm} = useResettableRef({
+    comment: ''
 });
 
-const emit = defineEmits(['relist']);
-
-const error = ref(null);
-const newKey = ref(null);
-
-const {form, resetForm, v$, validate} = useVuelidateOnForm(
+const {r$} = useAppRegle(
+    form,
     {
         comment: {required}
     },
-    {
-        comment: ''
-    }
+    {}
 );
 
 const clearContents = () => {
     resetForm();
+    r$.$reset();
+
     error.value = null;
     newKey.value = null;
 };
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
 const create = () => {
@@ -107,26 +115,40 @@ const create = () => {
     show();
 };
 
+const $field = useTemplateRef('$field');
+
+const onShown = () => {
+    void nextTick(() => {
+        $field.value?.focus();
+    })
+};
+
 const {axios} = useAxios();
 
 const doSubmit = async () => {
-    const isValid = await validate();
-    if (!isValid) {
+    const {valid} = await r$.$validate();
+    if (!valid) {
         return;
     }
 
     error.value = null;
 
-    axios({
-        method: 'POST',
-        url: props.createUrl,
-        data: form.value
-    }).then((resp) => {
-        newKey.value = resp.data.key;
-        emit('relist');
-    }).catch((error) => {
-        error.value = error.response.data.message;
-    });
+    try {
+        const {data} = await axios.post<ApiAccountNewApiKey>(
+            props.createUrl,
+            form.value
+        );
+
+        newKey.value = data.key;
+    } catch (e) {
+        if (isApiError(e)) {
+            error.value = e.response.data.message;
+        } else {
+            error.value = String(e);
+        }
+    }
+
+    emit('relist');
 };
 
 defineExpose({

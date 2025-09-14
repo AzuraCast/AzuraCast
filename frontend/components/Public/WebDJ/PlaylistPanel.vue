@@ -19,15 +19,19 @@
                         v-if="!isPlaying || isPaused"
                         type="button"
                         class="btn btn-sm btn-success"
-                        @click="play"
+                        @click="play()"
+                        :title="$gettext('Play')"
+                        :aria-label="$gettext('Play')"
                     >
-                        <icon :icon="IconPlayCircle" />
+                        <icon :icon="IconPlayCircle"/>
                     </button>
                     <button
                         v-if="isPlaying && !isPaused"
                         type="button"
                         class="btn btn-sm btn-warning"
                         @click="togglePause()"
+                        :title="$gettext('Pause')"
+                        :aria-label="$gettext('Pause')"
                     >
                         <icon :icon="IconPauseCircle" />
                     </button>
@@ -35,6 +39,8 @@
                         type="button"
                         class="btn btn-sm"
                         @click="previous()"
+                        :title="$gettext('Previous Track')"
+                        :aria-label="$gettext('Previous Track')"
                     >
                         <icon :icon="IconFastRewind" />
                     </button>
@@ -42,6 +48,8 @@
                         type="button"
                         class="btn btn-sm"
                         @click="next()"
+                        :title="$gettext('Next Track')"
+                        :aria-label="$gettext('Next Track')"
                     >
                         <icon :icon="IconFastForward" />
                     </button>
@@ -49,6 +57,8 @@
                         type="button"
                         class="btn btn-sm btn-danger"
                         @click="stop()"
+                        :title="$gettext('Stop')"
+                        :aria-label="$gettext('Stop')"
                     >
                         <icon :icon="IconStop" />
                     </button>
@@ -104,7 +114,7 @@
                         class="custom-file-input files"
                         accept="audio/*"
                         multiple
-                        @change="addNewFiles($event.target.files)"
+                        @change="onFileSelected"
                     >
                     <label
                         :for="id + '_files'"
@@ -174,25 +184,27 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/Common/Icon.vue';
+import Icon from "~/components/Common/Icons/Icon.vue";
 import VolumeSlider from "~/components/Public/WebDJ/VolumeSlider.vue";
 import formatTime from "~/functions/formatTime";
 import {computed, ref, watch} from "vue";
 import {useWebDjTrack} from "~/components/Public/WebDJ/useWebDjTrack";
 import {useTranslate} from "~/vendor/gettext";
-import {forEach} from "lodash";
 import {useInjectMixer} from "~/components/Public/WebDJ/useMixerValue";
 import {usePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
-import {useWebDjSource} from "~/components/Public/WebDJ/useWebDjSource";
+import {TagLibProcessResult, useWebDjSource, WebDjFilePointer} from "~/components/Public/WebDJ/useWebDjSource";
 import {useInjectWebcaster} from "~/components/Public/WebDJ/useWebcaster";
-import {IconFastForward, IconFastRewind, IconPauseCircle, IconPlayCircle, IconStop} from "~/components/Common/icons";
+import {
+    IconFastForward,
+    IconFastRewind,
+    IconPauseCircle,
+    IconPlayCircle,
+    IconStop
+} from "~/components/Common/Icons/icons.ts";
 
-const props = defineProps({
-    id: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    id: string
+}>();
 
 const isLeftPlaylist = computed(() => {
     return props.id === 'playlist_1';
@@ -222,7 +234,7 @@ const {
 usePassthroughSync(trackPassThrough, props.id);
 
 const fileIndex = ref(-1);
-const files = ref([]);
+const files = ref<WebDjFilePointer[]>([]);
 const duration = ref(0.0);
 const loop = ref(false);
 const playThrough = ref(false);
@@ -231,7 +243,9 @@ const isSeeking = ref(false);
 
 const seekingPosition = computed({
     get: () => {
-        return (100.0 * (position.value / Number(duration.value)));
+        return (position.value !== null)
+            ? (100.0 * (position.value / Number(duration.value)))
+            : 0;
     },
     set: (val) => {
         if (!isSeeking.value || !source.value) {
@@ -272,21 +286,30 @@ const langHeader = computed(() => {
         : $gettext('Playlist 2');
 });
 
-const addNewFiles = (newFiles) => {
-    forEach(newFiles, (file) => {
-        file.readTaglibMetadata((data) => {
+const onFileSelected = (e: Event) => {
+    const eventTarget = e.target as HTMLInputElement;
+
+    for (const file of eventTarget.files ?? []) {
+        // @ts-expect-error Weird custom function from taglib. Don't worry about it.
+        file.readTaglibMetadata((data: TagLibProcessResult) => {
             files.value.push({
                 file: file,
                 audio: data.audio,
                 metadata: data.metadata || {title: '', artist: ''}
             });
         });
-    });
-};
+    }
+}
 
-const selectFile = (options = {}) => {
+interface PlayOptions {
+    isAutoPlay?: boolean,
+    backward?: boolean,
+    fileIndex?: number
+}
+
+const selectFile = (options: PlayOptions = {}): WebDjFilePointer | null => {
     if (files.value.length === 0) {
-        return;
+        return null;
     }
 
     if (options.fileIndex) {
@@ -300,7 +323,7 @@ const selectFile = (options = {}) => {
         if (fileIndex.value >= files.value.length) {
             if (options.isAutoPlay && !loop.value) {
                 fileIndex.value = -1;
-                return;
+                return null;
             }
 
             if (fileIndex.value < 0) {
@@ -314,7 +337,12 @@ const selectFile = (options = {}) => {
     return files.value[fileIndex.value];
 };
 
-const play = (options = {}) => {
+const play = (initialOptions: PlayOptions = {}) => {
+    const options = {
+        isAutoPlay: false,
+        ...initialOptions,
+    };
+
     const file = selectFile(options);
 
     if (!file) {
@@ -330,7 +358,7 @@ const play = (options = {}) => {
 
     const destination = prepare();
 
-    createAudioSource(file, (newSource) => {
+    createAudioSource(file, (newSource: any) => {
         source.value = newSource;
         newSource.connect(destination);
 

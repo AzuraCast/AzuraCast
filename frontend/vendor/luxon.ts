@@ -1,4 +1,4 @@
-import {DateTime, Duration, Settings} from 'luxon';
+import {DateTime, Duration, Settings} from "luxon";
 import {useAzuraCast} from "~/vendor/azuracast";
 
 interface TimestampToRelative {
@@ -22,7 +22,7 @@ export function useLuxon(): UseLuxon {
 
         return DateTime.fromSeconds(timestamp).toRelative({
             ...timeConfig
-        });
+        }) ?? '';
     }
 
     return {

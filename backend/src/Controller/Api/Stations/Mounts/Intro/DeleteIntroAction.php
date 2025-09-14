@@ -16,9 +16,8 @@ use Psr\Http\Message\ResponseInterface;
 #[OA\Delete(
     path: '/station/{station_id}/mount/{id}/intro',
     operationId: 'deleteMountIntro',
-    description: 'Removes the intro track for a mount point.',
-    security: OpenApi::API_KEY_SECURITY,
-    tags: ['Stations: Mount Points'],
+    summary: 'Removes the intro track for a mount point.',
+    tags: [OpenApi::TAG_STATIONS_MOUNT_POINTS],
     parameters: [
         new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(
@@ -30,16 +29,16 @@ use Psr\Http\Message\ResponseInterface;
         ),
     ],
     responses: [
-        new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
-        new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\NotFound(),
+        new OpenApi\Response\GenericError(),
     ]
 )]
-final class DeleteIntroAction implements SingleActionInterface
+final readonly class DeleteIntroAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationMountRepository $mountRepo,
+        private StationMountRepository $mountRepo,
     ) {
     }
 

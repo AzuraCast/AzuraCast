@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use App\Http\Router;
 use App\Http\RouterInterface;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -21,7 +22,10 @@ final class InjectRouter extends AbstractMiddleware
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        /** @var Router $router */
         $router = $this->router->withRequest($request);
+
+        Router::setInstance($router);
 
         $request = $request->withAttribute(ServerRequest::ATTR_ROUTER, $router);
 

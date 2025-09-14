@@ -8,6 +8,11 @@
     <file>tests/Functional</file>
     <file>tests/Unit</file>
 
+    <!-- temporarily exclude these until PHP 8.4 property hooks get implemented -->
+    <exclude-pattern>backend/src/Entity/([^/]+).php</exclude-pattern>
+    <exclude-pattern>backend/src/Entity/Interfaces/([^/]+).php</exclude-pattern>
+    <exclude-pattern>backend/src/Entity/Traits/([^/]+).php</exclude-pattern>
+
     <arg name="basepath" value="."/>
     <arg name="extensions" value="php"/>
     <arg name="colors"/>

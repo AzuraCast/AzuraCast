@@ -7,7 +7,7 @@
             <form-group-field
                 id="form_config_to"
                 class="col-md-12"
-                :field="v$.config.to"
+                :field="r$.config.to"
                 :label="$gettext('Message Recipient(s)')"
                 :description="$gettext('E-mail addresses can be separated by commas.')"
             />
@@ -19,15 +19,17 @@
             <form-group-field
                 id="form_config_subject"
                 class="col-md-12"
-                :field="v$.config.subject"
+                :field="r$.config.subject"
                 :label="$gettext('Message Subject')"
             />
 
             <form-group-field
                 id="form_config_message"
                 class="col-md-12"
-                :field="v$.config.message"
+                :field="r$.config.message"
                 :label="$gettext('Message Body')"
+                input-type="textarea"
+                :input-attrs="{rows: 4}"
             />
         </div>
     </tab>
@@ -35,27 +37,22 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import CommonFormattingInfo from "./Common/FormattingInfo.vue";
-import {useVModel} from "@vueuse/core";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required} from "@vuelidate/validators";
+import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/FormattingInfo.vue";
 import Tab from "~/components/Common/Tab.vue";
+import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
+import {WebhookRecordCommon, WebhookRecordEmail} from "~/components/Stations/Webhooks/Form/form.ts";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {useAppScopedRegle} from "~/vendor/regle.ts";
+import {required} from "@regle/rules";
 
-const props = defineProps({
-    title: {
-        type: String,
-        required: true
-    },
-    form: {
-        type: Object,
-        required: true
-    }
-});
+defineProps<WebhookComponentProps>();
 
-const emit = defineEmits(['update:form']);
-const form = useVModel(props, 'form', emit);
+type ThisWebhookRecord = WebhookRecordCommon & WebhookRecordEmail;
 
-const {v$, tabClass} = useVuelidateOnFormTab(
+const form = defineModel<ThisWebhookRecord>('form', {required: true});
+
+const {r$} = useAppScopedRegle(
+    form,
     {
         config: {
             to: {required},
@@ -63,13 +60,10 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             message: {required}
         }
     },
-    form,
     {
-        config: {
-            to: '',
-            subject: '',
-            message: ''
-        }
+        namespace: 'station-webhooks'
     }
 );
+
+const tabClass = useFormTabClass(r$);
 </script>

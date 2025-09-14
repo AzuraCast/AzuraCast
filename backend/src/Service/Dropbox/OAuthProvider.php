@@ -49,7 +49,7 @@ final class OAuthProvider extends AbstractProvider
      * @param array|string $data Parsed response data
      * @return void
      */
-    protected function checkResponse(ResponseInterface $response, $data)
+    protected function checkResponse(ResponseInterface $response, $data): void
     {
         if (isset($data['error'])) {
             throw new IdentityProviderException(

@@ -48,7 +48,6 @@ final class ReadWriteBatchIteratorAggregate extends AbstractBatchIteratorAggrega
             }
         } catch (Throwable $exception) {
             $this->entityManager->rollback();
-
             throw $exception;
         }
 
@@ -110,6 +109,9 @@ final class ReadWriteBatchIteratorAggregate extends AbstractBatchIteratorAggrega
         }
 
         $this->flushAndClearEntityManager();
+
+        $this->entityManager->commit();
+        $this->entityManager->beginTransaction();
     }
 
     private function flushAndClearEntityManager(): void

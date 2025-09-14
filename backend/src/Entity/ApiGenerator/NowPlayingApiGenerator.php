@@ -10,6 +10,7 @@ use App\Entity\Api\NowPlaying\CurrentSong;
 use App\Entity\Api\NowPlaying\Listeners;
 use App\Entity\Api\NowPlaying\Live;
 use App\Entity\Api\NowPlaying\NowPlaying;
+use App\Entity\Api\ResolvableUrl;
 use App\Entity\Repository\SongHistoryRepository;
 use App\Entity\Repository\StationQueueRepository;
 use App\Entity\Repository\StationStreamerBroadcastRepository;
@@ -50,7 +51,7 @@ final class NowPlayingApiGenerator
         $baseUri = new Uri('');
 
         // Only update songs directly from NP results if we're not getting them fed to us from the backend.
-        $updateSongFromNowPlaying = !$station->getBackendType()->isEnabled();
+        $updateSongFromNowPlaying = !$station->backend_type->isEnabled();
 
         if ($updateSongFromNowPlaying && empty($npResult->currentSong->text)) {
             return $this->offlineApi($station, $baseUri);
@@ -85,7 +86,7 @@ final class NowPlayingApiGenerator
 
             $history = $this->historyRepo->getVisibleHistory(
                 $station,
-                $station->getApiHistoryItems() + 1
+                $station->api_history_items + 1
             );
 
             $currentSong = array_shift($history);
@@ -99,15 +100,15 @@ final class NowPlayingApiGenerator
             return $this->offlineApi($station, $baseUri);
         }
 
-        $apiSongHistory = $this->songHistoryApiGenerator->__invoke(
+        $apiCurrentSong = new CurrentSong();
+        $apiCurrentSong = $this->songHistoryApiGenerator->__invoke(
             record: $currentSong,
             baseUri: $baseUri,
             allowRemoteArt: true,
-            isNowPlaying: true
+            isNowPlaying: true,
+            objectToPopulate: $apiCurrentSong
         );
 
-        $apiCurrentSong = new CurrentSong();
-        $apiCurrentSong->fromParentObject($apiSongHistory);
         $np->now_playing = $apiCurrentSong;
 
         $np->song_history = $this->songHistoryApiGenerator->fromArray(
@@ -128,28 +129,32 @@ final class NowPlayingApiGenerator
         }
 
         // Detect and report live DJ status
-        $currentStreamer = $station->getCurrentStreamer();
+        $currentStreamer = $station->current_streamer;
 
         if (null !== $currentStreamer) {
-            $broadcastStart = $this->broadcastRepo->getLatestBroadcast($station)?->getTimestampStart();
-
             $live = new Live();
             $live->is_live = true;
-            $live->streamer_name = $currentStreamer->getDisplayName();
-            $live->broadcast_start = $broadcastStart;
+            $live->streamer_name = $currentStreamer->display_name;
+            $live->broadcast_start = $this->broadcastRepo->getLatestBroadcast($station)
+                ?->timestampStart?->getTimestamp();
 
-            if (0 !== $currentStreamer->getArtUpdatedAt()) {
-                $live->art = $this->router->namedAsUri(
-                    routeName: 'api:stations:streamer:art',
-                    routeParams: [
-                        'station_id' => $station->getShortName(),
-                        'id' => $currentStreamer->getIdRequired(),
-                        'timestamp' => $currentStreamer->getArtUpdatedAt(),
-                    ],
+            if (0 !== $currentStreamer->art_updated_at) {
+                $live->art = new ResolvableUrl(
+                    $this->router->namedAsUri(
+                        routeName: 'api:stations:streamer:art',
+                        routeParams: [
+                            'station_id' => $station->short_name,
+                            'id' => $currentStreamer->id,
+                            'timestamp' => $currentStreamer->art_updated_at,
+                        ],
+                    )
                 );
             }
 
             $np->live = $live;
+
+            // If a live streamer is connected, the stream is always online.
+            $np->is_online = true;
         } else {
             $np->live = new Live();
         }
@@ -174,7 +179,7 @@ final class NowPlayingApiGenerator
         $np->station = $this->stationApiGenerator->__invoke($station, $baseUri);
         $np->listeners = new Listeners();
 
-        $songObj = Song::createOffline($station->getBrandingConfig()->getOfflineText());
+        $songObj = Song::createOffline($station->branding_config->offline_text);
 
         $offlineApiNowPlaying = new CurrentSong();
         $offlineApiNowPlaying->sh_id = 0;

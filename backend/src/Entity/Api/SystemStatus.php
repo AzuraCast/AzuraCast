@@ -9,15 +9,16 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_SystemStatus',
+    required: ['*'],
     type: 'object'
 )]
-final class SystemStatus
+final readonly class SystemStatus
 {
     #[OA\Property(
         description: 'Whether the service is online or not (should always be true)',
         example: true
     )]
-    public bool $online = true;
+    public bool $online;
 
     #[OA\Property(
         description: 'The current UNIX timestamp',
@@ -27,6 +28,7 @@ final class SystemStatus
 
     public function __construct()
     {
+        $this->online = true;
         $this->timestamp = time();
     }
 }

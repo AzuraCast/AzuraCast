@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
+use App\Entity\ListenerDevice;
+use App\Entity\ListenerLocation;
 use App\OpenApi;
 use App\Utilities\Types;
+use DateTimeImmutable;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -79,8 +82,15 @@ final class Listener
         $api->ip = Types::string($row['listener_ip'] ?? null);
         $api->user_agent = Types::string($row['listener_user_agent'] ?? null);
         $api->hash = Types::string($row['listener_hash'] ?? null);
-        $api->connected_on = Types::int($row['timestamp_start'] ?? null);
-        $api->connected_until = Types::int($row['timestamp_end'] ?? null);
+
+        /** @var DateTimeImmutable|null $timestampStart */
+        $timestampStart = $row['timestamp_start'] ?? null;
+
+        /** @var DateTimeImmutable|null $timestampEnd */
+        $timestampEnd = $row['timestamp_end'] ?? null;
+
+        $api->connected_on = $timestampStart?->getTimestamp() ?? 0;
+        $api->connected_until = $timestampEnd?->getTimestamp() ?? 0;
         $api->connected_time = $api->connected_until - $api->connected_on;
 
         $device = [];

@@ -1,14 +1,15 @@
-import {useEventBus} from "@vueuse/core";
-
-export function useRestartEventBus() {
-    return useEventBus<boolean>('station-restart');
-}
+import {useQueryClient} from "@tanstack/vue-query";
+import {queryKeyWithStation} from "~/entities/Queries.ts";
+import {useStationId} from "~/functions/useStationQuery.ts";
 
 export function useMayNeedRestart() {
-    const eventBus = useRestartEventBus();
+    const queryClient = useQueryClient();
+    const stationId = useStationId();
 
     const mayNeedRestart = () => {
-        eventBus.emit(false);
+        void queryClient.invalidateQueries({
+            queryKey: queryKeyWithStation([], stationId)
+        });
     }
 
     return {

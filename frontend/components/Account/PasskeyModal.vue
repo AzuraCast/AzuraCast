@@ -23,7 +23,7 @@
             >
                 <form-group-field
                     id="form_name"
-                    :field="v$.name"
+                    :field="r$.name"
                     autofocus
                     class="mb-3"
                     :label="$gettext('Passkey Nickname')"
@@ -85,7 +85,7 @@
                 <button
                     type="submit"
                     class="btn"
-                    :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
+                    :class="(r$.$invalid) ? 'btn-danger' : 'btn-primary'"
                     @click="doSubmit"
                 >
                     {{ $gettext('Add New Passkey') }}
@@ -98,39 +98,52 @@
 <script setup lang="ts">
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {required} from '@vuelidate/validators';
-import {ref} from "vue";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {useAxios} from "~/vendor/axios";
+import {required} from "@regle/rules";
+import {ref, useTemplateRef} from "vue";
+import {isApiError, useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {getApiUrl} from "~/router.ts";
 import useWebAuthn from "~/functions/useWebAuthn.ts";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import {useResettableRef} from "~/functions/useResettableRef.ts";
+import {useAppRegle} from "~/vendor/regle.ts";
+import {isObject} from "@vueuse/core";
 
-const emit = defineEmits(['relist']);
+const emit = defineEmits<HasRelistEmit>();
 
 const registerWebAuthnUrl = getApiUrl('/frontend/account/webauthn/register');
 
-const error = ref(null);
+const error = ref<string | null>(null);
 
-const {form, resetForm, v$, validate} = useVuelidateOnForm(
+type PasskeyRow = {
+    name: string,
+    createResponse: string | null
+}
+
+const {record: form, reset: resetForm} = useResettableRef<PasskeyRow>({
+    name: '',
+    createResponse: null
+});
+
+const {r$} = useAppRegle(
+    form,
     {
         name: {required},
         createResponse: {required}
     },
-    {
-        name: '',
-        createResponse: null
-    }
+    {}
 );
 
 const clearContents = () => {
     resetForm();
+    r$.$reset();
+
     error.value = null;
 };
 
-const $modal = ref<ModalTemplateRef>(null);
+const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
 const create = () => {
@@ -149,15 +162,16 @@ const onHidden = () => {
 const {axios} = useAxios();
 
 const selectPasskey = async () => {
-    const registerArgs = await axios.get(registerWebAuthnUrl.value).then(r => r.data);
+    const {data: registerArgs} = await axios.get(registerWebAuthnUrl.value);
 
     try {
-        form.value.createResponse = await doRegister(registerArgs);
+        const createResponse = await doRegister(registerArgs);
+        form.value.createResponse = JSON.stringify(createResponse);
     } catch (err) {
-        if (err.name === 'InvalidStateError') {
+        if (isObject(err) && 'name' in err && err.name === 'InvalidStateError') {
             error.value = 'Error: Authenticator was probably already registered by user';
         } else {
-            error.value = err;
+            error.value = String(err);
         }
 
         throw err;
@@ -165,22 +179,33 @@ const selectPasskey = async () => {
 };
 
 const doSubmit = async () => {
-    const isValid = await validate();
-    if (!isValid) {
+    const {valid, data} = await r$.$validate();
+    if (!valid) {
         return;
     }
 
     error.value = null;
 
-    axios({
-        method: 'PUT',
-        url: registerWebAuthnUrl.value,
-        data: form.value
-    }).then(() => {
+    try {
+        const submitData = {
+            name: data.name,
+            createResponse: JSON.parse(data.createResponse)
+        };
+
+        await axios({
+            method: 'PUT',
+            url: registerWebAuthnUrl.value,
+            data: submitData
+        });
+
         hide();
-    }).catch((error) => {
-        error.value = error.response.data.message;
-    });
+    } catch (e: any) {
+        if (isApiError(e)) {
+            error.value = e.response.data.message;
+        } else {
+            error.value = 'An error occurred.';
+        }
+    }
 };
 
 defineExpose({

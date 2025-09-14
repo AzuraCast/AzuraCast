@@ -8,9 +8,9 @@ use App\Container\SettingsAwareTrait;
 use App\Event\GetSyncTasks;
 use App\Lock\LockFactory;
 use App\Sync\Task\AbstractTask;
-use Carbon\CarbonImmutable;
-use DateTimeZone;
+use App\Utilities\Time;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use ReflectionClass;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -37,10 +37,9 @@ final class RunnerCommand extends AbstractSyncRunnerCommand
     {
         $this->logToExtraFile('app_sync.log');
 
-        $io = new SymfonyStyle($input, $output);
-
         $settings = $this->readSettings();
-        if ($settings->getSyncDisabled()) {
+        if ($settings->sync_disabled) {
+            $io = new SymfonyStyle($input, $output);
             $io->error('Automated synchronization is temporarily disabled.');
             return 1;
         }
@@ -48,11 +47,11 @@ final class RunnerCommand extends AbstractSyncRunnerCommand
         $syncTasksEvent = new GetSyncTasks();
         $this->dispatcher->dispatch($syncTasksEvent);
 
-        $now = CarbonImmutable::now(new DateTimeZone('UTC'));
+        $now = Time::nowUtc();
 
         foreach ($syncTasksEvent->getTasks() as $taskClass) {
             if ($taskClass::isDue($now, $this->environment, $settings)) {
-                $this->start($io, $taskClass);
+                $this->start($output, $taskClass);
             }
         }
 
@@ -74,14 +73,14 @@ final class RunnerCommand extends AbstractSyncRunnerCommand
     }
 
     /**
-     * @param SymfonyStyle $io
+     * @param OutputInterface $output
      * @param class-string<AbstractTask> $taskClass
      */
     private function start(
-        SymfonyStyle $io,
+        OutputInterface $output,
         string $taskClass,
     ): void {
-        $taskShortName = SingleTaskCommand::getClassShortName($taskClass);
+        $taskShortName = new ReflectionClass($taskClass)->getShortName();
 
         $isLongTask = $taskClass::isLongTask();
         $timeout = ($isLongTask)
@@ -89,7 +88,7 @@ final class RunnerCommand extends AbstractSyncRunnerCommand
             : $this->environment->getSyncShortExecutionTime();
 
         $this->lockAndRunConsoleCommand(
-            $io,
+            $output,
             $taskShortName,
             'sync_task',
             [

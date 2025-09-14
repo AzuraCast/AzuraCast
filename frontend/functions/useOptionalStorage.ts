@@ -1,6 +1,19 @@
 import {MaybeRefOrGetter, ref, shallowRef} from "vue";
 import {RemovableRef, useLocalStorage, UseStorageOptions} from "@vueuse/core";
-import storageAvailable from "~/functions/storageAvailable";
+
+type StorageType = 'localStorage';
+
+const storageAvailable = (type: StorageType): boolean => {
+    try {
+        const storage: Storage = window[type],
+            x: string = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    } catch {
+        return false;
+    }
+}
 
 export default function useOptionalStorage<T extends (string | number | boolean | object | null)>(
     key: string,
@@ -11,6 +24,6 @@ export default function useOptionalStorage<T extends (string | number | boolean 
         return useLocalStorage(key, defaults, options);
     }
 
-    const {shallow} = options;
+    const {shallow} = options ?? {};
     return (shallow ? shallowRef : ref)(defaults) as RemovableRef<T>;
 }

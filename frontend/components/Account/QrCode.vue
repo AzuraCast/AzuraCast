@@ -3,14 +3,14 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import {onMounted, useTemplateRef} from "vue";
 import {toCanvas} from "qrcode";
 
 const props = defineProps<{
     uri: string
 }>();
 
-const $canvas = ref<HTMLCanvasElement | null>();
+const $canvas = useTemplateRef('$canvas');
 
 onMounted(() => {
     toCanvas($canvas.value, props.uri, (error) => {

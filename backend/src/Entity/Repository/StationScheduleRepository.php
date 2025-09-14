@@ -12,8 +12,10 @@ use App\Entity\StationPlaylist;
 use App\Entity\StationSchedule;
 use App\Entity\StationStreamer;
 use App\Radio\AutoDJ\Scheduler;
+use App\Utilities\DateRange;
+use App\Utilities\Time;
 use Carbon\CarbonImmutable;
-use Carbon\CarbonInterface;
+use DateTimeImmutable;
 
 /**
  * @extends Repository<StationSchedule>
@@ -40,7 +42,7 @@ final class StationScheduleRepository extends Repository
 
         $scheduleItems = [];
         foreach ($rawScheduleItems as $row) {
-            $scheduleItems[$row->getId()] = $row;
+            $scheduleItems[$row->id] = $row;
         }
 
         foreach ($items as $item) {
@@ -51,12 +53,12 @@ final class StationScheduleRepository extends Repository
                 $record = new StationSchedule($relation);
             }
 
-            $record->setStartTime((int)$item['start_time']);
-            $record->setEndTime((int)$item['end_time']);
-            $record->setStartDate($item['start_date']);
-            $record->setEndDate($item['end_date']);
-            $record->setDays($item['days'] ?? []);
-            $record->setLoopOnce($item['loop_once'] ?? false);
+            $record->start_time = (int)$item['start_time'];
+            $record->end_time = (int)$item['end_time'];
+            $record->start_date = $item['start_date'];
+            $record->end_date = $item['end_date'];
+            $record->days = $item['days'] ?? [];
+            $record->loop_once = $item['loop_once'] ?? false;
 
             $this->em->persist($record);
         }
@@ -104,15 +106,16 @@ final class StationScheduleRepository extends Repository
 
     /**
      * @param Station $station
-     * @param CarbonInterface|null $now
+     * @param DateTimeImmutable|null $now
      *
      * @return ApiStationSchedule[]
      */
-    public function getUpcomingSchedule(Station $station, CarbonInterface $now = null): array
-    {
-        if (null === $now) {
-            $now = CarbonImmutable::now($station->getTimezoneObject());
-        }
+    public function getUpcomingSchedule(
+        Station $station,
+        ?DateTimeImmutable $now = null
+    ): array {
+        $stationTz = $station->getTimezoneObject();
+        $now = CarbonImmutable::instance(Time::nowInTimezone($stationTz, $now));
 
         $startDate = $now->subDay();
         $endDate = $now->addDay()->addHour();
@@ -127,11 +130,11 @@ final class StationScheduleRepository extends Repository
                 $dayOfWeek = $i->dayOfWeekIso;
 
                 if (
-                    $this->scheduler->shouldSchedulePlayOnCurrentDate($scheduleItem, $i)
+                    $this->scheduler->shouldSchedulePlayOnCurrentDate($scheduleItem, $stationTz, $i)
                     && $this->scheduler->isScheduleScheduledToPlayToday($scheduleItem, $dayOfWeek)
                 ) {
-                    $start = StationSchedule::getDateTime($scheduleItem->getStartTime(), $i);
-                    $end = StationSchedule::getDateTime($scheduleItem->getEndTime(), $i);
+                    $start = StationSchedule::getDateTime($scheduleItem->start_time, $stationTz, $i);
+                    $end = StationSchedule::getDateTime($scheduleItem->end_time, $stationTz, $i);
 
                     // Handle overnight schedule items
                     if ($end < $start) {
@@ -145,9 +148,9 @@ final class StationScheduleRepository extends Repository
                     }
 
                     $events[] = ($this->scheduleApiGenerator)(
+                        $station,
                         $scheduleItem,
-                        $start,
-                        $end,
+                        new DateRange($start, $end),
                         $now
                     );
                 }

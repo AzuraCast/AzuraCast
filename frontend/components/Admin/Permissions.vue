@@ -16,122 +16,123 @@
 
         <data-table
             id="permissions"
-            ref="$datatable"
             paginated
             :fields="fields"
-            :api-url="listUrl"
+            :provider="listItemProvider"
         >
-            <template #cell(permissions)="row">
-                <div v-if="row.item.permissions.global.length > 0">
-                    {{ $gettext('Global') }}
-                    :
-                    {{ getGlobalPermissionNames(row.item.permissions.global).join(', ') }}
+            <template #cell(permissions)="{item}">
+                <div v-if="item.permissions.global.length > 0">
+                    <b>{{ $gettext('Global') }}:</b>
+                    {{ getGlobalPermissionNames(item.permissions.global).join(', ') }}
                 </div>
                 <div
-                    v-for="(permissions, stationId) in row.item.permissions.station"
-                    :key="stationId"
+                    v-for="(stationRow) in item.permissions.station"
+                    :key="stationRow.id"
                 >
-                    <b>{{ getStationName(stationId) }}</b>:
-                    {{ getStationPermissionNames(permissions).join(', ') }}
+                    <b>{{ getStationName(stationRow.id) }}:</b>
+                    {{ getStationPermissionNames(stationRow.permissions).join(', ') }}
+                </div>
+                <div v-if="item.permissions.global.length === 0 && item.permissions.station.length === 0">
+                    &nbsp;
                 </div>
             </template>
-            <template #cell(actions)="row">
+            <template #cell(actions)="{item}">
                 <div
-                    v-if="!row.item.is_super_admin"
+                    v-if="!item.is_super_admin"
                     class="btn-group btn-group-sm"
                 >
                     <button
                         type="button"
                         class="btn btn-primary"
-                        @click="doEdit(row.item.links.self)"
+                        @click="doEdit(item.links.self)"
                     >
                         {{ $gettext('Edit') }}
                     </button>
                     <button
-                        v-if="row.item.id !== 1"
+                        v-if="item.id !== 1"
                         type="button"
                         class="btn btn-danger"
-                        @click="doDelete(row.item.links.self)"
+                        @click="doDelete(item.links.self)"
                     >
                         {{ $gettext('Delete') }}
                     </button>
                 </div>
             </template>
         </data-table>
-    </card-page>
 
-    <edit-modal
-        ref="$editModal"
-        :create-url="listUrl"
-        :station-permissions="stationPermissions"
-        :stations="stations"
-        :global-permissions="globalPermissions"
-        @relist="relist"
-    />
+        <edit-modal
+            ref="$editModal"
+            :create-url="listUrl"
+            :station-permissions="props.stationPermissions"
+            :stations="props.stations"
+            :global-permissions="props.globalPermissions"
+            @relist="() => relist()"
+        />
+    </card-page>
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
-import EditModal from './Permissions/EditModal.vue';
-import {filter, get, map} from 'lodash';
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import EditModal from "~/components/Admin/Permissions/EditModal.vue";
+import {isEmpty} from "es-toolkit/compat";
 import {useTranslate} from "~/vendor/gettext";
-import {ref} from "vue";
-import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
-import useHasEditModal, {EditModalTemplateRef} from "~/functions/useHasEditModal";
+import {useTemplateRef} from "vue";
+import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
+import {ApiAdminVuePermissionsProps, GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
+import {AdminRoleRequired} from "~/entities/AdminPermissions.ts";
 
-const props = defineProps({
-    stations: {
-        type: Array,
-        required: true
-    },
-    globalPermissions: {
-        type: Array,
-        required: true
-    },
-    stationPermissions: {
-        type: Array,
-        required: true
-    }
-});
+const props = defineProps<ApiAdminVuePermissionsProps>();
 
 const listUrl = getApiUrl('/admin/roles');
 
 const {$gettext} = useTranslate();
 
-const fields: DataTableField[] = [
+const fields: DataTableField<AdminRoleRequired>[] = [
     {key: 'name', isRowHeader: true, label: $gettext('Role Name'), sortable: true},
     {key: 'permissions', label: $gettext('Permissions'), sortable: false},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const getGlobalPermissionNames = (permissions) => {
-    return filter(map(permissions, (permission) => {
-        return get(props.globalPermissions, permission, null);
-    }));
+const listItemProvider = useApiItemProvider<AdminRoleRequired>(
+    listUrl,
+    [QueryKeys.AdminPermissions]
+);
+
+const relist = () => {
+    void listItemProvider.refresh();
+}
+
+const getGlobalPermissionNames = (permissions: GlobalPermissions[]) => {
+    return permissions.map(
+        (permission) => props.globalPermissions[permission] ?? null
+    ).filter(
+        (row) => !isEmpty(row)
+    );
 };
 
-const getStationPermissionNames = (permissions) => {
-    return filter(map(permissions, (permission) => {
-        return get(props.stationPermissions, permission, null);
-    }));
+const getStationPermissionNames = (permissions: StationPermissions[]) => {
+    return permissions.map(
+        (permission) => props.stationPermissions[permission] ?? null
+    ).filter(
+        (row) => !isEmpty(row)
+    );
 };
 
-const getStationName = (stationId) => {
-    return get(props.stations, stationId, null);
+const getStationName = (stationId: number) => {
+    return props.stations[stationId] ?? null;
 };
 
-const $datatable = ref<DataTableTemplateRef>(null);
-const {relist} = useHasDatatable($datatable);
-
-const $editModal = ref<EditModalTemplateRef>(null);
+const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Role?'),
-    relist
+    () => relist()
 );
 </script>

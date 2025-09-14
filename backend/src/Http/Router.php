@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http;
 
 use App\Container\SettingsAwareTrait;
+use App\Traits\AvailableStaticallyTrait;
 use App\Traits\RequestAwareTrait;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
@@ -19,8 +20,9 @@ final class Router implements RouterInterface
 {
     use RequestAwareTrait;
     use SettingsAwareTrait;
+    use AvailableStaticallyTrait;
 
-    private ?UriInterface $baseUrl = null;
+    public ?UriInterface $baseUrl = null;
 
     private ?RouteInterface $currentRoute = null;
 
@@ -52,10 +54,10 @@ final class Router implements RouterInterface
     {
         $settings = $this->readSettings();
 
-        $useRequest ??= $settings->getPreferBrowserUrl();
+        $useRequest ??= $settings->prefer_browser_url;
 
         $baseUrl = $settings->getBaseUrlAsUri() ?? new Uri('');
-        $useHttps = $settings->getAlwaysUseSsl();
+        $useHttps = $settings->always_use_ssl;
 
         if ($this->request instanceof ServerRequestInterface) {
             $currentUri = $this->request->getUri();

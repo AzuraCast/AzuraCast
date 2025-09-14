@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Flysystem;
 
 use App\Flysystem\Adapter\ExtendedAdapterInterface;
+use League\Flysystem\Config;
 use League\Flysystem\PathNormalizer;
 use League\Flysystem\PathPrefixer;
 use RuntimeException;
@@ -15,10 +16,18 @@ final class RemoteFilesystem extends AbstractFilesystem
 
     public function __construct(
         ExtendedAdapterInterface $remoteAdapter,
-        string $localPath = null,
+        ?string $localPath = null,
         array $config = [],
-        PathNormalizer $pathNormalizer = null
+        ?PathNormalizer $pathNormalizer = null
     ) {
+        if (empty($config)) {
+            $config = [
+                Config::OPTION_MOVE_IDENTICAL_PATH => 'ignore',
+                Config::OPTION_COPY_IDENTICAL_PATH => 'ignore',
+                Config::OPTION_RETAIN_VISIBILITY => false,
+            ];
+        }
+
         $this->localPath = new PathPrefixer($localPath ?? sys_get_temp_dir());
         parent::__construct($remoteAdapter, $config, $pathNormalizer);
     }
@@ -41,7 +50,7 @@ final class RemoteFilesystem extends AbstractFilesystem
     }
 
     /** @inheritDoc */
-    public function withLocalFile(string $path, callable $function)
+    public function withLocalFile(string $path, callable $function): mixed
     {
         $localPath = $this->getLocalPath($path);
 

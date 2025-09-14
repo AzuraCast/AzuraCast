@@ -137,53 +137,64 @@
 import FlowUpload from "~/components/Common/FlowUpload.vue";
 import {computed, onMounted, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useSweetAlert} from "~/vendor/sweetalert";
 import {getApiUrl} from "~/router";
+import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
+import {ApiAdminStereoToolStatus} from "~/entities/ApiInterfaces.ts";
 
 const apiUrl = getApiUrl('/admin/stereo_tool');
 
 const isLoading = ref(true);
-const version = ref(null);
+const version = ref<string | null>(null);
 
 const {$gettext} = useTranslate();
 
 const langInstalledVersion = computed(() => {
     return $gettext(
-        'Stereo Tool version %{ version } is currently installed.',
+        'Stereo Tool version %{version} is currently installed.',
         {
-            version: version.value
+            version: version.value ?? 'N/A'
         }
     );
 });
 
 const {notifyError} = useNotify();
 
-const onError = (_file, message) => {
-    notifyError(message);
+const onError = (_: unknown, message: string | null) => {
+    if (message !== null) {
+        notifyError(message);
+    }
 };
 
 const {axios} = useAxios();
 
-const relist = () => {
+const relist = async () => {
     isLoading.value = true;
-    axios.get(apiUrl.value).then((resp) => {
-        version.value = resp.data.version;
-        isLoading.value = false;
-    });
+
+    const {data} = await axios.get<ApiAdminStereoToolStatus>(apiUrl.value);
+
+    version.value = data.version;
+    isLoading.value = false;
 };
 
-const {confirmDelete} = useSweetAlert();
+const {confirmDelete} = useDialog();
 
-const doDelete = () => {
-    confirmDelete().then((result) => {
-        if (result.value) {
-            axios.delete(apiUrl.value).then(relist);
-        }
+const doDelete = async () => {
+    const {value} = await confirmDelete({
+        title: $gettext('Uninstall Stereo Tool?'),
+        confirmButtonText: $gettext('Uninstall')
     });
+
+    if (!value) {
+        return;
+    }
+
+    await axios.delete(apiUrl.value);
+
+    await relist();
 }
 
 onMounted(relist);

@@ -1,23 +1,13 @@
 <template>
     <vue-date-picker
+        v-bind="vueDatePickerOptions"
         v-model="dateRange"
-        :dark="isDark"
-        range
-        :partial-range="false"
-        :preset-dates="ranges"
-        :min-date="minDate"
-        :max-date="maxDate"
-        :locale="localeWithDashes"
-        :select-text="$gettext('Select')"
-        :cancel-text="$gettext('Cancel')"
-        :now-button-label="$gettext('Now')"
-        :timezone="tz"
-        :clearable="false"
     >
         <template #dp-input="{ value }">
             <button
                 type="button"
-                class="btn btn-dark dropdown-toggle"
+                class="btn dropdown-toggle"
+                v-bind="$attrs"
             >
                 <icon :icon="IconDateRange" />
                 <span>
@@ -29,61 +19,58 @@
 </template>
 
 <script setup lang="ts">
-import VueDatePicker from '@vuepic/vue-datepicker';
-import Icon from "./Icon.vue";
-import useTheme from "~/functions/theme";
-import {useTranslate} from "~/vendor/gettext";
+import VueDatePicker, {VueDatePickerProps} from "@vuepic/vue-datepicker";
+import Icon from "~/components/Common/Icons/Icon.vue";
+import {useTheme} from "~/functions/theme.ts";
+import {useTranslate} from "~/vendor/gettext.ts";
 import {computed} from "vue";
-import {useAzuraCast} from "~/vendor/azuracast";
-import {useLuxon} from "~/vendor/luxon";
-import {IconDateRange} from "~/components/Common/icons";
+import {useAzuraCast} from "~/vendor/azuracast.ts";
+import {useLuxon} from "~/vendor/luxon.ts";
+import {IconDateRange} from "~/components/Common/Icons/icons.ts";
+import {storeToRefs} from "pinia";
+import {isString} from "es-toolkit";
 
 defineOptions({
     inheritAttrs: false
 });
 
-const props = defineProps({
-    tz: {
-        type: String,
-        default: null
-    },
-    minDate: {
-        type: [String, Date],
-        default() {
-            return null
-        }
-    },
-    maxDate: {
-        type: [String, Date],
-        default() {
-            return null
-        }
-    },
-    timePicker: {
-        type: Boolean,
-        default: false,
-    },
-    modelValue: {
-        type: Object,
-        required: true
-    }
-});
+export interface DateRange {
+    startDate: Date,
+    endDate: Date
+}
 
-const emit = defineEmits(['update:modelValue']);
+const props = defineProps<{
+    options?: Partial<VueDatePickerProps>,
+    modelValue?: DateRange
+}>();
 
-const {isDark} = useTheme();
+const emit = defineEmits<{
+    (e: 'update:modelValue', modelValue: DateRange): void
+}>();
+
+const {isDark} = storeToRefs(useTheme());
 
 const {localeWithDashes} = useAzuraCast();
 const {DateTime} = useLuxon();
 
-const dateRange = computed({
+type DateRangeTuple = Date[] | null;
+
+const dateRange = computed<DateRangeTuple>({
     get() {
+        if (!props.modelValue) {
+            return null;
+        }
+
         return [
-            props.modelValue?.startDate ?? null,
-            props.modelValue?.endDate ?? null,
+            props.modelValue.startDate,
+            props.modelValue.endDate,
         ]
     },
     set(newValue) {
+        if (newValue === null) {
+            return;
+        }
+
         const newRange = {
             startDate: newValue[0],
             endDate: newValue[1]
@@ -95,8 +82,23 @@ const dateRange = computed({
 
 const {$gettext} = useTranslate();
 
+const getTimezone = (options?: Partial<VueDatePickerProps>): string => {
+    if (options !== undefined && 'timezone' in options && options.timezone) {
+        if (isString(options.timezone)) {
+            return options.timezone;
+        }
+        if ('timezone' in options.timezone && isString(options.timezone.timezone)) {
+            return options.timezone.timezone;
+        }
+    }
+
+    return 'UTC';
+}
+
 const ranges = computed(() => {
-    const nowTz = DateTime.now().setZone(props.tz);
+    const tz = getTimezone(props.options);
+
+    const nowTz = DateTime.now().setZone(tz);
     const nowAtMidnightDate = nowTz.endOf('day').toJSDate();
 
     return [
@@ -157,5 +159,22 @@ const ranges = computed(() => {
             ]
         }
     ];
+});
+
+const vueDatePickerOptions = computed<VueDatePickerProps>(() => {
+    return {
+        dark: isDark.value,
+        range: {
+            partialRange: false
+        },
+        enableTimePicker: false,
+        presetDates: ranges.value,
+        locale: localeWithDashes,
+        selectText: $gettext('Select'),
+        cancelText: $gettext('Cancel'),
+        nowButtonLabel: $gettext('Now'),
+        clearable: false,
+        ...props.options,
+    }
 });
 </script>

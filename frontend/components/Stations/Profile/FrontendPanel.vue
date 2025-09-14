@@ -11,13 +11,13 @@
             >
                 {{ $gettext('Broadcasting Service') }}
 
-                <running-badge :running="frontendRunning" />
+                <running-badge :running="profileData.services.frontendRunning"/>
                 <br>
                 <small>{{ frontendName }}</small>
             </h3>
         </template>
 
-        <template v-if="userAllowedForStation(StationPermission.Broadcasting)">
+        <template v-if="userAllowedForStation(StationPermissions.Broadcasting)">
             <div
                 class="collapse"
                 :class="(credentialsVisible) ? 'show' : ''"
@@ -27,7 +27,7 @@
                         <tr class="align-middle">
                             <td>
                                 <a
-                                    :href="frontendAdminUri"
+                                    :href="profileData.frontendAdminUri"
                                     target="_blank"
                                 >
                                     {{ $gettext('Administration') }}
@@ -40,12 +40,12 @@
                                 </div>
                                 <div>
                                     {{ $gettext('Password:') }}
-                                    <span class="text-monospace">{{ frontendAdminPassword }}</span>
+                                    <span class="text-monospace">{{ profileData.frontendAdminPassword }}</span>
                                 </div>
                             </td>
                             <td class="px-0">
                                 <copy-to-clipboard-button
-                                    :text="frontendAdminPassword"
+                                    :text="profileData.frontendAdminPassword"
                                     hide-text
                                 />
                             </td>
@@ -58,7 +58,7 @@
                                 class="ps-0"
                                 colspan="2"
                             >
-                                {{ frontendPort }}
+                                {{ profileData.frontendPort }}
                                 <div
                                     v-if="isShoutcast"
                                     class="form-text"
@@ -80,12 +80,12 @@
                                 </div>
                                 <div>
                                     {{ $gettext('Password:') }}
-                                    <span class="text-monospace">{{ frontendSourcePassword }}</span>
+                                    <span class="text-monospace">{{ profileData.frontendSourcePassword }}</span>
                                 </div>
                             </td>
                             <td class="px-0">
                                 <copy-to-clipboard-button
-                                    :text="frontendSourcePassword"
+                                    :text="profileData.frontendSourcePassword"
                                     hide-text
                                 />
                             </td>
@@ -101,12 +101,12 @@
                                 </div>
                                 <div>
                                     {{ $gettext('Password:') }}
-                                    <span class="text-monospace">{{ frontendRelayPassword }}</span>
+                                    <span class="text-monospace">{{ profileData.frontendRelayPassword }}</span>
                                 </div>
                             </td>
                             <td class="px-0">
                                 <copy-to-clipboard-button
-                                    :text="frontendRelayPassword"
+                                    :text="profileData.frontendRelayPassword"
                                     hide-text
                                 />
                             </td>
@@ -117,7 +117,7 @@
         </template>
 
         <template
-            v-if="userAllowedForStation(StationPermission.Broadcasting)"
+            v-if="userAllowedForStation(StationPermissions.Broadcasting)"
             #footer_actions
         >
             <a
@@ -129,11 +129,11 @@
                     {{ langShowHideCredentials }}
                 </span>
             </a>
-            <template v-if="hasStarted">
+            <template v-if="stationData.hasStarted">
                 <button
                     type="button"
                     class="btn btn-link text-secondary"
-                    @click="makeApiCall(frontendRestartUri)"
+                    @click="doRestart"
                 >
                     <icon :icon="IconUpdate" />
                     <span>
@@ -141,10 +141,10 @@
                     </span>
                 </button>
                 <button
-                    v-if="!frontendRunning"
+                    v-if="!profileData.services.frontendRunning"
                     type="button"
                     class="btn btn-link text-success"
-                    @click="makeApiCall(frontendStartUri)"
+                    @click="doStart()"
                 >
                     <icon :icon="IconPlay" />
                     <span>
@@ -152,10 +152,10 @@
                     </span>
                 </button>
                 <button
-                    v-if="frontendRunning"
+                    v-if="profileData.services.frontendRunning"
                     type="button"
                     class="btn btn-link text-danger"
-                    @click="makeApiCall(frontendStopUri)"
+                    @click="doStop()"
                 >
                     <icon :icon="IconStop" />
                     <span>
@@ -168,27 +168,27 @@
 </template>
 
 <script setup lang="ts">
-import {FrontendAdapter} from '~/entities/RadioAdapters';
-import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton.vue';
-import Icon from '~/components/Common/Icon.vue';
+import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {computed} from "vue";
-import frontendPanelProps from "~/components/Stations/Profile/frontendPanelProps";
 import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
-import {StationPermission, userAllowedForStation} from "~/acl";
+import {userAllowedForStation} from "~/acl";
 import useOptionalStorage from "~/functions/useOptionalStorage";
-import {IconMoreHoriz, IconPlay, IconStop, IconUpdate} from "~/components/Common/icons";
+import {IconMoreHoriz, IconPlay, IconStop, IconUpdate} from "~/components/Common/Icons/icons.ts";
+import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
+import {FrontendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
+import {getStationApiUrl} from "~/router.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
+import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
 
-const props = defineProps({
-    ...frontendPanelProps,
-    frontendRunning: {
-        type: Boolean,
-        required: true
-    }
-});
+const stationData = useStationData();
+const profileData = useStationProfileData();
 
-const emit = defineEmits(['api-call']);
+const frontendRestartUri = getStationApiUrl('/frontend/restart');
+const frontendStartUri = getStationApiUrl('/frontend/start');
+const frontendStopUri = getStationApiUrl('/frontend/stop');
 
 const credentialsVisible = useOptionalStorage<boolean>('station_show_frontend_credentials', false);
 
@@ -201,19 +201,48 @@ const langShowHideCredentials = computed(() => {
 });
 
 const frontendName = computed(() => {
-    if (props.frontendType === FrontendAdapter.Icecast) {
-        return 'Icecast';
-    } else if (props.frontendType === FrontendAdapter.Shoutcast) {
-        return 'Shoutcast';
+    switch (stationData.value.frontendType) {
+        case FrontendAdapters.Icecast:
+            return 'Icecast';
+
+        case FrontendAdapters.Rsas:
+            return 'Rocket Streaming Audio Server (RSAS)';
+
+        case FrontendAdapters.Shoutcast:
+            return 'Shoutcast';
+
+        default:
+            return '';
     }
-    return '';
 });
 
 const isShoutcast = computed(() => {
-    return props.frontendType === FrontendAdapter.Shoutcast;
+    return stationData.value.frontendType === FrontendAdapters.Shoutcast;
 });
 
-const makeApiCall = (uri) => {
-    emit('api-call', uri);
-};
+const doRestart = useMakeApiCall(
+    frontendRestartUri,
+    {
+        title: $gettext('Restart service?'),
+        confirmButtonText: $gettext('Restart')
+    }
+);
+
+const doStart = useMakeApiCall(
+    frontendStartUri,
+    {
+        title: $gettext('Start service?'),
+        confirmButtonText: $gettext('Start'),
+        confirmButtonClass: 'btn-success'
+    }
+);
+
+const doStop = useMakeApiCall(
+    frontendStopUri,
+    {
+        title: $gettext('Stop service?'),
+        confirmButtonText: $gettext('Stop'),
+        confirmButtonClass: 'btn-danger'
+    }
+);
 </script>

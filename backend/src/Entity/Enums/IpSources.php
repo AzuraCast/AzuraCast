@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity\Enums;
 
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
 
+#[OA\Schema(type: 'string')]
 enum IpSources: string
 {
     case Local = 'local';

@@ -144,7 +144,7 @@ final class StationMediaRepository extends Repository
     private function getStorageLocation(Station|StorageLocation $source): StorageLocation
     {
         if ($source instanceof Station) {
-            return $source->getMediaStorageLocation();
+            return $source->media_storage_location;
         }
 
         return $source;
@@ -171,21 +171,22 @@ final class StationMediaRepository extends Repository
         $this->em->persist($media);
 
         // Clear existing auto-assigned custom fields.
-        $fieldCollection = $media->getCustomFields();
+        $fieldCollection = $media->custom_fields;
         foreach ($fieldCollection as $existingCustomField) {
             /** @var StationMediaCustomField $existingCustomField */
-            if ($existingCustomField->getField()->hasAutoAssign()) {
+            if (!empty($existingCustomField->field->auto_assign)) {
                 $this->em->remove($existingCustomField);
                 $fieldCollection->removeElement($existingCustomField);
             }
         }
 
         $customFieldsToSet = $this->customFieldRepo->getAutoAssignableFields();
-        $tags = $metadata->getTags();
+        $tags = $metadata->getKnownTags();
         foreach ($customFieldsToSet as $tag => $customFieldKey) {
             if (!empty($tags[$tag])) {
                 $customFieldRow = new StationMediaCustomField($media, $customFieldKey);
-                $customFieldRow->setValue($tags[$tag]);
+                $customFieldRow->value = $tags[$tag];
+
                 $this->em->persist($customFieldRow);
 
                 $fieldCollection->add($customFieldRow);
@@ -214,22 +215,19 @@ final class StationMediaRepository extends Repository
         }
 
         // Attempt to derive title and artist from filename.
-        $artist = $media->getArtist();
-        $title = $media->getTitle();
+        $artist = $media->artist;
+        $title = $media->title;
 
         if (null === $artist || null === $title) {
-            $filename = pathinfo($media->getPath(), PATHINFO_FILENAME);
+            $filename = pathinfo($media->path, PATHINFO_FILENAME);
             $filename = str_replace('_', ' ', $filename);
 
             $songObj = Song::createFromText($filename);
             $media->setSong($songObj);
         }
 
-        // Force a text property to auto-generate from artist/title
-        $media->setText($media->getText());
-
         // Generate a song_id hash based on the track
-        $media->updateSongId();
+        $media->updateMetaFields();
     }
 
     public function updateAlbumArt(
@@ -249,10 +247,10 @@ final class StationMediaRepository extends Repository
     ): void {
         $fs ??= $this->getFilesystem($media);
 
-        $media->setArtUpdatedAt(time());
+        $media->art_updated_at = time();
         $this->em->persist($media);
 
-        $albumArtPath = StationMedia::getArtPath($media->getUniqueId());
+        $albumArtPath = StationMedia::getArtPath($media->unique_id);
         $albumArtString = AlbumArt::resize($rawArtString);
 
         $fs->write($albumArtPath, $albumArtString);
@@ -264,10 +262,10 @@ final class StationMediaRepository extends Repository
     ): void {
         $fs ??= $this->getFilesystem($media);
 
-        $currentAlbumArtPath = StationMedia::getArtPath($media->getUniqueId());
+        $currentAlbumArtPath = StationMedia::getArtPath($media->unique_id);
         $fs->delete($currentAlbumArtPath);
 
-        $media->setArtUpdatedAt(0);
+        $media->art_updated_at = 0;
         $this->em->persist($media);
         $this->em->flush();
 
@@ -282,17 +280,17 @@ final class StationMediaRepository extends Repository
 
         $metadata = $media->toMetadata();
 
-        $artPath = StationMedia::getArtPath($media->getUniqueId());
+        $artPath = StationMedia::getArtPath($media->unique_id);
         if ($fs->fileExists($artPath)) {
             $metadata->setArtwork($fs->read($artPath));
         }
 
         // Write tags to the Media file.
-        $media->setMtime(time() + 5);
-        $media->updateSongId();
+        $media->mtime = time() + 5;
+        $media->updateMetaFields();
 
         return $fs->withLocalFile(
-            $media->getPath(),
+            $media->path,
             function ($path) use ($metadata) {
                 $this->metadataManager->write($metadata, $path);
                 return true;
@@ -306,7 +304,7 @@ final class StationMediaRepository extends Repository
     ): void {
         $fs ??= $this->getFilesystem($media);
         $fs->withLocalFile(
-            $media->getPath(),
+            $media->path,
             function ($path) use ($media, $fs): void {
                 $this->writeWaveform($media, $path, $fs);
             }
@@ -318,15 +316,22 @@ final class StationMediaRepository extends Repository
         string $path,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
+        $waveformData = AudioWaveform::getWaveformFor($path);
+        $this->saveWaveformData($media, $waveformData, $fs);
+    }
+
+    public function saveWaveformData(
+        StationMedia $media,
+        array $waveformData,
+        ?ExtendedFilesystemInterface $fs = null
+    ): void {
         $fs ??= $this->getFilesystem($media);
 
-        $waveform = AudioWaveform::getWaveformFor($path);
-        $waveformPath = StationMedia::getWaveformPath($media->getUniqueId());
-
+        $waveformPath = StationMedia::getWaveformPath($media->unique_id);
         $fs->write(
             $waveformPath,
             json_encode(
-                $waveform,
+                $waveformData,
                 JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR | JSON_PARTIAL_OUTPUT_ON_ERROR
             )
         );
@@ -357,7 +362,7 @@ final class StationMediaRepository extends Repository
 
         if ($deleteFile) {
             try {
-                $fs->delete($media->getPath());
+                $fs->delete($media->path);
             } catch (FilesystemException) {
                 // Skip
             }
@@ -373,7 +378,7 @@ final class StationMediaRepository extends Repository
 
     private function getFilesystem(StationMedia $media): ExtendedFilesystemInterface
     {
-        return $this->storageLocationRepo->getAdapter($media->getStorageLocation())
+        return $this->storageLocationRepo->getAdapter($media->storage_location)
             ->getFilesystem();
     }
 }

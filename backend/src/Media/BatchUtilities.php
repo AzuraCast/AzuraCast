@@ -6,8 +6,8 @@ namespace App\Media;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Doctrine\ReadWriteBatchIteratorAggregate;
-use App\Entity\Interfaces\PathAwareInterface;
 use App\Entity\Repository\StationMediaRepository;
+use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\Repository\UnprocessableMediaRepository;
 use App\Entity\StationMedia;
@@ -15,7 +15,9 @@ use App\Entity\StationPlaylistFolder;
 use App\Entity\StorageLocation;
 use App\Entity\UnprocessableMedia;
 use App\Flysystem\ExtendedFilesystemInterface;
+use App\Message\WritePlaylistFileMessage;
 use App\Utilities\File;
+use Symfony\Component\Messenger\MessageBus;
 use Throwable;
 
 final class BatchUtilities
@@ -23,7 +25,9 @@ final class BatchUtilities
     use EntityManagerAwareTrait;
 
     public function __construct(
+        private readonly MessageBus $messageBus,
         private readonly StationMediaRepository $mediaRepo,
+        private readonly StationPlaylistMediaRepository $spmRepo,
         private readonly UnprocessableMediaRepository $unprocessableMediaRepo,
         private readonly StorageLocationRepository $storageLocationRepo,
     ) {
@@ -37,56 +41,58 @@ final class BatchUtilities
     ): void {
         $fs ??= $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
-        if ($fs->isDir($to)) {
-            // Update the paths of all media contained within the directory.
-            $toRename = [
-                $this->iterateMediaInDirectory($storageLocation, $from),
-                $this->iterateUnprocessableMediaInDirectory($storageLocation, $from),
-                $this->iteratePlaylistFoldersInDirectory($storageLocation, $from),
-            ];
+        $affectedPlaylists = [];
 
-            foreach ($toRename as $iterator) {
-                foreach ($iterator as $record) {
-                    /** @var PathAwareInterface $record */
-                    $record->setPath(
-                        File::renameDirectoryInPath($record->getPath(), $from, $to)
-                    );
-                    $this->em->persist($record);
-                }
+        if ($fs->directoryExists($to)) {
+            // Update the paths of all media contained within the directory.
+            foreach ($this->iterateMediaInDirectory($storageLocation, $from) as $record) {
+                $record->path = File::renameDirectoryInPath($record->path, $from, $to);
+                $this->em->persist($record);
+
+                $affectedPlaylists += $this->spmRepo->getPlaylistsForMedia($record);
+            }
+
+            foreach ($this->iterateUnprocessableMediaInDirectory($storageLocation, $from) as $record) {
+                $record->path = File::renameDirectoryInPath($record->path, $from, $to);
+                $this->em->persist($record);
+            }
+
+            foreach ($this->iteratePlaylistFoldersInDirectory($storageLocation, $from) as $record) {
+                $record->path = File::renameDirectoryInPath($record->path, $from, $to);
+                $this->em->persist($record);
+
+                $playlist = $record->playlist;
+                $affectedPlaylists[$playlist->id] = $playlist->id;
             }
         } else {
             $record = $this->mediaRepo->findByPath($from, $storageLocation);
 
             if ($record instanceof StationMedia) {
-                $record->setPath($to);
+                $affectedPlaylists += $this->spmRepo->getPlaylistsForMedia($record);
+
+                $record->path = $to;
                 $this->em->persist($record);
                 $this->em->flush();
             } else {
                 $record = $this->unprocessableMediaRepo->findByPath($from, $storageLocation);
 
                 if ($record instanceof UnprocessableMedia) {
-                    $record->setPath($to);
+                    $record->path = $to;
                     $this->em->persist($record);
                     $this->em->flush();
                 }
             }
         }
+
+        $this->writePlaylistChanges($affectedPlaylists);
     }
 
-    /**
-     * @param array $files
-     * @param array $directories
-     * @param StorageLocation $storageLocation
-     * @param ExtendedFilesystemInterface|null $fs
-     *
-     * @return array<int, int> Affected playlist IDs
-     */
     public function handleDelete(
         array $files,
         array $directories,
         StorageLocation $storageLocation,
         ?ExtendedFilesystemInterface $fs = null
-    ): array {
+    ): void {
         $fs ??= $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
         $affectedPlaylists = [];
 
@@ -115,7 +121,7 @@ final class BatchUtilities
 
         $this->em->flush();
 
-        return $affectedPlaylists;
+        $this->writePlaylistChanges($affectedPlaylists);
     }
 
     /**
@@ -224,5 +230,21 @@ final class BatchUtilities
             ->setParameter('path', $dir . '%');
 
         return ReadWriteBatchIteratorAggregate::fromQuery($query, 25);
+    }
+
+    /**
+     * @param int[] $playlists
+     * @return void
+     */
+    public function writePlaylistChanges(
+        array $playlists
+    ): void {
+        foreach (array_unique($playlists) as $playlistId) {
+            // Instruct the message queue to start a new "write playlist to file" task.
+            $message = new WritePlaylistFileMessage();
+            $message->playlist_id = $playlistId;
+
+            $this->messageBus->dispatch($message);
+        }
     }
 }

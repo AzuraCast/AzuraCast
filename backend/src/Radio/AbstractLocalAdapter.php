@@ -7,15 +7,19 @@ namespace App\Radio;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Entity\Api\LogType;
 use App\Entity\Station;
 use App\Exception\Supervisor\AlreadyRunningException;
 use App\Exception\Supervisor\NotRunningException;
 use App\Exception\SupervisorException;
 use App\Http\Router;
+use GuzzleHttp\Client;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Supervisor\Exception\Fault;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
 use Supervisor\SupervisorInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Throwable;
 
 abstract class AbstractLocalAdapter
 {
@@ -27,6 +31,7 @@ abstract class AbstractLocalAdapter
         protected SupervisorInterface $supervisor,
         protected EventDispatcherInterface $dispatcher,
         protected Router $router,
+        protected Client $httpClient,
     ) {
     }
 
@@ -44,15 +49,22 @@ abstract class AbstractLocalAdapter
             return false;
         }
 
-        $currentConfig = (is_file($configPath))
-            ? file_get_contents($configPath)
-            : null;
+        $fsUtils = new Filesystem();
 
-        $newConfig = $this->getCurrentConfiguration($station);
+        try {
+            $currentConfig = $fsUtils->readFile($configPath);
+        } catch (Throwable) {
+            $currentConfig = '';
+        }
 
-        file_put_contents($configPath, $newConfig);
+        $newConfig = $this->getCurrentConfiguration($station) ?? '';
 
-        return 0 !== strcmp($currentConfig ?: '', $newConfig ?: '');
+        $fsUtils->dumpFile(
+            $configPath,
+            $newConfig
+        );
+
+        return 0 !== strcmp($currentConfig, $newConfig);
     }
 
     /**
@@ -101,7 +113,7 @@ abstract class AbstractLocalAdapter
     public function isRunning(Station $station): bool
     {
         if (!$this->hasCommand($station)) {
-            return true;
+            return false;
         }
 
         $programName = $this->getSupervisorFullName($station);
@@ -120,7 +132,7 @@ abstract class AbstractLocalAdapter
      */
     public function hasCommand(Station $station): bool
     {
-        if ($this->environment->isTesting() || !$station->getIsEnabled()) {
+        if ($this->environment->isTesting() || !$station->is_enabled) {
             return false;
         }
 
@@ -129,12 +141,21 @@ abstract class AbstractLocalAdapter
 
     /**
      * Return the shell command required to run the program.
-     *
-     * @param Station $station
      */
     public function getCommand(Station $station): ?string
     {
         return null;
+    }
+
+    /**
+     * Return a list of environment variables to be attached to the process when it runs.
+     * Value is in the form of "Env var name" => "Env var value", both as strings.
+     *
+     * @return array<string, string>
+     */
+    public function getEnvironmentVariables(Station $station): array
+    {
+        return [];
     }
 
     /**
@@ -191,7 +212,7 @@ abstract class AbstractLocalAdapter
                 $this->supervisor->stopProcess($programName);
                 $this->logger->info(
                     'Adapter "' . static::class . '" stopped.',
-                    ['station_id' => $station->getId(), 'station_name' => $station->getName()]
+                    ['station_id' => $station->id, 'station_name' => $station->name]
                 );
             } catch (SupervisorLibException $e) {
                 $this->handleSupervisorException($e, $programName, $station);
@@ -216,7 +237,7 @@ abstract class AbstractLocalAdapter
                 $this->supervisor->startProcess($programName);
                 $this->logger->info(
                     'Adapter "' . static::class . '" started.',
-                    ['station_id' => $station->getId(), 'station_name' => $station->getName()]
+                    ['station_id' => $station->id, 'station_name' => $station->name]
                 );
             } catch (SupervisorLibException $e) {
                 $this->handleSupervisorException($e, $programName, $station);
@@ -239,10 +260,20 @@ abstract class AbstractLocalAdapter
         Station $station
     ): void {
         $eNew = SupervisorException::fromSupervisorLibException($e, $programName);
-        $eNew->addLoggingContext('station_id', $station->getId());
-        $eNew->addLoggingContext('station_name', $station->getName());
+        $eNew->addLoggingContext('station_id', $station->id);
+        $eNew->addLoggingContext('station_name', $station->name);
 
         throw $eNew;
+    }
+
+    /**
+     * Return the logs available for this adapter for the given station.
+     *
+     * @return LogType[]
+     */
+    public function getLogTypes(Station $station): array
+    {
+        return [];
     }
 
     /**

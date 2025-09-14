@@ -3,26 +3,29 @@
         id="leaflet-container"
         ref="$container"
     >
-        <slot
-            v-if="$map"
-            :map="$map"
-        />
+        <slot v-if="$map" :map="$map"/>
     </div>
 </template>
 
 <script setup lang="ts">
-import {onMounted, provide, ref, shallowRef, watch} from "vue";
-import {Control, Icon, map, tileLayer} from 'leaflet';
-import useTheme from "~/functions/theme";
-import 'leaflet-fullscreen';
-import {useTranslate} from "~/vendor/gettext";
+import {onMounted, shallowRef, useTemplateRef, watch} from "vue";
+import {Control, Icon, Map, map, tileLayer} from "leaflet";
+import {useTheme} from "~/functions/theme.ts";
+import "leaflet-fullscreen";
+import {useTranslate} from "~/vendor/gettext.ts";
+import {storeToRefs} from "pinia";
 
-const $container = ref<HTMLDivElement | null>(null);
-const $map = shallowRef(null);
+defineSlots<{
+    default: (props: {
+        map: Map
+    }) => any,
+}>();
 
-provide('map', $map);
+const $container = useTemplateRef('$container');
 
-const {currentTheme} = useTheme();
+const $map = shallowRef<Map | null>(null);
+
+const {currentTheme} = storeToRefs(useTheme());
 const {$gettext} = useTranslate();
 
 onMounted(() => {
@@ -30,7 +33,7 @@ onMounted(() => {
 
     // Init map
     const mapObj = map(
-        $container.value
+        $container.value!
     );
     mapObj.setView([40, 0], 1);
 
@@ -67,8 +70,8 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
-@import 'leaflet/dist/leaflet.css';
-@import 'leaflet-fullscreen/dist/leaflet.fullscreen.css';
+@import "leaflet/dist/leaflet.css";
+@import "leaflet-fullscreen/dist/leaflet.fullscreen.css";
 
 .leaflet-container {
     height: 300px;

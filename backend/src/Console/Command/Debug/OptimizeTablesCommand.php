@@ -34,7 +34,7 @@ final class OptimizeTablesCommand extends CommandAbstract
             $table = reset($tableRow);
 
             $io->listing([$table]);
-            $this->db->executeQuery('OPTIMIZE TABLE ' . $this->db->quoteIdentifier($table));
+            $this->db->executeQuery('OPTIMIZE TABLE ' . $this->db->quoteSingleIdentifier($table));
         }
 
         $io->success('All tables optimized.');

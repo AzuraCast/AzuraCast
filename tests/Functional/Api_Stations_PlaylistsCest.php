@@ -22,7 +22,7 @@ class Api_Stations_PlaylistsCest extends CestAbstract
 
         $this->testCrudApi(
             $I,
-            '/api/station/' . $station->getId() . '/playlists',
+            '/api/station/' . $station->id . '/playlists',
             [
                 'name' => 'General Rotation Playlist',
                 'source' => PlaylistSources::Songs->value,

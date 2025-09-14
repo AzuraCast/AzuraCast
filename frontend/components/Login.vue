@@ -139,30 +139,18 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
-import {IconMail, IconVpnKey} from "~/components/Common/icons.ts";
-import useWebAuthn from "~/functions/useWebAuthn.ts";
+import Icon from "~/components/Common/Icons/Icon.vue";
+import {IconMail, IconVpnKey} from "~/components/Common/Icons/icons.ts";
+import useWebAuthn, {ProcessedValidateResponse} from "~/functions/useWebAuthn.ts";
 import {useAxios} from "~/vendor/axios.ts";
-import {nextTick, onMounted, ref} from "vue";
+import {nextTick, onMounted, ref, useTemplateRef} from "vue";
 
-const props = defineProps({
-    hideProductName: {
-        type: Boolean,
-        default: true
-    },
-    instanceName: {
-        type: String,
-        default: null
-    },
-    forgotPasswordUrl: {
-        type: String,
-        default: null
-    },
-    webAuthnUrl: {
-        type: String,
-        default: null
-    }
-});
+const props = defineProps<{
+    hideProductName: boolean,
+    instanceName: string,
+    forgotPasswordUrl: string,
+    webAuthnUrl: string,
+}>();
 
 const {
     isSupported: passkeySupported,
@@ -172,12 +160,12 @@ const {
 
 const {axios} = useAxios();
 
-const $webAuthnForm = ref<HTMLFormElement | null>(null);
+const $webAuthnForm = useTemplateRef('$webAuthnForm');
 
 const validateArgs = ref<object | null>(null);
 const validateData = ref<string | null>(null);
 
-const handleValidationResponse = async (validateResp) => {
+const handleValidationResponse = async (validateResp: ProcessedValidateResponse) => {
     validateData.value = JSON.stringify(validateResp);
     await nextTick();
     $webAuthnForm.value?.submit();
@@ -185,7 +173,7 @@ const handleValidationResponse = async (validateResp) => {
 
 const logInWithPasskey = async () => {
     if (validateArgs.value === null) {
-        validateArgs.value = await axios.get(props.webAuthnUrl).then(r => r.data);
+        validateArgs.value = (await axios.get<object>(props.webAuthnUrl)).data;
     }
 
     try {
@@ -203,7 +191,7 @@ onMounted(async () => {
     }
 
     // Call WebAuthn authentication
-    validateArgs.value = await axios.get(props.webAuthnUrl).then(r => r.data);
+    validateArgs.value = (await axios.get<object>(props.webAuthnUrl)).data;
 
     try {
         const validateResp = await doValidate(validateArgs.value, true);

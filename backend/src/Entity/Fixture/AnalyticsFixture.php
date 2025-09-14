@@ -7,7 +7,7 @@ namespace App\Entity\Fixture;
 use App\Entity\Analytics;
 use App\Entity\Enums\AnalyticsIntervals;
 use App\Entity\Station;
-use Carbon\CarbonImmutable;
+use App\Utilities\Time;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -18,7 +18,7 @@ final class AnalyticsFixture extends AbstractFixture implements DependentFixture
     {
         $stations = $manager->getRepository(Station::class)->findAll();
 
-        $midnightUtc = CarbonImmutable::now('UTC')->setTime(0, 0);
+        $midnightUtc = Time::nowUtc()->setTime(0, 0);
 
         for ($i = 1; $i <= 14; $i++) {
             $day = $midnightUtc->subDays($i);

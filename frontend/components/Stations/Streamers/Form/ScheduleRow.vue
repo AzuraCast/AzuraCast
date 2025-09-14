@@ -24,16 +24,15 @@
                 <form-group-field
                     :id="'edit_form_start_time_'+index"
                     class="col-md-4"
-                    :field="v$.start_time"
+                    :field="r$.start_time"
                 >
                     <template #label>
                         {{ $gettext('Start Time') }}
                     </template>
-                    <template #default="slotProps">
+                    <template #default="{id, model}">
                         <playlist-time
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            :state="slotProps.state"
+                            :id="id"
+                            v-model="model.$model"
                         />
                     </template>
                 </form-group-field>
@@ -41,7 +40,7 @@
                 <form-group-field
                     :id="'edit_form_end_time_'+index"
                     class="col-md-4"
-                    :field="v$.end_time"
+                    :field="r$.end_time"
                 >
                     <template #label>
                         {{ $gettext('End Time') }}
@@ -51,11 +50,10 @@
                             $gettext('If the end time is before the start time, the schedule entry will continue overnight.')
                         }}
                     </template>
-                    <template #default="slotProps">
+                    <template #default="{id, model}">
                         <playlist-time
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            :state="slotProps.state"
+                            :id="id"
+                            v-model="model.$model"
                         />
                     </template>
                 </form-group-field>
@@ -74,7 +72,7 @@
                 <form-group-field
                     :id="'edit_form_start_date_'+index"
                     class="col-md-4"
-                    :field="v$.start_date"
+                    :field="r$.start_date"
                     input-type="date"
                     :label="$gettext('Start Date')"
                     :description="$gettext('To set this schedule to run only within a certain date range, specify a start and end date.')"
@@ -83,7 +81,7 @@
                 <form-group-field
                     :id="'edit_form_end_date_'+index"
                     class="col-md-4"
-                    :field="v$.end_date"
+                    :field="r$.end_date"
                     input-type="date"
                     :label="$gettext('End Date')"
                 />
@@ -91,7 +89,7 @@
                 <form-group-multi-check
                     :id="'edit_form_days_'+index"
                     class="col-md-4"
-                    :field="v$.days"
+                    :field="r$.days"
                     :options="dayOptions"
                     stacked
                     :label="$gettext('Scheduled Play Days of Week')"
@@ -103,40 +101,44 @@
 </template>
 
 <script setup lang="ts">
-import PlaylistTime from '~/components/Common/TimeCode.vue';
-import Icon from "~/components/Common/Icon.vue";
+import PlaylistTime from "~/components/Common/TimeCode.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {required} from "@vuelidate/validators";
-import useVuelidate from "@vuelidate/core";
+import {required} from "@regle/rules";
 import {toRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
-import {IconRemove} from "~/components/Common/icons";
+import {IconRemove} from "~/components/Common/Icons/icons.ts";
+import {useAppScopedRegle} from "~/vendor/regle.ts";
 
-const props = defineProps({
-    index: {
-        type: Number,
-        required: true
-    },
-    row: {
-        type: Object,
-        required: true
-    }
-});
+interface PlaylistScheduleRow {
+    start_time: number,
+    end_time: number,
+    start_date: string,
+    end_date: string,
+    days: number[],
+}
 
-const emit = defineEmits(['remove']);
+const props = defineProps<{
+    index: number,
+    row: PlaylistScheduleRow,
+}>();
 
-const v$ = useVuelidate(
+const emit = defineEmits<{
+    (e: 'remove'): void
+}>();
+
+const {r$} = useAppScopedRegle(
+    toRef(props, 'row'),
     {
-        'start_time': {required},
-        'end_time': {required},
-        'start_date': {},
-        'end_date': {},
-        'days': {}
+        start_time: {required},
+        end_time: {required},
     },
-    toRef(props, 'row')
+    {
+        namespace: 'stations-streamers'
+    }
 );
 
 const {$gettext} = useTranslate();

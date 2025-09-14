@@ -29,7 +29,8 @@ final class TwoFactorAction implements SingleActionInterface
                 $user = $auth->getUser();
 
                 $flash->success(
-                    '<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(),
+                    message: $user->email,
+                    title: __('Logged in successfully.'),
                 );
 
                 $referrer = Types::stringOrNull($request->getSession()->get('login_referrer'), true);
@@ -39,7 +40,8 @@ final class TwoFactorAction implements SingleActionInterface
             }
 
             $flash->error(
-                '<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),
+                message: __('Your credentials could not be verified.'),
+                title: __('Login unsuccessful')
             );
 
             return $response->withRedirect((string)$request->getUri());

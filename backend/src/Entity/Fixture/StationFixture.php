@@ -15,25 +15,25 @@ final class StationFixture extends AbstractFixture
     public function load(ObjectManager $manager): void
     {
         $station = new Station();
-        $station->setName('AzuraTest Radio');
-        $station->setDescription('A test radio station.');
-        $station->setEnableRequests(true);
-        $station->setFrontendType(FrontendAdapters::Icecast);
-        $station->setBackendType(BackendAdapters::Liquidsoap);
-        $station->setEnableHls(true);
-        $station->setRadioBaseDir('/var/azuracast/stations/azuratest_radio');
-        $station->setHasStarted(true);
+        $station->name = 'AzuraTest Radio';
+        $station->description = 'A test radio station.';
+        $station->enable_requests = true;
+        $station->frontend_type = FrontendAdapters::Icecast;
+        $station->backend_type = BackendAdapters::Liquidsoap;
+        $station->enable_hls = true;
+        $station->radio_base_dir = '/var/azuracast/stations/azuratest_radio';
+        $station->has_started = true;
         $station->ensureDirectoriesExist();
 
-        $mediaStorage = $station->getMediaStorageLocation();
-        $recordingsStorage = $station->getRecordingsStorageLocation();
-        $podcastsStorage = $station->getPodcastsStorageLocation();
+        $mediaStorage = $station->media_storage_location;
+        $recordingsStorage = $station->recordings_storage_location;
+        $podcastsStorage = $station->podcasts_storage_location;
 
         $stationQuota = getenv('INIT_STATION_QUOTA');
         if (!empty($stationQuota)) {
-            $mediaStorage->setStorageQuota($stationQuota);
-            $recordingsStorage->setStorageQuota($stationQuota);
-            $podcastsStorage->setStorageQuota($stationQuota);
+            $mediaStorage->storageQuota = $stationQuota;
+            $recordingsStorage->storageQuota = $stationQuota;
+            $podcastsStorage->storageQuota = $stationQuota;
         }
 
         $manager->persist($station);

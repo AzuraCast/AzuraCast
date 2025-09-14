@@ -1,4 +1,4 @@
-import NProgress from 'nprogress';
+import NProgress from "nprogress";
 
 export function useNProgress() {
     const showLoading = () => {

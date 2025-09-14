@@ -9,6 +9,7 @@ use App\Controller\SingleActionInterface;
 use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
 
 final class PodcastsAction implements SingleActionInterface
@@ -22,16 +23,18 @@ final class PodcastsAction implements SingleActionInterface
     ): ResponseInterface {
         $station = $request->getStation();
 
-        if (!$station->getEnablePublicPage()) {
+        if (!$station->enable_public_page) {
             throw NotFoundException::station();
         }
 
         $isEmbedded = $this->isEmbedded($request, $params);
 
-        $pageClass = 'podcasts station-' . $station->getShortName();
+        $pageClass = 'podcasts station-' . $station->short_name;
         if ($isEmbedded) {
             $pageClass .= ' embed';
         }
+
+        $groupLayout = Types::string($request->getQueryParam('layout'), 'table', true);
 
         $router = $request->getRouter();
         $view = $request->getView();
@@ -49,13 +52,17 @@ final class PodcastsAction implements SingleActionInterface
             component: 'Public/Podcasts',
             id: 'podcast',
             layout: 'minimal',
-            title: 'Podcasts - ' . $station->getName(),
+            title: 'Podcasts - ' . $station->name,
             layoutParams: [
                 'page_class' => $pageClass,
                 'hide_footer' => $isEmbedded,
             ],
             props: [
+                'stationId' => $station->id,
+                'stationName' => $station->name,
+                'stationTz' => $station->timezone,
                 'baseUrl' => $router->fromHere('public:index'),
+                'groupLayout' => $groupLayout,
             ],
         );
     }

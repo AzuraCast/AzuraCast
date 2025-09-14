@@ -6,6 +6,9 @@ namespace App\Controller\Api\Stations\Streamers;
 
 use App\Controller\Api\AbstractApiCrudController;
 use App\Entity\Api\Error;
+use App\Entity\Api\StationStreamer as ApiStationStreamer;
+use App\Entity\Api\StationStreamerBroadcast as ApiStationStreamerBroadcast;
+use App\Entity\Api\StationStreamerBroadcastRecording;
 use App\Entity\Api\Status;
 use App\Entity\Station;
 use App\Entity\StationStreamer;
@@ -13,9 +16,12 @@ use App\Entity\StationStreamerBroadcast;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Paginator;
 use App\Utilities\File;
+use App\Utilities\Time;
 use App\Utilities\Types;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -23,6 +29,117 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * @extends AbstractApiCrudController<StationStreamerBroadcast>
  */
+#[
+    OA\Get(
+        path: '/station/{station_id}/streamers/broadcasts',
+        operationId: 'getStationAllBroadcasts',
+        summary: 'List all broadcasts associated with the station.',
+        tags: [OpenApi::TAG_STATIONS_STREAMERS],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(
+                        ref: ApiStationStreamerBroadcast::class
+                    )
+                )
+            ),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    ),
+    OA\Get(
+        path: '/station/{station_id}/streamer/{id}/broadcasts',
+        operationId: 'getStationStreamerBroadcasts',
+        summary: 'List all broadcasts associated with the specified streamer.',
+        tags: [OpenApi::TAG_STATIONS_STREAMERS],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+            new OA\Parameter(
+                name: 'id',
+                description: 'Streamer ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(
+                        ref: ApiStationStreamerBroadcast::class
+                    )
+                )
+            ),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    ),
+    OA\Get(
+        path: '/station/{station_id}/streamer/{id}/broadcast/{broadcast_id}/download',
+        operationId: 'getStationStreamerDownloadBroadcast',
+        summary: 'Download a single broadcast from a streamer.',
+        tags: [OpenApi::TAG_STATIONS_STREAMERS],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+            new OA\Parameter(
+                name: 'id',
+                description: 'Streamer ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+            new OA\Parameter(
+                name: 'broadcast_id',
+                description: 'Broadcast ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OpenApi\Response\SuccessWithDownload(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    ),
+    OA\Delete(
+        path: '/station/{station_id}/streamer/{id}/broadcast/{broadcast_id}',
+        operationId: 'getStationStreamerDeleteBroadcast',
+        summary: 'Remove a single broadcast from a streamer.',
+        tags: [OpenApi::TAG_STATIONS_STREAMERS],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+            new OA\Parameter(
+                name: 'id',
+                description: 'Streamer ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+            new OA\Parameter(
+                name: 'broadcast_id',
+                description: 'Broadcast ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 class BroadcastsController extends AbstractApiCrudController
 {
     protected string $entityClass = StationStreamerBroadcast::class;
@@ -80,45 +197,44 @@ class BroadcastsController extends AbstractApiCrudController
         $fsRecordings = $this->stationFilesystems->getRecordingsFilesystem($station);
 
         $paginator->setPostprocessor(
-            function ($row) use ($id, $router, $isInternal, $fsRecordings) {
-                $return = $this->toArray($row);
-
-                unset($return['recordingPath']);
-                $recordingPath = $row->getRecordingPath();
+            function (StationStreamerBroadcast $row) use ($id, $router, $isInternal, $fsRecordings) {
+                $return = new ApiStationStreamerBroadcast(
+                    $row->id,
+                    $row->timestampStart->format(Time::JS_ISO8601_FORMAT),
+                    $row->timestampEnd?->format(Time::JS_ISO8601_FORMAT)
+                );
 
                 if (null === $id) {
-                    $streamer = $row->getStreamer();
-                    $return['streamer'] = [
-                        'id' => $streamer->getId(),
-                        'streamer_username' => $streamer->getStreamerUsername(),
-                        'display_name' => $streamer->getDisplayName(),
-                    ];
+                    $streamer = $row->streamer;
+                    $return->streamer = new ApiStationStreamer(
+                        $streamer->id,
+                        $streamer->streamer_username,
+                        $streamer->display_name
+                    );
                 }
 
                 $routeParams = [
-                    'broadcast_id' => $row->getId(),
+                    'broadcast_id' => $row->id,
                 ];
                 if (null === $id) {
-                    $routeParams['id'] = $row->getStreamer()->getId();
+                    $routeParams['id'] = $row->streamer->id;
                 }
+
+                $recordingPath = $row->recordingPath;
 
                 if (!empty($recordingPath) && $fsRecordings->fileExists($recordingPath)) {
-                    $return['recording'] = [
-                        'path' => $recordingPath,
-                        'size' => $fsRecordings->fileSize($recordingPath),
-                        'links' => [
-                            'download' => $router->fromHere(
-                                routeName: 'api:stations:streamer:broadcast:download',
-                                routeParams: $routeParams,
-                                absolute: !$isInternal
-                            ),
-                        ],
-                    ];
-                } else {
-                    $return['recording'] = [];
+                    $return->recording = new StationStreamerBroadcastRecording(
+                        $recordingPath,
+                        $fsRecordings->fileSize($recordingPath),
+                        $router->fromHere(
+                            routeName: 'api:stations:streamer:broadcast:download',
+                            routeParams: $routeParams,
+                            absolute: !$isInternal
+                        )
+                    );
                 }
 
-                $return['links'] = [
+                $return->links = [
                     'delete' => $router->fromHere(
                         routeName: 'api:stations:streamer:broadcast:delete',
                         routeParams: $routeParams,
@@ -146,7 +262,7 @@ class BroadcastsController extends AbstractApiCrudController
                 ->withJson(Error::notFound());
         }
 
-        $recordingPath = $broadcast->getRecordingPath();
+        $recordingPath = $broadcast->recordingPath;
 
         if (empty($recordingPath)) {
             return $response->withStatus(400)
@@ -160,7 +276,7 @@ class BroadcastsController extends AbstractApiCrudController
         return $response->streamFilesystemFile(
             $fsRecordings,
             $recordingPath,
-            File::sanitizeFileName($broadcast->getStreamer()->getDisplayName()) . '_' . $filename
+            File::sanitizeFileName($broadcast->streamer->display_name) . '_' . $filename
         );
     }
 
@@ -177,7 +293,7 @@ class BroadcastsController extends AbstractApiCrudController
                 ->withJson(Error::notFound());
         }
 
-        $recordingPath = $broadcast->getRecordingPath();
+        $recordingPath = $broadcast->recordingPath;
 
         if (!empty($recordingPath)) {
             $fsRecordings = $this->stationFilesystems->getRecordingsFilesystem($station);

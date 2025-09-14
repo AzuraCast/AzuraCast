@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'podcast_category'),
     Attributes\Auditable
 ]
-class PodcastCategory implements IdentifiableEntityInterface
+final class PodcastCategory implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -22,38 +22,26 @@ class PodcastCategory implements IdentifiableEntityInterface
 
     #[ORM\ManyToOne(inversedBy: 'categories')]
     #[ORM\JoinColumn(name: 'podcast_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    protected Podcast $podcast;
+    public readonly Podcast $podcast;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    protected string $category;
+    public readonly string $category;
+
+    public string $title {
+        get => (explode(self::CATEGORY_SEPARATOR, $this->category))[0];
+    }
+
+    public ?string $subtitle {
+        get => (str_contains($this->category, self::CATEGORY_SEPARATOR))
+            ? (explode(self::CATEGORY_SEPARATOR, $this->category))[1]
+            : null;
+    }
 
     public function __construct(Podcast $podcast, string $category)
     {
         $this->podcast = $podcast;
         $this->category = $this->truncateString($category);
-    }
-
-    public function getPodcast(): Podcast
-    {
-        return $this->podcast;
-    }
-
-    public function getCategory(): string
-    {
-        return $this->category;
-    }
-
-    public function getTitle(): string
-    {
-        return (explode(self::CATEGORY_SEPARATOR, $this->category))[0];
-    }
-
-    public function getSubTitle(): ?string
-    {
-        return (str_contains($this->category, self::CATEGORY_SEPARATOR))
-            ? (explode(self::CATEGORY_SEPARATOR, $this->category))[1]
-            : null;
     }
 
     /**

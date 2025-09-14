@@ -9,12 +9,32 @@ use App\Controller\Api\Traits\AcceptsDateRange;
 use App\Entity\AuditLog;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Paginator;
 use App\Utilities\Types;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-use const JSON_PRETTY_PRINT;
-
+#[
+    OA\Get(
+        path: '/admin/auditlog',
+        operationId: 'getAuditlog',
+        summary: 'List all Audit Log actions that have taken place on the installation.',
+        tags: [OpenApi::TAG_ADMIN],
+        responses: [
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(
+                        ref: AuditLog::class
+                    )
+                )
+            ),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class AuditLogAction
 {
     use AcceptsDateRange;
@@ -25,20 +45,18 @@ final class AuditLogAction
         Response $response
     ): ResponseInterface {
         $dateRange = $this->getDateRange($request);
-        $start = $dateRange->getStart();
-        $end = $dateRange->getEnd();
-
         $qb = $this->em->createQueryBuilder();
 
         $qb->select('a')
             ->from(AuditLog::class, 'a')
             ->andWhere('a.timestamp >= :start AND a.timestamp <= :end')
-            ->setParameter('start', $start->getTimestamp())
-            ->setParameter('end', $end->getTimestamp());
+            ->setParameter('start', $dateRange->start)
+            ->setParameter('end', $dateRange->end);
 
         $searchPhrase = trim(
             Types::string($request->getQueryParam('searchPhrase'))
         );
+
         if (!empty($searchPhrase)) {
             $qb->andWhere('(a.user LIKE :query OR a.identifier LIKE :query OR a.target LIKE :query)')
                 ->setParameter('query', '%' . $searchPhrase . '%');
@@ -47,43 +65,6 @@ final class AuditLogAction
         $qb->orderBy('a.timestamp', 'DESC');
 
         $paginator = Paginator::fromQueryBuilder($qb, $request);
-
-        $paginator->setPostprocessor(
-            function (AuditLog $row) {
-                $changesRaw = $row->getChanges();
-                $changes = [];
-
-                foreach ($changesRaw as $fieldName => [$fieldPrevious, $fieldNew]) {
-                    $changes[] = [
-                        'field' => $fieldName,
-                        'from' => json_encode(
-                            $fieldPrevious,
-                            JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT
-                        ),
-                        'to' => json_encode(
-                            $fieldNew,
-                            JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT
-                        ),
-                    ];
-                }
-
-                $operation = $row->getOperation();
-
-                return [
-                    'id' => $row->getId(),
-                    'timestamp' => $row->getTimestamp(),
-                    'operation' => $operation->value,
-                    'operation_text' => $operation->getName(),
-                    'class' => $row->getClass(),
-                    'identifier' => $row->getIdentifier(),
-                    'target_class' => $row->getTargetClass(),
-                    'target' => $row->getTarget(),
-                    'user' => $row->getUser(),
-                    'changes' => $changes,
-                ];
-            }
-        );
-
         return $paginator->write($response);
     }
 }

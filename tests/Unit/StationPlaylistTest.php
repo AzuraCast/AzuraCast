@@ -34,15 +34,15 @@ class StationPlaylistTest extends Unit
         $station = Mockery::mock(Station::class);
 
         $playlist = new StationPlaylist($station);
-        $playlist->setName('Test Playlist');
+        $playlist->name = 'Test Playlist';
 
         // Sample playlist that plays from 10PM to 4AM the next day.
         $scheduleEntry = new StationSchedule($playlist);
-        $scheduleEntry->setStartTime(2200);
-        $scheduleEntry->setEndTime(400);
-        $scheduleEntry->setDays([1, 2, 3]); // Monday, Tuesday, Wednesday
+        $scheduleEntry->start_time = 2200;
+        $scheduleEntry->end_time = 400;
+        $scheduleEntry->days = [1, 2, 3]; // Monday, Tuesday, Wednesday
 
-        $playlist->getScheduleItems()->add($scheduleEntry);
+        $playlist->schedule_items->add($scheduleEntry);
 
         $utc = new DateTimeZone('UTC');
         $testMonday = CarbonImmutable::create(2018, 1, 15, 0, 0, 0, $utc);
@@ -75,22 +75,22 @@ class StationPlaylistTest extends Unit
         $station = Mockery::mock(Station::class);
 
         $playlist = new StationPlaylist($station);
-        $playlist->setName('Test Playlist');
-        $playlist->setType(PlaylistTypes::OncePerXMinutes);
-        $playlist->setPlayPerMinutes(30);
+        $playlist->name = 'Test Playlist';
+        $playlist->type = PlaylistTypes::OncePerXMinutes;
+        $playlist->play_per_minutes = 30;
 
         $utc = new DateTimeZone('UTC');
         $testDay = CarbonImmutable::create(2018, 1, 15, 0, 0, 0, $utc);
 
         // Last played 20 minutes ago, SHOULD NOT play again.
         $lastPlayed = $testDay->addMinutes(0 - 20);
-        $playlist->setPlayedAt($lastPlayed->getTimestamp());
+        $playlist->played_at = $lastPlayed;
 
         self::assertFalse($this->scheduler->shouldPlaylistPlayNow($playlist, $testDay));
 
         // Last played 40 minutes ago, SHOULD play again.
         $lastPlayed = $testDay->addMinutes(0 - 40);
-        $playlist->setPlayedAt($lastPlayed->getTimestamp());
+        $playlist->played_at = $lastPlayed;
 
         self::assertTrue($this->scheduler->shouldPlaylistPlayNow($playlist, $testDay));
     }
@@ -101,9 +101,9 @@ class StationPlaylistTest extends Unit
         $station = Mockery::mock(Station::class);
 
         $playlist = new StationPlaylist($station);
-        $playlist->setName('Test Playlist');
-        $playlist->setType(PlaylistTypes::OncePerHour);
-        $playlist->setPlayPerHourMinute(50);
+        $playlist->name = 'Test Playlist';
+        $playlist->type = PlaylistTypes::OncePerHour;
+        $playlist->play_per_hour_minute = 50;
 
         $utc = new DateTimeZone('UTC');
         $testDay = CarbonImmutable::create(2018, 1, 15, 0, 0, 0, $utc);

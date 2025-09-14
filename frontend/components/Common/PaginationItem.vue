@@ -24,26 +24,23 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-    page: {
-        type: Number,
-        default: 1
-    },
-    label: {
-        type: String,
-        default: null
-    },
-    active: {
-        type: Boolean,
-        default: false
-    },
-    disabled: {
-        type: Boolean,
-        default: false
+const props = withDefaults(
+    defineProps<{
+        page?: number,
+        label?: string,
+        active?: boolean,
+        disabled?: boolean,
+    }>(),
+    {
+        page: 1,
+        active: false,
+        disabled: false,
     }
-});
+);
 
-const emit = defineEmits(['click']);
+const emit = defineEmits<{
+    (e: 'click', page: number): void
+}>();
 
 const onClick = () => {
     emit('click', props.page);

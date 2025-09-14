@@ -42,7 +42,8 @@ final class MasqueradeAction implements SingleActionInterface
         $auth->masqueradeAsUser($user);
 
         $request->getFlash()->success(
-            '<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(),
+            message: $user->email,
+            title: __('Logged in successfully.')
         );
 
         return $response->withRedirect($request->getRouter()->named('dashboard'));

@@ -21,9 +21,12 @@ final class NowPlayingCache
 {
     private const int NOWPLAYING_CACHE_TTL = 180;
 
+    private readonly CacheItemPoolInterface $cache;
+
     public function __construct(
-        private readonly CacheItemPoolInterface $cache
+        CacheItemPoolInterface $cache
     ) {
+        $this->cache = CacheNamespace::NowPlaying->withNamespace($cache);
     }
 
     public function setForStation(
@@ -32,7 +35,7 @@ final class NowPlayingCache
     ): void {
         $this->populateLookupCache($station);
 
-        $stationCacheItem = $this->getStationCache($station->getShortName());
+        $stationCacheItem = $this->getStationCache($station->short_name);
 
         $stationCacheItem->set($nowPlaying);
         $stationCacheItem->expiresAfter(self::NOWPLAYING_CACHE_TTL);
@@ -44,7 +47,7 @@ final class NowPlayingCache
     public function getForStation(string|Station $station): ?NowPlaying
     {
         if ($station instanceof Station) {
-            $station = $station->getShortName();
+            $station = $station->short_name;
         }
 
         $stationCacheItem = $this->getStationCache($station);
@@ -119,9 +122,7 @@ final class NowPlayingCache
 
     private function getLookupCache(): CacheItemInterface
     {
-        return $this->cache->getItem(
-            'now_playing.lookup'
-        );
+        return $this->cache->getItem('lookup');
     }
 
     private function populateLookupCache(
@@ -134,9 +135,9 @@ final class NowPlayingCache
             ? Types::array($lookupCacheItem->get())
             : [];
 
-        $lookupCache[$station->getIdRequired()] = [
-            'short_name' => $station->getShortName(),
-            'is_public' => $station->getEnablePublicPage(),
+        $lookupCache[$station->id] = [
+            'short_name' => $station->short_name,
+            'is_public' => $station->enable_public_page,
             'updated_at' => $updated ?? time(),
         ];
 
@@ -156,10 +157,6 @@ final class NowPlayingCache
             }
         }
 
-        return $this->cache->getItem(
-            urlencode(
-                'now_playing.station_' . $identifier
-            )
-        );
+        return $this->cache->getItem(urlencode('station_' . $identifier));
     }
 }

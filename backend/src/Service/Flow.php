@@ -45,7 +45,7 @@ final class Flow
     public static function process(
         ServerRequest $request,
         Response $response,
-        string $tempDir = null
+        ?string $tempDir = null
     ): UploadedFile|ResponseInterface {
         if (null === $tempDir) {
             $tempDir = sys_get_temp_dir() . '/uploads';
@@ -70,7 +70,7 @@ final class Flow
         $targetSize = (int)($params['flowTotalSize'] ?? 0);
         $targetChunks = (int)($params['flowTotalChunks']);
 
-        $flowFilename = $params['flowFilename'] ?? ($flowIdentifier);
+        $flowFilename = $params['flowRelativePath'] ?? $params['flowFilename'] ?? $flowIdentifier;
 
         // init the destination file (format <filename.ext>.part<#chunk>
         $chunkBaseDir = $tempDir . '/' . $flowIdentifier;

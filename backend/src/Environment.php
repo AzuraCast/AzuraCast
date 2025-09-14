@@ -6,16 +6,19 @@ namespace App;
 
 use App\Enums\ApplicationEnvironment;
 use App\Enums\ReleaseChannel;
+use App\Installer\EnvFiles\AzuraCastEnvFile;
 use App\Radio\Configuration;
+use App\Traits\AvailableStaticallyTrait;
 use App\Utilities\File;
 use App\Utilities\Types;
+use Exception;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LogLevel;
 
 final class Environment
 {
-    private static Environment $instance;
+    use AvailableStaticallyTrait;
 
     // Cached immutable values that are frequently used.
     private readonly string $baseDir;
@@ -72,6 +75,7 @@ final class Environment
     public const string ENABLE_REDIS = 'ENABLE_REDIS';
     public const string REDIS_HOST = 'REDIS_HOST';
     public const string REDIS_PORT = 'REDIS_PORT';
+    public const string REDIS_DB = 'REDIS_DB';
 
     public function __construct(array $elements = [])
     {
@@ -80,7 +84,18 @@ final class Environment
         $this->parentDir = dirname($this->baseDir);
         $this->isDocker = file_exists($this->parentDir . '/.docker');
 
-        $this->data = $elements;
+        if (! $this->isDocker) {
+            try {
+                $azuracastEnvPath = AzuraCastEnvFile::buildPathFromBase($this->baseDir);
+                $azuracastEnv = AzuraCastEnvFile::fromEnvFile($azuracastEnvPath);
+                $this->data = array_merge($elements, $azuracastEnv->toArray());
+            } catch (Exception) {
+                $this->data = $elements;
+            }
+        } else {
+            $this->data = $elements;
+        }
+
         $this->appEnv = ApplicationEnvironment::tryFrom(
             Types::string($this->data[self::APP_ENV] ?? null, '', true)
         ) ?? ApplicationEnvironment::default();
@@ -166,7 +181,7 @@ final class Environment
         );
     }
 
-    public function getAssetUrl(): ?string
+    public function getAssetUrl(): string
     {
         return Types::string(
             $this->data[self::ASSET_URL] ?? null,
@@ -271,17 +286,14 @@ final class Environment
         );
     }
 
-    public function getNowPlayingDelayTime(): int
+    public function getNowPlayingDelayTime(): ?int
     {
-        return Types::int($this->data[self::NOW_PLAYING_DELAY_TIME] ?? null);
+        return Types::intOrNull($this->data[self::NOW_PLAYING_DELAY_TIME] ?? null);
     }
 
-    public function getNowPlayingMaxConcurrentProcesses(): int
+    public function getNowPlayingMaxConcurrentProcesses(): ?int
     {
-        return Types::int(
-            $this->data[self::NOW_PLAYING_MAX_CONCURRENT_PROCESSES] ?? null,
-            5
-        );
+        return Types::intOrNull($this->data[self::NOW_PLAYING_MAX_CONCURRENT_PROCESSES] ?? null);
     }
 
     /**
@@ -377,6 +389,7 @@ final class Environment
      * @return array{
      *     host: string,
      *     port: int,
+     *     db: int,
      *     socket?: string
      * }
      */
@@ -391,6 +404,9 @@ final class Environment
             'port' => Types::int(
                 $this->data[self::REDIS_PORT] ?? null,
                 6379
+            ),
+            'db' => Types::int(
+                $this->data[self::REDIS_DB] ?? null
             ),
         ];
 
@@ -452,15 +468,5 @@ final class Environment
             self::IS_CLI => $existingEnv->isCli(),
             self::IS_DOCKER => $existingEnv->isDocker(),
         ]);
-    }
-
-    public static function getInstance(): Environment
-    {
-        return self::$instance;
-    }
-
-    public static function setInstance(Environment $instance): void
-    {
-        self::$instance = $instance;
     }
 }

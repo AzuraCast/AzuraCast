@@ -1,21 +1,15 @@
 <template>
     <div class="radio-player-widget">
-        <audio-player
-            :title="np.now_playing.song.text"
-            :volume="volume"
-            :is-muted="isMuted"
-        />
-
         <div class="now-playing-details">
             <div
-                v-if="showAlbumArt && np.now_playing.song.art"
+                v-if="showAlbumArt && np.now_playing?.song?.art"
                 class="now-playing-art"
             >
                 <album-art :src="np.now_playing.song.art" />
             </div>
             <div class="now-playing-main">
                 <h6
-                    v-if="np.live.is_live"
+                    v-if="np.live?.is_live"
                     class="now-playing-live"
                 >
                     <span class="badge text-bg-primary me-2">
@@ -29,7 +23,7 @@
                         {{ offlineText ?? $gettext('Station Offline') }}
                     </h4>
                 </div>
-                <div v-else-if="np.now_playing.song.title !== ''">
+                <div v-else-if="np.now_playing?.song?.title">
                     <h4 class="now-playing-title">
                         {{ np.now_playing.song.title }}
                     </h4>
@@ -39,7 +33,7 @@
                 </div>
                 <div v-else>
                     <h4 class="now-playing-title">
-                        {{ np.now_playing.song.text }}
+                        {{ np.now_playing?.song?.text }}
                     </h4>
                 </div>
 
@@ -71,9 +65,7 @@
         <div class="radio-controls">
             <play-button
                 class="radio-control-play-button btn-xl"
-                :url="currentStream.url"
-                :is-hls="currentStream.hls"
-                is-stream
+                :stream="activeStream"
             />
 
             <div class="radio-control-select-stream">
@@ -89,7 +81,7 @@
                         aria-haspopup="true"
                         aria-expanded="false"
                     >
-                        {{ currentStream.name }}
+                        {{ activeStream.title }}
                         <span class="caret" />
                     </button>
                     <ul
@@ -98,21 +90,24 @@
                     >
                         <li
                             v-for="stream in streams"
-                            :key="stream.url"
+                            :key="stream.url ?? stream.title ?? 'Stream'"
                         >
                             <button
                                 type="button"
                                 class="dropdown-item"
-                                @click="switchStream(stream)"
+                                @click="setActiveStream(stream)"
                             >
-                                {{ stream.name }}
+                                {{ stream.title }}
                             </button>
                         </li>
                     </ul>
                 </div>
             </div>
 
-            <div class="radio-control-volume d-flex align-items-center">
+            <div
+                v-if="showVolume"
+                class="radio-control-volume d-flex align-items-center"
+            >
                 <div class="flex-shrink-0 mx-2">
                     <mute-button
                         class="p-0 text-secondary"
@@ -138,45 +133,52 @@
 </template>
 
 <script setup lang="ts">
-import AudioPlayer from '~/components/Common/AudioPlayer.vue';
-import PlayButton from "~/components/Common/PlayButton.vue";
-import {computed, nextTick, onMounted, ref, shallowRef, watch} from "vue";
+import PlayButton from "~/components/Common/Audio/PlayButton.vue";
+import {computed, nextTick, onMounted, ref, toRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
-import playerProps from "~/components/Public/playerProps";
-import MuteButton from "~/components/Common/MuteButton.vue";
+import MuteButton from "~/components/Common/Audio/MuteButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
-import {useAzuraCastStation} from "~/vendor/azuracast";
-import usePlayerVolume from "~/functions/usePlayerVolume";
-import {usePlayerStore} from "~/functions/usePlayerStore.ts";
+import {blankStreamDescriptor, StreamDescriptor, usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {useEventListener} from "@vueuse/core";
+import {ApiNowPlaying, ApiNowPlayingVueProps} from "~/entities/ApiInterfaces.ts";
+import {storeToRefs} from "pinia";
 
-const props = defineProps({
-    ...playerProps
+export interface PlayerProps {
+    nowPlayingProps: ApiNowPlayingVueProps,
+    offlineText?: string,
+    showHls?: boolean,
+    showAlbumArt?: boolean,
+    autoplay?: boolean
+}
+
+defineOptions({
+    inheritAttrs: false
 });
 
-const emit = defineEmits(['np_updated']);
+const props = withDefaults(
+    defineProps<PlayerProps>(),
+    {
+        showHls: true,
+        showAlbumArt: true,
+        autoplay: true
+    }
+);
 
-const {offlineText} = useAzuraCastStation();
+const emit = defineEmits<{
+    (e: 'np_updated', np: ApiNowPlaying): void
+}>();
 
 const {
     np,
     currentTrackPercent,
     currentTrackDurationDisplay,
     currentTrackElapsedDisplay
-} = useNowPlaying(props);
+} = useNowPlaying(toRef(props, 'nowPlayingProps'));
 
-interface CurrentStreamDescriptor {
-    name: string,
-    url: string,
-    hls: boolean,
-}
-
-const currentStream = shallowRef<CurrentStreamDescriptor>({
-    name: '',
-    url: '',
-    hls: false,
-});
+const playerStore = usePlayerStore();
+const {volume, showVolume, isMuted} = storeToRefs(playerStore);
+const {setVolume, toggleMute, toggle} = playerStore;
 
 const enableHls = computed(() => {
     return props.showHls && np.value?.station?.hls_enabled;
@@ -188,67 +190,57 @@ const hlsIsDefault = computed(() => {
 
 const {$gettext} = useTranslate();
 
-const streams = computed<CurrentStreamDescriptor[]>(() => {
-    const allStreams = [];
+const activeStream = ref<StreamDescriptor>(blankStreamDescriptor);
+
+const streams = computed<StreamDescriptor[]>(() => {
+    const allStreams: StreamDescriptor[] = [];
 
     if (enableHls.value) {
         allStreams.push({
-            name: $gettext('HLS'),
+            title: $gettext('HLS'),
             url: np.value?.station?.hls_url,
-            hls: true,
+            isStream: true,
+            isHls: true
         });
     }
 
-    np.value?.station?.mounts.forEach(function (mount) {
+    np.value?.station?.mounts?.forEach(function (mount) {
         allStreams.push({
-            name: mount.name,
+            title: mount.name ?? mount.url,
             url: mount.url,
-            hls: false,
+            isStream: true,
+            isHls: false
         });
     });
 
-    np.value?.station?.remotes.forEach(function (remote) {
+    np.value?.station?.remotes?.forEach(function (remote) {
         allStreams.push({
-            name: remote.name,
+            title: remote.name ?? remote.url,
             url: remote.url,
-            hls: false,
+            isStream: true,
+            isHls: false
         });
     });
 
     return allStreams;
 });
 
-const volume = usePlayerVolume();
+const setActiveStream = (newStream: StreamDescriptor): void => {
+    activeStream.value = newStream;
+    toggle(newStream);
+};
 
 const urlParamVolume = (new URL(document.location.href)).searchParams.get('volume');
 if (null !== urlParamVolume) {
-    volume.value = Number(urlParamVolume);
+    setVolume(Number(urlParamVolume));
 }
-
-const isMuted = ref(false);
-
-const toggleMute = () => {
-    isMuted.value = !isMuted.value;
-}
-
-const {toggle} = usePlayerStore();
-
-const switchStream = (new_stream: CurrentStreamDescriptor) => {
-    currentStream.value = new_stream;
-
-    toggle({
-        url: new_stream.url,
-        isStream: true,
-        isHls: new_stream.hls
-    });
-};
 
 if (props.autoplay) {
-    const stop = useEventListener(document, "now-playing", async () => {
-        await nextTick();
-
-        switchStream(currentStream.value);
-        stop();
+    const cleanupEvent = useEventListener(document, "now-playing", () => {
+        void nextTick(() => {
+            toggle(activeStream.value);
+            cleanupEvent();
+        });
     });
 }
 
@@ -256,22 +248,22 @@ onMounted(() => {
     document.dispatchEvent(new CustomEvent("player-ready"));
 });
 
-const onNowPlayingUpdated = (np_new) => {
+const onNowPlayingUpdated = (np_new: ApiNowPlaying) => {
     emit('np_updated', np_new);
 
     // Set a "default" current stream if none exists.
     const $streams = streams.value;
-    let $currentStream = currentStream.value;
+    let $currentStream: StreamDescriptor | null = activeStream.value;
 
-    if ($currentStream.url === '' && $streams.length > 0) {
+    if ($currentStream.url === null && $streams.length > 0) {
         if (hlsIsDefault.value) {
-            currentStream.value = $streams[0];
+            activeStream.value = $streams[0];
         } else {
             $currentStream = null;
 
-            if (np_new.station.listen_url !== '') {
+            if (np_new.station?.listen_url) {
                 $streams.forEach(function (stream) {
-                    if (stream.url === np_new.station.listen_url) {
+                    if (stream.url === np_new.station?.listen_url) {
                         $currentStream = stream;
                     }
                 });
@@ -281,7 +273,7 @@ const onNowPlayingUpdated = (np_new) => {
                 $currentStream = $streams[0];
             }
 
-            currentStream.value = $currentStream;
+            activeStream.value = $currentStream;
         }
     }
 };

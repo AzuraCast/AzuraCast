@@ -15,10 +15,13 @@
                     </h2>
                 </div>
 
-                <log-list
-                    :url="logsUrl"
-                    @view="viewLog"
-                />
+                <loading :loading="isLoading" lazy>
+                    <log-list
+                        v-if="data"
+                        :logs="data"
+                        @view="viewLog"
+                    />
+                </loading>
             </section>
 
             <streaming-log-modal ref="$modal" />
@@ -74,18 +77,38 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
 import LogList from "~/components/Common/LogList.vue";
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import {getStationApiUrl} from "~/router";
-import {IconSupport} from "~/components/Common/icons.ts";
+import {IconSupport} from "~/components/Common/Icons/icons.ts";
+import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import {useQuery} from "@tanstack/vue-query";
+import {ApiLogType} from "~/entities/ApiInterfaces.ts";
+import {useAxios} from "~/vendor/axios.ts";
+import Loading from "~/components/Common/Loading.vue";
 
 const logsUrl = getStationApiUrl('/logs');
 
-const $modal = ref<InstanceType<typeof StreamingLogModal> | null>(null);
+const {axios} = useAxios();
 
-const viewLog = (url, isStreaming) => {
+type ApiLogRow = Required<ApiLogType>
+
+const {data, isLoading} = useQuery<ApiLogRow[]>({
+    queryKey: queryKeyWithStation([
+        QueryKeys.StationLogs
+    ]),
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiLogRow[]>(logsUrl.value, {signal});
+        return data;
+    },
+    placeholderData: () => []
+});
+
+const $modal = useTemplateRef('$modal');
+
+const viewLog = (url: string, isStreaming: boolean) => {
     $modal.value?.show(url, isStreaming);
 };
 </script>

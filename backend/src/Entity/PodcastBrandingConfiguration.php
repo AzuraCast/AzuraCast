@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Doctrine\AbstractArrayEntity;
 use App\Utilities\Types;
+use OpenApi\Attributes as OA;
 
-class PodcastBrandingConfiguration extends AbstractStationConfiguration
+#[OA\Schema(schema: "PodcastBrandingConfiguration", type: "object")]
+final class PodcastBrandingConfiguration extends AbstractArrayEntity
 {
-    public const string PUBLIC_CUSTOM_HTML = 'public_custom_html';
-
-    public function getPublicCustomHtml(): ?string
-    {
-        return Types::stringOrNull($this->get(self::PUBLIC_CUSTOM_HTML), true);
+    #[OA\Property]
+    public ?string $public_custom_html = null {
+        set => Types::stringOrNull($value, true);
     }
 
-    public function setPublicCustomHtml(?string $html): void
-    {
-        $this->set(self::PUBLIC_CUSTOM_HTML, $html);
+    #[OA\Property]
+    public bool $enable_op3_prefix = false {
+        set(bool|string $value) => Types::bool($value, false, true);
     }
 }

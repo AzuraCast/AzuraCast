@@ -159,7 +159,7 @@ final class Auth
         }
 
         /** @var User|null $user */
-        $user = $this->userRepo->getRepository()->find($this->user->getId());
+        $user = $this->userRepo->getRepository()->find($this->user->id);
         return $user;
     }
 
@@ -178,9 +178,9 @@ final class Auth
             self::SESSION_IS_LOGIN_COMPLETE_KEY,
             (null !== $isLoginComplete)
                 ? $isLoginComplete
-                : null === $user->getTwoFactorSecret()
+                : null === $user->two_factor_secret
         );
-        $this->session->set(self::SESSION_USER_ID_KEY, $user->getId());
+        $this->session->set(self::SESSION_USER_ID_KEY, $user->id);
         $this->session->regenerate();
 
         $this->user = $user;
@@ -191,10 +191,7 @@ final class Auth
      */
     public function logout(): void
     {
-        if (isset($this->session) && $this->session instanceof SessionInterface) {
-            $this->session->clear();
-        }
-
+        $this->session->clear();
         $this->session->regenerate();
         $this->user = null;
     }
@@ -215,7 +212,7 @@ final class Auth
      */
     public function masqueradeAsUser(User $user): void
     {
-        $this->session->set(self::SESSION_MASQUERADE_USER_ID_KEY, $user->getId());
+        $this->session->set(self::SESSION_MASQUERADE_USER_ID_KEY, $user->id);
         $this->masqueraded_user = $user;
     }
 

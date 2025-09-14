@@ -4,19 +4,13 @@
         :loading="loading"
         :title="langTitle"
         :error="error"
-        :disable-save-button="v$.$invalid"
+        :disable-save-button="r$.$invalid"
         @submit="doSubmit"
         @hidden="clearContents"
     >
         <tabs>
-            <form-basic-info
-                v-model:form="form"
-                :is-edit-mode="isEditMode"
-            />
-            <form-schedule
-                v-model:schedule-items="form.schedule_items"
-                :form="v$"
-            />
+            <form-basic-info/>
+            <form-schedule v-model:schedule-items="form.schedule_items"/>
             <form-artwork
                 v-model="form.artwork_file"
                 :artwork-src="record.links.art"
@@ -28,65 +22,73 @@
 </template>
 
 <script setup lang="ts">
-import FormBasicInfo from './Form/BasicInfo.vue';
-import FormSchedule from './Form/Schedule.vue';
-import FormArtwork from './Form/Artwork.vue';
+import FormBasicInfo from "~/components/Stations/Streamers/Form/BasicInfo.vue";
+import FormSchedule from "~/components/Stations/Streamers/Form/Schedule.vue";
+import FormArtwork from "~/components/Stations/Streamers/Form/Artwork.vue";
 import mergeExisting from "~/functions/mergeExisting";
-import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, ref} from "vue";
+import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useResettableRef} from "~/functions/useResettableRef";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
+import {storeToRefs} from "pinia";
+import {useAppCollectScope} from "~/vendor/regle.ts";
+import {useStationsStreamersForm} from "~/components/Stations/Streamers/Form/form.ts";
 
-const props = defineProps({
-    ...baseEditModalProps,
-    newArtUrl: {
-        type: String,
-        required: true
-    },
-});
+interface StreamersEditModalProps extends BaseEditModalProps {
+    newArtUrl: string
+}
 
-const emit = defineEmits(['relist']);
+const props = defineProps<StreamersEditModalProps>();
 
-const $modal = ref<ModalFormTemplateRef>(null);
+const emit = defineEmits<BaseEditModalEmits>();
+
+const $modal = useTemplateRef('$modal');
 
 const {record, reset} = useResettableRef({
     has_custom_art: false,
-    links: {}
+    links: {
+        art: '',
+    }
 });
+
+const formStore = useStationsStreamersForm();
+const {form} = storeToRefs(formStore);
+const {$reset: resetForm, setEditMode} = formStore;
+
+const {r$} = useAppCollectScope('stations-playlists');
 
 const {
     loading,
     error,
     isEditMode,
-    form,
-    v$,
     clearContents,
     create,
     edit,
     doSubmit,
     close
 } = useBaseEditModal(
+    form,
     props,
     emit,
     $modal,
-    {},
-    {
-        schedule_items: [],
-        artwork_file: null
+    () => {
+        resetForm();
+        reset();
     },
+    async () => (await r$.$validate()).valid,
     {
-        resetForm: (originalResetForm) => {
-            originalResetForm();
-            reset();
-        },
         populateForm: (data, formRef) => {
-            record.value = data;
+            record.value = mergeExisting(record.value, data as typeof record.value);
             formRef.value = mergeExisting(formRef.value, data);
         },
     },
 );
+
+watch(isEditMode, (newValue) => {
+    setEditMode(newValue);
+});
 
 const {$gettext} = useTranslate();
 

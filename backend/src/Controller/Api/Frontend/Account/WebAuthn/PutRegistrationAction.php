@@ -10,10 +10,27 @@ use App\Entity\Api\Status;
 use App\Entity\UserPasskey;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Security\WebAuthnPasskey;
 use App\Utilities\Types;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[
+    OA\Put(
+        path: '/frontend/account/webauthn/register',
+        operationId: 'putAccountWebAuthnRegister',
+        summary: 'Submit a new registration request for WebAuthn.',
+        tags: [OpenApi::TAG_ACCOUNTS],
+        responses: [
+            // TODO API Response Body
+            new OpenApi\Response\Success(),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\NotFound(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )
+]
 final class PutRegistrationAction
 {
     use UsesWebAuthnTrait;

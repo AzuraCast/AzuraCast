@@ -4,10 +4,19 @@ declare(strict_types=1);
 
 namespace App\Media;
 
+/**
+ * @phpstan-import-type KnownTags from MetadataInterface
+ * @phpstan-import-type ExtraTags from MetadataInterface
+ */
 final class Metadata implements MetadataInterface
 {
-    /** @var array<string, mixed> */
-    private array $tags = [];
+    public const string MULTI_VALUE_SEPARATOR = ';';
+
+    /** @var KnownTags */
+    private array $knownTags = [];
+
+    /** @var ExtraTags */
+    private array $extraTags = [];
 
     private float $duration = 0.0;
 
@@ -15,19 +24,24 @@ final class Metadata implements MetadataInterface
 
     private string $mimeType = '';
 
-    public function getTags(): array
+    public function getKnownTags(): array
     {
-        return $this->tags;
+        return $this->knownTags;
     }
 
-    public function setTags(array $tags): void
+    public function setKnownTags(array $tags): void
     {
-        $this->tags = $tags;
+        $this->knownTags = $tags;
     }
 
-    public function addTag(string $key, mixed $value): void
+    public function getExtraTags(): array
     {
-        $this->tags[$key] = $value;
+        return $this->extraTags;
+    }
+
+    public function setExtraTags(array $tags): void
+    {
+        $this->extraTags = $tags;
     }
 
     public function getDuration(): float

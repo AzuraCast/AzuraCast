@@ -3,9 +3,9 @@
 // Original Definitions by: Denis Carriere <https://github.com/DenisCarriere>
 // Updated by : Paul Harwood <https://github.com/runette>
 
-import { ControlOptions } from 'leaflet';
+import {ControlOptions} from "leaflet";
 
-declare module 'leaflet' {
+declare module "leaflet" {
     interface MapOptions {
         fullscreenControl?: boolean | FullscreenOptions;
     }

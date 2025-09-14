@@ -41,12 +41,9 @@ import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
 
-const props = defineProps({
-    albumArtUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    albumArtUrl: string
+}>();
 
 const albumArtSrc = ref(props.albumArtUrl);
 const reloadArt = () => {
@@ -56,7 +53,7 @@ watch(toRef(props, 'albumArtUrl'), reloadArt);
 
 const {axios} = useAxios();
 
-const uploaded = (file) => {
+const uploaded = (file: File | null) => {
     if (null === file) {
         return;
     }
@@ -64,13 +61,13 @@ const uploaded = (file) => {
     const formData = new FormData();
     formData.append('art', file);
 
-    axios.post(props.albumArtUrl, formData).finally(() => {
+    void axios.post(props.albumArtUrl, formData).finally(() => {
         reloadArt();
     });
 };
 
 const deleteArt = () => {
-    axios.delete(props.albumArtUrl).finally(() => {
+    void axios.delete(props.albumArtUrl).finally(() => {
         reloadArt();
     });
 };

@@ -9,10 +9,10 @@ use App\Entity\StationPlaylist;
 use App\Entity\StationQueue;
 use Psr\Http\Message\UriInterface;
 
-final class StationQueueApiGenerator
+final readonly class StationQueueApiGenerator
 {
     public function __construct(
-        private readonly SongApiGenerator $songApiGenerator
+        private SongApiGenerator $songApiGenerator
     ) {
     }
 
@@ -22,29 +22,29 @@ final class StationQueueApiGenerator
         bool $allowRemoteArt = false
     ): NowPlayingStationQueue {
         $response = new NowPlayingStationQueue();
-        $response->cued_at = $record->getTimestampCued();
-        $response->played_at = $record->getTimestampPlayed();
-        $response->duration = (int)$record->getDuration();
-        $response->is_request = $record->getRequest() !== null;
+        $response->cued_at = $record->timestamp_cued->getTimestamp();
+        $response->played_at = $record->timestamp_played?->getTimestamp() ?? null;
+        $response->duration = $record->duration ?? 0.0;
+        $response->is_request = $record->request !== null;
 
-        if ($record->getPlaylist() instanceof StationPlaylist) {
-            $response->playlist = $record->getPlaylist()->getName();
+        if ($record->playlist instanceof StationPlaylist) {
+            $response->playlist = $record->playlist->name;
         } else {
             $response->playlist = '';
         }
 
-        $recordMedia = $record->getMedia();
+        $recordMedia = $record->media;
         if (null !== $recordMedia) {
             $response->song = ($this->songApiGenerator)(
                 song: $recordMedia,
-                station: $record->getStation(),
+                station: $record->station,
                 baseUri: $baseUri,
                 allowRemoteArt: $allowRemoteArt
             );
         } else {
             $response->song = ($this->songApiGenerator)(
                 song: $record,
-                station: $record->getStation(),
+                station: $record->station,
                 baseUri: $baseUri,
                 allowRemoteArt: $allowRemoteArt
             );

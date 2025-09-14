@@ -24,19 +24,6 @@ return static function (RouteCollectorProxy $app) {
         ->setName('account:endmasquerade')
         ->add(Middleware\RequireLogin::class);
 
-    $app->group(
-        '',
-        function (RouteCollectorProxy $group) {
-            $group->get('/dashboard', Controller\Frontend\DashboardAction::class)
-                ->setName('dashboard');
-
-            $group->get('/profile', Controller\Frontend\Profile\IndexAction::class)
-                ->setName('profile:index');
-        }
-    )->add(Middleware\Module\PanelLayout::class)
-        ->add(Middleware\EnableView::class)
-        ->add(Middleware\RequireLogin::class);
-
     $app->map(['GET', 'POST'], '/login', Controller\Frontend\Account\LoginAction::class)
         ->setName('account:login')
         ->add(Middleware\EnableView::class);
@@ -71,16 +58,12 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('setup:register');
 
             $group->map(['GET', 'POST'], '/station', Controller\Frontend\SetupController::class . ':stationAction')
-                ->setName('setup:station')
-                ->add(Middleware\Module\PanelLayout::class);
+                ->setName('setup:station');
 
             $group->map(['GET', 'POST'], '/settings', Controller\Frontend\SetupController::class . ':settingsAction')
-                ->setName('setup:settings')
-                ->add(Middleware\Module\PanelLayout::class);
+                ->setName('setup:settings');
         }
     )->add(Middleware\EnableView::class);
 
-    call_user_func(include(__DIR__ . '/admin.php'), $app);
-
-    call_user_func(include(__DIR__ . '/stations.php'), $app);
+    call_user_func(include(__DIR__ . '/dashboard.php'), $app);
 };

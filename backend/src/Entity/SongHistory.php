@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Interfaces\SongInterface;
-use App\Utilities\Types;
+use App\Utilities\Time;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
     ORM\Index(name: 'idx_timestamp_start', columns: ['timestamp_start']),
     ORM\Index(name: 'idx_timestamp_end', columns: ['timestamp_end'])
 ]
-class SongHistory implements
+final class SongHistory implements
     Interfaces\SongInterface,
     Interfaces\IdentifiableEntityInterface,
     Interfaces\StationAwareInterface
@@ -32,71 +33,90 @@ class SongHistory implements
 
     #[ORM\ManyToOne(inversedBy: 'history')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    protected Station $station;
+    public readonly Station $station;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    protected int $station_id;
+    public private(set) int $station_id;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
-    protected ?StationPlaylist $playlist = null;
+    public ?StationPlaylist $playlist = null;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    protected ?int $playlist_id = null;
+    public private(set) ?int $playlist_id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
-    protected ?StationStreamer $streamer = null;
+    public ?StationStreamer $streamer = null;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    protected ?int $streamer_id = null;
+    public private(set) ?int $streamer_id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
-    protected ?StationMedia $media = null;
+    public ?StationMedia $media = null {
+        set {
+            $this->media = $value;
 
+            if (null !== $value) {
+                $this->duration = $value->getCalculatedLength();
+            }
+        }
+    }
+
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    protected ?int $media_id = null;
+    public private(set) ?int $media_id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'request_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
-    protected ?StationRequest $request = null;
+    public ?StationRequest $request = null;
 
+    /* TODO Remove direct identifier access. */
     #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    protected ?int $request_id = null;
+    public private(set) ?int $request_id = null;
 
-    #[ORM\Column]
-    protected int $timestamp_start = 0;
+    #[ORM\Column(type: 'datetime_immutable', precision: 6)]
+    public readonly DateTimeImmutable $timestamp_start;
 
-    #[ORM\Column(nullable: true)]
-    protected ?int $duration = null;
-
-    #[ORM\Column(nullable: true)]
-    protected ?int $listeners_start = null;
-
-    #[ORM\Column]
-    protected int $timestamp_end = 0;
+    #[ORM\Column(type: 'float', nullable: true)]
+    public ?float $duration = null;
 
     #[ORM\Column(nullable: true)]
-    protected ?int $listeners_end = 0;
+    public ?int $listeners_start = null;
+
+    #[ORM\Column(type: 'datetime_immutable', precision: 6, nullable: true)]
+    public ?DateTimeImmutable $timestamp_end = null;
 
     #[ORM\Column(nullable: true)]
-    protected ?int $unique_listeners = 0;
+    public ?int $listeners_end = 0;
+
+    #[ORM\Column(nullable: true)]
+    public ?int $unique_listeners = 0;
 
     #[ORM\Column]
-    protected int $delta_total = 0;
+    public int $delta_total = 0 {
+        set => $this->truncateSmallInt($value);
+    }
 
     #[ORM\Column]
-    protected int $delta_positive = 0;
+    public int $delta_positive = 0 {
+        set => $this->truncateSmallInt($value);
+    }
 
     #[ORM\Column]
-    protected int $delta_negative = 0;
+    public int $delta_negative = 0 {
+        set => $this->truncateSmallInt($value);
+    }
 
     #[ORM\Column(type: 'json', nullable: true)]
-    protected mixed $delta_points = null;
+    public ?array $delta_points = null;
 
     #[ORM\Column]
-    protected bool $is_visible = true;
+    public bool $is_visible = true;
 
     public function __construct(
         Station $station,
@@ -104,175 +124,15 @@ class SongHistory implements
     ) {
         $this->setSong($song);
         $this->station = $station;
-    }
-
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
-    public function getPlaylist(): ?StationPlaylist
-    {
-        return $this->playlist;
-    }
-
-    public function setPlaylist(StationPlaylist $playlist = null): void
-    {
-        $this->playlist = $playlist;
-    }
-
-    public function getStreamer(): ?StationStreamer
-    {
-        return $this->streamer;
-    }
-
-    public function setStreamer(?StationStreamer $streamer): void
-    {
-        $this->streamer = $streamer;
-    }
-
-    public function getMedia(): ?StationMedia
-    {
-        return $this->media;
-    }
-
-    public function setMedia(?StationMedia $media = null): void
-    {
-        $this->media = $media;
-
-        if (null !== $media) {
-            $this->setDuration($media->getCalculatedLength());
-        }
-    }
-
-    public function getRequest(): ?StationRequest
-    {
-        return $this->request;
-    }
-
-    public function setRequest(?StationRequest $request): void
-    {
-        $this->request = $request;
-    }
-
-    public function getTimestampStart(): int
-    {
-        return $this->timestamp_start;
-    }
-
-    public function setTimestampStart(int $timestampStart): void
-    {
-        $this->timestamp_start = $timestampStart;
-    }
-
-    public function getDuration(): ?int
-    {
-        return $this->duration;
-    }
-
-    public function setDuration(?int $duration): void
-    {
-        $this->duration = $duration;
-    }
-
-    public function getListenersStart(): ?int
-    {
-        return $this->listeners_start;
-    }
-
-    public function setListenersStart(?int $listenersStart): void
-    {
-        $this->listeners_start = $listenersStart;
-    }
-
-    public function getTimestampEnd(): int
-    {
-        return $this->timestamp_end;
-    }
-
-    public function setTimestampEnd(int $timestampEnd): void
-    {
-        $this->timestamp_end = $timestampEnd;
-
-        if (!$this->duration) {
-            $this->duration = $timestampEnd - $this->timestamp_start;
-        }
-    }
-
-    public function getTimestamp(): int
-    {
-        return $this->timestamp_start;
-    }
-
-    public function getListenersEnd(): ?int
-    {
-        return $this->listeners_end;
-    }
-
-    public function setListenersEnd(?int $listenersEnd): void
-    {
-        $this->listeners_end = $listenersEnd;
-    }
-
-    public function getUniqueListeners(): ?int
-    {
-        return $this->unique_listeners;
-    }
-
-    public function setUniqueListeners(?int $uniqueListeners): void
-    {
-        $this->unique_listeners = $uniqueListeners;
-    }
-
-    public function getListeners(): int
-    {
-        return (int)$this->listeners_start;
-    }
-
-    public function getDeltaTotal(): int
-    {
-        return $this->delta_total;
-    }
-
-    public function setDeltaTotal(int $deltaTotal): void
-    {
-        $this->delta_total = $this->truncateSmallInt($deltaTotal);
-    }
-
-    public function getDeltaPositive(): int
-    {
-        return $this->delta_positive;
-    }
-
-    public function setDeltaPositive(int $deltaPositive): void
-    {
-        $this->delta_positive = $this->truncateSmallInt($deltaPositive);
-    }
-
-    public function getDeltaNegative(): int
-    {
-        return $this->delta_negative;
-    }
-
-    public function setDeltaNegative(int $deltaNegative): void
-    {
-        $this->delta_negative = $this->truncateSmallInt($deltaNegative);
-    }
-
-    /**
-     * @return int[]
-     */
-    public function getDeltaPoints(): array
-    {
-        return Types::array($this->delta_points);
+        $this->timestamp_start = Time::nowUtc();
     }
 
     public function addDeltaPoint(int $deltaPoint): void
     {
-        $deltaPoints = $this->getDeltaPoints();
+        $deltaPoints = $this->delta_points ?? [];
 
         if (0 === count($deltaPoints)) {
-            $this->setListenersStart($deltaPoint);
+            $this->listeners_start = $deltaPoint;
         }
 
         $deltaPoints[] = $deltaPoint;
@@ -286,7 +146,7 @@ class SongHistory implements
             return;
         }
 
-        $deltaPoints = $lastSong->getDeltaPoints();
+        $deltaPoints = $lastSong->delta_points ?? [];
 
         $lastDeltaPoint = array_pop($deltaPoints);
         if (null !== $lastDeltaPoint) {
@@ -294,40 +154,24 @@ class SongHistory implements
         }
     }
 
-    public function getIsVisible(): bool
-    {
-        return $this->is_visible;
-    }
-
-    public function setIsVisible(bool $isVisible): void
-    {
-        $this->is_visible = $isVisible;
-    }
-
     public function updateVisibility(): void
     {
-        $this->is_visible = !($this->playlist instanceof StationPlaylist) || !$this->playlist->getIsJingle();
-    }
-
-    /**
-     * @return bool Whether the record should be shown in APIs (i.e. is not a jingle)
-     */
-    public function showInApis(): bool
-    {
-        if ($this->playlist instanceof StationPlaylist) {
-            return !$this->playlist->getIsJingle();
-        }
-        return true;
+        $this->is_visible = !($this->playlist instanceof StationPlaylist) || !$this->playlist->is_jingle;
     }
 
     public function playbackEnded(): void
     {
-        $this->setTimestampEnd(time());
+        $nowUtc = Time::nowUtc();
+        $this->timestamp_end = $nowUtc;
 
-        $deltaPoints = (array)$this->getDeltaPoints();
+        if (!$this->duration) {
+            $this->duration = $nowUtc->diffInSeconds($this->timestamp_start, true);
+        }
+
+        $deltaPoints = (array)$this->delta_points;
 
         if (0 !== count($deltaPoints)) {
-            $this->setListenersEnd(end($deltaPoints));
+            $this->listeners_end = end($deltaPoints);
             reset($deltaPoints);
 
             $deltaPositive = 0;
@@ -350,14 +194,14 @@ class SongHistory implements
                 $previousDelta = $currentDelta;
             }
 
-            $this->setDeltaPositive((int)$deltaPositive);
-            $this->setDeltaNegative((int)$deltaNegative);
-            $this->setDeltaTotal((int)$deltaTotal);
+            $this->delta_positive = (int)$deltaPositive;
+            $this->delta_negative = (int)$deltaNegative;
+            $this->delta_total = (int)$deltaTotal;
         } else {
-            $this->setListenersEnd(0);
-            $this->setDeltaPositive(0);
-            $this->setDeltaNegative(0);
-            $this->setDeltaTotal(0);
+            $this->listeners_end = 0;
+            $this->delta_positive = 0;
+            $this->delta_negative = 0;
+            $this->delta_total = 0;
         }
     }
 
@@ -372,11 +216,11 @@ class SongHistory implements
 
     public static function fromQueue(StationQueue $queue): self
     {
-        $sh = new self($queue->getStation(), $queue);
-        $sh->setMedia($queue->getMedia());
-        $sh->setRequest($queue->getRequest());
-        $sh->setPlaylist($queue->getPlaylist());
-        $sh->setDuration($queue->getDuration());
+        $sh = new self($queue->station, $queue);
+        $sh->media = $queue->media;
+        $sh->request = $queue->request;
+        $sh->playlist = $queue->playlist;
+        $sh->duration = $queue->duration;
         $sh->updateVisibility();
 
         return $sh;

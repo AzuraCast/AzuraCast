@@ -1,7 +1,22 @@
-import {cloneDeep} from "lodash";
+import {cloneDeep} from "es-toolkit";
+
+export interface ProcessedRegisterResponse {
+    transports: string[] | null,
+    clientDataJSON: string | null,
+    attestationObject: string | null
+}
+
+export interface ProcessedValidateResponse {
+    id: string | null,
+    clientDataJSON: string | null,
+    authenticatorData: string | null,
+    signature: string | null,
+    userHandle: string | null
+}
 
 export default function useWebAuthn() {
-    let abortController = null;
+    let abortController: AbortController | null = null;
+
     const abortAndCreateNew = (message: string) => {
         if (abortController) {
             const abortError = new Error(message);
@@ -21,7 +36,7 @@ export default function useWebAuthn() {
         }
     }
 
-    const recursiveBase64StrToArrayBuffer = (obj) => {
+    const recursiveBase64StrToArrayBuffer = (obj: any) => {
         const prefix = '=?BINARY?B?';
         const suffix = '?=';
         if (typeof obj === 'object') {
@@ -46,7 +61,7 @@ export default function useWebAuthn() {
         }
     }
 
-    const arrayBufferToBase64 = (buffer) => {
+    const arrayBufferToBase64 = (buffer: ArrayBuffer) => {
         let binary = '';
         const bytes = new Uint8Array(buffer);
         const len = bytes.byteLength;
@@ -72,22 +87,24 @@ export default function useWebAuthn() {
         return await PublicKeyCredential.isConditionalMediationAvailable();
     };
 
-    const processServerArgs = (serverArgs) => {
+    const processServerArgs = (serverArgs: any) => {
         const newArgs = cloneDeep(serverArgs);
         recursiveBase64StrToArrayBuffer(newArgs);
         return newArgs;
     };
 
     // Registration (private creation)
-    const processRegisterResponse = (cred) => {
+    const processRegisterResponse = (cred: PublicKeyCredential): ProcessedRegisterResponse => {
+        const response = cred.response as AuthenticatorAttestationResponse;
+
         return {
-            transports: cred.response.getTransports ? cred.response.getTransports() : null,
-            clientDataJSON: cred.response.clientDataJSON ? arrayBufferToBase64(cred.response.clientDataJSON) : null,
-            attestationObject: cred.response.attestationObject ? arrayBufferToBase64(cred.response.attestationObject) : null
+            transports: response.getTransports ? response.getTransports() : null,
+            clientDataJSON: response.clientDataJSON ? arrayBufferToBase64(response.clientDataJSON) : null,
+            attestationObject: response.attestationObject ? arrayBufferToBase64(response.attestationObject) : null
         };
     }
 
-    const doRegister = async (rawArgs: object) => {
+    const doRegister = async (rawArgs: object): Promise<ProcessedRegisterResponse> => {
         const registerArgs = processServerArgs(rawArgs);
 
         const signal = abortAndCreateNew('New registration started.');
@@ -97,22 +114,24 @@ export default function useWebAuthn() {
             signal: signal
         };
 
-        const rawResp = await navigator.credentials.create(options);
+        const rawResp = await navigator.credentials.create(options) as PublicKeyCredential;
         return processRegisterResponse(rawResp);
     };
 
     // Validation (public login)
-    const processValidateResponse = (cred) => {
+    const processValidateResponse = (cred: PublicKeyCredential): ProcessedValidateResponse => {
+        const response = cred.response as AuthenticatorAssertionResponse;
+
         return {
             id: cred.rawId ? arrayBufferToBase64(cred.rawId) : null,
-            clientDataJSON: cred.response.clientDataJSON ? arrayBufferToBase64(cred.response.clientDataJSON) : null,
-            authenticatorData: cred.response.authenticatorData ? arrayBufferToBase64(cred.response.authenticatorData) : null,
-            signature: cred.response.signature ? arrayBufferToBase64(cred.response.signature) : null,
-            userHandle: cred.response.userHandle ? arrayBufferToBase64(cred.response.userHandle) : null
+            clientDataJSON: response.clientDataJSON ? arrayBufferToBase64(response.clientDataJSON) : null,
+            authenticatorData: response.authenticatorData ? arrayBufferToBase64(response.authenticatorData) : null,
+            signature: response.signature ? arrayBufferToBase64(response.signature) : null,
+            userHandle: response.userHandle ? arrayBufferToBase64(response.userHandle) : null
         };
     };
 
-    const doValidate = async (rawArgs: object, isConditional: boolean = false) => {
+    const doValidate = async (rawArgs: object, isConditional: boolean = false): Promise<ProcessedValidateResponse> => {
         const validateArgs = processServerArgs(rawArgs);
 
         const mediation = (isConditional) ? {
@@ -127,7 +146,7 @@ export default function useWebAuthn() {
             signal: signal
         };
 
-        const rawResp = await navigator.credentials.get(options);
+        const rawResp = await navigator.credentials.get(options) as PublicKeyCredential;
         return processValidateResponse(rawResp);
     };
 

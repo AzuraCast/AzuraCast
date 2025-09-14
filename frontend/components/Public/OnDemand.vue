@@ -21,16 +21,18 @@
         <template #default>
             <data-table
                 id="public_on_demand"
-                ref="datatable"
                 paginated
                 select-fields
                 :fields="fields"
-                :api-url="listUrl"
+                :provider="listItemProvider"
             >
                 <template #cell(download_url)="row">
                     <play-button
                         class="btn-lg"
-                        :url="row.item.download_url"
+                        :stream="{
+                            title: row.item.media.text,
+                            url: row.item.download_url,
+                        }"
                     />
                     <template v-if="showDownloadButton">
                         <a
@@ -46,50 +48,41 @@
                 <template #cell(art)="row">
                     <album-art :src="row.item.media.art" />
                 </template>
-                <template #cell(size)="row">
-                    <template v-if="!row.item.size">
-                        &nbsp;
-                    </template>
-                    <template v-else>
-                        {{ formatFileSize(row.item.size) }}
-                    </template>
-                </template>
             </data-table>
         </template>
     </full-height-card>
 </template>
 
 <script setup lang="ts">
-import InlinePlayer from '../InlinePlayer.vue';
-import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import {forEach} from 'lodash';
-import Icon from '~/components/Common/Icon.vue';
-import PlayButton from "~/components/Common/PlayButton.vue";
+import InlinePlayer from "~/components/InlinePlayer.vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
+import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import {useTranslate} from "~/vendor/gettext";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
-import {IconDownload} from "~/components/Common/icons";
+import {IconDownload} from "~/components/Common/Icons/icons.ts";
 import FullHeightCard from "~/components/Public/FullHeightCard.vue";
+import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
+import {QueryKeys} from "~/entities/Queries.ts";
 
-const props = defineProps({
-    listUrl: {
-        type: String,
-        required: true
-    },
-    stationName: {
-        type: String,
-        required: true
-    },
-    customFields: {
-        type: Array,
-        default: () => {
-            return [];
-        }
-    },
-    showDownloadButton: {
-        type: Boolean,
-        default: false
+interface OnDemandCustomField {
+    display_key: string,
+    key: string,
+    label: string,
+}
+
+const props = withDefaults(
+    defineProps<{
+        listUrl: string,
+        stationName: string,
+        customFields?: OnDemandCustomField[],
+        showDownloadButton?: boolean
+    }>(),
+    {
+        customFields: () => ([]),
+        showDownloadButton: false,
     }
-});
+);
 
 const {$gettext} = useTranslate();
 
@@ -120,7 +113,7 @@ const fields: DataTableField[] = [
     }
 ];
 
-forEach(props.customFields.slice(), (field) => {
+for (const field of props.customFields.slice()) {
     fields.push({
         key: field.display_key,
         label: field.label,
@@ -129,5 +122,12 @@ forEach(props.customFields.slice(), (field) => {
         visible: false,
         formatter: (_value, _key, item) => item.media.custom_fields[field.key]
     });
-});
+}
+
+const listItemProvider = useApiItemProvider(
+    props.listUrl,
+    [
+        QueryKeys.PublicOnDemand
+    ]
+);
 </script>

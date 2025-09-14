@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
-use App\Entity\Api\NowPlaying\StationQueue;
 use App\Entity\Api\Traits\HasLinks;
-use App\Traits\LoadFromParentObject;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_StationQueueDetailed',
     type: 'object'
 )]
-final class StationQueueDetailed extends StationQueue
+final class StationQueueDetailed
 {
-    use LoadFromParentObject;
     use HasLinks;
 
     #[OA\Property(

@@ -6,9 +6,9 @@ namespace App\Controller\Api\Stations\Vue;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Stations\Vue\FilesProps;
 use App\Entity\Enums\PlaylistSources;
 use App\Entity\Repository\CustomFieldRepository;
-use App\Enums\StationFeatures;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\MimeType;
@@ -34,21 +34,22 @@ final class FilesAction implements SingleActionInterface
             <<<'DQL'
                 SELECT sp.id, sp.name
                 FROM App\Entity\StationPlaylist sp
-                WHERE sp.station_id = :station_id AND sp.source = :source
+                WHERE sp.station = :station AND sp.source = :source
                 ORDER BY sp.name ASC
             DQL
-        )->setParameter('station_id', $station->getId())
+        )->setParameter('station', $station)
             ->setParameter('source', PlaylistSources::Songs->value)
             ->getArrayResult();
 
-        $backendEnum = $station->getBackendType();
+        $backendEnum = $station->backend_type;
 
-        return $response->withJson([
-            'initialPlaylists' => $playlists,
-            'customFields' => $this->customFieldRepo->fetchArray(),
-            'validMimeTypes' => MimeType::getProcessableTypes(),
-            'showSftp' => StationFeatures::Sftp->supportedForStation($station),
-            'supportsImmediateQueue' => $backendEnum->isEnabled(),
-        ]);
+        return $response->withJson(
+            new FilesProps(
+                initialPlaylists: $playlists,
+                customFields: $this->customFieldRepo->fetchArray(),
+                validMimeTypes: MimeType::getProcessableTypes(),
+                supportsImmediateQueue: $backendEnum->isEnabled()
+            )
+        );
     }
 }

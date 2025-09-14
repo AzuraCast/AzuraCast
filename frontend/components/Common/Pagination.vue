@@ -65,28 +65,25 @@
 <script setup lang="ts">
 import {computed, ref, toRef, watch} from "vue";
 import PaginationItem from "~/components/Common/PaginationItem.vue";
-import {clamp} from "lodash";
+import {clamp} from "es-toolkit/compat";
 
-const props = defineProps({
-    total: {
-        type: Number,
-        required: true
-    },
-    perPage: {
-        type: Number,
-        required: true,
-    },
-    currentPage: {
-        type: Number,
-        default: 1
-    },
-    pageSpace: {
-        type: Number,
-        default: 1
+const props = withDefaults(
+    defineProps<{
+        total: number,
+        perPage: number,
+        currentPage?: number,
+        pageSpace?: number,
+    }>(),
+    {
+        currentPage: 1,
+        pageSpace: 1
     }
-});
+);
 
-const emit = defineEmits(['update:currentPage', 'change']);
+const emit = defineEmits<{
+    (e: 'update:currentPage', value: number): void,
+    (e: 'change', value: number): void
+}>();
 
 const pageCount = computed(() => Math.max(
     1,

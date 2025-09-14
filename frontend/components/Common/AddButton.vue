@@ -9,15 +9,14 @@
     </button>
 </template>
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
-import {IconAdd} from "~/components/Common/icons.ts";
+import Icon from "~/components/Common/Icons/Icon.vue";
+import {IconAdd} from "~/components/Common/Icons/icons.ts";
 
-const props = defineProps({
-    text: {
-        type: String,
-        required: true
-    }
-});
+defineProps<{
+    text: string
+}>();
 
-const emit = defineEmits(['click']);
+const emit = defineEmits<{
+    (e: 'click'): void
+}>();
 </script>

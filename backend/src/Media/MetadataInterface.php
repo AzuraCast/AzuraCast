@@ -4,23 +4,33 @@ declare(strict_types=1);
 
 namespace App\Media;
 
+use App\Media\Enums\MetadataTags;
+
+/**
+ * @phpstan-type KnownTags array<value-of<MetadataTags>, mixed>
+ * @phpstan-type ExtraTags array<string, mixed>
+ */
 interface MetadataInterface
 {
     /**
-     * @return array<string, mixed>
+     * @return KnownTags
      */
-    public function getTags(): array;
+    public function getKnownTags(): array;
 
     /**
-     * @param array<string, mixed> $tags
+     * @param KnownTags $tags
      */
-    public function setTags(array $tags): void;
+    public function setKnownTags(array $tags): void;
 
     /**
-     * @param string $key
-     * @param mixed $value
+     * @return ExtraTags
      */
-    public function addTag(string $key, mixed $value): void;
+    public function getExtraTags(): array;
+
+    /**
+     * @param ExtraTags $tags
+     */
+    public function setExtraTags(array $tags): void;
 
     /**
      * @return float

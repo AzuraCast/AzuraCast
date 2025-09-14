@@ -1,14 +1,11 @@
 import {Ref} from "vue";
 
 interface EditModalCompatible {
-    create(),
-
-    edit(editUrl: string)
+    create(): void,
+    edit(editUrl: string): void
 }
 
-export type EditModalTemplateRef = InstanceType<EditModalCompatible> | null;
-
-export default function useHasEditModal($modalRef: Ref<EditModalTemplateRef>) {
+export default function useHasEditModal($modalRef: Ref<EditModalCompatible | null>) {
     const doCreate = (): void => {
         $modalRef.value?.create();
     };

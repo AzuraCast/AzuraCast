@@ -134,4 +134,18 @@ final class SsoTokenRepository extends AbstractSplitTokenRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * Get count of expired tokens without deleting them.
+     */
+    public function getExpiredTokenCount(): int
+    {
+        return (int) $this->em->createQueryBuilder()
+            ->select('COUNT(t.id)')
+            ->from($this->entityClass, 't')
+            ->where('t.expires_at <= :now')
+            ->setParameter('now', time())
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

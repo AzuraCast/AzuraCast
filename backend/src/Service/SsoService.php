@@ -174,6 +174,14 @@ final class SsoService
     }
 
     /**
+     * Get count of expired tokens without deleting them.
+     */
+    public function getExpiredTokenCount(): int
+    {
+        return $this->ssoTokenRepo->getExpiredTokenCount();
+    }
+
+    /**
      * Clean up existing tokens for a user to prevent accumulation.
      */
     private function cleanupUserTokens(User $user): void

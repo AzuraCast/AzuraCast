@@ -1950,6 +1950,20 @@ export type SftpUser = HasAutoIncrementId & {
   publicKeys?: string | null;
 };
 
+export type SsoToken = HasSplitTokenFields & {
+  user?: User;
+  /** @example "WHMCS SSO Login" */
+  comment?: string;
+  /** @example 1640995200 */
+  created_at?: number;
+  /** @example 1640998800 */
+  expires_at?: number;
+  /** @example false */
+  used?: boolean;
+  /** @example "192.168.1.1" */
+  ip_address?: string | null;
+};
+
 export type Station = HasAutoIncrementId & {
   /**
    * The full display name of the station.

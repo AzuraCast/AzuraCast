@@ -57,7 +57,6 @@ import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functi
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import mergeExisting from "~/functions/mergeExisting.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {isValidPassword, useAppRegle} from "~/vendor/regle.ts";
 import {email, required, requiredIf} from "@regle/rules";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
@@ -72,7 +71,7 @@ const emit = defineEmits<BaseEditModalEmits>();
 
 const $modal = useTemplateRef('$modal');
 
-const {record: form, reset: resetFormRef} = useResettableRef(
+const form = ref(
     {
         email: '',
         new_password: '',
@@ -111,8 +110,7 @@ const {
     emit,
     $modal,
     () => {
-        resetFormRef();
-        r$.$reset();
+        r$.$reset({toOriginalState: true});
     },
     async () => (await r$.$validate()).valid,
     {

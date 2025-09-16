@@ -1,8 +1,8 @@
 import {useAppRegle} from "~/vendor/regle.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {required} from "@regle/rules";
 import {IpSources, Settings} from "~/entities/ApiInterfaces.ts";
 import {defineStore} from "pinia";
+import { ref } from "vue";
 
 type Form = Required<Pick<
     Settings,
@@ -38,7 +38,7 @@ type Form = Required<Pick<
 export const useAdminSettingsForm = defineStore(
     'form-admin-settings',
     () => {
-        const {record: form, reset} = useResettableRef<Form>({
+        const form = ref<Form>({
             base_url: '',
             instance_name: '',
             prefer_browser_url: true,
@@ -117,8 +117,7 @@ export const useAdminSettingsForm = defineStore(
         );
 
         const $reset = () => {
-            reset();
-            r$.$reset();
+            r$.$reset({toOriginalState: true});
         }
 
         return {

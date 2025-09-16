@@ -139,7 +139,6 @@ import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Loading from "~/components/Common/Loading.vue";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
 import {Settings} from "~/entities/ApiInterfaces.ts";
 
@@ -161,7 +160,7 @@ type BrandingSettings = Required<Pick<Settings,
     | 'internal_custom_css'
 >>
 
-const {record: form, reset: resetForm} = useResettableRef<BrandingSettings>({
+const blankForm: BrandingSettings = {
     public_theme: null,
     hide_album_art: false,
     homepage_redirect_url: '',
@@ -170,10 +169,10 @@ const {record: form, reset: resetForm} = useResettableRef<BrandingSettings>({
     public_custom_css: '',
     public_custom_js: '',
     internal_custom_css: ''
-});
+}
 
 const {r$} = useAppRegle(
-    form,
+    blankForm,
     {},
     {}
 );
@@ -199,19 +198,18 @@ const publicThemeOptions = computed(() => {
 
 const {axios} = useAxios();
 
-const populateForm = (data: typeof form.value) => {
-    form.value = mergeExisting(form.value, data);
-};
-
 const relist = async () => {
-    resetForm();
-    r$.$reset();
+    r$.$reset({
+        toOriginalState: true
+    });
 
     isLoading.value = true;
 
     const {data} = await axios.get(props.apiUrl);
+    r$.$reset({
+        toState: mergeExisting(r$.$value, data)
+    });
 
-    populateForm(data);
     isLoading.value = false;
 }
 
@@ -220,7 +218,7 @@ onMounted(relist);
 const {notifySuccess} = useNotify();
 
 const submit = async () => {
-    const {valid} = await r$.$validate();
+    const {valid, data: postData} = await r$.$validate();
     if (!valid) {
         return;
     }
@@ -228,7 +226,7 @@ const submit = async () => {
     await axios({
         method: 'PUT',
         url: props.apiUrl,
-        data: form.value
+        data: postData
     });
 
     notifySuccess($gettext('Changes saved.'));

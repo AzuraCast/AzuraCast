@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, useTemplateRef} from "vue";
+import {computed, toRef, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import StorageLocationForm from "~/components/Admin/StorageLocations/Form.vue";
@@ -39,14 +39,14 @@ import Sftp from "~/components/Admin/StorageLocations/Form/Sftp.vue";
 import S3 from "~/components/Admin/StorageLocations/Form/S3.vue";
 import Dropbox from "~/components/Admin/StorageLocations/Form/Dropbox.vue";
 import Tabs from "~/components/Common/Tabs.vue";
-import {useAdminStorageLocationsForm} from "~/components/Admin/StorageLocations/Form/form.ts";
+import {StorageLocationRecord, useAdminStorageLocationsForm} from "~/components/Admin/StorageLocations/Form/form.ts";
 import {storeToRefs} from "pinia";
+import mergeExisting from "~/functions/mergeExisting.ts";
+import {StorageLocationTypes} from "~/entities/ApiInterfaces.ts";
 
-interface StorageLocationsEditModalProps extends BaseEditModalProps {
-    type: string
-}
-
-const props = defineProps<StorageLocationsEditModalProps>();
+const props = defineProps<BaseEditModalProps & {
+    type: StorageLocationTypes
+}>();
 const emit = defineEmits<BaseEditModalEmits>();
 
 const $modal = useTemplateRef('$modal');
@@ -54,6 +54,8 @@ const $modal = useTemplateRef('$modal');
 const formStore = useAdminStorageLocationsForm();
 const {form, r$} = storeToRefs(formStore);
 const {$reset: resetForm} = formStore;
+
+type RecordWithType = Omit<StorageLocationRecord, 'type'> & Required<Pick<StorageLocationRecord, 'type'>>;
 
 const {
     loading,
@@ -64,24 +66,33 @@ const {
     edit,
     doSubmit,
     close
-} = useBaseEditModal(
-    form,
-    props,
+} = useBaseEditModal<StorageLocationRecord, RecordWithType>(
+    toRef(props, 'createUrl'),
     emit,
     $modal,
     resetForm,
-    async () => (await r$.value.$validate()).valid,
-    {
-        getSubmittableFormData: (formRef, isEditModeRef) => {
-            if (isEditModeRef.value) {
-                return formRef.value;
-            }
-
-            return {
-                ...formRef.value,
-                type: props.type
-            };
+    (data) => {
+        r$.value.$reset({
+            toState: mergeExisting(r$.value.$value, data)
+        })
+    },
+    async (isEditMode) => {
+        const {valid} = await r$.value.$validate();
+        if (!valid) {
+            return {valid};
         }
+
+        if (isEditMode) {
+            return {valid, data: form.value};
+        }
+
+        return {
+            valid,
+            data: {
+                ...form.value,
+                type: props.type
+            }
+        };
     }
 );
 

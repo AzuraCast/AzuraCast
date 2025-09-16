@@ -915,6 +915,11 @@ export interface ApiNowPlayingStation {
    * @example true
    */
   is_public: boolean;
+  /**
+   * If the station has song requests enabled.
+   * @example true
+   */
+  requests_enabled: boolean;
   mounts: ApiNowPlayingStationMount[];
   remotes: ApiNowPlayingStationRemote[];
   /**
@@ -2206,6 +2211,8 @@ export type StationMount = HasAutoIncrementId & {
 export type StationPlaylist = HasAutoIncrementId & {
   /** @example "Test Playlist" */
   name?: string;
+  /** @example "A playlist containing my favorite songs" */
+  description?: string | null;
   type?: PlaylistTypes;
   source?: PlaylistSources;
   order?: PlaylistOrders;

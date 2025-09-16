@@ -19,6 +19,15 @@
                 :description="$gettext('If disabled, the playlist will not be included in radio playback, but can still be managed.')"
             />
 
+            <form-group-field
+                id="form_edit_description"
+                class="col-md-12"
+                :field="r$.description"
+                input-type="textarea"
+                :label="$gettext('Description')"
+                :description="$gettext('An optional description to help identify this playlist.')"
+            />
+
             <form-group-multi-check
                 id="edit_form_source"
                 class="col-md-12"

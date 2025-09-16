@@ -7357,6 +7357,7 @@ components:
         - playlist_pls_url
         - playlist_m3u_url
         - is_public
+        - requests_enabled
         - mounts
         - remotes
         - hls_enabled
@@ -7415,6 +7416,10 @@ components:
           example: 'https://example.com/public/example_station/playlist.m3u'
         is_public:
           description: 'If the station is public (i.e. should be shown in listings of all stations)'
+          type: boolean
+          example: true
+        requests_enabled:
+          description: 'If the station has song requests enabled.'
           type: boolean
           example: true
         mounts:
@@ -9481,6 +9486,10 @@ components:
             name:
               type: string
               example: 'Test Playlist'
+            description:
+              type: string
+              example: 'A playlist containing my favorite songs'
+              nullable: true
             type:
               $ref: '#/components/schemas/PlaylistTypes'
             source:

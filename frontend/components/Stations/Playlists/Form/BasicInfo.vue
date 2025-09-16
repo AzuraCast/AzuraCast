@@ -22,7 +22,7 @@
             <form-group-field
                 id="form_edit_description"
                 class="col-md-12"
-                :field="v$.description"
+                :field="r$.description"
                 input-type="textarea"
                 :label="$gettext('Description')"
                 :description="$gettext('An optional description to help identify this playlist.')"

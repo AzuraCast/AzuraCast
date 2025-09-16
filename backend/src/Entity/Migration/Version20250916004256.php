@@ -6,7 +6,7 @@ namespace App\Entity\Migration;
 
 use Doctrine\DBAL\Schema\Schema;
 
-final class Version20250815004256 extends AbstractMigration
+final class Version20250916004256 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -15,7 +15,7 @@ final class Version20250815004256 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE station_playlists ADD description LONGTEXT DEFAULT NULL');
+        $this->addSql('ALTER TABLE station_playlists ADD description LONGTEXT DEFAULT NULL AFTER name');
     }
 
     public function down(Schema $schema): void

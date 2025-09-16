@@ -35,14 +35,17 @@ import MountFormAdvanced from "~/components/Stations/Mounts/Form/Advanced.vue";
 import MountFormIntro from "~/components/Stations/Mounts/Form/Intro.vue";
 import mergeExisting from "~/functions/mergeExisting";
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, useTemplateRef} from "vue";
+import {computed, toRef, useTemplateRef} from "vue";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useTranslate} from "~/vendor/gettext";
-import {useResettableRef} from "~/functions/useResettableRef";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import {storeToRefs} from "pinia";
-import {useStationsMountsForm} from "~/components/Stations/Mounts/Form/form.ts";
+import {
+    StationMountHttpResponse,
+    StationMountRecord,
+    useStationsMountsForm
+} from "~/components/Stations/Mounts/Form/form.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import {toRefs} from "@vueuse/core";
 
@@ -61,15 +64,8 @@ const $modal = useTemplateRef('$modal');
 
 const {notifySuccess} = useNotify();
 
-const {record, reset} = useResettableRef({
-    intro_path: null,
-    links: {
-        intro: ''
-    }
-});
-
 const formStore = useStationsMountsForm();
-const {form, r$} = storeToRefs(formStore);
+const {form, record, r$} = storeToRefs(formStore);
 const {$reset: resetForm} = formStore;
 
 const {
@@ -81,21 +77,26 @@ const {
     edit,
     doSubmit,
     close
-} = useBaseEditModal(
-    form,
-    props,
+} = useBaseEditModal<
+    StationMountRecord,
+    StationMountHttpResponse
+>(
+    toRef(props, 'createUrl'),
     emit,
     $modal,
-    () => {
-        resetForm();
-        reset();
+    resetForm,
+    (data) => {
+        record.value = mergeExisting(record.value, data);
+
+        r$.value.$reset({
+            toState: mergeExisting(r$.value.$value, data)
+        })
     },
-    async () => (await r$.value.$validate()).valid,
+    async () => {
+        const {valid, data} = await r$.value.$validate();
+        return {valid, data};
+    },
     {
-        populateForm: (data, formRef) => {
-            record.value = mergeExisting(record.value, data as typeof record.value);
-            formRef.value = mergeExisting(formRef.value, data);
-        },
         onSubmitSuccess: () => {
             notifySuccess();
             emit('relist');

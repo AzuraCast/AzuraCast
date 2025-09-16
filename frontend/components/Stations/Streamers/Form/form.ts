@@ -3,7 +3,7 @@ import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {defineStore} from "pinia";
 import {required, requiredIf} from "@regle/rules";
 import {ref} from "vue";
-import {StationStreamer} from "~/entities/ApiInterfaces.ts";
+import {HasLinks, StationStreamer} from "~/entities/ApiInterfaces.ts";
 import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
 
 export type StationStreamersRecord = Omit<
@@ -14,6 +14,12 @@ export type StationStreamersRecord = Omit<
     artwork_file: UploadResponseBody | null
 }
 
+export type StationStreamersExtraData = Required<HasLinks> & {
+    has_custom_art: boolean
+};
+
+export type StationStreamersResponseBody = StationStreamersRecord & StationStreamersExtraData;
+
 export const useStationsStreamersForm = defineStore(
     'form-stations-streamers',
     () => {
@@ -22,6 +28,13 @@ export const useStationsStreamersForm = defineStore(
         const setEditMode = (newValue: boolean) => {
             isEditMode.value = newValue;
         };
+
+        const {record, reset: resetRecord} = useResettableRef<StationStreamersExtraData>({
+            has_custom_art: false,
+            links: {
+                art: '',
+            }
+        });
 
         const {record: form, reset} = useResettableRef<StationStreamersRecord>({
             streamer_username: '',
@@ -59,6 +72,7 @@ export const useStationsStreamersForm = defineStore(
 
         const $reset = () => {
             reset();
+            resetRecord();
             r$.$reset();
         }
 
@@ -66,6 +80,7 @@ export const useStationsStreamersForm = defineStore(
             isEditMode,
             setEditMode,
             form,
+            record,
             r$,
             $reset
         }

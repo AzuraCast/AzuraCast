@@ -34,16 +34,16 @@ import PodcastFormBranding from "~/components/Stations/Podcasts/PodcastForm/Bran
 import PodcastCommonArtwork from "~/components/Stations/Podcasts/Common/Artwork.vue";
 import mergeExisting from "~/functions/mergeExisting";
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, useTemplateRef} from "vue";
-import {useResettableRef} from "~/functions/useResettableRef";
+import {computed, toRef, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import {map} from "es-toolkit/compat";
 import {NestedFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import {storeToRefs} from "pinia";
-import {useStationsPodcastsForm} from "~/components/Stations/Podcasts/PodcastForm/form.ts";
+import {PodcastResponseBody, useStationsPodcastsForm} from "~/components/Stations/Podcasts/PodcastForm/form.ts";
 import {ApiPodcastCategory} from "~/entities/ApiInterfaces.ts";
+import {PodcastRecord} from "~/entities/Podcasts.ts";
 
 interface PodcastEditModalProps extends BaseEditModalProps {
     languageOptions: NestedFormOptionInput,
@@ -57,16 +57,8 @@ const emit = defineEmits<BaseEditModalEmits>();
 
 const $modal = useTemplateRef('$modal');
 
-const {record, reset} = useResettableRef({
-    has_custom_art: false,
-    art: '',
-    links: {
-        art: ''
-    }
-});
-
 const formStore = useStationsPodcastsForm();
-const {form, r$} = storeToRefs(formStore);
+const {form, record, r$} = storeToRefs(formStore);
 const {$reset: resetForm} = formStore;
 
 const {
@@ -78,27 +70,30 @@ const {
     edit,
     doSubmit,
     close
-} = useBaseEditModal(
-    form,
-    props,
+} = useBaseEditModal<
+    PodcastRecord,
+    PodcastResponseBody
+>(
+    toRef(props, 'createUrl'),
     emit,
     $modal,
-    () => {
-        resetForm();
-        reset();
-    },
-    async () => (await r$.value.$validate()).valid,
-    {
-        populateForm: (data, formRef) => {
-            data.categories = map(
-                data.categories,
-                (row) => (row as unknown as Required<ApiPodcastCategory>).category
-            );
+    resetForm,
+    (data) => {
+        data.categories = map(
+            data.categories,
+            (row) => (row as unknown as Required<ApiPodcastCategory>).category
+        );
 
-            record.value = mergeExisting(record.value, data as typeof record.value);
-            formRef.value = mergeExisting(formRef.value, data);
-        },
+        record.value = mergeExisting(record.value, data as typeof record.value);
+
+        r$.value.$reset({
+            toState: mergeExisting(r$.value.$value, data)
+        })
     },
+    async () => {
+        const {valid, data} = await r$.value.$validate();
+        return {valid, data};
+    }
 );
 
 const {$gettext} = useTranslate();

@@ -100,14 +100,13 @@ import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {required} from "@regle/rules";
 import {ref, useTemplateRef} from "vue";
-import {isApiError, useAxios} from "~/vendor/axios";
+import {getErrorAsString, useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {getApiUrl} from "~/router.ts";
 import useWebAuthn from "~/functions/useWebAuthn.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
 import {isObject} from "@vueuse/core";
 
@@ -122,13 +121,13 @@ type PasskeyRow = {
     createResponse: string | null
 }
 
-const {record: form, reset: resetForm} = useResettableRef<PasskeyRow>({
+const blankForm: PasskeyRow = {
     name: '',
     createResponse: null
-});
+}
 
 const {r$} = useAppRegle(
-    form,
+    blankForm,
     {
         name: {required},
         createResponse: {required}
@@ -137,8 +136,9 @@ const {r$} = useAppRegle(
 );
 
 const clearContents = () => {
-    resetForm();
-    r$.$reset();
+    r$.$reset({
+        toOriginalState: true
+    });
 
     error.value = null;
 };
@@ -166,7 +166,7 @@ const selectPasskey = async () => {
 
     try {
         const createResponse = await doRegister(registerArgs);
-        form.value.createResponse = JSON.stringify(createResponse);
+        r$.$value.createResponse = JSON.stringify(createResponse);
     } catch (err) {
         if (isObject(err) && 'name' in err && err.name === 'InvalidStateError') {
             error.value = 'Error: Authenticator was probably already registered by user';
@@ -199,12 +199,8 @@ const doSubmit = async () => {
         });
 
         hide();
-    } catch (e: any) {
-        if (isApiError(e)) {
-            error.value = e.response.data.message;
-        } else {
-            error.value = 'An error occurred.';
-        }
+    } catch (e) {
+        error.value = getErrorAsString(e);
     }
 };
 

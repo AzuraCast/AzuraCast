@@ -1,5 +1,4 @@
-import {computed, ComputedRef, nextTick, Ref, ref, ShallowRef, toRef} from "vue";
-import mergeExisting from "~/functions/mergeExisting";
+import {computed, ComputedRef, MaybeRef, nextTick, Ref, ref, ShallowRef, toValue} from "vue";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import ModalForm from "~/components/Common/ModalForm.vue";
@@ -9,73 +8,82 @@ import {useMutation, UseMutationOptions, UseMutationReturnType} from "@tanstack/
 
 export type ModalFormTemplateRef = InstanceType<typeof ModalForm>;
 
-export interface BaseEditModalProps {
-    createUrl?: string
+export type BaseEditModalProps = {
+    createUrl: string
 }
 
-export interface HasRelistEmit {
+export type HasRelistEmit = {
     (e: 'relist'): void
 }
 
 type Form = ApiGenericForm
 
-type AxiosMutateResponse = ApiStatus & Form
+type AxiosMutateResponse<T extends Form = Form> = ApiStatus & T
 
-type MutationOptions = UseMutationOptions<
-    AxiosMutateResponse,
+type MutationOptions<
+    SubmittedForm extends Form = Form,
+    ResponseBody extends Form = SubmittedForm
+> = UseMutationOptions<
+    AxiosMutateResponse<ResponseBody>,
     AxiosError<ApiError>,
-    Form
+    SubmittedForm
 >
 
-type MutationReturn = UseMutationReturnType<
-    AxiosMutateResponse,
+type MutationReturn<
+    SubmittedForm extends Form = Form,
+    ResponseBody extends Form = SubmittedForm
+> = UseMutationReturnType<
+    AxiosMutateResponse<ResponseBody>,
     AxiosError<ApiError>,
-    Form,
+    SubmittedForm,
     unknown
 >
 
 export type BaseEditModalEmits = HasRelistEmit;
 
-export interface BaseEditModalOptions<T extends Form = Form> {
-    clearContents?: (resetForm: () => void) => void,
-    populateForm?: (data: Partial<T>, form: Ref<T>) => void,
-    getSubmittableFormData?: (form: Ref<T>, isEditMode: ComputedRef<boolean>) => Form,
-    buildSubmitRequest?: (data: Form) => AxiosRequestConfig,
+export type BaseEditModalOptions<SubmittedForm extends Form = Form> = {
+    buildSubmitRequest?: (data: SubmittedForm) => AxiosRequestConfig,
     onSubmitSuccess?: (
         data: AxiosMutateResponse,
-        variables: Form,
+        variables: SubmittedForm,
         context: unknown
     ) => void,
     onSubmitError?: (
         error: AxiosError<ApiError, any>,
-        variables: Form,
+        variables: SubmittedForm,
         context: unknown
     ) => void,
 }
 
-export function useBaseEditModal<T extends Form = Form>(
-    form: Ref<T>,
-    props: BaseEditModalProps,
+export type ValidateReturn<T extends Form = Form> = {
+    valid: boolean,
+    data?: Partial<T>
+}
+
+export function useBaseEditModal<
+    SubmittedForm extends Form = Form,
+    ResponseBody extends Form = SubmittedForm
+>(
+    createUrl: MaybeRef<string>,
     emit: BaseEditModalEmits,
     $modal: Readonly<ShallowRef<ModalFormTemplateRef | null>>,
     resetForm: () => void,
-    validateForm?: () => Promise<boolean>,
-    options: BaseEditModalOptions<T> = {},
-    mutationOptions: Partial<MutationOptions> = {},
+    populateForm: (data: Partial<ResponseBody>) => void,
+    validateForm: (isEditMode: boolean) => Promise<ValidateReturn<SubmittedForm>>,
+    options: BaseEditModalOptions<SubmittedForm> = {},
+    mutationOptions: Partial<MutationOptions<SubmittedForm, ResponseBody>> = {},
 ): {
     loading: Ref<boolean>,
     error: Ref<any>,
     editUrl: Ref<string | null>,
     isEditMode: ComputedRef<boolean>,
-    mutation: MutationReturn,
+    mutation: MutationReturn<SubmittedForm, ResponseBody>,
     clearContents: () => void,
     create: () => void,
     edit: (recordUrl: string) => Promise<void>,
     doSubmit: () => Promise<void>,
     close: () => void
 } {
-    const createUrl = toRef(props, 'createUrl');
-
     const fetchLoading = ref<boolean>(false);
     const error = ref<any>(null);
     const editUrl = ref<string | null>(null);
@@ -85,11 +93,6 @@ export function useBaseEditModal<T extends Form = Form>(
     });
 
     const clearContents = (): void => {
-        if (typeof options.clearContents === 'function') {
-            options.clearContents(resetForm);
-            return;
-        }
-
         resetForm();
 
         fetchLoading.value = false;
@@ -106,15 +109,6 @@ export function useBaseEditModal<T extends Form = Form>(
             resetForm();
         });
     };
-
-    const populateForm = (data: Partial<T>): void => {
-        if (typeof options.populateForm === 'function') {
-            options.populateForm(data, form);
-            return;
-        }
-
-        form.value = mergeExisting(form.value, data);
-    }
 
     const {notifySuccess} = useNotify();
     const {axios} = useAxios();
@@ -148,15 +142,7 @@ export function useBaseEditModal<T extends Form = Form>(
         await doLoad();
     };
 
-    const getSubmittableFormData = (): ApiGenericForm => {
-        if (typeof options.getSubmittableFormData === 'function') {
-            return options.getSubmittableFormData(form, isEditMode);
-        }
-
-        return form.value;
-    };
-
-    const buildSubmitRequest = (data: ApiGenericForm): AxiosRequestConfig => {
+    const buildSubmitRequest = (data: SubmittedForm): AxiosRequestConfig<SubmittedForm> => {
         if (typeof options.buildSubmitRequest === 'function') {
             return options.buildSubmitRequest(data);
         }
@@ -167,7 +153,7 @@ export function useBaseEditModal<T extends Form = Form>(
                 : 'POST',
             url: (isEditMode.value && editUrl.value)
                 ? editUrl.value
-                : createUrl.value,
+                : toValue(createUrl),
             data: data
         };
     };
@@ -176,8 +162,14 @@ export function useBaseEditModal<T extends Form = Form>(
         $modal.value?.hide();
     };
 
-    const mutation: MutationReturn = useMutation({
-        mutationFn: async (data: ApiGenericForm) => (await axios<AxiosMutateResponse>(buildSubmitRequest(data))).data,
+    const mutation: MutationReturn<SubmittedForm, ResponseBody> = useMutation({
+        mutationFn: async (data: SubmittedForm): Promise<AxiosMutateResponse<ResponseBody>> => {
+            const {data: returnData} = await axios<AxiosMutateResponse<ResponseBody>>(
+                buildSubmitRequest(data)
+            );
+
+            return returnData;
+        },
         onSuccess: (
             data,
             variables,
@@ -204,19 +196,14 @@ export function useBaseEditModal<T extends Form = Form>(
     });
 
     const doSubmit = async (): Promise<void> => {
-        if (typeof validateForm === 'function') {
-            const valid = await validateForm();
+        const {valid, data} = await validateForm(isEditMode.value);
 
-            if (!valid) {
-                return;
-            }
-
-            error.value = null;
-            mutation.mutate(getSubmittableFormData());
-        } else {
-            error.value = null;
-            mutation.mutate(getSubmittableFormData());
+        if (!valid || !data) {
+            return;
         }
+
+        error.value = null;
+        mutation.mutate(data as SubmittedForm);
     };
 
     const loading = computed(

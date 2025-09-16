@@ -27,14 +27,17 @@ import FormSchedule from "~/components/Stations/Streamers/Form/Schedule.vue";
 import FormArtwork from "~/components/Stations/Streamers/Form/Artwork.vue";
 import mergeExisting from "~/functions/mergeExisting";
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, useTemplateRef, watch} from "vue";
+import {computed, toRef, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useResettableRef} from "~/functions/useResettableRef";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import {storeToRefs} from "pinia";
 import {useAppCollectScope} from "~/vendor/regle.ts";
-import {useStationsStreamersForm} from "~/components/Stations/Streamers/Form/form.ts";
+import {
+    StationStreamersRecord,
+    StationStreamersResponseBody,
+    useStationsStreamersForm
+} from "~/components/Stations/Streamers/Form/form.ts";
 
 interface StreamersEditModalProps extends BaseEditModalProps {
     newArtUrl: string
@@ -46,15 +49,8 @@ const emit = defineEmits<BaseEditModalEmits>();
 
 const $modal = useTemplateRef('$modal');
 
-const {record, reset} = useResettableRef({
-    has_custom_art: false,
-    links: {
-        art: '',
-    }
-});
-
 const formStore = useStationsStreamersForm();
-const {form} = storeToRefs(formStore);
+const {form, record} = storeToRefs(formStore);
 const {$reset: resetForm, setEditMode} = formStore;
 
 const {r$} = useAppCollectScope('stations-playlists');
@@ -68,22 +64,25 @@ const {
     edit,
     doSubmit,
     close
-} = useBaseEditModal(
-    form,
-    props,
+} = useBaseEditModal<
+    StationStreamersRecord,
+    StationStreamersResponseBody
+>(
+    toRef(props, 'createUrl'),
     emit,
     $modal,
-    () => {
-        resetForm();
-        reset();
+    resetForm,
+    (data) => {
+        record.value = mergeExisting(record.value, data);
+
+        r$.$reset({
+            toState: mergeExisting(r$.$value, data)
+        })
     },
-    async () => (await r$.$validate()).valid,
-    {
-        populateForm: (data, formRef) => {
-            record.value = mergeExisting(record.value, data as typeof record.value);
-            formRef.value = mergeExisting(formRef.value, data);
-        },
-    },
+    async () => {
+        const {valid, data} = await r$.$validate();
+        return {valid, data};
+    }
 );
 
 watch(isEditMode, (newValue) => {

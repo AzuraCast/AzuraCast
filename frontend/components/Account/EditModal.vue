@@ -54,10 +54,9 @@ import {email, required} from "@regle/rules";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {computed, ref, useTemplateRef} from "vue";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {isApiError, useAxios} from "~/vendor/axios";
+import {getErrorAsString, useAxios} from "~/vendor/axios";
 import {getApiUrl} from "~/router.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
@@ -78,15 +77,13 @@ const userUrl = getApiUrl('/frontend/account/me');
 const loading = ref(true);
 const error = ref<string | null>(null);
 
-const {record: form, reset: resetForm} = useResettableRef({
-    name: '',
-    email: '',
-    locale: 'default',
-    show_24_hour_time: false,
-});
-
 const {r$} = useAppRegle(
-    form,
+    {
+        name: '',
+        email: '',
+        locale: 'default',
+        show_24_hour_time: false,
+    },
     {
         name: {},
         email: {required, email},
@@ -97,8 +94,9 @@ const {r$} = useAppRegle(
 );
 
 const clearContents = () => {
-    resetForm();
-    r$.$reset();
+    r$.$reset({
+        toOriginalState: true
+    });
     
     loading.value = false;
     error.value = null;
@@ -117,7 +115,10 @@ const doOpen = async () => {
 
     try {
         const {data} = await axios.get(userUrl.value);
-        form.value = mergeExisting(form.value, data);
+        r$.$reset({
+            toState: mergeExisting(r$.$value, data)
+        });
+
         loading.value = false;
     } catch {
         hide();
@@ -142,7 +143,7 @@ const localeOptions = computed(() => {
 });
 
 const doSubmit = async () => {
-    const {valid} = await r$.$validate();
+    const {valid, data: postData} = await r$.$validate();
     if (!valid) {
         return;
     }
@@ -153,18 +154,14 @@ const doSubmit = async () => {
         await axios({
             method: 'PUT',
             url: userUrl.value,
-            data: form.value
+            data: postData
         });
 
         notifySuccess();
         emit('reload');
         hide();
     } catch (e) {
-        if (isApiError(e)) {
-            error.value = e.response.data.message;
-        } else {
-            error.value = String(e);
-        }
+        error.value = getErrorAsString(e);
     }
 };
 

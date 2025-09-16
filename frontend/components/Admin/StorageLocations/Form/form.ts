@@ -3,14 +3,14 @@ import {StorageLocation, StorageLocationAdapters} from "~/entities/ApiInterfaces
 import {defineStore} from "pinia";
 import {literal, required} from "@regle/rules";
 import {createVariant} from "@regle/core";
-import { ref } from "vue";
+import {ref} from "vue";
 
-type Form = Omit<StorageLocation, 'id'>;
+export type StorageLocationRecord = Omit<StorageLocation, 'id'>;
 
 export const useAdminStorageLocationsForm = defineStore(
     'form-admin-storage-locations',
     () => {
-        const form = ref<Form>({
+        const form = ref<StorageLocationRecord>({
             adapter: StorageLocationAdapters.Local,
             path: '',
             storageQuota: '',

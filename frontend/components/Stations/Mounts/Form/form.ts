@@ -2,7 +2,7 @@ import {useAppRegle} from "~/vendor/regle.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {defineStore} from "pinia";
 import {required} from "@regle/rules";
-import {StationMount, StreamFormats} from "~/entities/ApiInterfaces.ts";
+import {HasLinks, StationMount, StreamFormats} from "~/entities/ApiInterfaces.ts";
 import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
 
 export type StationMountRecord = Omit<
@@ -11,9 +11,22 @@ export type StationMountRecord = Omit<
     intro_file: UploadResponseBody | null
 };
 
+export type StationMountExtraData = Required<HasLinks> & {
+    intro_path: string | null,
+}
+
+export type StationMountHttpResponse = StationMountRecord & StationMountExtraData;
+
 export const useStationsMountsForm = defineStore(
     'form-stations-mounts',
     () => {
+        const {record, reset: resetRecord} = useResettableRef<StationMountExtraData>({
+            intro_path: null,
+            links: {
+                intro: ''
+            }
+        });
+
         const {record: form, reset} = useResettableRef<StationMountRecord>({
             name: '',
             display_name: '',
@@ -66,11 +79,13 @@ export const useStationsMountsForm = defineStore(
 
         const $reset = () => {
             reset();
+            resetRecord();
             r$.$reset();
         }
 
         return {
             form,
+            record,
             r$,
             $reset
         }

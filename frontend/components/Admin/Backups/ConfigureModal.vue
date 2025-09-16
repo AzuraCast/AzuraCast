@@ -93,7 +93,6 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
 import {BackupSettings} from "~/components/Admin/BackupsWrapper.vue";
 
@@ -108,7 +107,7 @@ const loading = ref(true);
 
 type BackupSettingsRow = Omit<BackupSettings, 'backup_last_run' | 'backup_last_output'>;
 
-const {record: form, reset: resetForm} = useResettableRef<BackupSettingsRow>({
+const form = ref<BackupSettingsRow>({
     backup_enabled: false,
     backup_time_code: null,
     backup_exclude_media: false,
@@ -122,6 +121,10 @@ const {r$} = useAppRegle(
     {},
     {}
 );
+
+const resetForm = () => r$.$reset({
+    toOriginalState: true
+});
 
 const formatOptions = computed(() => {
     return [
@@ -152,7 +155,6 @@ const close = () => {
 
 const doOpen = async () => {
     resetForm();
-    r$.$reset();
 
     loading.value = true;
 
@@ -161,7 +163,9 @@ const doOpen = async () => {
     try {
         const {data} = await axios.get(props.settingsUrl);
 
-        form.value = mergeExisting(form.value, data);
+        r$.$reset({
+            toState: mergeExisting(r$.$value, data)
+        });
         loading.value = false;
     } catch {
         close();
@@ -175,7 +179,7 @@ const open = () => {
 const {notifySuccess} = useNotify();
 
 const submit = async () => {
-    const {valid} = await r$.$validate();
+    const {valid, data: postData} = await r$.$validate();
     if (!valid) {
         return;
     }
@@ -183,7 +187,7 @@ const submit = async () => {
     await axios({
         method: 'PUT',
         url: props.settingsUrl,
-        data: form.value
+        data: postData
     });
 
     notifySuccess();

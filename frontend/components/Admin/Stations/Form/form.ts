@@ -1,5 +1,4 @@
 import {useAppRegle} from "~/vendor/regle.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {
     AudioProcessingMethods,
     BackendAdapters,
@@ -13,6 +12,7 @@ import {
 } from "~/entities/ApiInterfaces.ts";
 import {defineStore} from "pinia";
 import {numeric, required, url} from "@regle/rules";
+import { ref } from "vue";
 
 export type StationRecord = Omit<
     Required<Station>,
@@ -34,7 +34,7 @@ export type StationRecord = Omit<
 export const useAdminStationsForm = defineStore(
     'form-admin-stations',
     () => {
-        const {record: form, reset} = useResettableRef<StationRecord>({
+        const form = ref<StationRecord>({
             name: '',
             description: '',
             genre: '',
@@ -209,8 +209,7 @@ export const useAdminStationsForm = defineStore(
         );
 
         const $reset = () => {
-            reset();
-            r$.$reset();
+            r$.$reset({toOriginalState: true});
         }
 
         return {

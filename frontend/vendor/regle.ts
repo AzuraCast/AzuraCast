@@ -25,12 +25,18 @@ export const isValidPassword = createRule({
 
         return zxcvbn(value).score > 2;
     },
-    message: 'This password is too common or insecure.',
+    message: () => {
+        const {$gettext} = useTranslate();
+        return $gettext('This password is too common or insecure.');
+    } ,
 });
 
 export const isValidHexColor = createRule({
     validator: (value: Maybe<string>) => !isFilled(value) || /^#?[0-9A-F]{6}$/i.test(value),
-    message: 'This field must be a valid, non-transparent 6-character hex color.',
+    message: () => {
+        const {$gettext} = useTranslate();
+        return $gettext('This field must be a valid, non-transparent 6-character hex color.');
+    },
 });
 
 export const {useRegle: useAppRegle} = defineRegleConfig({
@@ -95,14 +101,8 @@ export const {useRegle: useAppRegle} = defineRegleConfig({
                 url,
                 $gettext('This field must be a valid URL.')
             ),
-            isValidPassword: withMessage(
-                isValidPassword,
-                $gettext('This password is too common or insecure.')
-            ),
-            isValidHexColor: withMessage(
-                isValidHexColor,
-                $gettext('This field must be a valid, non-transparent 6-character hex color.')
-            )
+            isValidPassword,
+            isValidHexColor
         };
     },
     modifiers: {

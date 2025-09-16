@@ -209,7 +209,7 @@ export function useBaseEditModal<
         }
 
         error.value = null;
-        mutation.mutate(data as SubmittedForm);
+        mutation.mutate(data);
     };
 
     const loading = computed(

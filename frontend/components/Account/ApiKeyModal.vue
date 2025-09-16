@@ -69,12 +69,11 @@ import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue
 import AccountApiKeyNewKey from "~/components/Account/ApiKeyNewKey.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {nextTick, ref, useTemplateRef} from "vue";
-import {isApiError, useAxios} from "~/vendor/axios";
+import {getErrorAsString, useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {ApiAccountNewApiKey} from "~/entities/ApiInterfaces.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
 import {required} from "@regle/rules";
 
@@ -87,12 +86,10 @@ const emit = defineEmits<HasRelistEmit>();
 const error = ref<string | null>(null);
 const newKey = ref<string | null>(null);
 
-const {record: form, reset: resetForm} = useResettableRef({
-    comment: ''
-});
-
 const {r$} = useAppRegle(
-    form,
+    {
+        comment: ''
+    },
     {
         comment: {required}
     },
@@ -100,8 +97,9 @@ const {r$} = useAppRegle(
 );
 
 const clearContents = () => {
-    resetForm();
-    r$.$reset();
+    r$.$reset({
+        toOriginalState: true
+    });
 
     error.value = null;
     newKey.value = null;
@@ -126,7 +124,7 @@ const onShown = () => {
 const {axios} = useAxios();
 
 const doSubmit = async () => {
-    const {valid} = await r$.$validate();
+    const {valid, data: postData} = await r$.$validate();
     if (!valid) {
         return;
     }
@@ -136,16 +134,12 @@ const doSubmit = async () => {
     try {
         const {data} = await axios.post<ApiAccountNewApiKey>(
             props.createUrl,
-            form.value
+            postData
         );
 
         newKey.value = data.key;
     } catch (e) {
-        if (isApiError(e)) {
-            error.value = e.response.data.message;
-        } else {
-            error.value = String(e);
-        }
+        error.value = getErrorAsString(e);
     }
 
     emit('relist');

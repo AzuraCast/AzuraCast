@@ -37,12 +37,32 @@ export type StationMediaRecord =
         extra_metadata: StationMediaMetadata
     }
 
+export type MediaMeta = Required<Pick<
+    ApiStationMedia,
+    | 'length'
+    | 'length_text'
+    | 'links'
+>>
+
+export type MediaHttpResponse = StationMediaRecord & MediaMeta;
+
 export const customFieldsKey = Symbol() as InjectionKey<Ref<CustomField[]>>;
 
 export const useStationsMediaForm = defineStore(
     'form-stations-media',
     () => {
         const customFields: Ref<CustomField[]> = injectRequired(customFieldsKey);
+
+        const {record, reset: resetRecord} = useResettableRef<MediaMeta>({
+            length: 0,
+            length_text: '',
+            links: {
+                art: '',
+                waveform: '',
+                waveform_cache: '',
+                play: ''
+            }
+        });
 
         const {record: form, reset} = useResettableRef<StationMediaRecord>(() => {
             const blankForm: StationMediaRecord = {
@@ -104,11 +124,13 @@ export const useStationsMediaForm = defineStore(
 
         const $reset = () => {
             reset();
+            resetRecord();
             r$.$reset();
         }
 
         return {
             customFields,
+            record,
             form,
             r$,
             $reset

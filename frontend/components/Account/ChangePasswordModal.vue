@@ -55,7 +55,6 @@ import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {getApiUrl} from "~/router.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {isValidPassword, useAppRegle} from "~/vendor/regle.ts";
 import {required, withMessage} from "@regle/rules";
 
@@ -65,14 +64,12 @@ const changePasswordUrl = getApiUrl('/frontend/account/password');
 
 const {$gettext} = useTranslate();
 
-const {record: form, reset: resetForm} = useResettableRef({
-    current_password: '',
-    new_password: '',
-    new_password2: ''
-});
-
 const {r$} = useAppRegle(
-    form,
+    {
+        current_password: '',
+        new_password: '',
+        new_password2: ''
+    },
     {
         current_password: {required},
         new_password: {required, isValidPassword},
@@ -92,8 +89,9 @@ const {r$} = useAppRegle(
 const error = ref(null);
 
 const clearContents = () => {
-    resetForm();
-    r$.$reset();
+    r$.$reset({
+        toOriginalState: true
+    });
 
     error.value = null;
 };
@@ -108,13 +106,13 @@ const open = () => {
 const {axios} = useAxios();
 
 const onSubmit = async () => {
-    const {valid} = await r$.$validate();
+    const {valid, data: postData} = await r$.$validate();
     if (!valid) {
         return;
     }
 
     try {
-        await axios.put(changePasswordUrl.value, form.value);
+        await axios.put(changePasswordUrl.value, postData);
     } finally {
         $modal.value?.hide();
         emit('relist');

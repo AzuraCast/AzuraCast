@@ -52,40 +52,33 @@
 
 <script setup lang="ts">
 import {map} from "es-toolkit/compat";
-import {computed, ref, useTemplateRef, watch} from "vue";
+import {computed, ref, toRef, useTemplateRef, watch} from "vue";
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import mergeExisting from "~/functions/mergeExisting.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {isValidPassword, useAppRegle} from "~/vendor/regle.ts";
 import {email, required, requiredIf} from "@regle/rules";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 
-interface UsersEditModalProps extends BaseEditModalProps {
+const props = defineProps<BaseEditModalProps & {
     roles: Record<number, string>
-}
-
-const props = defineProps<UsersEditModalProps>();
+}>();
 const emit = defineEmits<BaseEditModalEmits>();
 
 const $modal = useTemplateRef('$modal');
-
-const {record: form, reset: resetFormRef} = useResettableRef(
-    {
-        email: '',
-        new_password: '',
-        name: '',
-        roles: [],
-    }
-);
 
 // This value is needed higher up than it's defined, so it's synced back up here.
 const editMode = ref(false);
 
 const {r$} = useAppRegle(
-    form,
+    {
+        email: '',
+        new_password: '',
+        name: '',
+        roles: [],
+    },
     {
         email: {required, email},
         new_password: {
@@ -106,26 +99,26 @@ const {
     doSubmit,
     close
 } = useBaseEditModal(
-    form,
-    props,
+    toRef(props, 'createUrl'),
     emit,
     $modal,
     () => {
-        resetFormRef();
-        r$.$reset();
+        r$.$reset({
+            toOriginalState: true
+        });
     },
-    async () => (await r$.$validate()).valid,
-    {
-        populateForm: (data, formRef) => {
-            formRef.value = mergeExisting(
-                formRef.value,
-                {
-                    ...data,
-                    roles: map(data.roles, 'id'),
-                    new_password: ''
-                }
-            );
-        },
+    (data) => {
+        r$.$reset({
+            toState: mergeExisting(r$.$value, {
+                ...data,
+                roles: map(data.roles, 'id'),
+                new_password: ''
+            })
+        })
+    },
+    async () => {
+        const {valid, data} = await r$.$validate();
+        return {valid, data};
     }
 );
 

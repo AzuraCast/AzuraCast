@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {computed, useTemplateRef} from "vue";
+import {computed, toRef, useTemplateRef} from "vue";
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {useTranslate} from "~/vendor/gettext";
 import AdminPermissionsGlobalForm from "~/components/Admin/Permissions/Form/GlobalForm.vue";
@@ -34,14 +34,13 @@ import Tabs from "~/components/Common/Tabs.vue";
 import {ApiAdminRoleStationPermission, GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppCollectScope} from "~/vendor/regle.ts";
+import mergeExisting from "~/functions/mergeExisting.ts";
 
-interface PermissionsEditModalProps extends BaseEditModalProps {
+const props = defineProps<BaseEditModalProps & {
     stations: Record<number, string>,
     globalPermissions: Record<GlobalPermissions, string>,
     stationPermissions: Record<StationPermissions, string>,
-}
-
-const props = defineProps<PermissionsEditModalProps>();
+}>();
 const emit = defineEmits<BaseEditModalEmits>();
 
 const $modal = useTemplateRef('$modal');
@@ -73,16 +72,22 @@ const {
     edit,
     doSubmit,
     close
-} = useBaseEditModal(
-    form,
-    props,
+} = useBaseEditModal<PermissionsRecord>(
+    toRef(props, 'createUrl'),
     emit,
     $modal,
     () => {
         resetFormRef();
         r$.$reset();
     },
-    async () => (await r$.$validate()).valid,
+    (data) => {
+        form.value = mergeExisting(form.value, data);
+        r$.$reset();
+    },
+    async () => {
+        const {valid} = await r$.$validate();
+        return {valid, data: form.value};
+    }
 );
 
 const {$gettext} = useTranslate();

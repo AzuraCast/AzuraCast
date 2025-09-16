@@ -121,13 +121,13 @@ type PasskeyRow = {
     createResponse: string | null
 }
 
-const blankForm: PasskeyRow = {
+const form = ref<PasskeyRow>({
     name: '',
     createResponse: null
-}
+});
 
 const {r$} = useAppRegle(
-    blankForm,
+    form,
     {
         name: {required},
         createResponse: {required}

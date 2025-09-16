@@ -4,6 +4,7 @@ import {defineStore} from "pinia";
 import {required} from "@regle/rules";
 import {ApiPodcastEpisode, HasLinks} from "~/entities/ApiInterfaces.ts";
 import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
+import {ref} from "vue";
 
 export type PodcastEpisodeRecord = Required<Omit<
     ApiPodcastEpisode,
@@ -52,7 +53,7 @@ export const useStationsPodcastEpisodesForm = defineStore(
             }
         });
 
-        const {record: form, reset} = useResettableRef<PodcastEpisodeRecord>({
+        const form = ref<PodcastEpisodeRecord>({
             title: '',
             link: '',
             description: '',
@@ -86,9 +87,10 @@ export const useStationsPodcastEpisodesForm = defineStore(
         );
 
         const $reset = () => {
-            reset();
             resetRecord();
-            r$.$reset();
+            r$.$reset({
+                toOriginalState: true
+            });
         }
 
         return {

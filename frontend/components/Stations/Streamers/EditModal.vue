@@ -50,10 +50,10 @@ const emit = defineEmits<BaseEditModalEmits>();
 const $modal = useTemplateRef('$modal');
 
 const formStore = useStationsStreamersForm();
-const {form, record} = storeToRefs(formStore);
+const {form, r$, record} = storeToRefs(formStore);
 const {$reset: resetForm, setEditMode} = formStore;
 
-const {r$} = useAppCollectScope('stations-playlists');
+const {r$: validater$} = useAppCollectScope('stations-playlists');
 
 const {
     loading,
@@ -75,13 +75,13 @@ const {
     (data) => {
         record.value = mergeExisting(record.value, data);
 
-        r$.$reset({
-            toState: mergeExisting(r$.$value, data)
+        r$.value.$reset({
+            toState: mergeExisting(r$.value.$value, data)
         })
     },
     async () => {
-        const {valid, data} = await r$.$validate();
-        return {valid, data};
+        const {valid} = await validater$.$validate();
+        return {valid, data: form.value};
     }
 );
 

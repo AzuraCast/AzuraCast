@@ -48,7 +48,7 @@ import ModalForm from "~/components/Common/ModalForm.vue";
 import {toRef, useTemplateRef} from "vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
-import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal.ts";
+import {BaseEditModalEmits, useBaseEditModal} from "~/functions/useBaseEditModal.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
 import {CustomField} from "~/entities/ApiInterfaces.ts";
 import {MediaInitialPlaylist} from "~/components/Stations/Media.vue";
@@ -61,7 +61,7 @@ import {
 } from "~/components/Stations/Media/Form/form.ts";
 import {provideLocal} from "@vueuse/core";
 
-const props = defineProps<BaseEditModalProps & {
+const props = defineProps<{
     customFields: Required<CustomField>[],
     playlists: MediaInitialPlaylist[]
 }>();
@@ -85,7 +85,7 @@ const {
     StationMediaRecord,
     MediaHttpResponse
 >(
-    toRef(props, 'createUrl'),
+    null,
     emit,
     $modal,
     resetForm,
@@ -109,7 +109,7 @@ const {
     },
     async () => {
         const {valid, data} = await r$.value.$validate();
-        return {valid, data};
+        return {valid, data: data as StationMediaRecord};
     }
 );
 

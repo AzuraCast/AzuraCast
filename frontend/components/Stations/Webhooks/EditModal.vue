@@ -152,8 +152,8 @@ const {
         r$.$reset();
     },
     async () => {
-        const {valid, data} = await r$.$validate();
-        return {valid, data};
+        const {valid} = await r$.$validate();
+        return {valid, data: form.value};
     }
 );
 

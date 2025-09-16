@@ -36,7 +36,7 @@ export const useStationsStreamersForm = defineStore(
             }
         });
 
-        const {record: form, reset} = useResettableRef<StationStreamersRecord>({
+        const form = ref<StationStreamersRecord>({
             streamer_username: '',
             streamer_password: '',
             display_name: '',
@@ -71,9 +71,10 @@ export const useStationsStreamersForm = defineStore(
         );
 
         const $reset = () => {
-            reset();
             resetRecord();
-            r$.$reset();
+            r$.$reset({
+                toOriginalState: true
+            });
         }
 
         return {

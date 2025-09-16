@@ -94,7 +94,7 @@ const {
     },
     async () => {
         const {valid, data} = await r$.value.$validate();
-        return {valid, data};
+        return {valid, data: data as StationMountRecord};
     },
     {
         onSubmitSuccess: () => {

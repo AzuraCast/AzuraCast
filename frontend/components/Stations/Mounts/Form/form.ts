@@ -4,6 +4,7 @@ import {defineStore} from "pinia";
 import {required} from "@regle/rules";
 import {HasLinks, StationMount, StreamFormats} from "~/entities/ApiInterfaces.ts";
 import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
+import {ref} from "vue";
 
 export type StationMountRecord = Omit<
     Required<StationMount>, 'id' | 'listeners_unique' | 'listeners_total'
@@ -27,7 +28,7 @@ export const useStationsMountsForm = defineStore(
             }
         });
 
-        const {record: form, reset} = useResettableRef<StationMountRecord>({
+        const form = ref<StationMountRecord>({
             name: '',
             display_name: '',
             is_visible_on_public_pages: true,
@@ -78,9 +79,10 @@ export const useStationsMountsForm = defineStore(
         );
 
         const $reset = () => {
-            reset();
             resetRecord();
-            r$.$reset();
+            r$.$reset({
+                toOriginalState: true
+            });
         }
 
         return {

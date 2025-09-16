@@ -107,20 +107,24 @@ const loading = ref(true);
 
 type BackupSettingsRow = Omit<BackupSettings, 'backup_last_run' | 'backup_last_output'>;
 
-const blankForm: BackupSettingsRow = {
+const form = ref<BackupSettingsRow>({
     backup_enabled: false,
     backup_time_code: null,
     backup_exclude_media: false,
     backup_keep_copies: 2,
     backup_storage_location: null,
     backup_format: null
-}
+});
 
 const {r$} = useAppRegle(
-    blankForm,
+    form,
     {},
     {}
 );
+
+const resetForm = () => r$.$reset({
+    toOriginalState: true
+});
 
 const formatOptions = computed(() => {
     return [
@@ -150,9 +154,7 @@ const close = () => {
 };
 
 const doOpen = async () => {
-    r$.$reset({
-        toOriginalState: true
-    });
+    resetForm();
 
     loading.value = true;
 

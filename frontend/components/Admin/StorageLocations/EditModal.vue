@@ -55,7 +55,7 @@ const {form, r$} = storeToRefs(formStore);
 const {$reset: resetForm} = formStore;
 
 type RecordWithType = StorageLocationRecord & {
-    type: string
+    type?: string
 };
 
 const {
@@ -79,8 +79,12 @@ const {
     },
     async (isEditMode) => {
         const {valid, data} = await r$.value.$validate();
-        if (isEditMode || !valid) {
-            return {valid, data};
+        if (!valid || !data) {
+            return {valid};
+        }
+
+        if (isEditMode) {
+            return {valid, data: data as RecordWithType};
         }
 
         return {
@@ -88,7 +92,7 @@ const {
             data: {
                 ...data,
                 type: props.type
-            }
+            } as RecordWithType
         };
     }
 );

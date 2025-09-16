@@ -64,7 +64,7 @@ export function useBaseEditModal<
     SubmittedForm extends Form = Form,
     ResponseBody extends Form = SubmittedForm
 >(
-    createUrl: MaybeRef<string>,
+    createUrl: MaybeRef<string | null>,
     emit: BaseEditModalEmits,
     $modal: Readonly<ShallowRef<ModalFormTemplateRef | null>>,
     resetForm: () => void,
@@ -147,13 +147,19 @@ export function useBaseEditModal<
             return options.buildSubmitRequest(data);
         }
 
+        const url = (isEditMode.value && editUrl.value)
+            ? editUrl.value
+            : toValue(createUrl);
+
+        if (url === null) {
+            throw new Error("No valid URL to submit to!");
+        }
+
         return {
             method: (isEditMode.value)
                 ? 'PUT'
                 : 'POST',
-            url: (isEditMode.value && editUrl.value)
-                ? editUrl.value
-                : toValue(createUrl),
+            url,
             data: data
         };
     };

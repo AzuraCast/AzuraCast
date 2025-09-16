@@ -108,13 +108,12 @@ import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import StreamingLogView from "~/components/Common/StreamingLogView.vue";
 import {ref, useTemplateRef} from "vue";
-import {isApiError, useAxios} from "~/vendor/axios";
+import {getErrorAsString, useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {ApiTaskWithLog} from "~/entities/ApiInterfaces.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
 
 const props = defineProps<{
@@ -136,14 +135,14 @@ type Row = {
     exclude_media: boolean
 }
 
-const {record: form, reset: resetForm} = useResettableRef<Row>({
+const blankForm: Row = {
     storage_location: null,
     path: '',
     exclude_media: false,
-});
+};
 
 const {r$} = useAppRegle(
-    form,
+    blankForm,
     {
         storage_location: {},
         path: {},
@@ -155,20 +154,19 @@ const {r$} = useAppRegle(
 const {axios} = useAxios();
 
 const submit = async () => {
-    const {valid} = await r$.$validate();
+    const {valid, data: postData} = await r$.$validate();
     if (!valid) {
         return;
     }
 
     try {
-        const {data} = await axios.post<ApiTaskWithLog>(props.runBackupUrl, form.value);
+        const {data} = await axios.post<ApiTaskWithLog>(
+            props.runBackupUrl,
+            postData
+        );
         logUrl.value = data.logUrl;
     } catch (e) {
-        if (isApiError(e)) {
-            error.value = e.response.data.message;
-        } else {
-            error.value = String(e);
-        }
+        error.value = getErrorAsString(e);
     }
 };
 
@@ -176,8 +174,9 @@ const clearContents = () => {
     logUrl.value = null;
     error.value = null;
 
-    resetForm();
-    r$.$reset();
+    r$.$reset({
+        toOriginalState: true
+    });
 }
 
 const onHidden = () => {

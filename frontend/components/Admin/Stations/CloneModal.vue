@@ -42,7 +42,7 @@ import ModalForm from "~/components/Common/ModalForm.vue";
 import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {isApiError, useAxios} from "~/vendor/axios";
+import {getErrorAsString, useAxios} from "~/vendor/axios";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
@@ -165,11 +165,7 @@ const doSubmit = async () => {
         emit('relist');
         hide();
     } catch (e) {
-        if (isApiError(e)) {
-            error.value = e.response.data.message;
-        } else {
-            error.value = 'An unexpected error occurred.';
-        }
+        error.value = getErrorAsString(e);
     }
 };
 

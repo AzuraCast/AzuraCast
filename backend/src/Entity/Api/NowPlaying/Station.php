@@ -96,6 +96,12 @@ final class Station
     )]
     public bool $is_public = false;
 
+    #[OA\Property(
+        description: 'If the station has song requests enabled.',
+        example: true
+    )]
+    public bool $requests_enabled = false;
+
     /** @var StationMount[] */
     #[OA\Property]
     public array $mounts = [];

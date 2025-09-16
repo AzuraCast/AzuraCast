@@ -89,7 +89,9 @@ let bsModal: Modal | null = null;
 const $modal = useTemplateRef('$modal');
 
 onMounted(() => {
-    bsModal = new Modal($modal.value);
+    if ($modal.value) {
+        bsModal = new Modal($modal.value);
+    }
 });
 
 onUnmounted(() => {

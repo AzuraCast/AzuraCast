@@ -9,7 +9,6 @@ use App\Container\SettingsAwareTrait;
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Controller\SingleActionInterface;
-use App\Entity\Api\Dashboard;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\Api\Traits\HasLinks;
 use App\Entity\ApiGenerator\NowPlayingApiGenerator;

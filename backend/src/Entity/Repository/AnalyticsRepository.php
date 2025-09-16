@@ -9,8 +9,8 @@ use App\Entity\Analytics;
 use App\Entity\Enums\AnalyticsIntervals;
 use App\Entity\Station;
 use App\Utilities\DateRange;
+use App\Utilities\Time;
 use Carbon\CarbonImmutable;
-use DateTimeImmutable;
 
 /**
  * @extends Repository<Analytics>
@@ -62,30 +62,20 @@ final class AnalyticsRepository extends Repository
             ->execute();
     }
 
-    public function clearSingleMetric(
-        AnalyticsIntervals $type,
-        DateTimeImmutable $moment,
-        ?Station $station = null
-    ): void {
-        if (null === $station) {
-            $this->em->createQuery(
-                <<<'DQL'
-                    DELETE FROM App\Entity\Analytics a
-                    WHERE a.station IS NULL AND a.type = :type AND a.moment = :moment
-                DQL
-            )->setParameter('type', $type)
-                ->setParameter('moment', $moment)
-                ->execute();
-        } else {
-            $this->em->createQuery(
-                <<<'DQL'
-                    DELETE FROM App\Entity\Analytics a
-                    WHERE a.station = :station AND a.type = :type AND a.moment = :moment
-                DQL
-            )->setParameter('station', $station)
-                ->setParameter('type', $type)
-                ->setParameter('moment', $moment)
-                ->execute();
-        }
+    public function getLatestDayRecord(): ?CarbonImmutable
+    {
+        $row = $this->em->createQuery(
+            <<<'DQL'
+            SELECT a FROM App\Entity\Analytics a
+            WHERE a.station IS NULL AND a.type = :day
+            ORDER BY a.moment DESC
+            DQL
+        )->setParameter('day', AnalyticsIntervals::Daily)
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+
+        return ($row instanceof Analytics)
+            ? Time::toUtcCarbonImmutable($row->moment)
+            : null;
     }
 }

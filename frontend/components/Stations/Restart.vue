@@ -104,16 +104,19 @@
 
 <script setup lang="ts">
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import {ref} from "vue";
 import {getStationApiUrl} from "~/router";
 import {useRouter} from "vue-router";
-import {useDialog} from "~/functions/useDialog.ts";
+import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
+import {useClearAllStationQueries, useStationData} from "~/functions/useStationQuery.ts";
+import {ApiStatus, FlashLevels} from "~/entities/ApiInterfaces.ts";
+import {toRefs} from "@vueuse/core";
+import {delay} from "es-toolkit";
 
-defineProps<{
-    canReload: boolean,
-}>();
+const stationData = useStationData();
+const {canReload} = toRefs(stationData);
 
 const reloadUrl = getStationApiUrl('/reload');
 const restartUrl = getStationApiUrl('/restart');
@@ -127,54 +130,54 @@ const {$gettext} = useTranslate();
 
 const router = useRouter();
 
-const makeApiCall = (uri: string) => {
+const clearAllStationQueries = useClearAllStationQueries();
+
+const makeApiCall = async (uri: string) => {
     isLoading.value = true;
 
-    void axios.post(uri).then((resp) => {
-        notify(resp.data.formatted_message, {
-            variant: (resp.data.success) ? 'success' : 'warning'
+    try {
+        const {data} = await axios.post<ApiStatus>(uri);
+        notify(data.formatted_message, {
+            variant: (data.success) ? FlashLevels.Success : FlashLevels.Warning
         });
 
-        setTimeout(
-            () => {
-                const profileRoute = router.resolve({
-                    name: 'stations:index'
-                });
+        await delay(2000);
 
-                window.location.href = profileRoute.href;
-            },
-            2000
-        );
-    }).finally(() => {
+        await router.push({
+            name: 'stations:index'
+        });
+
+        await clearAllStationQueries();
+    } finally {
         isLoading.value = false;
-    });
+    }
 };
 
-const doReload = () => {
-    void showAlert({
+const doReload = async () => {
+    const {value} = await showAlert({
         title: $gettext('Are you sure?'),
         confirmButtonClass: 'btn-warning',
         confirmButtonText: $gettext('Reload Configuration')
-    }).then((result) => {
-        if (!result.value) {
-            return;
-        }
-
-        makeApiCall(reloadUrl.value);
     });
+
+    if (!value) {
+        return;
+    }
+
+    await makeApiCall(reloadUrl.value);
 }
 
-const doRestart = () => {
-    void showAlert({
+const doRestart = async () => {
+    const {value} = await showAlert({
         title: $gettext('Are you sure?'),
         confirmButtonClass: 'btn-warning',
         confirmButtonText: $gettext('Restart Broadcasting')
-    }).then((result) => {
-        if (!result.value) {
-            return;
-        }
-
-        makeApiCall(restartUrl.value);
     });
+
+    if (!value) {
+        return;
+    }
+
+    await makeApiCall(restartUrl.value);
 }
 </script>

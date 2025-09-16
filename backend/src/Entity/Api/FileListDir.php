@@ -12,6 +12,8 @@ use OpenApi\Attributes as OA;
 )]
 final class FileListDir
 {
-    #[OA\Property(type: "array", items: new OA\Items())]
+    #[OA\Property(type: "array", items: new OA\Items(
+        ref: StationMediaPlaylist::class
+    ))]
     public array $playlists = [];
 }

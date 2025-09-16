@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Vue;
 
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Form\NestedFormOptions;
+use App\Entity\Api\Stations\Vue\PodcastsProps;
 use App\Entity\PodcastCategory;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -24,9 +26,11 @@ final class PodcastsAction implements SingleActionInterface
         $languageOptions = Languages::getNames($userLocale);
         $categoriesOptions = PodcastCategory::getAvailableCategories();
 
-        return $response->withJson([
-            'languageOptions' => $languageOptions,
-            'categoriesOptions' => $categoriesOptions,
-        ]);
+        return $response->withJson(
+            new PodcastsProps(
+                languageOptions: $languageOptions,
+                categoriesOptions: NestedFormOptions::fromArray($categoriesOptions)
+            )
+        );
     }
 }

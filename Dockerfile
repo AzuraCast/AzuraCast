@@ -8,12 +8,12 @@ FROM mariadb:lts-noble AS mariadb
 #
 # Built-in docs build step
 #
-FROM ghcr.io/azuracast/azuracast.com:builtin@sha256:2dc5aa815818a2df138dee2b25052aebebac2aed89f37b4c523f394fd6bc703f AS docs
+FROM ghcr.io/azuracast/azuracast.com:builtin@sha256:4d20682c395499eba232fb0d88858161527aa1f534a5e9711129bf4daabe958c AS docs
 
 #
 # Icecast-KH with AzuraCast customizations build step
 #
-FROM ghcr.io/azuracast/icecast-kh-ac:2024-05-24 AS icecast
+FROM ghcr.io/azuracast/icecast-kh-ac:2025-08-29 AS icecast
 
 #
 # PHP Extension Installer build step
@@ -38,7 +38,7 @@ COPY --from=icecast /usr/local/share/icecast /usr/local/share/icecast
 #
 # Final build image
 #
-FROM php:8.4-fpm-bookworm AS pre-final
+FROM php:8.4-fpm-trixie AS pre-final
 
 ENV TZ="UTC" \
     LANGUAGE="en_US.UTF-8" \

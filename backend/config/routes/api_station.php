@@ -56,6 +56,9 @@ return static function (RouteCollectorProxy $group) {
             $group->group(
                 '',
                 function (RouteCollectorProxy $group) {
+                    $group->get('/dashboard', Controller\Api\Stations\GetDashboardAction::class)
+                        ->add(new Middleware\Permissions(StationPermissions::View, true));
+
                     $group->map(
                         ['GET', 'POST'],
                         '/nowplaying/update',
@@ -759,10 +762,6 @@ return static function (RouteCollectorProxy $group) {
                         }
                     )->add(new Middleware\StationSupportsFeature(StationFeatures::Streamers))
                         ->add(new Middleware\Permissions(StationPermissions::Streamers, true));
-
-                    $group->get('/restart-status', Controller\Api\Stations\GetRestartStatusAction::class)
-                        ->setName('api:stations:restart-status')
-                        ->add(new Middleware\Permissions(StationPermissions::View, true));
 
                     $group->get('/status', Controller\Api\Stations\ServicesController::class . ':statusAction')
                         ->setName('api:stations:status')

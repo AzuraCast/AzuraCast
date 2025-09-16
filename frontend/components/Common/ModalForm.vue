@@ -10,7 +10,7 @@
     >
         <template #default="slotProps">
             <div
-                v-if="error != null"
+                v-if="error"
                 class="alert alert-danger"
             >
                 {{ error }}
@@ -82,7 +82,7 @@ withDefaults(
         loading?: boolean,
         disableSaveButton?: boolean,
         noEnforceFocus?: boolean,
-        error?: string,
+        error?: string | null,
     }>(),
     {
         size: 'lg',

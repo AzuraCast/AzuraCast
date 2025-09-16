@@ -7,10 +7,10 @@ namespace App\Service;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 
-final class GuzzleFactory
+final readonly class GuzzleFactory
 {
     public function __construct(
-        private readonly array $defaultConfig = []
+        private array $defaultConfig = []
     ) {
     }
 

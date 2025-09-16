@@ -31,10 +31,10 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class UpdateMetadataAction implements SingleActionInterface
+final readonly class UpdateMetadataAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly Adapters $adapters,
+        private Adapters $adapters,
     ) {
     }
 

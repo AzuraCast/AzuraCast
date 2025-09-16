@@ -64,7 +64,6 @@
         ref="$editModal"
         :create-url="listUrl"
         :new-intro-url="newIntroUrl"
-        :station-frontend-type="stationFrontendType"
         @relist="() => relist()"
         @needs-restart="() => mayNeedRestart()"
     />
@@ -82,13 +81,8 @@ import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
-import {FrontendAdapters} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
-
-defineProps<{
-    stationFrontendType: FrontendAdapters
-}>();
 
 const listUrl = getStationApiUrl('/mounts');
 const newIntroUrl = getStationApiUrl('/mounts/intro');

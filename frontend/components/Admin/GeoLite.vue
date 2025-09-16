@@ -71,7 +71,7 @@
                             <fieldset>
                                 <form-group-field
                                     id="edit_form_key"
-                                    :field="v$.key"
+                                    v-model="form.key"
                                 >
                                     <template #label>
                                         {{ $gettext('MaxMind License Key') }}
@@ -105,28 +105,27 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {computed, onMounted, ref} from "vue";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
 import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
-import {useDialog} from "~/functions/useDialog.ts";
+import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {ApiAdminGeoLiteStatus} from "~/entities/ApiInterfaces.ts";
+import {useResettableRef} from "~/functions/useResettableRef.ts";
 
 const apiUrl = getApiUrl('/admin/geolite');
 
 const isLoading = ref(true);
-const version = ref(null);
+const version = ref<string | null>(null);
 
-const {form, v$} = useVuelidateOnForm(
-    {
-        key: {}
-    },
-    {
-        key: null
-    }
-);
+type Row = {
+    key: string | null
+}
+
+const {record: form} = useResettableRef<Row>({
+    key: null
+});
 
 const {$gettext} = useTranslate();
 
@@ -134,48 +133,51 @@ const langInstalledVersion = computed(() => {
     return $gettext(
         'GeoLite version "%{version}" is currently installed.',
         {
-            version: version.value
+            version: version.value ?? 'N/A'
         }
     );
 });
 
 const {axios} = useAxios();
 
-const doFetch = () => {
+const doFetch = async () => {
     isLoading.value = true;
 
-    void axios.get<ApiAdminGeoLiteStatus>(apiUrl.value).then(({data}) => {
-        form.value.key = data.key;
-        version.value = data.version;
-        isLoading.value = false;
-    });
+    const {data} = await axios.get<ApiAdminGeoLiteStatus>(apiUrl.value);
+    form.value.key = data.key;
+    version.value = data.version;
+    isLoading.value = false;
 };
 
 onMounted(doFetch);
 
-const doUpdate = () => {
+const doUpdate = async () => {
     isLoading.value = true;
 
-    void axios.post<ApiAdminGeoLiteStatus>(apiUrl.value, {
-        geolite_license_key: form.value.key
-    }).then(({data}) => {
+    try {
+        const {data} = await axios.post<ApiAdminGeoLiteStatus>(apiUrl.value, {
+            geolite_license_key: form.value.key
+        });
+
         version.value = data.version;
-    }).finally(() => {
+    } finally {
         isLoading.value = false;
-    });
+    }
 };
 
 const {confirmDelete} = useDialog();
 
-const doDelete = () => {
-    void confirmDelete({
+const doDelete = async () => {
+    const {value} = await confirmDelete({
         title: $gettext('Remove GeoLite license key?'),
         confirmButtonText: $gettext('Remove Key')
-    }).then((result) => {
-        if (result.value) {
-            form.value.key = null;
-            doUpdate();
-        }
     });
+
+    if (!value) {
+        return;
+    }
+
+    form.value.key = null;
+    await doUpdate();
 }
 </script>

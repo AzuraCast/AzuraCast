@@ -39,10 +39,10 @@ final class Version20250203160744 extends AbstractMigration
 
     protected function migrateForwardsToDateTime(string $tableName, string $fieldName, bool $nullable): void
     {
-        $tableName = $this->connection->quoteIdentifier($tableName);
+        $tableName = $this->connection->quoteSingleIdentifier($tableName);
 
-        $tempFieldName = $this->connection->quoteIdentifier('temp_' . $fieldName);
-        $destFieldName = $this->connection->quoteIdentifier($fieldName);
+        $tempFieldName = $this->connection->quoteSingleIdentifier('temp_' . $fieldName);
+        $destFieldName = $this->connection->quoteSingleIdentifier($fieldName);
 
         $this->addSql(
             <<<SQL
@@ -91,10 +91,10 @@ final class Version20250203160744 extends AbstractMigration
 
     protected function migrateBackFromDateTime(string $tableName, string $fieldName): void
     {
-        $tableName = $this->connection->quoteIdentifier($tableName);
+        $tableName = $this->connection->quoteSingleIdentifier($tableName);
 
-        $tempFieldName = $this->connection->quoteIdentifier('temp_' . $fieldName);
-        $destFieldName = $this->connection->quoteIdentifier($fieldName);
+        $tempFieldName = $this->connection->quoteSingleIdentifier('temp_' . $fieldName);
+        $destFieldName = $this->connection->quoteSingleIdentifier($fieldName);
 
         $this->addSql(
             <<<SQL

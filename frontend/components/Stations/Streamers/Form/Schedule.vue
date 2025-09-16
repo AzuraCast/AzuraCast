@@ -36,11 +36,11 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import StreamersFormScheduleRow from "~/components/Stations/Streamers/Form/ScheduleRow.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import Tab from "~/components/Common/Tab.vue";
-import {IconAdd} from "~/components/Common/icons";
+import {IconAdd} from "~/components/Common/Icons/icons.ts";
 
 const scheduleItems = defineModel<Array<any>>('scheduleItems', {
     default: () => [],

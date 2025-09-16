@@ -5,7 +5,7 @@ import {
     DataTableRow
 } from "~/functions/useHasDatatable.ts";
 import {computed, MaybeRefOrGetter, shallowRef, toValue} from "vue";
-import {filter, get, slice} from "lodash";
+import {filter, get, slice} from "es-toolkit/compat";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
 
 export function useClientItemProvider<Row extends DataTableRow = DataTableRow>(
@@ -53,17 +53,19 @@ export function useClientItemProvider<Row extends DataTableRow = DataTableRow>(
     const rows = computed(() => {
         let itemsOnPage = filteredItems.value;
 
-        if (context.value.sortField) {
+        const { sortField, sortOrder } = context.value;
+
+        if (sortField !== null) {
             const collator = new Intl.Collator(localeShort, {numeric: true, sensitivity: 'base'});
 
             itemsOnPage = itemsOnPage.sort(
                 (a, b) => collator.compare(
-                    get(a, context.value.sortField, null),
-                    get(b, context.value.sortField, null)
+                    get(a, sortField, ''),
+                    get(b, sortField, '')
                 )
             );
 
-            if (context.value.sortOrder === 'desc') {
+            if (sortOrder === 'desc') {
                 itemsOnPage = itemsOnPage.reverse();
             }
         }

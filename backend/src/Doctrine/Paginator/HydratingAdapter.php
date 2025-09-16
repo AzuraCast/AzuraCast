@@ -13,14 +13,14 @@ use Pagerfanta\Adapter\AdapterInterface;
  * @template T
  * @implements AdapterInterface<T>
  */
-final class HydratingAdapter implements AdapterInterface
+final readonly class HydratingAdapter implements AdapterInterface
 {
     /**
      * @param AdapterInterface<T> $wrapped
      */
     public function __construct(
-        private readonly AdapterInterface $wrapped,
-        private readonly Closure $hydrateCallback,
+        private AdapterInterface $wrapped,
+        private Closure $hydrateCallback,
     ) {
     }
 

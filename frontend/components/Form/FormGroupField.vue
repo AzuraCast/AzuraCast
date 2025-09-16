@@ -48,8 +48,8 @@
                 >
             </slot>
 
-            <vuelidate-error
-                v-if="isVuelidateField"
+            <validation-error
+                v-if="isValidatedField"
                 :field="field"
             />
         </template>
@@ -79,15 +79,15 @@
 </template>
 
 <script setup lang="ts">
-import VuelidateError from "~/components/Form/VuelidateError.vue";
 import {computed, nextTick, onMounted, reactive, Reactive, useTemplateRef, WritableComputedRef} from "vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
-import {FormFieldEmits, FormFieldProps, useFormField, VuelidateField} from "~/components/Form/useFormField";
+import {FormFieldEmits, FormFieldProps, useFormField, ValidatedField} from "~/components/Form/useFormField";
+import ValidationError from "~/components/Form/ValidationError.vue";
 
 type T = string | number | null;
 
-interface FormGroupFieldProps extends FormFieldProps<T>, FormLabelParentProps {
+type FormGroupFieldProps = FormFieldProps<T> & FormLabelParentProps & {
     id: string,
     name?: string,
     label?: string,
@@ -122,7 +122,7 @@ const slots = defineSlots<{
     label?: () => any,
     default?: (props: {
         id: string,
-        field?: VuelidateField<T>,
+        field?: ValidatedField<T>,
         model: {
             $model: T
         },
@@ -134,7 +134,7 @@ const slots = defineSlots<{
 
 const emit = defineEmits<FormFieldEmits<T>>();
 
-const {model: parentModel, isVuelidateField, fieldClass, isRequired} = useFormField<T>(props, emit);
+const {model: parentModel, isValidatedField, fieldClass, isRequired} = useFormField<T>(props, emit);
 
 const isNumeric = computed(() => {
     return props.inputNumber || props.inputType === "number" || props.inputType === "range";

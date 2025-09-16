@@ -1,5 +1,5 @@
 import {ref, shallowRef} from "vue";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useTranslate} from "~/vendor/gettext";
 import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
 
@@ -22,7 +22,7 @@ export const [useProvideWebcaster, useInjectWebcaster] = createRequiredInjection
         const metadata = shallowRef<WebcasterMetadata | null>(null);
         const isConnected = ref(false);
 
-        let socket: WebSocket | null = null;
+        let socket: WebSocket;
 
         const sendMetadata = (data: WebcasterMetadata) => {
             metadata.value = data;

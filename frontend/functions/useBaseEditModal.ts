@@ -1,96 +1,90 @@
-import {computed, ComputedRef, nextTick, Ref, ref, ShallowRef, toRef} from "vue";
-import mergeExisting from "~/functions/mergeExisting";
-import {useNotify} from "~/functions/useNotify";
+import {computed, ComputedRef, MaybeRef, nextTick, Ref, ref, ShallowRef, toValue} from "vue";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
-import {
-    useVuelidateOnForm,
-    VuelidateBlankForm,
-    VuelidateRef,
-    VuelidateValidations
-} from "~/functions/useVuelidateOnForm";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {AxiosError, AxiosRequestConfig} from "axios";
-import {GlobalConfig} from "@vuelidate/core";
 import {ApiError, ApiGenericForm, ApiStatus} from "~/entities/ApiInterfaces.ts";
 import {useMutation, UseMutationOptions, UseMutationReturnType} from "@tanstack/vue-query";
 
 export type ModalFormTemplateRef = InstanceType<typeof ModalForm>;
 
-export interface BaseEditModalProps {
-    createUrl?: string
+export type BaseEditModalProps = {
+    createUrl: string
 }
 
-export interface HasRelistEmit {
+export type HasRelistEmit = {
     (e: 'relist'): void
 }
 
-type AxiosMutateResponse = ApiStatus & Record<string, any>
+type Form = ApiGenericForm
 
-type MutationOptions = UseMutationOptions<
-    AxiosMutateResponse,
+type AxiosMutateResponse<T extends Form = Form> = ApiStatus & T
+
+type MutationOptions<
+    SubmittedForm extends Form = Form,
+    ResponseBody extends Form = SubmittedForm
+> = UseMutationOptions<
+    AxiosMutateResponse<ResponseBody>,
     AxiosError<ApiError>,
-    ApiGenericForm
+    SubmittedForm
 >
 
-type MutationReturn = UseMutationReturnType<
-    AxiosMutateResponse,
+type MutationReturn<
+    SubmittedForm extends Form = Form,
+    ResponseBody extends Form = SubmittedForm
+> = UseMutationReturnType<
+    AxiosMutateResponse<ResponseBody>,
     AxiosError<ApiError>,
-    ApiGenericForm,
+    SubmittedForm,
     unknown
 >
 
 export type BaseEditModalEmits = HasRelistEmit;
 
-export interface BaseEditModalOptions<T extends ApiGenericForm = ApiGenericForm> extends GlobalConfig {
-    resetForm?(originalResetForm: () => void): void,
-
-    clearContents?(resetForm: () => void): void,
-
-    populateForm?(data: Partial<T>, form: Ref<T>): void,
-
-    getSubmittableFormData?(form: Ref<T>, isEditMode: ComputedRef<boolean>): ApiGenericForm,
-
-    buildSubmitRequest?(data: ApiGenericForm): AxiosRequestConfig,
-
-    onSubmitSuccess?(
+export type BaseEditModalOptions<SubmittedForm extends Form = Form> = {
+    buildSubmitRequest?: (data: SubmittedForm) => AxiosRequestConfig,
+    onSubmitSuccess?: (
         data: AxiosMutateResponse,
-        variables: ApiGenericForm,
+        variables: SubmittedForm,
         context: unknown
-    ): void,
-
-    onSubmitError?(
+    ) => void,
+    onSubmitError?: (
         error: AxiosError<ApiError, any>,
-        variables: ApiGenericForm,
+        variables: SubmittedForm,
         context: unknown
-    ): void,
+    ) => void,
 }
 
-export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
-    props: BaseEditModalProps,
+export type ValidateReturn<T extends Form = Form> = {
+    valid: boolean,
+    data?: T
+}
+
+export function useBaseEditModal<
+    SubmittedForm extends Form = Form,
+    ResponseBody extends Form = SubmittedForm
+>(
+    createUrl: MaybeRef<string | null>,
     emit: BaseEditModalEmits,
     $modal: Readonly<ShallowRef<ModalFormTemplateRef | null>>,
-    validations?: VuelidateValidations<T>,
-    blankForm?: VuelidateBlankForm<T>,
-    options: BaseEditModalOptions<T> = {},
-    mutationOptions: Partial<MutationOptions> = {},
+    resetForm: () => void,
+    populateForm: (data: Partial<ResponseBody>) => void,
+    validateForm: (isEditMode: boolean) => Promise<ValidateReturn<SubmittedForm>>,
+    options: BaseEditModalOptions<SubmittedForm> = {},
+    mutationOptions: Partial<MutationOptions<SubmittedForm, ResponseBody>> = {},
 ): {
     loading: Ref<boolean>,
     error: Ref<any>,
     editUrl: Ref<string | null>,
     isEditMode: ComputedRef<boolean>,
-    form: Ref<T>,
-    v$: VuelidateRef<T>,
-    mutation: MutationReturn,
-    resetForm: () => void,
+    mutation: MutationReturn<SubmittedForm, ResponseBody>,
     clearContents: () => void,
     create: () => void,
-    edit: (recordUrl: string) => void,
-    doSubmit: () => void,
+    edit: (recordUrl: string) => Promise<void>,
+    doSubmit: () => Promise<void>,
     close: () => void
 } {
-    const createUrl = toRef(props, 'createUrl');
-
-    const loading = ref<boolean>(false);
+    const fetchLoading = ref<boolean>(false);
     const error = ref<any>(null);
     const editUrl = ref<string | null>(null);
 
@@ -98,34 +92,10 @@ export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
         return editUrl.value !== null;
     });
 
-    const {
-        form,
-        v$,
-        resetForm: originalResetForm
-    } = useVuelidateOnForm(
-        validations,
-        blankForm,
-        options
-    );
-
-    const resetForm = (): void => {
-        if (typeof options.resetForm === 'function') {
-            options.resetForm(originalResetForm);
-            return;
-        }
-
-        originalResetForm();
-    };
-
     const clearContents = (): void => {
-        if (typeof options.clearContents === 'function') {
-            options.clearContents(resetForm);
-            return;
-        }
-
         resetForm();
 
-        loading.value = false;
+        fetchLoading.value = false;
         error.value = null;
         editUrl.value = null;
     };
@@ -140,66 +110,56 @@ export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
         });
     };
 
-    const populateForm = (data: Partial<T>): void => {
-        if (typeof options.populateForm === 'function') {
-            options.populateForm(data, form);
-            return;
-        }
-
-        form.value = mergeExisting(form.value, data);
-    }
-
     const {notifySuccess} = useNotify();
     const {axios} = useAxios();
 
-    const doLoad = (): void => {
-        loading.value = true;
+    const doLoad = async (): Promise<void> => {
+        fetchLoading.value = true;
 
         if (!editUrl.value) {
             throw new Error("No edit URL!");
         }
 
-        axios.get(editUrl.value).then((resp) => {
-            populateForm(resp.data);
-        }).catch(() => {
+        try {
+            const {data} = await axios.get(editUrl.value);
+            populateForm(data);
+        } catch {
             close();
-        }).finally(() => {
-            loading.value = false;
-        });
+        } finally {
+            fetchLoading.value = false;
+        }
     };
 
-    const edit = (recordUrl: string): void => {
+    const edit = async (recordUrl: string): Promise<void> => {
         clearContents();
 
         editUrl.value = recordUrl;
         $modal.value?.show();
 
-        void nextTick(() => {
-            resetForm();
-            doLoad();
-        })
+        await nextTick();
+
+        resetForm();
+        await doLoad();
     };
 
-    const getSubmittableFormData = (): ApiGenericForm => {
-        if (typeof options.getSubmittableFormData === 'function') {
-            return options.getSubmittableFormData(form, isEditMode);
-        }
-
-        return form.value;
-    };
-
-    const buildSubmitRequest = (data: ApiGenericForm): AxiosRequestConfig => {
+    const buildSubmitRequest = (data: SubmittedForm): AxiosRequestConfig<SubmittedForm> => {
         if (typeof options.buildSubmitRequest === 'function') {
             return options.buildSubmitRequest(data);
+        }
+
+        const url = (isEditMode.value && editUrl.value)
+            ? editUrl.value
+            : toValue(createUrl);
+
+        if (url === null) {
+            throw new Error("No valid URL to submit to!");
         }
 
         return {
             method: (isEditMode.value)
                 ? 'PUT'
                 : 'POST',
-            url: (isEditMode.value && editUrl.value)
-                ? editUrl.value
-                : createUrl.value,
+            url,
             data: data
         };
     };
@@ -208,8 +168,14 @@ export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
         $modal.value?.hide();
     };
 
-    const mutation: MutationReturn = useMutation({
-        mutationFn: async (data: ApiGenericForm) => (await axios<AxiosMutateResponse>(buildSubmitRequest(data))).data,
+    const mutation: MutationReturn<SubmittedForm, ResponseBody> = useMutation({
+        mutationFn: async (data: SubmittedForm): Promise<AxiosMutateResponse<ResponseBody>> => {
+            const {data: returnData} = await axios<AxiosMutateResponse<ResponseBody>>(
+                buildSubmitRequest(data)
+            );
+
+            return returnData;
+        },
         onSuccess: (
             data,
             variables,
@@ -233,33 +199,29 @@ export function useBaseEditModal<T extends ApiGenericForm = ApiGenericForm>(
             error.value = err.response?.data?.message;
         },
         ...mutationOptions
-    })
+    });
 
-    const doSubmit = (): void => {
-        v$.value.$touch();
-        v$.value.$validate().then((isValid: boolean) => {
-            if (!isValid) {
-                return;
-            }
+    const doSubmit = async (): Promise<void> => {
+        const {valid, data} = await validateForm(isEditMode.value);
 
-            error.value = null;
-            mutation.mutate(getSubmittableFormData());
-        });
+        if (!valid || !data) {
+            return;
+        }
+
+        error.value = null;
+        mutation.mutate(data);
     };
 
-    const isLoading = computed(
-        () => loading.value || mutation.isPending.value
+    const loading = computed(
+        () => fetchLoading.value || mutation.isPending.value
     );
 
     return {
-        loading: isLoading,
+        loading,
         error,
         editUrl,
         isEditMode,
-        form,
-        v$,
         mutation,
-        resetForm,
         clearContents,
         create,
         edit,

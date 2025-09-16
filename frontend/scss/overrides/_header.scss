@@ -1,5 +1,5 @@
 header.navbar {
-  background-image: url('/static/img/header_bg.webp'), linear-gradient(90deg, #0a6fc2 0%, #2196f3 100%);
+  background-image: url('~/img/header_bg.webp'), linear-gradient(90deg, #0a6fc2 0%, #2196f3 100%);
   background-position: top left, center;
   background-repeat: no-repeat;
   background-size: 500px 100px, cover;
@@ -41,6 +41,10 @@ header.navbar {
         font-size: 1rem;
       }
     }
+  }
+
+  body:not(.has-sidebar) & #navbar-toggle {
+    display: none !important;
   }
 
   .navbar-toggler {

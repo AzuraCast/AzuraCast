@@ -43,33 +43,18 @@
 </template>
 
 <script setup lang="ts">
-import {find, isEmpty, pickBy} from "lodash";
+import {find, isEmpty, pickBy} from "es-toolkit/compat";
 import PermissionsFormStationRow from "~/components/Admin/Permissions/Form/StationRow.vue";
 import {computed, toRaw} from "vue";
 import Tab from "~/components/Common/Tab.vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab.ts";
-import {ApiAdminRole} from "~/entities/ApiInterfaces.ts";
+import {PermissionsRecord} from "~/components/Admin/Permissions/EditModal.vue";
 
 const props = defineProps<{
     stations: Record<string, string>,
     stationPermissions: Record<string, string>,
 }>();
 
-const form = defineModel<ApiAdminRole>('form', {required: true});
-
-useVuelidateOnFormTab(
-    form,
-    {
-        permissions: {
-            station: {}
-        }
-    },
-    () => ({
-        permissions: {
-            station: []
-        }
-    })
-);
+const form = defineModel<PermissionsRecord>('form', {required: true});
 
 const remainingStations = computed(() => {
     const usedStations = form.value.permissions?.station ?? [];

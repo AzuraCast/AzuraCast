@@ -310,7 +310,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {useTemplateRef} from "vue";
 import useHasEditModal from "~/functions/useHasEditModal";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import {useLuxon} from "~/vendor/luxon";
@@ -319,16 +319,14 @@ import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 import AddButton from "~/components/Common/AddButton.vue";
-import {IconContract, IconExpand} from "~/components/Common/icons.ts";
-import Icon from "~/components/Common/Icon.vue";
+import {IconContract, IconExpand} from "~/components/Common/Icons/icons.ts";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import ScheduleViewTab from "~/components/Stations/Common/ScheduleViewTab.vue";
 import {EventImpl} from "@fullcalendar/core/internal";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
-
-const props = defineProps<{
-    useManualAutoDj: boolean
-}>();
+import {useStationData} from "~/functions/useStationQuery.ts";
+import {toRefs} from "@vueuse/core";
 
 const listUrl = getStationApiUrl('/playlists');
 const scheduleUrl = getStationApiUrl('/playlists/schedule');
@@ -404,8 +402,11 @@ const doApplyTo = (url: string) => {
 
 const {mayNeedRestart: originalMayNeedRestart} = useMayNeedRestart();
 
+const stationData = useStationData();
+const {useManualAutoDj} = toRefs(stationData);
+
 const mayNeedRestart = () => {
-    if (!props.useManualAutoDj) {
+    if (!useManualAutoDj.value) {
         return;
     }
 
@@ -415,13 +416,13 @@ const mayNeedRestart = () => {
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const doModify = (url: string) => {
-    void axios.put(url).then((resp) => {
-        mayNeedRestart();
+const doModify = async (url: string) => {
+    const {data} = await axios.put(url);
 
-        notifySuccess(resp.data.message);
-        relist();
-    });
+    mayNeedRestart();
+
+    notifySuccess(data.message);
+    relist();
 };
 
 const {doDelete} = useConfirmAndDelete(

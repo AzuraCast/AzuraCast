@@ -25,7 +25,7 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="state">
                             <tr
                                 v-for="row in state.bestAndWorst.best"
                                 :key="row.song.id"
@@ -65,7 +65,7 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="state">
                             <tr
                                 v-for="row in state.bestAndWorst.worst"
                                 :key="row.song.id"
@@ -105,7 +105,7 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="state">
                             <tr
                                 v-for="row in state.mostPlayed"
                                 :key="row.song.id"
@@ -126,13 +126,13 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import {toRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import SongText from "~/components/Stations/Reports/Overview/SongText.vue";
 import Loading from "~/components/Common/Loading.vue";
 import {useLuxon} from "~/vendor/luxon";
-import {IconChevronDown, IconChevronUp} from "~/components/Common/icons";
+import {IconChevronDown, IconChevronUp} from "~/components/Common/Icons/icons.ts";
 import {DateRange} from "~/components/Stations/Reports/Overview/CommonMetricsView.vue";
 import {useQuery} from "@tanstack/vue-query";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
@@ -147,10 +147,17 @@ const {axios} = useAxios();
 
 const {DateTime} = useLuxon();
 
-const {data: state, isLoading} = useQuery({
+type StatsData = {
+    bestAndWorst: {
+        best: any[],
+        worst: any[]
+    },
+    mostPlayed: any[]
+}
+
+const {data: state, isLoading} = useQuery<StatsData>({
     queryKey: queryKeyWithStation([
-        QueryKeys.StationReports
-    ], [
+        QueryKeys.StationReports,
         'best_and_worst',
         dateRange
     ]),

@@ -325,7 +325,7 @@ final class ConfigWriter implements EventSubscriberInterface
                         $playlistScheduleVar = 'rotate(weights=[1,'
                             . $playlist->play_per_songs . '], [' . $playlistVarName . ', radio])';
                     } else {
-                        $delaySeconds = $playlist->play_per_songs * 60;
+                        $delaySeconds = $playlist->play_per_minutes * 60;
                         $delayTrackSensitive = $playlist->backendInterruptOtherSongs() ? 'false' : 'true';
 
                         $playlistScheduleVar = 'fallback(track_sensitive=' . $delayTrackSensitive . ', [delay(' . $delaySeconds . '., ' . $playlistVarName . '), radio])';
@@ -523,7 +523,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(
             <<<LS
             # Log current metadata for debugging.
-            source.methods(radio).on_metadata(azuracast.log_meta)
+            source.methods(radio).on_metadata(synchronous=false, azuracast.log_meta)
             
             # Apply crossfade.
             radio = azuracast.apply_crossfade(radio)
@@ -558,8 +558,6 @@ final class ConfigWriter implements EventSubscriberInterface
             'icy = true',
             'icy_metadata_charset = "' . $charset . '"',
             'metadata_charset = "' . $charset . '"',
-            'on_connect = azuracast.live_connected',
-            'on_disconnect = azuracast.live_disconnected',
         ];
 
         $djBuffer = $settings->dj_buffer;
@@ -578,6 +576,8 @@ final class ConfigWriter implements EventSubscriberInterface
 
             # Live Broadcasting
             live = input.harbor({$harborParams})
+            live.on_connect(synchronous=false, azuracast.live_connected)
+            live.on_disconnect(synchronous=false, azuracast.live_disconnected)
             
             last_live_meta = ref([])
 
@@ -630,7 +630,7 @@ final class ConfigWriter implements EventSubscriberInterface
             end
 
             # Continuously check on live.
-            source.methods(radio).on_frame(check_live)
+            source.methods(radio).on_frame(synchronous=true, check_live)
             LIQ
         );
 
@@ -691,7 +691,7 @@ final class ConfigWriter implements EventSubscriberInterface
             radio = azuracast.add_fallback(radio)
             
             # Send metadata changes back to AzuraCast
-            source.methods(radio).on_metadata(azuracast.send_feedback)
+            source.methods(radio).on_metadata(synchronous=false, azuracast.send_feedback)
 
             # Handle "Jingle Mode" tracks by replaying the previous metadata.
             radio = azuracast.handle_jingle_mode(radio)
@@ -704,9 +704,6 @@ final class ConfigWriter implements EventSubscriberInterface
 
     public function writeEncodingConfiguration(WriteLiquidsoapConfiguration $event): void
     {
-        /*
-         * TODO: Wait for upstream to attempt unified encoding.
-         *
         $station = $event->getStation();
 
         // @var Collection<EncodableInterface> $encodables
@@ -744,7 +741,6 @@ final class ConfigWriter implements EventSubscriberInterface
                 LIQ
             );
         }
-        */
     }
 
     public function writeLocalBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -788,31 +784,69 @@ final class ConfigWriter implements EventSubscriberInterface
         // Configure the outbound broadcast.
         $hlsStreams = [];
 
+        // Build the HLS stream encoder destinations.
         foreach ($station->hls_streams as $hlsStream) {
             $streamVarName = self::cleanUpVarName($hlsStream->name);
 
-            // TODO: Replace with common encoder
-            $outputString = $this->getFullFfmpegString(
-                $hlsStream->getEncodingFormat(),
-                'mpegts'
+            $ffmpegStreams = [];
+            foreach ($station->hls_streams as $hlsInnerStream) {
+                $innerStreamVarName = self::cleanUpVarName(
+                    $hlsInnerStream->getEncodingFormat()->getVariableName('hls')
+                );
+
+                $ffmpegStreams[] = ($hlsInnerStream->id === $hlsStream->id)
+                    ? '%' . $innerStreamVarName . '.copy'
+                    : '%' . $innerStreamVarName . '.drop';
+            }
+
+            $hlsStreams[] = sprintf(
+                '("%s", %%ffmpeg(format="mpegts", %s))',
+                $streamVarName,
+                implode(', ', $ffmpegStreams)
             );
-
-            $lsConfig[] = $streamVarName . ' = ' . $outputString;
-
-            $hlsStreams[] = $streamVarName;
         }
 
         if (empty($hlsStreams)) {
             return;
         }
 
-        $lsConfig[] = 'hls_streams = [' . implode(
-            ', ',
-            array_map(
-                static fn($row) => '("' . $row . '", ' . $row . ')',
-                $hlsStreams
-            )
-        ) . ']';
+        $lsConfig[] = 'hls_streams = [' . "\n" . '    ' . implode(
+            ',' . "\n" . '    ',
+            $hlsStreams
+        ) . "\n" . ']';
+
+        // Build an aggregate source composed of the various encoders.
+        $i = 0;
+        $hlsSourceTracks = [];
+
+        foreach ($station->hls_streams as $hlsStream) {
+            $i++;
+
+            $encoding = $hlsStream->getEncodingFormat();
+            $encoderVarName = $encoding->getVariableName('radio');
+            $hlsVarName = $encoding->getVariableName('hls');
+
+            $hlsSourceTracks[] = $hlsVarName . ' = ' . $hlsVarName;
+
+            if ($i === 1) {
+                $hlsSourceTracks[] = 'metadata = hls_m';
+                $hlsSourceTracks[] = 'track_marks = hls_tm';
+
+                $lsConfig[] = sprintf(
+                    'let {audio = %s, metadata = hls_m, track_marks = hls_tm} = source.tracks(%s)',
+                    $hlsVarName,
+                    $encoderVarName
+                );
+            } else {
+                $lsConfig[] = sprintf(
+                    'let {audio = %s} = source.tracks(%s)',
+                    $hlsVarName,
+                    $encoderVarName
+                );
+            }
+        }
+
+        $lsConfig[] = 'hls_radio = source({' . implode(', ', $hlsSourceTracks) . '})';
 
         $event->appendLines($lsConfig);
 
@@ -841,7 +875,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 temp_dir="#{settings.azuracast.temp_path()}",
                 "{$hlsBaseDir}",
                 hls_streams,
-                radio
+                hls_radio
             )
             LIQ
         );
@@ -1137,11 +1171,8 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $outputParams = [];
 
-        // TODO for common encoding:
-        // $container = $encoding->format->getFfmpegContainer();
-        // $outputParams[] = '%ffmpeg(format="' . $container . '", %audio.copy)';
-
-        $outputParams[] = $this->getFullFfmpegString($encoding);
+        $container = $encoding->format->getFfmpegContainer();
+        $outputParams[] = '%ffmpeg(format="' . $container . '", %audio.copy)';
 
         $outputParams[] = 'id="' . $idPrefix . $id . '"';
 
@@ -1192,12 +1223,12 @@ final class ConfigWriter implements EventSubscriberInterface
             $outputParams[] = 'transport = https_transport';
         }
 
-        $outputParams[] = 'send_icy_metadata = ' . ($encoding->format->sendIcyMetadata() ? 'true' : 'false');
+        $sendIcyMetadata = $encoding->format->sendIcyMetadata();
+        if (null !== $sendIcyMetadata) {
+            $outputParams[] = 'send_icy_metadata = ' . ($sendIcyMetadata ? 'true' : 'false');
+        }
 
-        // TODO for common encoding:
-        // $outputParams[] = self::cleanUpVarName($encoding->getVariableName('radio'));
-
-        $outputParams[] = 'radio';
+        $outputParams[] = self::cleanUpVarName($encoding->getVariableName('radio'));
 
         $outputCommand = ($source->isShoutcast)
             ? 'output.shoutcast'

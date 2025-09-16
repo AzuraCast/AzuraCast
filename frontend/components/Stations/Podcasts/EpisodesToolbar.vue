@@ -32,14 +32,13 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
-import {IconDelete, IconEdit} from "~/components/Common/icons";
+import {IconDelete, IconEdit} from "~/components/Common/Icons/icons.ts";
 import {computed, toRef} from "vue";
 import useHandlePodcastBatchResponse from "~/components/Stations/Podcasts/useHandlePodcastBatchResponse.ts";
-import {map} from "lodash";
-import {useDialog} from "~/functions/useDialog.ts";
+import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
 
 const props = withDefaults(
@@ -69,35 +68,37 @@ const hasSelectedItems = computed(() => {
 
 const {handleBatchResponse} = useHandlePodcastBatchResponse();
 
-const doBatch = (action: string, successMessage: string, errorMessage: string) => {
-    void axios.put(props.batchUrl, {
+const doBatch = async (action: string, successMessage: string, errorMessage: string) => {
+    const {data} = await axios.put(props.batchUrl, {
         'do': action,
-        'episodes': map(props.selectedItems, 'id')
-    }).then(({data}) => {
-        handleBatchResponse(data, successMessage, errorMessage);
-        emit('relist');
+        'episodes': props.selectedItems.map((row) => row.id)
     });
+
+    handleBatchResponse(data, successMessage, errorMessage);
+    emit('relist');
 };
 
 const {confirmDelete} = useDialog();
 
-const doDelete = () => {
-    void confirmDelete({
+const doDelete = async () => {
+    const {value} = await confirmDelete({
         title: $gettext(
             'Delete %{num} episodes?',
             {
                 num: String(props.selectedItems.length)
             }
         ),
-    }).then((result) => {
-        if (result.value) {
-            doBatch(
-                'delete',
-                $gettext('Episodes removed:'),
-                $gettext('Error removing episodes:')
-            );
-        }
     });
+
+    if (!value) {
+        return;
+    }
+
+    await doBatch(
+        'delete',
+        $gettext('Episodes removed:'),
+        $gettext('Error removing episodes:')
+    );
 };
 
 const doEdit = () => {

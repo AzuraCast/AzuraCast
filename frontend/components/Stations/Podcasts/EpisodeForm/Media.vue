@@ -73,7 +73,7 @@ const props = defineProps<{
 
 const model = defineModel<UploadResponseBody | null>();
 
-const hasMedia = ref(null);
+const hasMedia = ref<boolean | null>(null);
 syncRef(toRef(props, 'recordHasMedia'), hasMedia, {direction: 'ltr'});
 
 const targetUrl = computed(() => {
@@ -82,7 +82,7 @@ const targetUrl = computed(() => {
         : props.newMediaUrl;
 });
 
-const onFileSuccess = (_file, message: UploadResponseBody | null) => {
+const onFileSuccess = (_file: any, message: UploadResponseBody | null) => {
     hasMedia.value = true;
 
     if (!props.editMediaUrl && message) {
@@ -92,11 +92,11 @@ const onFileSuccess = (_file, message: UploadResponseBody | null) => {
 
 const {axios} = useAxios();
 
-const deleteMedia = () => {
+const deleteMedia = async () => {
     if (props.editMediaUrl) {
-        void axios.delete(props.editMediaUrl).then(() => {
-            hasMedia.value = false;
-        });
+        await axios.delete(props.editMediaUrl);
+
+        hasMedia.value = false;
     } else {
         hasMedia.value = false;
         model.value = null;

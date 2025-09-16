@@ -20,13 +20,15 @@
 
 <script setup lang="ts">
 import VueDatePicker, {VueDatePickerProps} from "@vuepic/vue-datepicker";
-import Icon from "~/components/Common/Icon.vue";
-import useTheme from "~/functions/theme";
-import {useTranslate} from "~/vendor/gettext";
+import Icon from "~/components/Common/Icons/Icon.vue";
+import {useTheme} from "~/functions/theme.ts";
+import {useTranslate} from "~/vendor/gettext.ts";
 import {computed} from "vue";
-import {useAzuraCast} from "~/vendor/azuracast";
-import {useLuxon} from "~/vendor/luxon";
-import {IconDateRange} from "~/components/Common/icons";
+import {useAzuraCast} from "~/vendor/azuracast.ts";
+import {useLuxon} from "~/vendor/luxon.ts";
+import {IconDateRange} from "~/components/Common/Icons/icons.ts";
+import {storeToRefs} from "pinia";
+import {isString} from "es-toolkit";
 
 defineOptions({
     inheritAttrs: false
@@ -46,19 +48,29 @@ const emit = defineEmits<{
     (e: 'update:modelValue', modelValue: DateRange): void
 }>();
 
-const {isDark} = useTheme();
+const {isDark} = storeToRefs(useTheme());
 
 const {localeWithDashes} = useAzuraCast();
 const {DateTime} = useLuxon();
 
-const dateRange = computed({
+type DateRangeTuple = Date[] | null;
+
+const dateRange = computed<DateRangeTuple>({
     get() {
+        if (!props.modelValue) {
+            return null;
+        }
+
         return [
-            props.modelValue?.startDate ?? null,
-            props.modelValue?.endDate ?? null,
+            props.modelValue.startDate,
+            props.modelValue.endDate,
         ]
     },
     set(newValue) {
+        if (newValue === null) {
+            return;
+        }
+
         const newRange = {
             startDate: newValue[0],
             endDate: newValue[1]
@@ -70,10 +82,21 @@ const dateRange = computed({
 
 const {$gettext} = useTranslate();
 
+const getTimezone = (options?: Partial<VueDatePickerProps>): string => {
+    if (options !== undefined && 'timezone' in options && options.timezone) {
+        if (isString(options.timezone)) {
+            return options.timezone;
+        }
+        if ('timezone' in options.timezone && isString(options.timezone.timezone)) {
+            return options.timezone.timezone;
+        }
+    }
+
+    return 'UTC';
+}
+
 const ranges = computed(() => {
-    const tz: string = (props.options && "timezone" in props.options)
-        ? (typeof props.options.timezone === "string" ? props.options.timezone : props.options.timezone.timezone)
-        : 'UTC';
+    const tz = getTimezone(props.options);
 
     const nowTz = DateTime.now().setZone(tz);
     const nowAtMidnightDate = nowTz.endOf('day').toJSDate();

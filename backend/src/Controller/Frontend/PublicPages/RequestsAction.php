@@ -11,10 +11,10 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class RequestsAction implements SingleActionInterface
+final readonly class RequestsAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly CustomFieldRepository $customFieldRepo
+        private CustomFieldRepository $customFieldRepo
     ) {
     }
 

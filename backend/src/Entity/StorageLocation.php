@@ -128,7 +128,8 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     }
 
     #[
-        ORM\Column(name: 's3_use_path_style', nullable: true)
+        ORM\Column(name: 's3_use_path_style', nullable: true),
+        OA\Property(example: false)
     ]
     public ?bool $s3UsePathStyle = false;
 

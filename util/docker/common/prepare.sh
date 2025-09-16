@@ -11,7 +11,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 # Enable contrib and nonfree repos
 sed -i 's/^Components: main$/& contrib non-free non-free-firmware/' /etc/apt/sources.list.d/debian.sources
-echo "deb http://deb.debian.org/debian bookworm-backports main" > /etc/apt/sources.list.d/backports.list
+# echo "deb http://deb.debian.org/debian bookworm-backports main" > /etc/apt/sources.list.d/backports.list
 
 apt-get update
 

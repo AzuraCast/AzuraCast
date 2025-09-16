@@ -4,13 +4,13 @@
         size="md"
         centered
         :title="$gettext('Change Password')"
-        :disable-save-button="v$.$invalid"
+        :disable-save-button="r$.$invalid"
         @submit="onSubmit"
         @hidden="clearContents"
     >
         <form-group-field
             id="form_current_password"
-            :field="v$.current_password"
+            :field="r$.current_password"
             input-type="password"
             autofocus
             :label="$gettext('Current Password')"
@@ -22,7 +22,7 @@
 
         <form-group-field
             id="form_new_password"
-            :field="v$.new_password"
+            :field="r$.new_password"
             input-type="password"
             :label="$gettext('New Password')"
             :input-attrs="{
@@ -33,7 +33,7 @@
 
         <form-group-field
             id="form_confirm_new_password"
-            :field="v$.new_password2"
+            :field="r$.new_password2"
             input-type="password"
             :input-attrs="{
                 autocomplete: 'new-password'
@@ -50,46 +50,50 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {helpers, required} from "@vuelidate/validators";
-import validatePassword from "~/functions/validatePassword";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {ref, useTemplateRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {getApiUrl} from "~/router.ts";
+import {isValidPassword, useAppRegle} from "~/vendor/regle.ts";
+import {required, withMessage} from "@regle/rules";
 
 const emit = defineEmits<HasRelistEmit>();
 
 const changePasswordUrl = getApiUrl('/frontend/account/password');
 
-const passwordsMatch = (value, siblings) => {
-    return siblings.new_password === value;
-};
-
 const {$gettext} = useTranslate();
 
-const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
+const {r$} = useAppRegle(
     {
-        current_password: {required},
-        new_password: {required, validatePassword},
-        new_password2: {
-            required,
-            passwordsMatch: helpers.withMessage($gettext('Must match new password.'), passwordsMatch)
-        }
+        current_password: '',
+        new_password: '',
+        new_password2: ''
     },
     {
-        current_password: null,
-        new_password: null,
-        new_password2: null
-    }
+        current_password: {required},
+        new_password: {required, isValidPassword},
+        new_password2: {
+            required,
+            passwordsMatch: withMessage(
+                (value, siblings) => {
+                    return siblings.new_password === value;
+                },
+                $gettext('Must match new password.')
+            )
+        }
+    },
+    {}
 );
 
 const error = ref(null);
 
 const clearContents = () => {
+    r$.$reset({
+        toOriginalState: true
+    });
+
     error.value = null;
-    resetForm();
 };
 
 const $modal = useTemplateRef('$modal');
@@ -101,15 +105,18 @@ const open = () => {
 
 const {axios} = useAxios();
 
-const onSubmit = () => {
-    ifValid(() => {
-        void axios
-            .put(changePasswordUrl.value, form.value)
-            .finally(() => {
-                $modal.value?.hide();
-                emit('relist');
-            });
-    });
+const onSubmit = async () => {
+    const {valid, data: postData} = await r$.$validate();
+    if (!valid) {
+        return;
+    }
+
+    try {
+        await axios.put(changePasswordUrl.value, postData);
+    } finally {
+        $modal.value?.hide();
+        emit('relist');
+    }
 };
 
 defineExpose({

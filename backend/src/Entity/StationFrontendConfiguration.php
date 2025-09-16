@@ -12,25 +12,6 @@ use OpenApi\Attributes as OA;
 #[OA\Schema(schema: "StationFrontendConfiguration", type: "object")]
 final class StationFrontendConfiguration extends AbstractArrayEntity
 {
-    public function __construct(array $elements = [])
-    {
-        // Generate defaults if not set.
-        $autoAssignPasswords = [
-            'source_pw',
-            'admin_pw',
-            'relay_pw',
-            'streamer_pw',
-        ];
-
-        foreach ($autoAssignPasswords as $autoAssignPassword) {
-            if (empty($elements[$autoAssignPassword])) {
-                $elements[$autoAssignPassword] = Strings::generatePassword();
-            }
-        }
-
-        parent::__construct($elements);
-    }
-
     #[OA\Property]
     public ?string $custom_config = null {
         set => Types::stringOrNull($value, true);
@@ -47,6 +28,22 @@ final class StationFrontendConfiguration extends AbstractArrayEntity
 
     #[OA\Property]
     public string $streamer_pw;
+
+    public function ensurePasswordsAreSet(): void
+    {
+        $autoAssignPasswords = [
+            'source_pw',
+            'admin_pw',
+            'relay_pw',
+            'streamer_pw',
+        ];
+
+        foreach ($autoAssignPasswords as $autoAssignPassword) {
+            if (empty($this->$autoAssignPassword)) {
+                $this->$autoAssignPassword = Strings::generatePassword();
+            }
+        }
+    }
 
     #[OA\Property]
     public ?int $port = null {
@@ -86,5 +83,23 @@ final class StationFrontendConfiguration extends AbstractArrayEntity
     #[OA\Property]
     public ?string $sc_user_id = null {
         set => Types::stringOrNull($value, true);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function merge(
+        ?array $sourceData,
+        array|AbstractArrayEntity|null $newData
+    ): array|null {
+        $arrayEntity = new self((array)$sourceData);
+        if ($newData !== null) {
+            $arrayEntity->fromArray($newData);
+        }
+
+        // Generate defaults if not set.
+        $arrayEntity->ensurePasswordsAreSet();
+
+        return $arrayEntity->toArray(true);
     }
 }

@@ -37,11 +37,11 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class GetWaveformAction implements SingleActionInterface
+final readonly class GetWaveformAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationMediaRepository $mediaRepo,
-        private readonly StationFilesystems $stationFilesystems
+        private StationMediaRepository $mediaRepo,
+        private StationFilesystems $stationFilesystems
     ) {
     }
 

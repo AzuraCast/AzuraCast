@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin\Vue;
 
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Admin\Vue\CustomFieldProps;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\Enums\MetadataTags;
@@ -17,8 +18,10 @@ final class CustomFieldsAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        return $response->withJson([
-            'autoAssignTypes' => MetadataTags::getNames(),
-        ]);
+        return $response->withJson(
+            new CustomFieldProps(
+                autoAssignTypes: MetadataTags::getNames(),
+            )
+        );
     }
 }

@@ -81,19 +81,19 @@
 
 <script setup lang="ts">
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
-import {IconChevronLeft, IconFolder} from "~/components/Common/icons";
+import {IconChevronLeft, IconFolder} from "~/components/Common/Icons/icons.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchResponse.ts";
-import {MediaSelectedItems} from "~/components/Stations/Media.vue";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {useQuery} from "@tanstack/vue-query";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import {useQueryItemProvider} from "~/functions/dataTable/useQueryItemProvider.ts";
+import {MediaSelectedItems} from "~/components/Stations/Media.vue";
 
 const props = defineProps<{
     selectedItems: MediaSelectedItems,
@@ -137,9 +137,7 @@ const {handleBatchResponse} = useHandleBatchResponse();
 const directoriesQuery = useQuery({
     queryKey: queryKeyWithStation(
         [
-            QueryKeys.StationMedia
-        ],
-        [
+            QueryKeys.StationMedia,
             'directories',
             destinationDirectory
         ]
@@ -160,23 +158,25 @@ const directoriesQuery = useQuery({
 
 const directoryItemProvider = useQueryItemProvider(directoriesQuery);
 
-const doMove = () => {
-    void axios.put(props.batchUrl, {
-        'do': 'move',
-        'currentDirectory': props.currentDirectory,
-        'directory': destinationDirectory.value,
-        'files': props.selectedItems.files,
-        'dirs': props.selectedItems.directories
-    }).then(({data}) => {
+const doMove = async () => {
+    try {
+        const {data} = await axios.put(props.batchUrl, {
+            'do': 'move',
+            'currentDirectory': props.currentDirectory,
+            'directory': destinationDirectory.value,
+            'files': props.selectedItems.files,
+            'dirs': props.selectedItems.directories
+        });
+
         handleBatchResponse(
             data,
             $gettext('Files moved:'),
             $gettext('Error moving files:')
         );
-    }).finally(() => {
+    } finally {
         hide();
         emit('relist');
-    });
+    }
 };
 
 const enterDirectory = (path: string) => {

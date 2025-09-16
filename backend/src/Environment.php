@@ -89,7 +89,7 @@ final class Environment
                 $azuracastEnvPath = AzuraCastEnvFile::buildPathFromBase($this->baseDir);
                 $azuracastEnv = AzuraCastEnvFile::fromEnvFile($azuracastEnvPath);
                 $this->data = array_merge($elements, $azuracastEnv->toArray());
-            } catch (Exception $e) {
+            } catch (Exception) {
                 $this->data = $elements;
             }
         } else {

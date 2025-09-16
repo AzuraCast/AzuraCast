@@ -12,10 +12,10 @@ use App\Entity\StationStreamer;
 use Carbon\CarbonImmutable;
 use Psr\Http\Message\UriInterface;
 
-final class SongHistoryApiGenerator
+final readonly class SongHistoryApiGenerator
 {
     public function __construct(
-        private readonly SongApiGenerator $songApiGenerator
+        private SongApiGenerator $songApiGenerator
     ) {
     }
 

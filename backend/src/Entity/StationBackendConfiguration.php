@@ -81,7 +81,7 @@ final class StationBackendConfiguration extends AbstractArrayEntity
 
     #[OA\Property]
     public bool $use_manual_autodj = false {
-        set (bool|null $value) => Types::bool($value, false);
+        set (bool|null $value) => Types::bool($value);
     }
 
     protected const int DEFAULT_QUEUE_LENGTH = 3;
@@ -134,7 +134,7 @@ final class StationBackendConfiguration extends AbstractArrayEntity
 
     #[OA\Property]
     public bool $post_processing_include_live = false {
-        set (bool|string|null $value) => Types::bool($value, false);
+        set (bool|string|null $value) => Types::bool($value);
     }
 
     #[OA\Property]

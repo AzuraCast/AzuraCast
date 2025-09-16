@@ -3,7 +3,7 @@ set -e
 set -x
 
 curl -LsS https://r.mariadb.com/downloads/mariadb_repo_setup | bash -s -- \
-  --mariadb-server-version=11.8.2
+  --mariadb-server-version=11.8.3 --skip-maxscale
 
 { \
 		echo "mariadb-server" mysql-server/root_password password 'unused'; \

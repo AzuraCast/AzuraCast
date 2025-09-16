@@ -90,14 +90,13 @@ import {useTranslate} from "~/vendor/gettext";
 import {useAzuraCast} from "~/vendor/azuracast";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import DetailsModal from "~/components/Admin/AuditLog/DetailsModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {getApiUrl} from "~/router";
-import {IconAddCircle, IconRemoveCircle, IconSwapHorizontalCircle} from "~/components/Common/icons";
+import {IconAddCircle, IconRemoveCircle, IconSwapHorizontalCircle} from "~/components/Common/Icons/icons.ts";
 import {ApiAdminAuditLogChangeset, AuditLog} from "~/entities/ApiInterfaces.ts";
-import {DeepRequired} from "utility-types";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
 
@@ -139,8 +138,16 @@ const apiUrl = computed(() => {
     const apiUrl = new URL(baseApiUrl.value, document.location.href);
 
     const apiUrlParams = apiUrl.searchParams;
-    apiUrlParams.set('start', DateTime.fromJSDate(dateRange.value.startDate).toISO());
-    apiUrlParams.set('end', DateTime.fromJSDate(dateRange.value.endDate).toISO());
+
+    const startDate = DateTime.fromJSDate(dateRange.value.startDate);
+    if (startDate.isValid) {
+        apiUrlParams.set('start', startDate.toISO());
+    }
+
+    const endDate = DateTime.fromJSDate(dateRange.value.endDate);
+    if (endDate.isValid) {
+        apiUrlParams.set('end', endDate.toISO());
+    }
 
     return apiUrl.toString();
 });
@@ -155,9 +162,7 @@ const apiItemProvider = useApiItemProvider<Row>(
 
 const $detailsModal = useTemplateRef('$detailsModal');
 
-type AuditLogChanges = DeepRequired<ApiAdminAuditLogChangeset>
-
-const showDetails = (changes: AuditLogChanges[]) => {
+const showDetails = (changes: ApiAdminAuditLogChangeset[]) => {
     $detailsModal.value?.open(changes);
 }
 </script>

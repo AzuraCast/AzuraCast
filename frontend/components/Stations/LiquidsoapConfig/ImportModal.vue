@@ -52,13 +52,14 @@
 <script setup lang="ts">
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {ref, useTemplateRef} from "vue";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import Modal from "~/components/Common/Modal.vue";
 import FormFile from "~/components/Form/FormFile.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import {ApiStatus} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     importUrl: string
@@ -66,9 +67,9 @@ const props = defineProps<{
 
 const emit = defineEmits<HasRelistEmit>();
 
-const configFile = ref(null);
+const configFile = ref<File | null>(null);
 
-const uploaded = (file) => {
+const uploaded = (file: File) => {
     configFile.value = file;
 }
 
@@ -78,19 +79,23 @@ const {show: open, hide} = useHasModal($modal);
 const {notifySuccess, notifyError} = useNotify();
 const {axios} = useAxios();
 
-const doSubmit = () => {
+const doSubmit = async () => {
+    if (!configFile.value) {
+        return;
+    }
+
     const formData = new FormData();
     formData.append('file', configFile.value);
 
-    void axios.post(props.importUrl, formData).then((resp) => {
-        if (resp.data.success) {
-            notifySuccess(resp.data.message);
-        } else {
-            notifyError(resp.data.message);
-        }
+    const {data} = await axios.post<ApiStatus>(props.importUrl, formData);
 
-        hide();
-    });
+    if (data.success) {
+        notifySuccess(data.message);
+    } else {
+        notifyError(data.message);
+    }
+
+    hide();
 };
 
 const onHidden = () => {

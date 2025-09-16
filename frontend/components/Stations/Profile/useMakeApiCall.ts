@@ -1,27 +1,35 @@
 import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/functions/useNotify";
-import {useDialog} from "~/functions/useDialog.ts";
-import {DialogOptions} from "~/components/Common/Dialog.vue";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
+import {DialogOptions, useDialog} from "~/components/Common/Dialogs/useDialog.ts";
+import {FlashLevels} from "~/entities/ApiInterfaces.ts";
+import {MaybeRef, nextTick, toValue} from "vue";
+import {useClearProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
 
 export default function useMakeApiCall(
-    uri: string,
+    uri: MaybeRef<string>,
     options: Partial<DialogOptions> = {},
 ) {
     const {axios} = useAxios();
     const {showAlert} = useDialog();
     const {notify} = useNotify();
 
-    return () => {
-        void showAlert(options).then((result) => {
-            if (!result.value) {
-                return;
-            }
+    const clearProfileData = useClearProfileData();
 
-            void axios.post(uri).then(({data}) => {
-                notify(data.formatted_message, {
-                    variant: (data.success) ? 'success' : 'warning'
-                });
-            });
+    return async () => {
+        const {value} = await showAlert(options);
+
+        if (!value) {
+            return;
+        }
+
+        const {data} = await axios.post(toValue(uri));
+
+        notify(data.formatted_message, {
+            variant: (data.success) ? FlashLevels.Success : FlashLevels.Warning
         });
+
+        await nextTick();
+
+        await clearProfileData();
     };
 }

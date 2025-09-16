@@ -36,12 +36,12 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class ProfileAction implements SingleActionInterface
+final readonly class ProfileAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationScheduleRepository $scheduleRepo,
-        private readonly StationApiGenerator $stationApiGenerator,
-        private readonly Adapters $adapters,
+        private StationScheduleRepository $scheduleRepo,
+        private StationApiGenerator $stationApiGenerator,
+        private Adapters $adapters,
     ) {
     }
 
@@ -61,10 +61,8 @@ final class ProfileAction implements SingleActionInterface
         $apiResponse->station = $this->stationApiGenerator->__invoke($station, $baseUri, true);
 
         $apiResponse->services = new StationServiceStatus(
-            backend_running: null !== $backend && $backend->isRunning($station),
-            frontend_running: null !== $frontend && $frontend->isRunning($station),
-            station_has_started: $station->has_started,
-            station_needs_restart: $station->needs_restart
+            backendRunning: null !== $backend && $backend->isRunning($station),
+            frontendRunning: null !== $frontend && $frontend->isRunning($station),
         );
 
         $apiResponse->schedule = $this->scheduleRepo->getUpcomingSchedule($station);

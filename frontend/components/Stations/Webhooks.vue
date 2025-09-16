@@ -112,31 +112,31 @@
 <script setup lang="ts">
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import EditModal from "~/components/Stations/Webhooks/EditModal.vue";
-import {get, map} from "lodash";
+import {get} from "es-toolkit/compat";
 import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useTemplateRef} from "vue";
+import {computed, useTemplateRef} from "vue";
 import useHasEditModal from "~/functions/useHasEditModal";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import {useTriggerDetails, useTypeDetails} from "~/entities/Webhooks";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useAzuraCastStation} from "~/vendor/azuracast";
 import {getApiUrl, getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import {ApiTaskWithLog, HasLinks, StationWebhook, WebhookTriggers, WebhookTypes} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import {useStationId} from "~/functions/useStationQuery.ts";
 
 const listUrl = getStationApiUrl('/webhooks');
 
-const {id} = useAzuraCastStation();
-const nowPlayingUrl = getApiUrl(`/nowplaying/${id}`);
+const id = useStationId();
+const nowPlayingUrl = getApiUrl(computed(() => `/nowplaying/${id.value}`));
 
 const {$gettext} = useTranslate();
 
-type Row = StationWebhook & HasLinks;
+type Row = Required<StationWebhook & HasLinks>;
 
 const fields: DataTableField<Row>[] = [
     {key: 'name', isRowHeader: true, label: $gettext('Name/Type'), sortable: true},
@@ -179,7 +179,7 @@ const getWebhookName = (key: WebhookTypes) => {
 };
 
 const getTriggerNames = (triggers: WebhookTriggers[]) => {
-    return map(triggers, (trigger) => {
+    return triggers.map((trigger) => {
         return get(langTriggerDetails, [trigger, 'title'], '');
     });
 };
@@ -190,18 +190,18 @@ const {doCreate, doEdit} = useHasEditModal($editModal);
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const doToggle = (url: string) => {
-    void axios.put(url).then((resp) => {
-        notifySuccess(resp.data.message);
-        relist();
-    });
+const doToggle = async (url: string) => {
+    const {data} = await axios.put(url);
+
+    notifySuccess(data.message);
+    relist();
 };
 
-const doClone = (url: string) => {
-    void axios.post(url).then(() => {
-        notifySuccess($gettext('Webhook duplicated.'));
-        relist();
-    });
+const doClone = async (url: string) => {
+    await axios.post(url);
+
+    notifySuccess($gettext('Webhook duplicated.'));
+    relist();
 };
 
 const $logModal = useTemplateRef('$logModal');

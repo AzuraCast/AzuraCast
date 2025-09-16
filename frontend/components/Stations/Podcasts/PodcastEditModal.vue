@@ -4,20 +4,17 @@
         :loading="loading"
         :title="langTitle"
         :error="error"
-        :disable-save-button="v$.$invalid"
+        :disable-save-button="r$.$invalid"
         @submit="doSubmit"
         @hidden="clearContents"
     >
         <tabs>
             <podcast-form-basic-info
-                v-model:form="form"
                 :categories-options="categoriesOptions"
                 :language-options="languageOptions"
             />
 
-            <podcast-form-source
-                v-model:form="form"
-            />
+            <podcast-form-source/>
 
             <podcast-common-artwork
                 v-model="form.artwork_file"
@@ -25,9 +22,7 @@
                 :new-art-url="newArtUrl"
             />
 
-            <podcast-form-branding
-                v-model:form="form"
-            />
+            <podcast-form-branding/>
         </tabs>
     </modal-form>
 </template>
@@ -39,13 +34,14 @@ import PodcastFormBranding from "~/components/Stations/Podcasts/PodcastForm/Bran
 import PodcastCommonArtwork from "~/components/Stations/Podcasts/Common/Artwork.vue";
 import mergeExisting from "~/functions/mergeExisting";
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, useTemplateRef} from "vue";
-import {useResettableRef} from "~/functions/useResettableRef";
+import {computed, toRef, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
-import {map} from "lodash";
 import {NestedFormOptionInput} from "~/functions/objectToFormOptions.ts";
+import {storeToRefs} from "pinia";
+import {PodcastResponseBody, useStationsPodcastsForm} from "~/components/Stations/Podcasts/PodcastForm/form.ts";
+import {PodcastRecord} from "~/entities/Podcasts.ts";
 
 interface PodcastEditModalProps extends BaseEditModalProps {
     languageOptions: NestedFormOptionInput,
@@ -59,52 +55,41 @@ const emit = defineEmits<BaseEditModalEmits>();
 
 const $modal = useTemplateRef('$modal');
 
-const {record, reset} = useResettableRef({
-    has_custom_art: false,
-    art: null,
-    links: {
-        art: null
-    }
-});
+const formStore = useStationsPodcastsForm();
+const {form, record, r$} = storeToRefs(formStore);
+const {$reset: resetForm} = formStore;
 
 const {
     loading,
     error,
     isEditMode,
-    form,
-    v$,
     clearContents,
     create,
     edit,
     doSubmit,
     close
-} = useBaseEditModal(
-    props,
+} = useBaseEditModal<
+    PodcastRecord,
+    PodcastResponseBody
+>(
+    toRef(props, 'createUrl'),
     emit,
     $modal,
-    {
-        artwork_file: {},
-        categories: {}
-    },
-    {
-        artwork_file: null,
-        categories: []
-    },
-    {
-        resetForm: (originalResetForm) => {
-            originalResetForm();
-            reset();
-        },
-        populateForm: (data, formRef) => {
-            data.categories = map(
-                data.categories,
-                (row) => row.category
-            );
+    resetForm,
+    (data) => {
+        record.value = mergeExisting(record.value, data);
 
-            record.value = mergeExisting(record.value, data as typeof record.value);
-            formRef.value = mergeExisting(formRef.value, data);
-        },
+        r$.value.$reset({
+            toState: mergeExisting(r$.value.$value, {
+                ...data,
+                categories: data.categories?.map((row) => row.category) ?? []
+            })
+        })
     },
+    async () => {
+        const {valid} = await r$.value.$validate();
+        return {valid, data: form.value};
+    }
 );
 
 const {$gettext} = useTranslate();

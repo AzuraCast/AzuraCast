@@ -58,10 +58,10 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class ServiceControlController
+final readonly class ServiceControlController
 {
     public function __construct(
-        private readonly ServiceControl $serviceControl
+        private ServiceControl $serviceControl
     ) {
     }
 

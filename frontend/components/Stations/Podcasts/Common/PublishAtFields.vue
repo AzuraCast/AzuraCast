@@ -25,7 +25,8 @@
 <script setup lang="ts">
 import {ref, watch} from "vue";
 import {useLuxon} from "~/vendor/luxon.ts";
-import {useAzuraCastStation} from "~/vendor/azuracast.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
+import {toRefs} from "@vueuse/core";
 
 defineProps<{
     id: string
@@ -37,16 +38,20 @@ const publishDate = ref<string>('');
 const publishTime = ref<string>('');
 
 const {DateTime} = useLuxon();
-const {timezone} = useAzuraCastStation();
+
+const stationData = useStationData();
+const {timezone} = toRefs(stationData);
 
 watch(model, (publishAt) => {
     if (publishAt !== null) {
-        const publishDateTime = DateTime.fromSeconds(Number(publishAt), {zone: timezone});
-        publishDate.value = publishDateTime.toISODate();
-        publishTime.value = publishDateTime.toISOTime({
-            suppressMilliseconds: true,
-            includeOffset: false
-        });
+        const publishDateTime = DateTime.fromSeconds(Number(publishAt), {zone: timezone.value});
+        if (publishDateTime.isValid) {
+            publishDate.value = publishDateTime.toISODate();
+            publishTime.value = publishDateTime.toISOTime({
+                suppressMilliseconds: true,
+                includeOffset: false
+            });
+        }
     } else {
         publishDate.value = '';
         publishTime.value = '';
@@ -58,7 +63,7 @@ watch(model, (publishAt) => {
 const updatePublishAt = () => {
     if (publishDate.value.length > 0 && publishTime.value.length > 0) {
         const publishDateTimeString = publishDate.value + 'T' + publishTime.value;
-        const publishDateTime = DateTime.fromISO(publishDateTimeString, {zone: timezone});
+        const publishDateTime = DateTime.fromISO(publishDateTimeString, {zone: timezone.value});
 
         model.value = publishDateTime.toSeconds();
     } else {
@@ -71,6 +76,10 @@ watch(publishDate, () => {
 });
 
 watch(publishTime, () => {
+    updatePublishAt();
+});
+
+watch(timezone, () => {
     updatePublishAt();
 });
 </script>

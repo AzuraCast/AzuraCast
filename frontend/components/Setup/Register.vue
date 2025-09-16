@@ -57,8 +57,9 @@
                     <form-group-field
                         id="username"
                         name="username"
+                        class="mb-3"
                         label-class="mb-2"
-                        :field="v$.username"
+                        :field="r$.username"
                         input-type="email"
                     >
                         <template #label>
@@ -73,8 +74,9 @@
                     <form-group-field
                         id="password"
                         name="password"
+                        class="mb-3"
                         label-class="mb-2"
-                        :field="v$.password"
+                        :field="r$.password"
                         input-type="password"
                     >
                         <template #label>
@@ -90,7 +92,7 @@
                         <button
                             type="submit"
                             class="btn btn-block btn-primary"
-                            :disabled="v$.$invalid"
+                            :disabled="r$.$invalid"
                         >
                             {{ $gettext('Create Account') }}
                         </button>
@@ -103,17 +105,16 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import {reactive} from "vue";
-import {email, required} from "@vuelidate/validators";
-import validatePassword from "~/functions/validatePassword";
-import useVuelidate from "@vuelidate/core";
-import {IconMail, IconVpnKey} from "~/components/Common/icons";
+import {IconMail, IconVpnKey} from "~/components/Common/Icons/icons.ts";
+import {isValidPassword, useAppRegle} from "~/vendor/regle.ts";
+import {email, required} from "@regle/rules";
 
 withDefaults(
     defineProps<{
         csrf: string,
-        error?: string
+        error?: string | null
     }>(),
     {
         error: null
@@ -121,14 +122,16 @@ withDefaults(
 );
 
 const form = reactive({
-    username: null,
-    password: null,
+    username: '',
+    password: '',
 });
 
-const formValidations = {
-    username: {required, email},
-    password: {required, validatePassword}
-};
-
-const v$ = useVuelidate(formValidations, form);
+const {r$} = useAppRegle(
+    form,
+    {
+        username: {required, email},
+        password: {required, isValidPassword}
+    },
+    {}
+);
 </script>

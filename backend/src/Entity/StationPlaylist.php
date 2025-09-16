@@ -65,7 +65,10 @@ final class StationPlaylist implements
         Assert\NotBlank
     ]
     public string $name {
-        set => $this->truncateString($value, 200);
+        set => $this->truncateString(
+            str_replace(';', ':', $value),
+            200
+        );
     }
 
     #[

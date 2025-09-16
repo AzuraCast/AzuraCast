@@ -7,14 +7,14 @@
             <form-group-field
                 id="edit_form_name"
                 class="col-md-12"
-                :field="v$.name"
+                :field="r$.name"
                 :label="$gettext('Name')"
             />
 
             <form-group-field
                 id="edit_form_description"
                 class="col-md-12"
-                :field="v$.description"
+                :field="r$.description"
                 input-type="textarea"
                 :label="$gettext('Description')"
             />
@@ -22,7 +22,7 @@
             <form-group-field
                 id="edit_form_genre"
                 class="col-md-6"
-                :field="v$.genre"
+                :field="r$.genre"
                 :label="$gettext('Genre')"
             >
                 <template #description>
@@ -35,7 +35,7 @@
             <form-group-field
                 id="edit_form_url"
                 class="col-md-6"
-                :field="v$.url"
+                :field="r$.url"
                 input-type="url"
                 :label="$gettext('Web Site URL')"
                 :description="$gettext('Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details.')"
@@ -46,7 +46,7 @@
                     <form-group-select
                         id="edit_form_timezone"
                         class="col-md-12"
-                        :field="v$.timezone"
+                        :field="r$.timezone"
                         :options="timezones"
                         :label="$gettext('Time Zone')"
                         :description="$gettext('Scheduled playlists and other timed items will be controlled by this time zone.')"
@@ -55,7 +55,7 @@
                     <form-group-field
                         id="edit_form_short_name"
                         class="col-md-12"
-                        :field="v$.short_name"
+                        :field="r$.short_name"
                         advanced
                         :label="$gettext('URL Stub')"
                     >
@@ -72,7 +72,7 @@
             <form-group-field
                 id="edit_form_api_history_items"
                 class="col-md-6"
-                :field="v$.api_history_items"
+                :field="r$.api_history_items"
                 advanced
                 :label="$gettext('Number of Visible Recent Songs')"
             >
@@ -100,7 +100,7 @@
                 <form-group-checkbox
                     id="edit_form_enable_public_page"
                     class="col-md-12"
-                    :field="v$.enable_public_page"
+                    :field="r$.enable_public_page"
                     :label="$gettext('Enable Public Pages')"
                     :description="$gettext('Show the station in public pages and general API results.')"
                 />
@@ -116,7 +116,7 @@
                 <form-group-checkbox
                     id="edit_form_enable_on_demand"
                     class="col-md-12"
-                    :field="v$.enable_on_demand"
+                    :field="r$.enable_on_demand"
                     :label="$gettext('Enable On-Demand Streaming')"
                     :description="$gettext('If enabled, music from playlists with on-demand streaming enabled will be available to stream via a specialized public page.')"
                 />
@@ -125,7 +125,7 @@
                     v-if="form.enable_on_demand"
                     id="edit_form_enable_on_demand_download"
                     class="col-md-12"
-                    :field="v$.enable_on_demand_download"
+                    :field="r$.enable_on_demand_download"
                     :label="$gettext('Enable Downloads on On-Demand Page')"
                 >
                     <template #description>
@@ -146,45 +146,19 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required, url} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
-import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
 import RadioWithCustomNumber from "~/components/Common/RadioWithCustomNumber.vue";
+import {storeToRefs} from "pinia";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {useAdminStationsForm} from "~/components/Admin/Stations/Form/form.ts";
 
 defineProps<{
     timezones: Record<string, string>,
 }>();
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
+const {r$, form} = storeToRefs(useAdminStationsForm());
 
-const {v$, tabClass} = useVuelidateOnFormTab(
-    form,
-    {
-        name: {required},
-        description: {},
-        genre: {},
-        url: {url},
-        timezone: {},
-        enable_public_page: {},
-        enable_on_demand: {},
-        enable_on_demand_download: {},
-        short_name: {},
-        api_history_items: {},
-    },
-    {
-        name: '',
-        description: '',
-        genre: '',
-        url: '',
-        timezone: 'UTC',
-        enable_public_page: true,
-        enable_on_demand: false,
-        enable_on_demand_download: true,
-        short_name: '',
-        api_history_items: 5,
-    }
-);
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.profileTab));
 
 const {$gettext} = useTranslate();
 

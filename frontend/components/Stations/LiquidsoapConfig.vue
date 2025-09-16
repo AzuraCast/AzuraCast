@@ -35,7 +35,7 @@
                 </p>
             </info-card>
 
-            <loading :loading="isLoading">
+            <loading :loading="isLoading" lazy>
                 <div class="card-body">
                     <div class="buttons mb-3">
                         <a
@@ -54,7 +54,7 @@
                     <button
                         type="submit"
                         class="btn mb-2"
-                        :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
+                        :class="(r$.$invalid) ? 'btn-danger' : 'btn-primary'"
                     >
                         {{ $gettext('Save Changes') }}
                     </button>
@@ -67,7 +67,7 @@
                         <form-group-field
                             v-if="row.is_field"
                             :id="'form_edit_'+row.field_name"
-                            :field="v$[row.field_name]"
+                            :field="r$[row.field_name]"
                         >
                             <template #default="{id, model}">
                                 <codemirror-textarea
@@ -88,7 +88,7 @@
                     <button
                         type="submit"
                         class="btn mt-2"
-                        :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
+                        :class="(r$.$invalid) ? 'btn-danger' : 'btn-primary'"
                     >
                         {{ $gettext('Save Changes') }}
                     </button>
@@ -108,47 +108,64 @@
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
-import {forEach} from "lodash";
 import mergeExisting from "~/functions/mergeExisting";
 import InfoCard from "~/components/Common/InfoCard.vue";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {computed, onMounted, ref, useTemplateRef} from "vue";
+import {onMounted, ref, useTemplateRef} from "vue";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import Loading from "~/components/Common/Loading.vue";
 import {getStationApiUrl} from "~/router";
 import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";
 import ImportModal from "~/components/Stations/LiquidsoapConfig/ImportModal.vue";
+import {useResettableRef} from "~/functions/useResettableRef.ts";
+import {useAppRegle} from "~/vendor/regle.ts";
+import {StationBackendConfiguration} from "~/entities/ApiInterfaces.ts";
 
 const settingsUrl = getStationApiUrl('/liquidsoap-config');
 const exportUrl = getStationApiUrl('/liquidsoap-config/export');
 const importUrl = getStationApiUrl('/liquidsoap-config/import');
 
-interface ConfigRow {
-    is_field: boolean,
-    field_name: string,
-    markup?: string
+type ConfigSectionNames =
+    | 'custom_config_top'
+    | 'custom_config_pre_playlists'
+    | 'custom_config_pre_live'
+    | 'custom_config_pre_fade'
+    | 'custom_config'
+    | 'custom_config_bottom';
+
+type ConfigRow = {
+    is_field: true,
+    field_name: ConfigSectionNames,
+    markup?: never
+} | {
+    is_field: false,
+    field_name?: never,
+    markup: string
 }
 
-const sections = ref<string[]>([]);
 const config = ref<ConfigRow[]>([]);
 
-const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
-    computed(() => {
-        const validations = {};
-        forEach(sections.value, (section) => {
-            validations[section] = {};
-        });
-        return validations;
-    }),
-    () => {
-        const blankForm = {};
-        forEach(sections.value, (section) => {
-            blankForm[section] = null;
-        });
-        return blankForm;
-    }
+type ConfigSections = Required<Pick<
+    StationBackendConfiguration,
+    ConfigSectionNames
+>>
+
+const sections = ref<string[]>([]);
+
+const {record: form, reset: resetForm} = useResettableRef<ConfigSections>(() => ({
+    custom_config_top: null,
+    custom_config_pre_playlists: null,
+    custom_config_pre_live: null,
+    custom_config_pre_fade: null,
+    custom_config: null,
+    custom_config_bottom: null
+}));
+
+const {r$} = useAppRegle(
+    form,
+    {},
+    {}
 );
 
 const isLoading = ref(true);
@@ -157,36 +174,43 @@ const {mayNeedRestart} = useMayNeedRestart();
 
 const {axios} = useAxios();
 
-const relist = () => {
+const relist = async () => {
     isLoading.value = true;
-    void axios.get(settingsUrl.value).then((resp) => {
-        config.value = resp.data.config;
-        sections.value = resp.data.sections;
+
+    try {
+        const {data} = await axios.get(settingsUrl.value);
+        config.value = data.config;
+        sections.value = data.sections;
 
         resetForm();
-        form.value = mergeExisting(form.value, resp.data.contents);
-    }).finally(() => {
+        r$.$reset();
+
+        form.value = mergeExisting(form.value, data.contents);
+    } finally {
         isLoading.value = false;
-    });
+    }
 };
 
 onMounted(relist);
 
 const {notifySuccess} = useNotify();
 
-const submit = () => {
-    ifValid(() => {
-        void axios({
-            method: 'PUT',
-            url: settingsUrl.value,
-            data: form.value,
-        }).then(() => {
-            notifySuccess();
+const submit = async () => {
+    const {valid} = await r$.$validate();
 
-            mayNeedRestart();
-            relist();
-        });
+    if (!valid) {
+        return;
+    }
+
+    await axios({
+        method: 'PUT',
+        url: settingsUrl.value,
+        data: form.value,
     });
+
+    notifySuccess();
+    mayNeedRestart();
+    await relist();
 }
 
 const $importModal = useTemplateRef('$importModal');

@@ -1,4 +1,4 @@
-import {cloneDeep} from "lodash";
+import {cloneDeep} from "es-toolkit";
 
 export interface ProcessedRegisterResponse {
     transports: string[] | null,

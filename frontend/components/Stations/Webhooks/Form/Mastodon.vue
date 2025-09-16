@@ -38,7 +38,7 @@
             <form-group-field
                 id="form_config_instance_url"
                 class="col-md-6"
-                :field="v$.config.instance_url"
+                :field="r$.config.instance_url"
                 :label="$gettext('Mastodon Instance URL')"
                 :description="$gettext('If your Mastodon username is &quot;@test@example.com&quot;, enter &quot;example.com&quot;.')"
             />
@@ -46,7 +46,7 @@
             <form-group-field
                 id="form_config_access_token"
                 class="col-md-6"
-                :field="v$.config.access_token"
+                :field="r$.config.access_token"
                 :label="$gettext('Access Token')"
             />
         </div>
@@ -55,7 +55,7 @@
             <form-group-multi-check
                 id="form_config_visibility"
                 class="col-md-12"
-                :field="v$.config.visibility"
+                :field="r$.config.visibility"
                 :options="visibilityOptions"
                 stacked
                 radio
@@ -63,9 +63,7 @@
             />
         </div>
 
-        <common-social-post-fields
-            v-model:form="form"
-        />
+        <common-social-post-fields v-model:form="form"/>
     </tab>
 </template>
 
@@ -76,17 +74,20 @@ import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
-import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
+import {WebhookRecordCommon, WebhookRecordMastodon} from "~/components/Stations/Webhooks/Form/form.ts";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {useAppScopedRegle} from "~/vendor/regle.ts";
+import {required} from "@regle/rules";
 
 defineProps<WebhookComponentProps>();
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
+type ThisWebhookRecord = WebhookRecordCommon & WebhookRecordMastodon;
 
-const {v$, tabClass} = useVuelidateOnFormTab(
+const form = defineModel<ThisWebhookRecord>('form', {required: true});
+
+const {r$} = useAppScopedRegle(
     form,
     {
         config: {
@@ -95,14 +96,12 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             visibility: {required}
         }
     },
-    () => ({
-        config: {
-            instance_url: '',
-            access_token: '',
-            visibility: 'public',
-        }
-    })
+    {
+        namespace: 'station-webhooks'
+    }
 );
+
+const tabClass = useFormTabClass(r$);
 
 const {$gettext} = useTranslate();
 

@@ -20,8 +20,8 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
-import {IconInfo} from "~/components/Common/icons";
+import Icon from "~/components/Common/Icons/Icon.vue";
+import {IconInfo} from "~/components/Common/Icons/icons.ts";
 
 const slots = defineSlots();
 </script>

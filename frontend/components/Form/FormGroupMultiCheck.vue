@@ -46,8 +46,8 @@
                 </form-multi-check>
             </slot>
 
-            <vuelidate-error
-                v-if="isVuelidateField"
+            <validation-error
+                v-if="isValidatedField"
                 :field="field"
             />
         </template>
@@ -67,7 +67,6 @@
 </template>
 
 <script setup lang="ts" generic="T = ModelFormField">
-import VuelidateError from "~/components/Form/VuelidateError.vue";
 import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
@@ -75,8 +74,9 @@ import useSlotsExcept from "~/functions/useSlotsExcept";
 import {FormFieldEmits, FormFieldProps, ModelFormField, useFormField} from "~/components/Form/useFormField";
 import {useSlots} from "vue";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
+import ValidationError from "~/components/Form/ValidationError.vue";
 
-interface FormGroupMultiCheckProps extends FormFieldProps<T>, FormLabelParentProps {
+type FormGroupMultiCheckProps = FormFieldProps<T> & FormLabelParentProps & {
     id: string,
     name?: string,
     label?: string,
@@ -98,5 +98,5 @@ const slots = useSlots();
 
 const emit = defineEmits<FormFieldEmits<T>>();
 
-const {model, isVuelidateField, isRequired} = useFormField<T>(props, emit);
+const {model, isValidatedField, isRequired} = useFormField<T>(props, emit);
 </script>

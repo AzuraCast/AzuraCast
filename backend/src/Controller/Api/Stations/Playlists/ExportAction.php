@@ -47,10 +47,10 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class ExportAction implements SingleActionInterface
+final readonly class ExportAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationPlaylistRepository $playlistRepo
+        private StationPlaylistRepository $playlistRepo
     ) {
     }
 

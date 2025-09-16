@@ -40,12 +40,12 @@ use Symfony\Component\Messenger\MessageBus;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class EmptyAction implements SingleActionInterface
+final readonly class EmptyAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationPlaylistRepository $playlistRepo,
-        private readonly StationPlaylistMediaRepository $spmRepo,
-        private readonly MessageBus $messageBus,
+        private StationPlaylistRepository $playlistRepo,
+        private StationPlaylistMediaRepository $spmRepo,
+        private MessageBus $messageBus,
     ) {
     }
 

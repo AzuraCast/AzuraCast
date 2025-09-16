@@ -1,8 +1,4 @@
 <template>
-    <h2 class="outside-card-header mb-1">
-        {{ $gettext('Backups') }}
-    </h2>
-
     <div class="row row-of-cards">
         <div class="col-md-6">
             <card-page header-id="hdr_automatic_backups">
@@ -12,30 +8,28 @@
                         class="card-title"
                     >
                         {{ $gettext('Automatic Backups') }}
-                        <enabled-badge :enabled="settings.backupEnabled" />
+                        <enabled-badge :enabled="settings.backup_enabled"/>
                     </h2>
                 </template>
 
-                <loading :loading="settingsLoading">
-                    <div
-                        v-if="settings.backupEnabled"
-                        class="card-body"
+                <div
+                    v-if="settings.backup_enabled"
+                    class="card-body"
+                >
+                    <p
+                        v-if="settings.backup_last_run > 0"
+                        class="card-text"
                     >
-                        <p
-                            v-if="settings.backupLastRun > 0"
-                            class="card-text"
-                        >
-                            {{ $gettext('Last run:') }}
-                            {{ timestampToRelative(settings.backupLastRun) }}
-                        </p>
-                        <p
-                            v-else
-                            class="card-text"
-                        >
-                            {{ $gettext('Never run') }}
-                        </p>
-                    </div>
-                </loading>
+                        {{ $gettext('Last run:') }}
+                        {{ timestampToRelative(settings.backup_last_run) }}
+                    </p>
+                    <p
+                        v-else
+                        class="card-text"
+                    >
+                        {{ $gettext('Never run') }}
+                    </p>
+                </div>
 
                 <template #footer_actions>
                     <button
@@ -43,18 +37,18 @@
                         class="btn btn-primary"
                         @click="doConfigure"
                     >
-                        <icon :icon="IconSettings" />
+                        <icon :icon="IconSettings"/>
                         <span>
                             {{ $gettext('Configure') }}
                         </span>
                     </button>
                     <button
-                        v-if="settings.backupEnabled && settings.backupLastOutput !== ''"
+                        v-if="settings.backup_enabled && settings.backup_last_output !== ''"
                         type="button"
                         class="btn btn-secondary"
                         @click="showLastOutput"
                     >
-                        <icon :icon="IconLogs" />
+                        <icon :icon="IconLogs"/>
                         <span>
                             {{ $gettext('Most Recent Backup Log') }}
                         </span>
@@ -72,8 +66,9 @@
                         {{ $gettext('To restore a backup from your host computer, run:') }}
                     </p>
 
-                    <pre v-if="isDocker"><code>./docker.sh restore path_to_backup.zip</code></pre>
-                    <pre v-else><code>/var/azuracast/www/bin/console azuracast:restore path_to_backup.zip</code></pre>
+                    <pre v-if="props.isDocker"><code>./docker.sh restore path_to_backup.zip</code></pre>
+                    <pre
+                        v-else><code>/var/azuracast/www/bin/console azuracast:restore path_to_backup.zip</code></pre>
 
                     <p class="card-text text-warning">
                         {{
@@ -95,7 +90,7 @@
                 class="btn btn-primary"
                 @click="doRunBackup"
             >
-                <icon :icon="IconSend" />
+                <icon :icon="IconSend"/>
                 <span>
                     {{ $gettext('Run Manual Backup') }}
                 </span>
@@ -131,25 +126,25 @@
     <admin-backups-configure-modal
         ref="$configureModal"
         :settings-url="settingsUrl"
-        :storage-locations="storageLocations"
+        :storage-locations="props.storageLocations"
         @relist="() => relist()"
     />
 
     <admin-backups-run-backup-modal
         ref="$runBackupModal"
         :run-backup-url="runBackupUrl"
-        :storage-locations="storageLocations"
+        :storage-locations="props.storageLocations"
         @relist="() => relist()"
     />
 
     <admin-backups-last-output-modal
         ref="$lastOutputModal"
-        :last-output="settings.backupLastOutput"
+        :last-output="settings.backup_last_output ?? ''"
     />
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import AdminBackupsLastOutputModal from "~/components/Admin/Backups/LastOutputModal.vue";
 import formatFileSize from "~/functions/formatFileSize";
@@ -157,49 +152,34 @@ import AdminBackupsConfigureModal from "~/components/Admin/Backups/ConfigureModa
 import AdminBackupsRunBackupModal from "~/components/Admin/Backups/RunBackupModal.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import {useAzuraCast} from "~/vendor/azuracast";
-import {onMounted, ref, useTemplateRef} from "vue";
+import {useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {getApiUrl} from "~/router";
-import {IconLogs, IconSend, IconSettings} from "~/components/Common/icons";
-import {DeepRequired} from "utility-types";
-import {ApiAdminBackup} from "~/entities/ApiInterfaces.ts";
+import {IconLogs, IconSend, IconSettings} from "~/components/Common/Icons/icons.ts";
+import {ApiAdminBackup, ApiAdminVueBackupProps} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
+import {BackupSettings} from "~/components/Admin/BackupsWrapper.vue";
+import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 
-withDefaults(
-    defineProps<{
-        storageLocations: Record<number, string>,
-        isDocker: boolean,
-    }>(),
-    {
-        isDocker: true
-    }
-);
+const props = defineProps<ApiAdminVueBackupProps & {
+    settings: BackupSettings
+}>();
+
+const emit = defineEmits<HasRelistEmit>();
 
 const listUrl = getApiUrl('/admin/backups');
 const runBackupUrl = getApiUrl('/admin/backups/run');
 const settingsUrl = getApiUrl('/admin/settings/backup');
 
-const settingsLoading = ref(false);
-
-const blankSettings = {
-    backupEnabled: false,
-    backupLastRun: 0,
-    backupLastOutput: '',
-};
-
-const settings = ref({...blankSettings});
-
 const {$gettext} = useTranslate();
 const {timeConfig} = useAzuraCast();
 const {DateTime, timestampToRelative} = useLuxon();
 
-type Row = DeepRequired<ApiAdminBackup>
+type Row = Required<ApiAdminBackup>
 
 const fields: DataTableField<Row>[] = [
     {
@@ -237,24 +217,10 @@ const itemProvider = useApiItemProvider<Row>(
     [QueryKeys.AdminBackups]
 );
 
-const {axios} = useAxios();
-
-const relist = () => {
-    settingsLoading.value = true;
-
-    void axios.get(settingsUrl.value).then((resp) => {
-        settings.value = {
-            backupEnabled: resp.data.backup_enabled,
-            backupLastRun: resp.data.backup_last_run,
-            backupLastOutput: resp.data.backup_last_output
-        };
-        settingsLoading.value = false;
-    });
-
-    void itemProvider.refresh();
+const relist = async () => {
+    await itemProvider.refresh();
+    emit('relist');
 };
-
-onMounted(relist);
 
 const $lastOutputModal = useTemplateRef('$lastOutputModal');
 const showLastOutput = () => {
@@ -273,6 +239,8 @@ const doRunBackup = () => {
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Backup?'),
-    relist,
+    () => {
+        void relist();
+    }
 );
 </script>

@@ -2,7 +2,7 @@
 // @ts-nocheck Typescript hates this file.
 // Color Scheme Plugin
 
-import {forEach} from "lodash";
+import {forEach} from "es-toolkit/compat";
 import colorLib from "@kurkle/color";
 import {Chart} from "chart.js";
 

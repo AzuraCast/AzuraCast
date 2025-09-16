@@ -41,11 +41,11 @@ enum StreamFormats: string
         };
     }
 
-    public function sendIcyMetadata(): bool
+    public function sendIcyMetadata(): ?bool
     {
         return match ($this) {
             self::Flac => true,
-            default => false,
+            default => null,
         };
     }
 

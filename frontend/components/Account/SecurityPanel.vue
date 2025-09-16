@@ -26,7 +26,7 @@
         </template>
 
         <loading :loading="securityLoading">
-            <div class="card-body">
+            <div class="card-body" v-if="security">
                 <h5>
                     {{ $gettext('Two-Factor Authentication') }}
                     <enabled-badge :enabled="security.two_factor_enabled"/>
@@ -126,10 +126,10 @@
 
 <script setup lang="ts">
 
-import {IconAdd, IconLock, IconLockOpen, IconVpnKey} from "~/components/Common/icons.ts";
+import {IconAdd, IconLock, IconLockOpen, IconVpnKey} from "~/components/Common/Icons/icons.ts";
 import CardPage from "~/components/Common/CardPage.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import Loading from "~/components/Common/Loading.vue";
 import AccountTwoFactorModal from "~/components/Account/TwoFactorModal.vue";
 import AccountChangePasswordModal from "~/components/Account/ChangePasswordModal.vue";

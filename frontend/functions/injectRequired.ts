@@ -1,7 +1,8 @@
-import {inject, InjectionKey} from "vue";
+import {InjectionKey} from "vue";
+import {injectLocal} from "@vueuse/core";
 
 export default function injectRequired<T>(key: InjectionKey<T>, defaultValue?: T): T {
-    const resolved = inject(key, defaultValue);
+    const resolved = injectLocal(key, defaultValue);
     if (!resolved) {
         throw new Error("Key was not provided.");
     }

@@ -8,6 +8,7 @@ use App\Entity\Attributes\StableMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 #[StableMigration('0.22.0')]
+#[StableMigration('0.22.1')]
 final class Version20250718124622 extends AbstractMigration
 {
     public function getDescription(): string

@@ -5,7 +5,7 @@
                 <div class="col-md-7">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0 pe-3">
-                            <album-art :src="podcast.art" />
+                            <album-art :src="podcast.art"/>
                         </div>
                         <div class="flex-fill">
                             <h2 class="card-title">
@@ -40,7 +40,7 @@
                 class="btn btn-secondary"
                 :to="{name: 'stations:podcasts:index'}"
             >
-                <icon :icon="IconChevronLeft" />
+                <icon :icon="IconChevronLeft"/>
                 {{ $gettext('All Podcasts') }}
             </router-link>
 
@@ -70,7 +70,7 @@
             @row-selected="onRowSelected"
         >
             <template #cell(art)="{item}">
-                <album-art :src="item.art" />
+                <album-art v-if="item.art !== null" :src="item.art"/>
             </template>
             <template #cell(title)="{item}">
                 <h5 class="m-0">
@@ -101,7 +101,7 @@
                     <span>{{ item.playlist_media.text }}</span>
                 </template>
                 <template v-else>
-&nbsp;
+                    &nbsp;
                 </template>
             </template>
             <template #cell(is_published)="{item}">
@@ -160,16 +160,16 @@
 <script setup lang="ts">
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import EditModal from "~/components/Stations/Podcasts/EpisodeEditModal.vue";
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed, shallowRef, toRef, useTemplateRef} from "vue";
 import AddButton from "~/components/Common/AddButton.vue";
-import {IconChevronLeft} from "~/components/Common/icons";
+import {IconChevronLeft} from "~/components/Common/Icons/icons.ts";
 import {getStationApiUrl} from "~/router.ts";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
-import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
+import {ApiPodcast, ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
 import useHasEditModal from "~/functions/useHasEditModal.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import CardPage from "~/components/Common/CardPage.vue";
@@ -180,8 +180,10 @@ import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
 const props = defineProps<{
-    podcast: ApiPodcast
+    podcast: Required<ApiPodcast>
 }>();
+
+const podcast = toRef(props, 'podcast');
 
 const quotaUrl = getStationApiUrl('/quota/station_podcasts');
 
@@ -189,7 +191,9 @@ const {$gettext} = useTranslate();
 
 const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
 
-const fields: DataTableField[] = [
+type Row = Required<ApiPodcastEpisode>
+
+const fields: DataTableField<Row>[] = [
     {
         key: 'art',
         label: $gettext('Art'),
@@ -249,17 +253,12 @@ const fields: DataTableField[] = [
     }
 ];
 
-
-const podcast = toRef(props, 'podcast');
-
-const episodesItemProvider = useApiItemProvider(
-    computed(() => props.podcast.links.episodes),
+const episodesItemProvider = useApiItemProvider<Row>(
+    computed(() => podcast.value.links.episodes),
     queryKeyWithStation(
         [
-            QueryKeys.StationPodcasts
-        ],
-        [
-            computed(() => props.podcast.id),
+            QueryKeys.StationPodcasts,
+            computed(() => podcast.value.id),
             'episodes'
         ]
     )
@@ -268,7 +267,7 @@ const episodesItemProvider = useApiItemProvider(
 const {refresh} = episodesItemProvider;
 
 const podcastIsManual = computed(() => {
-    return props.podcast.source == 'manual';
+    return podcast.value?.source == 'manual';
 });
 
 const $quota = useTemplateRef('$quota');
@@ -287,10 +286,10 @@ const {doDelete} = useConfirmAndDelete(
     () => relist()
 );
 
-const selectedItems = shallowRef([]);
+const selectedItems = shallowRef<Row[]>([]);
 
-const onRowSelected = (items) => {
-    selectedItems.value = items;
+const onRowSelected = (rows: Row[]) => {
+    selectedItems.value = rows;
 };
 
 const $batchEditModal = useTemplateRef('$batchEditModal');

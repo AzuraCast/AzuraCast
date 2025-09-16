@@ -11,11 +11,11 @@ use App\Http\Router;
 use App\Radio\Adapters;
 use Psr\Http\Message\UriInterface;
 
-final class StationApiGenerator
+final readonly class StationApiGenerator
 {
     public function __construct(
-        private readonly Adapters $adapters,
-        private readonly Router $router
+        private Adapters $adapters,
+        private Router $router
     ) {
     }
 
@@ -37,6 +37,7 @@ final class StationApiGenerator
         $response->timezone = $station->timezone;
         $response->url = $station->url;
         $response->is_public = $station->enable_public_page;
+        $response->requests_enabled = $station->enable_requests;
 
         $response->public_player_url = new ResolvableUrl(
             $this->router->namedAsUri(

@@ -1,4 +1,8 @@
-export default function (seconds: string | number): string {
+export default function (seconds: string | number | null): string {
+    if (seconds === null) {
+        return '';
+    }
+
     seconds = Math.floor(Number(seconds));
 
     const d: number = Math.floor(seconds / 86400),

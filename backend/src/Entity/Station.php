@@ -135,10 +135,15 @@ final class Station implements Stringable, IdentifiableEntityInterface
     public StationFrontendConfiguration $frontend_config {
         get => new StationFrontendConfiguration((array)$this->frontend_config_raw);
         set (StationFrontendConfiguration|array|null $value) {
-            $this->frontend_config_raw = StationFrontendConfiguration::merge(
+            $newConfig = StationFrontendConfiguration::merge(
                 $this->frontend_config_raw,
                 $value
             );
+
+            if ($this->frontend_config_raw !== $newConfig) {
+                $this->needs_restart = true;
+            }
+            $this->frontend_config_raw = $newConfig;
         }
     }
 
@@ -165,10 +170,15 @@ final class Station implements Stringable, IdentifiableEntityInterface
     public StationBackendConfiguration $backend_config {
         get => new StationBackendConfiguration((array)$this->backend_config_raw);
         set (StationBackendConfiguration|array|null $value) {
-            $this->backend_config_raw = StationBackendConfiguration::merge(
+            $newConfig = StationBackendConfiguration::merge(
                 $this->backend_config_raw,
                 $value
             );
+
+            if ($this->backend_config_raw !== $newConfig) {
+                $this->needs_restart = true;
+            }
+            $this->backend_config_raw = $newConfig;
         }
     }
 

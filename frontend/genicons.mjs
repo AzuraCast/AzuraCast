@@ -9,7 +9,7 @@ import * as url from "url";
 import {JSDOM} from "jsdom";
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
-const outputPath = path.resolve(__dirname, './components/Common/icons.ts');
+const outputPath = path.resolve(__dirname, './components/Common/Icons/icons.ts');
 const iconsPath = path.resolve(__dirname, './icons');
 
 const materialIconsViewBox = '0 -960 960 960';

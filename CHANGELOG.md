@@ -5,6 +5,12 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Unified Stream Encoding**: We're testing out an exciting feature made possible by Liquidsoap's tight FFmpeg
+  integration: the ability to encode a single audio stream and then output it across multiple platforms without
+  re-encoding it. Previously, if you had, say, a 128kbps AAC stream going to Icecast, a remote relay, and HLS, all three
+  of those streams would encode separately. With this new system, all three will share a single encoder. This has the
+  potential to dramatically reduce CPU consumption for larger stations with no impact in quality.
+
 - Liquidsoap is now updated to the Rolling Release build of 2.4.x. This includes a number of bug fixes for critical
   issues, but also includes some breaking changes. Most of these changes will appear in the logs as warnings when
   starting up a station with custom Liquidsoap code. If you use custom Liquidsoap code, you should evaluate these
@@ -16,9 +22,32 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- Our Docker image is now built on Debian Trixie (13), the newly released stable version of the Debian OS.
+
 ## Bug Fixes
 
+- Once-per-X-minutes playlists are again correctly written to Liquidsoap.
+
+---
+
+# AzuraCast 0.22.1 (Aug 29, 2025)
+
+This release backports several important bug fixes from our Rolling Release onto the stable channel.
+
+## Code Quality/Technical Changes
+
+- The hourly analytics process (that writes aggregate data used for charts, etc.) has been rewritten to be significantly
+  optimized for larger installations. This should keep the analytics task from overwhelming installations as easily.
+
+## Bug Fixes
+
+- A bug causing the update checker to fail and retry too frequently has been fixed.
+
 - Several issues caused by having "Plugin Mode" enabled have been resolved.
+
+- Fixed a bug preventing "Max Bitrate/Streams" settings on the Station form from saving correctly.
+
+- Making changes to frontend/backend station configuration will now properly trigger a "needs restart" flag.
 
 ---
 

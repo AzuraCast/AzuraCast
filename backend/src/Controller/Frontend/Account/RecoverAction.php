@@ -36,10 +36,7 @@ final class RecoverAction implements SingleActionInterface
 
         if (!$user instanceof User) {
             $flash->error(
-                sprintf(
-                    '<b>%s</b>',
-                    __('Invalid token specified.'),
-                ),
+                message: __('Invalid token specified.'),
             );
 
             return $response->withRedirect($request->getRouter()->named('account:login'));
@@ -69,11 +66,8 @@ final class RecoverAction implements SingleActionInterface
                 $this->loginTokenRepo->revokeForUser($user);
 
                 $flash->success(
-                    sprintf(
-                        '<b>%s</b><br>%s',
-                        __('Logged in using account recovery token'),
-                        __('Your password has been updated.')
-                    ),
+                    message: __('Your password has been updated.'),
+                    title: __('Logged in using account recovery token')
                 );
 
                 return $response->withRedirect($request->getRouter()->named('dashboard'));

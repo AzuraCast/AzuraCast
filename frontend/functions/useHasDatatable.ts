@@ -4,7 +4,9 @@ import {ComponentExposed} from "vue-component-type-helpers";
 
 export type DataTableRow = Record<string, any>
 
-export type DataTableTemplateRef = ComponentExposed<typeof DataTable>;
+export type DataTableTemplateRef<Row extends DataTableRow = DataTableRow> = ComponentExposed<
+    typeof DataTable<Row>
+>;
 
 export type DataTableFilterContext = {
     searchPhrase: string,
@@ -32,7 +34,9 @@ export type DataTableItemProvider<Row extends DataTableRow = DataTableRow> = {
     refresh: (flushCache?: boolean) => Promise<void>,
 };
 
-export default function useHasDatatable($datatableRef: Readonly<ShallowRef<DataTableTemplateRef | null>>) {
+export default function useHasDatatable<Row extends DataTableRow = DataTableRow>(
+    $datatableRef: Readonly<ShallowRef<DataTableTemplateRef<Row> | null>>
+) {
     /**
      * Reset selected rows, active row, and trigger data reload.
      */

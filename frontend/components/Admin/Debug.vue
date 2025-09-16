@@ -21,7 +21,14 @@
                         class="btn btn-sm btn-primary"
                         @click="makeDebugCall(clearCacheUrl)"
                     >
-                        {{ $gettext('Clear Cache') }}
+                        {{ $gettext('Clear Server Cache') }}
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-primary"
+                        @click="doClearClientCache"
+                    >
+                        {{ $gettext('Clear Client Cache') }}
                     </button>
                 </template>
             </card-page>
@@ -235,15 +242,15 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
 import TaskOutputModal from "~/components/Admin/Debug/TaskOutputModal.vue";
 import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {getApiUrl} from "~/router.ts";
 import Loading from "~/components/Common/Loading.vue";
-import {IconRefresh} from "~/components/Common/icons.ts";
-import Icon from "~/components/Common/Icon.vue";
+import {IconRefresh} from "~/components/Common/Icons/icons.ts";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import {ApiAdminDebugQueue, ApiAdminDebugStation, ApiAdminDebugSyncTask} from "~/entities/ApiInterfaces.ts";
-import {useQuery} from "@tanstack/vue-query";
+import {useQuery, useQueryClient} from "@tanstack/vue-query";
 import {QueryKeys} from "~/entities/Queries.ts";
 import {useQueryItemProvider} from "~/functions/dataTable/useQueryItemProvider.ts";
 
@@ -320,5 +327,13 @@ const makeDebugCall = async (url: string) => {
     } else {
         notifySuccess(data.message);
     }
+}
+
+const queryClient = useQueryClient();
+
+const doClearClientCache = async () => {
+    await queryClient.invalidateQueries();
+
+    notifySuccess($gettext('Client-side cache cleared!'));
 }
 </script>

@@ -42,12 +42,12 @@ use Psr\Http\Message\ResponseInterface;
         ),
     ]
 )]
-final class GetArtAction implements SingleActionInterface
+final readonly class GetArtAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationRepository $stationRepo,
-        private readonly StationMediaRepository $mediaRepo,
-        private readonly StationFilesystems $stationFilesystems
+        private StationRepository $stationRepo,
+        private StationMediaRepository $mediaRepo,
+        private StationFilesystems $stationFilesystems
     ) {
     }
 

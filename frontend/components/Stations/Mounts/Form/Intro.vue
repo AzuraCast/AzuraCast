@@ -80,7 +80,7 @@ const targetUrl = computed(() => {
         : props.newIntroUrl;
 });
 
-const onFileSuccess = (_file, message: UploadResponseBody | null) => {
+const onFileSuccess = (_file: any, message: UploadResponseBody | null) => {
     hasIntro.value = true;
 
     if (!props.editIntroUrl && message) {
@@ -90,11 +90,10 @@ const onFileSuccess = (_file, message: UploadResponseBody | null) => {
 
 const {axios} = useAxios();
 
-const deleteIntro = () => {
+const deleteIntro = async () => {
     if (props.editIntroUrl) {
-        void axios.delete(props.editIntroUrl).then(() => {
-            hasIntro.value = false;
-        });
+        await axios.delete(props.editIntroUrl);
+        hasIntro.value = false;
     } else {
         hasIntro.value = false;
         model.value = null;

@@ -17,14 +17,15 @@ use App\Xml\Writer;
 use Carbon\CarbonImmutable;
 use Psr\Http\Message\ResponseInterface;
 
-final class PodcastFeedAction implements SingleActionInterface
+final readonly class PodcastFeedAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly PodcastApiGenerator $podcastApiGenerator,
-        private readonly PodcastEpisodeApiGenerator $episodeApiGenerator
+        private PodcastApiGenerator $podcastApiGenerator,
+        private PodcastEpisodeApiGenerator $episodeApiGenerator
     ) {
     }
 
+    /** @noinspection HttpUrlsUsage */
     public function __invoke(
         ServerRequest $request,
         Response $response,

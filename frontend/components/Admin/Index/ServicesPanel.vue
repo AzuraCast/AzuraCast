@@ -50,7 +50,7 @@
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {getApiUrl} from "~/router.ts";
 import {useAxios} from "~/vendor/axios.ts";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import Loading from "~/components/Common/Loading.vue";
 import {ApiAdminServiceData} from "~/entities/ApiInterfaces.ts";
 import {useQuery} from "@tanstack/vue-query";
@@ -60,7 +60,9 @@ const servicesUrl = getApiUrl('/admin/services');
 
 const {axios, axiosSilent} = useAxios();
 
-const {data: services, isLoading} = useQuery<ApiAdminServiceData[]>({
+type ServiceDataRow = Required<ApiAdminServiceData>;
+
+const {data: services, isLoading} = useQuery<ServiceDataRow[]>({
     queryKey: [QueryKeys.AdminIndex, 'services'],
     queryFn: async ({signal}) => {
         const {data} = await axiosSilent.get(servicesUrl.value, {signal});
@@ -72,9 +74,8 @@ const {data: services, isLoading} = useQuery<ApiAdminServiceData[]>({
 
 const {notifySuccess} = useNotify();
 
-const doRestart = (serviceUrl: string) => {
-    void axios.post(serviceUrl).then((resp) => {
-        notifySuccess(resp.data.message);
-    });
+const doRestart = async (serviceUrl: string) => {
+    const {data} = await axios.post(serviceUrl);
+    notifySuccess(data.message);
 };
 </script>

@@ -34,11 +34,11 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class RenameAction implements SingleActionInterface
+final readonly class RenameAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly BatchUtilities $batchUtilities,
-        private readonly StationFilesystems $stationFilesystems,
+        private BatchUtilities $batchUtilities,
+        private StationFilesystems $stationFilesystems,
     ) {
     }
 

@@ -21,7 +21,7 @@
                 </form-group>
             </div>
             <div
-                v-if="src && src !== ''"
+                v-if="isString(src) && src !== ''"
                 class="col-md-4"
             >
                 <img
@@ -51,6 +51,7 @@ import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
+import {isString} from "es-toolkit/compat";
 
 const props = defineProps<{
     artworkSrc: string,
@@ -61,7 +62,7 @@ const props = defineProps<{
 const model = defineModel<UploadResponseBody | null>();
 
 const artworkSrc = toRef(props, 'artworkSrc');
-const localSrc = ref(null);
+const localSrc = ref<string | ArrayBuffer | null>(null);
 
 const src = computed(() => {
     return localSrc.value ?? artworkSrc.value;
@@ -69,7 +70,7 @@ const src = computed(() => {
 
 const {axios} = useAxios();
 
-const uploadFile = (file: File | null) => {
+const uploadFile = async (file: File | null) => {
     if (null === file) {
         return;
     }
@@ -84,16 +85,15 @@ const uploadFile = (file: File | null) => {
     const formData = new FormData();
     formData.append('art', file);
 
-    void axios.post(url, formData).then((resp) => {
-        model.value = resp.data;
-    });
+    const {data} = await axios.post(url, formData);
+    model.value = data;
 };
 
-const deleteArt = () => {
+const deleteArt = async () => {
     if (props.editArtUrl) {
-        void axios.delete(props.editArtUrl).then(() => {
-            localSrc.value = null;
-        });
+        await axios.delete(props.editArtUrl);
+
+        localSrc.value = null;
     } else {
         localSrc.value = null;
     }

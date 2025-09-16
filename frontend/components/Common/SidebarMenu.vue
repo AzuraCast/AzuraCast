@@ -13,6 +13,7 @@
             >
                 <icon
                     class="navdrawer-nav-icon"
+                    v-if="category.icon"
                     :icon="category.icon"
                 />
                 <span class="might-overflow">{{ category.label }}</span>
@@ -25,6 +26,7 @@
             >
                 <icon
                     class="navdrawer-nav-icon"
+                    v-if="category.icon"
                     :icon="category.icon"
                 />
                 <span class="might-overflow">{{ category.label }}</span>
@@ -81,10 +83,10 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import {useRoute} from "vue-router";
-import {some} from "lodash";
-import {IconOpenInNew} from "~/components/Common/icons.ts";
+import {some} from "es-toolkit/compat";
+import {IconOpenInNew} from "~/components/Common/Icons/icons.ts";
 import {MenuCategory, MenuRouteBasedUrl, MenuRouteUrl, MenuSubCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
 
 defineProps<{
@@ -93,8 +95,8 @@ defineProps<{
 
 const currentRoute = useRoute();
 
-const isRouteLink = (url: MenuRouteUrl): url is MenuRouteBasedUrl => {
-    return (typeof (url) !== 'undefined')
+const isRouteLink = (url?: MenuRouteUrl): url is MenuRouteBasedUrl => {
+    return (url !== undefined)
         && (typeof (url) !== 'string');
 };
 

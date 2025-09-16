@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import {computed} from "vue";
-import {isEmpty, padStart} from "lodash";
+import {padStart} from "es-toolkit/compat";
 
 const props = withDefaults(
     defineProps<{
@@ -35,8 +35,8 @@ const parseTimeCode = (timeCode: string | number | null) => {
     return null;
 }
 
-const convertToTimeCode = (time: string): number | null => {
-    if (isEmpty(time)) {
+const convertToTimeCode = (time: string | null): number | null => {
+    if (time === null || time === '') {
         return null;
     }
 
@@ -49,7 +49,10 @@ const timeCode = computed({
         return parseTimeCode(props.modelValue);
     },
     set: (newValue) => {
-        emit('update:modelValue', convertToTimeCode(newValue));
+        const newTimeCode = convertToTimeCode(newValue);
+        if (newTimeCode !== null) {
+            emit('update:modelValue', newTimeCode);
+        }
     }
 });
 </script>

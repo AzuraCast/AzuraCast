@@ -13,10 +13,10 @@ use App\Radio\Adapters;
 use League\Plates\Template\Template;
 use Psr\Http\Message\ResponseInterface;
 
-final class WebDjAction implements SingleActionInterface
+final readonly class WebDjAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly Adapters $adapters,
+        private Adapters $adapters,
     ) {
     }
 

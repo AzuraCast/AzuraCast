@@ -35,10 +35,10 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class ToggleAction implements SingleActionInterface
+final readonly class ToggleAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationWebhookRepository $webhookRepo
+        private StationWebhookRepository $webhookRepo
     ) {
     }
 

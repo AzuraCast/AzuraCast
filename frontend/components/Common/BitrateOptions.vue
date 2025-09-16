@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts" generic="T = string | number | null">
-import {map} from "lodash";
+import {map} from "es-toolkit/compat";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import RadioWithCustomNumber from "~/components/Common/RadioWithCustomNumber.vue";
 import {useSlots} from "vue";

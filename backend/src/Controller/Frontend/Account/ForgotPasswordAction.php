@@ -16,13 +16,13 @@ use App\Service\Mail;
 use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
 
-final class ForgotPasswordAction implements SingleActionInterface
+final readonly class ForgotPasswordAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly UserRepository $userRepo,
-        private readonly UserLoginTokenRepository $loginTokenRepo,
-        private readonly RateLimit $rateLimit,
-        private readonly Mail $mail
+        private UserRepository $userRepo,
+        private UserLoginTokenRepository $loginTokenRepo,
+        private RateLimit $rateLimit,
+        private Mail $mail
     ) {
     }
 
@@ -43,14 +43,11 @@ final class ForgotPasswordAction implements SingleActionInterface
                 $this->rateLimit->checkRequestRateLimit($request, 'forgot', 30, 3);
             } catch (RateLimitExceededException) {
                 $flash->error(
-                    sprintf(
-                        '<b>%s</b><br>%s',
-                        __('Too many forgot password attempts'),
-                        __(
-                            'You have attempted to reset your password too many times. Please wait '
-                            . '30 seconds and try again.'
-                        )
+                    message: __(
+                        'You have attempted to reset your password too many times. Please wait '
+                        . '30 seconds and try again.'
                     ),
+                    title: __('Too many forgot password attempts'),
                 );
 
                 return $response->withRedirect($request->getUri()->getPath());
@@ -79,14 +76,11 @@ final class ForgotPasswordAction implements SingleActionInterface
             }
 
             $flash->success(
-                sprintf(
-                    '<b>%s</b><br>%s',
-                    __('Account recovery e-mail sent.'),
-                    __(
-                        'If the e-mail address you provided is in the system, check your inbox '
-                        . 'for a password reset message.'
-                    )
+                message: __(
+                    'If the e-mail address you provided is in the system, check your inbox '
+                    . 'for a password reset message.'
                 ),
+                title: __('Account recovery e-mail sent.'),
             );
 
             return $response->withRedirect($request->getRouter()->named('account:login'));

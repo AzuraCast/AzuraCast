@@ -1,6 +1,6 @@
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
-import {useDialog} from "~/functions/useDialog.ts";
+import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {ApiStatus} from "~/entities/ApiInterfaces.ts";
 
 export default function useConfirmAndDelete<T extends ApiStatus = ApiStatus>(

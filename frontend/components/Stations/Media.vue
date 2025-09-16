@@ -81,8 +81,11 @@
                     <div class="flex-shrink-0 pe-2">
                         <template v-if="item.type === FileTypes.Media">
                             <play-button
-                                :url="item.media.links.play"
                                 class="btn-lg"
+                                :stream="{
+                                    title: item.text,
+                                    url: item.media!.links.play
+                                }"
                             />
                         </template>
                         <template v-else>
@@ -113,7 +116,7 @@
                                 class="name"
                                 href="#"
                                 :title="item.text"
-                                @click.prevent="changeDirectory(item.path)"
+                                @click.prevent="changeDirectory(item.path!)"
                             >
                                 {{ item.path_short }}
                             </a>
@@ -121,6 +124,7 @@
                         <template v-else-if="item.type === FileTypes.Media">
                             <a
                                 class="name"
+                                v-if="item.media"
                                 :href="item.media.links.play"
                                 target="_blank"
                                 :title="item.text"
@@ -169,12 +173,12 @@
             </template>
             <template #cell(playlists)="{ item }">
                 <MediaPlaylists
-                    v-if="item.media?.playlists?.length > 0"
+                    v-if="item.type === FileTypes.Media"
                     :playlists="item.media?.playlists as ApiStationMediaPlaylist[]"
                     @filter="filter"
                 />
                 <MediaPlaylists
-                    v-else-if="item.dir?.playlists?.length > 0"
+                    v-else-if="item.type === FileTypes.Directory"
                     :playlists="item.dir?.playlists as ApiStationMediaPlaylist[]"
                     @filter="filter"
                 />
@@ -245,21 +249,21 @@ import MoveFilesModal from "~/components/Stations/Media/MoveFilesModal.vue";
 import RenameModal from "~/components/Stations/Media/RenameModal.vue";
 import EditModal from "~/components/Stations/Media/EditModal.vue";
 import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
-import PlayButton from "~/components/Common/PlayButton.vue";
+import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed, ref, useTemplateRef, watch} from "vue";
-import {forEach, map, partition} from "lodash";
+import {forEach, map, partition} from "es-toolkit/compat";
 import formatFileSize from "~/functions/formatFileSize";
 import InfoCard from "~/components/Common/InfoCard.vue";
 import {getStationApiUrl} from "~/router";
 import {useRoute, useRouter} from "vue-router";
-import {IconFile, IconFolder, IconImage} from "~/components/Common/icons";
+import {IconFile, IconFolder, IconImage} from "~/components/Common/Icons/icons.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {
-    ApiFileList,
     ApiStationMediaPlaylist,
+    ApiStationsVueFilesProps,
     CustomField,
     FileTypes,
     StorageLocationTypes
@@ -267,34 +271,23 @@ import {
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import MediaPlaylists from "~/components/Stations/Media/MediaPlaylists.vue";
+import {useStationData} from "~/functions/useStationQuery.ts";
+import {FileListRequired, StationsVueFilesPropsRequired} from "~/entities/StationMedia.ts";
 
-export interface MediaSelectedItems {
-    all: ApiFileList[],
+const props = defineProps<StationsVueFilesPropsRequired>();
+
+export type MediaInitialPlaylist = ApiStationsVueFilesProps['initialPlaylists'][number];
+
+export type MediaRow = FileListRequired;
+
+export type MediaSelectedItems = {
+    all: MediaRow[],
     files: string[],
     directories: string[]
 }
 
-export interface MediaInitialPlaylist {
-    id: number,
-    name: string
-}
-
-const props = withDefaults(
-    defineProps<{
-        initialPlaylists?: MediaInitialPlaylist[],
-        customFields?: CustomField[],
-        validMimeTypes?: string[],
-        showSftp?: boolean,
-        supportsImmediateQueue?: boolean,
-    }>(),
-    {
-        initialPlaylists: () => [],
-        customFields: () => [],
-        validMimeTypes: () => [],
-        showSftp: true,
-        supportsImmediateQueue: true
-    }
-);
+const stationData = useStationData();
+const showSftp = computed(() => stationData.value.features.sftp ?? false);
 
 const listUrl = getStationApiUrl('/files/list');
 const batchUrl = getStationApiUrl('/files/batch');
@@ -338,13 +331,10 @@ const {$gettext} = useTranslate();
 
 const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
 
-type Row = ApiFileList;
-
-const listItemProvider = useApiItemProvider<Row>(
+const listItemProvider = useApiItemProvider<MediaRow>(
     listUrl,
     queryKeyWithStation(
-        [QueryKeys.StationMedia],
-        ['files', currentDirectory]
+        [QueryKeys.StationMedia, 'files', currentDirectory]
     ),
     {
         staleTime: 2 * 60 * 1000
@@ -355,8 +345,8 @@ const listItemProvider = useApiItemProvider<Row>(
     }
 );
 
-const fields = computed<DataTableField<Row>[]>(() => {
-    const fields: DataTableField<Row>[] = [
+const fields = computed<DataTableField<MediaRow>[]>(() => {
+    const fields: DataTableField<MediaRow>[] = [
         {key: 'path', isRowHeader: true, label: $gettext('Name'), sortable: true},
         {key: 'media.title', label: $gettext('Title'), sortable: true, selectable: true, visible: false},
         {
@@ -430,7 +420,7 @@ const selectedItems = ref<MediaSelectedItems>({
 
 const searchPhrase = ref('');
 
-const onRowSelected = (items: ApiFileList[]) => {
+const onRowSelected = (items: MediaRow[]) => {
     const splitItems = partition(items, (row) => row.type === FileTypes.Directory);
 
     selectedItems.value = {
@@ -468,7 +458,7 @@ const onFiltered = (newFilter: string) => {
 
 const $renameModal = useTemplateRef('$renameModal');
 
-const rename = (path) => {
+const rename = (path: string) => {
     $renameModal.value?.open(path);
 };
 

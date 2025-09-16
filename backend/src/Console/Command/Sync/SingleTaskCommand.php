@@ -66,7 +66,7 @@ final class SingleTaskCommand extends AbstractSyncCommand
             } else {
                 $this->runTask($task, $force);
             }
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
             // Show all valid commands.
             $io = new SymfonyStyle($input, $output);
 

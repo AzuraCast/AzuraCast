@@ -42,9 +42,10 @@ import Tabs from "~/components/Common/Tabs.vue";
 import {StorageLocationRecord, useAdminStorageLocationsForm} from "~/components/Admin/StorageLocations/Form/form.ts";
 import {storeToRefs} from "pinia";
 import mergeExisting from "~/functions/mergeExisting.ts";
+import {StorageLocationTypes} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<BaseEditModalProps & {
-    type: string
+    type: StorageLocationTypes
 }>();
 const emit = defineEmits<BaseEditModalEmits>();
 
@@ -54,9 +55,7 @@ const formStore = useAdminStorageLocationsForm();
 const {form, r$} = storeToRefs(formStore);
 const {$reset: resetForm} = formStore;
 
-type RecordWithType = StorageLocationRecord & {
-    type?: string
-};
+type RecordWithType = Omit<StorageLocationRecord, 'type'> & Required<Pick<StorageLocationRecord, 'type'>>;
 
 const {
     loading,
@@ -67,7 +66,7 @@ const {
     edit,
     doSubmit,
     close
-} = useBaseEditModal<RecordWithType>(
+} = useBaseEditModal<StorageLocationRecord, RecordWithType>(
     toRef(props, 'createUrl'),
     emit,
     $modal,
@@ -78,21 +77,21 @@ const {
         })
     },
     async (isEditMode) => {
-        const {valid, data} = await r$.value.$validate();
-        if (!valid || !data) {
+        const {valid} = await r$.value.$validate();
+        if (!valid) {
             return {valid};
         }
 
         if (isEditMode) {
-            return {valid, data: data as RecordWithType};
+            return {valid, data: form.value};
         }
 
         return {
             valid,
             data: {
-                ...data,
+                ...form.value,
                 type: props.type
-            } as RecordWithType
+            }
         };
     }
 );

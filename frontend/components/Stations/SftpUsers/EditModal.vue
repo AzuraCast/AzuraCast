@@ -86,17 +86,17 @@ type SftpUsersRecord = Required<
     Omit<SftpUser, 'id'>
 >
 
-const blankForm: SftpUsersRecord = {
+const form = ref<SftpUsersRecord>({
     username: '',
     password: '',
     publicKeys: null
-}
+});
 
 // This value is needed higher up than it's defined, so it's synced back up here.
 const editMode = ref(false);
 
 const {r$} = useAppRegle(
-    blankForm,
+    form,
     {
         username: {required},
         password: {
@@ -130,8 +130,8 @@ const {
         })
     },
     async () => {
-        const {valid, data} = await r$.$validate();
-        return {valid, data};
+        const {valid} = await r$.$validate();
+        return {valid, data: form.value};
     }
 );
 

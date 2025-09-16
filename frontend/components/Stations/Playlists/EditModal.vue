@@ -42,10 +42,10 @@ const $modal = useTemplateRef('$modal');
 const {notifySuccess} = useNotify();
 
 const formStore = useStationsPlaylistsForm();
-const {form} = storeToRefs(formStore);
+const {form, r$} = storeToRefs(formStore);
 const {$reset: resetForm} = formStore;
 
-const {r$} = useAppCollectScope('stations-playlists');
+const {r$: validatedr$} = useAppCollectScope('stations-playlists');
 
 const {
     loading,
@@ -62,13 +62,13 @@ const {
     $modal,
     resetForm,
     (data) => {
-        r$.$reset({
-            toState: mergeExisting(r$.$value, data)
+        r$.value.$reset({
+            toState: mergeExisting(r$.value.$value, data)
         })
     },
     async () => {
-        const {valid, data} = await r$.$validate();
-        return {valid, data};
+        const {valid} = await validatedr$.$validate();
+        return {valid, data: form.value};
     },
     {
         onSubmitSuccess: () => {

@@ -108,8 +108,8 @@ const {
         })
     },
     async () => {
-        const {valid, data} = await r$.value.$validate();
-        return {valid, data: data as StationMediaRecord};
+        const {valid} = await r$.value.$validate();
+        return {valid, data: form.value};
     }
 );
 

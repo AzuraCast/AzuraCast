@@ -44,7 +44,7 @@
 
 <script setup lang="ts">
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {computed, toRef, useTemplateRef} from "vue";
+import {computed, ref, toRef, useTemplateRef} from "vue";
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {useTranslate} from "~/vendor/gettext";
 import {CustomField} from "~/entities/ApiInterfaces.ts";
@@ -63,14 +63,14 @@ const $modal = useTemplateRef('$modal')
 
 type Form = Required<Omit<CustomField, 'id'>>;
 
-const blankForm: Form = {
+const form = ref<Form>({
     name: '',
     short_name: '',
     auto_assign: ''
-};
+});
 
 const {r$} = useAppRegle(
-    blankForm,
+    form,
     {
         name: {required},
     },
@@ -101,8 +101,8 @@ const {
         })
     },
     async () => {
-        const {valid, data} = await r$.$validate();
-        return {valid, data};
+        const {valid} = await r$.$validate();
+        return {valid, data: form.value};
     }
 );
 

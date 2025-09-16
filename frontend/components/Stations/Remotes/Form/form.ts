@@ -1,8 +1,8 @@
 import {useAppRegle} from "~/vendor/regle.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {defineStore} from "pinia";
 import {required} from "@regle/rules";
 import {RemoteAdapters, StationRemote, StreamFormats} from "~/entities/ApiInterfaces.ts";
+import {ref} from "vue";
 
 export type StationRemotesRecord = Omit<
     Required<StationRemote>,
@@ -15,7 +15,7 @@ export type StationRemotesRecord = Omit<
 export const useStationsRemotesForm = defineStore(
     'form-stations-remotes',
     () => {
-        const {record: form, reset} = useResettableRef<StationRemotesRecord>({
+        const form = ref<StationRemotesRecord>({
             display_name: '',
             type: RemoteAdapters.Icecast,
             custom_listen_url: null,
@@ -65,8 +65,9 @@ export const useStationsRemotesForm = defineStore(
         );
 
         const $reset = () => {
-            reset();
-            r$.$reset();
+            r$.$reset({
+                toOriginalState: true
+            });
         }
 
         return {

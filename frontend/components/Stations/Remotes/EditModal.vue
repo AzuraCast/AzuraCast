@@ -40,7 +40,7 @@ const $modal = useTemplateRef('$modal');
 const {notifySuccess} = useNotify();
 
 const formStore = useStationsRemotesForm();
-const {r$} = storeToRefs(formStore);
+const {form, r$} = storeToRefs(formStore);
 const {$reset: resetForm} = formStore;
 
 const {
@@ -63,8 +63,8 @@ const {
         })
     },
     async () => {
-        const {valid, data} = await r$.value.$validate();
-        return {valid, data};
+        const {valid} = await r$.value.$validate();
+        return {valid, data: form.value};
     },
     {
         onSubmitSuccess: () => {

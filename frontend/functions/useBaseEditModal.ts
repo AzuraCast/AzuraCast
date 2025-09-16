@@ -57,7 +57,7 @@ export type BaseEditModalOptions<SubmittedForm extends Form = Form> = {
 
 export type ValidateReturn<T extends Form = Form> = {
     valid: boolean,
-    data?: Partial<T>
+    data?: T
 }
 
 export function useBaseEditModal<

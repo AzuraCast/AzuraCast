@@ -161,6 +161,9 @@ export default function useNowPlaying(
                         setNowPlaying(data);
                     })(),
                     computed(() => (!document.hidden) ? 15000 : 30000),
+                    {
+                        immediateCallback: true
+                    }
                 );
 
                 useIntervalFn(
@@ -169,6 +172,9 @@ export default function useNowPlaying(
                         currentTime.value = data.timestamp;
                     })(),
                     computed(() => (!document.hidden) ? 300000 : 600000),
+                    {
+                        immediateCallback: true
+                    }
                 );
             }
 
@@ -186,7 +192,10 @@ export default function useNowPlaying(
                     currentTrackElapsed.value = elapsed;
                     currentTime.value = currentTime.value + 1;
                 },
-                1000
+                1000,
+                {
+                    immediateCallback: true
+                }
             );
         });
     }

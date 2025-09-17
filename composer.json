@@ -133,7 +133,7 @@
     "pyrech/composer-changelogs": "^2",
     "roave/security-advisories": "dev-latest",
     "slevomat/coding-standard": "^8",
-    "squizlabs/php_codesniffer": "^3.5",
+    "squizlabs/php_codesniffer": "^4",
     "symfony/var-dumper": "^7"
   },
   "config": {

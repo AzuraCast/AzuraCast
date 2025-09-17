@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3a06df0637da38b6e7d631e65471e928",
+    "content-hash": "175c61de86442f81987acac6e79d9342",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.356.17",
+            "version": "3.356.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "d0357fbe2535bb7d832e594a4ff2ff8da29d229c"
+                "reference": "4dbc87e689c4e4a6655d6b7e3d02ce2f4e87aa5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d0357fbe2535bb7d832e594a4ff2ff8da29d229c",
-                "reference": "d0357fbe2535bb7d832e594a4ff2ff8da29d229c",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4dbc87e689c4e4a6655d6b7e3d02ce2f4e87aa5c",
+                "reference": "4dbc87e689c4e4a6655d6b7e3d02ce2f4e87aa5c",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.356.17"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.356.19"
             },
-            "time": "2025-09-12T18:07:37+00:00"
+            "time": "2025-09-16T18:17:04+00:00"
         },
         {
             "name": "azuracast/doctrine-entity-normalizer",
@@ -10655,16 +10655,16 @@
         },
         {
             "name": "marc-mabe/php-enum",
-            "version": "v4.7.1",
+            "version": "v4.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/marc-mabe/php-enum.git",
-                "reference": "7159809e5cfa041dca28e61f7f7ae58063aae8ed"
+                "reference": "bb426fcdd65c60fb3638ef741e8782508fda7eef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marc-mabe/php-enum/zipball/7159809e5cfa041dca28e61f7f7ae58063aae8ed",
-                "reference": "7159809e5cfa041dca28e61f7f7ae58063aae8ed",
+                "url": "https://api.github.com/repos/marc-mabe/php-enum/zipball/bb426fcdd65c60fb3638ef741e8782508fda7eef",
+                "reference": "bb426fcdd65c60fb3638ef741e8782508fda7eef",
                 "shasum": ""
             },
             "require": {
@@ -10722,9 +10722,9 @@
             ],
             "support": {
                 "issues": "https://github.com/marc-mabe/php-enum/issues",
-                "source": "https://github.com/marc-mabe/php-enum/tree/v4.7.1"
+                "source": "https://github.com/marc-mabe/php-enum/tree/v4.7.2"
             },
-            "time": "2024-11-28T04:54:44+00:00"
+            "time": "2025-09-14T11:18:39+00:00"
         },
         {
             "name": "masterminds/html5",
@@ -11429,16 +11429,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.25",
+            "version": "2.1.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "4087d28bd252895874e174d65e26b2c202ed893a"
+                "reference": "b13345001a8553ec405b7741be0c6b8d7f8b5bf5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/4087d28bd252895874e174d65e26b2c202ed893a",
-                "reference": "4087d28bd252895874e174d65e26b2c202ed893a",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/b13345001a8553ec405b7741be0c6b8d7f8b5bf5",
+                "reference": "b13345001a8553ec405b7741be0c6b8d7f8b5bf5",
                 "shasum": ""
             },
             "require": {
@@ -11483,7 +11483,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-09-12T14:26:42+00:00"
+            "time": "2025-09-16T11:33:46+00:00"
         },
         {
             "name": "phpstan/phpstan-doctrine",
@@ -11893,16 +11893,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "12.3.10",
+            "version": "12.3.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "0d401d0df2e3c1703be425ecdc2d04f5c095938d"
+                "reference": "6a62f2b394e042884e4997ddc8b8db1ce56a0009"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/0d401d0df2e3c1703be425ecdc2d04f5c095938d",
-                "reference": "0d401d0df2e3c1703be425ecdc2d04f5c095938d",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6a62f2b394e042884e4997ddc8b8db1ce56a0009",
+                "reference": "6a62f2b394e042884e4997ddc8b8db1ce56a0009",
                 "shasum": ""
             },
             "require": {
@@ -11921,7 +11921,7 @@
                 "phpunit/php-invoker": "^6.0.0",
                 "phpunit/php-text-template": "^5.0.0",
                 "phpunit/php-timer": "^8.0.0",
-                "sebastian/cli-parser": "^4.0.0",
+                "sebastian/cli-parser": "^4.1.0",
                 "sebastian/comparator": "^7.1.3",
                 "sebastian/diff": "^7.0.0",
                 "sebastian/environment": "^8.0.3",
@@ -11970,7 +11970,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.3.10"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.3.11"
             },
             "funding": [
                 {
@@ -11994,7 +11994,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-09-11T10:35:19+00:00"
+            "time": "2025-09-14T06:21:44+00:00"
         },
         {
             "name": "psy/psysh",
@@ -12137,12 +12137,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "9e809d3a8829a5b870ae1c2f57706f46bb181093"
+                "reference": "662d5ecfaab913d8ce0de4521fc40ce92aa14e75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/9e809d3a8829a5b870ae1c2f57706f46bb181093",
-                "reference": "9e809d3a8829a5b870ae1c2f57706f46bb181093",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/662d5ecfaab913d8ce0de4521fc40ce92aa14e75",
+                "reference": "662d5ecfaab913d8ce0de4521fc40ce92aa14e75",
                 "shasum": ""
             },
             "conflict": {
@@ -12531,6 +12531,7 @@
                 "laravel/socialite": ">=1,<2.0.10",
                 "latte/latte": "<2.10.8",
                 "lavalite/cms": "<=9|==10.1",
+                "lavitto/typo3-form-to-database": "<2.2.5|>=3,<3.2.2|>=4,<4.2.3|>=5,<5.0.2",
                 "lcobucci/jwt": ">=3.4,<3.4.6|>=4,<4.0.4|>=4.1,<4.1.5",
                 "league/commonmark": "<2.7",
                 "league/flysystem": "<1.1.4|>=2,<2.1.1",
@@ -13099,20 +13100,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-09-11T17:05:04+00:00"
+            "time": "2025-09-16T20:05:44+00:00"
         },
         {
             "name": "sebastian/cli-parser",
-            "version": "4.1.0",
+            "version": "4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/cli-parser.git",
-                "reference": "8fd93be538992d556aaa45c74570129448a42084"
+                "reference": "90f41072d220e5c40df6e8635f5dafba2d9d4d04"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/cli-parser/zipball/8fd93be538992d556aaa45c74570129448a42084",
-                "reference": "8fd93be538992d556aaa45c74570129448a42084",
+                "url": "https://api.github.com/repos/sebastianbergmann/cli-parser/zipball/90f41072d220e5c40df6e8635f5dafba2d9d4d04",
+                "reference": "90f41072d220e5c40df6e8635f5dafba2d9d4d04",
                 "shasum": ""
             },
             "require": {
@@ -13124,7 +13125,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "4.1-dev"
+                    "dev-main": "4.2-dev"
                 }
             },
             "autoload": {
@@ -13148,7 +13149,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/cli-parser/issues",
                 "security": "https://github.com/sebastianbergmann/cli-parser/security/policy",
-                "source": "https://github.com/sebastianbergmann/cli-parser/tree/4.1.0"
+                "source": "https://github.com/sebastianbergmann/cli-parser/tree/4.2.0"
             },
             "funding": [
                 {
@@ -13168,7 +13169,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-09-13T14:16:18+00:00"
+            "time": "2025-09-14T09:36:45+00:00"
         },
         {
             "name": "sebastian/comparator",
@@ -13988,23 +13989,23 @@
         },
         {
             "name": "slevomat/coding-standard",
-            "version": "8.22.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slevomat/coding-standard.git",
-                "reference": "1dd80bf3b93692bedb21a6623c496887fad05fec"
+                "reference": "8fb1dfd5a64bff6159c7f28b3078db69a77f5e4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/1dd80bf3b93692bedb21a6623c496887fad05fec",
-                "reference": "1dd80bf3b93692bedb21a6623c496887fad05fec",
+                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/8fb1dfd5a64bff6159c7f28b3078db69a77f5e4c",
+                "reference": "8fb1dfd5a64bff6159c7f28b3078db69a77f5e4c",
                 "shasum": ""
             },
             "require": {
                 "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2 || ^0.7 || ^1.1.2",
                 "php": "^7.4 || ^8.0",
                 "phpstan/phpdoc-parser": "^2.3.0",
-                "squizlabs/php_codesniffer": "^3.13.4"
+                "squizlabs/php_codesniffer": "4.0.0"
             },
             "require-dev": {
                 "phing/phing": "3.0.1|3.1.0",
@@ -14015,6 +14016,7 @@
                 "phpstan/phpstan-strict-rules": "2.0.6",
                 "phpunit/phpunit": "9.6.8|10.5.48|11.4.4|11.5.36|12.3.10"
             },
+            "default-branch": true,
             "type": "phpcodesniffer-standard",
             "extra": {
                 "branch-alias": {
@@ -14037,7 +14039,7 @@
             ],
             "support": {
                 "issues": "https://github.com/slevomat/coding-standard/issues",
-                "source": "https://github.com/slevomat/coding-standard/tree/8.22.1"
+                "source": "https://github.com/slevomat/coding-standard/tree/master"
             },
             "funding": [
                 {
@@ -14049,7 +14051,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-09-13T08:53:30+00:00"
+            "time": "2025-09-16T07:53:33+00:00"
         },
         {
             "name": "softcreatr/jsonpath",
@@ -14122,37 +14124,32 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.13.4",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCSStandards/PHP_CodeSniffer.git",
-                "reference": "ad545ea9c1b7d270ce0fc9cbfb884161cd706119"
+                "reference": "06113cfdaf117fc2165f9cd040bd0f17fcd5242d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCSStandards/PHP_CodeSniffer/zipball/ad545ea9c1b7d270ce0fc9cbfb884161cd706119",
-                "reference": "ad545ea9c1b7d270ce0fc9cbfb884161cd706119",
+                "url": "https://api.github.com/repos/PHPCSStandards/PHP_CodeSniffer/zipball/06113cfdaf117fc2165f9cd040bd0f17fcd5242d",
+                "reference": "06113cfdaf117fc2165f9cd040bd0f17fcd5242d",
                 "shasum": ""
             },
             "require": {
                 "ext-simplexml": "*",
                 "ext-tokenizer": "*",
                 "ext-xmlwriter": "*",
-                "php": ">=5.4.0"
+                "php": ">=7.2.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.3.4"
+                "phpunit/phpunit": "^8.4.0 || ^9.3.4 || ^10.5.32 || 11.3.3 - 11.5.28 || ^11.5.31"
             },
             "bin": [
                 "bin/phpcbf",
                 "bin/phpcs"
             ],
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.x-dev"
-                }
-            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
@@ -14171,7 +14168,7 @@
                     "homepage": "https://github.com/PHPCSStandards/PHP_CodeSniffer/graphs/contributors"
                 }
             ],
-            "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
+            "description": "PHP_CodeSniffer tokenizes PHP files and detects violations of a defined set of coding standards.",
             "homepage": "https://github.com/PHPCSStandards/PHP_CodeSniffer",
             "keywords": [
                 "phpcs",
@@ -14202,7 +14199,7 @@
                     "type": "thanks_dev"
                 }
             ],
-            "time": "2025-09-05T05:47:09+00:00"
+            "time": "2025-09-15T11:28:58+00:00"
         },
         {
             "name": "staabm/side-effects-detector",

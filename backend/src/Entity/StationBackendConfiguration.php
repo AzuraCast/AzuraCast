@@ -270,12 +270,12 @@ final class StationBackendConfiguration extends AbstractArrayEntity
 
     #[OA\Property]
     public bool $hls_enable_on_public_player = false {
-        set (bool|string $value) => Types::bool($value, false, true);
+        set (bool|string|null $value) => Types::bool($value, false, true);
     }
 
     #[OA\Property]
     public bool $hls_is_default = false {
-        set (bool|string $value) => Types::bool($value, false, true);
+        set (bool|string|null $value) => Types::bool($value, false, true);
     }
 
     #[OA\Property]

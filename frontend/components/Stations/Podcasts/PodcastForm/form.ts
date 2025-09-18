@@ -34,6 +34,7 @@ export const useStationsPodcastsForm = defineStore(
             email: '',
             categories: [],
             is_enabled: true,
+            explicit: false,
             branding_config: {
                 public_custom_html: '',
                 enable_op3_prefix: false

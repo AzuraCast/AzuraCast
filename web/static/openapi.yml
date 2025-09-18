@@ -7575,6 +7575,8 @@ components:
               type: string
             description_short:
               type: string
+            explicit:
+              type: boolean
             is_enabled:
               type: boolean
             branding_config:

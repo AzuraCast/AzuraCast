@@ -1029,6 +1029,7 @@ export type ApiPodcast = HasLinks & {
   link?: string | null;
   description?: string;
   description_short?: string;
+  explicit?: boolean;
   is_enabled?: boolean;
   branding_config?: PodcastBrandingConfiguration;
   language?: string;

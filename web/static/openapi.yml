@@ -9529,6 +9529,7 @@ components:
               type: integer
               example: 15
             weight:
+              description: 'The relative weight of the playlist. Larger numbers play more often than playlists with lower number weights.'
               type: integer
               example: 3
             include_in_requests:

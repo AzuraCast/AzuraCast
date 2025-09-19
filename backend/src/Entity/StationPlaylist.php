@@ -166,7 +166,11 @@ final class StationPlaylist implements
     }
 
     #[
-        OA\Property(example: 3),
+        OA\Property(
+            description: "The relative weight of the playlist. Larger numbers play more often than playlists "
+            . "with lower number weights.",
+            example: 3,
+        ),
         ORM\Column(type: 'smallint')
     ]
     public int $weight = self::DEFAULT_WEIGHT {

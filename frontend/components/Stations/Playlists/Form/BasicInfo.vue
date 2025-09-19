@@ -128,7 +128,7 @@
                             :field="r$.weight"
                             :options="weightOptions"
                             :label="$gettext('Playlist Weight')"
-                            :description="$gettext('Higher weight playlists are played more frequently compared to other lower-weight playlists.')"
+                            :description="$gettext('Playlists with larger number weights (i.e. 25) play more frequently than playlists with smaller number weights (i.e. 1).')"
                         />
                     </div>
                 </form-fieldset>

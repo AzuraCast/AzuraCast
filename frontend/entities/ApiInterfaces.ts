@@ -2239,7 +2239,10 @@ export type StationPlaylist = HasAutoIncrementId & {
   play_per_minutes?: number;
   /** @example 15 */
   play_per_hour_minute?: number;
-  /** @example 3 */
+  /**
+   * The relative weight of the playlist. Larger numbers play more often than playlists with lower number weights.
+   * @example 3
+   */
   weight?: number;
   /** @example true */
   include_in_requests?: boolean;

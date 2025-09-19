@@ -235,7 +235,7 @@ final class QueueBuilder implements EventSubscriberInterface
      * Given a specified playlist group, choose a song from the assigned playlists to play
      *
      * @param StationPlaylist $playlistGroup A playlist that is holding other playlists inside
-     * @param mixed[] $recentSongHistoryForDuplicatePrevention
+     * @param mixed[] $recentSongHistory
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      *
      * @return bool Returns true if a track has been selected and registered
@@ -413,7 +413,7 @@ final class QueueBuilder implements EventSubscriberInterface
      * Given a specified (sequential or shuffled) playlist, choose a song from the playlist to play
      *
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
-     * @param mixed[] $recentSongHistoryForDuplicatePrevention
+     * @param mixed[] $recentSongHistory
      *
      * @return bool Returns true if a track has been selected and registered
      */
@@ -423,7 +423,7 @@ final class QueueBuilder implements EventSubscriberInterface
         array $recentSongHistory,
         bool $allowDuplicates = false
     ): bool {
-        $selectedTracks = match ($playlist->source) {
+        $selectedTracksResult = match ($playlist->source) {
             PlaylistSources::RemoteUrl => $this->getSongFromRemotePlaylist(
                 $playlist,
                 $event->getExpectedPlayTime()
@@ -444,7 +444,8 @@ final class QueueBuilder implements EventSubscriberInterface
             ),
         };
 
-        if ($event->setNextSongs($selectedTracks)) {
+        $selectedTracksResult = $selectedTracksResult ?: null;
+        if (true === $selectedTracksResult || $event->setNextSongs($selectedTracksResult)) {
             return true;
         }
 

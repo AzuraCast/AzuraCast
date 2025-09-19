@@ -71,7 +71,6 @@ final class QueueBuilder implements EventSubscriberInterface
         $this->logger->info('AzuraCast AutoDJ is calculating the next song to play...');
 
         $station = $event->getStation();
-        $expectedPlayTime = $event->getExpectedPlayTime();
 
         $activePlaylistsByType = $this->assembleActivePlaylistsByType($event, $station->playlists);
         if (empty($activePlaylistsByType)) {
@@ -81,7 +80,7 @@ final class QueueBuilder implements EventSubscriberInterface
 
         $recentSongHistoryForDuplicatePrevention = $this->queueRepo->getRecentlyPlayedByTimeRange(
             $station,
-            $expectedPlayTime,
+            $event->getExpectedPlayTime(),
             $station->backend_config->duplicate_prevention_time_range
         );
 
@@ -233,34 +232,34 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     /**
-     * Given a specified playlist group, choose a song from the assigned playlists to play and return it.
+     * Given a specified playlist group, choose a song from the assigned playlists to play
      *
      * @param StationPlaylist $playlistGroup A playlist that is holding other playlists inside
      * @param mixed[] $recentSongHistoryForDuplicatePrevention
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      *
-     * @return StationQueue|StationQueue[]|null
+     * @return bool Returns true if a track has been selected and registered
      */
     private function playSongFromPlaylistGroup(
         BuildQueue $event,
         StationPlaylist $playlistGroup,
         array $recentSongHistory,
         bool $allowDuplicates = false
-    ): StationQueue|array|null {
-        // @TODO: Check with Buster on how we could implement a depth-exhausting behaviour here:
-        //        Currently if the selectedPlaylist doesn't return a playable track the whole playlist group
-        //        would be skipped instead of trying the next one from it.
-        //        This seems bit brittle / unintuitive and could confuse users.
-
-        // @TODO: handle "PlaylistTypes" here
-        /*  @TODO: Extract logic from calculateNextSong into reusable method:
-            - assembleActivePlaylistsByType
-            - iterate through assemblePlaylistTypesToPlayByPriority
-            - check if there is an active one for type
-            - assembleEligiblePlaylistsAndPlaylistsLog for it
-            - weighted shuffle
-            - loop with duplicated flase|true flag
-        */
+    ): bool {
+        // @TODO: Thoughts about settings for playlist groups
+        // - wouldn't allow advanced backend options at all
+        //      - this would make handling groups much too hard imho as we would neet to figure out
+        //        how to translate this into LS code
+        // - wouldn't allow the following options in the beginning to keep the first version simple
+        //      - include in on-demand player
+        //      - hide metadata
+        //      - allow requests
+        // - Allowed PlaylistTypes
+        //      - No issues with PlaylistTypes::Standard
+        //      - wouldn't allow PlaylistTypes::Advanced
+        //          - can't really represent these in LS Code
+        //      - The "OncPerXYZ" PlaylistTypes seem a bit tricky to me
+        //          - I'd need to replicate the usage of assemblePlaylistTypesToPlayByPriority for playlist groups
 
         $selectedPlaylist = match ($playlistGroup->order) {
             PlaylistOrders::Random => $this->getRandomPlaylistFromPlaylistGroup($playlistGroup),
@@ -278,26 +277,32 @@ final class QueueBuilder implements EventSubscriberInterface
                 ]
             );
 
-            return null;
+            return false;
         }
 
-        /*$this->iteratePlaylistTypesToPlayByPriority(
+        $activePlaylistsByType = $this->assembleActivePlaylistsByType($event, $selectedPlaylist->playlists, false);
+        if (empty($activePlaylistsByType)) {
+            $this->logger->warning(
+                'No valid playlists in group detected, skipping playlist group.',
+                [
+                    'playlist_group_id' => $playlistGroup->id,
+                ]
+            );
+            return false;
+        }
 
-        );*/
-
-        $validTrack = $this->playSongFromPlaylist(
+        $hasRegisteredTrack = $this->iteratePlaylistTypesToPlayByPriority(
             $event,
-            $selectedPlaylist,
-            $recentSongHistory,
-            $allowDuplicates
+            $activePlaylistsByType,
+            $recentSongHistory
         );
 
-        if (null !== $validTrack) {
+        if ($hasRegisteredTrack) {
             $playlistGroup->played_at = $event->getExpectedPlayTime();
             $this->em->persist($playlistGroup);
         }
 
-        return $validTrack;
+        return $hasRegisteredTrack;
     }
 
     /**
@@ -348,21 +353,18 @@ final class QueueBuilder implements EventSubscriberInterface
                 foreach ($eligiblePlaylists as $playlistId => $weight) {
                     $playlist = $activePlaylistsByType[$currentPlaylistType][$playlistId];
 
-                    if (
-                        $event->setNextSongs(
-                            $this->playSongFromPlaylist(
-                                $event,
-                                $playlist,
-                                $recentSongHistoryForDuplicatePrevention,
-                                $allowDuplicates
-                            )
-                        )
-                    ) {
+                    $hasRegisteredTrack = $this->playSongFromPlaylist(
+                        $event,
+                        $playlist,
+                        $recentSongHistoryForDuplicatePrevention,
+                        $allowDuplicates
+                    );
+
+                    if ($hasRegisteredTrack) {
                         $this->logger->info(
                             'Playable track(s) found and registered.',
                             [
                                 'next_song' => (string) $event,
-                                'playlist_weight' => $weight,
                             ]
                         );
 
@@ -408,50 +410,62 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     /**
-     * Given a specified (sequential or shuffled) playlist, choose a song from the playlist to play and return it.
+     * Given a specified (sequential or shuffled) playlist, choose a song from the playlist to play
      *
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      * @param mixed[] $recentSongHistoryForDuplicatePrevention
      *
-     * @return StationQueue|StationQueue[]|null
+     * @return bool Returns true if a track has been selected and registered
      */
     private function playSongFromPlaylist(
         BuildQueue $event,
         StationPlaylist $playlist,
         array $recentSongHistory,
         bool $allowDuplicates = false
-    ): StationQueue|array|null {
-        if (PlaylistSources::RemoteUrl === $playlist->source) {
-            return $this->getSongFromRemotePlaylist(
+    ): bool {
+        $selectedTracks = match ($playlist->source) {
+            PlaylistSources::RemoteUrl => $this->getSongFromRemotePlaylist(
                 $playlist,
                 $event->getExpectedPlayTime()
-            );
-        }
+            ),
 
-        if (PlaylistSources::Playlists === $playlist->source) {
-            // @TODO: Thoughts about settings for playlist groups
-            // - wouldn't allow advanced backend options at all
-            //      - this would make handling groups much too hard imho as we would neet to figure out
-            //        how to translate this into LS code
-            // - wouldn't allow the following options in the beginning to keep the first version simple
-            //      - include in on-demand player
-            //      - hide metadata
-            //      - allow requests
-            // - Allowed PlaylistTypes
-            //      - No issues with PlaylistTypes::Standard
-            //      - wouldn't allow PlaylistTypes::Advanced
-            //          - can't really represent these in LS Code
-            //      - The "OncPerXYZ" PlaylistTypes seem a bit tricky to me
-            //          - I'd need to replicate the usage of assemblePlaylistTypesToPlayByPriority for playlist groups
-
-            return $this->playSongFromPlaylistGroup(
+            PlaylistSources::Playlists => $this->playSongFromPlaylistGroup(
                 $event,
                 $playlist,
                 $recentSongHistory,
                 $allowDuplicates
-            );
+            ),
+
+            PlaylistSources::Songs => $this->playSongFromSongsPlaylist(
+                $event,
+                $playlist,
+                $recentSongHistory,
+                $allowDuplicates
+            ),
+        };
+
+        if ($event->setNextSongs($selectedTracks)) {
+            return true;
         }
 
+        $this->logger->warning(
+            sprintf('Playlist "%s" did not return a playable track.', $playlist->name),
+            [
+                'playlist_id' => $playlist->id,
+                'playlist_order' => $playlist->order->value,
+                'allow_duplicates' => $allowDuplicates,
+            ]
+        );
+
+        return false;
+    }
+
+    private function playSongFromSongsPlaylist(
+        BuildQueue $event,
+        StationPlaylist $playlist,
+        array $recentSongHistory,
+        bool $allowDuplicates = false
+    ): StationQueue|array|null {
         if ($playlist->backendMerge()) {
             $this->spmRepo->resetQueue($playlist);
 
@@ -502,15 +516,6 @@ final class QueueBuilder implements EventSubscriberInterface
                 }
             }
         }
-
-        $this->logger->warning(
-            sprintf('Playlist "%s" did not return a playable track.', $playlist->name),
-            [
-                'playlist_id' => $playlist->id,
-                'playlist_order' => $playlist->order->value,
-                'allow_duplicates' => $allowDuplicates,
-            ]
-        );
 
         return null;
     }

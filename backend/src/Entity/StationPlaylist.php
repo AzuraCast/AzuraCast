@@ -291,7 +291,7 @@ final class StationPlaylist implements
     // - Need to ensure that all places apart from the the autodj / scheduling stuff know about playlist groups
     //      - The APIs that include anything with playlists need to be checked
     //          - Identify which exactly and make notes on what needs to be done there
-    // - Biggest plays with work needed: UI
+    // - Biggest place with work needed: UI
     //      - Need to make it possible to create playlist groups itself
     //      - Need to make it possible to add playlists & media to playlist groups
     //          - Need to prevent playlist groups to be added to self
@@ -301,8 +301,7 @@ final class StationPlaylist implements
     //          - How should we represent grouped playlists exactly?
     //          - Probably like regular playlists there too, maybe different color or with an icon?
     //          - Maybe add a hover tooltip / card that shows the list of the sub-playlists?
-    //      - Need to make it possible to see & sort playlist group contents liek with sequential playlists
-    // - Need to handle playlists internal queue for playlist groups
+    //      - Need to make it possible to see & sort playlist group contents like with sequential playlists
 
     public function __construct(Station $station)
     {
@@ -342,8 +341,6 @@ final class StationPlaylist implements
             return false;
         }
 
-        // @DEV: As long as a playlist group has playlists it can be tried to be played from
-        //  - resolving if the sub-playlists have media items should be done in the queue bilder or scheduler
         if (PlaylistSources::Playlists === $this->source) {
             return $this->playlists->count() > 0;
         }

@@ -212,11 +212,6 @@ final class ConfigWriter implements EventSubscriberInterface
                 continue;
             }
 
-            // @TODO: Do special handling for playlists that are part of a playlist group
-            //      - Do not schedule a playlist that is part of a playlist group in LS
-            //          - They are also not scheduled in AzuraCast AutoDJ so we should keep this behaviour consistent in LS too
-            //      - Still generate playlist definition in LS for those playlists if user wants to do any advanced stuff with them
-
             $playlistVarName = self::getPlaylistVariableName($playlist);
 
             if (in_array($playlistVarName, $playlistVarNames, true)) {
@@ -257,8 +252,6 @@ final class ConfigWriter implements EventSubscriberInterface
                     . self::cleanUpString($playlist->remote_url)
                     . '")';
                 $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFunc;
-            } elseif (PlaylistSources::Playlists === $playlist->source) {
-                // @TODO: Do we need to handle anything here?
             } else {
                 // Special handling for Remote Stream URLs.
                 $remoteUrl = $playlist->remote_url;
@@ -303,6 +296,11 @@ final class ConfigWriter implements EventSubscriberInterface
             }
 
             $event->appendLines($playlistConfigLines);
+
+            // Playlists that are part of playlist groups are not directly scheduled
+            if ($playlist->playlist_groups->count() > 0) {
+                continue;
+            }
 
             switch ($playlist->type) {
                 case PlaylistTypes::Standard:
@@ -1411,6 +1409,10 @@ final class ConfigWriter implements EventSubscriberInterface
     ): bool {
         $station = $event->getStation();
         $backendConfig = $event->getBackendConfig();
+
+        if (PlaylistSources::Playlists === $playlist->source) {
+            return false;
+        }
 
         if ($backendConfig->write_playlists_to_liquidsoap) {
             return true;

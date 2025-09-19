@@ -8,6 +8,8 @@ use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
+// @TODO: generate migration when ready
+
 #[
     ORM\Entity,
     ORM\Table(name: 'station_playlist_group'),
@@ -16,21 +18,6 @@ use JsonSerializable;
 final class StationPlaylistGroup implements JsonSerializable, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
-
-    #[
-        ORM\ManyToOne(inversedBy: 'playlist_groups'),
-        ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
-    ]
-    public Station $station;
-
-    public function setStation(Station $station): void
-    {
-        $this->station = $station;
-    }
-
-    /* TODO Remove direct identifier access. */
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    public private(set) int $station_id;
 
     #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'playlists')]
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
@@ -58,11 +45,9 @@ final class StationPlaylistGroup implements JsonSerializable, IdentifiableEntity
     public int $last_played = 0;
 
     public function __construct(
-        Station $station,
         StationPlaylist $playlist,
         StationPlaylist $playlistGroup
     ) {
-        $this->station = $station;
         $this->playlist = $playlist;
         $this->playlist_group = $playlistGroup;
     }

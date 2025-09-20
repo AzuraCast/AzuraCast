@@ -185,6 +185,14 @@ final class User implements Stringable, IdentifiableEntityInterface
     ]
     public private(set) Collection $login_tokens;
 
+    /** @var Collection<int, SsoToken> */
+    #[
+        ORM\OneToMany(targetEntity: SsoToken::class, mappedBy: 'user'),
+        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
+        DeepNormalize(true)
+    ]
+    public private(set) Collection $sso_tokens;
+
     public function __construct()
     {
         $this->created_at = time();
@@ -194,6 +202,7 @@ final class User implements Stringable, IdentifiableEntityInterface
         $this->api_keys = new ArrayCollection();
         $this->passkeys = new ArrayCollection();
         $this->login_tokens = new ArrayCollection();
+        $this->sso_tokens = new ArrayCollection();
     }
 
     #[ORM\PreUpdate]
@@ -230,6 +239,7 @@ final class User implements Stringable, IdentifiableEntityInterface
         $this->api_keys = new ArrayCollection();
         $this->passkeys = new ArrayCollection();
         $this->login_tokens = new ArrayCollection();
+        $this->sso_tokens = new ArrayCollection();
     }
 
     public function __toString(): string

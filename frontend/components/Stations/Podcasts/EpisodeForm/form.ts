@@ -2,41 +2,8 @@ import {useAppRegle} from "~/vendor/regle.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {defineStore} from "pinia";
 import {required} from "@regle/rules";
-import {ApiPodcastEpisode, HasLinks} from "~/entities/ApiInterfaces.ts";
-import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
 import {ref} from "vue";
-
-export type PodcastEpisodeRecord = Required<Omit<
-    ApiPodcastEpisode,
-    | 'id'
-    | 'links'
-    | 'media'
-    | 'created_at'
-    | 'art'
-    | 'storage_location_id'
-    | 'description_short'
-    | 'language_name'
-    | 'has_custom_art'
-    | 'art_updated_at'
-    | 'publish_at'
-    | 'is_published'
-    | 'has_media'
-    | 'playlist_media_id'
-    | 'playlist_media'
->> & {
-    publish_at: number | null,
-    artwork_file: UploadResponseBody | null,
-    media_file: UploadResponseBody | null,
-}
-
-export type PodcastEpisodeExtraData = Required<HasLinks> & {
-    has_custom_art: boolean,
-    art: string | null,
-    has_media: boolean,
-    media: string | null,
-}
-
-export type PodcastEpisodeResponseBody = PodcastEpisodeRecord & PodcastEpisodeExtraData
+import {PodcastEpisodeExtraData, PodcastEpisodeRecord} from "~/entities/Podcasts.ts";
 
 export const useStationsPodcastEpisodesForm = defineStore(
     'form-stations-podcast-episodes',

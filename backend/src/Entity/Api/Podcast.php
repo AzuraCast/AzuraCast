@@ -44,6 +44,9 @@ final class Podcast
     public string $description_short;
 
     #[OA\Property]
+    public bool $explicit;
+
+    #[OA\Property]
     public bool $is_enabled = true;
 
     #[OA\Property(description: "An array containing podcast-specific branding configuration")]

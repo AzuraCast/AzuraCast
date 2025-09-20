@@ -23,6 +23,7 @@ export const useStationsPlaylistsForm = defineStore(
     () => {
         const {record: form, reset} = useResettableRef<StationPlaylistsRecord>({
             name: '',
+            description: '',
             is_enabled: true,
             include_in_on_demand: false,
             weight: 3,

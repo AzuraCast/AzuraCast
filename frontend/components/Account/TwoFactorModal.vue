@@ -74,7 +74,7 @@ import {minLength, required} from "@regle/rules";
 import {ref, useTemplateRef} from "vue";
 import {useResettableRef} from "~/functions/useResettableRef";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {isApiError, useAxios} from "~/vendor/axios";
+import {getErrorAsString, useAxios} from "~/vendor/axios";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import QrCode from "~/components/Account/QrCode.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
@@ -89,12 +89,10 @@ const emit = defineEmits<HasRelistEmit>();
 const loading = ref(true);
 const error = ref<string | null>(null);
 
-const {record: form, reset: resetForm} = useResettableRef({
-    otp: ''
-});
-
 const {r$} = useAppRegle(
-    form,
+    {
+        otp: ''
+    },
     {
         otp: {
             required,
@@ -111,9 +109,10 @@ const {record: totp, reset: resetTotp} = useResettableRef({
 });
 
 const clearContents = () => {
-    resetForm();
     resetTotp();
-    r$.$reset();
+    r$.$reset({
+        toOriginalState: true
+    });
 
     loading.value = false;
     error.value = null;
@@ -146,7 +145,7 @@ const open = () => {
 };
 
 const doSubmit = async () => {
-    const {valid} = await r$.$validate();
+    const {valid, data: postData} = await r$.$validate();
     if (!valid) {
         return;
     }
@@ -159,7 +158,7 @@ const doSubmit = async () => {
             url: props.twoFactorUrl,
             data: {
                 secret: totp.value.secret,
-                otp: form.value.otp
+                otp: postData.otp
             }
         });
 
@@ -167,11 +166,7 @@ const doSubmit = async () => {
         emit('relist');
         hide();
     } catch (e) {
-        if (isApiError(e)) {
-            error.value = e.response.data.message;
-        } else {
-            error.value = String(e);
-        }
+        error.value = getErrorAsString(e);
     }
 };
 

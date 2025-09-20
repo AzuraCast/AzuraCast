@@ -584,8 +584,6 @@ final class ConfigWriter implements EventSubscriberInterface
             live.on_connect(synchronous=false, azuracast.live_connected)
             live.on_disconnect(synchronous=false, azuracast.live_disconnected)
 
-            last_live_meta = ref([])
-
             def insert_missing(m) =
                 def updates =
                     if m == [] then
@@ -594,16 +592,10 @@ final class ConfigWriter implements EventSubscriberInterface
                         [("is_live", "true")]
                     end
                 end
-                last_live_meta := [...m, ...updates]
                 updates
             end
             live = metadata.map(insert_missing, live)
-
             live = insert_metadata(live)
-            def insert_latest_live_metadata() =
-                log("Inserting last live meta: #{last_live_meta()}")
-                live.insert_metadata(last_live_meta())
-            end
 
             radio = fallback(
                 id="live_fallback",
@@ -612,7 +604,6 @@ final class ConfigWriter implements EventSubscriberInterface
                 transitions=[
                     fun (_, s) -> begin
                         log("executing transition to live")
-                        insert_latest_live_metadata()
                         s
                     end,
                     fun (_, s) -> begin

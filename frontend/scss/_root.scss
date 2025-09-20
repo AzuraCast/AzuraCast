@@ -1,6 +1,6 @@
 :root,
 [data-bs-theme="light"] {
-  --public-page-bg: url('/static/img/hexbg.webp');
+  --public-page-bg: url('~/img/hexbg.webp');
   --scrollbar-color: #{$gray-400};
 }
 
@@ -14,7 +14,7 @@
     color-scheme: light;
   }
 
-  --public-page-bg: url('/static/img/hexbg_dark.webp');
+  --public-page-bg: url('~/img/hexbg_dark.webp');
   --scrollbar-color: #{$gray-800};
   --bs-info-bg-subtle: #bbdefb;
   --bs-info-text-emphasis: #2C363D;

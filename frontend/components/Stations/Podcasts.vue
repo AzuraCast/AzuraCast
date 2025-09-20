@@ -61,6 +61,12 @@
                             {{ $gettext('Unpublished') }}
                         </span>
                         <span
+                            v-if="item.explicit"
+                            class="badge text-bg-danger"
+                        >
+                            {{ $gettext('Explicit') }}
+                        </span>
+                        <span
                             v-if="!item.is_enabled"
                             class="badge text-bg-danger"
                         >

@@ -1,16 +1,16 @@
 import {useAppRegle} from "~/vendor/regle.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {StorageLocation, StorageLocationAdapters} from "~/entities/ApiInterfaces.ts";
 import {defineStore} from "pinia";
 import {literal, required} from "@regle/rules";
 import {createVariant} from "@regle/core";
+import {ref} from "vue";
 
-type Form = Omit<StorageLocation, 'id'>;
+export type StorageLocationRecord = Omit<StorageLocation, 'id'>;
 
 export const useAdminStorageLocationsForm = defineStore(
     'form-admin-storage-locations',
     () => {
-        const {record: form, reset} = useResettableRef<Form>({
+        const form = ref<StorageLocationRecord>({
             adapter: StorageLocationAdapters.Local,
             path: '',
             storageQuota: '',
@@ -71,7 +71,6 @@ export const useAdminStorageLocationsForm = defineStore(
                 return variant.value;
             },
             {
-                // @ts-expect-error Variants and validationGroups don't play well.
                 validationGroups: (fields) => ({
                     generalTab: [
                         fields.adapter,
@@ -105,8 +104,7 @@ export const useAdminStorageLocationsForm = defineStore(
         );
 
         const $reset = () => {
-            reset();
-            r$.$reset();
+            r$.$reset({toOriginalState: true});
         }
 
         return {

@@ -2,8 +2,9 @@ import {useAppRegle} from "~/vendor/regle.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {defineStore} from "pinia";
 import {required} from "@regle/rules";
-import {StationMount, StreamFormats} from "~/entities/ApiInterfaces.ts";
+import {HasLinks, StationMount, StreamFormats} from "~/entities/ApiInterfaces.ts";
 import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
+import {ref} from "vue";
 
 export type StationMountRecord = Omit<
     Required<StationMount>, 'id' | 'listeners_unique' | 'listeners_total'
@@ -11,10 +12,23 @@ export type StationMountRecord = Omit<
     intro_file: UploadResponseBody | null
 };
 
+export type StationMountExtraData = Required<HasLinks> & {
+    intro_path: string | null,
+}
+
+export type StationMountHttpResponse = StationMountRecord & StationMountExtraData;
+
 export const useStationsMountsForm = defineStore(
     'form-stations-mounts',
     () => {
-        const {record: form, reset} = useResettableRef<StationMountRecord>({
+        const {record, reset: resetRecord} = useResettableRef<StationMountExtraData>({
+            intro_path: null,
+            links: {
+                intro: ''
+            }
+        });
+
+        const form = ref<StationMountRecord>({
             name: '',
             display_name: '',
             is_visible_on_public_pages: true,
@@ -65,12 +79,15 @@ export const useStationsMountsForm = defineStore(
         );
 
         const $reset = () => {
-            reset();
-            r$.$reset();
+            resetRecord();
+            r$.$reset({
+                toOriginalState: true
+            });
         }
 
         return {
             form,
+            record,
             r$,
             $reset
         }

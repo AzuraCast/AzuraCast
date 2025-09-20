@@ -3,10 +3,28 @@ import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {defineStore} from "pinia";
 import {required} from "@regle/rules";
 import {PodcastRecord} from "~/entities/Podcasts.ts";
+import {ApiPodcastCategory, HasLinks} from "~/entities/ApiInterfaces.ts";
+
+export type PodcastExtraData = Required<HasLinks> & {
+    has_custom_art: boolean,
+    art: string | null
+};
+
+export type PodcastResponseBody = Omit<PodcastRecord & PodcastExtraData, 'categories'> & {
+    categories: Required<ApiPodcastCategory>[]
+};
 
 export const useStationsPodcastsForm = defineStore(
     'form-stations-podcasts',
     () => {
+        const {record, reset: resetRecord} = useResettableRef<PodcastExtraData>({
+            has_custom_art: false,
+            art: '',
+            links: {
+                art: ''
+            }
+        });
+
         const {record: form, reset} = useResettableRef<PodcastRecord>({
             title: '',
             link: '',
@@ -16,6 +34,7 @@ export const useStationsPodcastsForm = defineStore(
             email: '',
             categories: [],
             is_enabled: true,
+            explicit: false,
             branding_config: {
                 public_custom_html: '',
                 enable_op3_prefix: false
@@ -65,10 +84,12 @@ export const useStationsPodcastsForm = defineStore(
 
         const $reset = () => {
             reset();
+            resetRecord();
             r$.$reset();
         }
 
         return {
+            record,
             form,
             r$,
             $reset

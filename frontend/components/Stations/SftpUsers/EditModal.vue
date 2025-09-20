@@ -67,14 +67,14 @@
 
 <script setup lang="ts">
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, ref, useTemplateRef, watch} from "vue";
+import {computed, ref, toRef, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
 import {required, requiredIf} from "@regle/rules";
 import {SftpUser} from "~/entities/ApiInterfaces.ts";
+import mergeExisting from "~/functions/mergeExisting.ts";
 
 const props = defineProps<BaseEditModalProps>();
 
@@ -86,13 +86,11 @@ type SftpUsersRecord = Required<
     Omit<SftpUser, 'id'>
 >
 
-const {record: form, reset: resetFormRef} = useResettableRef<SftpUsersRecord>(
-    {
-        username: '',
-        password: '',
-        publicKeys: null
-    }
-);
+const form = ref<SftpUsersRecord>({
+    username: '',
+    password: '',
+    publicKeys: null
+});
 
 // This value is needed higher up than it's defined, so it's synced back up here.
 const editMode = ref(false);
@@ -117,16 +115,24 @@ const {
     edit,
     doSubmit,
     close
-} = useBaseEditModal(
-    form,
-    props,
+} = useBaseEditModal<SftpUsersRecord>(
+    toRef(props, 'createUrl'),
     emit,
     $modal,
     () => {
-        resetFormRef();
-        r$.$reset();
+        r$.$reset({
+            toOriginalState: true
+        });
     },
-    async () => (await r$.$validate()).valid,
+    (data) => {
+        r$.$reset({
+            toState: mergeExisting(r$.$value, data)
+        })
+    },
+    async () => {
+        const {valid} = await r$.$validate();
+        return {valid, data: form.value};
+    }
 );
 
 watch(isEditMode, (newValue) => {

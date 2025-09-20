@@ -21,7 +21,7 @@ import FormBasicInfo from "~/components/Stations/Playlists/Form/BasicInfo.vue";
 import FormSchedule from "~/components/Stations/Playlists/Form/Schedule.vue";
 import FormAdvanced from "~/components/Stations/Playlists/Form/Advanced.vue";
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, useTemplateRef} from "vue";
+import {computed, toRef, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import ModalForm from "~/components/Common/ModalForm.vue";
@@ -29,6 +29,7 @@ import Tabs from "~/components/Common/Tabs.vue";
 import {storeToRefs} from "pinia";
 import {useAppCollectScope} from "~/vendor/regle.ts";
 import {useStationsPlaylistsForm} from "~/components/Stations/Playlists/Form/form.ts";
+import mergeExisting from "~/functions/mergeExisting.ts";
 
 const props = defineProps<BaseEditModalProps>();
 
@@ -41,10 +42,10 @@ const $modal = useTemplateRef('$modal');
 const {notifySuccess} = useNotify();
 
 const formStore = useStationsPlaylistsForm();
-const {form} = storeToRefs(formStore);
+const {form, r$} = storeToRefs(formStore);
 const {$reset: resetForm} = formStore;
 
-const {r$} = useAppCollectScope('stations-playlists');
+const {r$: validatedr$} = useAppCollectScope('stations-playlists');
 
 const {
     loading,
@@ -56,12 +57,19 @@ const {
     doSubmit,
     close
 } = useBaseEditModal(
-    form,
-    props,
+    toRef(props, 'createUrl'),
     emit,
     $modal,
     resetForm,
-    async () => (await r$.$validate()).valid,
+    (data) => {
+        r$.value.$reset({
+            toState: mergeExisting(r$.value.$value, data)
+        })
+    },
+    async () => {
+        const {valid} = await validatedr$.$validate();
+        return {valid, data: form.value};
+    },
     {
         onSubmitSuccess: () => {
             notifySuccess();

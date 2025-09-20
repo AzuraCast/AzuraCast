@@ -133,7 +133,7 @@ final readonly class PodcastFeedAction implements SingleActionInterface
             throw NotFoundException::podcast();
         }
 
-        if ($hasExplicitEpisode) {
+        if ($podcast->explicit || $hasExplicitEpisode) {
             $channel['itunes:explicit'] = 'true';
         }
 

@@ -48,47 +48,31 @@ import ModalForm from "~/components/Common/ModalForm.vue";
 import {toRef, useTemplateRef} from "vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
-import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal.ts";
+import {BaseEditModalEmits, useBaseEditModal} from "~/functions/useBaseEditModal.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
-import {ApiStationMedia, CustomField} from "~/entities/ApiInterfaces.ts";
+import {CustomField} from "~/entities/ApiInterfaces.ts";
 import {MediaInitialPlaylist} from "~/components/Stations/Media.vue";
 import {storeToRefs} from "pinia";
-import {customFieldsKey, useStationsMediaForm} from "~/components/Stations/Media/Form/form.ts";
+import {
+    customFieldsKey,
+    MediaHttpResponse,
+    StationMediaRecord,
+    useStationsMediaForm
+} from "~/components/Stations/Media/Form/form.ts";
 import {provideLocal} from "@vueuse/core";
 
-interface MediaEditModalProps extends BaseEditModalProps {
+const props = defineProps<{
     customFields: Required<CustomField>[],
     playlists: MediaInitialPlaylist[]
-}
-
-const props = defineProps<MediaEditModalProps>();
+}>();
 const emit = defineEmits<BaseEditModalEmits>();
-
-type MediaMeta = Required<Pick<
-    ApiStationMedia,
-    | 'length'
-    | 'length_text'
-    | 'links'
->>
-
-const {record, reset} = useResettableRef<MediaMeta>({
-    length: 0,
-    length_text: '',
-    links: {
-        art: '',
-        waveform: '',
-        waveform_cache: '',
-        play: ''
-    }
-});
 
 const $modal = useTemplateRef('$modal');
 
 provideLocal(customFieldsKey, toRef(props, 'customFields'));
 
 const formStore = useStationsMediaForm();
-const {form, r$} = storeToRefs(formStore);
+const {form, record, r$} = storeToRefs(formStore);
 const {$reset: resetForm} = formStore;
 
 const {
@@ -97,33 +81,35 @@ const {
     clearContents,
     edit,
     doSubmit
-} = useBaseEditModal(
-    form,
-    props,
+} = useBaseEditModal<
+    StationMediaRecord,
+    MediaHttpResponse
+>(
+    null,
     emit,
     $modal,
-    () => {
-        resetForm();
-        reset();
-    },
-    async () => (await r$.value.$validate()).valid,
-    {
-        populateForm: (data, form) => {
-            record.value = mergeExisting(record.value, data as typeof record.value);
+    resetForm,
+    (data) => {
+        record.value = mergeExisting(record.value, data);
 
-            const newForm = mergeExisting(form.value, data);
-            newForm.playlists = map(data.playlists, 'id');
-            newForm.custom_fields = {};
+        const newForm = mergeExisting(r$.value.$value, data);
+        newForm.playlists = map(data.playlists, 'id');
+        newForm.custom_fields = {};
 
-            forEach(props.customFields.slice(), (field) => {
-                newForm.custom_fields[field.short_name] =
-                    (data.custom_fields && data.custom_fields[field.short_name])
+        forEach(props.customFields.slice(), (field) => {
+            newForm.custom_fields[field.short_name] =
+                (data.custom_fields && data.custom_fields[field.short_name])
                     ? data.custom_fields[field.short_name]
                     : null;
-            });
+        });
 
-            form.value = newForm;
-        },
+        r$.value.$reset({
+            toState: newForm
+        })
+    },
+    async () => {
+        const {valid} = await r$.value.$validate();
+        return {valid, data: form.value};
     }
 );
 

@@ -42,7 +42,7 @@ import GoogleAnalyticsV4 from "~/components/Stations/Webhooks/Form/GoogleAnalyti
 import MatomoAnalytics from "~/components/Stations/Webhooks/Form/MatomoAnalytics.vue";
 import Mastodon from "~/components/Stations/Webhooks/Form/Mastodon.vue";
 import {BaseEditModalProps, HasRelistEmit, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {type Component, computed, nextTick, provide, useTemplateRef} from "vue";
+import {type Component, computed, nextTick, provide, toRef, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {ActiveWebhookTypes, WebhookTriggerDetails, WebhookTypeDetails} from "~/entities/Webhooks";
@@ -54,7 +54,7 @@ import GroupMe from "~/components/Stations/Webhooks/Form/GroupMe.vue";
 import Bluesky from "~/components/Stations/Webhooks/Form/Bluesky.vue";
 import {WebhookTypes} from "~/entities/ApiInterfaces.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
-import {useStationWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
+import {useStationWebhooksForm, WebhookRecord} from "~/components/Stations/Webhooks/Form/form.ts";
 import {useAppCollectScope} from "~/vendor/regle.ts";
 
 export interface WebhookComponentProps {
@@ -118,6 +118,10 @@ const formComponent = computed<Component>(() => {
     return get(webhookComponents, type.value, Generic);
 });
 
+type WebhookResponseBody = WebhookRecord & {
+    type: WebhookTypes | null
+}
+
 const {
     loading,
     error,
@@ -127,22 +131,29 @@ const {
     edit,
     doSubmit,
     close
-} = useBaseEditModal(
-    form,
-    props,
+} = useBaseEditModal<
+    WebhookRecord,
+    WebhookResponseBody
+>(
+    toRef(props, 'createUrl'),
     emit,
     $modal,
     reset,
-    async () => (await r$.$validate()).valid,
-    {
-        populateForm: (data, formRef) => {
-            setType(data.type as WebhookTypes | null);
-
-            // Wait for type-specific components to mount.
-            void nextTick(() => {
-                formRef.value = mergeExisting(formRef.value, data);
-            });
+    (data) => {
+        if (data.type) {
+            setType(data.type);
         }
+
+        // Wait for type-specific components to mount.
+        void nextTick(() => {
+            form.value = mergeExisting(form.value, data);
+        });
+
+        r$.$reset();
+    },
+    async () => {
+        const {valid} = await r$.$validate();
+        return {valid, data: form.value};
     }
 );
 

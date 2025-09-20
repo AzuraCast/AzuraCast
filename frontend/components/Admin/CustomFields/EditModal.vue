@@ -44,34 +44,30 @@
 
 <script setup lang="ts">
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {computed, useTemplateRef} from "vue";
+import {computed, ref, toRef, useTemplateRef} from "vue";
 import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {useTranslate} from "~/vendor/gettext";
 import {CustomField} from "~/entities/ApiInterfaces.ts";
 import {required} from "@regle/rules";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
+import mergeExisting from "~/functions/mergeExisting.ts";
 
-interface CustomFieldsEditModalProps extends BaseEditModalProps {
+const props = defineProps<BaseEditModalProps & {
     autoAssignTypes: Record<string, string>
-}
-
-const props = defineProps<CustomFieldsEditModalProps>();
+}>();
 const emit = defineEmits<BaseEditModalEmits>();
 
 const $modal = useTemplateRef('$modal')
 
 type Form = Required<Omit<CustomField, 'id'>>;
 
-const {record: form, reset: resetFormRef} = useResettableRef<Form>(
-    {
-        name: '',
-        short_name: '',
-        auto_assign: ''
-    }
-);
+const form = ref<Form>({
+    name: '',
+    short_name: '',
+    auto_assign: ''
+});
 
 const {r$} = useAppRegle(
     form,
@@ -90,16 +86,24 @@ const {
     edit,
     doSubmit,
     close
-} = useBaseEditModal(
-    form,
-    props,
+} = useBaseEditModal<Form>(
+    toRef(props, 'createUrl'),
     emit,
     $modal,
     () => {
-        resetFormRef();
-        r$.$reset();
+        r$.$reset({
+            toOriginalState: true
+        });
     },
-    async () => (await r$.$validate()).valid,
+    (data) => {
+        r$.$reset({
+            toState: mergeExisting(r$.$value, data)
+        })
+    },
+    async () => {
+        const {valid} = await r$.$validate();
+        return {valid, data: form.value};
+    }
 );
 
 const {$gettext} = useTranslate();

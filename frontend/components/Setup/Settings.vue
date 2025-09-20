@@ -4,7 +4,7 @@
         class="full-height-wrapper"
         role="main"
     >
-        <admin-settings @saved="onSaved">
+        <admin-settings :loading="loading" @saved="onSaved">
             <template #preCard>
                 <setup-step :step="3"/>
             </template>
@@ -29,12 +29,20 @@
 import AdminSettings from "~/components/Admin/Settings.vue";
 import SetupStep from "~/components/Setup/SetupStep.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
+import {delay} from "es-toolkit";
+import {ref} from "vue";
 
 const props = defineProps<{
     continueUrl: string
 }>();
 
-const onSaved = () => {
+const loading = ref(false);
+
+const onSaved = async () => {
+    loading.value = true;
+    
+    await delay(2000);
+
     window.location.href = props.continueUrl;
 }
 </script>

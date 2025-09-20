@@ -31,28 +31,26 @@
             </div>
 
             <div class="card-body">
-                <loading :loading="formLoading || propsLoading" lazy>
-                    <tabs v-if="props" content-class="mt-3">
+                <loading :loading="loading || formLoading || dataLoading" lazy>
+                    <tabs v-if="data" content-class="mt-3">
                         <settings-general-tab/>
                         <settings-security-privacy-tab/>
                         <settings-services-tab
-                            :release-channel="props.releaseChannel"
+                            :release-channel="data.releaseChannel"
                         />
                         <settings-debugging-tab/>
                     </tabs>
-                </loading>
-            </div>
 
-            <div class="card-body">
-                <button
-                    type="submit"
-                    class="btn btn-lg"
-                    :class="(r$.$invalid) ? 'btn-danger' : 'btn-primary'"
-                >
-                    <slot name="submitButtonName">
-                        {{ $gettext('Save Changes') }}
-                    </slot>
-                </button>
+                    <button
+                        type="submit"
+                        class="btn mt-3 btn-lg"
+                        :class="(r$.$invalid) ? 'btn-danger' : 'btn-primary'"
+                    >
+                        <slot name="submitButtonName">
+                            {{ $gettext('Save Changes') }}
+                        </slot>
+                    </button>
+                </loading>
             </div>
         </section>
     </form>
@@ -81,6 +79,15 @@ defineOptions({
     inheritAttrs: false
 });
 
+withDefaults(
+    defineProps<{
+        loading?: boolean
+    }>(),
+    {
+        loading: false
+    }
+);
+
 const emit = defineEmits<{
     (e: 'saved'): void
 }>();
@@ -97,7 +104,7 @@ const error = ref(null);
 
 const {axios} = useAxios();
 
-const {data: props, isLoading: propsLoading} = useQuery<ApiAdminVueSettingsProps>({
+const {data, isLoading: dataLoading} = useQuery<ApiAdminVueSettingsProps>({
     queryKey: [QueryKeys.AdminSettings, 'props'],
     queryFn: async ({signal}) => {
         const {data} = await axios.get<ApiAdminVueSettingsProps>(propsUrl.value, {signal});
@@ -140,8 +147,7 @@ const submit = async () => {
         data: form.value
     });
 
-    emit('saved');
     notifySuccess($gettext('Changes saved.'));
-    await relist();
+    emit('saved');
 }
 </script>

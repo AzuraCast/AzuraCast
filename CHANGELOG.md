@@ -11,14 +11,18 @@ release channel, you can take advantage of these new features and fixes.
   of those streams would encode separately. With this new system, all three will share a single encoder. This has the
   potential to dramatically reduce CPU consumption for larger stations with no impact in quality.
 
-- Liquidsoap is now updated to the Rolling Release build of 2.4.x. This includes a number of bug fixes for critical
-  issues, but also includes some breaking changes. Most of these changes will appear in the logs as warnings when
-  starting up a station with custom Liquidsoap code. If you use custom Liquidsoap code, you should evaluate these
-  warnings and make changes as needed.
+- Liquidsoap is now updated to version 2.4.0. This includes a number of bug fixes for critical issues, but also includes
+  some breaking changes. Most of these changes will appear in the logs as warnings when starting up a station with
+  custom Liquidsoap code. If you use custom Liquidsoap code, you should evaluate these warnings and make changes as
+  needed.
 
 - Playlists assigned to a folder should now be more intuitive; if a track is in a playlist because a parent folder is,
   the playlist will have a folder icon next to it, and hovering over it will indicate which folder it was set from.
   Clearing and setting that playlist directly on the media won't work (as it would just get reassigned later).
+
+- Playlists can now have a description associated with them.
+
+- Entire podcasts can now be marked as "Explicit".
 
 ## Code Quality/Technical Changes
 
@@ -27,6 +31,8 @@ release channel, you can take advantage of these new features and fixes.
 ## Bug Fixes
 
 - Once-per-X-minutes playlists are again correctly written to Liquidsoap.
+
+- Fixed some forms not saving because of null values.
 
 ---
 

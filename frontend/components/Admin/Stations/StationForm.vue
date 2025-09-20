@@ -65,7 +65,7 @@ import AdminStationsRequestsForm from "~/components/Admin/Stations/Form/Requests
 import AdminStationsStreamersForm from "~/components/Admin/Stations/Form/StreamersForm.vue";
 import {computed, nextTick, onMounted, ref, watch} from "vue";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {isApiError, useAxios} from "~/vendor/axios";
+import {getErrorAsString, useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
 import Loading from "~/components/Common/Loading.vue";
 import Tabs from "~/components/Common/Tabs.vue";
@@ -186,11 +186,7 @@ const submit = async () => {
         notifySuccess();
         emit('submitted');
     } catch (e) {
-        if (isApiError(e)) {
-            error.value = e.response.data.message;
-        } else {
-            error.value = String(e);
-        }
+        error.value = getErrorAsString(e);
     }
 };
 

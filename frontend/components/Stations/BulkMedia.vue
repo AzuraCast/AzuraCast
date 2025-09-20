@@ -315,7 +315,7 @@
 <script setup lang="ts">
 import {computed, ref, useTemplateRef} from "vue";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {isApiError, useAxios} from "~/vendor/axios";
+import {getErrorAsString, useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
@@ -373,11 +373,8 @@ const doPreview = async () => {
             notifyError(data.message || 'Preview failed');
         }
     } catch (e) {
-        if (isApiError(e)) {
-            notifyError(`Preview failed: ${e.response.data.message}`);
-        } else {
-            notifyError('Preview failed: ' + String(e));
-        }
+        const errorMsg = getErrorAsString(e);
+        notifyError(`Preview failed: ${errorMsg}`);
     }
 };
 

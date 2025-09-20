@@ -39,6 +39,22 @@ export const isApiError = (payload: any): payload is AxiosApiError => {
     return false;
 };
 
+export const getErrorAsString = (error: any): string => {
+    if (axios.isCancel(error)) {
+        return `HTTP request cancelled: ${error.message}`;
+    }
+
+    if (axios.isAxiosError(error)) {
+        if (isApiError(error)) {
+            return error.response.data.message;
+        }
+
+        return error.message;
+    }
+
+    return String(error);
+}
+
 export default function installAxios(vueApp: App) {
     // Configure auto-CSRF on requests
     const {apiCsrf} = useAzuraCast();

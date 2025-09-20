@@ -1,8 +1,8 @@
 import {useAppRegle} from "~/vendor/regle.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {HlsStreamProfiles, StationHlsStream} from "~/entities/ApiInterfaces.ts";
 import {defineStore} from "pinia";
 import {required} from "@regle/rules";
+import { ref } from "vue";
 
 export type HlsStreamRecord = Omit<
     Required<StationHlsStream>,
@@ -12,7 +12,7 @@ export type HlsStreamRecord = Omit<
 export const useStationsHlsStreamsForm = defineStore(
     'form-stations-hls-streams',
     () => {
-        const {record: form, reset} = useResettableRef<HlsStreamRecord>({
+        const form = ref<HlsStreamRecord>({
             name: '',
             format: HlsStreamProfiles.AacLowComplexity,
             bitrate: 128
@@ -37,8 +37,7 @@ export const useStationsHlsStreamsForm = defineStore(
         );
 
         const $reset = () => {
-            reset();
-            r$.$reset();
+            r$.$reset({toOriginalState: true}); 
         }
 
         return {

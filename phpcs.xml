@@ -71,6 +71,10 @@
         <exclude-pattern>src/Entity/Migration/*$</exclude-pattern>
     </rule>
 
+    <rule ref="Squiz.Classes.ValidClassName">
+        <exclude-pattern>tests/*</exclude-pattern>
+    </rule>
+
     <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
         <properties>
             <property name="searchAnnotations" value="true"/>

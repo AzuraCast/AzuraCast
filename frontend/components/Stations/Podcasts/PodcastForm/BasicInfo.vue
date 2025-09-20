@@ -71,6 +71,14 @@
                 :label="$gettext('Enable on Public Pages')"
                 :description="$gettext('If disabled, the station will not be visible on public-facing pages or APIs.')"
             />
+
+            <form-group-checkbox
+                id="form_edit_explicit"
+                class="col-md-12"
+                :field="r$.explicit"
+                :label="$gettext('Contains explicit content')"
+                :description="$gettext('Indicates the presence of explicit content (explicit language or adult content). Apple Podcasts displays an Explicit parental advisory graphic for your podcast if turned on. Podcasts containing explicit material aren\'t available in some Apple Podcasts territories.')"
+            />
         </div>
     </tab>
 </template>

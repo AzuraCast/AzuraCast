@@ -8,8 +8,6 @@ use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
-// @TODO: generate migration when ready
-
 #[
     ORM\Entity,
     ORM\Table(name: 'station_playlist_group'),

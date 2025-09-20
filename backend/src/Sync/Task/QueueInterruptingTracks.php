@@ -53,7 +53,6 @@ final class QueueInterruptingTracks extends AbstractTask
         }
     }
 
-    // @TODO: does this need to respect anything with playlist groups?
     private function queueForStation(Station $station): void
     {
         if (!$station->supportsAutoDjQueue()) {

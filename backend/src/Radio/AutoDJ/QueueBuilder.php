@@ -258,8 +258,6 @@ final class QueueBuilder implements EventSubscriberInterface
         //      - No issues with PlaylistTypes::Standard
         //      - wouldn't allow PlaylistTypes::Advanced
         //          - can't really represent these in LS Code
-        //      - The "OncPerXYZ" PlaylistTypes seem a bit tricky to me
-        //          - I'd need to replicate the usage of assemblePlaylistTypesToPlayByPriority for playlist groups
 
         $selectedPlaylist = match ($playlistGroup->order) {
             PlaylistOrders::Random => $this->getRandomPlaylistFromPlaylistGroup($playlistGroup),

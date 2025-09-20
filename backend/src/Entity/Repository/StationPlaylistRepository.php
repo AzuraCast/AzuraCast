@@ -10,6 +10,7 @@ use App\Entity\Station;
 use App\Entity\StationPlaylist;
 use App\Utilities\Time;
 use Carbon\CarbonImmutable;
+use Doctrine\ORM\QueryBuilder;
 use InvalidArgumentException;
 
 /**
@@ -83,6 +84,56 @@ final class StationPlaylistRepository extends AbstractStationBasedRepository
         }
 
         return $queuedPlaylistQuery->getQuery()->execute();
+    }
+
+    public function isPlaylistGroupQueueCompletelyFilled(StationPlaylist $playlist): bool
+    {
+        if (PlaylistSources::Playlists !== $playlist->source) {
+            throw new InvalidArgumentException('Playlist must contain playlists.');
+        }
+
+        if (PlaylistOrders::Random === $playlist->order) {
+            return true;
+        }
+
+        $notQueuedPlaylistCount = $this->getCountPlaylistGroupBaseQuery($playlist)
+            ->andWhere('spg.is_queued = 0')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $notQueuedPlaylistCount === 0;
+    }
+
+    public function isPlaylistGroupQueueEmpty(StationPlaylist $playlist): bool
+    {
+        if (PlaylistSources::Songs !== $playlist->source) {
+            return false;
+        }
+
+        if (PlaylistOrders::Random === $playlist->order) {
+            return false;
+        }
+
+        $totalPlaylistCount = $this->getCountPlaylistGroupBaseQuery($playlist)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $notQueuedPlaylistCount = $this->getCountPlaylistGroupBaseQuery($playlist)
+            ->andWhere('spg.is_queued = 0')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $notQueuedPlaylistCount === $totalPlaylistCount;
+    }
+
+    private function getCountPlaylistGroupBaseQuery(StationPlaylist $playlist): QueryBuilder
+    {
+        return $this->em->createQueryBuilder()
+            ->select('count(spg.id)')
+            ->from(StationPlaylist::class, 'sp')
+            ->join('sp.playlist_groups', 'spg')
+            ->where('spg.playlist_group = :playlistGroup')
+            ->setParameter('playlistGroup', $playlist);
     }
 
     /**

@@ -386,6 +386,10 @@ final class StationPlaylistMediaRepository extends Repository
 
     public function isQueueCompletelyFilled(StationPlaylist $playlist): bool
     {
+        if (PlaylistSources::Playlists === $playlist->source) {
+            throw new InvalidArgumentException('Playlist must not contain playlists.');
+        }
+
         if (PlaylistSources::Songs !== $playlist->source) {
             return true;
         }

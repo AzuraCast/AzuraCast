@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
+use App\Entity\Enums\PlaylistSources;
 use App\Entity\Interfaces\SongInterface;
 use App\Entity\Station;
 use App\Entity\StationMedia;
@@ -28,7 +29,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
         $this->em->createQuery(
             <<<'DQL'
                 DELETE FROM App\Entity\StationQueue sq
-                WHERE sq.media = :media 
+                WHERE sq.media = :media
                 AND sq.playlist = :playlist
                 AND sq.is_played = 0
             DQL
@@ -79,8 +80,8 @@ final class StationQueueRepository extends AbstractStationBasedRepository
             <<<'DQL'
             UPDATE App\Entity\StationQueue sq
             SET sq.is_played=1, sq.sent_to_autodj=1
-            WHERE sq.station = :station 
-            AND sq.is_played = 0 
+            WHERE sq.station = :station
+            AND sq.is_played = 0
             AND (sq.id = :id OR sq.timestamp_cued < :cued)
         DQL
         )->setParameter('station', $station)
@@ -191,6 +192,27 @@ final class StationQueueRepository extends AbstractStationBasedRepository
 
         $cuedPlaylistContentCount = $cuedPlaylistContentCountQuery->getSingleScalarResult();
         return $cuedPlaylistContentCount > 0;
+    }
+
+    public function hasCuedPlaylistGroupMedia(StationPlaylist $playlist): bool
+    {
+        if ($playlist->playlists->count() === 0) {
+            return false;
+        }
+
+        foreach ($playlist->playlists as $childPlaylist) {
+            $hasChildPlaylistCuedMedia = match ($childPlaylist->source) {
+                PlaylistSources::Playlists => $this->hasCuedPlaylistGroupMedia($childPlaylist),
+                PlaylistSources::Songs => $this->hasCuedPlaylistMedia($childPlaylist),
+                default => false
+            };
+
+            if ($hasChildPlaylistCuedMedia) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getUnplayedBaseQuery(Station $station): QueryBuilder

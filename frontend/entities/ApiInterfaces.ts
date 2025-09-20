@@ -1243,15 +1243,15 @@ export type ApiStationQueueDetailed = HasLinks & {
 };
 
 export interface ApiStationQuota {
-  used?: string;
-  used_bytes?: string;
-  used_percent?: number;
-  available?: string;
-  available_bytes?: string;
-  quota?: string | null;
-  quota_bytes?: string | null;
-  is_full?: boolean;
-  num_files?: number | null;
+  used: string;
+  used_bytes: string;
+  used_percent: number;
+  available: string;
+  available_bytes: string;
+  quota: string | null;
+  quota_bytes: string | null;
+  is_full: boolean;
+  num_files: number | null;
 }
 
 export interface ApiStationRequest {

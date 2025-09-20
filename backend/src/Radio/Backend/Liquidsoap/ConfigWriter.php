@@ -589,8 +589,9 @@ final class ConfigWriter implements EventSubscriberInterface
                 end
                 updates
             end
-            live = metadata.map(insert_missing, live)
-            live = insert_metadata(live)
+            
+            # Temporarily disabled for testing.
+            # live = metadata.map(insert_missing, live)
             
             radio = fallback(
                 id="live_fallback",

@@ -622,13 +622,6 @@ final class Station implements Stringable, IdentifiableEntityInterface
     ]
     public private(set) Collection $playlists;
 
-    /** @var Collection<int, StationPlaylistGroup> */
-    #[
-        ORM\OneToMany(targetEntity: StationPlaylistGroup::class, mappedBy: 'station'),
-        ORM\OrderBy(['weight' => 'DESC'])
-    ]
-    public private(set) Collection $playlist_groups;
-
     /** @var Collection<int, StationMount> */
     #[ORM\OneToMany(targetEntity: StationMount::class, mappedBy: 'station')]
     public private(set) Collection $mounts;
@@ -683,7 +676,6 @@ final class Station implements Stringable, IdentifiableEntityInterface
         $this->history = new ArrayCollection();
         $this->permissions = new ArrayCollection();
         $this->playlists = new ArrayCollection();
-        $this->playlist_groups = new ArrayCollection();
         $this->mounts = new ArrayCollection();
         $this->remotes = new ArrayCollection();
         $this->hls_streams = new ArrayCollection();

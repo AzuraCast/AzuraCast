@@ -11,7 +11,7 @@
         <tabs>
             <form-basic-info/>
             <form-schedule v-model:schedule-items="form.schedule_items" />
-            <form-advanced/>
+            <form-advanced v-if="form.source !== 'playlists'" />
         </tabs>
     </modal-form>
 </template>

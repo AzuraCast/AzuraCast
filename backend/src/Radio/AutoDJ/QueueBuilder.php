@@ -256,6 +256,7 @@ final class QueueBuilder implements EventSubscriberInterface
         //      - allow requests
         // - Allowed PlaylistTypes
         //      - No issues with PlaylistTypes::Standard
+        //      - Once every x should work
         //      - wouldn't allow PlaylistTypes::Advanced
         //          - can't really represent these in LS Code
 

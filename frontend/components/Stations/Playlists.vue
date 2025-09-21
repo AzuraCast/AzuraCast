@@ -36,7 +36,7 @@
                                 @click="doCreate"
                             />
                         </div>
-                        
+
                         <data-table
                             id="station_playlists"
                             paginated
@@ -52,14 +52,6 @@
                                     {{ row.item.description }}
                                 </p>
                                 <div class="badges">
-                                    <span class="badge text-bg-secondary">
-                                        <template v-if="row.item.source === 'songs'">
-                                            {{ $gettext('Song-based') }}
-                                        </template>
-                                        <template v-else>
-                                            {{ $gettext('Remote URL') }}
-                                        </template>
-                                    </span>
                                     <span
                                         v-if="row.item.is_jingle"
                                         class="badge text-bg-primary"
@@ -92,11 +84,24 @@
                                     </span>
                                 </div>
                             </template>
+                            <template #cell(source)="{ item }">
+                                <span class="badge text-bg-secondary">
+                                    <template v-if="item.source === 'songs'">
+                                        {{ $gettext('Song-based') }}
+                                    </template>
+                                    <template v-else-if="item.source === 'playlists'">
+                                        {{ $gettext('Playlist Group') }}
+                                    </template>
+                                    <template v-else>
+                                        {{ $gettext('Remote URL') }}
+                                    </template>
+                                </span>
+                            </template>
                             <template #cell(scheduling)="{ item }">
                                 <template v-if="!item.is_enabled">
                                     {{ $gettext('Disabled') }}
                                 </template>
-                                <template v-else-if="item.source !== 'songs'">
+                                <template v-else-if="item.source === 'remote_url'">
                                     {{ $gettext('Remote URL') }}
                                 </template>
                                 <template v-else-if="item.type === 'default'">
@@ -144,6 +149,10 @@
                                         {{ row.item.num_songs }}
                                     </router-link>
 
+                                    ({{ formatLength(row.item.total_length) }})
+                                </template>
+                                <template v-else-if="row.item.source === 'playlists'">
+                                    {{ row.item.num_songs }}
                                     ({{ formatLength(row.item.total_length) }})
                                 </template>
                                 <template v-else>
@@ -335,6 +344,7 @@ const {$gettext} = useTranslate();
 
 const fields: DataTableField[] = [
     {key: 'name', isRowHeader: true, label: $gettext('Playlist'), sortable: true},
+    {key: 'source', label: $gettext('Source'), sortable: false},
     {key: 'scheduling', label: $gettext('Scheduling'), sortable: false},
     {key: 'num_songs', label: $gettext('# Songs'), sortable: false},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}

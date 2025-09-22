@@ -59,6 +59,7 @@ return static function (RouteCollectorProxy $group) {
         Controller\Api\NowPlayingArtAction::class
     )->setName('api:nowplaying:art')
         ->add(new Middleware\Cache\SetCache(15))
+        ->add(Middleware\RequireLoginNonPublicStation::class)
         ->add(Middleware\RequireStation::class)
         ->add(Middleware\GetStation::class);
 
@@ -135,6 +136,7 @@ return static function (RouteCollectorProxy $group) {
                 }
             );
         }
-    )->add(Middleware\RequireStation::class)
+    )->add(Middleware\RequireLoginNonPublicStation::class)
+        ->add(Middleware\RequireStation::class)
         ->add(Middleware\GetStation::class);
 };

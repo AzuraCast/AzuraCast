@@ -127,7 +127,7 @@ final class ConfigWriter implements EventSubscriberInterface
             # AzuraCast Common Runtime Functions
             %include "{$commonLibPath}"
             
-            settings.server.log.level := {$logLevel}
+            log.level := {$logLevel}
             init.daemon.pidfile.path := "{$pidfile}"
             
             settings.init.compact_before_start := true

@@ -63,32 +63,32 @@
             />
         </div>
 
-        <common-social-post-fields v-model:form="form"/>
+        <common-social-post-fields/>
     </tab>
 </template>
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonSocialPostFields from "~/components/Stations/Webhooks/Form/Common/SocialPostFields.vue";
-import {computed} from "vue";
+import {computed, Ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
-import {WebhookRecordCommon, WebhookRecordMastodon} from "~/components/Stations/Webhooks/Form/form.ts";
+import {useStationsWebhooksForm,} from "~/components/Stations/Webhooks/Form/form.ts";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 import {useAppScopedRegle} from "~/vendor/regle.ts";
 import {required} from "@regle/rules";
+import {storeToRefs} from "pinia";
+import {WebhookRecordCommon, WebhookRecordMastodon} from "~/entities/Webhooks.ts";
 
 defineProps<WebhookComponentProps>();
 
-type ThisWebhookRecord = WebhookRecordCommon & WebhookRecordMastodon;
-
-const form = defineModel<ThisWebhookRecord>('form', {required: true});
+const {form} = storeToRefs(useStationsWebhooksForm());
 
 const {r$} = useAppScopedRegle(
-    form,
+    form as Ref<WebhookRecordCommon & WebhookRecordMastodon>,
     {
         config: {
             instance_url: {required},

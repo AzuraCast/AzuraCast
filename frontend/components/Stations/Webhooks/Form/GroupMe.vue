@@ -48,19 +48,20 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/FormattingInfo.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
-import {WebhookRecordCommon, WebhookRecordGroupMe} from "~/components/Stations/Webhooks/Form/form.ts";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 import {useAppScopedRegle} from "~/vendor/regle.ts";
 import {required} from "@regle/rules";
+import {storeToRefs} from "pinia";
+import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
+import {Ref} from "vue";
+import {WebhookRecordCommon, WebhookRecordGroupMe} from "~/entities/Webhooks.ts";
 
 defineProps<WebhookComponentProps>();
 
-type ThisWebhookRecord = WebhookRecordCommon & WebhookRecordGroupMe;
-
-const form = defineModel<ThisWebhookRecord>('form', {required: true});
+const {form} = storeToRefs(useStationsWebhooksForm());
 
 const {r$} = useAppScopedRegle(
-    form,
+    form as Ref<WebhookRecordCommon & WebhookRecordGroupMe>,
     {
         config: {
             bot_id: {required},

@@ -17,6 +17,7 @@ return static function (RouteCollectorProxy $group) {
              */
             $group->get('', Controller\Api\Stations\IndexController::class . ':indexAction')
                 ->setName('api:stations:index')
+                ->add(Middleware\RequireLoginNonPublicStation::class)
                 ->add(new Middleware\RateLimit('api', 5, 2));
 
             $group->get('/nowplaying', Controller\Api\NowPlayingAction::class);

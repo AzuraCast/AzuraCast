@@ -22,6 +22,7 @@ use App\Radio\Frontend\Blocklist\BlocklistParser;
 use App\Service\DeviceDetector;
 use App\Utilities\Time;
 use App\Utilities\Types;
+use Carbon\CarbonImmutable;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -139,20 +140,36 @@ final class SubmitAction implements SingleActionInterface
                 $thresholdSeconds = 15;
             }
 
-            $recentRequests = (int)$this->em->createQuery(
+            $now = Time::nowUtc();
+
+            /** @var StationRequest|null $latestRequest */
+            $latestRequest = $this->em->createQuery(
                 <<<'DQL'
-                    SELECT COUNT(sr.id) FROM App\Entity\StationRequest sr
+                    SELECT sr FROM App\Entity\StationRequest sr
                     WHERE sr.ip = :user_ip
                     AND sr.timestamp >= :threshold
+                    ORDER BY sr.timestamp DESC
                 DQL
             )->setParameter('user_ip', $ip)
-                ->setParameter('threshold', Time::nowUtc()->subSeconds($thresholdSeconds))
-                ->getSingleScalarResult();
+                ->setParameter('threshold', $now->subSeconds($thresholdSeconds))
+                ->setMaxResults(1)
+                ->getOneOrNullResult();
 
-            if ($recentRequests > 0) {
+            if ($latestRequest !== null) {
+                $requestsAvailableTime = CarbonImmutable::instance($latestRequest->timestamp)
+                    ->addSeconds($thresholdSeconds);
+
+                $requestsAvailableIn = $now->diffInUTCMinutes($requestsAvailableTime, true);
+
                 throw CannotCompleteActionException::submitRequest(
                     $request,
-                    __('You have submitted a request too recently! Please wait before submitting another one.')
+                    sprintf(
+                        __(
+                            'You have submitted a request too recently! '
+                            . 'Please wait %d minutes before submitting another one.'
+                        ),
+                        round($requestsAvailableIn, 2)
+                    ),
                 );
             }
         }

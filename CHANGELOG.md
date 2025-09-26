@@ -28,7 +28,15 @@ release channel, you can take advantage of these new features and fixes.
 
 - Our Docker image is now built on Debian Trixie (13), the newly released stable version of the Debian OS.
 
+- If a user submits a request too soon after their last one, they will be informed of how many minutes to wait.
+
 ## Bug Fixes
+
+- We have identified a bug that is causing the initial metadata push from live DJs to not transmit successfully. We have
+  temporarily disabled a function in our own code to resolve the issue, and will continue working with Liquidsoap to
+  resolve the issue fully.
+
+- A bug preventing Matomo analytics from registering correctly has been fixed.
 
 - Once-per-X-minutes playlists are again correctly written to Liquidsoap.
 

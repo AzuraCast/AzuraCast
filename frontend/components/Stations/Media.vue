@@ -411,7 +411,7 @@ const fields = computed<DataTableField<MediaRow>[]>(() => {
     return fields;
 });
 
-const playlists = ref<MediaInitialPlaylist[]>(props.initialPlaylists);
+const playlists = ref<MediaInitialPlaylist[]>(props.initialPlaylists.slice());
 const selectedItems = ref<MediaSelectedItems>({
     all: [],
     files: [],

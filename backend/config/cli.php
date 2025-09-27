@@ -36,6 +36,7 @@ return function (App\Event\BuildConsoleCommands $event) {
         'azuracast:sync:run' => Command\Sync\RunnerCommand::class,
         'azuracast:sync:task' => Command\Sync\SingleTaskCommand::class,
         'queue:process' => Command\MessageQueue\ProcessCommand::class,
+        'azuracast:sso:cleanup' => Command\SsoCleanupCommand::class,
         'queue:clear' => Command\MessageQueue\ClearCommand::class,
         'cache:clear' => Command\ClearCacheCommand::class,
         'acme:cert' => Command\Acme\GetCertificateCommand::class,

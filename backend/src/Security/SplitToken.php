@@ -34,7 +34,13 @@ final class SplitToken
     public static function fromKeyString(
         #[SensitiveParameter] string $key
     ): self {
-        [$identifier, $verifier] = explode(self::SEPARATOR, $key, 2);
+        $parts = explode(self::SEPARATOR, $key, 2);
+
+        if (count($parts) !== 2) {
+            throw new InvalidArgumentException('Token is not in a valid format.');
+        }
+
+        [$identifier, $verifier] = $parts;
 
         if (empty($identifier) || empty($verifier)) {
             throw new InvalidArgumentException('Token is not in a valid format.');

@@ -83,9 +83,9 @@ import {shallowRef, useTemplateRef, watch} from "vue";
 import {IconPlayCircle, IconStop} from "~/components/Common/Icons/icons.ts";
 import {reactiveComputed} from "@vueuse/core";
 import {RegionParams} from "wavesurfer.js/dist/plugins/regions.js";
-import {StationMediaMetadata, StationMediaRecord} from "~/components/Stations/Media/Form/form.ts";
 import {storeToRefs} from "pinia";
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
+import {StationMediaMetadata, StationMediaRecord} from "~/entities/StationMedia.ts";
 
 const props = defineProps<{
     duration: number,

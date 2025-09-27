@@ -2,17 +2,7 @@ import {useAppRegle} from "~/vendor/regle.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {defineStore} from "pinia";
 import {required} from "@regle/rules";
-import {PodcastRecord} from "~/entities/Podcasts.ts";
-import {ApiPodcastCategory, HasLinks} from "~/entities/ApiInterfaces.ts";
-
-export type PodcastExtraData = Required<HasLinks> & {
-    has_custom_art: boolean,
-    art: string | null
-};
-
-export type PodcastResponseBody = Omit<PodcastRecord & PodcastExtraData, 'categories'> & {
-    categories: Required<ApiPodcastCategory>[]
-};
+import {PodcastExtraData, PodcastRecord} from "~/entities/Podcasts.ts";
 
 export const useStationsPodcastsForm = defineStore(
     'form-stations-podcasts',

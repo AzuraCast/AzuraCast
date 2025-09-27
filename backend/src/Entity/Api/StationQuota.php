@@ -9,6 +9,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_StationQuota',
+    required: ['*'],
     type: 'object'
 )]
 final class StationQuota

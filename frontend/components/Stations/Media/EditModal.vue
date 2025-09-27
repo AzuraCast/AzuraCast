@@ -53,13 +53,9 @@ import mergeExisting from "~/functions/mergeExisting.ts";
 import {CustomField} from "~/entities/ApiInterfaces.ts";
 import {MediaInitialPlaylist} from "~/components/Stations/Media.vue";
 import {storeToRefs} from "pinia";
-import {
-    customFieldsKey,
-    MediaHttpResponse,
-    StationMediaRecord,
-    useStationsMediaForm
-} from "~/components/Stations/Media/Form/form.ts";
+import {customFieldsKey, useStationsMediaForm} from "~/components/Stations/Media/Form/form.ts";
 import {provideLocal} from "@vueuse/core";
+import {MediaHttpResponse, StationMediaRecord} from "~/entities/StationMedia.ts";
 
 const props = defineProps<{
     customFields: Required<CustomField>[],

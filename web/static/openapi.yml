@@ -7900,6 +7900,16 @@ components:
               nullable: true
           type: object
     Api_StationQuota:
+      required:
+        - used
+        - used_bytes
+        - used_percent
+        - available
+        - available_bytes
+        - quota
+        - quota_bytes
+        - is_full
+        - num_files
       properties:
         used:
           type: string

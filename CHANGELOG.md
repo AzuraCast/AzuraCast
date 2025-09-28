@@ -5,6 +5,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.23.0 (Sep 28, 2025)
+
+## New Features/Changes
+
 - **Share Encoders Between Streams**: You can now optionally enable an exciting new feature made possible by
   Liquidsoap's FFmpeg integration: shared stream encoders. If enabled, if you have multiple streams that have the exact
   same bitrate and format (i.e. 128kbps AAC for both an Icecast mount and HLS), both will share a single encoder. For

@@ -28,10 +28,10 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class DeleteFallbackAction implements SingleActionInterface
+final readonly class DeleteFallbackAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationRepository $stationRepo,
+        private StationRepository $stationRepo,
     ) {
     }
 

@@ -37,10 +37,10 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class GetAction implements SingleActionInterface
+final readonly class GetAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StorageLocationRepository $storageLocationRepo,
+        private StorageLocationRepository $storageLocationRepo,
     ) {
     }
 

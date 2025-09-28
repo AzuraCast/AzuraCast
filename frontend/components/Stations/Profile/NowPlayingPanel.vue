@@ -75,7 +75,7 @@
                                 <div class="d-table-cell align-middle w-100">
                                     <div v-if="!np.is_online">
                                         <h5 class="media-heading m-0 text-muted">
-                                            {{ offlineText ?? $gettext('Station Offline') }}
+                                            {{ stationData.offlineText ?? $gettext('Station Offline') }}
                                         </h5>
                                     </div>
                                     <div v-else-if="np.now_playing?.song?.title">
@@ -113,7 +113,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 mt-3 mt-md-0">
                     <div
                         v-if="!np.live?.is_live && np.playing_next"
                         class="clearfix"
@@ -241,14 +241,13 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import {computed, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLightbox} from "~/vendor/lightbox";
 import {userAllowedForStation} from "~/acl";
-import {useAzuraCastStation} from "~/vendor/azuracast";
 import {
     IconHeadphones,
     IconLogs,
@@ -257,31 +256,27 @@ import {
     IconSkipNext,
     IconUpdate,
     IconVolumeOff
-} from "~/components/Common/icons";
+} from "~/components/Common/Icons/icons.ts";
 import UpdateMetadataModal from "~/components/Stations/Profile/UpdateMetadataModal.vue";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
-import {NowPlayingProps} from "~/functions/useNowPlaying.ts";
 import {BackendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
+import {getStationApiUrl} from "~/router.ts";
+import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
+import {toRefs} from "@vueuse/core";
 
-export interface ProfileNowPlayingPanelProps extends NowPlayingProps {
-    backendType: BackendAdapters,
-    backendSkipSongUri: string,
-    backendDisconnectStreamerUri: string
-}
+const stationData = useStationData();
+const profileData = useStationProfileData();
+const {nowPlayingProps} = toRefs(profileData);
 
-defineOptions({
-    inheritAttrs: false
-});
-
-const props = defineProps<ProfileNowPlayingPanelProps>();
-
-const {offlineText} = useAzuraCastStation();
+const backendSkipSongUri = getStationApiUrl('/backend/skip');
+const backendDisconnectStreamerUri = getStationApiUrl('/backend/disconnect');
 
 const {
     np,
     currentTrackDurationDisplay,
     currentTrackElapsedDisplay
-} = useNowPlaying(props);
+} = useNowPlaying(nowPlayingProps);
 
 const {$gettext, $ngettext} = useTranslate();
 
@@ -297,13 +292,13 @@ const langListeners = computed(() => {
 });
 
 const isLiquidsoap = computed(() => {
-    return props.backendType === BackendAdapters.Liquidsoap;
+    return stationData.value.backendType === BackendAdapters.Liquidsoap;
 });
 
 const {vLightbox} = useLightbox();
 
 const doSkipSong = useMakeApiCall(
-    props.backendSkipSongUri,
+    backendSkipSongUri,
     {
         title: $gettext('Skip current song?'),
         confirmButtonText: $gettext('Skip Song')
@@ -311,7 +306,7 @@ const doSkipSong = useMakeApiCall(
 );
 
 const doDisconnectStreamer = useMakeApiCall(
-    props.backendDisconnectStreamerUri,
+    backendDisconnectStreamerUri,
     {
         title: $gettext('Disconnect current streamer?'),
         confirmButtonText: $gettext('Disconnect Streamer')

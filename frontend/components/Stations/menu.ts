@@ -1,7 +1,6 @@
 import {useTranslate} from "~/vendor/gettext.ts";
 import filterMenu, {MenuCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
 import {userAllowedForStation} from "~/acl.ts";
-import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {computed} from "vue";
 import {
     IconBroadcast,
@@ -14,13 +13,15 @@ import {
     IconPodcasts,
     IconPublic,
     IconReport
-} from "~/components/Common/icons.ts";
+} from "~/components/Common/Icons/icons.ts";
 import {reactiveComputed} from "@vueuse/core";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
 
 export function useStationsMenu(): ReactiveMenu {
     const {$gettext} = useTranslate();
-    const stationProps = useAzuraCastStation();
+
+    const station = useStationData();
 
     // Reuse this variable to avoid multiple calls.
     const userCanManageMedia = userAllowedForStation(StationPermissions.Media);
@@ -62,16 +63,16 @@ export function useStationsMenu(): ReactiveMenu {
                 key: 'public_page',
                 label: computed(() => $gettext('Public Page')),
                 icon: IconPublic,
-                url: stationProps.publicPageUrl,
+                url: station.value.publicPageUrl,
                 external: true,
-                visible: stationProps.enablePublicPages,
+                visible: station.value.enablePublicPages,
             };
 
             const mediaMenu: MenuCategory = {
                 key: 'media',
                 label: computed(() => $gettext('Media')),
                 icon: IconLibraryMusic,
-                visible: stationProps.features.media,
+                visible: station.value.features.media,
                 items: [
                     {
                         key: 'music_files',
@@ -117,9 +118,9 @@ export function useStationsMenu(): ReactiveMenu {
                     {
                         key: 'ondemand',
                         label: computed(() => $gettext('On-Demand Media')),
-                        url: stationProps.onDemandUrl,
+                        url: station.value.onDemandUrl,
                         external: true,
-                        visible: stationProps.enableOnDemand,
+                        visible: station.value.enableOnDemand,
                     },
                     {
                         key: 'sftp_users',
@@ -127,7 +128,7 @@ export function useStationsMenu(): ReactiveMenu {
                         url: {
                             name: 'stations:sftp_users:index'
                         },
-                        visible: userCanManageMedia && stationProps.features.sftp,
+                        visible: userCanManageMedia && station.value.features.sftp,
                     },
                     {
                         key: 'bulk_media',
@@ -147,7 +148,7 @@ export function useStationsMenu(): ReactiveMenu {
                 url: {
                     name: 'stations:playlists:index'
                 },
-                visible: userCanManageMedia && stationProps.features.media,
+                visible: userCanManageMedia && station.value.features.media,
             };
 
             const podcastsMenu: MenuCategory = {
@@ -157,14 +158,14 @@ export function useStationsMenu(): ReactiveMenu {
                 url: {
                     name: 'stations:podcasts:index'
                 },
-                visible: userAllowedForStation(StationPermissions.Podcasts) && stationProps.features.podcasts,
+                visible: userAllowedForStation(StationPermissions.Podcasts) && station.value.features.podcasts,
             };
 
             const streamingMenu: MenuCategory = {
                 key: 'streaming',
                 label: computed(() => $gettext('Live Streaming')),
                 icon: IconMic,
-                visible: userAllowedForStation(StationPermissions.Streamers) && stationProps.features.streamers,
+                visible: userAllowedForStation(StationPermissions.Streamers) && station.value.features.streamers,
                 items: [
                     {
                         key: 'streamers',
@@ -177,9 +178,9 @@ export function useStationsMenu(): ReactiveMenu {
                     {
                         key: 'webdj',
                         label: computed(() => $gettext('Web DJ')),
-                        url: stationProps.webDjUrl,
+                        url: station.value?.webDjUrl,
                         external: true,
-                        visible: stationProps.enablePublicPages
+                        visible: station.value.enablePublicPages
                     }
                 ]
             };
@@ -191,7 +192,7 @@ export function useStationsMenu(): ReactiveMenu {
                 url: {
                     name: 'stations:webhooks:index'
                 },
-                visible: userAllowedForStation(StationPermissions.WebHooks) && stationProps.features.webhooks,
+                visible: userAllowedForStation(StationPermissions.WebHooks) && station.value.features.webhooks,
             };
 
             const reportsMenu: MenuCategory = {
@@ -220,7 +221,7 @@ export function useStationsMenu(): ReactiveMenu {
                         url: {
                             name: 'stations:reports:requests'
                         },
-                        visible: userAllowedForStation(StationPermissions.Broadcasting) && stationProps.enableRequests
+                        visible: userAllowedForStation(StationPermissions.Broadcasting) && station.value.enableRequests
                     },
                     {
                         key: 'reports_timeline',
@@ -250,7 +251,7 @@ export function useStationsMenu(): ReactiveMenu {
                         url: {
                             name: 'stations:mounts:index',
                         },
-                        visible: userAllowedForStation(StationPermissions.MountPoints) && stationProps.features.mountPoints
+                        visible: userAllowedForStation(StationPermissions.MountPoints) && station.value.features.mountPoints
                     },
                     {
                         key: 'hls_streams',
@@ -258,7 +259,7 @@ export function useStationsMenu(): ReactiveMenu {
                         url: {
                             name: 'stations:hls_streams:index',
                         },
-                        visible: userAllowedForStation(StationPermissions.MountPoints) && stationProps.features.hlsStreams
+                        visible: userAllowedForStation(StationPermissions.MountPoints) && station.value.features.hlsStreams
                     },
                     {
                         key: 'remotes',
@@ -266,7 +267,7 @@ export function useStationsMenu(): ReactiveMenu {
                         url: {
                             name: 'stations:remotes:index',
                         },
-                        visible: userAllowedForStation(StationPermissions.RemoteRelays) && stationProps.features.remoteRelays
+                        visible: userAllowedForStation(StationPermissions.RemoteRelays) && station.value.features.remoteRelays
                     },
                     {
                         key: 'fallback',
@@ -274,7 +275,7 @@ export function useStationsMenu(): ReactiveMenu {
                         url: {
                             name: 'stations:fallback'
                         },
-                        visible: userAllowedForStation(StationPermissions.Broadcasting) && stationProps.features.media
+                        visible: userAllowedForStation(StationPermissions.Broadcasting) && station.value.features.media
                     },
                     {
                         key: 'ls_config',
@@ -283,7 +284,7 @@ export function useStationsMenu(): ReactiveMenu {
                             name: 'stations:util:ls_config'
                         },
                         visible: userAllowedForStation(StationPermissions.Broadcasting)
-                            && stationProps.features.customLiquidsoapConfig
+                            && station.value.features.customLiquidsoapConfig
                     },
                     {
                         key: 'stereo_tool',
@@ -291,7 +292,7 @@ export function useStationsMenu(): ReactiveMenu {
                         url: {
                             name: 'stations:stereo_tool_config'
                         },
-                        visible: stationProps.features.media && userAllowedForStation(StationPermissions.Broadcasting)
+                        visible: station.value.features.media && userAllowedForStation(StationPermissions.Broadcasting)
                     },
                     {
                         key: 'queue',
@@ -299,7 +300,7 @@ export function useStationsMenu(): ReactiveMenu {
                         url: {
                             name: 'stations:queue:index',
                         },
-                        visible: userAllowedForStation(StationPermissions.Broadcasting) && stationProps.features.autoDjQueue
+                        visible: userAllowedForStation(StationPermissions.Broadcasting) && station.value.features.autoDjQueue
                     },
                     {
                         key: 'restart',

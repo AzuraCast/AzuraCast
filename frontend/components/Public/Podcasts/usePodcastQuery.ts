@@ -7,6 +7,8 @@ import {computed} from "vue";
 import {useRoute} from "vue-router";
 import {useAxios} from "~/vendor/axios.ts";
 
+export type ApiPodcastRow = Required<ApiPodcast>
+
 export const usePodcastQuery = () => {
     const {stationId} = usePodcastGlobals();
     const {axios} = useAxios();
@@ -17,7 +19,7 @@ export const usePodcastQuery = () => {
         return `/public/podcast/${podcastId}`;
     }), stationId);
 
-    return useQuery<ApiPodcast>({
+    return useQuery<ApiPodcastRow>({
         queryKey: [
             QueryKeys.PublicPodcasts,
             {station: stationId},

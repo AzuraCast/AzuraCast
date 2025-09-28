@@ -11,7 +11,7 @@
             <strong class="order">{{ history.length - index }}</strong>
 
             <album-art
-                v-if="showAlbumArt"
+                v-if="showAlbumArt && row.song.art"
                 class="me-3"
                 :src="row.song.art"
             />

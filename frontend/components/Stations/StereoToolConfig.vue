@@ -87,7 +87,7 @@ import FlowUpload from "~/components/Common/FlowUpload.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
 import {onMounted, ref} from "vue";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
@@ -100,10 +100,9 @@ const downloadUrl = ref<string | null>(null);
 
 const {axios} = useAxios();
 
-const relist = () => {
-    void axios.get<ApiUploadedRecordStatus>(apiUrl.value).then(({data}) => {
-        downloadUrl.value = data.url;
-    });
+const relist = async () => {
+    const {data} = await axios.get<ApiUploadedRecordStatus>(apiUrl.value);
+    downloadUrl.value = data.url;
 };
 
 onMounted(relist);
@@ -112,16 +111,17 @@ const {mayNeedRestart} = useMayNeedRestart();
 
 const onFileSuccess = () => {
     mayNeedRestart();
-    relist();
+    void relist();
 };
 
 const {notifySuccess} = useNotify();
 
-const deleteConfigurationFile = () => {
-    void axios.delete(apiUrl.value).then(() => {
-        mayNeedRestart();
-        notifySuccess();
-        relist();
-    });
+const deleteConfigurationFile = async () => {
+    await axios.delete(apiUrl.value);
+
+    mayNeedRestart();
+    notifySuccess();
+    
+    await relist();
 };
 </script>

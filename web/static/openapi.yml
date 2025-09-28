@@ -5,7 +5,7 @@ info:
   license:
     name: 'GNU Affero General Public License v3.0 or later'
     url: 'https://www.gnu.org/licenses/agpl-3.0.txt'
-  version: 0.22.1
+  version: 0.23.0
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -690,9 +690,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Api_LogType'
+                $ref: '#/components/schemas/Api_Admin_LogList'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -2708,26 +2706,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Api_StationQuota'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '500':
-          $ref: '#/components/responses/GenericError'
-  '/station/{station_id}/restart-status':
-    get:
-      tags:
-        - 'Stations: General'
-      summary: 'Get the pending restart status for a station.'
-      operationId: getRestartStatus
-      parameters:
-        -
-          $ref: '#/components/parameters/StationIdRequired'
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_StationRestartStatus'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -6383,6 +6361,20 @@ components:
           type: string
           nullable: true
       type: object
+    Api_Admin_LogList:
+      required:
+        - globalLogs
+        - stationLogs
+      properties:
+        globalLogs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Api_LogType'
+        stationLogs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Api_Admin_StationLogList'
+      type: object
     Api_Admin_Permission:
       required:
         - id
@@ -6484,6 +6476,9 @@ components:
               readOnly: true
           type: object
     Api_Admin_RolePermissions:
+      required:
+        - global
+        - station
       properties:
         global:
           type: array
@@ -6745,6 +6740,21 @@ components:
           type: string
           nullable: true
       type: object
+    Api_Admin_StationLogList:
+      required:
+        - id
+        - name
+        - logs
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Api_LogType'
+      type: object
     Api_Admin_StereoToolStatus:
       required:
         - version
@@ -6803,6 +6813,114 @@ components:
         can_switch_to_stable:
           description: 'Whether you can seamlessly move from the Rolling Release channel to Stable without issues.'
           type: boolean
+      type: object
+    Api_Admin_Vue_BackupProps:
+      required:
+        - isDocker
+        - storageLocations
+      properties:
+        isDocker:
+          type: boolean
+        storageLocations:
+          type: object
+          additionalProperties:
+            type: string
+      type: object
+    Api_Admin_Vue_CustomFieldProps:
+      required:
+        - autoAssignTypes
+      properties:
+        autoAssignTypes:
+          type: object
+          additionalProperties:
+            type: string
+      type: object
+    Api_Admin_Vue_PermissionsProps:
+      required:
+        - stations
+        - globalPermissions
+        - stationPermissions
+      properties:
+        stations:
+          type: object
+          additionalProperties:
+            type: string
+        globalPermissions:
+          type: object
+          additionalProperties:
+            type: string
+        stationPermissions:
+          type: object
+          additionalProperties:
+            type: string
+      type: object
+    Api_Admin_Vue_SettingsProps:
+      required:
+        - releaseChannel
+      properties:
+        releaseChannel:
+          type: string
+      type: object
+    Api_Admin_Vue_StationsFormProps:
+      required:
+        - timezones
+        - countries
+        - isRsasInstalled
+        - isShoutcastInstalled
+        - isStereoToolInstalled
+      properties:
+        timezones:
+          type: object
+          additionalProperties:
+            type: string
+        countries:
+          type: object
+          additionalProperties:
+            type: string
+        isRsasInstalled:
+          type: boolean
+        isShoutcastInstalled:
+          type: boolean
+        isStereoToolInstalled:
+          type: boolean
+      type: object
+    Api_Admin_Vue_StationsProps:
+      required:
+        - formProps
+        - frontendTypes
+        - backendTypes
+      properties:
+        formProps:
+          $ref: '#/components/schemas/Api_Admin_Vue_StationsFormProps'
+        frontendTypes:
+          type: object
+        backendTypes:
+          type: object
+      type: object
+    Api_Admin_Vue_UpdateProps:
+      required:
+        - releaseChannel
+        - enableWebUpdates
+        - initialUpdateInfo
+      properties:
+        releaseChannel:
+          type: string
+        enableWebUpdates:
+          type: boolean
+        initialUpdateInfo:
+          oneOf:
+            -
+              $ref: '#/components/schemas/Api_Admin_UpdateDetails'
+          nullable: true
+      type: object
+    Api_Admin_Vue_UsersProps:
+      required:
+        - roles
+      properties:
+        roles:
+          type: object
+          additionalProperties:
+            type: string
       type: object
     Api_BatchResult:
       required:
@@ -6910,7 +7028,8 @@ components:
       properties:
         playlists:
           type: array
-          items: {  }
+          items:
+            $ref: '#/components/schemas/Api_StationMediaPlaylist'
       type: object
     Api_Form_Option:
       required:
@@ -7238,6 +7357,7 @@ components:
         - playlist_pls_url
         - playlist_m3u_url
         - is_public
+        - requests_enabled
         - mounts
         - remotes
         - hls_enabled
@@ -7296,6 +7416,10 @@ components:
           example: 'https://example.com/public/example_station/playlist.m3u'
         is_public:
           description: 'If the station is public (i.e. should be shown in listings of all stations)'
+          type: boolean
+          example: true
+        requests_enabled:
+          description: 'If the station has song requests enabled.'
           type: boolean
           example: true
         mounts:
@@ -7411,6 +7535,19 @@ components:
         listeners:
           $ref: '#/components/schemas/Api_NowPlaying_Listeners'
       type: object
+    Api_NowPlaying_Vue_Props:
+      required:
+        - stationShortName
+        - useStatic
+        - useSse
+      properties:
+        stationShortName:
+          type: string
+        useStatic:
+          type: boolean
+        useSse:
+          type: boolean
+      type: object
     Api_Podcast:
       type: object
       allOf:
@@ -7438,12 +7575,12 @@ components:
               type: string
             description_short:
               type: string
+            explicit:
+              type: boolean
             is_enabled:
               type: boolean
             branding_config:
-              description: 'An array containing podcast-specific branding configuration'
-              type: array
-              items: {  }
+              $ref: '#/components/schemas/PodcastBrandingConfiguration'
             language:
               type: string
             language_name:
@@ -7677,6 +7814,10 @@ components:
         short_name:
           type: string
           readOnly: true
+        folder:
+          type: string
+          readOnly: true
+          nullable: true
         count:
           type: integer
           readOnly: true
@@ -7702,7 +7843,6 @@ components:
           description: 'ID of the StationPlaylistMedia record associating this track with the playlist'
           type: integer
           example: 1
-          nullable: true
         media_id:
           description: 'ID of the StationPlaylistMedia record associating this track with the playlist'
           type: integer
@@ -7760,6 +7900,16 @@ components:
               nullable: true
           type: object
     Api_StationQuota:
+      required:
+        - used
+        - used_bytes
+        - used_percent
+        - available
+        - available_bytes
+        - quota
+        - quota_bytes
+        - is_full
+        - num_files
       properties:
         used:
           type: string
@@ -7795,13 +7945,6 @@ components:
           example: /api/station/1/request/1
         song:
           $ref: '#/components/schemas/Api_Song'
-      type: object
-    Api_StationRestartStatus:
-      properties:
-        has_started:
-          type: boolean
-        needs_restart:
-          type: boolean
       type: object
     Api_StationSchedule:
       properties:
@@ -7851,21 +7994,13 @@ components:
       type: object
     Api_StationServiceStatus:
       required:
-        - backend_running
-        - frontend_running
-        - station_has_started
-        - station_needs_restart
+        - backendRunning
+        - frontendRunning
       properties:
-        backend_running:
+        backendRunning:
           type: boolean
           example: true
-        frontend_running:
-          type: boolean
-          example: true
-        station_has_started:
-          type: boolean
-          example: true
-        station_needs_restart:
+        frontendRunning:
           type: boolean
           example: true
       type: object
@@ -7926,6 +8061,146 @@ components:
         size:
           type: integer
         downloadUrl:
+          type: string
+      type: object
+    Api_Stations_Vue_FilesProps:
+      required:
+        - initialPlaylists
+        - customFields
+        - validMimeTypes
+        - supportsImmediateQueue
+      properties:
+        initialPlaylists:
+          type: array
+          items:
+            required:
+              - id
+              - name
+            properties:
+              id:
+                type: integer
+                format: int64
+              name:
+                type: string
+            type: object
+        customFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomField'
+        validMimeTypes:
+          type: array
+          items:
+            type: string
+        supportsImmediateQueue:
+          type: boolean
+      type: object
+    Api_Stations_Vue_PodcastsProps:
+      required:
+        - languageOptions
+        - categoriesOptions
+      properties:
+        languageOptions:
+          type: object
+          additionalProperties:
+            type: string
+        categoriesOptions:
+          $ref: '#/components/schemas/Api_Form_NestedOptions'
+      type: object
+    Api_Stations_Vue_ProfileProps:
+      required:
+        - nowPlayingProps
+        - publicPageUri
+        - publicPageEmbedUri
+        - publicWebDjUri
+        - publicOnDemandUri
+        - publicPodcastsUri
+        - publicScheduleUri
+        - publicOnDemandEmbedUri
+        - publicRequestEmbedUri
+        - publicHistoryEmbedUri
+        - publicScheduleEmbedUri
+        - publicPodcastsEmbedUri
+        - frontendAdminUri
+        - frontendAdminPassword
+        - frontendSourcePassword
+        - frontendRelayPassword
+        - frontendPort
+        - numSongs
+        - numPlaylists
+      properties:
+        nowPlayingProps:
+          $ref: '#/components/schemas/Api_NowPlaying_Vue_Props'
+        publicPageUri:
+          type: string
+        publicPageEmbedUri:
+          type: string
+        publicWebDjUri:
+          type: string
+        publicOnDemandUri:
+          type: string
+        publicPodcastsUri:
+          type: string
+        publicScheduleUri:
+          type: string
+        publicOnDemandEmbedUri:
+          type: string
+        publicRequestEmbedUri:
+          type: string
+        publicHistoryEmbedUri:
+          type: string
+        publicScheduleEmbedUri:
+          type: string
+        publicPodcastsEmbedUri:
+          type: string
+        frontendAdminUri:
+          type: string
+        frontendAdminPassword:
+          type: string
+        frontendSourcePassword:
+          type: string
+        frontendRelayPassword:
+          type: string
+        frontendPort:
+          type: integer
+          nullable: true
+        numSongs:
+          type: integer
+        numPlaylists:
+          type: integer
+      type: object
+    Api_Stations_Vue_SftpUsersProps:
+      required:
+        - connectionUrl
+        - connectionIp
+        - connectionPort
+      properties:
+        connectionUrl:
+          type: string
+        connectionIp:
+          type: string
+          nullable: true
+        connectionPort:
+          type: integer
+      type: object
+    Api_Stations_Vue_StreamersProps:
+      required:
+        - recordStreams
+        - connectionServerUrl
+        - connectionStreamPort
+        - connectionIp
+        - connectionDjMountPoint
+      properties:
+        recordStreams:
+          type: boolean
+        connectionServerUrl:
+          type: string
+        connectionStreamPort:
+          type: integer
+          nullable: true
+        connectionIp:
+          type: string
+          nullable: true
+        connectionDjMountPoint:
           type: string
       type: object
     Api_Status:
@@ -7991,6 +8266,20 @@ components:
         utc_json:
           type: string
           example: '2012-12-25T16:30:00.000000Z'
+      type: object
+    Api_ToastNotification:
+      required:
+        - message
+        - title
+        - variant
+      properties:
+        message:
+          type: string
+        title:
+          type: string
+          nullable: true
+        variant:
+          $ref: '#/components/schemas/FlashLevels'
       type: object
     HasLinks:
       properties:
@@ -8061,6 +8350,219 @@ components:
         url:
           type: string
           nullable: true
+      type: object
+    Vue_AppGlobals:
+      required:
+        - locale
+        - localeShort
+        - localeWithDashes
+        - timeConfig
+        - apiCsrf
+        - dashboardProps
+        - user
+        - notifications
+        - componentProps
+      properties:
+        locale:
+          type: string
+        localeShort:
+          type: string
+        localeWithDashes:
+          type: string
+        timeConfig:
+          type: object
+          nullable: true
+        apiCsrf:
+          type: string
+          nullable: true
+        dashboardProps:
+          oneOf:
+            -
+              $ref: '#/components/schemas/Vue_DashboardGlobals'
+          nullable: true
+        user:
+          oneOf:
+            -
+              $ref: '#/components/schemas/Vue_UserGlobals'
+          nullable: true
+        notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Api_ToastNotification'
+        componentProps:
+          type: array
+          items:
+            type: '{}'
+          nullable: true
+      type: object
+    Vue_DashboardGlobals:
+      required:
+        - instanceName
+        - homeUrl
+        - logoutUrl
+        - version
+        - isDocker
+        - platform
+        - showCharts
+        - showAlbumArt
+        - supportedLocales
+        - analyticsLevel
+      properties:
+        instanceName:
+          type: string
+        homeUrl:
+          type: string
+        logoutUrl:
+          type: string
+        version:
+          type: string
+        isDocker:
+          type: boolean
+        platform:
+          type: string
+        showCharts:
+          type: boolean
+        showAlbumArt:
+          type: boolean
+        supportedLocales:
+          type: object
+          additionalProperties:
+            type: string
+        analyticsLevel:
+          $ref: '#/components/schemas/AnalyticsLevel'
+      type: object
+    Vue_StationFeatures:
+      required:
+        - media
+        - sftp
+        - podcasts
+        - streamers
+        - webhooks
+        - requests
+        - mountPoints
+        - hlsStreams
+        - remoteRelays
+        - customLiquidsoapConfig
+        - autoDjQueue
+      properties:
+        media:
+          type: boolean
+        sftp:
+          type: boolean
+        podcasts:
+          type: boolean
+        streamers:
+          type: boolean
+        webhooks:
+          type: boolean
+        requests:
+          type: boolean
+        mountPoints:
+          type: boolean
+        hlsStreams:
+          type: boolean
+        remoteRelays:
+          type: boolean
+        customLiquidsoapConfig:
+          type: boolean
+        autoDjQueue:
+          type: boolean
+      type: object
+    Vue_StationGlobals:
+      required:
+        - id
+        - name
+        - shortName
+        - description
+        - isEnabled
+        - hasStarted
+        - needsRestart
+        - timezone
+        - offlineText
+        - maxBitrate
+        - maxMounts
+        - maxHlsStreams
+        - enablePublicPages
+        - publicPageUrl
+        - enableOnDemand
+        - onDemandUrl
+        - enableStreamers
+        - webDjUrl
+        - enableRequests
+        - features
+        - ipGeoAttribution
+        - backendType
+        - frontendType
+        - canReload
+        - useManualAutoDj
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          nullable: true
+        shortName:
+          type: string
+        description:
+          type: string
+          nullable: true
+        isEnabled:
+          type: boolean
+        hasStarted:
+          type: boolean
+        needsRestart:
+          type: boolean
+        timezone:
+          type: string
+        offlineText:
+          type: string
+          nullable: true
+        maxBitrate:
+          type: integer
+        maxMounts:
+          type: integer
+        maxHlsStreams:
+          type: integer
+        enablePublicPages:
+          type: boolean
+        publicPageUrl:
+          type: string
+        enableOnDemand:
+          type: boolean
+        onDemandUrl:
+          type: string
+        enableStreamers:
+          type: boolean
+        webDjUrl:
+          type: string
+        enableRequests:
+          type: boolean
+        features:
+          $ref: '#/components/schemas/Vue_StationFeatures'
+        ipGeoAttribution:
+          type: string
+        backendType:
+          $ref: '#/components/schemas/BackendAdapters'
+        frontendType:
+          $ref: '#/components/schemas/FrontendAdapters'
+        canReload:
+          type: boolean
+        useManualAutoDj:
+          type: boolean
+      type: object
+    Vue_UserGlobals:
+      required:
+        - id
+        - displayName
+        - permissions
+      properties:
+        id:
+          type: integer
+        displayName:
+          type: string
+          nullable: true
+        permissions:
+          $ref: '#/components/schemas/Api_Admin_RolePermissions'
       type: object
     ApiKey:
       type: object
@@ -8321,6 +8823,14 @@ components:
           format: float
           example: '-97.000000'
           nullable: true
+      type: object
+    PodcastBrandingConfiguration:
+      properties:
+        public_custom_html:
+          type: string
+          nullable: true
+        enable_op3_prefix:
+          type: boolean
       type: object
     Relay:
       type: object
@@ -8772,6 +9282,8 @@ components:
           type: boolean
         write_playlists_to_liquidsoap:
           type: boolean
+        share_encoders:
+          type: boolean
         custom_config_top:
           description: 'Custom Liquidsoap Configuration: Top Section'
           type: string
@@ -8967,8 +9479,8 @@ components:
               example: 'https://custom-listen-url.example.com/stream.mp3'
               nullable: true
             frontend_config:
-              type: array
-              items: {  }
+              type: string
+              nullable: true
             listeners_unique:
               description: 'The most recent number of unique listeners.'
               type: integer
@@ -8988,6 +9500,10 @@ components:
             name:
               type: string
               example: 'Test Playlist'
+            description:
+              type: string
+              example: 'A playlist containing my favorite songs'
+              nullable: true
             type:
               $ref: '#/components/schemas/PlaylistTypes'
             source:
@@ -9025,6 +9541,7 @@ components:
               type: integer
               example: 15
             weight:
+              description: 'The relative weight of the playlist. Larger numbers play more often than playlists with lower number weights.'
               type: integer
               example: 3
             include_in_requests:
@@ -9265,6 +9782,10 @@ components:
               description: 'The optional custom S3 endpoint S3 adapters.'
               type: string
               example: 'https://your-region.digitaloceanspaces.com'
+              nullable: true
+            s3UsePathStyle:
+              type: boolean
+              example: false
               nullable: true
             dropboxAppKey:
               description: 'The optional Dropbox App Key.'
@@ -9584,14 +10105,10 @@ components:
         - aac
         - aac_he
         - aac_he_v2
-        - aac_ld
-        - aac_eld
       x-enumNames:
         - AacLowComplexity
         - AacHighEfficiencyV1
         - AacHighEfficiencyV2
-        - AacLowDelay
-        - AacEnhancedLowDelay
     MasterMePresets:
       type: string
       enum:

@@ -7,7 +7,7 @@
             <form-group-checkbox
                 id="edit_form_is_enabled"
                 class="col-md-6"
-                :field="v$.is_enabled"
+                :field="r$.is_enabled"
                 :label="$gettext('Enable Broadcasting')"
                 :description="$gettext('If disabled, the station will not broadcast or shuffle its AutoDJ.')"
             />
@@ -15,7 +15,7 @@
             <form-group-field
                 id="edit_form_radio_base_dir"
                 class="col-md-6"
-                :field="v$.radio_base_dir"
+                :field="r$.radio_base_dir"
                 advanced
                 :label="$gettext('Base Station Directory')"
                 :description="$gettext('The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.')"
@@ -26,7 +26,7 @@
             <form-group-field
                 id="edit_form_max_bitrate"
                 class="col-md-4"
-                :field="v$.max_bitrate"
+                :field="r$.max_bitrate"
                 :label="$gettext('Maximum Bitrate')"
                 :description="$gettext('The maximum bitrate in which the station allowed to broadcast at, in Kbps. 0 for unlimited.')"
                 input-number
@@ -35,7 +35,7 @@
             <form-group-field
                 id="edit_form_max_mounts"
                 class="col-md-4"
-                :field="v$.max_mounts"
+                :field="r$.max_mounts"
                 :label="$gettext('Maximum Mounts')"
                 :description="$gettext('The maximum number of mount points allowed. 0 for unlimited.')"
                 input-number
@@ -44,7 +44,7 @@
             <form-group-field
                 id="edit_form_max_hls_streams"
                 class="col-md-4"
-                :field="v$.max_hls_streams"
+                :field="r$.max_hls_streams"
                 :label="$gettext('Maximum HLS Streams')"
                 :description="$gettext('The maximum number of HLS streams allowed. 0 for unlimited.')"
                 input-number
@@ -56,7 +56,7 @@
                 <form-group-select
                     id="edit_form_media_storage_location"
                     class="col-md-12"
-                    :field="v$.media_storage_location"
+                    :field="r$.media_storage_location"
                     :options="storageLocationOptions.media_storage_location"
                     :label="$gettext('Media Storage Location')"
                 />
@@ -64,7 +64,7 @@
                 <form-group-select
                     id="edit_form_recordings_storage_location"
                     class="col-md-12"
-                    :field="v$.recordings_storage_location"
+                    :field="r$.recordings_storage_location"
                     :options="storageLocationOptions.recordings_storage_location"
                     :label="$gettext('Live Recordings Storage Location')"
                 />
@@ -72,7 +72,7 @@
                 <form-group-select
                     id="edit_form_podcasts_storage_location"
                     class="col-md-12"
-                    :field="v$.podcasts_storage_location"
+                    :field="r$.podcasts_storage_location"
                     :options="storageLocationOptions.podcasts_storage_location"
                     :label="$gettext('Podcasts Storage Location')"
                 />
@@ -84,47 +84,27 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {onMounted, reactive, ref} from "vue";
+import {computed, onMounted, reactive, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import Tab from "~/components/Common/Tab.vue";
 import {getApiUrl} from "~/router";
-import {ApiFormSimpleOptions, ApiGenericForm} from "~/entities/ApiInterfaces.ts";
+import {ApiFormSimpleOptions} from "~/entities/ApiInterfaces.ts";
 import {useTranslate} from "~/vendor/gettext.ts";
+import {storeToRefs} from "pinia";
+import {useAdminStationsForm} from "~/components/Admin/Stations/Form/form.ts";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 
 const props = defineProps<{
     isEditMode: boolean,
 }>();
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
-
 const storageLocationApiUrl = getApiUrl('/admin/stations/storage-locations');
 
-const {v$, tabClass} = useVuelidateOnFormTab(
-    form,
-    {
-        is_enabled: {},
-        media_storage_location: {},
-        recordings_storage_location: {},
-        podcasts_storage_location: {},
-        max_bitrate: {},
-        max_mounts: {},
-        max_hls_streams: {},
-        radio_base_dir: {},
-    },
-    {
-        media_storage_location: '',
-        recordings_storage_location: '',
-        podcasts_storage_location: '',
-        is_enabled: true,
-        max_bitrate: 0,
-        max_mounts: 0,
-        max_hls_streams: 0,
-        radio_base_dir: '',
-    }
-);
+const {r$} = storeToRefs(useAdminStationsForm());
+
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.adminTab));
 
 interface StorageLocationOptions {
     media_storage_location: ApiFormSimpleOptions,

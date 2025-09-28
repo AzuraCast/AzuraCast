@@ -1,4 +1,4 @@
-import {map} from "lodash";
+import {map} from "es-toolkit/compat";
 import {computed, ComputedRef, MaybeRefOrGetter, toValue} from "vue";
 import {ApiFormNestedOptions, ApiFormSimpleOptions} from "~/entities/ApiInterfaces.ts";
 

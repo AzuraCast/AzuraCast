@@ -62,10 +62,10 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import {useTemplateRef} from "vue";
 import MemoryStatsHelpModal from "~/components/Admin/Index/MemoryStatsHelpModal.vue";
-import {IconInfo} from "~/components/Common/icons.ts";
+import {IconInfo} from "~/components/Common/Icons/icons.ts";
 import {ApiAdminServerStatsMemoryStats} from "~/entities/ApiInterfaces.ts";
 
 defineProps<{

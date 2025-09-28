@@ -147,7 +147,7 @@ final class ListenerRepository extends Repository
         array &$existingClients
     ): void {
         $tempCsvPath = File::generateTempPath('mariadb_listeners.csv');
-        (new Filesystem())->chmod($tempCsvPath, 0o777);
+        new Filesystem()->chmod($tempCsvPath, 0o777);
 
         $csv = Writer::createFromPath($tempCsvPath);
         $csv->setEscape('');
@@ -200,11 +200,11 @@ final class ListenerRepository extends Repository
                 (%s)
             SQL,
             $this->conn->quote($tempCsvPath),
-            $this->conn->quoteIdentifier($this->tableName),
+            $this->conn->quoteSingleIdentifier($this->tableName),
             implode(
                 ',',
                 array_map(
-                    fn($col) => $this->conn->quoteIdentifier($col),
+                    fn($col) => $this->conn->quoteSingleIdentifier($col),
                     $csvColumns
                 )
             )

@@ -135,14 +135,14 @@ import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
-import {useDialog} from "~/functions/useDialog.ts";
+import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {ApiAdminRsasStatus} from "~/entities/ApiInterfaces.ts";
 
 const apiUrl = getApiUrl('/admin/rsas');
 const licenseUrl = getApiUrl('/admin/rsas/license');
 
 const isLoading = ref(true);
-const version = ref(null);
+const version = ref<string | null>(null);
 const hasLicense = ref(false);
 
 const {$gettext} = useTranslate();
@@ -151,35 +151,39 @@ const langInstalledVersion = computed(() => {
     return $gettext(
         'RSAS version "%{version}" is currently installed.',
         {
-            version: version.value
+            version: version.value ?? 'N/A'
         }
     );
 });
 
 const {axios} = useAxios();
 
-const relist = () => {
+const relist = async () => {
     isLoading.value = true;
 
-    void axios.get<ApiAdminRsasStatus>(apiUrl.value).then(({data}) => {
-        version.value = data.version;
-        hasLicense.value = data.hasLicense;
+    const {data} = await axios.get<ApiAdminRsasStatus>(apiUrl.value);
 
-        isLoading.value = false;
-    });
+    version.value = data.version;
+    hasLicense.value = data.hasLicense;
+
+    isLoading.value = false;
 };
 
 const {confirmDelete} = useDialog();
 
-const doRemoveLicense = () => {
-    void confirmDelete({
+const doRemoveLicense = async () => {
+    const {value} = await confirmDelete({
         title: $gettext('Remove RSAS license key?'),
         confirmButtonText: $gettext('Remove License Key')
-    }).then((result) => {
-        if (result.value) {
-            void axios.delete(licenseUrl.value).then(relist);
-        }
     });
+
+    if (!value) {
+        return;
+    }
+
+    await axios.delete(licenseUrl.value);
+
+    await relist();
 }
 
 onMounted(relist);

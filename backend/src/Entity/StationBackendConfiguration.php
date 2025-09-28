@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Doctrine\AbstractArrayEntity;
 use App\Entity\Enums\StationBackendPerformanceModes;
+use App\Radio\Backend\Liquidsoap\EncodingFormat;
 use App\Radio\Enums\AudioProcessingMethods;
 use App\Radio\Enums\CrossfadeModes;
 use App\Radio\Enums\MasterMePresets;
@@ -65,9 +66,22 @@ final class StationBackendConfiguration extends AbstractArrayEntity
         set (int|string|null $value) => Types::int($value, 128);
     }
 
+    public function getRecordStreamsEncoding(): ?EncodingFormat
+    {
+        if (!$this->record_streams) {
+            return null;
+        }
+
+        return new EncodingFormat(
+            format: $this->getRecordStreamsFormatEnum(),
+            bitrate: $this->record_streams_bitrate,
+            subProfile: null
+        );
+    }
+
     #[OA\Property]
     public bool $use_manual_autodj = false {
-        set (bool|null $value) => Types::bool($value, false);
+        set (bool|null $value) => Types::bool($value);
     }
 
     protected const int DEFAULT_QUEUE_LENGTH = 3;
@@ -120,7 +134,7 @@ final class StationBackendConfiguration extends AbstractArrayEntity
 
     #[OA\Property]
     public bool $post_processing_include_live = false {
-        set (bool|string|null $value) => Types::bool($value, false);
+        set (bool|string|null $value) => Types::bool($value);
     }
 
     #[OA\Property]
@@ -256,12 +270,12 @@ final class StationBackendConfiguration extends AbstractArrayEntity
 
     #[OA\Property]
     public bool $hls_enable_on_public_player = false {
-        set (bool|string $value) => Types::bool($value, false, true);
+        set (bool|string|null $value) => Types::bool($value, false, true);
     }
 
     #[OA\Property]
     public bool $hls_is_default = false {
-        set (bool|string $value) => Types::bool($value, false, true);
+        set (bool|string|null $value) => Types::bool($value, false, true);
     }
 
     #[OA\Property]
@@ -274,6 +288,9 @@ final class StationBackendConfiguration extends AbstractArrayEntity
 
     #[OA\Property]
     public bool $write_playlists_to_liquidsoap = false;
+
+    #[OA\Property]
+    public bool $share_encoders = false;
 
     /*
      * Liquidsoap Custom Configuration Sections

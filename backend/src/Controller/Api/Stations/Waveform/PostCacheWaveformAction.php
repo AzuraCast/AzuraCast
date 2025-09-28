@@ -38,10 +38,10 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class PostCacheWaveformAction implements SingleActionInterface
+final readonly class PostCacheWaveformAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationMediaRepository $mediaRepo
+        private StationMediaRepository $mediaRepo
     ) {
     }
 

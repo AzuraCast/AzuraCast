@@ -2,7 +2,7 @@
     <div class="outside-card-header d-flex align-items-center">
         <div class="flex-fill">
             <h2 class="display-6 m-0">
-                {{ name }}
+                {{ stationData.name }}
             </h2>
         </div>
         <div
@@ -35,11 +35,11 @@
 </template>
 <script setup lang="ts">
 import {userAllowedForStation} from "~/acl.ts";
-import {IconEdit} from "~/components/Common/icons.ts";
-import Icon from "~/components/Common/Icon.vue";
+import {IconEdit} from "~/components/Common/Icons/icons.ts";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
 
-const {name} = useAzuraCastStation();
+const stationData = useStationData();
 </script>

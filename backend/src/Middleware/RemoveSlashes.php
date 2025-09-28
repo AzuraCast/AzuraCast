@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Middleware;
 
 use App\Http\HttpFactory;
-use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;

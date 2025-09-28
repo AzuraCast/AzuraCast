@@ -64,7 +64,6 @@
 
 <script setup lang="ts">
 import {useTranslate} from "~/vendor/gettext.ts";
-import {get} from "lodash";
 import {ApiAdminDebugLogEntry} from "~/entities/ApiInterfaces.ts";
 
 defineProps<{
@@ -83,7 +82,7 @@ const badgeClasses = {
 };
 
 const getBadgeClass = (logLevel: keyof typeof badgeClasses) => {
-    return get(badgeClasses, logLevel, badgeClasses[100]);
+    return badgeClasses[logLevel] ?? badgeClasses[100];
 };
 
 const {$gettext} = useTranslate();
@@ -100,7 +99,7 @@ const badgeLabels = {
 };
 
 const getBadgeLabel = (logLevel: keyof typeof badgeLabels) => {
-    return get(badgeLabels, logLevel, badgeLabels[100]);
+    return badgeLabels[logLevel] ?? badgeLabels[100];
 };
 
 const dump = (value: any) => {

@@ -20,7 +20,7 @@ use Psr\Http\Message\UriFactoryInterface;
 use Psr\Http\Message\UriInterface;
 use Slim\Interfaces\ServerRequestCreatorInterface;
 
-final class HttpFactory implements
+final readonly class HttpFactory implements
     RequestFactoryInterface,
     ResponseFactoryInterface,
     ServerRequestFactoryInterface,
@@ -29,7 +29,7 @@ final class HttpFactory implements
     UriFactoryInterface,
     ServerRequestCreatorInterface
 {
-    private readonly GuzzleHttpFactory $httpFactory;
+    private GuzzleHttpFactory $httpFactory;
 
     public function __construct()
     {

@@ -6,11 +6,11 @@
                 class="card-title"
             >
                 {{ $gettext('Public Pages') }}
-                <enabled-badge :enabled="enablePublicPage" />
+                <enabled-badge :enabled="stationData.enablePublicPages"/>
             </h3>
         </template>
 
-        <template v-if="enablePublicPage">
+        <template v-if="stationData.enablePublicPages">
             <table class="table table-striped table-responsive-md mb-0">
                 <colgroup>
                     <col style="width: 30%;">
@@ -21,45 +21,45 @@
                         <td>{{ $gettext('Public Page') }}</td>
                         <td>
                             <a
-                                :href="publicPageUri"
+                                :href="profileData.publicPageUri"
                                 target="_blank"
-                            >{{ publicPageUri }}</a>
+                            >{{ profileData.publicPageUri }}</a>
                         </td>
                     </tr>
-                    <tr v-if="stationSupportsStreamers && enableStreamers">
+                    <tr v-if="stationData.features.streamers && stationData.enableStreamers">
                         <td>{{ $gettext('Web DJ') }}</td>
                         <td>
                             <a
-                                :href="publicWebDjUri"
+                                :href="profileData.publicWebDjUri"
                                 target="_blank"
-                            >{{ publicWebDjUri }}</a>
+                            >{{ profileData.publicWebDjUri }}</a>
                         </td>
                     </tr>
-                    <tr v-if="enableOnDemand">
+                    <tr v-if="stationData.enableOnDemand">
                         <td>{{ $gettext('On-Demand Media') }}</td>
                         <td>
                             <a
-                                :href="publicOnDemandUri"
+                                :href="profileData.publicOnDemandUri"
                                 target="_blank"
-                            >{{ publicOnDemandUri }}</a>
+                            >{{ profileData.publicOnDemandUri }}</a>
                         </td>
                     </tr>
                     <tr>
                         <td>{{ $gettext('Podcasts') }}</td>
                         <td>
                             <a
-                                :href="publicPodcastsUri"
+                                :href="profileData.publicPodcastsUri"
                                 target="_blank"
-                            >{{ publicPodcastsUri }}</a>
+                            >{{ profileData.publicPodcastsUri }}</a>
                         </td>
                     </tr>
                     <tr>
                         <td>{{ $gettext('Schedule') }}</td>
                         <td>
                             <a
-                                :href="publicScheduleUri"
+                                :href="profileData.publicScheduleUri"
                                 target="_blank"
-                            >{{ publicScheduleUri }}</a>
+                            >{{ profileData.publicScheduleUri }}</a>
                         </td>
                     </tr>
                 </tbody>
@@ -67,7 +67,7 @@
         </template>
 
         <template #footer_actions>
-            <template v-if="enablePublicPage">
+            <template v-if="stationData.enablePublicPages">
                 <a
                     class="btn btn-link text-secondary"
                     @click.prevent="doOpenEmbed"
@@ -115,42 +115,24 @@
         </template>
     </card-page>
 
-    <embed-modal
-        v-bind="props"
-        ref="$embedModal"
-    />
+    <embed-modal ref="$embedModal"/>
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
-import {toRef, useTemplateRef} from "vue";
-import EmbedModal, {ProfileEmbedModalProps} from "~/components/Stations/Profile/EmbedModal.vue";
+import {computed, useTemplateRef} from "vue";
+import EmbedModal from "~/components/Stations/Profile/EmbedModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {userAllowedForStation} from "~/acl";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
-import {IconBranding, IconCheck, IconClose, IconCode} from "~/components/Common/icons";
+import {IconBranding, IconCheck, IconClose, IconCode} from "~/components/Common/Icons/icons.ts";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
+import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
 
-export interface ProfilePublicPagesPanelProps extends ProfileEmbedModalProps {
-    stationSupportsStreamers: boolean,
-    stationSupportsRequests: boolean,
-    enablePublicPage: boolean,
-    enableStreamers: boolean,
-    enableOnDemand: boolean,
-    enableRequests: boolean,
-    publicPageUri: string,
-    publicWebDjUri: string,
-    publicOnDemandUri: string,
-    publicPodcastsUri: string,
-    publicScheduleUri: string
-}
-
-defineOptions({
-    inheritAttrs: false
-});
-
-const props = defineProps<ProfilePublicPagesPanelProps>();
+const stationData = useStationData();
+const profileData = useStationProfileData();
 
 const $embedModal = useTemplateRef('$embedModal');
 
@@ -160,6 +142,6 @@ const doOpenEmbed = () => {
 
 const togglePublicPages = useToggleFeature(
     'enable_public_page',
-    toRef(props, 'enablePublicPage')
+    computed(() => stationData.value.enablePublicPages),
 );
 </script>

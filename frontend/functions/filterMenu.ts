@@ -1,6 +1,7 @@
-import {cloneDeep, filter, get, map} from "lodash";
+import {filter, get, map} from "es-toolkit/compat";
+import {cloneDeep} from "es-toolkit";
 import {ComputedRef, toRaw} from "vue";
-import {Icon} from "~/components/Common/icons";
+import {Icon} from "~/components/Common/Icons/icons.ts";
 import {reactiveComputed} from "@vueuse/core";
 
 export interface MenuRouteBasedUrl {

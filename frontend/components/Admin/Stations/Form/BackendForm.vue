@@ -7,7 +7,7 @@
             <form-group-multi-check
                 id="edit_form_backend_type"
                 class="col-md-12"
-                :field="v$.backend_type"
+                :field="r$.backend_type"
                 :options="backendTypeOptions"
                 stacked
                 radio
@@ -22,7 +22,7 @@
                     <form-group-multi-check
                         id="edit_form_backend_crossfade_type"
                         class="col-md-7"
-                        :field="v$.backend_config.crossfade_type"
+                        :field="r$.backend_config.crossfade_type"
                         :options="crossfadeOptions"
                         stacked
                         radio
@@ -33,7 +33,7 @@
                     <form-group-field
                         id="edit_form_backend_crossfade"
                         class="col-md-5"
-                        :field="v$.backend_config.crossfade"
+                        :field="r$.backend_config.crossfade"
                         input-type="number"
                         :input-attrs="{ min: '0.0', max: '30.0', step: '0.1' }"
                         :label="$gettext('Crossfade Duration (Seconds)')"
@@ -60,7 +60,7 @@
                     <form-group-checkbox
                         id="edit_form_backend_config_enable_auto_cue"
                         class="col-md-12"
-                        :field="v$.backend_config.enable_auto_cue"
+                        :field="r$.backend_config.enable_auto_cue"
                         :label="$gettext('Enable AutoCue (Beta)')"
                         high-cpu
                     >
@@ -80,7 +80,7 @@
                         v-if="!isAutoCueEnabled"
                         id="edit_form_backend_enable_replaygain_metadata"
                         class="col-md-12"
-                        :field="v$.backend_config.enable_replaygain_metadata"
+                        :field="r$.backend_config.enable_replaygain_metadata"
                         :label="$gettext('Enable ReplayGain')"
                         high-cpu
                     >
@@ -96,7 +96,7 @@
                     <form-group-multi-check
                         id="edit_form_backend_config_audio_processing_method"
                         class="col-md-6"
-                        :field="v$.backend_config.audio_processing_method"
+                        :field="r$.backend_config.audio_processing_method"
                         :options="audioProcessingOptions"
                         stacked
                         radio
@@ -109,7 +109,7 @@
                         <form-group-checkbox
                             id="edit_form_backend_config_post_processing_include_live"
                             class="col-md-6"
-                            :field="v$.backend_config.post_processing_include_live"
+                            :field="r$.backend_config.post_processing_include_live"
                             :label="$gettext('Apply Post-processing to Live Streams')"
                             :description="$gettext('Check this box to apply post-processing to all audio, including live streams. Uncheck this box to only apply post-processing to the AutoDJ.')"
                         />
@@ -141,7 +141,7 @@
                         <form-group-multi-check
                             id="edit_form_backend_master_me_preset"
                             class="col-md-6"
-                            :field="v$.backend_config.master_me_preset"
+                            :field="r$.backend_config.master_me_preset"
                             :options="masterMePresetOptions"
                             stacked
                             radio
@@ -151,7 +151,7 @@
                         <form-group-field
                             id="edit_form_backend_master_me_loudness_target"
                             class="col-md-6"
-                            :field="v$.backend_config.master_me_loudness_target"
+                            :field="r$.backend_config.master_me_loudness_target"
                             input-type="number"
                             :input-attrs="{ min: '-50', max: '0', step: '1' }"
                             :label="$gettext('Master_me Loudness Target (LUFS)')"
@@ -184,7 +184,7 @@
                         <form-group-field
                             id="edit_form_backend_stereo_tool_license_key"
                             class="col-md-7"
-                            :field="v$.backend_config.stereo_tool_license_key"
+                            :field="r$.backend_config.stereo_tool_license_key"
                             input-type="text"
                             :label="$gettext('Stereo Tool License Key')"
                             :description="$gettext('Provide a valid license key from Thimeo. Functionality is limited without a license key.')"
@@ -218,9 +218,17 @@
 
                 <div class="row g-3">
                     <form-group-checkbox
+                        id="edit_form_backend_config_share_encoders"
+                        class="col-md-12"
+                        :field="r$.backend_config.share_encoders"
+                        :label="$gettext('Share Encoders Between Streams')"
+                        :description="$gettext('If you have multiple streams that broadcast in the same format and bitrate, enabling this may significantly improve CPU consumption. Disable this setting if you encounter issues with shared encoding.')"
+                    />
+
+                    <form-group-checkbox
                         id="edit_form_backend_use_manual_autodj"
                         class="col-md-12"
-                        :field="v$.backend_config.use_manual_autodj"
+                        :field="r$.backend_config.use_manual_autodj"
                         :label="$gettext('Manual AutoDJ Mode')"
                     >
                         <template #description>
@@ -233,7 +241,7 @@
                     <form-group-checkbox
                         id="edit_form_backend_config_write_playlists_to_liquidsoap"
                         class="col-md-12"
-                        :field="v$.backend_config.write_playlists_to_liquidsoap"
+                        :field="r$.backend_config.write_playlists_to_liquidsoap"
                         :label="$gettext('Always Write Playlists to Liquidsoap')"
                         :description="$gettext('By default, all playlists are written to Liquidsoap as a backup in case the normal AutoDJ fails. This can affect CPU load, especially on startup. Disable to only write essential playlists to Liquidsoap.')"
                     />
@@ -241,7 +249,7 @@
                     <form-group-field
                         id="edit_form_backend_telnet_port"
                         class="col-md-6"
-                        :field="v$.backend_config.telnet_port"
+                        :field="r$.backend_config.telnet_port"
                         input-type="number"
                         :input-attrs="{ min: '0' }"
                         :label="$gettext('Customize Internal Request Processing Port')"
@@ -251,7 +259,7 @@
                     <form-group-field
                         id="edit_form_backend_autodj_queue_length"
                         class="col-md-6"
-                        :field="v$.backend_config.autodj_queue_length"
+                        :field="r$.backend_config.autodj_queue_length"
                         input-type="number"
                         :input-attrs="{ min: '2', max: '25' }"
                         :label="$gettext('AutoDJ Queue Length')"
@@ -261,7 +269,7 @@
                     <form-group-multi-check
                         id="edit_form_backend_charset"
                         class="col-md-6"
-                        :field="v$.backend_config.charset"
+                        :field="r$.backend_config.charset"
                         :options="charsetOptions"
                         stacked
                         radio
@@ -272,7 +280,7 @@
                     <form-group-multi-check
                         id="edit_form_backend_performance_mode"
                         class="col-md-6"
-                        :field="v$.backend_config.performance_mode"
+                        :field="r$.backend_config.performance_mode"
                         :options="performanceModeOptions"
                         stacked
                         radio
@@ -283,7 +291,7 @@
                     <form-group-field
                         id="edit_form_backend_duplicate_prevention_time_range"
                         class="col-md-6"
-                        :field="v$.backend_config.duplicate_prevention_time_range"
+                        :field="r$.backend_config.duplicate_prevention_time_range"
                         input-type="number"
                         :input-attrs="{ min: '0', max: '1440' }"
                         :label="$gettext('Duplicate Prevention Time Range (Minutes)')"
@@ -303,84 +311,35 @@ import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {decimal, numeric, required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
-import {
-    ApiGenericForm,
-    AudioProcessingMethods,
-    BackendAdapters,
-    CrossfadeModes,
-    MasterMePresets
-} from "~/entities/ApiInterfaces.ts";
+import {AudioProcessingMethods, BackendAdapters, CrossfadeModes, MasterMePresets} from "~/entities/ApiInterfaces.ts";
+import {storeToRefs} from "pinia";
+import {useAdminStationsForm} from "~/components/Admin/Stations/Form/form.ts";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 
 const props = defineProps<{
     isStereoToolInstalled: boolean
 }>();
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
+const {r$, form} = storeToRefs(useAdminStationsForm());
 
-const {v$, tabClass} = useVuelidateOnFormTab(
-    form,
-    {
-        backend_type: {required},
-        backend_config: {
-            crossfade_type: {},
-            crossfade: {decimal},
-            write_playlists_to_liquidsoap: {},
-            audio_processing_method: {},
-            post_processing_include_live: {},
-            master_me_preset: {},
-            master_me_loudness_target: {},
-            stereo_tool_license_key: {},
-            enable_auto_cue: {},
-            enable_replaygain_metadata: {},
-            telnet_port: {numeric},
-            autodj_queue_length: {},
-            use_manual_autodj: {},
-            charset: {},
-            performance_mode: {},
-            duplicate_prevention_time_range: {},
-        }
-    },
-    () => ({
-        backend_type: BackendAdapters.Liquidsoap,
-        backend_config: {
-            crossfade_type: CrossfadeModes.Normal,
-            crossfade: 2,
-            write_playlists_to_liquidsoap: true,
-            audio_processing_method: AudioProcessingMethods.None,
-            post_processing_include_live: true,
-            master_me_preset: MasterMePresets.MusicGeneral,
-            master_me_loudness_target: -16,
-            stereo_tool_license_key: '',
-            enable_auto_cue: false,
-            enable_replaygain_metadata: false,
-            telnet_port: '',
-            autodj_queue_length: 3,
-            use_manual_autodj: false,
-            charset: 'UTF-8',
-            performance_mode: 'disabled',
-            duplicate_prevention_time_range: 120,
-        },
-    })
-);
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.backendTab));
 
 const isBackendEnabled = computed(() => {
     return form.value?.backend_type !== BackendAdapters.None;
 });
 
 const isStereoToolEnabled = computed(() => {
-    return form.value?.backend_config?.audio_processing_method === AudioProcessingMethods.StereoTool;
+    return form.value?.backend_config?.audio_processing_method === (AudioProcessingMethods.StereoTool as string);
 });
 
 const isMasterMeEnabled = computed(() => {
-    return form.value?.backend_config?.audio_processing_method === AudioProcessingMethods.MasterMe;
+    return form.value?.backend_config?.audio_processing_method === (AudioProcessingMethods.MasterMe as string);
 });
 
 const isPostProcessingEnabled = computed(() => {
-    return form.value?.backend_config?.audio_processing_method !== AudioProcessingMethods.None;
+    return form.value?.backend_config?.audio_processing_method !== (AudioProcessingMethods.None as string);
 });
 
 const isAutoCueEnabled = computed(() => {

@@ -77,9 +77,9 @@ export const [useProvideWebDjNode, useInjectWebDjNode] = createRequiredInjection
             return streamNode;
         });
 
-        let mediaRecorder;
+        let mediaRecorder: MediaRecorder;
 
-        const startStream = (username = null, password = null) => {
+        const startStream = (username: string | null = null, password: string | null = null) => {
             void context.value.resume();
 
             mediaRecorder = new MediaRecorder(

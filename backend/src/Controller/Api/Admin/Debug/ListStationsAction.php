@@ -34,10 +34,10 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class ListStationsAction implements SingleActionInterface
+final readonly class ListStationsAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationRepository $stationRepo
+        private StationRepository $stationRepo
     ) {
     }
 

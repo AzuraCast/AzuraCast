@@ -3,6 +3,7 @@
         <div class="flex-shrink-0">
             <a
                 v-lightbox
+                v-if="url"
                 :href="url"
                 target="_blank"
             >
@@ -60,20 +61,20 @@ const url = ref<string | null>(null);
 
 const {axios} = useAxios();
 
-const relist = () => {
+const relist = async () => {
     isLoading.value = true;
 
-    void axios.get<ApiUploadedRecordStatus>(props.apiUrl).then(({data}) => {
-        isUploaded.value = data.hasRecord;
-        url.value = data.url;
+    const {data} = await axios.get<ApiUploadedRecordStatus>(props.apiUrl);
 
-        isLoading.value = false;
-    });
+    isUploaded.value = data.hasRecord;
+    url.value = data.url;
+
+    isLoading.value = false;
 };
 
 onMounted(relist);
 
-const uploaded = (newFile: File | null) => {
+const uploaded = async (newFile: File | null) => {
     if (null === newFile) {
         return;
     }
@@ -81,15 +82,19 @@ const uploaded = (newFile: File | null) => {
     const formData = new FormData();
     formData.append('file', newFile);
 
-    void axios.post(props.apiUrl, formData).finally(() => {
-        relist();
-    });
+    try {
+        await axios.post(props.apiUrl, formData);
+    } finally {
+        await relist();
+    }
 };
 
-const clear = () => {
-    void axios.delete(props.apiUrl).finally(() => {
-        relist();
-    });
+const clear = async () => {
+    try {
+        await axios.delete(props.apiUrl);
+    } finally {
+        await relist();
+    }
 };
 
 const {vLightbox} = useLightbox();

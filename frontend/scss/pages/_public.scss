@@ -36,8 +36,13 @@ body.page-minimal {
   }
 
   &:not(.embed) {
+    #page-wrapper {
+      @extend .container;
+    }
+
     #main {
       display: flex;
+      flex-direction: column;
       align-items: stretch;
       justify-content: stretch;
       padding: 1.5rem;

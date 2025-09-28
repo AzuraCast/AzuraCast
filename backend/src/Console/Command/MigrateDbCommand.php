@@ -60,10 +60,7 @@ final class MigrateDbCommand extends AbstractDatabaseCommand
 
             $this->runCommand(
                 $output,
-                'migrations:migrate',
-                [
-                    '--allow-no-migration' => true,
-                ]
+                'migrations:migrate --allow-no-migration'
             );
 
             $output->setVerbosity($originalVerbosity);

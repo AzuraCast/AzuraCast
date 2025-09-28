@@ -314,13 +314,14 @@
 
 <script setup lang="ts">
 import {computed, ref, useTemplateRef} from "vue";
-import {useNotify} from "~/functions/useNotify";
-import {useAxios} from "~/vendor/axios";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
+import {getErrorAsString, useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
 import {getStationApiUrl} from "~/router";
 import {useHasModal} from "~/functions/useHasModal.ts";
+import {ApiStatus} from "~/entities/ApiInterfaces.ts";
 
 const apiUrl = getStationApiUrl('/files/bulk');
 const previewApiUrl = getStationApiUrl('/files/bulk/preview');
@@ -352,7 +353,7 @@ const uploaded = (file: File) => {
     previewResults.value = null;
 };
 
-const doPreview = () => {
+const doPreview = async () => {
     if (!importFile.value) {
         notifyError('Please select a CSV file first.');
         return;
@@ -361,46 +362,53 @@ const doPreview = () => {
     const formData = new FormData();
     formData.append('import_file', importFile.value);
 
-    void axios.post(previewApiUrl.value, formData).then((resp) => {
-        if (resp.data.success) {
-            previewResults.value = resp.data;
+    try {
+        const {data} = await axios.post<ApiStatus>(previewApiUrl.value, formData);
+
+        if (data.success) {
+            previewResults.value = data;
             previewCompleted.value = true;
             showPreview();
         } else {
-            notifyError(resp.data.message || 'Preview failed');
+            notifyError(data.message || 'Preview failed');
         }
-    }).catch((error) => {
-        notifyError('Preview failed: ' + (error.response?.data?.message || error.message));
-    });
+    } catch (e) {
+        const errorMsg = getErrorAsString(e);
+        notifyError(`Preview failed: ${errorMsg}`);
+    }
 };
 
 const proceedWithImport = () => {
     hidePreview();
-    doSubmit();
+    void doSubmit();
 };
 
-const doSubmit = () => {
+const doSubmit = async () => {
     if (!previewCompleted.value) {
         notifyError('Please preview the changes first.');
+        return;
+    }
+    if (!importFile.value) {
+        notifyError('No file provided.');
         return;
     }
 
     const formData = new FormData();
     formData.append('import_file', importFile.value);
 
-    void axios.post(apiUrl.value, formData).then((resp) => {
-        importFile.value = null;
-        previewCompleted.value = false;
-        previewResults.value = null;
+    const {data} = await axios.post<ApiStatus>(apiUrl.value, formData);
 
-        if (resp.data.success) {
-            importResults.value = resp.data;
-            notifySuccess(resp.data.message);
-            show();
-        } else {
-            notifyError(resp.data.message);
-            hide();
-        }
-    });
+    importFile.value = null;
+    previewCompleted.value = false;
+    previewResults.value = null;
+
+    if (data.success) {
+        importResults.value = data;
+        notifySuccess(data.message);
+        show();
+    } else {
+        notifyError(data.message);
+        hide();
+    }
 };
 </script>

@@ -93,15 +93,15 @@
 
 <script setup lang="ts">
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import {getStationApiUrl} from "~/router";
-import {IconRemove} from "~/components/Common/icons";
+import {IconRemove} from "~/components/Common/Icons/icons.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
-import {useDialog} from "~/functions/useDialog.ts";
+import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 
@@ -134,8 +134,7 @@ const fields: DataTableField[] = [
 const listItemProvider = useApiItemProvider(
     listUrlForType,
     queryKeyWithStation([
-        QueryKeys.StationReports
-    ], [
+        QueryKeys.StationReports,
         'requests',
         activeType
     ])
@@ -166,30 +165,33 @@ const {confirmDelete} = useDialog();
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const doDelete = (url: string) => {
-    void confirmDelete({
+const doDelete = async (url: string) => {
+    const {value} = await confirmDelete({
         title: $gettext('Delete Request?'),
-    }).then((result) => {
-        if (result.value) {
-            void axios.delete(url).then((resp) => {
-                notifySuccess(resp.data.message);
-                refresh();
-            });
-        }
     });
+
+    if (!value) {
+        return;
+    }
+
+    const {data} = await axios.delete(url);
+    notifySuccess(data.message);
+    refresh();
 };
 
-const doClear = () => {
-    void confirmDelete({
+const doClear = async () => {
+    const {value} = await confirmDelete({
         title: $gettext('Clear All Pending Requests?'),
         confirmButtonText: $gettext('Clear'),
-    }).then((result) => {
-        if (result.value) {
-            void axios.post(clearUrl.value).then((resp) => {
-                notifySuccess(resp.data.message);
-                refresh();
-            });
-        }
     });
+
+    if (!value) {
+        return;
+    }
+
+    const {data} = await axios.post(clearUrl.value);
+
+    notifySuccess(data.message);
+    refresh();
 };
 </script>

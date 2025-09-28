@@ -67,7 +67,7 @@
                 </p>
             </template>
             <template #cell(stations)="{item}">
-                {{ item.stations.join(', ') }}
+                {{ item.stations?.join(', ') }}
             </template>
             <template #cell(space)="{item}">
                 <template v-if="item.storageAvailable">
@@ -75,7 +75,7 @@
                         class="progress h-20 mb-3"
                         role="progressbar"
                         :aria-label="item.storageUsedPercent+'%'"
-                        :aria-valuenow="item.storageUsedPercent"
+                        :aria-valuenow="item.storageUsedPercent ?? undefined"
                         aria-valuemin="0"
                         aria-valuemax="100"
                     >
@@ -130,7 +130,7 @@ const listUrlForType = computed(() => {
 
 const {$gettext} = useTranslate();
 
-type Row = StorageLocation & ApiAdminStorageLocation;
+type Row = Required<StorageLocation & ApiAdminStorageLocation>;
 
 const fields: DataTableField<Row>[] = [
     {key: 'adapter', label: $gettext('Adapter'), sortable: false},
@@ -199,8 +199,10 @@ const getSpaceUsed = (item: Row) => {
         : item.storageUsed;
 };
 
-const getProgressVariant = (percent: number) => {
-    if (percent > 85) {
+const getProgressVariant = (percent: number | null) => {
+    if (percent === null) {
+        return '';
+    } else if (percent > 85) {
         return 'text-bg-danger';
     } else if (percent > 65) {
         return 'text-bg-warning';

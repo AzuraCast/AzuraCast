@@ -10,10 +10,10 @@ use App\Enums\GlobalPermissions;
 use App\Event\GetNotifications;
 use App\Service\ServiceControl;
 
-final class ServiceCheck
+final readonly class ServiceCheck
 {
     public function __construct(
-        private readonly ServiceControl $serviceControl
+        private ServiceControl $serviceControl
     ) {
     }
 

@@ -12,8 +12,6 @@ enum HlsStreamProfiles: string
     case AacLowComplexity = 'aac';
     case AacHighEfficiencyV1 = 'aac_he';
     case AacHighEfficiencyV2 = 'aac_he_v2';
-    case AacLowDelay = 'aac_ld';
-    case AacEnhancedLowDelay = 'aac_eld';
 
     public function getProfileName(): string
     {

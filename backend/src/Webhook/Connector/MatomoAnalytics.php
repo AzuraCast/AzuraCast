@@ -9,8 +9,10 @@ use App\Entity\Repository\ListenerRepository;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
 use App\Http\RouterInterface;
+use App\Utilities\Time;
 use App\Utilities\Types;
 use App\Utilities\Urls;
+use Carbon\CarbonImmutable;
 use GuzzleHttp\Client;
 use Psr\Http\Message\UriInterface;
 
@@ -80,7 +82,11 @@ final class MatomoAnalytics extends AbstractConnector
 
         // Get all current listeners
         $liveListeners = $this->listenerRepo->iterateLiveListenersArray($station);
-        $webhookLastSent = Types::intOrNull($webhook->getMetadataKey($webhook::LAST_SENT_TIMESTAMP_KEY)) ?? 0;
+
+        $webhookLastSentUnix = Types::intOrNull($webhook->getMetadataKey($webhook::LAST_SENT_TIMESTAMP_KEY));
+        $webhookLastSent = (null !== $webhookLastSentUnix)
+            ? CarbonImmutable::createFromTimestamp($webhookLastSentUnix, Time::getUtc())
+            : null;
 
         $i = 0;
         $entries = [];
@@ -113,7 +119,7 @@ final class MatomoAnalytics extends AbstractConnector
             ];
 
             // If this listener is already registered, this is a "ping" update.
-            if ($listener['timestamp_start'] < $webhookLastSent) {
+            if (null !== $webhookLastSent && $webhookLastSent->gt($listener['timestamp_start'])) {
                 $entry['ping'] = 1;
             }
 

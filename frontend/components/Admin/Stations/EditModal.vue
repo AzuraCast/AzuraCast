@@ -45,19 +45,20 @@
 </template>
 
 <script setup lang="ts">
-import AdminStationsForm, {StationFormParentProps} from "~/components/Admin/Stations/StationForm.vue";
+import AdminStationsForm from "~/components/Admin/Stations/StationForm.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import {ApiAdminVueStationsFormProps} from "~/entities/ApiInterfaces.ts";
 
 defineOptions({
     inheritAttrs: false
 });
 
-interface StationEditModalProps extends StationFormParentProps {
+interface StationEditModalProps extends ApiAdminVueStationsFormProps {
     createUrl: string
 }
 

@@ -12,6 +12,7 @@ use App\Exception\Http\InvalidRequestAttribute;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
+use Exception;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -49,10 +50,10 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class NowPlayingAction implements SingleActionInterface
+final readonly class NowPlayingAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly NowPlayingCache $nowPlayingCache
+        private NowPlayingCache $nowPlayingCache
     ) {
     }
 
@@ -70,7 +71,16 @@ final class NowPlayingAction implements SingleActionInterface
         if (null !== $station) {
             $np = $this->nowPlayingCache->getForStation($station);
 
-            if ($np instanceof NowPlaying) {
+            $accessAllowed = true;
+            if (!$station->enable_public_page) {
+                try {
+                    $request->getUser();
+                } catch (Exception) {
+                    $accessAllowed = false;
+                }
+            }
+
+            if ($np instanceof NowPlaying && $accessAllowed) {
                 $np->update();
 
                 return $response->withJson($np);

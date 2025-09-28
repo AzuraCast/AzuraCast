@@ -24,10 +24,11 @@
 <script setup lang="ts">
 import Tab from "~/components/Common/Tab.vue";
 import Schedule from "~/components/Common/ScheduleView.vue";
-import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {Calendar, EventClickArg} from "@fullcalendar/core";
 import {EventImpl} from "@fullcalendar/core/internal";
 import {useTemplateRef} from "vue";
+import {useStationData} from "~/functions/useStationQuery.ts";
+import {toRefs} from "@vueuse/core";
 
 defineProps<{
     scheduleUrl: string
@@ -37,7 +38,8 @@ const emit = defineEmits<{
     click: [event: EventImpl]
 }>();
 
-const {timezone} = useAzuraCastStation();
+const stationData = useStationData();
+const {timezone} = toRefs(stationData);
 
 const onClick = (arg: EventClickArg) => {
     emit('click', arg.event);
@@ -45,7 +47,13 @@ const onClick = (arg: EventClickArg) => {
 
 const $schedule = useTemplateRef('$schedule');
 
-const getCalendarApi = (): Calendar => $schedule.value?.getCalendarApi();
+const getCalendarApi = (): Calendar => {
+    if ($schedule.value) {
+        return $schedule.value.getCalendarApi();
+    }
+
+    throw new Error('Calendar not available.');
+};
 
 const refresh = () => getCalendarApi()?.refetchEvents();
 

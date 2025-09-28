@@ -37,11 +37,11 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class GetApplyToAction implements SingleActionInterface
+final readonly class GetApplyToAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationPlaylistRepository $playlistRepo,
-        private readonly StationFilesystems $stationFilesystems
+        private StationPlaylistRepository $playlistRepo,
+        private StationFilesystems $stationFilesystems
     ) {
     }
 

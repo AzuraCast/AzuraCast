@@ -12,12 +12,12 @@ use App\Utilities\Types;
 use App\Version;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
-use OpenApi\Util;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Finder\Finder;
 
 #[AsCommand(
     name: 'azuracast:api:docs',
@@ -63,16 +63,20 @@ final class GenerateApiDocsCommand extends CommandAbstract
 
         $srcDir = $this->environment->getBackendDirectory() . '/src';
 
-        $finder = Util::finder([
-            $srcDir . '/OpenApi.php', // OpenAPI Core Spec
-            $srcDir . '/Controller', // API Routes
-            $srcDir . '/Entity', // API Interfaces
-            $srcDir . '/Enums', // Enums
-            $srcDir . '/Radio/Enums', // Enums
-            $srcDir . '/Webhook/Enums', // Enums
-        ], [
-            'Migration',
-        ]);
+        $finder = new Finder()
+            ->files()
+            ->name('*.php')
+            ->followLinks()
+            ->sortByName()
+            ->in([
+                $srcDir . '/Controller', // API Routes
+                $srcDir . '/Entity', // API Interfaces
+                $srcDir . '/Enums', // Enums
+                $srcDir . '/Radio/Enums', // Enums
+                $srcDir . '/Webhook/Enums', // Enums
+            ])->append([
+                $srcDir . '/OpenApi.php', // OpenAPI Core Spec
+            ])->notPath('Migration');
 
         $generator = new Generator($this->logger);
         $generator->setConfig([

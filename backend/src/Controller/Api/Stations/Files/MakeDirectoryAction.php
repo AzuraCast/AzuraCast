@@ -34,10 +34,10 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class MakeDirectoryAction implements SingleActionInterface
+final readonly class MakeDirectoryAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationFilesystems $stationFilesystems
+        private StationFilesystems $stationFilesystems
     ) {
     }
 

@@ -7,7 +7,7 @@ import {
     DefaultDataPoint,
     registerables
 } from "chart.js";
-import {defaultsDeep} from "lodash";
+import {defaultsDeep} from "es-toolkit/compat";
 import {computed, MaybeRefOrGetter, onMounted, onUnmounted, Ref, toRaw, toValue, watch} from "vue";
 import zoomPlugin from "chartjs-plugin-zoom";
 import chartjsColorSchemes from "~/vendor/chartjs_colorschemes.ts";

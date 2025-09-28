@@ -31,14 +31,14 @@
             <form-group-field
                 id="form_edit_dropboxAppKey"
                 class="col-md-6"
-                :field="v$.dropboxAppKey"
+                :field="r$.dropboxAppKey"
                 :label="$gettext('App Key')"
             />
 
             <form-group-field
                 id="form_edit_dropboxAppSecret"
                 class="col-md-6"
-                :field="v$.dropboxAppSecret"
+                :field="r$.dropboxAppSecret"
                 :label="$gettext('App Secret')"
             />
 
@@ -62,7 +62,7 @@
             <form-group-field
                 id="form_edit_dropboxAuthToken"
                 class="col-md-12"
-                :field="v$.dropboxAuthToken"
+                :field="r$.dropboxAuthToken"
                 :label="$gettext('Access Code')"
             />
         </div>
@@ -72,32 +72,26 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {computed} from "vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
-import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
+import {useAdminStorageLocationsForm} from "~/components/Admin/StorageLocations/Form/form.ts";
+import {storeToRefs} from "pinia";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
+const formStore = useAdminStorageLocationsForm();
+const {r$, form} = storeToRefs(formStore);
 
-const {v$, tabClass} = useVuelidateOnFormTab(
-    form,
-    {
-        dropboxAppKey: {},
-        dropboxAppSecret: {},
-        dropboxAuthToken: {required},
-    },
-    {
-        dropboxAppKey: null,
-        dropboxAppSecret: null,
-        dropboxAuthToken: null,
-    }
-);
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.dropboxTab));
 
 const baseAuthUrl = 'https://www.dropbox.com/oauth2/authorize';
 
 const authUrl = computed(() => {
     const params = new URLSearchParams();
-    params.append('client_id', form.value?.dropboxAppKey);
+
+    const clientId = form.value?.dropboxAppKey;
+    if (clientId) {
+        params.append('client_id', clientId);
+    }
+
     params.append('response_type', 'code');
     params.append('token_access_type', 'offline');
 

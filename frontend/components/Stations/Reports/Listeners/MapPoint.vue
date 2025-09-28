@@ -5,18 +5,25 @@
 </template>
 
 <script setup lang="ts">
-import {inject, onUnmounted, ShallowRef, useTemplateRef, watch} from "vue";
+import {onUnmounted, toRef, useTemplateRef, watch} from "vue";
 import {LatLngTuple, Map, marker, Popup} from "leaflet";
 
 const props = defineProps<{
+    map: Map,
     position: LatLngTuple
 }>();
 
-const $map = inject<ShallowRef<Map | null>>('map');
-const map = $map.value;
-
 const mapMarker = marker(props.position);
-mapMarker.addTo(map);
+
+watch(
+    toRef(props, 'map'),
+    (mapRef) => {
+        if (mapRef !== null) {
+            mapMarker.addTo(mapRef);
+        }
+    },
+    {immediate: true}
+);
 
 const popup = new Popup();
 const $content = useTemplateRef('$content');
@@ -24,8 +31,10 @@ const $content = useTemplateRef('$content');
 watch(
     $content,
     (newContent) => {
-        popup.setContent(newContent);
-        mapMarker.bindPopup(popup);
+        if (newContent !== null) {
+            popup.setContent(newContent);
+            mapMarker.bindPopup(popup);
+        }
     },
     {immediate: true}
 );

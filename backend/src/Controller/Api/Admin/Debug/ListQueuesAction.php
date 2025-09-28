@@ -35,10 +35,10 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class ListQueuesAction implements SingleActionInterface
+final readonly class ListQueuesAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly QueueManagerInterface $queueManager,
+        private QueueManagerInterface $queueManager,
     ) {
     }
 

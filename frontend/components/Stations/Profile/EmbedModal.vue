@@ -99,27 +99,11 @@ import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
+import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
 
-export interface ProfileEmbedModalProps {
-    stationSupportsStreamers: boolean,
-    stationSupportsRequests: boolean,
-    enablePublicPage: boolean,
-    enableStreamers: boolean,
-    enableOnDemand: boolean,
-    enableRequests: boolean,
-    publicPageEmbedUri: string,
-    publicOnDemandEmbedUri: string,
-    publicRequestEmbedUri: string,
-    publicHistoryEmbedUri: string,
-    publicScheduleEmbedUri: string,
-    publicPodcastsEmbedUri: string
-}
-
-defineOptions({
-    inheritAttrs: false
-});
-
-const props = defineProps<ProfileEmbedModalProps>();
+const stationData = useStationData();
+const profileData = useStationProfileData();
 
 const selectedType = ref('player');
 const selectedTheme = ref('light');
@@ -146,14 +130,14 @@ const types = computed(() => {
         }
     ];
 
-    if (props.stationSupportsRequests && props.enableRequests) {
+    if (stationData.value.features.requests && stationData.value.enableRequests) {
         types.push({
             value: 'requests',
             text: $gettext('Requests')
         });
     }
 
-    if (props.enableOnDemand) {
+    if (stationData.value.enableOnDemand) {
         types.push({
             value: 'ondemand',
             text: $gettext('On-Demand Media')
@@ -183,23 +167,23 @@ const themes = computed(() => {
 const baseEmbedUrl = computed(() => {
     switch (selectedType.value) {
         case 'history':
-            return props.publicHistoryEmbedUri;
+            return profileData.value.publicHistoryEmbedUri;
 
         case 'ondemand':
-            return props.publicOnDemandEmbedUri;
+            return profileData.value.publicOnDemandEmbedUri;
 
         case 'requests':
-            return props.publicRequestEmbedUri;
+            return profileData.value.publicRequestEmbedUri;
 
         case 'schedule':
-            return props.publicScheduleEmbedUri;
+            return profileData.value.publicScheduleEmbedUri;
 
         case 'podcasts':
-            return props.publicPodcastsEmbedUri;
+            return profileData.value.publicPodcastsEmbedUri;
 
         case 'player':
         default:
-            return props.publicPageEmbedUri;
+            return profileData.value.publicPageEmbedUri;
     }
 });
 

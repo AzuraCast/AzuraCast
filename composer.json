@@ -32,7 +32,7 @@
     "azuracast/nowplaying": "dev-main",
     "beberlei/doctrineextensions": "^1.5",
     "br33f/php-ga4-mp": "^0.1.2",
-    "brick/math": "^0.13",
+    "brick/math": "^0.14",
     "composer/ca-bundle": "^1.2",
     "doctrine/data-fixtures": "^2",
     "doctrine/dbal": "^4",
@@ -133,7 +133,7 @@
     "pyrech/composer-changelogs": "^2",
     "roave/security-advisories": "dev-latest",
     "slevomat/coding-standard": "^8",
-    "squizlabs/php_codesniffer": "^3.5",
+    "squizlabs/php_codesniffer": "^4",
     "symfony/var-dumper": "^7"
   },
   "config": {

@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import {computed, onMounted, ref} from "vue";
-import MuteButton from "~/components/Common/MuteButton.vue";
+import MuteButton from "~/components/Common/Audio/MuteButton.vue";
 
 const defaultVolume = 75;
 

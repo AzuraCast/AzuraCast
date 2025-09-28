@@ -9,8 +9,8 @@
     </button>
 </template>
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
-import {IconAdd} from "~/components/Common/icons.ts";
+import Icon from "~/components/Common/Icons/Icon.vue";
+import {IconAdd} from "~/components/Common/Icons/icons.ts";
 
 defineProps<{
     text: string

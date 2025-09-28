@@ -54,7 +54,7 @@ final class ImportAction implements SingleActionInterface
 
         // Look for custom config blocks.
         preg_match_all(
-            "/# startcustomconfig\(([a-zA-Z_-]+)\)\n(.*)\n# endcustomconfig\(\\1\)/",
+            "/# startcustomconfig\(([a-zA-Z_-]+)\)\n([\s\S]*?)\n# endcustomconfig\(\\1\)/",
             $config,
             $matches,
             PREG_SET_ORDER

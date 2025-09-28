@@ -109,7 +109,7 @@ final class FlowUploadAction implements SingleActionInterface
         if ($stationMedia instanceof StationMedia) {
             if (!empty($allParams['searchPhrase'])) {
                 // If the user is looking at a playlist's contents, add uploaded media to that playlist.
-                [$searchPhrase, $playlist] = $this->parseSearchQuery(
+                [, $playlist] = $this->parseSearchQuery(
                     $station,
                     $allParams['searchPhrase']
                 );

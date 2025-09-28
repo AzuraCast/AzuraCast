@@ -11,6 +11,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Api_Admin_RolePermissions',
+    required: ['*'],
     type: 'object'
 )]
 final readonly class RolePermissions

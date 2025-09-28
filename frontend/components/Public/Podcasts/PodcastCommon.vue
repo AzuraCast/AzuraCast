@@ -27,7 +27,6 @@
     <p class="card-text">
         {{ podcast.description }}
     </p>
-    <!-- @vue-expect-error API mistype on Podcast branding config. -->
     <p
         v-if="podcast.branding_config.public_custom_html"
         class="card-text"
@@ -36,9 +35,9 @@
 </template>
 
 <script setup lang="ts">
-import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
+import { ApiPodcastRow } from "./usePodcastQuery";
 
 defineProps<{
-    podcast: ApiPodcast
+    podcast: ApiPodcastRow
 }>();
 </script>

@@ -30,10 +30,10 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class PostFallbackAction implements SingleActionInterface
+final readonly class PostFallbackAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationRepository $stationRepo
+        private StationRepository $stationRepo
     ) {
     }
 

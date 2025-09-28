@@ -71,12 +71,14 @@ export function useWebDjSource() {
         audioDeviceId: ConstrainDOMString,
         cb: (source: StreamAudioSourceWithStop) => void
     ): void => {
-        void navigator.mediaDevices.getUserMedia({
-            video: false,
-            audio: {
-                deviceId: audioDeviceId
-            }
-        }).then((stream) => {
+        void (async () => {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: false,
+                audio: {
+                    deviceId: audioDeviceId
+                }
+            });
+
             const source: StreamAudioSourceWithStop = context.value.createMediaStreamSource(stream);
             source.stop = () => {
                 const ref = stream.getAudioTracks();
@@ -86,7 +88,7 @@ export function useWebDjSource() {
             }
 
             cb(source);
-        });
+        })();
     };
 
     return {

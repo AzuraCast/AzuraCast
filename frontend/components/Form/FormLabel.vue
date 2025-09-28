@@ -26,12 +26,12 @@
 </template>
 
 <script setup lang="ts">
-export interface FormLabelParentProps {
+export type FormLabelParentProps = {
     advanced?: boolean,
     highCpu?: boolean
 }
 
-interface FormLabelProps extends FormLabelParentProps {
+type FormLabelProps = FormLabelParentProps & {
     isRequired?: boolean
 }
 

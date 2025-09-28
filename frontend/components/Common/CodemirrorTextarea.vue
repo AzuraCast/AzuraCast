@@ -2,7 +2,7 @@
     <code-mirror
         v-model="textValue"
         basic
-        :lang="lang"
+        :lang="lang ?? undefined"
         :dark="isDark"
     />
 </template>
@@ -14,7 +14,8 @@ import {css} from "@codemirror/lang-css";
 import {javascript} from "@codemirror/lang-javascript";
 import {html} from "@codemirror/lang-html";
 import {liquidsoap} from "codemirror-lang-liquidsoap";
-import useTheme from "~/functions/theme";
+import {storeToRefs} from "pinia";
+import {useTheme} from "~/functions/theme.ts";
 
 const props = defineProps<{
     modelValue?: string | number | null,
@@ -54,5 +55,5 @@ const lang = computed(() => {
     }
 });
 
-const {isDark} = useTheme();
+const {isDark} = storeToRefs(useTheme());
 </script>

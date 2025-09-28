@@ -39,10 +39,10 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class GetPodcastAction implements SingleActionInterface
+final readonly class GetPodcastAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly PodcastApiGenerator $podcastApiGen
+        private PodcastApiGenerator $podcastApiGen
     ) {
     }
 

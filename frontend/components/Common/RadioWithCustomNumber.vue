@@ -35,12 +35,12 @@
 <script setup lang="ts" generic="T = string | number | null">
 import {FormFieldProps} from "~/components/Form/useFormField";
 import {computed, nextTick, ref, toRef, useSlots} from "vue";
-import {find} from "lodash";
+import {find} from "es-toolkit/compat";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 import {objectToSimpleFormOptions, SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import {pausableWatch, WatchPausableReturn} from "@vueuse/core";
 
-interface RadioCustomNumberProps extends FormFieldProps<T> {
+type RadioCustomNumberProps = FormFieldProps<T> & {
     id: string,
     name?: string,
     inputAttrs?: object,
@@ -60,8 +60,23 @@ const props = withDefaults(
 
 const slots = useSlots();
 
-const model = defineModel<T>({
-    default: null
+const toNumberOrNull = (value: any): number | null => {
+    if (value === null) {
+        return value;
+    }
+
+    value = Number(value);
+    return Number.isNaN(value) ? null : value;
+};
+
+const model = defineModel<T, string, number | null, string | number | null>({
+    default: null,
+    get(value) {
+        return toNumberOrNull(value);
+    },
+    set(value) {
+        return toNumberOrNull(value);
+    }
 });
 
 const originalOptions = objectToSimpleFormOptions(toRef(props, 'options'));
@@ -76,8 +91,8 @@ const optionsWithCustom = computed(() => {
     return parsedOptions;
 });
 
-const radioField = ref<"custom" | T>(null);
-const customField = ref<T>(null);
+const radioField = ref<"custom" | T | null>(null);
+const customField = ref<T | null>(null);
 
 const watchers: WatchPausableReturn[] = [];
 

@@ -1,7 +1,6 @@
 import {computed, InjectionKey, onBeforeMount, onBeforeUnmount, provide, reactive, UnwrapNestedRefs, watch} from "vue";
 import injectRequired from "~/functions/injectRequired.ts";
 import {reactiveComputed} from "@vueuse/core";
-import {Required} from "utility-types";
 
 type VueClass = string | Record<string, boolean> | VueClass[];
 
@@ -35,7 +34,11 @@ interface TabParent {
 const tabStateKey: InjectionKey<UnwrapNestedRefs<TabParent>> = Symbol() as InjectionKey<UnwrapNestedRefs<TabParent>>;
 
 export function useTabParent(originalProps: TabParentProps) {
-    const props = reactiveComputed<Required<TabParentProps, 'destroyOnHide'>>(() => ({
+    const props = reactiveComputed<
+        Required<
+            Pick<TabParentProps, 'destroyOnHide'>
+        > & Omit<TabParentProps, 'destroyOnHide'>
+    >(() => ({
         destroyOnHide: false,
         ...originalProps,
     }));

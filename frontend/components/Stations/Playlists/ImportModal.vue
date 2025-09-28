@@ -101,30 +101,38 @@
 <script setup lang="ts">
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {ref, useTemplateRef} from "vue";
-import {useNotify} from "~/functions/useNotify";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import Modal from "~/components/Common/Modal.vue";
 import FormFile from "~/components/Form/FormFile.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import {ApiStatus} from "~/entities/ApiInterfaces.ts";
+
+type BatchImportResult = Required<ApiStatus> & {
+    import_results: {
+        path: string,
+        match: string | null
+    }[]
+}
 
 const emit = defineEmits<HasRelistEmit>();
 
-const importPlaylistUrl = ref(null);
-const playlistFile = ref(null);
+const importPlaylistUrl = ref<string | null>(null);
+const playlistFile = ref<File | null>(null);
 const overwritePlaylist = ref(false);
 
-const results = ref(null);
+const results = ref<BatchImportResult | null>(null);
 
-const uploaded = (file) => {
+const uploaded = (file: File) => {
     playlistFile.value = file;
 }
 
 const $modal = useTemplateRef('$modal');
 const {show, hide} = useHasModal($modal);
 
-const open = (newImportPlaylistUrl) => {
+const open = (newImportPlaylistUrl: string) => {
     playlistFile.value = null;
     overwritePlaylist.value = false;
 
@@ -135,20 +143,24 @@ const open = (newImportPlaylistUrl) => {
 const {notifySuccess, notifyError} = useNotify();
 const {axios} = useAxios();
 
-const doSubmit = () => {
+const doSubmit = async () => {
+    if (playlistFile.value === null || importPlaylistUrl.value === null) {
+        return;
+    }
+
     const formData = new FormData();
     formData.append('playlist_file', playlistFile.value);
 
-    void axios.post(importPlaylistUrl.value, formData).then((resp) => {
-        if (resp.data.success) {
-            results.value = resp.data;
+    const {data} = await axios.post<BatchImportResult>(importPlaylistUrl.value, formData);
 
-            notifySuccess(resp.data.message);
-        } else {
-            notifyError(resp.data.message);
-            hide();
-        }
-    });
+    if (data.success) {
+        results.value = data;
+
+        notifySuccess(data.message);
+    } else {
+        notifyError(data.message);
+        hide();
+    }
 };
 
 const onHidden = () => {

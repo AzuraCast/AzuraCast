@@ -11,10 +11,10 @@ use App\Http\ServerRequest;
 use App\VueComponent\NowPlayingComponent;
 use Psr\Http\Message\ResponseInterface;
 
-final class HistoryAction implements SingleActionInterface
+final readonly class HistoryAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly NowPlayingComponent $nowPlayingComponent
+        private NowPlayingComponent $nowPlayingComponent
     ) {
     }
 

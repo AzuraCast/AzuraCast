@@ -88,23 +88,26 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
+import Icon from "~/components/Common/Icons/Icon.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import {computed, nextTick, ref, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {getStationApiUrl} from "~/router";
-import {IconDownload, IconTrendingDown, IconTrendingUp} from "~/components/Common/icons";
+import {IconDownload, IconTrendingDown, IconTrendingUp} from "~/components/Common/Icons/icons.ts";
 import useHasDatatable from "~/functions/useHasDatatable.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
-import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import {useStationData} from "~/functions/useStationQuery.ts";
+import {toRefs} from "@vueuse/core";
 
 const baseApiUrl = getStationApiUrl('/history');
 
-const {timezone} = useAzuraCastStation();
+const stationData = useStationData();
+const {timezone} = toRefs(stationData);
+
 const {DateTime} = useLuxon();
 const {
     now,
@@ -177,8 +180,16 @@ const apiUrl = computed(() => {
     const apiUrl = new URL(baseApiUrl.value, document.location.href);
 
     const apiUrlParams = apiUrl.searchParams;
-    apiUrlParams.set('start', DateTime.fromJSDate(dateRange.value.startDate).toISO());
-    apiUrlParams.set('end', DateTime.fromJSDate(dateRange.value.endDate).toISO());
+
+    const startDate = DateTime.fromJSDate(dateRange.value.startDate);
+    if (startDate.isValid) {
+        apiUrlParams.set('start', startDate.toISO());
+    }
+
+    const endDate = DateTime.fromJSDate(dateRange.value.endDate);
+    if (endDate.isValid) {
+        apiUrlParams.set('end', endDate.toISO());
+    }
 
     return apiUrl.toString();
 });
@@ -195,8 +206,7 @@ const exportUrl = computed(() => {
 const listItemProvider = useApiItemProvider(
     apiUrl,
     queryKeyWithStation([
-        QueryKeys.StationReports
-    ], [
+        QueryKeys.StationReports,
         'timeline',
         dateRange
     ])

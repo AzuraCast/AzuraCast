@@ -4,7 +4,7 @@
         size="lg"
         :title="$gettext('Configure Backups')"
         :loading="loading"
-        :disable-save-button="v$.$invalid"
+        :disable-save-button="r$.$invalid"
         @submit="submit"
         @hidden="resetForm"
     >
@@ -13,7 +13,7 @@
                 <form-group-checkbox
                     id="form_edit_backup_enabled"
                     class="col-md-12"
-                    :field="v$.backup_enabled"
+                    :field="r$.backup_enabled"
                     :label="$gettext('Run Automatic Nightly Backups')"
                     :description="$gettext('Enable to have AzuraCast automatically run nightly backups at the time specified.')"
                 />
@@ -26,8 +26,9 @@
                 <form-group-field
                     id="form_backup_time_code"
                     class="col-md-6"
-                    :field="v$.backup_time_code"
+                    :field="r$.backup_time_code"
                     :label="$gettext('Scheduled Backup Time')"
+                    :description="$gettext('Backup times are always in UTC.')"
                 >
                     <template #default="{id, model, fieldClass}">
                         <time-code
@@ -41,7 +42,7 @@
                 <form-group-checkbox
                     id="form_edit_exclude_media"
                     class="col-md-6"
-                    :field="v$.backup_exclude_media"
+                    :field="r$.backup_exclude_media"
                     :label="$gettext('Exclude Media from Backup')"
                     :description="$gettext('Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.')"
                 />
@@ -49,7 +50,7 @@
                 <form-group-field
                     id="form_backup_keep_copies"
                     class="col-md-6"
-                    :field="v$.backup_keep_copies"
+                    :field="r$.backup_keep_copies"
                     input-type="number"
                     :input-attrs="{min: '0', max: '365'}"
                     :label="$gettext('Number of Backup Copies to Keep')"
@@ -59,7 +60,7 @@
                 <form-group-select
                     id="edit_form_backup_storage_location"
                     class="col-md-6"
-                    :field="v$.backup_storage_location"
+                    :field="r$.backup_storage_location"
                     :label="$gettext('Storage Location')"
                     :options="storageLocations"
                 />
@@ -67,7 +68,7 @@
                 <form-group-multi-check
                     id="edit_form_backup_format"
                     class="col-md-6"
-                    :field="v$.backup_format"
+                    :field="r$.backup_format"
                     stacked
                     radio
                     :options="formatOptions"
@@ -87,12 +88,13 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import TimeCode from "~/components/Common/TimeCode.vue";
 import {computed, ref, useTemplateRef} from "vue";
 import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/functions/useNotify";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
+import {useAppRegle} from "~/vendor/regle.ts";
+import {BackupSettings} from "~/components/Admin/BackupsWrapper.vue";
 
 const props = defineProps<{
     settingsUrl: string,
@@ -103,24 +105,26 @@ const emit = defineEmits<HasRelistEmit>();
 
 const loading = ref(true);
 
-const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
-    {
-        'backup_enabled': {},
-        'backup_time_code': {},
-        'backup_exclude_media': {},
-        'backup_keep_copies': {},
-        'backup_storage_location': {},
-        'backup_format': {},
-    },
-    {
-        backup_enabled: false,
-        backup_time_code: null,
-        backup_exclude_media: null,
-        backup_keep_copies: null,
-        backup_storage_location: null,
-        backup_format: null,
-    }
+type BackupSettingsRow = Omit<BackupSettings, 'backup_last_run' | 'backup_last_output'>;
+
+const form = ref<BackupSettingsRow>({
+    backup_enabled: false,
+    backup_time_code: null,
+    backup_exclude_media: false,
+    backup_keep_copies: 2,
+    backup_storage_location: null,
+    backup_format: null
+});
+
+const {r$} = useAppRegle(
+    form,
+    {},
+    {}
 );
+
+const resetForm = () => r$.$reset({
+    toOriginalState: true
+});
 
 const formatOptions = computed(() => {
     return [
@@ -149,33 +153,45 @@ const close = () => {
     hide();
 };
 
-const open = () => {
+const doOpen = async () => {
     resetForm();
+
     loading.value = true;
 
     show();
 
-    axios.get(props.settingsUrl).then((resp) => {
-        form.value = mergeExisting(form.value, resp.data);
+    try {
+        const {data} = await axios.get(props.settingsUrl);
+
+        r$.$reset({
+            toState: mergeExisting(r$.$value, data)
+        });
         loading.value = false;
-    }).catch(() => {
+    } catch {
         close();
-    });
+    }
+};
+
+const open = () => {
+    void doOpen();
 };
 
 const {notifySuccess} = useNotify();
 
-const submit = () => {
-    ifValid(() => {
-        void axios({
-            method: 'PUT',
-            url: props.settingsUrl,
-            data: form.value
-        }).then(() => {
-            notifySuccess();
-            close();
-        });
+const submit = async () => {
+    const {valid, data: postData} = await r$.$validate();
+    if (!valid) {
+        return;
+    }
+
+    await axios({
+        method: 'PUT',
+        url: props.settingsUrl,
+        data: postData
     });
+
+    notifySuccess();
+    close();
 }
 
 defineExpose({

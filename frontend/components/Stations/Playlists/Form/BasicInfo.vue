@@ -7,22 +7,31 @@
             <form-group-field
                 id="form_edit_name"
                 class="col-md-6"
-                :field="v$.name"
+                :field="r$.name"
                 :label="$gettext('Playlist Name')"
             />
 
             <form-group-checkbox
                 id="form_edit_is_enabled"
                 class="col-md-6"
-                :field="v$.is_enabled"
+                :field="r$.is_enabled"
                 :label="$gettext('Enable')"
                 :description="$gettext('If disabled, the playlist will not be included in radio playback, but can still be managed.')"
+            />
+
+            <form-group-field
+                id="form_edit_description"
+                class="col-md-12"
+                :field="r$.description"
+                input-type="textarea"
+                :label="$gettext('Description')"
+                :description="$gettext('An optional description to help identify this playlist.')"
             />
 
             <form-group-multi-check
                 id="edit_form_source"
                 class="col-md-12"
-                :field="v$.source"
+                :field="r$.source"
                 :options="sourceOptions"
                 stacked
                 radio
@@ -45,7 +54,7 @@
                     <form-group-checkbox
                         id="form_edit_avoid_duplicates"
                         class="col-md-6"
-                        :field="v$.avoid_duplicates"
+                        :field="r$.avoid_duplicates"
                         :label="$gettext('Avoid Duplicate Artists/Titles')"
                         :description="$gettext('Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.')"
                     />
@@ -53,7 +62,7 @@
                     <form-group-checkbox
                         id="form_edit_include_in_on_demand"
                         class="col-md-6"
-                        :field="v$.include_in_on_demand"
+                        :field="r$.include_in_on_demand"
                         :label="$gettext('Include in On-Demand Player')"
                         :description="$gettext('If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible.')"
                     />
@@ -61,7 +70,7 @@
                     <form-group-checkbox
                         id="form_edit_include_in_requests"
                         class="col-md-6"
-                        :field="v$.include_in_requests"
+                        :field="r$.include_in_requests"
                         :label="$gettext('Allow Requests from This Playlist')"
                         :description="$gettext('If requests are enabled for your station, users will be able to request media that is on this playlist.')"
                     />
@@ -69,7 +78,7 @@
                     <form-group-checkbox
                         id="form_edit_is_jingle"
                         class="col-md-6"
-                        :field="v$.is_jingle"
+                        :field="r$.is_jingle"
                         :description="$gettext('Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.')"
                     >
                         <template #label>
@@ -80,7 +89,7 @@
                     <form-group-multi-check
                         id="edit_form_type"
                         class="col-md-6"
-                        :field="v$.type"
+                        :field="r$.type"
                         :options="typeOptions"
                         stacked
                         radio
@@ -99,7 +108,7 @@
                     <form-group-multi-check
                         id="edit_form_order"
                         class="col-md-6"
-                        :field="v$.order"
+                        :field="r$.order"
                         :options="orderOptions"
                         stacked
                         radio
@@ -116,10 +125,10 @@
                         <form-group-select
                             id="form_edit_weight"
                             class="col-md-12"
-                            :field="v$.weight"
+                            :field="r$.weight"
                             :options="weightOptions"
                             :label="$gettext('Playlist Weight')"
-                            :description="$gettext('Higher weight playlists are played more frequently compared to other lower-weight playlists.')"
+                            :description="$gettext('Playlists with larger number weights (i.e. 25) play more frequently than playlists with smaller number weights (i.e. 1).')"
                         />
                     </div>
                 </form-fieldset>
@@ -133,7 +142,7 @@
                         <form-group-field
                             id="form_edit_play_per_songs"
                             class="col-md-12"
-                            :field="v$.play_per_songs"
+                            :field="r$.play_per_songs"
                             input-type="number"
                             :input-attrs="{min: '0', max: '150'}"
                             :label="$gettext('Number of Songs Between Plays')"
@@ -151,7 +160,7 @@
                         <form-group-field
                             id="form_edit_play_per_minutes"
                             class="col-md-12"
-                            :field="v$.play_per_minutes"
+                            :field="r$.play_per_minutes"
                             input-type="number"
                             :input-attrs="{min: '0', max: '360'}"
                             :label="$gettext('Number of Minutes Between Plays')"
@@ -169,7 +178,7 @@
                         <form-group-field
                             id="form_edit_play_per_hour_minute"
                             class="col-md-12"
-                            :field="v$.play_per_hour_minute"
+                            :field="r$.play_per_hour_minute"
                             input-type="number"
                             :input-attrs="{min: '0', max: '59'}"
                             :label="$gettext('Minute of Hour to Play')"
@@ -196,14 +205,14 @@
                     <form-group-field
                         id="form_edit_remote_url"
                         class="col-md-6"
-                        :field="v$.remote_url"
+                        :field="r$.remote_url"
                         :label="$gettext('Remote URL')"
                     />
 
                     <form-group-multi-check
                         id="edit_form_remote_type"
                         class="col-md-6"
-                        :field="v$.remote_type"
+                        :field="r$.remote_type"
                         :options="remoteTypeOptions"
                         stacked
                         radio
@@ -213,7 +222,7 @@
                     <form-group-field
                         id="form_edit_remote_buffer"
                         class="col-md-6"
-                        :field="v$.remote_buffer"
+                        :field="r$.remote_buffer"
                         input-type="number"
                         :input-attrs="{ min: 0, max: 120 }"
                         :label="$gettext('Remote Playback Buffer (Seconds)')"
@@ -229,56 +238,19 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import FormFieldset from "~/components/Form/FormFieldset.vue";
-import {map, range} from "lodash";
+import {map, range} from "es-toolkit/compat";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
-import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
+import {storeToRefs} from "pinia";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {computed} from "vue";
+import {useStationsPlaylistsForm} from "~/components/Stations/Playlists/Form/form.ts";
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
+const {r$, form} = storeToRefs(useStationsPlaylistsForm());
 
-const {v$, tabClass} = useVuelidateOnFormTab(
-    form,
-    {
-        name: {required},
-        is_enabled: {},
-        include_in_on_demand: {},
-        weight: {},
-        type: {},
-        source: {},
-        order: {},
-        remote_url: {},
-        remote_type: {},
-        remote_buffer: {},
-        is_jingle: {},
-        play_per_songs: {},
-        play_per_minutes: {},
-        play_per_hour_minute: {},
-        include_in_requests: {},
-        avoid_duplicates: {}
-    },
-    {
-        name: '',
-        is_enabled: true,
-        include_in_on_demand: false,
-        weight: 3,
-        type: 'default',
-        source: 'songs',
-        order: 'shuffle',
-        remote_url: null,
-        remote_type: 'stream',
-        remote_buffer: 0,
-        is_jingle: false,
-        play_per_songs: 0,
-        play_per_minutes: 0,
-        play_per_hour_minute: 0,
-        include_in_requests: true,
-        avoid_duplicates: true,
-    }
-);
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.basicInfoTab));
 
 const {$gettext} = useTranslate();
 

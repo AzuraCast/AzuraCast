@@ -60,6 +60,9 @@ final class Podcast implements Interfaces\IdentifiableEntityInterface
     }
 
     #[ORM\Column]
+    public bool $explicit;
+
+    #[ORM\Column]
     public bool $is_enabled = true;
 
     #[ORM\Column(name: 'branding_config', type: 'json', nullable: true)]

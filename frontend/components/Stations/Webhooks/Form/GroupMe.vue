@@ -7,7 +7,7 @@
             <form-group-field
                 id="form_config_bot_id"
                 class="col-md-6"
-                :field="v$.config.bot_id"
+                :field="r$.config.bot_id"
                 :label="$gettext('Bot ID')"
             >
                 <template #description>
@@ -23,7 +23,7 @@
             <form-group-field
                 id="form_config_api"
                 class="col-md-6"
-                :field="v$.config.api"
+                :field="r$.config.api"
                 :label="$gettext('Custom API Base URL')"
                 :description="$gettext('Leave blank to use the default GroupMe API URL (recommended).')"
             />
@@ -35,7 +35,7 @@
             <form-group-field
                 id="form_config_text"
                 class="col-md-12"
-                :field="v$.config.text"
+                :field="r$.config.text"
                 input-type="textarea"
                 :label="$gettext('Main Message Content')"
             />
@@ -46,42 +46,32 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/FormattingInfo.vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
-import {ApiGenericForm} from "~/entities/ApiInterfaces.ts";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {useAppScopedRegle} from "~/vendor/regle.ts";
+import {required} from "@regle/rules";
+import {storeToRefs} from "pinia";
+import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
+import {Ref} from "vue";
+import {WebhookRecordCommon, WebhookRecordGroupMe} from "~/entities/Webhooks.ts";
 
 defineProps<WebhookComponentProps>();
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
+const {form} = storeToRefs(useStationsWebhooksForm());
 
-const { $gettext } = useTranslate();
-
-const { v$, tabClass } = useVuelidateOnFormTab(
-    form,
+const {r$} = useAppScopedRegle(
+    form as Ref<WebhookRecordCommon & WebhookRecordGroupMe>,
     {
         config: {
-            bot_id: { required },
-            api: {},
-            text: { required }
+            bot_id: {required},
+            text: {required}
         }
     },
-    () => ({
-        config: {
-            bot_id: '',
-            api: '',
-            text: $gettext(
-                'Now playing on %{station}: %{title} by %{artist}! Tune in now.',
-                {
-                    station: '{{ station.name }}',
-                    title: '{{ now_playing.song.title }}',
-                    artist: '{{ now_playing.song.artist }}'
-                }
-            )
-        }
-    })
+    {
+        namespace: 'station-webhooks'
+    }
 );
 
+const tabClass = useFormTabClass(r$);
 </script>

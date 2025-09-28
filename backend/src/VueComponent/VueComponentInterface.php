@@ -8,5 +8,5 @@ use App\Http\ServerRequest;
 
 interface VueComponentInterface
 {
-    public function getProps(ServerRequest $request): array;
+    public function getProps(ServerRequest $request): array|object;
 }

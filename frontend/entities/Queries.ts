@@ -1,8 +1,11 @@
-import {useAzuraCastStation} from "~/vendor/azuracast.ts";
+import {useStationId} from "~/functions/useStationQuery.ts";
+import {ComputedRef} from "vue";
 
 export enum QueryKeys {
     Dashboard = 'Dashboard',
 
+    StationGroup = 'Station',
+    StationGlobals = 'StationGlobals',
     StationHlsStreams = 'StationHlsStreams',
     StationLogs = 'StationLogs',
     StationMedia = 'StationMedia',
@@ -33,19 +36,28 @@ export enum QueryKeys {
     AdminIndex = 'AdminIndex',
     AdminPermissions = 'AdminPermissions',
     AdminRelays = 'AdminRelays',
+    AdminSettings = 'AdminSettings',
     AdminStations = 'AdminStations',
     AdminStorageLocations = 'AdminStorageLocations',
+    AdminUpdates = 'AdminUpdates',
     AdminUsers = 'AdminUsers',
 }
 
 export const queryKeyWithStation = (
-    prefix: unknown[],
-    suffix?: unknown[]
+    suffix?: unknown[],
+    id?: ComputedRef<number | null>
 ): unknown[] => {
-    const {id} = useAzuraCastStation();
+    id ??= useStationId();
 
-    const newQueryKeys = [...prefix];
-    newQueryKeys.push({station: id});
+    const newQueryKeys: unknown[] = [
+        QueryKeys.StationGroup,
+        {
+            station: id
+        }
+    ];
+    newQueryKeys.push({
+        station: id
+    });
 
     if (suffix) {
         newQueryKeys.push(...suffix);

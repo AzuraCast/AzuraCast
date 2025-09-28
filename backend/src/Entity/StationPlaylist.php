@@ -65,8 +65,17 @@ final class StationPlaylist implements
         Assert\NotBlank
     ]
     public string $name {
-        set => $this->truncateString($value, 200);
+        set => $this->truncateString(
+            str_replace(';', ':', $value),
+            200
+        );
     }
+
+    #[
+        OA\Property(example: "A playlist containing my favorite songs"),
+        ORM\Column(type: 'text', nullable: true)
+    ]
+    public ?string $description = null;
 
     #[
         OA\Property(example: "default"),
@@ -157,7 +166,11 @@ final class StationPlaylist implements
     }
 
     #[
-        OA\Property(example: 3),
+        OA\Property(
+            description: "The relative weight of the playlist. Larger numbers play more often than playlists "
+            . "with lower number weights.",
+            example: 3,
+        ),
         ORM\Column(type: 'smallint')
     ]
     public int $weight = self::DEFAULT_WEIGHT {

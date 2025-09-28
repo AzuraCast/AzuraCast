@@ -33,10 +33,10 @@ use Symfony\Component\Messenger\MessageBus;
         ]
     )
 ]
-final class RunAction implements SingleActionInterface
+final readonly class RunAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly MessageBus $messageBus,
+        private MessageBus $messageBus,
     ) {
     }
 

@@ -7,7 +7,7 @@
             <form-group-field
                 id="edit_form_custom_listen_url"
                 class="col-md-12"
-                :field="v$.custom_listen_url"
+                :field="r$.custom_listen_url"
                 advanced
                 :label="$gettext('Mount Point URL')"
                 :description="$gettext('You can set a custom URL for this stream that AzuraCast will use when referring to it on the web interface and in the Now Playing API return data. Leave empty to use the default value.')"
@@ -20,7 +20,7 @@
             <form-group-field
                 id="edit_form_frontend_config"
                 class="col-md-12"
-                :field="v$.frontend_config"
+                :field="r$.frontend_config"
                 input-type="textarea"
                 advanced
                 :input-attrs="{class: 'text-preformatted', spellcheck: 'false', 'max-rows': 25, rows: 5}"
@@ -34,47 +34,21 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {computed} from "vue";
-import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import Tab from "~/components/Common/Tab.vue";
-import {ApiGenericForm, FrontendAdapters} from "~/entities/ApiInterfaces.ts";
+import {FrontendAdapters} from "~/entities/ApiInterfaces.ts";
+import {storeToRefs} from "pinia";
+import {useStationsMountsForm} from "~/components/Stations/Mounts/Form/form.ts";
+import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 
 const props = defineProps<{
     stationFrontendType: FrontendAdapters
 }>();
 
-const form = defineModel<ApiGenericForm>('form', {required: true});
-
 const isIcecast = computed(() => {
     return FrontendAdapters.Icecast === props.stationFrontendType;
 });
 
-const {v$, tabClass} = useVuelidateOnFormTab(
-    form,
-    computed(() => {
-        const validations: {
-            [key: string | number]: any
-        } = {
-            custom_listen_url: {}
-        };
+const {r$} = storeToRefs(useStationsMountsForm());
 
-        if (isIcecast.value) {
-            validations.frontend_config = {};
-        }
-
-        return validations;
-    }),
-    () => {
-        const blankForm: {
-            [key: string | number]: any
-        } = {
-            custom_listen_url: null,
-        };
-
-        if (isIcecast.value) {
-            blankForm.frontend_config = null;
-        }
-
-        return blankForm;
-    }
-);
+const tabClass = useFormTabClass(computed(() => r$.value.$groups.advancedTab));
 </script>

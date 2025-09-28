@@ -35,10 +35,10 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class DeleteIntroAction implements SingleActionInterface
+final readonly class DeleteIntroAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationMountRepository $mountRepo,
+        private StationMountRepository $mountRepo,
     ) {
     }
 

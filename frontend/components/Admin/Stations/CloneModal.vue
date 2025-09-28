@@ -4,43 +4,72 @@
         :loading="loading"
         :title="$gettext('Clone Station')"
         :error="error"
-        :disable-save-button="v$.$invalid"
+        :disable-save-button="r$.$invalid"
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <admin-stations-clone-modal-form :form="v$" />
+        <div class="row g-3">
+            <form-group-field
+                id="edit_form_name"
+                class="col-md-12"
+                :field="r$.name"
+                :label="$gettext('New Station Name')"
+            />
+
+            <form-group-field
+                id="edit_form_description"
+                class="col-md-12"
+                :field="r$.description"
+                input-type="textarea"
+                :label="$gettext('New Station Description')"
+            />
+
+            <form-group-multi-check
+                id="edit_form_clone"
+                class="col-md-12"
+                :field="r$.clone"
+                :options="cloneOptions"
+                stacked
+                :label="$gettext('Copy to New Station')"
+            />
+        </div>
     </modal-form>
 </template>
 
 <script setup lang="ts">
-import {required} from "@vuelidate/validators";
+import {required} from "@regle/rules";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import AdminStationsCloneModalForm from "~/components/Admin/Stations/CloneModalForm.vue";
-import {ref, useTemplateRef} from "vue";
+import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/functions/useNotify";
-import {useAxios} from "~/vendor/axios";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
+import {getErrorAsString, useAxios} from "~/vendor/axios";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
+import {useResettableRef} from "~/functions/useResettableRef.ts";
+import {useAppRegle} from "~/vendor/regle.ts";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 
 const emit = defineEmits<HasRelistEmit>();
 
 const loading = ref(true);
-const cloneUrl = ref(null);
-const error = ref(null);
+const cloneUrl = ref<string | null>(null);
+const error = ref<string | null>(null);
 
-const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
+const {record: form, reset: resetForm} = useResettableRef({
+    name: '',
+    description: '',
+    clone: [],
+});
+
+const {r$} = useAppRegle(
+    form,
     {
         name: {required},
         description: {},
         clone: {}
     },
-    {
-        name: '',
-        description: '',
-        clone: [],
-    }
+    {}
 );
 
 const $modal = useTemplateRef('$modal');
@@ -50,6 +79,7 @@ const {$gettext} = useTranslate();
 
 const create = (stationName: string, stationCloneUrl: string) => {
     resetForm();
+    r$.$reset();
 
     form.value.name = $gettext(
         '%{station} - Copy',
@@ -70,22 +100,73 @@ const clearContents = () => {
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const doSubmit = () => {
-    ifValid(() => {
-        error.value = null;
+const cloneOptions = computed(() => {
+    return [
+        {
+            text: $gettext('Share Media Storage Location'),
+            value: 'media_storage'
+        },
+        {
+            text: $gettext('Share Recordings Storage Location'),
+            value: 'recordings_storage'
+        },
+        {
+            text: $gettext('Share Podcasts Storage Location'),
+            value: 'podcasts_storage'
+        },
+        {
+            text: $gettext('Playlists'),
+            value: 'playlists',
+        },
+        {
+            text: $gettext('Mount Points'),
+            value: 'mounts'
+        },
+        {
+            text: $gettext('Remote Relays'),
+            value: 'remotes'
+        },
+        {
+            text: $gettext('Streamers/DJs'),
+            value: 'streamers'
+        },
+        {
+            text: $gettext('User Permissions'),
+            value: 'permissions'
+        },
+        {
+            text: $gettext('Web Hooks'),
+            value: 'webhooks'
+        }
+    ];
+});
 
-        axios({
+const doSubmit = async () => {
+    const {valid} = await r$.$validate();
+    if (!valid) {
+        return;
+    }
+
+    error.value = null;
+
+    try {
+        const currentCloneUrl = cloneUrl.value;
+        if (currentCloneUrl === null) {
+            return;
+        }
+
+        await axios({
             method: 'POST',
-            url: cloneUrl.value,
+            url: currentCloneUrl,
             data: form.value
-        }).then(() => {
-            notifySuccess();
-            emit('relist');
-            hide();
-        }).catch((error) => {
-            error.value = error.response.data.message;
         });
-    });
+
+        notifySuccess();
+        emit('relist');
+        hide();
+    } catch (e) {
+        error.value = getErrorAsString(e);
+    }
 };
 
 defineExpose({

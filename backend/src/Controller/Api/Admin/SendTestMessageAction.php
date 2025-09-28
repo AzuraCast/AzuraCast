@@ -33,11 +33,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         ]
     ),
 ]
-final class SendTestMessageAction implements SingleActionInterface
+final readonly class SendTestMessageAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly ValidatorInterface $validator,
-        private readonly Mail $mail,
+        private ValidatorInterface $validator,
+        private Mail $mail,
     ) {
     }
 

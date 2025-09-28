@@ -61,11 +61,11 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class PlayAction implements SingleActionInterface
+final readonly class PlayAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationMediaRepository $mediaRepo,
-        private readonly StationFilesystems $stationFilesystems
+        private StationMediaRepository $mediaRepo,
+        private StationFilesystems $stationFilesystems
     ) {
     }
 

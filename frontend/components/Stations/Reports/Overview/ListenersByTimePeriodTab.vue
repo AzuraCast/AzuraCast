@@ -129,7 +129,13 @@ const {DateTime} = useLuxon();
 
 const resultType = ref('average');
 
-const blankChartSection = {
+type ChartData = {
+    labels: any[],
+    metrics: any[],
+    alt: any[]
+}
+
+const blankChartSection: ChartData = {
     labels: [],
     metrics: [],
     alt: []
@@ -137,8 +143,7 @@ const blankChartSection = {
 
 const {data: chartData, isLoading} = useQuery({
     queryKey: queryKeyWithStation([
-        QueryKeys.StationReports
-    ], [
+        QueryKeys.StationReports,
         'listeners_by_time_period',
         resultType,
         dateRange

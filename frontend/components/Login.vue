@@ -139,8 +139,8 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon.vue";
-import {IconMail, IconVpnKey} from "~/components/Common/icons.ts";
+import Icon from "~/components/Common/Icons/Icon.vue";
+import {IconMail, IconVpnKey} from "~/components/Common/Icons/icons.ts";
 import useWebAuthn, {ProcessedValidateResponse} from "~/functions/useWebAuthn.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import {nextTick, onMounted, ref, useTemplateRef} from "vue";
@@ -173,7 +173,7 @@ const handleValidationResponse = async (validateResp: ProcessedValidateResponse)
 
 const logInWithPasskey = async () => {
     if (validateArgs.value === null) {
-        validateArgs.value = await axios.get(props.webAuthnUrl).then(r => r.data);
+        validateArgs.value = (await axios.get<object>(props.webAuthnUrl)).data;
     }
 
     try {
@@ -191,7 +191,7 @@ onMounted(async () => {
     }
 
     // Call WebAuthn authentication
-    validateArgs.value = await axios.get(props.webAuthnUrl).then(r => r.data);
+    validateArgs.value = (await axios.get<object>(props.webAuthnUrl)).data;
 
     try {
         const validateResp = await doValidate(validateArgs.value, true);

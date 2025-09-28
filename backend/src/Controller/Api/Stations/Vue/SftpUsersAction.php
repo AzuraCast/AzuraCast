@@ -7,6 +7,7 @@ namespace App\Controller\Api\Stations\Vue;
 use App\Container\EnvironmentAwareTrait;
 use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Stations\Vue\SftpUsersProps;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\AzuraCastCentral;
@@ -35,12 +36,12 @@ final class SftpUsersAction implements SingleActionInterface
 
         $port = $this->environment->getSftpPort();
 
-        return $response->withJson([
-            'connectionInfo' => [
-                'url' => (string)$baseUrl,
-                'ip' => $this->acCentral->getIp(),
-                'port' => $port,
-            ],
-        ]);
+        return $response->withJson(
+            new SftpUsersProps(
+                connectionUrl: (string)$baseUrl,
+                connectionIp: $this->acCentral->getIp(),
+                connectionPort: $port
+            )
+        );
     }
 }

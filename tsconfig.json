@@ -26,12 +26,12 @@
     "noEmit": true,
     "jsx": "preserve",
     /* Linting */
-    "strict": false,
+    "strict": true,
     "allowJs": true,
     "noUnusedLocals": false,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": false
+    "noImplicitAny": true
   },
   "include": [
     "frontend/**/*.ts",

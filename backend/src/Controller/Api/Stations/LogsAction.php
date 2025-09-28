@@ -64,7 +64,7 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class LogsAction implements SingleActionInterface
+class LogsAction implements SingleActionInterface
 {
     use HasLogViewer;
 
@@ -126,7 +126,7 @@ final class LogsAction implements SingleActionInterface
     /**
      * @return LogType[]
      */
-    private function getStationLogs(Station $station): array
+    protected function getStationLogs(Station $station): array
     {
         return [
             ...$this->adapters->getBackendAdapter($station)?->getLogTypes($station) ?? [],

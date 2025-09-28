@@ -31,10 +31,10 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class PermissionsAction implements SingleActionInterface
+final readonly class PermissionsAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly Acl $acl,
+        private Acl $acl,
     ) {
     }
 

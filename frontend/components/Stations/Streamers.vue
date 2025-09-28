@@ -13,11 +13,13 @@
                             </h2>
                         </div>
                         <div class="col-md-6 text-end">
-                            <stations-common-quota
-                                v-if="recordStreams"
-                                :quota-url="quotaUrl"
-                            />
-                            <time-zone v-else/>
+                            <loading :loading="propsLoading" lazy>
+                                <stations-common-quota
+                                    v-if="props && props.recordStreams"
+                                    :quota-url="quotaUrl"
+                                />
+                                <time-zone v-else/>
+                            </loading>
                         </div>
                     </div>
                 </template>
@@ -94,7 +96,9 @@
             </card-page>
         </div>
         <div class="col-md-4">
-            <connection-info :connection-info="connectionInfo" />
+            <loading :loading="propsLoading" lazy>
+                <connection-info v-if="props" v-bind="props"/>
+            </loading>
         </div>
 
         <edit-modal
@@ -112,7 +116,7 @@
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import EditModal from "~/components/Stations/Streamers/EditModal.vue";
 import BroadcastsModal from "~/components/Stations/Streamers/BroadcastsModal.vue";
-import ConnectionInfo, {StreamerConnectionInfo} from "~/components/Stations/Streamers/ConnectionInfo.vue";
+import ConnectionInfo from "~/components/Stations/Streamers/ConnectionInfo.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useTemplateRef} from "vue";
@@ -129,18 +133,32 @@ import {EventImpl} from "@fullcalendar/core/internal";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
-import {StorageLocationTypes} from "~/entities/ApiInterfaces.ts";
+import {ApiStationsVueStreamersProps, StorageLocationTypes} from "~/entities/ApiInterfaces.ts";
+import {useAxios} from "~/vendor/axios.ts";
+import {useQuery} from "@tanstack/vue-query";
+import Loading from "~/components/Common/Loading.vue";
 
-defineProps<{
-    recordStreams: boolean,
-    connectionInfo: StreamerConnectionInfo,
-}>();
-
+const propsUrl = getStationApiUrl('/vue/streamers');
 const listUrl = getStationApiUrl('/streamers');
 const newArtUrl = getStationApiUrl('/streamers/art');
 const scheduleUrl = getStationApiUrl('/streamers/schedule');
 
 const quotaUrl = getStationApiUrl(`/quota/${StorageLocationTypes.StationRecordings}`);
+
+const {axios} = useAxios();
+
+const {data: props, isLoading: propsLoading} = useQuery<ApiStationsVueStreamersProps>({
+    queryKey: queryKeyWithStation(
+        [
+            QueryKeys.StationSftpUsers,
+            'props'
+        ]
+    ),
+    queryFn: async ({signal}) => {
+        const {data} = await axios.get<ApiStationsVueStreamersProps>(propsUrl.value, {signal});
+        return data;
+    }
+});
 
 const {$gettext} = useTranslate();
 

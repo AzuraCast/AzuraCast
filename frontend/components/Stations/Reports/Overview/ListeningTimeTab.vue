@@ -1,5 +1,5 @@
 <template>
-    <loading :loading="isLoading">
+    <loading :loading="isLoading" lazy>
         <fieldset>
             <legend>
                 {{ $gettext('Listeners by Listening Time') }}
@@ -7,6 +7,7 @@
 
             <pie-chart
                 style="width: 100%;"
+                v-if="stats"
                 :data="stats.chart.datasets"
                 :labels="stats.chart.labels"
                 :alt="stats.chart.alt"
@@ -55,10 +56,18 @@ const dateRange = toRef(props, 'dateRange');
 const {axios} = useAxios();
 const {DateTime} = useLuxon();
 
-const metricsQuery = useQuery({
+type ChartData = {
+    all: any[],
+    chart: {
+        labels: any[],
+        datasets: any[],
+        alt: any[]
+    }
+}
+
+const {data: stats, isLoading, refetch} = useQuery<ChartData>({
     queryKey: queryKeyWithStation([
-        QueryKeys.StationReports
-    ], [
+        QueryKeys.StationReports,
         'listening_time_metrics',
         dateRange
     ]),
@@ -81,8 +90,6 @@ const metricsQuery = useQuery({
         }
     })
 });
-
-const {data: stats, isLoading, refetch} = metricsQuery;
 
 const metricsItemProvider = useClientItemProvider(
     computed(() => stats.value?.all ?? []),

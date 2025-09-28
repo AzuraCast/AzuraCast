@@ -70,7 +70,7 @@ jobs:
       - uses: actions/checkout@master
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: "lts/jod"
           cache: "npm"
@@ -110,7 +110,7 @@ jobs:
           key: ${{ runner.OS }}-build-${{ hashFiles('composer.lock') }}
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: "lts/jod"
           cache: "npm"
@@ -131,7 +131,7 @@ jobs:
           backend/bin/console locale:generate
 
       - name: Pull latest translations.
-        uses: crowdin/github-action@1.5.3
+        uses: crowdin/github-action@v2.11.0
         with:
           upload_sources: true
           download_translations: true
@@ -182,7 +182,7 @@ jobs:
       - uses: actions/checkout@master
 
       - name: Download built static assets from previous step
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: assets
 

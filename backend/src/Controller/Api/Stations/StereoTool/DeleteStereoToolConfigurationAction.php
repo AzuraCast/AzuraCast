@@ -28,10 +28,10 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class DeleteStereoToolConfigurationAction implements SingleActionInterface
+final readonly class DeleteStereoToolConfigurationAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly StationRepository $stationRepo
+        private StationRepository $stationRepo
     ) {
     }
 

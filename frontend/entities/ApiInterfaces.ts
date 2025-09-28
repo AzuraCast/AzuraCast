@@ -2084,6 +2084,7 @@ export interface StationBackendConfiguration {
   live_broadcast_text?: string;
   enable_auto_cue?: boolean;
   write_playlists_to_liquidsoap?: boolean;
+  share_encoders?: boolean;
   /** Custom Liquidsoap Configuration: Top Section */
   custom_config_top?: string | null;
   /** Custom Liquidsoap Configuration: Pre-Playlists Section */

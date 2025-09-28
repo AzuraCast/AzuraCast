@@ -698,6 +698,10 @@ final class ConfigWriter implements EventSubscriberInterface
     {
         $station = $event->getStation();
 
+        if (!$event->getBackendConfig()->share_encoders) {
+            return;
+        }
+
         // @var Collection<EncodableInterface> $encodables
         $encodables = [
             $station->mounts,
@@ -769,6 +773,8 @@ final class ConfigWriter implements EventSubscriberInterface
             return;
         }
 
+        $shareEncoders = $event->getBackendConfig()->share_encoders;
+
         $lsConfig = [
             '# HLS Broadcasting',
         ];
@@ -781,14 +787,21 @@ final class ConfigWriter implements EventSubscriberInterface
             $streamVarName = self::cleanUpVarName($hlsStream->name);
 
             $ffmpegStreams = [];
-            foreach ($station->hls_streams as $hlsInnerStream) {
-                $innerStreamVarName = self::cleanUpVarName(
-                    $hlsInnerStream->getEncodingFormat()->getVariableName('hls')
-                );
 
-                $ffmpegStreams[] = ($hlsInnerStream->id === $hlsStream->id)
-                    ? '%' . $innerStreamVarName . '.copy'
-                    : '%' . $innerStreamVarName . '.drop';
+            if ($shareEncoders) {
+                foreach ($station->hls_streams as $hlsInnerStream) {
+                    $innerStreamVarName = self::cleanUpVarName(
+                        $hlsInnerStream->getEncodingFormat()->getVariableName('hls')
+                    );
+
+                    $ffmpegStreams[] = ($hlsInnerStream->id === $hlsStream->id)
+                        ? '%' . $innerStreamVarName . '.copy'
+                        : '%' . $innerStreamVarName . '.drop';
+                }
+            } else {
+                $ffmpegStreams[] = $this->getFfmpegAudioString(
+                    $hlsStream->getEncodingFormat()
+                );
             }
 
             $hlsStreams[] = sprintf(
@@ -808,37 +821,43 @@ final class ConfigWriter implements EventSubscriberInterface
         ) . "\n" . ']';
 
         // Build an aggregate source composed of the various encoders.
-        $i = 0;
-        $hlsSourceTracks = [];
+        if ($shareEncoders) {
+            $i = 0;
+            $hlsSourceTracks = [];
 
-        foreach ($station->hls_streams as $hlsStream) {
-            $i++;
+            foreach ($station->hls_streams as $hlsStream) {
+                $i++;
 
-            $encoding = $hlsStream->getEncodingFormat();
-            $encoderVarName = $encoding->getVariableName('radio');
-            $hlsVarName = $encoding->getVariableName('hls');
+                $encoding = $hlsStream->getEncodingFormat();
+                $encoderVarName = $encoding->getVariableName('radio');
+                $hlsVarName = $encoding->getVariableName('hls');
 
-            $hlsSourceTracks[] = $hlsVarName . ' = ' . $hlsVarName;
+                $hlsSourceTracks[] = $hlsVarName . ' = ' . $hlsVarName;
 
-            if ($i === 1) {
-                $hlsSourceTracks[] = 'metadata = hls_m';
-                $hlsSourceTracks[] = 'track_marks = hls_tm';
+                if ($i === 1) {
+                    $hlsSourceTracks[] = 'metadata = hls_m';
+                    $hlsSourceTracks[] = 'track_marks = hls_tm';
 
-                $lsConfig[] = sprintf(
-                    'let {audio = %s, metadata = hls_m, track_marks = hls_tm} = source.tracks(%s)',
-                    $hlsVarName,
-                    $encoderVarName
-                );
-            } else {
-                $lsConfig[] = sprintf(
-                    'let {audio = %s} = source.tracks(%s)',
-                    $hlsVarName,
-                    $encoderVarName
-                );
+                    $lsConfig[] = sprintf(
+                        'let {audio = %s, metadata = hls_m, track_marks = hls_tm} = source.tracks(%s)',
+                        $hlsVarName,
+                        $encoderVarName
+                    );
+                } else {
+                    $lsConfig[] = sprintf(
+                        'let {audio = %s} = source.tracks(%s)',
+                        $hlsVarName,
+                        $encoderVarName
+                    );
+                }
             }
-        }
 
-        $lsConfig[] = 'hls_radio = source({' . implode(', ', $hlsSourceTracks) . '})';
+            $lsConfig[] = 'hls_radio = source({' . implode(', ', $hlsSourceTracks) . '})';
+
+            $radioVarName = 'hls_radio';
+        } else {
+            $radioVarName = 'radio';
+        }
 
         $event->appendLines($lsConfig);
 
@@ -867,7 +886,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 temp_dir="#{settings.azuracast.temp_path()}",
                 "{$hlsBaseDir}",
                 hls_streams,
-                hls_radio
+                {$radioVarName}
             )
             LIQ
         );
@@ -1158,13 +1177,20 @@ final class ConfigWriter implements EventSubscriberInterface
     ): string {
         $station = $event->getStation();
         $charset = $event->getBackendConfig()->charset;
+        $shareEncoders = $event->getBackendConfig()->share_encoders;
 
         $encoding = $source->encoding;
 
         $outputParams = [];
 
         $container = $encoding->format->getFfmpegContainer();
-        $outputParams[] = '%ffmpeg(format="' . $container . '", %audio.copy)';
+
+        if ($shareEncoders) {
+            $outputParams[] = '%ffmpeg(format="' . $container . '", %audio.copy)';
+        } else {
+            $audioString = $this->getFfmpegAudioString($encoding);
+            $outputParams[] = '%ffmpeg(format="' . $container . '", ' . $audioString . ')';
+        }
 
         $outputParams[] = 'id="' . $idPrefix . $id . '"';
 
@@ -1220,7 +1246,11 @@ final class ConfigWriter implements EventSubscriberInterface
             $outputParams[] = 'send_icy_metadata = ' . ($sendIcyMetadata ? 'true' : 'false');
         }
 
-        $outputParams[] = self::cleanUpVarName($encoding->getVariableName('radio'));
+        if ($shareEncoders) {
+            $outputParams[] = self::cleanUpVarName($encoding->getVariableName('radio'));
+        } else {
+            $outputParams[] = 'radio';
+        }
 
         $outputCommand = ($source->isShoutcast)
             ? 'output.shoutcast'

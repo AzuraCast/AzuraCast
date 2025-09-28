@@ -9282,6 +9282,8 @@ components:
           type: boolean
         write_playlists_to_liquidsoap:
           type: boolean
+        share_encoders:
+          type: boolean
         custom_config_top:
           description: 'Custom Liquidsoap Configuration: Top Section'
           type: string

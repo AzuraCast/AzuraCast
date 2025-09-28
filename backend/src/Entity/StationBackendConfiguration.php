@@ -289,6 +289,9 @@ final class StationBackendConfiguration extends AbstractArrayEntity
     #[OA\Property]
     public bool $write_playlists_to_liquidsoap = false;
 
+    #[OA\Property]
+    public bool $share_encoders = false;
+
     /*
      * Liquidsoap Custom Configuration Sections
      */

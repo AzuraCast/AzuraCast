@@ -10,46 +10,134 @@ use Slim\Routing\RouteCollectorProxy;
 
 return static function (RouteCollectorProxy $group) {
     $group->group(
+        '/nowplaying/{station_id}',
+        function (RouteCollectorProxy $group) {
+            $group->get(
+                '',
+                Controller\Api\NowPlayingAction::class
+            )->setName('api:nowplaying:station')
+                ->add(new Middleware\Cache\SetCache(15));
+
+            $group->get(
+                '/art[/{timestamp}.jpg]',
+                Controller\Api\NowPlayingArtAction::class
+            )->setName('api:nowplaying:art')
+                ->add(new Middleware\Cache\SetCache(15));
+        }
+    )->add(Middleware\RequireLoginNonPublicStation::class)
+        ->add(Middleware\RequireStation::class)
+        ->add(Middleware\GetStation::class);
+
+    $group->group(
         '/station/{station_id}',
         function (RouteCollectorProxy $group) {
             /*
-             * Anonymous Functions
+             * Anonymous Functions (hidden if station isn't public)
              */
-            $group->get('', Controller\Api\Stations\IndexController::class . ':indexAction')
-                ->setName('api:stations:index')
-                ->add(Middleware\RequireLoginNonPublicStation::class)
-                ->add(new Middleware\RateLimit('api', 5, 2));
 
-            $group->get('/nowplaying', Controller\Api\NowPlayingAction::class);
+            $group->group(
+                '',
+                function (RouteCollectorProxy $group) {
+                    $group->get('', Controller\Api\Stations\IndexController::class . ':indexAction')
+                        ->setName('api:stations:index')
+                        ->add(new Middleware\RateLimit('api', 5, 2));
 
-            $group->get('/schedule', Controller\Api\Stations\ScheduleAction::class)
-                ->setName('api:stations:schedule');
+                    $group->get('/nowplaying', Controller\Api\NowPlayingAction::class);
 
-            // Song Requests
-            $group->get('/requests', Controller\Api\Stations\Requests\ListAction::class)
-                ->add(new Middleware\StationSupportsFeature(StationFeatures::Requests))
-                ->setName('api:requests:list');
+                    $group->get('/schedule', Controller\Api\Stations\ScheduleAction::class)
+                        ->setName('api:stations:schedule');
 
-            $group->map(
-                ['GET', 'POST'],
-                '/request/{media_id}',
-                Controller\Api\Stations\Requests\SubmitAction::class
-            )
-                ->setName('api:requests:submit')
-                ->add(new Middleware\StationSupportsFeature(StationFeatures::Requests))
-                ->add(new Middleware\RateLimit('api', 5, 2));
+                    // Song Requests
+                    $group->get('/requests', Controller\Api\Stations\Requests\ListAction::class)
+                        ->add(new Middleware\StationSupportsFeature(StationFeatures::Requests))
+                        ->setName('api:requests:list');
 
-            // On-Demand Streaming
-            $group->get('/ondemand', Controller\Api\Stations\OnDemand\ListAction::class)
-                ->setName('api:stations:ondemand:list')
-                ->add(new Middleware\StationSupportsFeature(StationFeatures::OnDemand));
+                    $group->map(
+                        ['GET', 'POST'],
+                        '/request/{media_id}',
+                        Controller\Api\Stations\Requests\SubmitAction::class
+                    )
+                        ->setName('api:requests:submit')
+                        ->add(new Middleware\StationSupportsFeature(StationFeatures::Requests))
+                        ->add(new Middleware\RateLimit('api', 5, 2));
 
-            $group->get('/ondemand/download/{media_id}', Controller\Api\Stations\OnDemand\DownloadAction::class)
-                ->setName('api:stations:ondemand:download')
-                ->add(new Middleware\StationSupportsFeature(StationFeatures::OnDemand))
-                ->add(Middleware\RateLimit::forDownloads());
+                    // On-Demand Streaming
+                    $group->get('/ondemand', Controller\Api\Stations\OnDemand\ListAction::class)
+                        ->setName('api:stations:ondemand:list')
+                        ->add(new Middleware\StationSupportsFeature(StationFeatures::OnDemand));
 
-            // NOTE: See ./api_public.php for podcast public pages.
+                    $group->get('/ondemand/download/{media_id}', Controller\Api\Stations\OnDemand\DownloadAction::class)
+                        ->setName('api:stations:ondemand:download')
+                        ->add(new Middleware\StationSupportsFeature(StationFeatures::OnDemand))
+                        ->add(Middleware\RateLimit::forDownloads());
+
+                    // Media Art
+                    $group->get(
+                        '/art/{media_id:[a-zA-Z0-9\-]+}[-{timestamp}.jpg]',
+                        Controller\Api\Stations\Art\GetArtAction::class
+                    )->setName('api:stations:media:art')
+                        ->add(new Middleware\Cache\SetStaticFileCache());
+
+                    // Streamer Art
+                    $group->get(
+                        '/streamer/{id}/art[-{timestamp}.jpg]',
+                        Controller\Api\Stations\Streamers\Art\GetArtAction::class
+                    )->setName('api:stations:streamer:art')
+                        ->add(new Middleware\Cache\SetStaticFileCache());
+
+                    $group->group(
+                        '/public',
+                        function (RouteCollectorProxy $group) {
+                            // Podcast Public Pages
+                            $group->get('/podcasts', Controller\Api\Stations\Podcasts\ListPodcastsAction::class)
+                                ->setName('api:stations:public:podcasts');
+
+                            $group->group(
+                                '/podcast/{podcast_id}',
+                                function (RouteCollectorProxy $group) {
+                                    $group->get('', Controller\Api\Stations\Podcasts\GetPodcastAction::class)
+                                        ->setName('api:stations:public:podcast');
+
+                                    $group->get(
+                                        '/art[-{timestamp}.jpg]',
+                                        Controller\Api\Stations\Podcasts\Art\GetArtAction::class
+                                    )->setName('api:stations:public:podcast:art')
+                                        ->add(new Middleware\Cache\SetStaticFileCache());
+
+                                    $group->get(
+                                        '/episodes',
+                                        Controller\Api\Stations\Podcasts\Episodes\ListEpisodesAction::class
+                                    )->setName('api:stations:public:podcast:episodes');
+
+                                    $group->group(
+                                        '/episode/{episode_id}',
+                                        function (RouteCollectorProxy $group) {
+                                            $group->get(
+                                                '',
+                                                Controller\Api\Stations\Podcasts\Episodes\GetEpisodeAction::class
+                                            )->setName('api:stations:public:podcast:episode')
+                                                ->add(new Middleware\Cache\SetStaticFileCache());
+
+                                            $group->get(
+                                                '/art[-{timestamp}.jpg]',
+                                                Controller\Api\Stations\Podcasts\Episodes\Art\GetArtAction::class
+                                            )->setName('api:stations:public:podcast:episode:art')
+                                                ->add(new Middleware\Cache\SetStaticFileCache());
+
+                                            $group->get(
+                                                '/download[.{extension}]',
+                                                Controller\Api\Stations\Podcasts\Episodes\Media\GetMediaAction::class
+                                            )->setName('api:stations:public:podcast:episode:download')
+                                                ->add(Middleware\RateLimit::forDownloads());
+                                        }
+                                    );
+                                }
+                            )->add(Middleware\RequirePublishedPodcastEpisodeMiddleware::class)
+                                ->add(Middleware\GetAndRequirePodcast::class);
+                        }
+                    );
+                }
+            )->add(Middleware\RequireLoginNonPublicStation::class);
 
             /*
              * Authenticated Functions

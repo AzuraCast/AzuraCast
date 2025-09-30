@@ -22,7 +22,7 @@
                                     href="#"
                                     @click.prevent="navigateFromBreadcrumb()"
                                 >
-                                    <icon :icon="IconHome" />
+                                    <icon-ic-home/>
                                 </a>
                             </li>
 
@@ -104,15 +104,15 @@
                                             <span class="badge text-bg-secondary">
                                                 <div class="d-flex align-items-center">
                                                     <template v-if="item.source === 'songs'">
-                                                        <icon :icon="IconLibraryMusic"/>
+                                                        <icon-ic-library-music/>
                                                         <div class="ps-2">{{ $gettext('Song-based') }}</div>
                                                     </template>
                                                     <template v-else-if="item.source === 'playlists'">
-                                                        <icon :icon="IconPlaylist"/>
+                                                        <icon-ic-queue-music/>
                                                         <div class="ps-2">{{ $gettext('Playlist Group') }}</div>
                                                     </template>
                                                     <template v-else>
-                                                        <icon :icon="IconPublic"/>
+                                                        <icon-ic-public/>
                                                         <div class="ps-2">{{ $gettext('Remote URL') }}</div>
                                                     </template>
                                                 </div>
@@ -130,7 +130,7 @@
                                             title="Assign to current playlist"
                                             class="btn btn-primary"
                                         >
-                                            <icon :icon="IconDriveFileMove"/>
+                                            <icon-ic-drive-file-move/>
                                         </button>
 
                                         <button
@@ -140,7 +140,7 @@
                                             class="btn btn-secondary"
                                             @click="enterPlaylistGroup(item)"
                                         >
-                                            <icon :icon="IconFolderOpen"/>
+                                            <icon-bi-folder/>
                                         </button>
                                     </div>
                                 </div>
@@ -325,15 +325,15 @@
                                     <span class="badge text-bg-secondary">
                                         <div class="d-flex align-items-center">
                                             <template v-if="playlist.source === 'songs'">
-                                                <icon :icon="IconLibraryMusic"/>
+                                                <icon-ic-library-music/>
                                                 <div class="ps-2">{{ $gettext('Song-based') }}</div>
                                             </template>
                                             <template v-else-if="playlist.source === 'playlists'">
-                                                <icon :icon="IconPlaylist"/>
+                                                <icon-ic-queue-music/>
                                                 <div class="ps-2">{{ $gettext('Playlist Group') }}</div>
                                             </template>
                                             <template v-else>
-                                                <icon :icon="IconPublic"/>
+                                                <icon-ic-public/>
                                                 <div class="ps-2">{{ $gettext('Remote URL') }}</div>
                                             </template>
                                         </div>
@@ -350,15 +350,12 @@
 
 <script setup lang="ts">
 import Tab from "~/components/Common/Tab.vue";
-import Icon from "~/components/Common/Icons/Icon.vue";
-import {
-    IconHome,
-    IconLibraryMusic,
-    IconPlaylist,
-    IconPublic,
-    IconDriveFileMove,
-    IconFolderOpen
-} from "~/components/Common/Icons/icons.ts";
+import IconIcHome from "~icons/ic/baseline-home";
+import IconIcLibraryMusic from "~icons/ic/baseline-library-music";
+import IconIcQueueMusic from "~icons/ic/baseline-queue-music";
+import IconIcPublic from "~icons/ic/baseline-public";
+import IconIcDriveFileMove from "~icons/ic/baseline-drive-file-move";
+import IconBiFolder from "~icons/bi/folder";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {ref, watch} from "vue";
 import {useLuxon} from "~/vendor/luxon";

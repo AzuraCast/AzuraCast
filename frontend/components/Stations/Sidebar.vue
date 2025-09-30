@@ -20,7 +20,7 @@
                 :to="{ name: 'stations:profile:edit' }"
                 class="navbar-brand ms-0 flex-shrink-0"
             >
-                <icon :icon="IconEdit" />
+                <icon-ic-edit/>
                 <span class="visually-hidden">{{ $gettext('Edit Profile') }}</span>
             </router-link>
         </div>
@@ -62,16 +62,15 @@
 
 <script setup lang="ts">
 import {ref} from "vue";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import SidebarMenu from "~/components/Common/SidebarMenu.vue";
 import {toRefs, useIntervalFn} from "@vueuse/core";
 import {useStationsMenu} from "~/components/Stations/menu";
 import {userAllowedForStation} from "~/acl";
-import {IconEdit} from "~/components/Common/Icons/icons.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
+import IconIcEdit from "~icons/ic/baseline-edit";
 
 const menuItems = useStationsMenu();
 

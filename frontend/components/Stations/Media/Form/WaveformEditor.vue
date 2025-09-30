@@ -21,7 +21,7 @@
                 :title="$gettext('Play')"
                 @click="playAudio"
             >
-                <icon :icon="IconPlayCircle" />
+                <icon-ic-play-circle/>
             </button>
             <button
                 type="button"
@@ -29,7 +29,7 @@
                 :title="$gettext('Stop')"
                 @click="stopAudio"
             >
-                <icon :icon="IconStop" />
+                <icon-ic-stop/>
             </button>
         </div>
         <div class="btn-group btn-group-sm">
@@ -78,14 +78,14 @@
 
 <script setup lang="ts">
 import WaveformComponent from "~/components/Common/Audio/Waveform.vue";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {shallowRef, useTemplateRef, watch} from "vue";
-import {IconPlayCircle, IconStop} from "~/components/Common/Icons/icons.ts";
 import {reactiveComputed} from "@vueuse/core";
 import {RegionParams} from "wavesurfer.js/dist/plugins/regions.js";
 import {storeToRefs} from "pinia";
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {StationMediaMetadata, StationMediaRecord} from "~/entities/StationMedia.ts";
+import IconIcPlayCircle from "~icons/ic/baseline-play-circle";
+import IconIcStop from "~icons/ic/baseline-stop";
 
 const props = defineProps<{
     duration: number,

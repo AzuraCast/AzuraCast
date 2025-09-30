@@ -41,7 +41,7 @@
                             target="_blank"
                             :title="$gettext('Download')"
                         >
-                            <icon :icon="IconDownload" />
+                            <icon-ic-cloud-download/>
                         </a>
                     </template>
                 </template>
@@ -56,14 +56,13 @@
 <script setup lang="ts">
 import InlinePlayer from "~/components/InlinePlayer.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import {useTranslate} from "~/vendor/gettext";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
-import {IconDownload} from "~/components/Common/Icons/icons.ts";
 import FullHeightCard from "~/components/Public/FullHeightCard.vue";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
+import IconIcCloudDownload from "~icons/ic/baseline-cloud-download";
 
 interface OnDemandCustomField {
     display_key: string,

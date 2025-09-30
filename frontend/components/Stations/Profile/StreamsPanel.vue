@@ -46,10 +46,7 @@
                             >{{ mount.url }}</a>
                         </td>
                         <td class="ps-1 text-end">
-                            <icon
-                                class="sm align-middle"
-                                :icon="IconHeadphones"
-                            />
+                            <icon-ic-headphones class="sm align-middle"/>
                             <span class="listeners-total ps-1">{{ mount.listeners.total }}</span><br>
                             <small>
                                 <span class="listeners-unique pe-1">{{ mount.listeners.unique }}</span>
@@ -97,10 +94,7 @@
                             >{{ remote.url }}</a>
                         </td>
                         <td class="ps-1 text-end">
-                            <icon
-                                class="sm align-middle"
-                                :icon="IconHeadphones"
-                            />
+                            <icon-ic-headphones class="sm align-middle"/>
                             <span class="listeners-total ps-1">{{ remote.listeners.total }}</span><br>
                             <small>
                                 <span class="listeners-unique pe-1">{{ remote.listeners.unique }}</span>
@@ -143,10 +137,7 @@
                             >{{ profileData.station.hls_url }}</a>
                         </td>
                         <td class="ps-1 text-end">
-                            <icon
-                                class="sm align-middle"
-                                :icon="IconHeadphones"
-                            />
+                            <icon-ic-headphones class="sm align-middle"/>
                             <span class="listeners-total ps-1">
                                 {{ profileData.station.hls_listeners }}
                                 {{ $gettext('Unique') }}
@@ -162,7 +153,7 @@
                 class="btn btn-link text-primary"
                 :href="profileData.station.playlist_pls_url"
             >
-                <icon :icon="IconDownload" />
+                <icon-ic-cloud-download/>
                 <span>
                     {{ $gettext('Download PLS') }}
                 </span>
@@ -171,7 +162,8 @@
                 class="btn btn-link text-primary"
                 :href="profileData.station.playlist_m3u_url"
             >
-                <icon :icon="IconDownload" />
+                <icon-ic-cloud-download/>
+
                 <span>
                     {{ $gettext('Download M3U') }}
                 </span>
@@ -181,11 +173,11 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {IconDownload, IconHeadphones} from "~/components/Common/Icons/icons.ts";
 import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
+import IconIcCloudDownload from "~icons/ic/baseline-cloud-download";
+import IconIcHeadphones from "~icons/ic/baseline-headphones";
 
 const profileData = useStationProfileData();
 </script>

@@ -63,10 +63,7 @@
                         input-type="email"
                     >
                         <template #label>
-                            <icon
-                                :icon="IconMail"
-                                class="me-1"
-                            />
+                            <icon-ic-email class="me-1"/>
                             {{ $gettext('E-mail Address') }}
                         </template>
                     </form-group-field>
@@ -80,10 +77,7 @@
                         input-type="password"
                     >
                         <template #label>
-                            <icon
-                                :icon="IconVpnKey"
-                                class="me-1"
-                            />
+                            <icon-ic-vpn-key class="me-1"/>
                             {{ $gettext('Password') }}
                         </template>
                     </form-group-field>
@@ -105,11 +99,11 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {reactive} from "vue";
-import {IconMail, IconVpnKey} from "~/components/Common/Icons/icons.ts";
 import {isValidPassword, useAppRegle} from "~/vendor/regle.ts";
 import {email, required} from "@regle/rules";
+import IconIcEmail from "~icons/ic/baseline-email";
+import IconIcVpnKey from "~icons/ic/baseline-vpn-key";
 
 withDefaults(
     defineProps<{

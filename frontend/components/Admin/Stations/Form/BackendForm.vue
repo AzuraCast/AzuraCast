@@ -218,6 +218,14 @@
 
                 <div class="row g-3">
                     <form-group-checkbox
+                        id="edit_form_backend_config_share_encoders"
+                        class="col-md-12"
+                        :field="r$.backend_config.share_encoders"
+                        :label="$gettext('Share Encoders Between Streams')"
+                        :description="$gettext('If you have multiple streams that broadcast in the same format and bitrate, enabling this may significantly improve CPU consumption. Disable this setting if you encounter issues with shared encoding.')"
+                    />
+
+                    <form-group-checkbox
                         id="edit_form_backend_use_manual_autodj"
                         class="col-md-12"
                         :field="r$.backend_config.use_manual_autodj"

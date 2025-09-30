@@ -31,7 +31,7 @@
                                 :key="row.song.id"
                             >
                                 <td class=" text-center text-success">
-                                    <icon :icon="IconChevronUp" />
+                                    <icon-bi-chevron-up/>
                                     {{ row.stat_delta }}
                                     <br>
                                     <small>{{ row.stat_start }} to {{ row.stat_end }}</small>
@@ -71,7 +71,8 @@
                                 :key="row.song.id"
                             >
                                 <td class="text-center text-danger">
-                                    <icon :icon="IconChevronDown" />
+                                    <icon-bi-chevron-down/>
+
                                     {{ row.stat_delta }}
                                     <br>
                                     <small>{{ row.stat_start }} to {{ row.stat_end }}</small>
@@ -126,16 +127,16 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {toRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import SongText from "~/components/Stations/Reports/Overview/SongText.vue";
 import Loading from "~/components/Common/Loading.vue";
 import {useLuxon} from "~/vendor/luxon";
-import {IconChevronDown, IconChevronUp} from "~/components/Common/Icons/icons.ts";
 import {DateRange} from "~/components/Stations/Reports/Overview/CommonMetricsView.vue";
 import {useQuery} from "@tanstack/vue-query";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import IconBiChevronDown from "~icons/bi/chevron-down";
+import IconBiChevronUp from "~icons/bi/chevron-up";
 
 const props = defineProps<{
     dateRange: DateRange,

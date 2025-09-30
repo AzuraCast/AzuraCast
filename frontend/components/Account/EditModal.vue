@@ -77,13 +77,22 @@ const userUrl = getApiUrl('/frontend/account/me');
 const loading = ref(true);
 const error = ref<string | null>(null);
 
+type AccountRow = {
+    name: string | null,
+    email: string | null,
+    locale: string | null,
+    show_24_hour_time: boolean | null
+}
+
+const form = ref<AccountRow>({
+    name: '',
+    email: '',
+    locale: 'default',
+    show_24_hour_time: false,
+});
+
 const {r$} = useAppRegle(
-    {
-        name: '',
-        email: '',
-        locale: 'default',
-        show_24_hour_time: false,
-    },
+    form,
     {
         name: {},
         email: {required, email},

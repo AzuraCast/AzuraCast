@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import {glob} from "glob";
 import {resolve} from "path";
 import eslintPlugin from "@nabla/vite-plugin-eslint";
+import Icons from 'unplugin-icons/vite';
 
 const inputs = glob.sync('./frontend/js/pages/**/*.js').reduce((acc, path) => {
     // vue/pages/Admin/Index becomes AdminIndex
@@ -86,12 +87,21 @@ export default defineConfig({
     resolve: {
         alias: {
             '!': resolve(__dirname, '.'),
-            '~': resolve(__dirname, './frontend'),
+            '~': resolve(__dirname, './frontend')
         },
         extensions: ['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json', '.vue']
     },
     plugins: [
         vue(),
+        Icons({
+            compiler: 'vue3',
+            iconCustomizer(collection, icon, props) {
+                props.class = 'icon';
+                props.fill = 'currentColor';
+                props.focusable = 'false';
+                props['aria-hidden'] = 'true';
+            },
+        }),
         eslintPlugin(),
     ],
 })

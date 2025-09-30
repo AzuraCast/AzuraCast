@@ -12,7 +12,7 @@ import {
 } from "~/entities/ApiInterfaces.ts";
 import {defineStore} from "pinia";
 import {numeric, required, url} from "@regle/rules";
-import { ref } from "vue";
+import {ref} from "vue";
 
 export type StationRecord = Omit<
     Required<Station>,
@@ -66,6 +66,7 @@ export const useAdminStationsForm = defineStore(
                 crossfade_type: CrossfadeModes.Normal,
                 crossfade: 2,
                 write_playlists_to_liquidsoap: true,
+                share_encoders: false,
                 audio_processing_method: AudioProcessingMethods.None,
                 post_processing_include_live: true,
                 master_me_preset: MasterMePresets.MusicGeneral,
@@ -156,6 +157,7 @@ export const useAdminStationsForm = defineStore(
                         fields.backend_config.crossfade_type,
                         fields.backend_config.crossfade,
                         fields.backend_config.write_playlists_to_liquidsoap,
+                        fields.backend_config.share_encoders,
                         fields.backend_config.audio_processing_method,
                         fields.backend_config.post_processing_include_live,
                         fields.backend_config.master_me_preset,

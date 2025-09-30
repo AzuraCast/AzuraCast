@@ -1,22 +1,20 @@
 import {useTranslate} from "~/vendor/gettext.ts";
 import filterMenu, {MenuCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
 import {userAllowedForStation} from "~/acl.ts";
-import {computed} from "vue";
-import {
-    IconBroadcast,
-    IconCode,
-    IconImage,
-    IconLibraryMusic,
-    IconLogs,
-    IconMic,
-    IconPlaylist,
-    IconPodcasts,
-    IconPublic,
-    IconReport
-} from "~/components/Common/Icons/icons.ts";
+import {computed, markRaw} from "vue";
 import {reactiveComputed} from "@vueuse/core";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
+import IconIcCode from "~icons/ic/baseline-code";
+import IconIcImage from "~icons/ic/baseline-image";
+import IconIcLibraryMusic from "~icons/ic/baseline-library-music";
+import IconIcAssignment from "~icons/ic/baseline-assignment";
+import IconIcMic from "~icons/ic/baseline-mic";
+import IconIcQueueMusic from "~icons/ic/baseline-queue-music";
+import IconIcPodcasts from "~icons/ic/baseline-podcasts";
+import IconIcPublic from "~icons/ic/baseline-public";
+import IconIcInsertChart from "~icons/ic/baseline-insert-chart";
+import IconBiBroadcast from "~icons/bi/broadcast";
 
 export function useStationsMenu(): ReactiveMenu {
     const {$gettext} = useTranslate();
@@ -31,7 +29,7 @@ export function useStationsMenu(): ReactiveMenu {
             const profileMenu: MenuCategory = {
                 key: 'profile',
                 label: computed(() => $gettext('Profile')),
-                icon: IconImage,
+                icon: markRaw(IconIcImage),
                 items: [
                     {
                         key: 'view_profile',
@@ -62,7 +60,7 @@ export function useStationsMenu(): ReactiveMenu {
             const publicPageMenu: MenuCategory = {
                 key: 'public_page',
                 label: computed(() => $gettext('Public Page')),
-                icon: IconPublic,
+                icon: markRaw(IconIcPublic),
                 url: station.value.publicPageUrl,
                 external: true,
                 visible: station.value.enablePublicPages,
@@ -71,7 +69,7 @@ export function useStationsMenu(): ReactiveMenu {
             const mediaMenu: MenuCategory = {
                 key: 'media',
                 label: computed(() => $gettext('Media')),
-                icon: IconLibraryMusic,
+                icon: markRaw(IconIcLibraryMusic),
                 visible: station.value.features.media,
                 items: [
                     {
@@ -144,7 +142,7 @@ export function useStationsMenu(): ReactiveMenu {
             const playlistsMenu: MenuCategory = {
                 key: 'playlists',
                 label: computed(() => $gettext('Playlists')),
-                icon: IconPlaylist,
+                icon: markRaw(IconIcQueueMusic),
                 url: {
                     name: 'stations:playlists:index'
                 },
@@ -154,7 +152,7 @@ export function useStationsMenu(): ReactiveMenu {
             const podcastsMenu: MenuCategory = {
                 key: 'podcasts',
                 label: computed(() => $gettext('Podcasts')),
-                icon: IconPodcasts,
+                icon: markRaw(IconIcPodcasts),
                 url: {
                     name: 'stations:podcasts:index'
                 },
@@ -164,7 +162,7 @@ export function useStationsMenu(): ReactiveMenu {
             const streamingMenu: MenuCategory = {
                 key: 'streaming',
                 label: computed(() => $gettext('Live Streaming')),
-                icon: IconMic,
+                icon: markRaw(IconIcMic),
                 visible: userAllowedForStation(StationPermissions.Streamers) && station.value.features.streamers,
                 items: [
                     {
@@ -188,7 +186,7 @@ export function useStationsMenu(): ReactiveMenu {
             const webhooksMenu: MenuCategory = {
                 key: 'webhooks',
                 label: computed(() => $gettext('Web Hooks')),
-                icon: IconCode,
+                icon: markRaw(IconIcCode),
                 url: {
                     name: 'stations:webhooks:index'
                 },
@@ -198,7 +196,7 @@ export function useStationsMenu(): ReactiveMenu {
             const reportsMenu: MenuCategory = {
                 key: 'reports',
                 label: computed(() => $gettext('Reports')),
-                icon: IconReport,
+                icon: markRaw(IconIcInsertChart),
                 visible: userAllowedForStation(StationPermissions.Reports),
                 items: [
                     {
@@ -243,7 +241,7 @@ export function useStationsMenu(): ReactiveMenu {
             const broadcastingMenu: MenuCategory = {
                 key: 'broadcasting',
                 label: computed(() => $gettext('Broadcasting')),
-                icon: IconBroadcast,
+                icon: markRaw(IconBiBroadcast),
                 items: [
                     {
                         key: 'mounts',
@@ -316,7 +314,7 @@ export function useStationsMenu(): ReactiveMenu {
             const logsMenu: MenuCategory = {
                 key: 'logs',
                 label: computed(() => $gettext('Logs')),
-                icon: IconLogs,
+                icon: markRaw(IconIcAssignment),
                 url: {
                     name: 'stations:logs'
                 },

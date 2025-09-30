@@ -21,7 +21,8 @@
                         aria-expanded="false"
                         :disabled="!hasSelectedItems"
                     >
-                        <icon :icon="IconClearAll" />
+                        <icon-ic-clear-all/>
+
                         <span>
                             {{ $gettext('Playlists') }}
                         </span>
@@ -114,7 +115,8 @@
                 :disabled="!hasSelectedItems"
                 @click="moveFiles"
             >
-                <icon :icon="IconMove" />
+                <icon-ic-open-with/>
+
                 <span>
                     {{ $gettext('Move') }}
                 </span>
@@ -129,7 +131,7 @@
                         aria-expanded="false"
                         :disabled="!hasSelectedItems"
                     >
-                        <icon :icon="IconMoreHoriz" />
+                        <icon-ic-more-horiz/>
                         <span>
                             {{ $gettext('More') }}
                         </span>
@@ -187,7 +189,8 @@
                 :disabled="!hasSelectedItems"
                 @click="doDelete"
             >
-                <icon :icon="IconDelete" />
+                <icon-ic-delete/>
+
                 <span>
                     {{ $gettext('Delete') }}
                 </span>
@@ -199,7 +202,7 @@
                 class="btn btn-sm btn-primary"
                 @click="createDirectory"
             >
-                <icon :icon="IconFolder" />
+                <icon-ic-folder/>
                 <span>
                     {{ $gettext('New Folder') }}
                 </span>
@@ -211,16 +214,18 @@
 <script setup lang="ts">
 import {Dropdown} from "bootstrap";
 import {filter, intersection, map} from "es-toolkit/compat";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {computed, ref, toRef, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
-import {IconClearAll, IconDelete, IconFolder, IconMoreHoriz, IconMove} from "~/components/Common/Icons/icons.ts";
 import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchResponse.ts";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {MediaInitialPlaylist, MediaSelectedItems} from "~/components/Stations/Media.vue";
 import {ApiStationMediaPlaylist} from "~/entities/ApiInterfaces";
+import IconIcClearAll from "~icons/ic/baseline-clear-all";
+import IconIcDelete from "~icons/ic/baseline-delete";
+import IconIcMoreHoriz from "~icons/ic/baseline-more-horiz";
+import IconIcOpenWith from "~icons/ic/baseline-open-with";
 
 const props = defineProps<{
     currentDirectory: string,

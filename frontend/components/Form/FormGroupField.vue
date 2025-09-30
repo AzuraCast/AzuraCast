@@ -49,7 +49,7 @@
             </slot>
 
             <validation-error
-                v-if="isValidatedField"
+                v-if="field"
                 :field="field"
             />
         </template>
@@ -134,7 +134,7 @@ const slots = defineSlots<{
 
 const emit = defineEmits<FormFieldEmits<T>>();
 
-const {model: parentModel, isValidatedField, fieldClass, isRequired} = useFormField<T>(props, emit);
+const {model: parentModel, fieldClass, isRequired} = useFormField<T>(props, emit);
 
 const isNumeric = computed(() => {
     return props.inputNumber || props.inputType === "number" || props.inputType === "range";

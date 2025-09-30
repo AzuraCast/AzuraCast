@@ -1,7 +1,6 @@
 import {filter, get, map} from "es-toolkit/compat";
 import {cloneDeep} from "es-toolkit";
-import {ComputedRef, toRaw} from "vue";
-import {Icon} from "~/components/Common/Icons/icons.ts";
+import {Component, ComputedRef, toRaw} from "vue";
 import {reactiveComputed} from "@vueuse/core";
 
 export interface MenuRouteBasedUrl {
@@ -14,7 +13,7 @@ export type MenuRouteUrl = string | MenuRouteBasedUrl;
 export interface MenuSubCategory {
     key: string,
     label: ComputedRef<string>,
-    icon?: Icon,
+    icon?: Component,
     visible?: boolean,
     url?: MenuRouteUrl,
     external?: boolean,

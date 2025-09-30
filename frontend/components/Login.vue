@@ -35,7 +35,7 @@
                             for="username"
                             class="mb-2 d-flex align-items-center gap-2"
                         >
-                            <icon :icon="IconMail" />
+                            <icon-ic-email/>
                             <strong>
                                 {{ $gettext('E-mail Address') }}
                             </strong>
@@ -57,7 +57,8 @@
                             for="password"
                             class="mb-2 d-flex align-items-center gap-2"
                         >
-                            <icon :icon="IconVpnKey" />
+                            <icon-ic-vpn-key/>
+
                             <strong>{{ $gettext('Password') }}</strong>
                         </label>
                         <input
@@ -139,11 +140,11 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
-import {IconMail, IconVpnKey} from "~/components/Common/Icons/icons.ts";
 import useWebAuthn, {ProcessedValidateResponse} from "~/functions/useWebAuthn.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import {nextTick, onMounted, ref, useTemplateRef} from "vue";
+import IconIcEmail from "~icons/ic/baseline-email";
+import IconIcVpnKey from "~icons/ic/baseline-vpn-key";
 
 const props = defineProps<{
     hideProductName: boolean,

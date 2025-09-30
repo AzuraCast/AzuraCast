@@ -77,7 +77,7 @@
                         class="btn btn-dark"
                         @click="resetSyncTasks()"
                     >
-                        <icon :icon="IconRefresh" />
+                        <icon-ic-refresh/>
                         <span>{{ $gettext('Refresh') }}</span>
                     </button>
                 </div>
@@ -130,7 +130,7 @@
                         class="btn btn-dark"
                         @click="resetQueueTotals()"
                     >
-                        <icon :icon="IconRefresh" />
+                        <icon-ic-refresh/>
                         <span>{{ $gettext('Refresh') }}</span>
                     </button>
                 </div>
@@ -247,12 +247,11 @@ import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {getApiUrl} from "~/router.ts";
 import Loading from "~/components/Common/Loading.vue";
-import {IconRefresh} from "~/components/Common/Icons/icons.ts";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {ApiAdminDebugQueue, ApiAdminDebugStation, ApiAdminDebugSyncTask} from "~/entities/ApiInterfaces.ts";
 import {useQuery, useQueryClient} from "@tanstack/vue-query";
 import {QueryKeys} from "~/entities/Queries.ts";
 import {useQueryItemProvider} from "~/functions/dataTable/useQueryItemProvider.ts";
+import IconIcRefresh from "~icons/ic/baseline-refresh";
 
 const listSyncTasksUrl = getApiUrl('/admin/debug/sync-tasks');
 const listQueueTotalsUrl = getApiUrl('/admin/debug/queues');

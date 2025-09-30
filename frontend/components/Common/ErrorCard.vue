@@ -4,7 +4,7 @@
         role="alert"
     >
         <div class="flex-shrink-0 me-2">
-            <icon :icon="IconError" />
+            <icon-ic-error/>
         </div>
         <div class="flex-fill">
             <slot />
@@ -13,5 +13,5 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
-import {IconError} from "~/components/Common/Icons/icons.ts";</script>
+import IconIcError from "~icons/ic/baseline-error";
+</script>

@@ -16,10 +16,7 @@
                     class="card-subtitle text-end flex-fill my-0"
                     style="line-height: 1;"
                 >
-                    <icon
-                        class="align-middle"
-                        :icon="IconHeadphones"
-                    />
+                    <icon-ic-headphones class="align-middle"/>
                     <span class="ps-1">
                         {{ langListeners }}
                     </span>
@@ -36,7 +33,7 @@
                     :to="{name: 'stations:reports:listeners'}"
                     :title="$gettext('Listener Report')"
                 >
-                    <icon :icon="IconLogs" />
+                    <icon-ic-assignment/>
                 </router-link>
             </div>
         </template>
@@ -48,7 +45,7 @@
                         <div class="d-table">
                             <div class="d-table-row">
                                 <div class="d-table-cell align-middle text-end pe-2 pb-2">
-                                    <icon :icon="IconMusicNote"/>
+                                    <icon-ic-music-note/>
                                 </div>
                                 <div class="d-table-cell align-middle w-100 pb-2">
                                     <h5 class="m-0">
@@ -121,7 +118,7 @@
                         <div class="d-table">
                             <div class="d-table-row">
                                 <div class="d-table-cell align-middle pe-2 text-end pb-2">
-                                    <icon :icon="IconSkipNext"/>
+                                    <icon-ic-skip-next/>
                                 </div>
                                 <div class="d-table-cell align-middle w-100 pb-2">
                                     <h5 class="m-0">
@@ -178,7 +175,8 @@
                         class="clearfix"
                     >
                         <h6 style="margin-left: 22px;">
-                            <icon :icon="IconMic"/>
+                            <icon-ic-mic/>
+
                             {{ $gettext('Live') }}
                         </h6>
 
@@ -204,7 +202,8 @@
                 class="btn btn-link text-primary"
                 @click="doSkipSong()"
             >
-                <icon :icon="IconSkipNext" />
+                <icon-ic-skip-next/>
+
                 <span>
                     {{ $gettext('Skip Song') }}
                 </span>
@@ -216,7 +215,8 @@
                 class="btn btn-link text-primary"
                 @click="doDisconnectStreamer()"
             >
-                <icon :icon="IconVolumeOff" />
+                <icon-ic-volume-off/>
+
                 <span>
                     {{ $gettext('Disconnect Streamer') }}
                 </span>
@@ -227,7 +227,8 @@
                 class="btn btn-link text-secondary"
                 @click="updateMetadata()"
             >
-                <icon :icon="IconUpdate" />
+                <icon-ic-update/>
+
                 <span>
                     {{ $gettext('Update Metadata') }}
                 </span>
@@ -241,22 +242,12 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {computed, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLightbox} from "~/vendor/lightbox";
 import {userAllowedForStation} from "~/acl";
-import {
-    IconHeadphones,
-    IconLogs,
-    IconMic,
-    IconMusicNote,
-    IconSkipNext,
-    IconUpdate,
-    IconVolumeOff
-} from "~/components/Common/Icons/icons.ts";
 import UpdateMetadataModal from "~/components/Stations/Profile/UpdateMetadataModal.vue";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 import {BackendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
@@ -264,6 +255,13 @@ import {useStationData} from "~/functions/useStationQuery.ts";
 import {getStationApiUrl} from "~/router.ts";
 import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
 import {toRefs} from "@vueuse/core";
+import IconIcHeadphones from "~icons/ic/baseline-headphones";
+import IconIcAssignment from "~icons/ic/baseline-assignment";
+import IconIcMic from "~icons/ic/baseline-mic";
+import IconIcMusicNote from "~icons/ic/baseline-music-note";
+import IconIcSkipNext from "~icons/ic/baseline-skip-next";
+import IconIcUpdate from "~icons/ic/baseline-update";
+import IconIcVolumeOff from "~icons/ic/baseline-volume-off";
 
 const stationData = useStationData();
 const profileData = useStationProfileData();

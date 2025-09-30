@@ -44,7 +44,7 @@
                             target="_blank"
                             :title="$gettext('Download')"
                         >
-                            <icon :icon="IconDownload" />
+                            <icon-ic-cloud-download/>
                         </a>
                     </template>
                     <template v-else>
@@ -78,14 +78,12 @@
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import formatFileSize from "~/functions/formatFileSize";
 import InlinePlayer from "~/components/InlinePlayer.vue";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import {ref, shallowRef, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
-import {IconDownload} from "~/components/Common/Icons/icons.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {StreamChannel, usePlayerStore} from "~/functions/usePlayerStore.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
@@ -94,6 +92,7 @@ import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {ApiStationStreamerBroadcast} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import IconIcCloudDownload from "~icons/ic/baseline-cloud-download";
 
 const streamerId = ref<number | null>(null);
 const listUrl = ref<string | null>(null);

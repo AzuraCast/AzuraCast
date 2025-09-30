@@ -1,10 +1,12 @@
 import {useTranslate} from "~/vendor/gettext.ts";
 import {userAllowed} from "~/acl.ts";
 import filterMenu, {MenuCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
-import {computed} from "vue";
-import {IconGroups, IconRadio, IconRouter} from "~/components/Common/Icons/icons.ts";
+import {computed, markRaw} from "vue";
 import {reactiveComputed} from "@vueuse/core";
 import {GlobalPermissions} from "~/entities/ApiInterfaces.ts";
+import IconIcGroup from "~icons/ic/baseline-group";
+import IconIcRadio from "~icons/ic/baseline-radio";
+import IconIcRouter from "~icons/ic/baseline-router";
 
 export function useAdminMenu(): ReactiveMenu {
     const {$gettext} = useTranslate();
@@ -14,7 +16,7 @@ export function useAdminMenu(): ReactiveMenu {
             const maintenanceMenu: MenuCategory = {
                 key: 'maintenance',
                 label: computed(() => $gettext('System Maintenance')),
-                icon: IconRouter,
+                icon: markRaw(IconIcRouter),
                 items: [
                     {
                         key: 'settings',
@@ -78,7 +80,7 @@ export function useAdminMenu(): ReactiveMenu {
             const usersMenu: MenuCategory = {
                 key: 'users',
                 label: computed(() => $gettext('Users')),
-                icon: IconGroups,
+                icon: markRaw(IconIcGroup),
                 items: [
                     {
                         key: 'manage_users',
@@ -118,7 +120,7 @@ export function useAdminMenu(): ReactiveMenu {
             const stationsMenu: MenuCategory = {
                 key: 'stations',
                 label: computed(() => $gettext('Stations')),
-                icon: IconRadio,
+                icon: markRaw(IconIcRadio),
                 items: [
                     {
                         key: 'manage_stations',

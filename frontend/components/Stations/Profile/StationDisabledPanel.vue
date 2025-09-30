@@ -14,7 +14,8 @@
                 role="button"
                 :to="{name: 'stations:profile:edit'}"
             >
-                <icon :icon="IconEdit" />
+                <icon-ic-edit/>
+
                 <span>
                     {{ $gettext('Edit Profile') }}
                 </span>
@@ -35,11 +36,10 @@
 </template>
 <script setup lang="ts">
 import {userAllowedForStation} from "~/acl.ts";
-import {IconEdit} from "~/components/Common/Icons/icons.ts";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
+import IconIcEdit from "~icons/ic/baseline-edit";
 
 const stationData = useStationData();
 </script>

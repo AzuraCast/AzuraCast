@@ -60,24 +60,22 @@ const props = withDefaults(
 
 const slots = useSlots();
 
-const toPositiveNumberOrNull = (value: any): number | null => {
+const toNumberOrNull = (value: any): number | null => {
     if (value === null) {
         return value;
     }
 
     value = Number(value);
-    return (Number.isNaN(value) || value <= 0)
-        ? null
-        : value;
+    return Number.isNaN(value) ? null : value;
 };
 
 const model = defineModel<T, string, number | null, string | number | null>({
     default: null,
     get(value) {
-        return toPositiveNumberOrNull(value);
+        return toNumberOrNull(value);
     },
     set(value) {
-        return toPositiveNumberOrNull(value);
+        return toNumberOrNull(value);
     }
 });
 

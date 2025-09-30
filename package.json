@@ -7,7 +7,6 @@
     "serve": "vite",
     "lint": "eslint frontend",
     "tsc": "vue-tsc",
-    "generate-icons": "node frontend/genicons.mjs",
     "generate-locales": "vue-gettext-extract",
     "generate-api": "node frontend/genapi.mjs"
   },
@@ -22,8 +21,8 @@
     "@fullcalendar/timegrid": "^6",
     "@fullcalendar/vue3": "^6",
     "@popperjs/core": "^2.11.8",
-    "@regle/core": "^1.8.4",
-    "@regle/rules": "^1.8.4",
+    "@regle/core": "^1.8.6",
+    "@regle/rules": "^1.8.6",
     "@tanstack/vue-query": "^5.80.7",
     "@vuepic/vue-datepicker": "^11",
     "@vueuse/core": "^13",
@@ -56,8 +55,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
+    "@iconify-json/bi": "^1.2.6",
+    "@iconify-json/ic": "^1.2.4",
     "@nabla/vite-plugin-eslint": "^2.0.5",
-    "@tanstack/eslint-plugin-query": "^5.83.1",
+    "@tanstack/eslint-plugin-query": "^5.90.1",
     "@types/bootstrap": "^5.2.6",
     "@types/eslint__js": "^8.42.3",
     "@types/flowjs__flow.js": "^2.13.3",
@@ -77,6 +78,7 @@
     "svg.js": "^2.7.1",
     "swagger-typescript-api": "^13.0.3",
     "typescript-eslint": "^8",
+    "unplugin-icons": "^22.3.0",
     "vite": "^7",
     "vue-eslint-parser": "^10",
     "vue-tsc": "^3"

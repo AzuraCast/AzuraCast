@@ -73,7 +73,8 @@
                         :disabled="r$.$anyDirty"
                         @click="generateAcmeCert"
                     >
-                        <icon :icon="IconBadge" />
+                        <icon-ic-badge/>
+
                         <span>
                             {{ $gettext('Generate/Renew Certificate') }}
                             <span v-if="r$.$anyDirty">
@@ -166,7 +167,8 @@
                         :disabled="r$.$anyDirty"
                         @click="openTestMessage"
                     >
-                        <icon :icon="IconSend" />
+                        <icon-ic-send/>
+
                         <span>
                             {{ $gettext('Send Test Message') }}
                             <span v-if="r$.$anyDirty">
@@ -258,19 +260,19 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import AdminSettingsTestMessageModal from "~/components/Admin/Settings/TestMessageModal.vue";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
 import {computed, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import Tab from "~/components/Common/Tab.vue";
-import {IconBadge, IconSend} from "~/components/Common/Icons/icons.ts";
 import {ApiTaskWithLog} from "~/entities/ApiInterfaces.ts";
 import {useAdminSettingsForm} from "~/components/Admin/Settings/form.ts";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 import {storeToRefs} from "pinia";
 import {getApiUrl} from "~/router.ts";
+import IconIcBadge from "~icons/ic/baseline-badge";
+import IconIcSend from "~icons/ic/baseline-send";
 
 const props = defineProps<{
     releaseChannel: string

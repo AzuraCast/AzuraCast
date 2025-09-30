@@ -33,7 +33,7 @@
             :aria-label="$gettext('Stop')"
             @click="stop()"
         >
-            <icon :icon="IconStop"/>
+            <icon-ic-stop/>
         </button>
         <div
             v-if="showVolume"
@@ -63,12 +63,11 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {computed} from "vue";
 import MuteButton from "~/components/Common/Audio/MuteButton.vue";
-import {IconStop} from "~/components/Common/Icons/icons.ts";
 import {StreamChannel, usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {storeToRefs} from "pinia";
+import IconIcStop from "~icons/ic/baseline-stop";
 
 defineOptions({
     inheritAttrs: false

@@ -15,7 +15,8 @@
                     :disabled="dirHistory.length === 0"
                     @click="pageBack"
                 >
-                    <icon :icon="IconChevronLeft"/>
+                    <icon-bi-chevron-left/>
+
                     <span>
                         {{ $gettext('Back') }}
                     </span>
@@ -45,7 +46,7 @@
                     <template #cell(name)="{item}">
                         <div class="is_dir d-flex align-items-center">
                             <span class="file-icon me-2">
-                                <icon :icon="IconFolder"/>
+                                <icon-ic-folder/>
                             </span>
 
                             <a
@@ -81,12 +82,10 @@
 
 <script setup lang="ts">
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {computed, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
-import {IconChevronLeft, IconFolder} from "~/components/Common/Icons/icons.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchResponse.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
@@ -94,6 +93,8 @@ import {useQuery} from "@tanstack/vue-query";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import {useQueryItemProvider} from "~/functions/dataTable/useQueryItemProvider.ts";
 import {MediaSelectedItems} from "~/components/Stations/Media.vue";
+import IconIcFolder from "~icons/ic/baseline-folder";
+import IconBiChevronLeft from "~icons/bi/chevron-left";
 
 const props = defineProps<{
     selectedItems: MediaSelectedItems,

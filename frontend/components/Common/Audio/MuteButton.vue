@@ -5,15 +5,16 @@
         :aria-label="muteLang"
         @click="toggleMute"
     >
-        <icon :icon="muteIcon" />
+        <component :is="muteIcon"/>
     </button>
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {computed, toRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {IconVolumeDown, IconVolumeOff, IconVolumeUp} from "~/components/Common/Icons/icons.ts";
+import IconIcVolumeDown from "~icons/ic/baseline-volume-down";
+import IconIcVolumeOff from "~icons/ic/baseline-volume-off";
+import IconIcVolumeUp from "~icons/ic/baseline-volume-up";
 
 const props = defineProps<{
     volume: number,
@@ -46,13 +47,13 @@ const muteLang = computed(() => {
 
 const muteIcon = computed(() => {
     if (props.isMuted) {
-        return IconVolumeOff;
+        return IconIcVolumeOff;
     }
 
     if (props.volume < 60) {
-        return IconVolumeDown;
+        return IconIcVolumeDown;
     }
 
-    return IconVolumeUp;
+    return IconIcVolumeUp;
 });
 </script>

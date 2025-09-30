@@ -23,7 +23,8 @@
                         :href="podcast.links.public_feed"
                         target="_blank"
                     >
-                        <icon :icon="IconRss"/>
+                        <icon-bi-rss-fill/>
+
                         {{ $gettext('RSS') }}
                     </a>
                 </div>
@@ -172,8 +173,6 @@ import {getStationApiUrl} from "~/router.ts";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useTranslate} from "~/vendor/gettext.ts";
-import {IconRss} from "~/components/Common/Icons/icons.ts";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import PodcastCommon from "~/components/Public/Podcasts/PodcastCommon.vue";
@@ -184,6 +183,7 @@ import {computed} from "vue";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
 import {ApiPodcastRow} from "~/components/Public/Podcasts/usePodcastQuery.ts";
+import IconBiRssFill from "~icons/bi/rss-fill";
 
 const props = defineProps<{
     podcast: ApiPodcastRow

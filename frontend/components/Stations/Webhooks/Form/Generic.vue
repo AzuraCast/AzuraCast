@@ -79,19 +79,20 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
-import {WebhookRecordCommon, WebhookRecordGeneric} from "~/components/Stations/Webhooks/Form/form.ts";
+import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 import {useAppScopedRegle} from "~/vendor/regle.ts";
 import {required} from "@regle/rules";
+import {storeToRefs} from "pinia";
+import {Ref} from "vue";
+import {WebhookRecordCommon, WebhookRecordGeneric} from "~/entities/Webhooks.ts";
 
 defineProps<WebhookComponentProps>();
 
-type ThisWebhookRecord = WebhookRecordCommon & WebhookRecordGeneric;
-
-const form = defineModel<ThisWebhookRecord>('form', {required: true});
+const {form} = storeToRefs(useStationsWebhooksForm());
 
 const {r$} = useAppScopedRegle(
-    form,
+    form as Ref<WebhookRecordCommon & WebhookRecordGeneric>,
     {
         config: {
             webhook_url: {required},

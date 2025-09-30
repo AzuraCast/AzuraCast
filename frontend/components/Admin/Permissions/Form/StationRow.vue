@@ -15,7 +15,7 @@
                     class="btn btn-sm btn-light py-2"
                     @click="$emit('remove')"
                 >
-                    <icon :icon="IconRemove" />
+                    <icon-ic-remove/>
                     <span>
                         {{ $gettext('Remove') }}
                     </span>
@@ -40,12 +40,11 @@
 
 <script setup lang="ts">
 import {get} from "es-toolkit/compat";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {IconRemove} from "~/components/Common/Icons/icons.ts";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import {ApiAdminRoleStationPermission} from "~/entities/ApiInterfaces.ts";
 import {useAppScopedRegle} from "~/vendor/regle.ts";
+import IconIcRemove from "~icons/ic/baseline-remove";
 
 type T = ApiAdminRoleStationPermission;
 

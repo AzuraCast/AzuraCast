@@ -62,17 +62,20 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonFormattingInfo from "~/components/Stations/Webhooks/Form/Common/FormattingInfo.vue";
 import {includes} from "es-toolkit/compat";
-import {WebhookRecordCommon, WebhookRecordCommonMessages} from "~/components/Stations/Webhooks/Form/form.ts";
+import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
 import {useAppScopedRegle} from "~/vendor/regle.ts";
+import {storeToRefs} from "pinia";
+import {Ref} from "vue";
+import {WebhookRecordCommon, WebhookRecordCommonMessages} from "~/entities/Webhooks.ts";
+
+const {form} = storeToRefs(useStationsWebhooksForm());
 
 type FormWithSocialFields = WebhookRecordCommon & {
     config: WebhookRecordCommonMessages
 };
 
-const form = defineModel<FormWithSocialFields>('form', {required: true});
-
 const {r$} = useAppScopedRegle(
-    form,
+    form as Ref<FormWithSocialFields>,
     {},
     {
         namespace: 'station-webhooks'

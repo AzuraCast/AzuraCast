@@ -16,7 +16,8 @@
                                 :href="exportUrl"
                                 target="_blank"
                             >
-                                <icon :icon="IconDownload" />
+                                <icon-ic-cloud-download/>
+
                                 <span>
                                     {{ $gettext('Download CSV') }}
                                 </span>
@@ -123,19 +124,19 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0 pe-2">
                                     <span v-if="row.item.device.is_bot">
-                                        <icon :icon="IconRouter" />
+                                        <icon-ic-router/>
                                         <span class="visually-hidden">
                                             {{ $gettext('Bot/Crawler') }}
                                         </span>
                                     </span>
                                     <span v-else-if="row.item.device.is_mobile">
-                                        <icon :icon="IconSmartphone" />
+                                        <icon-ic-smartphone/>
                                         <span class="visually-hidden">
                                             {{ $gettext('Mobile') }}
                                         </span>
                                     </span>
                                     <span v-else>
-                                        <icon :icon="IconDesktopWindows" />
+                                        <icon-ic-desktop-windows/>
                                         <span class="visually-hidden">
                                             {{ $gettext('Desktop') }}
                                         </span>
@@ -186,14 +187,12 @@
 
 <script setup lang="ts">
 import StationReportsListenersMap from "~/components/Stations/Reports/Listeners/Map.vue";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown, {DateRange} from "~/components/Common/DateRangeDropdown.vue";
 import {computed, ComputedRef, Ref, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import {getStationApiUrl} from "~/router";
-import {IconDesktopWindows, IconDownload, IconRouter, IconSmartphone} from "~/components/Common/Icons/icons.ts";
 import useHasDatatable from "~/functions/useHasDatatable";
 import {ListenerFilters, ListenerTypeFilters} from "~/components/Stations/Reports/Listeners/listenerFilters.ts";
 import {filter} from "es-toolkit/compat";
@@ -207,6 +206,10 @@ import {useClientItemProvider} from "~/functions/dataTable/useClientItemProvider
 import {useStationData} from "~/functions/useStationQuery.ts";
 import {toRefs} from "@vueuse/core";
 import {ListenerRequired} from "~/entities/StationReports.ts";
+import IconIcDesktopWindows from "~icons/ic/baseline-desktop-windows";
+import IconIcCloudDownload from "~icons/ic/baseline-cloud-download";
+import IconIcRouter from "~icons/ic/baseline-router";
+import IconIcSmartphone from "~icons/ic/baseline-smartphone";
 
 const apiUrl = getStationApiUrl('/listeners');
 

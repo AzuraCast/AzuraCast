@@ -5,16 +5,27 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-- **Unified Stream Encoding**: We're testing out an exciting feature made possible by Liquidsoap's tight FFmpeg
-  integration: the ability to encode a single audio stream and then output it across multiple platforms without
-  re-encoding it. Previously, if you had, say, a 128kbps AAC stream going to Icecast, a remote relay, and HLS, all three
-  of those streams would encode separately. With this new system, all three will share a single encoder. This has the
-  potential to dramatically reduce CPU consumption for larger stations with no impact in quality.
+## Code Quality/Technical Changes
 
-- Liquidsoap is now updated to version 2.4.0. This includes a number of bug fixes for critical issues, but also includes
-  some breaking changes. Most of these changes will appear in the logs as warnings when starting up a station with
-  custom Liquidsoap code. If you use custom Liquidsoap code, you should evaluate these warnings and make changes as
-  needed.
+## Bug Fixes
+
+---
+
+# AzuraCast 0.23.0 (Sep 28, 2025)
+
+## New Features/Changes
+
+- **Share Encoders Between Streams**: You can now optionally enable an exciting new feature made possible by
+  Liquidsoap's FFmpeg integration: shared stream encoders. If enabled, if you have multiple streams that have the exact
+  same bitrate and format (i.e. 128kbps AAC for both an Icecast mount and HLS), both will share a single encoder. For
+  larger installations, this can dramatically improve CPU consumption. This feature is disabled by default to match the
+  experience of earlier versions; if you test it and encounter issues, try disabling it again. Enable the "Share
+  Encoders Between Streams" setting on the "AutoDJ" tab of your station's profile edit form.
+
+- **Liquidsoap 2.4.0**: Liquidsoap is now updated to version 2.4.0. This includes a number of bug fixes for critical
+  issues, but also includes some breaking changes. Most of these changes will appear in the logs as warnings when
+  starting up a station with custom Liquidsoap code. If you use custom Liquidsoap code, you should evaluate these
+  warnings and make changes as needed.
 
 - Playlists assigned to a folder should now be more intuitive; if a track is in a playlist because a parent folder is,
   the playlist will have a folder icon next to it, and hovering over it will indicate which folder it was set from.
@@ -28,7 +39,15 @@ release channel, you can take advantage of these new features and fixes.
 
 - Our Docker image is now built on Debian Trixie (13), the newly released stable version of the Debian OS.
 
+- If a user submits a request too soon after their last one, they will be informed of how many minutes to wait.
+
 ## Bug Fixes
+
+- We have identified a bug that is causing the initial metadata push from live DJs to not transmit successfully. We have
+  temporarily disabled a function in our own code to resolve the issue, and will continue working with Liquidsoap to
+  resolve the issue fully.
+
+- A bug preventing Matomo analytics from registering correctly has been fixed.
 
 - Once-per-X-minutes playlists are again correctly written to Liquidsoap.
 

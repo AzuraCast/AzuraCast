@@ -72,7 +72,8 @@
                     class="btn btn-link text-secondary"
                     @click.prevent="doOpenEmbed"
                 >
-                    <icon :icon="IconCode" />
+                    <icon-ic-code/>
+
                     <span>
                         {{ $gettext('Embed Widgets') }}
                     </span>
@@ -82,7 +83,8 @@
                     class="btn btn-link text-secondary"
                     :to="{name: 'stations:branding'}"
                 >
-                    <icon :icon="IconBranding" />
+                    <icon-ic-design-services/>
+
                     <span>
                         {{ $gettext('Edit Branding') }}
                     </span>
@@ -93,7 +95,8 @@
                     class="btn btn-link text-danger"
                     @click="togglePublicPages"
                 >
-                    <icon :icon="IconClose" />
+                    <icon-ic-close/>
+
                     <span>
                         {{ $gettext('Disable') }}
                     </span>
@@ -106,7 +109,8 @@
                     class="btn btn-link text-success"
                     @click="togglePublicPages"
                 >
-                    <icon :icon="IconCheck" />
+                    <icon-ic-check/>
+
                     <span>
                         {{ $gettext('Enable') }}
                     </span>
@@ -119,17 +123,19 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import {computed, useTemplateRef} from "vue";
 import EmbedModal from "~/components/Stations/Profile/EmbedModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {userAllowedForStation} from "~/acl";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
-import {IconBranding, IconCheck, IconClose, IconCode} from "~/components/Common/Icons/icons.ts";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
+import IconIcDesignServices from "~icons/ic/baseline-design-services";
+import IconIcCheck from "~icons/ic/baseline-check";
+import IconIcClose from "~icons/ic/baseline-close";
+import IconIcCode from "~icons/ic/baseline-code";
 
 const stationData = useStationData();
 const profileData = useStationProfileData();

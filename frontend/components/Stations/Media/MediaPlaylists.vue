@@ -15,7 +15,7 @@
             )"
             @click.prevent="emit('filter', 'playlist:'+playlist.short_name)"
         >
-            <Icon :icon="IconFolder" class="sm me-1"/>
+            <icon-ic-folder class="sm me-1"/>
 
             <span class="text-wrap">
                 {{ playlist.name }}
@@ -37,8 +37,7 @@
 
 <script setup lang="ts">
 import {ApiStationMediaPlaylist} from "~/entities/ApiInterfaces.ts";
-import {IconFolder} from "~/components/Common/Icons/icons.ts";
-import Icon from "~/components/Common/Icons/Icon.vue";
+import IconIcFolder from "~icons/ic/baseline-folder";
 
 defineProps<{
     playlists: ApiStationMediaPlaylist[]

@@ -26,7 +26,7 @@
                                 :title="(isPlaying) ? $gettext('Disable Microphone') : $gettext('Enable Microphone')"
                                 :aria-label="(isPlaying) ? $gettext('Disable Microphone') : $gettext('Enable Microphone')"
                             >
-                                <icon :icon="IconMic" />
+                                <icon-ic-mic/>
                             </button>
                             <button
                                 type="button"
@@ -82,14 +82,13 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import VolumeSlider from "~/components/Public/WebDJ/VolumeSlider.vue";
 import {useDevicesList} from "@vueuse/core";
 import {ref, watch} from "vue";
 import {useWebDjTrack} from "~/components/Public/WebDJ/useWebDjTrack";
 import {usePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
 import {useWebDjSource} from "~/components/Public/WebDJ/useWebDjSource";
-import {IconMic} from "~/components/Common/Icons/icons.ts";
+import IconIcMic from "~icons/ic/baseline-mic";
 
 const {
     source,

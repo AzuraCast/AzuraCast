@@ -33,7 +33,8 @@
                 role="button"
                 :to="{name: 'stations:profile:edit'}"
             >
-                <icon :icon="IconEdit" />
+                <icon-ic-edit/>
+
                 <span>
                     {{ $gettext('Edit Profile') }}
                 </span>
@@ -43,13 +44,12 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import {userAllowedForStation} from "~/acl";
-import {IconEdit} from "~/components/Common/Icons/icons.ts";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
+import IconIcEdit from "~icons/ic/baseline-edit";
 
 const stationData = useStationData();
 const profileData = useStationProfileData();

@@ -46,15 +46,18 @@ import {useTranslate} from "~/vendor/gettext.ts";
 import {getTriggers, WebhookTriggerDetails} from "~/entities/Webhooks.ts";
 import {computed} from "vue";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {WebhookRecord} from "~/components/Stations/Webhooks/Form/form.ts";
+import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
 import {useAppScopedRegle} from "~/vendor/regle.ts";
 import {required} from "@regle/rules";
+import {storeToRefs} from "pinia";
 
 const props = defineProps<{
     triggerDetails: WebhookTriggerDetails
 }>();
 
-const form = defineModel<WebhookRecord>('form', {required: true});
+const {
+    form
+} = storeToRefs(useStationsWebhooksForm());
 
 const {r$} = useAppScopedRegle(
     form,

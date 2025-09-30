@@ -42,7 +42,8 @@
                 class="btn btn-danger"
                 @click="doClear()"
             >
-                <icon :icon="IconRemove" />
+                <icon-ic-remove/>
+                
                 <span>
                     {{ $gettext('Clear Pending Requests') }}
                 </span>
@@ -93,17 +94,16 @@
 
 <script setup lang="ts">
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import {getStationApiUrl} from "~/router";
-import {IconRemove} from "~/components/Common/Icons/icons.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import IconIcRemove from "~icons/ic/baseline-remove";
 
 type RequestType = "pending" | "history";
 

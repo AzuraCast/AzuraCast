@@ -5,7 +5,7 @@
         aria-live="off"
     >
         <div class="flex-shrink-0 me-2">
-            <icon :icon="IconInfo" />
+            <icon-ic-info/>
         </div>
         <div class="flex-fill">
             <slot />
@@ -20,8 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
-import {IconInfo} from "~/components/Common/Icons/icons.ts";
+import IconIcInfo from "~icons/ic/baseline-info";
 
 const slots = defineSlots();
 </script>

@@ -64,7 +64,7 @@ final class GoogleAnalyticsV4 extends AbstractGoogleAnalyticsConnector
                 ->setParamValue('user_agent', $listener['listener_user_agent']);
 
             $ga4Service->send(
-                (new BaseRequest())->setClientId($uid)->addEvent($event)
+                new BaseRequest()->setClientId($uid)->addEvent($event)
             );
         }
     }

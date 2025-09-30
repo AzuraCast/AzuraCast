@@ -15,7 +15,7 @@
                         role="button"
                         :to="{ name: 'profile:index'}"
                     >
-                        <icon :icon="IconAccountCircle"/>
+                        <icon-ic-account-circle/>
                         <span>{{ $gettext('My Account') }}</span>
                     </router-link>
                     <router-link
@@ -24,7 +24,7 @@
                         role="button"
                         :to="{ name: 'admin:index' }"
                     >
-                        <icon :icon="IconSettings"/>
+                        <icon-ic-settings/>
                         <span>{{ $gettext('Administration') }}</span>
                     </router-link>
                 </user-info-panel>
@@ -42,19 +42,13 @@
                             v-if="'info' === notification.type"
                             class="flex-shrink-0 me-3"
                         >
-                            <icon
-                                :icon="IconInfo"
-                                class="lg"
-                            />
+                            <icon-ic-info class="lg"/>
                         </div>
                         <div
                             v-else
                             class="flex-shrink-0 me-3"
                         >
-                            <icon
-                                :icon="IconWarning"
-                                class="lg"
-                            />
+                            <icon-ic-warning class="lg"/>
                         </div>
                         <div class="flex-fill">
                             <h4>{{ notification.title }}</h4>
@@ -135,7 +129,8 @@
                                 class="btn btn-dark py-2"
                                 :to="{ name: 'admin:stations:index' }"
                             >
-                                <icon :icon="IconSettings"/>
+                                <icon-ic-settings/>
+
                                 <span>
                                     {{ $gettext('Manage Stations') }}
                                 </span>
@@ -178,10 +173,7 @@
                     </template>
                     <template #cell(listeners)="{ item }">
                         <span class="pe-1">
-                            <icon
-                                class="sm align-middle"
-                                :icon="IconHeadphones"
-                            />
+                            <icon-ic-headphones class="sm align-middle"/>
                         </span>
                         <template v-if="item.links.listeners">
                             <a
@@ -250,7 +242,6 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useAxios} from "~/vendor/axios";
@@ -259,13 +250,6 @@ import DashboardCharts from "~/components/DashboardCharts.vue";
 import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
 import useOptionalStorage from "~/functions/useOptionalStorage";
-import {
-    IconAccountCircle,
-    IconHeadphones,
-    IconInfo,
-    IconSettings,
-    IconWarning
-} from "~/components/Common/Icons/icons.ts";
 import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
 import {getApiUrl} from "~/router.ts";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
@@ -276,6 +260,11 @@ import {useQuery} from "@tanstack/vue-query";
 import {userAllowed} from "~/acl.ts";
 import {useAzuraCastDashboardGlobals} from "~/vendor/azuracast.ts";
 import DashboardNoSidebar from "~/components/Layout/DashboardNoSidebar.vue";
+import IconIcAccountCircle from "~icons/ic/baseline-account-circle";
+import IconIcHeadphones from "~icons/ic/baseline-headphones";
+import IconIcInfo from "~icons/ic/baseline-info";
+import IconIcSettings from "~icons/ic/baseline-settings";
+import IconIcWarning from "~icons/ic/baseline-warning";
 
 const {showCharts, showAlbumArt} = useAzuraCastDashboardGlobals();
 

@@ -18,7 +18,8 @@
                     class="btn btn-link text-secondary"
                     @click.prevent="openSongHistoryModal"
                 >
-                    <icon :icon="IconHistory" />
+                    <icon-ic-history/>
+
                     <span>
                         {{ $gettext('Song History') }}
                     </span>
@@ -28,7 +29,8 @@
                     class="btn btn-link text-secondary"
                     @click.prevent="openRequestModal"
                 >
-                    <icon :icon="IconHelp" />
+                    <icon-ic-help/>
+
                     <span>
                         {{ $gettext('Request Song') }}
                     </span>
@@ -37,7 +39,8 @@
                     class="btn btn-link text-secondary"
                     :href="downloadPlaylistUri"
                 >
-                    <icon :icon="IconDownload" />
+                    <icon-ic-cloud-download/>
+
                     <span>
                         {{ $gettext('Playlist') }}
                     </span>
@@ -64,14 +67,15 @@
 <script setup lang="ts">
 import SongHistoryModal from "~/components/Public/FullPlayer/SongHistoryModal.vue";
 import RequestModal from "~/components/Public/FullPlayer/RequestModal.vue";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import RadioPlayer, {PlayerProps} from "~/components/Public/Player.vue";
 import {shallowRef, useTemplateRef} from "vue";
 import Lightbox from "~/components/Common/Lightbox.vue";
 import {useProvideLightbox} from "~/vendor/lightbox";
-import {IconDownload, IconHelp, IconHistory} from "~/components/Common/Icons/icons.ts";
 import {RequestsProps} from "~/components/Public/Requests.vue";
 import {ApiNowPlaying, ApiNowPlayingSongHistory} from "~/entities/ApiInterfaces.ts";
+import IconIcCloudDownload from "~icons/ic/baseline-cloud-download";
+import IconIcHelp from "~icons/ic/baseline-help";
+import IconIcHistory from "~icons/ic/baseline-history";
 
 interface FullPlayerProps extends PlayerProps, RequestsProps {
     stationName: string,

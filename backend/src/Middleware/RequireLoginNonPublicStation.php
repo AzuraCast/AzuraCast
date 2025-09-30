@@ -5,22 +5,26 @@ declare(strict_types=1);
 namespace App\Middleware;
 
 use App\Exception\Http\NotLoggedInException;
+use App\Exception\NotFoundException;
 use App\Http\ServerRequest;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * Require that the user be logged in to view this page.
+ * Require that the user be logged in to view non-public station page.
  */
-class RequireLogin extends AbstractMiddleware
+final class RequireLoginNonPublicStation extends RequireLogin
 {
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
         try {
-            $request->getUser();
+            $request->getStation();
+            if (!$request->getStation()->enable_public_page) {
+                return parent::__invoke($request, $handler);
+            }
         } catch (Exception) {
-            throw NotLoggedInException::create($request);
+            throw NotFoundException::station();
         }
 
         return $handler->handle($request);

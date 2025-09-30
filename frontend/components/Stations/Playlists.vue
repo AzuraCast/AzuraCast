@@ -136,7 +136,7 @@
                                     {{ $gettext('Custom') }}
                                 </template>
                             </template>
-                            <template #cell(num_songs)="row">
+                            <template #cell(num_entries)="row">
                                 <template v-if="row.item.source === 'songs'">
                                     <router-link
                                         :to="{
@@ -152,8 +152,7 @@
                                     ({{ formatLength(row.item.total_length) }})
                                 </template>
                                 <template v-else-if="row.item.source === 'playlists'">
-                                    {{ row.item.num_songs }}
-                                    ({{ formatLength(row.item.total_length) }})
+                                    {{ row.item.playlists.length }}
                                 </template>
                                 <template v-else>
                                     &nbsp;
@@ -256,6 +255,7 @@
                                         {{ $gettext('Duplicate') }}
                                     </button>
                                     <a
+                                        v-if="item.source !== 'playlists'"
                                         v-for="format in ['pls', 'm3u']"
                                         :key="format"
                                         class="btn btn-sm btn-secondary"
@@ -274,6 +274,9 @@
                         </data-table>
                     </div>
                 </tab>
+                <playlist-grouping-tab
+                    ref="$playlistGroupingTab"
+                />
                 <schedule-view-tab
                     ref="$scheduleTab"
                     :schedule-url="scheduleUrl"
@@ -336,6 +339,7 @@ import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import {toRefs} from "@vueuse/core";
+import PlaylistGroupingTab from "~/components/Stations/Playlists/PlaylistGroupingTab.vue";
 
 const listUrl = getStationApiUrl('/playlists');
 const scheduleUrl = getStationApiUrl('/playlists/schedule');
@@ -346,7 +350,7 @@ const fields: DataTableField[] = [
     {key: 'name', isRowHeader: true, label: $gettext('Playlist'), sortable: true},
     {key: 'source', label: $gettext('Source'), sortable: false},
     {key: 'scheduling', label: $gettext('Scheduling'), sortable: false},
-    {key: 'num_songs', label: $gettext('# Songs'), sortable: false},
+    {key: 'num_entries', label: $gettext('# Entries'), sortable: false},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 

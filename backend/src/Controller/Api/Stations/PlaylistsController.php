@@ -273,7 +273,7 @@ final class PlaylistsController extends AbstractScheduledEntityController
             ),
         ];
 
-        if (PlaylistSources::Songs === $record->source) {
+        if (in_array($record->source, [PlaylistSources::Songs, PlaylistSources::Playlists])) {
             if (PlaylistOrders::Sequential === $record->order) {
                 $return['links']['order'] = $router->fromHere(
                     routeName: 'api:stations:playlist:order',
@@ -290,14 +290,16 @@ final class PlaylistsController extends AbstractScheduledEntityController
                 );
             }
 
-            $return['links']['import'] = $router->fromHere(
-                routeName: 'api:stations:playlist:import',
+            $return['links']['reshuffle'] = $router->fromHere(
+                routeName: 'api:stations:playlist:reshuffle',
                 routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             );
+        }
 
-            $return['links']['reshuffle'] = $router->fromHere(
-                routeName: 'api:stations:playlist:reshuffle',
+        if (PlaylistSources::Songs === $record->source) {
+            $return['links']['import'] = $router->fromHere(
+                routeName: 'api:stations:playlist:import',
                 routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             );

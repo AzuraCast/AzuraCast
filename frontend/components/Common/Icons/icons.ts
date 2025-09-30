@@ -120,6 +120,10 @@ export const IconDownload: Icon = {
   viewBox: materialIconsViewBox,
   contents: '<path d="M249-145q-94 0-160-65.5T23-370q0-81 51-143.5T204-591q22-90 88-150.5T445-812v349l-78-78-52 52 166 167 167-167-52-52-78 78v-349q101 14 170.5 92T763-534v24q74 3 124 54t50 128q0 75-54 129t-129 54H249Z"/>'
 };
+export const IconDriveFileMove: Icon = {
+  viewBox: materialIconsViewBox,
+  contents: '<path d="m526-410-75 75 42 42 147-147-147-147-42 42 75 75H320v60h206ZM140-160q-24 0-42-18.5T80-220v-520q0-23 18-41.5t42-18.5h281l60 60h339q23 0 41.5 18.5T880-680v460q0 23-18.5 41.5T820-160H140Zm0-60h680v-460H456l-60-60H140v520Zm0 0v-520 520Z"/>'
+};
 export const IconEdit: Icon = {
   viewBox: materialIconsViewBox,
   contents: '<path d="M180-180h44l443-443-44-44-443 443v44Zm614-486L666-794l42-42q17-17 42-17t42 17l44 44q17 17 17 42t-17 42l-42 42Zm-42 42L248-120H120v-128l504-504 128 128Zm-107-21-22-22 44 44-22-22Z"/>'
@@ -155,6 +159,10 @@ export const IconFilterList: Icon = {
 export const IconFolder: Icon = {
   viewBox: materialIconsViewBox,
   contents: '<path d="M137-144q-28.725 0-50.862-22.319Q64-188.637 64-217v-526q0-28.362 22.138-50.681Q108.275-816 137-816h271l73 73h342q28.362 0 50.681 22.319T896-670v453q0 28.363-22.319 50.681Q851.362-144 823-144H137Z"/>'
+};
+export const IconFolderOpen: Icon = {
+  viewBox: materialIconsViewBox,
+  contents: '<path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640H447l-80-80H160v480l96-320h684L837-217q-8 26-29.5 41.5T760-160H160Zm84-80h516l72-240H316l-72 240Zm0 0 72-240-72 240Zm-84-400v-80 80Z"/>'
 };
 export const IconGroups: Icon = {
   viewBox: materialIconsViewBox,

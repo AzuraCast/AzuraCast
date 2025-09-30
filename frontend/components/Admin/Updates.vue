@@ -35,7 +35,7 @@
                             class="btn btn-info"
                             @click="checkForUpdates()"
                         >
-                            <icon :icon="IconSync"/>
+                            <icon-ic-sync/>
                             {{ $gettext('Check for Updates') }}
                         </button>
                     </template>
@@ -61,7 +61,8 @@
                             href="/docs/getting-started/updates/release-channels/"
                             target="_blank"
                         >
-                            <icon :icon="IconInfo"/>
+                            <icon-ic-info/>
+
                             {{ $gettext('About Release Channels') }}
                         </a>
                     </template>
@@ -106,7 +107,8 @@
                             :to="{ name: 'admin:backups:index' }"
                             class="btn btn-dark"
                         >
-                            <icon :icon="IconUpload"/>
+                            <icon-ic-cloud-upload/>
+
                             <span>
                                 {{ $gettext('Backup') }}
                             </span>
@@ -116,7 +118,8 @@
                             class="btn btn-success"
                             @click="doUpdate()"
                         >
-                            <icon :icon="IconUpdate"/>
+                            <icon-ic-update/>
+
                             <span>
                                 {{ $gettext('Update via Web') }}
                             </span>
@@ -141,7 +144,7 @@
                             href="/docs/getting-started/updates/"
                             target="_blank"
                         >
-                            <icon :icon="IconInfo"/>
+                            <icon-ic-info/>
                             <span>
                                 {{ $gettext('Update Instructions') }}
                             </span>
@@ -155,18 +158,20 @@
 
 <script setup lang="ts">
 import {computed} from "vue";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
-import {IconInfo, IconSync, IconUpdate, IconUpload} from "~/components/Common/Icons/icons.ts";
 import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {ApiAdminUpdateDetails, ApiAdminVueUpdateProps} from "~/entities/ApiInterfaces.ts";
 import {useQuery} from "@tanstack/vue-query";
 import {QueryKeys} from "~/entities/Queries.ts";
 import Loading from "~/components/Common/Loading.vue";
+import IconIcInfo from "~icons/ic/baseline-info";
+import IconIcSync from "~icons/ic/baseline-sync";
+import IconIcUpdate from "~icons/ic/baseline-update";
+import IconIcCloudUpload from "~icons/ic/baseline-cloud-upload";
 
 const propsUrl = getApiUrl('/admin/vue/updates');
 const updatesApiUrl = getApiUrl('/admin/updates');

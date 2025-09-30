@@ -19,7 +19,8 @@
                     class="btn btn-link text-primary"
                     :to="{name: 'stations:streamers:index'}"
                 >
-                    <icon :icon="IconSettings" />
+                    <icon-ic-settings/>
+
                     <span>
                         {{ $gettext('Manage') }}
                     </span>
@@ -30,7 +31,8 @@
                     class="btn btn-link text-danger"
                     @click="toggleStreamers"
                 >
-                    <icon :icon="IconClose" />
+                    <icon-ic-close/>
+
                     <span>
                         {{ $gettext('Disable') }}
                     </span>
@@ -43,7 +45,8 @@
                     class="btn btn-link text-success"
                     @click="toggleStreamers"
                 >
-                    <icon :icon="IconCheck" />
+                    <icon-ic-check/>
+
                     <span>
                         {{ $gettext('Enable') }}
                     </span>
@@ -54,15 +57,16 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {userAllowedForStation} from "~/acl";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
-import {IconCheck, IconClose, IconSettings} from "~/components/Common/Icons/icons.ts";
 import {computed} from "vue";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
+import IconIcCheck from "~icons/ic/baseline-check";
+import IconIcClose from "~icons/ic/baseline-close";
+import IconIcSettings from "~icons/ic/baseline-settings";
 
 const stationData = useStationData();
 

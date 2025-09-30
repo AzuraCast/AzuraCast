@@ -48,7 +48,8 @@
                 class="btn btn-link text-secondary"
                 @click="doRestart()"
             >
-                <icon :icon="IconUpdate" />
+                <icon-ic-update/>
+
                 <span>
                     {{ $gettext('Restart') }}
                 </span>
@@ -59,7 +60,7 @@
                 class="btn btn-link text-success"
                 @click="doStart()"
             >
-                <icon :icon="IconPlay" />
+                <icon-ic-play-arrow/>
                 <span>
                     {{ $gettext('Start') }}
                 </span>
@@ -70,7 +71,7 @@
                 class="btn btn-link text-danger"
                 @click="doStop()"
             >
-                <icon :icon="IconStop" />
+                <icon-ic-stop/>
                 <span>
                     {{ $gettext('Stop') }}
                 </span>
@@ -80,18 +81,19 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {userAllowedForStation} from "~/acl";
-import {IconPlay, IconStop, IconUpdate} from "~/components/Common/Icons/icons.ts";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 import {BackendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {getStationApiUrl} from "~/router.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
+import IconIcPlayArrow from "~icons/ic/baseline-play-arrow";
+import IconIcStop from "~icons/ic/baseline-stop";
+import IconIcUpdate from "~icons/ic/baseline-update";
 
 const stationData = useStationData();
 const profileData = useStationProfileData();

@@ -11,10 +11,10 @@
                 :to="category.url"
                 class="nav-link"
             >
-                <icon
-                    class="navdrawer-nav-icon"
+                <component
                     v-if="category.icon"
-                    :icon="category.icon"
+                    :is="category.icon"
+                    class="navdrawer-nav-icon"
                 />
                 <span class="might-overflow">{{ category.label }}</span>
             </router-link>
@@ -24,16 +24,16 @@
                 class="nav-link"
                 :class="getLinkClass(category)"
             >
-                <icon
-                    class="navdrawer-nav-icon"
+                <component
                     v-if="category.icon"
-                    :icon="category.icon"
+                    :is="category.icon"
+                    class="navdrawer-nav-icon"
                 />
                 <span class="might-overflow">{{ category.label }}</span>
-                <icon
+
+                <icon-ic-open-in-new
                     v-if="category.external"
                     class="sm ms-2"
-                    :icon="IconOpenInNew"
                     :aria-label="$gettext('External')"
                 />
             </a>
@@ -68,10 +68,10 @@
                             :title="item.title"
                         >
                             <span class="might-overflow">{{ item.label }}</span>
-                            <icon
+
+                            <icon-ic-open-in-new
                                 v-if="item.external"
                                 class="sm ms-2"
-                                :icon="IconOpenInNew"
                                 :aria-label="$gettext('External')"
                             />
                         </a>
@@ -83,11 +83,10 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {useRoute} from "vue-router";
 import {some} from "es-toolkit/compat";
-import {IconOpenInNew} from "~/components/Common/Icons/icons.ts";
 import {MenuCategory, MenuRouteBasedUrl, MenuRouteUrl, MenuSubCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
+import IconIcOpenInNew from "~icons/ic/baseline-open-in-new";
 
 defineProps<{
     menu: ReactiveMenu

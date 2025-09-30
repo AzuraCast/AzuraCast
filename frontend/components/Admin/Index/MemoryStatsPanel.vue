@@ -13,7 +13,7 @@
                     class="btn btn-dark btn-sm py-2"
                     @click="showMemoryStatsHelpModal"
                 >
-                    <icon :icon="IconInfo" />
+                    <icon-ic-info/>
                 </button>
             </div>
         </div>
@@ -62,11 +62,10 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {useTemplateRef} from "vue";
 import MemoryStatsHelpModal from "~/components/Admin/Index/MemoryStatsHelpModal.vue";
-import {IconInfo} from "~/components/Common/Icons/icons.ts";
 import {ApiAdminServerStatsMemoryStats} from "~/entities/ApiInterfaces.ts";
+import IconIcInfo from "~icons/ic/baseline-info";
 
 defineProps<{
     memoryStats: ApiAdminServerStatsMemoryStats

@@ -8,10 +8,7 @@
             {{ $gettext('Create Account') }}
         </div>
         <div>
-            <icon
-                :icon="IconArrowRight"
-                class="xl"
-            />
+            <icon-ic-arrow-right class="xl"/>
         </div>
         <div
             class="rounded border p-2 m-2"
@@ -21,10 +18,7 @@
             {{ $gettext('Create Station') }}
         </div>
         <div>
-            <icon
-                :icon="IconArrowRight"
-                class="xl"
-            />
+            <icon-ic-arrow-right class="xl"/>
         </div>
         <div
             class="rounded border p-2 m-2"
@@ -37,8 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
-import {IconArrowRight} from "~/components/Common/Icons/icons.ts";
+import IconIcArrowRight from "~icons/ic/baseline-arrow-right";
 
 const props = withDefaults(
     defineProps<{

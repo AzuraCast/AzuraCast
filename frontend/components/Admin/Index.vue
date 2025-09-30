@@ -6,7 +6,7 @@
 
         <div class="row row-of-cards">
             <div
-                v-for="panel in menuItems.categories"
+                v-for="panel in menuItems"
                 :key="panel.key"
                 class="col-sm-12 col-lg-4"
             >
@@ -20,7 +20,7 @@
                         <div class="flex-shrink-0 pt-1">
                             <component
                                 v-if="panel.icon"
-                                :is="panel.icon"
+                                :is="panel.icon()"
                                 class="lg"
                             />
                         </div>

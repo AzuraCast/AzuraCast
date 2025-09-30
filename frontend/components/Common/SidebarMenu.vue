@@ -1,7 +1,7 @@
 <template>
     <ul class="navdrawer-nav">
         <li
-            v-for="category in menu.categories"
+            v-for="category in menu"
             :key="category.key"
             class="nav-item"
         >
@@ -13,7 +13,7 @@
             >
                 <component
                     v-if="category.icon"
-                    :is="category.icon"
+                    :is="category.icon()"
                     class="navdrawer-nav-icon"
                 />
                 <span class="might-overflow">{{ category.label }}</span>
@@ -26,7 +26,7 @@
             >
                 <component
                     v-if="category.icon"
-                    :is="category.icon"
+                    :is="category.icon()"
                     class="navdrawer-nav-icon"
                 />
                 <span class="might-overflow">{{ category.label }}</span>
@@ -85,11 +85,11 @@
 <script setup lang="ts">
 import {useRoute} from "vue-router";
 import {some} from "es-toolkit/compat";
-import {MenuCategory, MenuRouteBasedUrl, MenuRouteUrl, MenuSubCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
+import {MenuCategory, MenuRouteBasedUrl, MenuRouteUrl, MenuSubCategory} from "~/functions/filterMenu.ts";
 import IconIcOpenInNew from "~icons/ic/baseline-open-in-new";
 
 defineProps<{
-    menu: ReactiveMenu
+    menu: MenuCategory[]
 }>();
 
 const currentRoute = useRoute();

@@ -47,7 +47,7 @@
             </slot>
 
             <validation-error
-                v-if="isValidatedField"
+                v-if="field"
                 :field="field"
             />
         </template>
@@ -98,5 +98,5 @@ const slots = useSlots();
 
 const emit = defineEmits<FormFieldEmits<T>>();
 
-const {model, isValidatedField, isRequired} = useFormField<T>(props, emit);
+const {model, isRequired} = useFormField<T>(props, emit);
 </script>

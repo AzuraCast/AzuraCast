@@ -63,7 +63,7 @@
                                 :title="$gettext('Move to Bottom')"
                                 @click.prevent="moveToBottom(index)"
                             >
-                                <icon :icon="IconChevronBarDown"/>
+                                <icon-bi-chevron-bar-down/>
                             </button>
                             <button
                                 v-if="index+1 < media.length"
@@ -72,7 +72,7 @@
                                 :title="$gettext('Move Down')"
                                 @click.prevent="moveDown(index)"
                             >
-                                <icon :icon="IconChevronDown"/>
+                                <icon-bi-chevron-down/>
                             </button>
                             <button
                                 v-if="index > 0"
@@ -81,7 +81,7 @@
                                 :title="$gettext('Move Up')"
                                 @click.prevent="moveUp(index)"
                             >
-                                <icon :icon="IconChevronUp"/>
+                                <icon-bi-chevron-up/>
                             </button>
                             <button
                                 v-if="index > 0"
@@ -90,7 +90,7 @@
                                 :title="$gettext('Move to Top')"
                                 @click.prevent="moveToTop(index)"
                             >
-                                <icon :icon="IconChevronBarUp"/>
+                                <icon-bi-chevron-bar-up/>
                             </button>
                         </div>
                     </td>
@@ -101,7 +101,6 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import InlinePlayer from "~/components/InlinePlayer.vue";
 import {ref, useTemplateRef} from "vue";
@@ -109,11 +108,14 @@ import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
-import {IconChevronBarDown, IconChevronBarUp, IconChevronDown, IconChevronUp} from "~/components/Common/Icons/icons.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {StreamChannel, usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {useDraggable} from "vue-draggable-plus";
 import {ApiStationMedia} from "~/entities/ApiInterfaces.ts";
+import IconBiChevronBarDown from "~icons/bi/chevron-bar-down";
+import IconBiChevronBarUp from "~icons/bi/chevron-bar-up";
+import IconBiChevronDown from "~icons/bi/chevron-down";
+import IconBiChevronUp from "~icons/bi/chevron-up";
 
 type StationPlaylistMedia = {
     id: number,

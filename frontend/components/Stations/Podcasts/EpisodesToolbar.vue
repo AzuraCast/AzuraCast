@@ -10,7 +10,8 @@
             :disabled="!hasSelectedItems"
             @click="doEdit"
         >
-            <icon :icon="IconEdit" />
+            <icon-ic-edit/>
+
             <span>
                 {{ $gettext('Edit') }}
             </span>
@@ -23,7 +24,8 @@
             :disabled="!hasSelectedItems"
             @click="doDelete"
         >
-            <icon :icon="IconDelete" />
+            <icon-ic-delete/>
+
             <span>
                 {{ $gettext('Delete') }}
             </span>
@@ -32,14 +34,14 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
-import {IconDelete, IconEdit} from "~/components/Common/Icons/icons.ts";
 import {computed, toRef} from "vue";
 import useHandlePodcastBatchResponse from "~/components/Stations/Podcasts/useHandlePodcastBatchResponse.ts";
 import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
+import IconIcDelete from "~icons/ic/baseline-delete";
+import IconIcEdit from "~icons/ic/baseline-edit";
 
 const props = withDefaults(
     defineProps<{

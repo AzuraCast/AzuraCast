@@ -1,4 +1,4 @@
-import {computed, ComputedRef, UnwrapNestedRefs, WritableComputedRef} from "vue";
+import {computed, UnwrapNestedRefs, WritableComputedRef} from "vue";
 import {reactiveComputed} from "@vueuse/core";
 import {RegleFieldStatus} from "@regle/core";
 
@@ -23,20 +23,11 @@ export interface FormFieldEmits<T = ModelFormField> {
 export function useFormField<T = ModelFormField>(
     initialProps: FormFieldProps<T>,
     emit: FormFieldEmits<T>
-): {
-    isValidatedField: ComputedRef<boolean>,
-    model: WritableComputedRef<T>,
-    fieldClass: ComputedRef<string | null>,
-    isRequired: ComputedRef<boolean>
-} {
+) {
     const props = reactiveComputed(() => ({
         required: false,
         ...initialProps
     })) as FormFieldProps<T>;
-
-    const isValidatedField = computed(
-        () => props.field !== undefined
-    );
 
     const model: WritableComputedRef<T, T> = computed({
         get() {
@@ -79,7 +70,6 @@ export function useFormField<T = ModelFormField>(
     });
 
     return {
-        isValidatedField,
         model,
         fieldClass,
         isRequired

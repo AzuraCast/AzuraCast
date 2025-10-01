@@ -57,7 +57,8 @@
                     :href="item.links.public_feed"
                     target="_blank"
                 >
-                    <icon :icon="IconRss" />
+                    <icon-bi-rss-fill/>
+
                     {{ $gettext('RSS') }}
                 </a>
             </div>
@@ -120,13 +121,12 @@ import AlbumArt from "~/components/Common/AlbumArt.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import {getStationApiUrl} from "~/router.ts";
 import {useTranslate} from "~/vendor/gettext.ts";
-import {IconRss} from "~/components/Common/Icons/icons.ts";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import GridLayout from "~/components/Common/GridLayout.vue";
 import {usePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
 import {ApiPodcastRow} from "~/components/Public/Podcasts/usePodcastQuery.ts";
+import IconBiRssFill from "~icons/bi/rss-fill";
 
 const {groupLayout, stationId} = usePodcastGlobals();
 

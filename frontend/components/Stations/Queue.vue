@@ -6,7 +6,8 @@
                 class="btn btn-danger"
                 @click="doClear()"
             >
-                <icon :icon="IconRemove" />
+                <icon-ic-remove/>
+
                 <span>
                     {{ $gettext('Clear Upcoming Song Queue') }}
                 </span>
@@ -72,7 +73,6 @@
 <script setup lang="ts">
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import QueueLogsModal from "~/components/Stations/Queue/LogsModal.vue";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useTemplateRef} from "vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
@@ -80,12 +80,12 @@ import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getStationApiUrl} from "~/router";
-import {IconRemove} from "~/components/Common/Icons/icons.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {ApiNowPlayingStationQueue, ApiStationQueueDetailed, ApiStatus} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import IconIcRemove from "~icons/ic/baseline-remove";
 
 const listUrl = getStationApiUrl('/queue');
 const clearUrl = getStationApiUrl('/queue/clear');

@@ -4,13 +4,12 @@
         class="btn btn-primary"
         @click="emit('click')"
     >
-        <icon :icon="IconAdd" />
+        <icon-ic-add/>
         <span>{{ text }}</span>
     </button>
 </template>
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
-import {IconAdd} from "~/components/Common/Icons/icons.ts";
+import IconIcAdd from "~icons/ic/baseline-add";
 
 defineProps<{
     text: string

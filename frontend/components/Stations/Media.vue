@@ -93,19 +93,19 @@
                                 v-if="item.type === FileTypes.Directory"
                                 class="file-icon"
                             >
-                                <icon :icon="IconFolder" />
+                                <icon-ic-folder/>
                             </span>
                             <span
                                 v-else-if="item.type === FileTypes.CoverArt"
                                 class="file-icon"
                             >
-                                <icon :icon="IconImage" />
+                                <icon-ic-image/>
                             </span>
                             <span
                                 v-else
                                 class="file-icon"
                             >
-                                <icon :icon="IconFile" />
+                                <icon-ic-insert-drive-file/>
                             </span>
                         </template>
                     </div>
@@ -249,7 +249,6 @@ import MoveFilesModal from "~/components/Stations/Media/MoveFilesModal.vue";
 import RenameModal from "~/components/Stations/Media/RenameModal.vue";
 import EditModal from "~/components/Stations/Media/EditModal.vue";
 import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -259,7 +258,6 @@ import formatFileSize from "~/functions/formatFileSize";
 import InfoCard from "~/components/Common/InfoCard.vue";
 import {getStationApiUrl} from "~/router";
 import {useRoute, useRouter} from "vue-router";
-import {IconFile, IconFolder, IconImage} from "~/components/Common/Icons/icons.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {
     ApiStationMediaPlaylist,
@@ -273,6 +271,9 @@ import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import MediaPlaylists from "~/components/Stations/Media/MediaPlaylists.vue";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import {FileListRequired, StationsVueFilesPropsRequired} from "~/entities/StationMedia.ts";
+import IconIcInsertDriveFile from "~icons/ic/baseline-insert-drive-file";
+import IconIcFolder from "~icons/ic/baseline-folder";
+import IconIcImage from "~icons/ic/baseline-image";
 
 const props = defineProps<StationsVueFilesPropsRequired>();
 

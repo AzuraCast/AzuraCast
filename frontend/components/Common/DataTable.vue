@@ -31,7 +31,7 @@
                     <div class="flex-fill">
                         <div class="input-group">
                             <span class="input-group-text">
-                                <icon :icon="IconSearch" />
+                                <icon-ic-search/>
                             </span>
                             <input
                                 v-model="searchPhrase"
@@ -51,7 +51,7 @@
                                 :title="$gettext('Refresh rows')"
                                 @click="onClickRefresh"
                             >
-                                <icon :icon="IconRefresh" />
+                                <icon-ic-refresh/>
                             </button>
 
                             <div
@@ -103,7 +103,7 @@
                                     data-bs-placement="left"
                                     :title="$gettext('Display fields')"
                                 >
-                                    <icon :icon="IconFilterList" />
+                                    <icon-ic-filter-list/>
                                     <span class="caret" />
                                 </button>
                                 <div class="dropdown-menu">
@@ -179,7 +179,8 @@
                                     {{ column.label }}
 
                                     <template v-if="column.sortable && sortField?.key === column.key">
-                                        <icon :icon="(sortOrder === 'asc') ? IconArrowDropUp : IconArrowDropDown" />
+                                        <icon-ic-arrow-drop-up v-if="sortOrder === 'asc'"/>
+                                        <icon-ic-arrow-drop-down v-else/>
                                     </template>
                                 </div>
                             </slot>
@@ -291,20 +292,12 @@
 
 <script setup lang="ts" generic="Row extends DataTableRow = DataTableRow">
 import {filter, forEach, get, isEmpty, some} from "es-toolkit/compat";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {computed, ref, shallowRef, toRaw, watch} from "vue";
 import {watchDebounced} from "@vueuse/core";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 import FormCheckbox from "~/components/Form/FormCheckbox.vue";
 import Pagination from "~/components/Common/Pagination.vue";
 import useOptionalStorage from "~/functions/useOptionalStorage";
-import {
-    IconArrowDropDown,
-    IconArrowDropUp,
-    IconFilterList,
-    IconRefresh,
-    IconSearch
-} from "~/components/Common/Icons/icons.ts";
 import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import {
     DATATABLE_DEFAULT_CONTEXT,
@@ -313,6 +306,11 @@ import {
     DataTableRow
 } from "~/functions/useHasDatatable.ts";
 import {isString} from "es-toolkit";
+import IconIcArrowDropUp from "~icons/ic/baseline-arrow-drop-up";
+import IconIcArrowDropDown from "~icons/ic/baseline-arrow-drop-down";
+import IconIcFilterList from "~icons/ic/baseline-filter-list";
+import IconIcRefresh from "~icons/ic/baseline-refresh";
+import IconIcSearch from "~icons/ic/baseline-search";
 
 export interface DataTableField<Row extends DataTableRow = DataTableRow> {
     key: string,

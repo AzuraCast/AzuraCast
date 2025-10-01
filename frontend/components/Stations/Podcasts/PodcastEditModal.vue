@@ -40,8 +40,8 @@ import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import {NestedFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import {storeToRefs} from "pinia";
-import {PodcastResponseBody, useStationsPodcastsForm} from "~/components/Stations/Podcasts/PodcastForm/form.ts";
-import {PodcastRecord} from "~/entities/Podcasts.ts";
+import {useStationsPodcastsForm} from "~/components/Stations/Podcasts/PodcastForm/form.ts";
+import {PodcastRecord, PodcastResponseBody} from "~/entities/Podcasts.ts";
 
 interface PodcastEditModalProps extends BaseEditModalProps {
     languageOptions: NestedFormOptionInput,

@@ -15,7 +15,7 @@
                     class="btn btn-dark"
                     @click="doEditProfile"
                 >
-                    <icon :icon="IconEdit"/>
+                    <icon-ic-edit/>
                     <span>
                         {{ $gettext('Edit Profile') }}
                     </span>
@@ -41,15 +41,14 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {useTemplateRef} from "vue";
-import {IconEdit} from "~/components/Common/Icons/icons.ts";
 import AccountEditModal from "~/components/Account/EditModal.vue";
 import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
 import SecurityPanel from "~/components/Account/SecurityPanel.vue";
 import ApiKeysPanel from "~/components/Account/ApiKeysPanel.vue";
 import DashboardNoSidebar from "~/components/Layout/DashboardNoSidebar.vue";
 import {useAzuraCastDashboardGlobals} from "~/vendor/azuracast.ts";
+import IconIcEdit from "~icons/ic/baseline-edit";
 
 const {supportedLocales} = useAzuraCastDashboardGlobals();
 

@@ -168,6 +168,7 @@ final class PlaylistsController extends AbstractScheduledEntityController
             $qb,
             [
                 'sp.name',
+                'sp.description',
             ]
         );
 

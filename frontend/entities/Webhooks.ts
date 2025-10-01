@@ -160,3 +160,164 @@ export function getTriggers(type: WebhookTypes): WebhookTriggers[] {
             return allTriggersExceptListeners;
     }
 }
+
+export type WebhookRecordCommon = {
+    name: string,
+    triggers: string[],
+    config: {
+        rate_limit: number,
+    }
+};
+
+export type WebhookRecordCommonMessages = {
+    message: string,
+    message_song_changed_live: string,
+    message_live_connect: string,
+    message_live_disconnect: string,
+    message_station_offline: string,
+    message_station_online: string,
+}
+
+export type WebhookRecordGeneric = {
+    type: WebhookTypes.Generic,
+    config: {
+        webhook_url: string,
+        basic_auth_username: string,
+        basic_auth_password: string,
+        timeout: number,
+    }
+}
+
+export type WebhookRecordBluesky = {
+    type: WebhookTypes.Bluesky,
+    config: {
+        handle: string,
+        app_password: string
+    } & WebhookRecordCommonMessages
+}
+
+export type WebhookRecordDiscord = {
+    type: WebhookTypes.Discord,
+    config: {
+        webhook_url: string,
+        content: string,
+        title: string,
+        description: string,
+        url: string,
+        author: string,
+        thumbnail: string,
+        footer: string,
+        color: string,
+        include_timestamp: boolean
+    }
+}
+
+export type WebhookRecordEmail = {
+    type: WebhookTypes.Email,
+    config: {
+        to: string,
+        subject: string,
+        message: string
+    }
+}
+
+export type WebhookRecordGetMeRadio = {
+    type: WebhookTypes.GetMeRadio,
+    config: {
+        token: string,
+        station_id: string,
+    }
+}
+
+export type WebhookRecordGoogleAnalyticsV4 = {
+    type: WebhookTypes.GoogleAnalyticsV4,
+    config: {
+        api_secret: string,
+        measurement_id: string
+    }
+}
+
+export type WebhookRecordGroupMe = {
+    type: WebhookTypes.GroupMe,
+    config: {
+        bot_id: string,
+        api: string,
+        text: string
+    }
+}
+
+export type WebhookRecordMastodon = {
+    type: WebhookTypes.Mastodon,
+    config: {
+        instance_url: string,
+        access_token: string,
+        visibility: string
+    } & WebhookRecordCommonMessages
+}
+
+export type WebhookRecordMatomoAnalytics = {
+    type: WebhookTypes.MatomoAnalytics,
+    config: {
+        matomo_url: string,
+        site_id: string,
+        token: string
+    }
+}
+
+export type WebhookRecordRadioDe = {
+    type: WebhookTypes.RadioDe,
+    config: {
+        broadcastsubdomain: string,
+        apikey: string
+    }
+}
+
+export type WebhookRecordRadioReg = {
+    type: WebhookTypes.RadioReg,
+    config: {
+        webhookurl: string,
+        apikey: string
+    }
+}
+
+export type WebhookRecordTelegram = {
+    type: WebhookTypes.Telegram,
+    config: {
+        bot_token: string,
+        chat_id: string,
+        api: string,
+        text: string,
+        parse_mode: string
+    }
+}
+
+export type WebhookRecordTuneIn = {
+    type: WebhookTypes.TuneIn,
+    config: {
+        station_id: string,
+        partner_id: string,
+        partner_key: string
+    }
+}
+
+export type WebhookHooks =
+    | WebhookRecordGeneric
+    | WebhookRecordBluesky
+    | WebhookRecordDiscord
+    | WebhookRecordEmail
+    | WebhookRecordGetMeRadio
+    | WebhookRecordGoogleAnalyticsV4
+    | WebhookRecordGroupMe
+    | WebhookRecordMastodon
+    | WebhookRecordMatomoAnalytics
+    | WebhookRecordRadioDe
+    | WebhookRecordRadioReg
+    | WebhookRecordTelegram
+    | WebhookRecordTuneIn
+    | { type: null };
+
+export type WebhookRecord = WebhookRecordCommon & WebhookHooks;
+
+export type WebhookResponseBody = WebhookRecord & {
+    type: WebhookTypes | null
+}

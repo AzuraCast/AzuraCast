@@ -6,18 +6,14 @@
         class="btn p-0"
         @click="toggle"
     >
-        <icon
-            :class="iconClass"
-            :icon="iconText"
-        />
+        <icon-ic-stop-circle v-if="isThisPlaying" :class="iconClass"/>
+        <icon-ic-play-circle v-else :class="iconClass"/>
     </button>
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {IconPlayCircle, IconStopCircle} from "~/components/Common/Icons/icons.ts";
 import getUrlWithoutQuery from "~/functions/getUrlWithoutQuery.ts";
 import {
     blankStreamDescriptor,
@@ -26,6 +22,8 @@ import {
     usePlayerStore
 } from "~/functions/usePlayerStore.ts";
 import {storeToRefs} from "pinia";
+import IconIcPlayCircle from "~icons/ic/baseline-play-circle";
+import IconIcStopCircle from "~icons/ic/baseline-stop-circle";
 
 const props = defineProps<{
     stream: StreamDescriptor,
@@ -61,12 +59,6 @@ const langTitle = computed(() => {
     return isThisPlaying.value
         ? $gettext('Stop')
         : $gettext('Play');
-});
-
-const iconText = computed(() => {
-    return isThisPlaying.value
-        ? IconStopCircle
-        : IconPlayCircle;
 });
 
 const toggle = () => {

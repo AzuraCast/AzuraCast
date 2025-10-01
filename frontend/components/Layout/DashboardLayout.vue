@@ -16,10 +16,7 @@
             :aria-label="$gettext('Toggle Sidebar')"
             class="navbar-toggler d-inline-flex d-lg-none me-3"
         >
-            <icon
-                :icon="IconMenu"
-                class="lg"
-            />
+            <icon-ic-menu class="lg"/>
         </button>
         
         <router-link
@@ -47,10 +44,7 @@
                 data-bs-toggle="dropdown"
                 type="button"
             >
-                <icon
-                    :icon="IconMenuOpen"
-                    class="lg"
-                />
+                <icon-ic-menu-open class="lg"/>
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
                 <li>
@@ -58,7 +52,8 @@
                         class="dropdown-item"
                         :to="{ name: 'dashboard' }"
                     >
-                        <icon :icon="IconHome" />
+                        <icon-ic-home/>
+
                         {{ $gettext('Dashboard') }}
                     </router-link>
                 </li>
@@ -70,7 +65,8 @@
                         class="dropdown-item"
                         :to="{ name: 'admin:index'}"
                     >
-                        <icon :icon="IconSettings" />
+                        <icon-ic-settings/>
+
                         {{ $gettext('System Administration') }}
                     </router-link>
                 </li>
@@ -79,7 +75,8 @@
                         class="dropdown-item"
                         :to="{name: 'profile:index'}"
                     >
-                        <icon :icon="IconAccountCircle" />
+                        <icon-ic-account-circle/>
+
                         {{ $gettext('My Account') }}
                     </router-link>
                 </li>
@@ -89,7 +86,7 @@
                         href="#"
                         @click.prevent="toggleTheme"
                     >
-                        <icon :icon="IconInvertColors" />
+                        <icon-ic-invert-colors/>
                         {{ $gettext('Switch Theme') }}
                     </a>
                 </li>
@@ -102,7 +99,7 @@
                         href="/docs/"
                         target="_blank"
                     >
-                        <icon :icon="IconSupport" />
+                        <icon-ic-support/>
                         {{ $gettext('Documentation') }}
                     </a>
                 </li>
@@ -112,7 +109,8 @@
                         href="/docs/help/troubleshooting/"
                         target="_blank"
                     >
-                        <icon :icon="IconHelp" />
+                        <icon-ic-help/>
+
                         {{ $gettext('Help') }}
                     </a>
                 </li>
@@ -124,7 +122,8 @@
                         class="dropdown-item"
                         :href="logoutUrl"
                     >
-                        <icon :icon="IconExitToApp" />
+                        <icon-ic-exit-to-app/>
+
                         {{ $gettext('Sign Out') }}
                     </a>
                 </li>
@@ -139,25 +138,22 @@
 
 <script setup lang="ts">
 import {useTemplateRef} from "vue";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {useTheme} from "~/functions/theme.ts";
-import {
-    IconAccountCircle,
-    IconExitToApp,
-    IconHelp,
-    IconHome,
-    IconInvertColors,
-    IconMenu,
-    IconMenuOpen,
-    IconSettings,
-    IconSupport
-} from "~/components/Common/Icons/icons.ts";
 import {useAzuraCastDashboardGlobals, useAzuraCastUser} from "~/vendor/azuracast.ts";
 import {useProvideLightbox} from "~/vendor/lightbox.ts";
 import {userAllowed} from "~/acl.ts";
 import {GlobalPermissions} from "~/entities/ApiInterfaces.ts";
 import InlinePlayer from "~/components/InlinePlayer.vue";
 import Lightbox from "~/components/Common/Lightbox.vue";
+import IconIcAccountCircle from "~icons/ic/baseline-account-circle";
+import IconIcExitToApp from "~icons/ic/baseline-exit-to-app";
+import IconIcHelp from "~icons/ic/baseline-help";
+import IconIcHome from "~icons/ic/baseline-home";
+import IconIcInvertColors from "~icons/ic/baseline-invert-colors";
+import IconIcMenu from "~icons/ic/baseline-menu";
+import IconIcMenuOpen from "~icons/ic/baseline-menu-open";
+import IconIcSettings from "~icons/ic/baseline-settings";
+import IconIcSupport from "~icons/ic/baseline-support";
 
 const {
     instanceName,

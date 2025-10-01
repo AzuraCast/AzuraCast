@@ -1,193 +1,181 @@
 import {useTranslate} from "~/vendor/gettext.ts";
 import {userAllowed} from "~/acl.ts";
-import filterMenu, {MenuCategory, ReactiveMenu} from "~/functions/filterMenu.ts";
-import {computed} from "vue";
-import {IconGroups, IconRadio, IconRouter} from "~/components/Common/Icons/icons.ts";
-import {reactiveComputed} from "@vueuse/core";
+import {filterMenu, RawMenuCategory} from "~/functions/filterMenu.ts";
 import {GlobalPermissions} from "~/entities/ApiInterfaces.ts";
+import IconIcGroup from "~icons/ic/baseline-group";
+import IconIcRadio from "~icons/ic/baseline-radio";
+import IconIcRouter from "~icons/ic/baseline-router";
 
-export function useAdminMenu(): ReactiveMenu {
+export function useAdminMenu() {
     const {$gettext} = useTranslate();
 
-    const menu: ReactiveMenu = reactiveComputed(
-        () => {
-            const maintenanceMenu: MenuCategory = {
-                key: 'maintenance',
-                label: computed(() => $gettext('System Maintenance')),
-                icon: IconRouter,
-                items: [
-                    {
-                        key: 'settings',
-                        label: computed(() => $gettext('System Settings')),
-                        url: {
-                            name: 'admin:settings:index'
-                        },
-                        visible: userAllowed(GlobalPermissions.Settings)
+    const fullMenu: RawMenuCategory[] = [
+        {
+            key: 'maintenance',
+            label: $gettext('System Maintenance'),
+            icon: () => IconIcRouter,
+            items: [
+                {
+                    key: 'settings',
+                    label: $gettext('System Settings'),
+                    url: {
+                        name: 'admin:settings:index'
                     },
-                    {
-                        key: 'branding',
-                        label: computed(() => $gettext('Custom Branding')),
-                        url: {
-                            name: 'admin:branding:index'
-                        },
-                        visible: userAllowed(GlobalPermissions.Settings)
+                    visible: () => userAllowed(GlobalPermissions.Settings)
+                },
+                {
+                    key: 'branding',
+                    label: $gettext('Custom Branding'),
+                    url: {
+                        name: 'admin:branding:index'
                     },
-                    {
-                        key: 'logs',
-                        label: computed(() => $gettext('System Logs')),
-                        url: {
-                            name: 'admin:logs:index'
-                        },
-                        visible: userAllowed(GlobalPermissions.Logs)
+                    visible: () => userAllowed(GlobalPermissions.Settings)
+                },
+                {
+                    key: 'logs',
+                    label: $gettext('System Logs'),
+                    url: {
+                        name: 'admin:logs:index'
                     },
-                    {
-                        key: 'storage_locations',
-                        label: computed(() => $gettext('Storage Locations')),
-                        url: {
-                            name: 'admin:storage_locations:index'
-                        },
-                        visible: userAllowed(GlobalPermissions.StorageLocations)
+                    visible: () => userAllowed(GlobalPermissions.Logs)
+                },
+                {
+                    key: 'storage_locations',
+                    label: $gettext('Storage Locations'),
+                    url: {
+                        name: 'admin:storage_locations:index'
                     },
-                    {
-                        key: 'backups',
-                        label: computed(() => $gettext('Backups')),
-                        url: {
-                            name: 'admin:backups:index'
-                        },
-                        visible: userAllowed(GlobalPermissions.Backups)
+                    visible: () => userAllowed(GlobalPermissions.StorageLocations)
+                },
+                {
+                    key: 'backups',
+                    label: $gettext('Backups'),
+                    url: {
+                        name: 'admin:backups:index'
                     },
-                    {
-                        key: 'debug',
-                        label: computed(() => $gettext('System Debugger')),
-                        url: {
-                            name: 'admin:debug:index'
-                        },
-                        visible: userAllowed(GlobalPermissions.All)
+                    visible: () => userAllowed(GlobalPermissions.Backups)
+                },
+                {
+                    key: 'debug',
+                    label: $gettext('System Debugger'),
+                    url: {
+                        name: 'admin:debug:index'
                     },
-                    {
-                        key: 'updates',
-                        label: computed(() => $gettext('Update AzuraCast')),
-                        url: {
-                            name: 'admin:updates:index'
-                        },
-                        visible: userAllowed(GlobalPermissions.All)
-                    }
-                ]
-            };
-
-            const usersMenu: MenuCategory = {
-                key: 'users',
-                label: computed(() => $gettext('Users')),
-                icon: IconGroups,
-                items: [
-                    {
-                        key: 'manage_users',
-                        label: computed(() => $gettext('User Accounts')),
-                        url: {
-                            name: 'admin:users:index'
-                        },
-                        visible: userAllowed(GlobalPermissions.All)
+                    visible: () => userAllowed(GlobalPermissions.All)
+                },
+                {
+                    key: 'updates',
+                    label: $gettext('Update AzuraCast'),
+                    url: {
+                        name: 'admin:updates:index'
                     },
-                    {
-                        key: 'permissions',
-                        label: computed(() => $gettext('Roles & Permissions')),
-                        url: {
-                            name: 'admin:permissions:index'
-                        },
-                        visible: userAllowed(GlobalPermissions.All)
+                    visible: () => userAllowed(GlobalPermissions.All)
+                }
+            ]
+        },
+        {
+            key: 'users',
+            label: $gettext('Users'),
+            icon: () => IconIcGroup,
+            items: [
+                {
+                    key: 'manage_users',
+                    label: $gettext('User Accounts'),
+                    url: {
+                        name: 'admin:users:index'
                     },
-                    {
-                        key: 'auditlog',
-                        label: computed(() => $gettext('Audit Log')),
-                        url: {
-                            name: 'admin:auditlog:index'
-                        },
-                        visible: userAllowed(GlobalPermissions.Logs)
+                    visible: () => userAllowed(GlobalPermissions.All)
+                },
+                {
+                    key: 'permissions',
+                    label: $gettext('Roles & Permissions'),
+                    url: {
+                        name: 'admin:permissions:index'
                     },
-                    {
-                        key: 'api_keys',
-                        label: computed(() => $gettext('API Keys')),
-                        url: {
-                            name: 'admin:api:index'
-                        },
-                        visible: userAllowed(GlobalPermissions.ApiKeys)
-                    }
-                ]
-            };
-
-            const stationsMenu: MenuCategory = {
-                key: 'stations',
-                label: computed(() => $gettext('Stations')),
-                icon: IconRadio,
-                items: [
-                    {
-                        key: 'manage_stations',
-                        label: computed(() => $gettext('Stations')),
-                        url: {
-                            name: 'admin:stations:index'
-                        },
-                        visible: userAllowed(GlobalPermissions.Stations)
+                    visible: () => userAllowed(GlobalPermissions.All)
+                },
+                {
+                    key: 'auditlog',
+                    label: $gettext('Audit Log'),
+                    url: {
+                        name: 'admin:auditlog:index'
                     },
-                    {
-                        key: 'custom_fields',
-                        label: computed(() => $gettext('Custom Fields')),
-                        url: {
-                            name: 'admin:custom_fields:index'
-                        },
-                        visible: userAllowed(GlobalPermissions.CustomFields)
+                    visible: () => userAllowed(GlobalPermissions.Logs)
+                },
+                {
+                    key: 'api_keys',
+                    label: $gettext('API Keys'),
+                    url: {
+                        name: 'admin:api:index'
                     },
-                    {
-                        key: 'relays',
-                        label: computed(() => $gettext('Connected AzuraRelays')),
-                        url: {
-                            name: 'admin:relays:index',
-                        },
-                        visible: userAllowed(GlobalPermissions.Stations)
+                    visible: () => userAllowed(GlobalPermissions.ApiKeys)
+                }
+            ]
+        },
+        {
+            key: 'stations',
+            label: $gettext('Stations'),
+            icon: () => IconIcRadio,
+            items: [
+                {
+                    key: 'manage_stations',
+                    label: $gettext('Stations'),
+                    url: {
+                        name: 'admin:stations:index'
                     },
-                    {
-                        key: 'shoutcast',
-                        label: computed(() => $gettext('Install Shoutcast')),
-                        url: {
-                            name: 'admin:install_shoutcast:index'
-                        },
-                        visible: userAllowed(GlobalPermissions.Settings)
+                    visible: () => userAllowed(GlobalPermissions.Stations)
+                },
+                {
+                    key: 'custom_fields',
+                    label: $gettext('Custom Fields'),
+                    url: {
+                        name: 'admin:custom_fields:index'
                     },
-                    {
-                        key: 'rsas',
-                        label: computed(() => $gettext('Install RSAS')),
-                        url: {
-                            name: 'admin:install_rsas:index'
-                        },
-                        visible: userAllowed(GlobalPermissions.Settings)
+                    visible: () => userAllowed(GlobalPermissions.CustomFields)
+                },
+                {
+                    key: 'relays',
+                    label: $gettext('Connected AzuraRelays'),
+                    url: {
+                        name: 'admin:relays:index',
                     },
-                    {
-                        key: 'stereo_tool',
-                        label: computed(() => $gettext('Install Stereo Tool')),
-                        url: {
-                            name: 'admin:stereo_tool:index'
-                        },
-                        visible: userAllowed(GlobalPermissions.Settings)
+                    visible: () => userAllowed(GlobalPermissions.Stations)
+                },
+                {
+                    key: 'shoutcast',
+                    label: $gettext('Install Shoutcast'),
+                    url: {
+                        name: 'admin:install_shoutcast:index'
                     },
-                    {
-                        key: 'geolite',
-                        label: computed(() => $gettext('Install GeoLite IP Database')),
-                        url: {
-                            name: 'admin:install_geolite:index'
-                        },
-                        visible: userAllowed(GlobalPermissions.Settings)
-                    }
-                ]
-            };
-
-            return {
-                categories: [
-                    maintenanceMenu,
-                    usersMenu,
-                    stationsMenu
-                ]
-            };
+                    visible: () => userAllowed(GlobalPermissions.Settings)
+                },
+                {
+                    key: 'rsas',
+                    label: $gettext('Install RSAS'),
+                    url: {
+                        name: 'admin:install_rsas:index'
+                    },
+                    visible: () => userAllowed(GlobalPermissions.Settings)
+                },
+                {
+                    key: 'stereo_tool',
+                    label: $gettext('Install Stereo Tool'),
+                    url: {
+                        name: 'admin:stereo_tool:index'
+                    },
+                    visible: () => userAllowed(GlobalPermissions.Settings)
+                },
+                {
+                    key: 'geolite',
+                    label: $gettext('Install GeoLite IP Database'),
+                    url: {
+                        name: 'admin:install_geolite:index'
+                    },
+                    visible: () => userAllowed(GlobalPermissions.Settings)
+                }
+            ]
         }
-    ) as unknown as ReactiveMenu;
+    ];
 
-    return filterMenu(menu);
+    return filterMenu(fullMenu);
 }

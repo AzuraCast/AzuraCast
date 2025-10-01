@@ -60,8 +60,23 @@ const props = withDefaults(
 
 const slots = useSlots();
 
-const model = defineModel<T>({
-    default: null
+const toNumberOrNull = (value: any): number | null => {
+    if (value === null) {
+        return value;
+    }
+
+    value = Number(value);
+    return Number.isNaN(value) ? null : value;
+};
+
+const model = defineModel<T, string, number | null, string | number | null>({
+    default: null,
+    get(value) {
+        return toNumberOrNull(value);
+    },
+    set(value) {
+        return toNumberOrNull(value);
+    }
 });
 
 const originalOptions = objectToSimpleFormOptions(toRef(props, 'options'));

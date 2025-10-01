@@ -9,22 +9,11 @@
         @hidden="clearContents"
     >
         <tabs content-class="mt-3">
-            <storage-location-form v-model:form="form" />
+            <basic-info/>
 
-            <s3
-                v-if="form.adapter === 's3'"
-                v-model:form="form"
-            />
-
-            <dropbox
-                v-if="form.adapter === 'dropbox'"
-                v-model:form="form"
-            />
-
-            <sftp
-                v-if="form.adapter === 'sftp'"
-                v-model:form="form"
-            />
+            <s3 v-if="form.adapter === 's3'"/>
+            <dropbox v-if="form.adapter === 'dropbox'"/>
+            <sftp v-if="form.adapter === 'sftp'"/>
         </tabs>
     </modal-form>
 </template>
@@ -34,7 +23,7 @@ import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functi
 import {computed, toRef, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import StorageLocationForm from "~/components/Admin/StorageLocations/Form.vue";
+import BasicInfo from "~/components/Admin/StorageLocations/Form/BasicInfo.vue";
 import Sftp from "~/components/Admin/StorageLocations/Form/Sftp.vue";
 import S3 from "~/components/Admin/StorageLocations/Form/S3.vue";
 import Dropbox from "~/components/Admin/StorageLocations/Form/Dropbox.vue";
@@ -55,8 +44,6 @@ const formStore = useAdminStorageLocationsForm();
 const {form, r$} = storeToRefs(formStore);
 const {$reset: resetForm} = formStore;
 
-type RecordWithType = Omit<StorageLocationRecord, 'type'> & Required<Pick<StorageLocationRecord, 'type'>>;
-
 const {
     loading,
     error,
@@ -66,7 +53,7 @@ const {
     edit,
     doSubmit,
     close
-} = useBaseEditModal<StorageLocationRecord, RecordWithType>(
+} = useBaseEditModal<StorageLocationRecord>(
     toRef(props, 'createUrl'),
     emit,
     $modal,

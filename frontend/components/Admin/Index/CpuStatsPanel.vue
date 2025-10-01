@@ -13,7 +13,7 @@
                     class="btn btn-dark btn-sm py-2"
                     @click="showCpuStatsHelpModal"
                 >
-                    <icon :icon="IconInfo" />
+                    <icon-ic-info/>
                 </button>
             </div>
         </div>
@@ -134,12 +134,11 @@
     <cpu-stats-help-modal ref="$cpuStatsHelpModal" />
 </template>
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {useTemplateRef} from "vue";
 import CpuStatsHelpModal from "~/components/Admin/Index/CpuStatsHelpModal.vue";
 import {upperFirst} from "es-toolkit";
-import {IconInfo} from "~/components/Common/Icons/icons.ts";
 import {ApiAdminServerStatsCpuStats} from "~/entities/ApiInterfaces.ts";
+import IconIcInfo from "~icons/ic/baseline-info";
 
 defineProps<{
     cpuStats: ApiAdminServerStatsCpuStats

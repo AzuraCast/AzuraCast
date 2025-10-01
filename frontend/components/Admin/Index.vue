@@ -6,7 +6,7 @@
 
         <div class="row row-of-cards">
             <div
-                v-for="panel in menuItems.categories"
+                v-for="panel in menuItems"
                 :key="panel.key"
                 class="col-sm-12 col-lg-4"
             >
@@ -18,10 +18,10 @@
                             </h2>
                         </div>
                         <div class="flex-shrink-0 pt-1">
-                            <icon
-                                class="lg"
+                            <component
                                 v-if="panel.icon"
-                                :icon="panel.icon"
+                                :is="panel.icon()"
+                                class="lg"
                             />
                         </div>
                     </div>
@@ -106,7 +106,6 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {useAxios} from "~/vendor/axios";
 import {getApiUrl} from "~/router";
 import {useAdminMenu} from "~/components/Admin/menu";

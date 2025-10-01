@@ -47,10 +47,7 @@
                         input-type="password"
                     >
                         <template #label>
-                            <icon
-                                :icon="IconVpnKey"
-                                class="me-1"
-                            />
+                            <icon-ic-vpn-key class="me-1"/>
                             {{ $gettext('Password') }}
                         </template>
                     </form-group-field>
@@ -72,10 +69,9 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import Icon from "~/components/Common/Icons/Icon.vue";
-import {IconVpnKey} from "~/components/Common/Icons/icons.ts";
 import {isValidPassword, useAppRegle} from "~/vendor/regle.ts";
 import {required} from "@regle/rules";
+import IconIcVpnKey from "~icons/ic/baseline-vpn-key";
 
 defineProps<{
     csrf: string,

@@ -19,6 +19,15 @@
                 :description="$gettext('If disabled, the playlist will not be included in radio playback, but can still be managed.')"
             />
 
+            <form-group-field
+                id="form_edit_description"
+                class="col-md-12"
+                :field="r$.description"
+                input-type="textarea"
+                :label="$gettext('Description')"
+                :description="$gettext('An optional description to help identify this playlist.')"
+            />
+
             <form-group-multi-check
                 id="edit_form_source"
                 class="col-md-12"
@@ -119,7 +128,7 @@
                             :field="r$.weight"
                             :options="weightOptions"
                             :label="$gettext('Playlist Weight')"
-                            :description="$gettext('Higher weight playlists are played more frequently compared to other lower-weight playlists.')"
+                            :description="$gettext('Playlists with larger number weights (i.e. 25) play more frequently than playlists with smaller number weights (i.e. 1).')"
                         />
                     </div>
                 </form-fieldset>

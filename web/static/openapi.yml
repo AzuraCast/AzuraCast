@@ -5,7 +5,7 @@ info:
   license:
     name: 'GNU Affero General Public License v3.0 or later'
     url: 'https://www.gnu.org/licenses/agpl-3.0.txt'
-  version: 0.22.1
+  version: 0.23.1
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -7612,6 +7612,7 @@ components:
         - playlist_pls_url
         - playlist_m3u_url
         - is_public
+        - requests_enabled
         - mounts
         - remotes
         - hls_enabled
@@ -7670,6 +7671,10 @@ components:
           example: 'https://example.com/public/example_station/playlist.m3u'
         is_public:
           description: 'If the station is public (i.e. should be shown in listings of all stations)'
+          type: boolean
+          example: true
+        requests_enabled:
+          description: 'If the station has song requests enabled.'
           type: boolean
           example: true
         mounts:
@@ -7825,6 +7830,8 @@ components:
               type: string
             description_short:
               type: string
+            explicit:
+              type: boolean
             is_enabled:
               type: boolean
             branding_config:
@@ -8148,6 +8155,16 @@ components:
               nullable: true
           type: object
     Api_StationQuota:
+      required:
+        - used
+        - used_bytes
+        - used_percent
+        - available
+        - available_bytes
+        - quota
+        - quota_bytes
+        - is_full
+        - num_files
       properties:
         used:
           type: string
@@ -9546,6 +9563,8 @@ components:
           type: boolean
         write_playlists_to_liquidsoap:
           type: boolean
+        share_encoders:
+          type: boolean
         custom_config_top:
           description: 'Custom Liquidsoap Configuration: Top Section'
           type: string
@@ -9762,6 +9781,10 @@ components:
             name:
               type: string
               example: 'Test Playlist'
+            description:
+              type: string
+              example: 'A playlist containing my favorite songs'
+              nullable: true
             type:
               $ref: '#/components/schemas/PlaylistTypes'
             source:
@@ -9799,6 +9822,7 @@ components:
               type: integer
               example: 15
             weight:
+              description: 'The relative weight of the playlist. Larger numbers play more often than playlists with lower number weights.'
               type: integer
               example: 3
             include_in_requests:

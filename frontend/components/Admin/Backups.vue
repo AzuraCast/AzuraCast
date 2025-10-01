@@ -37,7 +37,8 @@
                         class="btn btn-primary"
                         @click="doConfigure"
                     >
-                        <icon :icon="IconSettings"/>
+                        <icon-ic-settings/>
+
                         <span>
                             {{ $gettext('Configure') }}
                         </span>
@@ -48,7 +49,8 @@
                         class="btn btn-secondary"
                         @click="showLastOutput"
                     >
-                        <icon :icon="IconLogs"/>
+                        <icon-ic-assignment/>
+
                         <span>
                             {{ $gettext('Most Recent Backup Log') }}
                         </span>
@@ -90,7 +92,8 @@
                 class="btn btn-primary"
                 @click="doRunBackup"
             >
-                <icon :icon="IconSend"/>
+                <icon-ic-send/>
+
                 <span>
                     {{ $gettext('Run Manual Backup') }}
                 </span>
@@ -144,7 +147,6 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import AdminBackupsLastOutputModal from "~/components/Admin/Backups/LastOutputModal.vue";
 import formatFileSize from "~/functions/formatFileSize";
@@ -158,12 +160,14 @@ import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {getApiUrl} from "~/router";
-import {IconLogs, IconSend, IconSettings} from "~/components/Common/Icons/icons.ts";
 import {ApiAdminBackup, ApiAdminVueBackupProps} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
 import {BackupSettings} from "~/components/Admin/BackupsWrapper.vue";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import IconIcAssignment from "~icons/ic/baseline-assignment";
+import IconIcSend from "~icons/ic/baseline-send";
+import IconIcSettings from "~icons/ic/baseline-settings";
 
 const props = defineProps<ApiAdminVueBackupProps & {
     settings: BackupSettings

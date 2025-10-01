@@ -18,7 +18,7 @@ export default function useAdminRoutes(): RouteRecordRaw[] {
                 },
                 {
                     path: 'settings',
-                    component: () => import('~/components/Admin/Settings.vue'),
+                    component: () => import('~/components/Admin/SettingsWrapper.vue'),
                     name: 'admin:settings:index'
                 },
                 {

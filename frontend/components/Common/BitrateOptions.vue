@@ -34,7 +34,26 @@ const props = defineProps<BitrateOptionsProps>();
 
 const slots = useSlots();
 
-const model = defineModel<T>();
+const toPositiveNumberOrNull = (value: any): number | null => {
+    if (value === null) {
+        return value;
+    }
+
+    value = Number(value);
+    return (Number.isNaN(value) || value <= 0)
+        ? null
+        : value;
+};
+
+const model = defineModel<T, string, number | null, string | number | null>({
+    default: null,
+    get(value) {
+        return toPositiveNumberOrNull(value);
+    },
+    set(value) {
+        return toPositiveNumberOrNull(value);
+    }
+});
 
 const radioBitrates = [
     32, 48, 64, 96, 128, 192, 256, 320

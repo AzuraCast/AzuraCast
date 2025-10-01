@@ -40,11 +40,8 @@ import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
 import {storeToRefs} from "pinia";
-import {
-    PodcastEpisodeRecord,
-    PodcastEpisodeResponseBody,
-    useStationsPodcastEpisodesForm
-} from "~/components/Stations/Podcasts/EpisodeForm/form.ts";
+import {useStationsPodcastEpisodesForm} from "~/components/Stations/Podcasts/EpisodeForm/form.ts";
+import {PodcastEpisodeRecord, PodcastEpisodeResponseBody} from "~/entities/Podcasts.ts";
 
 interface EpisodeEditModalProps extends BaseEditModalProps {
     podcast: Required<ApiPodcast>

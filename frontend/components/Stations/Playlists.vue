@@ -48,6 +48,9 @@
                                 <h5 class="m-0">
                                     {{ row.item.name }}
                                 </h5>
+                                <p v-if="row.item.description" class="text-muted mb-1">
+                                    {{ row.item.description }}
+                                </p>
                                 <div class="badges">
                                     <span class="badge text-bg-secondary">
                                         <template v-if="row.item.source === 'songs'">
@@ -169,7 +172,8 @@
                                         type="button"
                                         @click="toggleDetails()"
                                     >
-                                        <icon :icon="isActive ? IconContract : IconExpand" />
+                                        <icon-bi-contract v-if="isActive"/>
+                                        <icon-bi-expand v-else/>
 
                                         {{ $gettext('More') }}
                                     </button>
@@ -316,14 +320,14 @@ import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 import AddButton from "~/components/Common/AddButton.vue";
-import {IconContract, IconExpand} from "~/components/Common/Icons/icons.ts";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import ScheduleViewTab from "~/components/Stations/Common/ScheduleViewTab.vue";
 import {EventImpl} from "@fullcalendar/core/internal";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import {toRefs} from "@vueuse/core";
+import IconBiContract from "~icons/bi/chevron-contract";
+import IconBiExpand from "~icons/bi/chevron-expand";
 
 const listUrl = getStationApiUrl('/playlists');
 const scheduleUrl = getStationApiUrl('/playlists/schedule');

@@ -12,7 +12,8 @@
                         :href="exportUrl"
                         target="_blank"
                     >
-                        <icon :icon="IconDownload" />
+                        <icon-ic-cloud-download/>
+
                         <span>
                             {{ $gettext('Download CSV') }}
                         </span>
@@ -41,13 +42,13 @@
                 <span class="typography-subheading">
                     <template v-if="row.item.delta_total > 0">
                         <span class="text-success">
-                            <icon :icon="IconTrendingUp" />
+                            <icon-ic-trending-up/>
                             {{ abs(row.item.delta_total) }}
                         </span>
                     </template>
                     <template v-else-if="row.item.delta_total < 0">
                         <span class="text-danger">
-                            <icon :icon="IconTrendingDown" />
+                            <icon-ic-trending-down/>
                             {{ abs(row.item.delta_total) }}
                         </span>
                     </template>
@@ -88,13 +89,11 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import {computed, nextTick, ref, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {getStationApiUrl} from "~/router";
-import {IconDownload, IconTrendingDown, IconTrendingUp} from "~/components/Common/Icons/icons.ts";
 import useHasDatatable from "~/functions/useHasDatatable.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
@@ -102,6 +101,9 @@ import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import {toRefs} from "@vueuse/core";
+import IconIcCloudDownload from "~icons/ic/baseline-cloud-download";
+import IconIcTrendingDown from "~icons/ic/baseline-trending-down";
+import IconIcTrendingUp from "~icons/ic/baseline-trending-up";
 
 const baseApiUrl = getStationApiUrl('/history');
 

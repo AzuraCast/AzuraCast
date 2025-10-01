@@ -36,19 +36,20 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
-import {WebhookRecordCommon, WebhookRecordMatomoAnalytics} from "~/components/Stations/Webhooks/Form/form.ts";
 import {useAppScopedRegle} from "~/vendor/regle.ts";
 import {required} from "@regle/rules";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {storeToRefs} from "pinia";
+import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
+import {Ref} from "vue";
+import {WebhookRecordCommon, WebhookRecordMatomoAnalytics} from "~/entities/Webhooks.ts";
 
 defineProps<WebhookComponentProps>();
 
-type ThisWebhookRecord = WebhookRecordCommon & WebhookRecordMatomoAnalytics;
-
-const form = defineModel<ThisWebhookRecord>('form', {required: true});
+const {form} = storeToRefs(useStationsWebhooksForm());
 
 const {r$} = useAppScopedRegle(
-    form,
+    form as Ref<WebhookRecordCommon & WebhookRecordMatomoAnalytics>,
     {
         config: {
             matomo_url: {required},

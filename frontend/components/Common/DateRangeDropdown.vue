@@ -9,7 +9,8 @@
                 class="btn dropdown-toggle"
                 v-bind="$attrs"
             >
-                <icon :icon="IconDateRange" />
+                <icon-ic-date-range/>
+
                 <span>
                     {{ value }}
                 </span>
@@ -20,15 +21,14 @@
 
 <script setup lang="ts">
 import VueDatePicker, {VueDatePickerProps} from "@vuepic/vue-datepicker";
-import Icon from "~/components/Common/Icons/Icon.vue";
 import {useTheme} from "~/functions/theme.ts";
 import {useTranslate} from "~/vendor/gettext.ts";
 import {computed} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
-import {IconDateRange} from "~/components/Common/Icons/icons.ts";
 import {storeToRefs} from "pinia";
 import {isString} from "es-toolkit";
+import IconIcDateRange from "~icons/ic/baseline-date-range";
 
 defineOptions({
     inheritAttrs: false

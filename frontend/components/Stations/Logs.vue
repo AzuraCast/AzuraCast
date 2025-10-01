@@ -65,7 +65,8 @@
                         href="https://github.com/AzuraCast/AzuraCast/issues/new/choose"
                         target="_blank"
                     >
-                        <icon :icon="IconSupport" />
+                        <icon-ic-support/>
+
                         <span>
                             {{ $gettext('Add New GitHub Issue') }}
                         </span>
@@ -77,17 +78,16 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icons/Icon.vue";
 import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
 import LogList from "~/components/Common/LogList.vue";
 import {useTemplateRef} from "vue";
 import {getStationApiUrl} from "~/router";
-import {IconSupport} from "~/components/Common/Icons/icons.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import {useQuery} from "@tanstack/vue-query";
 import {ApiLogType} from "~/entities/ApiInterfaces.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import Loading from "~/components/Common/Loading.vue";
+import IconIcSupport from "~icons/ic/baseline-support";
 
 const logsUrl = getStationApiUrl('/logs');
 

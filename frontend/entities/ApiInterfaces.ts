@@ -915,6 +915,11 @@ export interface ApiNowPlayingStation {
    * @example true
    */
   is_public: boolean;
+  /**
+   * If the station has song requests enabled.
+   * @example true
+   */
+  requests_enabled: boolean;
   mounts: ApiNowPlayingStationMount[];
   remotes: ApiNowPlayingStationRemote[];
   /**
@@ -1024,6 +1029,7 @@ export type ApiPodcast = HasLinks & {
   link?: string | null;
   description?: string;
   description_short?: string;
+  explicit?: boolean;
   is_enabled?: boolean;
   branding_config?: PodcastBrandingConfiguration;
   language?: string;
@@ -1237,15 +1243,15 @@ export type ApiStationQueueDetailed = HasLinks & {
 };
 
 export interface ApiStationQuota {
-  used?: string;
-  used_bytes?: string;
-  used_percent?: number;
-  available?: string;
-  available_bytes?: string;
-  quota?: string | null;
-  quota_bytes?: string | null;
-  is_full?: boolean;
-  num_files?: number | null;
+  used: string;
+  used_bytes: string;
+  used_percent: number;
+  available: string;
+  available_bytes: string;
+  quota: string | null;
+  quota_bytes: string | null;
+  is_full: boolean;
+  num_files: number | null;
 }
 
 export interface ApiStationRequest {
@@ -2092,6 +2098,7 @@ export interface StationBackendConfiguration {
   live_broadcast_text?: string;
   enable_auto_cue?: boolean;
   write_playlists_to_liquidsoap?: boolean;
+  share_encoders?: boolean;
   /** Custom Liquidsoap Configuration: Top Section */
   custom_config_top?: string | null;
   /** Custom Liquidsoap Configuration: Pre-Playlists Section */
@@ -2220,6 +2227,8 @@ export type StationMount = HasAutoIncrementId & {
 export type StationPlaylist = HasAutoIncrementId & {
   /** @example "Test Playlist" */
   name?: string;
+  /** @example "A playlist containing my favorite songs" */
+  description?: string | null;
   type?: PlaylistTypes;
   source?: PlaylistSources;
   order?: PlaylistOrders;
@@ -2245,7 +2254,10 @@ export type StationPlaylist = HasAutoIncrementId & {
   play_per_minutes?: number;
   /** @example 15 */
   play_per_hour_minute?: number;
-  /** @example 3 */
+  /**
+   * The relative weight of the playlist. Larger numbers play more often than playlists with lower number weights.
+   * @example 3
+   */
   weight?: number;
   /** @example true */
   include_in_requests?: boolean;

@@ -7,6 +7,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+## Bug Fixes
+
+---
+
+# AzuraCast 0.23.1 (Oct 1, 2025)
+
+A minor bug fix addressing some pressing issues not fixed in 0.23.0.
+
+## Code Quality/Technical Changes
+
 - Stations that do not have the "Public Pages" feature enabled will no longer be visible to unauthenticated users via
   any of the public-facing API endpoints. If you need to use features that are only available to public stations (i.e.
   song requests), then the station should be made public.

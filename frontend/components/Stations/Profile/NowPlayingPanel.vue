@@ -247,7 +247,7 @@ import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLightbox} from "~/vendor/lightbox";
-import {userAllowedForStation} from "~/acl";
+import {useUserAllowedForStation} from "~/acl";
 import UpdateMetadataModal from "~/components/Stations/Profile/UpdateMetadataModal.vue";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 import {BackendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
@@ -266,6 +266,8 @@ import IconIcVolumeOff from "~icons/ic/baseline-volume-off";
 const stationData = useStationData();
 const profileData = useStationProfileData();
 const {nowPlayingProps} = toRefs(profileData);
+
+const {userAllowedForStation} = useUserAllowedForStation();
 
 const backendSkipSongUri = getStationApiUrl('/backend/skip');
 const backendDisconnectStreamerUri = getStationApiUrl('/backend/disconnect');

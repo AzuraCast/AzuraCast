@@ -127,7 +127,7 @@ import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import {computed, useTemplateRef} from "vue";
 import EmbedModal from "~/components/Stations/Profile/EmbedModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {userAllowedForStation} from "~/acl";
+import {useUserAllowedForStation} from "~/acl";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
@@ -139,6 +139,8 @@ import IconIcCode from "~icons/ic/baseline-code";
 
 const stationData = useStationData();
 const profileData = useStationProfileData();
+
+const {userAllowedForStation} = useUserAllowedForStation();
 
 const $embedModal = useTemplateRef('$embedModal');
 

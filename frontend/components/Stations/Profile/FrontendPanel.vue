@@ -175,7 +175,7 @@ import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
-import {userAllowedForStation} from "~/acl";
+import {useUserAllowedForStation} from "~/acl";
 import useOptionalStorage from "~/functions/useOptionalStorage";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 import {FrontendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
@@ -189,6 +189,8 @@ import IconIcUpdate from "~icons/ic/baseline-update";
 
 const stationData = useStationData();
 const profileData = useStationProfileData();
+
+const {userAllowedForStation} = useUserAllowedForStation();
 
 const frontendRestartUri = getStationApiUrl('/frontend/restart');
 const frontendStartUri = getStationApiUrl('/frontend/start');

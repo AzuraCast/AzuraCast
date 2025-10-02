@@ -65,7 +65,7 @@ import {ref} from "vue";
 import SidebarMenu from "~/components/Common/SidebarMenu.vue";
 import {toRefs, useIntervalFn} from "@vueuse/core";
 import {useStationsMenu} from "~/components/Stations/menu";
-import {userAllowedForStation} from "~/acl";
+import {useUserAllowedForStation} from "~/acl";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
@@ -73,6 +73,7 @@ import {useStationData} from "~/functions/useStationQuery.ts";
 import IconIcEdit from "~icons/ic/baseline-edit";
 
 const menuItems = useStationsMenu();
+const {userAllowedForStation} = useUserAllowedForStation();
 
 const stationData = useStationData();
 const {name, hasStarted, needsRestart, timezone} = toRefs(stationData);

@@ -36,8 +36,8 @@ return static function (RouteCollectorProxy $app) {
         ->setName('account:forgot')
         ->add(Middleware\EnableView::class);
 
-    $app->map(['GET', 'POST'], '/recover/{token}', Controller\Frontend\Account\RecoverAction::class)
-        ->setName('account:recover')
+    $app->map(['GET', 'POST'], '/login-token/{token}', Controller\Frontend\Account\LoginTokenAction::class)
+        ->setName('account:login-token')
         ->add(Middleware\EnableView::class);
 
     $app->get('/login/webauthn', Controller\Frontend\Account\WebAuthn\GetValidationAction::class)

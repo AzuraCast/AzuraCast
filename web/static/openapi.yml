@@ -678,6 +678,97 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
+  /admin/login_tokens:
+    get:
+      tags:
+        - 'Administration: Users'
+      summary: 'List all current unexpired login tokens in the system.'
+      operationId: getLoginTokens
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf: [{ $ref: '#/components/schemas/UserLoginToken' }, { $ref: '#/components/schemas/HasLinks' }]
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    post:
+      tags:
+        - 'Administration: Users'
+      summary: 'Create a new login token.'
+      operationId: addLoginToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Api_Admin_NewLoginToken'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Admin_NewLoginTokenResponse'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/admin/login_token/{id}':
+    get:
+      tags:
+        - 'Administration: Users'
+      summary: 'Retrieve details for a single login token.'
+      operationId: getLoginToken
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Token identifier'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - { $ref: '#/components/schemas/UserLoginToken' }
+                  - { $ref: '#/components/schemas/HasLinks' }
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    delete:
+      tags:
+        - 'Administration: Users'
+      summary: 'Delete a single login token.'
+      operationId: deleteLoginToken
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Token identifier'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   /admin/logs:
     get:
       tags:
@@ -1069,136 +1160,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Success'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '500':
-          $ref: '#/components/responses/GenericError'
-  /admin/sso/generate:
-    post:
-      tags:
-        - 'Administration: General'
-      summary: 'Generate a new SSO token for a user.'
-      description: 'Creates a one-time, time-limited login token that can be used for SSO integration with external systems like WHMCS.'
-      operationId: adminGenerateSsoToken
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - user_id
-              properties:
-                user_id:
-                  description: 'The ID of the user to generate a token for.'
-                  type: integer
-                  example: 123
-                comment:
-                  description: 'Optional comment describing the token.'
-                  type: string
-                  maxLength: 255
-                  example: 'WHMCS SSO Login'
-                expires_in:
-                  description: 'How many seconds until the token expires (60-3600).'
-                  type: integer
-                  maximum: 3600
-                  minimum: 60
-                  example: 300
-                ip_address:
-                  description: 'IP address that will be using the token (for audit purposes).'
-                  type: string
-                  format: ipv4
-                  example: 192.168.1.100
-              type: object
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Admin_SsoTokenGenerateResponse'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '500':
-          $ref: '#/components/responses/GenericError'
-  '/admin/sso/user/{user_id}/tokens':
-    get:
-      tags:
-        - 'Administration: General'
-      summary: 'List active SSO tokens for a user.'
-      description: 'Retrieves all active (non-expired, non-used) SSO tokens for a specific user.'
-      operationId: adminListUserSsoTokens
-      parameters:
-        -
-          name: user_id
-          in: path
-          description: 'The ID of the user to list tokens for.'
-          required: true
-          schema:
-            type: integer
-            example: 123
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                properties:
-                  success: { type: boolean, example: true }
-                  data: { type: array, items: { $ref: '#/components/schemas/Api_Admin_SsoTokenList' } }
-                type: object
-        '404':
-          $ref: '#/components/responses/RecordNotFound'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '500':
-          $ref: '#/components/responses/GenericError'
-    delete:
-      tags:
-        - 'Administration: General'
-      summary: 'Revoke all SSO tokens for a user.'
-      description: 'Immediately revokes all active SSO tokens for a specific user.'
-      operationId: adminRevokeUserSsoTokens
-      parameters:
-        -
-          name: user_id
-          in: path
-          description: 'The ID of the user to revoke tokens for.'
-          required: true
-          schema:
-            type: integer
-            example: 123
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                properties:
-                  success: { type: boolean, example: true }
-                  data: { properties: { revoked_count: { type: integer, example: 3 }, user: { properties: { id: { type: integer, example: 123 }, email: { type: string, example: user@example.com }, name: { type: string, example: 'User Name' } }, type: object } }, type: object }
-                type: object
-        '404':
-          $ref: '#/components/responses/RecordNotFound'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '500':
-          $ref: '#/components/responses/GenericError'
-  /admin/sso/cleanup:
-    delete:
-      tags:
-        - 'Administration: General'
-      summary: 'Clean up expired SSO tokens.'
-      description: 'Removes all expired SSO tokens from the database.'
-      operationId: adminCleanupSsoTokens
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                properties:
-                  success: { type: boolean, example: true }
-                  data: { properties: { cleaned_count: { type: integer, example: 5 } }, type: object }
-                type: object
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -6505,6 +6466,48 @@ components:
           items:
             $ref: '#/components/schemas/Api_Admin_StationLogList'
       type: object
+    Api_Admin_NewLoginToken:
+      required:
+        - user
+      properties:
+        user:
+          description: 'User ID or e-mail address.'
+          anyOf:
+            -
+              type: integer
+              format: int64
+            -
+              type: string
+        type:
+          oneOf:
+            -
+              $ref: '#/components/schemas/LoginTokenTypes'
+          nullable: true
+        comment:
+          type: string
+          example: 'SSO Login'
+          nullable: true
+        expires_minutes:
+          type: integer
+      type: object
+    Api_Admin_NewLoginTokenResponse:
+      required:
+        - record
+        - links
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_Status'
+        -
+          properties:
+            record:
+              $ref: '#/components/schemas/UserLoginToken'
+            links:
+              type: object
+              readOnly: true
+              additionalProperties:
+                type: string
+          type: object
     Api_Admin_Permission:
       required:
         - id
@@ -6868,131 +6871,6 @@ components:
       properties:
         version:
           type: string
-          nullable: true
-      type: object
-    Api_Admin_SsoTokenDetails:
-      properties:
-        token_id:
-          description: 'The unique identifier of the SSO token.'
-          type: string
-          example: abc123def456
-        expires_at:
-          description: 'When the token expires (Unix timestamp).'
-          type: integer
-          example: 1640998800
-        expires_in:
-          description: 'How many seconds until the token expires.'
-          type: integer
-          example: 300
-        sso_url:
-          description: 'The complete SSO URL that can be used to log in.'
-          type: string
-          example: 'https://your-azuracast.com/sso/login?token=abc123def456:verifier'
-        user:
-          $ref: '#/components/schemas/Api_Admin_SsoUser'
-      type: object
-    Api_Admin_SsoTokenGenerateResponse:
-      properties:
-        success:
-          description: 'Whether the request was successful.'
-          type: boolean
-          example: true
-        data:
-          $ref: '#/components/schemas/Api_Admin_SsoTokenDetails'
-        error:
-          description: 'Error message if the request failed.'
-          type: string
-          example: 'User not found'
-          nullable: true
-        details:
-          description: 'Validation error details if the request failed.'
-          type: object
-          nullable: true
-      type: object
-    Api_Admin_SsoTokenList:
-      properties:
-        id:
-          description: 'The unique identifier of the SSO token.'
-          type: string
-          example: abc123def456
-        comment:
-          description: 'Comment describing the token.'
-          type: string
-          example: 'WHMCS SSO Login'
-        created_at:
-          description: 'When the token was created (Unix timestamp).'
-          type: integer
-          example: 1640995200
-        expires_at:
-          description: 'When the token expires (Unix timestamp).'
-          type: integer
-          example: 1640998800
-        expires_in:
-          description: 'How many seconds until the token expires.'
-          type: integer
-          example: 300
-        is_valid:
-          description: 'Whether the token is still valid (not used and not expired).'
-          type: boolean
-          example: true
-        ip_address:
-          description: 'IP address that created the token (if available).'
-          type: string
-          example: 192.168.1.100
-          nullable: true
-      type: object
-    Api_Admin_SsoTokenResponse:
-      properties:
-        success:
-          description: 'Whether the request was successful.'
-          type: boolean
-          example: true
-        data:
-          description: 'The response data.'
-          type: mixed
-          nullable: true
-          oneOf:
-            -
-              $ref: '#/components/schemas/Api_Admin_SsoTokenDetails'
-            -
-              $ref: '#/components/schemas/Api_Admin_SsoTokenList'
-            -
-              type: array
-              items:
-                $ref: '#/components/schemas/Api_Admin_SsoTokenList'
-            -
-              properties:
-                revoked_count:
-                  type: integer
-                  example: 3
-                cleaned_count:
-                  type: integer
-                  example: 5
-              type: object
-        error:
-          description: 'Error message if the request failed.'
-          type: string
-          example: 'User not found'
-          nullable: true
-        details:
-          description: 'Validation error details if the request failed.'
-          type: object
-          nullable: true
-      type: object
-    Api_Admin_SsoUser:
-      properties:
-        id:
-          description: 'The unique identifier of the user.'
-          type: integer
-          example: 123
-        email:
-          description: 'The email address of the user.'
-          type: string
-          example: user@example.com
-        name:
-          description: 'The display name of the user.'
-          type: string
-          example: 'John Doe'
           nullable: true
       type: object
     Api_Admin_StationLogList:
@@ -8929,6 +8807,14 @@ components:
         - Local
         - XForwardedFor
         - Cloudflare
+    LoginTokenTypes:
+      type: string
+      enum:
+        - reset_password
+        - login
+      x-enumNames:
+        - ResetPassword
+        - Login
     PlaylistOrders:
       type: string
       enum:
@@ -9364,32 +9250,6 @@ components:
               type: string
             publicKeys:
               type: string
-              nullable: true
-          type: object
-    SsoToken:
-      type: object
-      allOf:
-        -
-          $ref: '#/components/schemas/HasSplitTokenFields'
-        -
-          properties:
-            user:
-              $ref: '#/components/schemas/User'
-            comment:
-              type: string
-              example: 'WHMCS SSO Login'
-            created_at:
-              type: integer
-              example: 1640995200
-            expires_at:
-              type: integer
-              example: 1640998800
-            used:
-              type: boolean
-              example: false
-            ip_address:
-              type: string
-              example: 192.168.1.1
               nullable: true
           type: object
     Station:
@@ -10211,6 +10071,28 @@ components:
               description: Role>
               type: array
               items: {  }
+          type: object
+    UserLoginToken:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasSplitTokenFields'
+        -
+          properties:
+            user:
+              $ref: '#/components/schemas/User'
+            type:
+              $ref: '#/components/schemas/LoginTokenTypes'
+            comment:
+              type: string
+              example: 'SSO Login'
+              nullable: true
+            created_at:
+              type: integer
+              example: 1640998800
+            expires_at:
+              type: integer
+              example: 1640998800
           type: object
     FlashLevels:
       type: string

@@ -84,7 +84,6 @@ return static function (CallableEventDispatcherInterface $dispatcher) {
                 App\Sync\Task\RunBackupTask::class,
                 App\Sync\Task\UpdateGeoLiteTask::class,
                 App\Sync\Task\UpdateStorageLocationSizesTask::class,
-                App\Sync\Task\CleanupSsoTokensTask::class,
             ]);
         }
     );

@@ -555,15 +555,4 @@ return [
             $logger
         );
     },
-
-    // SSO Service
-    App\Service\SsoService::class => static function (
-        Doctrine\ORM\EntityManagerInterface $em,
-        App\Entity\Repository\SsoTokenRepository $ssoTokenRepo,
-        App\Entity\Repository\UserRepository $userRepo,
-        Psr\Log\LoggerInterface $logger,
-        App\Http\RouterInterface $router
-    ) {
-        return new App\Service\SsoService($em, $ssoTokenRepo, $userRepo, $logger, $router);
-    },
 ];

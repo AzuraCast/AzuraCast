@@ -41,7 +41,7 @@ export function userAllowedForStation(permission: StationPermissions, id: number
             return false;
         }
 
-        if (thisStationPermissions.permissions.indexOf(StationPermissions.All) !== 1) {
+        if (thisStationPermissions.permissions.indexOf(StationPermissions.All) !== -1) {
             return true;
         }
 

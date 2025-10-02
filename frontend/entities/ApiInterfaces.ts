@@ -214,6 +214,11 @@ export enum PlaylistOrders {
   Sequential = "sequential",
 }
 
+export enum LoginTokenTypes {
+  ResetPassword = "reset_password",
+  Login = "login",
+}
+
 export enum IpSources {
   Local = "local",
   XForwardedFor = "xff",
@@ -318,6 +323,20 @@ export interface ApiAdminLogList {
   globalLogs: ApiLogType[];
   stationLogs: ApiAdminStationLogList[];
 }
+
+export interface ApiAdminNewLoginToken {
+  /** User ID or e-mail address. */
+  user: number | string;
+  type?: LoginTokenTypes | null;
+  /** @example "SSO Login" */
+  comment?: string | null;
+  expires_minutes?: number;
+}
+
+export type ApiAdminNewLoginTokenResponse = ApiStatus & {
+  record: UserLoginToken;
+  readonly links: Record<string, string>;
+};
 
 export interface ApiAdminPermission {
   id: string;
@@ -2494,4 +2513,15 @@ export type User = HasAutoIncrementId & {
   updated_at?: number;
   /** Role> */
   roles?: any[];
+};
+
+export type UserLoginToken = HasSplitTokenFields & {
+  user?: User;
+  type?: LoginTokenTypes;
+  /** @example "SSO Login" */
+  comment?: string | null;
+  /** @example 1640998800 */
+  created_at?: number;
+  /** @example 1640998800 */
+  expires_at?: number;
 };

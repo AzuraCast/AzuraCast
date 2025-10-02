@@ -6,7 +6,6 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity\Interfaces\SplitTokenEntityInterface;
-use App\Entity\User;
 use App\Security\SplitToken;
 
 /**
@@ -19,8 +18,9 @@ abstract class AbstractSplitTokenRepository extends Repository
      * Given an API key string in the format `identifier:verifier`, find and authenticate an API key.
      *
      * @param string $key
+     * @return TEntity|null
      */
-    public function authenticate(string $key): ?User
+    public function authenticate(string $key): ?SplitTokenEntityInterface
     {
         $userSuppliedToken = SplitToken::fromKeyString($key);
 
@@ -28,7 +28,7 @@ abstract class AbstractSplitTokenRepository extends Repository
 
         if ($tokenEntity instanceof SplitTokenEntityInterface) {
             return ($tokenEntity->verify($userSuppliedToken))
-                ? $tokenEntity->getUser()
+                ? $tokenEntity
                 : null;
         }
 

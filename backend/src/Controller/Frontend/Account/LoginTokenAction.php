@@ -6,15 +6,15 @@ namespace App\Controller\Frontend\Account;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\SingleActionInterface;
+use App\Entity\Enums\LoginTokenTypes;
 use App\Entity\Repository\UserLoginTokenRepository;
-use App\Entity\User;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
-final class RecoverAction implements SingleActionInterface
+final class LoginTokenAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
 
@@ -28,18 +28,34 @@ final class RecoverAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
+        $flash = $request->getFlash();
+
         /** @var string $token */
         $token = $params['token'];
 
-        $user = $this->loginTokenRepo->authenticate($token);
-        $flash = $request->getFlash();
+        $loginToken = $this->loginTokenRepo->authenticate($token);
 
-        if (!$user instanceof User) {
+        if (null === $loginToken) {
             $flash->error(
                 message: __('Invalid token specified.'),
             );
 
             return $response->withRedirect($request->getRouter()->named('account:login'));
+        }
+
+        $user = $loginToken->getUser();
+
+        // Magic login type tokens just redirect to the dashboard.
+        if ($loginToken->type === LoginTokenTypes::Login) {
+            $request->getAuth()->setUser($user);
+
+            $this->loginTokenRepo->revokeForUser($user);
+
+            $flash->success(
+                message: __('Logged in using login token.'),
+            );
+
+            return $response->withRedirect($request->getRouter()->named('dashboard'));
         }
 
         $csrf = $request->getCsrf();

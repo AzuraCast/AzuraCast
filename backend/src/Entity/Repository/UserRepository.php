@@ -14,6 +14,15 @@ final class UserRepository extends Repository
 {
     protected string $entityClass = User::class;
 
+    public function findByIdOrEmail(int|string $identifier): ?User
+    {
+        if (is_numeric($identifier)) {
+            return $this->repository->find($identifier);
+        }
+
+        return $this->findByEmail((string)$identifier);
+    }
+
     public function findByEmail(string $email): ?User
     {
         return $this->repository->findOneby(['email' => $email]);

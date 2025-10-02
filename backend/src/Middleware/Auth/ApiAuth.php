@@ -45,9 +45,9 @@ final class ApiAuth extends AbstractAuth
         $apiKey = $this->getApiKey($request);
 
         if (!empty($apiKey)) {
-            $apiUser = $this->apiKeyRepo->authenticate($apiKey);
-            if (null !== $apiUser) {
-                return $apiUser;
+            $apiRecord = $this->apiKeyRepo->authenticate($apiKey);
+            if (null !== $apiRecord) {
+                return $apiRecord->getUser();
             }
         }
 

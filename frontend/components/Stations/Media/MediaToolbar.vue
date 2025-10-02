@@ -224,6 +224,7 @@ import {MediaInitialPlaylist, MediaSelectedItems} from "~/components/Stations/Me
 import {ApiStationMediaPlaylist} from "~/entities/ApiInterfaces";
 import IconIcClearAll from "~icons/ic/baseline-clear-all";
 import IconIcDelete from "~icons/ic/baseline-delete";
+import IconIcFolder from "~icons/ic/baseline-folder";
 import IconIcMoreHoriz from "~icons/ic/baseline-more-horiz";
 import IconIcOpenWith from "~icons/ic/baseline-open-with";
 

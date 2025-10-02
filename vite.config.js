@@ -19,9 +19,11 @@ inputs['Layout'] = resolve(__dirname, './frontend/js/layout.js');
 
 console.log(inputs);
 
+const frontendBaseDir = resolve(__dirname, './frontend/');
+
 // https://vitejs.dev/config/
 export default defineConfig({
-    root: resolve(__dirname, './frontend/'),
+    root: frontendBaseDir,
     base: '/static/vite_dist',
     build: {
         rollupOptions: {
@@ -32,18 +34,46 @@ export default defineConfig({
                     estoolkit: ['es-toolkit'],
                     leaflet: ['leaflet'],
                     hlsjs: ['hls.js'],
-                    zxcvbn: ['zxcvbn']
+                    zxcvbn: ['zxcvbn'],
                 },
                 chunkFileNames: (assetInfo) => {
-                    if (assetInfo.name) {
-                        if (assetInfo.name === 'translations') {
-                            const translationParts = assetInfo.facadeModuleId
-                                .split('/');
+                    // Special handling for translations
+                    if (assetInfo.name && assetInfo.name === 'translations') {
+                        const translationParts = assetInfo.facadeModuleId
+                            .split('/');
 
-                            const translationPath = translationParts[translationParts.length - 2];
-                            return `translations-${translationPath}-[hash:8].js`
+                        const translationPath = translationParts[translationParts.length - 2];
+                        return `translations-${translationPath}-[hash:8].js`
+                    }
+
+                    // Name chunk after its file if it has one.
+                    if (assetInfo.moduleIds.length === 1) {
+                        const modulePath = assetInfo.moduleIds.slice().shift();
+
+                        if (modulePath.includes(frontendBaseDir)) {
+                            let path = modulePath.replace(frontendBaseDir + '/', '')
+                                .replaceAll('/', '-');
+
+                            if (path.includes('?')) {
+                                path = path.split('?').slice(0, -1).join('?');
+                            }
+                            if (path.includes('.')) {
+                                path = path.split('.').slice(0, -1).join('?');
+                            }
+
+                            return `${path}-[hash:8].js`;
                         }
 
+                        if (modulePath.indexOf('~icons') === 0) {
+                            const path = modulePath.split('/')
+                                .slice(1)
+                                .join('-');
+
+                            return `icon-${path}-[hash:8].js`;
+                        }
+                    }
+
+                    if (assetInfo.name) {
                         const assetName = assetInfo.name.replace(
                             '.vue_vue_type_style_index_0_lang',
                             ''

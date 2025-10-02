@@ -678,6 +678,97 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
+  /admin/login_tokens:
+    get:
+      tags:
+        - 'Administration: Users'
+      summary: 'List all current unexpired login tokens in the system.'
+      operationId: getLoginTokens
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf: [{ $ref: '#/components/schemas/UserLoginToken' }, { $ref: '#/components/schemas/HasLinks' }]
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    post:
+      tags:
+        - 'Administration: Users'
+      summary: 'Create a new login token.'
+      operationId: addLoginToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Api_Admin_NewLoginToken'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Admin_NewLoginTokenResponse'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/admin/login_token/{id}':
+    get:
+      tags:
+        - 'Administration: Users'
+      summary: 'Retrieve details for a single login token.'
+      operationId: getLoginToken
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Token identifier'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - { $ref: '#/components/schemas/UserLoginToken' }
+                  - { $ref: '#/components/schemas/HasLinks' }
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    delete:
+      tags:
+        - 'Administration: Users'
+      summary: 'Delete a single login token.'
+      operationId: deleteLoginToken
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Token identifier'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   /admin/logs:
     get:
       tags:
@@ -6375,6 +6466,48 @@ components:
           items:
             $ref: '#/components/schemas/Api_Admin_StationLogList'
       type: object
+    Api_Admin_NewLoginToken:
+      required:
+        - user
+      properties:
+        user:
+          description: 'User ID or e-mail address.'
+          anyOf:
+            -
+              type: integer
+              format: int64
+            -
+              type: string
+        type:
+          oneOf:
+            -
+              $ref: '#/components/schemas/LoginTokenTypes'
+          nullable: true
+        comment:
+          type: string
+          example: 'SSO Login'
+          nullable: true
+        expires_minutes:
+          type: integer
+      type: object
+    Api_Admin_NewLoginTokenResponse:
+      required:
+        - record
+        - links
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_Status'
+        -
+          properties:
+            record:
+              $ref: '#/components/schemas/UserLoginToken'
+            links:
+              type: object
+              readOnly: true
+              additionalProperties:
+                type: string
+          type: object
     Api_Admin_Permission:
       required:
         - id
@@ -8674,6 +8807,14 @@ components:
         - Local
         - XForwardedFor
         - Cloudflare
+    LoginTokenTypes:
+      type: string
+      enum:
+        - reset_password
+        - login
+      x-enumNames:
+        - ResetPassword
+        - Login
     PlaylistOrders:
       type: string
       enum:
@@ -9930,6 +10071,28 @@ components:
               description: Role>
               type: array
               items: {  }
+          type: object
+    UserLoginToken:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasSplitTokenFields'
+        -
+          properties:
+            user:
+              $ref: '#/components/schemas/User'
+            type:
+              $ref: '#/components/schemas/LoginTokenTypes'
+            comment:
+              type: string
+              example: 'SSO Login'
+              nullable: true
+            created_at:
+              type: integer
+              example: 1640998800
+            expires_at:
+              type: integer
+              example: 1640998800
           type: object
     FlashLevels:
       type: string

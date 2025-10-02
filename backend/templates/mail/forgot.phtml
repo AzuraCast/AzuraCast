@@ -1,8 +1,6 @@
 <?php
 /**
- * @var App\Http\RouterInterface $router
- * @var App\Environment $environment
- * @var string $token
+ * @var string $url
  */
 
 ?><?= __('Account Recovery') ?>
@@ -11,8 +9,4 @@
 
 <?= __('Click the link below to log in to your account.') ?>
 
-<?= $router->named(
-    routeName: 'account:recover',
-    routeParams: ['token' => $token],
-    absolute: true
-)?>
+<?= $url ?>

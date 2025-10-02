@@ -260,6 +260,12 @@ return static function (RouteCollectorProxy $group) {
                 ['station', 'stations', Controller\Api\Admin\StationsController::class, GlobalPermissions::Stations],
                 ['user', 'users', Controller\Api\Admin\UsersController::class, GlobalPermissions::All],
                 [
+                    'login_token',
+                    'login_tokens',
+                    Controller\Api\Admin\LoginTokensController::class,
+                    GlobalPermissions::All,
+                ],
+                [
                     'storage_location',
                     'storage_locations',
                     Controller\Api\Admin\StorageLocationsController::class,

@@ -59,7 +59,7 @@
 <script setup lang="ts">
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {userAllowedForStation} from "~/acl";
+import {useUserAllowedForStation} from "~/acl";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
 import {computed} from "vue";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
@@ -69,6 +69,8 @@ import IconIcClose from "~icons/ic/baseline-close";
 import IconIcAssignment from "~icons/ic/baseline-assignment";
 
 const stationData = useStationData();
+
+const {userAllowedForStation} = useUserAllowedForStation();
 
 const toggleRequests = useToggleFeature(
     'enable_requests',

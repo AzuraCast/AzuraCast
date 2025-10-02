@@ -1,6 +1,6 @@
 import {useTranslate} from "~/vendor/gettext.ts";
 import {filterMenu, MenuCategory, RawMenuCategory} from "~/functions/filterMenu.ts";
-import {userAllowedForStation} from "~/acl.ts";
+import {useUserAllowedForStation} from "~/acl.ts";
 import {shallowRef, watch} from "vue";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
@@ -19,6 +19,7 @@ export function useStationsMenu() {
     const {$gettext} = useTranslate();
 
     const station = useStationData();
+    const {userAllowedForStation} = useUserAllowedForStation();
 
     const fullMenu: RawMenuCategory[] = [
         {

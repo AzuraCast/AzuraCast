@@ -16,37 +16,33 @@ export function userAllowed(permission: GlobalPermissions): boolean {
     }
 }
 
-export function userAllowedForStation(permission: StationPermissions, id: number | null = null): boolean {
-    if (id === null) {
-        try {
-            const stationId = useStationId();
-            id = stationId.value;
-        } catch {
-            return false;
+export function useUserAllowedForStation() {
+    const {permissions} = useAzuraCastUser();
+    const stationId = useStationId();
+
+    return {
+        userAllowedForStation: (permission: StationPermissions) => {
+            try {
+                if (userAllowed(GlobalPermissions.Stations)) {
+                    return true;
+                }
+
+                const thisStationPermissions = permissions.station.find(
+                    (row) => row.id === stationId.value
+                );
+
+                if (thisStationPermissions === undefined) {
+                    return false;
+                }
+
+                if (thisStationPermissions.permissions.indexOf(StationPermissions.All) !== -1) {
+                    return true;
+                }
+
+                return thisStationPermissions.permissions.indexOf(permission) !== -1;
+            } catch {
+                return false;
+            }
         }
-    }
-
-    if (userAllowed(GlobalPermissions.Stations)) {
-        return true;
-    }
-
-    try {
-        const {permissions} = useAzuraCastUser();
-
-        const thisStationPermissions = permissions.station.find(
-            (row) => row.id === id
-        );
-
-        if (thisStationPermissions === undefined) {
-            return false;
-        }
-
-        if (thisStationPermissions.permissions.indexOf(StationPermissions.All) !== -1) {
-            return true;
-        }
-
-        return thisStationPermissions.permissions.indexOf(permission) !== -1;
-    } catch {
-        return false;
-    }
+    };
 }

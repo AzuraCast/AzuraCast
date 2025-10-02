@@ -1,13 +1,14 @@
 import {useTranslate} from "~/vendor/gettext.ts";
-import {userAllowed} from "~/acl.ts";
 import {filterMenu, RawMenuCategory} from "~/functions/filterMenu.ts";
 import {GlobalPermissions} from "~/entities/ApiInterfaces.ts";
 import IconIcGroup from "~icons/ic/baseline-group";
 import IconIcRadio from "~icons/ic/baseline-radio";
 import IconIcRouter from "~icons/ic/baseline-router";
+import {useUserAllowed} from "~/functions/useUserAllowed.ts";
 
 export function useAdminMenu() {
     const {$gettext} = useTranslate();
+    const {userAllowed} = useUserAllowed();
 
     const fullMenu: RawMenuCategory[] = [
         {

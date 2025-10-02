@@ -59,7 +59,7 @@
 <script setup lang="ts">
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useUserAllowedForStation} from "~/acl";
+import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
 import {computed} from "vue";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";

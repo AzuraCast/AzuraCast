@@ -257,7 +257,6 @@ import {ApiNotification, ApiNowPlaying, GlobalPermissions, HasLinks} from "~/ent
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
 import {useQuery} from "@tanstack/vue-query";
-import {userAllowed} from "~/acl.ts";
 import {useAzuraCastDashboardGlobals} from "~/vendor/azuracast.ts";
 import DashboardNoSidebar from "~/components/Layout/DashboardNoSidebar.vue";
 import IconIcAccountCircle from "~icons/ic/baseline-account-circle";
@@ -265,9 +264,11 @@ import IconIcHeadphones from "~icons/ic/baseline-headphones";
 import IconIcInfo from "~icons/ic/baseline-info";
 import IconIcSettings from "~icons/ic/baseline-settings";
 import IconIcWarning from "~icons/ic/baseline-warning";
+import {useUserAllowed} from "~/functions/useUserAllowed.ts";
 
 const {showCharts, showAlbumArt} = useAzuraCastDashboardGlobals();
 
+const {userAllowed} = useUserAllowed();
 const showAdmin = userAllowed(GlobalPermissions.View);
 
 const notificationsUrl = getApiUrl('/frontend/dashboard/notifications');

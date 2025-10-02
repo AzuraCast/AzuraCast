@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import PlayButton from "~/components/Common/Audio/PlayButton.vue";
-import {useUserAllowedForStation} from "~/acl";
+import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";

@@ -1,23 +1,11 @@
 import {useAzuraCastUser} from "~/vendor/azuracast.ts";
-import {GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
+import {useUserAllowed} from "~/functions/useUserAllowed.ts";
 import {useStationId} from "~/functions/useStationQuery.ts";
-
-export function userAllowed(permission: GlobalPermissions): boolean {
-    try {
-        const {permissions} = useAzuraCastUser();
-
-        if (permissions.global.indexOf(GlobalPermissions.All) !== -1) {
-            return true;
-        }
-
-        return permissions.global.indexOf(permission) !== -1;
-    } catch {
-        return false;
-    }
-}
+import {GlobalPermissions, StationPermissions} from "~/entities/ApiInterfaces.ts";
 
 export function useUserAllowedForStation() {
     const {permissions} = useAzuraCastUser();
+    const {userAllowed} = useUserAllowed();
     const stationId = useStationId();
 
     return {

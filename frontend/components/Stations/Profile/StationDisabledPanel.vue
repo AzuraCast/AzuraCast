@@ -35,7 +35,7 @@
     </card-page>
 </template>
 <script setup lang="ts">
-import {useUserAllowedForStation} from "~/acl.ts";
+import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts";
 import CardPage from "~/components/Common/CardPage.vue";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";

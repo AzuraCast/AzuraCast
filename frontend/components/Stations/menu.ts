@@ -1,6 +1,5 @@
 import {useTranslate} from "~/vendor/gettext.ts";
 import {filterMenu, MenuCategory, RawMenuCategory} from "~/functions/filterMenu.ts";
-import {useUserAllowedForStation} from "~/acl.ts";
 import {shallowRef, watch} from "vue";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
@@ -14,6 +13,7 @@ import IconIcPodcasts from "~icons/ic/baseline-podcasts";
 import IconIcPublic from "~icons/ic/baseline-public";
 import IconIcInsertChart from "~icons/ic/baseline-insert-chart";
 import IconBiBroadcast from "~icons/bi/broadcast";
+import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts";
 
 export function useStationsMenu() {
     const {$gettext} = useTranslate();

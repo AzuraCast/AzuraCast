@@ -141,10 +141,11 @@ import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {getApiUrl} from "~/router";
 import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {ApiAdminStereoToolStatus} from "~/entities/ApiInterfaces.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getApiUrl} = useApiRouter();
 const apiUrl = getApiUrl('/admin/stereo_tool');
 
 const isLoading = ref(true);

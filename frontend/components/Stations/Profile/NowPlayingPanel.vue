@@ -252,7 +252,6 @@ import UpdateMetadataModal from "~/components/Stations/Profile/UpdateMetadataMod
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 import {BackendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
-import {getStationApiUrl} from "~/router.ts";
 import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
 import {toRefs} from "@vueuse/core";
 import IconIcHeadphones from "~icons/ic/baseline-headphones";
@@ -262,12 +261,15 @@ import IconIcMusicNote from "~icons/ic/baseline-music-note";
 import IconIcSkipNext from "~icons/ic/baseline-skip-next";
 import IconIcUpdate from "~icons/ic/baseline-update";
 import IconIcVolumeOff from "~icons/ic/baseline-volume-off";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const stationData = useStationData();
 const profileData = useStationProfileData();
 const {nowPlayingProps} = toRefs(profileData);
 
 const {userAllowedForStation} = useUserAllowedForStation();
+
+const {getStationApiUrl} = useApiRouter();
 
 const backendSkipSongUri = getStationApiUrl('/backend/skip');
 const backendDisconnectStreamerUri = getStationApiUrl('/backend/disconnect');

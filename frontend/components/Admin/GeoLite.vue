@@ -109,11 +109,12 @@ import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
 import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {getApiUrl} from "~/router";
 import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {ApiAdminGeoLiteStatus} from "~/entities/ApiInterfaces.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getApiUrl} = useApiRouter();
 const apiUrl = getApiUrl('/admin/geolite');
 
 const isLoading = ref(true);

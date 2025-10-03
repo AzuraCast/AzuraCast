@@ -166,7 +166,6 @@ import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed, shallowRef, toRef, useTemplateRef} from "vue";
 import AddButton from "~/components/Common/AddButton.vue";
-import {getStationApiUrl} from "~/router.ts";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import {ApiPodcast, ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
 import useHasEditModal from "~/functions/useHasEditModal.ts";
@@ -178,6 +177,7 @@ import {useHasModal} from "~/functions/useHasModal.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import IconBiChevronLeft from "~icons/bi/chevron-left";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const props = defineProps<{
     podcast: Required<ApiPodcast>
@@ -185,6 +185,7 @@ const props = defineProps<{
 
 const podcast = toRef(props, 'podcast');
 
+const {getStationApiUrl} = useApiRouter();
 const quotaUrl = getStationApiUrl('/quota/station_podcasts');
 
 const {$gettext} = useTranslate();

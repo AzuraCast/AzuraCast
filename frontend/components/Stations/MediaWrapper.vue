@@ -9,10 +9,11 @@ import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import {useQuery} from "@tanstack/vue-query";
 import Loading from "~/components/Common/Loading.vue";
-import {getStationApiUrl} from "~/router.ts";
 import Media from "~/components/Stations/Media.vue";
 import {StationsVueFilesPropsRequired} from "~/entities/StationMedia.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getStationApiUrl} = useApiRouter();
 const propsUrl = getStationApiUrl('/vue/files');
 
 const {axios} = useAxios();

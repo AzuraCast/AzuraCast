@@ -1,5 +1,4 @@
 import {useAxios} from "~/vendor/axios.ts";
-import {getStationApiUrl} from "~/router.ts";
 import {useQuery, useQueryClient} from "@tanstack/vue-query";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import {StationProfileRequired} from "~/entities/StationProfile.ts";
@@ -8,6 +7,7 @@ import {ApiStationsVueProfileProps} from "~/entities/ApiInterfaces.ts";
 import {useStationData, useStationId} from "~/functions/useStationQuery.ts";
 import {computed} from "vue";
 import {toRefs} from "@vueuse/core";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const blankProps: ApiStationsVueProfileProps = {
     nowPlayingProps: {
@@ -37,6 +37,8 @@ const blankProps: ApiStationsVueProfileProps = {
 
 export const useProfilePropsQuery = () => {
     const {axios} = useAxios();
+    const {getStationApiUrl} = useApiRouter();
+
     const apiUrl = getStationApiUrl('/vue/profile');
 
     const stationData = useStationData();
@@ -69,6 +71,8 @@ const blankServices: StationProfileRequired = {
 
 export const useProfileServicesQuery = () => {
     const {axiosSilent} = useAxios();
+    const {getStationApiUrl} = useApiRouter();
+
     const profileApiUrl = getStationApiUrl('/profile');
 
     const stationData = useStationData();

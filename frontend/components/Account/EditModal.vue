@@ -55,7 +55,6 @@ import ModalForm from "~/components/Common/ModalForm.vue";
 import {computed, ref, useTemplateRef} from "vue";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {getErrorAsString, useAxios} from "~/vendor/axios";
-import {getApiUrl} from "~/router.ts";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
@@ -63,6 +62,7 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import TimeRadios from "~/components/Account/TimeRadios.vue";
 import {useTranslate} from "~/vendor/gettext.ts";
 import {objectToSimpleFormOptions} from "~/functions/objectToFormOptions.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const props = defineProps<{
     supportedLocales: Record<string, string>
@@ -72,6 +72,7 @@ const emit = defineEmits<{
     (e: 'reload'): void
 }>();
 
+const {getApiUrl} = useApiRouter();
 const userUrl = getApiUrl('/frontend/account/me');
 
 const loading = ref(true);

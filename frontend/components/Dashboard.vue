@@ -251,7 +251,6 @@ import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
 import useOptionalStorage from "~/functions/useOptionalStorage";
 import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
-import {getApiUrl} from "~/router.ts";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import {ApiNotification, ApiNowPlaying, GlobalPermissions, HasLinks} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
@@ -265,11 +264,14 @@ import IconIcInfo from "~icons/ic/baseline-info";
 import IconIcSettings from "~icons/ic/baseline-settings";
 import IconIcWarning from "~icons/ic/baseline-warning";
 import {useUserAllowed} from "~/functions/useUserAllowed.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const {showCharts, showAlbumArt} = useAzuraCastDashboardGlobals();
 
 const {userAllowed} = useUserAllowed();
 const showAdmin = userAllowed(GlobalPermissions.View);
+
+const {getApiUrl} = useApiRouter();
 
 const notificationsUrl = getApiUrl('/frontend/dashboard/notifications');
 const chartsUrl = getApiUrl('/frontend/dashboard/charts');

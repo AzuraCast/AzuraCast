@@ -107,7 +107,6 @@
 
 <script setup lang="ts">
 import {useAxios} from "~/vendor/axios";
-import {getApiUrl} from "~/router";
 import {useAdminMenu} from "~/components/Admin/menu";
 import CpuStatsPanel from "~/components/Admin/Index/CpuStatsPanel.vue";
 import MemoryStatsPanel from "~/components/Admin/Index/MemoryStatsPanel.vue";
@@ -119,7 +118,9 @@ import {ApiAdminServerStats} from "~/entities/ApiInterfaces.ts";
 import {useQuery} from "@tanstack/vue-query";
 import {QueryKeys} from "~/entities/Queries.ts";
 import DashboardNoSidebar from "~/components/Layout/DashboardNoSidebar.vue";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getApiUrl} = useApiRouter();
 const statsUrl = getApiUrl('/admin/server/stats');
 
 const menuItems = useAdminMenu();

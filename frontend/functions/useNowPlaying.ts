@@ -2,10 +2,10 @@ import NowPlaying from "~/entities/NowPlaying";
 import {computed, EffectScope, effectScope, isRef, MaybeRef, ref, shallowRef, watch} from "vue";
 import {useDocumentVisibility, useEventSource, useIntervalFn} from "@vueuse/core";
 import {ApiNowPlaying, ApiNowPlayingVueProps} from "~/entities/ApiInterfaces.ts";
-import {getApiUrl} from "~/router.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import formatTime from "~/functions/formatTime.ts";
 import {isUndefined, omitBy} from "es-toolkit/compat";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 interface SsePayload {
     data: {
@@ -23,6 +23,8 @@ export default function useNowPlaying(
     const currentTime = ref<number>(Math.floor(Date.now() / 1000));
     const currentTrackDuration = ref<number>(0);
     const currentTrackElapsed = ref<number>(0);
+
+    const {getApiUrl} = useApiRouter();
 
     const setNowPlaying = (np_new: ApiNowPlaying) => {
         if (!np_new.now_playing) {

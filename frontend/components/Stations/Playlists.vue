@@ -315,7 +315,6 @@ import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import {useLuxon} from "~/vendor/luxon";
-import {getStationApiUrl} from "~/router";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
@@ -328,7 +327,9 @@ import {useStationData} from "~/functions/useStationQuery.ts";
 import {toRefs} from "@vueuse/core";
 import IconBiContract from "~icons/bi/chevron-contract";
 import IconBiExpand from "~icons/bi/chevron-expand";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getStationApiUrl} = useApiRouter();
 const listUrl = getStationApiUrl('/playlists');
 const scheduleUrl = getStationApiUrl('/playlists/schedule');
 

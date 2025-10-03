@@ -88,17 +88,19 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 import {BackendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
-import {getStationApiUrl} from "~/router.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
 import IconIcPlayArrow from "~icons/ic/baseline-play-arrow";
 import IconIcStop from "~icons/ic/baseline-stop";
 import IconIcUpdate from "~icons/ic/baseline-update";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const stationData = useStationData();
 const profileData = useStationProfileData();
 
 const {userAllowedForStation} = useUserAllowedForStation();
+
+const {getStationApiUrl} = useApiRouter();
 
 const backendRestartUri = getStationApiUrl('/backend/restart');
 const backendStartUri = getStationApiUrl('/backend/start');

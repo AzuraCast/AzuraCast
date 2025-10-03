@@ -112,11 +112,12 @@ import {required} from "@regle/rules";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {getStationApiUrl} from "~/router";
 import CardPage from "~/components/Common/CardPage.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getStationApiUrl} = useApiRouter();
 const apiUrl = getStationApiUrl('/reports/soundexchange');
 
 const {now} = useStationDateTimeFormatter();

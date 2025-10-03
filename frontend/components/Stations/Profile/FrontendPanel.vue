@@ -179,18 +179,20 @@ import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts"
 import useOptionalStorage from "~/functions/useOptionalStorage";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 import {FrontendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
-import {getStationApiUrl} from "~/router.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
 import IconIcMoreHoriz from "~icons/ic/baseline-more-horiz";
 import IconIcPlayArrow from "~icons/ic/baseline-play-arrow";
 import IconIcStop from "~icons/ic/baseline-stop";
 import IconIcUpdate from "~icons/ic/baseline-update";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const stationData = useStationData();
 const profileData = useStationProfileData();
 
 const {userAllowedForStation} = useUserAllowedForStation();
+
+const {getStationApiUrl} = useApiRouter();
 
 const frontendRestartUri = getStationApiUrl('/frontend/restart');
 const frontendStartUri = getStationApiUrl('/frontend/start');

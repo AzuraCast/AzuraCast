@@ -7,8 +7,8 @@ import {useRoute} from "vue-router";
 import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 export const useStationId = (): ComputedRef<number | null> => {
-    const {params} = useRoute();
-    return computed(() => Number(params.station_id) ?? null);
+    const route = useRoute();
+    return computed(() => Number(route?.params?.station_id) ?? null);
 }
 
 const blankStationGlobals: VueStationGlobals = {

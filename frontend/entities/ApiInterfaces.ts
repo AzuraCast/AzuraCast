@@ -332,10 +332,16 @@ export interface ApiAdminNewLoginToken {
   expires_minutes?: number;
 }
 
-export type ApiAdminNewLoginTokenResponse = ApiStatus & {
+export interface ApiAdminNewLoginTokenResponse {
+  /** @example true */
+  success: boolean;
+  /** @example "Changes saved successfully." */
+  message: string;
+  /** @example "<b>Changes saved successfully.</b>" */
+  formatted_message: string;
   record: UserLoginToken;
   readonly links: Record<string, string>;
-};
+}
 
 export interface ApiAdminPermission {
   id: string;
@@ -558,6 +564,15 @@ export interface ApiAdminUpdateDetails {
   /** Whether you can seamlessly move from the Rolling Release channel to Stable without issues. */
   can_switch_to_stable?: boolean;
 }
+
+export type ApiAdminUserWithDetails = User &
+  HasLinks & {
+    /**
+     * Whether this user record represents the currently logged-in user.
+     * @example true
+     */
+    is_me: boolean;
+  };
 
 export interface ApiAdminVueBackupProps {
   isDocker: boolean;

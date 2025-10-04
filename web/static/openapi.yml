@@ -1553,7 +1553,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/User'
+                  $ref: '#/components/schemas/Api_Admin_UserWithDetails'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -1574,7 +1574,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Api_Admin_UserWithDetails'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -1600,7 +1600,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Api_Admin_UserWithDetails'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -6492,22 +6492,29 @@ components:
       type: object
     Api_Admin_NewLoginTokenResponse:
       required:
+        - success
+        - message
+        - formatted_message
         - record
         - links
-      type: object
-      allOf:
-        -
-          $ref: '#/components/schemas/Api_Status'
-        -
-          properties:
-            record:
-              $ref: '#/components/schemas/UserLoginToken'
-            links:
-              type: object
-              readOnly: true
-              additionalProperties:
-                type: string
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: 'Changes saved successfully.'
+        formatted_message:
+          type: string
+          example: '<b>Changes saved successfully.</b>'
+        record:
+          $ref: '#/components/schemas/UserLoginToken'
+        links:
           type: object
+          readOnly: true
+          additionalProperties:
+            type: string
+      type: object
     Api_Admin_Permission:
       required:
         - id
@@ -6947,6 +6954,22 @@ components:
           description: 'Whether you can seamlessly move from the Rolling Release channel to Stable without issues.'
           type: boolean
       type: object
+    Api_Admin_UserWithDetails:
+      required:
+        - is_me
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/User'
+        -
+          $ref: '#/components/schemas/HasLinks'
+        -
+          properties:
+            is_me:
+              description: 'Whether this user record represents the currently logged-in user.'
+              type: boolean
+              example: true
+          type: object
     Api_Admin_Vue_BackupProps:
       required:
         - isDocker

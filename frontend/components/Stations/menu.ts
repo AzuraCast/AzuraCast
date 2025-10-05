@@ -3,8 +3,9 @@ import {filterMenu, MenuCategory, RawMenuCategory} from "~/functions/filterMenu.
 import {shallowRef, watch} from "vue";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
+import IconIcHome from "~icons/ic/baseline-home";
 import IconIcCode from "~icons/ic/baseline-code";
-import IconIcImage from "~icons/ic/baseline-image";
+import IconIcSettings from "~icons/ic/baseline-settings";
 import IconIcLibraryMusic from "~icons/ic/baseline-library-music";
 import IconIcAssignment from "~icons/ic/baseline-assignment";
 import IconIcMic from "~icons/ic/baseline-mic";
@@ -23,20 +24,21 @@ export function useStationsMenu() {
 
     const fullMenu: RawMenuCategory[] = [
         {
+            key: 'view_profile',
+            label: $gettext('Overview'),
+            icon: () => IconIcHome,
+            url: {
+                name: 'stations:index'
+            }
+        },
+        {
             key: 'profile',
-            label: $gettext('Profile'),
-            icon: () => IconIcImage,
+            label: $gettext('Settings'),
+            icon: () => IconIcSettings,
             items: [
                 {
-                    key: 'view_profile',
-                    label: $gettext('View Profile'),
-                    url: {
-                        name: 'stations:index'
-                    }
-                },
-                {
                     key: 'edit_profile',
-                    label: $gettext('Edit Profile'),
+                    label: $gettext('Station Settings'),
                     url: {
                         name: 'stations:profile:edit'
                     },

@@ -114,7 +114,7 @@ export default function useNowPlaying(
                     }
                 }
 
-                const {data, close: closeSse, open: openSse} = useEventSource(sseUri);
+                const {data} = useEventSource(sseUri);
                 watch(data, (dataRaw: string | null) => {
                     if (!dataRaw) {
                         return;
@@ -141,20 +141,6 @@ export default function useNowPlaying(
                         handleSseData(jsonData.pub);
                     }
                 });
-
-                const visibility = useDocumentVisibility();
-                watch(
-                    visibility,
-                    (newValue: string, oldValue: string) => {
-                        if (newValue === 'hidden') {
-                            console.log('Window hidden; suspending NP data...');
-                            closeSse();
-                        } else if (newValue === 'visible' && oldValue === 'hidden') {
-                            console.log('Window shown; resuming NP data...');
-                            openSse();
-                        }
-                    }
-                )
             } else {
                 const nowPlayingUri = useStatic
                     ? getApiUrl(`/nowplaying_static/${stationShortName}.json`)
@@ -171,49 +157,33 @@ export default function useNowPlaying(
                     }
                 };
 
-                const {
-                    pause: pauseNp,
-                    resume: resumeNp,
-                } = useIntervalFn(
+                const visibility = useDocumentVisibility();
+
+                useIntervalFn(
                     () => void (async () => {
                         const {data} = await axiosSilent.get<ApiNowPlaying>(nowPlayingUri.value, axiosNoCacheConfig);
                         setNowPlaying(data);
                     })(),
-                    30000,
+                    computed(() =>
+                        visibility.value === 'visible' ? 20000 : 120000
+                    ),
                     {
                         immediateCallback: true
                     }
                 );
 
-                const {
-                    pause: pauseTimer,
-                    resume: resumeTimer
-                } = useIntervalFn(
+                useIntervalFn(
                     () => void (async () => {
                         const {data} = await axiosSilent.get(timeUri.value, axiosNoCacheConfig);
                         currentTime.value = data.timestamp;
                     })(),
-                    600000,
+                    computed(() =>
+                        visibility.value === 'visible' ? 600000 : 1200000
+                    ),
                     {
                         immediateCallback: true
                     }
                 );
-
-                const visibility = useDocumentVisibility();
-                watch(
-                    visibility,
-                    (newValue: string, oldValue: string) => {
-                        if (newValue === 'hidden') {
-                            console.log('Window hidden; suspending NP data...');
-                            pauseNp();
-                            pauseTimer();
-                        } else if (newValue === 'visible' && oldValue === 'hidden') {
-                            console.log('Window shown; resuming NP data...');
-                            resumeNp();
-                            resumeTimer();
-                        }
-                    }
-                )
             }
 
             useIntervalFn(

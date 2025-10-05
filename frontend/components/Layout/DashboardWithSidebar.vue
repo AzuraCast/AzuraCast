@@ -10,6 +10,7 @@
 
     <div id="page-wrapper" class="has-sidebar">
         <main id="main">
+            <div id="station-alerts-wrapper" />
             <div class="container" id="content">
                 <slot/>
             </div>

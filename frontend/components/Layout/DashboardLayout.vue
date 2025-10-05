@@ -35,7 +35,7 @@
             <div class="me-2">
                 {{ displayName }}
             </div>
-
+            <div id="station-time-wrapper" />
             <button
                 aria-expanded="false"
                 aria-haspopup="true"

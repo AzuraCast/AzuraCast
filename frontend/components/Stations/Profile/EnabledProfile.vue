@@ -1,6 +1,4 @@
 <template>
-    <profile-header/>
-
     <div
         id="profile"
         class="row row-of-cards"
@@ -41,7 +39,6 @@
 
 <script setup lang="ts">
 import ProfileStreams from "~/components/Stations/Profile/StreamsPanel.vue";
-import ProfileHeader from "~/components/Stations/Profile/HeaderPanel.vue";
 import ProfileNowPlaying from "~/components/Stations/Profile/NowPlayingPanel.vue";
 import ProfileSchedule from "~/components/Stations/Profile/SchedulePanel.vue";
 import ProfileRequests from "~/components/Stations/Profile/RequestsPanel.vue";

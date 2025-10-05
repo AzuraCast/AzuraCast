@@ -6,6 +6,19 @@
     >
         <template #header="{id}">
             <div class="d-flex align-items-center">
+                <div
+                    v-if="profileData.station.listen_url"
+                    class="flex-shrink-0 me-2"
+                >
+                    <play-button
+                        class="btn-xl text-white"
+                        :stream="{
+                            url: profileData.station.listen_url,
+                            title: stationData.name,
+                            isStream: true
+                        }"
+                    />
+                </div>
                 <h3
                     :id="id"
                     class="flex-shrink card-title my-0"
@@ -262,6 +275,7 @@ import IconIcSkipNext from "~icons/ic/baseline-skip-next";
 import IconIcUpdate from "~icons/ic/baseline-update";
 import IconIcVolumeOff from "~icons/ic/baseline-volume-off";
 import {useApiRouter} from "~/functions/useApiRouter.ts";
+import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 
 const stationData = useStationData();
 const profileData = useStationProfileData();

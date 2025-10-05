@@ -164,9 +164,13 @@ export default function useNowPlaying(
                         const {data} = await axiosSilent.get<ApiNowPlaying>(nowPlayingUri.value, axiosNoCacheConfig);
                         setNowPlaying(data);
                     })(),
-                    computed(() =>
-                        visibility.value === 'visible' ? 20000 : 120000
-                    ),
+                    computed(() => {
+                        if (useStatic) {
+                            return visibility.value === 'visible' ? 10000 : 30000;
+                        } else {
+                            return visibility.value === 'visible' ? 20000 : 60000;
+                        }
+                    }),
                     {
                         immediateCallback: true
                     }

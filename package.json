@@ -76,7 +76,7 @@
     "jsdom": "^27",
     "sass": "^1.39.2",
     "svg.js": "^2.7.1",
-    "swagger-typescript-api": "^13.0.3",
+    "swagger-typescript-api": "^13.2.14",
     "typescript-eslint": "^8",
     "unplugin-icons": "^22.3.0",
     "vite": "^7",

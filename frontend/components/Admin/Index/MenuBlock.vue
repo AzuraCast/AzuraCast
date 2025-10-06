@@ -35,7 +35,7 @@
 
 import {MenuCategory} from "~/functions/filterMenu.ts";
 
-const props = defineProps<{
+defineProps<{
     items: MenuCategory[]
 }>();
 </script>

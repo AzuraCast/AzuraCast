@@ -61,7 +61,7 @@
                                 </legend>
 
                                 <p
-                                    v-if="version"
+                                    v-if="record.version"
                                     class="text-success card-text"
                                 >
                                     {{ langInstalledVersion }}
@@ -87,7 +87,7 @@
                                 </legend>
 
                                 <p
-                                    v-if="hasLicense"
+                                    v-if="record.hasLicense"
                                     class="text-success card-text"
                                 >
                                     {{ $gettext('License key is currently installed.') }}
@@ -108,7 +108,7 @@
                             />
 
                             <div
-                                v-if="hasLicense"
+                                v-if="record.hasLicense"
                                 class="buttons block-buttons mt-3"
                             >
                                 <button
@@ -142,9 +142,13 @@ const {getApiUrl} = useApiRouter();
 const apiUrl = getApiUrl('/admin/rsas');
 const licenseUrl = getApiUrl('/admin/rsas/license');
 
+type Row = ApiAdminRsasStatus;
+
 const isLoading = ref(true);
-const version = ref<string | null>(null);
-const hasLicense = ref(false);
+const record = ref<Row>({
+    version: null,
+    hasLicense: false
+});
 
 const {$gettext} = useTranslate();
 
@@ -152,7 +156,7 @@ const langInstalledVersion = computed(() => {
     return $gettext(
         'RSAS version "%{version}" is currently installed.',
         {
-            version: version.value ?? 'N/A'
+            version: record.value.version ?? 'N/A'
         }
     );
 });
@@ -162,11 +166,8 @@ const {axios} = useAxios();
 const relist = async () => {
     isLoading.value = true;
 
-    const {data} = await axios.get<ApiAdminRsasStatus>(apiUrl.value);
-
-    version.value = data.version;
-    hasLicense.value = data.hasLicense;
-
+    const {data} = await axios.get<Row>(apiUrl.value);
+    record.value = data;
     isLoading.value = false;
 };
 
@@ -183,7 +184,7 @@ const doRemoveLicense = async () => {
     }
 
     await axios.delete(licenseUrl.value);
-
+    
     await relist();
 }
 

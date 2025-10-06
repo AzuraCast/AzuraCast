@@ -54,7 +54,7 @@
                             </legend>
 
                             <p
-                                v-if="version"
+                                v-if="record.version"
                                 class="text-success card-text"
                             >
                                 {{ langInstalledVersion }}
@@ -71,7 +71,7 @@
                             <fieldset>
                                 <form-group-field
                                     id="edit_form_key"
-                                    v-model="form.key"
+                                    v-model="record.key"
                                 >
                                     <template #label>
                                         {{ $gettext('MaxMind License Key') }}
@@ -111,21 +111,18 @@ import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {ApiAdminGeoLiteStatus} from "~/entities/ApiInterfaces.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useApiRouter} from "~/functions/useApiRouter.ts";
+import {useResettableRef} from "~/functions/useResettableRef.ts";
 
 const {getApiUrl} = useApiRouter();
 const apiUrl = getApiUrl('/admin/geolite');
 
+type Row = ApiAdminGeoLiteStatus;
+
 const isLoading = ref(true);
-const version = ref<string | null>(null);
-
-type Row = {
-    key: string | null
-}
-
-const {record: form} = useResettableRef<Row>({
-    key: null
+const {record, reset} = useResettableRef<Row>({
+    key: null,
+    version: null
 });
 
 const {$gettext} = useTranslate();
@@ -134,7 +131,7 @@ const langInstalledVersion = computed(() => {
     return $gettext(
         'GeoLite version "%{version}" is currently installed.',
         {
-            version: version.value ?? 'N/A'
+            version: record.value.version ?? 'N/A'
         }
     );
 });
@@ -144,9 +141,8 @@ const {axios} = useAxios();
 const doFetch = async () => {
     isLoading.value = true;
 
-    const {data} = await axios.get<ApiAdminGeoLiteStatus>(apiUrl.value);
-    form.value.key = data.key;
-    version.value = data.version;
+    const {data} = await axios.get<Row>(apiUrl.value);
+    record.value = data;
     isLoading.value = false;
 };
 
@@ -156,11 +152,8 @@ const doUpdate = async () => {
     isLoading.value = true;
 
     try {
-        const {data} = await axios.post<ApiAdminGeoLiteStatus>(apiUrl.value, {
-            geolite_license_key: form.value.key
-        });
-
-        version.value = data.version;
+        const {data} = await axios.post<Row>(apiUrl.value, record.value);
+        record.value = data;
     } finally {
         isLoading.value = false;
     }
@@ -178,7 +171,8 @@ const doDelete = async () => {
         return;
     }
 
-    form.value.key = null;
+    reset();
+
     await doUpdate();
 }
 </script>

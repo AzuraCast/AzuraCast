@@ -8,7 +8,7 @@
             <div class="d-flex align-items-center">
                 <div v-if="profileData.station.listen_url" class="flex-shrink-0 me-2">
                     <play-button
-                        class="btn-xl"
+                        class="btn-xl btn-link text-white"
                         :stream="{
                             url: profileData.station.listen_url,
                             title: stationData.name,

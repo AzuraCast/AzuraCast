@@ -2,7 +2,7 @@
     <div class="card settings">
         <div class="card-header text-bg-primary">
             <h5 class="card-title">
-                {{ $gettext('WebDJ') }}
+                {{ $gettext('Web DJ') }}
                 <br>
                 <small>{{ stationName }}</small>
             </h5>

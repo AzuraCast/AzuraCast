@@ -34,11 +34,9 @@
 import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
-import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
 import IconIcEdit from "~icons/ic/baseline-edit";
 
 const stationData = useStationData();
-const profileData = useStationProfileData();
 
 const {userAllowedForStation} = useUserAllowedForStation();
 </script>

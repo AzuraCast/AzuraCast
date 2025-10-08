@@ -1,13 +1,17 @@
 <template>
     <card-page header-id="hdr_streamers">
         <template #header="{id}">
-            <h3
-                :id="id"
-                class="card-title"
-            >
-                {{ $gettext('Streamers/DJs') }}
-                <enabled-badge :enabled="stationData.enableStreamers"/>
-            </h3>
+            <div class="d-flex align-items-center">
+                <h3
+                    :id="id"
+                    class="card-title flex-fill my-0"
+                >
+                    {{ $gettext('Streamers/DJs') }}
+                </h3>
+                <div class="flex-shrink-0">
+                    <enabled-badge :enabled="stationData.enableStreamers"/>
+                </div>
+            </div>
         </template>
         <template
             v-if="userAllowedForStation(StationPermissions.Streamers) || userAllowedForStation(StationPermissions.Profile)"

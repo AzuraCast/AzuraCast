@@ -1,13 +1,17 @@
 <template>
     <card-page header-id="hdr_public_pages">
         <template #header="{id}">
-            <h3
-                :id="id"
-                class="card-title"
-            >
-                {{ $gettext('Public Pages') }}
-                <enabled-badge :enabled="stationData.enablePublicPages"/>
-            </h3>
+            <div class="d-flex align-items-center">
+                <h3
+                    :id="id"
+                    class="card-title flex-fill my-0"
+                >
+                    {{ $gettext('Public Pages') }}
+                </h3>
+                <div class="flex-shrink-0">
+                    <enabled-badge :enabled="stationData.enablePublicPages"/>
+                </div>
+            </div>
         </template>
 
         <template v-if="stationData.enablePublicPages">

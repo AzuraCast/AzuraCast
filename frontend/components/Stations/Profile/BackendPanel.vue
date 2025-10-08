@@ -4,40 +4,21 @@
         header-id="hdr_backend"
     >
         <template #header="{id}">
-            <h3
-                :id="id"
-                class="card-title"
-            >
-                {{ $gettext('AutoDJ Service') }}
-                <running-badge :running="profileData.services.backendRunning"/>
-                <br>
-                <small>{{ backendName }}</small>
-            </h3>
-        </template>
-
-        <div class="card-body">
-            <p class="card-text">
-                {{ langTotalTracks }}
-            </p>
-
-            <div
-                v-if="userAllowedForStation(StationPermissions.Media)"
-                class="buttons"
-            >
-                <router-link
-                    class="btn btn-primary"
-                    :to="{name: 'stations:files:index'}"
+            <div class="d-flex align-items-center">
+                <h3
+                    :id="id"
+                    class="flex-fill card-title my-0"
                 >
-                    {{ $gettext('Music Files') }}
-                </router-link>
-                <router-link
-                    class="btn btn-primary"
-                    :to="{name: 'stations:playlists:index'}"
-                >
-                    {{ $gettext('Playlists') }}
-                </router-link>
+                    {{ $gettext('AutoDJ Service') }}
+
+                    <br>
+                    <small>{{ backendName }}</small>
+                </h3>
+                <div class="flex-shrink-0">
+                    <running-badge :running="profileData.services.backendRunning"/>
+                </div>
             </div>
-        </div>
+        </template>
 
         <template
             v-if="userAllowedForStation(StationPermissions.Broadcasting) && stationData.hasStarted"
@@ -106,42 +87,14 @@ const backendRestartUri = getStationApiUrl('/backend/restart');
 const backendStartUri = getStationApiUrl('/backend/start');
 const backendStopUri = getStationApiUrl('/backend/stop');
 
-const {$gettext, $ngettext} = useTranslate();
-
-const langTotalTracks = computed(() => {
-    const numSongs = $ngettext(
-        '%{numSongs} uploaded song',
-        '%{numSongs} uploaded songs',
-        profileData.value.numSongs,
-        {
-            numSongs: String(profileData.value.numSongs)
-        }
-    );
-
-    const numPlaylists = $ngettext(
-        '%{numPlaylists} playlist',
-        '%{numPlaylists} playlists',
-        profileData.value.numPlaylists,
-        {
-            numPlaylists: String(profileData.value.numPlaylists)
-        }
-    );
-
-    return $gettext(
-        'Liquidsoap is currently shuffling from %{songs} and %{playlists}.',
-        {
-            songs: numSongs,
-            playlists: numPlaylists
-        }
-    );
-});
-
 const backendName = computed(() => {
     if (stationData.value.backendType === BackendAdapters.Liquidsoap) {
         return 'Liquidsoap';
     }
     return '';
 });
+
+const {$gettext} = useTranslate();
 
 const doRestart = useMakeApiCall(
     backendRestartUri,

@@ -1,18 +1,5 @@
 <template>
     <div class="outside-card-header d-flex align-items-center">
-        <div
-            v-if="profileData.station.listen_url && stationData.hasStarted"
-            class="flex-shrink-0 me-2"
-        >
-            <play-button
-                class="btn-xl"
-                :stream="{
-                    url: profileData.station.listen_url,
-                    title: stationData.name,
-                    isStream: true
-                }"
-            />
-        </div>
         <div class="flex-fill">
             <h2 class="display-6 m-0">
                 {{ stationData.name }}<br>
@@ -44,7 +31,6 @@
 </template>
 
 <script setup lang="ts">
-import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";

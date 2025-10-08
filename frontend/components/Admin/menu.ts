@@ -152,7 +152,7 @@ export function useAdminMenu() {
             items: [
                 {
                     key: 'shoutcast',
-                    label: $gettext('Shoutcast'),
+                    label: $gettext('Shoutcast 2 DNAS'),
                     url: {
                         name: 'admin:install_shoutcast:index'
                     },
@@ -176,7 +176,7 @@ export function useAdminMenu() {
                 },
                 {
                     key: 'geolite',
-                    label: $gettext('GeoLite IP Database'),
+                    label: $gettext('MaxMind GeoLite IP Database'),
                     url: {
                         name: 'admin:install_geolite:index'
                     },

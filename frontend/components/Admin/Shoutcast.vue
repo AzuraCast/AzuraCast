@@ -71,6 +71,16 @@
                             :valid-mime-types="['.tar.gz']"
                             @complete="relist"
                         />
+
+                        <div v-if="record.version" class="block-buttons buttons mt-3">
+                            <button
+                                type="button"
+                                class="btn btn-danger"
+                                @click="doDelete"
+                            >
+                                {{ $gettext('Uninstall') }}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </loading>
@@ -87,6 +97,7 @@ import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {ApiAdminShoutcastStatus} from "~/entities/ApiInterfaces.ts";
 import {useApiRouter} from "~/functions/useApiRouter.ts";
+import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 
 const {getApiUrl} = useApiRouter();
 const apiUrl = getApiUrl('/admin/shoutcast');
@@ -120,4 +131,20 @@ const relist = async () => {
 };
 
 onMounted(relist);
+
+const {confirmDelete} = useDialog();
+
+const doDelete = async () => {
+    const {value} = await confirmDelete({
+        title: $gettext('Remove Shoutcast 2 DNAS?'),
+        confirmButtonText: $gettext('Uninstall')
+    });
+
+    if (!value) {
+        return;
+    }
+
+    await axios.delete<Row>(apiUrl.value);
+    await relist();
+}
 </script>

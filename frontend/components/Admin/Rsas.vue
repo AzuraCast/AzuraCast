@@ -79,6 +79,19 @@
                                 :valid-mime-types="['.tar.gz']"
                                 @complete="relist"
                             />
+
+                            <div
+                                v-if="record.version"
+                                class="buttons block-buttons mt-3"
+                            >
+                                <button
+                                    type="button"
+                                    class="btn btn-danger"
+                                    @click="doDelete"
+                                >
+                                    {{ $gettext('Uninstall') }}
+                                </button>
+                            </div>
                         </div>
                         <div>
                             <fieldset class="mb-3">
@@ -173,6 +186,21 @@ const relist = async () => {
 
 const {confirmDelete} = useDialog();
 
+const doDelete = async () => {
+    const {value} = await confirmDelete({
+        title: $gettext('Remove RSAS installation?'),
+        confirmButtonText: $gettext('Uninstall')
+    });
+
+    if (!value) {
+        return;
+    }
+
+    await axios.delete(apiUrl.value);
+
+    await relist();
+};
+
 const doRemoveLicense = async () => {
     const {value} = await confirmDelete({
         title: $gettext('Remove RSAS license key?'),
@@ -186,7 +214,7 @@ const doRemoveLicense = async () => {
     await axios.delete(licenseUrl.value);
     
     await relist();
-}
+};
 
 onMounted(relist);
 </script>

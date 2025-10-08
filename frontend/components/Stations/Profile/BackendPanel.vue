@@ -128,7 +128,7 @@ const langTotalTracks = computed(() => {
     );
 
     return $gettext(
-        'LiquidSoap is currently shuffling from %{songs} and %{playlists}.',
+        'Liquidsoap is currently shuffling from %{songs} and %{playlists}.',
         {
             songs: numSongs,
             playlists: numPlaylists

@@ -167,23 +167,23 @@ const themes = computed(() => {
 const baseEmbedUrl = computed(() => {
     switch (selectedType.value) {
         case 'history':
-            return profileData.value.publicHistoryEmbedUri;
+            return profileData.value.publicHistoryEmbedUrl;
 
         case 'ondemand':
-            return profileData.value.publicOnDemandEmbedUri;
+            return profileData.value.publicOnDemandEmbedUrl;
 
         case 'requests':
-            return profileData.value.publicRequestEmbedUri;
+            return profileData.value.publicRequestEmbedUrl;
 
         case 'schedule':
-            return profileData.value.publicScheduleEmbedUri;
+            return profileData.value.publicScheduleEmbedUrl;
 
         case 'podcasts':
-            return profileData.value.publicPodcastsEmbedUri;
+            return profileData.value.publicPodcastsEmbedUrl;
 
         case 'player':
         default:
-            return profileData.value.publicPageEmbedUri;
+            return profileData.value.publicPageEmbedUrl;
     }
 });
 

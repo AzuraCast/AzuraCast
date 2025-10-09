@@ -25,45 +25,36 @@
                         <td>{{ $gettext('Public Page') }}</td>
                         <td>
                             <a
-                                :href="profileData.publicPageUri"
+                                :href="stationData.publicPageUrl"
                                 target="_blank"
-                            >{{ profileData.publicPageUri }}</a>
-                        </td>
-                    </tr>
-                    <tr v-if="stationData.features.streamers && stationData.enableStreamers">
-                        <td>{{ $gettext('Web DJ') }}</td>
-                        <td>
-                            <a
-                                :href="profileData.publicWebDjUri"
-                                target="_blank"
-                            >{{ profileData.publicWebDjUri }}</a>
+                            >{{ stationData.publicPageUrl }}</a>
                         </td>
                     </tr>
                     <tr v-if="stationData.enableOnDemand">
                         <td>{{ $gettext('On-Demand Media') }}</td>
                         <td>
                             <a
-                                :href="profileData.publicOnDemandUri"
+                                :href="stationData.onDemandUrl"
                                 target="_blank"
-                            >{{ profileData.publicOnDemandUri }}</a>
+                            >{{ stationData.onDemandUrl }}</a>
                         </td>
                     </tr>
                     <tr>
                         <td>{{ $gettext('Podcasts') }}</td>
                         <td>
                             <a
-                                :href="profileData.publicPodcastsUri"
+                                :href="stationData.publicPodcastsUrl"
                                 target="_blank"
-                            >{{ profileData.publicPodcastsUri }}</a>
+                            >{{ stationData.publicPodcastsUrl }}</a>
                         </td>
                     </tr>
                     <tr>
                         <td>{{ $gettext('Schedule') }}</td>
                         <td>
                             <a
-                                :href="profileData.publicScheduleUri"
+                                :href="stationData.publicScheduleUrl"
                                 target="_blank"
-                            >{{ profileData.publicScheduleUri }}</a>
+                            >{{ stationData.publicScheduleUrl }}</a>
                         </td>
                     </tr>
                 </tbody>
@@ -135,14 +126,12 @@ import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts"
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
-import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
 import IconIcDesignServices from "~icons/ic/baseline-design-services";
 import IconIcCheck from "~icons/ic/baseline-check";
 import IconIcClose from "~icons/ic/baseline-close";
 import IconIcCode from "~icons/ic/baseline-code";
 
 const stationData = useStationData();
-const profileData = useStationProfileData();
 
 const {userAllowedForStation} = useUserAllowedForStation();
 

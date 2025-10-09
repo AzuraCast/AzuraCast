@@ -8289,48 +8289,31 @@ components:
     Api_Stations_Vue_ProfileProps:
       required:
         - nowPlayingProps
-        - publicPageUri
-        - publicPageEmbedUri
-        - publicWebDjUri
-        - publicOnDemandUri
-        - publicPodcastsUri
-        - publicScheduleUri
-        - publicOnDemandEmbedUri
-        - publicRequestEmbedUri
-        - publicHistoryEmbedUri
-        - publicScheduleEmbedUri
-        - publicPodcastsEmbedUri
+        - publicPageEmbedUrl
+        - publicOnDemandEmbedUrl
+        - publicRequestEmbedUrl
+        - publicHistoryEmbedUrl
+        - publicScheduleEmbedUrl
+        - publicPodcastsEmbedUrl
         - frontendAdminUri
         - frontendAdminPassword
         - frontendSourcePassword
         - frontendRelayPassword
         - frontendPort
-        - numSongs
-        - numPlaylists
       properties:
         nowPlayingProps:
           $ref: '#/components/schemas/Api_NowPlaying_Vue_Props'
-        publicPageUri:
+        publicPageEmbedUrl:
           type: string
-        publicPageEmbedUri:
+        publicOnDemandEmbedUrl:
           type: string
-        publicWebDjUri:
+        publicRequestEmbedUrl:
           type: string
-        publicOnDemandUri:
+        publicHistoryEmbedUrl:
           type: string
-        publicPodcastsUri:
+        publicScheduleEmbedUrl:
           type: string
-        publicScheduleUri:
-          type: string
-        publicOnDemandEmbedUri:
-          type: string
-        publicRequestEmbedUri:
-          type: string
-        publicHistoryEmbedUri:
-          type: string
-        publicScheduleEmbedUri:
-          type: string
-        publicPodcastsEmbedUri:
+        publicPodcastsEmbedUrl:
           type: string
         frontendAdminUri:
           type: string
@@ -8343,10 +8326,6 @@ components:
         frontendPort:
           type: integer
           nullable: true
-        numSongs:
-          type: integer
-        numPlaylists:
-          type: integer
       type: object
     Api_Stations_Vue_SftpUsersProps:
       required:
@@ -8668,6 +8647,8 @@ components:
         - onDemandUrl
         - enableStreamers
         - webDjUrl
+        - publicPodcastsUrl
+        - publicScheduleUrl
         - enableRequests
         - features
         - ipGeoAttribution
@@ -8714,6 +8695,10 @@ components:
         enableStreamers:
           type: boolean
         webDjUrl:
+          type: string
+        publicPodcastsUrl:
+          type: string
+        publicScheduleUrl:
           type: string
         enableRequests:
           type: boolean

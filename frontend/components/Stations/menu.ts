@@ -12,6 +12,7 @@ import IconIcQueueMusic from "~icons/ic/baseline-queue-music";
 import IconIcPodcasts from "~icons/ic/baseline-podcasts";
 import IconIcPublic from "~icons/ic/baseline-public";
 import IconIcInsertChart from "~icons/ic/baseline-insert-chart";
+import IconIcSettingsApplication from "~icons/ic/baseline-settings-applications";
 import IconBiBroadcast from "~icons/bi/broadcast";
 import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts";
 
@@ -24,24 +25,26 @@ export function useStationsMenu() {
     const fullMenu: RawMenuCategory[] = [
         {
             key: 'profile',
-            label: $gettext('Profile'),
+            label: $gettext('Overview'),
             icon: () => IconIcImage,
+            url: {
+                name: 'stations:index'
+            }
+        },
+        {
+            key: 'edit_profile',
+            label: $gettext('Edit Station Settings'),
+            icon: () => IconIcSettingsApplication,
+            url: {
+                name: 'stations:profile:edit'
+            },
+            visible: () => userAllowedForStation(StationPermissions.Profile)
+        },
+        {
+            key: 'public_page',
+            label: $gettext('Public Pages'),
+            icon: () => IconIcPublic,
             items: [
-                {
-                    key: 'view_profile',
-                    label: $gettext('View Profile'),
-                    url: {
-                        name: 'stations:index'
-                    }
-                },
-                {
-                    key: 'edit_profile',
-                    label: $gettext('Edit Profile'),
-                    url: {
-                        name: 'stations:profile:edit'
-                    },
-                    visible: () => userAllowedForStation(StationPermissions.Profile)
-                },
                 {
                     key: 'branding',
                     label: $gettext('Branding'),
@@ -49,16 +52,36 @@ export function useStationsMenu() {
                         name: 'stations:branding'
                     },
                     visible: () => userAllowedForStation(StationPermissions.Profile)
-                }
+                },
+                {
+                    key: 'public_player',
+                    label: $gettext('Public Player'),
+                    url: station.value.publicPageUrl,
+                    external: true,
+                    visible: () => station.value.enablePublicPages,
+                },
+                {
+                    key: 'public_on_demand',
+                    label: $gettext('On-Demand Media'),
+                    url: station.value.onDemandUrl,
+                    external: true,
+                    visible: () => station.value.enablePublicPages && station.value.enableOnDemand,
+                },
+                {
+                    key: 'public_podcasts',
+                    label: $gettext('Podcasts'),
+                    url: station.value.publicPodcastsUrl,
+                    external: true,
+                    visible: () => station.value.enablePublicPages,
+                },
+                {
+                    key: 'public_schedule',
+                    label: $gettext('Schedule'),
+                    url: station.value.publicScheduleUrl,
+                    external: true,
+                    visible: () => station.value.enablePublicPages,
+                },
             ]
-        },
-        {
-            key: 'public_page',
-            label: $gettext('Public Page'),
-            icon: () => IconIcPublic,
-            url: station.value.publicPageUrl,
-            external: true,
-            visible: () => station.value.enablePublicPages,
         },
         {
             key: 'media',

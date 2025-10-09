@@ -30,6 +30,8 @@ const blankStationGlobals: VueStationGlobals = {
     onDemandUrl: '',
     enableStreamers: false,
     webDjUrl: '',
+    publicPodcastsUrl: '',
+    publicScheduleUrl: '',
     enableRequests: false,
     features: {
         media: false,

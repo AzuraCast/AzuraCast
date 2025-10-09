@@ -15,24 +15,17 @@ const blankProps: ApiStationsVueProfileProps = {
         useStatic: false,
         useSse: false
     },
-    publicPageUri: "",
-    publicPageEmbedUri: "",
-    publicWebDjUri: "",
-    publicOnDemandUri: "",
-    publicPodcastsUri: "",
-    publicScheduleUri: "",
-    publicOnDemandEmbedUri: "",
-    publicRequestEmbedUri: "",
-    publicHistoryEmbedUri: "",
-    publicScheduleEmbedUri: "",
-    publicPodcastsEmbedUri: "",
+    publicPageEmbedUrl: "",
+    publicOnDemandEmbedUrl: "",
+    publicRequestEmbedUrl: "",
+    publicHistoryEmbedUrl: "",
+    publicScheduleEmbedUrl: "",
+    publicPodcastsEmbedUrl: "",
     frontendAdminUri: "",
     frontendAdminPassword: "",
     frontendSourcePassword: "",
     frontendRelayPassword: "",
-    frontendPort: null,
-    numSongs: 0,
-    numPlaylists: 0
+    frontendPort: null
 }
 
 export const useProfilePropsQuery = () => {

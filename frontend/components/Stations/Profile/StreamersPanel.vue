@@ -14,10 +14,22 @@
             </div>
         </template>
         <template
-            v-if="userAllowedForStation(StationPermissions.Streamers) || userAllowedForStation(StationPermissions.Profile)"
+            v-if="(stationData.enableStreamers && (stationData.enablePublicPages || userAllowedForStation(StationPermissions.Streamers))) || userAllowedForStation(StationPermissions.Profile)"
             #footer_actions
         >
             <template v-if="stationData.enableStreamers">
+                <a
+                    v-if="stationData.enablePublicPages"
+                    :href="stationData.webDjUrl"
+                    target="_blank"
+                    class="btn btn-link text-secondary"
+                >
+                    <icon-ic-mic/>
+
+                    <span>
+                        {{ $gettext('Web DJ') }}
+                    </span>
+                </a>
                 <router-link
                     v-if="userAllowedForStation(StationPermissions.Streamers)"
                     class="btn btn-link text-primary"
@@ -70,6 +82,7 @@ import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import IconIcCheck from "~icons/ic/baseline-check";
 import IconIcClose from "~icons/ic/baseline-close";
+import IconIcMic from "~icons/ic/baseline-mic";
 import IconIcSettings from "~icons/ic/baseline-settings";
 
 const stationData = useStationData();

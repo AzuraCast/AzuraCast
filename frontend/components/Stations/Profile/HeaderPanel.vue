@@ -1,42 +1,19 @@
 <template>
-    <div class="outside-card-header d-flex align-items-center">
-        <div class="flex-fill">
-            <h2 class="display-6 m-0">
-                {{ stationData.name }}<br>
-                <small
-                    v-if="stationData.description"
-                    class="text-muted"
-                >
-                    {{ stationData.description }}
-                </small>
-            </h2>
-        </div>
-        <div
-            v-if="userAllowedForStation(StationPermissions.Profile)"
-            class="flex-shrink-0 ms-3"
-        >
-            <router-link
-                class="btn btn-primary"
-                role="button"
-                :to="{name: 'stations:profile:edit'}"
+    <div class="outside-card-header">
+        <h2 class="display-6 m-0">
+            {{ stationData.name }}<br>
+            <small
+                v-if="stationData.description"
+                class="text-muted"
             >
-                <icon-ic-edit/>
-
-                <span>
-                    {{ $gettext('Edit Profile') }}
-                </span>
-            </router-link>
-        </div>
+                {{ stationData.description }}
+            </small>
+        </h2>
     </div>
 </template>
 
 <script setup lang="ts">
-import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts";
-import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
-import IconIcEdit from "~icons/ic/baseline-edit";
 
 const stationData = useStationData();
-
-const {userAllowedForStation} = useUserAllowedForStation();
 </script>

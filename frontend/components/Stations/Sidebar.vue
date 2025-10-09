@@ -1,29 +1,18 @@
 <template>
     <div class="navdrawer-header offcanvas-header">
-        <div class="d-flex align-items-center">
-            <router-link
-                :to="{ name: 'stations:index' }"
-                class="navbar-brand px-0 flex-fill"
+        <router-link
+            :to="{ name: 'stations:index' }"
+            class="navbar-brand"
+        >
+            {{ name }}
+            <div
+                id="station-time"
+                class="fs-6"
+                :title="$gettext('Station Time')"
             >
-                {{ name }}
-                <div
-                    id="station-time"
-                    class="fs-6"
-                    :title="$gettext('Station Time')"
-                >
-                    {{ clock }}
-                </div>
-            </router-link>
-
-            <router-link
-                v-if="userAllowedForStation(StationPermissions.Profile)"
-                :to="{ name: 'stations:profile:edit' }"
-                class="navbar-brand ms-0 flex-shrink-0"
-            >
-                <icon-ic-edit/>
-                <span class="visually-hidden">{{ $gettext('Edit Profile') }}</span>
-            </router-link>
-        </div>
+                {{ clock }}
+            </div>
+        </router-link>
     </div>
 
     <template v-if="userAllowedForStation(StationPermissions.Broadcasting)">
@@ -69,7 +58,6 @@ import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter
 import {useLuxon} from "~/vendor/luxon.ts";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
-import IconIcEdit from "~icons/ic/baseline-edit";
 import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts";
 
 const menuItems = useStationsMenu();

@@ -1402,24 +1402,17 @@ export interface ApiStationsVuePodcastsProps {
 
 export interface ApiStationsVueProfileProps {
   nowPlayingProps: ApiNowPlayingVueProps;
-  publicPageUri: string;
-  publicPageEmbedUri: string;
-  publicWebDjUri: string;
-  publicOnDemandUri: string;
-  publicPodcastsUri: string;
-  publicScheduleUri: string;
-  publicOnDemandEmbedUri: string;
-  publicRequestEmbedUri: string;
-  publicHistoryEmbedUri: string;
-  publicScheduleEmbedUri: string;
-  publicPodcastsEmbedUri: string;
+  publicPageEmbedUrl: string;
+  publicOnDemandEmbedUrl: string;
+  publicRequestEmbedUrl: string;
+  publicHistoryEmbedUrl: string;
+  publicScheduleEmbedUrl: string;
+  publicPodcastsEmbedUrl: string;
   frontendAdminUri: string;
   frontendAdminPassword: string;
   frontendSourcePassword: string;
   frontendRelayPassword: string;
   frontendPort: number | null;
-  numSongs: number;
-  numPlaylists: number;
 }
 
 export interface ApiStationsVueSftpUsersProps {
@@ -1606,6 +1599,8 @@ export interface VueStationGlobals {
   onDemandUrl: string;
   enableStreamers: boolean;
   webDjUrl: string;
+  publicPodcastsUrl: string;
+  publicScheduleUrl: string;
   enableRequests: boolean;
   features: VueStationFeatures;
   ipGeoAttribution: string;

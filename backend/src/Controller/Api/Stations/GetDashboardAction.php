@@ -49,15 +49,33 @@ final class GetDashboardAction implements SingleActionInterface
             maxMounts: $station->max_mounts,
             maxHlsStreams: $station->max_hls_streams,
             enablePublicPages: $station->enable_public_page,
-            publicPageUrl: $router->named('public:index', ['station_id' => $station->short_name]),
+            publicPageUrl: $router->named(
+                routeName: 'public:index',
+                routeParams: ['station_id' => $station->short_name],
+                absolute: true
+            ),
             enableOnDemand: $station->enable_on_demand,
-            onDemandUrl: $router->named('public:ondemand', ['station_id' => $station->short_name]),
+            onDemandUrl: $router->named(
+                routeName: 'public:ondemand',
+                routeParams: ['station_id' => $station->short_name],
+                absolute: true
+            ),
             enableStreamers: $station->enable_streamers,
             webDjUrl: (string)($router->namedAsUri(
                 routeName: 'public:dj',
                 routeParams: ['station_id' => $station->short_name],
                 absolute: true
             )->withScheme('https')),
+            publicPodcastsUrl: $router->named(
+                routeName: 'public:podcasts',
+                routeParams: ['station_id' => $station->short_name],
+                absolute: true
+            ),
+            publicScheduleUrl: $router->named(
+                routeName: 'public:schedule',
+                routeParams: ['station_id' => $station->short_name],
+                absolute: true
+            ),
             enableRequests: $station->enable_requests,
             features: new StationGlobalFeatures(
                 media: StationFeatures::Media->supportedForStation($station),

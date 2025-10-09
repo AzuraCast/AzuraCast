@@ -663,7 +663,7 @@ paths:
           application/json:
             schema:
               properties:
-                geolite_license_key:
+                key:
                   type: string
                   nullable: true
               type: object
@@ -966,33 +966,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-  /admin/rsas/license:
-    post:
-      tags:
-        - 'Administration: General'
-      summary: 'Upload a new Rocket Streaming Audio Server (RSAS) license key.'
-      operationId: postRsasLicense
-      requestBody:
-        $ref: '#/components/requestBodies/FlowFileUpload'
-      responses:
-        '200':
-          $ref: '#/components/responses/Success'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '500':
-          $ref: '#/components/responses/GenericError'
-    delete:
-      tags:
-        - 'Administration: General'
-      summary: 'Removes the Rocket Streaming Audio Server (RSAS) license.'
-      operationId: deleteRsasLicense
-      responses:
-        '200':
-          $ref: '#/components/responses/Success'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '500':
-          $ref: '#/components/responses/GenericError'
   /admin/rsas:
     get:
       tags:
@@ -1017,6 +990,45 @@ paths:
       operationId: postRsas
       requestBody:
         $ref: '#/components/requestBodies/FlowFileUpload'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    delete:
+      tags:
+        - 'Administration: General'
+      summary: 'Removes the Rocket Streaming Audio Server (RSAS) installation.'
+      operationId: deleteRsas
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  /admin/rsas/license:
+    post:
+      tags:
+        - 'Administration: General'
+      summary: 'Upload a new Rocket Streaming Audio Server (RSAS) license key.'
+      operationId: postRsasLicense
+      requestBody:
+        $ref: '#/components/requestBodies/FlowFileUpload'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    delete:
+      tags:
+        - 'Administration: General'
+      summary: 'Removes the Rocket Streaming Audio Server (RSAS) license.'
+      operationId: deleteRsasLicense
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -1157,6 +1169,18 @@ paths:
       operationId: postShoutcast
       requestBody:
         $ref: '#/components/requestBodies/FlowFileUpload'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    delete:
+      tags:
+        - 'Administration: General'
+      summary: 'Removes the installed Shoutcast binary.'
+      operationId: deleteShoutcast
       responses:
         '200':
           $ref: '#/components/responses/Success'

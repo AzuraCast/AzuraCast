@@ -36,7 +36,7 @@ export function useStationsMenu() {
             label: $gettext('Edit Station Settings'),
             icon: () => IconIcSettingsApplication,
             url: {
-                name: 'stations:profile:edit'
+                name: 'stations:settings:index'
             },
             visible: () => userAllowedForStation(StationPermissions.Profile)
         },

@@ -1,14 +1,11 @@
 <template>
     <div class="outside-card-header">
-        <h2 class="display-6 m-0">
-            {{ stationData.name }}<br>
-            <small
-                v-if="stationData.description"
-                class="text-muted"
-            >
-                {{ stationData.description }}
-            </small>
-        </h2>
+        <h1>
+            {{ stationData.name }}
+        </h1>
+        <h3 class="fw-normal text-muted" v-if="stationData.description">
+            {{ stationData.description }}
+        </h3>
     </div>
 </template>
 

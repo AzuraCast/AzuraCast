@@ -9,7 +9,7 @@
                 id="hdr_edit_profile"
                 class="card-title"
             >
-                {{ $gettext('Edit Station Profile') }}
+                {{ $gettext('Edit Station Settings') }}
             </h3>
         </div>
         <div class="card-body">

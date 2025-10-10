@@ -6,9 +6,10 @@
  * @var App\View\GlobalSections $sections
  * @var App\Entity\Api\Vue\AppGlobals $globalProps
  * @var App\Environment $environment
+ * @var App\Service\Vite $vite
  */
 
-$componentDeps = $this->getVueComponentInfo('js/pages/' . $component . '.js');
+$componentDeps = $vite->getScriptAndDependencies('js/pages/' . $component . '.js');
 
 $jsonFlags = $environment->isProduction()
     ? JSON_THROW_ON_ERROR
@@ -19,13 +20,13 @@ $propsJson = json_encode($globalProps, $jsonFlags);
 
 $headScripts = [];
 
-foreach ($componentDeps['css'] as $cssDep) {
+foreach ($componentDeps->css as $cssDep) {
     $headScripts[] = <<<HTML
         <link rel="stylesheet" href="{$cssDep}" />
     HTML;
 }
 
-foreach ($componentDeps['prefetch'] as $prefetchDep) {
+foreach ($componentDeps->prefetch as $prefetchDep) {
     $headScripts[] = <<<HTML
         <link rel="modulepreload" href="{$prefetchDep}" />
     HTML;
@@ -37,7 +38,7 @@ $scriptLines = [];
 $componentName = 'Vue_' . str_replace('/', '', $component);
 
 $scriptLines[] = <<<HTML
-    <script type="module" src="{$componentDeps['js']}"></script>
+    <script type="module" src="{$componentDeps->js}"></script>
     <script type="text/javascript">
         let {$componentName};
         ready(() => {

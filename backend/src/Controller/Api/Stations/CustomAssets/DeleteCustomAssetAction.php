@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\CustomAssets;
 
 use App\Assets\AssetTypes;
-use App\Container\EnvironmentAwareTrait;
-use App\Controller\SingleActionInterface;
+use App\Controller\Api\Admin\CustomAssets\AbstractCustomAssetAction;
 use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
+use App\Utilities\Types;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -39,23 +39,15 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class DeleteCustomAssetAction implements SingleActionInterface
+final readonly class DeleteCustomAssetAction extends AbstractCustomAssetAction
 {
-    use EnvironmentAwareTrait;
-
     public function __invoke(
         ServerRequest $request,
         Response $response,
         array $params
     ): ResponseInterface {
-        /** @var string $type */
-        $type = $params['type'];
-
-        $customAsset = AssetTypes::from($type)->createObject(
-            $this->environment,
-            $request->getStation()
-        );
-        $customAsset->delete();
+        $customAsset = $this->customAssetFactory->getForType(Types::string($params['type']));
+        $customAsset->delete($request->getStation());
 
         return $response->withJson(Status::success());
     }

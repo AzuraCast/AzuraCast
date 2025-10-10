@@ -14,9 +14,9 @@ use App\Enums\FlashLevels;
 use App\Enums\SupportedLocales;
 use App\Http\RouterInterface;
 use App\Http\ServerRequest;
+use App\Service\Vite;
 use App\Session\Flash;
 use App\Traits\RequestAwareTrait;
-use App\Utilities\Json;
 use App\View\GlobalSections;
 use League\Plates\Engine;
 use League\Plates\Template\Data;
@@ -39,7 +39,8 @@ final class View extends Engine
         Environment $environment,
         EventDispatcherInterface $dispatcher,
         Version $version,
-        RouterInterface $router
+        RouterInterface $router,
+        Vite $vite
     ) {
         parent::__construct(
             $environment->getBackendDirectory() . '/templates',
@@ -58,6 +59,7 @@ final class View extends Engine
                 'environment' => $environment,
                 'version' => $version,
                 'router' => $router,
+                'vite' => $vite,
             ]
         );
 
@@ -74,80 +76,12 @@ final class View extends Engine
                 if (class_exists(VarCloner::class)) {
                     $varCloner = new VarCloner();
 
-                    $dumpedValue = (new CliDumper())->dump($varCloner->cloneVar($value), true);
+                    $dumpedValue = new CliDumper()->dump($varCloner->cloneVar($value), true);
                 } else {
                     $dumpedValue = json_encode($value, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
                 }
 
                 return '<pre>' . htmlspecialchars($dumpedValue ?? '', ENT_QUOTES | ENT_HTML5) . '</pre>';
-            }
-        );
-
-        $vueComponents = (!$environment->isDevelopment())
-            ? Json::loadFromFile($environment->getBaseDirectory() . '/web/static/vite_dist/.vite/manifest.json')
-            : [];
-
-        $this->registerFunction(
-            'getVueComponentInfo',
-            function (string $componentPath) use ($vueComponents, $environment) {
-                $assetRoot = '/static/vite_dist';
-
-                if ($environment->isDevelopment() || $environment->isTesting()) {
-                    return [
-                        'js' => $assetRoot . '/' . $componentPath,
-                        'css' => [],
-                        'prefetch' => [],
-                    ];
-                }
-
-                if (!isset($vueComponents[$componentPath])) {
-                    return null;
-                }
-
-                $includes = [
-                    'js' => $assetRoot . '/' . $vueComponents[$componentPath]['file'],
-                    'css' => [],
-                    'prefetch' => [],
-                ];
-
-                $visitedNodes = [];
-                $fetchCss = function ($component) use (
-                    $vueComponents,
-                    $assetRoot,
-                    &$includes,
-                    &$fetchCss,
-                    &$visitedNodes
-                ): void {
-                    if (!isset($vueComponents[$component]) || isset($visitedNodes[$component])) {
-                        return;
-                    }
-
-                    $visitedNodes[$component] = true;
-
-                    $componentInfo = $vueComponents[$component];
-                    if (isset($componentInfo['css'])) {
-                        foreach ($componentInfo['css'] as $css) {
-                            $includes['css'][] = $assetRoot . '/' . $css;
-                        }
-                    }
-
-                    if (isset($componentInfo['file'])) {
-                        $fileUrl = $assetRoot . '/' . $componentInfo['file'];
-                        if ($fileUrl !== $includes['js']) {
-                            $includes['prefetch'][] = $fileUrl;
-                        }
-                    }
-
-                    if (isset($componentInfo['imports'])) {
-                        foreach ($componentInfo['imports'] as $import) {
-                            $fetchCss($import);
-                        }
-                    }
-                };
-
-                $fetchCss($componentPath);
-
-                return $includes;
             }
         );
 

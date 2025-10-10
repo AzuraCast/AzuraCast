@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Assets;
 
+use App\Entity\Station;
+use DI\Attribute\Injectable;
 use Intervention\Image\Interfaces\ImageInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
+#[Injectable(lazy: true)]
 final class BrowserIconCustomAsset extends AbstractCustomAsset
 {
     public const array ICON_SIZES = [
@@ -38,9 +41,12 @@ final class BrowserIconCustomAsset extends AbstractCustomAsset
         return $assetUrl . '/icons/' . $this->environment->getAppEnvironmentEnum()->value . '/original.png';
     }
 
-    public function upload(ImageInterface $image, string $mimeType): void
-    {
-        $this->delete();
+    public function upload(
+        ImageInterface $image,
+        string $mimeType,
+        ?Station $station = null
+    ): void {
+        $this->delete($station);
 
         $uploadsDir = $this->environment->getUploadsDirectory() . '/browser_icon';
         $this->ensureDirectoryExists($uploadsDir);
@@ -56,10 +62,10 @@ final class BrowserIconCustomAsset extends AbstractCustomAsset
         }
     }
 
-    public function delete(): void
+    public function delete(?Station $station = null): void
     {
         $uploadsDir = $this->environment->getUploadsDirectory() . '/browser_icon';
-        (new Filesystem())->remove($uploadsDir);
+        new Filesystem()->remove($uploadsDir);
     }
 
     public function getUrlForSize(int $size): string

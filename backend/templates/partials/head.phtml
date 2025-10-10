@@ -2,6 +2,7 @@
 /**
  * @var App\Customization $customization
  * @var App\Environment $environment
+ * @var App\Service\Vite $vite
  */
 
 if ($environment->isDevelopment()) {
@@ -10,10 +11,10 @@ if ($environment->isDevelopment()) {
     HTML;
 }
 
-$componentDeps = $this->getVueComponentInfo('js/layout.js');
+$componentDeps = $vite->getScriptAndDependencies('js/layout.js');
 
 echo <<<HTML
-    <script type="module" src="{$componentDeps['js']}"></script>
+    <script type="module" src="{$componentDeps->js}"></script>
     <script>
     function ready(callback) {
         if (document.readyState !== "loading") callback();
@@ -22,13 +23,13 @@ echo <<<HTML
     </script>
 HTML;
 
-foreach ($componentDeps['prefetch'] as $prefetchDep) {
+foreach ($componentDeps->prefetch as $prefetchDep) {
     echo <<<HTML
         <link rel="modulepreload" href="{$prefetchDep}" />
     HTML;
 }
 
-foreach ($componentDeps['css'] as $cssDep) {
+foreach ($componentDeps->css as $cssDep) {
     echo <<<HTML
         <link rel="stylesheet" href="{$cssDep}" />
     HTML;

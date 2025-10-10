@@ -153,6 +153,7 @@ class Icecast extends AbstractFrontend
             'hostname' => $baseUrl->getHost(),
             'limits' => [
                 'clients' => !empty($frontendConfig->max_listeners) ? $frontendConfig->max_listeners * 2 : 2500,
+                'max-listeners' => $frontendConfig->max_listeners ?? -1,
                 'sources' => $station->mounts->count(),
                 'queue-size' => 524288,
                 'client-timeout' => 30,
@@ -235,10 +236,6 @@ class Icecast extends AbstractFrontend
 
             if (!empty($station->url)) {
                 $mount['stream-url'] = $station->url;
-            }
-
-            if (!empty($frontendConfig->max_listeners)) {
-                $mount['max-listeners'] = $frontendConfig->max_listeners;
             }
 
             if (!empty($station->genre)) {

@@ -152,7 +152,8 @@ class Icecast extends AbstractFrontend
             'admin' => 'icemaster@localhost',
             'hostname' => $baseUrl->getHost(),
             'limits' => [
-                'clients' => $frontendConfig->max_listeners ?? 2500,
+                'clients' => !empty($frontendConfig->max_listeners) ? $frontendConfig->max_listeners * 2 : 2500,
+                'max-listeners' => $frontendConfig->max_listeners ?? -1,
                 'sources' => $station->mounts->count(),
                 'queue-size' => 524288,
                 'client-timeout' => 30,

@@ -22,7 +22,7 @@
     "@fullcalendar/vue3": "^6",
     "@popperjs/core": "^2.11.8",
     "@regle/core": "^1.8.6",
-    "@regle/rules": "^1.8.6",
+    "@regle/rules": "^1.9.5",
     "@tanstack/vue-query": "^5.80.7",
     "@vuepic/vue-datepicker": "^11",
     "@vueuse/core": "^13",

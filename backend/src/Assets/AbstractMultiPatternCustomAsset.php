@@ -55,7 +55,7 @@ abstract class AbstractMultiPatternCustomAsset extends AbstractCustomAsset
             if (is_file($path)) {
                 $mtime = filemtime($path);
 
-                return $this->getBaseUrl() . '/' . sprintf(
+                return $this->getBaseUrl($station) . '/' . sprintf(
                     $pattern,
                     '.' . $mtime
                 );

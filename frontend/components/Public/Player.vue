@@ -1,8 +1,12 @@
 <template>
-    <div class="radio-player-widget">
+    <div 
+        class="radio-player-widget"
+        :class="widgetClasses"
+        :style="widgetStyles"
+    >
         <div class="now-playing-details">
             <div
-                v-if="showAlbumArt && np.now_playing?.song?.art"
+                v-if="computedShowAlbumArt && np.now_playing?.song?.art"
                 class="now-playing-art"
             >
                 <album-art :src="np.now_playing.song.art" />
@@ -38,7 +42,7 @@
                 </div>
 
                 <div
-                    v-if="currentTrackElapsedDisplay != null"
+                    v-if="currentTrackElapsedDisplay != null && props.widgetCustomization?.showTrackProgress"
                     class="time-display"
                 >
                     <div class="time-display-played text-secondary">
@@ -70,7 +74,7 @@
 
             <div class="radio-control-select-stream">
                 <div
-                    v-if="streams.length > 1"
+                    v-if="streams.length > 1 && props.widgetCustomization?.showStreamSelection"
                     class="dropdown"
                 >
                     <button
@@ -105,7 +109,20 @@
             </div>
 
             <div
-                v-if="showVolume"
+                v-if="showPopupButton"
+                class="radio-control-popup"
+            >
+                <button
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    @click="openPopupPlayer"
+                >
+                    {{ $gettext('Open Popup Player') }}
+                </button>
+            </div>
+
+            <div
+                v-if="showVolume && props.widgetCustomization?.showVolumeControls"
                 class="radio-control-volume d-flex align-items-center"
             >
                 <div class="flex-shrink-0 mx-2">
@@ -144,12 +161,32 @@ import {useEventListener} from "@vueuse/core";
 import {ApiNowPlaying, ApiNowPlayingVueProps} from "~/entities/ApiInterfaces.ts";
 import {storeToRefs} from "pinia";
 
+interface WidgetCustomization {
+    primaryColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    showAlbumArt: boolean;
+    roundedCorners: boolean;
+    autoplay: boolean;
+    showVolumeControls: boolean;
+    showTrackProgress: boolean;
+    showStreamSelection: boolean;
+    showHistoryButton: boolean;
+    showRequestButton: boolean;
+    initialVolume: number;
+    layout: string;
+    enablePopupPlayer: boolean;
+    continuousPlay: boolean;
+    customCss?: string;
+}
+
 export interface PlayerProps {
     nowPlayingProps: ApiNowPlayingVueProps,
     offlineText?: string,
     showHls?: boolean,
     showAlbumArt?: boolean,
-    autoplay?: boolean
+    autoplay?: boolean,
+    widgetCustomization?: WidgetCustomization
 }
 
 defineOptions({
@@ -161,7 +198,21 @@ const props = withDefaults(
     {
         showHls: true,
         showAlbumArt: true,
-        autoplay: true
+        autoplay: true,
+        widgetCustomization: () => ({
+            showAlbumArt: true,
+            roundedCorners: false,
+            autoplay: false,
+            showVolumeControls: true,
+            showTrackProgress: true,
+            showStreamSelection: true,
+            showHistoryButton: false,
+            showRequestButton: false,
+            initialVolume: 75,
+            layout: 'horizontal',
+            enablePopupPlayer: false,
+            continuousPlay: false
+        })
     }
 );
 
@@ -176,9 +227,62 @@ const {
     currentTrackElapsedDisplay
 } = useNowPlaying(toRef(props, 'nowPlayingProps'));
 
+// Widget customization computed properties
+const computedShowAlbumArt = computed(() => {
+    return props.showAlbumArt && (props.widgetCustomization?.showAlbumArt ?? true);
+});
+
+const widgetClasses = computed(() => {
+    const classes: string[] = [];
+    
+    if (props.widgetCustomization?.layout) {
+        classes.push(`layout-${props.widgetCustomization.layout}`);
+    }
+    
+    if (props.widgetCustomization?.roundedCorners) {
+        classes.push('rounded-corners');
+    }
+    
+    return classes;
+});
+
+const widgetStyles = computed(() => {
+    const styles: Record<string, string> = {};
+    
+    if (props.widgetCustomization?.primaryColor) {
+        styles['--widget-primary-color'] = `#${props.widgetCustomization.primaryColor}`;
+    }
+    
+    if (props.widgetCustomization?.backgroundColor) {
+        styles['--widget-bg-color'] = `#${props.widgetCustomization.backgroundColor}`;
+    }
+    
+    if (props.widgetCustomization?.textColor) {
+        styles['--widget-text-color'] = `#${props.widgetCustomization.textColor}`;
+    }
+    
+    if (props.widgetCustomization?.roundedCorners) {
+        styles['--widget-border-radius'] = '12px';
+    }
+    
+    return styles;
+});
+
+// Inject custom CSS if provided
+if (props.widgetCustomization?.customCss) {
+    const customStyleElement = document.createElement('style');
+    customStyleElement.textContent = props.widgetCustomization.customCss;
+    document.head.appendChild(customStyleElement);
+}
+
 const playerStore = usePlayerStore();
-const {volume, showVolume, isMuted} = storeToRefs(playerStore);
+const {volume, showVolume, isMuted, isPlaying} = storeToRefs(playerStore);
 const {setVolume, toggleMute, toggle} = playerStore;
+
+// Set initial volume if specified
+if (props.widgetCustomization?.initialVolume && props.widgetCustomization.initialVolume !== 75) {
+    setVolume(props.widgetCustomization.initialVolume);
+}
 
 const enableHls = computed(() => {
     return props.showHls && np.value?.station?.hls_enabled;
@@ -230,6 +334,104 @@ const setActiveStream = (newStream: StreamDescriptor): void => {
     toggle(newStream);
 };
 
+const isClient = typeof window !== 'undefined';
+const isPopupContext = isClient
+    ? new URLSearchParams(window.location.search).has('popup')
+    : false;
+
+const popupUrl = computed(() => {
+    if (!isClient || !props.widgetCustomization?.enablePopupPlayer) {
+        return null;
+    }
+
+    const popupTarget = new URL(window.location.href);
+    popupTarget.searchParams.set('popup', '1');
+    return popupTarget.toString();
+});
+
+const showPopupButton = computed(() => {
+    return Boolean(popupUrl.value) && !isPopupContext;
+});
+
+const openPopupPlayer = () => {
+    if (!isClient || !popupUrl.value) {
+        return;
+    }
+
+    window.open(
+        popupUrl.value,
+        'azuracast-player-popup',
+        'width=420,height=680,resizable=yes,scrollbars=yes'
+    );
+};
+
+const continuousPlayEnabled = computed(() => {
+    return Boolean(props.widgetCustomization?.continuousPlay);
+});
+
+const continuousStorageKey = `azuracast-player-state-${props.nowPlayingProps.stationShortName}`;
+const desiredContinuousStreamUrl = ref<string | null>(null);
+const pendingContinuousResume = ref(false);
+
+const loadContinuousPreferences = () => {
+    if (!continuousPlayEnabled.value || !isClient) {
+        desiredContinuousStreamUrl.value = null;
+        pendingContinuousResume.value = false;
+        return;
+    }
+
+    try {
+        const savedState = window.localStorage.getItem(continuousStorageKey);
+        if (!savedState) {
+            desiredContinuousStreamUrl.value = null;
+            pendingContinuousResume.value = false;
+            return;
+        }
+
+        const parsed = JSON.parse(savedState) as {streamUrl?: string | null, isPlaying?: boolean};
+        desiredContinuousStreamUrl.value = (typeof parsed.streamUrl === 'string' && parsed.streamUrl.length > 0)
+            ? parsed.streamUrl
+            : null;
+        pendingContinuousResume.value = Boolean(parsed.isPlaying);
+    } catch (error) {
+        console.warn('Failed to load player state for continuous playback.', error);
+        desiredContinuousStreamUrl.value = null;
+        pendingContinuousResume.value = false;
+    }
+};
+
+watch(continuousPlayEnabled, (enabled) => {
+    if (!isClient) {
+        return;
+    }
+
+    if (enabled) {
+        loadContinuousPreferences();
+    } else {
+        window.localStorage.removeItem(continuousStorageKey);
+        desiredContinuousStreamUrl.value = null;
+        pendingContinuousResume.value = false;
+    }
+}, {immediate: true});
+
+watch([
+    () => activeStream.value?.url ?? null,
+    () => isPlaying.value
+], ([streamUrl, playing]) => {
+    if (!isClient || !continuousPlayEnabled.value) {
+        return;
+    }
+
+    try {
+        window.localStorage.setItem(continuousStorageKey, JSON.stringify({
+            streamUrl,
+            isPlaying: playing
+        }));
+    } catch (error) {
+        console.warn('Failed to persist player state for continuous playback.', error);
+    }
+});
+
 const urlParamVolume = (new URL(document.location.href)).searchParams.get('volume');
 if (null !== urlParamVolume) {
     setVolume(Number(urlParamVolume));
@@ -276,6 +478,22 @@ const onNowPlayingUpdated = (np_new: ApiNowPlaying) => {
             activeStream.value = $currentStream;
         }
     }
+
+    if (continuousPlayEnabled.value) {
+        if (desiredContinuousStreamUrl.value) {
+            const matchingStream = $streams.find((stream) => stream.url === desiredContinuousStreamUrl.value);
+            if (matchingStream) {
+                activeStream.value = matchingStream;
+            }
+            desiredContinuousStreamUrl.value = null;
+        }
+
+        if (pendingContinuousResume.value && activeStream.value.url && !isPlaying.value) {
+            toggle(activeStream.value);
+        }
+
+        pendingContinuousResume.value = false;
+    }
 };
 
 watch(np, onNowPlayingUpdated, {immediate: true});
@@ -283,12 +501,113 @@ watch(np, onNowPlayingUpdated, {immediate: true});
 
 <style lang="scss">
 .radio-player-widget {
+    // CSS Custom Properties for widget customization
+    --widget-primary-color: #2196F3;
+    --widget-bg-color: transparent;
+    --widget-text-color: inherit;
+    --widget-border-radius: 0px;
+    --widget-padding: 1rem;
+    --widget-gap: 0.75rem;
+    
+    transition: all 0.3s ease;
+    padding: var(--widget-padding);
+    background-color: var(--widget-bg-color);
+    color: var(--widget-text-color);
+    border-radius: var(--widget-border-radius);
+    
+    // Layout variants
+    &.layout-vertical {
+        .now-playing-details {
+            flex-direction: column;
+            text-align: center;
+            
+            .now-playing-art {
+                margin-bottom: 1rem;
+                margin-right: 0;
+            }
+        }
+        
+        .radio-controls {
+            flex-direction: column;
+            gap: 0.5rem;
+            
+            .radio-control-play-button {
+                margin: 0 auto;
+            }
+        }
+    }
+    
+    &.layout-compact {
+        --widget-gap: 0.5rem;
+        padding: 0.5rem;
+        
+        .now-playing-details {
+            align-items: center;
+
+            .now-playing-art {
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+
+                img {
+                    width: 40px;
+                    height: 40px;
+                }
+            }
+
+            .now-playing-main {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+        }
+        
+        .now-playing-title {
+            font-size: 0.9rem;
+        }
+        
+        .now-playing-artist {
+            font-size: 0.8rem;
+        }
+
+        .radio-controls {
+            gap: 0.5rem;
+        }
+    }
+    
+    &.layout-large {
+        padding: 2rem;
+        
+        .now-playing-details {
+            .now-playing-art {
+                width: 120px;
+                height: 120px;
+                margin-right: 2rem;
+            }
+        }
+        
+        .now-playing-title {
+            font-size: 1.5rem;
+        }
+        
+        .now-playing-artist {
+            font-size: 1.2rem;
+        }
+    }
+    
+    &.rounded-corners {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
     .now-playing-details {
         display: flex;
         align-items: center;
+        gap: var(--widget-gap);
 
         .now-playing-art {
-            padding-right: .5rem;
+            flex: 0 0 auto;
 
             img {
                 width: 75px;
@@ -356,6 +675,7 @@ watch(np, onNowPlayingUpdated, {immediate: true});
                     -webkit-transition: width 1s; /* Safari */
                     transition: width 1s;
                     transition-timing-function: linear;
+                    background-color: var(--widget-primary-color) !important;
                 }
             }
 
@@ -370,10 +690,7 @@ watch(np, onNowPlayingUpdated, {immediate: true});
         flex-direction: row;
         align-items: center;
         flex-wrap: wrap;
-
-        .radio-control-play-button {
-            margin-right: .25rem;
-        }
+        gap: var(--widget-gap);
 
         .radio-control-select-stream {
             flex: 1 1 auto;
@@ -389,6 +706,14 @@ watch(np, onNowPlayingUpdated, {immediate: true});
         .radio-control-volume {
             .radio-control-volume-slider {
                 max-width: 30%;
+            }
+        }
+
+        .radio-control-popup {
+            flex: 0 0 auto;
+
+            button {
+                white-space: nowrap;
             }
         }
     }

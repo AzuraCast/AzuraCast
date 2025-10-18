@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@codemirror/lang-css": "^6.0.1",
+    "@codemirror/commands": "^6.3.3",
     "@codemirror/lang-html": "^6.4.9",
     "@codemirror/lang-javascript": "^6.1.2",
     "@flowjs/flow.js": "^2.14.1",

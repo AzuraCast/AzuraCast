@@ -45,12 +45,12 @@ abstract class AbstractCustomAsset implements CustomAssetInterface
 
     public function getUrl(?Station $station = null): string
     {
-        $path = $this->getPath();
+        $path = $this->getPath($station);
         if (is_file($path)) {
             $pattern = $this->getPattern();
             $mtime = filemtime($path);
 
-            return $this->getBaseUrl() . '/' . sprintf(
+            return $this->getBaseUrl($station) . '/' . sprintf(
                 $pattern,
                 '.' . $mtime
             );

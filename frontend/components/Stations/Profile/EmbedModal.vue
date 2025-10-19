@@ -248,21 +248,13 @@
                             <div v-if="activeCustomizationTab === 'advanced'" class="tab-content">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <form-group-multi-check
-                                            id="embed_type_advanced"
-                                            v-model="customization.embedType"
-                                            :label="$gettext('Embed Type')"
-                                            :options="embedTypeOptions"
-                                            stacked
-                                            radio
-                                        />
-                                    </div>
-                                    <div class="col-md-6">
                                         <form-group-checkbox
                                             id="embed_popup_player"
                                             v-model="customization.enablePopupPlayer"
                                             :label="$gettext('Enable Popup Player')"
                                         />
+                                    </div>
+                                    <div class="col-md-6">
                                         <form-group-checkbox
                                             id="embed_continuous_play"
                                             v-model="customization.continuousPlay"
@@ -303,37 +295,14 @@
                         </h2>
                     </div>
                     <div class="card-body">
-                        <div class="mb-3">
-                            <nav>
-                                <div class="nav nav-pills" role="tablist">
-                                    <button
-                                        class="nav-link"
-                                        :class="{ active: embedCodeTab === 'iframe' }"
-                                        @click="embedCodeTab = 'iframe'"
-                                        type="button"
-                                    >
-                                        {{ $gettext('HTML (iframe)') }}
-                                    </button>
-                                    <button
-                                        class="nav-link"
-                                        :class="{ active: embedCodeTab === 'javascript' }"
-                                        @click="embedCodeTab = 'javascript'"
-                                        type="button"
-                                    >
-                                        {{ $gettext('JavaScript') }}
-                                    </button>
-                                </div>
-                            </nav>
-                        </div>
-                        
                         <textarea
                             class="full-width form-control text-preformatted"
                             spellcheck="false"
                             style="height: 120px;"
                             readonly
-                            :value="currentEmbedCode"
+                            :value="embedCode"
                         ></textarea>
-                        <copy-to-clipboard-button :text="currentEmbedCode" />
+                        <copy-to-clipboard-button :text="embedCode" />
                         
                         <div class="mt-3">
                             <div class="input-group">
@@ -421,18 +390,12 @@
             <div class="card-body">
                 <div class="preview-container" :style="previewContainerStyle">
                     <iframe
-                        v-if="customization.embedType === 'iframe' || embedCodeTab === 'iframe'"
                         width="100%"
                         :src="embedUrl"
                         frameborder="0"
                         style="border: 0;"
                         :style="previewFrameStyle"
                     ></iframe>
-                    <div
-                        v-else-if="customization.embedType === 'javascript'"
-                        v-html="javascriptPreview"
-                        class="js-embed-preview"
-                    ></div>
                 </div>
             </div>
         </section>
@@ -457,7 +420,6 @@ const profileData = useStationProfileData();
 const selectedType = ref('player');
 const selectedTheme = ref('light');
 const activeCustomizationTab = ref('appearance');
-const embedCodeTab = ref('iframe');
 const templateName = ref('');
 const selectedTemplate = ref('');
 
@@ -477,7 +439,6 @@ interface WidgetCustomization {
     layout: string;
     width: string;
     height: number;
-    embedType: string;
     enablePopupPlayer: boolean;
     continuousPlay: boolean;
     customCss: string;
@@ -499,7 +460,6 @@ const customization = ref<WidgetCustomization>({
     layout: 'horizontal',
     width: '100%',
     height: 150,
-    embedType: 'iframe',
     enablePopupPlayer: false,
     continuousPlay: false,
     customCss: ''
@@ -697,19 +657,6 @@ const layoutOptions = computed(() => {
     ];
 });
 
-const embedTypeOptions = computed(() => {
-    return [
-        {
-            value: 'iframe',
-            text: $gettext('HTML iframe (Recommended)')
-        },
-        {
-            value: 'javascript',
-            text: $gettext('JavaScript Widget')
-        }
-    ];
-});
-
 const baseEmbedUrl = computed(() => {
     switch (selectedType.value) {
         case 'history':
@@ -833,46 +780,11 @@ const embedHeight = computed(() => {
     }
 });
 
-const iframeEmbedCode = computed(() => {
+const embedCode = computed(() => {
     const width = customization.value.width || '100%';
     const height = embedHeight.value;
     
     return `<iframe src="${embedUrl.value}" frameborder="0" allowtransparency="true" style="width: ${width}; min-height: ${height}; border: 0;"></iframe>`;
-});
-
-const javascriptEmbedCode = computed(() => {
-    const config = {
-        station: stationData.value.shortName,
-        containerId: 'azuracast-player',
-        width: customization.value.width || '100%',
-        height: parseInt(embedHeight.value),
-        autoplay: customization.value.autoplay,
-        showAlbumArt: customization.value.showAlbumArt,
-        showVolumeControls: customization.value.showVolumeControls,
-        showTrackProgress: customization.value.showTrackProgress,
-        showStreamSelection: customization.value.showStreamSelection,
-        layout: customization.value.layout,
-        primaryColor: customization.value.primaryColor,
-        backgroundColor: customization.value.backgroundColor,
-        textColor: customization.value.textColor,
-        roundedCorners: customization.value.roundedCorners,
-        initialVolume: customization.value.initialVolume
-    };
-
-    const scriptSrc = `${window.location.origin}/static/js/azuracast-embed.js`;
-
-    return `<div id="azuracast-player"></div>
-<script src="${scriptSrc}"></scr` + `ipt>
-<script>
-AzuraCastEmbed.init(${JSON.stringify(config, null, 2)});
-</scr` + `ipt>`;
-});
-
-const currentEmbedCode = computed(() => {
-    if (embedCodeTab.value === 'javascript') {
-        return javascriptEmbedCode.value;
-    }
-    return iframeEmbedCode.value;
 });
 
 // Preview styles
@@ -898,18 +810,6 @@ const previewFrameStyle = computed(() => {
     };
     
     return styles;
-});
-
-const javascriptPreview = computed(() => {
-    if (customization.value.embedType !== 'javascript') {
-        return '';
-    }
-
-    return `<div style="padding: 20px; border: 1px dashed #ccc; text-align: center;">
-        <p><strong>JavaScript Widget Preview</strong></p>
-        <p>Station: ${stationData.value.name}</p>
-        <p>The actual widget would be rendered here when embedded in a webpage.</p>
-    </div>`;
 });
 
 const $modal = useTemplateRef('$modal');

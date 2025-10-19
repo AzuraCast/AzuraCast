@@ -1616,6 +1616,91 @@ export interface VueUserGlobals {
   permissions: ApiAdminRolePermissions;
 }
 
+export interface ApiWidgetCustomization {
+  /**
+   * Primary accent color (hex without #).
+   * @example "2196F3"
+   */
+  primaryColor?: string | null;
+  /**
+   * Background color (hex without #).
+   * @example "ffffff"
+   */
+  backgroundColor?: string | null;
+  /**
+   * Text color (hex without #).
+   * @example "000000"
+   */
+  textColor?: string | null;
+  /**
+   * Whether album art should be shown.
+   * @example true
+   */
+  showAlbumArt?: boolean;
+  /**
+   * Whether the widget should use rounded corners.
+   * @example false
+   */
+  roundedCorners?: boolean;
+  /**
+   * Whether autoplay should be requested.
+   * @example false
+   */
+  autoplay?: boolean;
+  /**
+   * Whether the volume controls are visible.
+   * @example true
+   */
+  showVolumeControls?: boolean;
+  /**
+   * Whether track progress is visible.
+   * @example true
+   */
+  showTrackProgress?: boolean;
+  /**
+   * Whether stream selection controls are visible.
+   * @example true
+   */
+  showStreamSelection?: boolean;
+  /**
+   * Whether the history button is visible.
+   * @example false
+   */
+  showHistoryButton?: boolean;
+  /**
+   * Whether the request button is visible.
+   * @example false
+   */
+  showRequestButton?: boolean;
+  /**
+   * Initial player volume (0-100).
+   * @min 0
+   * @max 100
+   * @example 75
+   */
+  initialVolume?: number;
+  /**
+   * Layout variant for the widget.
+   * @example "horizontal"
+   */
+  layout?: string;
+  /**
+   * Whether to show an "open popup" button.
+   * @example false
+   */
+  enablePopupPlayer?: boolean;
+  /**
+   * Whether to persist playback state across pages.
+   * @example false
+   */
+  continuousPlay?: boolean;
+  /**
+   * Additional CSS applied to the widget.
+   * @example ".radio-player-widget { border-radius: 12px; }"
+   */
+  customCss?: string | null;
+}
+
 export type ApiKey = HasSplitTokenFields & {
   user?: User;
   comment?: string;

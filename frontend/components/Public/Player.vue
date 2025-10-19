@@ -151,34 +151,15 @@
 
 <script setup lang="ts">
 import PlayButton from "~/components/Common/Audio/PlayButton.vue";
-import {computed, nextTick, onMounted, ref, toRef, watch} from "vue";
+import {computed, nextTick, onMounted, onUnmounted, ref, toRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
 import MuteButton from "~/components/Common/Audio/MuteButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {blankStreamDescriptor, StreamDescriptor, usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {useEventListener} from "@vueuse/core";
-import {ApiNowPlaying, ApiNowPlayingVueProps} from "~/entities/ApiInterfaces.ts";
+import {ApiNowPlaying, ApiNowPlayingVueProps, ApiWidgetCustomization} from "~/entities/ApiInterfaces.ts";
 import {storeToRefs} from "pinia";
-
-interface WidgetCustomization {
-    primaryColor?: string;
-    backgroundColor?: string;
-    textColor?: string;
-    showAlbumArt: boolean;
-    roundedCorners: boolean;
-    autoplay: boolean;
-    showVolumeControls: boolean;
-    showTrackProgress: boolean;
-    showStreamSelection: boolean;
-    showHistoryButton: boolean;
-    showRequestButton: boolean;
-    initialVolume: number;
-    layout: string;
-    enablePopupPlayer: boolean;
-    continuousPlay: boolean;
-    customCss?: string;
-}
 
 export interface PlayerProps {
     nowPlayingProps: ApiNowPlayingVueProps,
@@ -186,7 +167,7 @@ export interface PlayerProps {
     showHls?: boolean,
     showAlbumArt?: boolean,
     autoplay?: boolean,
-    widgetCustomization?: WidgetCustomization
+    widgetCustomization?: ApiWidgetCustomization
 }
 
 defineOptions({
@@ -211,7 +192,11 @@ const props = withDefaults(
             initialVolume: 75,
             layout: 'horizontal',
             enablePopupPlayer: false,
-            continuousPlay: false
+            continuousPlay: false,
+            customCss: '',
+            primaryColor: undefined,
+            backgroundColor: undefined,
+            textColor: undefined
         })
     }
 );
@@ -227,6 +212,72 @@ const {
     currentTrackElapsedDisplay
 } = useNowPlaying(toRef(props, 'nowPlayingProps'));
 
+const isClient = typeof window !== 'undefined';
+const isPopupContext = isClient
+    ? new URLSearchParams(window.location.search).has('popup')
+    : false;
+
+const popupLayout = computed(() => props.widgetCustomization?.layout ?? 'horizontal');
+
+let previousBodyMargin = '';
+let previousBodyOverflow = '';
+let previousHtmlOverflow = '';
+
+const applyLayoutScrollMode = (layout: string) => {
+    if (!isClient) {
+        return;
+    }
+
+    const requiresScroll = layout === 'vertical' || layout === 'large';
+
+    if (requiresScroll) {
+        document.body.classList.add('embed-player-scrollable');
+        document.body.style.overflow = 'auto';
+        document.documentElement.style.overflow = 'auto';
+    } else {
+        document.body.classList.remove('embed-player-scrollable');
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+    }
+};
+
+onMounted(() => {
+    if (!isClient) {
+        return;
+    }
+
+    previousBodyMargin = document.body.style.margin;
+    previousBodyOverflow = document.body.style.overflow;
+    previousHtmlOverflow = document.documentElement.style.overflow;
+
+    document.body.classList.add('embed-player');
+    if (isPopupContext) {
+        document.body.classList.add('embed-player-popup');
+    }
+
+    document.body.style.margin = '0';
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+
+    applyLayoutScrollMode(popupLayout.value);
+});
+
+onUnmounted(() => {
+    if (!isClient) {
+        return;
+    }
+
+    document.body.classList.remove('embed-player', 'embed-player-popup');
+    document.body.classList.remove('embed-player-scrollable');
+    document.body.style.margin = previousBodyMargin;
+    document.body.style.overflow = previousBodyOverflow;
+    document.documentElement.style.overflow = previousHtmlOverflow;
+});
+
+watch(popupLayout, (layout) => {
+    applyLayoutScrollMode(layout);
+});
+
 // Widget customization computed properties
 const computedShowAlbumArt = computed(() => {
     return props.showAlbumArt && (props.widgetCustomization?.showAlbumArt ?? true);
@@ -241,6 +292,10 @@ const widgetClasses = computed(() => {
     
     if (props.widgetCustomization?.roundedCorners) {
         classes.push('rounded-corners');
+    }
+
+    if (isPopupContext) {
+        classes.push('popup-context');
     }
     
     return classes;
@@ -280,7 +335,7 @@ const {volume, showVolume, isMuted, isPlaying} = storeToRefs(playerStore);
 const {setVolume, toggleMute, toggle} = playerStore;
 
 // Set initial volume if specified
-if (props.widgetCustomization?.initialVolume && props.widgetCustomization.initialVolume !== 75) {
+if (typeof props.widgetCustomization?.initialVolume === 'number' && props.widgetCustomization.initialVolume !== 75) {
     setVolume(props.widgetCustomization.initialVolume);
 }
 
@@ -334,11 +389,6 @@ const setActiveStream = (newStream: StreamDescriptor): void => {
     toggle(newStream);
 };
 
-const isClient = typeof window !== 'undefined';
-const isPopupContext = isClient
-    ? new URLSearchParams(window.location.search).has('popup')
-    : false;
-
 const popupUrl = computed(() => {
     if (!isClient || !props.widgetCustomization?.enablePopupPlayer) {
         return null;
@@ -361,7 +411,7 @@ const openPopupPlayer = () => {
     window.open(
         popupUrl.value,
         'azuracast-player-popup',
-        'width=420,height=680,resizable=yes,scrollbars=yes'
+        'width=540,height=760,resizable=yes,scrollbars=yes'
     );
 };
 
@@ -601,6 +651,38 @@ watch(np, onNowPlayingUpdated, {immediate: true});
         overflow: hidden;
     }
 
+    &.popup-context {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: clamp(1rem, 2vw, 1.75rem);
+        height: 100%;
+
+        .now-playing-details {
+            align-items: flex-start;
+            gap: clamp(1.25rem, 3vw, 2rem);
+
+            .now-playing-art img {
+                width: clamp(96px, 18vw, 150px);
+                height: clamp(96px, 18vw, 150px);
+                object-fit: cover;
+                border-radius: 12px;
+            }
+        }
+
+        .radio-controls {
+            margin-top: auto;
+            width: 100%;
+            padding-top: clamp(0.75rem, 2vw, 1.25rem);
+
+            .radio-control-volume {
+                .radio-control-volume-slider {
+                    max-width: 60%;
+                }
+            }
+        }
+    }
+
     .now-playing-details {
         display: flex;
         align-items: center;
@@ -716,6 +798,65 @@ watch(np, onNowPlayingUpdated, {immediate: true});
                 white-space: nowrap;
             }
         }
+    }
+}
+
+body.embed-player {
+    margin: 0;
+    overflow: hidden;
+    background: transparent;
+}
+
+body.embed-player-scrollable {
+    overflow: auto;
+}
+
+body.embed-player-popup {
+    --popup-padding: clamp(1.25rem, 3vw, 3rem);
+    margin: 0;
+    background: var(--bs-body-bg);
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    padding: var(--popup-padding);
+    min-height: 100vh;
+    overflow: hidden;
+}
+body.embed-player-popup .radio-player-widget {
+    width: min(640px, calc(100vw - (var(--popup-padding) * 2)));
+    min-height: calc(100vh - (var(--popup-padding) * 2));
+    max-height: 100vh;
+    --widget-padding: clamp(1.25rem, 2.5vw, 2.25rem);
+    --widget-gap: clamp(0.9rem, 1.8vw, 1.4rem);
+    --widget-bg-color: var(--bs-card-bg);
+    box-shadow: var(--bs-box-shadow-lg, 0 1.25rem 2.5rem rgba(15, 23, 42, 0.16));
+    border: 1px solid var(--bs-border-color-translucent, rgba(15, 23, 42, 0.12));
+}
+
+body.embed-player-popup .radio-player-widget.rounded-corners {
+    border-radius: 18px;
+}
+
+body.embed-player-scrollable .radio-player-widget {
+    height: auto;
+    min-height: auto;
+    max-height: none;
+}
+
+body.embed-player-popup .radio-player-widget.layout-vertical {
+    justify-content: flex-start;
+}
+
+@media (max-width: 575px) {
+    body.embed-player-popup {
+        --popup-padding: 1rem;
+        --widget-padding: 1.25rem;
+    }
+
+    body.embed-player-popup .radio-player-widget {
+        width: 100%;
+        height: calc(100vh - (var(--popup-padding) * 2));
+        box-shadow: var(--bs-box-shadow, 0 0.75rem 1.5rem rgba(15, 23, 42, 0.16));
     }
 }
 </style>

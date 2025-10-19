@@ -1,13 +1,13 @@
 <template>
     <modal
         id="embed_modal"
-        ref="$modal"
+        ref="modalRef"
         size="xl"
         :title="$gettext('Player Embed Widget Builder')"
         hide-footer
         no-enforce-focus
     >
-        <div class="row">
+        <div class="row g-4">
             <div class="col-md-8">
                 <section
                     class="card mb-3"
@@ -19,7 +19,7 @@
                         </h2>
                     </div>
                     <div class="card-body">
-                        <div class="row mb-3">
+                        <div class="row g-3 mb-3 align-items-stretch">
                             <div class="col-md-6">
                                 <form-group-multi-check
                                     id="embed_type"
@@ -44,7 +44,16 @@
                         </div>
 
                         <div v-if="selectedType === 'player'" class="mb-3">
-                            <h5 class="mb-3">{{ $gettext('Player Customization') }}</h5>
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                                <h5 class="mb-0">{{ $gettext('Player Customization') }}</h5>
+                                <button
+                                    type="button"
+                                    class="btn btn-sm btn-outline-secondary"
+                                    @click="resetAllCustomization"
+                                >
+                                    {{ $gettext('Reset All To Defaults') }}
+                                </button>
+                            </div>
                             
                             <nav class="mb-3">
                                 <div class="nav nav-pills" role="tablist">
@@ -84,7 +93,16 @@
                             </nav>
 
                             <div v-if="activeCustomizationTab === 'appearance'" class="tab-content">
-                                <div class="row">
+                                <div class="d-flex justify-content-end mb-3">
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-outline-secondary"
+                                        @click="resetAppearanceCustomization"
+                                    >
+                                        {{ $gettext('Reset Appearance') }}
+                                    </button>
+                                </div>
+                                <div class="row g-3">
                                     <div class="col-md-4">
                                         <form-group-field
                                             id="embed_primary_color"
@@ -125,7 +143,7 @@
                                         </form-group-field>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row g-3">
                                     <div class="col-md-6">
                                         <form-group-checkbox
                                             id="embed_show_album_art"
@@ -144,7 +162,16 @@
                             </div>
 
                             <div v-if="activeCustomizationTab === 'functionality'" class="tab-content">
-                                <div class="row">
+                                <div class="d-flex justify-content-end mb-3">
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-outline-secondary"
+                                        @click="resetFunctionalityCustomization"
+                                    >
+                                        {{ $gettext('Reset Functionality') }}
+                                    </button>
+                                </div>
+                                <div class="row g-3">
                                     <div class="col-md-6">
                                         <form-group-checkbox
                                             id="embed_autoplay"
@@ -180,7 +207,7 @@
                                         />
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row g-3">
                                     <div class="col-md-6">
                                         <form-group-field
                                             id="embed_initial_volume"
@@ -204,7 +231,16 @@
                             </div>
 
                             <div v-if="activeCustomizationTab === 'layout'" class="tab-content">
-                                <div class="row">
+                                <div class="d-flex justify-content-end mb-3">
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-outline-secondary"
+                                        @click="resetLayoutCustomization"
+                                    >
+                                        {{ $gettext('Reset Layout') }}
+                                    </button>
+                                </div>
+                                <div class="row g-3">
                                     <div class="col-md-6">
                                         <form-group-multi-check
                                             id="embed_layout"
@@ -246,7 +282,16 @@
                             </div>
 
                             <div v-if="activeCustomizationTab === 'advanced'" class="tab-content">
-                                <div class="row">
+                                <div class="d-flex justify-content-end mb-3">
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-outline-secondary"
+                                        @click="resetAdvancedCustomization"
+                                    >
+                                        {{ $gettext('Reset Advanced') }}
+                                    </button>
+                                </div>
+                                <div class="row g-3">
                                     <div class="col-md-6">
                                         <form-group-checkbox
                                             id="embed_popup_player"
@@ -262,7 +307,7 @@
                                         />
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row g-3">
                                     <div class="col-md-12">
                                         <form-group-field
                                             id="embed_custom_css"
@@ -296,7 +341,7 @@
                     </div>
                     <div class="card-body">
                         <textarea
-                            class="full-width form-control text-preformatted"
+                            class="full-width form-control text-preformatted mb-2"
                             spellcheck="false"
                             style="height: 120px;"
                             readonly
@@ -344,7 +389,7 @@
                                         @click="deleteTemplate"
                                         :title="$gettext('Delete template')"
                                     >
-                                        🗑️
+                                        {{ $gettext('Delete') }}
                                     </button>
                                 </div>
                             </div>
@@ -388,7 +433,7 @@
                 </h2>
             </div>
             <div class="card-body">
-                <div class="preview-container" :style="previewContainerStyle">
+                <div class="preview-container border rounded p-3" :style="previewContainerStyle">
                     <iframe
                         width="100%"
                         :src="embedUrl"
@@ -404,7 +449,7 @@
 
 <script setup lang="ts">
 import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton.vue";
-import {computed, ref, useTemplateRef} from "vue";
+import {computed, onMounted, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
@@ -413,6 +458,7 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
+import type {ApiWidgetCustomization} from "~/entities/ApiInterfaces.ts";
 
 const stationData = useStationData();
 const profileData = useStationProfileData();
@@ -423,7 +469,7 @@ const activeCustomizationTab = ref('appearance');
 const templateName = ref('');
 const selectedTemplate = ref('');
 
-interface WidgetCustomization {
+type WidgetCustomization = ApiWidgetCustomization & {
     primaryColor: string;
     backgroundColor: string;
     textColor: string;
@@ -437,14 +483,14 @@ interface WidgetCustomization {
     showRequestButton: boolean;
     initialVolume: number;
     layout: string;
-    width: string;
-    height: number;
     enablePopupPlayer: boolean;
     continuousPlay: boolean;
     customCss: string;
-}
+    width: string;
+    height: number;
+};
 
-const customization = ref<WidgetCustomization>({
+const createDefaultCustomization = (): WidgetCustomization => ({
     primaryColor: '#2196F3',
     backgroundColor: '#ffffff',
     textColor: '#000000',
@@ -458,16 +504,39 @@ const customization = ref<WidgetCustomization>({
     showRequestButton: false,
     initialVolume: 75,
     layout: 'horizontal',
-    width: '100%',
-    height: 150,
     enablePopupPlayer: false,
     continuousPlay: false,
-    customCss: ''
+    customCss: '',
+    width: '100%',
+    height: 150
 });
+
+const customization = ref<WidgetCustomization>(createDefaultCustomization());
 
 const savedTemplates = ref<Array<{name: string, config: WidgetCustomization}>>([]);
 
 const {$gettext} = useTranslate();
+
+const encodeCustomCssParam = (css: string): string | null => {
+    if (!css) {
+        return null;
+    }
+
+    const encoder = typeof globalThis.btoa === 'function' ? globalThis.btoa : null;
+    if (!encoder) {
+        return null;
+    }
+
+    try {
+        const utf8 = encodeURIComponent(css).replace(/%([0-9A-F]{2})/g, (_match, hex) => {
+            return String.fromCharCode(Number.parseInt(hex, 16));
+        });
+        return encoder(utf8);
+    } catch (error) {
+        console.warn('Failed to encode custom CSS.', error);
+        return null;
+    }
+};
 
 // Load saved templates from localStorage
 const loadSavedTemplates = () => {
@@ -580,7 +649,62 @@ const importTemplate = (event: Event) => {
 };
 
 // Initialize templates on component mount
-loadSavedTemplates();
+onMounted(() => {
+    loadSavedTemplates();
+});
+
+const updateCustomization = (partial: Partial<WidgetCustomization>) => {
+    customization.value = {
+        ...customization.value,
+        ...partial
+    };
+};
+
+const resetAppearanceCustomization = () => {
+    const defaults = createDefaultCustomization();
+    updateCustomization({
+        primaryColor: defaults.primaryColor,
+        backgroundColor: defaults.backgroundColor,
+        textColor: defaults.textColor,
+        showAlbumArt: defaults.showAlbumArt,
+        roundedCorners: defaults.roundedCorners
+    });
+};
+
+const resetFunctionalityCustomization = () => {
+    const defaults = createDefaultCustomization();
+    updateCustomization({
+        autoplay: defaults.autoplay,
+        showVolumeControls: defaults.showVolumeControls,
+        showTrackProgress: defaults.showTrackProgress,
+        showStreamSelection: defaults.showStreamSelection,
+        showHistoryButton: defaults.showHistoryButton,
+        showRequestButton: defaults.showRequestButton,
+        initialVolume: defaults.initialVolume
+    });
+};
+
+const resetLayoutCustomization = () => {
+    const defaults = createDefaultCustomization();
+    updateCustomization({
+        layout: defaults.layout,
+        width: defaults.width,
+        height: defaults.height
+    });
+};
+
+const resetAdvancedCustomization = () => {
+    const defaults = createDefaultCustomization();
+    updateCustomization({
+        enablePopupPlayer: defaults.enablePopupPlayer,
+        continuousPlay: defaults.continuousPlay,
+        customCss: defaults.customCss
+    });
+};
+
+const resetAllCustomization = () => {
+    customization.value = createDefaultCustomization();
+};
 
 const types = computed(() => {
     const types = [
@@ -731,13 +855,16 @@ const embedUrl = computed(() => {
 
         // Advanced
         if (customization.value.enablePopupPlayer) {
-            baseUrl.searchParams.set('popup', '1');
+            baseUrl.searchParams.set('allow_popup', '1');
         }
         if (customization.value.continuousPlay) {
             baseUrl.searchParams.set('continuous', '1');
         }
         if (customization.value.customCss) {
-            baseUrl.searchParams.set('custom_css', btoa(customization.value.customCss));
+            const encodedCss = encodeCustomCssParam(customization.value.customCss);
+            if (encodedCss) {
+                baseUrl.searchParams.set('custom_css', encodedCss);
+            }
         }
     }
 
@@ -783,8 +910,11 @@ const embedHeight = computed(() => {
 const embedCode = computed(() => {
     const width = customization.value.width || '100%';
     const height = embedHeight.value;
+    const isScrollableLayout = customization.value.layout === 'vertical' || customization.value.layout === 'large';
+    const minHeightStyle = isScrollableLayout ? '' : ` min-height: ${height};`;
+    const heightStyle = ` height: ${height};`;
     
-    return `<iframe src="${embedUrl.value}" frameborder="0" allowtransparency="true" style="width: ${width}; min-height: ${height}; border: 0;"></iframe>`;
+    return `<iframe src="${embedUrl.value}" frameborder="0" allowtransparency="true" style="width: ${width};${minHeightStyle}${heightStyle} border: 0;"></iframe>`;
 });
 
 // Preview styles
@@ -812,8 +942,13 @@ const previewFrameStyle = computed(() => {
     return styles;
 });
 
-const $modal = useTemplateRef('$modal');
-const {show: open} = useHasModal($modal);
+type ModalExpose = {
+    show(): void;
+    hide(): void;
+};
+
+const modalRef = useTemplateRef<ModalExpose>('modalRef');
+const {show: open} = useHasModal(modalRef);
 
 defineExpose({
     open

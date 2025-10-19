@@ -87,8 +87,8 @@ final class WidgetCustomization
         $instance->showHistoryButton = !empty($request->getQueryParam('show_history'));
         $instance->showRequestButton = !empty($request->getQueryParam('show_requests'));
 
-    $allowPopup = $request->getQueryParam('allow_popup');
-    $instance->enablePopupPlayer = !empty($allowPopup);
+        $allowPopup = $request->getQueryParam('allow_popup');
+        $instance->enablePopupPlayer = !empty($allowPopup);
         $instance->continuousPlay = !empty($request->getQueryParam('continuous'));
 
         if ($volume = $request->getQueryParam('volume')) {

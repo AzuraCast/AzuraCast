@@ -5,6 +5,9 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- The embeddable player widget builder has been greatly expanded and now supports custom colors, several preset layouts,
+  enabling or disabling components in the player, and saving/loading custom templates.
+
 ## Code Quality/Technical Changes
 
 ## Bug Fixes

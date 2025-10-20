@@ -62,7 +62,11 @@ final class WidgetCustomization
     #[OA\Property(description: 'Whether to persist playback state across pages.', example: false)]
     public bool $continuousPlay = false;
 
-    #[OA\Property(description: 'Additional CSS applied to the widget.', example: '.radio-player-widget { border-radius: 12px; }', nullable: true)]
+    #[OA\Property(
+        description: 'Additional CSS applied to the widget.',
+        example: '.radio-player-widget { border-radius: 12px; }',
+        nullable: true
+    )]
     public ?string $customCss = null;
 
     public static function fromRequest(ServerRequest $request): self

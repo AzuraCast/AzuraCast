@@ -8729,6 +8729,83 @@ components:
         permissions:
           $ref: '#/components/schemas/Api_Admin_RolePermissions'
       type: object
+    Api_WidgetCustomization:
+      properties:
+        primaryColor:
+          description: 'Primary accent color (hex without #).'
+          type: string
+          example: 2196F3
+          nullable: true
+        backgroundColor:
+          description: 'Background color (hex without #).'
+          type: string
+          example: ffffff
+          nullable: true
+        textColor:
+          description: 'Text color (hex without #).'
+          type: string
+          example: '000000'
+          nullable: true
+        showAlbumArt:
+          description: 'Whether album art should be shown.'
+          type: boolean
+          example: true
+        roundedCorners:
+          description: 'Whether the widget should use rounded corners.'
+          type: boolean
+          example: false
+        autoplay:
+          description: 'Whether autoplay should be requested.'
+          type: boolean
+          example: false
+        showVolumeControls:
+          description: 'Whether the volume controls are visible.'
+          type: boolean
+          example: true
+        showTrackProgress:
+          description: 'Whether track progress is visible.'
+          type: boolean
+          example: true
+        showStreamSelection:
+          description: 'Whether stream selection controls are visible.'
+          type: boolean
+          example: true
+        showHistoryButton:
+          description: 'Whether the history button is visible.'
+          type: boolean
+          example: false
+        showRequestButton:
+          description: 'Whether the request button is visible.'
+          type: boolean
+          example: false
+        showPlaylistButton:
+          description: 'Whether the playlist download button is visible.'
+          type: boolean
+          example: false
+        initialVolume:
+          description: 'Initial player volume (0-100).'
+          type: integer
+          maximum: 100
+          minimum: 0
+          example: 75
+        layout:
+          description: 'Layout variant for the widget.'
+          type: string
+          example: horizontal
+        enablePopupPlayer:
+          description: 'Whether to show an "open popup" button.'
+          type: boolean
+          example: false
+        continuousPlay:
+          description: 'Whether to persist playback state across pages.'
+          type: boolean
+          example: false
+        customCss:
+          description: 'Additional CSS applied to the widget.'
+          type: string
+          example: '.radio-player-widget { border-radius: 12px; }'
+          nullable: true
+      type: object
     ApiKey:
       type: object
       allOf:

@@ -114,13 +114,13 @@
         </template>
     </card-page>
 
-    <embed-modal ref="$embedModal"/>
+    <widget-modal ref="$widgetModal"/>
 </template>
 
 <script setup lang="ts">
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import {computed, useTemplateRef} from "vue";
-import EmbedModal from "~/components/Stations/Profile/EmbedModal.vue";
+import WidgetModal from "~/components/Stations/Profile/WidgetModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
@@ -135,10 +135,10 @@ const stationData = useStationData();
 
 const {userAllowedForStation} = useUserAllowedForStation();
 
-const $embedModal = useTemplateRef('$embedModal');
+const $widgetModal = useTemplateRef('$widgetModal');
 
 const doOpenEmbed = () => {
-    $embedModal.value?.open();
+    $widgetModal.value?.open();
 };
 
 const togglePublicPages = useToggleFeature(

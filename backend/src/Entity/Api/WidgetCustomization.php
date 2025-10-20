@@ -14,13 +14,13 @@ use OpenApi\Attributes as OA;
 )]
 final class WidgetCustomization
 {
-    #[OA\Property(nullable: true, description: 'Primary accent color (hex without #).', example: '2196F3')]
+    #[OA\Property(description: 'Primary accent color (hex without #).', example: '2196F3', nullable: true)]
     public ?string $primaryColor = null;
 
-    #[OA\Property(nullable: true, description: 'Background color (hex without #).', example: 'ffffff')]
+    #[OA\Property(description: 'Background color (hex without #).', example: 'ffffff', nullable: true)]
     public ?string $backgroundColor = null;
 
-    #[OA\Property(nullable: true, description: 'Text color (hex without #).', example: '000000')]
+    #[OA\Property(description: 'Text color (hex without #).', example: '000000', nullable: true)]
     public ?string $textColor = null;
 
     #[OA\Property(description: 'Whether album art should be shown.', example: true)]
@@ -42,12 +42,15 @@ final class WidgetCustomization
     public bool $showStreamSelection = true;
 
     #[OA\Property(description: 'Whether the history button is visible.', example: false)]
-    public bool $showHistoryButton = false;
+    public bool $showHistoryButton = true;
 
     #[OA\Property(description: 'Whether the request button is visible.', example: false)]
-    public bool $showRequestButton = false;
+    public bool $showRequestButton = true;
 
-    #[OA\Property(description: 'Initial player volume (0-100).', example: 75, minimum: 0, maximum: 100)]
+    #[OA\Property(description: 'Whether the playlist download button is visible.', example: false)]
+    public bool $showPlaylistButton = true;
+
+    #[OA\Property(description: 'Initial player volume (0-100).', maximum: 100, minimum: 0, example: 75)]
     public int $initialVolume = 75;
 
     #[OA\Property(description: 'Layout variant for the widget.', example: 'horizontal')]
@@ -59,7 +62,7 @@ final class WidgetCustomization
     #[OA\Property(description: 'Whether to persist playback state across pages.', example: false)]
     public bool $continuousPlay = false;
 
-    #[OA\Property(nullable: true, description: 'Additional CSS applied to the widget.', example: '.radio-player-widget { border-radius: 12px; }')]
+    #[OA\Property(description: 'Additional CSS applied to the widget.', example: '.radio-player-widget { border-radius: 12px; }', nullable: true)]
     public ?string $customCss = null;
 
     public static function fromRequest(ServerRequest $request): self
@@ -78,25 +81,67 @@ final class WidgetCustomization
             $instance->textColor = $textColor;
         }
 
-        $instance->showAlbumArt = empty($request->getQueryParam('hide_album_art'));
-        $instance->roundedCorners = !empty($request->getQueryParam('rounded'));
-        $instance->autoplay = !empty($request->getQueryParam('autoplay'));
-        $instance->showVolumeControls = empty($request->getQueryParam('hide_volume'));
-        $instance->showTrackProgress = empty($request->getQueryParam('hide_progress'));
-        $instance->showStreamSelection = empty($request->getQueryParam('hide_streams'));
-        $instance->showHistoryButton = !empty($request->getQueryParam('show_history'));
-        $instance->showRequestButton = !empty($request->getQueryParam('show_requests'));
+        $instance->showAlbumArt = !Types::bool(
+            $request->getQueryParam('hide_album_art'),
+            false,
+            true
+        );
+        $instance->roundedCorners = Types::bool(
+            $request->getQueryParam('rounded'),
+            false,
+            true
+        );
+        $instance->autoplay = Types::bool(
+            $request->getQueryParam('autoplay'),
+            false,
+            true
+        );
+        $instance->showVolumeControls = !Types::bool(
+            $request->getQueryParam('hide_volume'),
+            false,
+            true
+        );
+        $instance->showTrackProgress = !Types::bool(
+            $request->getQueryParam('hide_progress'),
+            false,
+            true
+        );
+        $instance->showStreamSelection = !Types::bool(
+            $request->getQueryParam('hide_streams'),
+            false,
+            true
+        );
+        $instance->showHistoryButton = !Types::bool(
+            $request->getQueryParam('hide_history'),
+            false,
+            true
+        );
+        $instance->showRequestButton = !Types::bool(
+            $request->getQueryParam('hide_requests'),
+            false,
+            true
+        );
+        $instance->showPlaylistButton = !Types::bool(
+            $request->getQueryParam('hide_playlist'),
+            false,
+            true
+        );
+        $instance->enablePopupPlayer = Types::bool(
+            $request->getQueryParam('allow_popup'),
+            false,
+            true
+        );
+        $instance->continuousPlay = Types::bool(
+            $request->getQueryParam('continuous'),
+            false,
+            true
+        );
 
-        $allowPopup = $request->getQueryParam('allow_popup');
-        $instance->enablePopupPlayer = !empty($allowPopup);
-        $instance->continuousPlay = !empty($request->getQueryParam('continuous'));
-
-        if ($volume = $request->getQueryParam('volume')) {
-            $instance->initialVolume = Types::int($volume);
+        if ($volume = Types::intOrNull($request->getQueryParam('volume'))) {
+            $instance->initialVolume = $volume;
         }
-
-        if ($layout = $request->getQueryParam('layout')) {
-            $instance->layout = Types::string($layout);
+        if ($layout = Types::stringOrNull($request->getQueryParam('layout'))) {
+            $instance->layout = $layout;
         }
 
         if ($customCss = $request->getQueryParam('custom_css')) {
@@ -122,33 +167,5 @@ final class WidgetCustomization
         }
 
         return null;
-    }
-
-    public function getCssVariables(): array
-    {
-        $vars = [];
-
-        if ($this->primaryColor) {
-            $vars['--widget-primary-color'] = '#' . $this->primaryColor;
-        }
-
-        if ($this->backgroundColor) {
-            $vars['--widget-bg-color'] = '#' . $this->backgroundColor;
-        }
-
-        if ($this->textColor) {
-            $vars['--widget-text-color'] = '#' . $this->textColor;
-        }
-
-        if ($this->roundedCorners) {
-            $vars['--widget-border-radius'] = '8px';
-        }
-
-        return $vars;
-    }
-
-    public function getCustomCssDecoded(): ?string
-    {
-        return $this->customCss;
     }
 }

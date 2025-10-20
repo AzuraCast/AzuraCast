@@ -1673,6 +1673,11 @@ export interface ApiWidgetCustomization {
    */
   showRequestButton?: boolean;
   /**
+   * Whether the playlist download button is visible.
+   * @example false
+   */
+  showPlaylistButton?: boolean;
+  /**
    * Initial player volume (0-100).
    * @min 0
    * @max 100

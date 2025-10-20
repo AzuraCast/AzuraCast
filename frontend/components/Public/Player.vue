@@ -1,9 +1,5 @@
 <template>
-    <div 
-        class="radio-player-widget"
-        :class="widgetClasses"
-        :style="widgetStyles"
-    >
+    <div class="radio-player-widget">
         <div class="now-playing-details">
             <div
                 v-if="computedShowAlbumArt && np.now_playing?.song?.art"
@@ -151,7 +147,7 @@
 
 <script setup lang="ts">
 import PlayButton from "~/components/Common/Audio/PlayButton.vue";
-import {computed, nextTick, onMounted, onUnmounted, ref, toRef, watch} from "vue";
+import {computed, nextTick, onMounted, ref, toRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
 import MuteButton from "~/components/Common/Audio/MuteButton.vue";
@@ -160,44 +156,23 @@ import {blankStreamDescriptor, StreamDescriptor, usePlayerStore} from "~/functio
 import {useEventListener} from "@vueuse/core";
 import {ApiNowPlaying, ApiNowPlayingVueProps, ApiWidgetCustomization} from "~/entities/ApiInterfaces.ts";
 import {storeToRefs} from "pinia";
+import {defaultWidgetSettings} from "~/entities/PublicPlayer.ts";
+import useOptionalStorage from "~/functions/useOptionalStorage.ts";
 
 export interface PlayerProps {
     nowPlayingProps: ApiNowPlayingVueProps,
     offlineText?: string,
     showHls?: boolean,
     showAlbumArt?: boolean,
-    autoplay?: boolean,
     widgetCustomization?: ApiWidgetCustomization
 }
-
-defineOptions({
-    inheritAttrs: false
-});
 
 const props = withDefaults(
     defineProps<PlayerProps>(),
     {
         showHls: true,
         showAlbumArt: true,
-        autoplay: true,
-        widgetCustomization: () => ({
-            showAlbumArt: true,
-            roundedCorners: false,
-            autoplay: false,
-            showVolumeControls: true,
-            showTrackProgress: true,
-            showStreamSelection: true,
-            showHistoryButton: false,
-            showRequestButton: false,
-            initialVolume: 75,
-            layout: 'horizontal',
-            enablePopupPlayer: false,
-            continuousPlay: false,
-            customCss: '',
-            primaryColor: undefined,
-            backgroundColor: undefined,
-            textColor: undefined
-        })
+        widgetCustomization: () => defaultWidgetSettings
     }
 );
 
@@ -212,123 +187,12 @@ const {
     currentTrackElapsedDisplay
 } = useNowPlaying(toRef(props, 'nowPlayingProps'));
 
-const isClient = typeof window !== 'undefined';
-const isPopupContext = isClient
-    ? new URLSearchParams(window.location.search).has('popup')
-    : false;
-
-const popupLayout = computed(() => props.widgetCustomization?.layout ?? 'horizontal');
-
-let previousBodyMargin = '';
-let previousBodyOverflow = '';
-let previousHtmlOverflow = '';
-
-const applyLayoutScrollMode = (layout: string) => {
-    if (!isClient) {
-        return;
-    }
-
-    const requiresScroll = layout === 'vertical' || layout === 'large';
-
-    if (requiresScroll) {
-        document.body.classList.add('embed-player-scrollable');
-        document.body.style.overflow = 'auto';
-        document.documentElement.style.overflow = 'auto';
-    } else {
-        document.body.classList.remove('embed-player-scrollable');
-        document.body.style.overflow = 'hidden';
-        document.documentElement.style.overflow = 'hidden';
-    }
-};
-
-onMounted(() => {
-    if (!isClient) {
-        return;
-    }
-
-    previousBodyMargin = document.body.style.margin;
-    previousBodyOverflow = document.body.style.overflow;
-    previousHtmlOverflow = document.documentElement.style.overflow;
-
-    document.body.classList.add('embed-player');
-    if (isPopupContext) {
-        document.body.classList.add('embed-player-popup');
-    }
-
-    document.body.style.margin = '0';
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
-
-    applyLayoutScrollMode(popupLayout.value);
-});
-
-onUnmounted(() => {
-    if (!isClient) {
-        return;
-    }
-
-    document.body.classList.remove('embed-player', 'embed-player-popup');
-    document.body.classList.remove('embed-player-scrollable');
-    document.body.style.margin = previousBodyMargin;
-    document.body.style.overflow = previousBodyOverflow;
-    document.documentElement.style.overflow = previousHtmlOverflow;
-});
-
-watch(popupLayout, (layout) => {
-    applyLayoutScrollMode(layout);
-});
+const isPopupContext = new URLSearchParams(window.location.search).has('popup');
 
 // Widget customization computed properties
 const computedShowAlbumArt = computed(() => {
     return props.showAlbumArt && (props.widgetCustomization?.showAlbumArt ?? true);
 });
-
-const widgetClasses = computed(() => {
-    const classes: string[] = [];
-    
-    if (props.widgetCustomization?.layout) {
-        classes.push(`layout-${props.widgetCustomization.layout}`);
-    }
-    
-    if (props.widgetCustomization?.roundedCorners) {
-        classes.push('rounded-corners');
-    }
-
-    if (isPopupContext) {
-        classes.push('popup-context');
-    }
-    
-    return classes;
-});
-
-const widgetStyles = computed(() => {
-    const styles: Record<string, string> = {};
-    
-    if (props.widgetCustomization?.primaryColor) {
-        styles['--widget-primary-color'] = `#${props.widgetCustomization.primaryColor}`;
-    }
-    
-    if (props.widgetCustomization?.backgroundColor) {
-        styles['--widget-bg-color'] = `#${props.widgetCustomization.backgroundColor}`;
-    }
-    
-    if (props.widgetCustomization?.textColor) {
-        styles['--widget-text-color'] = `#${props.widgetCustomization.textColor}`;
-    }
-    
-    if (props.widgetCustomization?.roundedCorners) {
-        styles['--widget-border-radius'] = '12px';
-    }
-    
-    return styles;
-});
-
-// Inject custom CSS if provided
-if (props.widgetCustomization?.customCss) {
-    const customStyleElement = document.createElement('style');
-    customStyleElement.textContent = props.widgetCustomization.customCss;
-    document.head.appendChild(customStyleElement);
-}
 
 const playerStore = usePlayerStore();
 const {volume, showVolume, isMuted, isPlaying} = storeToRefs(playerStore);
@@ -390,7 +254,7 @@ const setActiveStream = (newStream: StreamDescriptor): void => {
 };
 
 const popupUrl = computed(() => {
-    if (!isClient || !props.widgetCustomization?.enablePopupPlayer) {
+    if (!props.widgetCustomization?.enablePopupPlayer) {
         return null;
     }
 
@@ -404,7 +268,7 @@ const showPopupButton = computed(() => {
 });
 
 const openPopupPlayer = () => {
-    if (!isClient || !popupUrl.value) {
+    if (!popupUrl.value) {
         return;
     }
 
@@ -419,66 +283,41 @@ const continuousPlayEnabled = computed(() => {
     return Boolean(props.widgetCustomization?.continuousPlay);
 });
 
-const continuousStorageKey = `azuracast-player-state-${props.nowPlayingProps.stationShortName}`;
-const desiredContinuousStreamUrl = ref<string | null>(null);
-const pendingContinuousResume = ref(false);
-
-const loadContinuousPreferences = () => {
-    if (!continuousPlayEnabled.value || !isClient) {
-        desiredContinuousStreamUrl.value = null;
-        pendingContinuousResume.value = false;
-        return;
-    }
-
-    try {
-        const savedState = window.localStorage.getItem(continuousStorageKey);
-        if (!savedState) {
-            desiredContinuousStreamUrl.value = null;
-            pendingContinuousResume.value = false;
-            return;
-        }
-
-        const parsed = JSON.parse(savedState) as {streamUrl?: string | null, isPlaying?: boolean};
-        desiredContinuousStreamUrl.value = (typeof parsed.streamUrl === 'string' && parsed.streamUrl.length > 0)
-            ? parsed.streamUrl
-            : null;
-        pendingContinuousResume.value = Boolean(parsed.isPlaying);
-    } catch (error) {
-        console.warn('Failed to load player state for continuous playback.', error);
-        desiredContinuousStreamUrl.value = null;
-        pendingContinuousResume.value = false;
-    }
+type ContinuousStorage = {
+    streamUrl: string | null,
+    isPlaying: boolean,
+    resume: boolean
 };
 
-watch(continuousPlayEnabled, (enabled) => {
-    if (!isClient) {
-        return;
-    }
+const blankContinuousStorage: ContinuousStorage = {
+    streamUrl: null,
+    isPlaying: false,
+    resume: false
+}
 
-    if (enabled) {
-        loadContinuousPreferences();
-    } else {
-        window.localStorage.removeItem(continuousStorageKey);
-        desiredContinuousStreamUrl.value = null;
-        pendingContinuousResume.value = false;
+const continuousStorage = useOptionalStorage<ContinuousStorage>(
+    () => `azuracast-player-state-${props.nowPlayingProps.stationShortName}`,
+    blankContinuousStorage
+);
+
+watch(continuousPlayEnabled, (enabled) => {
+    if (!enabled) {
+        continuousStorage.value = blankContinuousStorage;
     }
 }, {immediate: true});
 
-watch([
+watch(
     () => activeStream.value?.url ?? null,
-    () => isPlaying.value
-], ([streamUrl, playing]) => {
-    if (!isClient || !continuousPlayEnabled.value) {
-        return;
+    (streamUrl) => {
+        if (continuousPlayEnabled.value) {
+            continuousStorage.value.streamUrl = streamUrl;
+        }
     }
+);
 
-    try {
-        window.localStorage.setItem(continuousStorageKey, JSON.stringify({
-            streamUrl,
-            isPlaying: playing
-        }));
-    } catch (error) {
-        console.warn('Failed to persist player state for continuous playback.', error);
+watch(isPlaying, (playing) => {
+    if (continuousPlayEnabled.value) {
+        continuousStorage.value.isPlaying = playing;
     }
 });
 
@@ -487,7 +326,7 @@ if (null !== urlParamVolume) {
     setVolume(Number(urlParamVolume));
 }
 
-if (props.autoplay) {
+if (props.widgetCustomization?.autoplay) {
     const cleanupEvent = useEventListener(document, "now-playing", () => {
         void nextTick(() => {
             toggle(activeStream.value);
@@ -530,19 +369,22 @@ const onNowPlayingUpdated = (np_new: ApiNowPlaying) => {
     }
 
     if (continuousPlayEnabled.value) {
-        if (desiredContinuousStreamUrl.value) {
-            const matchingStream = $streams.find((stream) => stream.url === desiredContinuousStreamUrl.value);
+        if (continuousStorage.value.streamUrl) {
+            const matchingStream = $streams.find((stream) => stream.url === continuousStorage.value.streamUrl);
             if (matchingStream) {
                 activeStream.value = matchingStream;
             }
-            desiredContinuousStreamUrl.value = null;
+
+            continuousStorage.value.streamUrl = null;
         }
 
-        if (pendingContinuousResume.value && activeStream.value.url && !isPlaying.value) {
-            toggle(activeStream.value);
-        }
+        if (continuousStorage.value.resume) {
+            if (activeStream.value.url && !isPlaying.value) {
+                toggle(activeStream.value);
+            }
 
-        pendingContinuousResume.value = false;
+            continuousStorage.value.resume = false;
+        }
     }
 };
 
@@ -556,132 +398,14 @@ watch(np, onNowPlayingUpdated, {immediate: true});
     --widget-bg-color: transparent;
     --widget-text-color: inherit;
     --widget-border-radius: 0px;
-    --widget-padding: 1rem;
+    --widget-padding: 0;
     --widget-gap: 0.75rem;
-    
+
     transition: all 0.3s ease;
     padding: var(--widget-padding);
     background-color: var(--widget-bg-color);
     color: var(--widget-text-color);
     border-radius: var(--widget-border-radius);
-    
-    // Layout variants
-    &.layout-vertical {
-        .now-playing-details {
-            flex-direction: column;
-            text-align: center;
-            
-            .now-playing-art {
-                margin-bottom: 1rem;
-                margin-right: 0;
-            }
-        }
-        
-        .radio-controls {
-            flex-direction: column;
-            gap: 0.5rem;
-            
-            .radio-control-play-button {
-                margin: 0 auto;
-            }
-        }
-    }
-    
-    &.layout-compact {
-        --widget-gap: 0.5rem;
-        padding: 0.5rem;
-        
-        .now-playing-details {
-            align-items: center;
-
-            .now-playing-art {
-                width: 40px;
-                height: 40px;
-                display: flex;
-                align-items: center;
-
-                img {
-                    width: 40px;
-                    height: 40px;
-                }
-            }
-
-            .now-playing-main {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-            }
-        }
-        
-        .now-playing-title {
-            font-size: 0.9rem;
-        }
-        
-        .now-playing-artist {
-            font-size: 0.8rem;
-        }
-
-        .radio-controls {
-            gap: 0.5rem;
-        }
-    }
-    
-    &.layout-large {
-        padding: 2rem;
-        
-        .now-playing-details {
-            .now-playing-art {
-                width: 120px;
-                height: 120px;
-                margin-right: 2rem;
-            }
-        }
-        
-        .now-playing-title {
-            font-size: 1.5rem;
-        }
-        
-        .now-playing-artist {
-            font-size: 1.2rem;
-        }
-    }
-    
-    &.rounded-corners {
-        border-radius: 12px;
-        overflow: hidden;
-    }
-
-    &.popup-context {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: clamp(1rem, 2vw, 1.75rem);
-        height: 100%;
-
-        .now-playing-details {
-            align-items: flex-start;
-            gap: clamp(1.25rem, 3vw, 2rem);
-
-            .now-playing-art img {
-                width: clamp(96px, 18vw, 150px);
-                height: clamp(96px, 18vw, 150px);
-                object-fit: cover;
-                border-radius: 12px;
-            }
-        }
-
-        .radio-controls {
-            margin-top: auto;
-            width: 100%;
-            padding-top: clamp(0.75rem, 2vw, 1.25rem);
-
-            .radio-control-volume {
-                .radio-control-volume-slider {
-                    max-width: 60%;
-                }
-            }
-        }
-    }
 
     .now-playing-details {
         display: flex;
@@ -798,65 +522,6 @@ watch(np, onNowPlayingUpdated, {immediate: true});
                 white-space: nowrap;
             }
         }
-    }
-}
-
-body.embed-player {
-    margin: 0;
-    overflow: hidden;
-    background: transparent;
-}
-
-body.embed-player-scrollable {
-    overflow: auto;
-}
-
-body.embed-player-popup {
-    --popup-padding: clamp(1.25rem, 3vw, 3rem);
-    margin: 0;
-    background: var(--bs-body-bg);
-    display: flex;
-    align-items: stretch;
-    justify-content: center;
-    padding: var(--popup-padding);
-    min-height: 100vh;
-    overflow: hidden;
-}
-body.embed-player-popup .radio-player-widget {
-    width: min(640px, calc(100vw - (var(--popup-padding) * 2)));
-    min-height: calc(100vh - (var(--popup-padding) * 2));
-    max-height: 100vh;
-    --widget-padding: clamp(1.25rem, 2.5vw, 2.25rem);
-    --widget-gap: clamp(0.9rem, 1.8vw, 1.4rem);
-    --widget-bg-color: var(--bs-card-bg);
-    box-shadow: var(--bs-box-shadow-lg, 0 1.25rem 2.5rem rgba(15, 23, 42, 0.16));
-    border: 1px solid var(--bs-border-color-translucent, rgba(15, 23, 42, 0.12));
-}
-
-body.embed-player-popup .radio-player-widget.rounded-corners {
-    border-radius: 18px;
-}
-
-body.embed-player-scrollable .radio-player-widget {
-    height: auto;
-    min-height: auto;
-    max-height: none;
-}
-
-body.embed-player-popup .radio-player-widget.layout-vertical {
-    justify-content: flex-start;
-}
-
-@media (max-width: 575px) {
-    body.embed-player-popup {
-        --popup-padding: 1rem;
-        --widget-padding: 1.25rem;
-    }
-
-    body.embed-player-popup .radio-player-widget {
-        width: 100%;
-        height: calc(100vh - (var(--popup-padding) * 2));
-        box-shadow: var(--bs-box-shadow, 0 0.75rem 1.5rem rgba(15, 23, 42, 0.16));
     }
 }
 </style>

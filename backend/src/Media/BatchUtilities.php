@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Media;
 
+use App\Cache\MediaListCache;
 use App\Container\EntityManagerAwareTrait;
 use App\Doctrine\ReadWriteBatchIteratorAggregate;
 use App\Entity\Repository\StationMediaRepository;
@@ -30,6 +31,7 @@ final class BatchUtilities
         private readonly StationPlaylistMediaRepository $spmRepo,
         private readonly UnprocessableMediaRepository $unprocessableMediaRepo,
         private readonly StorageLocationRepository $storageLocationRepo,
+        private readonly MediaListCache $mediaListCache
     ) {
     }
 
@@ -85,6 +87,8 @@ final class BatchUtilities
         }
 
         $this->writePlaylistChanges($affectedPlaylists);
+
+        $this->mediaListCache->clearCache($storageLocation);
     }
 
     public function handleDelete(
@@ -122,6 +126,8 @@ final class BatchUtilities
         $this->em->flush();
 
         $this->writePlaylistChanges($affectedPlaylists);
+
+        $this->mediaListCache->clearCache($storageLocation);
     }
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Files;
 
+use App\Cache\MediaListCache;
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Controller\Api\Traits\HasMediaSearch;
@@ -30,7 +31,6 @@ use Doctrine\ORM\QueryBuilder;
 use League\Flysystem\StorageAttributes;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
-use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 #[
@@ -80,7 +80,7 @@ final class ListAction implements SingleActionInterface
     use HasMediaSearch;
 
     public function __construct(
-        private readonly CacheInterface $cache,
+        private readonly MediaListCache $mediaListCache,
         private readonly StationFilesystems $stationFilesystems
     ) {
     }
@@ -95,8 +95,6 @@ final class ListAction implements SingleActionInterface
         $station = $request->getStation();
         $storageLocation = $station->media_storage_location;
 
-        $fs = $this->stationFilesystems->getMediaFilesystem($station);
-
         $currentDir = Types::string($request->getParam('currentDirectory'));
 
         $searchPhraseFull = Types::stringOrNull($request->getParam('searchPhrase'), true);
@@ -107,27 +105,33 @@ final class ListAction implements SingleActionInterface
             $searchPhraseFull ?? ''
         );
 
+        $cache = $this->mediaListCache->getCacheForTag($storageLocation);
+
         $cacheKeyParts = [
-            'files_list',
-            $storageLocation->id,
             (!empty($currentDir)) ? 'dir_' . rawurlencode($currentDir) : 'root',
         ];
 
         if ($isSearch) {
             $cacheKeyParts[] = 'search_' . rawurlencode($searchPhraseFull);
         }
-
         $cacheKey = implode('.', $cacheKeyParts);
 
         $flushCache = Types::bool($request->getParam('flushCache'), false, true);
+        if ($flushCache) {
+            $cache->clear();
+        }
 
-        if (!$flushCache && $this->cache->has($cacheKey)) {
+        $cacheItem = $cache->getItem($cacheKey);
+
+        if ($cacheItem->isHit()) {
             /** @var array<int, FileList> $result */
-            $result = $this->cache->get($cacheKey);
+            $result = $cacheItem->get();
         } else {
             $pathLike = (empty($currentDir))
                 ? '%'
                 : $currentDir . '/%';
+
+            $fs = $this->stationFilesystems->getMediaFilesystem($station);
 
             $mediaQueryBuilder = $this->em->createQueryBuilder()
                 ->select('sm')
@@ -287,7 +291,9 @@ final class ListAction implements SingleActionInterface
                 $result[] = $row;
             }
 
-            $this->cache->set($cacheKey, $result, 300);
+            $cacheItem->set($result);
+            $cacheItem->expiresAfter(60 * 5);
+            $cache->save($cacheItem);
         }
 
         // Apply sorting

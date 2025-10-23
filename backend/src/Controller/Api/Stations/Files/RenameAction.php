@@ -38,7 +38,7 @@ final readonly class RenameAction implements SingleActionInterface
 {
     public function __construct(
         private BatchUtilities $batchUtilities,
-        private StationFilesystems $stationFilesystems,
+        private StationFilesystems $stationFilesystems
     ) {
     }
 

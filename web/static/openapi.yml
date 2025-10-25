@@ -7358,12 +7358,15 @@ components:
           type: object
     Api_Notification:
       required:
+        - id
         - title
         - body
         - type
         - actionLabel
         - actionUrl
       properties:
+        id:
+          type: string
         title:
           type: string
         body:
@@ -9910,7 +9913,7 @@ components:
               description: 'Array of ISO-8601 days (1 for Monday, 7 for Sunday)'
               type: array
               items:
-                type: integer
+                type: int
               example: '0,1,2,3'
             loop_once:
               type: boolean

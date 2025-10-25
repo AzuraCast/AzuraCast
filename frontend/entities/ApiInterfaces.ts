@@ -778,6 +778,7 @@ export type ApiLogType = HasLinks & {
 };
 
 export interface ApiNotification {
+  id: string;
   title: string;
   body: string;
   type: FlashLevels;
@@ -2434,7 +2435,7 @@ export type StationSchedule = HasAutoIncrementId & {
    * Array of ISO-8601 days (1 for Monday, 7 for Sunday)
    * @example "0,1,2,3"
    */
-  days?: number[];
+  days?: int[];
   /** @example false */
   loop_once?: boolean;
 };

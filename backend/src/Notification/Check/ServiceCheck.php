@@ -34,13 +34,14 @@ final readonly class ServiceCheck
                 // phpcs:disable Generic.Files.LineLength
                 $event->addNotification(
                     new Notification(
-                        sprintf(__('Service Not Running: %s'), $service->name),
-                        __(
+                        id: sprintf('notification-service-%s', $service->name),
+                        title: sprintf(__('Service Not Running: %s'), $service->name),
+                        body: __(
                             'One of the essential services on this installation is not currently running. Visit the system administration and check the system logs to find the cause of this issue.'
                         ),
-                        FlashLevels::Error,
-                        __('Administration'),
-                        $router->named('admin:index:index')
+                        type: FlashLevels::Error,
+                        actionLabel: __('Administration'),
+                        actionUrl: $router->named('admin:index:index')
                     )
                 );
                 // phpcs:enable

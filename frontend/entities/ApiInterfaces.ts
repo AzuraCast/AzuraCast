@@ -309,7 +309,7 @@ export interface ApiAdminDebugSyncTask {
   task: string;
   pattern: string | null;
   time: number;
-  nextRun: number;
+  nextRun: number | null;
   url: string;
 }
 

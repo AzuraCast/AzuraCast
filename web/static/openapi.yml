@@ -6461,6 +6461,7 @@ components:
           type: integer
         nextRun:
           type: integer
+          nullable: true
         url:
           type: string
       type: object

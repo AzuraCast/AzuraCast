@@ -276,7 +276,9 @@ const syncTaskFields: DataTableField<ApiAdminDebugSyncTask>[] = [
     {
         key: 'nextRun',
         label: $gettext('Next Run'),
-        formatter: (value) => timestampToRelative(value),
+        formatter: (value) => (value === null)
+            ? $gettext('Manual Only')
+            : timestampToRelative(value),
         sortable: true
     },
     {key: 'actions', label: $gettext('Actions')}

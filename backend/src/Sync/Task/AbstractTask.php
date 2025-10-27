@@ -14,7 +14,6 @@ use App\Entity\StorageLocation;
 use App\Environment;
 use Cron\CronExpression;
 use DateTimeInterface;
-use RuntimeException;
 
 abstract class AbstractTask implements ScheduledTaskInterface
 {
@@ -41,7 +40,7 @@ abstract class AbstractTask implements ScheduledTaskInterface
     ): bool {
         $schedulePattern = static::getSchedulePattern();
         if (null === $schedulePattern) {
-            throw new RuntimeException('Schedule not defined.');
+            return false;
         }
 
         $cronExpression = new CronExpression($schedulePattern);
@@ -52,10 +51,10 @@ abstract class AbstractTask implements ScheduledTaskInterface
         DateTimeInterface $now,
         Environment $environment,
         Settings $settings
-    ): int {
+    ): ?int {
         $schedulePattern = static::getSchedulePattern();
         if (null === $schedulePattern) {
-            throw new RuntimeException('Schedule not defined.');
+            return null;
         }
 
         $cronExpression = new CronExpression($schedulePattern);

@@ -51,8 +51,7 @@ abstract class AbstractTask implements ScheduledTaskInterface
         DateTimeInterface $now,
         Environment $environment,
         Settings $settings
-    ): ?int
-    {
+    ): ?int {
         $schedulePattern = static::getSchedulePattern();
         if (null === $schedulePattern) {
             return null;

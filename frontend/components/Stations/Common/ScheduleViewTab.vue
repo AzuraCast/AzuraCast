@@ -47,12 +47,8 @@ const onClick = (arg: EventClickArg) => {
 
 const $schedule = useTemplateRef('$schedule');
 
-const getCalendarApi = (): Calendar => {
-    if ($schedule.value) {
-        return $schedule.value.getCalendarApi();
-    }
-
-    throw new Error('Calendar not available.');
+const getCalendarApi = (): Calendar | undefined => {
+    return $schedule.value?.getCalendarApi();
 };
 
 const refresh = () => getCalendarApi()?.refetchEvents();

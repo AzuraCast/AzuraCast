@@ -257,7 +257,11 @@ final class QueueBuilder implements EventSubscriberInterface
                     $recentSongHistory,
                     $allowDuplicates
                 ),
-                PlaylistOrders::Sequential => $this->getSequentialMediaIdFromPlaylist($playlist),
+                PlaylistOrders::Sequential => $this->getSequentialMediaIdFromPlaylist(
+                    $playlist,
+                    $recentSongHistory,
+                    $allowDuplicates
+                ),
                 PlaylistOrders::Shuffle => $this->getShuffledMediaIdFromPlaylist(
                     $playlist,
                     $recentSongHistory,
@@ -401,7 +405,9 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     private function getSequentialMediaIdFromPlaylist(
-        StationPlaylist $playlist
+        StationPlaylist $playlist,
+        array $recentSongHistory,
+        bool $allowDuplicates = false
     ): ?StationPlaylistQueue {
         $mediaQueue = $this->spmRepo->getQueue($playlist);
         if (empty($mediaQueue)) {
@@ -409,6 +415,19 @@ final class QueueBuilder implements EventSubscriberInterface
             $mediaQueue = $this->spmRepo->getQueue($playlist);
         }
 
+        // Apply duplicate prevention if enabled for this playlist
+        if ($playlist->avoid_duplicates) {
+            $queueItem = $this->duplicatePrevention->preventDuplicates(
+                $mediaQueue,
+                $recentSongHistory,
+                $allowDuplicates
+            );
+            if (null !== $queueItem) {
+                return $queueItem;
+            }
+        }
+
+        // Fallback: return first item in queue if duplicate prevention is disabled or no match found
         return array_shift($mediaQueue);
     }
 

@@ -8,6 +8,7 @@ use App\Entity\Station;
 use App\Entity\StationSchedule;
 use App\Radio\AutoDJ\Scheduler;
 use App\Utilities\DateRange;
+use Carbon\CarbonImmutable;
 
 trait HasScheduleDisplay
 {
@@ -47,7 +48,7 @@ trait HasScheduleDisplay
 
                         // For overnight schedules, verify the event end doesn't exceed the configured end_date
                         if (!empty($scheduleItem->end_date)) {
-                            $configuredEndDate = \Carbon\CarbonImmutable::createFromFormat(
+                            $configuredEndDate = CarbonImmutable::createFromFormat(
                                 'Y-m-d',
                                 $scheduleItem->end_date,
                                 $tz

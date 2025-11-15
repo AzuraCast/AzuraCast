@@ -44,6 +44,31 @@ trait HasScheduleDisplay
                     // Handle overnight schedule items
                     if ($rowEnd < $rowStart) {
                         $rowEnd = $rowEnd->addDay();
+
+                        // For overnight schedules, verify the event end doesn't exceed the configured end_date
+                        if (!empty($scheduleItem->end_date)) {
+                            $configuredEndDate = \Carbon\CarbonImmutable::createFromFormat(
+                                'Y-m-d',
+                                $scheduleItem->end_date,
+                                $tz
+                            );
+                            if (null !== $configuredEndDate) {
+                                // Allow one extra day if start_date == end_date (single overnight event)
+                                if ($scheduleItem->start_date === $scheduleItem->end_date) {
+                                    $configuredEndDate = $configuredEndDate->addDay();
+                                }
+                                $maxEndDateTime = StationSchedule::getDateTime(
+                                    $scheduleItem->end_time,
+                                    $tz,
+                                    $configuredEndDate
+                                );
+
+                                if ($rowEnd->greaterThan($maxEndDateTime)) {
+                                    $i = $i->addDay();
+                                    continue; // Skip this event - it exceeds the configured date range
+                                }
+                            }
+                        }
                     }
 
                     $itemDateRange = new DateRange($rowStart, $rowEnd);

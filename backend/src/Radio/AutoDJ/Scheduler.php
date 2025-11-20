@@ -449,6 +449,14 @@ final class Scheduler
             $endDate = CarbonImmutable::createFromFormat('Y-m-d', $endDate, $tz);
 
             if (null !== $endDate) {
+                $isOvernightSchedule = $schedule->start_time > $schedule->end_time;
+
+                // For overnight schedules where start_date == end_date,
+                // the end_time actually occurs on the next day
+                if ($isOvernightSchedule && $schedule->start_date === $schedule->end_date) {
+                    $endDate = $endDate->addDay();
+                }
+
                 $endDate = StationSchedule::getDateTime(
                     $schedule->end_time,
                     $tz,

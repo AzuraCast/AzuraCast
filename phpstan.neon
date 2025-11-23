@@ -15,6 +15,7 @@ parameters:
         - backend/src
         - backend/templates
         - web
+        - plugins
 
     fileExtensions:
         - ""

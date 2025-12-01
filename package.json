@@ -73,7 +73,7 @@
     "del": "^8",
     "eslint": "^9",
     "eslint-plugin-vue": "^10",
-    "glob": "^11",
+    "glob": "^13",
     "jsdom": "^27",
     "sass": "^1.39.2",
     "svg.js": "^2.7.1",

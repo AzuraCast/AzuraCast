@@ -134,7 +134,6 @@ import Loading from "~/components/Common/Loading.vue";
 import AccountTwoFactorModal from "~/components/Account/TwoFactorModal.vue";
 import AccountChangePasswordModal from "~/components/Account/ChangePasswordModal.vue";
 import {useAxios} from "~/vendor/axios.ts";
-import {getApiUrl} from "~/router.ts";
 import {useTemplateRef} from "vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import {useTranslate} from "~/vendor/gettext.ts";
@@ -148,9 +147,11 @@ import IconIcAdd from "~icons/ic/baseline-add";
 import IconIcLock from "~icons/ic/baseline-lock";
 import IconIcLockOpen from "~icons/ic/baseline-lock-open";
 import IconIcVpnKey from "~icons/ic/baseline-vpn-key";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const {axios} = useAxios();
 
+const {getApiUrl} = useApiRouter();
 const twoFactorUrl = getApiUrl('/frontend/account/two-factor');
 
 const {

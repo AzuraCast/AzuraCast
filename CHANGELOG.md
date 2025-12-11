@@ -11,6 +11,44 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.23.2 (Dec 11, 2025)
+
+## New Features/Changes
+
+- The embeddable player widget builder has been greatly expanded and now supports custom colors, several preset layouts,
+  enabling or disabling components in the player, and saving/loading custom templates.
+
+- Administrators can now create login tokens for any account that function as "magic links" that complete the
+  authentication process in one step, as opposed to only being able to create password reset links. Both types of links
+  can be created from the Administration panel.
+
+## Code Quality/Technical Changes
+
+- If already installed, instances of Rocket Streaming Audio Server (RSAS) or Shoutcast can now be uninstalled from the
+  web interface.
+
+- Notifications on the dashboard homepage have unique IDs, meaning they can be individually targeted by CSS for styling
+  or other customization purposes.
+
+## Bug Fixes
+
+- Several bugs causing the Media Manager's cache to become out-of-date from the actual contents of the filesystem have
+  been resolved, so navigating around the station filesystem should accurately represent its contents in many more
+  cases.
+
+- Fixed a bug where live streamers/DJs with a disconnect delay would never be reactivated.
+
+- Fixed a bug preventing writing metadata changes to certain file formats.
+
+- Fixed a bug affecting uploading of custom branding assets.
+
+- Fixed a bug causing Icecast to have the incorrect amount of maximum listeners.
+
+- A low-security vulnerability affecting an internal API endpoint inside AzuraCast has been found and fixed in this
+  version. Updating is strongly recommended for users using SFTP to manage their local media.
+
+---
+
 # AzuraCast 0.23.1 (Oct 1, 2025)
 
 A minor bug fix addressing some pressing issues not fixed in 0.23.0.

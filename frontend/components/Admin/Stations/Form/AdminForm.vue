@@ -89,17 +89,18 @@ import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import Tab from "~/components/Common/Tab.vue";
-import {getApiUrl} from "~/router";
 import {ApiFormSimpleOptions} from "~/entities/ApiInterfaces.ts";
 import {useTranslate} from "~/vendor/gettext.ts";
 import {storeToRefs} from "pinia";
 import {useAdminStationsForm} from "~/components/Admin/Stations/Form/form.ts";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const props = defineProps<{
     isEditMode: boolean,
 }>();
 
+const {getApiUrl} = useApiRouter();
 const storageLocationApiUrl = getApiUrl('/admin/stations/storage-locations');
 
 const {r$} = storeToRefs(useAdminStationsForm());

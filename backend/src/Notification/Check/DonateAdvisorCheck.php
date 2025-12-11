@@ -31,14 +31,15 @@ final class DonateAdvisorCheck
 
         $event->addNotification(
             new Notification(
-                __('AzuraCast is free and open-source software.'),
-                __(
+                id: 'notification-donation',
+                title: __('AzuraCast is free and open-source software.'),
+                body: __(
                     'If you are enjoying AzuraCast, please consider donating to support our work. We depend ' .
                     'on donations to build new features, fix bugs, and keep AzuraCast modern, accessible and free.',
                 ),
-                FlashLevels::Info,
-                __('Donate to AzuraCast'),
-                'https://donate.azuracast.com/'
+                type: FlashLevels::Info,
+                actionLabel: __('Donate to AzuraCast'),
+                actionUrl: 'https://donate.azuracast.com/'
             )
         );
     }

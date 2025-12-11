@@ -346,6 +346,14 @@ return [
             new Symfony\Component\Serializer\Mapping\Loader\AttributeLoader()
         );
 
+        $reflectionExtractor = new Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor(
+            mutatorPrefixes: [],
+            accessorPrefixes: [],
+            arrayMutatorPrefixes: [],
+            enableConstructorExtraction: false,
+            magicMethodsFlags: Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor::DISALLOW_MAGIC_METHODS
+        );
+
         if ($environment->isProduction()) {
             $classMetaFactory = new Symfony\Component\Serializer\Mapping\Factory\CacheClassMetadataFactory(
                 $classMetaFactory,
@@ -364,7 +372,8 @@ return [
                 classMetadataFactory: $classMetaFactory
             ),
             new Symfony\Component\Serializer\Normalizer\ObjectNormalizer(
-                classMetadataFactory: $classMetaFactory
+                classMetadataFactory: $classMetaFactory,
+                propertyTypeExtractor: $reflectionExtractor
             ),
         ];
         $encoders = [

@@ -5,15 +5,25 @@ import {resolve} from "path";
 import eslintPlugin from "@nabla/vite-plugin-eslint";
 import Icons from 'unplugin-icons/vite';
 
-const inputs = glob.sync('./frontend/js/pages/**/*.js').reduce((acc, path) => {
+const inputs = {};
+
+glob.sync('./frontend/js/pages/**/*.js').forEach((path) => {
     // vue/pages/Admin/Index becomes AdminIndex
     const entry = path.replace(/\.js$/g, '')
         .replace(/^frontend\/js\/pages\//g, '')
         .replace(/\//g, '');
 
-    acc[entry] = resolve(__dirname, path)
-    return acc
-}, {});
+    inputs[entry] = resolve(__dirname, path)
+});
+
+// Ensure all images are included in the manifest.
+glob.sync('./frontend/img/**/*.*').forEach((path) => {
+    const entry = path.replace(/\.[^/.]+$/g, '')
+        .replace(/^frontend\/img\//g, '')
+        .replace(/\//g, '');
+
+    inputs['img_' + entry] = resolve(__dirname, path)
+});
 
 inputs['Layout'] = resolve(__dirname, './frontend/js/layout.js');
 

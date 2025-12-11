@@ -98,12 +98,12 @@ import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
-import {getStationApiUrl} from "~/router";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import IconIcRemove from "~icons/ic/baseline-remove";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 type RequestType = "pending" | "history";
 
@@ -112,6 +112,7 @@ interface TypeTabs {
     title: string
 }
 
+const {getStationApiUrl} = useApiRouter();
 const listUrl = getStationApiUrl('/reports/requests');
 const clearUrl = getStationApiUrl('/reports/requests/clear');
 

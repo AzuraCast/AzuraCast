@@ -95,7 +95,6 @@ import StreamsTab from "~/components/Stations/Reports/Overview/StreamsTab.vue";
 import ClientsTab from "~/components/Stations/Reports/Overview/ClientsTab.vue";
 import ListeningTimeTab from "~/components/Stations/Reports/Overview/ListeningTimeTab.vue";
 import {ref} from "vue";
-import {getStationApiUrl} from "~/router";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
@@ -103,10 +102,12 @@ import {useStationData} from "~/functions/useStationQuery.ts";
 import {toRefs} from "@vueuse/core";
 import {useAzuraCastDashboardGlobals} from "~/vendor/azuracast.ts";
 import {AnalyticsLevel} from "~/entities/ApiInterfaces.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const {analyticsLevel} = useAzuraCastDashboardGlobals();
 const showFullAnalytics = analyticsLevel === AnalyticsLevel.All;
 
+const {getStationApiUrl} = useApiRouter();
 const listenersByTimePeriodUrl = getStationApiUrl('/reports/overview/charts');
 const bestAndWorstUrl = getStationApiUrl('/reports/overview/best-and-worst');
 const byStreamUrl = getStationApiUrl('/reports/overview/by-stream');

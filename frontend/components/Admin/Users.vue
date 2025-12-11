@@ -51,6 +51,13 @@
                         </a>
                         <button
                             type="button"
+                            class="btn btn-secondary"
+                            @click="doOpenLoginLink(row.item)"
+                        >
+                            {{ $gettext('Login Link') }}
+                        </button>
+                        <button
+                            type="button"
                             class="btn btn-primary"
                             @click="doEdit(row.item.links.self)"
                         >
@@ -68,6 +75,11 @@
             </data-table>
 
         </card-page>
+
+        <login-link-modal
+            ref="$loginLinkModal"
+            :create-url="loginTokenUrl"
+        />
 
         <edit-modal
             v-if="props"
@@ -87,17 +99,20 @@ import {useTemplateRef} from "vue";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
-import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
 import {useQuery} from "@tanstack/vue-query";
-import {ApiAdminVueUsersProps} from "~/entities/ApiInterfaces.ts";
+import {ApiAdminUserWithDetails, ApiAdminVueUsersProps} from "~/entities/ApiInterfaces.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import Loading from "~/components/Common/Loading.vue";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
+import LoginLinkModal from "~/components/Admin/Users/LoginLinkModal.vue";
 
+const {getApiUrl} = useApiRouter();
 const propsUrl = getApiUrl('/admin/vue/users');
 const listUrl = getApiUrl('/admin/users');
+const loginTokenUrl = getApiUrl('/admin/login_tokens');
 
 const {axios} = useAxios();
 
@@ -111,13 +126,15 @@ const {data: props, isLoading: propsLoading} = useQuery<ApiAdminVueUsersProps>({
 
 const {$gettext} = useTranslate();
 
-const fields: DataTableField[] = [
+type Row = Required<ApiAdminUserWithDetails>;
+
+const fields: DataTableField<Row>[] = [
     {key: 'name', isRowHeader: true, label: $gettext('User Name'), sortable: true},
     {key: 'roles', label: $gettext('Roles'), sortable: false},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const listItemProvider = useApiItemProvider(
+const listItemProvider = useApiItemProvider<Row>(
     listUrl,
     [
         QueryKeys.AdminUsers,
@@ -131,6 +148,11 @@ const relist = () => {
 
 const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
+
+const $loginLinkModal = useTemplateRef('$loginLinkModal');
+const doOpenLoginLink = (user: Row) => {
+    $loginLinkModal.value?.create(user.id);
+};
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete User?'),

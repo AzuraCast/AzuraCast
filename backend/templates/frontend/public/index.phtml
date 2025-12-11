@@ -25,9 +25,9 @@ $sections->appendStart('head');
 ?>
     <link rel="manifest" href="<?= $router->fromHere('public:manifest') ?>">
 
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="<?= $this->e($station->name ?? '') ?>">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-title" content="<?= $this->e($station->name ?? '') ?>">
 
     <meta property="og:title" content="<?= $this->e($station->name ?? '') ?>">
     <meta property="og:url" content="<?= $this->e($station->url ?? '') ?>">
@@ -35,27 +35,24 @@ $sections->appendStart('head');
 
     <meta property="twitter:card" content="player">
     <meta property="twitter:player" content="<?= $router->named(
-        'public:index',
-        ['station_id' => $station->short_name, 'embed' => 'social'],
-        [],
-        true
+        routeName: 'public:index',
+        routeParams: ['station_id' => $station->short_name, 'embed' => 'social'],
+        absolute: true
     ) ?>">
     <meta property="twitter:player:width" content="400">
     <meta property="twitter:player:height" content="200">
 
     <link rel="alternate" type="application/json+oembed"
           href="<?= $router->named(
-              'public:oembed',
-              ['station_id' => $station->short_name, 'format' => 'json'],
-              [],
-              true
+              routeName: 'public:oembed',
+              routeParams: ['station_id' => $station->short_name, 'format' => 'json'],
+              absolute: true
           ) ?>"/>
     <link rel="alternate" type="text/xml+oembed"
           href="<?= $router->named(
-              'public:oembed',
-              ['station_id' => $station->short_name, 'format' => 'xml'],
-              [],
-              true
+              routeName: 'public:oembed',
+              routeParams: ['station_id' => $station->short_name, 'format' => 'xml'],
+              absolute: true
           ) ?>"/>
 <?php
 $sections->end();

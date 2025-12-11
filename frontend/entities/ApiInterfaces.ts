@@ -213,6 +213,11 @@ export enum PlaylistOrders {
   Sequential = "sequential",
 }
 
+export enum LoginTokenTypes {
+  ResetPassword = "reset_password",
+  Login = "login",
+}
+
 export enum IpSources {
   Local = "local",
   XForwardedFor = "xff",
@@ -304,7 +309,7 @@ export interface ApiAdminDebugSyncTask {
   task: string;
   pattern: string | null;
   time: number;
-  nextRun: number;
+  nextRun: number | null;
   url: string;
 }
 
@@ -316,6 +321,26 @@ export interface ApiAdminGeoLiteStatus {
 export interface ApiAdminLogList {
   globalLogs: ApiLogType[];
   stationLogs: ApiAdminStationLogList[];
+}
+
+export interface ApiAdminNewLoginToken {
+  /** User ID or e-mail address. */
+  user: number | string;
+  type?: LoginTokenTypes | null;
+  /** @example "SSO Login" */
+  comment?: string | null;
+  expires_minutes?: number;
+}
+
+export interface ApiAdminNewLoginTokenResponse {
+  /** @example true */
+  success: boolean;
+  /** @example "Changes saved successfully." */
+  message: string;
+  /** @example "<b>Changes saved successfully.</b>" */
+  formatted_message: string;
+  record: UserLoginToken;
+  readonly links: Record<string, string>;
 }
 
 export interface ApiAdminPermission {
@@ -540,6 +565,15 @@ export interface ApiAdminUpdateDetails {
   can_switch_to_stable?: boolean;
 }
 
+export type ApiAdminUserWithDetails = User &
+  HasLinks & {
+    /**
+     * Whether this user record represents the currently logged-in user.
+     * @example true
+     */
+    is_me: boolean;
+  };
+
 export interface ApiAdminVueBackupProps {
   isDocker: boolean;
   storageLocations: Record<string, string>;
@@ -744,6 +778,7 @@ export type ApiLogType = HasLinks & {
 };
 
 export interface ApiNotification {
+  id: string;
   title: string;
   body: string;
   type: FlashLevels;
@@ -1368,24 +1403,17 @@ export interface ApiStationsVuePodcastsProps {
 
 export interface ApiStationsVueProfileProps {
   nowPlayingProps: ApiNowPlayingVueProps;
-  publicPageUri: string;
-  publicPageEmbedUri: string;
-  publicWebDjUri: string;
-  publicOnDemandUri: string;
-  publicPodcastsUri: string;
-  publicScheduleUri: string;
-  publicOnDemandEmbedUri: string;
-  publicRequestEmbedUri: string;
-  publicHistoryEmbedUri: string;
-  publicScheduleEmbedUri: string;
-  publicPodcastsEmbedUri: string;
+  publicPageEmbedUrl: string;
+  publicOnDemandEmbedUrl: string;
+  publicRequestEmbedUrl: string;
+  publicHistoryEmbedUrl: string;
+  publicScheduleEmbedUrl: string;
+  publicPodcastsEmbedUrl: string;
   frontendAdminUri: string;
   frontendAdminPassword: string;
   frontendSourcePassword: string;
   frontendRelayPassword: string;
   frontendPort: number | null;
-  numSongs: number;
-  numPlaylists: number;
 }
 
 export interface ApiStationsVueSftpUsersProps {
@@ -1572,6 +1600,8 @@ export interface VueStationGlobals {
   onDemandUrl: string;
   enableStreamers: boolean;
   webDjUrl: string;
+  publicPodcastsUrl: string;
+  publicScheduleUrl: string;
   enableRequests: boolean;
   features: VueStationFeatures;
   ipGeoAttribution: string;
@@ -1585,6 +1615,96 @@ export interface VueUserGlobals {
   id: number;
   displayName: string | null;
   permissions: ApiAdminRolePermissions;
+}
+
+export interface ApiWidgetCustomization {
+  /**
+   * Primary accent color (hex without #).
+   * @example "2196F3"
+   */
+  primaryColor?: string | null;
+  /**
+   * Background color (hex without #).
+   * @example "ffffff"
+   */
+  backgroundColor?: string | null;
+  /**
+   * Text color (hex without #).
+   * @example "000000"
+   */
+  textColor?: string | null;
+  /**
+   * Whether album art should be shown.
+   * @example true
+   */
+  showAlbumArt?: boolean;
+  /**
+   * Whether the widget should use rounded corners.
+   * @example false
+   */
+  roundedCorners?: boolean;
+  /**
+   * Whether autoplay should be requested.
+   * @example false
+   */
+  autoplay?: boolean;
+  /**
+   * Whether the volume controls are visible.
+   * @example true
+   */
+  showVolumeControls?: boolean;
+  /**
+   * Whether track progress is visible.
+   * @example true
+   */
+  showTrackProgress?: boolean;
+  /**
+   * Whether stream selection controls are visible.
+   * @example true
+   */
+  showStreamSelection?: boolean;
+  /**
+   * Whether the history button is visible.
+   * @example false
+   */
+  showHistoryButton?: boolean;
+  /**
+   * Whether the request button is visible.
+   * @example false
+   */
+  showRequestButton?: boolean;
+  /**
+   * Whether the playlist download button is visible.
+   * @example false
+   */
+  showPlaylistButton?: boolean;
+  /**
+   * Initial player volume (0-100).
+   * @min 0
+   * @max 100
+   * @example 75
+   */
+  initialVolume?: number;
+  /**
+   * Layout variant for the widget.
+   * @example "horizontal"
+   */
+  layout?: string;
+  /**
+   * Whether to show an "open popup" button.
+   * @example false
+   */
+  enablePopupPlayer?: boolean;
+  /**
+   * Whether to persist playback state across pages.
+   * @example false
+   */
+  continuousPlay?: boolean;
+  /**
+   * Additional CSS applied to the widget.
+   * @example ".radio-player-widget { border-radius: 12px; }"
+   */
+  customCss?: string | null;
 }
 
 export type ApiKey = HasSplitTokenFields & {
@@ -2315,7 +2435,7 @@ export type StationSchedule = HasAutoIncrementId & {
    * Array of ISO-8601 days (1 for Monday, 7 for Sunday)
    * @example "0,1,2,3"
    */
-  days?: number[];
+  days?: int[];
   /** @example false */
   loop_once?: boolean;
 };
@@ -2493,4 +2613,15 @@ export type User = HasAutoIncrementId & {
   updated_at?: number;
   /** Role> */
   roles?: any[];
+};
+
+export type UserLoginToken = HasSplitTokenFields & {
+  user?: User;
+  type?: LoginTokenTypes;
+  /** @example "SSO Login" */
+  comment?: string | null;
+  /** @example 1640998800 */
+  created_at?: number;
+  /** @example 1640998800 */
+  expires_at?: number;
 };

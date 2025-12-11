@@ -33,11 +33,12 @@ import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import {useTranslate} from "~/vendor/gettext";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
-import {getApiUrl} from "~/router";
 import {ApiKey, HasLinks} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getApiUrl} = useApiRouter();
 const apiUrl = getApiUrl('/admin/api-keys');
 
 const {$gettext} = useTranslate();

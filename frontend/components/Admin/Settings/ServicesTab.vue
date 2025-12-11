@@ -270,14 +270,15 @@ import {ApiTaskWithLog} from "~/entities/ApiInterfaces.ts";
 import {useAdminSettingsForm} from "~/components/Admin/Settings/form.ts";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 import {storeToRefs} from "pinia";
-import {getApiUrl} from "~/router.ts";
 import IconIcBadge from "~icons/ic/baseline-badge";
 import IconIcSend from "~icons/ic/baseline-send";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const props = defineProps<{
     releaseChannel: string
 }>();
 
+const {getApiUrl} = useApiRouter();
 const acmeUrl = getApiUrl('/admin/acme');
 
 const {form, r$} = storeToRefs(useAdminSettingsForm());

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Files;
 
+use App\Cache\MediaListCache;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Controller\Api\Traits\HasMediaSearch;
@@ -55,6 +56,7 @@ final class FlowUploadAction implements SingleActionInterface
         private readonly MediaProcessor $mediaProcessor,
         private readonly StationPlaylistMediaRepository $spmRepo,
         private readonly StationPlaylistFolderRepository $spfRepo,
+        private readonly MediaListCache $mediaListCache
     ) {
     }
 
@@ -138,6 +140,8 @@ final class FlowUploadAction implements SingleActionInterface
         $mediaStorage->addStorageUsed($uploadedSize);
         $this->em->persist($mediaStorage);
         $this->em->flush();
+
+        $this->mediaListCache->clearCache($mediaStorage);
 
         return $response->withJson(Status::created());
     }

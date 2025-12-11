@@ -2,7 +2,7 @@
 set -e
 set -x
 
-export SUPERCRONIC_VERSION=0.2.36
+export SUPERCRONIC_VERSION=0.2.40
 
 # Per-architecture LS installs
 ARCHITECTURE=amd64

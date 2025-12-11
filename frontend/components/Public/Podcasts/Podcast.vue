@@ -169,7 +169,6 @@
 </template>
 
 <script setup lang="ts">
-import {getStationApiUrl} from "~/router.ts";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useTranslate} from "~/vendor/gettext.ts";
@@ -184,6 +183,7 @@ import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
 import {ApiPodcastRow} from "~/components/Public/Podcasts/usePodcastQuery.ts";
 import IconBiRssFill from "~icons/bi/rss-fill";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const props = defineProps<{
     podcast: ApiPodcastRow
@@ -201,6 +201,7 @@ const fields: DataTableField<Row>[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
+const {getStationApiUrl} = useApiRouter();
 const episodesUrl = getStationApiUrl(computed(() => {
     return `/public/podcast/${props.podcast.id}/episodes`;
 }), stationId);

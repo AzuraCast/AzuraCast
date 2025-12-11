@@ -35,11 +35,13 @@
     </card-page>
 </template>
 <script setup lang="ts">
-import {userAllowedForStation} from "~/acl.ts";
+import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts";
 import CardPage from "~/components/Common/CardPage.vue";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import IconIcEdit from "~icons/ic/baseline-edit";
 
 const stationData = useStationData();
+
+const {userAllowedForStation} = useUserAllowedForStation();
 </script>

@@ -115,13 +115,14 @@ import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import Loading from "~/components/Common/Loading.vue";
-import {getStationApiUrl} from "~/router";
 import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";
 import ImportModal from "~/components/Stations/LiquidsoapConfig/ImportModal.vue";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
 import {StationBackendConfiguration} from "~/entities/ApiInterfaces.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getStationApiUrl} = useApiRouter();
 const settingsUrl = getStationApiUrl('/liquidsoap-config');
 const exportUrl = getStationApiUrl('/liquidsoap-config/export');
 const importUrl = getStationApiUrl('/liquidsoap-config/import');

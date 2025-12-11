@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Frontend\Account;
 
 use App\Controller\SingleActionInterface;
+use App\Entity\Enums\LoginTokenTypes;
 use App\Entity\Repository\UserLoginTokenRepository;
 use App\Entity\Repository\UserRepository;
 use App\Entity\User;
@@ -62,12 +63,24 @@ final readonly class ForgotPasswordAction implements SingleActionInterface
 
                 $email->subject(__('Account Recovery'));
 
-                $loginToken = $this->loginTokenRepo->createToken($user);
+                [$token] = $this->loginTokenRepo->createToken(
+                    $user,
+                    LoginTokenTypes::ResetPassword,
+                    'Self-service password reset'
+                );
+
+                $router = $request->getRouter();
+                $url = $router->named(
+                    routeName: 'account:login-token',
+                    routeParams: ['token' => $token],
+                    absolute: true
+                );
+
                 $email->text(
                     $view->render(
                         'mail/forgot',
                         [
-                            'token' => (string)$loginToken,
+                            'url' => $url,
                         ]
                     )
                 );

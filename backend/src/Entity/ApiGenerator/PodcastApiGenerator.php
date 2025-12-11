@@ -150,7 +150,7 @@ final class PodcastApiGenerator
 
         return in_array(
             $podcast->id,
-            $this->publishedPodcasts[$station->short_name] ?? [],
+            $this->publishedPodcasts[$station->short_name],
             true
         );
     }

@@ -245,14 +245,15 @@ import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
-import {getApiUrl} from "~/router.ts";
 import Loading from "~/components/Common/Loading.vue";
 import {ApiAdminDebugQueue, ApiAdminDebugStation, ApiAdminDebugSyncTask} from "~/entities/ApiInterfaces.ts";
 import {useQuery, useQueryClient} from "@tanstack/vue-query";
 import {QueryKeys} from "~/entities/Queries.ts";
 import {useQueryItemProvider} from "~/functions/dataTable/useQueryItemProvider.ts";
 import IconIcRefresh from "~icons/ic/baseline-refresh";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getApiUrl} = useApiRouter();
 const listSyncTasksUrl = getApiUrl('/admin/debug/sync-tasks');
 const listQueueTotalsUrl = getApiUrl('/admin/debug/queues');
 const listStationsUrl = getApiUrl('/admin/debug/stations');
@@ -275,7 +276,9 @@ const syncTaskFields: DataTableField<ApiAdminDebugSyncTask>[] = [
     {
         key: 'nextRun',
         label: $gettext('Next Run'),
-        formatter: (value) => timestampToRelative(value),
+        formatter: (value) => (value === null)
+            ? $gettext('Manual Only')
+            : timestampToRelative(value),
         sortable: true
     },
     {key: 'actions', label: $gettext('Actions')}

@@ -70,10 +70,10 @@ import Loading from "~/components/Common/Loading.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import {useAdminSettingsForm} from "~/components/Admin/Settings/form.ts";
 import {storeToRefs} from "pinia";
-import {getApiUrl} from "~/router.ts";
 import {useQuery} from "@tanstack/vue-query";
 import {QueryKeys} from "~/entities/Queries.ts";
 import {ApiAdminVueSettingsProps} from "~/entities/ApiInterfaces.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 defineOptions({
     inheritAttrs: false
@@ -92,6 +92,7 @@ const emit = defineEmits<{
     (e: 'saved'): void
 }>();
 
+const {getApiUrl} = useApiRouter();
 const apiUrl = getApiUrl('/admin/settings/general');
 const propsUrl = getApiUrl('/admin/vue/settings');
 

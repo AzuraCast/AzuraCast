@@ -4,11 +4,11 @@ import {computed, ComputedRef} from "vue";
 import {useAxios} from "~/vendor/axios.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import {useRoute} from "vue-router";
-import {getStationApiUrl} from "~/router.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 export const useStationId = (): ComputedRef<number | null> => {
-    const {params} = useRoute();
-    return computed(() => Number(params.station_id) ?? null);
+    const route = useRoute();
+    return computed(() => Number(route?.params?.station_id) ?? null);
 }
 
 const blankStationGlobals: VueStationGlobals = {
@@ -30,6 +30,8 @@ const blankStationGlobals: VueStationGlobals = {
     onDemandUrl: '',
     enableStreamers: false,
     webDjUrl: '',
+    publicPodcastsUrl: '',
+    publicScheduleUrl: '',
     enableRequests: false,
     features: {
         media: false,
@@ -55,6 +57,7 @@ export const useStationQuery = () => {
     const {axios} = useAxios();
     const stationId = useStationId();
 
+    const {getStationApiUrl} = useApiRouter();
     const dashboardUrl = getStationApiUrl('/dashboard', stationId);
 
     return useQuery<VueStationGlobals>({

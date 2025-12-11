@@ -74,14 +74,16 @@ export default function useStationsRoutes(): RouteRecordRaw[] {
                     }
                 },
                 {
+                    path: 'profile/edit',
+                    name: 'stations:profile:edit',
+                    redirect: {
+                        name: 'stations:settings:index'
+                    }
+                },
+                {
                     path: 'mounts',
                     component: () => import('~/components/Stations/Mounts.vue'),
                     name: 'stations:mounts:index',
-                },
-                {
-                    path: 'profile/edit',
-                    component: () => import('~/components/Stations/ProfileEdit.vue'),
-                    name: 'stations:profile:edit'
                 },
                 {
                     path: 'queue',
@@ -122,6 +124,11 @@ export default function useStationsRoutes(): RouteRecordRaw[] {
                     path: 'restart',
                     component: () => import('~/components/Stations/Restart.vue'),
                     name: 'stations:restart:index'
+                },
+                {
+                    path: 'settings',
+                    component: () => import('~/components/Stations/Settings.vue'),
+                    name: 'stations:settings:index'
                 },
                 {
                     path: 'sftp_users',

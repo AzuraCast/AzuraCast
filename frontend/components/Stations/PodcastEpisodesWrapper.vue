@@ -6,7 +6,6 @@
 
 <script setup lang="ts">
 import {computed} from "vue";
-import {getStationApiUrl} from "~/router.ts";
 import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import {useAxios} from "~/vendor/axios.ts";
@@ -14,10 +13,12 @@ import {useQuery} from "@tanstack/vue-query";
 import {useRoute} from "vue-router";
 import Loading from "~/components/Common/Loading.vue";
 import PodcastEpisodes from "~/components/Stations/PodcastEpisodes.vue";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const {params} = useRoute();
 const podcastId = computed(() => params.podcast_id as string);
 
+const {getStationApiUrl} = useApiRouter();
 const podcastUrl = getStationApiUrl(computed(() => `/podcast/${podcastId.value}`));
 
 const {axios} = useAxios();

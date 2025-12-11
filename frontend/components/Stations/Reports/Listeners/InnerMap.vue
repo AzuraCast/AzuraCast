@@ -14,6 +14,9 @@ import {useTheme} from "~/functions/theme.ts";
 import "leaflet-fullscreen";
 import {useTranslate} from "~/vendor/gettext.ts";
 import {storeToRefs} from "pinia";
+import markerIconUrl from "leaflet/dist/images/marker-icon.png";
+import markerIconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
+import markerShadowUrl from "leaflet/dist/images/marker-shadow.png";
 
 defineSlots<{
     default: (props: {
@@ -29,7 +32,10 @@ const {currentTheme} = storeToRefs(useTheme());
 const {$gettext} = useTranslate();
 
 onMounted(() => {
-    Icon.Default.imagePath = '/static/img/leaflet/';
+    Icon.Default.prototype.options.iconUrl = markerIconUrl;
+    Icon.Default.prototype.options.iconRetinaUrl = markerIconRetinaUrl;
+    Icon.Default.prototype.options.shadowUrl = markerShadowUrl;
+    Icon.Default.imagePath = "";
 
     // Init map
     const mapObj = map(

@@ -1,13 +1,15 @@
 import {useTranslate} from "~/vendor/gettext.ts";
-import {userAllowed} from "~/acl.ts";
 import {filterMenu, RawMenuCategory} from "~/functions/filterMenu.ts";
 import {GlobalPermissions} from "~/entities/ApiInterfaces.ts";
 import IconIcGroup from "~icons/ic/baseline-group";
 import IconIcRadio from "~icons/ic/baseline-radio";
 import IconIcRouter from "~icons/ic/baseline-router";
+import IconIcWidgets from "~icons/ic/baseline-widgets";
+import {useUserAllowed} from "~/functions/useUserAllowed.ts";
 
 export function useAdminMenu() {
     const {$gettext} = useTranslate();
+    const {userAllowed} = useUserAllowed();
 
     const fullMenu: RawMenuCategory[] = [
         {
@@ -141,9 +143,16 @@ export function useAdminMenu() {
                     },
                     visible: () => userAllowed(GlobalPermissions.Stations)
                 },
+            ],
+        },
+        {
+            key: 'software',
+            label: $gettext('Third-Party Software'),
+            icon: () => IconIcWidgets,
+            items: [
                 {
                     key: 'shoutcast',
-                    label: $gettext('Install Shoutcast'),
+                    label: $gettext('Shoutcast 2 DNAS'),
                     url: {
                         name: 'admin:install_shoutcast:index'
                     },
@@ -151,7 +160,7 @@ export function useAdminMenu() {
                 },
                 {
                     key: 'rsas',
-                    label: $gettext('Install RSAS'),
+                    label: $gettext('Rocket Streaming Audio Server (RSAS)'),
                     url: {
                         name: 'admin:install_rsas:index'
                     },
@@ -159,7 +168,7 @@ export function useAdminMenu() {
                 },
                 {
                     key: 'stereo_tool',
-                    label: $gettext('Install Stereo Tool'),
+                    label: $gettext('Stereo Tool'),
                     url: {
                         name: 'admin:stereo_tool:index'
                     },
@@ -167,7 +176,7 @@ export function useAdminMenu() {
                 },
                 {
                     key: 'geolite',
-                    label: $gettext('Install GeoLite IP Database'),
+                    label: $gettext('MaxMind GeoLite IP Database'),
                     url: {
                         name: 'admin:install_geolite:index'
                     },

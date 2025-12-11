@@ -32,7 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     Attributes\Auditable,
     UniqueEntity(fields: ['email'])
 ]
-final class User implements Stringable, IdentifiableEntityInterface
+class User implements Stringable, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;

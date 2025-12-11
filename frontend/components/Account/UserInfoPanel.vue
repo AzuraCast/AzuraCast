@@ -50,15 +50,16 @@
 <script setup lang="ts">
 import Avatar from "~/components/Common/Avatar.vue";
 import {useAxios} from "~/vendor/axios.ts";
-import {getApiUrl} from "~/router.ts";
 import {useQuery} from "@tanstack/vue-query";
 import {QueryKeys} from "~/entities/Queries.ts";
 import Loading from "../Common/Loading.vue";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const slots = defineSlots();
 
 const {axios} = useAxios();
 
+const {getApiUrl} = useApiRouter();
 const userUrl = getApiUrl('/frontend/account/me');
 
 type Row = {

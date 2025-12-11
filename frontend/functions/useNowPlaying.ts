@@ -2,10 +2,10 @@ import NowPlaying from "~/entities/NowPlaying";
 import {computed, EffectScope, effectScope, isRef, MaybeRef, ref, shallowRef, watch} from "vue";
 import {useDocumentVisibility, useEventSource, useIntervalFn} from "@vueuse/core";
 import {ApiNowPlaying, ApiNowPlayingVueProps} from "~/entities/ApiInterfaces.ts";
-import {getApiUrl} from "~/router.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import formatTime from "~/functions/formatTime.ts";
 import {isUndefined, omitBy} from "es-toolkit/compat";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 interface SsePayload {
     data: {
@@ -23,6 +23,8 @@ export default function useNowPlaying(
     const currentTime = ref<number>(Math.floor(Date.now() / 1000));
     const currentTrackDuration = ref<number>(0);
     const currentTrackElapsed = ref<number>(0);
+
+    const {getApiUrl} = useApiRouter();
 
     const setNowPlaying = (np_new: ApiNowPlaying) => {
         if (!np_new.now_playing) {
@@ -112,7 +114,7 @@ export default function useNowPlaying(
                     }
                 }
 
-                const {data, close: closeSse, open: openSse} = useEventSource(sseUri);
+                const {data} = useEventSource(sseUri);
                 watch(data, (dataRaw: string | null) => {
                     if (!dataRaw) {
                         return;
@@ -139,20 +141,6 @@ export default function useNowPlaying(
                         handleSseData(jsonData.pub);
                     }
                 });
-
-                const visibility = useDocumentVisibility();
-                watch(
-                    visibility,
-                    (newValue: string, oldValue: string) => {
-                        if (newValue === 'hidden') {
-                            console.log('Window hidden; suspending NP data...');
-                            closeSse();
-                        } else if (newValue === 'visible' && oldValue === 'hidden') {
-                            console.log('Window shown; resuming NP data...');
-                            openSse();
-                        }
-                    }
-                )
             } else {
                 const nowPlayingUri = useStatic
                     ? getApiUrl(`/nowplaying_static/${stationShortName}.json`)
@@ -169,49 +157,37 @@ export default function useNowPlaying(
                     }
                 };
 
-                const {
-                    pause: pauseNp,
-                    resume: resumeNp,
-                } = useIntervalFn(
+                const visibility = useDocumentVisibility();
+
+                useIntervalFn(
                     () => void (async () => {
                         const {data} = await axiosSilent.get<ApiNowPlaying>(nowPlayingUri.value, axiosNoCacheConfig);
                         setNowPlaying(data);
                     })(),
-                    30000,
+                    computed(() => {
+                        if (useStatic) {
+                            return visibility.value === 'visible' ? 10000 : 30000;
+                        } else {
+                            return visibility.value === 'visible' ? 20000 : 60000;
+                        }
+                    }),
                     {
                         immediateCallback: true
                     }
                 );
 
-                const {
-                    pause: pauseTimer,
-                    resume: resumeTimer
-                } = useIntervalFn(
+                useIntervalFn(
                     () => void (async () => {
                         const {data} = await axiosSilent.get(timeUri.value, axiosNoCacheConfig);
                         currentTime.value = data.timestamp;
                     })(),
-                    600000,
+                    computed(() =>
+                        visibility.value === 'visible' ? 600000 : 1200000
+                    ),
                     {
                         immediateCallback: true
                     }
                 );
-
-                const visibility = useDocumentVisibility();
-                watch(
-                    visibility,
-                    (newValue: string, oldValue: string) => {
-                        if (newValue === 'hidden') {
-                            console.log('Window hidden; suspending NP data...');
-                            pauseNp();
-                            pauseTimer();
-                        } else if (newValue === 'visible' && oldValue === 'hidden') {
-                            console.log('Window shown; resuming NP data...');
-                            resumeNp();
-                            resumeTimer();
-                        }
-                    }
-                )
             }
 
             useIntervalFn(

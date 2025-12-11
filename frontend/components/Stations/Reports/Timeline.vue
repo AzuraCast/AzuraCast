@@ -93,7 +93,6 @@ import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import {computed, nextTick, ref, useTemplateRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {getStationApiUrl} from "~/router";
 import useHasDatatable from "~/functions/useHasDatatable.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
@@ -104,7 +103,9 @@ import {toRefs} from "@vueuse/core";
 import IconIcCloudDownload from "~icons/ic/baseline-cloud-download";
 import IconIcTrendingDown from "~icons/ic/baseline-trending-down";
 import IconIcTrendingUp from "~icons/ic/baseline-trending-up";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getStationApiUrl} = useApiRouter();
 const baseApiUrl = getStationApiUrl('/history');
 
 const stationData = useStationData();

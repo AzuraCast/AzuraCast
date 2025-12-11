@@ -212,6 +212,11 @@ return static function (RouteCollectorProxy $group) {
                         Controller\Api\Admin\Rsas\PostAction::class
                     );
 
+                    $group->delete(
+                        '/rsas',
+                        Controller\Api\Admin\Rsas\DeleteAction::class
+                    );
+
                     $group->post(
                         '/rsas/license',
                         Controller\Api\Admin\Rsas\PostLicenseAction::class
@@ -230,6 +235,11 @@ return static function (RouteCollectorProxy $group) {
                     $group->post(
                         '/shoutcast',
                         Controller\Api\Admin\Shoutcast\PostAction::class
+                    );
+
+                    $group->delete(
+                        '/shoutcast',
+                        Controller\Api\Admin\Shoutcast\DeleteAction::class
                     );
 
                     $group->get(
@@ -259,6 +269,12 @@ return static function (RouteCollectorProxy $group) {
                 ['role', 'roles', Controller\Api\Admin\RolesController::class, GlobalPermissions::All],
                 ['station', 'stations', Controller\Api\Admin\StationsController::class, GlobalPermissions::Stations],
                 ['user', 'users', Controller\Api\Admin\UsersController::class, GlobalPermissions::All],
+                [
+                    'login_token',
+                    'login_tokens',
+                    Controller\Api\Admin\LoginTokensController::class,
+                    GlobalPermissions::All,
+                ],
                 [
                     'storage_location',
                     'storage_locations',

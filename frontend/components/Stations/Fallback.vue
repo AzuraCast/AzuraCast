@@ -78,10 +78,11 @@ import {onMounted, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
-import {getStationApiUrl} from "~/router";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {ApiUploadedRecordStatus} from "~/entities/ApiInterfaces.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getStationApiUrl} = useApiRouter();
 const apiUrl = getStationApiUrl('/fallback');
 
 const downloadUrl = ref<string | null>(null);

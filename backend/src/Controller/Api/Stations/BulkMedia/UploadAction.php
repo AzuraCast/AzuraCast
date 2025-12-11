@@ -300,21 +300,7 @@ final class UploadAction implements SingleActionInterface
                 }
             } elseif ('playlists' === $key) {
                 $hasPlaylists = true;
-                if (null !== $value) {
-                    foreach (explode(';', $value) as $playlistName) {
-                        $playlistName = trim($playlistName);
-                        if ('' === $playlistName) { // Skip empty entries from things like "Playlist A;;Playlist B"
-                            continue;
-                        }
-
-                        $playlistShortName = StationPlaylist::generateShortName($playlistName);
-                        if (isset($playlistsByName[$playlistShortName])) {
-                            /** @var int $playlistId */
-                            $playlistId = $playlistsByName[$playlistShortName];
-                            $playlists[$playlistId] = 0;
-                        }
-                    }
-                }
+                $this->parsePlaylistField($value, $playlistsByName, $playlists);
             }
         }
 
@@ -410,16 +396,7 @@ final class UploadAction implements SingleActionInterface
                 }
             } elseif ('playlists' === $key) {
                 $hasPlaylists = true;
-                if (null !== $value) {
-                    foreach (explode(', ', $value) as $playlistName) {
-                        $playlistShortName = StationPlaylist::generateShortName($playlistName);
-                        if (isset($playlistsByName[$playlistShortName])) {
-                            /** @var int $playlistId */
-                            $playlistId = $playlistsByName[$playlistShortName];
-                            $playlists[$playlistId] = 0;
-                        }
-                    }
-                }
+                $this->parsePlaylistField($value, $playlistsByName, $playlists);
             }
         }
 
@@ -513,6 +490,30 @@ final class UploadAction implements SingleActionInterface
         }
 
         return $changes;
+    }
+
+    private function parsePlaylistField(
+        string|null $value,
+        array $playlistsByName,
+        array &$playlists
+    ): void {
+        if (null === $value) {
+            return;
+        }
+
+        foreach (explode(';', $value) as $playlistName) {
+            $playlistName = trim($playlistName);
+            if ('' === $playlistName) { // Skip empty entries from things like "Playlist A;;Playlist B"
+                continue;
+            }
+
+            $playlistShortName = StationPlaylist::generateShortName($playlistName);
+            if (isset($playlistsByName[$playlistShortName])) {
+                /** @var int $playlistId */
+                $playlistId = $playlistsByName[$playlistShortName];
+                $playlists[$playlistId] = 0;
+            }
+        }
     }
 
     private function clearMemory(): void

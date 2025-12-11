@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
+use App\Entity\Enums\LoginTokenTypes;
 use App\Entity\User;
 use App\Entity\UserLoginToken;
 use App\Security\SplitToken;
@@ -15,15 +16,34 @@ final class UserLoginTokenRepository extends AbstractSplitTokenRepository
 {
     protected string $entityClass = UserLoginToken::class;
 
-    public function createToken(User $user): SplitToken
-    {
+    /**
+     * @return array{
+     *     SplitToken,
+     *     UserLoginToken
+     * }
+     */
+    public function createToken(
+        User $user,
+        ?LoginTokenTypes $type,
+        ?string $comment = null,
+        int $expiresMinutes = 30,
+    ): array {
         $token = SplitToken::generate();
 
-        $loginToken = new UserLoginToken($user, $token);
+        $loginToken = new UserLoginToken(
+            $user,
+            $token,
+            $type ?? LoginTokenTypes::default(),
+            $comment,
+            $expiresMinutes
+        );
         $this->em->persist($loginToken);
         $this->em->flush();
 
-        return $token;
+        return [
+            $token,
+            $loginToken,
+        ];
     }
 
     public function revokeForUser(User $user): void
@@ -39,14 +59,12 @@ final class UserLoginTokenRepository extends AbstractSplitTokenRepository
 
     public function cleanup(): void
     {
-        /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
-        $threshold = time() - 86400; // One day
-
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\Entity\UserLoginToken ut WHERE ut.created_at <= :threshold
+                DELETE FROM App\Entity\UserLoginToken ut 
+                WHERE ut.expires_at <= :time
             DQL
-        )->setParameter('threshold', $threshold)
+        )->setParameter('time', time())
             ->execute();
     }
 }

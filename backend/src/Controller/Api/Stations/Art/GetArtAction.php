@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Art;
 
 use App\Controller\SingleActionInterface;
+use App\Customization;
 use App\Entity\Repository\StationMediaRepository;
-use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Flysystem\ExtendedFilesystemInterface;
@@ -45,9 +45,9 @@ use Psr\Http\Message\ResponseInterface;
 final readonly class GetArtAction implements SingleActionInterface
 {
     public function __construct(
-        private StationRepository $stationRepo,
         private StationMediaRepository $mediaRepo,
-        private StationFilesystems $stationFilesystems
+        private StationFilesystems $stationFilesystems,
+        private Customization $customization
     ) {
     }
 
@@ -74,7 +74,7 @@ final readonly class GetArtAction implements SingleActionInterface
             );
         }
 
-        return $response->withRedirect((string)$this->stationRepo->getDefaultAlbumArtUrl($station), 302);
+        return $response->withRedirect((string)$this->customization->getDefaultAlbumArtUrl($station), 302);
     }
 
     private function getMediaPath(

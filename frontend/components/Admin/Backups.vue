@@ -159,7 +159,6 @@ import {useTranslate} from "~/vendor/gettext";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
-import {getApiUrl} from "~/router";
 import {ApiAdminBackup, ApiAdminVueBackupProps} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
@@ -168,6 +167,7 @@ import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import IconIcAssignment from "~icons/ic/baseline-assignment";
 import IconIcSend from "~icons/ic/baseline-send";
 import IconIcSettings from "~icons/ic/baseline-settings";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const props = defineProps<ApiAdminVueBackupProps & {
     settings: BackupSettings
@@ -175,6 +175,7 @@ const props = defineProps<ApiAdminVueBackupProps & {
 
 const emit = defineEmits<HasRelistEmit>();
 
+const {getApiUrl} = useApiRouter();
 const listUrl = getApiUrl('/admin/backups');
 const runBackupUrl = getApiUrl('/admin/backups/run');
 const settingsUrl = getApiUrl('/admin/settings/backup');

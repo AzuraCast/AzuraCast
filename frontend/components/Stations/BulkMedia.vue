@@ -319,10 +319,11 @@ import {getErrorAsString, useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
-import {getStationApiUrl} from "~/router";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {ApiStatus} from "~/entities/ApiInterfaces.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getStationApiUrl} = useApiRouter();
 const apiUrl = getStationApiUrl('/files/bulk');
 const previewApiUrl = getStationApiUrl('/files/bulk/preview');
 

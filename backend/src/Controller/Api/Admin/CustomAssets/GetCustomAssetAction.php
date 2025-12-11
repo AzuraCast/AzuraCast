@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin\CustomAssets;
 
 use App\Assets\AssetTypes;
-use App\Container\EnvironmentAwareTrait;
-use App\Controller\SingleActionInterface;
 use App\Entity\Api\UploadedRecordStatus;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
+use App\Utilities\Types;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -42,19 +41,14 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class GetCustomAssetAction implements SingleActionInterface
+final readonly class GetCustomAssetAction extends AbstractCustomAssetAction
 {
-    use EnvironmentAwareTrait;
-
     public function __invoke(
         ServerRequest $request,
         Response $response,
         array $params
     ): ResponseInterface {
-        /** @var string $type */
-        $type = $params['type'];
-
-        $customAsset = AssetTypes::from($type)->createObject($this->environment);
+        $customAsset = $this->customAssetFactory->getForType(Types::string($params['type']));
 
         return $response->withJson(
             new UploadedRecordStatus(

@@ -45,8 +45,9 @@ import Modal from "~/components/Common/Modal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
-import {getApiUrl} from "~/router.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getApiUrl} = useApiRouter();
 const testMessageUrl = getApiUrl('/admin/send-test-message');
 
 type TestMessageRecord = {

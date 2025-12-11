@@ -5,6 +5,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.23.2 (Dec 11, 2025)
+
+## New Features/Changes
+
 - The embeddable player widget builder has been greatly expanded and now supports custom colors, several preset layouts,
   enabling or disabling components in the player, and saving/loading custom templates.
 

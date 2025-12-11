@@ -5,7 +5,7 @@ info:
   license:
     name: 'GNU Affero General Public License v3.0 or later'
     url: 'https://www.gnu.org/licenses/agpl-3.0.txt'
-  version: 0.23.1
+  version: 0.23.2
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -6433,7 +6433,6 @@ components:
             type: '{}'
         formatted:
           type: '{}'
-          nullable: true
       type: object
     Api_Admin_Debug_LogResult:
       required:
@@ -7168,7 +7167,8 @@ components:
         extra_data:
           description: 'Stack traces and other supplemental data.'
           type: array
-          items: {  }
+          items:
+            type: mixed
         success:
           description: 'Used for API calls that expect an \Entity\Api\Status type response.'
           type: boolean
@@ -8080,7 +8080,8 @@ components:
             log:
               description: 'Log entries on how the specific queue item was picked by the AutoDJ.'
               type: array
-              items: {  }
+              items:
+                type: mixed
               nullable: true
           type: object
     Api_StationQuota:
@@ -9914,7 +9915,7 @@ components:
               description: 'Array of ISO-8601 days (1 for Monday, 7 for Sunday)'
               type: array
               items:
-                type: int
+                type: integer
               example: '0,1,2,3'
             loop_once:
               type: boolean

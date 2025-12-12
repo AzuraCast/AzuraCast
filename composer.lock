@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ae8fe411960f808961c9f5dd0ad23f06",
+    "content-hash": "db925fa1b213118267d4db354e1e62eb",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -8264,25 +8264,25 @@
         },
         {
             "name": "symfony/rate-limiter",
-            "version": "v7.4.0",
+            "version": "v8.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/rate-limiter.git",
-                "reference": "5c6df5bc10308505bb0fa8d1388bc6bd8a628ba8"
+                "reference": "1d4e173cafccecf3fdc167536c33d599f6c1c9e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/rate-limiter/zipball/5c6df5bc10308505bb0fa8d1388bc6bd8a628ba8",
-                "reference": "5c6df5bc10308505bb0fa8d1388bc6bd8a628ba8",
+                "url": "https://api.github.com/repos/symfony/rate-limiter/zipball/1d4e173cafccecf3fdc167536c33d599f6c1c9e0",
+                "reference": "1d4e173cafccecf3fdc167536c33d599f6c1c9e0",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.2",
-                "symfony/options-resolver": "^7.3|^8.0"
+                "php": ">=8.4",
+                "symfony/options-resolver": "^7.4|^8.0"
             },
             "require-dev": {
                 "psr/cache": "^1.0|^2.0|^3.0",
-                "symfony/lock": "^6.4|^7.0|^8.0"
+                "symfony/lock": "^7.4|^8.0"
             },
             "type": "library",
             "autoload": {
@@ -8314,7 +8314,7 @@
                 "rate-limiter"
             ],
             "support": {
-                "source": "https://github.com/symfony/rate-limiter/tree/v7.4.0"
+                "source": "https://github.com/symfony/rate-limiter/tree/v8.0.0"
             },
             "funding": [
                 {
@@ -8334,7 +8334,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-08-04T07:05:15+00:00"
+            "time": "2025-08-04T07:36:47+00:00"
         },
         {
             "name": "symfony/redis-messenger",

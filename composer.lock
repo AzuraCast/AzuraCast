@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.367.0",
+            "version": "3.367.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "6ce549c3efe117e76f1f878ae8463d95b838ef9d"
+                "reference": "4155279437f17a51604f05f8373b685c058bc278"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6ce549c3efe117e76f1f878ae8463d95b838ef9d",
-                "reference": "6ce549c3efe117e76f1f878ae8463d95b838ef9d",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4155279437f17a51604f05f8373b685c058bc278",
+                "reference": "4155279437f17a51604f05f8373b685c058bc278",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.367.0"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.367.1"
             },
-            "time": "2025-12-10T19:12:49+00:00"
+            "time": "2025-12-11T19:13:06+00:00"
         },
         {
             "name": "azuracast/doctrine-entity-normalizer",
@@ -11939,16 +11939,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "12.5.2",
+            "version": "12.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "06713c2633d6d832f2fe98a70511ecaa7cb92c1a"
+                "reference": "6dc2e076d09960efbb0c1272aa9bc156fc80955e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/06713c2633d6d832f2fe98a70511ecaa7cb92c1a",
-                "reference": "06713c2633d6d832f2fe98a70511ecaa7cb92c1a",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6dc2e076d09960efbb0c1272aa9bc156fc80955e",
+                "reference": "6dc2e076d09960efbb0c1272aa9bc156fc80955e",
                 "shasum": ""
             },
             "require": {
@@ -12016,7 +12016,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.5.2"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.5.3"
             },
             "funding": [
                 {
@@ -12040,7 +12040,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-08T07:22:32+00:00"
+            "time": "2025-12-11T08:52:59+00:00"
         },
         {
             "name": "psy/psysh",
@@ -12185,12 +12185,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "4400137eb61cd0db3192a409353ae83e811395fe"
+                "reference": "3590218a227633a3efd9c7c6aee158a13c693246"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/4400137eb61cd0db3192a409353ae83e811395fe",
-                "reference": "4400137eb61cd0db3192a409353ae83e811395fe",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/3590218a227633a3efd9c7c6aee158a13c693246",
+                "reference": "3590218a227633a3efd9c7c6aee158a13c693246",
                 "shasum": ""
             },
             "conflict": {
@@ -12243,7 +12243,7 @@
                 "automattic/jetpack": "<9.8",
                 "awesome-support/awesome-support": "<=6.0.7",
                 "aws/aws-sdk-php": "<3.288.1",
-                "azuracast/azuracast": "<0.18.3",
+                "azuracast/azuracast": "<=0.23.1",
                 "b13/seo_basics": "<0.8.2",
                 "backdrop/backdrop": "<=1.32",
                 "backpack/crud": "<3.4.9",
@@ -12461,6 +12461,7 @@
                 "floriangaerber/magnesium": "<0.3.1",
                 "fluidtypo3/vhs": "<5.1.1",
                 "fof/byobu": ">=0.3.0.0-beta2,<1.1.7",
+                "fof/pretty-mail": "<=1.1.2",
                 "fof/upload": "<1.2.3",
                 "foodcoopshop/foodcoopshop": ">=3.2,<3.6.1",
                 "fooman/tcpdf": "<6.2.22",
@@ -13179,7 +13180,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-10T19:05:59+00:00"
+            "time": "2025-12-12T17:05:55+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -14145,29 +14146,28 @@
         },
         {
             "name": "softcreatr/jsonpath",
-            "version": "0.10.0",
+            "version": "0.8.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SoftCreatR/JSONPath.git",
-                "reference": "74f0b330a98135160db947ba7bc65216b64a0c86"
+                "reference": "fc12dee0b46f3fa3a175c4051dbab60984acef4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SoftCreatR/JSONPath/zipball/74f0b330a98135160db947ba7bc65216b64a0c86",
-                "reference": "74f0b330a98135160db947ba7bc65216b64a0c86",
+                "url": "https://api.github.com/repos/SoftCreatR/JSONPath/zipball/fc12dee0b46f3fa3a175c4051dbab60984acef4b",
+                "reference": "fc12dee0b46f3fa3a175c4051dbab60984acef4b",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "php": "8.1 - 8.4"
+                "php": ">=8.0"
             },
             "replace": {
                 "flow/jsonpath": "*"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.58",
-                "phpunit/phpunit": "10 - 12",
-                "squizlabs/php_codesniffer": "^3.10"
+                "phpunit/phpunit": "^9.6",
+                "roave/security-advisories": "dev-latest"
             },
             "type": "library",
             "autoload": {
@@ -14210,7 +14210,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-22T00:28:17+00:00"
+            "time": "2023-08-17T20:14:00+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",

@@ -87,7 +87,7 @@
     "symfony/process": "^7.3.4",
     "symfony/property-access": "^8",
     "symfony/rate-limiter": "^8",
-    "symfony/redis-messenger": "^7.3.4",
+    "symfony/redis-messenger": "^8",
     "symfony/serializer": "^7.3.5",
     "symfony/uid": "^7.3.1",
     "symfony/validator": "^7.3.5",

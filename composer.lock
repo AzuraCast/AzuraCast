@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "db925fa1b213118267d4db354e1e62eb",
+    "content-hash": "171542646a9ca831739b6e11dd42184e",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -8338,31 +8338,31 @@
         },
         {
             "name": "symfony/redis-messenger",
-            "version": "v7.4.0",
+            "version": "v8.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/redis-messenger.git",
-                "reference": "ba94fe0e8db2c1a2635bd00df8d33a17d614a436"
+                "reference": "c4af44773ab26e37b566260d90e6de4927c598dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/redis-messenger/zipball/ba94fe0e8db2c1a2635bd00df8d33a17d614a436",
-                "reference": "ba94fe0e8db2c1a2635bd00df8d33a17d614a436",
+                "url": "https://api.github.com/repos/symfony/redis-messenger/zipball/c4af44773ab26e37b566260d90e6de4927c598dd",
+                "reference": "c4af44773ab26e37b566260d90e6de4927c598dd",
                 "shasum": ""
             },
             "require": {
                 "ext-redis": "*",
-                "php": ">=8.2",
-                "symfony/messenger": "^7.3|^8.0"
+                "php": ">=8.4",
+                "symfony/messenger": "^7.4|^8.0"
             },
             "conflict": {
                 "ext-redis": "<6.1",
                 "ext-relay": "<0.12"
             },
             "require-dev": {
-                "symfony/property-access": "^6.4|^7.0|^8.0",
-                "symfony/serializer": "^6.4|^7.0|^8.0",
-                "symfony/var-dumper": "^6.4|^7.0|^8.0"
+                "symfony/property-access": "^7.4|^8.0",
+                "symfony/serializer": "^7.4|^8.0",
+                "symfony/var-dumper": "^7.4|^8.0"
             },
             "type": "symfony-messenger-bridge",
             "autoload": {
@@ -8390,7 +8390,7 @@
             "description": "Symfony Redis extension Messenger Bridge",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/redis-messenger/tree/v7.4.0"
+                "source": "https://github.com/symfony/redis-messenger/tree/v8.0.0"
             },
             "funding": [
                 {
@@ -8410,7 +8410,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-11-06T11:42:47+00:00"
+            "time": "2025-11-08T16:30:39+00:00"
         },
         {
             "name": "symfony/serializer",

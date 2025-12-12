@@ -85,7 +85,7 @@
     "symfony/messenger": "^8",
     "symfony/monolog-bridge": "^8",
     "symfony/process": "^7.3.4",
-    "symfony/property-access": "^7.3.3",
+    "symfony/property-access": "^8",
     "symfony/rate-limiter": "^7.3.2",
     "symfony/redis-messenger": "^7.3.4",
     "symfony/serializer": "^7.3.5",

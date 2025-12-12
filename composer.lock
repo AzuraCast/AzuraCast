@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4860da34cabbb4173ba71e707196187c",
+    "content-hash": "ae8fe411960f808961c9f5dd0ad23f06",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -8093,25 +8093,25 @@
         },
         {
             "name": "symfony/property-access",
-            "version": "v7.4.0",
+            "version": "v8.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/property-access.git",
-                "reference": "537626149d2910ca43eb9ce465654366bf4442f4"
+                "reference": "74df691dfb7f9b161b7d8cd1695bb918c68f16b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/property-access/zipball/537626149d2910ca43eb9ce465654366bf4442f4",
-                "reference": "537626149d2910ca43eb9ce465654366bf4442f4",
+                "url": "https://api.github.com/repos/symfony/property-access/zipball/74df691dfb7f9b161b7d8cd1695bb918c68f16b5",
+                "reference": "74df691dfb7f9b161b7d8cd1695bb918c68f16b5",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.2",
-                "symfony/property-info": "^6.4|^7.0|^8.0"
+                "php": ">=8.4",
+                "symfony/property-info": "^7.4|^8.0"
             },
             "require-dev": {
-                "symfony/cache": "^6.4|^7.0|^8.0",
-                "symfony/var-exporter": "^6.4.1|^7.0.1|^8.0"
+                "symfony/cache": "^7.4|^8.0",
+                "symfony/var-exporter": "^7.4|^8.0"
             },
             "type": "library",
             "autoload": {
@@ -8150,7 +8150,7 @@
                 "reflection"
             ],
             "support": {
-                "source": "https://github.com/symfony/property-access/tree/v7.4.0"
+                "source": "https://github.com/symfony/property-access/tree/v8.0.0"
             },
             "funding": [
                 {
@@ -8170,7 +8170,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-09-08T21:14:32+00:00"
+            "time": "2025-08-12T11:06:01+00:00"
         },
         {
             "name": "symfony/property-info",

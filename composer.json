@@ -83,7 +83,7 @@
     "symfony/lock": "^8",
     "symfony/mailer": "^8",
     "symfony/messenger": "^8",
-    "symfony/monolog-bridge": "^7.3.5",
+    "symfony/monolog-bridge": "^8",
     "symfony/process": "^7.3.4",
     "symfony/property-access": "^7.3.3",
     "symfony/rate-limiter": "^7.3.2",

@@ -79,7 +79,7 @@
     "symfony/event-dispatcher": "^8",
     "symfony/filesystem": "^8",
     "symfony/finder": "^8",
-    "symfony/intl": "^7.3.5",
+    "symfony/intl": "^8",
     "symfony/lock": "^7.3.4",
     "symfony/mailer": "^7.3.5",
     "symfony/messenger": "^7.3.3",

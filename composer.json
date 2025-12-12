@@ -80,7 +80,7 @@
     "symfony/filesystem": "^8",
     "symfony/finder": "^8",
     "symfony/intl": "^8",
-    "symfony/lock": "^7.3.4",
+    "symfony/lock": "^8",
     "symfony/mailer": "^7.3.5",
     "symfony/messenger": "^7.3.3",
     "symfony/monolog-bridge": "^7.3.5",

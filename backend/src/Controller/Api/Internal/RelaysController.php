@@ -150,7 +150,9 @@ final class RelaysController
 
         foreach ($relay->remotes as $remote) {
             /** @var StationRemote $remote */
-            $existingRemotes[$remote->station->id][$remote->mount] = $remote;
+            if ($remote->mount !== null) {
+                $existingRemotes[$remote->station->id][$remote->mount] = $remote;
+            }
         }
 
         // Iterate through all remotes that *should* exist.

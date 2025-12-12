@@ -111,7 +111,8 @@
     "symfony/polyfill-php81": "1.99",
     "symfony/polyfill-php82": "1.99",
     "symfony/polyfill-php83": "1.99",
-    "symfony/polyfill-php84": "1.99"
+    "symfony/polyfill-php84": "1.99",
+    "symfony/polyfill-php85": "1.99"
   },
   "require-dev": {
     "codeception/codeception": "^5.3.2",
@@ -134,7 +135,7 @@
     "roave/security-advisories": "dev-latest",
     "slevomat/coding-standard": "^8.24",
     "squizlabs/php_codesniffer": "^4",
-    "symfony/var-dumper": "^7.3.5"
+    "symfony/var-dumper": "^8"
   },
   "config": {
     "discard-changes": true,

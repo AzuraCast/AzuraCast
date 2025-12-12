@@ -75,7 +75,7 @@
     "spomky-labs/otphp": "^11.3",
     "supervisorphp/supervisor": "dev-main",
     "symfony/cache": "^7.3.5",
-    "symfony/console": "^7.3.5",
+    "symfony/console": "^8",
     "symfony/event-dispatcher": "^7.3.3",
     "symfony/filesystem": "^7.3.2",
     "symfony/finder": "^7.3.5",

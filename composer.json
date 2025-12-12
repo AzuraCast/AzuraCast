@@ -77,7 +77,7 @@
     "symfony/cache": "^7.3.5",
     "symfony/console": "^8",
     "symfony/event-dispatcher": "^8",
-    "symfony/filesystem": "^7.3.2",
+    "symfony/filesystem": "^8",
     "symfony/finder": "^7.3.5",
     "symfony/intl": "^7.3.5",
     "symfony/lock": "^7.3.4",

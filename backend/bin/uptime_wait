@@ -17,7 +17,7 @@ $console = new Symfony\Component\Console\Application(
 
 $uptimeWaitCommand = new App\Console\Command\Internal\UptimeWaitCommand();
 $uptimeWaitCommand->setEnvironment($environment);
-$console->add($uptimeWaitCommand);
+$console->addCommand($uptimeWaitCommand);
 
 $console->setDefaultCommand('azuracast:internal:uptime-wait', true);
 

@@ -381,13 +381,13 @@ install-docker-compose() {
     exit 1
   fi
 
-  curl -fsSL -o docker-compose https://github.com/docker/compose/releases/download/v2.4.1/docker-compose-linux-$(uname -m)
+  curl -fsSL -o docker-compose https://github.com/docker/compose/releases/download/v5.0.0/docker-compose-linux-$(uname -m)
 
   ARCHITECTURE=amd64
   if [ "$(uname -m)" = "aarch64" ]; then
     ARCHITECTURE=arm64
   fi
-  curl -fsSL -o docker-compose-switch https://github.com/docker/compose-switch/releases/download/v1.0.4/docker-compose-linux-${ARCHITECTURE}
+  curl -fsSL -o docker-compose-switch https://github.com/docker/compose-switch/releases/download/v1.0.5/docker-compose-linux-${ARCHITECTURE}
 
   if [[ $EUID -ne 0 ]]; then
     sudo chmod a+x ./docker-compose

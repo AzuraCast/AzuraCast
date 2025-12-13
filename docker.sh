@@ -383,7 +383,7 @@ install-docker-compose() {
   fi
 
   DOCKER_COMPOSE_VERSION=$(version-number $(docker compose version --short || echo "0.0.0"))
-  if (( $DOCKER_COMPOSE_VERSION > $(version-number "5.0.0") )); then
+  if (( $DOCKER_COMPOSE_VERSION >= $(version-number "5.0.0") )); then
     echo "Docker Compose is already installed and newer than version 5.0.0. No update needed."
     set +e
   else

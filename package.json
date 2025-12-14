@@ -25,7 +25,7 @@
     "@regle/rules": "^1.8.6",
     "@tanstack/vue-query": "^5.80.7",
     "@unhead/vue": "^2.0.19",
-    "@vuepic/vue-datepicker": "^11",
+    "@vuepic/vue-datepicker": "^12",
     "@vueuse/core": "^14",
     "axios": "^1",
     "bootstrap": "^5.3.0",

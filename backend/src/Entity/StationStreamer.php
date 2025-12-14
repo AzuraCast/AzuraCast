@@ -15,7 +15,7 @@ use ReflectionException;
 use ReflectionProperty;
 use SensitiveParameter;
 use Stringable;
-use Symfony\Component\Serializer\Annotation as Serializer;
+use Symfony\Component\Serializer\Attribute as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use const PASSWORD_ARGON2ID;

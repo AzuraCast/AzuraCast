@@ -25,7 +25,7 @@ use OpenApi\Attributes as OA;
 use RuntimeException;
 use Stringable;
 use Symfony\Component\Filesystem\Path;
-use Symfony\Component\Serializer\Annotation as Serializer;
+use Symfony\Component\Serializer\Attribute as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 

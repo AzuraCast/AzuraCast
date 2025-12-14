@@ -8,7 +8,7 @@ use App\Doctrine\Generator\UuidV6Generator;
 use App\Entity\Interfaces\EntityGroupsInterface;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute as Serializer;
 
 #[
     OA\Schema(
@@ -29,7 +29,7 @@ trait HasUniqueId
     #[
         ORM\Column(name: 'id', type: 'guid', unique: true, nullable: false),
         ORM\Id, ORM\GeneratedValue(strategy: 'CUSTOM'), ORM\CustomIdGenerator(UuidV6Generator::class),
-        Groups([EntityGroupsInterface::GROUP_ID, EntityGroupsInterface::GROUP_ALL])
+        Serializer\Groups([EntityGroupsInterface::GROUP_ID, EntityGroupsInterface::GROUP_ALL])
     ]
     public protected(set) string $id;
 }

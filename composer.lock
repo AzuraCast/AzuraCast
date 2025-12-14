@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e3fa945ff78a09cbf3340fb8e2a68720",
+    "content-hash": "8699870fa0dc1f687a62bb70c0cb76c2",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -159,16 +159,16 @@
         },
         {
             "name": "azuracast/doctrine-entity-normalizer",
-            "version": "3.2.9",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/doctrine-entity-normalizer.git",
-                "reference": "4f494fa6088f6cccafab2df9b27105cd2d28115a"
+                "reference": "d38f6fecf35faaf7b10d5999686ea9648abd91ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/doctrine-entity-normalizer/zipball/4f494fa6088f6cccafab2df9b27105cd2d28115a",
-                "reference": "4f494fa6088f6cccafab2df9b27105cd2d28115a",
+                "url": "https://api.github.com/repos/AzuraCast/doctrine-entity-normalizer/zipball/d38f6fecf35faaf7b10d5999686ea9648abd91ab",
+                "reference": "d38f6fecf35faaf7b10d5999686ea9648abd91ab",
                 "shasum": ""
             },
             "require": {
@@ -178,7 +178,7 @@
                 "doctrine/persistence": "^2|^3",
                 "php": ">=8.4",
                 "symfony/property-info": "^7",
-                "symfony/serializer": "^7"
+                "symfony/serializer": "^8"
             },
             "require-dev": {
                 "php-parallel-lint/php-console-highlighter": "^1",
@@ -206,7 +206,7 @@
             "description": "An implementation of the Symfony Serializer with custom support for Doctrine 3 ORM entities.",
             "support": {
                 "issues": "https://github.com/AzuraCast/doctrine-entity-normalizer/issues",
-                "source": "https://github.com/AzuraCast/doctrine-entity-normalizer/tree/3.2.9"
+                "source": "https://github.com/AzuraCast/doctrine-entity-normalizer/tree/3.3.0"
             },
             "funding": [
                 {
@@ -214,7 +214,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-07-21T18:58:10+00:00"
+            "time": "2025-12-14T21:11:17+00:00"
         },
         {
             "name": "azuracast/nowplaying",
@@ -8334,58 +8334,50 @@
         },
         {
             "name": "symfony/serializer",
-            "version": "v7.4.2",
+            "version": "v8.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/serializer.git",
-                "reference": "1a957acb613b520e443c2c659a67c782b67794bc"
+                "reference": "b2a228b1df083eb85ef1ad057582c4bbe387d368"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/serializer/zipball/1a957acb613b520e443c2c659a67c782b67794bc",
-                "reference": "1a957acb613b520e443c2c659a67c782b67794bc",
+                "url": "https://api.github.com/repos/symfony/serializer/zipball/b2a228b1df083eb85ef1ad057582c4bbe387d368",
+                "reference": "b2a228b1df083eb85ef1ad057582c4bbe387d368",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.2",
-                "symfony/deprecation-contracts": "^2.5|^3",
-                "symfony/polyfill-ctype": "~1.8",
-                "symfony/polyfill-php84": "^1.30"
+                "php": ">=8.4",
+                "symfony/polyfill-ctype": "^1.8"
             },
             "conflict": {
                 "phpdocumentor/reflection-docblock": "<3.2.2",
-                "phpdocumentor/type-resolver": "<1.4.0",
-                "symfony/dependency-injection": "<6.4",
-                "symfony/property-access": "<6.4",
-                "symfony/property-info": "<6.4",
-                "symfony/uid": "<6.4",
-                "symfony/validator": "<6.4",
-                "symfony/yaml": "<6.4"
+                "phpdocumentor/type-resolver": "<1.4.0"
             },
             "require-dev": {
                 "phpdocumentor/reflection-docblock": "^3.2|^4.0|^5.0",
                 "phpstan/phpdoc-parser": "^1.0|^2.0",
                 "seld/jsonlint": "^1.10",
-                "symfony/cache": "^6.4|^7.0|^8.0",
-                "symfony/config": "^6.4|^7.0|^8.0",
-                "symfony/console": "^6.4|^7.0|^8.0",
-                "symfony/dependency-injection": "^7.2|^8.0",
-                "symfony/error-handler": "^6.4|^7.0|^8.0",
-                "symfony/filesystem": "^6.4|^7.0|^8.0",
-                "symfony/form": "^6.4|^7.0|^8.0",
-                "symfony/http-foundation": "^6.4|^7.0|^8.0",
-                "symfony/http-kernel": "^6.4|^7.0|^8.0",
-                "symfony/messenger": "^6.4|^7.0|^8.0",
-                "symfony/mime": "^6.4|^7.0|^8.0",
-                "symfony/property-access": "^6.4|^7.0|^8.0",
-                "symfony/property-info": "^6.4|^7.0|^8.0",
+                "symfony/cache": "^7.4|^8.0",
+                "symfony/config": "^7.4|^8.0",
+                "symfony/console": "^7.4|^8.0",
+                "symfony/dependency-injection": "^7.4|^8.0",
+                "symfony/error-handler": "^7.4|^8.0",
+                "symfony/filesystem": "^7.4|^8.0",
+                "symfony/form": "^7.4|^8.0",
+                "symfony/http-foundation": "^7.4|^8.0",
+                "symfony/http-kernel": "^7.4|^8.0",
+                "symfony/messenger": "^7.4|^8.0",
+                "symfony/mime": "^7.4|^8.0",
+                "symfony/property-access": "^7.4|^8.0",
+                "symfony/property-info": "^7.4|^8.0",
                 "symfony/translation-contracts": "^2.5|^3",
-                "symfony/type-info": "^7.1.8|^8.0",
-                "symfony/uid": "^6.4|^7.0|^8.0",
-                "symfony/validator": "^6.4|^7.0|^8.0",
-                "symfony/var-dumper": "^6.4|^7.0|^8.0",
-                "symfony/var-exporter": "^6.4|^7.0|^8.0",
-                "symfony/yaml": "^6.4|^7.0|^8.0"
+                "symfony/type-info": "^7.4|^8.0",
+                "symfony/uid": "^7.4|^8.0",
+                "symfony/validator": "^7.4|^8.0",
+                "symfony/var-dumper": "^7.4|^8.0",
+                "symfony/var-exporter": "^7.4|^8.0",
+                "symfony/yaml": "^7.4|^8.0"
             },
             "type": "library",
             "autoload": {
@@ -8413,7 +8405,7 @@
             "description": "Handles serializing and deserializing data structures, including object graphs, into array structures or other formats like XML and JSON.",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/serializer/tree/v7.4.2"
+                "source": "https://github.com/symfony/serializer/tree/v8.0.2"
             },
             "funding": [
                 {
@@ -8433,7 +8425,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-07T17:35:40+00:00"
+            "time": "2025-12-08T06:57:48+00:00"
         },
         {
             "name": "symfony/service-contracts",
@@ -12069,12 +12061,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "3590218a227633a3efd9c7c6aee158a13c693246"
+                "reference": "1553067758ae7f3df13df7c7e232c62d928e1d23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/3590218a227633a3efd9c7c6aee158a13c693246",
-                "reference": "3590218a227633a3efd9c7c6aee158a13c693246",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/1553067758ae7f3df13df7c7e232c62d928e1d23",
+                "reference": "1553067758ae7f3df13df7c7e232c62d928e1d23",
                 "shasum": ""
             },
             "conflict": {
@@ -12546,6 +12538,7 @@
                 "microsoft/microsoft-graph-core": "<2.0.2",
                 "microweber/microweber": "<=2.0.19",
                 "mikehaertl/php-shellcommand": "<1.6.1",
+                "mineadmin/mineadmin": "<=3.0.9",
                 "miniorange/miniorange-saml": "<1.4.3",
                 "mittwald/typo3_forum": "<1.2.1",
                 "mobiledetect/mobiledetectlib": "<2.8.32",
@@ -13064,7 +13057,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-12T17:05:55+00:00"
+            "time": "2025-12-12T23:06:01+00:00"
         },
         {
             "name": "sebastian/cli-parser",

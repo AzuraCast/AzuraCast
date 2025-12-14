@@ -12,8 +12,7 @@ use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use Stringable;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute as Serializer;
 
 #[
     OA\Schema(type: 'object'),
@@ -29,14 +28,14 @@ final readonly class ApiKey implements Stringable, IdentifiableEntityInterface, 
     #[OA\Property]
     #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EAGER', inversedBy: 'api_keys')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    #[Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
     #[DeepNormalize(true)]
     #[Serializer\MaxDepth(1)]
     public User $user;
 
     #[OA\Property]
     #[ORM\Column(length: 255, nullable: false)]
-    #[Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     public string $comment;
 
     public function __construct(

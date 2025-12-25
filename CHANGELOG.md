@@ -9,6 +9,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Fixed a bug where UTC offsets that weren't a full hour (i.e. +6:30 UTC) were not displayed correctly in dropdowns.
+
 ---
 
 # AzuraCast 0.23.2 (Dec 11, 2025)

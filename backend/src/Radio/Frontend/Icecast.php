@@ -207,8 +207,8 @@ class Icecast extends AbstractFrontend
                 'prng-seed' => [
                     '@type' => 'read-write',
                     '@size' => '1024',
-                    '_' => $configDir.'/icecast.prng-seed',
-                ]
+                    '_' => $configDir . '/icecast.prng-seed',
+                ],
             ],
         ];
 

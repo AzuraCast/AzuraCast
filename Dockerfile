@@ -13,7 +13,7 @@ FROM ghcr.io/azuracast/azuracast.com:builtin@sha256:f7c41278613d113375ca285ba85f
 #
 # Icecast-KH with AzuraCast customizations build step
 #
-FROM ghcr.io/azuracast/icecast-kh-ac:2025-08-29 AS icecast
+FROM ghcr.io/azuracast/icecast-ac:feat-switch-to-upstream AS icecast
 
 #
 # PHP Extension Installer build step
@@ -34,6 +34,7 @@ COPY --from=mariadb /usr/local/bin/docker-entrypoint.sh /usr/local/bin/db_entryp
 # Add Icecast
 COPY --from=icecast /usr/local/bin/icecast /usr/local/bin/icecast
 COPY --from=icecast /usr/local/share/icecast /usr/local/share/icecast
+COPY --from=icecast /usr/local/lib/libigloo* /usr/local/lib/
 
 #
 # Final build image

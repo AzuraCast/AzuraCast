@@ -153,8 +153,7 @@ class Icecast extends AbstractFrontend
             'hostname' => $baseUrl->getHost(),
             'limits' => [
                 'clients' => !empty($frontendConfig->max_listeners) ? $frontendConfig->max_listeners * 2 : 2500,
-                'max-listeners' => $frontendConfig->max_listeners ?? -1,
-                'sources' => $station->mounts->count(),
+                'sources' => $station->mounts->count() * 2,
                 'queue-size' => 524288,
                 'client-timeout' => 30,
                 'header-timeout' => 15,
@@ -173,6 +172,7 @@ class Icecast extends AbstractFrontend
             ],
 
             'mount' => [],
+
             'fileserve' => 1,
             'paths' => [
                 'basedir' => self::BASE_DIR,
@@ -186,61 +186,99 @@ class Icecast extends AbstractFrontend
                         '@dest' => '/status.xsl',
                     ],
                 ],
-                'ssl-private-key' => $certKey,
-                'ssl-certificate' => $certPath,
-                // phpcs:disable Generic.Files.LineLength
-                'ssl-allowed-ciphers' => 'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS',
-                // phpcs:enable
                 'deny-ip' => $this->writeIpBansFile($station),
-                'deny-agents' => $this->writeUserAgentBansFile($station),
-                'x-forwarded-for' => '127.0.0.1',
+                // 'x-forwarded-for' => '127.0.0.1',
             ],
             'logging' => [
                 'accesslog' => 'icecast_access.log',
-                'errorlog' => '/dev/stderr',
+                'errorlog' => '-',
                 'loglevel' => $this->environment->isProduction() ? self::LOGLEVEL_WARN : self::LOGLEVEL_INFO,
                 'logsize' => 10000,
             ],
             'security' => [
-                'chroot' => 0,
+                'chroot' => 'false',
+                'tls-context' => [
+                    // phpcs:disable Generic.Files.LineLength
+                    'tls-allowed-ciphers' => 'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS',
+                    // phpcs:enable
+                    'tls-certificate' => $certPath,
+                    'tls-key' => $certKey,
+                ],
+                'prng-seed' => [
+                    '@type' => 'read-write',
+                    '@size' => '1024',
+                    '_' => $configDir.'/icecast.prng-seed',
+                ]
             ],
         ];
 
         $bannedCountries = $frontendConfig->banned_countries ?? [];
+        $bannedUserAgents = $frontendConfig->banned_user_agents ?? '';
         $allowedIps = $this->getIpsAsArray($frontendConfig->allowed_ips);
 
-        $useListenerAuth = !empty($bannedCountries) || !empty($allowedIps);
+        $useListenerAuth = !empty($bannedCountries) || !empty($bannedUserAgents) || !empty($allowedIps);
         $charset = match ($station->backend_config->charset) {
             'ISO-8859-1' => 'ISO8859-1',
             default => 'UTF8',
         };
+
+        $mountDefaults = [
+            '@type' => 'default',
+            'charset' => $charset,
+            'stream-name' => $station->name,
+        ];
+
+        if ($frontendConfig->max_listeners) {
+            $mountDefaults['max-listeners'] = $frontendConfig->max_listeners;
+        }
+
+        if ($station->max_bitrate !== 0) {
+            $maxBitrateInBps = $station->max_bitrate * 1024 + 2500;
+            $mountDefaults['limit-rate'] = $maxBitrateInBps;
+        }
+
+        if (!empty($station->description)) {
+            $mountDefaults['stream-description'] = $station->description;
+        }
+
+        if (!empty($station->url)) {
+            $mountDefaults['stream-url'] = $station->url;
+        }
+
+        if (!empty($station->genre)) {
+            $mountDefaults['genre'] = $station->genre;
+        }
+
+        if ($useListenerAuth) {
+            $mountDefaults['authentication'] = [
+                'role' => [
+                    '@type' => 'url',
+                    'allow-method' => 'source,put,get,post,options',
+                    'allow-web' => '*',
+                    'allow-admin' => '*',
+                    'option' => [
+                        [
+                            '@name' => 'client_add',
+                            '@value' => $this->getAuthenticationUrl($station),
+                        ],
+                        [
+                            '@name' => 'auth_header',
+                            '@value' => 'icecast-auth-user: 1',
+                        ],
+                    ],
+                ],
+            ];
+        }
+
+        $config['mount'][] = $mountDefaults;
 
         /** @var StationMount $mountRow */
         foreach ($station->mounts as $mountRow) {
             $mount = [
                 '@type' => 'normal',
                 'mount-name' => $mountRow->name,
-                'charset' => $charset,
-                'stream-name' => $station->name,
-                'listenurl' => $this->getUrlForMount($station, $mountRow),
+                'stream-url' => $this->getUrlForMount($station, $mountRow),
             ];
-
-            if ($station->max_bitrate !== 0) {
-                $maxBitrateInBps = $station->max_bitrate * 1024 + 2500;
-                $mount['limit-rate'] = $maxBitrateInBps;
-            }
-
-            if (!empty($station->description)) {
-                $mount['stream-description'] = $station->description;
-            }
-
-            if (!empty($station->url)) {
-                $mount['stream-url'] = $station->url;
-            }
-
-            if (!empty($station->genre)) {
-                $mount['genre'] = $station->genre;
-            }
 
             if (!$mountRow->is_visible_on_public_pages) {
                 $mount['hidden'] = 1;
@@ -257,13 +295,13 @@ class Icecast extends AbstractFrontend
 
             if (!empty($mountRow->fallback_mount)) {
                 $mount['fallback-mount'] = $mountRow->fallback_mount;
-                $mount['fallback-override'] = 1;
+                $mount['fallback-override'] = 'all';
             } elseif ($mountRow->enable_autodj) {
                 $autoDjFormat = $mountRow->autodj_format ?? StreamFormats::default();
                 $autoDjBitrate = $mountRow->autodj_bitrate;
 
                 $mount['fallback-mount'] = '/fallback-[' . $autoDjBitrate . '].' . $autoDjFormat->getExtension();
-                $mount['fallback-override'] = 1;
+                $mount['fallback-override'] = 'all';
             }
 
             if ($mountRow->max_listener_duration) {
@@ -286,22 +324,6 @@ class Icecast extends AbstractFrontend
                     'mount' => $mountRelayUri->getPath(),
                     'local-mount' => $mountRow->name,
                 ]);
-            }
-
-            if ($useListenerAuth) {
-                $mount['authentication'][] = [
-                    '@type' => 'url',
-                    'option' => [
-                        [
-                            '@name' => 'listener_add',
-                            '@value' => $this->getAuthenticationUrl($station),
-                        ],
-                        [
-                            '@name' => 'auth_header',
-                            '@value' => 'icecast-auth-user: 1',
-                        ],
-                    ],
-                ];
             }
 
             $config['mount'][] = $mount;

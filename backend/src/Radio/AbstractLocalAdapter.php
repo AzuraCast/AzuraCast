@@ -63,6 +63,7 @@ abstract class AbstractLocalAdapter
             $configPath,
             $newConfig
         );
+        $fsUtils->chmod($configPath, 0o600);
 
         return 0 !== strcmp($currentConfig, $newConfig);
     }

@@ -1,8 +1,8 @@
 import {useAppRegle} from "~/vendor/regle.ts";
 import {required} from "@regle/rules";
-import {IpSources, Settings} from "~/entities/ApiInterfaces.ts";
+import {AnalyticsLevel, IpSources, Settings} from "~/entities/ApiInterfaces.ts";
 import {defineStore} from "pinia";
-import { ref } from "vue";
+import {ref} from "vue";
 
 type Form = Required<Pick<
     Settings,
@@ -46,7 +46,7 @@ export const useAdminSettingsForm = defineStore(
             history_keep_days: 7,
             enable_static_nowplaying: true,
             sync_disabled: false,
-            analytics: null,
+            analytics: AnalyticsLevel.NoIp,
             always_use_ssl: false,
             ip_source: IpSources.Local,
             api_access_control: '*',

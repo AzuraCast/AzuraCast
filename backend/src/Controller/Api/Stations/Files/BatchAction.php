@@ -164,7 +164,7 @@ final class BatchAction implements SingleActionInterface
         StorageLocation $storageLocation,
         ExtendedFilesystemInterface $fs
     ): MediaBatchResult {
-        $result = $this->parseRequest($request, $fs, true);
+        $result = $this->parseRequest($request, $fs, false);
 
         /** @var array<int, int> $playlists */
         $playlists = [];

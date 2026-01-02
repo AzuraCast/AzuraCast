@@ -53,14 +53,15 @@ final class DuplicatePrevention
         foreach ($playedTracks as $playedTrack) {
             $songId = $playedTrack['song_id'];
 
-            if (!isset($latestSongIdsPlayed[$songId])) {
-                $timestampPlayed = $playedTrack['timestamp_played'];
-                if ($timestampPlayed instanceof DateTimeInterface) {
-                    $timestampPlayed = $timestampPlayed->getTimestamp();
-                }
-
-                $latestSongIdsPlayed[$songId] = $timestampPlayed;
+            $timestampPlayed = $playedTrack['timestamp_played'];
+            if ($timestampPlayed instanceof DateTimeInterface) {
+                $timestampPlayed = $timestampPlayed->getTimestamp();
             }
+
+            $latestSongIdsPlayed[$songId] = max(
+                $latestSongIdsPlayed[$songId] ?? 0,
+                $timestampPlayed
+            );
         }
 
         /** @var StationPlaylistQueue[] $notPlayedEligibleTracks */
@@ -68,7 +69,9 @@ final class DuplicatePrevention
 
         foreach ($eligibleTracks as $mediaId => $track) {
             $songId = $track->song_id;
+
             if (isset($latestSongIdsPlayed[$songId])) {
+                $track->last_played = $latestSongIdsPlayed[$songId];
                 continue;
             }
 
@@ -76,6 +79,11 @@ final class DuplicatePrevention
         }
 
         $validTrack = $this->getDistinctTrack($notPlayedEligibleTracks, $playedTracks);
+
+        if (null === $validTrack) {
+            $validTrack = $this->getDistinctTrack($eligibleTracks, $playedTracks);
+        }
+
         if (null !== $validTrack) {
             $this->logger->info(
                 'Found track that avoids duplicate title and artist.',
@@ -91,20 +99,14 @@ final class DuplicatePrevention
 
         // If we reach this point, there's no way to avoid a duplicate title and artist.
         if ($allowDuplicates) {
-            /** @var StationPlaylistQueue[] $mediaIdsByTimePlayed */
-            $mediaIdsByTimePlayed = [];
-
-            // For each piece of eligible media, get its latest played timestamp.
-            foreach ($eligibleTracks as $track) {
-                $songId = $track->song_id;
-                $trackKey = $latestSongIdsPlayed[$songId] ?? 0;
-                $mediaIdsByTimePlayed[$trackKey] = $track;
-            }
-
-            ksort($mediaIdsByTimePlayed);
+            usort(
+                $eligibleTracks,
+                fn (StationPlaylistQueue $a, StationPlaylistQueue $b) =>
+                    ($a->last_played ?? 0) <=> ($b->last_played ?? 0)
+            );
 
             // Pull the lowest value, which corresponds to the least recently played song.
-            $validTrack = array_shift($mediaIdsByTimePlayed);
+            $validTrack = reset($eligibleTracks);
 
             $this->logger->warning(
                 'No way to avoid same title OR same artist; using least recently played song.',

@@ -7,6 +7,9 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- If you are mounting a filesystem that has folders or paths that are not accessible by AzuraCast, the software will 
+  skip these directories instead of them preventing regular operation.
+
 ## Bug Fixes
 
 - Fixed a bug preventing setup from completing correctly.

@@ -188,7 +188,8 @@ final class LocalFilesystemAdapter extends LeagueLocalFilesystemAdapter implemen
                 str_replace('\\', '/', $path),
                 $fileInfo->getSize(),
                 $visibility,
-                $lastModified
+                $lastModified,
+                fn() => $this->mimeType($path)->mimeType()
             );
     }
 }

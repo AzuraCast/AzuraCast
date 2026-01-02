@@ -33,7 +33,7 @@ final class StationQueueDetailed
 
     #[OA\Property(
         description: 'Log entries on how the specific queue item was picked by the AutoDJ.',
-        items: new OA\Items()
+        items: new OA\Items(type: 'any')
     )]
     public ?array $log = [];
 }

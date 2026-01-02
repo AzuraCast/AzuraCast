@@ -7168,7 +7168,7 @@ components:
           description: 'Stack traces and other supplemental data.'
           type: array
           items:
-            type: mixed
+            type: any
         success:
           description: 'Used for API calls that expect an \Entity\Api\Status type response.'
           type: boolean
@@ -7356,6 +7356,31 @@ components:
             tail:
               type: boolean
               readOnly: true
+          type: object
+    Api_MediaBatchResult:
+      required:
+        - files
+        - directories
+        - responseRecord
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_BatchResult'
+        -
+          properties:
+            files:
+              type: array
+              items:
+                type: string
+            directories:
+              type: array
+              items:
+                type: string
+            responseRecord:
+              type: array
+              items:
+                type: any
+              nullable: true
           type: object
     Api_Notification:
       required:
@@ -8081,7 +8106,7 @@ components:
               description: 'Log entries on how the specific queue item was picked by the AutoDJ.'
               type: array
               items:
-                type: mixed
+                type: any
               nullable: true
           type: object
     Api_StationQuota:

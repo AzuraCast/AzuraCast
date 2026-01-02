@@ -43,7 +43,7 @@ final readonly class Error
 
     #[OA\Property(
         description: 'Stack traces and other supplemental data.',
-        items: new OA\Items()
+        items: new OA\Items(type: 'any')
     )]
     public array $extra_data;
 

@@ -1,0 +1,219 @@
+#
+# AzuraCast Docker Compose Configuration File
+#
+# When updating, you will be prompted to replace this file with a new
+# version; you should do this whenever possible to take advantage of
+# new updates.
+#
+# If you need to customize this file, you can create a new file named:
+#   docker-compose.override.yml
+# with any changes you need to make.
+#
+
+name: azuracast
+
+services:
+  web:
+    container_name: azuracast
+    image: "ghcr.io/azuracast/azuracast:${AZURACAST_VERSION:-latest}"
+    labels:
+      - "com.centurylinklabs.watchtower.scope=azuracast"
+    # Want to customize the HTTP/S ports? Follow the instructions here:
+    # https://www.azuracast.com/docs/administration/docker/#using-non-standard-ports
+    ports:
+      - '${AZURACAST_HTTP_PORT:-80}:${AZURACAST_HTTP_PORT:-80}'
+      - '${AZURACAST_HTTPS_PORT:-443}:${AZURACAST_HTTPS_PORT:-443}'
+      - '${AZURACAST_SFTP_PORT:-2022}:${AZURACAST_SFTP_PORT:-2022}'
+      - '8000:8000'
+      - '8005:8005'
+      - '8006:8006'
+      - '8010:8010'
+      - '8015:8015'
+      - '8016:8016'
+      - '8020:8020'
+      - '8025:8025'
+      - '8026:8026'
+      - '8030:8030'
+      - '8035:8035'
+      - '8036:8036'
+      - '8040:8040'
+      - '8045:8045'
+      - '8046:8046'
+      - '8050:8050'
+      - '8055:8055'
+      - '8056:8056'
+      - '8060:8060'
+      - '8065:8065'
+      - '8066:8066'
+      - '8070:8070'
+      - '8075:8075'
+      - '8076:8076'
+      - '8090:8090'
+      - '8095:8095'
+      - '8096:8096'
+      - '8100:8100'
+      - '8105:8105'
+      - '8106:8106'
+      - '8110:8110'
+      - '8115:8115'
+      - '8116:8116'
+      - '8120:8120'
+      - '8125:8125'
+      - '8126:8126'
+      - '8130:8130'
+      - '8135:8135'
+      - '8136:8136'
+      - '8140:8140'
+      - '8145:8145'
+      - '8146:8146'
+      - '8150:8150'
+      - '8155:8155'
+      - '8156:8156'
+      - '8160:8160'
+      - '8165:8165'
+      - '8166:8166'
+      - '8170:8170'
+      - '8175:8175'
+      - '8176:8176'
+      - '8180:8180'
+      - '8185:8185'
+      - '8186:8186'
+      - '8190:8190'
+      - '8195:8195'
+      - '8196:8196'
+      - '8200:8200'
+      - '8205:8205'
+      - '8206:8206'
+      - '8210:8210'
+      - '8215:8215'
+      - '8216:8216'
+      - '8220:8220'
+      - '8225:8225'
+      - '8226:8226'
+      - '8230:8230'
+      - '8235:8235'
+      - '8236:8236'
+      - '8240:8240'
+      - '8245:8245'
+      - '8246:8246'
+      - '8250:8250'
+      - '8255:8255'
+      - '8256:8256'
+      - '8260:8260'
+      - '8265:8265'
+      - '8266:8266'
+      - '8270:8270'
+      - '8275:8275'
+      - '8276:8276'
+      - '8280:8280'
+      - '8285:8285'
+      - '8286:8286'
+      - '8290:8290'
+      - '8295:8295'
+      - '8296:8296'
+      - '8300:8300'
+      - '8305:8305'
+      - '8306:8306'
+      - '8310:8310'
+      - '8315:8315'
+      - '8316:8316'
+      - '8320:8320'
+      - '8325:8325'
+      - '8326:8326'
+      - '8330:8330'
+      - '8335:8335'
+      - '8336:8336'
+      - '8340:8340'
+      - '8345:8345'
+      - '8346:8346'
+      - '8350:8350'
+      - '8355:8355'
+      - '8356:8356'
+      - '8360:8360'
+      - '8365:8365'
+      - '8366:8366'
+      - '8370:8370'
+      - '8375:8375'
+      - '8376:8376'
+      - '8380:8380'
+      - '8385:8385'
+      - '8386:8386'
+      - '8390:8390'
+      - '8395:8395'
+      - '8396:8396'
+      - '8400:8400'
+      - '8405:8405'
+      - '8406:8406'
+      - '8410:8410'
+      - '8415:8415'
+      - '8416:8416'
+      - '8420:8420'
+      - '8425:8425'
+      - '8426:8426'
+      - '8430:8430'
+      - '8435:8435'
+      - '8436:8436'
+      - '8440:8440'
+      - '8445:8445'
+      - '8446:8446'
+      - '8450:8450'
+      - '8455:8455'
+      - '8456:8456'
+      - '8460:8460'
+      - '8465:8465'
+      - '8466:8466'
+      - '8470:8470'
+      - '8475:8475'
+      - '8476:8476'
+      - '8480:8480'
+      - '8485:8485'
+      - '8486:8486'
+      - '8490:8490'
+      - '8495:8495'
+      - '8496:8496'
+    env_file:
+      - azuracast.env
+      - .env
+    volumes:
+      - station_data:/var/azuracast/stations
+      - backups:/var/azuracast/backups
+      - db_data:/var/lib/mysql
+      - www_uploads:/var/azuracast/storage/uploads
+      - shoutcast2_install:/var/azuracast/storage/shoutcast2
+      - stereo_tool_install:/var/azuracast/storage/stereo_tool
+      - rsas_install:/var/azuracast/storage/rsas
+      - geolite_install:/var/azuracast/storage/geoip
+      - sftpgo_data:/var/azuracast/storage/sftpgo
+      - acme:/var/azuracast/storage/acme
+    restart: unless-stopped
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    logging:
+      options:
+        max-size: "1m"
+        max-file: "5"
+
+  updater:
+    container_name: azuracast_updater
+    image: ghcr.io/azuracast/updater:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    logging:
+      options:
+        max-size: "1m"
+        max-file: "5"
+
+volumes:
+  db_data: { }
+  acme: { }
+  shoutcast2_install: { }
+  stereo_tool_install: { }
+  rsas_install: { }
+  geolite_install: { }
+  sftpgo_data: { }
+  station_data: { }
+  www_uploads: { }
+  backups: { }

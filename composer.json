@@ -74,7 +74,7 @@
     "spatie/flysystem-dropbox": "^3.0.2",
     "spomky-labs/otphp": "^11.3",
     "supervisorphp/supervisor": "dev-main",
-    "symfony/cache": "^7.3.5",
+    "symfony/cache": "^8",
     "symfony/console": "^8",
     "symfony/event-dispatcher": "^8",
     "symfony/filesystem": "^8",
@@ -84,7 +84,7 @@
     "symfony/mailer": "^8",
     "symfony/messenger": "^8",
     "symfony/monolog-bridge": "^8",
-    "symfony/process": "^7.3.4",
+    "symfony/process": "^8",
     "symfony/property-access": "^8",
     "symfony/rate-limiter": "^8",
     "symfony/redis-messenger": "^8",
@@ -94,7 +94,7 @@
     "symfony/yaml": "^8",
     "vlucas/phpdotenv": "^5.6.2",
     "wikimedia/composer-merge-plugin": "dev-master",
-    "zircote/swagger-php": "^5.5.1"
+    "zircote/swagger-php": "^6"
   },
   "replace": {
     "symfony/polyfill-ctype": "1.99",

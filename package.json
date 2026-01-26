@@ -79,7 +79,7 @@
     "svg.js": "^2.7.1",
     "swagger-typescript-api": "^13.2.14",
     "typescript-eslint": "^8",
-    "unplugin-icons": "^22.3.0",
+    "unplugin-icons": "^23",
     "vite": "^7",
     "vue-eslint-parser": "^10",
     "vue-tsc": "^3"

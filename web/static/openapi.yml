@@ -8068,6 +8068,10 @@ components:
           description: 'The song title.'
           type: string
           example: 'Aluko River'
+        last_played:
+          description: 'The UNIX timestamp when this specific track was last played.'
+          type: integer
+          nullable: true
       type: object
     Api_StationProfile:
       required:

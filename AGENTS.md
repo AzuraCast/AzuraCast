@@ -1,19 +1,59 @@
 # AGENTS.md — Rahdiot Tuk-Tuk Transmission Rules
 
-## Context
-Archival system for Kronos9 / Jitpop. [cite_start]Origin: Hyperion [cite: 1-4].
+## C<template>
+  <div class="resonance-container">
+    <header class="signal-header">
+      <span class="element-tag">ELEMENT: AIR (O)</span>
+      <h1 class="slot-title">SLOT I: OPENING RESONANCE</h1>
+    </header>
 
-## Invariant Laws
-1. [cite_start]Observe → Record → Classify → Preserve [cite: 8-10].
-2. Use 13 Moon / 28-Day Calendar. [cite_start]No Gregorian dates .
-3. Mapping:
-   - [cite_start]Air (O): Signal/Message[cite: 15, 105].
-   - [cite_start]Water (H): Memory/Emotion[cite: 16, 106].
-   - [cite_start]Earth (Si): Structure/Pattern.
-   - [cite_start]Fire (P): Ignition/Action[cite: 18, 108].
-   - [cite_start]Aether (Au): Alignment[cite: 19, 109].
+    <main class="signal-display">
+      <div class="status-stack">
+        <p>STATUS: TRANSMITTING FROM HYPERION</p>
+        <p>PHASE: ALIGNMENT INITIATED</p>
+      </div>
+      
+      <div class="signal-visualizer">
+        <div v-for="i in 12" :key="i" class="signal-bar"></div>
+      </div>
+    </main>
 
-## UI Rules
-- Palette: Hadron-Church.
-- [cite_start]Tone: Discipline of Restraint[cite: 76].
-- Terminology: Signal, Downlink, Satellite, Relay.
+    <footer class="doctrine-footer">
+      <p>OBSERVE // RECORD // CLASSIFY // PRESERVE</p>
+    </footer>
+  </div>
+</template>
+
+<style scoped>
+.resonance-container {
+  background-color: #0a0a0a; /* Hadron Black */
+  color: #d4d4d4; /* Distressed Silver */
+  font-family: 'Courier New', monospace;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem;
+}
+
+.element-tag { color: #57a6ff; font-weight: bold; } /* Air Blue */
+
+.signal-visualizer {
+  display: flex;
+  gap: 4px;
+  height: 50px;
+  align-items: flex-end;
+}
+
+.signal-bar {
+  width: 8px;
+  height: 20%;
+  background-color: #d4d4d4;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { height: 20%; opacity: 0.5; }
+  50% { height: 80%; opacity: 1; }
+}
+</style>

@@ -1,59 +1,27 @@
 # AGENTS.md — Rahdiot Tuk-Tuk Transmission Rules
 
-## C<template>
-  <div class="resonance-container">
-    <header class="signal-header">
-      <span class="element-tag">ELEMENT: AIR (O)</span>
-      <h1 class="slot-title">SLOT I: OPENING RESONANCE</h1>
-    </header>
+## Context
+* **System**: Archival transmission node for Kronos9 / Jitpop.
+* **Origin**: Hyperion Satellite.
+* **Tier**: Paid / Operating in 2026 Temporal Window.
 
-    <main class="signal-display">
-      <div class="status-stack">
-        <p>STATUS: TRANSMITTING FROM HYPERION</p>
-        <p>PHASE: ALIGNMENT INITIATED</p>
-      </div>
-      
-      <div class="signal-visualizer">
-        <div v-for="i in 12" :key="i" class="signal-bar"></div>
-      </div>
-    </main>
+## Invariant Laws
+1. **Observe → Record → Classify → Preserve**: This is the mandatory structural pillar for all code and archival actions.
+2. **Temporal Sync**: Use the **13 Moon / 28-Day Calendar** exclusively; reject all Gregorian date logic in frontend and backend scheduling.
+3. **The Discipline of Restraint**: Prioritize minimal UI and structural silence to preserve the purity of the signal.
 
-    <footer class="doctrine-footer">
-      <p>OBSERVE // RECORD // CLASSIFY // PRESERVE</p>
-    </footer>
-  </div>
-</template>
+## Mapping: Elemental Classification
+* **Air (O)**: Signal messaging, Azuracast transmissions, and downlink presence.
+* **Water (H)**: Memory, archival functions, and emotional resonance.
+* **Earth (Si)**: Structural patterns, VS Code project hierarchy, and database logic.
+* **Fire (P)**: Critical ruptures, launch events, and high-energy ignition.
+* **Aether (Au)**: Alignment of the continuum and the final preservation of the archive.
 
-<style scoped>
-.resonance-container {
-  background-color: #0a0a0a; /* Hadron Black */
-  color: #d4d4d4; /* Distressed Silver */
-  font-family: 'Courier New', monospace;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 2rem;
-}
+## UI & Aesthetic (Hadron-Tuk-Tuk Synthesis)
+* **Palette**: Hadron Black (#0a0a0a) base with Tuk-Tuk Ignition Red (#ff0000) and Signal Cyan (#00ccff) accents.
+* **Texture**: Distressed, street-level energy combined with digital "Hadron-Church" severity.
+* **Terminology**: Use 'Signal' (Track), 'Downlink' (Frontend), 'Satellite' (Backend/Azuracast), and 'Relay' (Transmission link).
 
-.element-tag { color: #57a6ff; font-weight: bold; } /* Air Blue */
-
-.signal-visualizer {
-  display: flex;
-  gap: 4px;
-  height: 50px;
-  align-items: flex-end;
-}
-
-.signal-bar {
-  width: 8px;
-  height: 20%;
-  background-color: #d4d4d4;
-  animation: pulse 1.5s infinite ease-in-out;
-}
-
-@keyframes pulse {
-  0%, 100% { height: 20%; opacity: 0.5; }
-  50% { height: 80%; opacity: 1; }
-}
-</style>
+## Archival Structure
+* **Slots**: Index all functional events and commits by Canonical Slots (I-XII).
+* **Preservation**: Every material occurrence must be committed to the `YvesVerela/RahdiotTuk-Tuk` archive.

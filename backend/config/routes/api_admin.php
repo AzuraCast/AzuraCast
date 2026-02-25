@@ -27,6 +27,11 @@ return static function (RouteCollectorProxy $group) {
                         Controller\Api\Admin\ApiKeysController::class . ':listAction'
                     )->setName('api:admin:api-keys');
 
+                    $group->post(
+                        '/api-keys',
+                        Controller\Api\Admin\ApiKeysController::class . ':createAction'
+                    );
+
                     $group->get(
                         '/api-key/{id}',
                         Controller\Api\Admin\ApiKeysController::class . ':getAction'

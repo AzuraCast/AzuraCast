@@ -119,7 +119,7 @@ final readonly class CpuData
 
         return BigDecimal::of($usage)
             ->multipliedBy(100)
-            ->dividedBy($total, 2, RoundingMode::HALF_UP);
+            ->dividedBy($total, 2, RoundingMode::Up);
     }
 
     public function getIdle(): BigDecimal
@@ -131,7 +131,7 @@ final readonly class CpuData
 
         return BigDecimal::of($idle)
             ->multipliedBy(100)
-            ->dividedBy($total, 2, RoundingMode::HALF_UP);
+            ->dividedBy($total, 2, RoundingMode::Up);
     }
 
     public function getIoWait(): BigDecimal
@@ -143,7 +143,7 @@ final readonly class CpuData
 
         return BigDecimal::of($ioWait ?? 0)
             ->multipliedBy(100)
-            ->dividedBy($total, 2, RoundingMode::HALF_UP);
+            ->dividedBy($total, 2, RoundingMode::Up);
     }
 
     public function getSteal(): BigDecimal
@@ -155,6 +155,6 @@ final readonly class CpuData
 
         return BigDecimal::of($steal ?? 0)
             ->multipliedBy(100)
-            ->dividedBy($total, 2, RoundingMode::HALF_UP);
+            ->dividedBy($total, 2, RoundingMode::Up);
     }
 }

@@ -10,7 +10,9 @@ parameters:
         objectManagerLoader: util/phpstan-doctrine.php
 
     paths:
-        - backend/bin
+        - backend/bin/console
+        - backend/bin/installer
+        - backend/bin/uptime_wait
         - backend/config
         - backend/src
         - backend/templates
@@ -18,7 +20,6 @@ parameters:
         - plugins
 
     fileExtensions:
-        - ""
         - php
 
     excludePaths:

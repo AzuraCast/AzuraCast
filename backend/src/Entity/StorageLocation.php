@@ -325,7 +325,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
                 $totalSpaceFloat = disk_total_space($localPath);
                 if (is_float($totalSpaceFloat)) {
-                    $totalSpace = BigInteger::of($totalSpaceFloat);
+                    $totalSpace = BigInteger::of((string)$totalSpaceFloat);
                     if (null === $quota || $quota->isGreaterThan($totalSpace)) {
                         return $totalSpace;
                     }

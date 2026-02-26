@@ -42,7 +42,7 @@ jobs:
           tools: composer:v2, cs2pr
 
       - name: Cache PHP dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: vendor
           key: ${{ runner.OS }}-build-${{ hashFiles('composer.lock') }}
@@ -104,7 +104,7 @@ jobs:
           tools: composer:v2, cs2pr
 
       - name: Cache PHP dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: vendor
           key: ${{ runner.OS }}-build-${{ hashFiles('composer.lock') }}
@@ -131,7 +131,7 @@ jobs:
           backend/bin/console locale:generate
 
       - name: Pull latest translations.
-        uses: crowdin/github-action@v2.13.0
+        uses: crowdin/github-action@v2.15.0
         with:
           upload_sources: true
           download_translations: true
@@ -158,7 +158,7 @@ jobs:
           chmod 777 .gitinfo
 
       - name: Upload built static assets and translations
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: assets
           if-no-files-found: error
@@ -182,7 +182,7 @@ jobs:
       - uses: actions/checkout@master
 
       - name: Download built static assets from previous step
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: assets
 

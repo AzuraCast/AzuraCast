@@ -116,7 +116,7 @@ final class PrometheusAction implements SingleActionInterface
     {
         $spaceTotalFloat = disk_total_space($this->environment->getStationDirectory());
         $spaceTotal = (is_float($spaceTotalFloat))
-            ? BigInteger::of($spaceTotalFloat)
+            ? BigInteger::of((string)$spaceTotalFloat)
             : BigInteger::zero();
 
         $registry->getOrRegisterGauge(
@@ -127,7 +127,7 @@ final class PrometheusAction implements SingleActionInterface
 
         $spaceFreeFloat = disk_free_space($this->environment->getStationDirectory());
         $spaceFree = (is_float($spaceFreeFloat))
-            ? BigInteger::of($spaceFreeFloat)
+            ? BigInteger::of((string)$spaceFreeFloat)
             : BigInteger::zero();
 
         $registry->getOrRegisterGauge(
@@ -256,6 +256,6 @@ final class PrometheusAction implements SingleActionInterface
         }
 
         $mbytes = BigInteger::of(1024)->power(2);
-        return $bytes->dividedBy($mbytes, 2, RoundingMode::HALF_UP)->toFloat();
+        return $bytes->dividedBy($mbytes, 2, RoundingMode::Up)->toFloat();
     }
 }

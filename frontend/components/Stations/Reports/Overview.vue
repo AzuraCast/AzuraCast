@@ -12,7 +12,9 @@
                     <date-range-dropdown
                         v-model="dateRange"
                         :options="{
-                            enableTimePicker: true,
+                            timeConfig: {
+                                enableTimePicker: true
+                            },
                             timezone: timezone
                         }"
                         class="btn-dark"

@@ -7,7 +7,7 @@ namespace App\Entity\Traits;
 use App\Entity\Interfaces\EntityGroupsInterface;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute as Serializer;
 
 #[OA\Schema(
     required: ['id'],
@@ -27,7 +27,7 @@ trait HasAutoIncrementId
         ORM\Column(name: 'id', nullable: false),
         ORM\Id,
         ORM\GeneratedValue,
-        Groups([EntityGroupsInterface::GROUP_ID, EntityGroupsInterface::GROUP_ALL])
+        Serializer\Groups([EntityGroupsInterface::GROUP_ID, EntityGroupsInterface::GROUP_ALL])
     ]
     public protected(set) int $id;
 }

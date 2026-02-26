@@ -777,6 +777,12 @@ export type ApiLogType = HasLinks & {
   readonly tail: boolean;
 };
 
+export type ApiMediaBatchResult = ApiBatchResult & {
+  files: string[];
+  directories: string[];
+  responseRecord: any[] | null;
+};
+
 export interface ApiNotification {
   id: string;
   title: string;
@@ -2435,7 +2441,7 @@ export type StationSchedule = HasAutoIncrementId & {
    * Array of ISO-8601 days (1 for Monday, 7 for Sunday)
    * @example "0,1,2,3"
    */
-  days?: int[];
+  days?: number[];
   /** @example false */
   loop_once?: boolean;
 };

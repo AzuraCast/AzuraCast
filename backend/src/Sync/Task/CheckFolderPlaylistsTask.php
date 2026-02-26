@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Sync\Task;
 
 use App\Entity\Enums\PlaylistSources;
+use App\Entity\Repository\StationPlaylistFolderRepository;
 use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
+use App\Entity\StationPlaylistFolder;
 use App\Entity\StorageLocation;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
@@ -18,6 +20,7 @@ use Symfony\Component\Messenger\MessageBus;
 final class CheckFolderPlaylistsTask extends AbstractTask
 {
     public function __construct(
+        private readonly StationPlaylistFolderRepository $folderRepo,
         private readonly StationPlaylistMediaRepository $spmRepo,
         private readonly StationFilesystems $stationFilesystems,
         private readonly MessageBus $messageBus,
@@ -73,15 +76,6 @@ final class CheckFolderPlaylistsTask extends AbstractTask
             return;
         }
 
-        $mediaInFolderQuery = $this->em->createQuery(
-            <<<'DQL'
-                SELECT sm.id
-                FROM App\Entity\StationMedia sm
-                WHERE sm.storage_location = :storageLocation
-                AND sm.path LIKE :path
-            DQL
-        )->setParameter('storageLocation', $mediaStorageLocation);
-
         $madeChanges = false;
 
         foreach ($folders as $folder) {
@@ -94,9 +88,10 @@ final class CheckFolderPlaylistsTask extends AbstractTask
                 continue;
             }
 
-            $mediaInFolderRaw = $mediaInFolderQuery->setParameter('path', $path . '/%')
-                ->getArrayResult();
-            $mediaInFolder = array_column($mediaInFolderRaw, 'id', 'id');
+            $mediaInFolder = $this->folderRepo->getMediaIdsInFolder(
+                $mediaStorageLocation,
+                $path
+            );
 
             // Remove media from this folder that isn't in it anymore.
             $removedRecords = 0;

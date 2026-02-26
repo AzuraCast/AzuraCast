@@ -18,7 +18,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use RuntimeException;
 use Stringable;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute as Serializer;
 
 #[
     OA\Schema(schema: "Settings", type: "object"),
@@ -64,7 +64,7 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "Site Base URL", example: "https://your.azuracast.site"),
         ORM\Column(length: 255, nullable: true),
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public ?string $base_url = '' {
         set {
@@ -95,7 +95,7 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "AzuraCast Instance Name", example: "My AzuraCast Instance"),
         ORM\Column(length: 255, nullable: true),
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public ?string $instance_name = null {
         set => $this->truncateNullableString($value);
@@ -104,21 +104,21 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "Prefer Browser URL (If Available)", example: "false"),
         ORM\Column,
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public bool $prefer_browser_url = true;
 
     #[
         OA\Property(description: "Use Web Proxy for Radio", example: "false"),
         ORM\Column,
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public bool $use_radio_proxy = true;
 
     #[
         OA\Property(description: "Days of Playback History to Keep"),
         ORM\Column(type: 'smallint'),
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public int $history_keep_days = SongHistory::DEFAULT_DAYS_TO_KEEP {
         set => $this->truncateSmallInt($value);
@@ -127,14 +127,14 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "Always Use HTTPS", example: "false"),
         ORM\Column,
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public bool $always_use_ssl = false;
 
     #[
         OA\Property(description: "API 'Access-Control-Allow-Origin' header", example: "*"),
         ORM\Column(length: 255, nullable: true),
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public ?string $api_access_control = '' {
         get => Types::stringOrNull($this->api_access_control, true);
@@ -147,14 +147,14 @@ final class Settings implements Stringable
             example: "false"
         ),
         ORM\Column,
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public bool $enable_static_nowplaying = false;
 
     #[
         OA\Property(description: "Listener Analytics Collection"),
         ORM\Column(type: 'string', length: 50, nullable: true, enumType: AnalyticsLevel::class),
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public ?AnalyticsLevel $analytics = null;
     
@@ -166,7 +166,7 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "Check for Updates and Announcements", example: "true"),
         ORM\Column,
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public bool $check_for_updates = true;
 
@@ -203,21 +203,21 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "Base Theme for Public Pages", example: "light"),
         ORM\Column(type: 'string', length: 50, nullable: true, enumType: SupportedThemes::class),
-        Groups(self::GROUP_BRANDING)
+        Serializer\Groups(self::GROUP_BRANDING)
     ]
     public ?SupportedThemes $public_theme = null;
 
     #[
         OA\Property(description: "Hide Album Art on Public Pages", example: "false"),
         ORM\Column,
-        Groups(self::GROUP_BRANDING)
+        Serializer\Groups(self::GROUP_BRANDING)
     ]
     public bool $hide_album_art = false;
 
     #[
         OA\Property(description: "Homepage Redirect URL", example: "https://example.com/"),
         ORM\Column(length: 255, nullable: true),
-        Groups(self::GROUP_BRANDING)
+        Serializer\Groups(self::GROUP_BRANDING)
     ]
     public ?string $homepage_redirect_url = null {
         get => Types::stringOrNull($this->homepage_redirect_url, true);
@@ -227,7 +227,7 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "Default Album Art URL", example: "https://example.com/image.jpg"),
         ORM\Column(nullable: true),
-        Groups(self::GROUP_BRANDING)
+        Serializer\Groups(self::GROUP_BRANDING)
     ]
     public ?string $default_album_art_url = null {
         set => $this->truncateNullableString($value, 255, true);
@@ -248,7 +248,7 @@ final class Settings implements Stringable
             example: "false"
         ),
         ORM\Column,
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public bool $use_external_album_art_when_processing_media = false;
 
@@ -258,7 +258,7 @@ final class Settings implements Stringable
             example: "false"
         ),
         ORM\Column,
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public bool $use_external_album_art_in_apis = false;
 
@@ -268,7 +268,7 @@ final class Settings implements Stringable
             example: "SAMPLE-API-KEY"
         ),
         ORM\Column(length: 255, nullable: true),
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public ?string $last_fm_api_key = null {
         set => $this->truncateNullableString($value, 255, true);
@@ -277,14 +277,14 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "Hide AzuraCast Branding on Public Pages", example: "false"),
         ORM\Column,
-        Groups(self::GROUP_BRANDING)
+        Serializer\Groups(self::GROUP_BRANDING)
     ]
     public bool $hide_product_name = false;
 
     #[
         OA\Property(description: "Custom CSS for Public Pages", example: ""),
         ORM\Column(type: 'text', nullable: true),
-        Groups(self::GROUP_BRANDING)
+        Serializer\Groups(self::GROUP_BRANDING)
     ]
     public ?string $public_custom_css = null {
         set => Types::stringOrNull($value, true);
@@ -293,7 +293,7 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "Custom JS for Public Pages", example: ""),
         ORM\Column(type: 'text', nullable: true),
-        Groups(self::GROUP_BRANDING)
+        Serializer\Groups(self::GROUP_BRANDING)
     ]
     public ?string $public_custom_js = null {
         set => Types::stringOrNull($value, true);
@@ -302,7 +302,7 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "Custom CSS for Internal Pages", example: ""),
         ORM\Column(type: 'text', nullable: true),
-        Groups(self::GROUP_BRANDING)
+        Serializer\Groups(self::GROUP_BRANDING)
     ]
     public ?string $internal_custom_css = null {
         set => Types::stringOrNull($value, true);
@@ -311,7 +311,7 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "Whether backup is enabled.", example: "false"),
         ORM\Column,
-        Groups(self::GROUP_BACKUP)
+        Serializer\Groups(self::GROUP_BACKUP)
     ]
     public bool $backup_enabled = false;
 
@@ -321,7 +321,7 @@ final class Settings implements Stringable
             example: 400
         ),
         ORM\Column(length: 4, nullable: true),
-        Groups(self::GROUP_BACKUP)
+        Serializer\Groups(self::GROUP_BACKUP)
     ]
     public ?string $backup_time_code = null {
         set(string|int|null $value) => $this->truncateNullableString(
@@ -333,14 +333,14 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "Whether to exclude media in automated backups.", example: "false"),
         ORM\Column,
-        Groups(self::GROUP_BACKUP)
+        Serializer\Groups(self::GROUP_BACKUP)
     ]
     public bool $backup_exclude_media = false;
 
     #[
         OA\Property(description: "Number of backups to keep, or infinite if zero/null.", example: 2),
         ORM\Column(type: 'smallint'),
-        Groups(self::GROUP_BACKUP)
+        Serializer\Groups(self::GROUP_BACKUP)
     ]
     public int $backup_keep_copies = 0 {
         set => $this->truncateSmallInt($value);
@@ -349,7 +349,7 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "The storage location ID for automated backups.", example: 1),
         ORM\Column(nullable: true),
-        Groups(self::GROUP_BACKUP)
+        Serializer\Groups(self::GROUP_BACKUP)
     ]
     public ?int $backup_storage_location = null {
         set(string|int|null $value) => Types::intOrNull($value);
@@ -358,7 +358,7 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "The output format for the automated backup.", example: 'zip'),
         ORM\Column(nullable: true),
-        Groups(self::GROUP_BACKUP)
+        Serializer\Groups(self::GROUP_BACKUP)
     ]
     public ?string $backup_format = null {
         get => Types::stringOrNull($this->backup_format, true);
@@ -372,7 +372,7 @@ final class Settings implements Stringable
         ),
         ORM\Column,
         Attributes\AuditIgnore,
-        Groups(self::GROUP_BACKUP)
+        Serializer\Groups(self::GROUP_BACKUP)
     ]
     public int $backup_last_run = 0;
 
@@ -385,7 +385,7 @@ final class Settings implements Stringable
         OA\Property(description: "The output of the latest automated backup task.", example: ""),
         ORM\Column(type: 'text', nullable: true),
         Attributes\AuditIgnore,
-        Groups(self::GROUP_BACKUP)
+        Serializer\Groups(self::GROUP_BACKUP)
     ]
     public ?string $backup_last_output = null;
 
@@ -411,7 +411,7 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "Temporarily disable all sync tasks.", example: "false"),
         ORM\Column,
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public bool $sync_disabled = false;
 
@@ -440,7 +440,7 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "The license key for the Maxmind Geolite download.", example: ""),
         ORM\Column(length: 255, nullable: true),
-        Groups(self::GROUP_GEO_IP)
+        Serializer\Groups(self::GROUP_GEO_IP)
     ]
     public ?string $geolite_license_key = null {
         get => Types::stringOrNull($this->geolite_license_key, true);
@@ -453,7 +453,7 @@ final class Settings implements Stringable
         ),
         ORM\Column,
         Attributes\AuditIgnore,
-        Groups(self::GROUP_GEO_IP)
+        Serializer\Groups(self::GROUP_GEO_IP)
     ]
     public int $geolite_last_run = 0;
 
@@ -465,14 +465,14 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "Enable e-mail delivery across the application.", example: "true"),
         ORM\Column,
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public bool $mail_enabled = false;
 
     #[
         OA\Property(description: "The name of the sender of system e-mails.", example: "AzuraCast"),
         ORM\Column(length: 255, nullable: true),
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public ?string $mail_sender_name = '';
 
@@ -482,28 +482,28 @@ final class Settings implements Stringable
             example: "example@example.com"
         ),
         ORM\Column(length: 255, nullable: true),
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public ?string $mail_sender_email = '';
 
     #[
         OA\Property(description: "The host to send outbound SMTP mail.", example: "smtp.example.com"),
         ORM\Column(length: 255, nullable: true),
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public ?string $mail_smtp_host = '';
 
     #[
         OA\Property(description: "The port for sending outbound SMTP mail.", example: 465),
         ORM\Column(type: 'smallint'),
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public int $mail_smtp_port = 0;
 
     #[
         OA\Property(description: "The username when connecting to SMTP mail.", example: "username"),
         ORM\Column(length: 255, nullable: true),
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public ?string $mail_smtp_username = '' {
         set => $this->truncateNullableString($value);
@@ -512,42 +512,42 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "The password when connecting to SMTP mail.", example: "password"),
         ORM\Column(length: 255, nullable: true),
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public ?string $mail_smtp_password = '';
 
     #[
         OA\Property(description: "Whether to use a secure (TLS) connection when sending SMTP mail.", example: "true"),
         ORM\Column,
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public bool $mail_smtp_secure = true;
 
     #[
         OA\Property(description: "The external avatar service to use when fetching avatars.", example: "libravatar"),
         ORM\Column(length: 25, nullable: true),
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public ?string $avatar_service = null;
 
     #[
         OA\Property(description: "The default avatar URL.", example: ""),
         ORM\Column(length: 255, nullable: true),
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public ?string $avatar_default_url = null;
 
     #[
         OA\Property(description: "ACME (LetsEncrypt) e-mail address.", example: ""),
         ORM\Column(length: 255, nullable: true),
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public ?string $acme_email = null;
 
     #[
         OA\Property(description: "ACME (LetsEncrypt) domain name(s).", example: ""),
         ORM\Column(length: 255, nullable: true),
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public ?string $acme_domains = null {
         get => Types::stringOrNull($this->acme_domains, true);
@@ -576,7 +576,7 @@ final class Settings implements Stringable
     #[
         OA\Property(description: "IP Address Source"),
         ORM\Column(type: 'string', length: 50, nullable: true, enumType: IpSources::class),
-        Groups(self::GROUP_GENERAL)
+        Serializer\Groups(self::GROUP_GENERAL)
     ]
     public ?IpSources $ip_source = null;
 

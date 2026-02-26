@@ -9,7 +9,7 @@ use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Security\SplitToken;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute as Serializer;
 
 #[OA\Schema(
     type: 'object'
@@ -21,7 +21,7 @@ trait HasSplitTokenFields
     )]
     #[ORM\Column(length: 16)]
     #[ORM\Id]
-    #[Groups([
+    #[Serializer\Groups([
         EntityGroupsInterface::GROUP_ID,
         EntityGroupsInterface::GROUP_ALL,
     ])]

@@ -17,7 +17,7 @@ $console = new Symfony\Component\Console\Application(
 
 $installCommand = new App\Installer\Command\InstallCommand();
 $installCommand->setEnvironment($environment);
-$console->add($installCommand);
+$console->addCommand($installCommand);
 
 $console->setDefaultCommand('install');
 

@@ -11,6 +11,33 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.23.3 (Feb 26, 2026)
+
+This release includes numerous incremental bug fixes and new features, along with a vulnerability fix that is
+particularly important for users of multi-tenant installations (i.e. resellers). Upgrading is strongly recommended in
+these environments.
+
+## Code Quality/Technical Changes
+
+- Added a new API endpoint allowing super administrators to create an API key for any given user.
+
+- If you are mounting a filesystem that has folders or paths that are not accessible by AzuraCast, the software will 
+  skip these directories instead of them preventing regular operation.
+
+## Bug Fixes
+
+- Fixed a vulnerability where some media-based endpoints did not fully perform permission checking on the user making
+  the API call. This vulnerability does not allow unauthenticated members of the public to modify your files, but would
+  allow logged-in users associated with other stations on a single installation to possibly modify or add files to the
+  incorrect station, provided they knew the station ID. This vulnerability was introduced in a community pull request on
+  July 7, 2025 and affects all versions of AzuraCast released afterward, including 0.22.0, 0.22.1, 0.23.0, and 0.23.2.
+
+- Fixed a bug preventing setup from completing correctly.
+
+- Fixed a bug where UTC offsets that weren't a full hour (i.e. +6:30 UTC) were not displayed correctly in dropdowns.
+
+---
+
 # AzuraCast 0.23.2 (Dec 11, 2025)
 
 ## New Features/Changes

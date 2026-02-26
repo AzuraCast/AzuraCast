@@ -1,10 +1,15 @@
 import {computed, UnwrapNestedRefs, WritableComputedRef} from "vue";
 import {reactiveComputed} from "@vueuse/core";
-import {RegleFieldStatus} from "@regle/core";
+import {InferRegleRules, InferRegleShortcuts, RegleFieldStatus} from "@regle/core";
+import {useAppRegle} from "~/vendor/regle.ts";
 
 export type ModelFormField = string | number | boolean | Array<any> | null | undefined
 
-export type ValidatedField<T = ModelFormField> = RegleFieldStatus<T>
+export type ValidatedField<T = ModelFormField> = RegleFieldStatus<
+    T,
+    InferRegleRules<typeof useAppRegle>,
+    InferRegleShortcuts<typeof useAppRegle>
+>
 
 export type FormFieldProps<T = ModelFormField> = {
     required?: boolean

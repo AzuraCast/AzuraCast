@@ -19,8 +19,7 @@ use ReflectionException;
 use ReflectionProperty;
 use SensitiveParameter;
 use Stringable;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[
@@ -42,13 +41,13 @@ class User implements Stringable, IdentifiableEntityInterface
         ORM\Column(length: 100, nullable: false),
         Assert\NotBlank,
         Assert\Email,
-        Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
     public string $email;
 
     #[
         OA\Property(example: ""),
-        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
         ORM\Column(length: 255, nullable: false),
         Attributes\AuditIgnore
     ]
@@ -99,7 +98,7 @@ class User implements Stringable, IdentifiableEntityInterface
     #[
         OA\Property(example: "Demo Account"),
         ORM\Column(length: 100, nullable: true),
-        Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
     public ?string $name = null {
         set => $this->truncateNullableString($value, 100);
@@ -108,7 +107,7 @@ class User implements Stringable, IdentifiableEntityInterface
     #[
         OA\Property(example: "en_US"),
         ORM\Column(length: 25, nullable: true),
-        Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
     public ?string $locale = null {
         set => $this->truncateNullableString($value, 25);
@@ -118,7 +117,7 @@ class User implements Stringable, IdentifiableEntityInterface
         OA\Property(example: true),
         ORM\Column(nullable: true),
         Attributes\AuditIgnore,
-        Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
     public ?bool $show_24_hour_time = null;
 
@@ -126,7 +125,7 @@ class User implements Stringable, IdentifiableEntityInterface
         OA\Property(example: "A1B2C3D4"),
         ORM\Column(length: 255, nullable: true),
         Attributes\AuditIgnore,
-        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
     public ?string $two_factor_secret = null {
         set => $this->truncateNullableString($value);
@@ -136,7 +135,7 @@ class User implements Stringable, IdentifiableEntityInterface
         OA\Property(example: OpenApi::SAMPLE_TIMESTAMP),
         ORM\Column,
         Attributes\AuditIgnore,
-        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
     public readonly int $created_at;
 
@@ -144,7 +143,7 @@ class User implements Stringable, IdentifiableEntityInterface
         OA\Property(example: OpenApi::SAMPLE_TIMESTAMP),
         ORM\Column,
         Attributes\AuditIgnore,
-        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
     public int $updated_at;
 
@@ -155,7 +154,7 @@ class User implements Stringable, IdentifiableEntityInterface
         ORM\JoinTable(name: 'user_has_role'),
         ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE'),
         ORM\InverseJoinColumn(name: 'role_id', referencedColumnName: 'id', onDelete: 'CASCADE'),
-        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
         DeepNormalize(true),
         Serializer\MaxDepth(1)
     ]
@@ -164,7 +163,7 @@ class User implements Stringable, IdentifiableEntityInterface
     /** @var Collection<int, ApiKey> */
     #[
         ORM\OneToMany(targetEntity: ApiKey::class, mappedBy: 'user'),
-        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
         DeepNormalize(true)
     ]
     public private(set) Collection $api_keys;
@@ -172,7 +171,7 @@ class User implements Stringable, IdentifiableEntityInterface
     /** @var Collection<int, UserPasskey> */
     #[
         ORM\OneToMany(targetEntity: UserPasskey::class, mappedBy: 'user'),
-        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
         DeepNormalize(true)
     ]
     public private(set) Collection $passkeys;
@@ -180,7 +179,7 @@ class User implements Stringable, IdentifiableEntityInterface
     /** @var Collection<int, UserLoginToken> */
     #[
         ORM\OneToMany(targetEntity: UserLoginToken::class, mappedBy: 'user'),
-        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
         DeepNormalize(true)
     ]
     public private(set) Collection $login_tokens;

@@ -61,6 +61,7 @@ final class AlbumArtCustomAsset extends AbstractMultiPatternCustomAsset
         [$pattern, $encoder] = $patterns[$mimeType] ?? $patterns['default'];
 
         $destPath = $this->getPathForPattern($pattern, $station);
+
         $this->ensureDirectoryExists(dirname($destPath));
 
         $newImage->encode($encoder)->save($destPath);

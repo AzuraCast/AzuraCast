@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Files;
 
+use App\Cache\MediaListCache;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
@@ -37,6 +38,7 @@ use Psr\Http\Message\ResponseInterface;
 final readonly class MakeDirectoryAction implements SingleActionInterface
 {
     public function __construct(
+        private MediaListCache $mediaListCache,
         private StationFilesystems $stationFilesystems
     ) {
     }
@@ -66,6 +68,8 @@ final readonly class MakeDirectoryAction implements SingleActionInterface
             return $response->withStatus(400)
                 ->withJson(new Error(400, $e->getMessage()));
         }
+
+        $this->mediaListCache->clearCache($station);
 
         return $response->withJson(Status::created());
     }

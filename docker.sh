@@ -372,6 +372,7 @@ install-docker() {
 
 install-docker-compose() {
   set -e
+  local DOCKER_COMPOSE_VERSION
   echo "Installing Docker Compose..."
 
   CURRENT_OS=$(uname -s)
@@ -381,30 +382,36 @@ install-docker-compose() {
     exit 1
   fi
 
-  curl -fsSL -o docker-compose https://github.com/docker/compose/releases/download/v2.4.1/docker-compose-linux-$(uname -m)
-
-  ARCHITECTURE=amd64
-  if [ "$(uname -m)" = "aarch64" ]; then
-    ARCHITECTURE=arm64
-  fi
-  curl -fsSL -o docker-compose-switch https://github.com/docker/compose-switch/releases/download/v1.0.4/docker-compose-linux-${ARCHITECTURE}
-
-  if [[ $EUID -ne 0 ]]; then
-    sudo chmod a+x ./docker-compose
-    sudo chmod a+x ./docker-compose-switch
-
-    sudo mv ./docker-compose /usr/libexec/docker/cli-plugins/docker-compose
-    sudo mv ./docker-compose-switch /usr/local/bin/docker-compose
+  DOCKER_COMPOSE_VERSION=$(version-number $(docker compose version --short || echo "0.0.0"))
+  if (( $DOCKER_COMPOSE_VERSION >= $(version-number "5.0.0") )); then
+    echo "Docker Compose is already installed and newer than version 5.0.0. No update needed."
+    set +e
   else
-    chmod a+x ./docker-compose
-    chmod a+x ./docker-compose-switch
+    curl -fsSL -o docker-compose https://github.com/docker/compose/releases/download/v5.0.0/docker-compose-linux-$(uname -m)
 
-    mv ./docker-compose /usr/libexec/docker/cli-plugins/docker-compose
-    mv ./docker-compose-switch /usr/local/bin/docker-compose
+    ARCHITECTURE=amd64
+    if [ "$(uname -m)" = "aarch64" ]; then
+      ARCHITECTURE=arm64
+    fi
+    curl -fsSL -o docker-compose-switch https://github.com/docker/compose-switch/releases/download/v1.0.5/docker-compose-linux-${ARCHITECTURE}
+
+    if [[ $EUID -ne 0 ]]; then
+      sudo chmod a+x ./docker-compose
+      sudo chmod a+x ./docker-compose-switch
+
+      sudo mv ./docker-compose /usr/libexec/docker/cli-plugins/docker-compose
+      sudo mv ./docker-compose-switch /usr/local/bin/docker-compose
+    else
+      chmod a+x ./docker-compose
+      chmod a+x ./docker-compose-switch
+
+      mv ./docker-compose /usr/libexec/docker/cli-plugins/docker-compose
+      mv ./docker-compose-switch /usr/local/bin/docker-compose
+    fi
+
+    echo "Docker Compose updated!"
+    set +e
   fi
-
-  echo "Docker Compose updated!"
-  set +e
 }
 
 run-installer() {

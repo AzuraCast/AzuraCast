@@ -5,6 +5,3 @@ parameters:
 
 		-
 				identifier: missingType.generics
-
-		-
-				identifier: doctrine.finalEntity

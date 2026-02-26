@@ -139,6 +139,31 @@ final class StationScheduleRepository extends Repository
                     // Handle overnight schedule items
                     if ($end < $start) {
                         $end = $end->addDay();
+
+                        // For overnight schedules, verify the event end doesn't exceed the configured end_date
+                        if (!empty($scheduleItem->end_date)) {
+                            $configuredEndDate = CarbonImmutable::createFromFormat(
+                                'Y-m-d',
+                                $scheduleItem->end_date,
+                                $stationTz
+                            );
+                            if (null !== $configuredEndDate) {
+                                // Allow one extra day if start_date == end_date (single overnight event)
+                                if ($scheduleItem->start_date === $scheduleItem->end_date) {
+                                    $configuredEndDate = $configuredEndDate->addDay();
+                                }
+                                $maxEndDateTime = StationSchedule::getDateTime(
+                                    $scheduleItem->end_time,
+                                    $stationTz,
+                                    $configuredEndDate
+                                );
+
+                                if ($end->greaterThan($maxEndDateTime)) {
+                                    $i = $i->addDay();
+                                    continue; // Skip this event - it exceeds the configured date range
+                                }
+                            }
+                        }
                     }
 
                     // Skip events that have already happened today.

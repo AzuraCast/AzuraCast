@@ -74,6 +74,7 @@ import {useQuery} from "@tanstack/vue-query";
 import {QueryKeys} from "~/entities/Queries.ts";
 import {ApiAdminVueSettingsProps} from "~/entities/ApiInterfaces.ts";
 import {useApiRouter} from "~/functions/useApiRouter.ts";
+import {omitBy} from "es-toolkit/compat";
 
 defineOptions({
     inheritAttrs: false
@@ -118,7 +119,8 @@ const {data, isLoading: dataLoading} = useQuery<ApiAdminVueSettingsProps>({
 
 const populateForm = (data: typeof form.value) => {
     resetForm();
-    form.value = mergeExisting(form.value, data);
+
+    form.value = mergeExisting(form.value, omitBy(data, val => val === null));
 };
 
 const relist = async () => {

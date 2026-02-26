@@ -16,7 +16,7 @@ const storageAvailable = (type: StorageType): boolean => {
 }
 
 export default function useOptionalStorage<T extends (string | number | boolean | object | null)>(
-    key: string,
+    key: MaybeRefOrGetter<string>,
     defaults: MaybeRefOrGetter<T>,
     options?: UseStorageOptions<T>
 ): RemovableRef<T> {

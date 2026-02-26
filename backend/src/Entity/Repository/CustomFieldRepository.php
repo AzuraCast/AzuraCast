@@ -97,13 +97,19 @@ final class CustomFieldRepository extends Repository
         )->setParameter('media', $media)
             ->execute();
 
-        foreach ($customFields as $fieldId => $fieldValue) {
-            $field = is_numeric($fieldId)
-                ? $this->em->find(CustomField::class, $fieldId)
-                : $this->em->getRepository(CustomField::class)->findOneBy(['short_name' => $fieldId]);
+        /** @var array<array-key, CustomField> $customFieldLookup */
+        $customFieldLookup = [];
+        foreach ($this->getRepository()->findAll() as $customField) {
+            $customFieldLookup[$customField->id] = $customField;
+            $customFieldLookup[$customField->short_name] = $customField;
+        }
 
-            if ($field instanceof CustomField) {
-                $record = new StationMediaCustomField($media, $field);
+        foreach ($customFields as $fieldId => $fieldValue) {
+            if (isset($customFieldLookup[$fieldId])) {
+                $record = new StationMediaCustomField(
+                    $media,
+                    $customFieldLookup[$fieldId]
+                );
                 $record->value = $fieldValue;
 
                 $this->em->persist($record);

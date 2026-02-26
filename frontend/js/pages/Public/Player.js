@@ -1,4 +1,4 @@
-import Player from "~/components/Public/Player.vue";
 import initApp from "~/layout";
+import EmbedPlayer from "~/components/Public/EmbedPlayer.vue";
 
-initApp(Player);
+initApp(EmbedPlayer);

@@ -11,7 +11,6 @@ use App\Event\GetSyncTasks;
 use App\Sync\Task\AbstractTask;
 use App\Utilities\Types;
 use Doctrine\Inflector\InflectorFactory;
-use Generator;
 use InvalidArgumentException;
 use Monolog\LogRecord;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -140,45 +139,45 @@ final class SingleTaskCommand extends AbstractSyncCommand
      */
     public function getTask(string $taskName): AbstractTask
     {
+        $validTasks = $this->getValidTasks();
+
+        /** @var class-string|null $taskToRun */
+        $taskToRun = null;
+
         // Accept literal FQDN of class.
-        if ($this->di->has($taskName)) {
-            /** @var class-string $taskName */
-            $taskClass = $this->di->get($taskName);
-            assert($taskClass instanceof AbstractTask);
+        if (in_array($taskName, $validTasks, true)) {
+            $taskToRun = $taskName;
+        } else {
+            // Accept other forms like 'TaskName', 'task_name' or 'task-name'
+            if (str_contains($taskName, '\\')) {
+                $taskName = substr($taskName, strrpos($taskName, '\\') + 1);
+            }
 
-            return $taskClass;
+            $inflector = InflectorFactory::create()->build();
+            $taskName = $inflector->classify($taskName);
+
+            foreach ($validTasks as $validTaskName) {
+                $validTaskShort = substr($validTaskName, strrpos($validTaskName, '\\') + 1);
+
+                if ($validTaskShort === $taskName || $validTaskShort === $taskName . 'Task') {
+                    $taskToRun = $validTaskName;
+                    break;
+                }
+            }
         }
 
-        // Accept any shorter form of the task name, i.e.
-        // "check-updates" -> App\Sync\Task\CheckUpdatesTask
-
-        if (str_contains($taskName, '\\')) {
-            $taskName = substr($taskName, strrpos($taskName, '\\') + 1);
-        }
-
-        if (!str_ends_with(strtolower($taskName), 'task')) {
-            $taskName .= 'Task';
-        }
-
-        $inflector = InflectorFactory::create()->build();
-        $taskName = $inflector->classify($taskName);
-
-        $taskNamespace = new ReflectionClass(AbstractTask::class)->getNamespaceName();
-
-        /** @var class-string $taskName */
-        $taskName = $taskNamespace . '\\' . $taskName;
-
-        if ($this->di->has($taskName)) {
-            $taskClass = $this->di->get($taskName);
-            assert($taskClass instanceof AbstractTask);
-
-            return $taskClass;
+        if (null !== $taskToRun) {
+            $taskClass = $this->di->get($taskToRun);
+            if ($taskClass instanceof AbstractTask) {
+                return $taskClass;
+            }
         }
 
         throw new InvalidArgumentException('Task not found.');
     }
 
-    private function getValidTasks(): Generator
+    /** @return class-string<AbstractTask>[] */
+    private function getValidTasks(): array
     {
         $syncTasksEvent = new GetSyncTasks();
         $this->eventDispatcher->dispatch($syncTasksEvent);

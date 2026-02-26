@@ -31,7 +31,9 @@
                                 v-model="dateRange"
                                 :options="{
                                     timezone: timezone,
-                                    enableTimePicker: true,
+                                    timeConfig: {
+                                        enableTimePicker: true
+                                    },
                                     minDate: minDate,
                                     maxDate: maxDate,
                                 }"

@@ -402,7 +402,7 @@ return static function (RouteCollectorProxy $group) {
                                         Controller\Api\Stations\Files\FlowUploadAction::class
                                     )->setName('api:stations:files:upload');
                                 }
-                            );
+                            )->add(new Middleware\Permissions(StationPermissions::Media, true));
 
                             $group->group(
                                 '/file/{id}',

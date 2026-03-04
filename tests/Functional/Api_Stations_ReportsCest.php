@@ -133,7 +133,7 @@ class Api_Stations_ReportsCest extends CestAbstract
 
         $response = $I->grabResponse();
 
-        $csvReader = Reader::createFromString($response);
+        $csvReader = Reader::fromString($response);
         $csvReader->setHeaderOffset(0);
 
         $csvHeaders = $csvReader->getHeader();

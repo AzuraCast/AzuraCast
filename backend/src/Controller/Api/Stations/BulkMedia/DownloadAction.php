@@ -120,7 +120,7 @@ final class DownloadAction implements SingleActionInterface
         foreach ($query->getArrayResult() as $row) {
             $extraMetadata = [];
             foreach ($extraMetadataFields as $fieldName) {
-                $extraMetadata[] = $row['extra_metadata'][$fieldName] ?? '';
+                $extraMetadata[] = $row['extra_metadata_raw'][$fieldName] ?? '';
             }
 
             $customFieldsById = [];

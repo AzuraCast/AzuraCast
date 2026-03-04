@@ -51,6 +51,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 proxy_intercept_errors    on;
                 proxy_next_upstream       error timeout invalid_header;
                 proxy_redirect            off;
+                proxy_set_header          Cookie "";
                 proxy_connect_timeout     60;
 
                 proxy_set_header Host \$host/{$listenBaseUrl};

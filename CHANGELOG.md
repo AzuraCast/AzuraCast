@@ -31,6 +31,8 @@ release channel, you can take advantage of these new features and fixes.
 
 - Tweaked our port 80 web proxy to avoid issues caused by oversized cookie headers.
 
+- Fixed an issue that may have caused bulk SFTP uploads to result in a temporary IP ban.
+
 ---
 
 # AzuraCast 0.23.3 (Feb 26, 2026)

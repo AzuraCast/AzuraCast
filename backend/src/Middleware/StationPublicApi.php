@@ -20,7 +20,7 @@ final class StationPublicApi extends RequireLogin
         try {
             $station = $request->getStation();
 
-            if (!$station->enable_public_page && !$station->enable_public_api) {
+            if (!$station->enable_public_api) {
                 return parent::__invoke($request, $handler);
             }
         } catch (Exception) {

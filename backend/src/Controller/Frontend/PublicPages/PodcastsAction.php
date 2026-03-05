@@ -6,7 +6,6 @@ namespace App\Controller\Frontend\PublicPages;
 
 use App\Controller\Frontend\PublicPages\Traits\IsEmbeddable;
 use App\Controller\SingleActionInterface;
-use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities\Types;
@@ -22,11 +21,6 @@ final class PodcastsAction implements SingleActionInterface
         array $params
     ): ResponseInterface {
         $station = $request->getStation();
-
-        if (!$station->enable_public_page) {
-            throw NotFoundException::station();
-        }
-
         $isEmbedded = $this->isEmbedded($request, $params);
 
         $pageClass = 'podcasts station-' . $station->short_name;

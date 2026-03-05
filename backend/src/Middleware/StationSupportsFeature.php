@@ -18,7 +18,10 @@ final class StationSupportsFeature extends AbstractMiddleware
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $this->feature->assertSupportedForStation($request->getStation());
+        $this->feature->assertSupportedForStation(
+            $request->getStation(),
+            $request->getSettings()
+        );
 
         return $handler->handle($request);
     }

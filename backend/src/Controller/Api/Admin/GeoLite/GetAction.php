@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin\GeoLite;
 
-use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Admin\GeoLiteStatus;
 use App\Http\Response;
@@ -31,20 +30,17 @@ use Psr\Http\Message\ResponseInterface;
 )]
 final class GetAction implements SingleActionInterface
 {
-    use SettingsAwareTrait;
-
     public function __invoke(
         ServerRequest $request,
         Response $response,
         array $params
     ): ResponseInterface {
         $version = GeoLite::getVersion();
-        $settings = $this->readSettings();
 
         return $response->withJson(
             new GeoLiteStatus(
                 $version,
-                $settings->geolite_license_key
+                $request->getSettings()->geolite_license_key
             )
         );
     }

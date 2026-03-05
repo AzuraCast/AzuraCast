@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin\Vue;
 
 use App\Container\EnvironmentAwareTrait;
-use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Admin\Vue\UpdateProps;
 use App\Http\Response;
@@ -17,7 +16,6 @@ use Psr\Http\Message\ResponseInterface;
 final class UpdatesAction implements SingleActionInterface
 {
     use EnvironmentAwareTrait;
-    use SettingsAwareTrait;
 
     public function __construct(
         private readonly Version $version,
@@ -30,7 +28,7 @@ final class UpdatesAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $settings = $this->readSettings();
+        $settings = $request->getSettings();
 
         $enableWebUpdates = $this->environment->enableWebUpdater();
         if ($enableWebUpdates && !$this->webUpdater->ping()) {

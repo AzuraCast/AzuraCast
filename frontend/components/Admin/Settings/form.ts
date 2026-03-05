@@ -17,6 +17,7 @@ type Form = Required<Pick<
     | 'always_use_ssl'
     | 'ip_source'
     | 'api_access_control'
+    | 'enable_liquidsoap_editing'
     | 'check_for_updates'
     | 'acme_email'
     | 'acme_domains'
@@ -50,6 +51,7 @@ export const useAdminSettingsForm = defineStore(
             always_use_ssl: false,
             ip_source: IpSources.Local,
             api_access_control: '*',
+            enable_liquidsoap_editing: true,
             check_for_updates: true,
             acme_email: '',
             acme_domains: '',

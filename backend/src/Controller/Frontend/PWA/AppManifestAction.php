@@ -6,7 +6,6 @@ namespace App\Controller\Frontend\PWA;
 
 use App\Controller\SingleActionInterface;
 use App\Enums\SupportedThemes;
-use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -19,10 +18,6 @@ final class AppManifestAction implements SingleActionInterface
         array $params
     ): ResponseInterface {
         $station = $request->getStation();
-
-        if (!$station->enable_public_page) {
-            throw NotFoundException::station();
-        }
 
         $customization = $request->getCustomization();
 

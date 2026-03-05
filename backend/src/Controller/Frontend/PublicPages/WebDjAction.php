@@ -6,7 +6,6 @@ namespace App\Controller\Frontend\PublicPages;
 
 use App\Controller\SingleActionInterface;
 use App\Enums\StationFeatures;
-use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
@@ -26,12 +25,9 @@ final readonly class WebDjAction implements SingleActionInterface
         array $params
     ): ResponseInterface {
         $station = $request->getStation();
+        $settings = $request->getSettings();
 
-        if (!$station->enable_public_page) {
-            throw NotFoundException::station();
-        }
-
-        StationFeatures::Streamers->assertSupportedForStation($station);
+        StationFeatures::Streamers->assertSupportedForStation($station, $settings);
 
         $backend = $this->adapters->requireBackendAdapter($station);
 

@@ -323,6 +323,13 @@ export interface ApiAdminLogList {
   stationLogs: ApiAdminStationLogList[];
 }
 
+export interface ApiAdminNewApiKey {
+  /** User ID or e-mail address. */
+  user: number | string;
+  /** @example "Admin-generated API key" */
+  comment?: string;
+}
+
 export interface ApiAdminNewLoginToken {
   /** User ID or e-mail address. */
   user: number | string;
@@ -1261,6 +1268,8 @@ export interface ApiStationPlaylistQueue {
    * @example "Aluko River"
    */
   title?: string;
+  /** The UNIX timestamp when this specific track was last played. */
+  last_played?: number | null;
 }
 
 export interface ApiStationProfile {
@@ -1866,6 +1875,11 @@ export interface Settings {
    */
   api_access_control?: string | null;
   /**
+   * Allow stations to manually edit Liquidsoap code.
+   * @example "true"
+   */
+  enable_liquidsoap_editing?: boolean;
+  /**
    * Whether to use high-performance static JSON for Now Playing data updates.
    * @example "false"
    */
@@ -2132,10 +2146,15 @@ export type Station = HasAutoIncrementId & {
    */
   is_streamer_live?: boolean;
   /**
-   * Whether this station is visible as a public page and in a now-playing API response.
+   * Whether this station's public pages (player, on-demand streaming, etc.) are visible to non-authenticated users.
    * @example true
    */
   enable_public_page?: boolean;
+  /**
+   * Whether the public-facing API endpoints (now playing, art, etc.) are visible to non-authenticated users. Automatically enabled if 'enable_public_page' is true.
+   * @example true
+   */
+  enable_public_api?: boolean;
   /**
    * Whether this station has a public 'on-demand' streaming and download page.
    * @example true

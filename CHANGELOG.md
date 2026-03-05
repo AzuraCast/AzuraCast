@@ -5,9 +5,31 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **New "Enable Public APIs" Setting on Stations**: We have separated the "Enable Public Pages" permission into one for
+  public pages, and one for public-facing APIs. If the public pages setting is enabled, APIs are enabled by default.
+  This allows stations to build third-party players without using our built-in public pages.
+
+- **New "Allow Stations to Edit Raw Liquidsoap Configuration" Global Setting**: In multi-tenant environments (i.e.
+  resellers), giving users full access to edit custom Liquidsoap configuration can have security implications, as
+  Liquidsoap's scripting language allows the user to call out to external processes or read system files. You can now
+  disable this feature globally via a setting on the System Settings page, which applies to all stations regardless of
+  individual user permissions.
+
 ## Code Quality/Technical Changes
 
+- The ID3 metadata tag "website" now maps to "url_artist" for custom field assignment.
+
+- We have removed the "EXPOSE 8000-8999" line from our Dockerfile; this has no effect on the actual ports that we expose
+  in the software, but it will prevent some developer software from assuming that every port from 8000 to 8999 is in use
+  by AzuraCast even when that isn't the case.
+
 ## Bug Fixes
+
+- Improved cache invalidation when editing fields on the Media Manager page.
+
+- Fixed a bug preventing custom cue points from appearing when exporting bulk media CSVs.
+
+- Tweaked our port 80 web proxy to avoid issues caused by oversized cookie headers.
 
 ---
 

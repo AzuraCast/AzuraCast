@@ -6,7 +6,6 @@ namespace App\Controller\Api\Admin\Debug;
 
 use App\Cache\SyncStatusCache;
 use App\Container\EnvironmentAwareTrait;
-use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Admin\Debug\SyncTask;
 use App\Event\GetSyncTasks;
@@ -44,7 +43,6 @@ use ReflectionClass;
 final class ListSyncTasksAction implements SingleActionInterface
 {
     use EnvironmentAwareTrait;
-    use SettingsAwareTrait;
 
     public function __construct(
         private readonly EventDispatcherInterface $dispatcher,
@@ -55,14 +53,13 @@ final class ListSyncTasksAction implements SingleActionInterface
     public function __invoke(ServerRequest $request, Response $response, array $params): ResponseInterface
     {
         $router = $request->getRouter();
+        $settings = $request->getSettings();
 
         $syncTasks = [];
 
         $now = Time::nowUtc();
         $syncTasksEvent = new GetSyncTasks();
         $this->dispatcher->dispatch($syncTasksEvent);
-
-        $settings = $this->readSettings();
 
         /** @var class-string<AbstractTask> $task */
         foreach ($syncTasksEvent->getTasks() as $task) {

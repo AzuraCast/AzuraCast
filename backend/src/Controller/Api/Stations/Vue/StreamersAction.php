@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Vue;
 
-use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Stations\Vue\StreamersProps;
 use App\Http\Response;
@@ -14,8 +13,6 @@ use Psr\Http\Message\ResponseInterface;
 
 final class StreamersAction implements SingleActionInterface
 {
-    use SettingsAwareTrait;
-
     public function __construct(
         private readonly AzuraCastCentral $acCentral,
     ) {
@@ -27,8 +24,8 @@ final class StreamersAction implements SingleActionInterface
         array $params
     ): ResponseInterface {
         $station = $request->getStation();
+        $settings = $request->getSettings();
 
-        $settings = $this->readSettings();
         $backendConfig = $station->backend_config;
 
         $serverUrl = ($settings->getBaseUrlAsUri() ?? $request->getRouter()->getBaseUrl())->getHost();

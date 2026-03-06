@@ -39,12 +39,14 @@ final class Strings
      * Generate a randomized password of specified length.
      *
      * @param int $length
+     * @param string $keyspace
+     * @return string
      */
-    public static function generatePassword(int $length = 8): string
-    {
+    public static function generatePassword(
+        int $length = 8,
+        string $keyspace = '234679ACDEFGHJKLMNPQRTWXYZacdefghjkmnpqrtwxyz'
+    ): string {
         // String of all possible characters. Avoids using certain letters and numbers that closely resemble others.
-        $keyspace = '234679ACDEFGHJKLMNPQRTWXYZacdefghjkmnpqrtwxyz';
-
         $str = '';
         $max = mb_strlen($keyspace, '8bit') - 1;
 
@@ -52,6 +54,7 @@ final class Strings
             /** @noinspection RandomApiMigrationInspection */
             $str .= $keyspace[rand(0, $max)];
         }
+
         return $str;
     }
 

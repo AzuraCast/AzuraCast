@@ -1350,7 +1350,22 @@ final class ConfigWriter implements EventSubscriberInterface
      */
     public static function cleanUpString(?string $string): string
     {
-        return str_replace(['"', "\n", "\r"], ['\'', '', ''], $string ?? '');
+        $string = str_replace(['"', "\n", "\r"], ['\'', '', ''], $string ?? '');
+
+        // Remove strings that are interpolated
+        $string = preg_replace(
+            '/#{(.*)}/U',
+            '$1',
+            $string
+        );
+
+        $string = preg_replace(
+            '/\$\((.*)\)/U',
+            '$1',
+            $string ?? ''
+        );
+
+        return $string ?? '';
     }
 
     /**

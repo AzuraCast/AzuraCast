@@ -25,6 +25,12 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Hardened the security of our Liquidsoap script generation by escaping parts of strings used by Liquidsoap that could
+  be interpolated to include other values from the running script or to execute console commands. While this would not
+  allow anonymous listeners to modify an installation, it could represent a significant security risk in multi-tenant (
+  i.e. reseller) environments. In those environments, it is also recommended to entirely disable Liquidsoap custom
+  script editing (as made possible in "New Features" above) for further increased security.
+
 - Improved cache invalidation when editing fields on the Media Manager page.
 
 - Fixed a bug preventing custom cue points from appearing when exporting bulk media CSVs.

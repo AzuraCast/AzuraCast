@@ -926,8 +926,14 @@ final class ConfigWriter implements EventSubscriberInterface
             return;
         }
 
-        $settings = $event->getStation()->backend_config;
-        $customConfig = $settings->getCustomConfigurationSection($sectionName);
+        // If LS editing is disabled, don't add custom blocks to the written code.
+        $settings = $this->settingsRepo->readSettings();
+        if (!$settings->enable_liquidsoap_editing) {
+            return;
+        }
+
+        $backendConfig = $event->getStation()->backend_config;
+        $customConfig = $backendConfig->getCustomConfigurationSection($sectionName);
 
         if (!empty($customConfig)) {
             $event->appendLines(

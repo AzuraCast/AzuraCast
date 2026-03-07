@@ -365,7 +365,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
         ORM\Column,
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    public bool $enable_public_api {
+    public bool $enable_public_api = true {
         get {
             if ($this->enable_public_page) {
                 return true;

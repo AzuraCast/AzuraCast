@@ -5,6 +5,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.23.4 (Mar 8, 2026)
+
+## New Features/Changes
+
 - **New "Enable Public APIs" Setting on Stations**: We have separated the "Enable Public Pages" permission into one for
   public pages, and one for public-facing APIs. If the public pages setting is enabled, APIs are enabled by default.
   This allows stations to build third-party players without using our built-in public pages.

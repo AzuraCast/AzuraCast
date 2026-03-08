@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Entity\Migration;
 
+use App\Entity\Attributes\StableMigration;
 use Doctrine\DBAL\Schema\Schema;
 
+#[StableMigration('0.23.4')]
 final class Version20260305112630 extends AbstractMigration
 {
     public function getDescription(): string
@@ -30,7 +32,7 @@ final class Version20260305112630 extends AbstractMigration
 
         $this->connection->executeQuery(
             <<<'SQL'
-                UPDATE station SET enable_public_api=enable_public_page 
+                UPDATE station SET enable_public_api=enable_public_page
             SQL
         );
     }

@@ -5,7 +5,7 @@ info:
   license:
     name: 'GNU Affero General Public License v3.0 or later'
     url: 'https://www.gnu.org/licenses/agpl-3.0.txt'
-  version: 0.23.3
+  version: 0.23.4
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -9216,6 +9216,10 @@ components:
           type: string
           example: '*'
           nullable: true
+        enable_liquidsoap_editing:
+          description: 'Allow stations to manually edit Liquidsoap code.'
+          type: boolean
+          example: 'true'
         enable_static_nowplaying:
           description: 'Whether to use high-performance static JSON for Now Playing data updates.'
           type: boolean
@@ -9502,7 +9506,11 @@ components:
               type: boolean
               example: false
             enable_public_page:
-              description: 'Whether this station is visible as a public page and in a now-playing API response.'
+              description: "Whether this station's public pages (player, on-demand streaming, etc.) are visible to non-authenticated users."
+              type: boolean
+              example: true
+            enable_public_api:
+              description: "Whether the public-facing API endpoints (now playing, art, etc.) are visible to non-authenticated users. Automatically enabled if 'enable_public_page' is true."
               type: boolean
               example: true
             enable_on_demand:

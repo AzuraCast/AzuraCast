@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Frontend\PublicPages;
 
 use App\Controller\SingleActionInterface;
-use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Xml\Writer;
@@ -19,10 +18,6 @@ final class OEmbedAction implements SingleActionInterface
         array $params
     ): ResponseInterface {
         $station = $request->getStation();
-
-        if (!$station->enable_public_page) {
-            throw NotFoundException::station();
-        }
 
         $format = $params['format'] ?? 'json';
 

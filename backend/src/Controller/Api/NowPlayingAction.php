@@ -72,7 +72,7 @@ final readonly class NowPlayingAction implements SingleActionInterface
             $np = $this->nowPlayingCache->getForStation($station);
 
             $accessAllowed = true;
-            if (!$station->enable_public_page) {
+            if (!$station->enable_public_api) {
                 try {
                     $request->getUser();
                 } catch (Exception) {

@@ -14,8 +14,6 @@ use App\OpenApi;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /** @extends AbstractApiCrudController<Settings> */
 #[
@@ -53,13 +51,6 @@ final class SettingsController extends AbstractApiCrudController
 
     protected string $entityClass = Settings::class;
 
-    public function __construct(
-        Serializer $serializer,
-        ValidatorInterface $validator
-    ) {
-        parent::__construct($serializer, $validator);
-    }
-
     public function listAction(
         ServerRequest $request,
         Response $response,
@@ -73,8 +64,12 @@ final class SettingsController extends AbstractApiCrudController
             $context[AbstractNormalizer::GROUPS] = [$group];
         }
 
-        $settings = $this->readSettings();
-        return $response->withJson($this->toArray($settings, $context));
+        return $response->withJson(
+            $this->toArray(
+                $this->readSettings(),
+                $context
+            )
+        );
     }
 
     public function updateAction(

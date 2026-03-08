@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Traits;
 
-use App\Container\SettingsAwareTrait;
 use App\Http\ServerRequest;
 use App\Utilities\Types;
 use InvalidArgumentException;
@@ -13,8 +12,6 @@ use lbuchs\WebAuthn\WebAuthn;
 
 trait UsesWebAuthnTrait
 {
-    use SettingsAwareTrait;
-
     protected const string SESSION_CHALLENGE_KEY = 'webauthn_challenge';
     protected const int WEBAUTHN_TIMEOUT = 300;
 
@@ -23,7 +20,7 @@ trait UsesWebAuthnTrait
     protected function getWebAuthn(ServerRequest $request): WebAuthn
     {
         if (null === $this->webAuthn) {
-            $settings = $this->settingsRepo->readSettings();
+            $settings = $request->getSettings();
             $router = $request->getRouter();
 
             $this->webAuthn = new WebAuthn(

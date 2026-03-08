@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Frontend\Dashboard;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Container\SettingsAwareTrait;
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Controller\SingleActionInterface;
@@ -48,7 +47,6 @@ use Psr\Http\Message\ResponseInterface;
 final class StationsAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
-    use SettingsAwareTrait;
     use CanSortResults;
     use CanSearchResults;
 
@@ -102,7 +100,7 @@ final class StationsAction implements SingleActionInterface
         $paginator = Paginator::fromArray($viewStations, $request);
 
         $router = $request->getRouter();
-        $listenersEnabled = $this->readSettings()->isAnalyticsEnabled();
+        $listenersEnabled = $request->getSettings()->isAnalyticsEnabled();
 
         $paginator->setPostprocessor(
             function (NowPlaying $np) use ($router, $listenersEnabled, $acl) {

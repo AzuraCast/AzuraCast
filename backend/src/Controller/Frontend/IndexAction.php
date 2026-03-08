@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend;
 
-use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Exception\Http\InvalidRequestAttribute;
 use App\Http\Response;
@@ -13,15 +12,14 @@ use Psr\Http\Message\ResponseInterface;
 
 final class IndexAction implements SingleActionInterface
 {
-    use SettingsAwareTrait;
-
     public function __invoke(
         ServerRequest $request,
         Response $response,
         array $params
     ): ResponseInterface {
         // Redirect to complete setup, if it hasn't been completed yet.
-        $settings = $this->readSettings();
+        $settings = $request->getSettings();
+
         if (!$settings->isSetupComplete()) {
             return $response->withRedirect($request->getRouter()->named('setup:index'));
         }

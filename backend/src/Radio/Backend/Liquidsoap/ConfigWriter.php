@@ -27,6 +27,7 @@ use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
 use App\Radio\FallbackFile;
 use App\Radio\StereoTool;
+use App\Utilities\Strings;
 use App\Utilities\Types;
 use Carbon\CarbonImmutable;
 use RuntimeException;
@@ -83,10 +84,10 @@ final class ConfigWriter implements EventSubscriberInterface
         $pidfile = $configDir . '/liquidsoap.pid';
         $httpApiPort = $this->liquidsoap->getHttpApiPort($station);
 
-        $stationTz = self::cleanUpString($station->timezone ?? 'UTC');
+        $stationTz = self::toRawString($station->timezone ?? 'UTC');
 
-        $stationApiAuth = self::cleanUpString($station->adapter_api_key);
-        $stationApiUrl = self::cleanUpString(
+        $stationApiAuth = self::toRawString($station->adapter_api_key);
+        $stationApiUrl = self::toRawString(
             (string)$this->environment->getInternalUri()
                 ->withPath('/api/internal/' . $station->id . '/liquidsoap')
         );
@@ -110,15 +111,15 @@ final class ConfigWriter implements EventSubscriberInterface
         $defaultFade = self::toFloat($backendConfig->crossfade);
         $defaultCross = self::toFloat($backendConfig->getCrossfadeDuration());
 
-        $liveBroadcastText = self::cleanUpString(
+        $liveBroadcastText = self::toRawString(
             $backendConfig->live_broadcast_text
         );
 
-        $fallbackPath = self::cleanUpString(
+        $fallbackPath = self::toRawString(
             $this->fallbackFile->getFallbackPathForStation($station)
         );
 
-        $tempPath = self::cleanUpString(
+        $tempPath = self::toRawString(
             $station->getRadioTempDir()
         );
 
@@ -132,14 +133,14 @@ final class ConfigWriter implements EventSubscriberInterface
             
             settings.init.compact_before_start := true
             
-            environment.set("TZ", "{$stationTz}") 
+            environment.set("TZ", {$stationTz}) 
             
             settings.azuracast.liquidsoap_api_port := {$httpApiPort}
-            settings.azuracast.api_url := "{$stationApiUrl}"
-            settings.azuracast.api_key := "{$stationApiAuth}"
+            settings.azuracast.api_url := {$stationApiUrl}
+            settings.azuracast.api_key := {$stationApiAuth}
             settings.azuracast.media_path := "{$stationMediaDir}"
-            settings.azuracast.fallback_path := "{$fallbackPath}"
-            settings.azuracast.temp_path := "{$tempPath}"
+            settings.azuracast.fallback_path := {$fallbackPath}
+            settings.azuracast.temp_path := {$tempPath}
             
             settings.azuracast.compute_autocue := {$useComputeAutocue}
             
@@ -148,7 +149,7 @@ final class ConfigWriter implements EventSubscriberInterface
             settings.azuracast.enable_crossfade := {$enableCrossfade}
             settings.azuracast.crossfade_type := "{$crossfadeType}"
             
-            settings.azuracast.live_broadcast_text := "{$liveBroadcastText}"
+            settings.azuracast.live_broadcast_text := {$liveBroadcastText}
             
             # Start HTTP API Server
             azuracast.start_http_api()
@@ -227,7 +228,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 $playlistFilePath = PlaylistFileWriter::getPlaylistFilePath($playlist);
 
                 $playlistParams = [
-                    'id="' . self::cleanUpString($playlistVarName) . '"',
+                    'id=' . self::toRawString($playlistVarName),
                     'mime_type="audio/x-mpegurl"',
                 ];
 
@@ -244,13 +245,10 @@ final class ConfigWriter implements EventSubscriberInterface
                     . implode(',', $playlistParams) . ')';
 
                 if ($playlist->backendMerge()) {
-                    $playlistConfigLines[] = $playlistVarName . ' = merge_tracks(id="merge_'
-                        . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
+                    $playlistConfigLines[] = $playlistVarName . ' = merge_tracks(id="merge_' . $playlistVarName . '", ' . $playlistVarName . ')';
                 }
             } elseif (PlaylistRemoteTypes::Playlist === $playlist->remote_type) {
-                $playlistFunc = 'playlist("'
-                    . self::cleanUpString($playlist->remote_url)
-                    . '")';
+                $playlistFunc = 'playlist(' . self::toRawString($playlist->remote_url) . ')';
                 $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFunc;
             } else {
                 // Special handling for Remote Stream URLs.
@@ -268,7 +266,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 };
 
                 $remoteUrlFunc = 'mksafe(buffer(buffer=' . $buffer . '., '
-                    . $inputFunc . '("' . self::cleanUpString($remoteUrl) . '")))';
+                    . $inputFunc . '(' . self::toRawString($remoteUrl) . ')))';
 
                 if (0 === $scheduleItems->count()) {
                     $fallbackRemoteUrl = $remoteUrlFunc;
@@ -551,7 +549,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $recordLiveStreams = $settings->record_streams;
 
         $harborParams = [
-            '"' . self::cleanUpString($djMount) . '"',
+            self::toRawString($djMount),
             'id = "input_streamer"',
             'port = ' . $this->liquidsoap->getStreamPort($station),
             'auth = azuracast.dj_auth',
@@ -926,8 +924,14 @@ final class ConfigWriter implements EventSubscriberInterface
             return;
         }
 
-        $settings = $event->getStation()->backend_config;
-        $customConfig = $settings->getCustomConfigurationSection($sectionName);
+        // If LS editing is disabled, don't add custom blocks to the written code.
+        $settings = $this->settingsRepo->readSettings();
+        if (!$settings->enable_liquidsoap_editing) {
+            return;
+        }
+
+        $backendConfig = $event->getStation()->backend_config;
+        $customConfig = $backendConfig->getCustomConfigurationSection($sectionName);
 
         if (!empty($customConfig)) {
             $event->appendLines(
@@ -1194,11 +1198,11 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $outputParams[] = 'id="' . $idPrefix . $id . '"';
 
-        $outputParams[] = 'host = "' . self::cleanUpString($source->host) . '"';
+        $outputParams[] = 'host = ' . self::toRawString($source->host);
         $outputParams[] = 'port = ' . (int)$source->port;
 
         if (!empty($source->username)) {
-            $outputParams[] = 'user = "' . self::cleanUpString($source->username) . '"';
+            $outputParams[] = 'user = ' . self::toRawString($source->username);
         }
 
         $password = self::cleanUpString($source->password);
@@ -1220,18 +1224,18 @@ final class ConfigWriter implements EventSubscriberInterface
                 $mountPoint = '/';
             }
 
-            $outputParams[] = 'mount = "' . self::cleanUpString($mountPoint) . '"';
+            $outputParams[] = 'mount = ' . self::toRawString($mountPoint);
         }
 
-        $outputParams[] = 'name = "' . self::cleanUpString($station->name) . '"';
+        $outputParams[] = 'name = ' . self::toRawString($station->name);
 
         if (!$source->isShoutcast) {
-            $outputParams[] = 'description = "' . self::cleanUpString($station->description) . '"';
+            $outputParams[] = 'description = ' . self::toRawString($station->description);
         }
-        $outputParams[] = 'genre = "' . self::cleanUpString($station->genre) . '"';
+        $outputParams[] = 'genre = ' . self::toRawString($station->genre);
 
         if (!empty($station->url)) {
-            $outputParams[] = 'url = "' . self::cleanUpString($station->url) . '"';
+            $outputParams[] = 'url = ' . self::toRawString($station->url);
         }
 
         $outputParams[] = 'public = ' . ($source->isPublic ? 'true' : 'false');
@@ -1344,7 +1348,35 @@ final class ConfigWriter implements EventSubscriberInterface
      */
     public static function cleanUpString(?string $string): string
     {
-        return str_replace(['"', "\n", "\r"], ['\'', '', ''], $string ?? '');
+        $string = str_replace(['"', "\n", "\r"], ['\'', '', ''], $string ?? '');
+
+        // Remove strings that are interpolated
+        $string = preg_replace(
+            '/#{(.*)}/U',
+            '$1',
+            $string
+        );
+
+        $string = preg_replace(
+            '/\$\((.*)\)/U',
+            '$1',
+            $string ?? ''
+        );
+
+        return $string ?? '';
+    }
+
+    public static function toRawString(?string $value): string
+    {
+        $delimiter = 'str_' . Strings::generatePassword(
+            5,
+            'abcdefghijklmnopqrstuvwxyz'
+        );
+
+        $startString = '{' . $delimiter . '|';
+        $endString = '|' . $delimiter . '}';
+
+        return $startString . str_replace($endString, '', $value ?? '') . $endString;
     }
 
     /**

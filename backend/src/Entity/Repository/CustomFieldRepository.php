@@ -104,6 +104,10 @@ final class CustomFieldRepository extends Repository
             $customFieldLookup[$customField->short_name] = $customField;
         }
 
+        // Ensure custom fields associated with the media record are updated as well.
+        $mediaCustomFieldsCollection = $media->custom_fields;
+        $mediaCustomFieldsCollection->clear();
+
         foreach ($customFields as $fieldId => $fieldValue) {
             if (isset($customFieldLookup[$fieldId])) {
                 $record = new StationMediaCustomField(
@@ -113,6 +117,7 @@ final class CustomFieldRepository extends Repository
                 $record->value = $fieldValue;
 
                 $this->em->persist($record);
+                $mediaCustomFieldsCollection->add($record);
             }
         }
 

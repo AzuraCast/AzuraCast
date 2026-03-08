@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Frontend\Dashboard;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Enums\AnalyticsIntervals;
@@ -38,7 +37,6 @@ use Psr\SimpleCache\CacheInterface;
 final class ChartsAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
-    use SettingsAwareTrait;
 
     public function __construct(
         private readonly CacheInterface $cache,
@@ -50,7 +48,9 @@ final class ChartsAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        if (!$this->readSettings()->isAnalyticsEnabled()) {
+        $settings = $request->getSettings();
+
+        if (!$settings->isAnalyticsEnabled()) {
             return $response->withStatus(403, 'Forbidden')
                 ->withJson(new Error(403, 'Analytics are disabled for this installation.'));
         }

@@ -32,10 +32,6 @@ final readonly class PodcastFeedAction implements SingleActionInterface
         array $params
     ): ResponseInterface {
         $station = $request->getStation();
-        if (!$station->enable_public_page) {
-            throw NotFoundException::station();
-        }
-
         $podcast = $request->getPodcast();
 
         // Fetch podcast API feed.

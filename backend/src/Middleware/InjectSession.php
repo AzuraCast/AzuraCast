@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Middleware;
 
 use App\Cache\CacheNamespace;
-use App\Container\SettingsAwareTrait;
 use App\Environment;
 use App\Http\ServerRequest;
 use App\Session\Csrf;
@@ -23,8 +22,6 @@ use Symfony\Component\Cache\Adapter\ArrayAdapter;
  */
 final class InjectSession extends AbstractMiddleware
 {
-    use SettingsAwareTrait;
-
     private CacheItemPoolInterface $cachePool;
 
     public function __construct(
@@ -38,7 +35,7 @@ final class InjectSession extends AbstractMiddleware
 
     public function getSessionPersistence(ServerRequest $request): SessionPersistenceInterface
     {
-        $alwaysUseSsl = $this->readSettings()->always_use_ssl;
+        $alwaysUseSsl = $request->getSettings()->always_use_ssl;
         $isHttpsUrl = ('https' === $request->getUri()->getScheme());
 
         return new CacheSessionPersistence(

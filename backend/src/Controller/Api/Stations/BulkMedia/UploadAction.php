@@ -142,7 +142,7 @@ final class UploadAction implements SingleActionInterface
         // Read and process CSV.
         $csvPath = $flowResponse->getUploadedPath();
 
-        $reader = Reader::createFromPath($csvPath);
+        $reader = Reader::from($csvPath);
         $reader->setHeaderOffset(0);
 
         $importResults = [];

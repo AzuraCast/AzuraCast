@@ -28,7 +28,7 @@ concurrency:
 jobs:
   php-test:
     name: PHP Test Suite
-    runs-on: depot-ubuntu-24.04
+    runs-on: ubuntu-latest
     env:
       APPLICATION_ENV: testing
     steps:
@@ -65,7 +65,7 @@ jobs:
 
   node-test:
     name: Node Test Suite
-    runs-on: depot-ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
 
@@ -88,7 +88,7 @@ jobs:
     needs:
       - php-test
       - node-test
-    runs-on: depot-ubuntu-24.04
+    runs-on: ubuntu-latest
     env:
       APPLICATION_ENV: testing
       NODE_ENV: production
@@ -176,7 +176,7 @@ jobs:
       contents: read
       id-token: write
       packages: write
-    runs-on: depot-ubuntu-24.04
+    runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'schedule'
     steps:
       - uses: actions/checkout@master

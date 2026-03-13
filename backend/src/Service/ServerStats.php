@@ -119,7 +119,7 @@ final class ServerStats
 
             $interfaces[] = NetworkData::fromInterfaceData(
                 $interfaceName,
-                BigDecimal::of((string)$currentTimestamp),
+                BigDecimal::of(sprintf('%F', $currentTimestamp)),
                 $interfaceData
             );
         }

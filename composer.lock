@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "46cc43de2d98129a1fea589bb2df4e75",
+    "content-hash": "58c6cf1d85795fc17fbe16682c5009d6",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -386,23 +386,22 @@
         },
         {
             "name": "brick/math",
-            "version": "0.15.0",
+            "version": "0.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brick/math.git",
-                "reference": "3903230959c97217826e5d8948d2e0fbc86a2ccf"
+                "reference": "9b8bd30c534479b1cd279eec37a7b0aed30a323c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brick/math/zipball/3903230959c97217826e5d8948d2e0fbc86a2ccf",
-                "reference": "3903230959c97217826e5d8948d2e0fbc86a2ccf",
+                "url": "https://api.github.com/repos/brick/math/zipball/9b8bd30c534479b1cd279eec37a7b0aed30a323c",
+                "reference": "9b8bd30c534479b1cd279eec37a7b0aed30a323c",
                 "shasum": ""
             },
             "require": {
                 "php": "^8.2"
             },
             "require-dev": {
-                "php-coveralls/php-coveralls": "^2.2",
                 "phpstan/phpstan": "2.1.22",
                 "phpunit/phpunit": "^11.5"
             },
@@ -434,7 +433,7 @@
             ],
             "support": {
                 "issues": "https://github.com/brick/math/issues",
-                "source": "https://github.com/brick/math/tree/0.15.0"
+                "source": "https://github.com/brick/math/tree/0.16.1"
             },
             "funding": [
                 {
@@ -442,7 +441,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-20T15:19:18+00:00"
+            "time": "2026-03-09T13:41:19+00:00"
         },
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -12101,12 +12100,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "ed005b7ebb25c82bb29af88d634357073f3b7a33"
+                "reference": "fd8c1f9c7f58e0751309b3a79dfdc9760431ee0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/ed005b7ebb25c82bb29af88d634357073f3b7a33",
-                "reference": "ed005b7ebb25c82bb29af88d634357073f3b7a33",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/fd8c1f9c7f58e0751309b3a79dfdc9760431ee0e",
+                "reference": "fd8c1f9c7f58e0751309b3a79dfdc9760431ee0e",
                 "shasum": ""
             },
             "conflict": {
@@ -12771,7 +12770,7 @@
                 "reportico-web/reportico": "<=8.1",
                 "rhukster/dom-sanitizer": "<1.0.7",
                 "rmccue/requests": ">=1.6,<1.8",
-                "robrichards/xmlseclibs": "<=3.1.3",
+                "robrichards/xmlseclibs": "<3.1.5",
                 "roots/soil": "<4.1",
                 "roundcube/roundcubemail": "<1.5.10|>=1.6,<1.6.11",
                 "rudloff/alltube": "<3.0.3",
@@ -13123,7 +13122,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-03-12T14:21:15+00:00"
+            "time": "2026-03-13T20:11:00+00:00"
         },
         {
             "name": "sebastian/cli-parser",

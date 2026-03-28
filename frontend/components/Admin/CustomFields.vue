@@ -63,7 +63,6 @@ import {useTemplateRef} from "vue";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
-import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import {ApiAdminVueCustomFieldProps, CustomField, HasLinks} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
@@ -71,7 +70,9 @@ import {QueryKeys} from "~/entities/Queries.ts";
 import {useQuery} from "@tanstack/vue-query";
 import {useAxios} from "~/vendor/axios.ts";
 import Loading from "~/components/Common/Loading.vue";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getApiUrl} = useApiRouter();
 const propsUrl = getApiUrl('/admin/vue/custom_fields');
 const listUrl = getApiUrl('/admin/custom_fields');
 

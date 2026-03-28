@@ -21,7 +21,7 @@ final readonly class SyncTask
         #[OA\Property]
         public int $time,
         #[OA\Property]
-        public int $nextRun,
+        public ?int $nextRun,
         #[OA\Property]
         public string $url
     ) {

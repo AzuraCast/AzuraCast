@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Assets;
 
+use App\Entity\Station;
+use DI\Attribute\Injectable;
 use Intervention\Image\Encoders\JpegEncoder;
 use Intervention\Image\Encoders\PngEncoder;
 use Intervention\Image\Encoders\WebpEncoder;
 use Intervention\Image\Interfaces\ImageInterface;
 
+#[Injectable(lazy: true)]
 final class BackgroundCustomAsset extends AbstractMultiPatternCustomAsset
 {
     protected function getPatterns(): array
@@ -31,20 +34,23 @@ final class BackgroundCustomAsset extends AbstractMultiPatternCustomAsset
 
     protected function getDefaultUrl(): string
     {
-        return $this->environment->getAssetUrl() . '/img/hexbg.png';
+        return $this->vite->getImagePath('img/hexbg.webp');
     }
 
-    public function upload(ImageInterface $image, string $mimeType): void
-    {
+    public function upload(
+        ImageInterface $image,
+        string $mimeType,
+        ?Station $station = null
+    ): void {
         $newImage = clone $image;
         $newImage->resizeDown(3264, 2160);
 
-        $this->delete();
+        $this->delete($station);
 
         $patterns = $this->getPatterns();
         [$pattern, $encoder] = $patterns[$mimeType] ?? $patterns['default'];
 
-        $destPath = $this->getPathForPattern($pattern);
+        $destPath = $this->getPathForPattern($pattern, $station);
         $this->ensureDirectoryExists(dirname($destPath));
 
         $newImage->encode($encoder)->save($destPath);

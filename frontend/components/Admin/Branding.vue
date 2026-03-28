@@ -43,8 +43,9 @@ import CardPage from "~/components/Common/CardPage.vue";
 import Lightbox from "~/components/Common/Lightbox.vue";
 import {useTemplateRef} from "vue";
 import {useProvideLightbox} from "~/vendor/lightbox";
-import {getApiUrl} from "~/router";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getApiUrl} = useApiRouter();
 const settingsApiUrl = getApiUrl('/admin/settings/branding');
 const browserIconApiUrl = getApiUrl('/admin/custom_assets/browser_icon');
 const backgroundApiUrl = getApiUrl('/admin/custom_assets/background');

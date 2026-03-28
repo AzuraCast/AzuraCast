@@ -50,11 +50,12 @@ import {useTranslate} from "~/vendor/gettext";
 import {useAzuraCast} from "~/vendor/azuracast";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
-import {getApiUrl} from "~/router";
 import {Relay} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getApiUrl} = useApiRouter();
 const listUrl = getApiUrl('/admin/relays/list');
 
 const {$gettext} = useTranslate();

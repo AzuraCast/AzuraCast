@@ -145,7 +145,7 @@ final class HistoryAction implements SingleActionInterface
         if (!($tempFile = tmpfile())) {
             throw new RuntimeException('Could not create temp file.');
         }
-        $csv = Writer::createFromStream($tempFile);
+        $csv = Writer::from($tempFile);
 
         $csv->insertOne([
             'Date',

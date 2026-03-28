@@ -18,27 +18,17 @@ class ProfileProps
         #[OA\Property]
         public NowPlayingProps $nowPlayingProps,
         #[OA\Property]
-        public string $publicPageUri,
+        public string $publicPageEmbedUrl,
         #[OA\Property]
-        public string $publicPageEmbedUri,
+        public string $publicOnDemandEmbedUrl,
         #[OA\Property]
-        public string $publicWebDjUri,
+        public string $publicRequestEmbedUrl,
         #[OA\Property]
-        public string $publicOnDemandUri,
+        public string $publicHistoryEmbedUrl,
         #[OA\Property]
-        public string $publicPodcastsUri,
+        public string $publicScheduleEmbedUrl,
         #[OA\Property]
-        public string $publicScheduleUri,
-        #[OA\Property]
-        public string $publicOnDemandEmbedUri,
-        #[OA\Property]
-        public string $publicRequestEmbedUri,
-        #[OA\Property]
-        public string $publicHistoryEmbedUri,
-        #[OA\Property]
-        public string $publicScheduleEmbedUri,
-        #[OA\Property]
-        public string $publicPodcastsEmbedUri,
+        public string $publicPodcastsEmbedUrl,
         #[OA\Property]
         public string $frontendAdminUri,
         #[OA\Property]
@@ -48,11 +38,7 @@ class ProfileProps
         #[OA\Property]
         public string $frontendRelayPassword,
         #[OA\Property]
-        public ?int $frontendPort,
-        #[OA\Property]
-        public int $numSongs,
-        #[OA\Property]
-        public int $numPlaylists
+        public ?int $frontendPort
     ) {
     }
 }

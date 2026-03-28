@@ -1,6 +1,5 @@
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
-import {getStationApiUrl} from "~/router.ts";
 import {set} from "es-toolkit/compat";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
@@ -8,6 +7,7 @@ import {nextTick, Ref} from "vue";
 import {ApiStatus} from "~/entities/ApiInterfaces.ts";
 import {useClearStationGlobalsQuery} from "~/functions/useStationQuery.ts";
 import {useClearProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 export default function useToggleFeature(
     feature: string,
@@ -17,6 +17,7 @@ export default function useToggleFeature(
     const {showAlert} = useDialog();
     const {notifySuccess} = useNotify();
     const {$gettext} = useTranslate();
+    const {getStationApiUrl} = useApiRouter();
 
     const profileEditUrl = getStationApiUrl('/profile/edit');
 

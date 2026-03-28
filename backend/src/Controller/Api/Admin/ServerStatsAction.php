@@ -87,11 +87,11 @@ final class ServerStatsAction implements SingleActionInterface
             );
 
             $bytesPerTimeReceived = $deltaNetworkData->received->bytes
-                ->dividedBy($measurementTime, RoundingMode::HALF_UP)
+                ->dividedBy($measurementTime, RoundingMode::Up)
                 ->toBigInteger();
 
             $bytesPerTimeTransmitted = $deltaNetworkData->transmitted->bytes
-                ->dividedBy($measurementTime, RoundingMode::HALF_UP)
+                ->dividedBy($measurementTime, RoundingMode::Up)
                 ->toBigInteger();
 
             $networkInterfaces[] = new NetworkInterfaceStats(
@@ -111,12 +111,12 @@ final class ServerStatsAction implements SingleActionInterface
 
         $spaceTotalFloat = disk_total_space($this->environment->getStationDirectory());
         $spaceTotal = (is_float($spaceTotalFloat))
-            ? BigInteger::of($spaceTotalFloat)
+            ? BigInteger::of((int)$spaceTotalFloat)
             : BigInteger::zero();
 
         $spaceFreeFloat = disk_free_space($this->environment->getStationDirectory());
         $spaceFree = (is_float($spaceFreeFloat))
-            ? BigInteger::of($spaceFreeFloat)
+            ? BigInteger::of((int)$spaceFreeFloat)
             : BigInteger::zero();
 
         $spaceUsed = $spaceTotal->minus($spaceFree);

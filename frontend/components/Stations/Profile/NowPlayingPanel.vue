@@ -6,6 +6,16 @@
     >
         <template #header="{id}">
             <div class="d-flex align-items-center">
+                <div v-if="profileData.station.listen_url" class="flex-shrink-0 me-2">
+                    <play-button
+                        class="btn-xl btn-link text-white"
+                        :stream="{
+                            url: profileData.station.listen_url,
+                            title: stationData.name,
+                            isStream: true
+                        }"
+                    />
+                </div>
                 <h3
                     :id="id"
                     class="flex-shrink card-title my-0"
@@ -247,12 +257,11 @@ import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLightbox} from "~/vendor/lightbox";
-import {userAllowedForStation} from "~/acl";
+import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts";
 import UpdateMetadataModal from "~/components/Stations/Profile/UpdateMetadataModal.vue";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 import {BackendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
-import {getStationApiUrl} from "~/router.ts";
 import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
 import {toRefs} from "@vueuse/core";
 import IconIcHeadphones from "~icons/ic/baseline-headphones";
@@ -262,10 +271,16 @@ import IconIcMusicNote from "~icons/ic/baseline-music-note";
 import IconIcSkipNext from "~icons/ic/baseline-skip-next";
 import IconIcUpdate from "~icons/ic/baseline-update";
 import IconIcVolumeOff from "~icons/ic/baseline-volume-off";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
+import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 
 const stationData = useStationData();
 const profileData = useStationProfileData();
 const {nowPlayingProps} = toRefs(profileData);
+
+const {userAllowedForStation} = useUserAllowedForStation();
+
+const {getStationApiUrl} = useApiRouter();
 
 const backendSkipSongUri = getStationApiUrl('/backend/skip');
 const backendDisconnectStreamerUri = getStationApiUrl('/backend/disconnect');

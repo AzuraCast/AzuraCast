@@ -35,28 +35,6 @@ final class ProfileAction implements SingleActionInterface
             throw new RuntimeException('The station profile is disabled.');
         }
 
-        // Statistics about backend playback.
-        $numSongs = $this->em->createQuery(
-            <<<'DQL'
-                SELECT COUNT(sm.id)
-                FROM App\Entity\StationMedia sm
-                LEFT JOIN sm.playlists spm
-                LEFT JOIN spm.playlist sp
-                WHERE sp.id IS NOT NULL
-                AND sp.station = :station
-            DQL
-        )->setParameter('station', $station)
-            ->getSingleScalarResult();
-
-        $numPlaylists = $this->em->createQuery(
-            <<<'DQL'
-                SELECT COUNT(sp.id)
-                FROM App\Entity\StationPlaylist sp
-                WHERE sp.station = :station
-            DQL
-        )->setParameter('station', $station)
-            ->getSingleScalarResult();
-
         $frontend = $this->adapters->getFrontendAdapter($station);
         $frontendConfig = $station->frontend_config;
 
@@ -65,57 +43,32 @@ final class ProfileAction implements SingleActionInterface
         return $response->withJson(
             new ProfileProps(
                 nowPlayingProps: $this->nowPlayingComponent->getDataProps($request),
-                publicPageUri: $router->named(
-                    routeName: 'public:index',
-                    routeParams: ['station_id' => $station->short_name],
-                    absolute: true
-                ),
-                publicPageEmbedUri: $router->named(
+                publicPageEmbedUrl: $router->named(
                     routeName: 'public:index',
                     routeParams: ['station_id' => $station->short_name, 'embed' => 'embed'],
                     absolute: true
                 ),
-                publicWebDjUri: $router->named(
-                    routeName: 'public:dj',
-                    routeParams: ['station_id' => $station->short_name],
-                    absolute: true
-                ),
-                publicOnDemandUri: $router->named(
-                    routeName: 'public:ondemand',
-                    routeParams: ['station_id' => $station->short_name],
-                    absolute: true
-                ),
-                publicPodcastsUri: $router->named(
-                    routeName: 'public:podcasts',
-                    routeParams: ['station_id' => $station->short_name],
-                    absolute: true
-                ),
-                publicScheduleUri: $router->named(
-                    routeName: 'public:schedule',
-                    routeParams: ['station_id' => $station->short_name],
-                    absolute: true
-                ),
-                publicOnDemandEmbedUri: $router->named(
+                publicOnDemandEmbedUrl: $router->named(
                     routeName: 'public:ondemand',
                     routeParams: ['station_id' => $station->short_name, 'embed' => 'embed'],
                     absolute: true
                 ),
-                publicRequestEmbedUri: $router->named(
+                publicRequestEmbedUrl: $router->named(
                     routeName: 'public:embedrequests',
                     routeParams: ['station_id' => $station->short_name],
                     absolute: true
                 ),
-                publicHistoryEmbedUri: $router->named(
+                publicHistoryEmbedUrl: $router->named(
                     routeName: 'public:history',
                     routeParams: ['station_id' => $station->short_name],
                     absolute: true
                 ),
-                publicScheduleEmbedUri: $router->named(
+                publicScheduleEmbedUrl: $router->named(
                     routeName: 'public:schedule',
                     routeParams: ['station_id' => $station->short_name, 'embed' => 'embed'],
                     absolute: true
                 ),
-                publicPodcastsEmbedUri: $router->named(
+                publicPodcastsEmbedUrl: $router->named(
                     routeName: 'public:podcasts',
                     routeParams: ['station_id' => $station->short_name],
                     queryParams: ['embed' => 'true'],
@@ -125,9 +78,7 @@ final class ProfileAction implements SingleActionInterface
                 frontendAdminPassword: $frontendConfig->admin_pw,
                 frontendSourcePassword: $frontendConfig->source_pw,
                 frontendRelayPassword: $frontendConfig->relay_pw,
-                frontendPort: $frontendConfig->port,
-                numSongs: (int)$numSongs,
-                numPlaylists: (int)$numPlaylists,
+                frontendPort: $frontendConfig->port
             )
         );
     }

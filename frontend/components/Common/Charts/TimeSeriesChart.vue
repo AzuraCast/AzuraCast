@@ -65,6 +65,10 @@ useChart<'line'>(
                             const title: string[] = [];
 
                             ctx.forEach((ctxRow) => {
+                                if (ctxRow.parsed.x === null) {
+                                    return;
+                                }
+
                                 title.push(
                                     DateTime.fromMillis(ctxRow.parsed.x).setZone(props.tz)?.toLocaleString(DateTime.DATE_SHORT)
                                 );
@@ -74,6 +78,10 @@ useChart<'line'>(
                         },
                         label: function (ctx) {
                             let label = ctx.dataset.label || '';
+                            if (ctx.parsed.y === null) {
+                                return label;
+                            }
+
                             if (label) {
                                 label += ': ';
                             }

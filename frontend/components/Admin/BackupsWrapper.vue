@@ -11,12 +11,13 @@
 <script setup lang="ts">
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
-import {getApiUrl} from "~/router";
 import {ApiAdminVueBackupProps, Settings} from "~/entities/ApiInterfaces.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
 import {useQuery} from "@tanstack/vue-query";
 import Backups from "~/components/Admin/Backups.vue";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getApiUrl} = useApiRouter();
 const propsUrl = getApiUrl('/admin/vue/backups');
 const settingsUrl = getApiUrl('/admin/settings/backup');
 

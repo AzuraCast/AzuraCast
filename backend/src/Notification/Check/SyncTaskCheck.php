@@ -34,11 +34,12 @@ final class SyncTaskCheck
             // phpcs:disable Generic.Files.LineLength
             $event->addNotification(
                 new Notification(
-                    __('Synchronization Disabled'),
-                    __(
+                    id: 'notification-sync-disabled',
+                    title: __('Synchronization Disabled'),
+                    body: __(
                         'Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks.'
                     ),
-                    FlashLevels::Error
+                    type: FlashLevels::Error
                 )
             );
             // phpcs:enable
@@ -53,13 +54,14 @@ final class SyncTaskCheck
             // phpcs:disable Generic.Files.LineLength
             $event->addNotification(
                 new Notification(
-                    __('Synchronization Not Recently Run'),
-                    __(
+                    id: 'notification-sync-recently-run',
+                    title: __('Synchronization Not Recently Run'),
+                    body: __(
                         'The routine synchronization task has not run recently. This may indicate an error with your installation.'
                     ),
-                    FlashLevels::Error,
-                    __('System Debugger'),
-                    $router->named('admin:debug:index')
+                    type: FlashLevels::Error,
+                    actionLabel: __('System Debugger'),
+                    actionUrl: $router->named('admin:debug:index')
                 )
             );
             // phpcs:enable

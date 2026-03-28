@@ -53,6 +53,10 @@ final readonly class StationGlobals
         #[OA\Property]
         public string $webDjUrl,
         #[OA\Property]
+        public string $publicPodcastsUrl,
+        #[OA\Property]
+        public string $publicScheduleUrl,
+        #[OA\Property]
         public bool $enableRequests,
         #[OA\Property]
         public StationGlobalFeatures $features,

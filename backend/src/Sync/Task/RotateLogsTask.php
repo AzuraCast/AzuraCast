@@ -94,7 +94,8 @@ final class RotateLogsTask extends AbstractTask
         $backupsByTime = [];
         foreach ($iterator as $backup) {
             /** @var StorageAttributes $backup */
-            $backupsByTime[$backup->lastModified()] = $backup->path();
+            $lastModified = $backup->lastModified() ?? 0;
+            $backupsByTime[$lastModified] = $backup->path();
         }
 
         if (count($backupsByTime) <= $copiesToKeep) {

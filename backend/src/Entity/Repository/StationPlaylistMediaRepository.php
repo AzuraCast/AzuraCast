@@ -354,7 +354,14 @@ final class StationPlaylistMediaRepository extends Repository
         }
 
         $queuedMediaQuery = $this->em->createQueryBuilder()
-            ->select(['spm.id AS spm_id', 'sm.id', 'sm.song_id', 'sm.artist', 'sm.title'])
+            ->select([
+                'spm.id AS spm_id',
+                'spm.last_played AS last_played',
+                'sm.id',
+                'sm.song_id',
+                'sm.artist',
+                'sm.title',
+            ])
             ->from(StationMedia::class, 'sm')
             ->join('sm.playlists', 'spm')
             ->where('spm.playlist = :playlist')
@@ -377,6 +384,7 @@ final class StationPlaylistMediaRepository extends Repository
                 $record->song_id = $val['song_id'];
                 $record->artist = $val['artist'] ?? '';
                 $record->title = $val['title'] ?? '';
+                $record->last_played = $val['last_played'] ?? null;
 
                 return $record;
             },

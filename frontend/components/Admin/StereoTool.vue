@@ -95,7 +95,7 @@
                             </legend>
 
                             <p
-                                v-if="version"
+                                v-if="record.version"
                                 class="text-success card-text"
                             >
                                 {{ langInstalledVersion }}
@@ -115,7 +115,7 @@
                         />
 
                         <div
-                            v-if="version"
+                            v-if="record.version"
                             class="buttons block-buttons mt-3"
                         >
                             <button
@@ -141,14 +141,19 @@ import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {getApiUrl} from "~/router";
 import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {ApiAdminStereoToolStatus} from "~/entities/ApiInterfaces.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getApiUrl} = useApiRouter();
 const apiUrl = getApiUrl('/admin/stereo_tool');
 
+type Row = ApiAdminStereoToolStatus;
+
 const isLoading = ref(true);
-const version = ref<string | null>(null);
+const record = ref<Row>({
+    version: null
+});
 
 const {$gettext} = useTranslate();
 
@@ -156,7 +161,7 @@ const langInstalledVersion = computed(() => {
     return $gettext(
         'Stereo Tool version %{version} is currently installed.',
         {
-            version: version.value ?? 'N/A'
+            version: record.value.version ?? 'N/A'
         }
     );
 });
@@ -174,9 +179,8 @@ const {axios} = useAxios();
 const relist = async () => {
     isLoading.value = true;
 
-    const {data} = await axios.get<ApiAdminStereoToolStatus>(apiUrl.value);
-
-    version.value = data.version;
+    const {data} = await axios.get<Row>(apiUrl.value);
+    record.value = data;
     isLoading.value = false;
 };
 

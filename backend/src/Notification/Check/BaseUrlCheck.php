@@ -49,15 +49,16 @@ final class BaseUrlCheck
 
             $event->addNotification(
                 new Notification(
-                    sprintf(
+                    id: 'notification-base-url',
+                    title: sprintf(
                         __('Your "Base URL" setting (%s) does not match the URL you are currently using (%s).'),
                         (string)$baseUriWithoutRequest,
                         (string)$baseUriWithRequest
                     ),
-                    implode(' ', $notificationBodyParts),
-                    FlashLevels::Warning,
-                    __('System Settings'),
-                    $router->named('admin:settings:index')
+                    body: implode(' ', $notificationBodyParts),
+                    type: FlashLevels::Warning,
+                    actionLabel: __('System Settings'),
+                    actionUrl: $router->named('admin:settings:index')
                 )
             );
         }

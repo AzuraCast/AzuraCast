@@ -5,22 +5,27 @@
         header-id="hdr_frontend"
     >
         <template #header="{id}">
-            <h3
-                :id="id"
-                class="card-title"
-            >
-                {{ $gettext('Broadcasting Service') }}
-
-                <running-badge :running="profileData.services.frontendRunning"/>
-                <br>
-                <small>{{ frontendName }}</small>
-            </h3>
+            <div class="d-flex align-items-center">
+                <h3
+                    :id="id"
+                    class="flex-fill card-title my-0"
+                >
+                    {{ $gettext('Broadcasting Service') }}
+                    <br>
+                    <small>{{ frontendName }}</small>
+                </h3>
+                <div class="flex-shrink-0">
+                    <running-badge :running="profileData.services.frontendRunning"/>
+                </div>
+            </div>
         </template>
 
         <template v-if="userAllowedForStation(StationPermissions.Broadcasting)">
             <div
                 class="collapse"
                 :class="(credentialsVisible) ? 'show' : ''"
+                id="collapseFrontendCredentials"
+                v-on="collapseListeners"
             >
                 <table class="table table-striped table-responsive">
                     <tbody>
@@ -120,15 +125,19 @@
             v-if="userAllowedForStation(StationPermissions.Broadcasting)"
             #footer_actions
         >
-            <a
+            <button
+                type="button"
                 class="btn btn-link text-primary"
-                @click.prevent="credentialsVisible = !credentialsVisible"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseFrontendCredentials"
+                :aria-expanded="credentialsVisible ? 'true' : 'false'"
+                aria-controls="collapseFrontendCredentials"
             >
                 <icon-ic-more-horiz/>
                 <span>
                     {{ langShowHideCredentials }}
                 </span>
-            </a>
+            </button>
             <template v-if="stationData.hasStarted">
                 <button
                     type="button"
@@ -175,26 +184,39 @@ import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
-import {userAllowedForStation} from "~/acl";
+import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts";
 import useOptionalStorage from "~/functions/useOptionalStorage";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
 import {FrontendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
-import {getStationApiUrl} from "~/router.ts";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
 import IconIcMoreHoriz from "~icons/ic/baseline-more-horiz";
 import IconIcPlayArrow from "~icons/ic/baseline-play-arrow";
 import IconIcStop from "~icons/ic/baseline-stop";
 import IconIcUpdate from "~icons/ic/baseline-update";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const stationData = useStationData();
 const profileData = useStationProfileData();
+
+const {userAllowedForStation} = useUserAllowedForStation();
+
+const {getStationApiUrl} = useApiRouter();
 
 const frontendRestartUri = getStationApiUrl('/frontend/restart');
 const frontendStartUri = getStationApiUrl('/frontend/start');
 const frontendStopUri = getStationApiUrl('/frontend/stop');
 
 const credentialsVisible = useOptionalStorage<boolean>('station_show_frontend_credentials', false);
+
+const collapseListeners = {
+    ['hidden.bs.collapse']: () => {
+        credentialsVisible.value = false;
+    },
+    ['shown.bs.collapse']: () => {
+        credentialsVisible.value = true;
+    },
+};
 
 const {$gettext} = useTranslate();
 

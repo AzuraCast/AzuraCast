@@ -32,7 +32,8 @@
                 <template v-if="!notificationsLoading && notifications && notifications.length > 0">
                     <div
                         v-for="notification in notifications"
-                        :key="notification.title"
+                        :key="notification.id"
+                        :id="notification.id"
                         class="card-body d-flex align-items-center alert flex-md-row flex-column"
                         :class="'alert-'+notification.type"
                         role="alert"
@@ -251,13 +252,11 @@ import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
 import useOptionalStorage from "~/functions/useOptionalStorage";
 import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
-import {getApiUrl} from "~/router.ts";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import {ApiNotification, ApiNowPlaying, GlobalPermissions, HasLinks} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
 import {useQuery} from "@tanstack/vue-query";
-import {userAllowed} from "~/acl.ts";
 import {useAzuraCastDashboardGlobals} from "~/vendor/azuracast.ts";
 import DashboardNoSidebar from "~/components/Layout/DashboardNoSidebar.vue";
 import IconIcAccountCircle from "~icons/ic/baseline-account-circle";
@@ -265,10 +264,15 @@ import IconIcHeadphones from "~icons/ic/baseline-headphones";
 import IconIcInfo from "~icons/ic/baseline-info";
 import IconIcSettings from "~icons/ic/baseline-settings";
 import IconIcWarning from "~icons/ic/baseline-warning";
+import {useUserAllowed} from "~/functions/useUserAllowed.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const {showCharts, showAlbumArt} = useAzuraCastDashboardGlobals();
 
+const {userAllowed} = useUserAllowed();
 const showAdmin = userAllowed(GlobalPermissions.View);
+
+const {getApiUrl} = useApiRouter();
 
 const notificationsUrl = getApiUrl('/frontend/dashboard/notifications');
 const chartsUrl = getApiUrl('/frontend/dashboard/charts');

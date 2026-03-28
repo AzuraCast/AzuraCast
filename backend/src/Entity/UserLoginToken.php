@@ -11,7 +11,7 @@ use App\Security\SplitToken;
 use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
-use Symfony\Component\Serializer\Annotation as Serializer;
+use Symfony\Component\Serializer\Attribute as Serializer;
 
 #[
     ORM\Entity(readOnly: true),

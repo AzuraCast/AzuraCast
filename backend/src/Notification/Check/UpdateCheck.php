@@ -52,19 +52,20 @@ final class UpdateCheck
         ) {
             $event->addNotification(
                 new Notification(
-                    __(
+                    id: 'notification-update-new-stable',
+                    title: __(
                         'New AzuraCast Stable Release Available',
                     ),
-                    sprintf(
+                    body: sprintf(
                         __(
                             'Version %s is now available. You are currently running version %s. Updating is recommended.'
                         ),
                         $updateData->latest_release,
                         $updateData->current_release
                     ),
-                    FlashLevels::Info,
-                    $actionLabel,
-                    $actionUrl
+                    type: FlashLevels::Info,
+                    actionLabel: $actionLabel,
+                    actionUrl: $actionUrl
                 )
             );
             return;
@@ -74,16 +75,17 @@ final class UpdateCheck
             if ($updateData->needs_rolling_update) {
                 $event->addNotification(
                     new Notification(
-                        __('New AzuraCast Rolling Release Available'),
-                        sprintf(
+                        id: 'notification-update-new-rolling',
+                        title: __('New AzuraCast Rolling Release Available'),
+                        body: sprintf(
                             __(
                                 'Your installation is currently %d update(s) behind the latest version. Updating is recommended.'
                             ),
                             $updateData->rolling_updates_available
                         ),
-                        FlashLevels::Info,
-                        $actionLabel,
-                        $actionUrl
+                        type: FlashLevels::Info,
+                        actionLabel: $actionLabel,
+                        actionUrl: $actionUrl
                     )
                 );
             }
@@ -91,13 +93,14 @@ final class UpdateCheck
             if ($updateData->can_switch_to_stable) {
                 $event->addNotification(
                     new Notification(
-                        __('Switch to Stable Channel Available'),
-                        __(
+                        id: 'notification-update-switch-channels',
+                        title: __('Switch to Stable Channel Available'),
+                        body: __(
                             'Your Rolling Release installation is currently older than the latest Stable release. This means you can switch releases to the "Stable" release channel if desired.'
                         ),
-                        FlashLevels::Info,
-                        __('About Release Channels'),
-                        '/docs/getting-started/updates/release-channels/'
+                        type: FlashLevels::Info,
+                        actionLabel: __('About Release Channels'),
+                        actionUrl: '/docs/getting-started/updates/release-channels/'
                     )
                 );
             }

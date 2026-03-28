@@ -82,7 +82,10 @@ const model = defineModel<T, string, number | null, string | number | null>({
 const originalOptions = objectToSimpleFormOptions(toRef(props, 'options'));
 
 const optionsWithCustom = computed(() => {
-    const parsedOptions = originalOptions.value;
+    const parsedOptions = [
+        ...originalOptions.value
+    ];
+    
     parsedOptions.push({
         value: 'custom',
         text: 'Custom'

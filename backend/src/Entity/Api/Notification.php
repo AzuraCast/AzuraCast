@@ -16,6 +16,8 @@ final readonly class Notification
 {
     public function __construct(
         #[OA\Property]
+        public string $id,
+        #[OA\Property]
         public string $title,
         #[OA\Property]
         public string $body,

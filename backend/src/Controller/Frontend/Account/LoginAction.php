@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Frontend\Account;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Entity\User;
 use App\Exception\Http\RateLimitExceededException;
@@ -19,7 +18,6 @@ use Psr\Http\Message\ResponseInterface;
 final class LoginAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
-    use SettingsAwareTrait;
 
     public function __construct(
         private readonly RateLimit $rateLimit
@@ -33,10 +31,9 @@ final class LoginAction implements SingleActionInterface
     ): ResponseInterface {
         $auth = $request->getAuth();
         $acl = $request->getAcl();
+        $settings = $request->getSettings();
 
         // Check installation completion progress.
-        $settings = $this->readSettings();
-
         if (!$settings->isSetupComplete()) {
             $numUsers = (int)$this->em->createQuery(
                 <<<'DQL'

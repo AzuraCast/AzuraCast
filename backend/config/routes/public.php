@@ -73,6 +73,7 @@ return static function (RouteCollectorProxy $app) {
                 ->add(Middleware\GetAndRequirePodcast::class);
         }
     )
+        ->add(Middleware\StationPublicPage::class)
         ->add(Middleware\EnableView::class)
         ->add(Middleware\GetStation::class);
 };

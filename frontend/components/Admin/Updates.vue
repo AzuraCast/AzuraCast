@@ -162,7 +162,6 @@ import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import CardPage from "~/components/Common/CardPage.vue";
-import {getApiUrl} from "~/router";
 import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {ApiAdminUpdateDetails, ApiAdminVueUpdateProps} from "~/entities/ApiInterfaces.ts";
 import {useQuery} from "@tanstack/vue-query";
@@ -172,7 +171,9 @@ import IconIcInfo from "~icons/ic/baseline-info";
 import IconIcSync from "~icons/ic/baseline-sync";
 import IconIcUpdate from "~icons/ic/baseline-update";
 import IconIcCloudUpload from "~icons/ic/baseline-cloud-upload";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getApiUrl} = useApiRouter();
 const propsUrl = getApiUrl('/admin/vue/updates');
 const updatesApiUrl = getApiUrl('/admin/updates');
 

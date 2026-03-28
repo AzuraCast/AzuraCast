@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Cache\MediaListCache;
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Api\Error;
@@ -162,6 +163,7 @@ final class FilesController extends AbstractStationApiCrudController
         private readonly StationPlaylistMediaRepository $playlistMediaRepo,
         private readonly MediaProcessor $mediaProcessor,
         private readonly StationFilesystems $stationFilesystems,
+        private readonly MediaListCache $mediaListCache,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
@@ -364,13 +366,14 @@ final class FilesController extends AbstractStationApiCrudController
             throw ValidationException::fromValidationErrors($errors);
         }
 
-        $this->mediaRepo->writeToFile($record);
-        $this->em->persist($record);
-        $this->em->flush();
-
         if (null !== $customFields) {
             $this->customFieldsRepo->setCustomFields($record, $customFields);
         }
+
+        $this->mediaRepo->writeToFile($record);
+
+        $this->em->persist($record);
+        $this->em->flush();
 
         if (null !== $playlists) {
             $playlistsToAssign = [];
@@ -400,6 +403,8 @@ final class FilesController extends AbstractStationApiCrudController
                 }
             }
         }
+
+        $this->mediaListCache->clearCache($station);
 
         return $response->withJson(Status::updated());
     }
@@ -462,11 +467,18 @@ final class FilesController extends AbstractStationApiCrudController
         ];
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function deleteRecord(object $record): void
-    {
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        array $params
+    ): ResponseInterface {
+        $record = $this->getRecord($request, $params);
+
+        if (null === $record) {
+            return $response->withStatus(404)
+                ->withJson(Error::notFound());
+        }
+
         // Delete the media file off the filesystem.
         // Write new PLS playlist configuration.
         foreach ($this->mediaRepo->remove($record, true) as $playlistId => $playlistRecord) {
@@ -484,5 +496,9 @@ final class FilesController extends AbstractStationApiCrudController
                 $this->messageBus->dispatch($message);
             }
         }
+
+        $this->mediaListCache->clearCache($request->getStation());
+
+        return $response->withJson(Status::deleted());
     }
 }

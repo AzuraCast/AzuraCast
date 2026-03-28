@@ -74,6 +74,11 @@ abstract class AbstractEnvFile implements ArrayAccess
 
     public function offsetSet(mixed $offset, mixed $value): void
     {
+        if ($offset === null) {
+            return;
+        }
+
+
         $this->data[$offset] = $value;
     }
 

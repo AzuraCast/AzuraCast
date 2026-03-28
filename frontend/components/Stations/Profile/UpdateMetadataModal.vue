@@ -63,10 +63,12 @@ import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
-import {getStationApiUrl} from "~/router.ts";
 import InfoCard from "~/components/Common/InfoCard.vue";
 import {useResettableRef} from "~/functions/useResettableRef.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
+
+const {getStationApiUrl} = useApiRouter();
 
 const updateMetadataUrl = getStationApiUrl('/nowplaying/update');
 

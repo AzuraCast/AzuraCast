@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Assets;
 
+use App\Entity\Station;
 use Intervention\Image\Interfaces\EncoderInterface;
 
 abstract class AbstractMultiPatternCustomAsset extends AbstractCustomAsset
@@ -18,41 +19,43 @@ abstract class AbstractMultiPatternCustomAsset extends AbstractCustomAsset
         return $this->getPatterns()['default'][0];
     }
 
-    protected function getPathForPattern(string $pattern): string
-    {
+    protected function getPathForPattern(
+        string $pattern,
+        ?Station $station = null
+    ): string {
         $pattern = sprintf($pattern, '');
-        return $this->getBasePath() . '/' . $pattern;
+        return $this->getBasePath($station) . '/' . $pattern;
     }
 
-    public function getPath(): string
+    public function getPath(?Station $station = null): string
     {
         $patterns = $this->getPatterns();
         foreach ($patterns as [$pattern, $encoder]) {
-            $path = $this->getPathForPattern($pattern);
+            $path = $this->getPathForPattern($pattern, $station);
             if (is_file($path)) {
                 return $path;
             }
         }
 
-        return $this->getPathForPattern($patterns['default'][0]);
+        return $this->getPathForPattern($patterns['default'][0], $station);
     }
 
-    public function delete(): void
+    public function delete(?Station $station = null): void
     {
         foreach ($this->getPatterns() as [$pattern, $encoder]) {
-            @unlink($this->getPathForPattern($pattern));
+            @unlink($this->getPathForPattern($pattern, $station));
         }
     }
 
-    public function getUrl(): string
+    public function getUrl(?Station $station = null): string
     {
         foreach ($this->getPatterns() as [$pattern, $encoder]) {
-            $path = $this->getPathForPattern($pattern);
+            $path = $this->getPathForPattern($pattern, $station);
 
             if (is_file($path)) {
                 $mtime = filemtime($path);
 
-                return $this->getBaseUrl() . '/' . sprintf(
+                return $this->getBaseUrl($station) . '/' . sprintf(
                     $pattern,
                     '.' . $mtime
                 );

@@ -102,7 +102,16 @@
                     class="col-md-12"
                     :field="r$.enable_public_page"
                     :label="$gettext('Enable Public Pages')"
-                    :description="$gettext('Show the station in public pages and general API results.')"
+                    :description="$gettext('Allow non-authenticated users to see public-facing pages related to this station (Player, Requests, On Demand, etc.).')"
+                />
+
+                <form-group-checkbox
+                    v-if="!form.enable_public_page"
+                    id="edit_form_enable_public_api"
+                    class="col-md-12"
+                    :field="r$.enable_public_api"
+                    :label="$gettext('Enable Public APIs')"
+                    :description="$gettext('Allow non-authenticated users to see public-facing APIs even when public pages are disabled.')"
                 />
             </div>
         </form-fieldset>

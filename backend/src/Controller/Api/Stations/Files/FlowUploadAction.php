@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Files;
 
+use App\Cache\MediaListCache;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Controller\Api\Traits\HasMediaSearch;
@@ -55,6 +56,7 @@ final class FlowUploadAction implements SingleActionInterface
         private readonly MediaProcessor $mediaProcessor,
         private readonly StationPlaylistMediaRepository $spmRepo,
         private readonly StationPlaylistFolderRepository $spfRepo,
+        private readonly MediaListCache $mediaListCache
     ) {
     }
 
@@ -121,15 +123,17 @@ final class FlowUploadAction implements SingleActionInterface
             } elseif (!empty($currentDir)) {
                 // If the user is viewing a regular directory, check for playlists assigned to the directory and assign
                 // them to this media immediately.
-                $playlistIds = $this->spfRepo->getPlaylistIdsForFolderAndParents($station, $currentDir);
+                $parentFolders = $this->spfRepo->getPlaylistFoldersForPath($station, $currentDir, true);
 
-                if (!empty($playlistIds)) {
-                    foreach ($playlistIds as $playlistId) {
-                        $playlist = $this->em->find(StationPlaylist::class, $playlistId);
-                        if (null !== $playlist) {
-                            $this->spmRepo->addMediaToPlaylist($stationMedia, $playlist);
-                        }
+                if (!empty($parentFolders)) {
+                    foreach ($parentFolders as $folder) {
+                        $this->spmRepo->addMediaToPlaylist(
+                            media: $stationMedia,
+                            playlist: $folder->playlist,
+                            folder: $folder
+                        );
                     }
+
                     $this->em->flush();
                 }
             }
@@ -138,6 +142,8 @@ final class FlowUploadAction implements SingleActionInterface
         $mediaStorage->addStorageUsed($uploadedSize);
         $this->em->persist($mediaStorage);
         $this->em->flush();
+
+        $this->mediaListCache->clearCache($mediaStorage);
 
         return $response->withJson(Status::created());
     }

@@ -31,7 +31,9 @@
                                 v-model="dateRange"
                                 :options="{
                                     timezone: timezone,
-                                    enableTimePicker: true,
+                                    timeConfig: {
+                                        enableTimePicker: true
+                                    },
                                     minDate: minDate,
                                     maxDate: maxDate,
                                 }"
@@ -192,7 +194,6 @@ import DateRangeDropdown, {DateRange} from "~/components/Common/DateRangeDropdow
 import {computed, ComputedRef, Ref, ref, useTemplateRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
-import {getStationApiUrl} from "~/router";
 import useHasDatatable from "~/functions/useHasDatatable";
 import {ListenerFilters, ListenerTypeFilters} from "~/components/Stations/Reports/Listeners/listenerFilters.ts";
 import {filter} from "es-toolkit/compat";
@@ -210,7 +211,9 @@ import IconIcDesktopWindows from "~icons/ic/baseline-desktop-windows";
 import IconIcCloudDownload from "~icons/ic/baseline-cloud-download";
 import IconIcRouter from "~icons/ic/baseline-router";
 import IconIcSmartphone from "~icons/ic/baseline-smartphone";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getStationApiUrl} = useApiRouter();
 const apiUrl = getStationApiUrl('/listeners');
 
 const isLive = ref<boolean>(true);

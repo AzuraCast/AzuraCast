@@ -67,7 +67,7 @@ export const [useProvideWebcaster, useInjectWebcaster] = createRequiredInjection
                 // way we know if we're still connected is to set a timer.
                 setTimeout(() => {
                     if (isConnected.value) {
-                        notifySuccess($gettext('WebDJ connected!'));
+                        notifySuccess($gettext('Web DJ connected!'));
 
                         if (metadata.value !== null) {
                             socket.send(JSON.stringify({
@@ -80,7 +80,7 @@ export const [useProvideWebcaster, useInjectWebcaster] = createRequiredInjection
             };
 
             socket.onerror = () => {
-                notifyError($gettext('An error occurred with the WebDJ socket.'));
+                notifyError($gettext('An error occurred with the Web DJ socket.'));
             }
 
             socket.onclose = () => {

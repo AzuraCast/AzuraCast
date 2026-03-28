@@ -256,7 +256,6 @@ import {computed, ref, useTemplateRef, watch} from "vue";
 import {forEach, map, partition} from "es-toolkit/compat";
 import formatFileSize from "~/functions/formatFileSize";
 import InfoCard from "~/components/Common/InfoCard.vue";
-import {getStationApiUrl} from "~/router";
 import {useRoute, useRouter} from "vue-router";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {
@@ -274,6 +273,7 @@ import {FileListRequired, StationsVueFilesPropsRequired} from "~/entities/Statio
 import IconIcInsertDriveFile from "~icons/ic/baseline-insert-drive-file";
 import IconIcFolder from "~icons/ic/baseline-folder";
 import IconIcImage from "~icons/ic/baseline-image";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const props = defineProps<StationsVueFilesPropsRequired>();
 
@@ -290,6 +290,7 @@ export type MediaSelectedItems = {
 const stationData = useStationData();
 const showSftp = computed(() => stationData.value.features.sftp ?? false);
 
+const {getStationApiUrl} = useApiRouter();
 const listUrl = getStationApiUrl('/files/list');
 const batchUrl = getStationApiUrl('/files/batch');
 const uploadUrl = getStationApiUrl('/files/upload');
@@ -444,7 +445,7 @@ const filter = (newFilter: string) => {
 const $quota = useTemplateRef('$quota');
 
 const onTriggerRelist = () => {
-    void listItemProvider.refresh(true);
+    void listItemProvider.refresh(false);
 
     $quota.value?.update();
 };

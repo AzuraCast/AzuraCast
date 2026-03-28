@@ -86,7 +86,7 @@ final class RunAnalyticsTask extends AbstractTask
         $tempCsvPath = File::generateTempPath('mariadb_analytics.csv');
         new Filesystem()->chmod($tempCsvPath, 0o777);
 
-        $csv = Writer::createFromPath($tempCsvPath);
+        $csv = Writer::from($tempCsvPath);
         $csv->setEscape('');
         $csv->addFormatter(function ($row) {
             return array_map(function ($col) {

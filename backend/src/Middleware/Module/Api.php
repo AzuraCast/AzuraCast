@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Middleware\Module;
 
 use App\Container\EnvironmentAwareTrait;
-use App\Container\SettingsAwareTrait;
 use App\Entity\User;
 use App\Exception\Http\InvalidRequestAttribute;
 use App\Exception\WrappedException;
@@ -26,7 +25,6 @@ use Throwable;
 final class Api extends AbstractMiddleware
 {
     use EnvironmentAwareTrait;
-    use SettingsAwareTrait;
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -68,7 +66,7 @@ final class Api extends AbstractMiddleware
             $apiUser = null;
         }
 
-        $settings = $this->readSettings();
+        $settings = $request->getSettings();
 
         // Check for a user-set CORS header override.
         $acaoHeader = $settings->api_access_control;

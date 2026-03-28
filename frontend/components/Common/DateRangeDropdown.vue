@@ -20,15 +20,16 @@
 </template>
 
 <script setup lang="ts">
-import VueDatePicker, {VueDatePickerProps} from "@vuepic/vue-datepicker";
+import {RootProps, VueDatePicker} from "@vuepic/vue-datepicker";
 import {useTheme} from "~/functions/theme.ts";
 import {useTranslate} from "~/vendor/gettext.ts";
 import {computed} from "vue";
-import {useAzuraCast} from "~/vendor/azuracast.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
 import {storeToRefs} from "pinia";
 import {isString} from "es-toolkit";
 import IconIcDateRange from "~icons/ic/baseline-date-range";
+import {getDateFnLocale} from "~/functions/getDateFnLocale.ts";
+import {merge} from "es-toolkit/compat";
 
 defineOptions({
     inheritAttrs: false
@@ -40,7 +41,7 @@ export interface DateRange {
 }
 
 const props = defineProps<{
-    options?: Partial<VueDatePickerProps>,
+    options?: Partial<RootProps>,
     modelValue?: DateRange
 }>();
 
@@ -50,7 +51,6 @@ const emit = defineEmits<{
 
 const {isDark} = storeToRefs(useTheme());
 
-const {localeWithDashes} = useAzuraCast();
 const {DateTime} = useLuxon();
 
 type DateRangeTuple = Date[] | null;
@@ -82,13 +82,10 @@ const dateRange = computed<DateRangeTuple>({
 
 const {$gettext} = useTranslate();
 
-const getTimezone = (options?: Partial<VueDatePickerProps>): string => {
+const getTimezone = (options?: Partial<RootProps>): string => {
     if (options !== undefined && 'timezone' in options && options.timezone) {
         if (isString(options.timezone)) {
             return options.timezone;
-        }
-        if ('timezone' in options.timezone && isString(options.timezone.timezone)) {
-            return options.timezone.timezone;
         }
     }
 
@@ -161,20 +158,25 @@ const ranges = computed(() => {
     ];
 });
 
-const vueDatePickerOptions = computed<VueDatePickerProps>(() => {
-    return {
+const vueDatePickerOptions = computed<RootProps>(() => {
+    return merge({
         dark: isDark.value,
         range: {
             partialRange: false
         },
-        enableTimePicker: false,
+        timeConfig: {
+            enableTimePicker: false,
+        },
         presetDates: ranges.value,
-        locale: localeWithDashes,
-        selectText: $gettext('Select'),
-        cancelText: $gettext('Cancel'),
-        nowButtonLabel: $gettext('Now'),
-        clearable: false,
-        ...props.options,
-    }
+        locale: getDateFnLocale(),
+        actionRow: {
+            selectBtnLabel: $gettext('Select'),
+            cancelBtnLabel: $gettext('Cancel'),
+            nowBtnLabel: $gettext('Now')
+        },
+        inputAttrs: {
+            clearable: false
+        }
+    }, props.options);
 });
 </script>

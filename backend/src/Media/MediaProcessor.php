@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Media;
 
+use App\Cache\MediaListCache;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Entity\Repository\StationMediaRepository;
@@ -25,7 +26,8 @@ final class MediaProcessor
     public function __construct(
         private readonly StationMediaRepository $mediaRepo,
         private readonly UnprocessableMediaRepository $unprocessableMediaRepo,
-        private readonly StorageLocationRepository $storageLocationRepo
+        private readonly StorageLocationRepository $storageLocationRepo,
+        private readonly MediaListCache $mediaListCache
     ) {
     }
 
@@ -111,6 +113,7 @@ final class MediaProcessor
             throw $e;
         } finally {
             $fs->uploadAndDeleteOriginal($localPath, $path);
+            $this->mediaListCache->clearCache($storageLocation);
         }
     }
 
@@ -166,6 +169,8 @@ final class MediaProcessor
             );
 
             throw $e;
+        } finally {
+            $this->mediaListCache->clearCache($storageLocation);
         }
     }
 
@@ -202,6 +207,8 @@ final class MediaProcessor
         $media->mtime = time() + 5;
         $this->em->persist($media);
 
+        $this->mediaListCache->clearCache($storageLocation);
+
         return true;
     }
 
@@ -230,5 +237,7 @@ final class MediaProcessor
             $destPath,
             AlbumArt::resize($contents)
         );
+
+        $this->mediaListCache->clearCache($storageLocation);
     }
 }

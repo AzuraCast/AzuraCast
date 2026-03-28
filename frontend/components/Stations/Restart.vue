@@ -107,17 +107,18 @@ import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios";
 import {ref} from "vue";
-import {getStationApiUrl} from "~/router";
 import {useRouter} from "vue-router";
 import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
 import {useClearAllStationQueries, useStationData} from "~/functions/useStationQuery.ts";
 import {ApiStatus, FlashLevels} from "~/entities/ApiInterfaces.ts";
 import {toRefs} from "@vueuse/core";
 import {delay} from "es-toolkit";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const stationData = useStationData();
 const {canReload} = toRefs(stationData);
 
+const {getStationApiUrl} = useApiRouter();
 const reloadUrl = getStationApiUrl('/reload');
 const restartUrl = getStationApiUrl('/restart');
 

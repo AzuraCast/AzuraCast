@@ -6,7 +6,6 @@ namespace App\Controller\Frontend\PublicPages;
 
 use App\Controller\SingleActionInterface;
 use App\Entity\Repository\CustomFieldRepository;
-use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -24,10 +23,6 @@ final readonly class RequestsAction implements SingleActionInterface
         array $params
     ): ResponseInterface {
         $station = $request->getStation();
-
-        if (!$station->enable_public_page) {
-            throw NotFoundException::station();
-        }
 
         $router = $request->getRouter();
         $customization = $request->getCustomization();

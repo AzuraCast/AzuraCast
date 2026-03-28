@@ -48,14 +48,15 @@ import CardPage from "~/components/Common/CardPage.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {QueryKeys} from "~/entities/Queries.ts";
-import {getApiUrl} from "~/router.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import {useQuery} from "@tanstack/vue-query";
 import Loading from "~/components/Common/Loading.vue";
 import {LogListRequired} from "~/entities/AdminLogs.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const {axios} = useAxios();
 
+const {getApiUrl} = useApiRouter();
 const systemLogsUrl = getApiUrl('/admin/logs');
 
 const {data, isLoading} = useQuery<LogListRequired>({

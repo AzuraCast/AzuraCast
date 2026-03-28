@@ -8,6 +8,7 @@ use App\Controller\Api\AbstractApiCrudController;
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Controller\Frontend\Account\MasqueradeAction;
+use App\Entity\Api\Admin\UserWithDetails;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Entity\User;
@@ -29,7 +30,7 @@ use Psr\Http\Message\ResponseInterface;
             new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: User::class)
+                    items: new OA\Items(ref: UserWithDetails::class)
                 )
             ),
             new OpenApi\Response\AccessDenied(),
@@ -46,7 +47,7 @@ use Psr\Http\Message\ResponseInterface;
         tags: [OpenApi::TAG_ADMIN_USERS],
         responses: [
             new OpenApi\Response\Success(
-                content: new OA\JsonContent(ref: User::class)
+                content: new OA\JsonContent(ref: UserWithDetails::class)
             ),
             new OpenApi\Response\AccessDenied(),
             new OpenApi\Response\GenericError(),
@@ -68,7 +69,7 @@ use Psr\Http\Message\ResponseInterface;
         ],
         responses: [
             new OpenApi\Response\Success(
-                content: new OA\JsonContent(ref: User::class)
+                content: new OA\JsonContent(ref: UserWithDetails::class)
             ),
             new OpenApi\Response\AccessDenied(),
             new OpenApi\Response\NotFound(),

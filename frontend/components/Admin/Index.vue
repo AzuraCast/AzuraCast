@@ -5,39 +5,14 @@
         </h2>
 
         <div class="row row-of-cards">
-            <div
-                v-for="panel in menuItems"
-                :key="panel.key"
-                class="col-sm-12 col-lg-4"
-            >
-                <section class="card">
-                    <div class="card-header text-bg-primary d-flex align-items-center">
-                        <div class="flex-fill">
-                            <h2 class="card-title">
-                                {{ panel.label }}
-                            </h2>
-                        </div>
-                        <div class="flex-shrink-0 pt-1">
-                            <component
-                                v-if="panel.icon"
-                                :is="panel.icon()"
-                                class="lg"
-                            />
-                        </div>
-                    </div>
-
-                    <div class="list-group list-group-flush">
-                        <template v-for="item in panel.items" :key="item.key">
-                            <router-link
-                                v-if="item.url"
-                                :to="item.url"
-                                class="list-group-item list-group-item-action"
-                            >
-                                {{ item.label }}
-                            </router-link>
-                        </template>
-                    </div>
-                </section>
+            <div class="col-sm-12 col-lg-4">
+                <menu-block :items="menuItems.slice(0, 1)"/>
+            </div>
+            <div class="col-sm-12 col-lg-4">
+                <menu-block :items="menuItems.slice(1, 2)"/>
+            </div>
+            <div class="col-sm-12 col-lg-4">
+                <menu-block :items="menuItems.slice(2)"/>
             </div>
         </div>
 
@@ -107,7 +82,6 @@
 
 <script setup lang="ts">
 import {useAxios} from "~/vendor/axios";
-import {getApiUrl} from "~/router";
 import {useAdminMenu} from "~/components/Admin/menu";
 import CpuStatsPanel from "~/components/Admin/Index/CpuStatsPanel.vue";
 import MemoryStatsPanel from "~/components/Admin/Index/MemoryStatsPanel.vue";
@@ -119,7 +93,10 @@ import {ApiAdminServerStats} from "~/entities/ApiInterfaces.ts";
 import {useQuery} from "@tanstack/vue-query";
 import {QueryKeys} from "~/entities/Queries.ts";
 import DashboardNoSidebar from "~/components/Layout/DashboardNoSidebar.vue";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
+import MenuBlock from "~/components/Admin/Index/MenuBlock.vue";
 
+const {getApiUrl} = useApiRouter();
 const statsUrl = getApiUrl('/admin/server/stats');
 
 const menuItems = useAdminMenu();

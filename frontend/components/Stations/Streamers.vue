@@ -123,7 +123,6 @@ import {useTemplateRef} from "vue";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
-import {getStationApiUrl} from "~/router";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 import AddButton from "~/components/Common/AddButton.vue";
@@ -137,6 +136,9 @@ import {ApiStationsVueStreamersProps, StorageLocationTypes} from "~/entities/Api
 import {useAxios} from "~/vendor/axios.ts";
 import {useQuery} from "@tanstack/vue-query";
 import Loading from "~/components/Common/Loading.vue";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
+
+const {getStationApiUrl} = useApiRouter();
 
 const propsUrl = getStationApiUrl('/vue/streamers');
 const listUrl = getStationApiUrl('/streamers');

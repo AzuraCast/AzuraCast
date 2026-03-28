@@ -25,7 +25,7 @@ use OpenApi\Attributes as OA;
 use RuntimeException;
 use Stringable;
 use Symfony\Component\Filesystem\Path;
-use Symfony\Component\Serializer\Annotation as Serializer;
+use Symfony\Component\Serializer\Attribute as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -347,13 +347,33 @@ final class Station implements Stringable, IdentifiableEntityInterface
 
     #[
         OA\Property(
-            description: "Whether this station is visible as a public page and in a now-playing API response.",
+            description: "Whether this station's public pages (player, on-demand streaming, etc.) are visible to "
+            . "non-authenticated users.",
             example: true
         ),
         ORM\Column,
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
     public bool $enable_public_page = true;
+
+    #[
+        OA\Property(
+            description: "Whether the public-facing API endpoints (now playing, art, etc.) are visible to "
+            . "non-authenticated users. Automatically enabled if 'enable_public_page' is true.",
+            example: true
+        ),
+        ORM\Column,
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
+    public bool $enable_public_api = true {
+        get {
+            if ($this->enable_public_page) {
+                return true;
+            }
+
+            return $this->enable_public_api ?? true;
+        }
+    }
 
     #[
         OA\Property(

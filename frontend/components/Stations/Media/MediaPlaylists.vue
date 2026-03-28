@@ -4,7 +4,7 @@
         :key="playlist.id"
     >
         <a
-            v-if="playlist.folder !== null"
+            v-if="playlist.folder"
             class="btn-search text-nowrap"
             href="#"
             :title="$gettext(

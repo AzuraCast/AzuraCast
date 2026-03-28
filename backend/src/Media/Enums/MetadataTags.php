@@ -157,6 +157,7 @@ enum MetadataTags: string
         $aliases = [
             'date' => self::Year,
             'encoder' => self::EncodedBy,
+            'website' => self::UrlArtist,
         ];
 
         return $aliases[$value] ?? null;

@@ -8,6 +8,7 @@ use App\Acl;
 use App\Auth;
 use App\Customization;
 use App\Entity\Podcast;
+use App\Entity\Settings;
 use App\Entity\Station;
 use App\Entity\User;
 use App\Enums\SupportedLocales;
@@ -32,6 +33,7 @@ final class ServerRequest extends SlimServerRequest
     public const string ATTR_LOCALE = 'locale';
     public const string ATTR_CUSTOMIZATION = 'customization';
     public const string ATTR_AUTH = 'auth';
+    public const string ATTR_SETTINGS = 'settings';
     public const string ATTR_STATION = 'station';
     public const string ATTR_PODCAST = 'podcast';
     public const string ATTR_USER = 'user';
@@ -122,6 +124,14 @@ final class ServerRequest extends SlimServerRequest
     public function getUser(): User
     {
         return $this->getAttributeOfClass(self::ATTR_USER, User::class);
+    }
+
+    /**
+     * @throws InvalidRequestAttribute
+     */
+    public function getSettings(): Settings
+    {
+        return $this->getAttributeOfClass(self::ATTR_SETTINGS, Settings::class);
     }
 
     /**

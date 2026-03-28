@@ -69,10 +69,10 @@ import {getErrorAsString, useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
 import Loading from "~/components/Common/Loading.vue";
 import Tabs from "~/components/Common/Tabs.vue";
-import {userAllowed} from "~/acl";
 import {ApiAdminVueStationsFormProps, GlobalPermissions} from "~/entities/ApiInterfaces.ts";
 import {storeToRefs} from "pinia";
 import {useAdminStationsForm} from "~/components/Admin/Stations/Form/form.ts";
+import {useUserAllowed} from "~/functions/useUserAllowed.ts";
 
 defineOptions({
     inheritAttrs: false
@@ -102,6 +102,7 @@ const emit = defineEmits<{
     (e: 'validUpdate', valid: boolean): void
 }>();
 
+const {userAllowed} = useUserAllowed();
 const showAdminTab = userAllowed(GlobalPermissions.Stations);
 
 const formStore = useAdminStationsForm();

@@ -46,11 +46,12 @@ final class RecentBackupCheck
             $router = $request->getRouter();
             $event->addNotification(
                 new Notification(
-                    __('Installation Not Recently Backed Up'),
-                    __('This installation has not been backed up in the last two weeks.'),
-                    FlashLevels::Info,
-                    __('Backups'),
-                    $router->named('admin:backups:index')
+                    id: 'notification-recent-backup',
+                    title: __('Installation Not Recently Backed Up'),
+                    body: __('This installation has not been backed up in the last two weeks.'),
+                    type: FlashLevels::Info,
+                    actionLabel: __('Backups'),
+                    actionUrl: $router->named('admin:backups:index')
                 )
             );
         }

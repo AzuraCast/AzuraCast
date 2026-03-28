@@ -6,13 +6,13 @@ namespace App\Controller\Frontend;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\EnvironmentAwareTrait;
-use App\Container\SettingsAwareTrait;
 use App\Entity\Repository\RolePermissionRepository;
 use App\Entity\User;
 use App\Exception\Http\NotLoggedInException;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Middleware\Auth\ApiAuth;
 use App\VueComponent\StationFormComponent;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
@@ -23,7 +23,6 @@ final class SetupController
 {
     use EntityManagerAwareTrait;
     use EnvironmentAwareTrait;
-    use SettingsAwareTrait;
 
     public function __construct(
         private readonly RolePermissionRepository $permissionRepo,
@@ -130,6 +129,8 @@ final class SetupController
             return $response->withRedirect($request->getRouter()->named('setup:' . $currentStep));
         }
 
+        $this->addCsrf($request);
+
         $router = $request->getRouter();
 
         return $request->getView()->renderVuePage(
@@ -161,6 +162,8 @@ final class SetupController
         if ($currentStep !== 'settings' && $this->environment->isProduction()) {
             return $response->withRedirect($router->named('setup:' . $currentStep));
         }
+
+        $this->addCsrf($request);
 
         $router = $request->getRouter();
 
@@ -200,7 +203,7 @@ final class SetupController
      */
     private function getSetupStep(ServerRequest $request): string
     {
-        $settings = $this->readSettings();
+        $settings = $request->getSettings();
         if ($settings->isSetupComplete()) {
             return 'complete';
         }
@@ -235,5 +238,15 @@ final class SetupController
 
         // Step 3: System Settings
         return 'settings';
+    }
+
+    private function addCsrf(ServerRequest $request): void
+    {
+        $view = $request->getView();
+
+        $globalProps = $view->getGlobalProps();
+
+        $csrf = $request->getCsrf();
+        $globalProps->apiCsrf = $csrf->generate(ApiAuth::API_CSRF_NAMESPACE);
     }
 }

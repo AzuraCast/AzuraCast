@@ -2,6 +2,7 @@
 /**
  * @var App\Customization $customization
  * @var App\Environment $environment
+ * @var App\Service\Vite $vite
  */
 
 if ($environment->isDevelopment()) {
@@ -10,10 +11,10 @@ if ($environment->isDevelopment()) {
     HTML;
 }
 
-$componentDeps = $this->getVueComponentInfo('js/layout.js');
+$componentDeps = $vite->getScriptAndDependencies('js/layout.js');
 
 echo <<<HTML
-    <script type="module" src="{$componentDeps['js']}"></script>
+    <script type="module" src="{$componentDeps->js}"></script>
     <script>
     function ready(callback) {
         if (document.readyState !== "loading") callback();
@@ -22,32 +23,19 @@ echo <<<HTML
     </script>
 HTML;
 
-foreach ($componentDeps['prefetch'] as $prefetchDep) {
+foreach ($componentDeps->prefetch as $prefetchDep) {
     echo <<<HTML
         <link rel="modulepreload" href="{$prefetchDep}" />
     HTML;
 }
 
-foreach ($componentDeps['css'] as $cssDep) {
+foreach ($componentDeps->css as $cssDep) {
     echo <<<HTML
         <link rel="stylesheet" href="{$cssDep}" />
     HTML;
 }
 ?>
 
-<link rel="apple-touch-icon" sizes="57x57" href="<?= $customization->getBrowserIconUrl(57) ?>">
-<link rel="apple-touch-icon" sizes="60x60" href="<?= $customization->getBrowserIconUrl(60) ?>">
-<link rel="apple-touch-icon" sizes="72x72" href="<?= $customization->getBrowserIconUrl(72) ?>">
-<link rel="apple-touch-icon" sizes="76x76" href="<?= $customization->getBrowserIconUrl(76) ?>">
-<link rel="apple-touch-icon" sizes="114x114" href="<?= $customization->getBrowserIconUrl(114) ?>">
-<link rel="apple-touch-icon" sizes="120x120" href="<?= $customization->getBrowserIconUrl(120) ?>">
-<link rel="apple-touch-icon" sizes="144x144" href="<?= $customization->getBrowserIconUrl(144) ?>">
-<link rel="apple-touch-icon" sizes="152x152" href="<?= $customization->getBrowserIconUrl(152) ?>">
 <link rel="apple-touch-icon" sizes="180x180" href="<?= $customization->getBrowserIconUrl(180) ?>">
 <link rel="icon" type="image/png" sizes="192x192" href="<?= $customization->getBrowserIconUrl(192) ?>">
-<link rel="icon" type="image/png" sizes="32x32" href="<?= $customization->getBrowserIconUrl(32) ?>">
-<link rel="icon" type="image/png" sizes="96x96" href="<?= $customization->getBrowserIconUrl(96) ?>">
-<link rel="icon" type="image/png" sizes="16x16" href="<?= $customization->getBrowserIconUrl(16) ?>">
-<meta name="msapplication-TileColor" content="#2196F3">
-<meta name="msapplication-TileImage" content="<?= $customization->getBrowserIconUrl(144) ?>">
 <meta name="theme-color" content="#2196F3">

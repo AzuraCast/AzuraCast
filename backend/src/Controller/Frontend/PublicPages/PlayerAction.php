@@ -7,7 +7,6 @@ namespace App\Controller\Frontend\PublicPages;
 use App\Controller\Frontend\PublicPages\Traits\IsEmbeddable;
 use App\Controller\SingleActionInterface;
 use App\Entity\Repository\CustomFieldRepository;
-use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\VueComponent\NowPlayingComponent;
@@ -36,14 +35,10 @@ final class PlayerAction implements SingleActionInterface
 
         $station = $request->getStation();
 
-        if (!$station->enable_public_page) {
-            throw NotFoundException::station();
-        }
-
         // Build Vue props.
         $router = $request->getRouter();
 
-        $props = $this->nowPlayingComponent->getProps($request);
+        $playerProps = $this->nowPlayingComponent->getProps($request);
 
         // Render embedded player.
         if ($embed) {
@@ -69,14 +64,27 @@ final class PlayerAction implements SingleActionInterface
                     'page_class' => implode(' ', $pageClasses),
                     'hide_footer' => true,
                 ],
-                props: $props,
+                props: $playerProps,
             );
         }
 
-        $props['downloadPlaylistUri'] = $router->named(
-            'public:playlist',
-            ['station_id' => $station->short_name, 'format' => 'pls']
-        );
+        $props = [
+            'stationName' => $station->name,
+            'enableRequests' => $station->enable_requests,
+            'downloadPlaylistUri' => $router->named(
+                routeName: 'public:playlist',
+                routeParams: ['station_id' => $station->short_name, 'format' => 'pls']
+            ),
+            'requests' => [
+                'requestListUri' => $router->named(
+                    routeName: 'api:requests:list',
+                    routeParams: ['station_id' => $station->id]
+                ),
+                'showAlbumArt' => $playerProps['showAlbumArt'],
+                'customFields' => $this->customFieldRepo->fetchArray(),
+            ],
+            'player' => $playerProps,
+        ];
 
         // Auto-redirect requests from players to the playlist (PLS) download.
         $userAgent = strtolower($request->getHeaderLine('User-Agent'));
@@ -87,15 +95,6 @@ final class PlayerAction implements SingleActionInterface
         }
 
         // Render full page player.
-        $props['stationName'] = $station->name;
-        $props['enableRequests'] = $station->enable_requests;
-
-        $props['requestListUri'] = $router->named(
-            'api:requests:list',
-            ['station_id' => $station->id]
-        );
-        $props['customFields'] = $this->customFieldRepo->fetchArray();
-
         return $request->getView()->renderToResponse(
             $response,
             'frontend/public/index',

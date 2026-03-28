@@ -6,7 +6,6 @@ namespace App\Controller\Api\Internal;
 
 use App\Cache\AzuraRelayCache;
 use App\Container\EntityManagerAwareTrait;
-use App\Container\SettingsAwareTrait;
 use App\Entity\Api\Admin\Relay as ApiRelay;
 use App\Entity\Api\Status;
 use App\Entity\Relay;
@@ -43,7 +42,6 @@ use Psr\Http\Message\ResponseInterface;
 final class RelaysController
 {
     use EntityManagerAwareTrait;
-    use SettingsAwareTrait;
 
     public function __construct(
         private readonly Adapters $adapters,
@@ -132,7 +130,7 @@ final class RelaysController
             $baseUrl = $body['base_url'];
         } else {
             /** @noinspection HttpUrlsUsage */
-            $baseUrl = 'http://' . $this->readSettings()->getIp($request);
+            $baseUrl = 'http://' . $request->getSettings()->getIp($request);
         }
 
         $relay = $relayRepo->findOneBy(['base_url' => $baseUrl]);
@@ -150,7 +148,9 @@ final class RelaysController
 
         foreach ($relay->remotes as $remote) {
             /** @var StationRemote $remote */
-            $existingRemotes[$remote->station->id][$remote->mount] = $remote;
+            if ($remote->mount !== null) {
+                $existingRemotes[$remote->station->id][$remote->mount] = $remote;
+            }
         }
 
         // Iterate through all remotes that *should* exist.

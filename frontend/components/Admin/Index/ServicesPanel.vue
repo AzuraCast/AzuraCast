@@ -48,14 +48,15 @@
 
 <script setup lang="ts">
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
-import {getApiUrl} from "~/router.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import Loading from "~/components/Common/Loading.vue";
 import {ApiAdminServiceData} from "~/entities/ApiInterfaces.ts";
 import {useQuery} from "@tanstack/vue-query";
 import {QueryKeys} from "~/entities/Queries.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getApiUrl} = useApiRouter();
 const servicesUrl = getApiUrl('/admin/services');
 
 const {axios, axiosSilent} = useAxios();

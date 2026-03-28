@@ -11,6 +11,111 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.23.4 (Mar 8, 2026)
+
+## New Features/Changes
+
+- **New "Enable Public APIs" Setting on Stations**: We have separated the "Enable Public Pages" permission into one for
+  public pages, and one for public-facing APIs. If the public pages setting is enabled, APIs are enabled by default.
+  This allows stations to build third-party players without using our built-in public pages.
+
+- **New "Allow Stations to Edit Raw Liquidsoap Configuration" Global Setting**: In multi-tenant environments (i.e.
+  resellers), giving users full access to edit custom Liquidsoap configuration can have security implications, as
+  Liquidsoap's scripting language allows the user to call out to external processes or read system files. You can now
+  disable this feature globally via a setting on the System Settings page, which applies to all stations regardless of
+  individual user permissions.
+
+## Code Quality/Technical Changes
+
+- The ID3 metadata tag "website" now maps to "url_artist" for custom field assignment.
+
+- We have removed the "EXPOSE 8000-8999" line from our Dockerfile; this has no effect on the actual ports that we expose
+  in the software, but it will prevent some developer software from assuming that every port from 8000 to 8999 is in use
+  by AzuraCast even when that isn't the case.
+
+## Bug Fixes
+
+- Hardened the security of our Liquidsoap script generation by escaping parts of strings used by Liquidsoap that could
+  be interpolated to include other values from the running script or to execute console commands. While this would not
+  allow anonymous listeners to modify an installation, it could represent a significant security risk in multi-tenant (
+  i.e. reseller) environments. In those environments, it is also recommended to entirely disable Liquidsoap custom
+  script editing (as made possible in "New Features" above) for further increased security.
+
+- Improved cache invalidation when editing fields on the Media Manager page.
+
+- Fixed a bug preventing custom cue points from appearing when exporting bulk media CSVs.
+
+- Tweaked our port 80 web proxy to avoid issues caused by oversized cookie headers.
+
+- Fixed an issue that may have caused bulk SFTP uploads to result in a temporary IP ban.
+
+---
+
+# AzuraCast 0.23.3 (Feb 26, 2026)
+
+This release includes numerous incremental bug fixes and new features, along with a vulnerability fix that is
+particularly important for users of multi-tenant installations (i.e. resellers). Upgrading is strongly recommended in
+these environments.
+
+## Code Quality/Technical Changes
+
+- Added a new API endpoint allowing super administrators to create an API key for any given user.
+
+- If you are mounting a filesystem that has folders or paths that are not accessible by AzuraCast, the software will 
+  skip these directories instead of them preventing regular operation.
+
+## Bug Fixes
+
+- Fixed a vulnerability where some media-based endpoints did not fully perform permission checking on the user making
+  the API call. This vulnerability does not allow unauthenticated members of the public to modify your files, but would
+  allow logged-in users associated with other stations on a single installation to possibly modify or add files to the
+  incorrect station, provided they knew the station ID. This vulnerability was introduced in a community pull request on
+  July 7, 2025 and affects all versions of AzuraCast released afterward, including 0.22.0, 0.22.1, 0.23.0, and 0.23.2.
+
+- Fixed a bug preventing setup from completing correctly.
+
+- Fixed a bug where UTC offsets that weren't a full hour (i.e. +6:30 UTC) were not displayed correctly in dropdowns.
+
+---
+
+# AzuraCast 0.23.2 (Dec 11, 2025)
+
+## New Features/Changes
+
+- The embeddable player widget builder has been greatly expanded and now supports custom colors, several preset layouts,
+  enabling or disabling components in the player, and saving/loading custom templates.
+
+- Administrators can now create login tokens for any account that function as "magic links" that complete the
+  authentication process in one step, as opposed to only being able to create password reset links. Both types of links
+  can be created from the Administration panel.
+
+## Code Quality/Technical Changes
+
+- If already installed, instances of Rocket Streaming Audio Server (RSAS) or Shoutcast can now be uninstalled from the
+  web interface.
+
+- Notifications on the dashboard homepage have unique IDs, meaning they can be individually targeted by CSS for styling
+  or other customization purposes.
+
+## Bug Fixes
+
+- Several bugs causing the Media Manager's cache to become out-of-date from the actual contents of the filesystem have
+  been resolved, so navigating around the station filesystem should accurately represent its contents in many more
+  cases.
+
+- Fixed a bug where live streamers/DJs with a disconnect delay would never be reactivated.
+
+- Fixed a bug preventing writing metadata changes to certain file formats.
+
+- Fixed a bug affecting uploading of custom branding assets.
+
+- Fixed a bug causing Icecast to have the incorrect amount of maximum listeners.
+
+- A low-security vulnerability affecting an internal API endpoint inside AzuraCast has been found and fixed in this
+  version. Updating is strongly recommended for users using SFTP to manage their local media.
+
+---
+
 # AzuraCast 0.23.1 (Oct 1, 2025)
 
 A minor bug fix addressing some pressing issues not fixed in 0.23.0.

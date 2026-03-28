@@ -152,7 +152,7 @@ final class Time
             $offset = $tz->getOffset($nowUtc);
 
             $offsetPrefix = $offset < 0 ? '-' : '+';
-            $offsetFormatted = gmdate(($offset % 60 === 0) ? 'G' : 'G:i', abs($offset));
+            $offsetFormatted = gmdate(($offset % 3600 === 0) ? 'G' : 'G:i', abs($offset));
 
             $prettyOffset = ($offset === 0) ? 'UTC' : 'UTC' . $offsetPrefix . $offsetFormatted;
             if ($tzSubregion !== $tzRegion) {

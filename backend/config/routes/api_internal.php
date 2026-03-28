@@ -30,10 +30,12 @@ return static function (RouteCollectorProxy $group) {
             )->add(Middleware\GetStation::class);
 
             $group->post('/sftp-auth', Controller\Api\Internal\SftpAuthAction::class)
-                ->setName('api:internal:sftp-auth');
+                ->setName('api:internal:sftp-auth')
+                ->add(Middleware\RequireInternalConnection::class);
 
             $group->post('/sftp-event', Controller\Api\Internal\SftpEventAction::class)
-                ->setName('api:internal:sftp-event');
+                ->setName('api:internal:sftp-event')
+                ->add(Middleware\RequireInternalConnection::class);
 
             $group->get('/relays', Controller\Api\Internal\RelaysController::class)
                 ->setName('api:internal:relays')

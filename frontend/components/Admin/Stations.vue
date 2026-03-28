@@ -93,7 +93,6 @@ import {useTemplateRef} from "vue";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
-import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useAxios} from "~/vendor/axios.ts";
@@ -103,7 +102,9 @@ import {QueryKeys} from "~/entities/Queries.ts";
 import {useQuery} from "@tanstack/vue-query";
 import {ApiAdminVueStationsProps, HasLinks, Station} from "~/entities/ApiInterfaces.ts";
 import Loading from "~/components/Common/Loading.vue";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getApiUrl} = useApiRouter();
 const listUrl = getApiUrl('/admin/stations');
 const propsUrl = getApiUrl('/admin/vue/stations');
 

@@ -119,7 +119,6 @@ import AlbumArt from "~/components/Common/AlbumArt.vue";
 import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useTemplateRef} from "vue";
-import {getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
@@ -130,7 +129,9 @@ import {ApiStationsVuePodcastsProps, StorageLocationTypes} from "~/entities/ApiI
 import {useAxios} from "~/vendor/axios.ts";
 import {useQuery} from "@tanstack/vue-query";
 import Loading from "~/components/Common/Loading.vue";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getStationApiUrl} = useApiRouter();
 const quotaUrl = getStationApiUrl(`/quota/${StorageLocationTypes.StationPodcasts}`);
 const listUrl = getStationApiUrl('/podcasts');
 const newArtUrl = getStationApiUrl('/podcasts/art');

@@ -110,7 +110,6 @@ import {useTranslate} from "~/vendor/gettext";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
-import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import {
     ApiAdminStorageLocation,
@@ -120,9 +119,11 @@ import {
 } from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const activeType = ref<StorageLocationTypes>(StorageLocationTypes.StationMedia);
 
+const {getApiUrl} = useApiRouter();
 const listUrl = getApiUrl('/admin/storage_locations');
 const listUrlForType = computed(() => {
     return listUrl.value + '?type=' + activeType.value;

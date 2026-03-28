@@ -32,14 +32,15 @@ final class ProfilerAdvisorCheck
 
         $event->addNotification(
             new Notification(
-                __('The performance profiling extension is currently enabled on this installation.'),
-                __(
+                id: 'notification-dev-spx',
+                title: __('The performance profiling extension is currently enabled on this installation.'),
+                body: __(
                     'You can track the execution time and memory usage of any AzuraCast page or application ' .
                     'from the profiler page.',
                 ),
-                FlashLevels::Info,
-                __('Profiler Control Panel'),
-                '/?' . http_build_query(
+                type: FlashLevels::Info,
+                actionLabel: __('Profiler Control Panel'),
+                actionUrl: '/?' . http_build_query(
                     [
                         'SPX_UI_URI' => '/',
                         'SPX_KEY' => $this->environment->getProfilingExtensionHttpKey(),
@@ -51,12 +52,13 @@ final class ProfilerAdvisorCheck
         if ($this->environment->isProfilingExtensionAlwaysOn()) {
             $event->addNotification(
                 new Notification(
-                    __('Performance profiling is currently enabled for all requests.'),
-                    __(
+                    id: 'notification-dev-spx-profiling',
+                    title: __('Performance profiling is currently enabled for all requests.'),
+                    body: __(
                         'This can have an adverse impact on system performance. ' .
                         'You should disable this when possible.'
                     ),
-                    FlashLevels::Warning
+                    type: FlashLevels::Warning
                 )
             );
         }

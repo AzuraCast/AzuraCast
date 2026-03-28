@@ -84,14 +84,15 @@ import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import DetailsModal from "~/components/Admin/AuditLog/DetailsModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
-import {getApiUrl} from "~/router";
 import {ApiAdminAuditLogChangeset, AuditLog} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys} from "~/entities/Queries.ts";
 import IconIcAddCircle from "~icons/ic/baseline-add-circle";
 import IconIcRemoveCircle from "~icons/ic/baseline-remove-circle";
 import IconIcSwapHorizontalCircle from "~icons/ic/baseline-swap-horizontal-circle";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getApiUrl} = useApiRouter();
 const baseApiUrl = getApiUrl('/admin/auditlog');
 
 const {DateTime} = useLuxon();

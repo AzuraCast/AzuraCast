@@ -9,7 +9,7 @@
                 id="hdr_edit_profile"
                 class="card-title"
             >
-                {{ $gettext('Edit Station Profile') }}
+                {{ $gettext('Edit Station Settings') }}
             </h3>
         </div>
         <div class="card-body">
@@ -28,14 +28,15 @@
 
 <script setup lang="ts">
 import AdminStationsForm from "~/components/Admin/Stations/StationForm.vue";
-import {getStationApiUrl} from "~/router";
 import {useRouter} from "vue-router";
 import {useAxios} from "~/vendor/axios.ts";
 import {useQuery} from "@tanstack/vue-query";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import {ApiAdminVueStationsFormProps} from "~/entities/ApiInterfaces.ts";
 import Loading from "~/components/Common/Loading.vue";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getStationApiUrl} = useApiRouter();
 const editUrl = getStationApiUrl('/profile/edit');
 const propsUrl = getStationApiUrl('/vue/profile/edit');
 

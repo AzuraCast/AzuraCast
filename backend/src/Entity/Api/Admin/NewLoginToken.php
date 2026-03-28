@@ -30,7 +30,7 @@ final class NewLoginToken
     public string|int $user;
 
     #[OA\Property]
-    public ?LoginTokenTypes $type;
+    public ?LoginTokenTypes $type = null;
 
     #[OA\Property(example: "SSO Login")]
     public ?string $comment = null;

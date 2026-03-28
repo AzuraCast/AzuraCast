@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Entity\ApiGenerator;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Customization;
 use App\Entity\Api\ResolvableUrl;
 use App\Entity\Api\Song;
 use App\Entity\Interfaces\SongInterface;
 use App\Entity\Repository\CustomFieldRepository;
-use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Http\Router;
@@ -24,7 +24,7 @@ final class SongApiGenerator
 
     public function __construct(
         private readonly Router $router,
-        private readonly StationRepository $stationRepo,
+        private readonly Customization $customization,
         private readonly CustomFieldRepository $customFieldRepo,
         private readonly RemoteAlbumArt $remoteAlbumArt
     ) {
@@ -108,7 +108,7 @@ final class SongApiGenerator
             }
         }
 
-        return $this->stationRepo->getDefaultAlbumArtUrl($station);
+        return $this->customization->getDefaultAlbumArtUrl($station);
     }
 
     /**

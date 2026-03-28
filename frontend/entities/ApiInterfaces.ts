@@ -310,7 +310,7 @@ export interface ApiAdminDebugSyncTask {
   task: string;
   pattern: string | null;
   time: number;
-  nextRun: number;
+  nextRun: number | null;
   url: string;
 }
 
@@ -324,6 +324,13 @@ export interface ApiAdminLogList {
   stationLogs: ApiAdminStationLogList[];
 }
 
+export interface ApiAdminNewApiKey {
+  /** User ID or e-mail address. */
+  user: number | string;
+  /** @example "Admin-generated API key" */
+  comment?: string;
+}
+
 export interface ApiAdminNewLoginToken {
   /** User ID or e-mail address. */
   user: number | string;
@@ -333,10 +340,16 @@ export interface ApiAdminNewLoginToken {
   expires_minutes?: number;
 }
 
-export type ApiAdminNewLoginTokenResponse = ApiStatus & {
+export interface ApiAdminNewLoginTokenResponse {
+  /** @example true */
+  success: boolean;
+  /** @example "Changes saved successfully." */
+  message: string;
+  /** @example "<b>Changes saved successfully.</b>" */
+  formatted_message: string;
   record: UserLoginToken;
   readonly links: Record<string, string>;
-};
+}
 
 export interface ApiAdminPermission {
   id: string;
@@ -560,6 +573,15 @@ export interface ApiAdminUpdateDetails {
   can_switch_to_stable?: boolean;
 }
 
+export type ApiAdminUserWithDetails = User &
+  HasLinks & {
+    /**
+     * Whether this user record represents the currently logged-in user.
+     * @example true
+     */
+    is_me: boolean;
+  };
+
 export interface ApiAdminVueBackupProps {
   isDocker: boolean;
   storageLocations: Record<string, string>;
@@ -763,7 +785,14 @@ export type ApiLogType = HasLinks & {
   readonly tail: boolean;
 };
 
+export type ApiMediaBatchResult = ApiBatchResult & {
+  files: string[];
+  directories: string[];
+  responseRecord: any[] | null;
+};
+
 export interface ApiNotification {
+  id: string;
   title: string;
   body: string;
   type: FlashLevels;
@@ -1240,6 +1269,8 @@ export interface ApiStationPlaylistQueue {
    * @example "Aluko River"
    */
   title?: string;
+  /** The UNIX timestamp when this specific track was last played. */
+  last_played?: number | null;
 }
 
 export interface ApiStationProfile {
@@ -1388,24 +1419,17 @@ export interface ApiStationsVuePodcastsProps {
 
 export interface ApiStationsVueProfileProps {
   nowPlayingProps: ApiNowPlayingVueProps;
-  publicPageUri: string;
-  publicPageEmbedUri: string;
-  publicWebDjUri: string;
-  publicOnDemandUri: string;
-  publicPodcastsUri: string;
-  publicScheduleUri: string;
-  publicOnDemandEmbedUri: string;
-  publicRequestEmbedUri: string;
-  publicHistoryEmbedUri: string;
-  publicScheduleEmbedUri: string;
-  publicPodcastsEmbedUri: string;
+  publicPageEmbedUrl: string;
+  publicOnDemandEmbedUrl: string;
+  publicRequestEmbedUrl: string;
+  publicHistoryEmbedUrl: string;
+  publicScheduleEmbedUrl: string;
+  publicPodcastsEmbedUrl: string;
   frontendAdminUri: string;
   frontendAdminPassword: string;
   frontendSourcePassword: string;
   frontendRelayPassword: string;
   frontendPort: number | null;
-  numSongs: number;
-  numPlaylists: number;
 }
 
 export interface ApiStationsVueSftpUsersProps {
@@ -1592,6 +1616,8 @@ export interface VueStationGlobals {
   onDemandUrl: string;
   enableStreamers: boolean;
   webDjUrl: string;
+  publicPodcastsUrl: string;
+  publicScheduleUrl: string;
   enableRequests: boolean;
   features: VueStationFeatures;
   ipGeoAttribution: string;
@@ -1605,6 +1631,96 @@ export interface VueUserGlobals {
   id: number;
   displayName: string | null;
   permissions: ApiAdminRolePermissions;
+}
+
+export interface ApiWidgetCustomization {
+  /**
+   * Primary accent color (hex without #).
+   * @example "2196F3"
+   */
+  primaryColor?: string | null;
+  /**
+   * Background color (hex without #).
+   * @example "ffffff"
+   */
+  backgroundColor?: string | null;
+  /**
+   * Text color (hex without #).
+   * @example "000000"
+   */
+  textColor?: string | null;
+  /**
+   * Whether album art should be shown.
+   * @example true
+   */
+  showAlbumArt?: boolean;
+  /**
+   * Whether the widget should use rounded corners.
+   * @example false
+   */
+  roundedCorners?: boolean;
+  /**
+   * Whether autoplay should be requested.
+   * @example false
+   */
+  autoplay?: boolean;
+  /**
+   * Whether the volume controls are visible.
+   * @example true
+   */
+  showVolumeControls?: boolean;
+  /**
+   * Whether track progress is visible.
+   * @example true
+   */
+  showTrackProgress?: boolean;
+  /**
+   * Whether stream selection controls are visible.
+   * @example true
+   */
+  showStreamSelection?: boolean;
+  /**
+   * Whether the history button is visible.
+   * @example false
+   */
+  showHistoryButton?: boolean;
+  /**
+   * Whether the request button is visible.
+   * @example false
+   */
+  showRequestButton?: boolean;
+  /**
+   * Whether the playlist download button is visible.
+   * @example false
+   */
+  showPlaylistButton?: boolean;
+  /**
+   * Initial player volume (0-100).
+   * @min 0
+   * @max 100
+   * @example 75
+   */
+  initialVolume?: number;
+  /**
+   * Layout variant for the widget.
+   * @example "horizontal"
+   */
+  layout?: string;
+  /**
+   * Whether to show an "open popup" button.
+   * @example false
+   */
+  enablePopupPlayer?: boolean;
+  /**
+   * Whether to persist playback state across pages.
+   * @example false
+   */
+  continuousPlay?: boolean;
+  /**
+   * Additional CSS applied to the widget.
+   * @example ".radio-player-widget { border-radius: 12px; }"
+   */
+  customCss?: string | null;
 }
 
 export type ApiKey = HasSplitTokenFields & {
@@ -1759,6 +1875,11 @@ export interface Settings {
    * @example "*"
    */
   api_access_control?: string | null;
+  /**
+   * Allow stations to manually edit Liquidsoap code.
+   * @example "true"
+   */
+  enable_liquidsoap_editing?: boolean;
   /**
    * Whether to use high-performance static JSON for Now Playing data updates.
    * @example "false"
@@ -2026,10 +2147,15 @@ export type Station = HasAutoIncrementId & {
    */
   is_streamer_live?: boolean;
   /**
-   * Whether this station is visible as a public page and in a now-playing API response.
+   * Whether this station's public pages (player, on-demand streaming, etc.) are visible to non-authenticated users.
    * @example true
    */
   enable_public_page?: boolean;
+  /**
+   * Whether the public-facing API endpoints (now playing, art, etc.) are visible to non-authenticated users. Automatically enabled if 'enable_public_page' is true.
+   * @example true
+   */
+  enable_public_api?: boolean;
   /**
    * Whether this station has a public 'on-demand' streaming and download page.
    * @example true

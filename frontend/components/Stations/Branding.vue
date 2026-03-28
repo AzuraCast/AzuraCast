@@ -38,8 +38,9 @@
 <script setup lang="ts">
 import BrandingForm from "~/components/Stations/Branding/BrandingForm.vue";
 import CustomAssetForm from "~/components/Admin/Branding/CustomAssetForm.vue";
-import {getStationApiUrl} from "~/router";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getStationApiUrl} = useApiRouter();
 const profileEditUrl = getStationApiUrl('/profile/edit');
 const backgroundApiUrl = getStationApiUrl('/custom_assets/background');
 const albumArtApiUrl = getStationApiUrl('/custom_assets/album_art');

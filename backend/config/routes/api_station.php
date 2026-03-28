@@ -24,7 +24,7 @@ return static function (RouteCollectorProxy $group) {
             )->setName('api:nowplaying:art')
                 ->add(new Middleware\Cache\SetCache(15));
         }
-    )->add(Middleware\RequireLoginNonPublicStation::class)
+    )->add(Middleware\StationPublicApi::class)
         ->add(Middleware\RequireStation::class)
         ->add(Middleware\GetStation::class);
 
@@ -137,7 +137,7 @@ return static function (RouteCollectorProxy $group) {
                         }
                     );
                 }
-            )->add(Middleware\RequireLoginNonPublicStation::class);
+            )->add(Middleware\StationPublicApi::class);
 
             /*
              * Authenticated Functions
@@ -402,7 +402,7 @@ return static function (RouteCollectorProxy $group) {
                                         Controller\Api\Stations\Files\FlowUploadAction::class
                                     )->setName('api:stations:files:upload');
                                 }
-                            );
+                            )->add(new Middleware\Permissions(StationPermissions::Media, true));
 
                             $group->group(
                                 '/file/{id}',

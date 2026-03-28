@@ -23,7 +23,7 @@ interface ScheduledTaskInterface
         DateTimeInterface $now,
         Environment $environment,
         Settings $settings
-    ): int;
+    ): ?int;
 
     /**
      * The CRON-styled pattern for execution of this task.

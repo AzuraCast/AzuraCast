@@ -54,12 +54,13 @@ import {ref, useTemplateRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
-import {getApiUrl} from "~/router.ts";
 import {isValidPassword, useAppRegle} from "~/vendor/regle.ts";
 import {required, withMessage} from "@regle/rules";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const emit = defineEmits<HasRelistEmit>();
 
+const {getApiUrl} = useApiRouter();
 const changePasswordUrl = getApiUrl('/frontend/account/password');
 
 const {$gettext} = useTranslate();

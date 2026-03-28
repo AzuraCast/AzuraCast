@@ -1,13 +1,17 @@
 <template>
     <card-page header-id="hdr_song_requests">
         <template #header="{id}">
-            <h3
-                :id="id"
-                class="card-title"
-            >
-                {{ $gettext('Song Requests') }}
-                <enabled-badge :enabled="stationData.enableRequests"/>
-            </h3>
+            <div class="d-flex align-items-center">
+                <h3
+                    :id="id"
+                    class="card-title flex-fill my-0"
+                >
+                    {{ $gettext('Song Requests') }}
+                </h3>
+                <div class="flex-shrink-0">
+                    <enabled-badge :enabled="stationData.enableRequests"/>
+                </div>
+            </div>
         </template>
 
         <template
@@ -59,7 +63,7 @@
 <script setup lang="ts">
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {userAllowedForStation} from "~/acl";
+import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
 import {computed} from "vue";
 import {StationPermissions} from "~/entities/ApiInterfaces.ts";
@@ -69,6 +73,8 @@ import IconIcClose from "~icons/ic/baseline-close";
 import IconIcAssignment from "~icons/ic/baseline-assignment";
 
 const stationData = useStationData();
+
+const {userAllowedForStation} = useUserAllowedForStation();
 
 const toggleRequests = useToggleFeature(
     'enable_requests',

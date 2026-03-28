@@ -81,14 +81,15 @@
 import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
 import LogList from "~/components/Common/LogList.vue";
 import {useTemplateRef} from "vue";
-import {getStationApiUrl} from "~/router";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import {useQuery} from "@tanstack/vue-query";
 import {ApiLogType} from "~/entities/ApiInterfaces.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import Loading from "~/components/Common/Loading.vue";
 import IconIcSupport from "~icons/ic/baseline-support";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
+const {getStationApiUrl} = useApiRouter();
 const logsUrl = getStationApiUrl('/logs');
 
 const {axios} = useAxios();

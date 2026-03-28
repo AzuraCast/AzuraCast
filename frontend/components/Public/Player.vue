@@ -2,7 +2,7 @@
     <div class="radio-player-widget">
         <div class="now-playing-details">
             <div
-                v-if="showAlbumArt && np.now_playing?.song?.art"
+                v-if="computedShowAlbumArt && np.now_playing?.song?.art"
                 class="now-playing-art"
             >
                 <album-art :src="np.now_playing.song.art" />
@@ -38,7 +38,7 @@
                 </div>
 
                 <div
-                    v-if="currentTrackElapsedDisplay != null"
+                    v-if="currentTrackElapsedDisplay != null && props.widgetCustomization?.showTrackProgress"
                     class="time-display"
                 >
                     <div class="time-display-played text-secondary">
@@ -70,7 +70,7 @@
 
             <div class="radio-control-select-stream">
                 <div
-                    v-if="streams.length > 1"
+                    v-if="streams.length > 1 && props.widgetCustomization?.showStreamSelection"
                     class="dropdown"
                 >
                     <button
@@ -105,7 +105,20 @@
             </div>
 
             <div
-                v-if="showVolume"
+                v-if="showPopupButton"
+                class="radio-control-popup"
+            >
+                <button
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    @click="openPopupPlayer"
+                >
+                    {{ $gettext('Open Popup Player') }}
+                </button>
+            </div>
+
+            <div
+                v-if="showVolume && props.widgetCustomization?.showVolumeControls"
                 class="radio-control-volume d-flex align-items-center"
             >
                 <div class="flex-shrink-0 mx-2">
@@ -141,27 +154,25 @@ import MuteButton from "~/components/Common/Audio/MuteButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {blankStreamDescriptor, StreamDescriptor, usePlayerStore} from "~/functions/usePlayerStore.ts";
 import {useEventListener} from "@vueuse/core";
-import {ApiNowPlaying, ApiNowPlayingVueProps} from "~/entities/ApiInterfaces.ts";
+import {ApiNowPlaying, ApiNowPlayingVueProps, ApiWidgetCustomization} from "~/entities/ApiInterfaces.ts";
 import {storeToRefs} from "pinia";
+import {defaultWidgetSettings} from "~/entities/PublicPlayer.ts";
+import useOptionalStorage from "~/functions/useOptionalStorage.ts";
 
 export interface PlayerProps {
     nowPlayingProps: ApiNowPlayingVueProps,
     offlineText?: string,
     showHls?: boolean,
     showAlbumArt?: boolean,
-    autoplay?: boolean
+    widgetCustomization?: ApiWidgetCustomization
 }
-
-defineOptions({
-    inheritAttrs: false
-});
 
 const props = withDefaults(
     defineProps<PlayerProps>(),
     {
         showHls: true,
         showAlbumArt: true,
-        autoplay: true
+        widgetCustomization: () => defaultWidgetSettings
     }
 );
 
@@ -176,9 +187,21 @@ const {
     currentTrackElapsedDisplay
 } = useNowPlaying(toRef(props, 'nowPlayingProps'));
 
+const isPopupContext = new URLSearchParams(window.location.search).has('popup');
+
+// Widget customization computed properties
+const computedShowAlbumArt = computed(() => {
+    return props.showAlbumArt && (props.widgetCustomization?.showAlbumArt ?? true);
+});
+
 const playerStore = usePlayerStore();
-const {volume, showVolume, isMuted} = storeToRefs(playerStore);
+const {volume, showVolume, isMuted, isPlaying} = storeToRefs(playerStore);
 const {setVolume, toggleMute, toggle} = playerStore;
+
+// Set initial volume if specified
+if (typeof props.widgetCustomization?.initialVolume === 'number' && props.widgetCustomization.initialVolume !== 75) {
+    setVolume(props.widgetCustomization.initialVolume);
+}
 
 const enableHls = computed(() => {
     return props.showHls && np.value?.station?.hls_enabled;
@@ -230,12 +253,80 @@ const setActiveStream = (newStream: StreamDescriptor): void => {
     toggle(newStream);
 };
 
+const popupUrl = computed(() => {
+    if (!props.widgetCustomization?.enablePopupPlayer) {
+        return null;
+    }
+
+    const popupTarget = new URL(window.location.href);
+    popupTarget.searchParams.set('popup', '1');
+    return popupTarget.toString();
+});
+
+const showPopupButton = computed(() => {
+    return Boolean(popupUrl.value) && !isPopupContext;
+});
+
+const openPopupPlayer = () => {
+    if (!popupUrl.value) {
+        return;
+    }
+
+    window.open(
+        popupUrl.value,
+        'azuracast-player-popup',
+        'width=540,height=760,resizable=yes,scrollbars=yes'
+    );
+};
+
+const continuousPlayEnabled = computed(() => {
+    return Boolean(props.widgetCustomization?.continuousPlay);
+});
+
+type ContinuousStorage = {
+    streamUrl: string | null,
+    isPlaying: boolean,
+    resume: boolean
+};
+
+const blankContinuousStorage: ContinuousStorage = {
+    streamUrl: null,
+    isPlaying: false,
+    resume: false
+}
+
+const continuousStorage = useOptionalStorage<ContinuousStorage>(
+    () => `azuracast-player-state-${props.nowPlayingProps.stationShortName}`,
+    blankContinuousStorage
+);
+
+watch(continuousPlayEnabled, (enabled) => {
+    if (!enabled) {
+        continuousStorage.value = blankContinuousStorage;
+    }
+}, {immediate: true});
+
+watch(
+    () => activeStream.value?.url ?? null,
+    (streamUrl) => {
+        if (continuousPlayEnabled.value) {
+            continuousStorage.value.streamUrl = streamUrl;
+        }
+    }
+);
+
+watch(isPlaying, (playing) => {
+    if (continuousPlayEnabled.value) {
+        continuousStorage.value.isPlaying = playing;
+    }
+});
+
 const urlParamVolume = (new URL(document.location.href)).searchParams.get('volume');
 if (null !== urlParamVolume) {
     setVolume(Number(urlParamVolume));
 }
 
-if (props.autoplay) {
+if (props.widgetCustomization?.autoplay) {
     const cleanupEvent = useEventListener(document, "now-playing", () => {
         void nextTick(() => {
             toggle(activeStream.value);
@@ -276,6 +367,25 @@ const onNowPlayingUpdated = (np_new: ApiNowPlaying) => {
             activeStream.value = $currentStream;
         }
     }
+
+    if (continuousPlayEnabled.value) {
+        if (continuousStorage.value.streamUrl) {
+            const matchingStream = $streams.find((stream) => stream.url === continuousStorage.value.streamUrl);
+            if (matchingStream) {
+                activeStream.value = matchingStream;
+            }
+
+            continuousStorage.value.streamUrl = null;
+        }
+
+        if (continuousStorage.value.resume) {
+            if (activeStream.value.url && !isPlaying.value) {
+                toggle(activeStream.value);
+            }
+
+            continuousStorage.value.resume = false;
+        }
+    }
 };
 
 watch(np, onNowPlayingUpdated, {immediate: true});
@@ -283,12 +393,27 @@ watch(np, onNowPlayingUpdated, {immediate: true});
 
 <style lang="scss">
 .radio-player-widget {
+    // CSS Custom Properties for widget customization
+    --widget-primary-color: #2196F3;
+    --widget-bg-color: transparent;
+    --widget-text-color: inherit;
+    --widget-border-radius: 0px;
+    --widget-padding: 0;
+    --widget-gap: 0.75rem;
+
+    transition: all 0.3s ease;
+    padding: var(--widget-padding);
+    background-color: var(--widget-bg-color);
+    color: var(--widget-text-color);
+    border-radius: var(--widget-border-radius);
+
     .now-playing-details {
         display: flex;
         align-items: center;
+        gap: var(--widget-gap);
 
         .now-playing-art {
-            padding-right: .5rem;
+            flex: 0 0 auto;
 
             img {
                 width: 75px;
@@ -356,6 +481,7 @@ watch(np, onNowPlayingUpdated, {immediate: true});
                     -webkit-transition: width 1s; /* Safari */
                     transition: width 1s;
                     transition-timing-function: linear;
+                    background-color: var(--widget-primary-color) !important;
                 }
             }
 
@@ -370,10 +496,7 @@ watch(np, onNowPlayingUpdated, {immediate: true});
         flex-direction: row;
         align-items: center;
         flex-wrap: wrap;
-
-        .radio-control-play-button {
-            margin-right: .25rem;
-        }
+        gap: var(--widget-gap);
 
         .radio-control-select-stream {
             flex: 1 1 auto;
@@ -389,6 +512,14 @@ watch(np, onNowPlayingUpdated, {immediate: true});
         .radio-control-volume {
             .radio-control-volume-slider {
                 max-width: 30%;
+            }
+        }
+
+        .radio-control-popup {
+            flex: 0 0 auto;
+
+            button {
+                white-space: nowrap;
             }
         }
     }

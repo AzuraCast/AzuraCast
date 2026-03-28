@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\Admin;
 
-use App\Entity\Api\Status;
 use App\Entity\UserLoginToken;
 use OpenApi\Attributes as OA;
 
@@ -15,12 +14,15 @@ use OpenApi\Attributes as OA;
         type: 'object',
     ),
 ]
-final readonly class NewLoginTokenResponse extends Status
+final readonly class NewLoginTokenResponse
 {
     public function __construct(
-        bool $success,
-        string $message,
-        ?string $formattedMessage,
+        #[OA\Property(example: true)]
+        public bool $success,
+        #[OA\Property(example: 'Changes saved successfully.')]
+        public string $message,
+        #[OA\Property(example: '<b>Changes saved successfully.</b>')]
+        public string $formatted_message,
         #[OA\Property]
         public UserLoginToken $record,
         #[OA\Property(
@@ -30,6 +32,5 @@ final readonly class NewLoginTokenResponse extends Status
         )]
         public array $links
     ) {
-        parent::__construct($success, $message, $formattedMessage);
     }
 }

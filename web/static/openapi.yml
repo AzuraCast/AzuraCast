@@ -5,7 +5,7 @@ info:
   license:
     name: 'GNU Affero General Public License v3.0 or later'
     url: 'https://www.gnu.org/licenses/agpl-3.0.txt'
-  version: 0.23.1
+  version: 0.23.4
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -70,6 +70,30 @@ paths:
                 type: array
                 items:
                   allOf: [{ $ref: '#/components/schemas/ApiKey' }, { $ref: '#/components/schemas/HasLinks' }]
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    post:
+      tags:
+        - 'Administration: General'
+      summary: 'Create a new API key for a specified user.'
+      operationId: adminCreateApiKey
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Api_Admin_NewApiKey'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - { $ref: '#/components/schemas/Api_Account_NewApiKey' }
+                  - { $ref: '#/components/schemas/ApiKey' }
+                  - { $ref: '#/components/schemas/HasLinks' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -663,7 +687,7 @@ paths:
           application/json:
             schema:
               properties:
-                geolite_license_key:
+                key:
                   type: string
                   nullable: true
               type: object
@@ -966,33 +990,6 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
-  /admin/rsas/license:
-    post:
-      tags:
-        - 'Administration: General'
-      summary: 'Upload a new Rocket Streaming Audio Server (RSAS) license key.'
-      operationId: postRsasLicense
-      requestBody:
-        $ref: '#/components/requestBodies/FlowFileUpload'
-      responses:
-        '200':
-          $ref: '#/components/responses/Success'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '500':
-          $ref: '#/components/responses/GenericError'
-    delete:
-      tags:
-        - 'Administration: General'
-      summary: 'Removes the Rocket Streaming Audio Server (RSAS) license.'
-      operationId: deleteRsasLicense
-      responses:
-        '200':
-          $ref: '#/components/responses/Success'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '500':
-          $ref: '#/components/responses/GenericError'
   /admin/rsas:
     get:
       tags:
@@ -1017,6 +1014,45 @@ paths:
       operationId: postRsas
       requestBody:
         $ref: '#/components/requestBodies/FlowFileUpload'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    delete:
+      tags:
+        - 'Administration: General'
+      summary: 'Removes the Rocket Streaming Audio Server (RSAS) installation.'
+      operationId: deleteRsas
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  /admin/rsas/license:
+    post:
+      tags:
+        - 'Administration: General'
+      summary: 'Upload a new Rocket Streaming Audio Server (RSAS) license key.'
+      operationId: postRsasLicense
+      requestBody:
+        $ref: '#/components/requestBodies/FlowFileUpload'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    delete:
+      tags:
+        - 'Administration: General'
+      summary: 'Removes the Rocket Streaming Audio Server (RSAS) license.'
+      operationId: deleteRsasLicense
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -1157,6 +1193,18 @@ paths:
       operationId: postShoutcast
       requestBody:
         $ref: '#/components/requestBodies/FlowFileUpload'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+    delete:
+      tags:
+        - 'Administration: General'
+      summary: 'Removes the installed Shoutcast binary.'
+      operationId: deleteShoutcast
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -1553,7 +1601,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/User'
+                  $ref: '#/components/schemas/Api_Admin_UserWithDetails'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -1574,7 +1622,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Api_Admin_UserWithDetails'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -1600,7 +1648,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Api_Admin_UserWithDetails'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -6409,7 +6457,6 @@ components:
             type: '{}'
         formatted:
           type: '{}'
-          nullable: true
       type: object
     Api_Admin_Debug_LogResult:
       required:
@@ -6437,6 +6484,7 @@ components:
           type: integer
         nextRun:
           type: integer
+          nullable: true
         url:
           type: string
       type: object
@@ -6466,6 +6514,22 @@ components:
           items:
             $ref: '#/components/schemas/Api_Admin_StationLogList'
       type: object
+    Api_Admin_NewApiKey:
+      required:
+        - user
+      properties:
+        user:
+          description: 'User ID or e-mail address.'
+          anyOf:
+            -
+              type: integer
+              format: int64
+            -
+              type: string
+        comment:
+          type: string
+          example: 'Admin-generated API key'
+      type: object
     Api_Admin_NewLoginToken:
       required:
         - user
@@ -6492,22 +6556,29 @@ components:
       type: object
     Api_Admin_NewLoginTokenResponse:
       required:
+        - success
+        - message
+        - formatted_message
         - record
         - links
-      type: object
-      allOf:
-        -
-          $ref: '#/components/schemas/Api_Status'
-        -
-          properties:
-            record:
-              $ref: '#/components/schemas/UserLoginToken'
-            links:
-              type: object
-              readOnly: true
-              additionalProperties:
-                type: string
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: 'Changes saved successfully.'
+        formatted_message:
+          type: string
+          example: '<b>Changes saved successfully.</b>'
+        record:
+          $ref: '#/components/schemas/UserLoginToken'
+        links:
           type: object
+          readOnly: true
+          additionalProperties:
+            type: string
+      type: object
     Api_Admin_Permission:
       required:
         - id
@@ -6947,6 +7018,22 @@ components:
           description: 'Whether you can seamlessly move from the Rolling Release channel to Stable without issues.'
           type: boolean
       type: object
+    Api_Admin_UserWithDetails:
+      required:
+        - is_me
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/User'
+        -
+          $ref: '#/components/schemas/HasLinks'
+        -
+          properties:
+            is_me:
+              description: 'Whether this user record represents the currently logged-in user.'
+              type: boolean
+              example: true
+          type: object
     Api_Admin_Vue_BackupProps:
       required:
         - isDocker
@@ -7120,7 +7207,8 @@ components:
         extra_data:
           description: 'Stack traces and other supplemental data.'
           type: array
-          items: {  }
+          items:
+            type: any
         success:
           description: 'Used for API calls that expect an \Entity\Api\Status type response.'
           type: boolean
@@ -7309,14 +7397,42 @@ components:
               type: boolean
               readOnly: true
           type: object
+    Api_MediaBatchResult:
+      required:
+        - files
+        - directories
+        - responseRecord
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_BatchResult'
+        -
+          properties:
+            files:
+              type: array
+              items:
+                type: string
+            directories:
+              type: array
+              items:
+                type: string
+            responseRecord:
+              type: array
+              items:
+                type: any
+              nullable: true
+          type: object
     Api_Notification:
       required:
+        - id
         - title
         - body
         - type
         - actionLabel
         - actionUrl
       properties:
+        id:
+          type: string
         title:
           type: string
         body:
@@ -7992,6 +8108,10 @@ components:
           description: 'The song title.'
           type: string
           example: 'Aluko River'
+        last_played:
+          description: 'The UNIX timestamp when this specific track was last played.'
+          type: integer
+          nullable: true
       type: object
     Api_StationProfile:
       required:
@@ -8029,7 +8149,8 @@ components:
             log:
               description: 'Log entries on how the specific queue item was picked by the AutoDJ.'
               type: array
-              items: {  }
+              items:
+                type: any
               nullable: true
           type: object
     Api_StationQuota:
@@ -8242,48 +8363,31 @@ components:
     Api_Stations_Vue_ProfileProps:
       required:
         - nowPlayingProps
-        - publicPageUri
-        - publicPageEmbedUri
-        - publicWebDjUri
-        - publicOnDemandUri
-        - publicPodcastsUri
-        - publicScheduleUri
-        - publicOnDemandEmbedUri
-        - publicRequestEmbedUri
-        - publicHistoryEmbedUri
-        - publicScheduleEmbedUri
-        - publicPodcastsEmbedUri
+        - publicPageEmbedUrl
+        - publicOnDemandEmbedUrl
+        - publicRequestEmbedUrl
+        - publicHistoryEmbedUrl
+        - publicScheduleEmbedUrl
+        - publicPodcastsEmbedUrl
         - frontendAdminUri
         - frontendAdminPassword
         - frontendSourcePassword
         - frontendRelayPassword
         - frontendPort
-        - numSongs
-        - numPlaylists
       properties:
         nowPlayingProps:
           $ref: '#/components/schemas/Api_NowPlaying_Vue_Props'
-        publicPageUri:
+        publicPageEmbedUrl:
           type: string
-        publicPageEmbedUri:
+        publicOnDemandEmbedUrl:
           type: string
-        publicWebDjUri:
+        publicRequestEmbedUrl:
           type: string
-        publicOnDemandUri:
+        publicHistoryEmbedUrl:
           type: string
-        publicPodcastsUri:
+        publicScheduleEmbedUrl:
           type: string
-        publicScheduleUri:
-          type: string
-        publicOnDemandEmbedUri:
-          type: string
-        publicRequestEmbedUri:
-          type: string
-        publicHistoryEmbedUri:
-          type: string
-        publicScheduleEmbedUri:
-          type: string
-        publicPodcastsEmbedUri:
+        publicPodcastsEmbedUrl:
           type: string
         frontendAdminUri:
           type: string
@@ -8296,10 +8400,6 @@ components:
         frontendPort:
           type: integer
           nullable: true
-        numSongs:
-          type: integer
-        numPlaylists:
-          type: integer
       type: object
     Api_Stations_Vue_SftpUsersProps:
       required:
@@ -8621,6 +8721,8 @@ components:
         - onDemandUrl
         - enableStreamers
         - webDjUrl
+        - publicPodcastsUrl
+        - publicScheduleUrl
         - enableRequests
         - features
         - ipGeoAttribution
@@ -8668,6 +8770,10 @@ components:
           type: boolean
         webDjUrl:
           type: string
+        publicPodcastsUrl:
+          type: string
+        publicScheduleUrl:
+          type: string
         enableRequests:
           type: boolean
         features:
@@ -8696,6 +8802,83 @@ components:
           nullable: true
         permissions:
           $ref: '#/components/schemas/Api_Admin_RolePermissions'
+      type: object
+    Api_WidgetCustomization:
+      properties:
+        primaryColor:
+          description: 'Primary accent color (hex without #).'
+          type: string
+          example: 2196F3
+          nullable: true
+        backgroundColor:
+          description: 'Background color (hex without #).'
+          type: string
+          example: ffffff
+          nullable: true
+        textColor:
+          description: 'Text color (hex without #).'
+          type: string
+          example: '000000'
+          nullable: true
+        showAlbumArt:
+          description: 'Whether album art should be shown.'
+          type: boolean
+          example: true
+        roundedCorners:
+          description: 'Whether the widget should use rounded corners.'
+          type: boolean
+          example: false
+        autoplay:
+          description: 'Whether autoplay should be requested.'
+          type: boolean
+          example: false
+        showVolumeControls:
+          description: 'Whether the volume controls are visible.'
+          type: boolean
+          example: true
+        showTrackProgress:
+          description: 'Whether track progress is visible.'
+          type: boolean
+          example: true
+        showStreamSelection:
+          description: 'Whether stream selection controls are visible.'
+          type: boolean
+          example: true
+        showHistoryButton:
+          description: 'Whether the history button is visible.'
+          type: boolean
+          example: false
+        showRequestButton:
+          description: 'Whether the request button is visible.'
+          type: boolean
+          example: false
+        showPlaylistButton:
+          description: 'Whether the playlist download button is visible.'
+          type: boolean
+          example: false
+        initialVolume:
+          description: 'Initial player volume (0-100).'
+          type: integer
+          maximum: 100
+          minimum: 0
+          example: 75
+        layout:
+          description: 'Layout variant for the widget.'
+          type: string
+          example: horizontal
+        enablePopupPlayer:
+          description: 'Whether to show an "open popup" button.'
+          type: boolean
+          example: false
+        continuousPlay:
+          description: 'Whether to persist playback state across pages.'
+          type: boolean
+          example: false
+        customCss:
+          description: 'Additional CSS applied to the widget.'
+          type: string
+          example: '.radio-player-widget { border-radius: 12px; }'
+          nullable: true
       type: object
     ApiKey:
       type: object
@@ -9033,6 +9216,10 @@ components:
           type: string
           example: '*'
           nullable: true
+        enable_liquidsoap_editing:
+          description: 'Allow stations to manually edit Liquidsoap code.'
+          type: boolean
+          example: 'true'
         enable_static_nowplaying:
           description: 'Whether to use high-performance static JSON for Now Playing data updates.'
           type: boolean
@@ -9319,7 +9506,11 @@ components:
               type: boolean
               example: false
             enable_public_page:
-              description: 'Whether this station is visible as a public page and in a now-playing API response.'
+              description: "Whether this station's public pages (player, on-demand streaming, etc.) are visible to non-authenticated users."
+              type: boolean
+              example: true
+            enable_public_api:
+              description: "Whether the public-facing API endpoints (now playing, art, etc.) are visible to non-authenticated users. Automatically enabled if 'enable_public_page' is true."
               type: boolean
               example: true
             enable_on_demand:

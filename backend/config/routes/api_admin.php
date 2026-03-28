@@ -27,6 +27,11 @@ return static function (RouteCollectorProxy $group) {
                         Controller\Api\Admin\ApiKeysController::class . ':listAction'
                     )->setName('api:admin:api-keys');
 
+                    $group->post(
+                        '/api-keys',
+                        Controller\Api\Admin\ApiKeysController::class . ':createAction'
+                    );
+
                     $group->get(
                         '/api-key/{id}',
                         Controller\Api\Admin\ApiKeysController::class . ':getAction'
@@ -212,6 +217,11 @@ return static function (RouteCollectorProxy $group) {
                         Controller\Api\Admin\Rsas\PostAction::class
                     );
 
+                    $group->delete(
+                        '/rsas',
+                        Controller\Api\Admin\Rsas\DeleteAction::class
+                    );
+
                     $group->post(
                         '/rsas/license',
                         Controller\Api\Admin\Rsas\PostLicenseAction::class
@@ -230,6 +240,11 @@ return static function (RouteCollectorProxy $group) {
                     $group->post(
                         '/shoutcast',
                         Controller\Api\Admin\Shoutcast\PostAction::class
+                    );
+
+                    $group->delete(
+                        '/shoutcast',
+                        Controller\Api\Admin\Shoutcast\DeleteAction::class
                     );
 
                     $group->get(

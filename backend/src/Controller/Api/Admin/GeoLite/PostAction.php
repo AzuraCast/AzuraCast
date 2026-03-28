@@ -24,7 +24,7 @@ use Psr\Http\Message\ResponseInterface;
         content: new OA\JsonContent(
             properties: [
                 new OA\Property(
-                    property: 'geolite_license_key',
+                    property: 'key',
                     type: 'string',
                     nullable: true,
                 ),
@@ -56,9 +56,8 @@ final class PostAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $newKey = trim(
-            Types::string($request->getParsedBodyParam('geolite_license_key'))
-        );
+        $body = (array)$request->getParsedBody();
+        $newKey = Types::stringOrNull($body['key'] ?? $body['geolite_license_key'] ?? null, true);
 
         $settings = $this->readSettings();
         $settings->geolite_license_key = $newKey;

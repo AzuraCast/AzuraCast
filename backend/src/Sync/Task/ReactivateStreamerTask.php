@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
+use App\Entity\StationStreamer;
+
 final class ReactivateStreamerTask extends AbstractTask
 {
     public static function getSchedulePattern(): string
@@ -23,8 +25,9 @@ final class ReactivateStreamerTask extends AbstractTask
         )->setParameter('reactivate_at', time())
             ->execute();
 
+        /** @var StationStreamer $streamer */
         foreach ($streamers as $streamer) {
-            $streamer->setIsActive(true);
+            $streamer->is_active = true;
             $this->em->persist($streamer);
         }
 

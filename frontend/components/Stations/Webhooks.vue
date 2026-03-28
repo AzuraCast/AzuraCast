@@ -122,12 +122,14 @@ import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import {useTriggerDetails, useTypeDetails} from "~/entities/Webhooks";
 import CardPage from "~/components/Common/CardPage.vue";
-import {getApiUrl, getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import {ApiTaskWithLog, HasLinks, StationWebhook, WebhookTriggers, WebhookTypes} from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
 import {useStationId} from "~/functions/useStationQuery.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
+
+const {getApiUrl, getStationApiUrl} = useApiRouter();
 
 const listUrl = getStationApiUrl('/webhooks');
 

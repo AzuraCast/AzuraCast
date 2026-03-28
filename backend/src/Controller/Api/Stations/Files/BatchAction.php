@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Files;
 
+use App\Cache\MediaListCache;
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\MediaBatchResult;
@@ -78,7 +79,8 @@ final class BatchAction implements SingleActionInterface
         private readonly StationPlaylistMediaRepository $playlistMediaRepo,
         private readonly StationPlaylistFolderRepository $playlistFolderRepo,
         private readonly StationQueueRepository $queueRepo,
-        private readonly StationFilesystems $stationFilesystems
+        private readonly StationFilesystems $stationFilesystems,
+        private readonly MediaListCache $mediaListCache
     ) {
     }
 
@@ -162,7 +164,7 @@ final class BatchAction implements SingleActionInterface
         StorageLocation $storageLocation,
         ExtendedFilesystemInterface $fs
     ): MediaBatchResult {
-        $result = $this->parseRequest($request, $fs, true);
+        $result = $this->parseRequest($request, $fs, false);
 
         /** @var array<int, int> $playlists */
         $playlists = [];
@@ -236,6 +238,8 @@ final class BatchAction implements SingleActionInterface
         $this->em->flush();
 
         $this->batchUtilities->writePlaylistChanges($affectedPlaylistIds);
+
+        $this->mediaListCache->clearCache($storageLocation);
 
         return $result;
     }
@@ -318,6 +322,8 @@ final class BatchAction implements SingleActionInterface
         }
 
         $this->batchUtilities->writePlaylistChanges($affectedPlaylists);
+
+        $this->mediaListCache->clearCache($storageLocation);
 
         return $result;
     }

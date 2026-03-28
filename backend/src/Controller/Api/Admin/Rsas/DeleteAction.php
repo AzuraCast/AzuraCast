@@ -1,0 +1,43 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controller\Api\Admin\Rsas;
+
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Status;
+use App\Http\Response;
+use App\Http\ServerRequest;
+use App\OpenApi;
+use App\Radio\Frontend\Rsas;
+use App\Utilities\File;
+use OpenApi\Attributes as OA;
+use Psr\Http\Message\ResponseInterface;
+
+#[OA\Delete(
+    path: '/admin/rsas',
+    operationId: 'deleteRsas',
+    summary: 'Removes the Rocket Streaming Audio Server (RSAS) installation.',
+    tags: [OpenApi::TAG_ADMIN],
+    responses: [
+        new OpenApi\Response\Success(),
+        new OpenApi\Response\AccessDenied(),
+        new OpenApi\Response\GenericError(),
+    ]
+)]
+final class DeleteAction implements SingleActionInterface
+{
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        array $params
+    ): ResponseInterface {
+        $licensePath = Rsas::getLicensePath();
+        @unlink($licensePath);
+
+        $libraryPath = Rsas::getDirectory();
+        File::clearDirectoryContents($libraryPath);
+
+        return $response->withJson(Status::success());
+    }
+}

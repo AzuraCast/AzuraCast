@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Frontend;
 
 use App\Container\EnvironmentAwareTrait;
-use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\HashMap;
 use App\Entity\Api\Vue\DashboardGlobals;
@@ -19,7 +18,6 @@ use Psr\Http\Message\ResponseInterface;
 
 final class DashboardAction implements SingleActionInterface
 {
-    use SettingsAwareTrait;
     use EnvironmentAwareTrait;
 
     public function __construct(
@@ -36,8 +34,7 @@ final class DashboardAction implements SingleActionInterface
         $customization = $request->getCustomization();
         $auth = $request->getAuth();
         $router = $request->getRouter();
-
-        $settings = $this->readSettings();
+        $settings = $request->getSettings();
 
         $supportedLocales = [];
         foreach (SupportedLocales::cases() as $supportedLocale) {

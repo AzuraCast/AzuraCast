@@ -12,7 +12,7 @@
                     v-if="type"
                     class="list-group-item list-group-item-action"
                     href="#"
-                    @click.prevent="selectType(key)"
+                    @click.prevent="selectType(key as ActiveWebhookTypes)"
                 >
                     <h6 class="font-weight-bold mb-0">
                         {{ type.title }}

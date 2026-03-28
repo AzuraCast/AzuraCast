@@ -64,12 +64,12 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {useTranslate} from "~/vendor/gettext.ts";
 import {computed, onMounted, ref, shallowRef} from "vue";
 import {useAxios} from "~/vendor/axios.ts";
-import {getStationApiUrl} from "~/router.ts";
 import Loading from "~/components/Common/Loading.vue";
 import {ApiFormSimpleOptions} from "~/entities/ApiInterfaces.ts";
 import {storeToRefs} from "pinia";
 import {useStationsPodcastsForm} from "~/components/Stations/Podcasts/PodcastForm/form.ts";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const {r$, form} = storeToRefs(useStationsPodcastsForm());
 
@@ -94,6 +94,7 @@ const playlistsLoading = ref<boolean>(true);
 const playlistOptions = shallowRef<ApiFormSimpleOptions>([]);
 
 const {axios} = useAxios();
+const {getStationApiUrl} = useApiRouter();
 const playlistsApiUrl = getStationApiUrl('/podcasts/playlists');
 
 const loadPlaylists = async () => {

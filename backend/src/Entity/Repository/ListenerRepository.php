@@ -149,7 +149,7 @@ final class ListenerRepository extends Repository
         $tempCsvPath = File::generateTempPath('mariadb_listeners.csv');
         new Filesystem()->chmod($tempCsvPath, 0o777);
 
-        $csv = Writer::createFromPath($tempCsvPath);
+        $csv = Writer::from($tempCsvPath);
         $csv->setEscape('');
         $csv->addFormatter(function ($row) {
             return array_map(function ($col) {

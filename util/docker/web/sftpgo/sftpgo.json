@@ -18,7 +18,8 @@
       "ban_time": 5,
       "ban_time_increment": 50,
       "threshold": 15,
-      "observation_time": 15
+      "observation_time": 15,
+      "score_valid": 0
     }
   },
   "rate_limiters": [

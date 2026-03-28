@@ -104,14 +104,15 @@ import {getErrorAsString, useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
-import {getApiUrl} from "~/router.ts";
 import useWebAuthn from "~/functions/useWebAuthn.ts";
 import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
 import {useAppRegle} from "~/vendor/regle.ts";
 import {isObject} from "@vueuse/core";
+import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const emit = defineEmits<HasRelistEmit>();
 
+const {getApiUrl} = useApiRouter();
 const registerWebAuthnUrl = getApiUrl('/frontend/account/webauthn/register');
 
 const error = ref<string | null>(null);

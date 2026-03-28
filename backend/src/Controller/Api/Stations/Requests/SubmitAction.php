@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Requests;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Status;
 use App\Entity\Repository\StationMediaRepository;
@@ -54,7 +53,6 @@ use Psr\Http\Message\ResponseInterface;
 final class SubmitAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
-    use SettingsAwareTrait;
 
     public function __construct(
         private readonly StationMediaRepository $mediaRepo,
@@ -71,9 +69,11 @@ final class SubmitAction implements SingleActionInterface
     ): ResponseInterface {
         $trackId = Types::string($params['media_id']);
 
+        $settings = $request->getSettings();
+
         // Verify that the station supports requests.
         $station = $request->getStation();
-        StationFeatures::Requests->assertSupportedForStation($station);
+        StationFeatures::Requests->assertSupportedForStation($station, $settings);
 
         try {
             $user = $request->getUser();
@@ -83,7 +83,7 @@ final class SubmitAction implements SingleActionInterface
 
         $isAuthenticated = ($user instanceof User);
 
-        $ip = $this->readSettings()->getIp($request);
+        $ip = $settings->getIp($request);
         $userAgent = $request->getHeaderLine('User-Agent');
 
         // Forbid web crawlers from using this feature.

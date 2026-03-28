@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Podcasts\Art;
 
 use App\Controller\SingleActionInterface;
+use App\Customization;
 use App\Entity\Podcast;
-use App\Entity\Repository\StationRepository;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -41,7 +41,7 @@ use Psr\Http\Message\ResponseInterface;
 final readonly class GetArtAction implements SingleActionInterface
 {
     public function __construct(
-        private StationRepository $stationRepo,
+        private Customization $customization,
         private StationFilesystems $stationFilesystems,
     ) {
     }
@@ -63,7 +63,7 @@ final readonly class GetArtAction implements SingleActionInterface
         }
 
         return $response->withRedirect(
-            (string)$this->stationRepo->getDefaultAlbumArtUrl($station),
+            (string)$this->customization->getDefaultAlbumArtUrl($station),
             302
         );
     }

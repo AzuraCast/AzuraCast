@@ -6,6 +6,8 @@ import installTanstack from "~/vendor/tanstack.ts";
 import {createPinia} from "pinia";
 import {VueAppGlobals} from "~/entities/ApiInterfaces.ts";
 import AppWrapper from "~/components/Layout/AppWrapper.vue";
+import {createHead} from "@unhead/vue/client";
+import {RegleVuePlugin} from "@regle/core";
 
 export default function initApp(
     appConfig: Component = {},
@@ -37,6 +39,13 @@ export default function initApp(
     /* Pinia */
     const pinia = createPinia();
     vueApp.use(pinia);
+
+    /* Unhead */
+    const head = createHead();
+    vueApp.use(head);
+
+    /* Regle Dev Tools */
+    vueApp.use(RegleVuePlugin);
 
     (<any>window).vueComponent = async (el: string, globalProps: VueAppGlobals): Promise<void> => {
         vueApp.provide(globalConstantsKey, reactive(globalProps));

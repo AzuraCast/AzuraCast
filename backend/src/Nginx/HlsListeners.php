@@ -66,6 +66,7 @@ final class HlsListeners
             $client = $this->parseRow($logRow, $timestamp);
             if (
                 null !== $client
+                && null !== $client->mount
                 && isset($clientsByStream[$client->mount])
                 && !isset($allClients[$client->uid])
             ) {

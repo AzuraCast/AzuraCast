@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace App\Event;
 
 use App\Sync\Task\AbstractTask;
-use Generator;
 
 final class GetSyncTasks
 {
     /** @var class-string<AbstractTask>[] */
     private array $tasks = [];
 
-    /** @return Generator<class-string<AbstractTask>> */
-    public function getTasks(): Generator
+    /** @return class-string<AbstractTask>[] */
+    public function getTasks(): array
     {
-        yield from $this->tasks;
+        return $this->tasks;
     }
 
     /**

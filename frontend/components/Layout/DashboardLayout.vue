@@ -141,7 +141,6 @@ import {useTemplateRef} from "vue";
 import {useTheme} from "~/functions/theme.ts";
 import {useAzuraCastDashboardGlobals, useAzuraCastUser} from "~/vendor/azuracast.ts";
 import {useProvideLightbox} from "~/vendor/lightbox.ts";
-import {userAllowed} from "~/acl.ts";
 import {GlobalPermissions} from "~/entities/ApiInterfaces.ts";
 import InlinePlayer from "~/components/InlinePlayer.vue";
 import Lightbox from "~/components/Common/Lightbox.vue";
@@ -154,6 +153,7 @@ import IconIcMenu from "~icons/ic/baseline-menu";
 import IconIcMenuOpen from "~icons/ic/baseline-menu-open";
 import IconIcSettings from "~icons/ic/baseline-settings";
 import IconIcSupport from "~icons/ic/baseline-support";
+import {useUserAllowed} from "~/functions/useUserAllowed.ts";
 
 const {
     instanceName,
@@ -162,6 +162,7 @@ const {
 
 const {displayName} = useAzuraCastUser();
 
+const {userAllowed} = useUserAllowed();
 const showAdmin = userAllowed(GlobalPermissions.View);
 
 const {toggleTheme} = useTheme();

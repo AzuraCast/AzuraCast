@@ -41,4 +41,9 @@ final class StationPlaylistQueue
         example: 'Aluko River'
     )]
     public string $title = '';
+
+    #[OA\Property(
+        description: 'The UNIX timestamp when this specific track was last played.',
+    )]
+    public ?int $last_played;
 }

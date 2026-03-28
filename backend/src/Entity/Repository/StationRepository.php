@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Assets\AssetTypes;
-use App\Container\EnvironmentAwareTrait;
-use App\Container\SettingsAwareTrait;
 use App\Doctrine\Repository;
 use App\Entity\Station;
 use App\Entity\StationHlsStream;
@@ -16,16 +13,12 @@ use App\Flysystem\StationFilesystems;
 use App\Radio\Enums\StreamFormats;
 use App\Service\Flow\UploadedFile;
 use Closure;
-use Psr\Http\Message\UriInterface;
 
 /**
  * @extends Repository<Station>
  */
 final class StationRepository extends Repository
 {
-    use EnvironmentAwareTrait;
-    use SettingsAwareTrait;
-
     protected string $entityClass = Station::class;
 
     /**
@@ -257,29 +250,6 @@ final class StationRepository extends Repository
             DQL
         )->setParameter('station', $station)
             ->execute();
-    }
-
-    /**
-     * Return the URL to use for songs with no specified album artwork, when artwork is displayed.
-     *
-     * @param Station|null $station
-     */
-    public function getDefaultAlbumArtUrl(?Station $station = null): UriInterface
-    {
-        if (null !== $station) {
-            $stationAlbumArt = AssetTypes::AlbumArt->createObject($this->environment, $station);
-            if ($stationAlbumArt->isUploaded()) {
-                return $stationAlbumArt->getUri();
-            }
-
-            $stationCustomUri = $station->branding_config->getDefaultAlbumArtUrlAsUri();
-            if (null !== $stationCustomUri) {
-                return $stationCustomUri;
-            }
-        }
-
-        $customUrl = $this->readSettings()->getDefaultAlbumArtUrlAsUri();
-        return $customUrl ?? AssetTypes::AlbumArt->createObject($this->environment)->getUri();
     }
 
     public function setFallback(

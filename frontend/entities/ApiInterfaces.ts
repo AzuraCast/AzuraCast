@@ -1250,7 +1250,7 @@ export interface ApiStationPlaylistQueue {
    */
   spm_id?: number;
   /**
-   * ID of the StationPlaylistMedia record associating this track with the playlist
+   * ID of the StationMedia record associating this track with the media
    * @example 1
    */
   media_id?: number;

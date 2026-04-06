@@ -17,7 +17,7 @@ final class StationPlaylistGroup implements JsonSerializable, IdentifiableEntity
 {
     use Traits\HasAutoIncrementId;
 
-    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'playlists')]
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'playlist_groups')]
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public StationPlaylist $playlist;
 
@@ -25,7 +25,7 @@ final class StationPlaylistGroup implements JsonSerializable, IdentifiableEntity
     #[ORM\Column(nullable: false, insertable: false, updatable: false)]
     public private(set) int $playlist_id;
 
-    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'playlist_groups')]
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'playlists')]
     #[ORM\JoinColumn(name: 'playlist_group_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public StationPlaylist $playlist_group;
 

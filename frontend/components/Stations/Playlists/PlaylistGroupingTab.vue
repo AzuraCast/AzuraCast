@@ -1,17 +1,27 @@
 <template>
     <tab
+        ref="$tab"
         id="playlist_grouping"
         :label="$gettext('Playlist Grouping')"
     >
         <div class="card-body-flush">
-            <div class="row gx-1 pt-1 overflow-hidden">
+            <div
+                v-if="loading"
+                class="p-5 text-center"
+            >
+                <div class="spinner-border" />
+            </div>
+            <div
+                v-else
+                class="row gx-1 pt-3 overflow-hidden"
+            >
                 <div class="col-6">
                     <h4 class="bg-primary text-bg-primary text-center p-3 mb-0 shadow">
-                        Playlists
+                        {{ $gettext('Playlists') }}
                     </h4>
 
                     <nav
-                        v-if="playlistBreadcrumps.length"
+                        v-if="playlistBreadcrumbs.length"
                         style="--bs-breadcrumb-divider: '>';"
                         aria-label="breadcrumb"
                         class="border border-3 border-top-0 border-primary p-3 overflow-scroll"
@@ -22,17 +32,20 @@
                                     href="#"
                                     @click.prevent="navigateFromBreadcrumb()"
                                 >
-                                    <icon-ic-home/>
+                                    <icon-ic-home />
                                 </a>
                             </li>
 
-                            <template v-for="(breadcrumb, index) in playlistBreadcrumps">
-                                <template v-if="index < (playlistBreadcrumps.length - 1)">
+                            <template
+                                v-for="(breadcrumb, index) in playlistBreadcrumbs"
+                                :key="breadcrumb.id"
+                            >
+                                <template v-if="index < (playlistBreadcrumbs.length - 1)">
                                     <li class="breadcrumb-item text-nowrap">
                                         <a
                                             href="#"
-                                            @click.prevent="navigateFromBreadcrumb(index + 1)"
                                             class="text-nowrap"
+                                            @click.prevent="navigateFromBreadcrumb(index + 1)"
                                         >
                                             {{ breadcrumb.name }}
                                         </a>
@@ -47,19 +60,18 @@
                                     </li>
                                 </template>
                             </template>
-
                         </ol>
                     </nav>
 
                     <ul class="list-group list-group-flush h-100 shadow">
                         <li v-if="currentPlaylists.length === 0">
                             <div class="p-5 text-center fs-5">
-                                No playlists available
+                                {{ $gettext('No playlists available') }}
                             </div>
                         </li>
                         <li
-                            v-for="item in currentPlaylists"
-                            :key="item.id"
+                            v-for="(item, index) in currentPlaylists"
+                            :key="`${item.id}-${index}`"
                             class="list-group-item p-0"
                             :class="{active: isSelected(item)}"
                         >
@@ -78,8 +90,32 @@
 
                                 <div class="d-flex">
                                     <div class="d-flex flex-column flex-grow-1 min-w-0">
-                                        <div class="d-flex flex-grow-1 justify-content-between align-items-start">
-                                            <span class="pr-2 fs-5">{{ item.name }}</span>
+                                        <span class="pr-2 fs-5">{{ item.name }}</span>
+
+                                        <div
+                                            class="text-truncate text-muted mb-3"
+                                            :title="item.description"
+                                        >
+                                            {{ item.description }}
+                                        </div>
+
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge text-bg-secondary">
+                                                <div class="d-flex align-items-center">
+                                                    <template v-if="item.source === 'songs'">
+                                                        <icon-ic-library-music />
+                                                        <div class="ps-2">{{ $gettext('Song-based') }}</div>
+                                                    </template>
+                                                    <template v-else-if="item.source === 'playlists'">
+                                                        <icon-ic-queue-music />
+                                                        <div class="ps-2">{{ $gettext('Playlist Group') }}</div>
+                                                    </template>
+                                                    <template v-else>
+                                                        <icon-ic-public />
+                                                        <div class="ps-2">{{ $gettext('Remote URL') }}</div>
+                                                    </template>
+                                                </div>
+                                            </span>
 
                                             <span
                                                 v-if="item.source === 'songs'"
@@ -92,55 +128,31 @@
                                                 v-text="item.playlists.length"
                                             />
                                         </div>
-
-                                        <div
-                                            class="text-truncate text-muted mb-3"
-                                            :title="item.description"
-                                        >
-                                            {{ item.description }}
-                                        </div>
-
-                                        <div>
-                                            <span class="badge text-bg-secondary">
-                                                <div class="d-flex align-items-center">
-                                                    <template v-if="item.source === 'songs'">
-                                                        <icon-ic-library-music/>
-                                                        <div class="ps-2">{{ $gettext('Song-based') }}</div>
-                                                    </template>
-                                                    <template v-else-if="item.source === 'playlists'">
-                                                        <icon-ic-queue-music/>
-                                                        <div class="ps-2">{{ $gettext('Playlist Group') }}</div>
-                                                    </template>
-                                                    <template v-else>
-                                                        <icon-ic-public/>
-                                                        <div class="ps-2">{{ $gettext('Remote URL') }}</div>
-                                                    </template>
-                                                </div>
-                                            </span>
-                                        </div>
                                     </div>
 
                                     <div
                                         v-if="hasButtons(item)"
-                                        class="btn-group-vertical ms-3"
+                                        class="btn-group-vertical ms-3 align-self-center"
                                     >
                                         <button
                                             v-if="isAssignable(item)"
                                             type="button"
-                                            title="Assign to current playlist"
+                                            :title="$gettext('Add to selected playlist group')"
                                             class="btn btn-primary"
+                                            :disabled="saving"
+                                            @click="doAssign(item)"
                                         >
-                                            <icon-ic-drive-file-move/>
+                                            <icon-ic-drive-file-move />
                                         </button>
 
                                         <button
                                             v-if="item.source === 'playlists'"
                                             type="button"
-                                            title="Enter playlist group"
+                                            :title="$gettext('Enter playlist group')"
                                             class="btn btn-secondary"
                                             @click="enterPlaylistGroup(item)"
                                         >
-                                            <icon-bi-folder/>
+                                            <icon-bi-folder />
                                         </button>
                                     </div>
                                 </div>
@@ -151,7 +163,7 @@
 
                 <div class="col-6">
                     <h4 class="bg-primary text-bg-primary text-center p-3 mb-0 shadow">
-                        Playlist Contents
+                        {{ $gettext('Playlist Contents') }}
                     </h4>
                     <div
                         v-if="selectedPlaylist !== undefined"
@@ -204,7 +216,7 @@
                                 {{ $gettext('Jingle Mode') }}
                             </span>
                             <span
-                                v-if="selectedPlaylist.source === 'songs' && selectedPlaylist.order === 'sequential'"
+                                v-if="selectedPlaylist.order === 'sequential'"
                                 class="badge text-bg-info"
                             >
                                 {{ $gettext('Sequential') }}
@@ -249,95 +261,137 @@
                             </span>
                             <span
                                 v-if="selectedPlaylist.include_in_on_demand"
-                            class="badge text-bg-info"
-                        >
-                            {{ $gettext('On-Demand') }}
-                        </span>
+                                class="badge text-bg-info"
+                            >
+                                {{ $gettext('On-Demand') }}
+                            </span>
                         </div>
                     </div>
 
                     <ul class="list-group list-group-flush h-100 shadow">
                         <li v-if="selectedPlaylist === undefined">
                             <div class="p-5 text-center fs-5">
-                                No playlist selected
+                                {{ $gettext('No playlist selected') }}
                             </div>
                         </li>
 
                         <li v-else-if="selectedPlaylist.source === 'songs' && selectedPlaylist.num_songs === 0">
                             <div class="p-5 text-center fs-5">
-                                No songs available
+                                {{ $gettext('No songs available') }}
                             </div>
                         </li>
 
                         <li v-else-if="selectedPlaylist.source === 'playlists' && selectedPlaylist.playlists.length === 0">
                             <div class="p-5 text-center fs-5">
-                                No playlists available
+                                {{ $gettext('No playlists assigned') }}
                             </div>
                         </li>
 
                         <li
                             v-else-if="selectedPlaylist.source === 'songs'"
-                            v-for="mediaItem in selectedPlaylistMediaItems"
                             class="list-group-item"
                         >
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div class="d-flex align-items-center">
-                                    <album-art
-                                        :src="mediaItem.art"
-                                        class="flex-shrink-1 pe-3"
-                                    />
-
-                                    <div class="d-flex flex-column flex-grow-1">
-                                        <span class="fs-5">{{ mediaItem.title }}</span>
-                                        <span class="fs-6">{{ mediaItem.artist }}</span>
-                                    </div>
-                                </div>
-
-                                <span
-                                    class="badge bg-primary rounded-pill"
-                                    v-text="mediaItem.length_text"
-                                />
+                            <div class="p-3 text-center text-muted">
+                                {{ $gettext('%{count} songs in this playlist.', {count: selectedPlaylist.num_songs}) }}
                             </div>
                         </li>
 
                         <li
                             v-else-if="selectedPlaylist.source === 'playlists'"
-                            v-for="playlist in selectedPlaylist.playlists"
+                            v-for="(member, index) in selectedPlaylist.playlists"
+                            :key="`${selectedPlaylist.id}-${member.id}-${index}`"
                             class="list-group-item"
                         >
-                            <div class="d-flex flex-column">
-                                <div class="d-flex flex-grow-1 justify-content-between align-items-start mb-2">
-                                    <span class="flex-grow-1 pr-2 fs-5">{{ playlist.name }}</span>
+                            <div class="d-flex">
+                                <div class="d-flex flex-column flex-grow-1 min-w-0">
+                                    <div class="d-flex flex-grow-1 justify-content-between align-items-start mb-2">
+                                        <span class="flex-grow-1 pr-2 fs-5">{{ member.name }}</span>
 
-                                    <span
-                                        v-if="playlist.source === 'songs'"
-                                        class="badge bg-primary rounded-pill"
-                                        v-text="playlist.num_songs"
-                                    />
-                                    <span
-                                        v-else-if="playlist.source === 'playlists'"
-                                        class="badge bg-primary rounded-pill"
-                                        v-text="playlist.playlists.length"
-                                    />
-                                </div>
+                                        <button
+                                            type="button"
+                                            class="btn btn-sm btn-danger"
+                                            :title="$gettext('Remove from group')"
+                                            :disabled="saving"
+                                            @click="doRemove(index)"
+                                        >
+                                            <icon-ic-delete />
+                                        </button>
+                                    </div>
 
-                                <div>
-                                    <span class="badge text-bg-secondary">
-                                        <div class="d-flex align-items-center">
-                                            <template v-if="playlist.source === 'songs'">
-                                                <icon-ic-library-music/>
-                                                <div class="ps-2">{{ $gettext('Song-based') }}</div>
-                                            </template>
-                                            <template v-else-if="playlist.source === 'playlists'">
-                                                <icon-ic-queue-music/>
-                                                <div class="ps-2">{{ $gettext('Playlist Group') }}</div>
-                                            </template>
-                                            <template v-else>
-                                                <icon-ic-public/>
-                                                <div class="ps-2">{{ $gettext('Remote URL') }}</div>
-                                            </template>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge text-bg-secondary">
+                                                <div class="d-flex align-items-center">
+                                                    <template v-if="member.source === 'songs'">
+                                                        <icon-ic-library-music />
+                                                        <div class="ps-2">{{ $gettext('Song-based') }}</div>
+                                                    </template>
+                                                    <template v-else-if="member.source === 'playlists'">
+                                                        <icon-ic-queue-music />
+                                                        <div class="ps-2">{{ $gettext('Playlist Group') }}</div>
+                                                    </template>
+                                                    <template v-else>
+                                                        <icon-ic-public />
+                                                        <div class="ps-2">{{ $gettext('Remote URL') }}</div>
+                                                    </template>
+                                                </div>
+                                            </span>
+
+                                            <span
+                                                v-if="member.source === 'songs'"
+                                                class="badge bg-primary rounded-pill"
+                                                v-text="member.num_songs"
+                                            />
+                                            <span
+                                                v-else-if="member.source === 'playlists'"
+                                                class="badge bg-primary rounded-pill"
+                                                v-text="member.playlists.length"
+                                            />
                                         </div>
-                                    </span>
+
+                                        <div class="btn-group btn-group-sm">
+                                            <button
+                                                v-if="index + 1 < selectedPlaylist.playlists.length"
+                                                type="button"
+                                                class="btn btn-secondary"
+                                                :title="$gettext('Move to Bottom')"
+                                                :disabled="saving"
+                                                @click.prevent="doMoveToBottom(index)"
+                                            >
+                                                <icon-bi-chevron-bar-down />
+                                            </button>
+                                            <button
+                                                v-if="index + 1 < selectedPlaylist.playlists.length"
+                                                type="button"
+                                                class="btn btn-primary"
+                                                :title="$gettext('Move Down')"
+                                                :disabled="saving"
+                                                @click.prevent="doMoveDown(index)"
+                                            >
+                                                <icon-bi-chevron-down />
+                                            </button>
+                                            <button
+                                                v-if="index > 0"
+                                                type="button"
+                                                class="btn btn-primary"
+                                                :title="$gettext('Move Up')"
+                                                :disabled="saving"
+                                                @click.prevent="doMoveUp(index)"
+                                            >
+                                                <icon-bi-chevron-up />
+                                            </button>
+                                            <button
+                                                v-if="index > 0"
+                                                type="button"
+                                                class="btn btn-secondary"
+                                                :title="$gettext('Move to Top')"
+                                                :disabled="saving"
+                                                @click.prevent="doMoveToTop(index)"
+                                            >
+                                                <icon-bi-chevron-bar-up />
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </li>
@@ -355,11 +409,28 @@ import IconIcLibraryMusic from "~icons/ic/baseline-library-music";
 import IconIcQueueMusic from "~icons/ic/baseline-queue-music";
 import IconIcPublic from "~icons/ic/baseline-public";
 import IconIcDriveFileMove from "~icons/ic/baseline-drive-file-move";
+import IconIcDelete from "~icons/ic/baseline-delete";
 import IconBiFolder from "~icons/bi/folder";
-import AlbumArt from "~/components/Common/AlbumArt.vue";
-import {ref, watch} from "vue";
-import {useLuxon} from "~/vendor/luxon";
-import {useDraggable} from "vue-draggable-plus"; // @TODO: add draggable feature
+import IconBiChevronBarDown from "~icons/bi/chevron-bar-down";
+import IconBiChevronBarUp from "~icons/bi/chevron-bar-up";
+import IconBiChevronDown from "~icons/bi/chevron-down";
+import IconBiChevronUp from "~icons/bi/chevron-up";
+import {ref, useTemplateRef, watch} from "vue";
+import {useAxios} from "~/vendor/axios";
+import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
+import {useTranslate} from "~/vendor/gettext";
+
+// @TODO: The types are currently a inline placeholder implementation that should get replaced by generated ones
+// from the frontend/entities/ApiInterfaces.ts & a new frontend/entities/StationPlaylist.ts later on
+
+export type PlaylistMember = {
+    id: number,
+    name: string,
+    weight: number,
+    source: string,
+    num_songs: number,
+    playlists: PlaylistMember[],
+};
 
 export type Playlist = {
     id: number,
@@ -374,627 +445,177 @@ export type Playlist = {
     play_per_minutes: number,
     play_per_hour_minute: number,
     include_in_on_demand: boolean,
-    schedule_items: string[],
+    schedule_items: unknown[],
     is_enabled: boolean,
     num_songs: number,
-    playlists: Playlist[]
+    playlists: PlaylistMember[],
+    links: {
+        self: string,
+        members?: string,
+    },
 };
 
-export type MediaItem = {
-    artist: string,
-    title: string,
-    length_text: string,
-    art: string
-};
-
-export type PlaylistBreadcrump = {
+export type PlaylistBreadcrumb = {
     id: number,
-    name: string
+    name: string,
 };
 
-const selectedPlaylist = ref<Playlist>();
-const selectedPlaylistMediaItems = ref<MediaItem[]>([]);
+const props = defineProps<{
+    listUrl: string
+}>();
 
-watch(selectedPlaylist, (item: Playlist|undefined) => {
-    if (item === undefined) {
-        selectedPlaylistMediaItems.value = [];
-    } else if (item.source === 'songs') {
-        // @TODO: Load media items for selected playlist instead of mocking
-        selectedPlaylistMediaItems.value = [];
-        for (let index = 0; index < item.num_songs; index++) {
-            selectedPlaylistMediaItems.value.push({
-                artist: randomWord(9),
-                title: randomWord(16),
-                length_text: formatLength(randomInt(60, 500)),
-                art: '/api/station/1/art/49d74f4dadd63d1b3415d7b3'
-            });
+const $tab = useTemplateRef<InstanceType<typeof Tab>>('$tab');
+
+watch(
+    () => $tab.value?.isActive,
+    (isActive) => {
+        if (isActive) {
+            void loadPlaylists();
         }
-    } else {
-        selectedPlaylistMediaItems.value = [];
     }
-});
+);
 
-const randomWord = (length = 5) => {
-  const consonants = 'bcdfghjklmnpqrstvwxyz';
-  const vowels = 'aeiou';
-  let word = '';
-  for (let i = 0; i < length; i++) {
-    word += (i % 2 === 0)
-      ? consonants[Math.floor(Math.random() * consonants.length)]
-      : vowels[Math.floor(Math.random() * vowels.length)];
-  }
-  return word;
-}
+const {$gettext} = useTranslate();
+const {axios} = useAxios();
+const {notifySuccess, notifyError} = useNotify();
 
-const randomInt = (min: number, max: number) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+const loading = ref<boolean>(true);
+const saving = ref<boolean>(false);
+const playlists = ref<Playlist[]>([]);
+const currentPlaylists = ref<Playlist[]>([]);
+const playlistBreadcrumbs = ref<PlaylistBreadcrumb[]>([]);
+const selectedPlaylist = ref<Playlist | undefined>(undefined);
 
-const {Duration} = useLuxon();
-const formatLength = (length: number) => {
-    const duration = Duration.fromMillis(length * 1000);
-    return duration.rescale().toHuman({unitDisplay: 'short'});
-};
+/**
+ * Since all playlists that are assigned to a StationPlaylist are returned as
+ * their StationPlaylistGroup (id, name, weight) we need to enrich those to
+ * have their full StationPlaylist forms available for easier handling.
+ */
+const buildTree = (raw: Playlist[]): Playlist[] => {
+    const map = new Map<number, Playlist>(raw.map((playlist) => [playlist.id, playlist]));
 
-const playlists = ref<Playlist[]>([
-    {
-        id: 1,
-        name: 'Morning',
-        description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr. At vero eos et accusam et justo duo dolores et ea rebum.',
-        source: 'playlists',
-        type: 'default',
-        order: 'shuffle',
-        weight: 1,
-        play_per_songs: 0,
-        play_per_minutes: 0,
-        play_per_hour_minute: 0,
-        include_in_on_demand: false,
-        schedule_items: ['test'],
-        is_enabled: true,
-        is_jingle: false,
-        num_songs: 0,
-        playlists: [
-            {
-                id: 8,
-                name: 'test 1',
-                description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-                source: 'songs',
-                type: 'default',
-                order: 'shuffle',
-                weight: 1,
-                play_per_songs: 0,
-                play_per_minutes: 0,
-                play_per_hour_minute: 0,
-                include_in_on_demand: true,
-                schedule_items: [],
-                is_enabled: true,
-                is_jingle: false,
-                num_songs: 75,
-                playlists: []
-            },
-            {
-                id: 9,
-                name: 'test 2',
-                description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-                source: 'songs',
-                type: 'default',
-                order: 'random',
-                weight: 1,
-                play_per_songs: 0,
-                play_per_minutes: 0,
-                play_per_hour_minute: 0,
-                include_in_on_demand: true,
-                schedule_items: [],
-                is_enabled: true,
-                is_jingle: false,
-                num_songs: 8,
-                playlists: []
-            },
-        ]
-    },
-    {
-        id: 2,
-        name: 'Evening',
-        description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-        source: 'playlists',
-        type: 'default',
-        order: 'sequential',
-        weight: 1,
-        play_per_songs: 0,
-        play_per_minutes: 0,
-        play_per_hour_minute: 0,
-        include_in_on_demand: false,
-        schedule_items: ['test'],
-        is_enabled: true,
-        is_jingle: false,
-        num_songs: 0,
-        playlists: [
-            {
-                id: 15,
-                name: 'test 3',
-                description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-                source: 'songs',
-                type: 'default',
-                order: 'shuffle',
-                weight: 1,
-                play_per_songs: 0,
-                play_per_minutes: 0,
-                play_per_hour_minute: 0,
-                include_in_on_demand: true,
-                schedule_items: [],
-                is_enabled: true,
-                is_jingle: true,
-                num_songs: 69,
-                playlists: []
-            },
-            {
-                id: 16,
-                name: 'test 4',
-                description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-                source: 'playlists',
-                type: 'default',
-                order: 'sequential',
-                weight: 1,
-                play_per_songs: 0,
-                play_per_minutes: 0,
-                play_per_hour_minute: 0,
-                include_in_on_demand: false,
-                schedule_items: [],
-                is_enabled: true,
-                is_jingle: false,
-                num_songs: 0,
-                playlists: [
-                    {
-                        id: 17,
-                        name: 'test 5',
-                        description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-                        source: 'songs',
+    for (const playlist of raw) {
+        if (playlist.source !== 'playlists' || !Array.isArray(playlist.playlists)) {
+            continue;
+        }
+
+        playlist.playlists = playlist.playlists
+            .map((member) => {
+                const fullPlaylist = map.get(member.id);
+                return fullPlaylist
+                    ? {
+                        ...fullPlaylist,
+                        weight: member.weight,
+                    }
+                    : {
+                        ...member,
+                        description: '',
                         type: 'default',
+                        is_jingle: false,
                         order: 'shuffle',
-                        weight: 1,
-                        play_per_songs: 0,
-                        play_per_minutes: 0,
-                        play_per_hour_minute: 0,
-                        include_in_on_demand: true,
-                        schedule_items: [],
-                        is_enabled: true,
-                        is_jingle: false,
-                        num_songs: 8,
-                        playlists: []
-                    },
-                    {
-                        id: 22,
-                        name: 'test 6',
-                        description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-                        source: 'songs',
-                        type: 'default',
-                        order: 'random',
-                        weight: 1,
-                        play_per_songs: 0,
-                        play_per_minutes: 0,
-                        play_per_hour_minute: 0,
-                        include_in_on_demand: true,
-                        schedule_items: [],
-                        is_enabled: true,
-                        is_jingle: false,
-                        num_songs: 16,
-                        playlists: []
-                    },
-                ]
-            },
-            {
-                id: 18,
-                name: 'test 7',
-                description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-                source: 'playlists',
-                type: 'default',
-                order: 'random',
-                weight: 1,
-                play_per_songs: 0,
-                play_per_minutes: 0,
-                play_per_hour_minute: 0,
-                include_in_on_demand: false,
-                schedule_items: [],
-                is_enabled: true,
-                is_jingle: false,
-                num_songs: 0,
-                playlists: [
-                    {
-                        id: 19,
-                        name: 'test 8',
-                        description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-                        source: 'songs',
-                        type: 'default',
-                        order: 'random',
-                        weight: 1,
-                        play_per_songs: 0,
-                        play_per_minutes: 0,
-                        play_per_hour_minute: 0,
-                        include_in_on_demand: true,
-                        schedule_items: [],
-                        is_enabled: true,
-                        is_jingle: false,
-                        num_songs: 8,
-                        playlists: []
-                    },
-                    {
-                        id: 20,
-                        name: 'test 9',
-                        description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-                        source: 'songs',
-                        type: 'default',
-                        order: 'random',
-                        weight: 1,
-                        play_per_songs: 0,
-                        play_per_minutes: 0,
-                        play_per_hour_minute: 0,
-                        include_in_on_demand: true,
-                        schedule_items: [],
-                        is_enabled: true,
-                        is_jingle: false,
-                        num_songs: 16,
-                        playlists: []
-                    },
-                    {
-                        id: 21,
-                        name: 'test 10',
-                        description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-                        source: 'songs',
-                        type: 'default',
-                        order: 'random',
-                        weight: 1,
-                        play_per_songs: 0,
-                        play_per_minutes: 0,
-                        play_per_hour_minute: 0,
-                        include_in_on_demand: true,
-                        schedule_items: [],
-                        is_enabled: true,
-                        is_jingle: false,
-                        num_songs: 16,
-                        playlists: []
-                    },
-                ]
-            },
-            {
-                id: 22,
-                name: 'test 11',
-                description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-                source: 'songs',
-                type: 'default',
-                order: 'random',
-                weight: 1,
-                play_per_songs: 0,
-                play_per_minutes: 0,
-                play_per_hour_minute: 0,
-                include_in_on_demand: true,
-                schedule_items: [],
-                is_enabled: false,
-                is_jingle: false,
-                num_songs: 12,
-                playlists: []
-            },
-        ]
-    },
-    {
-        id: 3,
-        name: 'Late Night',
-        description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-        source: 'playlists',
-        type: 'default',
-        order: 'random',
-        weight: 1,
-        play_per_songs: 0,
-        play_per_minutes: 0,
-        play_per_hour_minute: 0,
-        include_in_on_demand: false,
-        schedule_items: [],
-        is_enabled: true,
-        is_jingle: false,
-        num_songs: 0,
-        playlists: [
-            {
-                id: 10,
-                name: 'test 3',
-                description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-                source: 'songs',
-                type: 'default',
-                order: 'random',
-                weight: 1,
-                play_per_songs: 0,
-                play_per_minutes: 0,
-                play_per_hour_minute: 0,
-                include_in_on_demand: true,
-                schedule_items: [],
-                is_enabled: true,
-                is_jingle: false,
-                num_songs: 75,
-                playlists: []
-            },
-            {
-                id: 11,
-                name: 'test 4',
-                description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-                source: 'songs',
-                type: 'default',
-                order: 'random',
-                weight: 1,
-                play_per_songs: 0,
-                play_per_minutes: 0,
-                play_per_hour_minute: 0,
-                include_in_on_demand: true,
-                schedule_items: [],
-                is_enabled: true,
-                is_jingle: false,
-                num_songs: 134,
-                playlists: []
-            },
-            {
-                id: 12,
-                name: 'test 5',
-                description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-                source: 'songs',
-                type: 'default',
-                order: 'random',
-                weight: 1,
-                play_per_songs: 0,
-                play_per_minutes: 0,
-                play_per_hour_minute: 0,
-                include_in_on_demand: true,
-                schedule_items: [],
-                is_enabled: true,
-                is_jingle: false,
-                num_songs: 4,
-                playlists: []
-            },
-            {
-                id: 13,
-                name: 'test 6',
-                description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-                source: 'songs',
-                type: 'default',
-                order: 'random',
-                weight: 1,
-                play_per_songs: 0,
-                play_per_minutes: 0,
-                play_per_hour_minute: 0,
-                include_in_on_demand: true,
-                schedule_items: [],
-                is_enabled: true,
-                is_jingle: false,
-                num_songs: 6,
-                playlists: []
-            },
-            {
-                id: 14,
-                name: 'test 7',
-                description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-                source: 'songs',
-                type: 'default',
-                order: 'random',
-                weight: 1,
-                play_per_songs: 0,
-                play_per_minutes: 0,
-                play_per_hour_minute: 0,
-                include_in_on_demand: true,
-                schedule_items: [],
-                is_enabled: true,
-                is_jingle: false,
-                num_songs: 12,
-                playlists: []
-            },
-        ]
-    },
-    {
-        id: 4,
-        name: 'Jazz',
-        description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-        source: 'songs',
-        type: 'default',
-        order: 'random',
-        weight: 1,
-        play_per_songs: 0,
-        play_per_minutes: 0,
-        play_per_hour_minute: 0,
-        include_in_on_demand: true,
-        schedule_items: [],
-        is_enabled: true,
-        is_jingle: false,
-        num_songs: 12,
-        playlists: []
-    },
-    {
-        id: 5,
-        name: 'Disco',
-        description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-        source: 'songs',
-        type: 'default',
-        order: 'random',
-        weight: 1,
-        play_per_songs: 0,
-        play_per_minutes: 0,
-        play_per_hour_minute: 0,
-        include_in_on_demand: true,
-        schedule_items: [],
-        is_enabled: true,
-        is_jingle: false,
-        num_songs: 123,
-        playlists: []
-    },
-    {
-        id: 6,
-        name: 'Metal',
-        description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-        source: 'songs',
-        type: 'default',
-        order: 'random',
-        weight: 1,
-        play_per_songs: 0,
-        play_per_minutes: 0,
-        play_per_hour_minute: 0,
-        include_in_on_demand: true,
-        schedule_items: ['test'],
-        is_enabled: false,
-        is_jingle: true,
-        num_songs: 1234,
-        playlists: []
-    },
-    {
-        id: 23,
-        name: 'Deep Nested Playlist 1',
-        description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-        source: 'playlists',
-        type: 'default',
-        order: 'random',
-        weight: 1,
-        play_per_songs: 0,
-        play_per_minutes: 0,
-        play_per_hour_minute: 0,
-        include_in_on_demand: false,
-        schedule_items: [],
-        is_enabled: true,
-        is_jingle: false,
-        num_songs: 0,
-        playlists: [
-            {
-                id: 24,
-                name: 'Deep Nested Playlist 2',
-                description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-                source: 'playlists',
-                type: 'default',
-                order: 'random',
-                weight: 1,
-                play_per_songs: 0,
-                play_per_minutes: 0,
-                play_per_hour_minute: 0,
-                include_in_on_demand: false,
-                schedule_items: [],
-                is_enabled: true,
-                is_jingle: false,
-                num_songs: 0,
-                playlists: [
-                    {
-                        id: 25,
-                        name: 'Deep Nested Playlist 3',
-                        description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-                        source: 'playlists',
-                        type: 'default',
-                        order: 'random',
-                        weight: 1,
                         play_per_songs: 0,
                         play_per_minutes: 0,
                         play_per_hour_minute: 0,
                         include_in_on_demand: false,
                         schedule_items: [],
                         is_enabled: true,
-                        is_jingle: false,
-                        num_songs: 0,
-                        playlists: [
-                            {
-                                id: 26,
-                                name: 'Deep Nested Playlist 4',
-                                description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-                                source: 'playlists',
-                                type: 'default',
-                                order: 'random',
-                                weight: 1,
-                                play_per_songs: 0,
-                                play_per_minutes: 0,
-                                play_per_hour_minute: 0,
-                                include_in_on_demand: false,
-                                schedule_items: [],
-                                is_enabled: true,
-                                is_jingle: false,
-                                num_songs: 0,
-                                playlists: [
-                                    {
-                                        id: 27,
-                                        name: 'Deep Nested Playlist 5',
-                                        description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-                                        source: 'playlists',
-                                        type: 'default',
-                                        order: 'random',
-                                        weight: 1,
-                                        play_per_songs: 0,
-                                        play_per_minutes: 0,
-                                        play_per_hour_minute: 0,
-                                        include_in_on_demand: false,
-                                        schedule_items: [],
-                                        is_enabled: true,
-                                        is_jingle: false,
-                                        num_songs: 0,
-                                        playlists: []
-                                    },
-                                ]
-                            },
-                        ]
-                    },
-                ]
-            },
-        ]
-    },
-    {
-        id: 7,
-        name: 'External Radio',
-        description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
-        source: 'remote_url',
-        type: 'default',
-        order: 'random',
-        weight: 1,
-        play_per_songs: 0,
-        play_per_minutes: 0,
-        play_per_hour_minute: 0,
-        include_in_on_demand: false,
-        schedule_items: ['string'],
-        is_enabled: true,
-        is_jingle: false,
-        num_songs: 0,
-        playlists: []
+                        links: {self: ''},
+                    };
+            })
+            .sort((a, b) => a.weight - b.weight);
     }
-]);
 
-const currentPlaylists = ref<Playlist[]>([...playlists.value]);
+    return raw;
+};
 
-const playlistBreadcrumps = ref<PlaylistBreadcrump[]>([]);
+const fetchAndBuildPlaylists = async (): Promise<void> => {
+    const {data} = await axios.get(props.listUrl, {
+        params: {rowCount: -1},
+    });
 
-const navigateFromBreadcrumb = (breadcrumpIndex: number = 0): void => {
-    playlistBreadcrumps.value.splice(breadcrumpIndex);
+    const items: Playlist[] = data.rows as Playlist[] ?? [];
 
-    if (playlistBreadcrumps.value.length === 0) {
-        currentPlaylists.value = playlists.value;
+    playlists.value = buildTree(items);
+};
+
+const resolveCurrentPlaylistsByCreadcrumbs = (breadcrumbs: PlaylistBreadcrumb[]): Playlist[] => {
+    if (breadcrumbs.length === 0) {
+        return [...playlists.value];
+    }
+
+    let currentPlaylists = playlists.value;
+    for (const breadcrumb of breadcrumbs) {
+        const breadcrumpPlaylist = currentPlaylists.find((playlist) => playlist.id === breadcrumb.id);
+
+        if (breadcrumpPlaylist?.source !== 'playlists') {
+            continue;
+        }
+
+        const resolvedPlaylists = breadcrumpPlaylist.playlists.map(
+            (member) => playlists.value.find(
+                (playlist) => playlist.id === member.id
+            )
+        );
+
+        if (resolvedPlaylists.some((playlist) => !playlist)) {
+            notifyError($gettext('Failed to resolve playlist in group.'));
+            return currentPlaylists;
+        }
+
+        currentPlaylists = resolvedPlaylists as Playlist[];
+    }
+
+    return currentPlaylists;
+};
+
+const loadPlaylists = async () => {
+    loading.value = true;
+    selectedPlaylist.value = undefined;
+    playlistBreadcrumbs.value = [];
+
+    try {
+        await fetchAndBuildPlaylists();
+        currentPlaylists.value = [...playlists.value];
+    } catch {
+        notifyError($gettext('Failed to load playlists.'));
+    } finally {
+        loading.value = false;
+    }
+};
+
+const navigateFromBreadcrumb = (breadcrumbIndex: number = 0): void => {
+    playlistBreadcrumbs.value.splice(breadcrumbIndex);
+    currentPlaylists.value = resolveCurrentPlaylistsByCreadcrumbs(playlistBreadcrumbs.value);
+};
+
+const enterPlaylistGroup = (playlist: Playlist): void => {
+    const resolvedPlaylists = playlist.playlists.map(
+        (member) => playlists.value.find(
+            (fullPlaylist) => fullPlaylist.id === member.id
+        )
+    );
+
+    if (resolvedPlaylists.some((playlist) => !playlist)) {
+        notifyError($gettext('Failed to resolve playlist in group.'));
         return;
     }
 
-    let currentPlaylistsForBreadcrumb = playlists.value;
-    playlistBreadcrumps.value.forEach((breadcrumb: PlaylistBreadcrump) => {
-        currentPlaylistsForBreadcrumb.forEach((playlist: Playlist) => {
-            if (playlist.id === breadcrumb.id) {
-                currentPlaylistsForBreadcrumb = playlist.playlists
-            }
-        });
-    });
+    currentPlaylists.value = resolvedPlaylists as Playlist[];
 
-    currentPlaylists.value = currentPlaylistsForBreadcrumb;
-}
-
-const enterPlaylistGroup = (playlist: Playlist): void => {
-    currentPlaylists.value = playlist.playlists;
-
-    playlistBreadcrumps.value.push(<PlaylistBreadcrump>{
+    playlistBreadcrumbs.value.push({
         id: playlist.id,
-        name: playlist.name
+        name: playlist.name,
     });
 };
 
-const isSelected = (playlist: Playlist): boolean => {
-    return playlist.id === selectedPlaylist.value?.id;
-}
+const isSelected = (playlist: Playlist): boolean =>
+    playlist.id === selectedPlaylist.value?.id;
 
-const isSelectable = (playlist: Playlist): boolean => {
-    return ['songs', 'playlists'].includes(playlist.source) && !isSelected(playlist);
-}
+const isSelectable = (playlist: Playlist): boolean =>
+    ['songs', 'playlists'].includes(playlist.source) && !isSelected(playlist);
 
 const isAssignable = (playlist: Playlist): boolean => {
-    if (selectedPlaylist.value === undefined) {
+    if (selectedPlaylist.value?.source !== 'playlists') {
         return false;
     }
 
@@ -1002,15 +623,124 @@ const isAssignable = (playlist: Playlist): boolean => {
         return false;
     }
 
-    if (playlist.id === selectedPlaylist.value.id) {
+    if (playlistBreadcrumbs.value.some((breadcrump) => breadcrump.id === selectedPlaylist.value!.id)) {
         return false;
     }
 
-    return true;
+    return playlist.id !== selectedPlaylist.value.id;
 };
 
-const hasButtons = (playlist: Playlist): boolean => {
-    return isAssignable(playlist) || playlist.source === 'playlists';
+const hasButtons = (playlist: Playlist): boolean =>
+    isAssignable(playlist) || playlist.source === 'playlists';
+
+const saveMembersForSelected = async (members: PlaylistMember[]): Promise<void> => {
+    const group = selectedPlaylist.value;
+    if (!group?.links.members) {
+        return;
+    }
+
+    saving.value = true;
+    try {
+        await axios.put(group.links.members, {
+            members: members.map((member, index) => ({id: member.id, weight: index + 1})),
+        });
+
+        const savedId = group.id;
+        const savedBreadcrumbs = [...playlistBreadcrumbs.value];
+
+        await fetchAndBuildPlaylists();
+
+        currentPlaylists.value = resolveCurrentPlaylistsByCreadcrumbs(savedBreadcrumbs);
+        selectedPlaylist.value = playlists.value.find((playlist) => playlist.id === savedId);
+
+        notifySuccess($gettext('Playlist group updated.'));
+    } catch {
+        notifyError($gettext('Failed to update playlist group.'));
+    } finally {
+        saving.value = false;
+    }
+};
+
+const doAssign = async (playlist: Playlist): Promise<void> => {
+    const group = selectedPlaylist.value;
+    if (!group || group.source !== 'playlists') {
+        return;
+    }
+
+    const newMember: PlaylistMember = {
+        id: playlist.id,
+        name: playlist.name,
+        weight: group.playlists.length + 1,
+        source: playlist.source,
+        num_songs: playlist.num_songs,
+        playlists: playlist.playlists,
+    };
+
+    await saveMembersForSelected([...group.playlists, newMember]);
+};
+
+const doRemove = async (index: number): Promise<void> => {
+    const group = selectedPlaylist.value;
+    if (!group || group.source !== 'playlists') {
+        return;
+    }
+
+    const updated = [...group.playlists];
+    updated.splice(index, 1);
+
+    await saveMembersForSelected(updated);
+};
+
+const doMoveUp = async (index: number): Promise<void> => {
+    const group = selectedPlaylist.value;
+    if (!group || group.source !== 'playlists') {
+        return;
+    }
+
+    const updated = [...group.playlists];
+    const item = updated.splice(index, 1)[0];
+    updated.splice(index - 1, 0, item);
+
+    await saveMembersForSelected(updated);
+};
+
+const doMoveDown = async (index: number): Promise<void> => {
+    const group = selectedPlaylist.value;
+    if (!group || group.source !== 'playlists') {
+        return;
+    }
+
+    const updated = [...group.playlists];
+    const item = updated.splice(index, 1)[0];
+    updated.splice(index + 1, 0, item);
+
+    await saveMembersForSelected(updated);
+};
+
+const doMoveToTop = async (index: number): Promise<void> => {
+    const group = selectedPlaylist.value;
+    if (!group || group.source !== 'playlists') {
+        return;
+    }
+
+    const updated = [...group.playlists];
+    const item = updated.splice(index, 1)[0];
+    updated.splice(0, 0, item);
+
+    await saveMembersForSelected(updated);
+};
+
+const doMoveToBottom = async (index: number): Promise<void> => {
+    const group = selectedPlaylist.value;
+    if (!group || group.source !== 'playlists') {
+        return;
+    }
+
+    const updated = [...group.playlists];
+    const item = updated.splice(index, 1)[0];
+    updated.splice(updated.length, 0, item);
+
+    await saveMembersForSelected(updated);
 };
 </script>
 

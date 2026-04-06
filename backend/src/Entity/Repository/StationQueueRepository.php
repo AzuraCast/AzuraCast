@@ -201,9 +201,9 @@ final class StationQueueRepository extends AbstractStationBasedRepository
         }
 
         foreach ($playlist->playlists as $childPlaylist) {
-            $hasChildPlaylistCuedMedia = match ($childPlaylist->source) {
-                PlaylistSources::Playlists => $this->hasCuedPlaylistGroupMedia($childPlaylist),
-                PlaylistSources::Songs => $this->hasCuedPlaylistMedia($childPlaylist),
+            $hasChildPlaylistCuedMedia = match ($childPlaylist->playlist->source) {
+                PlaylistSources::Playlists => $this->hasCuedPlaylistGroupMedia($childPlaylist->playlist),
+                PlaylistSources::Songs => $this->hasCuedPlaylistMedia($childPlaylist->playlist),
                 default => false
             };
 

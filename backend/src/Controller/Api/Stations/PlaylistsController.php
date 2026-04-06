@@ -297,6 +297,14 @@ final class PlaylistsController extends AbstractScheduledEntityController
             );
         }
 
+        if (PlaylistSources::Playlists === $record->source) {
+            $return['links']['members'] = $router->fromHere(
+                routeName: 'api:stations:playlist:members',
+                routeParams: ['id' => $record->id],
+                absolute: !$isInternal
+            );
+        }
+
         if (PlaylistSources::Songs === $record->source) {
             $return['links']['import'] = $router->fromHere(
                 routeName: 'api:stations:playlist:import',

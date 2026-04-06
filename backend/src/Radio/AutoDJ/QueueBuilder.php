@@ -18,6 +18,7 @@ use App\Entity\Repository\StationRequestRepository;
 use App\Entity\Song;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
+use App\Entity\StationPlaylistGroup;
 use App\Entity\StationPlaylistMedia;
 use App\Entity\StationQueue;
 use App\Event\Radio\BuildQueue;
@@ -246,27 +247,13 @@ final class QueueBuilder implements EventSubscriberInterface
         array $recentSongHistory,
         bool $allowDuplicates = false
     ): bool {
-        // @TODO: Thoughts about settings for playlist groups
-        // - wouldn't allow advanced backend options at all
-        //      - this would make handling groups much too hard imho as we would neet to figure out
-        //        how to translate this into LS code
-        // - wouldn't allow the following options in the beginning to keep the first version simple
-        //      - include in on-demand player
-        //      - hide metadata
-        //      - allow requests
-        // - Allowed PlaylistTypes
-        //      - No issues with PlaylistTypes::Standard
-        //      - Once every x should work
-        //      - wouldn't allow PlaylistTypes::Advanced
-        //          - can't really represent these in LS Code
-
-        $selectedPlaylist = match ($playlistGroup->order) {
+        $selectedStationPlaylistGroup = match ($playlistGroup->order) {
             PlaylistOrders::Random => $this->getRandomPlaylistFromPlaylistGroup($playlistGroup),
             PlaylistOrders::Sequential => $this->getSequentialPlaylistFromPlaylistGroup($playlistGroup),
             PlaylistOrders::Shuffle => $this->getShuffledPlaylistFromPlaylistGroup($playlistGroup)
         };
 
-        if ($selectedPlaylist === null) {
+        if ($selectedStationPlaylistGroup === null) {
             $this->logger->warning(
                 sprintf('Playlist Group "%s" did not return a playable track.', $playlistGroup->name),
                 [
@@ -279,29 +266,67 @@ final class QueueBuilder implements EventSubscriberInterface
             return false;
         }
 
-        $activePlaylistsByType = $this->assembleActivePlaylistsByType($event, $selectedPlaylist->playlists, false);
-        if (empty($activePlaylistsByType)) {
-            $this->logger->warning(
-                'No valid playlists in group detected, skipping playlist group.',
-                [
-                    'playlist_group_id' => $playlistGroup->id,
-                ]
-            );
-            return false;
-        }
+        $selectedPlaylist = $selectedStationPlaylistGroup->playlist;
 
-        $hasRegisteredTrack = $this->iteratePlaylistTypesToPlayByPriority(
-            $event,
-            $activePlaylistsByType,
-            $recentSongHistory
-        );
+        $hasRegisteredTrack = match ($selectedPlaylist->source) {
+            PlaylistSources::Playlists => $this->playSongFromMemberPlaylists(
+                $event,
+                $selectedPlaylist,
+                $playlistGroup,
+                $recentSongHistory
+            ),
+            default => $this->playSongFromPlaylist(
+                $event,
+                $selectedPlaylist,
+                $recentSongHistory,
+                $allowDuplicates
+            ),
+        };
 
         if ($hasRegisteredTrack) {
             $playlistGroup->played_at = $event->getExpectedPlayTime();
             $this->em->persist($playlistGroup);
+
+            $selectedStationPlaylistGroup->played($event->getExpectedPlayTime()->getTimestamp());
+            $this->em->persist($selectedStationPlaylistGroup);
         }
 
         return $hasRegisteredTrack;
+    }
+
+    /**
+     * Given a specified playlist of a playlist group, choose a playlist from the assigned playlists to play
+     *
+     * @param StationPlaylist $selectedPlaylist Playlist of the playlist group that is holding other playlists inside
+     * @param StationPlaylist $playlistGroup Selected parent playlist of the selected playlist
+     * @param mixed[] $recentSongHistory
+     *
+     * @return bool Returns true if a track has been selected and registered
+     */
+    private function playSongFromMemberPlaylists(
+        BuildQueue $event,
+        StationPlaylist $selectedPlaylist,
+        StationPlaylist $playlistGroup,
+        array $recentSongHistory
+    ): bool {
+        $memberPlaylists = $selectedPlaylist->playlists->map(
+            fn(StationPlaylistGroup $spg): StationPlaylist => $spg->playlist
+        );
+
+        $activePlaylistsByType = $this->assembleActivePlaylistsByType($event, $memberPlaylists, false);
+        if (empty($activePlaylistsByType)) {
+            $this->logger->warning(
+                'No valid playlists in group detected, skipping playlist group.',
+                ['playlist_group_id' => $playlistGroup->id]
+            );
+            return false;
+        }
+
+        return $this->iteratePlaylistTypesToPlayByPriority(
+            $event,
+            $activePlaylistsByType,
+            $recentSongHistory
+        );
     }
 
     /**
@@ -378,7 +403,7 @@ final class QueueBuilder implements EventSubscriberInterface
 
     private function getRandomPlaylistFromPlaylistGroup(
         StationPlaylist $playlist
-    ): ?StationPlaylist {
+    ): ?StationPlaylistGroup {
         $playlistGroupQueue = $this->spRepo->getPlaylistGroupQueue($playlist);
 
         return array_shift($playlistGroupQueue);
@@ -386,7 +411,7 @@ final class QueueBuilder implements EventSubscriberInterface
 
     private function getSequentialPlaylistFromPlaylistGroup(
         StationPlaylist $playlist
-    ): ?StationPlaylist {
+    ): ?StationPlaylistGroup {
         $playlistGroupQueue = $this->spRepo->getPlaylistGroupQueue($playlist);
         if (empty($playlistGroupQueue)) {
             $this->spRepo->resetPlaylistGroupQueue($playlist);
@@ -398,7 +423,7 @@ final class QueueBuilder implements EventSubscriberInterface
 
     private function getShuffledPlaylistFromPlaylistGroup(
         StationPlaylist $playlist
-    ): ?StationPlaylist {
+    ): ?StationPlaylistGroup {
         $playlistGroupQueue = $this->spRepo->getPlaylistGroupQueue($playlist);
         if (empty($playlistGroupQueue)) {
             $this->spRepo->resetPlaylistGroupQueue($playlist);

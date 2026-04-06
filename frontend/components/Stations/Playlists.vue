@@ -59,7 +59,7 @@
                                         {{ $gettext('Jingle Mode') }}
                                     </span>
                                     <span
-                                        v-if="row.item.source === 'songs' && row.item.order === 'sequential'"
+                                        v-if="row.item.order === 'sequential'"
                                         class="badge text-bg-info"
                                     >
                                         {{ $gettext('Sequential') }}
@@ -255,21 +255,23 @@
                                     >
                                         {{ $gettext('Duplicate') }}
                                     </button>
-                                    <a
-                                        v-if="item.source !== 'playlists'"
-                                        v-for="format in ['pls', 'm3u']"
-                                        :key="format"
-                                        class="btn btn-sm btn-secondary"
-                                        :href="item.links.export[format]"
-                                        target="_blank"
-                                    >
-                                        {{
-                                            $gettext(
-                                                'Export %{format}',
-                                                {format: format.toUpperCase()}
-                                            )
-                                        }}
-                                    </a>
+
+                                    <template v-if="item.source !== 'playlists'">
+                                        <a
+                                            v-for="format in ['pls', 'm3u']"
+                                            :key="format"
+                                            class="btn btn-sm btn-secondary"
+                                            :href="item.links.export[format]"
+                                            target="_blank"
+                                        >
+                                            {{
+                                                $gettext(
+                                                    'Export %{format}',
+                                                    {format: format.toUpperCase()}
+                                                )
+                                            }}
+                                        </a>
+                                    </template>
                                 </div>
                             </template>
                         </data-table>
@@ -277,6 +279,7 @@
                 </tab>
                 <playlist-grouping-tab
                     ref="$playlistGroupingTab"
+                    :list-url="listUrl"
                 />
                 <schedule-view-tab
                     ref="$scheduleTab"

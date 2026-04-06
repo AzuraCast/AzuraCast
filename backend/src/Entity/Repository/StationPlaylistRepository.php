@@ -8,6 +8,7 @@ use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Enums\PlaylistSources;
 use App\Entity\Station;
 use App\Entity\StationPlaylist;
+use App\Entity\StationPlaylistGroup;
 use App\Utilities\Time;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\QueryBuilder;
@@ -61,7 +62,7 @@ final class StationPlaylistRepository extends AbstractStationBasedRepository
     /**
      * @param StationPlaylist $playlist A playlist that is holding other playlists inside
      *
-     * @return StationPlaylist[]
+     * @return StationPlaylistGroup[]
      */
     public function getPlaylistGroupQueue(StationPlaylist $playlist): array
     {
@@ -70,9 +71,8 @@ final class StationPlaylistRepository extends AbstractStationBasedRepository
         }
 
         $queuedPlaylistQuery = $this->em->createQueryBuilder()
-            ->select('sp')
-            ->from(StationPlaylist::class, 'sp')
-            ->join('sp.playlist_groups', 'spg')
+            ->select('spg')
+            ->from(StationPlaylistGroup::class, 'spg')
             ->where('spg.playlist_group = :playlistGroup')
             ->setParameter('playlistGroup', $playlist);
 
@@ -106,7 +106,7 @@ final class StationPlaylistRepository extends AbstractStationBasedRepository
 
     public function isPlaylistGroupQueueEmpty(StationPlaylist $playlist): bool
     {
-        if (PlaylistSources::Songs !== $playlist->source) {
+        if (PlaylistSources::Playlists !== $playlist->source) {
             return false;
         }
 

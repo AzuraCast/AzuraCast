@@ -7,8 +7,21 @@ namespace App\Entity;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
+use OpenApi\Attributes as OA;
 
 #[
+    OA\Schema(
+        type: "object",
+        properties: [
+            new OA\Property(
+                property: 'name',
+                description: 'The playlist name.',
+                type: 'string',
+                example: 'My Playlist',
+                readOnly: true
+            ),
+        ]
+    ),
     ORM\Entity,
     ORM\Table(name: 'station_playlist_group'),
     Attributes\Auditable
@@ -33,7 +46,10 @@ final class StationPlaylistGroup implements JsonSerializable, IdentifiableEntity
     #[ORM\Column(nullable: false, insertable: false, updatable: false)]
     public private(set) int $playlist_group_id;
 
-    #[ORM\Column]
+    #[
+        OA\Property(example: 1),
+        ORM\Column
+    ]
     public int $weight = 0;
 
     #[ORM\Column]

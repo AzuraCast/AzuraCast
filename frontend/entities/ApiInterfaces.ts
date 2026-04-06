@@ -2406,6 +2406,18 @@ export type StationPlaylist = HasAutoIncrementId & {
   schedule_items?: any[];
   /** Podcast> */
   podcasts?: any[];
+  /** StationPlaylistGroup> */
+  playlists?: any[];
+};
+
+export type StationPlaylistGroup = HasAutoIncrementId & {
+  /**
+   * The playlist name.
+   * @example "My Playlist"
+   */
+  readonly name?: string;
+  /** @example 1 */
+  weight?: number;
 };
 
 export type StationRemote = HasAutoIncrementId & {

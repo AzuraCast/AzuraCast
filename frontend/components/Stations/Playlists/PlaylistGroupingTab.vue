@@ -100,7 +100,7 @@
 
                                         <div
                                             class="text-truncate text-muted mb-3"
-                                            :title="item.description"
+                                            :title="item.description ?? ''"
                                         >
                                             {{ item.description }}
                                         </div>
@@ -108,11 +108,11 @@
                                         <div class="d-flex align-items-center gap-2">
                                             <span class="badge text-bg-secondary">
                                                 <div class="d-flex align-items-center">
-                                                    <template v-if="item.source === 'songs'">
+                                                    <template v-if="item.source === PlaylistSources.Songs">
                                                         <icon-ic-library-music />
                                                         <div class="ps-2">{{ $gettext('Song-based') }}</div>
                                                     </template>
-                                                    <template v-else-if="item.source === 'playlists'">
+                                                    <template v-else-if="item.source === PlaylistSources.Playlists">
                                                         <icon-ic-queue-music />
                                                         <div class="ps-2">{{ $gettext('Playlist Group') }}</div>
                                                     </template>
@@ -124,12 +124,12 @@
                                             </span>
 
                                             <span
-                                                v-if="item.source === 'songs'"
+                                                v-if="item.source === PlaylistSources.Songs"
                                                 class="badge bg-primary rounded-pill"
                                                 v-text="item.num_songs"
                                             />
                                             <span
-                                                v-else-if="item.source === 'playlists'"
+                                                v-else-if="item.source === PlaylistSources.Playlists"
                                                 class="badge bg-primary rounded-pill"
                                                 v-text="item.playlists.length"
                                             />
@@ -152,7 +152,7 @@
                                         </button>
 
                                         <button
-                                            v-if="item.source === 'playlists'"
+                                            v-if="item.source === PlaylistSources.Playlists"
                                             type="button"
                                             :title="$gettext('Enter playlist group')"
                                             class="btn btn-secondary"
@@ -179,12 +179,12 @@
                             <span class="pr-2 fs-5">{{ selectedPlaylist.name }}</span>
 
                             <span
-                                v-if="selectedPlaylist.source === 'songs'"
+                                v-if="selectedPlaylist.source === PlaylistSources.Songs"
                                 class="badge bg-primary rounded-pill"
                                 v-text="selectedPlaylist.num_songs"
                             />
                             <span
-                                v-else-if="selectedPlaylist.source === 'playlists'"
+                                v-else-if="selectedPlaylist.source === PlaylistSources.Playlists"
                                 class="badge bg-primary rounded-pill"
                                 v-text="selectedPlaylist.playlists.length"
                             />
@@ -192,17 +192,17 @@
 
                         <div
                             class="text-truncate text-muted mb-3"
-                            :title="selectedPlaylist.description"
+                            :title="selectedPlaylist.description ?? ''"
                         >
                             {{ selectedPlaylist.description }}
                         </div>
 
                         <div class="badges">
                             <span class="badge text-bg-primary">
-                                <template v-if="selectedPlaylist.source === 'songs'">
+                                <template v-if="selectedPlaylist.source === PlaylistSources.Songs">
                                     {{ $gettext('Song-based') }}
                                 </template>
-                                <template v-else-if="selectedPlaylist.source === 'playlists'">
+                                <template v-else-if="selectedPlaylist.source === PlaylistSources.Playlists">
                                     {{ $gettext('Playlist Group') }}
                                 </template>
                                 <template v-else>
@@ -222,7 +222,7 @@
                                 {{ $gettext('Jingle Mode') }}
                             </span>
                             <span
-                                v-if="selectedPlaylist.order === 'sequential'"
+                                v-if="selectedPlaylist.order === PlaylistOrders.Sequential"
                                 class="badge text-bg-info"
                             >
                                 {{ $gettext('Sequential') }}
@@ -234,10 +234,10 @@
                                 {{ $gettext('Scheduled') }}
                             </span>
                             <span class="badge text-bg-secondary">
-                                <template v-if="selectedPlaylist.type === 'default'">
+                                <template v-if="selectedPlaylist.type === PlaylistTypes.Standard">
                                     {{ $gettext('General Rotation') }} ({{ selectedPlaylist.weight }})<br>
                                 </template>
-                                <template v-else-if="selectedPlaylist.type === 'once_per_x_songs'">
+                                <template v-else-if="selectedPlaylist.type === PlaylistTypes.OncePerXSongs">
                                     {{
                                         $gettext(
                                             'Once per %{songs} Songs',
@@ -245,7 +245,7 @@
                                         )
                                     }}
                                 </template>
-                                <template v-else-if="selectedPlaylist.type === 'once_per_x_minutes'">
+                                <template v-else-if="selectedPlaylist.type === PlaylistTypes.OncePerXMinutes">
                                     {{
                                         $gettext(
                                             'Once per %{minutes} Minutes',
@@ -253,7 +253,7 @@
                                         )
                                     }}
                                 </template>
-                                <template v-else-if="selectedPlaylist.type === 'once_per_hour'">
+                                <template v-else-if="selectedPlaylist.type === PlaylistTypes.OncePerHour">
                                     {{
                                         $gettext(
                                             'Once per Hour (at %{minute})',
@@ -288,7 +288,7 @@
                         </li>
 
                         <li
-                            v-else-if="selectedPlaylist.source === 'songs' && selectedPlaylist.num_songs === 0"
+                            v-else-if="selectedPlaylist.source === PlaylistSources.Songs && selectedPlaylist.num_songs === 0"
                             class="no-drag"
                         >
                             <div class="p-5 text-center fs-5">
@@ -297,7 +297,7 @@
                         </li>
 
                         <li
-                            v-else-if="selectedPlaylist.source === 'playlists' && selectedPlaylist.playlists.length === 0"
+                            v-else-if="selectedPlaylist.source === PlaylistSources.Playlists && selectedPlaylist.playlists.length === 0"
                             class="no-drag"
                         >
                             <div class="p-5 text-center fs-5">
@@ -306,7 +306,7 @@
                         </li>
 
                         <li
-                            v-else-if="selectedPlaylist.source === 'songs'"
+                            v-else-if="selectedPlaylist.source === PlaylistSources.Songs"
                             class="list-group-item no-drag"
                         >
                             <div class="p-3 text-center text-muted">
@@ -315,7 +315,7 @@
                         </li>
 
                         <li
-                            v-else-if="selectedPlaylist.source === 'playlists'"
+                            v-else-if="selectedPlaylist.source === PlaylistSources.Playlists"
                             v-for="(member, index) in playlistMembers"
                             :key="`${selectedPlaylist.id}-${member.id}-${index}`"
                             class="list-group-item"
@@ -340,11 +340,11 @@
                                         <div class="d-flex align-items-center gap-2">
                                             <span class="badge text-bg-secondary">
                                                 <div class="d-flex align-items-center">
-                                                    <template v-if="member.source === 'songs'">
+                                                    <template v-if="member.source === PlaylistSources.Songs">
                                                         <icon-ic-library-music />
                                                         <div class="ps-2">{{ $gettext('Song-based') }}</div>
                                                     </template>
-                                                    <template v-else-if="member.source === 'playlists'">
+                                                    <template v-else-if="member.source === PlaylistSources.Playlists">
                                                         <icon-ic-queue-music />
                                                         <div class="ps-2">{{ $gettext('Playlist Group') }}</div>
                                                     </template>
@@ -356,12 +356,12 @@
                                             </span>
 
                                             <span
-                                                v-if="member.source === 'songs'"
+                                                v-if="member.source === PlaylistSources.Songs"
                                                 class="badge bg-primary rounded-pill"
                                                 v-text="member.num_songs"
                                             />
                                             <span
-                                                v-else-if="member.source === 'playlists'"
+                                                v-else-if="member.source === PlaylistSources.Playlists"
                                                 class="badge bg-primary rounded-pill"
                                                 v-text="member.playlists.length"
                                             />
@@ -438,46 +438,12 @@ import {useDraggable} from "vue-draggable-plus";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useTranslate} from "~/vendor/gettext";
-
-// @TODO: The types are currently a inline placeholder implementation that should get replaced by generated ones
-// from the frontend/entities/ApiInterfaces.ts & a new frontend/entities/StationPlaylist.ts later on
-
-export type PlaylistMember = {
-    id: number,
-    name: string,
-    weight: number,
-    source: string,
-    num_songs: number,
-    playlists: PlaylistMember[],
-};
-
-export type Playlist = {
-    id: number,
-    name: string,
-    description: string,
-    source: string,
-    type: string,
-    is_jingle: boolean,
-    order: string,
-    weight: number,
-    play_per_songs: number,
-    play_per_minutes: number,
-    play_per_hour_minute: number,
-    include_in_on_demand: boolean,
-    schedule_items: unknown[],
-    is_enabled: boolean,
-    num_songs: number,
-    playlists: PlaylistMember[],
-    links: {
-        self: string,
-        members?: string,
-    },
-};
-
-export type PlaylistBreadcrumb = {
-    id: number,
-    name: string,
-};
+import {
+    type StationPlaylistEnriched,
+    type StationPlaylistGroupMemberEnriched,
+    type PlaylistBreadcrumb,
+} from "~/entities/StationPlaylist.ts";
+import {PlaylistSources, PlaylistTypes, PlaylistOrders} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     listUrl: string
@@ -502,14 +468,14 @@ const {notifySuccess, notifyError} = useNotify();
 
 const loading = ref<boolean>(true);
 const saving = ref<boolean>(false);
-const playlists = ref<Playlist[]>([]);
-const currentPlaylists = ref<Playlist[]>([]);
+const playlists = ref<StationPlaylistEnriched[]>([]);
+const currentPlaylists = ref<StationPlaylistEnriched[]>([]);
 const playlistBreadcrumbs = ref<PlaylistBreadcrumb[]>([]);
-const selectedPlaylist = ref<Playlist | undefined>(undefined);
-const playlistMembers = ref<PlaylistMember[]>([]);
+const selectedPlaylist = ref<StationPlaylistEnriched | undefined>(undefined);
+const playlistMembers = ref<StationPlaylistGroupMemberEnriched[]>([]);
 
 watch(selectedPlaylist, (playlist) => {
-    playlistMembers.value = playlist?.source === 'playlists'
+    playlistMembers.value = playlist?.source === PlaylistSources.Playlists
         ? [...playlist.playlists]
         : [];
 });
@@ -527,14 +493,14 @@ watch($playlistList, (element) => {
         },
         filter: '.not-assignable',
         sort: false,
-        clone: (playlist: Playlist) => ({
+        clone: (playlist: StationPlaylistEnriched) => ({
             id: playlist.id,
             name: playlist.name,
             weight: 0,
             source: playlist.source,
             num_songs: playlist.num_songs,
             playlists: playlist.playlists,
-        }) as Playlist,
+        }) as StationPlaylistEnriched,
     });
 });
 
@@ -563,11 +529,11 @@ watch($playlistContents, (element) => {
  * their StationPlaylistGroup (id, name, weight) we need to enrich those to
  * have their full StationPlaylist forms available for easier handling.
  */
-const buildTree = (raw: Playlist[]): Playlist[] => {
-    const map = new Map<number, Playlist>(raw.map((playlist) => [playlist.id, playlist]));
+const buildTree = (raw: StationPlaylistEnriched[]): StationPlaylistEnriched[] => {
+    const map = new Map<number, StationPlaylistEnriched>(raw.map((playlist) => [playlist.id, playlist]));
 
     for (const playlist of raw) {
-        if (playlist.source !== 'playlists' || !Array.isArray(playlist.playlists)) {
+        if (playlist.source !== PlaylistSources.Playlists || !Array.isArray(playlist.playlists)) {
             continue;
         }
 
@@ -605,12 +571,12 @@ const fetchAndBuildPlaylists = async (): Promise<void> => {
         params: {rowCount: -1},
     });
 
-    const items: Playlist[] = data.rows as Playlist[] ?? [];
+    const items: StationPlaylistEnriched[] = data.rows as StationPlaylistEnriched[] ?? [];
 
     playlists.value = buildTree(items);
 };
 
-const resolveCurrentPlaylistsByCreadcrumbs = (breadcrumbs: PlaylistBreadcrumb[]): Playlist[] => {
+const resolveCurrentPlaylistsByCreadcrumbs = (breadcrumbs: PlaylistBreadcrumb[]): StationPlaylistEnriched[] => {
     if (breadcrumbs.length === 0) {
         return [...playlists.value];
     }
@@ -619,7 +585,7 @@ const resolveCurrentPlaylistsByCreadcrumbs = (breadcrumbs: PlaylistBreadcrumb[])
     for (const breadcrumb of breadcrumbs) {
         const breadcrumpPlaylist = currentPlaylists.find((playlist) => playlist.id === breadcrumb.id);
 
-        if (breadcrumpPlaylist?.source !== 'playlists') {
+        if (breadcrumpPlaylist?.source !== PlaylistSources.Playlists) {
             continue;
         }
 
@@ -634,7 +600,7 @@ const resolveCurrentPlaylistsByCreadcrumbs = (breadcrumbs: PlaylistBreadcrumb[])
             return currentPlaylists;
         }
 
-        currentPlaylists = resolvedPlaylists as Playlist[];
+        currentPlaylists = resolvedPlaylists as StationPlaylistEnriched[];
     }
 
     return currentPlaylists;
@@ -660,7 +626,7 @@ const navigateFromBreadcrumb = (breadcrumbIndex: number = 0): void => {
     currentPlaylists.value = resolveCurrentPlaylistsByCreadcrumbs(playlistBreadcrumbs.value);
 };
 
-const enterPlaylistGroup = (playlist: Playlist): void => {
+const enterPlaylistGroup = (playlist: StationPlaylistEnriched): void => {
     const resolvedPlaylists = playlist.playlists.map(
         (member) => playlists.value.find(
             (fullPlaylist) => fullPlaylist.id === member.id
@@ -672,7 +638,7 @@ const enterPlaylistGroup = (playlist: Playlist): void => {
         return;
     }
 
-    currentPlaylists.value = resolvedPlaylists as Playlist[];
+    currentPlaylists.value = resolvedPlaylists as StationPlaylistEnriched[];
 
     playlistBreadcrumbs.value.push({
         id: playlist.id,
@@ -680,18 +646,18 @@ const enterPlaylistGroup = (playlist: Playlist): void => {
     });
 };
 
-const isSelected = (playlist: Playlist): boolean =>
+const isSelected = (playlist: StationPlaylistEnriched): boolean =>
     playlist.id === selectedPlaylist.value?.id;
 
-const isSelectable = (playlist: Playlist): boolean =>
-    ['songs', 'playlists'].includes(playlist.source) && !isSelected(playlist);
+const isSelectable = (playlist: StationPlaylistEnriched): boolean =>
+    [PlaylistSources.Songs, PlaylistSources.Playlists].includes(playlist.source) && !isSelected(playlist);
 
-const isAssignable = (playlist: Playlist): boolean => {
-    if (selectedPlaylist.value?.source !== 'playlists') {
+const isAssignable = (playlist: StationPlaylistEnriched): boolean => {
+    if (selectedPlaylist.value?.source !== PlaylistSources.Playlists) {
         return false;
     }
 
-    if (!['songs', 'playlists'].includes(playlist.source)) {
+    if (![PlaylistSources.Songs, PlaylistSources.Playlists].includes(playlist.source)) {
         return false;
     }
 
@@ -702,10 +668,10 @@ const isAssignable = (playlist: Playlist): boolean => {
     return playlist.id !== selectedPlaylist.value.id;
 };
 
-const hasButtons = (playlist: Playlist): boolean =>
-    isAssignable(playlist) || playlist.source === 'playlists';
+const hasButtons = (playlist: StationPlaylistEnriched): boolean =>
+    isAssignable(playlist) || playlist.source === PlaylistSources.Playlists;
 
-const saveMembersForSelected = async (members: PlaylistMember[]): Promise<void> => {
+const saveMembersForSelected = async (members: StationPlaylistGroupMemberEnriched[]): Promise<void> => {
     const group = selectedPlaylist.value;
     if (!group?.links.members) {
         return;
@@ -733,13 +699,13 @@ const saveMembersForSelected = async (members: PlaylistMember[]): Promise<void> 
     }
 };
 
-const doAssign = async (playlist: Playlist): Promise<void> => {
+const doAssign = async (playlist: StationPlaylistEnriched): Promise<void> => {
     const group = selectedPlaylist.value;
-    if (!group || group.source !== 'playlists') {
+    if (!group || group.source !== PlaylistSources.Playlists) {
         return;
     }
 
-    const newMember: PlaylistMember = {
+    const newMember: StationPlaylistGroupMemberEnriched = {
         id: playlist.id,
         name: playlist.name,
         weight: group.playlists.length + 1,

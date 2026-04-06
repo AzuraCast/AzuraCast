@@ -9927,6 +9927,26 @@ components:
               description: Podcast>
               type: array
               items: {  }
+            playlists:
+              description: StationPlaylistGroup>
+              type: array
+              items: {  }
+          type: object
+    StationPlaylistGroup:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            name:
+              description: 'The playlist name.'
+              type: string
+              readOnly: true
+              example: 'My Playlist'
+            weight:
+              type: integer
+              example: 1
           type: object
     StationRemote:
       type: object

@@ -63,8 +63,14 @@
                         </ol>
                     </nav>
 
-                    <ul class="list-group list-group-flush h-100 shadow">
-                        <li v-if="currentPlaylists.length === 0">
+                    <ul
+                        ref="$playlistList"
+                        class="list-group list-group-flush h-100 shadow"
+                    >
+                        <li
+                            v-if="currentPlaylists.length === 0"
+                            class="not-assignable"
+                        >
                             <div class="p-5 text-center fs-5">
                                 {{ $gettext('No playlists available') }}
                             </div>
@@ -73,7 +79,7 @@
                             v-for="(item, index) in currentPlaylists"
                             :key="`${item.id}-${index}`"
                             class="list-group-item p-0"
-                            :class="{active: isSelected(item)}"
+                            :class="{active: isSelected(item), 'not-assignable': !isAssignable(item)}"
                         >
                             <label
                                 class="playlist-selection-item d-block w-100 p-3"
@@ -478,6 +484,7 @@ const props = defineProps<{
 }>();
 
 const $tab = useTemplateRef<InstanceType<typeof Tab>>('$tab');
+const $playlistList = useTemplateRef<HTMLUListElement>('$playlistList');
 const $playlistContents = useTemplateRef<HTMLUListElement>('$playlistContents');
 
 watch(
@@ -507,14 +514,45 @@ watch(selectedPlaylist, (playlist) => {
         : [];
 });
 
+watch($playlistList, (element) => {
+    if (element === null) {
+        return;
+    }
+
+    useDraggable($playlistList, currentPlaylists, {
+        group: {
+            name: 'playlist-grouping',
+            pull: 'clone',
+            put: false,
+        },
+        filter: '.not-assignable',
+        sort: false,
+        clone: (playlist: Playlist) => ({
+            id: playlist.id,
+            name: playlist.name,
+            weight: 0,
+            source: playlist.source,
+            num_songs: playlist.num_songs,
+            playlists: playlist.playlists,
+        }) as Playlist,
+    });
+});
+
 watch($playlistContents, (element) => {
     if (element === null) {
         return
     }
 
     useDraggable($playlistContents, playlistMembers, {
+        group: {
+            name: 'playlist-grouping',
+            put: true,
+        },
         filter: '.no-drag',
         onEnd() {
+            void saveMembersForSelected(playlistMembers.value);
+        },
+        onAdd() {
             void saveMembersForSelected(playlistMembers.value);
         }
     });

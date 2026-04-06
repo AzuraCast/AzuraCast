@@ -268,20 +268,32 @@
                         </div>
                     </div>
 
-                    <ul class="list-group list-group-flush h-100 shadow">
-                        <li v-if="selectedPlaylist === undefined">
+                    <ul
+                        ref="$playlistContents"
+                        class="list-group list-group-flush h-100 shadow"
+                    >
+                        <li
+                            v-if="selectedPlaylist === undefined"
+                            class="no-drag"
+                        >
                             <div class="p-5 text-center fs-5">
                                 {{ $gettext('No playlist selected') }}
                             </div>
                         </li>
 
-                        <li v-else-if="selectedPlaylist.source === 'songs' && selectedPlaylist.num_songs === 0">
+                        <li
+                            v-else-if="selectedPlaylist.source === 'songs' && selectedPlaylist.num_songs === 0"
+                            class="no-drag"
+                        >
                             <div class="p-5 text-center fs-5">
                                 {{ $gettext('No songs available') }}
                             </div>
                         </li>
 
-                        <li v-else-if="selectedPlaylist.source === 'playlists' && selectedPlaylist.playlists.length === 0">
+                        <li
+                            v-else-if="selectedPlaylist.source === 'playlists' && selectedPlaylist.playlists.length === 0"
+                            class="no-drag"
+                        >
                             <div class="p-5 text-center fs-5">
                                 {{ $gettext('No playlists assigned') }}
                             </div>
@@ -289,7 +301,7 @@
 
                         <li
                             v-else-if="selectedPlaylist.source === 'songs'"
-                            class="list-group-item"
+                            class="list-group-item no-drag"
                         >
                             <div class="p-3 text-center text-muted">
                                 {{ $gettext('%{count} songs in this playlist.', {count: selectedPlaylist.num_songs}) }}
@@ -298,7 +310,7 @@
 
                         <li
                             v-else-if="selectedPlaylist.source === 'playlists'"
-                            v-for="(member, index) in selectedPlaylist.playlists"
+                            v-for="(member, index) in playlistMembers"
                             :key="`${selectedPlaylist.id}-${member.id}-${index}`"
                             class="list-group-item"
                         >
@@ -351,7 +363,7 @@
 
                                         <div class="btn-group btn-group-sm">
                                             <button
-                                                v-if="index + 1 < selectedPlaylist.playlists.length"
+                                                v-if="index + 1 < playlistMembers.length"
                                                 type="button"
                                                 class="btn btn-secondary"
                                                 :title="$gettext('Move to Bottom')"
@@ -361,7 +373,7 @@
                                                 <icon-bi-chevron-bar-down />
                                             </button>
                                             <button
-                                                v-if="index + 1 < selectedPlaylist.playlists.length"
+                                                v-if="index + 1 < playlistMembers.length"
                                                 type="button"
                                                 class="btn btn-primary"
                                                 :title="$gettext('Move Down')"
@@ -416,6 +428,7 @@ import IconBiChevronBarUp from "~icons/bi/chevron-bar-up";
 import IconBiChevronDown from "~icons/bi/chevron-down";
 import IconBiChevronUp from "~icons/bi/chevron-up";
 import {ref, useTemplateRef, watch} from "vue";
+import {useDraggable} from "vue-draggable-plus";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
 import {useTranslate} from "~/vendor/gettext";
@@ -465,6 +478,7 @@ const props = defineProps<{
 }>();
 
 const $tab = useTemplateRef<InstanceType<typeof Tab>>('$tab');
+const $playlistContents = useTemplateRef<HTMLUListElement>('$playlistContents');
 
 watch(
     () => $tab.value?.isActive,
@@ -485,6 +499,26 @@ const playlists = ref<Playlist[]>([]);
 const currentPlaylists = ref<Playlist[]>([]);
 const playlistBreadcrumbs = ref<PlaylistBreadcrumb[]>([]);
 const selectedPlaylist = ref<Playlist | undefined>(undefined);
+const playlistMembers = ref<PlaylistMember[]>([]);
+
+watch(selectedPlaylist, (playlist) => {
+    playlistMembers.value = playlist?.source === 'playlists'
+        ? [...playlist.playlists]
+        : [];
+});
+
+watch($playlistContents, (element) => {
+    if (element === null) {
+        return
+    }
+
+    useDraggable($playlistContents, playlistMembers, {
+        filter: '.no-drag',
+        onEnd() {
+            void saveMembersForSelected(playlistMembers.value);
+        }
+    });
+});
 
 /**
  * Since all playlists that are assigned to a StationPlaylist are returned as
@@ -676,28 +710,18 @@ const doAssign = async (playlist: Playlist): Promise<void> => {
         playlists: playlist.playlists,
     };
 
-    await saveMembersForSelected([...group.playlists, newMember]);
+    await saveMembersForSelected([...playlistMembers.value, newMember]);
 };
 
 const doRemove = async (index: number): Promise<void> => {
-    const group = selectedPlaylist.value;
-    if (!group || group.source !== 'playlists') {
-        return;
-    }
-
-    const updated = [...group.playlists];
+    const updated = [...playlistMembers.value];
     updated.splice(index, 1);
 
     await saveMembersForSelected(updated);
 };
 
 const doMoveUp = async (index: number): Promise<void> => {
-    const group = selectedPlaylist.value;
-    if (!group || group.source !== 'playlists') {
-        return;
-    }
-
-    const updated = [...group.playlists];
+    const updated = [...playlistMembers.value];
     const item = updated.splice(index, 1)[0];
     updated.splice(index - 1, 0, item);
 
@@ -705,12 +729,7 @@ const doMoveUp = async (index: number): Promise<void> => {
 };
 
 const doMoveDown = async (index: number): Promise<void> => {
-    const group = selectedPlaylist.value;
-    if (!group || group.source !== 'playlists') {
-        return;
-    }
-
-    const updated = [...group.playlists];
+    const updated = [...playlistMembers.value];
     const item = updated.splice(index, 1)[0];
     updated.splice(index + 1, 0, item);
 
@@ -718,12 +737,7 @@ const doMoveDown = async (index: number): Promise<void> => {
 };
 
 const doMoveToTop = async (index: number): Promise<void> => {
-    const group = selectedPlaylist.value;
-    if (!group || group.source !== 'playlists') {
-        return;
-    }
-
-    const updated = [...group.playlists];
+    const updated = [...playlistMembers.value];
     const item = updated.splice(index, 1)[0];
     updated.splice(0, 0, item);
 
@@ -731,12 +745,7 @@ const doMoveToTop = async (index: number): Promise<void> => {
 };
 
 const doMoveToBottom = async (index: number): Promise<void> => {
-    const group = selectedPlaylist.value;
-    if (!group || group.source !== 'playlists') {
-        return;
-    }
-
-    const updated = [...group.playlists];
+    const updated = [...playlistMembers.value];
     const item = updated.splice(index, 1)[0];
     updated.splice(updated.length, 0, item);
 
@@ -768,7 +777,15 @@ const doMoveToBottom = async (index: number): Promise<void> => {
     }
 }
 
+.list-group-item:not(.no-drag) {
+    cursor: grab;
+}
+
 .min-w-0 {
     min-width: 0;
+}
+
+.sortable-ghost {
+    opacity: 0.4;
 }
 </style>

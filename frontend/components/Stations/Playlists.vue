@@ -193,10 +193,18 @@
                                     style="line-height: 2.5;"
                                 >
                                     <button
-                                        v-if="item.links.order"
+                                        v-if="item.links.order && item.source !== 'playlists'"
                                         type="button"
                                         class="btn btn-sm btn-primary"
                                         @click="doReorder(item.links.order)"
+                                    >
+                                        {{ $gettext('Reorder') }}
+                                    </button>
+                                    <button
+                                        v-if="item.links.order && item.source === 'playlists'"
+                                        type="button"
+                                        class="btn btn-sm btn-primary"
+                                        @click="doGroupReorder(item.links.members, item.playlists)"
                                     >
                                         {{ $gettext('Reorder') }}
                                     </button>
@@ -297,8 +305,11 @@
         @needs-restart="() => mayNeedRestart()"
     />
     <reorder-modal ref="$reorderModal" />
+    <playlist-group-reorder-modal
+        ref="$groupReorderModal"
+        @relist="() => relist()"
+    />
     <queue-modal ref="$queueModal" />
-    <reorder-modal ref="$reorderModal" />
     <import-modal
         ref="$importModal"
         @relist="() => relist()"
@@ -344,6 +355,9 @@ import IconBiContract from "~icons/bi/chevron-contract";
 import IconBiExpand from "~icons/bi/chevron-expand";
 import {useApiRouter} from "~/functions/useApiRouter.ts";
 import PlaylistGroupingTab from "~/components/Stations/Playlists/PlaylistGroupingTab.vue";
+import PlaylistGroupReorderModal from "~/components/Stations/Playlists/PlaylistGroupReorderModal.vue";
+import {StationPlaylistEnriched, StationPlaylistGroupMemberEnriched} from "~/entities/StationPlaylist.ts";
+import {StationPlaylistGroup} from "~/entities/ApiInterfaces.ts";
 
 const {getStationApiUrl} = useApiRouter();
 const listUrl = getStationApiUrl('/playlists');
@@ -393,6 +407,39 @@ const $reorderModal = useTemplateRef('$reorderModal');
 
 const doReorder = (url: string) => {
     $reorderModal.value?.open(url);
+};
+
+const $groupReorderModal = useTemplateRef('$groupReorderModal');
+
+const doGroupReorder = async (membersUrl: string, playlists: StationPlaylistGroup[]): Promise<void> => {
+    const {data} = await axios.get(listUrl.value, {
+        params: {rowCount: -1}
+    });
+
+    const allPlaylists: StationPlaylistEnriched[] = data.rows ?? [];
+    const playlistMap = new Map(allPlaylists.map((playlist) => [playlist.id, playlist]));
+
+    const enrichedMembers: StationPlaylistGroupMemberEnriched[] = playlists
+        .map((member) => {
+            const weight = member.weight ?? 0;
+            const full = playlistMap.get(member.id);
+            return full
+                ? {
+                    ...full,
+                    weight: weight,
+                }
+                : {
+                    ...member,
+                    name: member.name ?? '',
+                    weight: weight,
+                    source: '',
+                    num_songs: 0,
+                    playlists: []
+                };
+        })
+        .sort((a, b) => a.weight - b.weight);
+
+    $groupReorderModal.value?.open(membersUrl, enrichedMembers);
 };
 
 const $queueModal = useTemplateRef('$queueModal');

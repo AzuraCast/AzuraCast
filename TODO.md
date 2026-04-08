@@ -33,6 +33,5 @@ Thoughts about settings for playlist groups
 @TODO
 -------------------------------
 All Playlists
-- Reorder Button fails on an error that it is not a sequential playlist
 - Need to also check the Reshuffle Button
 - The Playback Queue Button seems useless here

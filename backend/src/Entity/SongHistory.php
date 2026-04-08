@@ -14,7 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
     ORM\Table(name: 'song_history'),
     ORM\Index(name: 'idx_is_visible', columns: ['is_visible']),
     ORM\Index(name: 'idx_timestamp_start', columns: ['timestamp_start']),
-    ORM\Index(name: 'idx_timestamp_end', columns: ['timestamp_end'])
+    ORM\Index(name: 'idx_timestamp_end', columns: ['timestamp_end']),
+    ORM\Index(name: 'idx_station_visible_id', columns: ['station_id', 'is_visible', 'id'])
 ]
 final class SongHistory implements
     Interfaces\SongInterface,

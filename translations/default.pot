@@ -8530,7 +8530,7 @@ msgid "%{steps} Steps"
 msgstr ""
 
 #: frontend/components/Stations/Playlists/Form/BasicInfo.vue:65
-msgid "Plays songs from child playlists in a repeating sequence."
+msgid "Plays songs from child playlists in a repeating sequence. Song requests are handled within the clockwheel and do not use the global request queue."
 msgstr ""
 
 #: backend/src/Controller/Api/Stations/Playlists/PutChildrenAction.php:82

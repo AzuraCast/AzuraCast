@@ -907,11 +907,7 @@ final class QueueBuilder implements EventSubscriberInterface
                 continue;
             }
 
-            // An active clockwheel with "suppress requests" handles requests via its own steps.
-            if (
-                PlaylistTypes::Clockwheel === $playlist->type
-                && $playlist->backendSuppressRequests()
-            ) {
+            if (PlaylistTypes::Clockwheel === $playlist->type) {
                 $this->logger->debug(
                     sprintf('Clockwheel "%s" suppresses global requests.', $playlist->name),
                     ['playlist_id' => $playlist->id]

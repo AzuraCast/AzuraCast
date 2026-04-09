@@ -32,18 +32,16 @@
                     <div class="card-body-flush">
                         <div
                             v-if="clockwheelConflictNames"
-                            class="alert alert-warning m-3"
+                            class="alert alert-warning mx-3 mt-3 mb-0"
                         >
                             <strong>{{ $gettext('Overlapping clockwheel schedules detected') }}</strong>
-                            <p class="mb-1 mt-2">
+                            <p class="small mb-1 mt-2">
                                 {{ $gettext('Only one clockwheel can be active at a time. When schedules overlap, only one will play.') }}
-                            </p>
-                            <p class="mb-1">
                                 {{ clockwheelConflictNames.join(', ') }}
                             </p>
-                            <small class="text-muted">
+                            <p class="small mb-0">
                                 {{ $gettext('Adjust schedules so clockwheels do not overlap, or disable the ones you no longer need.') }}
-                            </small>
+                            </p>
                         </div>
 
                         <div class="card-body buttons">

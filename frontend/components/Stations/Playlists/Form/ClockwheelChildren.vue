@@ -15,6 +15,24 @@
                 {{ $gettext('Only playlists in "General Rotation" mode can be added as steps.') }}
             </p>
 
+            <div class="form-check mb-3">
+                <input
+                    id="clockwheel_suppress_requests"
+                    v-model="suppressRequests"
+                    type="checkbox"
+                    class="form-check-input"
+                >
+                <label
+                    for="clockwheel_suppress_requests"
+                    class="form-check-label"
+                >
+                    {{ $gettext('Handle requests in clockwheel') }}
+                </label>
+                <small class="form-text text-muted d-block">
+                    {{ $gettext('When enabled, the global request queue is suppressed and requests are only played via request slots or steps with "Allow Requests" enabled.') }}
+                </small>
+            </div>
+
             <div
                 v-if="children.length === 0"
                 class="alert alert-info"
@@ -220,6 +238,18 @@ const {getStationApiUrl} = useApiRouter();
 
 const children = ref<ChildItem[]>([]);
 const availablePlaylists = ref<PlaylistOption[]>([]);
+
+const suppressRequests = computed({
+    get: () => form.value.backend_options.includes('suppress_requests'),
+    set: (val: boolean) => {
+        const opts = form.value.backend_options;
+        if (val && !opts.includes('suppress_requests')) {
+            opts.push('suppress_requests');
+        } else if (!val) {
+            form.value.backend_options = opts.filter((o: string) => o !== 'suppress_requests');
+        }
+    }
+});
 
 const playlistMetaMap = computed(() => {
     const map = new Map<number, PlaylistOption>();

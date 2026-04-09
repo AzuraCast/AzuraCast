@@ -40,5 +40,4 @@ final class Version20260409185407 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_277B0055C6D69377 ON station_queue');
         $this->addSql('ALTER TABLE station_queue DROP clockwheel_step, DROP clockwheel_playlist_id');
     }
-
 }

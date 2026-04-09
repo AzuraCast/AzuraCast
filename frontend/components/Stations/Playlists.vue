@@ -392,7 +392,7 @@ const listItemProvider = useApiItemProvider(
     queryKeyWithStation([QueryKeys.StationPlaylists]),
     undefined,
     undefined,
-    (rows) => [...rows].sort((a: any, b: any) => {
+    (rows: Record<string, any>[]) => [...rows].sort((a, b) => {
         const aCw = a.type === 'clockwheel' ? 0 : 1;
         const bCw = b.type === 'clockwheel' ? 0 : 1;
         return aCw - bCw;

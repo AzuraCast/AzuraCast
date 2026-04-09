@@ -30,6 +30,18 @@
                     :label="$gettext('All Playlists')"
                 >
                     <div class="card-body-flush">
+                        <div
+                            v-if="clockwheelConflict"
+                            class="alert alert-warning m-3 mb-0"
+                        >
+                            {{
+                                $gettext(
+                                    'Multiple enabled clockwheels detected: %{names}. Only one clockwheel can be active at a time — the one with the highest weight will take priority.',
+                                    {names: clockwheelConflict}
+                                )
+                            }}
+                        </div>
+
                         <div class="card-body buttons">
                             <add-button
                                 :text="$gettext('Add Playlist')"
@@ -332,7 +344,7 @@ import QueueModal from "~/components/Stations/Playlists/QueueModal.vue";
 import CloneModal from "~/components/Stations/Playlists/CloneModal.vue";
 import ApplyToModal from "~/components/Stations/Playlists/ApplyToModal.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useTemplateRef} from "vue";
+import {computed, useTemplateRef} from "vue";
 import useHasEditModal from "~/functions/useHasEditModal";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
@@ -370,6 +382,16 @@ const listItemProvider = useApiItemProvider(
     listUrl,
     queryKeyWithStation([QueryKeys.StationPlaylists])
 );
+
+const clockwheelConflict = computed((): string | null => {
+    const enabledCws = listItemProvider.rows.value.filter(
+        (p: Record<string, unknown>) => p.type === 'clockwheel' && p.is_enabled
+    );
+    if (enabledCws.length > 1) {
+        return enabledCws.map((p: Record<string, unknown>) => `"${p.name as string}"`).join(', ');
+    }
+    return null;
+});
 
 const {Duration} = useLuxon();
 

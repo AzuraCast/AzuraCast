@@ -62,7 +62,7 @@
                         class="col-md-12"
                     >
                         <p class="text-muted mb-0">
-                            {{ $gettext('A Clockwheel plays songs from other playlists in a defined repeating sequence. Add playlists as steps below and specify how many songs to play from each before advancing.') }}
+                            {{ $gettext('Plays songs from child playlists in a repeating sequence.') }}
                         </p>
                     </div>
                     <template v-if="form.type !== 'clockwheel'">

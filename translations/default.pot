@@ -8530,7 +8530,7 @@ msgid "%{steps} Steps"
 msgstr ""
 
 #: frontend/components/Stations/Playlists/Form/BasicInfo.vue:65
-msgid "A Clockwheel plays songs from other playlists in a defined repeating sequence. Add playlists as steps below and specify how many songs to play from each before advancing."
+msgid "Plays songs from child playlists in a repeating sequence."
 msgstr ""
 
 #: backend/src/Controller/Api/Stations/Playlists/PutChildrenAction.php:82
@@ -8554,9 +8554,6 @@ msgstr ""
 msgid "Child playlist not found: %d"
 msgstr ""
 
-#: backend/src/Controller/Api/Stations/Playlists/PutChildrenAction.php:158
-msgid "Circular reference detected: playlist \"%s\" would create a loop."
-msgstr ""
 
 #: frontend/components/Stations/Playlists.vue:141
 #: frontend/components/Stations/Playlists.vue:64
@@ -8582,7 +8579,7 @@ msgid "Clockwheel:"
 msgstr ""
 
 #: frontend/components/Stations/Playlists/Form/ClockwheelChildren.vue:14
-msgid "Define the sequence of playlists to play from. Each step will play the specified number of songs before advancing to the next step. The sequence repeats from the beginning after the last step."
+msgid "Each step plays the specified number of songs before advancing. The sequence repeats after the last step."
 msgstr ""
 
 #: frontend/components/Stations/Playlists/EditModal.vue:130
@@ -8591,10 +8588,6 @@ msgstr ""
 
 #: backend/src/Controller/Api/Stations/Playlists/PutChildrenAction.php:76
 msgid "Invalid child playlist ID."
-msgstr ""
-
-#: backend/src/Controller/Api/Stations/Playlists/PutChildrenAction.php:151
-msgid "Maximum clockwheel nesting depth of %d exceeded."
 msgstr ""
 
 #: frontend/components/Stations/Playlists/Form/ClockwheelChildren.vue:22
@@ -8606,7 +8599,7 @@ msgid "Only General Rotation playlists can be used as clockwheel children: %s"
 msgstr ""
 
 #: frontend/components/Stations/Playlists/Form/ClockwheelChildren.vue:15
-msgid "Only playlists in \"General Rotation\" mode can be added as steps."
+msgid "General Rotation playlists can be added as steps."
 msgstr ""
 
 #: frontend/components/Stations/Playlists/Form/ClockwheelChildren.vue:34

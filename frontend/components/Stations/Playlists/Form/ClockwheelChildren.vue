@@ -11,7 +11,7 @@
         </div>
         <div class="card-body">
             <p class="text-muted mb-3">
-                {{ $gettext('Define the sequence of playlists to play from. Each step will play the specified number of songs before advancing to the next step. The sequence repeats from the beginning after the last step.') }}
+                {{ $gettext('Each step plays the specified number of songs before advancing. The sequence repeats after the last step.') }}
                 {{ $gettext('General Rotation playlists can be added as steps.') }}
             </p>
 

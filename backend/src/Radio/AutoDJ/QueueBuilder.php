@@ -352,7 +352,8 @@ final class QueueBuilder implements EventSubscriberInterface
 
                 if (null === $request) {
                     $this->logger->debug(
-                        sprintf('Clockwheel step %d: request slot has no pending requests, skipping.', $stepIndex)
+                        sprintf('Clockwheel step %d: request slot has no pending requests, skipping.', $stepIndex),
+                        ['step_index' => $stepIndex, 'playlist_id' => $clockwheelPlaylist->id]
                     );
                     if ($attempt === 0) {
                         $this->advanceClockwheelStep($clockwheelPlaylist, $totalSteps);
@@ -406,7 +407,8 @@ final class QueueBuilder implements EventSubscriberInterface
 
             if (!$childPlaylist->is_enabled) {
                 $this->logger->debug(
-                    sprintf('Clockwheel step %d: child "%s" disabled, skipping.', $stepIndex, $childPlaylist->name)
+                    sprintf('Clockwheel step %d: child "%s" disabled, skipping.', $stepIndex, $childPlaylist->name),
+                    ['step_index' => $stepIndex, 'playlist_id' => $childPlaylist->id]
                 );
                 if ($attempt === 0) {
                     $this->advanceClockwheelStep($clockwheelPlaylist, $totalSteps);
@@ -415,7 +417,6 @@ final class QueueBuilder implements EventSubscriberInterface
                 continue;
             }
 
-            // Override mode: if this step allows requests, try a request first.
             if (ClockwheelRequestMode::None !== $child->request_mode) {
                 $request = $this->requestRepo->getNextPlayableRequest(
                     $clockwheelPlaylist->station,
@@ -432,7 +433,8 @@ final class QueueBuilder implements EventSubscriberInterface
                             'Clockwheel step %d: request track not in playlist "%s", skipping request.',
                             $stepIndex,
                             $childPlaylist->name
-                        )
+                        ),
+                        ['step_index' => $stepIndex, 'playlist_id' => $childPlaylist->id]
                     );
                     $request = null;
                 }
@@ -520,7 +522,8 @@ final class QueueBuilder implements EventSubscriberInterface
             }
 
             $this->logger->debug(
-                sprintf('Clockwheel step %d: "%s" returned no track.', $stepIndex, $childPlaylist->name)
+                sprintf('Clockwheel step %d: "%s" returned no track.', $stepIndex, $childPlaylist->name),
+                ['step_index' => $stepIndex, 'playlist_id' => $childPlaylist->id]
             );
 
             if ($attempt === 0) {
@@ -883,10 +886,10 @@ final class QueueBuilder implements EventSubscriberInterface
                 PlaylistTypes::Clockwheel === $playlist->type
                 && $playlist->backendSuppressRequests()
             ) {
-                $this->logger->debug(sprintf(
-                    'Clockwheel "%s" suppresses global requests.',
-                    $playlist->name
-                ));
+                $this->logger->debug(
+                    sprintf('Clockwheel "%s" suppresses global requests.', $playlist->name),
+                    ['playlist_id' => $playlist->id]
+                );
                 return;
             }
 

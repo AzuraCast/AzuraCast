@@ -9,7 +9,6 @@ use App\Controller\SingleActionInterface;
 use App\Entity\Api\Status;
 use App\Entity\Enums\PlaylistTypes;
 use App\Entity\Repository\StationPlaylistRepository;
-use App\Entity\StationPlaylist;
 use App\Entity\StationPlaylistChild;
 use App\Exception;
 use App\Http\Response;
@@ -44,8 +43,6 @@ use Psr\Http\Message\ResponseInterface;
 final class PutChildrenAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
-
-    private const int MAX_NESTING_DEPTH = 5;
 
     public function __construct(
         private readonly StationPlaylistRepository $playlistRepo,
@@ -87,17 +84,13 @@ final class PutChildrenAction implements SingleActionInterface
                 throw new Exception(__('Child playlist not found: %d', $childId));
             }
 
-            if (!in_array($childPlaylist->type, [PlaylistTypes::Standard, PlaylistTypes::Clockwheel], true)) {
+            if (PlaylistTypes::Standard !== $childPlaylist->type) {
                 throw new Exception(
                     __(
                         'Only General Rotation playlists can be used as clockwheel children: %s',
                         $childPlaylist->name
                     )
                 );
-            }
-
-            if (PlaylistTypes::Clockwheel === $childPlaylist->type) {
-                $this->checkCircularReference($record, $childPlaylist, 1);
             }
         }
 
@@ -138,37 +131,5 @@ final class PutChildrenAction implements SingleActionInterface
         $this->em->flush();
 
         return $response->withJson(new Status(true, __('Clockwheel children updated.')));
-    }
-
-    /**
-     * Recursively check for circular references in clockwheel playlists.
-     */
-    private function checkCircularReference(
-        StationPlaylist $ancestor,
-        StationPlaylist $current,
-        int $depth
-    ): void {
-        if ($depth > self::MAX_NESTING_DEPTH) {
-            throw new Exception(
-                __('Maximum clockwheel nesting depth of %d exceeded.', self::MAX_NESTING_DEPTH)
-            );
-        }
-
-        foreach ($current->child_items as $child) {
-            $childPlaylist = $child->childPlaylist;
-            if (null === $childPlaylist) {
-                continue;
-            }
-
-            if ($childPlaylist->id === $ancestor->id) {
-                throw new Exception(
-                    __('Circular reference detected: playlist "%s" would create a loop.', $current->name)
-                );
-            }
-
-            if (PlaylistTypes::Clockwheel === $childPlaylist->type) {
-                $this->checkCircularReference($ancestor, $childPlaylist, $depth + 1);
-            }
-        }
     }
 }

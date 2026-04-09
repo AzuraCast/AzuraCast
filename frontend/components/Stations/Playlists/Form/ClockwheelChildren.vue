@@ -12,7 +12,7 @@
         <div class="card-body">
             <p class="text-muted mb-3">
                 {{ $gettext('Define the sequence of playlists to play from. Each step will play the specified number of songs before advancing to the next step. The sequence repeats from the beginning after the last step.') }}
-                {{ $gettext('General Rotation playlists and other clockwheels can be added as steps.') }}
+                {{ $gettext('General Rotation playlists can be added as steps.') }}
             </p>
 
             <div class="form-check mb-3">
@@ -91,16 +91,7 @@
                         <td>
                             <template v-if="child.child_playlist_id !== null && getPlaylistMeta(child.child_playlist_id)">
                                 <div class="d-flex flex-wrap gap-1">
-                                    <span
-                                        v-if="getPlaylistMeta(child.child_playlist_id)!.type === 'clockwheel'"
-                                        class="badge text-bg-clockwheel"
-                                    >
-                                        {{ $gettext('Clockwheel') }}
-                                    </span>
-                                    <span
-                                        v-else
-                                        class="badge text-bg-secondary"
-                                    >
+                                    <span class="badge text-bg-secondary">
                                         {{ getPlaylistMeta(child.child_playlist_id)!.order }}
                                     </span>
                                     <span
@@ -302,7 +293,7 @@ const loadPlaylists = async () => {
         const {data} = await axios.get(listUrl.value);
         availablePlaylists.value = data
             .filter((pl: any) =>
-                (pl.type === 'default' || pl.type === 'clockwheel')
+                pl.type === 'default'
                 && pl.id !== currentPlaylistId.value
             )
             .map((pl: any) => ({

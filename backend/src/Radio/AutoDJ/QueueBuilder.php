@@ -316,28 +316,14 @@ final class QueueBuilder implements EventSubscriberInterface
      * @param array $recentSongHistory
      * @param DateTimeImmutable $expectedPlayTime
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
-     * @param int $depth Current nesting depth (clockwheels can contain other clockwheels).
      * @return StationQueue|StationQueue[]|null
      */
     private function playSongFromClockwheel(
         StationPlaylist $clockwheelPlaylist,
         array $recentSongHistory,
         DateTimeImmutable $expectedPlayTime,
-        bool $allowDuplicates = false,
-        int $depth = 0
+        bool $allowDuplicates = false
     ): StationQueue|array|null {
-        $maxDepth = 5;
-        if ($depth >= $maxDepth) {
-            $this->logger->warning(
-                sprintf(
-                    'Clockwheel "%s" exceeded maximum nesting depth of %d.',
-                    $clockwheelPlaylist->name,
-                    $maxDepth
-                ),
-                ['playlist_id' => $clockwheelPlaylist->id, 'depth' => $depth]
-            );
-            return null;
-        }
 
         $children = $clockwheelPlaylist->child_items->toArray();
         if (empty($children)) {
@@ -489,20 +475,12 @@ final class QueueBuilder implements EventSubscriberInterface
                 ['playlist_id' => $childPlaylist->id]
             );
 
-            $result = (PlaylistTypes::Clockwheel === $childPlaylist->type)
-                ? $this->playSongFromClockwheel(
-                    $childPlaylist,
-                    $recentSongHistory,
-                    $expectedPlayTime,
-                    $allowDuplicates,
-                    $depth + 1
-                )
-                : $this->playSongFromPlaylist(
-                    $childPlaylist,
-                    $recentSongHistory,
-                    $expectedPlayTime,
-                    $allowDuplicates
-                );
+            $result = $this->playSongFromPlaylist(
+                $childPlaylist,
+                $recentSongHistory,
+                $expectedPlayTime,
+                $allowDuplicates
+            );
 
             if (null !== $result) {
                 $songsPlayed++;

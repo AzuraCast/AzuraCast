@@ -35,6 +35,10 @@
                                 :text="$gettext('Add Playlist')"
                                 @click="doCreate"
                             />
+                            <add-button
+                                :text="$gettext('Add Clockwheel')"
+                                @click="doCreateClockwheel"
+                            />
                         </div>
                         
                         <data-table
@@ -51,9 +55,15 @@
                                 <p v-if="row.item.description" class="text-muted mb-1">
                                     {{ row.item.description }}
                                 </p>
-                                <div class="badges">
-                                    <span class="badge text-bg-secondary">
-                                        <template v-if="row.item.source === 'songs'">
+                                <div class="badges d-flex flex-wrap gap-1">
+                                    <span
+                                        class="badge"
+                                        :class="row.item.type === 'clockwheel' ? 'text-bg-clockwheel' : 'text-bg-secondary'"
+                                    >
+                                        <template v-if="row.item.type === 'clockwheel'">
+                                            {{ $gettext('Clockwheel') }}
+                                        </template>
+                                        <template v-else-if="row.item.source === 'songs'">
                                             {{ $gettext('Song-based') }}
                                         </template>
                                         <template v-else>
@@ -67,7 +77,7 @@
                                         {{ $gettext('Jingle Mode') }}
                                     </span>
                                     <span
-                                        v-if="row.item.source === 'songs' && row.item.order === 'sequential'"
+                                        v-if="row.item.source === 'songs' && row.item.order === 'sequential' && row.item.type !== 'clockwheel'"
                                         class="badge text-bg-info"
                                     >
                                         {{ $gettext('Sequential') }}
@@ -127,12 +137,25 @@
                                         )
                                     }}
                                 </template>
+                                <template v-else-if="item.type === 'clockwheel'">
+                                    {{ $gettext('Clockwheel') }}<br>
+                                    {{
+                                        $gettext(
+                                            '%{steps} Steps',
+                                            {steps: item.num_children ?? 0}
+                                        )
+                                    }}
+                                </template>
                                 <template v-else>
                                     {{ $gettext('Custom') }}
                                 </template>
                             </template>
                             <template #cell(num_songs)="row">
-                                <template v-if="row.item.source === 'songs'">
+                                <template v-if="row.item.type === 'clockwheel'">
+                                    {{ row.item.num_songs }}
+                                    ({{ formatLength(row.item.total_length) }})
+                                </template>
+                                <template v-else-if="row.item.source === 'songs'">
                                     <router-link
                                         :to="{
                                             name: 'stations:files:index',
@@ -185,7 +208,7 @@
                                     style="line-height: 2.5;"
                                 >
                                     <button
-                                        v-if="item.links.order"
+                                        v-if="item.links.order && item.type !== 'clockwheel'"
                                         type="button"
                                         class="btn btn-sm btn-primary"
                                         @click="doReorder(item.links.order)"
@@ -201,7 +224,7 @@
                                         {{ (item.is_enabled) ? $gettext('Disable') : $gettext('Enable') }}
                                     </button>
                                     <button
-                                        v-if="item.links.empty"
+                                        v-if="item.links.empty && item.type !== 'clockwheel'"
                                         type="button"
                                         class="btn btn-sm btn-danger"
                                         @click="doEmpty(item.links.empty)"
@@ -209,7 +232,7 @@
                                         {{ $gettext('Empty') }}
                                     </button>
                                     <button
-                                        v-if="item.links.reshuffle"
+                                        v-if="item.links.reshuffle && item.type !== 'clockwheel'"
                                         type="button"
                                         class="btn btn-sm btn-secondary"
                                         @click="doModify(item.links.reshuffle)"
@@ -217,7 +240,7 @@
                                         {{ $gettext('Reshuffle') }}
                                     </button>
                                     <button
-                                        v-if="item.links.import"
+                                        v-if="item.links.import && item.type !== 'clockwheel'"
                                         type="button"
                                         class="btn btn-sm btn-secondary"
                                         @click="doImport(item.links.import)"
@@ -225,7 +248,7 @@
                                         {{ $gettext('Import from PLS/M3U') }}
                                     </button>
                                     <button
-                                        v-if="item.links.queue"
+                                        v-if="item.links.queue && item.type !== 'clockwheel'"
                                         type="button"
                                         class="btn btn-sm btn-secondary"
                                         @click="doQueue(item.links.queue)"
@@ -233,7 +256,7 @@
                                         {{ $gettext('Playback Queue') }}
                                     </button>
                                     <button
-                                        v-if="item.links.applyto"
+                                        v-if="item.links.applyto && item.type !== 'clockwheel'"
                                         type="button"
                                         class="btn btn-sm btn-secondary"
                                         @click="doApplyTo(item.links.applyto)"
@@ -247,20 +270,22 @@
                                     >
                                         {{ $gettext('Duplicate') }}
                                     </button>
-                                    <a
-                                        v-for="format in ['pls', 'm3u']"
-                                        :key="format"
-                                        class="btn btn-sm btn-secondary"
-                                        :href="item.links.export[format]"
-                                        target="_blank"
-                                    >
-                                        {{
-                                            $gettext(
-                                                'Export %{format}',
-                                                {format: format.toUpperCase()}
-                                            )
-                                        }}
-                                    </a>
+                                    <template v-if="item.type !== 'clockwheel'">
+                                        <a
+                                            v-for="format in ['pls', 'm3u']"
+                                            :key="format"
+                                            class="btn btn-sm btn-secondary"
+                                            :href="item.links.export[format]"
+                                            target="_blank"
+                                        >
+                                            {{
+                                                $gettext(
+                                                    'Export %{format}',
+                                                    {format: format.toUpperCase()}
+                                                )
+                                            }}
+                                        </a>
+                                    </template>
                                 </div>
                             </template>
                         </data-table>
@@ -283,7 +308,6 @@
     />
     <reorder-modal ref="$reorderModal" />
     <queue-modal ref="$queueModal" />
-    <reorder-modal ref="$reorderModal" />
     <import-modal
         ref="$importModal"
         @relist="() => relist()"
@@ -367,6 +391,10 @@ const relist = () => {
 
 const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
+
+const doCreateClockwheel = (): void => {
+    $editModal.value?.createClockwheel();
+};
 
 const doCalendarClick = (event: EventImpl) => {
     doEdit(event.extendedProps.edit_url);

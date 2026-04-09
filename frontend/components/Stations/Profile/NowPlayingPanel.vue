@@ -104,8 +104,14 @@
                                     </div>
                                     <div v-if="np.now_playing?.playlist">
                                         <small class="text-muted">
-                                            {{ $gettext('Playlist') }}
-                                            : {{ np.now_playing.playlist }}</small>
+                                            {{ $gettext('Playlist') }}: {{ np.now_playing.playlist }}
+                                            <template v-if="np.now_playing.clockwheel">
+                                                <br>
+                                                {{ $gettext('Clockwheel:') }}
+                                                {{ np.now_playing.clockwheel }},
+                                                {{ $gettext('Step %{step}', {step: np.now_playing.clockwheel_step ?? 0}) }}
+                                            </template>
+                                        </small>
                                     </div>
                                     <div
                                         v-if="currentTrackElapsedDisplay"
@@ -173,8 +179,14 @@
 
                                     <div v-if="np.playing_next.playlist">
                                         <small class="text-muted">
-                                            {{ $gettext('Playlist') }}
-                                            : {{ np.playing_next.playlist }}</small>
+                                            {{ $gettext('Playlist') }}: {{ np.playing_next.playlist }}
+                                            <template v-if="np.playing_next.clockwheel">
+                                                <br>
+                                                {{ $gettext('Clockwheel:') }}
+                                                {{ np.playing_next.clockwheel }},
+                                                {{ $gettext('Step %{step}', {step: np.playing_next.clockwheel_step ?? 0}) }}
+                                            </template>
+                                        </small>
                                     </div>
                                 </div>
                             </div>

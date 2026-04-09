@@ -98,6 +98,7 @@ final class Scheduler
                 $shouldPlay = false;
                 break;
 
+            case PlaylistTypes::Clockwheel:
             case PlaylistTypes::Standard:
                 break;
         }

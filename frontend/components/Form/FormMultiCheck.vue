@@ -14,6 +14,7 @@
                 :class="fieldClass"
                 :type="radio ? 'radio' : 'checkbox'"
                 :name="name"
+                :disabled="option.disabled ?? false"
             >
             <label
                 class="form-check-label"

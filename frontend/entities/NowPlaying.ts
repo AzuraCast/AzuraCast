@@ -43,6 +43,8 @@ const npEmpty: ApiNowPlaying = {
         playlist: 'default',
         streamer: '',
         is_request: false,
+        clockwheel: null,
+        clockwheel_step: null,
         song: {
             id: '',
             text: '',
@@ -61,6 +63,8 @@ const npEmpty: ApiNowPlaying = {
         duration: 0,
         playlist: 'default',
         is_request: false,
+        clockwheel: null,
+        clockwheel_step: null,
         song: {
             id: '',
             text: '',

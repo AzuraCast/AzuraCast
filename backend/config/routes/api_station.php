@@ -683,6 +683,21 @@ return static function (RouteCollectorProxy $group) {
                                         '/empty',
                                         Controller\Api\Stations\Playlists\EmptyAction::class
                                     )->setName('api:stations:playlist:empty');
+
+                                    $group->get(
+                                        '/children',
+                                        Controller\Api\Stations\Playlists\GetChildrenAction::class
+                                    )->setName('api:stations:playlist:children');
+
+                                    $group->put(
+                                        '/children',
+                                        Controller\Api\Stations\Playlists\PutChildrenAction::class
+                                    );
+
+                                    $group->put(
+                                        '/reset-clockwheel',
+                                        Controller\Api\Stations\Playlists\ResetClockwheelAction::class
+                                    )->setName('api:stations:playlist:reset-clockwheel');
                                 }
                             );
                         }

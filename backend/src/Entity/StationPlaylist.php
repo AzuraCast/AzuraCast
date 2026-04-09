@@ -279,6 +279,39 @@ final class StationPlaylist implements
     ]
     public private(set) Collection $podcasts;
 
+    /** @var Collection<int, StationPlaylistChild> */
+    #[
+        ORM\OneToMany(targetEntity: StationPlaylistChild::class, mappedBy: 'parentPlaylist', fetch: 'EXTRA_LAZY'),
+        ORM\OrderBy(['position' => 'ASC'])
+    ]
+    public private(set) Collection $child_items;
+
+    /** @var Collection<int, StationPlaylistChild> */
+    #[
+        ORM\OneToMany(targetEntity: StationPlaylistChild::class, mappedBy: 'childPlaylist', fetch: 'EXTRA_LAZY'),
+    ]
+    public private(set) Collection $parent_items;
+
+    #[
+        OA\Property(
+            description: 'For Clockwheel playlists: the current step index in the child playlist sequence.',
+            example: 0
+        ),
+        ORM\Column(name: 'clockwheel_step', type: 'smallint'),
+        Attributes\AuditIgnore
+    ]
+    public int $clockwheel_step = 0;
+
+    #[
+        OA\Property(
+            description: 'For Clockwheel playlists: songs played in the current step.',
+            example: 0
+        ),
+        ORM\Column(name: 'clockwheel_songs_played', type: 'smallint'),
+        Attributes\AuditIgnore
+    ]
+    public int $clockwheel_songs_played = 0;
+
     public function __construct(Station $station)
     {
         $this->station = $station;
@@ -292,6 +325,8 @@ final class StationPlaylist implements
         $this->folders = new ArrayCollection();
         $this->schedule_items = new ArrayCollection();
         $this->podcasts = new ArrayCollection();
+        $this->child_items = new ArrayCollection();
+        $this->parent_items = new ArrayCollection();
     }
 
     /**
@@ -317,6 +352,10 @@ final class StationPlaylist implements
             return false;
         }
 
+        if (PlaylistTypes::Clockwheel === $this->type) {
+            return $this->child_items->count() > 0;
+        }
+
         if (PlaylistSources::Songs === $this->source) {
             return $this->media_items->count() > 0;
         }
@@ -329,11 +368,15 @@ final class StationPlaylist implements
     {
         $this->played_at = null;
         $this->queue_reset_at = null;
+        $this->clockwheel_step = 0;
+        $this->clockwheel_songs_played = 0;
 
         $this->media_items = new ArrayCollection();
         $this->folders = new ArrayCollection();
         $this->schedule_items = new ArrayCollection();
         $this->podcasts = new ArrayCollection();
+        $this->child_items = new ArrayCollection();
+        $this->parent_items = new ArrayCollection();
     }
 
     public function __toString(): string

@@ -609,7 +609,9 @@ final class QueueBuilder implements EventSubscriberInterface
 
         foreach ($activeClockwheels as $clockwheel) {
             foreach ($clockwheel->child_items as $child) {
-                $suppressedIds[$child->child_playlist_id] = $clockwheel->name;
+                if (null !== $child->child_playlist_id) {
+                    $suppressedIds[$child->child_playlist_id] = $clockwheel->name;
+                }
             }
         }
 

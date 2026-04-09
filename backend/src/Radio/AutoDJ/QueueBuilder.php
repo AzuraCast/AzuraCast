@@ -698,7 +698,6 @@ final class QueueBuilder implements EventSubscriberInterface
 
     public function getNextSongFromRequests(BuildQueue $event): void
     {
-        // Don't use this to cue requests.
         if ($event->isInterrupting()) {
             return;
         }
@@ -706,14 +705,29 @@ final class QueueBuilder implements EventSubscriberInterface
         $expectedPlayTime = $event->getExpectedPlayTime();
         $station = $event->getStation();
 
-        // Check if any playlist marked with "Prioritize Over Requests" (e.g. a jingle) is due now.
         foreach ($station->playlists as $playlist) {
             /** @var StationPlaylist $playlist */
+            if (!$playlist->isPlayable($event->isInterrupting())) {
+                continue;
+            }
+            if (!$this->scheduler->shouldPlaylistPlayNow($playlist, $expectedPlayTime)) {
+                continue;
+            }
+
+            // An active clockwheel with "suppress requests" takes over request handling entirely.
             if (
-                $playlist->backendPrioritizeOverRequests() &&
-                $playlist->isPlayable($event->isInterrupting()) &&
-                $this->scheduler->shouldPlaylistPlayNow($playlist, $expectedPlayTime)
+                PlaylistTypes::Clockwheel === $playlist->type
+                && $playlist->backendSuppressRequests()
             ) {
+                $this->logger->debug(sprintf(
+                    'Clockwheel "%s" suppresses global requests.',
+                    $playlist->name
+                ));
+                return;
+            }
+
+            // A playlist with "prioritize over requests" (e.g. a jingle) is due now.
+            if ($playlist->backendPrioritizeOverRequests()) {
                 $this->logger->debug(sprintf(
                     'Playlist "%s" is prioritized and due now; skipping request queue.',
                     $playlist->name

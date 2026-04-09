@@ -43,6 +43,7 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
             <<<'DQL'
                 SELECT sh FROM App\Entity\SongHistory sh
                 LEFT JOIN sh.media sm
+                LEFT JOIN sh.clockwheel_playlist scw
                 WHERE sh.station = :station
                 AND sh.is_visible = 1
                 ORDER BY sh.id DESC

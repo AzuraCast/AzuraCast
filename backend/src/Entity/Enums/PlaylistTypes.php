@@ -14,6 +14,7 @@ enum PlaylistTypes: string
     case OncePerXMinutes = 'once_per_x_minutes';
     case OncePerHour = 'once_per_hour';
     case Advanced = 'custom';
+    case Clockwheel = 'clockwheel';
 
     public static function default(): self
     {

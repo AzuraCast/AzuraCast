@@ -30,10 +30,29 @@
                     :label="$gettext('All Playlists')"
                 >
                     <div class="card-body-flush">
+                        <div
+                            v-if="clockwheelConflictNames"
+                            class="card-body pb-0"
+                        >
+                            <div class="alert alert-warning mb-0">
+                                <strong>{{ $gettext('Overlapping clockwheel schedules detected') }}</strong>
+                                <p class="small mb-1 mt-2">
+                                    {{ $gettext('Only one clockwheel can be active at a time. When schedules overlap, only one will play.') }}
+                                </p>
+                                <p class="small mb-0">
+                                    {{ $gettext('Adjust schedules so clockwheels do not overlap, or disable the ones you no longer need.') }}
+                                </p>
+                            </div>
+                        </div>
+
                         <div class="card-body buttons">
                             <add-button
                                 :text="$gettext('Add Playlist')"
                                 @click="doCreate"
+                            />
+                            <add-button
+                                :text="$gettext('Add Clockwheel')"
+                                @click="doCreateClockwheel"
                             />
                         </div>
                         
@@ -51,9 +70,15 @@
                                 <p v-if="row.item.description" class="text-muted mb-1">
                                     {{ row.item.description }}
                                 </p>
-                                <div class="badges">
-                                    <span class="badge text-bg-secondary">
-                                        <template v-if="row.item.source === 'songs'">
+                                <div class="badges d-flex flex-wrap gap-1">
+                                    <span
+                                        class="badge"
+                                        :class="row.item.type === 'clockwheel' ? 'text-bg-clockwheel' : 'text-bg-secondary'"
+                                    >
+                                        <template v-if="row.item.type === 'clockwheel'">
+                                            {{ $gettext('Clockwheel') }}
+                                        </template>
+                                        <template v-else-if="row.item.source === 'songs'">
                                             {{ $gettext('Song-based') }}
                                         </template>
                                         <template v-else>
@@ -67,7 +92,7 @@
                                         {{ $gettext('Jingle Mode') }}
                                     </span>
                                     <span
-                                        v-if="row.item.source === 'songs' && row.item.order === 'sequential'"
+                                        v-if="row.item.source === 'songs' && row.item.order === 'sequential' && row.item.type !== 'clockwheel'"
                                         class="badge text-bg-info"
                                     >
                                         {{ $gettext('Sequential') }}
@@ -127,12 +152,25 @@
                                         )
                                     }}
                                 </template>
+                                <template v-else-if="item.type === 'clockwheel'">
+                                    {{ $gettext('Clockwheel') }}<br>
+                                    {{
+                                        $gettext(
+                                            '%{steps} Steps',
+                                            {steps: item.num_children ?? 0}
+                                        )
+                                    }}
+                                </template>
                                 <template v-else>
                                     {{ $gettext('Custom') }}
                                 </template>
                             </template>
                             <template #cell(num_songs)="row">
-                                <template v-if="row.item.source === 'songs'">
+                                <template v-if="row.item.type === 'clockwheel'">
+                                    {{ row.item.num_songs }}
+                                    ({{ formatLength(row.item.total_length) }})
+                                </template>
+                                <template v-else-if="row.item.source === 'songs'">
                                     <router-link
                                         :to="{
                                             name: 'stations:files:index',
@@ -185,7 +223,7 @@
                                     style="line-height: 2.5;"
                                 >
                                     <button
-                                        v-if="item.links.order"
+                                        v-if="item.links.order && item.type !== 'clockwheel'"
                                         type="button"
                                         class="btn btn-sm btn-primary"
                                         @click="doReorder(item.links.order)"
@@ -201,7 +239,7 @@
                                         {{ (item.is_enabled) ? $gettext('Disable') : $gettext('Enable') }}
                                     </button>
                                     <button
-                                        v-if="item.links.empty"
+                                        v-if="item.links.empty && item.type !== 'clockwheel'"
                                         type="button"
                                         class="btn btn-sm btn-danger"
                                         @click="doEmpty(item.links.empty)"
@@ -209,7 +247,7 @@
                                         {{ $gettext('Empty') }}
                                     </button>
                                     <button
-                                        v-if="item.links.reshuffle"
+                                        v-if="item.links.reshuffle && item.type !== 'clockwheel'"
                                         type="button"
                                         class="btn btn-sm btn-secondary"
                                         @click="doModify(item.links.reshuffle)"
@@ -217,7 +255,7 @@
                                         {{ $gettext('Reshuffle') }}
                                     </button>
                                     <button
-                                        v-if="item.links.import"
+                                        v-if="item.links.import && item.type !== 'clockwheel'"
                                         type="button"
                                         class="btn btn-sm btn-secondary"
                                         @click="doImport(item.links.import)"
@@ -225,7 +263,7 @@
                                         {{ $gettext('Import from PLS/M3U') }}
                                     </button>
                                     <button
-                                        v-if="item.links.queue"
+                                        v-if="item.links.queue && item.type !== 'clockwheel'"
                                         type="button"
                                         class="btn btn-sm btn-secondary"
                                         @click="doQueue(item.links.queue)"
@@ -233,7 +271,7 @@
                                         {{ $gettext('Playback Queue') }}
                                     </button>
                                     <button
-                                        v-if="item.links.applyto"
+                                        v-if="item.links.applyto && item.type !== 'clockwheel'"
                                         type="button"
                                         class="btn btn-sm btn-secondary"
                                         @click="doApplyTo(item.links.applyto)"
@@ -247,20 +285,22 @@
                                     >
                                         {{ $gettext('Duplicate') }}
                                     </button>
-                                    <a
-                                        v-for="format in ['pls', 'm3u']"
-                                        :key="format"
-                                        class="btn btn-sm btn-secondary"
-                                        :href="item.links.export[format]"
-                                        target="_blank"
-                                    >
-                                        {{
-                                            $gettext(
-                                                'Export %{format}',
-                                                {format: format.toUpperCase()}
-                                            )
-                                        }}
-                                    </a>
+                                    <template v-if="item.type !== 'clockwheel'">
+                                        <a
+                                            v-for="format in ['pls', 'm3u']"
+                                            :key="format"
+                                            class="btn btn-sm btn-secondary"
+                                            :href="item.links.export[format]"
+                                            target="_blank"
+                                        >
+                                            {{
+                                                $gettext(
+                                                    'Export %{format}',
+                                                    {format: format.toUpperCase()}
+                                                )
+                                            }}
+                                        </a>
+                                    </template>
                                 </div>
                             </template>
                         </data-table>
@@ -283,7 +323,6 @@
     />
     <reorder-modal ref="$reorderModal" />
     <queue-modal ref="$queueModal" />
-    <reorder-modal ref="$reorderModal" />
     <import-modal
         ref="$importModal"
         @relist="() => relist()"
@@ -308,7 +347,7 @@ import QueueModal from "~/components/Stations/Playlists/QueueModal.vue";
 import CloneModal from "~/components/Stations/Playlists/CloneModal.vue";
 import ApplyToModal from "~/components/Stations/Playlists/ApplyToModal.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useTemplateRef} from "vue";
+import {computed, useTemplateRef} from "vue";
 import useHasEditModal from "~/functions/useHasEditModal";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
@@ -344,8 +383,117 @@ const fields: DataTableField[] = [
 
 const listItemProvider = useApiItemProvider(
     listUrl,
-    queryKeyWithStation([QueryKeys.StationPlaylists])
+    queryKeyWithStation([QueryKeys.StationPlaylists]),
+    undefined,
+    undefined,
+    (rows: Record<string, any>[]) => [...rows].sort((a, b) => {
+        const aCw = a.type === 'clockwheel' ? 0 : 1;
+        const bCw = b.type === 'clockwheel' ? 0 : 1;
+        return aCw - bCw;
+    })
 );
+
+const clockwheelConflictNames = computed((): string[] | null => {
+    const enabledCws = listItemProvider.rows.value.filter(
+        (p: Record<string, unknown>) => p.type === 'clockwheel' && p.is_enabled
+    );
+    if (enabledCws.length <= 1) {
+        return null;
+    }
+
+    const overlapping: string[] = [];
+    for (let i = 0; i < enabledCws.length; i++) {
+        for (let j = i + 1; j < enabledCws.length; j++) {
+            if (clockwheelSchedulesOverlap(enabledCws[i], enabledCws[j])) {
+                if (!overlapping.includes(enabledCws[i].name as string)) {
+                    overlapping.push(enabledCws[i].name as string);
+                }
+                if (!overlapping.includes(enabledCws[j].name as string)) {
+                    overlapping.push(enabledCws[j].name as string);
+                }
+            }
+        }
+    }
+
+    return overlapping.length > 1 ? overlapping : null;
+});
+
+function clockwheelSchedulesOverlap(
+    a: Record<string, unknown>,
+    b: Record<string, unknown>
+): boolean {
+    const aItems = a.schedule_items as Record<string, unknown>[] | undefined;
+    const bItems = b.schedule_items as Record<string, unknown>[] | undefined;
+
+    if (!aItems?.length || !bItems?.length) {
+        return true;
+    }
+
+    for (const sa of aItems) {
+        for (const sb of bItems) {
+            if (scheduleItemsOverlap(sa, sb)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+function scheduleItemsOverlap(
+    a: Record<string, unknown>,
+    b: Record<string, unknown>
+): boolean {
+    if (!dateRangesOverlap(
+        a.start_date as string | null, a.end_date as string | null,
+        b.start_date as string | null, b.end_date as string | null
+    )) {
+        return false;
+    }
+    if (!daysOverlap(a.days as number[] | undefined, b.days as number[] | undefined)) {
+        return false;
+    }
+    return timeRangesOverlap(a.start_time as number, a.end_time as number, b.start_time as number, b.end_time as number);
+}
+
+function dateRangesOverlap(
+    aStart: string | null, aEnd: string | null,
+    bStart: string | null, bEnd: string | null
+): boolean {
+    if (aEnd && bStart && aEnd < bStart) return false;
+    if (bEnd && aStart && bEnd < aStart) return false;
+    return true;
+}
+
+function daysOverlap(a: number[] | undefined, b: number[] | undefined): boolean {
+    if (!a?.length || !b?.length) return true;
+    return a.some((d) => b.includes(d));
+}
+
+function timeToMinutes(hhmm: number): number {
+    return Math.floor(hhmm / 100) * 60 + (hhmm % 100);
+}
+
+function timeRangesOverlap(aStart: number, aEnd: number, bStart: number, bEnd: number): boolean {
+    const aS = timeToMinutes(aStart);
+    const aE = timeToMinutes(aEnd);
+    const bS = timeToMinutes(bStart);
+    const bE = timeToMinutes(bEnd);
+    const DAY = 1440;
+
+    const aRanges = aS < aE
+        ? [[aS, aE]]
+        : aS > aE ? [[aS, DAY], [0, aE]] : [[aS, aS + 1]];
+    const bRanges = bS < bE
+        ? [[bS, bE]]
+        : bS > bE ? [[bS, DAY], [0, bE]] : [[bS, bS + 1]];
+
+    for (const [a0, a1] of aRanges) {
+        for (const [b0, b1] of bRanges) {
+            if (a0 < b1 && b0 < a1) return true;
+        }
+    }
+    return false;
+}
 
 const {Duration} = useLuxon();
 
@@ -367,6 +515,10 @@ const relist = () => {
 
 const $editModal = useTemplateRef('$editModal');
 const {doCreate, doEdit} = useHasEditModal($editModal);
+
+const doCreateClockwheel = (): void => {
+    $editModal.value?.createClockwheel();
+};
 
 const doCalendarClick = (event: EventImpl) => {
     doEdit(event.extendedProps.edit_url);

@@ -8524,3 +8524,119 @@ msgstr ""
 #: /var/azuracast/www/backend/templates/mail/forgot.phtml:12
 msgid "Click the link below to log in to your account."
 msgstr ""
+
+#: frontend/components/Stations/Playlists.vue:144
+msgid "%{steps} Steps"
+msgstr ""
+
+#: frontend/components/Stations/Playlists/Form/BasicInfo.vue:65
+msgid "Plays songs from child playlists in a repeating sequence. Song requests are handled within the clockwheel and do not use the global request queue."
+msgstr ""
+
+#: backend/src/Controller/Api/Stations/Playlists/PutChildrenAction.php:82
+msgid "A clockwheel playlist cannot contain itself."
+msgstr ""
+
+#: frontend/components/Stations/Playlists.vue:39
+#: frontend/components/Stations/Playlists/EditModal.vue:131
+msgid "Add Clockwheel"
+msgstr ""
+
+#: frontend/components/Stations/Playlists.vue
+msgid "Adjust schedules so clockwheels do not overlap, or disable the ones you no longer need."
+msgstr ""
+
+#: frontend/components/Stations/Playlists/Form/ClockwheelChildren.vue:139
+msgid "Add Playlist Step"
+msgstr ""
+
+#: frontend/components/Stations/Playlists/Form/BasicInfo.vue:126
+msgid "Assigned to Clockwheel \"%{name}\" — type cannot be changed."
+msgstr ""
+
+#: backend/src/Controller/Api/Stations/Playlists/PutChildrenAction.php:88
+msgid "Child playlist not found: %d"
+msgstr ""
+
+
+#: frontend/components/Stations/Playlists.vue:141
+#: frontend/components/Stations/Playlists.vue:64
+#: frontend/components/Stations/Playlists/Form/BasicInfo.vue:343
+#: frontend/components/Stations/Playlists/Form/BasicInfo.vue:51
+msgid "Clockwheel"
+msgstr ""
+
+#: frontend/components/Stations/Playlists/Form/ClockwheelChildren.vue:9
+msgid "Clockwheel Steps"
+msgstr ""
+
+#: backend/src/Controller/Api/Stations/Playlists/PutChildrenAction.php:138
+msgid "Clockwheel children updated."
+msgstr ""
+
+#: frontend/components/Stations/Playlists.vue
+msgid "Only one clockwheel can be active at a time. When schedules overlap, only one will play."
+msgstr ""
+
+#: frontend/components/Stations/Playlists.vue
+msgid "Overlapping clockwheel schedules detected"
+msgstr ""
+
+#: backend/src/Controller/Api/Stations/Playlists/ResetClockwheelAction.php:71
+msgid "Clockwheel reset to beginning."
+msgstr ""
+
+#: frontend/components/Stations/Reports/Timeline.vue:79
+msgid "Clockwheel:"
+msgstr ""
+
+#: frontend/components/Stations/Playlists/Form/ClockwheelChildren.vue:14
+msgid "Each step plays the specified number of songs before advancing. The sequence repeats after the last step."
+msgstr ""
+
+#: frontend/components/Stations/Playlists/EditModal.vue:130
+msgid "Edit Clockwheel"
+msgstr ""
+
+#: backend/src/Controller/Api/Stations/Playlists/PutChildrenAction.php:76
+msgid "Invalid child playlist ID."
+msgstr ""
+
+#: frontend/components/Stations/Playlists/Form/ClockwheelChildren.vue:22
+msgid "No child playlists have been added yet. Add playlists below to define the clockwheel sequence."
+msgstr ""
+
+#: backend/src/Controller/Api/Stations/Playlists/PutChildrenAction.php:94
+msgid "Only General Rotation playlists can be used as clockwheel children: %s"
+msgstr ""
+
+#: frontend/components/Stations/Playlists/Form/ClockwheelChildren.vue:15
+msgid "General Rotation playlists can be added as steps."
+msgstr ""
+
+#: frontend/components/Stations/Playlists/Form/ClockwheelChildren.vue:34
+msgid "Per Step"
+msgstr ""
+
+#: frontend/components/Stations/Playlists/Form/ClockwheelChildren.vue:54
+msgid "Select a Playlist"
+msgstr ""
+
+#: frontend/components/Stations/Playlists/Form/BasicInfo.vue:324
+msgid "Standard playlist, shuffles with other standard playlists based on weight. Can also be used in Clockwheels."
+msgstr ""
+
+#: backend/src/Controller/Api/Stations/Playlists/GetChildrenAction.php:61
+#: backend/src/Controller/Api/Stations/Playlists/PutChildrenAction.php:67
+#: backend/src/Controller/Api/Stations/Playlists/ResetClockwheelAction.php:62
+msgid "This playlist is not a clockwheel playlist."
+msgstr ""
+
+#: frontend/components/Stations/Playlists/Form/ClockwheelChildren.vue:130
+msgid "Total unique songs across all steps:"
+msgstr ""
+
+#: backend/src/Controller/Api/Stations/PlaylistsController.php
+msgid "This playlist is assigned to clockwheel(s): %s. Remove it first."
+msgstr ""
+

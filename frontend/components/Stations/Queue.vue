@@ -62,6 +62,12 @@
                 </div>
                 <div v-else-if="row.item.playlist">
                     {{ $gettext('Playlist') }}: {{ row.item.playlist }}
+                    <template v-if="row.item.clockwheel">
+                        <br>
+                        {{ $gettext('Clockwheel:') }}
+                        {{ row.item.clockwheel }},
+                        {{ $gettext('Step %{step}', {step: row.item.clockwheel_step}) }}
+                    </template>
                 </div>
             </template>
         </data-table>

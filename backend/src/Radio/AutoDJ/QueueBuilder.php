@@ -7,6 +7,7 @@ namespace App\Radio\AutoDJ;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Entity\Api\StationPlaylistQueue;
+use App\Entity\Enums\ClockwheelRequestMode;
 use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Enums\PlaylistRemoteTypes;
 use App\Entity\Enums\PlaylistSources;
@@ -17,8 +18,10 @@ use App\Entity\Repository\StationRequestRepository;
 use App\Entity\Song;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
+use App\Entity\StationPlaylistChild;
 use App\Entity\StationPlaylistMedia;
 use App\Entity\StationQueue;
+use App\Entity\StationSchedule;
 use App\Event\Radio\BuildQueue;
 use App\Radio\PlaylistParser;
 use DateTimeImmutable;
@@ -97,10 +100,13 @@ final class QueueBuilder implements EventSubscriberInterface
             ]
         );
 
+        $suppressedPlaylistIds = $this->getClockwheelSuppressedIds($activePlaylistsByType, $expectedPlayTime);
+
         $typesToPlay = [
             PlaylistTypes::OncePerHour->value,
             PlaylistTypes::OncePerXSongs->value,
             PlaylistTypes::OncePerXMinutes->value,
+            PlaylistTypes::Clockwheel->value,
             PlaylistTypes::Standard->value,
         ];
         $typesToPlayByPriority = [];
@@ -119,6 +125,17 @@ final class QueueBuilder implements EventSubscriberInterface
             foreach ($activePlaylistsByType[$currentPlaylistType] as $playlistId => $playlist) {
                 /** @var StationPlaylist $playlist */
                 if (!$this->scheduler->shouldPlaylistPlayNow($playlist, $expectedPlayTime)) {
+                    continue;
+                }
+
+                if (isset($suppressedPlaylistIds[$playlistId])) {
+                    $this->logger->debug(
+                        sprintf(
+                            'Playlist "%s" suppressed by active clockwheel.',
+                            $playlist->name
+                        ),
+                        ['clockwheel' => $suppressedPlaylistIds[$playlistId]]
+                    );
                     continue;
                 }
 
@@ -152,16 +169,21 @@ final class QueueBuilder implements EventSubscriberInterface
                 foreach ($eligiblePlaylists as $playlistId => $weight) {
                     $playlist = $activePlaylistsByType[$currentPlaylistType][$playlistId];
 
-                    if (
-                        $event->setNextSongs(
-                            $this->playSongFromPlaylist(
-                                $playlist,
-                                $recentSongHistoryForDuplicatePrevention,
-                                $expectedPlayTime,
-                                $allowDuplicates
-                            )
+                    $nextSongs = (PlaylistTypes::Clockwheel === $playlist->type)
+                        ? $this->playSongFromClockwheel(
+                            $playlist,
+                            $recentSongHistoryForDuplicatePrevention,
+                            $expectedPlayTime,
+                            $allowDuplicates
                         )
-                    ) {
+                        : $this->playSongFromPlaylist(
+                            $playlist,
+                            $recentSongHistoryForDuplicatePrevention,
+                            $expectedPlayTime,
+                            $allowDuplicates
+                        );
+
+                    if ($event->setNextSongs($nextSongs)) {
                         $this->logger->info(
                             'Playable track(s) found and registered.',
                             [
@@ -289,6 +311,411 @@ final class QueueBuilder implements EventSubscriberInterface
             ]
         );
         return null;
+    }
+
+    /**
+     * @param StationPlaylist $clockwheelPlaylist
+     * @param array $recentSongHistory
+     * @param DateTimeImmutable $expectedPlayTime
+     * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
+     * @return StationQueue|StationQueue[]|null
+     */
+    private function playSongFromClockwheel(
+        StationPlaylist $clockwheelPlaylist,
+        array $recentSongHistory,
+        DateTimeImmutable $expectedPlayTime,
+        bool $allowDuplicates = false
+    ): StationQueue|array|null {
+
+        $children = $clockwheelPlaylist->child_items->toArray();
+        if (empty($children)) {
+            return null;
+        }
+
+        usort($children, static fn(StationPlaylistChild $a, StationPlaylistChild $b) => $a->position <=> $b->position);
+
+        $totalSteps = count($children);
+        $currentStep = $clockwheelPlaylist->clockwheel_step;
+        $songsPlayed = $clockwheelPlaylist->clockwheel_songs_played;
+
+        $savedStep = $currentStep;
+        $savedSongsPlayed = $songsPlayed;
+
+        for ($attempt = 0; $attempt < $totalSteps; $attempt++) {
+            $stepIndex = ($currentStep + $attempt) % $totalSteps;
+            $child = $children[$stepIndex];
+
+            if ($child->isRequestSlot()) {
+                $request = $this->requestRepo->getNextPlayableRequest(
+                    $clockwheelPlaylist->station,
+                    $expectedPlayTime
+                );
+
+                if (null === $request) {
+                    $this->logger->debug(
+                        sprintf('Clockwheel step %d: request slot has no pending requests, skipping.', $stepIndex),
+                        ['step_index' => $stepIndex, 'playlist_id' => $clockwheelPlaylist->id]
+                    );
+                    if ($attempt === 0) {
+                        $this->advanceClockwheelStep($clockwheelPlaylist, $totalSteps);
+                        $songsPlayed = 0;
+                    }
+                    continue;
+                }
+
+                $this->logger->info(
+                    sprintf(
+                        'Clockwheel "%s" step %d/%d: playing request (song %d/%d).',
+                        $clockwheelPlaylist->name,
+                        $stepIndex + 1,
+                        $totalSteps,
+                        $songsPlayed + 1,
+                        $child->song_count
+                    ),
+                    ['request_id' => $request->id]
+                );
+
+                $result = StationQueue::fromRequest($request);
+                $this->em->persist($result);
+
+                $request->played_at = $expectedPlayTime;
+                $this->em->persist($request);
+
+                $songsPlayed++;
+
+                if ($attempt > 0) {
+                    $clockwheelPlaylist->clockwheel_step = $stepIndex;
+                }
+
+                if ($songsPlayed >= $child->song_count) {
+                    $this->advanceClockwheelStep($clockwheelPlaylist, $totalSteps);
+                } else {
+                    $clockwheelPlaylist->clockwheel_songs_played = $songsPlayed;
+                }
+
+                $clockwheelPlaylist->played_at = $expectedPlayTime;
+                $this->em->persist($clockwheelPlaylist);
+
+                $this->annotateClockwheelResult($result, $clockwheelPlaylist, $stepIndex + 1);
+
+                return $result;
+            }
+
+            $childPlaylist = $child->childPlaylist;
+            if (null === $childPlaylist) {
+                continue;
+            }
+
+            if (!$childPlaylist->is_enabled) {
+                $this->logger->debug(
+                    sprintf('Clockwheel step %d: child "%s" disabled, skipping.', $stepIndex, $childPlaylist->name),
+                    ['step_index' => $stepIndex, 'playlist_id' => $childPlaylist->id]
+                );
+                if ($attempt === 0) {
+                    $this->advanceClockwheelStep($clockwheelPlaylist, $totalSteps);
+                    $songsPlayed = 0;
+                }
+                continue;
+            }
+
+            if (ClockwheelRequestMode::None !== $child->request_mode) {
+                $request = $this->requestRepo->getNextPlayableRequest(
+                    $clockwheelPlaylist->station,
+                    $expectedPlayTime
+                );
+
+                if (
+                    null !== $request
+                    && ClockwheelRequestMode::PlaylistOnly === $child->request_mode
+                    && !$this->isTrackInPlaylist($request->track, $childPlaylist)
+                ) {
+                    $this->logger->debug(
+                        sprintf(
+                            'Clockwheel step %d: request track not in playlist "%s", skipping request.',
+                            $stepIndex,
+                            $childPlaylist->name
+                        ),
+                        ['step_index' => $stepIndex, 'playlist_id' => $childPlaylist->id]
+                    );
+                    $request = null;
+                }
+
+                if (null !== $request) {
+                    $this->logger->info(
+                        sprintf(
+                            'Clockwheel "%s" step %d/%d: request overrides "%s" (song %d/%d).',
+                            $clockwheelPlaylist->name,
+                            $stepIndex + 1,
+                            $totalSteps,
+                            $childPlaylist->name,
+                            $songsPlayed + 1,
+                            $child->song_count
+                        ),
+                        ['request_id' => $request->id, 'playlist_id' => $childPlaylist->id]
+                    );
+
+                    $result = StationQueue::fromRequest($request);
+                    $this->em->persist($result);
+
+                    $request->played_at = $expectedPlayTime;
+                    $this->em->persist($request);
+
+                    $songsPlayed++;
+
+                    if ($attempt > 0) {
+                        $clockwheelPlaylist->clockwheel_step = $stepIndex;
+                    }
+
+                    if ($songsPlayed >= $child->song_count) {
+                        $this->advanceClockwheelStep($clockwheelPlaylist, $totalSteps);
+                    } else {
+                        $clockwheelPlaylist->clockwheel_songs_played = $songsPlayed;
+                    }
+
+                    $clockwheelPlaylist->played_at = $expectedPlayTime;
+                    $this->em->persist($clockwheelPlaylist);
+
+                    $this->annotateClockwheelResult($result, $clockwheelPlaylist, $stepIndex + 1);
+
+                    return $result;
+                }
+            }
+
+            $this->logger->info(
+                sprintf(
+                    'Clockwheel "%s" step %d/%d: playing from "%s" (song %d/%d).',
+                    $clockwheelPlaylist->name,
+                    $stepIndex + 1,
+                    $totalSteps,
+                    $childPlaylist->name,
+                    $songsPlayed + 1,
+                    $child->song_count
+                ),
+                ['playlist_id' => $childPlaylist->id]
+            );
+
+            $result = $this->playSongFromPlaylist(
+                $childPlaylist,
+                $recentSongHistory,
+                $expectedPlayTime,
+                $allowDuplicates
+            );
+
+            if (null !== $result) {
+                $songsPlayed++;
+
+                if ($attempt > 0) {
+                    $clockwheelPlaylist->clockwheel_step = $stepIndex;
+                }
+
+                if ($songsPlayed >= $child->song_count) {
+                    $this->advanceClockwheelStep($clockwheelPlaylist, $totalSteps);
+                } else {
+                    $clockwheelPlaylist->clockwheel_songs_played = $songsPlayed;
+                }
+
+                $clockwheelPlaylist->played_at = $expectedPlayTime;
+                $this->em->persist($clockwheelPlaylist);
+
+                $this->annotateClockwheelResult($result, $clockwheelPlaylist, $stepIndex + 1);
+
+                return $result;
+            }
+
+            $this->logger->debug(
+                sprintf('Clockwheel step %d: "%s" returned no track.', $stepIndex, $childPlaylist->name),
+                ['step_index' => $stepIndex, 'playlist_id' => $childPlaylist->id]
+            );
+
+            if ($attempt === 0) {
+                $this->advanceClockwheelStep($clockwheelPlaylist, $totalSteps);
+                $songsPlayed = 0;
+            }
+        }
+
+        $this->logger->warning(
+            sprintf('Clockwheel "%s" exhausted all children without a playable track.', $clockwheelPlaylist->name),
+            ['playlist_id' => $clockwheelPlaylist->id]
+        );
+
+        $clockwheelPlaylist->clockwheel_step = $savedStep;
+        $clockwheelPlaylist->clockwheel_songs_played = $savedSongsPlayed;
+        $this->em->persist($clockwheelPlaylist);
+
+        return null;
+    }
+
+    private function advanceClockwheelStep(StationPlaylist $playlist, int $totalSteps): void
+    {
+        $playlist->clockwheel_step = ($playlist->clockwheel_step + 1) % $totalSteps;
+        $playlist->clockwheel_songs_played = 0;
+        $this->em->persist($playlist);
+    }
+
+    private function isTrackInPlaylist(StationMedia $track, StationPlaylist $playlist): bool
+    {
+        $count = (int)$this->em->createQuery(
+            <<<'DQL'
+                SELECT COUNT(spm.id) FROM App\Entity\StationPlaylistMedia spm
+                WHERE spm.media = :media AND spm.playlist = :playlist
+            DQL
+        )->setParameter('media', $track)
+            ->setParameter('playlist', $playlist)
+            ->getSingleScalarResult();
+
+        return $count > 0;
+    }
+
+    /**
+     * @param StationQueue|StationQueue[]|null $result
+     */
+    private function annotateClockwheelResult(
+        StationQueue|array|null $result,
+        StationPlaylist $clockwheelPlaylist,
+        int $step
+    ): void {
+        if (null === $result) {
+            return;
+        }
+
+        $items = is_array($result) ? $result : [$result];
+        foreach ($items as $queue) {
+            $queue->clockwheel_playlist = $clockwheelPlaylist;
+            $queue->clockwheel_step = $step;
+        }
+    }
+
+    /**
+     * @param array<string, array<int, StationPlaylist>> $activePlaylistsByType
+     * @return array<int, string> Suppressed playlist ID => parent clockwheel name
+     */
+    private function getClockwheelSuppressedIds(
+        array $activePlaylistsByType,
+        DateTimeImmutable $expectedPlayTime
+    ): array {
+        $suppressedIds = [];
+
+        $activeClockwheels = $this->getActiveClockwheels($activePlaylistsByType, $expectedPlayTime);
+
+        if (empty($activeClockwheels)) {
+            return [];
+        }
+
+        // If multiple top-level clockwheels are active, pick one and suppress the rest.
+        if (count($activeClockwheels) > 1) {
+            $winner = $this->pickPrimaryClockwheel($activeClockwheels, $expectedPlayTime);
+            foreach ($activeClockwheels as $cw) {
+                if ($cw->id !== $winner->id) {
+                    $suppressedIds[$cw->id] = $winner->name;
+                    $this->logger->warning(
+                        sprintf(
+                            'Clockwheel "%s" ignored: "%s" is already active.',
+                            $cw->name,
+                            $winner->name
+                        ),
+                        ['suppressed_id' => $cw->id, 'winner_id' => $winner->id]
+                    );
+                }
+            }
+            $activeClockwheels = [$winner];
+        }
+
+        foreach ($activeClockwheels as $clockwheel) {
+            foreach ($clockwheel->child_items as $child) {
+                if (null !== $child->child_playlist_id) {
+                    $suppressedIds[$child->child_playlist_id] = $clockwheel->name;
+                }
+            }
+        }
+
+        // When a clockwheel is active, suppress all Standard playlists.
+        $standardKeys = [
+            PlaylistTypes::Standard->value . '_scheduled',
+            PlaylistTypes::Standard->value . '_unscheduled',
+        ];
+        $clockwheelNames = implode(', ', array_map(fn($cw) => $cw->name, $activeClockwheels));
+
+        foreach ($standardKeys as $key) {
+            if (empty($activePlaylistsByType[$key])) {
+                continue;
+            }
+            foreach ($activePlaylistsByType[$key] as $playlistId => $playlist) {
+                $suppressedIds[$playlistId] = $clockwheelNames;
+            }
+        }
+
+        return $suppressedIds;
+    }
+
+    /**
+     * @param array<string, array<int, StationPlaylist>> $activePlaylistsByType
+     * @return StationPlaylist[]
+     */
+    private function getActiveClockwheels(
+        array $activePlaylistsByType,
+        DateTimeImmutable $expectedPlayTime
+    ): array {
+        $clockwheelKeys = [
+            PlaylistTypes::Clockwheel->value . '_scheduled',
+            PlaylistTypes::Clockwheel->value . '_unscheduled',
+        ];
+
+        $active = [];
+        foreach ($clockwheelKeys as $key) {
+            if (empty($activePlaylistsByType[$key])) {
+                continue;
+            }
+            foreach ($activePlaylistsByType[$key] as $clockwheel) {
+                /** @var StationPlaylist $clockwheel */
+                if ($this->scheduler->shouldPlaylistPlayNow($clockwheel, $expectedPlayTime)) {
+                    $active[] = $clockwheel;
+                }
+            }
+        }
+
+        return $active;
+    }
+
+    /**
+     * @param StationPlaylist[] $clockwheels
+     */
+    private function pickPrimaryClockwheel(
+        array $clockwheels,
+        DateTimeImmutable $expectedPlayTime
+    ): StationPlaylist {
+        usort(
+            $clockwheels,
+            function (StationPlaylist $a, StationPlaylist $b) use ($expectedPlayTime): int {
+                $aRemaining = $this->getScheduleRemainingSeconds($a, $expectedPlayTime);
+                $bRemaining = $this->getScheduleRemainingSeconds($b, $expectedPlayTime);
+                return ($bRemaining <=> $aRemaining) ?: ($a->id <=> $b->id);
+            }
+        );
+
+        return $clockwheels[0];
+    }
+
+    private function getScheduleRemainingSeconds(
+        StationPlaylist $playlist,
+        DateTimeImmutable $now
+    ): int {
+        $schedule = $this->scheduler->getActiveSchedule($playlist, $now);
+        if (null === $schedule) {
+            return 0;
+        }
+
+        $tz = $playlist->station->getTimezoneObject();
+        $endTime = StationSchedule::getDateTime($schedule->end_time, $tz, $now);
+
+        if ($schedule->start_time === $schedule->end_time) {
+            $endTime = $endTime->addMinutes(15);
+        } elseif ($schedule->start_time > $schedule->end_time) {
+            if ($now->getTimestamp() > $endTime->getTimestamp()) {
+                $endTime = $endTime->addDay();
+            }
+        }
+
+        return max(0, $endTime->getTimestamp() - $now->getTimestamp());
     }
 
     private function makeQueueFromApi(
@@ -464,7 +891,6 @@ final class QueueBuilder implements EventSubscriberInterface
 
     public function getNextSongFromRequests(BuildQueue $event): void
     {
-        // Don't use this to cue requests.
         if ($event->isInterrupting()) {
             return;
         }
@@ -472,14 +898,25 @@ final class QueueBuilder implements EventSubscriberInterface
         $expectedPlayTime = $event->getExpectedPlayTime();
         $station = $event->getStation();
 
-        // Check if any playlist marked with "Prioritize Over Requests" (e.g. a jingle) is due now.
         foreach ($station->playlists as $playlist) {
             /** @var StationPlaylist $playlist */
-            if (
-                $playlist->backendPrioritizeOverRequests() &&
-                $playlist->isPlayable($event->isInterrupting()) &&
-                $this->scheduler->shouldPlaylistPlayNow($playlist, $expectedPlayTime)
-            ) {
+            if (!$playlist->isPlayable($event->isInterrupting())) {
+                continue;
+            }
+            if (!$this->scheduler->shouldPlaylistPlayNow($playlist, $expectedPlayTime)) {
+                continue;
+            }
+
+            if (PlaylistTypes::Clockwheel === $playlist->type) {
+                $this->logger->debug(
+                    sprintf('Clockwheel "%s" suppresses global requests.', $playlist->name),
+                    ['playlist_id' => $playlist->id]
+                );
+                return;
+            }
+
+            // A playlist with "prioritize over requests" (e.g. a jingle) is due now.
+            if ($playlist->backendPrioritizeOverRequests()) {
                 $this->logger->debug(sprintf(
                     'Playlist "%s" is prioritized and due now; skipping request queue.',
                     $playlist->name

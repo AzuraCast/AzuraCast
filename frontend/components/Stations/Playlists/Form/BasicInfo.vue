@@ -29,6 +29,7 @@
             />
 
             <form-group-multi-check
+                v-if="form.type !== 'clockwheel'"
                 id="edit_form_source"
                 class="col-md-12"
                 :field="r$.source"
@@ -40,53 +41,83 @@
         </div>
 
         <section
-            v-show="form.source === 'songs'"
+            v-show="form.source === 'songs' || form.type === 'clockwheel'"
             class="card mb-3"
             role="region"
         >
             <div class="card-header text-bg-primary">
                 <h2 class="card-title">
-                    {{ $gettext('Song-Based Playlist') }}
+                    <template v-if="form.type === 'clockwheel'">
+                        {{ $gettext('Clockwheel') }}
+                    </template>
+                    <template v-else>
+                        {{ $gettext('Song-Based Playlist') }}
+                    </template>
                 </h2>
             </div>
             <div class="card-body">
                 <div class="row g-3 mb-3">
-                    <form-group-checkbox
-                        id="form_edit_avoid_duplicates"
-                        class="col-md-6"
-                        :field="r$.avoid_duplicates"
-                        :label="$gettext('Avoid Duplicate Artists/Titles')"
-                        :description="$gettext('Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.')"
-                    />
-
-                    <form-group-checkbox
-                        id="form_edit_include_in_on_demand"
-                        class="col-md-6"
-                        :field="r$.include_in_on_demand"
-                        :label="$gettext('Include in On-Demand Player')"
-                        :description="$gettext('If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible.')"
-                    />
-
-                    <form-group-checkbox
-                        id="form_edit_include_in_requests"
-                        class="col-md-6"
-                        :field="r$.include_in_requests"
-                        :label="$gettext('Allow Requests from This Playlist')"
-                        :description="$gettext('If requests are enabled for your station, users will be able to request media that is on this playlist.')"
-                    />
-
-                    <form-group-checkbox
-                        id="form_edit_is_jingle"
-                        class="col-md-6"
-                        :field="r$.is_jingle"
-                        :description="$gettext('Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.')"
+                    <div
+                        v-if="isClockwheelMode"
+                        class="col-md-12"
                     >
-                        <template #label>
-                            {{ $gettext('Hide Metadata from Listeners ("Jingle Mode")') }}
-                        </template>
-                    </form-group-checkbox>
+                        <p class="text-muted mb-0">
+                            {{ $gettext('Plays songs from child playlists in a repeating sequence. Song requests are handled within the clockwheel and do not use the global request queue.') }}
+                        </p>
+                    </div>
+                    <template v-if="form.type !== 'clockwheel'">
+                        <form-group-checkbox
+                            id="form_edit_avoid_duplicates"
+                            class="col-md-6"
+                            :field="r$.avoid_duplicates"
+                            :label="$gettext('Avoid Duplicate Artists/Titles')"
+                            :description="$gettext('Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.')"
+                        />
+
+                        <form-group-checkbox
+                            id="form_edit_include_in_on_demand"
+                            class="col-md-6"
+                            :field="r$.include_in_on_demand"
+                            :label="$gettext('Include in On-Demand Player')"
+                            :description="$gettext('If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible.')"
+                        />
+
+                        <form-group-checkbox
+                            id="form_edit_include_in_requests"
+                            class="col-md-6"
+                            :field="r$.include_in_requests"
+                            :label="$gettext('Allow Requests from This Playlist')"
+                            :description="$gettext('If requests are enabled for your station, users will be able to request media that is on this playlist.')"
+                        />
+
+                        <form-group-checkbox
+                            id="form_edit_is_jingle"
+                            class="col-md-6"
+                            :field="r$.is_jingle"
+                            :description="$gettext('Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.')"
+                        >
+                            <template #label>
+                                {{ $gettext('Hide Metadata from Listeners ("Jingle Mode")') }}
+                            </template>
+                        </form-group-checkbox>
+                    </template>
+
+                    <div
+                        v-if="isInClockwheel"
+                        class="col-md-12"
+                    >
+                        <div class="alert alert-info mb-0">
+                            {{
+                                $gettext(
+                                    'Assigned to Clockwheel "%{name}" — type cannot be changed.',
+                                    {name: clockwheelNames}
+                                )
+                            }}
+                        </div>
+                    </div>
 
                     <form-group-multi-check
+                        v-if="!isClockwheelMode"
                         id="edit_form_type"
                         class="col-md-6"
                         :field="r$.type"
@@ -106,6 +137,7 @@
                     </form-group-multi-check>
 
                     <form-group-multi-check
+                        v-if="form.type !== 'clockwheel'"
                         id="edit_form_order"
                         class="col-md-6"
                         :field="r$.order"
@@ -231,6 +263,11 @@
                 </div>
             </div>
         </section>
+
+        <form-clockwheel-children
+            ref="$clockwheelChildren"
+            :edit-url="editUrl"
+        />
     </tab>
 </template>
 
@@ -245,12 +282,24 @@ import {useTranslate} from "~/vendor/gettext";
 import Tab from "~/components/Common/Tab.vue";
 import {storeToRefs} from "pinia";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {computed} from "vue";
+import {computed, inject, type Ref, useTemplateRef} from "vue";
 import {useStationsPlaylistsForm} from "~/components/Stations/Playlists/Form/form.ts";
+import FormClockwheelChildren from "~/components/Stations/Playlists/Form/ClockwheelChildren.vue";
+
+defineProps<{
+    editUrl?: string | null;
+}>();
 
 const {r$, form} = storeToRefs(useStationsPlaylistsForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.basicInfoTab));
+
+const usedInClockwheels = inject<Ref<Array<{id: number, name: string}>>>('usedInClockwheels');
+const isInClockwheel = computed(() => (usedInClockwheels?.value?.length ?? 0) > 0);
+const clockwheelNames = computed(() =>
+    (usedInClockwheels?.value ?? []).map((cw: {name: string}) => cw.name).join(', ')
+);
+const isClockwheelMode = inject<Ref<boolean>>('isClockwheelMode');
 
 const {$gettext} = useTranslate();
 
@@ -267,33 +316,44 @@ const sourceOptions = [
     }
 ];
 
-const typeOptions = [
-    {
-        value: 'default',
-        text: $gettext('General Rotation'),
-        description: $gettext('Standard playlist, shuffles with other standard playlists based on weight.')
-    },
-    {
-        value: 'once_per_x_songs',
-        text: $gettext('Once per x Songs'),
-        description: $gettext('Play once every $x songs.')
-    },
-    {
-        value: 'once_per_x_minutes',
-        text: $gettext('Once per x Minutes'),
-        description: $gettext('Play once every $x minutes.')
-    },
-    {
-        value: 'once_per_hour',
-        text: $gettext('Once per Hour'),
-        description: $gettext('Play once per hour at the specified minute.')
-    },
-    {
-        value: 'custom',
-        text: $gettext('Advanced'),
-        description: $gettext('Manually define how this playlist is used in Liquidsoap configuration.')
+const typeOptions = computed(() => {
+    const allOptions = [
+        {
+            value: 'default',
+            text: $gettext('General Rotation'),
+            description: $gettext('Standard playlist, shuffles with other standard playlists based on weight. Can also be used in Clockwheels.')
+        },
+        {
+            value: 'once_per_x_songs',
+            text: $gettext('Once per x Songs'),
+            description: $gettext('Play once every $x songs.')
+        },
+        {
+            value: 'once_per_x_minutes',
+            text: $gettext('Once per x Minutes'),
+            description: $gettext('Play once every $x minutes.')
+        },
+        {
+            value: 'once_per_hour',
+            text: $gettext('Once per Hour'),
+            description: $gettext('Play once per hour at the specified minute.')
+        },
+        {
+            value: 'custom',
+            text: $gettext('Advanced'),
+            description: $gettext('Manually define how this playlist is used in Liquidsoap configuration.')
+        }
+    ];
+
+    if (isInClockwheel.value) {
+        return allOptions.map(o => ({
+            ...o,
+            disabled: o.value !== 'default'
+        }));
     }
-];
+
+    return allOptions;
+});
 
 const orderOptions = [
     {
@@ -337,4 +397,10 @@ const weightOptions = map(
         }
     }
 );
+
+const $clockwheelChildren = useTemplateRef('$clockwheelChildren');
+
+defineExpose({
+    $clockwheelChildren
+});
 </script>

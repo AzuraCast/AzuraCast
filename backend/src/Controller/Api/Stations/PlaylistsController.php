@@ -8,9 +8,12 @@ use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Enums\PlaylistSources;
+use App\Entity\Enums\PlaylistTypes;
 use App\Entity\Station;
 use App\Entity\StationPlaylist;
+use App\Entity\StationPlaylistChild;
 use App\Entity\StationSchedule;
+use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -250,6 +253,54 @@ final class PlaylistsController extends AbstractScheduledEntityController
         $return['num_songs'] = $songTotals['num_songs'];
         $return['total_length'] = round((float)$songTotals['total_length']);
 
+        if (PlaylistTypes::Clockwheel === $record->type) {
+            $childItems = $record->child_items->toArray();
+            $return['num_children'] = count($childItems);
+
+            $childPlaylistIds = array_unique(
+                array_filter(
+                    array_map(
+                        static fn(StationPlaylistChild $c) => $c->childPlaylist?->id,
+                        $childItems
+                    )
+                )
+            );
+
+            if (!empty($childPlaylistIds)) {
+                $childTotals = $this->em->createQuery(
+                    <<<'DQL'
+                        SELECT count(sm.id) AS num_songs,
+                               COALESCE(SUM(sm.length), 0) AS total_length
+                        FROM App\Entity\StationMedia sm
+                        WHERE sm.id IN (
+                            SELECT DISTINCT IDENTITY(spm.media)
+                            FROM App\Entity\StationPlaylistMedia spm
+                            WHERE IDENTITY(spm.playlist) IN (:playlistIds)
+                        )
+                    DQL
+                )->setParameter('playlistIds', $childPlaylistIds)
+                    ->getSingleResult(AbstractQuery::HYDRATE_SCALAR);
+
+                $return['num_songs'] = (int)$childTotals['num_songs'];
+                $return['total_length'] = round((float)$childTotals['total_length']);
+            } else {
+                $return['num_songs'] = 0;
+                $return['total_length'] = 0;
+            }
+        }
+
+        $usedInClockwheels = [];
+        foreach ($record->parent_items as $item) {
+            $parentId = $item->parentPlaylist->id;
+            if (!isset($usedInClockwheels[$parentId])) {
+                $usedInClockwheels[$parentId] = [
+                    'id' => $parentId,
+                    'name' => $item->parentPlaylist->name,
+                ];
+            }
+        }
+        $return['used_in_clockwheels'] = array_values($usedInClockwheels);
+
         $isInternal = $request->isInternal();
         $router = $request->getRouter();
 
@@ -324,6 +375,22 @@ final class PlaylistsController extends AbstractScheduledEntityController
         return $return;
     }
 
+    protected function deleteRecord(object $record): void
+    {
+        if (!$record->parent_items->isEmpty()) {
+            $names = array_map(
+                fn(StationPlaylistChild $c) => $c->parentPlaylist->name,
+                $record->parent_items->toArray()
+            );
+
+            throw new Exception(
+                __('This playlist is assigned to clockwheel(s): %s. Remove it first.', implode(', ', $names))
+            );
+        }
+
+        parent::deleteRecord($record);
+    }
+
     /**
      * @return mixed[]
      */
@@ -334,7 +401,7 @@ final class PlaylistsController extends AbstractScheduledEntityController
             array_merge(
                 $context,
                 [
-                    AbstractNormalizer::IGNORED_ATTRIBUTES => ['queue'],
+                    AbstractNormalizer::IGNORED_ATTRIBUTES => ['queue', 'parent_items', 'child_items'],
                 ]
             )
         );

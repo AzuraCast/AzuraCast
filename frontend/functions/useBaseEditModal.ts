@@ -47,7 +47,7 @@ export type BaseEditModalOptions<SubmittedForm extends Form = Form> = {
         data: AxiosMutateResponse,
         variables: SubmittedForm,
         context: unknown
-    ) => void,
+    ) => void | Promise<void>,
     onSubmitError?: (
         error: AxiosError<ApiError, any>,
         variables: SubmittedForm,
@@ -176,13 +176,13 @@ export function useBaseEditModal<
 
             return returnData;
         },
-        onSuccess: (
+        onSuccess: async (
             data,
             variables,
             context
-        ): void => {
+        ): Promise<void> => {
             if (typeof options.onSubmitSuccess === 'function') {
-                options.onSubmitSuccess(data, variables, context);
+                await options.onSubmitSuccess(data, variables, context);
                 return;
             }
 

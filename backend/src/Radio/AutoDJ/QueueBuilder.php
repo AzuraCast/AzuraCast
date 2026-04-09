@@ -583,28 +583,29 @@ final class QueueBuilder implements EventSubscriberInterface
     ): array {
         $suppressedIds = [];
 
-        $clockwheelKeys = [
-            PlaylistTypes::Clockwheel->value . '_scheduled',
-            PlaylistTypes::Clockwheel->value . '_unscheduled',
-        ];
-
-        $activeClockwheels = [];
-        foreach ($clockwheelKeys as $key) {
-            if (empty($activePlaylistsByType[$key])) {
-                continue;
-            }
-
-            foreach ($activePlaylistsByType[$key] as $clockwheel) {
-                /** @var StationPlaylist $clockwheel */
-                if (!$this->scheduler->shouldPlaylistPlayNow($clockwheel, $expectedPlayTime)) {
-                    continue;
-                }
-                $activeClockwheels[] = $clockwheel;
-            }
-        }
+        $activeClockwheels = $this->getActiveClockwheels($activePlaylistsByType, $expectedPlayTime);
 
         if (empty($activeClockwheels)) {
             return [];
+        }
+
+        // If multiple top-level clockwheels are active, pick one and suppress the rest.
+        if (count($activeClockwheels) > 1) {
+            $winner = $this->pickPrimaryClockwheel($activeClockwheels);
+            foreach ($activeClockwheels as $cw) {
+                if ($cw->id !== $winner->id) {
+                    $suppressedIds[$cw->id] = $winner->name;
+                    $this->logger->warning(
+                        sprintf(
+                            'Clockwheel "%s" suppressed: "%s" takes priority.',
+                            $cw->name,
+                            $winner->name
+                        ),
+                        ['suppressed_id' => $cw->id, 'winner_id' => $winner->id]
+                    );
+                }
+            }
+            $activeClockwheels = [$winner];
         }
 
         foreach ($activeClockwheels as $clockwheel) {
@@ -632,6 +633,48 @@ final class QueueBuilder implements EventSubscriberInterface
         }
 
         return $suppressedIds;
+    }
+
+    /**
+     * @param array<string, array<int, StationPlaylist>> $activePlaylistsByType
+     * @return StationPlaylist[]
+     */
+    private function getActiveClockwheels(
+        array $activePlaylistsByType,
+        DateTimeImmutable $expectedPlayTime
+    ): array {
+        $clockwheelKeys = [
+            PlaylistTypes::Clockwheel->value . '_scheduled',
+            PlaylistTypes::Clockwheel->value . '_unscheduled',
+        ];
+
+        $active = [];
+        foreach ($clockwheelKeys as $key) {
+            if (empty($activePlaylistsByType[$key])) {
+                continue;
+            }
+            foreach ($activePlaylistsByType[$key] as $clockwheel) {
+                /** @var StationPlaylist $clockwheel */
+                if ($this->scheduler->shouldPlaylistPlayNow($clockwheel, $expectedPlayTime)) {
+                    $active[] = $clockwheel;
+                }
+            }
+        }
+
+        return $active;
+    }
+
+    /**
+     * @param StationPlaylist[] $clockwheels
+     */
+    private function pickPrimaryClockwheel(array $clockwheels): StationPlaylist
+    {
+        usort(
+            $clockwheels,
+            static fn(StationPlaylist $a, StationPlaylist $b) => ($b->weight <=> $a->weight) ?: ($a->id <=> $b->id)
+        );
+
+        return $clockwheels[0];
     }
 
     private function makeQueueFromApi(

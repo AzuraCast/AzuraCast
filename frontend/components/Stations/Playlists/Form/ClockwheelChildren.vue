@@ -29,9 +29,10 @@
                 <thead>
                     <tr>
                         <th style="width: 5%;">#</th>
-                        <th style="width: 35%;">{{ $gettext('Playlist') }}</th>
-                        <th style="width: 25%;">{{ $gettext('Info') }}</th>
-                        <th style="width: 15%;">{{ $gettext('Per Step') }}</th>
+                        <th style="width: 30%;">{{ $gettext('Playlist') }}</th>
+                        <th style="width: 20%;">{{ $gettext('Info') }}</th>
+                        <th style="width: 10%;">{{ $gettext('Per Step') }}</th>
+                        <th style="width: 15%;">{{ $gettext('Requests') }}</th>
                         <th style="width: 20%;">{{ $gettext('Actions') }}</th>
                     </tr>
                 </thead>
@@ -43,27 +44,34 @@
                     >
                         <td>{{ index + 1 }}</td>
                         <td>
-                            <select
-                                v-model="child.child_playlist_id"
-                                class="form-select form-select-sm"
-                            >
-                                <option
-                                    value=""
-                                    disabled
+                            <template v-if="child.child_playlist_id === null">
+                                <span class="badge text-bg-info">
+                                    {{ $gettext('Request Slot') }}
+                                </span>
+                            </template>
+                            <template v-else>
+                                <select
+                                    v-model="child.child_playlist_id"
+                                    class="form-select form-select-sm"
                                 >
-                                    {{ $gettext('Select a Playlist') }}
-                                </option>
-                                <option
-                                    v-for="pl in availablePlaylists"
-                                    :key="pl.id"
-                                    :value="pl.id"
-                                >
-                                    {{ pl.name }}
-                                </option>
-                            </select>
+                                    <option
+                                        value=""
+                                        disabled
+                                    >
+                                        {{ $gettext('Select a Playlist') }}
+                                    </option>
+                                    <option
+                                        v-for="pl in availablePlaylists"
+                                        :key="pl.id"
+                                        :value="pl.id"
+                                    >
+                                        {{ pl.name }}
+                                    </option>
+                                </select>
+                            </template>
                         </td>
                         <td>
-                            <template v-if="getPlaylistMeta(child.child_playlist_id)">
+                            <template v-if="child.child_playlist_id !== null && getPlaylistMeta(child.child_playlist_id)">
                                 <div class="d-flex flex-wrap gap-1">
                                     <span class="badge text-bg-secondary">
                                         {{ getPlaylistMeta(child.child_playlist_id)!.order }}
@@ -79,6 +87,11 @@
                                     </span>
                                 </div>
                             </template>
+                            <template v-if="child.child_playlist_id === null">
+                                <small class="text-muted">
+                                    {{ $gettext('Plays pending listener requests.') }}
+                                </small>
+                            </template>
                         </td>
                         <td>
                             <input
@@ -88,6 +101,24 @@
                                 min="1"
                                 max="100"
                             >
+                        </td>
+                        <td>
+                            <template v-if="child.child_playlist_id !== null">
+                                <div class="form-check">
+                                    <input
+                                        :id="'allow_requests_' + index"
+                                        v-model="child.allow_requests"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                    >
+                                    <label
+                                        :for="'allow_requests_' + index"
+                                        class="form-check-label"
+                                    >
+                                        {{ $gettext('Allow') }}
+                                    </label>
+                                </div>
+                            </template>
                         </td>
                         <td>
                             <div class="btn-group btn-group-sm">
@@ -131,13 +162,22 @@
                 <strong>{{ totalUniqueSongs }}</strong>
             </div>
 
-            <button
-                type="button"
-                class="btn btn-sm btn-primary"
-                @click.prevent="addChild"
-            >
-                {{ $gettext('Add Playlist Step') }}
-            </button>
+            <div class="d-flex gap-2">
+                <button
+                    type="button"
+                    class="btn btn-sm btn-primary"
+                    @click.prevent="addChild"
+                >
+                    {{ $gettext('Add Playlist Step') }}
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-sm btn-secondary"
+                    @click.prevent="addRequestSlot"
+                >
+                    {{ $gettext('Add Request Slot') }}
+                </button>
+            </div>
         </div>
     </section>
 </template>
@@ -154,9 +194,10 @@ import IconBiChevronDown from "~icons/bi/chevron-down";
 import IconBiXLg from "~icons/bi/x-lg";
 
 interface ChildItem {
-    child_playlist_id: number | '';
+    child_playlist_id: number | '' | null;
     child_playlist_name?: string;
     song_count: number;
+    allow_requests: boolean;
 }
 
 interface PlaylistOption {
@@ -197,7 +238,7 @@ const totalUniqueSongs = computed(() => {
     const seenIds = new Set<number>();
     let total = 0;
     for (const child of children.value) {
-        if (child.child_playlist_id !== '' && !seenIds.has(child.child_playlist_id)) {
+        if (child.child_playlist_id !== null && child.child_playlist_id !== '' && !seenIds.has(child.child_playlist_id)) {
             seenIds.add(child.child_playlist_id);
             const meta = getPlaylistMeta(child.child_playlist_id);
             if (meta) {
@@ -230,9 +271,10 @@ const loadChildren = async (url: string) => {
     try {
         const {data} = await axios.get(url + '/children');
         children.value = data.map((child: any) => ({
-            child_playlist_id: child.child_playlist_id,
+            child_playlist_id: child.child_playlist_id ?? null,
             child_playlist_name: child.child_playlist_name,
-            song_count: child.song_count
+            song_count: child.song_count,
+            allow_requests: child.allow_requests ?? false
         }));
     } catch {
         children.value = [];
@@ -242,7 +284,16 @@ const loadChildren = async (url: string) => {
 const addChild = () => {
     children.value.push({
         child_playlist_id: '',
-        song_count: 1
+        song_count: 1,
+        allow_requests: false
+    });
+};
+
+const addRequestSlot = () => {
+    children.value.push({
+        child_playlist_id: null,
+        song_count: 1,
+        allow_requests: false
     });
 };
 

@@ -356,6 +356,62 @@ final class QueueBuilder implements EventSubscriberInterface
         for ($attempt = 0; $attempt < $totalSteps; $attempt++) {
             $stepIndex = ($currentStep + $attempt) % $totalSteps;
             $child = $children[$stepIndex];
+
+            if ($child->isRequestSlot()) {
+                $request = $this->requestRepo->getNextPlayableRequest(
+                    $clockwheelPlaylist->station,
+                    $expectedPlayTime
+                );
+
+                if (null === $request) {
+                    $this->logger->debug(
+                        sprintf('Clockwheel step %d: request slot has no pending requests, skipping.', $stepIndex)
+                    );
+                    if ($attempt === 0) {
+                        $this->advanceClockwheelStep($clockwheelPlaylist, $totalSteps);
+                        $songsPlayed = 0;
+                    }
+                    continue;
+                }
+
+                $this->logger->info(
+                    sprintf(
+                        'Clockwheel "%s" step %d/%d: playing request (song %d/%d).',
+                        $clockwheelPlaylist->name,
+                        $stepIndex + 1,
+                        $totalSteps,
+                        $songsPlayed + 1,
+                        $child->song_count
+                    ),
+                    ['request_id' => $request->id]
+                );
+
+                $result = StationQueue::fromRequest($request);
+                $this->em->persist($result);
+
+                $request->played_at = $expectedPlayTime;
+                $this->em->persist($request);
+
+                $songsPlayed++;
+
+                if ($attempt > 0) {
+                    $clockwheelPlaylist->clockwheel_step = $stepIndex;
+                }
+
+                if ($songsPlayed >= $child->song_count) {
+                    $this->advanceClockwheelStep($clockwheelPlaylist, $totalSteps);
+                } else {
+                    $clockwheelPlaylist->clockwheel_songs_played = $songsPlayed;
+                }
+
+                $clockwheelPlaylist->played_at = $expectedPlayTime;
+                $this->em->persist($clockwheelPlaylist);
+
+                $this->annotateClockwheelResult($result, $clockwheelPlaylist, $stepIndex + 1);
+
+                return $result;
+            }
+
             $childPlaylist = $child->childPlaylist;
 
             if (!$childPlaylist->is_enabled) {
@@ -367,6 +423,54 @@ final class QueueBuilder implements EventSubscriberInterface
                     $songsPlayed = 0;
                 }
                 continue;
+            }
+
+            // Override mode: if this step allows requests, try a request first.
+            if ($child->allow_requests) {
+                $request = $this->requestRepo->getNextPlayableRequest(
+                    $clockwheelPlaylist->station,
+                    $expectedPlayTime
+                );
+
+                if (null !== $request) {
+                    $this->logger->info(
+                        sprintf(
+                            'Clockwheel "%s" step %d/%d: request overrides "%s" (song %d/%d).',
+                            $clockwheelPlaylist->name,
+                            $stepIndex + 1,
+                            $totalSteps,
+                            $childPlaylist->name,
+                            $songsPlayed + 1,
+                            $child->song_count
+                        ),
+                        ['request_id' => $request->id, 'playlist_id' => $childPlaylist->id]
+                    );
+
+                    $result = StationQueue::fromRequest($request);
+                    $this->em->persist($result);
+
+                    $request->played_at = $expectedPlayTime;
+                    $this->em->persist($request);
+
+                    $songsPlayed++;
+
+                    if ($attempt > 0) {
+                        $clockwheelPlaylist->clockwheel_step = $stepIndex;
+                    }
+
+                    if ($songsPlayed >= $child->song_count) {
+                        $this->advanceClockwheelStep($clockwheelPlaylist, $totalSteps);
+                    } else {
+                        $clockwheelPlaylist->clockwheel_songs_played = $songsPlayed;
+                    }
+
+                    $clockwheelPlaylist->played_at = $expectedPlayTime;
+                    $this->em->persist($clockwheelPlaylist);
+
+                    $this->annotateClockwheelResult($result, $clockwheelPlaylist, $stepIndex + 1);
+
+                    return $result;
+                }
             }
 
             $this->logger->info(
@@ -714,13 +818,10 @@ final class QueueBuilder implements EventSubscriberInterface
                 continue;
             }
 
-            // An active clockwheel with "suppress requests" takes over request handling entirely.
-            if (
-                PlaylistTypes::Clockwheel === $playlist->type
-                && $playlist->backendSuppressRequests()
-            ) {
+            // An active clockwheel handles requests via its own steps.
+            if (PlaylistTypes::Clockwheel === $playlist->type) {
                 $this->logger->debug(sprintf(
-                    'Clockwheel "%s" suppresses global requests.',
+                    'Clockwheel "%s" is active; global request queue deferred to clockwheel steps.',
                     $playlist->name
                 ));
                 return;

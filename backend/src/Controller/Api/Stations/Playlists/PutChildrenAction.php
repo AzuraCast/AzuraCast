@@ -72,10 +72,9 @@ final class PutChildrenAction implements SingleActionInterface
         $childPlaylistIds = [];
         foreach ($children as $child) {
             $childId = (int)($child['child_playlist_id'] ?? 0);
-            if ($childId <= 0) {
-                throw new Exception(__('Invalid child playlist ID.'));
+            if ($childId > 0) {
+                $childPlaylistIds[] = $childId;
             }
-            $childPlaylistIds[] = $childId;
         }
 
         if (in_array($record->id, $childPlaylistIds, true)) {
@@ -114,15 +113,18 @@ final class PutChildrenAction implements SingleActionInterface
         foreach ($children as $child) {
             $childId = (int)($child['child_playlist_id'] ?? 0);
             $songCount = max(1, (int)($child['song_count'] ?? 1));
+            $allowRequests = (bool)($child['allow_requests'] ?? false);
 
-            /** @var StationPlaylist $childPlaylist */
-            $childPlaylist = $this->playlistRepo->findForStation($childId, $station);
+            $childPlaylist = ($childId > 0)
+                ? $this->playlistRepo->findForStation($childId, $station)
+                : null;
 
             $childEntity = new StationPlaylistChild(
                 $record,
                 $childPlaylist,
                 $position,
-                $songCount
+                $songCount,
+                $allowRequests
             );
 
             $this->em->persist($childEntity);
@@ -153,6 +155,10 @@ final class PutChildrenAction implements SingleActionInterface
         }
 
         foreach ($current->child_items as $child) {
+            if ($child->isRequestSlot()) {
+                continue;
+            }
+
             if ($child->childPlaylist->id === $ancestor->id) {
                 throw new Exception(
                     __('Circular reference detected: playlist "%s" would create a loop.', $current->name)

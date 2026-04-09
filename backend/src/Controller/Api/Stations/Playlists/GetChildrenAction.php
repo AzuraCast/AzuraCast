@@ -65,7 +65,7 @@ final class GetChildrenAction implements SingleActionInterface
             <<<'DQL'
                 SELECT spc, sp
                 FROM App\Entity\StationPlaylistChild spc
-                JOIN spc.childPlaylist sp
+                LEFT JOIN spc.childPlaylist sp
                 WHERE IDENTITY(spc.parentPlaylist) = :playlist_id
                 ORDER BY spc.position ASC
             DQL
@@ -76,10 +76,11 @@ final class GetChildrenAction implements SingleActionInterface
         foreach ($children as $child) {
             $result[] = [
                 'id' => $child->id,
-                'child_playlist_id' => $child->childPlaylist->id,
-                'child_playlist_name' => $child->childPlaylist->name,
+                'child_playlist_id' => $child->childPlaylist?->id,
+                'child_playlist_name' => $child->childPlaylist?->name,
                 'position' => $child->position,
                 'song_count' => $child->song_count,
+                'allow_requests' => $child->allow_requests,
             ];
         }
 

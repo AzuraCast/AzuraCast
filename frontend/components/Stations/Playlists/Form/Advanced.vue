@@ -25,43 +25,29 @@ import {storeToRefs} from "pinia";
 import {useStationsPlaylistsForm} from "~/components/Stations/Playlists/Form/form.ts";
 import {useFormTabClass} from "~/functions/useFormTabClass.ts";
 import {computed} from "vue";
-import {PlaylistTypes} from "~/entities/ApiInterfaces.ts";
 
-const {form, r$} = storeToRefs(useStationsPlaylistsForm());
+const {r$} = storeToRefs(useStationsPlaylistsForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.advancedTab));
 
 const {$gettext} = useTranslate();
 
-const isClockwheel = computed(() => form.value.type === PlaylistTypes.Clockwheel);
-
-const backendOptions = computed(() => {
-    const options = [
-        {
-            value: 'interrupt',
-            text: $gettext('Interrupt other songs to play at scheduled time.')
-        },
-        {
-            value: 'single_track',
-            text: $gettext('Only play one track at scheduled time.')
-        },
-        {
-            value: 'merge',
-            text: $gettext('Merge playlist to play as a single track.')
-        },
-        {
-            value: 'prioritize',
-            text: $gettext('Prioritize over listener requests.')
-        }
-    ];
-
-    if (isClockwheel.value) {
-        options.push({
-            value: 'suppress_requests',
-            text: $gettext('Suppress global listener requests while this clockwheel is active.')
-        });
+const backendOptions = [
+    {
+        value: 'interrupt',
+        text: $gettext('Interrupt other songs to play at scheduled time.')
+    },
+    {
+        value: 'single_track',
+        text: $gettext('Only play one track at scheduled time.')
+    },
+    {
+        value: 'merge',
+        text: $gettext('Merge playlist to play as a single track.')
+    },
+    {
+        value: 'prioritize',
+        text: $gettext('Prioritize over listener requests.')
     }
-
-    return options;
-});
+];
 </script>

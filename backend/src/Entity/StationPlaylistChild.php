@@ -27,11 +27,11 @@ final class StationPlaylistChild implements IdentifiableEntityInterface
     public private(set) int $parent_playlist_id;
 
     #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'parent_items')]
-    #[ORM\JoinColumn(name: 'child_playlist_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    public readonly StationPlaylist $childPlaylist;
+    #[ORM\JoinColumn(name: 'child_playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    public readonly ?StationPlaylist $childPlaylist;
 
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    public private(set) int $child_playlist_id;
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    public private(set) ?int $child_playlist_id;
 
     #[
         OA\Property(description: 'Position in the clockwheel sequence (0-based).'),
@@ -47,15 +47,28 @@ final class StationPlaylistChild implements IdentifiableEntityInterface
     ]
     public int $song_count = 1;
 
+    #[
+        OA\Property(description: 'Allow listener requests to override songs from this step.'),
+        ORM\Column(type: 'boolean')
+    ]
+    public bool $allow_requests = false;
+
+    public function isRequestSlot(): bool
+    {
+        return null === $this->childPlaylist;
+    }
+
     public function __construct(
         StationPlaylist $parentPlaylist,
-        StationPlaylist $childPlaylist,
+        ?StationPlaylist $childPlaylist,
         int $position = 0,
-        int $songCount = 1
+        int $songCount = 1,
+        bool $allowRequests = false
     ) {
         $this->parentPlaylist = $parentPlaylist;
         $this->childPlaylist = $childPlaylist;
         $this->position = $position;
         $this->song_count = max(1, $songCount);
+        $this->allow_requests = $allowRequests;
     }
 }

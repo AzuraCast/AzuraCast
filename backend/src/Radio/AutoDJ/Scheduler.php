@@ -191,6 +191,17 @@ final class Scheduler
             : 0;
     }
 
+    public function getActiveSchedule(
+        StationPlaylist $playlist,
+        DateTimeImmutable $now
+    ): ?StationSchedule {
+        return $this->getActiveScheduleFromCollection(
+            $playlist->schedule_items,
+            $playlist->station->getTimezoneObject(),
+            $now
+        );
+    }
+
     public function canStreamerStreamNow(
         StationStreamer $streamer,
         ?DateTimeImmutable $now = null

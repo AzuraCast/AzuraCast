@@ -8542,6 +8542,10 @@ msgstr ""
 msgid "Add Clockwheel"
 msgstr ""
 
+#: frontend/components/Stations/Playlists.vue
+msgid "Adjust schedules so clockwheels do not overlap, or disable the ones you no longer need."
+msgstr ""
+
 #: frontend/components/Stations/Playlists/Form/ClockwheelChildren.vue:139
 msgid "Add Playlist Step"
 msgstr ""
@@ -8568,6 +8572,14 @@ msgstr ""
 
 #: backend/src/Controller/Api/Stations/Playlists/PutChildrenAction.php:138
 msgid "Clockwheel children updated."
+msgstr ""
+
+#: frontend/components/Stations/Playlists.vue
+msgid "Only one clockwheel can be active at a time. When schedules overlap, only one will play."
+msgstr ""
+
+#: frontend/components/Stations/Playlists.vue
+msgid "Overlapping clockwheel schedules detected"
 msgstr ""
 
 #: backend/src/Controller/Api/Stations/Playlists/ResetClockwheelAction.php:71

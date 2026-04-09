@@ -31,23 +31,18 @@
                 >
                     <div class="card-body-flush">
                         <div
-                            v-if="clockwheelConflictInfo"
+                            v-if="clockwheelConflictNames"
                             class="alert alert-warning m-3"
                         >
-                            <strong>{{ $gettext('Multiple enabled clockwheels detected') }}</strong>
+                            <strong>{{ $gettext('Overlapping clockwheel schedules detected') }}</strong>
                             <p class="mb-1 mt-2">
-                                {{ $gettext('Only one clockwheel can be active at a time. The currently active clockwheel will keep priority; newly enabled clockwheels are ignored until it is disabled.') }}
+                                {{ $gettext('Only one clockwheel can be active at a time. When schedules overlap, only one will play.') }}
                             </p>
-                            <ul class="mb-1">
-                                <li>
-                                    <strong>{{ $gettext('Active:') }}</strong> {{ clockwheelConflictInfo.active }}
-                                </li>
-                                <li>
-                                    <strong>{{ $gettext('Ignored:') }}</strong> {{ clockwheelConflictInfo.ignored }}
-                                </li>
-                            </ul>
+                            <p class="mb-1">
+                                {{ clockwheelConflictNames.join(', ') }}
+                            </p>
                             <small class="text-muted">
-                                {{ $gettext('To resolve this, schedule your clockwheels for non-overlapping time slots, or disable/delete the ones you no longer need.') }}
+                                {{ $gettext('Adjust schedules so clockwheels do not overlap, or disable the ones you no longer need.') }}
                             </small>
                         </div>
 
@@ -399,7 +394,7 @@ const listItemProvider = useApiItemProvider(
     })
 );
 
-const clockwheelConflictInfo = computed((): { active: string; ignored: string } | null => {
+const clockwheelConflictNames = computed((): string[] | null => {
     const enabledCws = listItemProvider.rows.value.filter(
         (p: Record<string, unknown>) => p.type === 'clockwheel' && p.is_enabled
     );
@@ -407,18 +402,99 @@ const clockwheelConflictInfo = computed((): { active: string; ignored: string } 
         return null;
     }
 
-    const sorted = [...enabledCws].sort((a: Record<string, unknown>, b: Record<string, unknown>) => {
-        const aPlayed = (a.played_at as number | null) ?? 0;
-        const bPlayed = (b.played_at as number | null) ?? 0;
-        if (aPlayed !== bPlayed) return bPlayed - aPlayed;
-        return (a.id as number) - (b.id as number);
-    });
+    const overlapping: string[] = [];
+    for (let i = 0; i < enabledCws.length; i++) {
+        for (let j = i + 1; j < enabledCws.length; j++) {
+            if (clockwheelSchedulesOverlap(enabledCws[i], enabledCws[j])) {
+                if (!overlapping.includes(enabledCws[i].name as string)) {
+                    overlapping.push(enabledCws[i].name as string);
+                }
+                if (!overlapping.includes(enabledCws[j].name as string)) {
+                    overlapping.push(enabledCws[j].name as string);
+                }
+            }
+        }
+    }
 
-    return {
-        active: sorted[0].name as string,
-        ignored: sorted.slice(1).map((p: Record<string, unknown>) => p.name as string).join(', ')
-    };
+    return overlapping.length > 1 ? overlapping : null;
 });
+
+function clockwheelSchedulesOverlap(
+    a: Record<string, unknown>,
+    b: Record<string, unknown>
+): boolean {
+    const aItems = a.schedule_items as Record<string, unknown>[] | undefined;
+    const bItems = b.schedule_items as Record<string, unknown>[] | undefined;
+
+    if (!aItems?.length || !bItems?.length) {
+        return true;
+    }
+
+    for (const sa of aItems) {
+        for (const sb of bItems) {
+            if (scheduleItemsOverlap(sa, sb)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+function scheduleItemsOverlap(
+    a: Record<string, unknown>,
+    b: Record<string, unknown>
+): boolean {
+    if (!dateRangesOverlap(
+        a.start_date as string | null, a.end_date as string | null,
+        b.start_date as string | null, b.end_date as string | null
+    )) {
+        return false;
+    }
+    if (!daysOverlap(a.days as number[] | undefined, b.days as number[] | undefined)) {
+        return false;
+    }
+    return timeRangesOverlap(a.start_time as number, a.end_time as number, b.start_time as number, b.end_time as number);
+}
+
+function dateRangesOverlap(
+    aStart: string | null, aEnd: string | null,
+    bStart: string | null, bEnd: string | null
+): boolean {
+    if (aEnd && bStart && aEnd < bStart) return false;
+    if (bEnd && aStart && bEnd < aStart) return false;
+    return true;
+}
+
+function daysOverlap(a: number[] | undefined, b: number[] | undefined): boolean {
+    if (!a?.length || !b?.length) return true;
+    return a.some((d) => b.includes(d));
+}
+
+function timeToMinutes(hhmm: number): number {
+    return Math.floor(hhmm / 100) * 60 + (hhmm % 100);
+}
+
+function timeRangesOverlap(aStart: number, aEnd: number, bStart: number, bEnd: number): boolean {
+    const aS = timeToMinutes(aStart);
+    const aE = timeToMinutes(aEnd);
+    const bS = timeToMinutes(bStart);
+    const bE = timeToMinutes(bEnd);
+    const DAY = 1440;
+
+    const aRanges = aS < aE
+        ? [[aS, aE]]
+        : aS > aE ? [[aS, DAY], [0, aE]] : [[aS, aS + 1]];
+    const bRanges = bS < bE
+        ? [[bS, bE]]
+        : bS > bE ? [[bS, DAY], [0, bE]] : [[bS, bS + 1]];
+
+    for (const [a0, a1] of aRanges) {
+        for (const [b0, b1] of bRanges) {
+            if (a0 < b1 && b0 < a1) return true;
+        }
+    }
+    return false;
+}
 
 const {Duration} = useLuxon();
 

@@ -21,6 +21,7 @@ use App\Entity\StationPlaylist;
 use App\Entity\StationPlaylistChild;
 use App\Entity\StationPlaylistMedia;
 use App\Entity\StationQueue;
+use App\Entity\StationSchedule;
 use App\Event\Radio\BuildQueue;
 use App\Radio\PlaylistParser;
 use DateTimeImmutable;
@@ -602,7 +603,7 @@ final class QueueBuilder implements EventSubscriberInterface
 
         // If multiple top-level clockwheels are active, pick one and suppress the rest.
         if (count($activeClockwheels) > 1) {
-            $winner = $this->pickPrimaryClockwheel($activeClockwheels);
+            $winner = $this->pickPrimaryClockwheel($activeClockwheels, $expectedPlayTime);
             foreach ($activeClockwheels as $cw) {
                 if ($cw->id !== $winner->id) {
                     $suppressedIds[$cw->id] = $winner->name;
@@ -678,18 +679,43 @@ final class QueueBuilder implements EventSubscriberInterface
     /**
      * @param StationPlaylist[] $clockwheels
      */
-    private function pickPrimaryClockwheel(array $clockwheels): StationPlaylist
-    {
+    private function pickPrimaryClockwheel(
+        array $clockwheels,
+        DateTimeImmutable $expectedPlayTime
+    ): StationPlaylist {
         usort(
             $clockwheels,
-            static function (StationPlaylist $a, StationPlaylist $b): int {
-                $aTs = $a->played_at?->getTimestamp() ?? 0;
-                $bTs = $b->played_at?->getTimestamp() ?? 0;
-                return ($bTs <=> $aTs) ?: ($a->id <=> $b->id);
+            function (StationPlaylist $a, StationPlaylist $b) use ($expectedPlayTime): int {
+                $aRemaining = $this->getScheduleRemainingSeconds($a, $expectedPlayTime);
+                $bRemaining = $this->getScheduleRemainingSeconds($b, $expectedPlayTime);
+                return ($bRemaining <=> $aRemaining) ?: ($a->id <=> $b->id);
             }
         );
 
         return $clockwheels[0];
+    }
+
+    private function getScheduleRemainingSeconds(
+        StationPlaylist $playlist,
+        DateTimeImmutable $now
+    ): int {
+        $schedule = $this->scheduler->getActiveSchedule($playlist, $now);
+        if (null === $schedule) {
+            return 0;
+        }
+
+        $tz = $playlist->station->getTimezoneObject();
+        $endTime = StationSchedule::getDateTime($schedule->end_time, $tz, $now);
+
+        if ($schedule->start_time === $schedule->end_time) {
+            $endTime = $endTime->addMinutes(15);
+        } elseif ($schedule->start_time > $schedule->end_time) {
+            if ($now->getTimestamp() > $endTime->getTimestamp()) {
+                $endTime = $endTime->addDay();
+            }
+        }
+
+        return max(0, $endTime->getTimestamp() - $now->getTimestamp());
     }
 
     private function makeQueueFromApi(

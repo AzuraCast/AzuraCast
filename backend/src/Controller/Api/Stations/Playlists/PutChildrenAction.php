@@ -155,18 +155,19 @@ final class PutChildrenAction implements SingleActionInterface
         }
 
         foreach ($current->child_items as $child) {
-            if ($child->isRequestSlot()) {
+            $childPlaylist = $child->childPlaylist;
+            if (null === $childPlaylist) {
                 continue;
             }
 
-            if ($child->childPlaylist->id === $ancestor->id) {
+            if ($childPlaylist->id === $ancestor->id) {
                 throw new Exception(
                     __('Circular reference detected: playlist "%s" would create a loop.', $current->name)
                 );
             }
 
-            if (PlaylistTypes::Clockwheel === $child->childPlaylist->type) {
-                $this->checkCircularReference($ancestor, $child->childPlaylist, $depth + 1);
+            if (PlaylistTypes::Clockwheel === $childPlaylist->type) {
+                $this->checkCircularReference($ancestor, $childPlaylist, $depth + 1);
             }
         }
     }

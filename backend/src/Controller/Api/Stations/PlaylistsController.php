@@ -258,9 +258,11 @@ final class PlaylistsController extends AbstractScheduledEntityController
             $return['num_children'] = count($childItems);
 
             $childPlaylistIds = array_unique(
-                array_map(
-                    static fn(StationPlaylistChild $c) => $c->childPlaylist->id,
-                    $childItems
+                array_filter(
+                    array_map(
+                        static fn(StationPlaylistChild $c) => $c->childPlaylist?->id,
+                        $childItems
+                    )
                 )
             );
 

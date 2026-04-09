@@ -413,6 +413,9 @@ final class QueueBuilder implements EventSubscriberInterface
             }
 
             $childPlaylist = $child->childPlaylist;
+            if (null === $childPlaylist) {
+                continue;
+            }
 
             if (!$childPlaylist->is_enabled) {
                 $this->logger->debug(

@@ -7,6 +7,7 @@ namespace App\Controller\Api\Stations\Playlists;
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Status;
+use App\Entity\Enums\ClockwheelRequestMode;
 use App\Entity\Enums\PlaylistTypes;
 use App\Entity\Repository\StationPlaylistRepository;
 use App\Entity\StationPlaylistChild;
@@ -106,7 +107,9 @@ final class PutChildrenAction implements SingleActionInterface
         foreach ($children as $child) {
             $childId = (int)($child['child_playlist_id'] ?? 0);
             $songCount = max(1, (int)($child['song_count'] ?? 1));
-            $allowRequests = (bool)($child['allow_requests'] ?? false);
+            $requestMode = ClockwheelRequestMode::tryFrom(
+                (string)($child['request_mode'] ?? 'none')
+            ) ?? ClockwheelRequestMode::None;
 
             $childPlaylist = ($childId > 0)
                 ? $this->playlistRepo->findForStation($childId, $station)
@@ -117,7 +120,7 @@ final class PutChildrenAction implements SingleActionInterface
                 $childPlaylist,
                 $position,
                 $songCount,
-                $allowRequests
+                $requestMode
             );
 
             $this->em->persist($childEntity);

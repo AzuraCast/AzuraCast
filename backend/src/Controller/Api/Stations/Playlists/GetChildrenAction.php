@@ -80,7 +80,7 @@ final class GetChildrenAction implements SingleActionInterface
                 'child_playlist_name' => $child->childPlaylist?->name,
                 'position' => $child->position,
                 'song_count' => $child->song_count,
-                'allow_requests' => $child->allow_requests,
+                'request_mode' => $child->request_mode->value,
             ];
         }
 

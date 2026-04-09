@@ -50,7 +50,7 @@
                         <th style="width: 30%;">{{ $gettext('Playlist') }}</th>
                         <th style="width: 20%;">{{ $gettext('Info') }}</th>
                         <th style="width: 10%;">{{ $gettext('Per Step') }}</th>
-                        <th style="width: 15%;">{{ $gettext('Requests') }}</th>
+                        <th style="width: 15%;">{{ $gettext('Allow Requests') }}</th>
                         <th style="width: 20%;">{{ $gettext('Actions') }}</th>
                     </tr>
                 </thead>
@@ -122,20 +122,20 @@
                         </td>
                         <td>
                             <template v-if="child.child_playlist_id !== null">
-                                <div class="form-check">
-                                    <input
-                                        :id="'allow_requests_' + index"
-                                        v-model="child.allow_requests"
-                                        type="checkbox"
-                                        class="form-check-input"
-                                    >
-                                    <label
-                                        :for="'allow_requests_' + index"
-                                        class="form-check-label"
-                                    >
-                                        {{ $gettext('Allow') }}
-                                    </label>
-                                </div>
+                                <select
+                                    v-model="child.request_mode"
+                                    class="form-select form-select-sm"
+                                >
+                                    <option value="none">
+                                        {{ $gettext('None') }}
+                                    </option>
+                                    <option value="any">
+                                        {{ $gettext('Any') }}
+                                    </option>
+                                    <option value="playlist_only">
+                                        {{ $gettext('From Playlist') }}
+                                    </option>
+                                </select>
                             </template>
                         </td>
                         <td>
@@ -215,7 +215,7 @@ interface ChildItem {
     child_playlist_id: number | '' | null;
     child_playlist_name?: string;
     song_count: number;
-    allow_requests: boolean;
+    request_mode: 'none' | 'any' | 'playlist_only';
 }
 
 interface PlaylistOption {
@@ -316,7 +316,7 @@ const loadChildren = async (url: string) => {
             child_playlist_id: child.child_playlist_id ?? null,
             child_playlist_name: child.child_playlist_name,
             song_count: child.song_count,
-            allow_requests: child.allow_requests ?? false
+            request_mode: child.request_mode ?? 'none'
         }));
     } catch {
         children.value = [];
@@ -327,7 +327,7 @@ const addChild = () => {
     children.value.push({
         child_playlist_id: '',
         song_count: 1,
-        allow_requests: false
+        request_mode: 'none'
     });
 };
 
@@ -335,7 +335,7 @@ const addRequestSlot = () => {
     children.value.push({
         child_playlist_id: null,
         song_count: 1,
-        allow_requests: false
+        request_mode: 'none'
     });
 };
 

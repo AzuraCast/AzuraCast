@@ -31,15 +31,24 @@
                 >
                     <div class="card-body-flush">
                         <div
-                            v-if="clockwheelConflict"
-                            class="alert alert-warning m-3 mb-0"
+                            v-if="clockwheelConflictInfo"
+                            class="alert alert-warning m-3"
                         >
-                            {{
-                                $gettext(
-                                    'Multiple enabled clockwheels detected: %{names}. Only one clockwheel can be active at a time — the one with the highest weight will take priority.',
-                                    {names: clockwheelConflict}
-                                )
-                            }}
+                            <strong>{{ $gettext('Multiple enabled clockwheels detected') }}</strong>
+                            <p class="mb-1 mt-2">
+                                {{ $gettext('Only one clockwheel can be active at a time. The currently active clockwheel will keep priority; newly enabled clockwheels are ignored until it is disabled.') }}
+                            </p>
+                            <ul class="mb-1">
+                                <li>
+                                    <strong>{{ $gettext('Active:') }}</strong> {{ clockwheelConflictInfo.active }}
+                                </li>
+                                <li>
+                                    <strong>{{ $gettext('Ignored:') }}</strong> {{ clockwheelConflictInfo.ignored }}
+                                </li>
+                            </ul>
+                            <small class="text-muted">
+                                {{ $gettext('To resolve this, schedule your clockwheels for non-overlapping time slots, or disable/delete the ones you no longer need.') }}
+                            </small>
                         </div>
 
                         <div class="card-body buttons">
@@ -380,17 +389,35 @@ const fields: DataTableField[] = [
 
 const listItemProvider = useApiItemProvider(
     listUrl,
-    queryKeyWithStation([QueryKeys.StationPlaylists])
+    queryKeyWithStation([QueryKeys.StationPlaylists]),
+    undefined,
+    undefined,
+    (rows) => [...rows].sort((a: any, b: any) => {
+        const aCw = a.type === 'clockwheel' ? 0 : 1;
+        const bCw = b.type === 'clockwheel' ? 0 : 1;
+        return aCw - bCw;
+    })
 );
 
-const clockwheelConflict = computed((): string | null => {
+const clockwheelConflictInfo = computed((): { active: string; ignored: string } | null => {
     const enabledCws = listItemProvider.rows.value.filter(
         (p: Record<string, unknown>) => p.type === 'clockwheel' && p.is_enabled
     );
-    if (enabledCws.length > 1) {
-        return enabledCws.map((p: Record<string, unknown>) => `"${p.name as string}"`).join(', ');
+    if (enabledCws.length <= 1) {
+        return null;
     }
-    return null;
+
+    const sorted = [...enabledCws].sort((a: Record<string, unknown>, b: Record<string, unknown>) => {
+        const aPlayed = (a.played_at as number | null) ?? 0;
+        const bPlayed = (b.played_at as number | null) ?? 0;
+        if (aPlayed !== bPlayed) return bPlayed - aPlayed;
+        return (a.id as number) - (b.id as number);
+    });
+
+    return {
+        active: sorted[0].name as string,
+        ignored: sorted.slice(1).map((p: Record<string, unknown>) => p.name as string).join(', ')
+    };
 });
 
 const {Duration} = useLuxon();

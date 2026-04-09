@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Enums\ClockwheelRequestMode;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
@@ -48,10 +49,10 @@ final class StationPlaylistChild implements IdentifiableEntityInterface
     public int $song_count = 1;
 
     #[
-        OA\Property(description: 'Allow listener requests to override songs from this step.'),
-        ORM\Column(type: 'boolean')
+        OA\Property(description: 'Request handling mode for this step.'),
+        ORM\Column(type: 'string', length: 20, enumType: ClockwheelRequestMode::class)
     ]
-    public bool $allow_requests = false;
+    public ClockwheelRequestMode $request_mode = ClockwheelRequestMode::None;
 
     public function isRequestSlot(): bool
     {
@@ -63,12 +64,12 @@ final class StationPlaylistChild implements IdentifiableEntityInterface
         ?StationPlaylist $childPlaylist,
         int $position = 0,
         int $songCount = 1,
-        bool $allowRequests = false
+        ClockwheelRequestMode $requestMode = ClockwheelRequestMode::None
     ) {
         $this->parentPlaylist = $parentPlaylist;
         $this->childPlaylist = $childPlaylist;
         $this->position = $position;
         $this->song_count = max(1, $songCount);
-        $this->allow_requests = $allowRequests;
+        $this->request_mode = $requestMode;
     }
 }

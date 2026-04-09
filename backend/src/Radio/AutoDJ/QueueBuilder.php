@@ -7,6 +7,7 @@ namespace App\Radio\AutoDJ;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Entity\Api\StationPlaylistQueue;
+use App\Entity\Enums\ClockwheelRequestMode;
 use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Enums\PlaylistRemoteTypes;
 use App\Entity\Enums\PlaylistSources;
@@ -415,11 +416,26 @@ final class QueueBuilder implements EventSubscriberInterface
             }
 
             // Override mode: if this step allows requests, try a request first.
-            if ($child->allow_requests) {
+            if (ClockwheelRequestMode::None !== $child->request_mode) {
                 $request = $this->requestRepo->getNextPlayableRequest(
                     $clockwheelPlaylist->station,
                     $expectedPlayTime
                 );
+
+                if (
+                    null !== $request
+                    && ClockwheelRequestMode::PlaylistOnly === $child->request_mode
+                    && !$this->isTrackInPlaylist($request->track, $childPlaylist)
+                ) {
+                    $this->logger->debug(
+                        sprintf(
+                            'Clockwheel step %d: request track not in playlist "%s", skipping request.',
+                            $stepIndex,
+                            $childPlaylist->name
+                        )
+                    );
+                    $request = null;
+                }
 
                 if (null !== $request) {
                     $this->logger->info(
@@ -532,6 +548,20 @@ final class QueueBuilder implements EventSubscriberInterface
         $this->em->persist($playlist);
     }
 
+    private function isTrackInPlaylist(StationMedia $track, StationPlaylist $playlist): bool
+    {
+        $count = (int)$this->em->createQuery(
+            <<<'DQL'
+                SELECT COUNT(spm.id) FROM App\Entity\StationPlaylistMedia spm
+                WHERE spm.media = :media AND spm.playlist = :playlist
+            DQL
+        )->setParameter('media', $track)
+            ->setParameter('playlist', $playlist)
+            ->getSingleScalarResult();
+
+        return $count > 0;
+    }
+
     /**
      * @param StationQueue|StationQueue[]|null $result
      */
@@ -575,7 +605,7 @@ final class QueueBuilder implements EventSubscriberInterface
                     $suppressedIds[$cw->id] = $winner->name;
                     $this->logger->warning(
                         sprintf(
-                            'Clockwheel "%s" suppressed: "%s" takes priority.',
+                            'Clockwheel "%s" ignored: "%s" is already active.',
                             $cw->name,
                             $winner->name
                         ),
@@ -649,7 +679,11 @@ final class QueueBuilder implements EventSubscriberInterface
     {
         usort(
             $clockwheels,
-            static fn(StationPlaylist $a, StationPlaylist $b) => ($b->weight <=> $a->weight) ?: ($a->id <=> $b->id)
+            static function (StationPlaylist $a, StationPlaylist $b): int {
+                $aTs = $a->played_at?->getTimestamp() ?? 0;
+                $bTs = $b->played_at?->getTimestamp() ?? 0;
+                return ($bTs <=> $aTs) ?: ($a->id <=> $b->id);
+            }
         );
 
         return $clockwheels[0];

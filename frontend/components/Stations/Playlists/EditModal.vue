@@ -14,7 +14,7 @@
                 :edit-url="editUrl"
             />
             <form-schedule v-model:schedule-items="form.schedule_items" />
-            <form-advanced v-if="form.type !== 'clockwheel'"/>
+            <form-advanced />
         </tabs>
     </modal-form>
 </template>

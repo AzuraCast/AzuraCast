@@ -781,7 +781,7 @@ final class QueueBuilder implements EventSubscriberInterface
             }
 
             // @TODO: maybe too naive of a check
-            // if it is part of a playlist group we would need to check if that one is currently eligible to be played...
+            // if it is part of a playlist group we would need to check if that one is currently eligible to be played
             if (PlaylistSources::Requests === $playlist->source) {
                 $this->logger->debug(sprintf(
                     'Playlist "%s" is controlling request queue and due now; skipping regular request queue.',

@@ -9050,10 +9050,12 @@ components:
         - songs
         - playlists
         - remote_url
+        - requests
       x-enumNames:
         - Songs
         - Playlists
         - RemoteUrl
+        - Requests
     PlaylistTypes:
       type: string
       enum:

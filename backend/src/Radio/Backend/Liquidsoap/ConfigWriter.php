@@ -1464,7 +1464,10 @@ final class ConfigWriter implements EventSubscriberInterface
         $station = $event->getStation();
         $backendConfig = $event->getBackendConfig();
 
-        if (PlaylistSources::Playlists === $playlist->source) {
+        if (
+            PlaylistSources::Playlists === $playlist->source
+            || PlaylistSources::Requests === $playlist->source
+        ) {
             return false;
         }
 

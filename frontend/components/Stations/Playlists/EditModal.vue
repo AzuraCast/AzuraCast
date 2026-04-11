@@ -11,7 +11,7 @@
         <tabs>
             <form-basic-info/>
             <form-schedule v-model:schedule-items="form.schedule_items" />
-            <form-advanced v-if="form.source !== 'playlists'" />
+            <form-advanced v-if="![PlaylistSources.Playlists, PlaylistSources.Requests].includes(form.source)" />
         </tabs>
     </modal-form>
 </template>
@@ -30,6 +30,7 @@ import {storeToRefs} from "pinia";
 import {useAppCollectScope} from "~/vendor/regle.ts";
 import {useStationsPlaylistsForm} from "~/components/Stations/Playlists/Form/form.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
+import { PlaylistSources } from "~/entities/ApiInterfaces";
 
 const props = defineProps<BaseEditModalProps>();
 

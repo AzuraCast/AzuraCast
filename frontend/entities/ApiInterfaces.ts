@@ -200,6 +200,7 @@ export enum PlaylistSources {
   Songs = "songs",
   Playlists = "playlists",
   RemoteUrl = "remote_url",
+  Requests = "requests",
 }
 
 export enum PlaylistRemoteTypes {

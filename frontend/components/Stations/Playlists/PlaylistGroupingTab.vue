@@ -116,7 +116,11 @@
                                                         <icon-ic-queue-music />
                                                         <div class="ps-2">{{ $gettext('Playlist Group') }}</div>
                                                     </template>
-                                                    <template v-else>
+                                                    <template v-else-if="item.source === PlaylistSources.Requests">
+                                                        <icon-bi-people />
+                                                        <div class="ps-2">{{ $gettext('Request Queue') }}</div>
+                                                    </template>
+                                                    <template v-else-if="item.source === PlaylistSources.RemoteUrl">
                                                         <icon-ic-public />
                                                         <div class="ps-2">{{ $gettext('Remote URL') }}</div>
                                                     </template>
@@ -348,7 +352,11 @@
                                                         <icon-ic-queue-music />
                                                         <div class="ps-2">{{ $gettext('Playlist Group') }}</div>
                                                     </template>
-                                                    <template v-else>
+                                                    <template v-else-if="member.source === PlaylistSources.Requests">
+                                                        <icon-bi-people />
+                                                        <div class="ps-2">{{ $gettext('Request Queue') }}</div>
+                                                    </template>
+                                                    <template v-else-if="member.source === PlaylistSources.RemoteUrl">
                                                         <icon-ic-public />
                                                         <div class="ps-2">{{ $gettext('Remote URL') }}</div>
                                                     </template>
@@ -428,6 +436,7 @@ import IconIcQueueMusic from "~icons/ic/baseline-queue-music";
 import IconIcPublic from "~icons/ic/baseline-public";
 import IconIcDriveFileMove from "~icons/ic/baseline-drive-file-move";
 import IconIcDelete from "~icons/ic/baseline-delete";
+import IconBiPeople from "~icons/bi/people";
 import IconBiFolder from "~icons/bi/folder";
 import IconBiChevronBarDown from "~icons/bi/chevron-bar-down";
 import IconBiChevronBarUp from "~icons/bi/chevron-bar-up";
@@ -657,7 +666,7 @@ const isAssignable = (playlist: StationPlaylistEnriched): boolean => {
         return false;
     }
 
-    if (![PlaylistSources.Songs, PlaylistSources.Playlists].includes(playlist.source)) {
+    if (![PlaylistSources.Songs, PlaylistSources.Requests, PlaylistSources.Playlists].includes(playlist.source)) {
         return false;
     }
 

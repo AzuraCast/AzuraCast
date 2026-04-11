@@ -92,6 +92,9 @@
                                     <template v-else-if="item.source === 'playlists'">
                                         {{ $gettext('Playlist Group') }}
                                     </template>
+                                    <template v-else-if="item.source === 'requests'">
+                                        {{ $gettext('Request Queue') }}
+                                    </template>
                                     <template v-else>
                                         {{ $gettext('Remote URL') }}
                                     </template>

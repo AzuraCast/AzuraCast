@@ -91,7 +91,7 @@ final class StationPlaylist implements
         set {
             $this->source = $value;
 
-            if (PlaylistSources::RemoteUrl === $value) {
+            if (PlaylistSources::RemoteUrl === $value || PlaylistSources::Requests === $value) {
                 $this->type = PlaylistTypes::Standard;
             }
         }
@@ -336,6 +336,10 @@ final class StationPlaylist implements
 
         if ($interrupting !== $this->backendInterruptOtherSongs()) {
             return false;
+        }
+
+        if (PlaylistSources::Requests === $this->source) {
+            return true;
         }
 
         if (PlaylistSources::Playlists === $this->source) {

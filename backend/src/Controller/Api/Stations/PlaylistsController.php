@@ -343,7 +343,7 @@ final class PlaylistsController extends AbstractScheduledEntityController
         }
 
         $source = PlaylistSources::tryFrom($data['source'] ?? '');
-        if ($source === PlaylistSources::Playlists) {
+        if ($source === PlaylistSources::Playlists || $source === PlaylistSources::Requests) {
             $data['include_in_on_demand'] = false;
             $data['include_in_requests'] = false;
             $data['is_jingle'] = false;

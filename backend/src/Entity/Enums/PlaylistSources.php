@@ -12,4 +12,5 @@ enum PlaylistSources: string
     case Songs = 'songs';
     case Playlists = 'playlists';
     case RemoteUrl = 'remote_url';
+    case Requests = 'requests';
 }

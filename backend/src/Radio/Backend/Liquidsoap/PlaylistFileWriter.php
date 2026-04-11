@@ -55,7 +55,10 @@ final class PlaylistFileWriter implements EventSubscriberInterface
             return;
         }
 
-        if (PlaylistSources::Playlists === $playlist->source) {
+        if (
+            PlaylistSources::Playlists === $playlist->source
+            || PlaylistSources::Requests === $playlist->source
+        ) {
             return;
         }
 

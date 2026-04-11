@@ -466,6 +466,11 @@ final class QueueBuilder implements EventSubscriberInterface
                 $recentSongHistory,
                 $allowDuplicates
             ),
+
+            PlaylistSources::Requests => $this->playSongFromRequestsPlaylist(
+                $event,
+                $playlist
+            ),
         };
 
         $selectedTracksResult = $selectedTracksResult ?: null;
@@ -547,6 +552,39 @@ final class QueueBuilder implements EventSubscriberInterface
         }
 
         return null;
+    }
+
+    private function playSongFromRequestsPlaylist(
+        BuildQueue $event,
+        StationPlaylist $playlist
+    ): bool {
+        $request = $this->requestRepo->getNextPlayableRequest(
+            $playlist->station,
+            $event->getExpectedPlayTime()
+        );
+
+        if (null === $request) {
+            return false;
+        }
+
+        $this->logger->debug(sprintf(
+            'Queueing next song from request ID %d via Requests playlist "%s".',
+            $request->id,
+            $playlist->name
+        ));
+
+        $stationQueueEntry = StationQueue::fromRequest($request);
+        $stationQueueEntry->playlist = $playlist;
+        $this->em->persist($stationQueueEntry);
+
+        $request->played_at = $event->getExpectedPlayTime();
+        $this->em->persist($request);
+
+        $playlist->played_at = $event->getExpectedPlayTime();
+        $this->em->persist($playlist);
+
+        $event->setNextSongs($stationQueueEntry);
+        return true;
     }
 
     private function makeQueueFromApi(
@@ -733,11 +771,26 @@ final class QueueBuilder implements EventSubscriberInterface
         // Check if any playlist marked with "Prioritize Over Requests" (e.g. a jingle) is due now.
         foreach ($station->playlists as $playlist) {
             /** @var StationPlaylist $playlist */
-            if (
-                $playlist->backendPrioritizeOverRequests() &&
-                $playlist->isPlayable($event->isInterrupting()) &&
-                $this->scheduler->shouldPlaylistPlayNow($playlist, $expectedPlayTime)
-            ) {
+
+            if (!$playlist->isPlayable($event->isInterrupting())) {
+                continue;
+            }
+
+            if (!$this->scheduler->shouldPlaylistPlayNow($playlist, $expectedPlayTime)) {
+                continue;
+            }
+
+            // @TODO: maybe too naive of a check
+            // if it is part of a playlist group we would need to check if that one is currently eligible to be played...
+            if (PlaylistSources::Requests === $playlist->source) {
+                $this->logger->debug(sprintf(
+                    'Playlist "%s" is controlling request queue and due now; skipping regular request queue.',
+                    $playlist->name
+                ));
+                return;
+            }
+
+            if ($playlist->backendPrioritizeOverRequests()) {
                 $this->logger->debug(sprintf(
                     'Playlist "%s" is prioritized and due now; skipping request queue.',
                     $playlist->name

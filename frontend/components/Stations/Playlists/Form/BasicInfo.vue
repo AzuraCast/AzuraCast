@@ -345,6 +345,24 @@
                 </div>
             </div>
         </section>
+        <section
+            v-show="form.source === 'requests'"
+            class="card mb-3"
+            role="region"
+        >
+            <div class="card-header text-bg-primary">
+                <h2 class="card-title">
+                    {{ $gettext('Request Queue Playlist') }}
+                </h2>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    {{
+                        $gettext('This playlist will play songs that listeners have requested. When this playlist\'s slot is reached and no requests are pending, the AutoDJ will skip to the next eligible playlist.')
+                    }}
+                </p>
+            </div>
+        </section>
     </tab>
 </template>
 
@@ -383,6 +401,11 @@ const sourceOptions = [
         value: 'remote_url',
         text: $gettext('Remote URL'),
         description: $gettext('A playlist that instructs the station to play from a remote URL.')
+    },
+    {
+        value: 'requests',
+        text: $gettext('Request Queue'),
+        description: $gettext('A playlist that plays songs requested by listeners.')
     }
 ];
 

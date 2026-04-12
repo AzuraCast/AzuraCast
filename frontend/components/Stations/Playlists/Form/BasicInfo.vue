@@ -190,6 +190,120 @@
         </section>
 
         <section
+            v-show="form.source === 'playlists'"
+            class="card mb-3"
+            role="region"
+        >
+            <div class="card-header text-bg-primary">
+                <h2 class="card-title">
+                    {{ $gettext('Playlist Group Playlist') }}
+                </h2>
+            </div>
+            <div class="card-body">
+                <div class="row g-3 mb-3">
+                    <form-group-multi-check
+                        id="edit_form_type"
+                        class="col-md-6"
+                        :field="r$.type"
+                        :options="typeOptions.filter((option) => option.value !== 'custom')"
+                        stacked
+                        radio
+                        :label="$gettext('Playlist Type')"
+                    />
+
+                    <form-group-multi-check
+                        id="edit_form_order"
+                        class="col-md-6"
+                        :field="r$.order"
+                        :options="orderOptions"
+                        stacked
+                        radio
+                        :label="$gettext('Song Playback Order')"
+                    />
+
+                    <form-group-checkbox
+                        id="form_edit_avoid_duplicates"
+                        class="col-md-6"
+                        :field="r$.avoid_duplicates"
+                        :label="$gettext('Avoid Duplicate Artists/Titles')"
+                        :description="$gettext('Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.')"
+                    />
+                </div>
+
+                <form-fieldset v-show="form.type === 'default'">
+                    <template #label>
+                        {{ $gettext('General Rotation') }}
+                    </template>
+
+                    <div class="row g-3">
+                        <form-group-select
+                            id="form_edit_weight"
+                            class="col-md-12"
+                            :field="r$.weight"
+                            :options="weightOptions"
+                            :label="$gettext('Playlist Weight')"
+                            :description="$gettext('Playlists with larger number weights (i.e. 25) play more frequently than playlists with smaller number weights (i.e. 1).')"
+                        />
+                    </div>
+                </form-fieldset>
+
+                <form-fieldset v-show="form.type === 'once_per_x_songs'">
+                    <template #label>
+                        {{ $gettext('Once per x Songs') }}
+                    </template>
+
+                    <div class="row g-3">
+                        <form-group-field
+                            id="form_edit_play_per_songs"
+                            class="col-md-12"
+                            :field="r$.play_per_songs"
+                            input-type="number"
+                            :input-attrs="{min: '0', max: '150'}"
+                            :label="$gettext('Number of Songs Between Plays')"
+                            :description="$gettext('This playlist will play every $x songs, where $x is specified here.')"
+                        />
+                    </div>
+                </form-fieldset>
+
+                <form-fieldset v-show="form.type === 'once_per_x_minutes'">
+                    <template #label>
+                        {{ $gettext('Once per x Minutes') }}
+                    </template>
+
+                    <div class="row g-3">
+                        <form-group-field
+                            id="form_edit_play_per_minutes"
+                            class="col-md-12"
+                            :field="r$.play_per_minutes"
+                            input-type="number"
+                            :input-attrs="{min: '0', max: '360'}"
+                            :label="$gettext('Number of Minutes Between Plays')"
+                            :description="$gettext('This playlist will play every $x minutes, where $x is specified here.')"
+                        />
+                    </div>
+                </form-fieldset>
+
+                <form-fieldset v-show="form.type === 'once_per_hour'">
+                    <template #label>
+                        {{ $gettext('Once per Hour') }}
+                    </template>
+
+                    <div class="row g-3">
+                        <form-group-field
+                            id="form_edit_play_per_hour_minute"
+                            class="col-md-12"
+                            :field="r$.play_per_hour_minute"
+                            input-type="number"
+                            :input-attrs="{min: '0', max: '59'}"
+                            :label="$gettext('Minute of Hour to Play')"
+                            :description="$gettext('Specify the minute of every hour that this playlist should play.')"
+                        />
+                    </div>
+                </form-fieldset>
+            </div>
+        </section>
+
+        <section
             v-show="form.source === 'remote_url'"
             class="card mb-3"
             role="region"
@@ -231,6 +345,24 @@
                 </div>
             </div>
         </section>
+        <section
+            v-show="form.source === 'requests'"
+            class="card mb-3"
+            role="region"
+        >
+            <div class="card-header text-bg-primary">
+                <h2 class="card-title">
+                    {{ $gettext('Request Queue Playlist') }}
+                </h2>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    {{
+                        $gettext('This playlist will play songs that listeners have requested. When this playlist\'s slot is reached and no requests are pending, the AutoDJ will skip to the next eligible playlist.')
+                    }}
+                </p>
+            </div>
+        </section>
     </tab>
 </template>
 
@@ -261,9 +393,19 @@ const sourceOptions = [
         description: $gettext('A playlist containing media files hosted on this server.')
     },
     {
+        value: 'playlists',
+        text: $gettext('Playlist Group'),
+        description: $gettext('A playlist containing other playlists.')
+    },
+    {
         value: 'remote_url',
         text: $gettext('Remote URL'),
         description: $gettext('A playlist that instructs the station to play from a remote URL.')
+    },
+    {
+        value: 'requests',
+        text: $gettext('Request Queue'),
+        description: $gettext('A playlist that plays songs requested by listeners.')
     }
 ];
 

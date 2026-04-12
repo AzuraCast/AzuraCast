@@ -14,4 +14,6 @@ import {TabChildProps, useTabChild} from "~/functions/tabs.ts";
 const props = defineProps<TabChildProps>();
 
 const {computedId, isActive, isLazy} = useTabChild(props);
+
+defineExpose({isActive});
 </script>

@@ -6,8 +6,10 @@ namespace App\Radio\AutoDJ;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Entity\Enums\PlaylistSources;
 use App\Entity\Enums\PlaylistTypes;
 use App\Entity\Repository\StationPlaylistMediaRepository;
+use App\Entity\Repository\StationPlaylistRepository;
 use App\Entity\Repository\StationQueueRepository;
 use App\Entity\StationPlaylist;
 use App\Entity\StationSchedule;
@@ -26,6 +28,7 @@ final class Scheduler
     use EntityManagerAwareTrait;
 
     public function __construct(
+        private readonly StationPlaylistRepository $spRepo,
         private readonly StationPlaylistMediaRepository $spmRepo,
         private readonly StationQueueRepository $queueRepo
     ) {
@@ -372,26 +375,43 @@ final class Scheduler
 
         $playlistPlayedAt = $playlist->played_at;
 
-        $isQueueEmpty = $this->spmRepo->isQueueEmpty($playlist);
-        $hasCuedPlaylistMedia = $this->queueRepo->hasCuedPlaylistMedia($playlist);
+        $isQueueEmpty = (PlaylistSources::Playlists === $playlist->source)
+            ? $this->spRepo->isPlaylistGroupQueueEmpty($playlist)
+            : $this->spmRepo->isQueueEmpty($playlist);
+
+        $hasCuedPlaylistMedia = (PlaylistSources::Playlists === $playlist->source)
+            ? $this->queueRepo->hasCuedPlaylistGroupMedia($playlist)
+            : $this->queueRepo->hasCuedPlaylistMedia($playlist);
 
         if (!$dateRange->contains($playlistPlayedAt)) {
             $this->logger->debug('Playlist was not played yet.');
 
-            $isQueueFilled = $this->spmRepo->isQueueCompletelyFilled($playlist);
+            $isQueueFilled = (PlaylistSources::Playlists === $playlist->source)
+                ? $this->spRepo->isPlaylistGroupQueueCompletelyFilled($playlist)
+                : $this->spmRepo->isQueueCompletelyFilled($playlist);
 
             if ((!$isQueueFilled || $isQueueEmpty) && !$hasCuedPlaylistMedia) {
                 $now = $dateRange->start->subSecond();
 
                 $this->logger->debug('Resetting playlist queue with now override', [$now]);
 
-                $this->spmRepo->resetQueue($playlist, $now);
+                if (PlaylistSources::Playlists === $playlist->source) {
+                    $this->spRepo->resetPlaylistGroupQueue($playlist, $now);
+                } else {
+                    $this->spmRepo->resetQueue($playlist, $now);
+                }
+
                 $isQueueEmpty = false;
             }
         } elseif ($isQueueEmpty && !$hasCuedPlaylistMedia) {
             $this->logger->debug('Resetting playlist queue.');
 
-            $this->spmRepo->resetQueue($playlist);
+            if (PlaylistSources::Playlists === $playlist->source) {
+                $this->spRepo->resetPlaylistGroupQueue($playlist);
+            } else {
+                $this->spmRepo->resetQueue($playlist);
+            }
+
             $isQueueEmpty = false;
         }
 

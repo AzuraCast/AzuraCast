@@ -91,7 +91,7 @@ final class StationPlaylist implements
         set {
             $this->source = $value;
 
-            if (PlaylistSources::RemoteUrl === $value) {
+            if (PlaylistSources::RemoteUrl === $value || PlaylistSources::Requests === $value) {
                 $this->type = PlaylistTypes::Standard;
             }
         }
@@ -279,6 +279,25 @@ final class StationPlaylist implements
     ]
     public private(set) Collection $podcasts;
 
+    /** @var Collection<int, StationPlaylistGroup> */
+    #[
+        OA\Property(type: "array", items: new OA\Items()),
+        ORM\OneToMany(targetEntity: StationPlaylistGroup::class, mappedBy: 'playlist_group', fetch: 'EXTRA_LAZY'),
+        ORM\OrderBy(['weight' => 'ASC']),
+        DeepNormalize(true),
+        Serializer\MaxDepth(1)
+    ]
+    public private(set) Collection $playlists;
+
+    /** @var Collection<int, StationPlaylistGroup> */
+    #[
+        ORM\OneToMany(targetEntity: StationPlaylistGroup::class, mappedBy: 'playlist', fetch: 'EXTRA_LAZY'),
+        ORM\OrderBy(['weight' => 'ASC']),
+        DeepNormalize(true),
+        Serializer\MaxDepth(1)
+    ]
+    public private(set) Collection $playlist_groups;
+
     public function __construct(Station $station)
     {
         $this->station = $station;
@@ -292,6 +311,8 @@ final class StationPlaylist implements
         $this->folders = new ArrayCollection();
         $this->schedule_items = new ArrayCollection();
         $this->podcasts = new ArrayCollection();
+        $this->playlists = new ArrayCollection();
+        $this->playlist_groups = new ArrayCollection();
     }
 
     /**
@@ -317,6 +338,14 @@ final class StationPlaylist implements
             return false;
         }
 
+        if (PlaylistSources::Requests === $this->source) {
+            return true;
+        }
+
+        if (PlaylistSources::Playlists === $this->source) {
+            return $this->playlists->count() > 0;
+        }
+
         if (PlaylistSources::Songs === $this->source) {
             return $this->media_items->count() > 0;
         }
@@ -334,6 +363,8 @@ final class StationPlaylist implements
         $this->folders = new ArrayCollection();
         $this->schedule_items = new ArrayCollection();
         $this->podcasts = new ArrayCollection();
+        $this->playlists = new ArrayCollection();
+        $this->playlist_groups = new ArrayCollection();
     }
 
     public function __toString(): string

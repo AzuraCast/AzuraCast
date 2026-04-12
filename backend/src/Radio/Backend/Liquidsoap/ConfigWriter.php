@@ -127,33 +127,33 @@ final class ConfigWriter implements EventSubscriberInterface
             <<<LIQ
             # AzuraCast Common Runtime Functions
             %include "{$commonLibPath}"
-            
+
             log.level := {$logLevel}
             init.daemon.pidfile.path := "{$pidfile}"
-            
+
             settings.init.compact_before_start := true
-            
-            environment.set("TZ", {$stationTz}) 
-            
+
+            environment.set("TZ", {$stationTz})
+
             settings.azuracast.liquidsoap_api_port := {$httpApiPort}
             settings.azuracast.api_url := {$stationApiUrl}
             settings.azuracast.api_key := {$stationApiAuth}
             settings.azuracast.media_path := "{$stationMediaDir}"
             settings.azuracast.fallback_path := {$fallbackPath}
             settings.azuracast.temp_path := {$tempPath}
-            
+
             settings.azuracast.compute_autocue := {$useComputeAutocue}
-            
+
             settings.azuracast.default_fade := {$defaultFade}
             settings.azuracast.default_cross := {$defaultCross}
             settings.azuracast.enable_crossfade := {$enableCrossfade}
             settings.azuracast.crossfade_type := "{$crossfadeType}"
-            
+
             settings.azuracast.live_broadcast_text := {$liveBroadcastText}
-            
+
             # Start HTTP API Server
             azuracast.start_http_api()
-            
+
             LIQ
         );
 
@@ -294,6 +294,11 @@ final class ConfigWriter implements EventSubscriberInterface
             }
 
             $event->appendLines($playlistConfigLines);
+
+            // Playlists that are part of playlist groups are not directly scheduled
+            if ($playlist->playlist_groups->count() > 0) {
+                continue;
+            }
 
             switch ($playlist->type) {
                 case PlaylistTypes::Standard:
@@ -496,7 +501,7 @@ final class ConfigWriter implements EventSubscriberInterface
             <<<LIQ
             # Allow Telnet to skip the current track.
             azuracast.utilities.add_skip_command(radio)
-            
+
             # Apply amplification metadata (if supplied)
             # This can be disabled by setting:
             #   settings.azuracast.apply_amplify := false
@@ -522,7 +527,7 @@ final class ConfigWriter implements EventSubscriberInterface
             <<<LS
             # Log current metadata for debugging.
             source.methods(radio).on_metadata(synchronous=false, azuracast.log_meta)
-            
+
             # Apply crossfade.
             radio = azuracast.apply_crossfade(radio)
             LS
@@ -587,10 +592,10 @@ final class ConfigWriter implements EventSubscriberInterface
                 end
                 updates
             end
-            
+
             # Temporarily disabled for testing.
             # live = metadata.map(insert_missing, live)
-            
+
             radio = fallback(
                 id="live_fallback",
                 track_sensitive=true,
@@ -599,7 +604,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     fun (_, s) -> begin
                         log("executing transition to live")
                         s
-                    end, 
+                    end,
                     fun (_, s) -> begin
                         s
                     end
@@ -679,7 +684,7 @@ final class ConfigWriter implements EventSubscriberInterface
             <<<LIQ
             # Add Fallback
             radio = azuracast.add_fallback(radio)
-            
+
             # Send metadata changes back to AzuraCast
             source.methods(radio).on_metadata(synchronous=false, azuracast.send_feedback)
 
@@ -1458,6 +1463,13 @@ final class ConfigWriter implements EventSubscriberInterface
     ): bool {
         $station = $event->getStation();
         $backendConfig = $event->getBackendConfig();
+
+        if (
+            PlaylistSources::Playlists === $playlist->source
+            || PlaylistSources::Requests === $playlist->source
+        ) {
+            return false;
+        }
 
         if ($backendConfig->write_playlists_to_liquidsoap) {
             return true;

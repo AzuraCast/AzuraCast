@@ -2548,8 +2548,8 @@ paths:
           in: query
           schema:
             type: boolean
-            default: false
             nullable: true
+            default: false
       responses:
         '200':
           description: Success
@@ -3722,6 +3722,32 @@ paths:
         - 'Stations: Playlists'
       summary: 'Import the contents of an uploaded playlist (PLS/M3U) file into the specified playlist.'
       operationId: postStationPlaylistImport
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Playlist ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/playlist/{id}/members':
+    put:
+      tags:
+        - 'Stations: Playlists'
+      summary: 'Set the member playlists of the specified playlist group.'
+      operationId: putStationPlaylistMembers
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -7548,11 +7574,11 @@ components:
         cache:
           description: 'Debugging information about where the now playing data comes from.'
           type: string
+          nullable: true
           enum:
             - hit
             - database
             - station
-          nullable: true
       type: object
     Api_NowPlaying_SongHistory:
       required:
@@ -8093,7 +8119,7 @@ components:
           type: integer
           example: 1
         media_id:
-          description: 'ID of the StationPlaylistMedia record associating this track with the playlist'
+          description: 'ID of the StationMedia record associating this track with the media'
           type: integer
           example: 1
         song_id:
@@ -8209,10 +8235,10 @@ components:
         type:
           description: 'The type of this schedule entry.'
           type: string
+          example: playlist
           enum:
             - playlist
             - streamer
-          example: playlist
         name:
           description: "Either the playlist or streamer's display name."
           type: string
@@ -8859,9 +8885,9 @@ components:
         initialVolume:
           description: 'Initial player volume (0-100).'
           type: integer
+          example: 75
           maximum: 100
           minimum: 0
-          example: 75
         layout:
           description: 'Layout variant for the widget.'
           type: string
@@ -9022,10 +9048,14 @@ components:
       type: string
       enum:
         - songs
+        - playlists
         - remote_url
+        - requests
       x-enumNames:
         - Songs
+        - Playlists
         - RemoteUrl
+        - Requests
     PlaylistTypes:
       type: string
       enum:
@@ -9899,6 +9929,26 @@ components:
               description: Podcast>
               type: array
               items: {  }
+            playlists:
+              description: StationPlaylistGroup>
+              type: array
+              items: {  }
+          type: object
+    StationPlaylistGroup:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            name:
+              description: 'The playlist name.'
+              type: string
+              readOnly: true
+              example: 'My Playlist'
+            weight:
+              type: integer
+              example: 1
           type: object
     StationRemote:
       type: object

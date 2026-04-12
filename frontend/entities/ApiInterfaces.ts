@@ -198,7 +198,9 @@ export enum PlaylistTypes {
 
 export enum PlaylistSources {
   Songs = "songs",
+  Playlists = "playlists",
   RemoteUrl = "remote_url",
+  Requests = "requests",
 }
 
 export enum PlaylistRemoteTypes {
@@ -1249,7 +1251,7 @@ export interface ApiStationPlaylistQueue {
    */
   spm_id?: number;
   /**
-   * ID of the StationPlaylistMedia record associating this track with the playlist
+   * ID of the StationMedia record associating this track with the media
    * @example 1
    */
   media_id?: number;
@@ -2405,6 +2407,18 @@ export type StationPlaylist = HasAutoIncrementId & {
   schedule_items?: any[];
   /** Podcast> */
   podcasts?: any[];
+  /** StationPlaylistGroup> */
+  playlists?: any[];
+};
+
+export type StationPlaylistGroup = HasAutoIncrementId & {
+  /**
+   * The playlist name.
+   * @example "My Playlist"
+   */
+  readonly name?: string;
+  /** @example 1 */
+  weight?: number;
 };
 
 export type StationRemote = HasAutoIncrementId & {

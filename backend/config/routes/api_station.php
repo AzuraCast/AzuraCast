@@ -683,6 +683,11 @@ return static function (RouteCollectorProxy $group) {
                                         '/empty',
                                         Controller\Api\Stations\Playlists\EmptyAction::class
                                     )->setName('api:stations:playlist:empty');
+
+                                    $group->put(
+                                        '/members',
+                                        Controller\Api\Stations\Playlists\PutMembersAction::class
+                                    )->setName('api:stations:playlist:members');
                                 }
                             );
                         }

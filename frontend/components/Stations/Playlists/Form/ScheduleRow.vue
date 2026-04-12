@@ -80,6 +80,7 @@
                 />
 
                 <form-group-checkbox
+                    v-if="form.source !== PlaylistSources.Requests"
                     :id="'edit_form_loop_once_'+index"
                     class="col-md-4"
                     :field="r$.loop_once"
@@ -113,6 +114,11 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 import {useAppScopedRegle} from "~/vendor/regle.ts";
 import IconIcRemove from "~icons/ic/baseline-remove";
+import { PlaylistSources } from "~/entities/ApiInterfaces";
+import {storeToRefs} from "pinia";
+import {useStationsPlaylistsForm} from "~/components/Stations/Playlists/Form/form.ts";
+
+const {form} = storeToRefs(useStationsPlaylistsForm());
 
 interface PlaylistScheduleRow {
     start_time: number,

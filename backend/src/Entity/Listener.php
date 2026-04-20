@@ -12,6 +12,8 @@ use NowPlaying\Result\Client;
     ORM\Entity,
     ORM\Table(name: 'listener'),
     ORM\Index(name: 'idx_timestamps', columns: ['timestamp_end', 'timestamp_start']),
+    ORM\Index(name: 'idx_timestamp_start', columns: ['timestamp_start']),
+    ORM\Index(name: 'idx_station_timestamps_hash', columns: ['station_id', 'timestamp_end', 'timestamp_start', 'listener_hash']),
     ORM\Index(name: 'idx_statistics_country', columns: ['location_country']),
     ORM\Index(name: 'idx_statistics_os', columns: ['device_os_family']),
     ORM\Index(name: 'idx_statistics_browser', columns: ['device_browser_family'])

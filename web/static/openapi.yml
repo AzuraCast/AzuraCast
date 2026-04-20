@@ -5,7 +5,7 @@ info:
   license:
     name: 'GNU Affero General Public License v3.0 or later'
     url: 'https://www.gnu.org/licenses/agpl-3.0.txt'
-  version: 0.23.4
+  version: 0.23.5
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -2548,8 +2548,8 @@ paths:
           in: query
           schema:
             type: boolean
-            default: false
             nullable: true
+            default: false
       responses:
         '200':
           description: Success
@@ -7548,11 +7548,11 @@ components:
         cache:
           description: 'Debugging information about where the now playing data comes from.'
           type: string
+          nullable: true
           enum:
             - hit
             - database
             - station
-          nullable: true
       type: object
     Api_NowPlaying_SongHistory:
       required:
@@ -8209,10 +8209,10 @@ components:
         type:
           description: 'The type of this schedule entry.'
           type: string
+          example: playlist
           enum:
             - playlist
             - streamer
-          example: playlist
         name:
           description: "Either the playlist or streamer's display name."
           type: string
@@ -8859,9 +8859,9 @@ components:
         initialVolume:
           description: 'Initial player volume (0-100).'
           type: integer
+          example: 75
           maximum: 100
           minimum: 0
-          example: 75
         layout:
           description: 'Layout variant for the widget.'
           type: string

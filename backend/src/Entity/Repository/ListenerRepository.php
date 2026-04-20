@@ -226,7 +226,7 @@ final class ListenerRepository extends Repository
             'station_id' => $station->id,
             'timestamp_start' => $now,
             'listener_uid' => (int)$client->uid,
-            'listener_user_agent' => $this->truncateString($client->userAgent ?? ''),
+            'listener_user_agent' => $this->truncateString($client->userAgent),
             'listener_ip' => $client->ip,
             'listener_hash' => Listener::calculateListenerHash($client),
             'mount_id' => null,

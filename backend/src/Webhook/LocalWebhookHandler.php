@@ -49,7 +49,7 @@ final class LocalWebhookHandler
         );
 
         if (empty($npText)) {
-            $npText = $station->name ?? '';
+            $npText = $station->name;
         }
 
         $configDir = $station->getRadioConfigDir();

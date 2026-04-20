@@ -31,6 +31,10 @@ final class Types
             return (!empty($input)) ? $input : null;
         }
 
+        if (is_float($input)) {
+            $input = sprintf('%F', $input);
+        }
+
         return (string)$input;
     }
 

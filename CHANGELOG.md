@@ -11,6 +11,20 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.23.5 (Apr 20, 2026)
+
+This release is primarily to ship minor bug fixes and a new stable version of Liquidsoap, the AutoDJ software used by
+AzuraCast stations.
+
+## Code Quality/Technical Changes
+
+- Updated to Liquidsoap 2.4.4 stable, which fixes several performance issues.
+
+- Fine-tuned the indexes used on several analytics database tables, significantly improving their performance on 
+  stations with large datasets.
+
+---
+
 # AzuraCast 0.23.4 (Mar 8, 2026)
 
 ## New Features/Changes

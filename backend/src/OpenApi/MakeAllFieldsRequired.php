@@ -25,6 +25,10 @@ class MakeAllFieldsRequired
         }
     }
 
+    /**
+     * @param OA\Schema $schema
+     * @return list<string>
+     */
     protected function getPropertyNames(OA\Schema $schema): array
     {
         $propertyNames = [];

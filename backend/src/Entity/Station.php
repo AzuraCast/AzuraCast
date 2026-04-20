@@ -371,7 +371,7 @@ final class Station implements Stringable, IdentifiableEntityInterface
                 return true;
             }
 
-            return $this->enable_public_api ?? true;
+            return $this->enable_public_api;
         }
     }
 

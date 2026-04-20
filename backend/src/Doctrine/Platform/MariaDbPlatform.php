@@ -57,7 +57,7 @@ class MariaDbPlatform extends MariaDB1010Platform
 
                     preg_match('/datetime\((\d+)\)/i', $columnType, $matches);
 
-                    if ($matches[0]) {
+                    if (isset($matches[1])) {
                         $column->setType(Type::getType('datetime_immutable'));
                         $column->setPrecision((int)$matches[1]);
                     }

@@ -84,7 +84,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $pidfile = $configDir . '/liquidsoap.pid';
         $httpApiPort = $this->liquidsoap->getHttpApiPort($station);
 
-        $stationTz = self::toRawString($station->timezone ?? 'UTC');
+        $stationTz = self::toRawString($station->timezone);
 
         $stationApiAuth = self::toRawString($station->adapter_api_key);
         $stationApiUrl = self::toRawString(

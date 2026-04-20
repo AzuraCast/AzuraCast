@@ -6,6 +6,7 @@ namespace App\Assets;
 
 use App\Entity\Station;
 use DI\Attribute\Injectable;
+use Intervention\Image\Format;
 use Intervention\Image\Interfaces\ImageInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -53,12 +54,14 @@ final class BrowserIconCustomAsset extends AbstractCustomAsset
 
         $newImage = clone $image;
         $newImage->resize(256, 256);
-        $newImage->toPng()->save($uploadsDir . '/original.png');
+        $newImage->encodeUsingFormat(Format::PNG)
+            ->save($uploadsDir . '/original.png');
 
         foreach (self::ICON_SIZES as $iconSize) {
             $newImage = clone $image;
             $newImage->resize($iconSize, $iconSize);
-            $newImage->toPng()->save($uploadsDir . '/' . $iconSize . '.png');
+            $newImage->encodeUsingFormat(Format::PNG)
+                ->save($uploadsDir . '/' . $iconSize . '.png');
         }
     }
 

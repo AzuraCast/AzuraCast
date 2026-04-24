@@ -31,16 +31,21 @@ final class LiquidsoapAction implements SingleActionInterface
         $action = Types::string($params['action'] ?? '');
 
         $station = $request->getStation();
-        $asAutoDj = $request->hasHeader('X-Liquidsoap-Api-Key');
+        $asAutoDj = false;
         $payload = (array)$request->getParsedBody();
 
         try {
             $acl = $request->getAcl();
+            $authKey = $request->getHeaderLine('X-Liquidsoap-Api-Key');
+
             if (!$acl->isAllowed(StationPermissions::View, $station->id)) {
-                $authKey = $request->getHeaderLine('X-Liquidsoap-Api-Key');
                 if (!$station->validateAdapterApiKey($authKey)) {
                     throw new RuntimeException('Invalid API key.');
                 }
+                $asAutoDj = true;
+            } else {
+                // Even ACL-authenticated users must provide valid adapter key for AutoDJ operations
+                $asAutoDj = !empty($authKey) && $station->validateAdapterApiKey($authKey);
             }
 
             $command = LiquidsoapCommands::tryFrom($action);

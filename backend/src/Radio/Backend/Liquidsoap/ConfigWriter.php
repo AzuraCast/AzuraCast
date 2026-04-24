@@ -1205,14 +1205,12 @@ final class ConfigWriter implements EventSubscriberInterface
             $outputParams[] = 'user = ' . self::toRawString($source->username);
         }
 
-        $password = self::cleanUpString($source->password);
-
+        $password = $source->password;
         $adapterType = $source->adapterType;
         if (FrontendAdapters::Shoutcast === $adapterType) {
             $password .= ':#' . $id;
         }
-
-        $outputParams[] = 'password = "' . $password . '"';
+        $outputParams[] = 'password = ' . self::toRawString($password);
 
         $mountPoint = $source->mount;
         if (StreamProtocols::Icy === $source->protocol) {
@@ -1341,29 +1339,6 @@ final class ConfigWriter implements EventSubscriberInterface
         $mins = $timeCode % 100;
 
         return $hours . 'h' . $mins . 'm';
-    }
-
-    /**
-     * Filter a user-supplied string to be a valid LiquidSoap config entry.
-     */
-    public static function cleanUpString(?string $string): string
-    {
-        $string = str_replace(['"', "\n", "\r"], ['\'', '', ''], $string ?? '');
-
-        // Remove strings that are interpolated
-        $string = preg_replace(
-            '/#{(.*)}/U',
-            '$1',
-            $string
-        );
-
-        $string = preg_replace(
-            '/\$\((.*)\)/U',
-            '$1',
-            $string ?? ''
-        );
-
-        return $string ?? '';
     }
 
     public static function toRawString(?string $value): string

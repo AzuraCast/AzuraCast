@@ -9523,6 +9523,9 @@ components:
               type: integer
               example: 15
               nullable: true
+            requests_only_via_playlists:
+              type: boolean
+              example: false
             disconnect_deactivate_streamer:
               type: integer
               example: 0
@@ -10045,6 +10048,10 @@ components:
                 type: integer
               example: '0,1,2,3'
             loop_once:
+              type: boolean
+              example: false
+            prevent_requests:
+              description: 'Used to suppress the global request queue while this schedule window is active.'
               type: boolean
               example: false
           type: object

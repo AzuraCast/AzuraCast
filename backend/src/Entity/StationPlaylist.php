@@ -42,7 +42,6 @@ final class StationPlaylist implements
     public const string OPTION_INTERRUPT_OTHER_SONGS = 'interrupt';
     public const string OPTION_PLAY_SINGLE_TRACK = 'single_track';
     public const string OPTION_MERGE = 'merge';
-    public const string OPTION_PRIORITIZE_OVER_REQUESTS = 'prioritize';
 
     #[
         ORM\ManyToOne(inversedBy: 'playlists'),
@@ -219,11 +218,6 @@ final class StationPlaylist implements
     public function backendPlaySingleTrack(): bool
     {
         return in_array(self::OPTION_PLAY_SINGLE_TRACK, $this->backend_options, true);
-    }
-
-    public function backendPrioritizeOverRequests(): bool
-    {
-        return in_array(self::OPTION_PRIORITIZE_OVER_REQUESTS, $this->backend_options, true);
     }
 
     #[

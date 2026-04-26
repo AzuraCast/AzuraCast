@@ -79,15 +79,6 @@
                     :label="$gettext('End Date')"
                 />
 
-                <form-group-checkbox
-                    v-if="form.source !== PlaylistSources.Requests"
-                    :id="'edit_form_loop_once_'+index"
-                    class="col-md-4"
-                    :field="r$.loop_once"
-                    :label="$gettext('Loop Once')"
-                    :description="$gettext('Only loop through playlist once.')"
-                />
-
                 <form-group-multi-check
                     :id="'edit_form_days_'+index"
                     class="col-md-4"
@@ -96,6 +87,24 @@
                     :description="$gettext('Leave blank to play on every day of the week.')"
                     :options="dayOptions"
                     stacked
+                />
+
+                <form-group-checkbox
+                    v-if="form.source !== PlaylistSources.Requests"
+                    :id="'edit_form_loop_once_'+index"
+                    class="col-md-6"
+                    :field="r$.loop_once"
+                    :label="$gettext('Loop Once')"
+                    :description="$gettext('Only loop through playlist once.')"
+                />
+
+                <form-group-checkbox
+                    v-if="form.source !== PlaylistSources.Requests"
+                    :id="'edit_form_prevent_requests_'+index"
+                    class="col-md-6"
+                    :field="r$.prevent_requests"
+                    :label="$gettext('Block Request Queue While Active')"
+                    :description="$gettext('While this scheduled window is active, listener requests will not be played via the automatic request queue.')"
                 />
             </div>
         </div>
@@ -127,6 +136,7 @@ interface PlaylistScheduleRow {
     end_date: string,
     days: number[],
     loop_once: boolean,
+    prevent_requests: boolean,
 }
 
 const props = defineProps<{

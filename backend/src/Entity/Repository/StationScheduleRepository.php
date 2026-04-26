@@ -59,6 +59,7 @@ final class StationScheduleRepository extends Repository
             $record->end_date = $item['end_date'];
             $record->days = $item['days'] ?? [];
             $record->loop_once = $item['loop_once'] ?? false;
+            $record->prevent_requests = $item['prevent_requests'] ?? false;
 
             $this->em->persist($record);
         }

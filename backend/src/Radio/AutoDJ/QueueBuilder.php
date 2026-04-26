@@ -780,10 +780,36 @@ final class QueueBuilder implements EventSubscriberInterface
         $expectedPlayTime = $event->getExpectedPlayTime();
         $station = $event->getStation();
 
-        // Check if any playlist marked with "Prioritize Over Requests" (e.g. a jingle) is due now.
+        if ($station->requests_only_via_playlists) {
+            return;
+        }
+
         foreach ($station->playlists as $playlist) {
             /** @var StationPlaylist $playlist */
+            if (!$playlist->is_enabled) {
+                continue;
+            }
 
+            foreach ($playlist->schedule_items as $scheduleItem) {
+                if (
+                    $scheduleItem->prevent_requests
+                    && $this->scheduler->shouldSchedulePlayNow(
+                        $scheduleItem,
+                        $station->getTimezoneObject(),
+                        $expectedPlayTime,
+                        excludeSpecialRules: true
+                    )
+                ) {
+                    $this->logger->debug(sprintf(
+                        'Schedule item on playlist "%s" is blocking the global request queue.',
+                        $playlist->name
+                    ));
+                    return;
+                }
+            }
+        }
+
+        foreach ($station->playlists as $playlist) {
             if (!$playlist->isPlayable($event->isInterrupting())) {
                 continue;
             }
@@ -792,19 +818,9 @@ final class QueueBuilder implements EventSubscriberInterface
                 continue;
             }
 
-            // @TODO: maybe too naive of a check
-            // if it is part of a playlist group we would need to check if that one is currently eligible to be played
             if (PlaylistSources::Requests === $playlist->source) {
                 $this->logger->debug(sprintf(
                     'Playlist "%s" is controlling request queue and due now; skipping regular request queue.',
-                    $playlist->name
-                ));
-                return;
-            }
-
-            if ($playlist->backendPrioritizeOverRequests()) {
-                $this->logger->debug(sprintf(
-                    'Playlist "%s" is prioritized and due now; skipping request queue.',
                     $playlist->name
                 ));
                 return;

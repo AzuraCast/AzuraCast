@@ -2135,6 +2135,8 @@ export type Station = HasAutoIncrementId & {
   request_delay?: number | null;
   /** @example 15 */
   request_threshold?: number | null;
+  /** @example false */
+  requests_only_via_playlists?: boolean;
   /** @example 0 */
   disconnect_deactivate_streamer?: number | null;
   /**
@@ -2477,6 +2479,11 @@ export type StationSchedule = HasAutoIncrementId & {
   days?: number[];
   /** @example false */
   loop_once?: boolean;
+  /**
+   * Used to suppress the global request queue while this schedule window is active.
+   * @example false
+   */
+  prevent_requests?: boolean;
 };
 
 /** Station streamers (DJ accounts) allowed to broadcast to a station. */

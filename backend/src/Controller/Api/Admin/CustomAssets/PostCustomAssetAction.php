@@ -57,7 +57,7 @@ final readonly class PostCustomAssetAction extends AbstractCustomAssetAction
         $imageContents = $flowResponse->readAndDeleteUploadedFile();
 
         $customAsset->upload(
-            AlbumArt::getImageManager()->read($imageContents),
+            AlbumArt::getImageManager()->decode($imageContents),
             MimeType::getMimeTypeDetector()->detectMimeTypeFromBuffer($imageContents) ?? 'image/jpeg'
         );
 

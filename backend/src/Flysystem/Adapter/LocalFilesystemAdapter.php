@@ -13,6 +13,7 @@ use League\Flysystem\Local\LocalFilesystemAdapter as LeagueLocalFilesystemAdapte
 use League\Flysystem\PathPrefixer;
 use League\Flysystem\StorageAttributes;
 use League\Flysystem\SymbolicLinkEncountered;
+use League\Flysystem\UnableToCopyFile;
 use League\Flysystem\UnableToRetrieveMetadata;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use League\Flysystem\UnixVisibility\VisibilityConverter;
@@ -191,5 +192,35 @@ final class LocalFilesystemAdapter extends LeagueLocalFilesystemAdapter implemen
                 $lastModified,
                 fn() => $this->mimeType($path)->mimeType()
             );
+    }
+
+    /** @inheritDoc */
+    public function upload(string $localPath, string $to): void
+    {
+        $destPath = $this->getLocalPath($to);
+
+        $this->ensureDirectoryExists(
+            dirname($destPath),
+            $this->visibility->defaultForDirectories()
+        );
+
+        if (!@copy($localPath, $destPath)) {
+            throw UnableToCopyFile::fromLocationTo($localPath, $destPath);
+        }
+    }
+
+    /** @inheritDoc */
+    public function download(string $from, string $localPath): void
+    {
+        $sourcePath = $this->getLocalPath($from);
+
+        $this->ensureDirectoryExists(
+            dirname($localPath),
+            $this->visibility->defaultForDirectories()
+        );
+
+        if (!@copy($sourcePath, $localPath)) {
+            throw UnableToCopyFile::fromLocationTo($sourcePath, $localPath);
+        }
     }
 }

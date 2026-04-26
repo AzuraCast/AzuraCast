@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
       "~/*": [
-        "frontend/*"
+        "./frontend/*"
       ],
       "!/*": [
-        "*"
+        "./*"
       ]
     },
     "types": [

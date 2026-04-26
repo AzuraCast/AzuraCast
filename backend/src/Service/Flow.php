@@ -28,6 +28,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Exception\Http\FlowUploadException;
+use App\Flysystem\Normalizer\WhitespacePathNormalizer;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow\UploadedFile;
@@ -64,7 +65,9 @@ final class Flow
             return self::handleStandardUpload($request, $tempDir);
         }
 
-        $flowIdentifier = $params['flowIdentifier'];
+        $pathNormalizer = new WhitespacePathNormalizer();
+
+        $flowIdentifier = $pathNormalizer->normalizePath($params['flowIdentifier']);
         $flowChunkNumber = (int)($params['flowChunkNumber'] ?? 1);
 
         $targetSize = (int)($params['flowTotalSize'] ?? 0);

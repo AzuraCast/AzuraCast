@@ -157,7 +157,7 @@ final class Configuration
                 'command' => $adapter->getCommand($station),
                 'directory' => $station->getRadioConfigDir(),
                 'environment' => self::buildEnvironment([
-                    'TZ' => $station->timezone ?? 'UTC',
+                    'TZ' => $station->timezone,
                     ...$adapter->getEnvironmentVariables($station),
                 ]),
                 'autostart' => 'false',

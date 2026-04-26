@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Media;
 
 use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Format;
 use Intervention\Image\ImageManager;
 
 final class AlbumArt
@@ -17,7 +18,7 @@ final class AlbumArt
         int $height = self::IMAGE_WIDTH,
         bool $upsize = false,
     ): string {
-        $newArtwork = self::getImageManager()->read($rawArtworkString);
+        $newArtwork = self::getImageManager()->decode($rawArtworkString);
 
         if ($upsize) {
             $newArtwork->cover($width, $height);
@@ -25,7 +26,7 @@ final class AlbumArt
             $newArtwork->coverDown($width, $height);
         }
 
-        return $newArtwork->toJpeg()->toString();
+        return $newArtwork->encodeUsingFormat(Format::JPEG)->toString();
     }
 
     public static function getImageManager(): ImageManager

@@ -424,7 +424,8 @@ return static function (RouteCollectorProxy $group) {
                                     )->add(new Middleware\Permissions(StationPermissions::DeleteMedia, true));
 
                                     $group->get('/play', Controller\Api\Stations\Files\PlayAction::class)
-                                        ->setName('api:stations:files:play');
+                                        ->setName('api:stations:files:play')
+                                        ->add(new Middleware\Permissions(StationPermissions::Media, true));
                                 }
                             );
                         }

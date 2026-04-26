@@ -14,6 +14,8 @@ abstract class AbstractFilesystem extends Filesystem implements ExtendedFilesyst
 {
     protected ExtendedAdapterInterface $adapter;
 
+    protected PathNormalizer $pathNormalizer;
+
     public function __construct(
         ExtendedAdapterInterface $adapter,
         array $config = [],
@@ -22,6 +24,7 @@ abstract class AbstractFilesystem extends Filesystem implements ExtendedFilesyst
         $this->adapter = $adapter;
 
         $pathNormalizer = $pathNormalizer ?: new WhitespacePathNormalizer();
+        $this->pathNormalizer = $pathNormalizer;
 
         parent::__construct($adapter, $config, $pathNormalizer);
     }

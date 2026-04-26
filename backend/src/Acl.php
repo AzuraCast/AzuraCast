@@ -21,8 +21,8 @@ use function is_array;
 
 /**
  * @phpstan-type PermissionsArray array{
- *     global: array<string, string>,
- *     station: array<string, string>
+ *     "global": array<string, string>,
+ *     "station": array<string, string>
  * }
  */
 final class Acl
@@ -38,8 +38,8 @@ final class Acl
      * @var array<
      *     int,
      *     array{
-     *         stations?: array<int, array<string>>,
-     *         global?: array<string>
+     *         "stations"?: array<int, list<string>>,
+     *         "global"?: list<string>
      *     }
      * >
      */
@@ -64,14 +64,23 @@ final class Acl
             DQL
         );
 
-        $this->actions = [];
+        $actions = [];
+
         foreach ($sql->toIterable() as $row) {
+            $actions[$row['role_id']] ??= [
+                'stations' => [],
+                'global' => [],
+            ];
+
             if ($row['station_id']) {
-                $this->actions[$row['role_id']]['stations'][$row['station_id']][] = $row['action_name'];
+                $actions[$row['role_id']]['stations'][$row['station_id']] ??= [];
+                $actions[$row['role_id']]['stations'][$row['station_id']][] = $row['action_name'];
             } else {
-                $this->actions[$row['role_id']]['global'][] = $row['action_name'];
+                $actions[$row['role_id']]['global'][] = $row['action_name'];
             }
         }
+
+        $this->actions = $actions;
     }
 
     /**

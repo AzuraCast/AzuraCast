@@ -325,8 +325,8 @@
                             class="list-group-item"
                         >
                             <div class="d-flex">
-                                <div class="d-flex flex-column flex-grow-1 min-w-0">
-                                    <div class="d-flex flex-grow-1 justify-content-between align-items-start mb-2">
+                                <div class="d-flex flex-column flex-grow-1 min-w-0 gap-2">
+                                    <div class="d-flex flex-grow-1 justify-content-between align-items-start">
                                         <span class="flex-grow-1 pr-2 fs-5">{{ member.name }}</span>
 
                                         <button
@@ -338,6 +338,19 @@
                                         >
                                             <icon-ic-delete />
                                         </button>
+                                    </div>
+
+                                    <div class="d-flex flex-column align-items-end gap-2 mb-2">
+                                        <form-group-field
+                                            :id="`consecutive-plays-${index}`"
+                                            class="col-12 col-md-6 col-xl-4 col-xxl-3"
+                                            :model-value="member.consecutive_plays"
+                                            @update:model-value="doUpdateConsecutivePlays(index, $event)"
+                                            input-type="number"
+                                            :input-attrs="{min: '0'}"
+                                            :disabled="saving"
+                                            :label="$gettext('Consecutive Plays')"
+                                        />
                                     </div>
 
                                     <div class="d-flex justify-content-between align-items-center">
@@ -430,6 +443,7 @@
 
 <script setup lang="ts">
 import Tab from "~/components/Common/Tab.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import IconIcHome from "~icons/ic/baseline-home";
 import IconIcLibraryMusic from "~icons/ic/baseline-library-music";
 import IconIcQueueMusic from "~icons/ic/baseline-queue-music";
@@ -443,6 +457,7 @@ import IconBiChevronBarUp from "~icons/bi/chevron-bar-up";
 import IconBiChevronDown from "~icons/bi/chevron-down";
 import IconBiChevronUp from "~icons/bi/chevron-up";
 import {ref, useTemplateRef, watch} from "vue";
+import {useDebounceFn} from "@vueuse/core";
 import {useDraggable} from "vue-draggable-plus";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
@@ -553,6 +568,7 @@ const buildTree = (raw: StationPlaylistEnriched[]): StationPlaylistEnriched[] =>
                     ? {
                         ...fullPlaylist,
                         weight: member.weight,
+                        consecutive_plays: member.consecutive_plays ?? 0,
                     }
                     : {
                         ...member,
@@ -689,7 +705,11 @@ const saveMembersForSelected = async (members: StationPlaylistGroupMemberEnriche
     saving.value = true;
     try {
         await axios.put(group.links.members, {
-            members: members.map((member, index) => ({id: member.id, weight: index + 1})),
+            members: members.map((member, index) => ({
+                id: member.id,
+                weight: index + 1,
+                consecutive_plays: member.consecutive_plays ?? 0,
+            })),
         });
 
         const savedId = group.id;
@@ -708,6 +728,11 @@ const saveMembersForSelected = async (members: StationPlaylistGroupMemberEnriche
     }
 };
 
+const debouncedSaveMembers = useDebounceFn(
+    (members: StationPlaylistGroupMemberEnriched[]) => saveMembersForSelected(members),
+    1500
+);
+
 const doAssign = async (playlist: StationPlaylistEnriched): Promise<void> => {
     const group = selectedPlaylist.value;
     if (!group || group.source !== PlaylistSources.Playlists) {
@@ -718,6 +743,7 @@ const doAssign = async (playlist: StationPlaylistEnriched): Promise<void> => {
         id: playlist.id,
         name: playlist.name,
         weight: group.playlists.length + 1,
+        consecutive_plays: 0,
         source: playlist.source,
         num_songs: playlist.num_songs,
         playlists: playlist.playlists,
@@ -763,6 +789,16 @@ const doMoveToBottom = async (index: number): Promise<void> => {
     updated.splice(updated.length, 0, item);
 
     await saveMembersForSelected(updated);
+};
+
+const doUpdateConsecutivePlays = (index: number, value: number | null): void => {
+    const consecutivePlays = Math.max(0, value ?? 0);
+
+    const updated = [...playlistMembers.value];
+    updated[index] = {...updated[index], consecutive_plays: consecutivePlays};
+    playlistMembers.value = updated;
+
+    void debouncedSaveMembers(updated);
 };
 </script>
 

@@ -58,6 +58,15 @@ final class StationPlaylistGroup implements JsonSerializable, IdentifiableEntity
     #[ORM\Column]
     public int $last_played = 0;
 
+    #[
+        OA\Property(example: 0),
+        ORM\Column
+    ]
+    public int $consecutive_plays = 0;
+
+    #[ORM\Column]
+    public int $consecutive_plays_count = 0;
+
     public function __construct(
         StationPlaylist $playlist,
         StationPlaylist $playlistGroup
@@ -66,10 +75,25 @@ final class StationPlaylistGroup implements JsonSerializable, IdentifiableEntity
         $this->playlist_group = $playlistGroup;
     }
 
-    public function played(?int $timestamp = null): void
+    public function played(?int $timestamp = null, bool $forceAdvance = false): bool
     {
         $this->last_played = $timestamp ?? time();
+
+        if ($this->consecutive_plays > 0) {
+            $this->consecutive_plays_count++;
+        }
+
+        if (
+            !$forceAdvance
+            && $this->consecutive_plays > 0
+            && $this->consecutive_plays_count < $this->consecutive_plays
+        ) {
+            return false;
+        }
+
         $this->is_queued = false;
+        $this->consecutive_plays_count = 0;
+        return true;
     }
 
     /**
@@ -81,6 +105,7 @@ final class StationPlaylistGroup implements JsonSerializable, IdentifiableEntity
             'id' => $this->playlist->id,
             'name' => $this->playlist->name,
             'weight' => $this->weight,
+            'consecutive_plays' => $this->consecutive_plays,
         ];
     }
 
@@ -88,5 +113,6 @@ final class StationPlaylistGroup implements JsonSerializable, IdentifiableEntity
     {
         $this->last_played = 0;
         $this->is_queued = false;
+        $this->consecutive_plays_count = 0;
     }
 }

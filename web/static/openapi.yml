@@ -9952,6 +9952,9 @@ components:
             weight:
               type: integer
               example: 1
+            consecutive_plays:
+              type: integer
+              example: 0
           type: object
     StationRemote:
       type: object

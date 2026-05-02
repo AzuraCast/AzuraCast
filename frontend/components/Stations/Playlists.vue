@@ -425,16 +425,19 @@ const doGroupReorder = async (membersUrl: string, playlists: StationPlaylistGrou
     const enrichedMembers: StationPlaylistGroupMemberEnriched[] = playlists
         .map((member) => {
             const weight = member.weight ?? 0;
+            const consecutivePlays = member.consecutive_plays ?? 0;
             const full = playlistMap.get(member.id);
             return full
                 ? {
                     ...full,
                     weight: weight,
+                    consecutive_plays: consecutivePlays,
                 }
                 : {
                     ...member,
                     name: member.name ?? '',
                     weight: weight,
+                    consecutive_plays: consecutivePlays,
                     source: '',
                     num_songs: 0,
                     playlists: []

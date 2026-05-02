@@ -151,7 +151,7 @@ final class StationPlaylistRepository extends AbstractStationBasedRepository
             $this->em->createQuery(
                 <<<'DQL'
                     UPDATE App\Entity\StationPlaylistGroup spg
-                    SET spg.is_queued = 1
+                    SET spg.is_queued = 1, spg.consecutive_plays_count = 0
                     WHERE spg.playlist_group = :playlistGroup
                 DQL
             )->setParameter('playlistGroup', $playlist)
@@ -171,7 +171,7 @@ final class StationPlaylistRepository extends AbstractStationBasedRepository
                     $updateSpgWeightQuery = $this->em->createQuery(
                         <<<'DQL'
                             UPDATE App\Entity\StationPlaylistGroup spg
-                            SET spg.weight = :weight, spg.is_queued = 1
+                            SET spg.weight = :weight, spg.is_queued = 1, spg.consecutive_plays_count = 0
                             WHERE spg.id = :id
                         DQL
                     );

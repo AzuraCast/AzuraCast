@@ -289,10 +289,14 @@ final class QueueBuilder implements EventSubscriberInterface
 
             $selectedStationPlaylistGroup->played($event->getExpectedPlayTime()->getTimestamp());
             $this->em->persist($selectedStationPlaylistGroup);
-        } elseif (PlaylistSources::Requests === $selectedPlaylist->source) {
-            // No requests are currently pending, need to mark the request slot as played
-            // so the group moves on to the next member immediately.
-            $selectedStationPlaylistGroup->played($event->getExpectedPlayTime()->getTimestamp());
+        } else {
+            // Member could not produce a track, we need to force-advance so the group
+            // isn't stuck on an unplayable member.
+            $selectedStationPlaylistGroup->played(
+                $event->getExpectedPlayTime()->getTimestamp(),
+                forceAdvance: true
+            );
+
             $this->em->persist($selectedStationPlaylistGroup);
 
             return $this->playSongFromPlaylistGroup(

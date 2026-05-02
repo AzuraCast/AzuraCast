@@ -159,6 +159,7 @@ const save = async () => {
         members: members.value.map((member, index) => ({
             id: member.id,
             weight: index + 1,
+            consecutive_plays: member.consecutive_plays ?? 0,
         })),
     });
 

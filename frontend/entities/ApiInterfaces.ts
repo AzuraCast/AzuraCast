@@ -2421,6 +2421,8 @@ export type StationPlaylistGroup = HasAutoIncrementId & {
   readonly name?: string;
   /** @example 1 */
   weight?: number;
+  /** @example 0 */
+  consecutive_plays?: number;
 };
 
 export type StationRemote = HasAutoIncrementId & {

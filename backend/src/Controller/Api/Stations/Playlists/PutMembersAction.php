@@ -63,7 +63,7 @@ final readonly class PutMembersAction implements SingleActionInterface
             throw new Exception(__('This playlist is not a playlist group.'));
         }
 
-        /** @var array<array{id?: mixed, weight?: mixed}> $members */
+        /** @var array<array{id?: mixed, weight?: mixed, consecutive_plays?: mixed}> $members */
         $members = Types::array($request->getParam('members'));
 
         // Validate all members before making any changes to ensure we don't try
@@ -106,6 +106,7 @@ final readonly class PutMembersAction implements SingleActionInterface
         foreach ($members as $member) {
             $memberId = Types::int($member['id'] ?? null);
             $weight = Types::int($member['weight'] ?? 0);
+            $consecutivePlays = Types::int($member['consecutive_plays'] ?? 0);
 
             $memberPlaylist = $this->playlistRepo->findForStation($memberId, $station);
             if (!$memberPlaylist instanceof StationPlaylist) {
@@ -114,6 +115,7 @@ final readonly class PutMembersAction implements SingleActionInterface
 
             $stationPlaylistGroup = new StationPlaylistGroup($memberPlaylist, $record);
             $stationPlaylistGroup->weight = $weight;
+            $stationPlaylistGroup->consecutive_plays = max(0, $consecutivePlays);
             $this->entityManager->persist($stationPlaylistGroup);
         }
 

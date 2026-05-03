@@ -1,19 +1,13 @@
 General notes regarding playlist groups
 -----------------------------------------------------------------------------
 - Need to ensure that all places apart from the the autodj / scheduling stuff know about playlist groups
-     - The APIs that include anything with playlists need to be checked
-         - Identify which exactly and make notes on what needs to be done there
+    - The APIs that include anything with playlists need to be checked
+        - Identify which exactly and make notes on what needs to be done there
 - Biggest place with work needed: UI
-     - Need to make it possible to create playlist groups itself
-     - Need to make it possible to add playlists & media to playlist groups
-         - Need to prevent playlist groups to be added to self
-         - Do we need to prevent playlists that are already part of the playlist group from being added again?
-             - Probably not(?), could be wanted to say "sequentially play A then B, then C, then A again, etc..."
-     - What to do with the schedule page?
-         - How should we represent grouped playlists exactly?
-         - Probably like regular playlists there too, maybe different color or with an icon?
-         - Maybe add a hover tooltip / card that shows the list of the sub-playlists?
-     - Need to make it possible to see & sort playlist group contents like with sequential playlists
+    - What to do with the schedule page?
+        - How should we represent grouped playlists exactly?
+        - Probably like regular playlists there too, maybe different color or with an icon?
+        - Maybe add a hover tooltip / card that shows the list of the sub-playlists?
 
 Thoughts about settings for playlist groups
 -----------------------------------------------------------------------------
@@ -32,6 +26,7 @@ Thoughts about settings for playlist groups
 
 @TODO
 -------------------------------
-All Playlists
-- Need to also check the Reshuffle Button
-- The Playback Queue Button seems useless here
+Features
+- Add "Allow Requests" dropdown to PlaylistGroupingTab
+    - Options: None, Any, From Playlist
+- Add tracking of origin for media from PlaylistGroup & Consecutive Play number

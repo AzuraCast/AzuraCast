@@ -282,14 +282,6 @@ final class PlaylistsController extends AbstractScheduledEntityController
                 );
             }
 
-            if (PlaylistOrders::Random !== $record->order) {
-                $return['links']['queue'] = $router->fromHere(
-                    routeName: 'api:stations:playlist:queue',
-                    routeParams: ['id' => $record->id],
-                    absolute: !$isInternal
-                );
-            }
-
             $return['links']['reshuffle'] = $router->fromHere(
                 routeName: 'api:stations:playlist:reshuffle',
                 routeParams: ['id' => $record->id],
@@ -306,6 +298,14 @@ final class PlaylistsController extends AbstractScheduledEntityController
         }
 
         if (PlaylistSources::Songs === $record->source) {
+            if (PlaylistOrders::Random !== $record->order) {
+                $return['links']['queue'] = $router->fromHere(
+                    routeName: 'api:stations:playlist:queue',
+                    routeParams: ['id' => $record->id],
+                    absolute: !$isInternal
+                );
+            }
+
             $return['links']['import'] = $router->fromHere(
                 routeName: 'api:stations:playlist:import',
                 routeParams: ['id' => $record->id],

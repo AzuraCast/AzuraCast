@@ -27,7 +27,7 @@
             <form-group-multi-check
                 id="edit_form_clone"
                 class="col-md-12"
-                :field="r$.clone"
+                :field="r$.clone.$self"
                 :options="cloneOptions"
                 stacked
                 :label="$gettext('Copy to New Station')"

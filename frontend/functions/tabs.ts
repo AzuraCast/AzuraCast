@@ -31,7 +31,7 @@ interface TabParent {
     delete(computedId: string): void
 }
 
-const tabStateKey: InjectionKey<UnwrapNestedRefs<TabParent>> = Symbol() as InjectionKey<UnwrapNestedRefs<TabParent>>;
+const tabStateKey = Symbol() as InjectionKey<UnwrapNestedRefs<TabParent>>;
 
 export function useTabParent(originalProps: TabParentProps) {
     const props = reactiveComputed<

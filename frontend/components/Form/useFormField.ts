@@ -1,15 +1,10 @@
 import {computed, UnwrapNestedRefs, WritableComputedRef} from "vue";
 import {reactiveComputed} from "@vueuse/core";
-import {InferRegleRules, InferRegleShortcuts, RegleFieldStatus} from "@regle/core";
-import {useAppRegle} from "~/vendor/regle.ts";
+import {RegleFieldStatus} from "@regle/core";
 
 export type ModelFormField = string | number | boolean | Array<any> | null | undefined
 
-export type ValidatedField<T = ModelFormField> = RegleFieldStatus<
-    T,
-    InferRegleRules<typeof useAppRegle>,
-    InferRegleShortcuts<typeof useAppRegle>
->
+export type ValidatedField<T = ModelFormField> = RegleFieldStatus<T>
 
 export type FormFieldProps<T = ModelFormField> = {
     required?: boolean
@@ -69,9 +64,15 @@ export function useFormField<T = ModelFormField>(
             return props.required;
         }
 
-        return (props.field !== undefined)
-            ? !!props.field.$rules?.required?.$active
-            : false;
+        if (props.field === undefined) {
+            return false;
+        }
+
+        if ("$rules" in props.field) {
+            return !!props.field.$rules?.required?.$active;
+        }
+
+        return false;
     });
 
     return {

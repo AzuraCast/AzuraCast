@@ -4,7 +4,7 @@
             <form-group-multi-check
                 id="edit_form_playlists"
                 class="col-md-12"
-                :field="r$.playlists"
+                :field="r$.playlists.$self"
                 :options="options"
                 stacked
                 :label="$gettext('Playlists')"

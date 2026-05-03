@@ -139,7 +139,7 @@ final class Version20201027130504 extends AbstractMigration
             );
 
             foreach ($dirInfo['stations'] as $stationId) {
-                $media = $this->connection->fetchAllAssociative(
+                $media = $this->connection->fetchAllNumeric(
                     'SELECT sm.id, sm.path FROM station_media AS sm WHERE sm.station_id = ?',
                     [
                         $stationId,

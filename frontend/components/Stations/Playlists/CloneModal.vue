@@ -18,7 +18,7 @@
             <form-group-multi-check
                 id="form_edit_clone"
                 class="col-md-12"
-                :field="r$.clone"
+                :field="r$.clone.$self"
                 :options="copyOptions"
                 stacked
                 :label="$gettext('Customize Copy')"

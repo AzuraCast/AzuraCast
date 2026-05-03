@@ -9,8 +9,8 @@ import {useNProgress} from "~/vendor/nprogress.ts";
 import injectRequired from "~/functions/injectRequired.ts";
 import {ApiError} from "~/entities/ApiInterfaces.ts";
 
-const injectKey: InjectionKey<AxiosInstance> = Symbol() as InjectionKey<AxiosInstance>;
-const injectKeySilent: InjectionKey<AxiosInstance> = Symbol() as InjectionKey<AxiosInstance>;
+const injectKey = Symbol() as InjectionKey<AxiosInstance>;
+const injectKeySilent = Symbol() as InjectionKey<AxiosInstance>;
 
 /* Composition API Axios utilities */
 interface UseAxios {

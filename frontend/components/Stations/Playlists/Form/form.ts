@@ -71,7 +71,7 @@ export const useStationsPlaylistsForm = defineStore(
                         fields.avoid_duplicates,
                     ],
                     advancedTab: [
-                        fields.backend_options
+                        fields.backend_options.$self
                     ]
                 })
             }

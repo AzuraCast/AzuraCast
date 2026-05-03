@@ -151,7 +151,7 @@ export const useAdminStationsForm = defineStore(
                         fields.frontend_config.max_listeners,
                         fields.frontend_config.custom_config,
                         fields.frontend_config.banned_ips,
-                        fields.frontend_config.banned_countries,
+                        fields.frontend_config.banned_countries.$self,
                         fields.frontend_config.allowed_ips,
                         fields.frontend_config.banned_user_agents,
                     ],

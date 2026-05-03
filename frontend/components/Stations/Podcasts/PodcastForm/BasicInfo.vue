@@ -57,7 +57,7 @@
             <form-group-select
                 id="form_edit_categories"
                 class="col-md-12"
-                :field="r$.categories"
+                :field="r$.categories.$self"
                 :options="categoriesOptions"
                 multiple
                 :label="$gettext('Categories')"

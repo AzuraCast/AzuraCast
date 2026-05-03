@@ -115,7 +115,7 @@
                     <div class="col-md-7">
                         <form-group-select
                             id="edit_form_frontend_banned_countries"
-                            :field="r$.frontend_config.banned_countries"
+                            :field="r$.frontend_config.banned_countries.$self"
                             :options="countries"
                             multiple
                             :label="$gettext('Banned Countries')"

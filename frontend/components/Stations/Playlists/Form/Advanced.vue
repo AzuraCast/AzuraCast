@@ -7,7 +7,7 @@
             <form-group-multi-check
                 id="edit_form_backend_options"
                 class="col-md-12"
-                :field="r$.backend_options"
+                :field="r$.backend_options.$self"
                 :options="backendOptions"
                 stacked
                 :label="$gettext('Advanced Manual AutoDJ Scheduling Options')"

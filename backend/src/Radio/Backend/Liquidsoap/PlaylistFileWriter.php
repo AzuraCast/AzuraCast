@@ -6,6 +6,7 @@ namespace App\Radio\Backend\Liquidsoap;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Doctrine\ReadOnlyBatchIteratorAggregate;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
@@ -136,7 +137,7 @@ final class PlaylistFileWriter implements EventSubscriberInterface
         )->setParameter('playlist', $playlist);
 
         /** @var StationMedia $mediaFile */
-        foreach ($mediaQuery->toIterable() as $mediaFile) {
+        foreach (ReadOnlyBatchIteratorAggregate::fromQuery($mediaQuery, 1000) as $mediaFile) {
             $event = new AnnotateNextSong(
                 station: $station,
                 media: $mediaFile,

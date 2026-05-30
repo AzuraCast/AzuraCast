@@ -24,9 +24,9 @@ final class UnprocessableMedia implements PathAwareInterface, IdentifiableEntity
     #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public readonly StorageLocation $storage_location;
 
-    /* TODO Remove direct identifier access. */
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    public private(set) int $storage_location_id;
+    public int $storage_location_id {
+        get => $this->storage_location->id;
+    }
 
     #[ORM\Column(length: 500)]
     public string $path {

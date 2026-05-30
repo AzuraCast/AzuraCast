@@ -36,25 +36,25 @@ final class SongHistory implements
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public readonly Station $station;
 
-    /* TODO Remove direct identifier access. */
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    public private(set) int $station_id;
+    public int $station_id {
+        get => $this->station->id;
+    }
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     public ?StationPlaylist $playlist = null;
 
-    /* TODO Remove direct identifier access. */
-    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    public private(set) ?int $playlist_id = null;
+    public ?int $playlist_id {
+        get => $this->playlist?->id;
+    }
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     public ?StationStreamer $streamer = null;
 
-    /* TODO Remove direct identifier access. */
-    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    public private(set) ?int $streamer_id = null;
+    public ?int $streamer_id {
+        get => $this->streamer?->id;
+    }
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
@@ -68,17 +68,17 @@ final class SongHistory implements
         }
     }
 
-    /* TODO Remove direct identifier access. */
-    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    public private(set) ?int $media_id = null;
+    public ?int $media_id {
+        get => $this->media?->id;
+    }
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'request_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     public ?StationRequest $request = null;
 
-    /* TODO Remove direct identifier access. */
-    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    public private(set) ?int $request_id = null;
+    public ?int $request_id {
+        get => $this->request?->id;
+    }
 
     #[ORM\Column(type: 'datetime_immutable', precision: 6)]
     public readonly DateTimeImmutable $timestamp_start;

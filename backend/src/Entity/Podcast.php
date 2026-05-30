@@ -27,17 +27,18 @@ final class Podcast implements Interfaces\IdentifiableEntityInterface
     #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public readonly StorageLocation $storage_location;
 
-    /* TODO Remove direct identifier access. */
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    public private(set) int $storage_location_id;
+    public int $storage_location_id {
+        get => $this->storage_location->id;
+    }
 
     #[DeepNormalize(true)]
     #[ORM\ManyToOne(inversedBy: 'podcasts')]
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     public ?StationPlaylist $playlist = null;
 
-    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    public private(set) ?int $playlist_id = null;
+    public ?int $playlist_id {
+        get => $this->playlist?->id;
+    }
 
     #[ORM\Column(type: 'string', length: 50, enumType: PodcastSources::class)]
     public PodcastSources $source = PodcastSources::Manual;

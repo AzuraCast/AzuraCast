@@ -1014,10 +1014,12 @@ final class ConfigWriter implements EventSubscriberInterface
                         $stereoToolProcess .= ' -k "' . $stereoToolLicenseKey . '"';
                     }
 
+                    $stereoToolProcessString = self::toRawString($stereoToolProcess);
+
                     $event->appendBlock(
                         <<<LIQ
                         # Stereo Tool Pipe
-                        radio = pipe(replay_delay=1.0, process='{$stereoToolProcess}', radio)
+                        radio = pipe(replay_delay=1.0, process={$stereoToolProcessString}, radio)
                         LIQ
                     );
                 } else {
@@ -1040,13 +1042,16 @@ final class ConfigWriter implements EventSubscriberInterface
                         }
                     }
 
+                    $stereoToolLicenseKeyString = self::toRawString($stereoToolLicenseKey ?? '');
+                    $stereoToolConfigurationString = self::toRawString($stereoToolConfiguration);
+
                     $event->appendBlock(
                         <<<LIQ
                         # Stereo Tool Pipe
                         radio = stereotool(
                             library_file="{$stereoToolLibrary}",
-                            license_key="{$stereoToolLicenseKey}",
-                            preset="{$stereoToolConfiguration}",
+                            license_key={$stereoToolLicenseKeyString},
+                            preset={$stereoToolConfigurationString},
                             radio
                         )
                         LIQ

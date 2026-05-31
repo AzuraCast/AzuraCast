@@ -28,33 +28,33 @@ final class Listener implements
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public readonly Station $station;
 
-    /* TODO Remove direct identifier access. */
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    public private(set) int $station_id;
+    public int $station_id {
+        get => $this->station->id;
+    }
 
     #[ORM\ManyToOne(targetEntity: StationMount::class)]
     #[ORM\JoinColumn(name: 'mount_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     public readonly ?StationMount $mount;
 
-    /* TODO Remove direct identifier access. */
-    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    public private(set) ?int $mount_id = null;
+    public ?int $mount_id {
+        get => $this->mount?->id;
+    }
 
     #[ORM\ManyToOne(targetEntity: StationRemote::class)]
     #[ORM\JoinColumn(name: 'remote_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     public readonly ?StationRemote $remote;
 
-    /* TODO Remove direct identifier access. */
-    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    public private(set) ?int $remote_id = null;
+    public ?int $remote_id {
+        get => $this->remote?->id;
+    }
 
     #[ORM\ManyToOne(targetEntity: StationHlsStream::class)]
     #[ORM\JoinColumn(name: 'hls_stream_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     public readonly ?StationHlsStream $hls_stream;
 
-    /* TODO Remove direct identifier access. */
-    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    public private(set) ?int $hls_stream_id = null;
+    public ?int $hls_stream_id {
+        get => $this->hls_stream?->id;
+    }
 
     #[ORM\Column]
     public int $listener_uid;

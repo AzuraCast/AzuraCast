@@ -24,17 +24,17 @@ final class StationRequest implements
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public readonly Station $station;
 
-    /* TODO Remove direct identifier access. */
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    public private(set) int $station_id;
+    public int $station_id {
+        get => $this->station->id;
+    }
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'track_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public readonly StationMedia $track;
 
-    /* TODO Remove direct identifier access. */
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    public private(set) int $track_id;
+    public int $track_id {
+        get => $this->track->id;
+    }
 
     #[ORM\Column(type: 'datetime_immutable', precision: 6)]
     public readonly DateTimeImmutable $timestamp;

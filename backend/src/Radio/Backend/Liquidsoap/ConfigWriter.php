@@ -554,8 +554,8 @@ final class ConfigWriter implements EventSubscriberInterface
             'port = ' . $this->liquidsoap->getStreamPort($station),
             'auth = azuracast.dj_auth',
             'icy = true',
-            'icy_metadata_charset = "' . $charset . '"',
-            'metadata_charset = "' . $charset . '"',
+            'icy_metadata_charset = ' . self::toRawString($charset),
+            'metadata_charset = ' . self::toRawString($charset),
         ];
 
         $djBuffer = $settings->dj_buffer;
@@ -1237,7 +1237,7 @@ final class ConfigWriter implements EventSubscriberInterface
         }
 
         $outputParams[] = 'public = ' . ($source->isPublic ? 'true' : 'false');
-        $outputParams[] = 'encoding = "' . $charset . '"';
+        $outputParams[] = 'encoding = ' . self::toRawString($charset);
 
         if (StreamProtocols::Https === $source->protocol) {
             $outputParams[] = 'transport = https_transport';

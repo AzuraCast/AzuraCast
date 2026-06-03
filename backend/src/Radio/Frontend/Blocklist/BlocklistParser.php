@@ -18,6 +18,20 @@ final readonly class BlocklistParser
     ) {
     }
 
+    public function isEnabledForHls(Station $station): bool
+    {
+        if (FrontendAdapters::Remote === $station->frontend_type) {
+            return false;
+        }
+
+        $frontendConfig = $station->frontend_config;
+
+        return !empty($frontendConfig->banned_countries ?? [])
+            || '' !== trim($frontendConfig->allowed_ips ?? '')
+            || '' !== trim($frontendConfig->banned_ips ?? '')
+            || '' !== trim($frontendConfig->banned_user_agents ?? '');
+    }
+
     public function isAllowed(
         Station $station,
         string $ip,

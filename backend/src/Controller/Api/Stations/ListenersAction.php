@@ -90,9 +90,13 @@ final class ListenersAction implements SingleActionInterface
 
             $range = $dateRange->format('Y-m-d_H-i-s', '_to_');
 
-            $listenersIterator = $this->em->createQuery(
+            $query = $this->em->createQuery(
                 <<<'DQL'
-                    SELECT l
+                    SELECT
+                        l,
+                        IDENTITY(l.mount) AS mount_id,
+                        IDENTITY(l.remote) AS remote_id,
+                        IDENTITY(l.hls_stream) AS hls_stream_id
                     FROM App\Entity\Listener l
                     WHERE l.station = :station
                     AND l.timestamp_start < :time_end
@@ -101,8 +105,20 @@ final class ListenersAction implements SingleActionInterface
                 DQL
             )->setParameter('station', $station)
                 ->setParameter('time_start', $start)
-                ->setParameter('time_end', $end)
-                ->toIterable([], AbstractQuery::HYDRATE_ARRAY);
+                ->setParameter('time_end', $end);
+
+            // Virtual *_id properties are not included in result of array hydration
+            // need to explicitly select them and merge back into listener row
+            $listenersIterator = (static function () use ($query) {
+                foreach ($query->toIterable([], AbstractQuery::HYDRATE_ARRAY) as $row) {
+                    yield [
+                        ...$row[0],
+                        'mount_id' => $row['mount_id'],
+                        'remote_id' => $row['remote_id'],
+                        'hls_stream_id' => $row['hls_stream_id'],
+                    ];
+                }
+            })();
         }
 
         $mountNames = $this->mountRepo->getDisplayNames($station);

@@ -20,25 +20,25 @@ final class StationPlaylistMedia implements JsonSerializable, IdentifiableEntity
     #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public readonly StationMedia $media;
 
-    /* TODO Remove direct identifier access. */
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    public private(set) int $media_id;
+    public int $media_id {
+        get => $this->media->id;
+    }
 
     #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'media_items')]
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public StationPlaylist $playlist;
 
-    /* TODO Remove direct identifier access. */
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    public private(set) int $playlist_id;
+    public int $playlist_id {
+        get => $this->playlist->id;
+    }
 
     #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'media_items')]
     #[ORM\JoinColumn(name: 'folder_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     public ?StationPlaylistFolder $folder = null;
 
-    /* TODO Remove direct identifier access. */
-    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
-    public private(set) ?int $folder_id = null;
+    public ?int $folder_id {
+        get => $this->folder?->id;
+    }
 
     #[ORM\Column]
     public int $weight = 0;

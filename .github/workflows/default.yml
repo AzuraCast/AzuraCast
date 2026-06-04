@@ -20,8 +20,14 @@ on:
       - '*'
   schedule:
     - cron: '0 2 * * 0' # Weekly on Sundays at 02:00
+  workflow_dispatch:
+    inputs:
+      no_cache:
+        description: 'Build without using cached Docker layers'
+        type: boolean
+        default: false
 
-concurrency: 
+concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
@@ -82,7 +88,7 @@ jobs:
 
       - name: Generate linting report
         run: npm run lint
-  
+
   prepare:
     name: Prepare Codebase
     needs:
@@ -92,7 +98,7 @@ jobs:
     env:
       APPLICATION_ENV: testing
       NODE_ENV: production
-    if: github.event_name == 'push' || github.event_name == 'schedule'
+    if: github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@master
 
@@ -168,7 +174,7 @@ jobs:
             translations
             web/static/vite_dist
             web/static/api/openapi.yml
-  
+
   build:
     name: Build & Publish
     needs: prepare
@@ -177,7 +183,7 @@ jobs:
       id-token: write
       packages: write
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event_name == 'schedule'
+    if: github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@master
 
@@ -221,6 +227,7 @@ jobs:
         with:
           context: .
           push: true
+          no-cache: ${{ github.event_name == 'workflow_dispatch' && inputs.no_cache }}
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

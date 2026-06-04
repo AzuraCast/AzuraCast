@@ -13,8 +13,9 @@ use App\Http\ServerRequest;
 use App\Radio\Frontend\Blocklist\BlocklistParser;
 use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
+use Throwable;
 
-final class ListenerAuthAction implements SingleActionInterface
+final class HlsListenerAuthAction implements SingleActionInterface
 {
     use LoggerAwareTrait;
 
@@ -48,18 +49,42 @@ final class ListenerAuthAction implements SingleActionInterface
             }
         }
 
-        $station = $request->getStation();
-        $listenerIp = Types::string($request->getParam('ip'));
+        try {
+            $listenerIp = $this->getListenerIp($request);
+            $userAgent = Types::stringOrNull($request->getHeaderLine('User-Agent'), true);
 
-        // RSAS has no "deny-agents" so user-agent bans must be enforced here too.
-        $userAgent = Types::stringOrNull($request->getParam('agent'), true);
+            $isAllowed = $this->blocklistParser->isAllowed($station, $listenerIp, $userAgent);
+        } catch (Throwable $exception) {
+            $this->logger->warning(
+                'Error during HLS listener authentication; allowing listener.',
+                [
+                    'station_id' => $station->id,
+                    'exception' => $exception,
+                ]
+            );
 
-        if ($this->blocklistParser->isAllowed($station, $listenerIp, $userAgent)) {
-            return $response->withHeader('icecast-auth-user', '1');
+            return $response->withStatus(200);
         }
 
-        return $response
-            ->withHeader('icecast-auth-user', '0')
-            ->withHeader('icecast-auth-message', 'geo-blocked');
+        return $response->withStatus($isAllowed ? 200 : 403);
+    }
+
+    private function getListenerIp(ServerRequest $request): string
+    {
+        $ip = $request->getSettings()->getIp($request);
+
+        if ($this->isLoopbackIp($ip)) {
+            $realIp = Types::stringOrNull($request->getHeaderLine('X-Real-IP'), true);
+            if (null !== $realIp) {
+                return $realIp;
+            }
+        }
+
+        return $ip;
+    }
+
+    private function isLoopbackIp(string $ip): bool
+    {
+        return '::1' === $ip || str_starts_with($ip, '127.');
     }
 }

@@ -27,6 +27,13 @@ return static function (RouteCollectorProxy $group) {
                         '/listener-auth[/{api_auth}]',
                         Controller\Api\Internal\ListenerAuthAction::class
                     )->setName('api:internal:listener-auth');
+
+                    // NGINX auth_request handler for HLS
+                    $group->map(
+                        ['GET', 'POST'],
+                        '/hls-listener-auth[/{api_auth}]',
+                        Controller\Api\Internal\HlsListenerAuthAction::class
+                    )->setName('api:internal:hls-listener-auth');
                 }
             )->add(Middleware\GetStation::class);
 

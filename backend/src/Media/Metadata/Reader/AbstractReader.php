@@ -10,6 +10,9 @@ use App\Media\MetadataInterface;
 use App\Utilities\Arrays;
 use App\Utilities\Strings;
 
+/**
+ * @phpstan-import-type KnownTags from MetadataInterface
+ */
 abstract class AbstractReader
 {
     protected function aggregateMetaTags(MetadataInterface $metadata, array $toProcessRaw): void
@@ -48,7 +51,9 @@ abstract class AbstractReader
             }
         }
 
+        /** @var KnownTags $knownTags */
         $knownTags = [];
+
         $extraTags = [];
 
         foreach ($toProcess as $tagName => $tagContents) {

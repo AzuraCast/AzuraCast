@@ -127,6 +127,8 @@ final class ListenersAction implements SingleActionInterface
 
         /** @var ApiListener[] $listeners */
         $listeners = [];
+
+        /** @var non-empty-array $listenersByHash */
         $listenersByHash = [];
 
         $groupByUnique = Types::bool($queryParams['unique'] ?? null, true, true);

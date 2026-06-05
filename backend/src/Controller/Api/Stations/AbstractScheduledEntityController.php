@@ -67,6 +67,7 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
 
         $this->em->persist($record);
         $this->em->flush();
+        $this->em->refresh($record);
 
         if (null !== $scheduleItems) {
             $this->scheduleRepo->setScheduleItems($record, $scheduleItems);

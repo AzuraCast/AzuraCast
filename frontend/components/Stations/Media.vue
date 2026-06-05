@@ -267,6 +267,7 @@ import {
 } from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import {syncRef, toRef} from "@vueuse/core";
 import MediaPlaylists from "~/components/Stations/Media/MediaPlaylists.vue";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import {FileListRequired, StationsVueFilesPropsRequired} from "~/entities/StationMedia.ts";
@@ -414,6 +415,8 @@ const fields = computed<DataTableField<MediaRow>[]>(() => {
 });
 
 const playlists = ref<MediaInitialPlaylist[]>(props.initialPlaylists.slice());
+syncRef(toRef(props, 'initialPlaylists'), playlists, {direction: 'ltr'});
+
 const selectedItems = ref<MediaSelectedItems>({
     all: [],
     files: [],

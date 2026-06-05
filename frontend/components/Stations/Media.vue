@@ -267,6 +267,7 @@ import {
 } from "~/entities/ApiInterfaces.ts";
 import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
 import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import {useQueryClient} from "@tanstack/vue-query";
 import MediaPlaylists from "~/components/Stations/Media/MediaPlaylists.vue";
 import {useStationData} from "~/functions/useStationQuery.ts";
 import {FileListRequired, StationsVueFilesPropsRequired} from "~/entities/StationMedia.ts";
@@ -413,7 +414,8 @@ const fields = computed<DataTableField<MediaRow>[]>(() => {
     return fields;
 });
 
-const playlists = ref<MediaInitialPlaylist[]>(props.initialPlaylists.slice());
+const playlists = computed(() => props.initialPlaylists);
+
 const selectedItems = ref<MediaSelectedItems>({
     all: [],
     files: [],
@@ -450,8 +452,11 @@ const onTriggerRelist = () => {
     $quota.value?.update();
 };
 
-const onAddPlaylist = (row: MediaInitialPlaylist) => {
-    playlists.value.push(row);
+const queryClient = useQueryClient();
+const propsQueryKey = queryKeyWithStation([QueryKeys.StationMedia, 'props']);
+
+const onAddPlaylist = () => {
+    void queryClient.invalidateQueries({queryKey: propsQueryKey});
 };
 
 const onFiltered = (newFilter: string) => {

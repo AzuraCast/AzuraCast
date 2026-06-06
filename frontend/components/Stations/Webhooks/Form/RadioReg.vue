@@ -19,12 +19,21 @@
                 :label="$gettext('RadioReg Organization API Key')"
                 :description="$gettext('An API token is issued on a per-organization basis and are found on the org. settings page.')"
             />
+
+            <form-group-checkbox
+                id="form_config_send_cover_art"
+                class="col-md-12"
+                :field="r$.config.send_cover_art"
+                :label="$gettext('Send Cover Art')"
+                :description="$gettext('If enabled, the cover art URLs for the current and next song will be included in the webhook payload. If disabled, RadioReg will look up cover art on its own.')"
+            />
         </div>
     </tab>
 </template>
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
 import {useAppScopedRegle} from "~/vendor/regle.ts";

@@ -206,7 +206,8 @@ export const useStationsWebhooksForm = defineStore(
                         type: WebhookTypes.RadioReg,
                         config: {
                             webhookurl: '',
-                            apikey: ''
+                            apikey: '',
+                            send_cover_art: false
                         }
                     };
                     break;

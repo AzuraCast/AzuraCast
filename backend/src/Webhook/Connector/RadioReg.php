@@ -39,10 +39,17 @@ final class RadioReg extends AbstractConnector
             'nextTitle'     => $np->playing_next?->song->title ?? '',
             'nextArtist'    => $np->playing_next?->song->artist ?? '',
             'songDuration'  => $np->now_playing?->duration,
-            'songStartedAt' => $np->now_playing !== null
-                ? date('c', $np->now_playing->played_at)
-                : null,
+            'songStartedAt' => $np->now_playing?->played_at,
         ];
+
+        if (!empty($config['send_cover_art'])) {
+            $messageBody['art'] = $np->now_playing !== null
+                ? (string)$np->now_playing->song->art
+                : '';
+            $messageBody['nextArt'] = $np->playing_next !== null
+                ? (string)$np->playing_next->song->art
+                : '';
+        }
 
         $response = $this->httpClient->post(
             $config['webhookurl'],

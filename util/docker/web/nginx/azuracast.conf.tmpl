@@ -204,3 +204,7 @@ server {
 
     include /etc/nginx/azuracast.conf.d/*.conf;
 }
+
+# Per-station custom public-page domain server blocks.
+# Written by AzuraCast to a path the azuracast user can write to.
+include /var/azuracast/stations/*/config/custom_domain.conf;

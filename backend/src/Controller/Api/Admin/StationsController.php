@@ -327,6 +327,10 @@ class StationsController extends AbstractApiCrudController
             $this->nginx->writeConfiguration($station);
         }
 
+        if ($originalRecord['custom_domain'] !== $station->custom_domain) {
+            $this->nginx->writeConfiguration($station);
+        }
+
         $frontendChanged = ($originalRecord['frontend_type'] !== $station->frontend_type);
         if ($frontendChanged) {
             $rewriteConfiguration = true;
@@ -477,6 +481,11 @@ class StationsController extends AbstractApiCrudController
             $this->em->flush();
 
             throw $e;
+        }
+
+        // Write custom domain nginx config immediately if a domain was set at creation.
+        if (!empty($station->custom_domain)) {
+            $this->nginx->writeCustomDomainConfiguration($station);
         }
 
         return $station;

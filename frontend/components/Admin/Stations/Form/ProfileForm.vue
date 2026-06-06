@@ -65,6 +65,20 @@
                             }}
                         </template>
                     </form-group-field>
+
+                    <form-group-field
+                        id="edit_form_custom_domain"
+                        class="col-md-12"
+                        :field="r$.custom_domain"
+                        advanced
+                        :label="$gettext('Custom Public Page Domain')"
+                    >
+                        <template #description>
+                            {{
+                                $gettext('Point a domain directly at this station\'s public page (e.g. "radio.example.com"). AzuraCast will serve the station player at the root of that domain. Leave blank to use the default /public/{url-stub} path.')
+                            }}
+                        </template>
+                    </form-group-field>
                 </div>
 
             </div>

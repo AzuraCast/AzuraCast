@@ -82,6 +82,12 @@ final class RestartRadioCommand extends CommandAbstract
                 $io->warning([
                     $station . ': ' . $e->getMessage(),
                 ]);
+
+                // Write custom domain nginx config independently — does not require
+                // the station to have started, so runs even when the catch fires.
+                if (!empty($station->custom_domain)) {
+                    $this->nginx->writeCustomDomainConfiguration($station);
+                }
             }
 
             $io->progressAdvance();

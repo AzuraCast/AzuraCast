@@ -39,6 +39,7 @@ export const useAdminStationsForm = defineStore(
             description: '',
             genre: '',
             url: '',
+            custom_domain: '',
             timezone: 'UTC',
             enable_public_page: true,
             enable_public_api: true,
@@ -138,6 +139,7 @@ export const useAdminStationsForm = defineStore(
                         fields.enable_on_demand,
                         fields.enable_on_demand_download,
                         fields.short_name,
+                        fields.custom_domain,
                         fields.api_history_items,
                     ],
                     frontendTab: [

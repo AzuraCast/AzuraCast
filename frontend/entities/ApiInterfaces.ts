@@ -2122,6 +2122,12 @@ export type Station = HasAutoIncrementId & {
   url?: string | null;
   /** @example "Various" */
   genre?: string | null;
+  /**
+   * Custom domain to serve this station's public page at root (e.g. "metalradio.rocks").
+   * When set, AzuraCast nginx will serve /public/{short_name} at the domain root.
+   * @example "metalradio.rocks"
+   */
+  custom_domain?: string | null;
   /** @example "/var/azuracast/stations/azuratest_radio" */
   radio_base_dir?: string;
   /**

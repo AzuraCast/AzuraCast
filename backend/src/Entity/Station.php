@@ -264,6 +264,24 @@ final class Station implements Stringable, IdentifiableEntityInterface
     }
 
     #[
+        OA\Property(
+            description: "A custom domain to serve this station's public page at the root path (e.g. metalradio.rocks).",
+            example: "metalradio.rocks"
+        ),
+        ORM\Column(length: 255, nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
+    public ?string $custom_domain = null {
+        set {
+            $domain = $this->truncateNullableString($value);
+            if ($domain !== $this->custom_domain) {
+                $this->needs_restart = true;
+            }
+            $this->custom_domain = $domain;
+        }
+    }
+
+    #[
         OA\Property(example: "/var/azuracast/stations/azuratest_radio"),
         ORM\Column(length: 255, nullable: false),
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])

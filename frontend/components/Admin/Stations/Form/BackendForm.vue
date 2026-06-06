@@ -40,6 +40,41 @@
                         :description="$gettext('Number of seconds to overlap songs.')"
                     />
                 </div>
+
+                <div
+                    v-if="isSmartCrossfade"
+                    class="row g-3 mb-3"
+                >
+                    <form-group-field
+                        id="edit_form_backend_crossfade_smart_high"
+                        class="col-md-4"
+                        :field="r$.backend_config.crossfade_smart_high"
+                        input-type="number"
+                        :input-attrs="{ max: '0.0', step: '0.1' }"
+                        :label="$gettext('Smart Mode: Loud Threshold (dB)')"
+                        :description="$gettext('The volume level above which a track is considered \'loud\'. Smart Mode will not overlap tracks louder than this to avoid clipping. Raise this (closer to 0) if loud tracks are not crossfading.')"
+                    />
+
+                    <form-group-field
+                        id="edit_form_backend_crossfade_smart_medium"
+                        class="col-md-4"
+                        :field="r$.backend_config.crossfade_smart_medium"
+                        input-type="number"
+                        :input-attrs="{ max: '0.0', step: '0.1' }"
+                        :label="$gettext('Smart Mode: Quiet Threshold (dB)')"
+                        :description="$gettext('The volume level below which a track is considered quiet. Tracks quieter than this are safe to fully crossfade.')"
+                    />
+
+                    <form-group-field
+                        id="edit_form_backend_crossfade_smart_margin"
+                        class="col-md-4"
+                        :field="r$.backend_config.crossfade_smart_margin"
+                        input-type="number"
+                        :input-attrs="{ min: '0.0', step: '0.1' }"
+                        :label="$gettext('Smart Mode: Volume Margin (dB)')"
+                        :description="$gettext('The volume difference above which two tracks are considered too different to overlap nicely.')"
+                    />
+                </div>
             </template>
 
             <form-fieldset>
@@ -344,6 +379,10 @@ const isPostProcessingEnabled = computed(() => {
 
 const isAutoCueEnabled = computed(() => {
     return form.value?.backend_config?.enable_auto_cue ?? false;
+});
+
+const isSmartCrossfade = computed(() => {
+    return form.value?.backend_config?.crossfade_type === (CrossfadeModes.Smart as string);
 });
 
 const {$gettext} = useTranslate();

@@ -74,6 +74,21 @@ let settings.azuracast.crossfade_type = settings.make(
     "normal"
 )
 
+let settings.azuracast.crossfade_smart_high = settings.make(
+    description="Smart crossfade: the dB level above which a track is considered 'loud'.",
+    -15.0
+)
+
+let settings.azuracast.crossfade_smart_medium = settings.make(
+    description="Smart crossfade: the dB level below which a track is considered quiet ('medium').",
+    -32.0
+)
+
+let settings.azuracast.crossfade_smart_margin = settings.make(
+    description="Smart crossfade: the dB difference above which two tracks are considered too different to overlap.",
+    8.0
+)
+
 let settings.azuracast.request_timeout = settings.make(
     description="The timeout for requests (i.e. song requests and 'Next Song' resolution), in seconds.",
     20.0
@@ -148,7 +163,7 @@ def azuracast.http_api_log_requests(req, res, next)
 end
 
 harbor.http.middleware.register(azuracast.http_api_log_requests)
-  
+
 def azuracast.http_api_check_token(req, res, next)
     if req.headers["x-liquidsoap-api-key"] != settings.azuracast.api_key() then
         res.status_code(401)
@@ -159,7 +174,7 @@ end
 
 harbor.http.middleware.register(azuracast.http_api_check_token)
 
-def azuracast.start_http_api(~port=null) = 
+def azuracast.start_http_api(~port=null) =
     port = port ?? settings.azuracast.liquidsoap_api_port()
     server.harbor(port=port)
 end
@@ -206,7 +221,7 @@ def azuracast.api_call(~timeout=null, endpoint_url, payload) =
             label="azuracast.api",
             "API #{endpoint_url} - Error: #{error.kind(err)} - #{error.message(err)}"
         )
-        
+
         null
     end
 end
@@ -239,7 +254,7 @@ def azuracast.media_protocol(~rlog:_,~maxtime,arg) =
                 else
                     "#{uri}"
                 end
-            else 
+            else
                 null
             end
         catch err do
@@ -276,7 +291,7 @@ def azuracast.autocue(
 
     # Check if `"azuracast_autocue"` is present and set to `"true"`. If so, use azuracast autocue implementation:
     if list.assoc(default="false", "azuracast_autocue", request_metadata) == "true" then
-        def azuracast_optional_start_next = 
+        def azuracast_optional_start_next =
             if list.assoc.mem("autocue_start_next", request_metadata) then
                 { start_next = float_of_string(list.assoc("autocue_start_next", request_metadata)) }
             else
@@ -316,8 +331,8 @@ def azuracast.autocue(
         )
 
         let autocue_result = autocue.internal.implementation(
-            request_metadata=request_metadata, 
-            file_metadata=file_metadata, 
+            request_metadata=request_metadata,
+            file_metadata=file_metadata,
             filename
         )
 
@@ -329,7 +344,7 @@ def azuracast.autocue(
                 label=label,
                 "Saving cache to AzuraCast (key #{cache_key})"
             )
-            
+
             def f() =
                 _ = azuracast.api_call(
                     timeout=5.0,
@@ -340,7 +355,7 @@ def azuracast.autocue(
                     })
                 )
             end
-        
+
             thread.run(fast=false, f)
         end
 
@@ -376,7 +391,7 @@ def azuracast.autodj_next_song() =
             ) = null.get(api_response)
 
             request.create(uri)
-        else 
+        else
             null
         end
     catch err do
@@ -391,7 +406,7 @@ def azuracast.autodj_next_song() =
 end
 
 # Delayed ping for AutoDJ Next Song
-def azuracast.wait_for_next_song(autodj) = 
+def azuracast.wait_for_next_song(autodj) =
     azuracast.autodj_ping_attempts := azuracast.autodj_ping_attempts() + 1
 
     if source.is_ready(autodj) then
@@ -419,9 +434,9 @@ end
 
 def azuracast.enable_autodj(s) =
     dynamic = request.dynamic(
-        id="next_song", 
-        timeout=settings.azuracast.request_timeout(), 
-        retry_delay=10., 
+        id="next_song",
+        timeout=settings.azuracast.request_timeout(),
+        retry_delay=10.,
         azuracast.autodj_next_song
     )
 
@@ -436,7 +451,7 @@ def azuracast.enable_autodj(s) =
             )
         ]
     )
-    
+
     s = fallback(id="autodj_fallback", track_sensitive = true, [dynamic_startup, s])
 
     ref_dynamic = ref(dynamic);
@@ -482,7 +497,7 @@ def azuracast.dj_auth(auth_info) =
             else
                 false
             end
-        else 
+        else
             false
         end
     catch err do
@@ -570,7 +585,9 @@ def azuracast.live_aware_crossfade_impl(old, new) =
             cross.smart(
                 old,
                 new,
-                margin=8.,
+                high=settings.azuracast.crossfade_smart_high(),
+                medium=settings.azuracast.crossfade_smart_medium(),
+                margin=settings.azuracast.crossfade_smart_margin(),
                 fade_in=settings.azuracast.default_fade(),
                 fade_out=settings.azuracast.default_fade()
             )
@@ -674,7 +691,7 @@ def azuracast.handle_jingle_mode(s) =
     s
 end
 
-def azuracast.apply_amplify(s) = 
+def azuracast.apply_amplify(s) =
     if (settings.azuracast.apply_amplify()) then
         (amplify(1., s) : source)
     else
@@ -686,7 +703,7 @@ end
 Debugging
 ----->#
 
-def azuracast.log_meta(m) = 
+def azuracast.log_meta(m) =
     label="log_meta"
     l = list.sort.natural(metadata.cover.remove(m))
     list.iter(fun(v) -> log(level=4, label=label, "#{v}"), l)

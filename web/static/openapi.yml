@@ -9595,15 +9595,15 @@ components:
           type: number
           format: float
         crossfade_smart_high:
-          description: "Smart crossfade: the dB level above which a track is considered 'loud'."
+          description: "The dB level above which a track is considered 'loud' ('high' parameter in 'cross.smart')."
           type: number
           format: float
         crossfade_smart_medium:
-          description: "Smart crossfade: the dB level below which a track is considered quiet ('medium')."
+          description: "The dB level below which a track is considered 'quiet' ('medium' parameter in 'cross.smart')."
           type: number
           format: float
         crossfade_smart_margin:
-          description: 'Smart crossfade: the dB difference above which two tracks are considered too different to overlap.'
+          description: "The dB difference above which two tracks are considered too different to overlap ('margin' parameter in 'cross.smart')."
           type: number
           format: float
         duplicate_prevention_time_range:

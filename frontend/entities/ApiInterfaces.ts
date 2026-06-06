@@ -2220,17 +2220,17 @@ export interface StationBackendConfiguration {
   /** @format float */
   crossfade?: number;
   /**
-   * Smart crossfade: the dB level above which a track is considered 'loud'.
+   * The dB level above which a track is considered 'loud' ('high' parameter in 'cross.smart').
    * @format float
    */
   crossfade_smart_high?: number;
   /**
-   * Smart crossfade: the dB level below which a track is considered quiet ('medium').
+   * The dB level below which a track is considered 'quiet' ('medium' parameter in 'cross.smart').
    * @format float
    */
   crossfade_smart_medium?: number;
   /**
-   * Smart crossfade: the dB difference above which two tracks are considered too different to overlap.
+   * The dB difference above which two tracks are considered too different to overlap ('margin' parameter in 'cross.smart').
    * @format float
    */
   crossfade_smart_margin?: number;

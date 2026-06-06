@@ -226,7 +226,7 @@ final class StationBackendConfiguration extends AbstractArrayEntity
     protected const float DEFAULT_CROSSFADE_SMART_HIGH = -15.0;
 
     #[OA\Property(
-        description: "Smart crossfade: the dB level above which a track is considered 'loud'."
+        description: "The dB level above which a track is considered 'loud' ('high' parameter in 'cross.smart')."
     )]
     public float $crossfade_smart_high = self::DEFAULT_CROSSFADE_SMART_HIGH {
         set (float|string|null $value) => round(
@@ -238,7 +238,7 @@ final class StationBackendConfiguration extends AbstractArrayEntity
     protected const float DEFAULT_CROSSFADE_SMART_MEDIUM = -32.0;
 
     #[OA\Property(
-        description: "Smart crossfade: the dB level below which a track is considered quiet ('medium')."
+        description: "The dB level below which a track is considered 'quiet' ('medium' parameter in 'cross.smart')."
     )]
     public float $crossfade_smart_medium = self::DEFAULT_CROSSFADE_SMART_MEDIUM {
         set (float|string|null $value) => round(
@@ -250,7 +250,7 @@ final class StationBackendConfiguration extends AbstractArrayEntity
     protected const float DEFAULT_CROSSFADE_SMART_MARGIN = 8.0;
 
     #[OA\Property(
-        description: "Smart crossfade: the dB difference above which two tracks are considered too different to overlap."
+        description: "The dB difference above which two tracks are considered too different to overlap ('margin' parameter in 'cross.smart')."
     )]
     public float $crossfade_smart_margin = self::DEFAULT_CROSSFADE_SMART_MARGIN {
         set (float|string|null $value) => round(

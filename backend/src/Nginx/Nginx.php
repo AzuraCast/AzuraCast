@@ -82,6 +82,9 @@ final class Nginx
 
         $acmeDir = Environment::getInstance()->getParentDirectory() . '/storage/acme';
 
+        // Port the streaming server (Icecast, RSAS, etc.) listens on.
+        $streamingPort = $station->frontend_config->port ?? 8000;
+
         // proxy_params already includes proxy_buffering off and long timeouts —
         // do not set them again or nginx will reject the config as duplicate.
         $newConfig = <<<NGINX
@@ -100,12 +103,8 @@ final class Nginx
 
             server_name {$domain};
 
-            # Static assets, API, system paths — ^~ beats rewrites, pass straight through.
+            # Static assets, docs, system paths — ^~ passes straight through.
             location ^~ /static {
-                include /etc/nginx/proxy_params;
-                proxy_pass http://127.0.0.1:6010;
-            }
-            location ^~ /api {
                 include /etc/nginx/proxy_params;
                 proxy_pass http://127.0.0.1:6010;
             }
@@ -122,10 +121,27 @@ final class Nginx
                 proxy_pass http://127.0.0.1:6010;
             }
 
-            # Stream: /listen → /listen/{$stationSlug}
-            location = /listen {
+            # Centrifugo live Now Playing stream — must precede /api so the longer
+            # ^~ /api/live/ prefix wins in nginx location matching.
+            location ^~ /api/live/ {
+                rewrite ^/api/live/nowplaying/(.*)\$ /connection/uni_\$1 break;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade \$http_upgrade;
+                proxy_set_header Connection "";
+                proxy_buffering off;
+                proxy_pass http://127.0.0.1:6020;
+            }
+            location ^~ /api {
                 include /etc/nginx/proxy_params;
-                proxy_pass http://127.0.0.1:6010/listen/{$stationSlug};
+                proxy_pass http://127.0.0.1:6010;
+            }
+
+            # Stream mounts: /listen/[mount] → streaming server directly.
+            # ^~ strips the /listen/ prefix; the streaming server handles /[mount].
+            location ^~ /listen/ {
+                include /etc/nginx/proxy_params;
+                proxy_intercept_errors on;
+                proxy_pass http://127.0.0.1:{$streamingPort}/;
             }
 
             # Once rewritten, station paths pass through without further rewriting.

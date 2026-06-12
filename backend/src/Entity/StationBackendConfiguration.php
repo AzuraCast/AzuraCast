@@ -223,6 +223,42 @@ final class StationBackendConfiguration extends AbstractArrayEntity
         return $this->getCrossfadeDuration() > 0;
     }
 
+    protected const float DEFAULT_CROSSFADE_SMART_HIGH = -15.0;
+
+    #[OA\Property(
+        description: "The dB level above which a track is considered 'loud' ('high' parameter in 'cross.smart')."
+    )]
+    public float $crossfade_smart_high = self::DEFAULT_CROSSFADE_SMART_HIGH {
+        set (float|string|null $value) => round(
+            Types::float($value, self::DEFAULT_CROSSFADE_SMART_HIGH),
+            1
+        );
+    }
+
+    protected const float DEFAULT_CROSSFADE_SMART_MEDIUM = -32.0;
+
+    #[OA\Property(
+        description: "The dB level below which a track is considered 'quiet' ('medium' parameter in 'cross.smart')."
+    )]
+    public float $crossfade_smart_medium = self::DEFAULT_CROSSFADE_SMART_MEDIUM {
+        set (float|string|null $value) => round(
+            Types::float($value, self::DEFAULT_CROSSFADE_SMART_MEDIUM),
+            1
+        );
+    }
+
+    protected const float DEFAULT_CROSSFADE_SMART_MARGIN = 8.0;
+
+    #[OA\Property(
+        description: "The dB difference above which two tracks are considered too different to overlap ('margin' parameter in 'cross.smart')."
+    )]
+    public float $crossfade_smart_margin = self::DEFAULT_CROSSFADE_SMART_MARGIN {
+        set (float|string|null $value) => round(
+            Types::float($value, self::DEFAULT_CROSSFADE_SMART_MARGIN),
+            1
+        );
+    }
+
     protected const int DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE = 120;
 
     #[OA\Property]

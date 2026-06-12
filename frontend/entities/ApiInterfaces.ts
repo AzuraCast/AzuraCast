@@ -2219,6 +2219,21 @@ export interface StationBackendConfiguration {
   crossfade_type?: string;
   /** @format float */
   crossfade?: number;
+  /**
+   * The dB level above which a track is considered 'loud' ('high' parameter in 'cross.smart').
+   * @format float
+   */
+  crossfade_smart_high?: number;
+  /**
+   * The dB level below which a track is considered 'quiet' ('medium' parameter in 'cross.smart').
+   * @format float
+   */
+  crossfade_smart_medium?: number;
+  /**
+   * The dB difference above which two tracks are considered too different to overlap ('margin' parameter in 'cross.smart').
+   * @format float
+   */
+  crossfade_smart_margin?: number;
   duplicate_prevention_time_range?: number;
   performance_mode?: string;
   hls_segment_length?: number;
@@ -2401,9 +2416,7 @@ export type StationPlaylist = HasAutoIncrementId & {
   backend_options?: string[];
   /** @example true */
   avoid_duplicates?: boolean;
-  /** StationSchedule> */
   schedule_items?: any[];
-  /** Podcast> */
   podcasts?: any[];
 };
 
@@ -2481,7 +2494,6 @@ export type StationStreamer = HasAutoIncrementId & {
   enforce_schedule?: boolean;
   /** @example 1609480800 */
   reactivate_at?: number | null;
-  /** StationSchedule> */
   schedule_items?: any[];
 };
 
@@ -2585,7 +2597,7 @@ export type StorageLocation = HasAutoIncrementId & {
   /** The private key pass phrase for SFTP adapters */
   sftpPrivateKeyPassPhrase?: string | null;
   /** @example "120000" */
-  storageQuotaBytes?: any;
+  storageQuotaBytes?: any | null;
   /** @example "50 GB" */
   storageQuota?: string | null;
   /** @example "60000" */
@@ -2593,7 +2605,7 @@ export type StorageLocation = HasAutoIncrementId & {
   /** @example "1 GB" */
   storageUsed?: string;
   /** @example "120000" */
-  storageAvailableBytes?: any;
+  storageAvailableBytes?: any | null;
   /** @example "1 GB" */
   storageAvailable?: string;
 };
@@ -2636,7 +2648,6 @@ export type User = HasAutoIncrementId & {
   created_at?: number;
   /** @example 1609480800 */
   updated_at?: number;
-  /** Role> */
   roles?: any[];
 };
 

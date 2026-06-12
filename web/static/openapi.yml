@@ -9594,6 +9594,18 @@ components:
         crossfade:
           type: number
           format: float
+        crossfade_smart_high:
+          description: "The dB level above which a track is considered 'loud' ('high' parameter in 'cross.smart')."
+          type: number
+          format: float
+        crossfade_smart_medium:
+          description: "The dB level below which a track is considered 'quiet' ('medium' parameter in 'cross.smart')."
+          type: number
+          format: float
+        crossfade_smart_margin:
+          description: "The dB difference above which two tracks are considered too different to overlap ('margin' parameter in 'cross.smart')."
+          type: number
+          format: float
         duplicate_prevention_time_range:
           type: integer
         performance_mode:
@@ -9892,11 +9904,9 @@ components:
               type: boolean
               example: true
             schedule_items:
-              description: StationSchedule>
               type: array
               items: {  }
             podcasts:
-              description: Podcast>
               type: array
               items: {  }
           type: object
@@ -10030,7 +10040,6 @@ components:
               example: 1609480800
               nullable: true
             schedule_items:
-              description: StationSchedule>
               type: array
               items: {  }
           type: object
@@ -10259,7 +10268,6 @@ components:
               type: integer
               example: 1609480800
             roles:
-              description: Role>
               type: array
               items: {  }
           type: object

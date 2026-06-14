@@ -54,9 +54,9 @@ final class StationPlaylist implements
         $this->station = $station;
     }
 
-    /* TODO Remove direct identifier access. */
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    public private(set) int $station_id;
+    public int $station_id {
+        get => $this->station->id;
+    }
 
     #[
         OA\Property(example: "Test Playlist"),

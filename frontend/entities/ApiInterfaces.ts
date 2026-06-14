@@ -215,6 +215,12 @@ export enum PlaylistOrders {
   Sequential = "sequential",
 }
 
+export enum PlaylistGroupAllowedRequests {
+  Any = "any",
+  Playlist = "playlist",
+  None = "none",
+}
+
 export enum LoginTokenTypes {
   ResetPassword = "reset_password",
   Login = "login",
@@ -2405,11 +2411,8 @@ export type StationPlaylist = HasAutoIncrementId & {
   backend_options?: string[];
   /** @example true */
   avoid_duplicates?: boolean;
-  /** StationSchedule> */
   schedule_items?: any[];
-  /** Podcast> */
   podcasts?: any[];
-  /** StationPlaylistGroup> */
   playlists?: any[];
 };
 
@@ -2423,6 +2426,7 @@ export type StationPlaylistGroup = HasAutoIncrementId & {
   weight?: number;
   /** @example 0 */
   consecutive_plays?: number;
+  allowed_requests?: PlaylistGroupAllowedRequests;
 };
 
 export type StationRemote = HasAutoIncrementId & {
@@ -2504,7 +2508,6 @@ export type StationStreamer = HasAutoIncrementId & {
   enforce_schedule?: boolean;
   /** @example 1609480800 */
   reactivate_at?: number | null;
-  /** StationSchedule> */
   schedule_items?: any[];
 };
 
@@ -2608,7 +2611,7 @@ export type StorageLocation = HasAutoIncrementId & {
   /** The private key pass phrase for SFTP adapters */
   sftpPrivateKeyPassPhrase?: string | null;
   /** @example "120000" */
-  storageQuotaBytes?: any;
+  storageQuotaBytes?: any | null;
   /** @example "50 GB" */
   storageQuota?: string | null;
   /** @example "60000" */
@@ -2616,7 +2619,7 @@ export type StorageLocation = HasAutoIncrementId & {
   /** @example "1 GB" */
   storageUsed?: string;
   /** @example "120000" */
-  storageAvailableBytes?: any;
+  storageAvailableBytes?: any | null;
   /** @example "1 GB" */
   storageAvailable?: string;
 };
@@ -2659,7 +2662,6 @@ export type User = HasAutoIncrementId & {
   created_at?: number;
   /** @example 1609480800 */
   updated_at?: number;
-  /** Role> */
   roles?: any[];
 };
 

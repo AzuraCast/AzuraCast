@@ -7,6 +7,7 @@ namespace App\Radio\AutoDJ;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Entity\Api\StationPlaylistQueue;
+use App\Entity\Enums\PlaylistGroupAllowedRequests;
 use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Enums\PlaylistRemoteTypes;
 use App\Entity\Enums\PlaylistSources;
@@ -574,6 +575,10 @@ final class QueueBuilder implements EventSubscriberInterface
         BuildQueue $event,
         StationPlaylist $playlist
     ): bool {
+        if ($this->areRequestsBlockedByAncestors($playlist, $event->getExpectedPlayTime())) {
+            return false;
+        }
+
         $request = $this->requestRepo->getNextPlayableRequest(
             $playlist->station,
             $event->getExpectedPlayTime()
@@ -774,6 +779,92 @@ final class QueueBuilder implements EventSubscriberInterface
         return $this->duplicatePrevention->preventDuplicates($mediaQueue, $recentSongHistory);
     }
 
+    /**
+     * Walk down from a group through nested members to check allowed_requests.
+     *
+     * For non-random playlists we only need to check the next in the queue but
+     * for random order we have basically check if any in the hierarchy blocks the requests
+     * and treat it authoritatively since we cannot determine which would be next exactly.
+     *
+     * Returns true if any level blocks the request.
+     */
+    private function isRequestBlockedInHierarchy(
+        StationPlaylist $group,
+        ?StationMedia $requestedMedia
+    ): bool {
+        $members = ($group->order === PlaylistOrders::Random)
+            ? $group->playlists->toArray()
+            : array_slice($this->spRepo->getPlaylistGroupQueue($group), 0, 1);
+
+        foreach ($members as $member) {
+            if ($member->allowed_requests === PlaylistGroupAllowedRequests::None) {
+                $this->logger->debug(sprintf(
+                    'Playlist group member "%s" blocks requests (allowed_requests=none).',
+                    $member->playlist->name
+                ));
+                return true;
+            }
+
+            if (
+                $member->allowed_requests === PlaylistGroupAllowedRequests::Playlist
+                && $requestedMedia !== null
+                && !$this->spmRepo->isMediaInPlaylist($requestedMedia, $member->playlist)
+            ) {
+                $this->logger->debug(sprintf(
+                    'Request blocked, media not in subtree of member "%s".',
+                    $member->playlist->name
+                ));
+                return true;
+            }
+
+            if ($member->playlist->source === PlaylistSources::Playlists) {
+                if ($this->isRequestBlockedInHierarchy($member->playlist, $requestedMedia)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Walk up from a playlist through its group memberships, to check allowed_requests.
+     *
+     * Only blocks when the root ancestor is scheduled and active to prevent an unscheduled
+     * playlist from always blocking requests on the whole station.
+     */
+    private function areRequestsBlockedByAncestors(
+        StationPlaylist $playlist,
+        DateTimeImmutable $expectedPlayTime
+    ): bool {
+        foreach ($playlist->playlist_groups as $membership) {
+            if ($membership->allowed_requests === PlaylistGroupAllowedRequests::None) {
+                $root = $membership->playlist_group;
+                while (($parentMembership = $root->playlist_groups->first()) !== false) {
+                    /** @var StationPlaylistGroup $parentMembership */
+                    $root = $parentMembership->playlist_group;
+                }
+
+                if (
+                    $root->schedule_items->count() > 0
+                    && $this->scheduler->shouldPlaylistPlayNow($root, $expectedPlayTime)
+                ) {
+                    $this->logger->debug(sprintf(
+                        'Requests blocked for "%s", ancestor group membership has allowed_requests=none.',
+                        $playlist->name
+                    ));
+                    return true;
+                }
+            }
+
+            if ($this->areRequestsBlockedByAncestors($membership->playlist_group, $expectedPlayTime)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function getNextSongFromRequests(BuildQueue $event): void
     {
         // Don't use this to cue requests.
@@ -834,6 +925,25 @@ final class QueueBuilder implements EventSubscriberInterface
         $request = $this->requestRepo->getNextPlayableRequest($station, $expectedPlayTime);
         if (null === $request) {
             return;
+        }
+
+        foreach ($station->playlists as $playlist) {
+            if (
+                !$playlist->is_enabled
+                || $playlist->source !== PlaylistSources::Playlists
+                || $playlist->schedule_items->count() === 0
+                || $playlist->playlist_groups->count() > 0
+            ) {
+                continue;
+            }
+
+            if (!$this->scheduler->shouldPlaylistPlayNow($playlist, $expectedPlayTime)) {
+                continue;
+            }
+
+            if ($this->isRequestBlockedInHierarchy($playlist, $request->track)) {
+                return;
+            }
         }
 
         $this->logger->debug(sprintf('Queueing next song from request ID %d.', $request->id));

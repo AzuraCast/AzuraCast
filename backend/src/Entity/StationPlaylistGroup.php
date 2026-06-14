@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Enums\PlaylistGroupAllowedRequests;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
@@ -67,6 +68,12 @@ final class StationPlaylistGroup implements JsonSerializable, IdentifiableEntity
     #[ORM\Column]
     public int $consecutive_plays_count = 0;
 
+    #[
+        OA\Property(example: 'any'),
+        ORM\Column(type: 'string', enumType: PlaylistGroupAllowedRequests::class)
+    ]
+    public PlaylistGroupAllowedRequests $allowed_requests = PlaylistGroupAllowedRequests::Any;
+
     public function __construct(
         StationPlaylist $playlist,
         StationPlaylist $playlistGroup
@@ -106,6 +113,7 @@ final class StationPlaylistGroup implements JsonSerializable, IdentifiableEntity
             'name' => $this->playlist->name,
             'weight' => $this->weight,
             'consecutive_plays' => $this->consecutive_plays,
+            'allowed_requests' => $this->allowed_requests->value,
         ];
     }
 

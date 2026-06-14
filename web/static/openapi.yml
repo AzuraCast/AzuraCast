@@ -9024,6 +9024,16 @@ components:
       x-enumNames:
         - ResetPassword
         - Login
+    PlaylistGroupAllowedRequests:
+      type: string
+      enum:
+        - any
+        - playlist
+        - none
+      x-enumNames:
+        - Any
+        - Playlist
+        - None
     PlaylistOrders:
       type: string
       enum:
@@ -9925,15 +9935,12 @@ components:
               type: boolean
               example: true
             schedule_items:
-              description: StationSchedule>
               type: array
               items: {  }
             podcasts:
-              description: Podcast>
               type: array
               items: {  }
             playlists:
-              description: StationPlaylistGroup>
               type: array
               items: {  }
           type: object
@@ -9955,6 +9962,8 @@ components:
             consecutive_plays:
               type: integer
               example: 0
+            allowed_requests:
+              $ref: '#/components/schemas/PlaylistGroupAllowedRequests'
           type: object
     StationRemote:
       type: object
@@ -10090,7 +10099,6 @@ components:
               example: 1609480800
               nullable: true
             schedule_items:
-              description: StationSchedule>
               type: array
               items: {  }
           type: object
@@ -10319,7 +10327,6 @@ components:
               type: integer
               example: 1609480800
             roles:
-              description: Role>
               type: array
               items: {  }
           type: object

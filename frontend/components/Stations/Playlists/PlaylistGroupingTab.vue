@@ -110,19 +110,19 @@
                                                 <div class="d-flex align-items-center">
                                                     <template v-if="item.source === PlaylistSources.Songs">
                                                         <icon-ic-library-music />
-                                                        <div class="ps-2">{{ $gettext('Song-based') }}</div>
+                                                        <div class="d-none d-md-block ps-2">{{ $gettext('Song-based') }}</div>
                                                     </template>
                                                     <template v-else-if="item.source === PlaylistSources.Playlists">
                                                         <icon-ic-queue-music />
-                                                        <div class="ps-2">{{ $gettext('Playlist Group') }}</div>
+                                                        <div class="d-none d-md-block ps-2">{{ $gettext('Playlist Group') }}</div>
                                                     </template>
                                                     <template v-else-if="item.source === PlaylistSources.Requests">
                                                         <icon-bi-people />
-                                                        <div class="ps-2">{{ $gettext('Request Queue') }}</div>
+                                                        <div class="d-none d-md-block ps-2">{{ $gettext('Request Queue') }}</div>
                                                     </template>
                                                     <template v-else-if="item.source === PlaylistSources.RemoteUrl">
                                                         <icon-ic-public />
-                                                        <div class="ps-2">{{ $gettext('Remote URL') }}</div>
+                                                        <div class="d-none d-md-block ps-2">{{ $gettext('Remote URL') }}</div>
                                                     </template>
                                                 </div>
                                             </span>
@@ -201,7 +201,7 @@
                             {{ selectedPlaylist.description }}
                         </div>
 
-                        <div class="badges">
+                        <div class="d-flex flex-wrap gap-2">
                             <span class="badge text-bg-primary">
                                 <template v-if="selectedPlaylist.source === PlaylistSources.Songs">
                                     {{ $gettext('Song-based') }}
@@ -340,7 +340,7 @@
                                         </button>
                                     </div>
 
-                                    <div class="d-flex flex-column align-items-end gap-2 mb-2">
+                                    <div class="d-flex flex-column flex-md-row justify-content-between gap-2 mb-2">
                                         <form-group-field
                                             :id="`consecutive-plays-${index}`"
                                             class="col-12 col-md-6 col-xl-4 col-xxl-3"
@@ -351,6 +351,16 @@
                                             :disabled="saving"
                                             :label="$gettext('Consecutive Plays')"
                                         />
+
+                                        <form-group-select
+                                            :id="`allowed-requests-${index}`"
+                                            class="col-12 col-md-6 col-xl-4 col-xxl-3"
+                                            :model-value="member.allowed_requests"
+                                            @update:model-value="doUpdateAllowedRequests(index, $event)"
+                                            :options="getAllowedRequestsOptions(member)"
+                                            :disabled="saving"
+                                            :label="$gettext('Allowed Requests')"
+                                        />
                                     </div>
 
                                     <div class="d-flex justify-content-between align-items-center">
@@ -359,19 +369,19 @@
                                                 <div class="d-flex align-items-center">
                                                     <template v-if="member.source === PlaylistSources.Songs">
                                                         <icon-ic-library-music />
-                                                        <div class="ps-2">{{ $gettext('Song-based') }}</div>
+                                                        <div class="d-none d-md-block ps-2">{{ $gettext('Song-based') }}</div>
                                                     </template>
                                                     <template v-else-if="member.source === PlaylistSources.Playlists">
                                                         <icon-ic-queue-music />
-                                                        <div class="ps-2">{{ $gettext('Playlist Group') }}</div>
+                                                        <div class="d-none d-md-block ps-2">{{ $gettext('Playlist Group') }}</div>
                                                     </template>
                                                     <template v-else-if="member.source === PlaylistSources.Requests">
                                                         <icon-bi-people />
-                                                        <div class="ps-2">{{ $gettext('Request Queue') }}</div>
+                                                        <div class="d-none d-md-block ps-2">{{ $gettext('Request Queue') }}</div>
                                                     </template>
                                                     <template v-else-if="member.source === PlaylistSources.RemoteUrl">
                                                         <icon-ic-public />
-                                                        <div class="ps-2">{{ $gettext('Remote URL') }}</div>
+                                                        <div class="d-none d-md-block ps-2">{{ $gettext('Remote URL') }}</div>
                                                     </template>
                                                 </div>
                                             </span>
@@ -444,6 +454,7 @@
 <script setup lang="ts">
 import Tab from "~/components/Common/Tab.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import IconIcHome from "~icons/ic/baseline-home";
 import IconIcLibraryMusic from "~icons/ic/baseline-library-music";
 import IconIcQueueMusic from "~icons/ic/baseline-queue-music";
@@ -467,7 +478,7 @@ import {
     type StationPlaylistGroupMemberEnriched,
     type PlaylistBreadcrumb,
 } from "~/entities/StationPlaylist.ts";
-import {PlaylistSources, PlaylistTypes, PlaylistOrders} from "~/entities/ApiInterfaces.ts";
+import {PlaylistSources, PlaylistTypes, PlaylistOrders, PlaylistGroupAllowedRequests} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps<{
     listUrl: string
@@ -518,13 +529,11 @@ watch($playlistList, (element) => {
         filter: '.not-assignable',
         sort: false,
         clone: (playlist: StationPlaylistEnriched) => ({
-            id: playlist.id,
-            name: playlist.name,
+            ...playlist,
             weight: 0,
-            source: playlist.source,
-            num_songs: playlist.num_songs,
-            playlists: playlist.playlists,
-        }) as StationPlaylistEnriched,
+            consecutive_plays: 0,
+            allowed_requests: PlaylistGroupAllowedRequests.Any,
+        }),
     });
 });
 
@@ -569,9 +578,11 @@ const buildTree = (raw: StationPlaylistEnriched[]): StationPlaylistEnriched[] =>
                         ...fullPlaylist,
                         weight: member.weight,
                         consecutive_plays: member.consecutive_plays ?? 0,
+                        allowed_requests: member.allowed_requests ?? PlaylistGroupAllowedRequests.Any,
                     }
                     : {
                         ...member,
+                        allowed_requests: member.allowed_requests ?? PlaylistGroupAllowedRequests.Any,
                         description: '',
                         type: 'default',
                         is_jingle: false,
@@ -709,6 +720,7 @@ const saveMembersForSelected = async (members: StationPlaylistGroupMemberEnriche
                 id: member.id,
                 weight: index + 1,
                 consecutive_plays: member.consecutive_plays ?? 0,
+                allowed_requests: member.allowed_requests ?? PlaylistGroupAllowedRequests.Any,
             })),
         });
 
@@ -744,6 +756,7 @@ const doAssign = async (playlist: StationPlaylistEnriched): Promise<void> => {
         name: playlist.name,
         weight: group.playlists.length + 1,
         consecutive_plays: 0,
+        allowed_requests: PlaylistGroupAllowedRequests.Any,
         source: playlist.source,
         num_songs: playlist.num_songs,
         playlists: playlist.playlists,
@@ -796,6 +809,31 @@ const doUpdateConsecutivePlays = (index: number, value: number | null): void => 
 
     const updated = [...playlistMembers.value];
     updated[index] = {...updated[index], consecutive_plays: consecutivePlays};
+    playlistMembers.value = updated;
+
+    void debouncedSaveMembers(updated);
+};
+
+const getAllowedRequestsOptions = (member: StationPlaylistGroupMemberEnriched) => {
+    const options: Record<string, string> = {
+        [PlaylistGroupAllowedRequests.Any]: $gettext('Any (Default)'),
+    };
+
+    if ([PlaylistSources.Songs, PlaylistSources.Playlists].includes(member.source as PlaylistSources)) {
+        options[PlaylistGroupAllowedRequests.Playlist] = $gettext('Playlist Media Only');
+    }
+
+    options[PlaylistGroupAllowedRequests.None] = $gettext('None');
+
+    return options;
+};
+
+const doUpdateAllowedRequests = (index: number, value: string | null): void => {
+    const updated = [...playlistMembers.value];
+    updated[index] = {
+        ...updated[index],
+        allowed_requests: (value ?? PlaylistGroupAllowedRequests.Any) as PlaylistGroupAllowedRequests
+    };
     playlistMembers.value = updated;
 
     void debouncedSaveMembers(updated);

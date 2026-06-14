@@ -115,7 +115,7 @@ import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
 import {useHasModal} from "~/functions/useHasModal.ts";
 import {useDraggable} from "vue-draggable-plus";
-import {PlaylistSources} from "~/entities/ApiInterfaces.ts";
+import {PlaylistSources, PlaylistGroupAllowedRequests} from "~/entities/ApiInterfaces.ts";
 import {StationPlaylistGroupMemberEnriched} from "~/entities/StationPlaylist.ts";
 import IconBiGripVertical from "~icons/bi/grip-vertical";
 import IconBiChevronBarDown from "~icons/bi/chevron-bar-down";
@@ -160,6 +160,7 @@ const save = async () => {
             id: member.id,
             weight: index + 1,
             consecutive_plays: member.consecutive_plays ?? 0,
+            allowed_requests: member.allowed_requests ?? PlaylistGroupAllowedRequests.Any,
         })),
     });
 

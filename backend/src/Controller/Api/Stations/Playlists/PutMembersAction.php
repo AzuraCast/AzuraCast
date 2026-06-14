@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Playlists;
 
 use App\Controller\SingleActionInterface;
+use App\Entity\Enums\PlaylistGroupAllowedRequests;
 use App\Entity\Enums\PlaylistSources;
 use App\Entity\Repository\StationPlaylistRepository;
 use App\Entity\StationPlaylist;
@@ -63,7 +64,7 @@ final readonly class PutMembersAction implements SingleActionInterface
             throw new Exception(__('This playlist is not a playlist group.'));
         }
 
-        /** @var array<array{id?: mixed, weight?: mixed, consecutive_plays?: mixed}> $members */
+        /** @var array<array{id?: mixed, weight?: mixed, consecutive_plays?: mixed, allowed_requests?: mixed}> $members */
         $members = Types::array($request->getParam('members'));
 
         // Validate all members before making any changes to ensure we don't try
@@ -116,6 +117,19 @@ final readonly class PutMembersAction implements SingleActionInterface
             $stationPlaylistGroup = new StationPlaylistGroup($memberPlaylist, $record);
             $stationPlaylistGroup->weight = $weight;
             $stationPlaylistGroup->consecutive_plays = max(0, $consecutivePlays);
+
+            $allowedRequests = PlaylistGroupAllowedRequests::tryFrom(
+                Types::stringOrNull($member['allowed_requests'] ?? null) ?? ''
+            ) ?? PlaylistGroupAllowedRequests::Any;
+
+            if (
+                $allowedRequests === PlaylistGroupAllowedRequests::Playlist
+                && !in_array($memberPlaylist->source, [PlaylistSources::Songs, PlaylistSources::Playlists])
+            ) {
+                $allowedRequests = PlaylistGroupAllowedRequests::Any;
+            }
+
+            $stationPlaylistGroup->allowed_requests = $allowedRequests;
             $this->entityManager->persist($stationPlaylistGroup);
         }
 

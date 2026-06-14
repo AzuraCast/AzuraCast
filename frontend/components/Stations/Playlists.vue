@@ -360,7 +360,7 @@ import {useApiRouter} from "~/functions/useApiRouter.ts";
 import PlaylistGroupingTab from "~/components/Stations/Playlists/PlaylistGroupingTab.vue";
 import PlaylistGroupReorderModal from "~/components/Stations/Playlists/PlaylistGroupReorderModal.vue";
 import {StationPlaylistEnriched, StationPlaylistGroupMemberEnriched} from "~/entities/StationPlaylist.ts";
-import {StationPlaylistGroup} from "~/entities/ApiInterfaces.ts";
+import {StationPlaylistGroup, PlaylistGroupAllowedRequests} from "~/entities/ApiInterfaces.ts";
 
 const {getStationApiUrl} = useApiRouter();
 const listUrl = getStationApiUrl('/playlists');
@@ -432,12 +432,14 @@ const doGroupReorder = async (membersUrl: string, playlists: StationPlaylistGrou
                     ...full,
                     weight: weight,
                     consecutive_plays: consecutivePlays,
+                    allowed_requests: member.allowed_requests ?? PlaylistGroupAllowedRequests.Any,
                 }
                 : {
                     ...member,
                     name: member.name ?? '',
                     weight: weight,
                     consecutive_plays: consecutivePlays,
+                    allowed_requests: member.allowed_requests ?? PlaylistGroupAllowedRequests.Any,
                     source: '',
                     num_songs: 0,
                     playlists: []

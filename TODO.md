@@ -27,6 +27,8 @@ Thoughts about settings for playlist groups
 @TODO
 -------------------------------
 Features
-- Add "Allow Requests" dropdown to PlaylistGroupingTab
-    - Options: None, Any, From Playlist
+- Think about how we want to handle disabled playlists that are part of groups
+    - Should they even be allowed to be disabled?
+    - Should disabled ones be allowed to be added to playlist groups?
+    - Should disabling a playlist remove them from a playlist group?
 - Add tracking of origin for media from PlaylistGroup & Consecutive Play number

@@ -110,6 +110,9 @@ final class ConfigWriter implements EventSubscriberInterface
             : 'normal';
         $defaultFade = self::toFloat($backendConfig->crossfade);
         $defaultCross = self::toFloat($backendConfig->getCrossfadeDuration());
+        $crossfadeSmartHigh = self::toFloat($backendConfig->crossfade_smart_high);
+        $crossfadeSmartMedium = self::toFloat($backendConfig->crossfade_smart_medium);
+        $crossfadeSmartMargin = self::toFloat($backendConfig->crossfade_smart_margin);
 
         $liveBroadcastText = self::toRawString(
             $backendConfig->live_broadcast_text
@@ -148,6 +151,9 @@ final class ConfigWriter implements EventSubscriberInterface
             settings.azuracast.default_cross := {$defaultCross}
             settings.azuracast.enable_crossfade := {$enableCrossfade}
             settings.azuracast.crossfade_type := "{$crossfadeType}"
+            settings.azuracast.crossfade_smart_high := {$crossfadeSmartHigh}
+            settings.azuracast.crossfade_smart_medium := {$crossfadeSmartMedium}
+            settings.azuracast.crossfade_smart_margin := {$crossfadeSmartMargin}
 
             settings.azuracast.live_broadcast_text := {$liveBroadcastText}
 

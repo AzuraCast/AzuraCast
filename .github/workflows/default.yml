@@ -137,7 +137,7 @@ jobs:
           backend/bin/console locale:generate
 
       - name: Pull latest translations.
-        uses: crowdin/github-action@v2.16.2
+        uses: crowdin/github-action@v2.16.3
         with:
           upload_sources: true
           download_translations: true

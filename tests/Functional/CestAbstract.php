@@ -111,8 +111,7 @@ abstract class CestAbstract
         // Create API key
         $key = SplitToken::generate();
 
-        $apiKey = new ApiKey($user, $key);
-        $apiKey->comment = 'Test Suite';
+        $apiKey = new ApiKey($user, $key, 'Test Suite');
 
         $this->em->persist($apiKey);
         $this->em->flush();
@@ -150,12 +149,7 @@ abstract class CestAbstract
     protected function getTestStation(): Station
     {
         if ($this->test_station instanceof Station) {
-            $testStation = $this->em->refetch($this->test_station);
-            if ($testStation instanceof Station) {
-                return $testStation;
-            }
-
-            $this->test_station = null;
+            return $this->em->refetch($this->test_station);
         }
 
         throw new RuntimeException('Test station is not established.');
@@ -177,7 +171,12 @@ abstract class CestAbstract
         /** @var MediaProcessor $mediaProcessor */
         $mediaProcessor = $this->di->get(MediaProcessor::class);
 
-        return $mediaProcessor->process($storageLocation, 'test.mp3');
+        $media = $mediaProcessor->process($storageLocation, 'test.mp3');
+        if ($media === null) {
+            throw new RuntimeException('Failed to process the test song.');
+        }
+
+        return $media;
     }
 
     protected function _cleanTables(): void

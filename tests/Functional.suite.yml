@@ -3,7 +3,8 @@ suite_namespace: \Functional
 modules:
   enabled:
     - \App\Tests\Module
-    - Doctrine2:
+    - Asserts
+    - Doctrine:
         depends: \App\Tests\Module
     - REST:
         depends: \App\Tests\Module

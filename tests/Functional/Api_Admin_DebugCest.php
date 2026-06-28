@@ -12,7 +12,7 @@ class Api_Admin_DebugCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function syncTasks(FunctionalTester $I)
+    public function syncTasks(FunctionalTester $I): void
     {
         $I->wantTo('Test All Synchronized Tasks');
 

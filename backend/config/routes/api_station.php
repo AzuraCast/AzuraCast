@@ -607,6 +607,16 @@ return static function (RouteCollectorProxy $group) {
                                 Controller\Api\Stations\PlaylistsController::class . ':scheduleAction'
                             )->setName('api:stations:playlists:schedule');
 
+                            $group->get(
+                                '/playlists/export-config',
+                                Controller\Api\Stations\Playlists\ExportConfigAction::class
+                            )->setName('api:stations:playlists:export_config');
+
+                            $group->post(
+                                '/playlists/import-config',
+                                Controller\Api\Stations\Playlists\ImportConfigAction::class
+                            )->setName('api:stations:playlists:import_config');
+
                             $group->group(
                                 '/playlist/{id}',
                                 function (RouteCollectorProxy $group) {
@@ -669,6 +679,11 @@ return static function (RouteCollectorProxy $group) {
                                         '/export[/{format}]',
                                         Controller\Api\Stations\Playlists\ExportAction::class
                                     )->setName('api:stations:playlist:export');
+
+                                    $group->get(
+                                        '/export-config',
+                                        Controller\Api\Stations\Playlists\ExportConfigAction::class
+                                    )->setName('api:stations:playlist:export_config');
 
                                     $group->get(
                                         '/apply-to',

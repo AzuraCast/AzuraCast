@@ -271,6 +271,11 @@ final class PlaylistsController extends AbstractScheduledEntityController
                 routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             ),
+            'export_config' => $router->fromHere(
+                routeName: 'api:stations:playlist:export_config',
+                routeParams: ['id' => $record->id],
+                absolute: !$isInternal
+            ),
         ];
 
         if (in_array($record->source, [PlaylistSources::Songs, PlaylistSources::Playlists])) {

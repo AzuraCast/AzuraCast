@@ -30,11 +30,30 @@
                     :label="$gettext('All Playlists')"
                 >
                     <div class="card-body-flush">
-                        <div class="card-body buttons">
+                        <div class="card-body buttons d-flex justify-content-between">
                             <add-button
                                 :text="$gettext('Add Playlist')"
                                 @click="doCreate"
                             />
+
+                            <div class="d-flex gap-2">
+                                <a
+                                    class="btn btn-secondary"
+                                    :href="exportPlaylistsConfigUrl"
+                                    target="_blank"
+                                >
+                                <icon-bi-cloud-download/>
+                                    {{ $gettext('Export') }}
+                                </a>
+                                <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    @click="doImportPlaylistConfig"
+                                >
+                                    <icon-bi-cloud-upload/>
+                                    {{ $gettext('Import') }}
+                                </button>
+                            </div>
                         </div>
 
                         <data-table
@@ -283,6 +302,15 @@
                                             }}
                                         </a>
                                     </template>
+
+                                    <a
+                                        v-if="item.links.export_config"
+                                        class="btn btn-sm btn-secondary"
+                                        :href="item.links.export_config"
+                                        target="_blank"
+                                    >
+                                        {{ $gettext('Export JSON') }}
+                                    </a>
                                 </div>
                             </template>
                         </data-table>
@@ -317,6 +345,11 @@
         ref="$importModal"
         @relist="() => relist()"
     />
+    <import-playlist-config-modal
+        ref="$importPlaylistConfigModal"
+        :import-url="importPlaylistsConfigUrl"
+        @relist="() => relist()"
+    />
     <clone-modal
         ref="$cloneModal"
         @relist="() => relist()"
@@ -333,6 +366,7 @@ import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import EditModal from "~/components/Stations/Playlists/EditModal.vue";
 import ReorderModal from "~/components/Stations/Playlists/ReorderModal.vue";
 import ImportModal from "~/components/Stations/Playlists/ImportModal.vue";
+import ImportPlaylistConfigModal from "~/components/Stations/Playlists/ImportPlaylistConfigModal.vue";
 import QueueModal from "~/components/Stations/Playlists/QueueModal.vue";
 import CloneModal from "~/components/Stations/Playlists/CloneModal.vue";
 import ApplyToModal from "~/components/Stations/Playlists/ApplyToModal.vue";
@@ -356,6 +390,8 @@ import {useStationData} from "~/functions/useStationQuery.ts";
 import {toRefs} from "@vueuse/core";
 import IconBiContract from "~icons/bi/chevron-contract";
 import IconBiExpand from "~icons/bi/chevron-expand";
+import IconBiCloudDownload from "~icons/bi/cloud-download";
+import IconBiCloudUpload from "~icons/bi/cloud-upload";
 import {useApiRouter} from "~/functions/useApiRouter.ts";
 import PlaylistGroupingTab from "~/components/Stations/Playlists/PlaylistGroupingTab.vue";
 import PlaylistGroupReorderModal from "~/components/Stations/Playlists/PlaylistGroupReorderModal.vue";
@@ -365,6 +401,8 @@ import {StationPlaylistGroup, PlaylistGroupAllowedRequests} from "~/entities/Api
 const {getStationApiUrl} = useApiRouter();
 const listUrl = getStationApiUrl('/playlists');
 const scheduleUrl = getStationApiUrl('/playlists/schedule');
+const exportPlaylistsConfigUrl = getStationApiUrl('/playlists/export-config');
+const importPlaylistsConfigUrl = getStationApiUrl('/playlists/import-config');
 
 const {$gettext} = useTranslate();
 
@@ -460,6 +498,12 @@ const $importModal = useTemplateRef('$importModal');
 
 const doImport = (url: string) => {
     $importModal.value?.open(url);
+};
+
+const $importPlaylistConfigModal = useTemplateRef('$importPlaylistConfigModal');
+
+const doImportPlaylistConfig = () => {
+    $importPlaylistConfigModal.value?.open();
 };
 
 const $cloneModal = useTemplateRef('$cloneModal');

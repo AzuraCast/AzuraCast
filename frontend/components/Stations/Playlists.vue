@@ -42,7 +42,7 @@
                                     :href="exportPlaylistsConfigUrl"
                                     target="_blank"
                                 >
-                                <icon-bi-cloud-download/>
+                                    <icon-bi-cloud-download/>
                                     {{ $gettext('Export') }}
                                 </a>
                                 <button

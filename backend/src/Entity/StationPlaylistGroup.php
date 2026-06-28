@@ -35,17 +35,17 @@ final class StationPlaylistGroup implements JsonSerializable, IdentifiableEntity
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public StationPlaylist $playlist;
 
-    /* TODO Remove direct identifier access. */
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    public private(set) int $playlist_id;
+    public int $playlist_id {
+        get => $this->playlist->id;
+    }
 
     #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'playlists')]
     #[ORM\JoinColumn(name: 'playlist_group_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     public StationPlaylist $playlist_group;
 
-    /* TODO Remove direct identifier access. */
-    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
-    public private(set) int $playlist_group_id;
+    public int $playlist_group_id {
+        get => $this->playlist_group->id;
+    }
 
     #[
         OA\Property(example: 1),

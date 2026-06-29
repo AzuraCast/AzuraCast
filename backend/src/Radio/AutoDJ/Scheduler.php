@@ -98,6 +98,7 @@ final class Scheduler
                 $shouldPlay = false;
                 break;
 
+            case PlaylistTypes::Clockwheel:
             case PlaylistTypes::Standard:
                 break;
         }
@@ -188,6 +189,17 @@ final class Scheduler
         return $scheduleItem instanceof StationSchedule
             ? $scheduleItem->getDuration($stationTz)
             : 0;
+    }
+
+    public function getActiveSchedule(
+        StationPlaylist $playlist,
+        DateTimeImmutable $now
+    ): ?StationSchedule {
+        return $this->getActiveScheduleFromCollection(
+            $playlist->schedule_items,
+            $playlist->station->getTimezoneObject(),
+            $now
+        );
     }
 
     public function canStreamerStreamNow(

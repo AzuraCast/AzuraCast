@@ -194,6 +194,7 @@ export enum PlaylistTypes {
   OncePerXMinutes = "once_per_x_minutes",
   OncePerHour = "once_per_hour",
   Advanced = "custom",
+  Clockwheel = "clockwheel",
 }
 
 export enum PlaylistSources {
@@ -701,6 +702,7 @@ export interface ApiFormOption {
   value: any;
   text: string;
   description?: string | null;
+  disabled?: boolean;
 }
 
 export interface ApiFormOptionGroup {
@@ -894,6 +896,16 @@ export interface ApiNowPlayingSongHistory {
   streamer: string | null;
   /** Indicates whether the song is a listener request. */
   is_request: boolean;
+  /**
+   * If the song was played via a clockwheel, the name of the clockwheel playlist.
+   * @example "Main Clock"
+   */
+  clockwheel: string | null;
+  /**
+   * If the song was played via a clockwheel, the step number (1-based).
+   * @example 2
+   */
+  clockwheel_step: number | null;
   song: ApiSong;
 }
 
@@ -1029,6 +1041,16 @@ export interface ApiNowPlayingStationQueue {
   playlist: string | null;
   /** Indicates whether the song is a listener request. */
   is_request: boolean;
+  /**
+   * If the song was played via a clockwheel, the name of the clockwheel playlist.
+   * @example "Main Clock"
+   */
+  clockwheel: string | null;
+  /**
+   * If the song was played via a clockwheel, the step number (1-based).
+   * @example 2
+   */
+  clockwheel_step: number | null;
   song: ApiSong;
 }
 

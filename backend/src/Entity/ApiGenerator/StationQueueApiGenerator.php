@@ -33,6 +33,11 @@ final readonly class StationQueueApiGenerator
             $response->playlist = '';
         }
 
+        if ($record->clockwheel_playlist instanceof StationPlaylist) {
+            $response->clockwheel = $record->clockwheel_playlist->name;
+            $response->clockwheel_step = $record->clockwheel_step;
+        }
+
         $recordMedia = $record->media;
         if (null !== $recordMedia) {
             $response->song = ($this->songApiGenerator)(

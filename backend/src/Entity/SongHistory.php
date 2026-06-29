@@ -119,6 +119,13 @@ final class SongHistory implements
     #[ORM\Column]
     public bool $is_visible = true;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'clockwheel_playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    public ?StationPlaylist $clockwheel_playlist = null;
+
+    #[ORM\Column(type: 'smallint', nullable: true)]
+    public ?int $clockwheel_step = null;
+
     public function __construct(
         Station $station,
         SongInterface $song
@@ -221,6 +228,8 @@ final class SongHistory implements
         $sh->media = $queue->media;
         $sh->request = $queue->request;
         $sh->playlist = $queue->playlist;
+        $sh->clockwheel_playlist = $queue->clockwheel_playlist;
+        $sh->clockwheel_step = $queue->clockwheel_step;
         $sh->duration = $queue->duration;
         $sh->updateVisibility();
 

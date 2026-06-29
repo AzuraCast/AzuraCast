@@ -44,6 +44,18 @@ class StationQueue
     )]
     public bool $is_request = false;
 
+    #[OA\Property(
+        description: 'If the song was played via a clockwheel, the name of the clockwheel playlist.',
+        example: 'Main Clock'
+    )]
+    public ?string $clockwheel = null;
+
+    #[OA\Property(
+        description: 'If the song was played via a clockwheel, the step number (1-based).',
+        example: 2
+    )]
+    public ?int $clockwheel_step = null;
+
     #[OA\Property]
     public Song $song;
 }

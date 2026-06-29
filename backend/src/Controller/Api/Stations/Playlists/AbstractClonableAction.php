@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Playlists;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Entity\Enums\PlaylistTypes;
 use App\Entity\Repository\StationPlaylistRepository;
 use App\Entity\StationPlaylist;
+use App\Entity\StationPlaylistChild;
 
 abstract class AbstractClonableAction
 {
@@ -56,6 +58,18 @@ abstract class AbstractClonableAction
                 $newMediaItem = clone $oldMediaItem;
                 $newMediaItem->playlist = $newRecord;
                 $this->em->persist($newMediaItem);
+            }
+        }
+
+        if (PlaylistTypes::Clockwheel === $record->type) {
+            foreach ($record->child_items as $oldChild) {
+                $newChild = new StationPlaylistChild(
+                    $newRecord,
+                    $oldChild->childPlaylist,
+                    $oldChild->position,
+                    $oldChild->song_count
+                );
+                $this->em->persist($newChild);
             }
         }
 

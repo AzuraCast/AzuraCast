@@ -101,6 +101,13 @@ final class StationQueue implements
     #[ORM\Column(type: 'float', nullable: true)]
     public ?float $duration = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'clockwheel_playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    public ?StationPlaylist $clockwheel_playlist = null;
+
+    #[ORM\Column(type: 'smallint', nullable: true)]
+    public ?int $clockwheel_step = null;
+
     public function __construct(Station $station, Interfaces\SongInterface $song)
     {
         $this->setSong($song);

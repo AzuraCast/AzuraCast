@@ -48,7 +48,7 @@ jobs:
           tools: composer:v2, cs2pr
 
       - name: Cache PHP dependencies
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: vendor
           key: ${{ runner.OS }}-build-${{ hashFiles('composer.lock') }}
@@ -110,7 +110,7 @@ jobs:
           tools: composer:v2, cs2pr
 
       - name: Cache PHP dependencies
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: vendor
           key: ${{ runner.OS }}-build-${{ hashFiles('composer.lock') }}

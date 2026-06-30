@@ -54,7 +54,8 @@ const add = () => {
         start_date: null,
         end_date: null,
         days: [],
-        loop_once: false
+        loop_once: false,
+        prevent_requests: false
     });
 };
 

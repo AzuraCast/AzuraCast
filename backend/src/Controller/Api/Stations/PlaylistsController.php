@@ -8,6 +8,7 @@ use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Enums\PlaylistSources;
+use App\Entity\Enums\PlaylistTypes;
 use App\Entity\Station;
 use App\Entity\StationPlaylist;
 use App\Entity\StationSchedule;
@@ -16,6 +17,7 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Utilities\DateRange;
 use Doctrine\ORM\AbstractQuery;
+use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -269,9 +271,14 @@ final class PlaylistsController extends AbstractScheduledEntityController
                 routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             ),
+            'export_config' => $router->fromHere(
+                routeName: 'api:stations:playlist:export_config',
+                routeParams: ['id' => $record->id],
+                absolute: !$isInternal
+            ),
         ];
 
-        if (PlaylistSources::Songs === $record->source) {
+        if (in_array($record->source, [PlaylistSources::Songs, PlaylistSources::Playlists])) {
             if (PlaylistOrders::Sequential === $record->order) {
                 $return['links']['order'] = $router->fromHere(
                     routeName: 'api:stations:playlist:order',
@@ -280,6 +287,22 @@ final class PlaylistsController extends AbstractScheduledEntityController
                 );
             }
 
+            $return['links']['reshuffle'] = $router->fromHere(
+                routeName: 'api:stations:playlist:reshuffle',
+                routeParams: ['id' => $record->id],
+                absolute: !$isInternal
+            );
+        }
+
+        if (PlaylistSources::Playlists === $record->source) {
+            $return['links']['members'] = $router->fromHere(
+                routeName: 'api:stations:playlist:members',
+                routeParams: ['id' => $record->id],
+                absolute: !$isInternal
+            );
+        }
+
+        if (PlaylistSources::Songs === $record->source) {
             if (PlaylistOrders::Random !== $record->order) {
                 $return['links']['queue'] = $router->fromHere(
                     routeName: 'api:stations:playlist:queue',
@@ -290,12 +313,6 @@ final class PlaylistsController extends AbstractScheduledEntityController
 
             $return['links']['import'] = $router->fromHere(
                 routeName: 'api:stations:playlist:import',
-                routeParams: ['id' => $record->id],
-                absolute: !$isInternal
-            );
-
-            $return['links']['reshuffle'] = $router->fromHere(
-                routeName: 'api:stations:playlist:reshuffle',
                 routeParams: ['id' => $record->id],
                 absolute: !$isInternal
             );
@@ -322,6 +339,28 @@ final class PlaylistsController extends AbstractScheduledEntityController
         }
 
         return $return;
+    }
+
+    protected function editRecord(?array $data, ?object $record = null, array $context = []): object
+    {
+        if (null === $data) {
+            throw new InvalidArgumentException('Could not parse input data.');
+        }
+
+        $source = PlaylistSources::tryFrom($data['source'] ?? '');
+        if ($source === PlaylistSources::Playlists || $source === PlaylistSources::Requests) {
+            $data['include_in_on_demand'] = false;
+            $data['include_in_requests'] = false;
+            $data['is_jingle'] = false;
+            $data['backend_options'] = [];
+
+            $type = PlaylistTypes::tryFrom($data['type'] ?? '');
+            $data['type'] = ($type === PlaylistTypes::Advanced)
+                ? PlaylistTypes::Standard->value
+                : $data['type'];
+        }
+
+        return parent::editRecord($data, $record, $context);
     }
 
     /**

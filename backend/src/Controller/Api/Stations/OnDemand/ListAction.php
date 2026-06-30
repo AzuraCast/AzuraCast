@@ -51,6 +51,8 @@ final class ListAction extends AbstractSearchableListAction
             throw StationUnsupportedException::onDemand();
         }
 
+        // @TODO: how do we want to handle media from playlist groups under a playlist?
+        // - Currently we wouldn't get them if their parent has ondemand active but themself not
         $paginator = $this->getPaginator($request, $playlists);
 
         $router = $request->getRouter();

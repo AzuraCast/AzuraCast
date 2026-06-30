@@ -15,6 +15,7 @@ export type StationPlaylistsRecord = Required<
         StationPlaylist,
         | 'id'
         | 'podcasts'
+        | 'playlists'
     >
 >
 

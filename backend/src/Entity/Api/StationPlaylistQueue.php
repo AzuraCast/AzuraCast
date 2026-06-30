@@ -19,7 +19,7 @@ final class StationPlaylistQueue
     public int $spm_id;
 
     #[OA\Property(
-        description: 'ID of the StationPlaylistMedia record associating this track with the playlist',
+        description: 'ID of the StationMedia record associating this track with the media',
         example: 1
     )]
     public int $media_id;

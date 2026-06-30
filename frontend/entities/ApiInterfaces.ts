@@ -198,7 +198,9 @@ export enum PlaylistTypes {
 
 export enum PlaylistSources {
   Songs = "songs",
+  Playlists = "playlists",
   RemoteUrl = "remote_url",
+  Requests = "requests",
 }
 
 export enum PlaylistRemoteTypes {
@@ -211,6 +213,12 @@ export enum PlaylistOrders {
   Random = "random",
   Shuffle = "shuffle",
   Sequential = "sequential",
+}
+
+export enum PlaylistGroupAllowedRequests {
+  Any = "any",
+  Playlist = "playlist",
+  None = "none",
 }
 
 export enum LoginTokenTypes {
@@ -1249,7 +1257,7 @@ export interface ApiStationPlaylistQueue {
    */
   spm_id?: number;
   /**
-   * ID of the StationPlaylistMedia record associating this track with the playlist
+   * ID of the StationMedia record associating this track with the media
    * @example 1
    */
   media_id?: number;
@@ -2133,6 +2141,8 @@ export type Station = HasAutoIncrementId & {
   request_delay?: number | null;
   /** @example 15 */
   request_threshold?: number | null;
+  /** @example false */
+  requests_only_via_playlists?: boolean;
   /** @example 0 */
   disconnect_deactivate_streamer?: number | null;
   /**
@@ -2418,6 +2428,20 @@ export type StationPlaylist = HasAutoIncrementId & {
   avoid_duplicates?: boolean;
   schedule_items?: any[];
   podcasts?: any[];
+  playlists?: any[];
+};
+
+export type StationPlaylistGroup = HasAutoIncrementId & {
+  /**
+   * The playlist name.
+   * @example "My Playlist"
+   */
+  readonly name?: string;
+  /** @example 1 */
+  weight?: number;
+  /** @example 0 */
+  consecutive_plays?: number;
+  allowed_requests?: PlaylistGroupAllowedRequests;
 };
 
 export type StationRemote = HasAutoIncrementId & {
@@ -2476,6 +2500,11 @@ export type StationSchedule = HasAutoIncrementId & {
   days?: number[];
   /** @example false */
   loop_once?: boolean;
+  /**
+   * Used to suppress the global request queue while this schedule window is active.
+   * @example false
+   */
+  prevent_requests?: boolean;
 };
 
 /** Station streamers (DJ accounts) allowed to broadcast to a station. */

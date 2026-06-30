@@ -79,14 +79,6 @@
                     :label="$gettext('End Date')"
                 />
 
-                <form-group-checkbox
-                    :id="'edit_form_loop_once_'+index"
-                    class="col-md-4"
-                    :field="r$.loop_once"
-                    :label="$gettext('Loop Once')"
-                    :description="$gettext('Only loop through playlist once.')"
-                />
-
                 <form-group-multi-check
                     :id="'edit_form_days_'+index"
                     class="col-md-4"
@@ -95,6 +87,24 @@
                     :description="$gettext('Leave blank to play on every day of the week.')"
                     :options="dayOptions"
                     stacked
+                />
+
+                <form-group-checkbox
+                    v-if="form.source !== PlaylistSources.Requests"
+                    :id="'edit_form_loop_once_'+index"
+                    class="col-md-6"
+                    :field="r$.loop_once"
+                    :label="$gettext('Loop Once')"
+                    :description="$gettext('Only loop through playlist once.')"
+                />
+
+                <form-group-checkbox
+                    v-if="form.source !== PlaylistSources.Requests"
+                    :id="'edit_form_prevent_requests_'+index"
+                    class="col-md-6"
+                    :field="r$.prevent_requests"
+                    :label="$gettext('Block Request Queue While Active')"
+                    :description="$gettext('While this scheduled window is active, listener requests will not be played via the automatic request queue.')"
                 />
             </div>
         </div>
@@ -113,6 +123,11 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 import {useAppScopedRegle} from "~/vendor/regle.ts";
 import IconIcRemove from "~icons/ic/baseline-remove";
+import { PlaylistSources } from "~/entities/ApiInterfaces";
+import {storeToRefs} from "pinia";
+import {useStationsPlaylistsForm} from "~/components/Stations/Playlists/Form/form.ts";
+
+const {form} = storeToRefs(useStationsPlaylistsForm());
 
 interface PlaylistScheduleRow {
     start_time: number,
@@ -121,6 +136,7 @@ interface PlaylistScheduleRow {
     end_date: string,
     days: number[],
     loop_once: boolean,
+    prevent_requests: boolean,
 }
 
 const props = defineProps<{

@@ -48,7 +48,7 @@ const $modal = useTemplateRef('$modal');
 export type PermissionsRecord = {
     name: string;
     permissions: {
-        global: string[],
+        global: GlobalPermissions[],
         station: ApiAdminRoleStationPermission[]
     }
 }

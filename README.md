@@ -6,7 +6,8 @@
 [![Latest Stable Release](https://img.shields.io/packagist/v/azuracast/azuracast.svg?label=latest+stable+version)]()
 [![AGPL-3.0 License](https://img.shields.io/github/license/azuracast/azuracast.svg)]()
 [![Ethical Open Source](https://img.shields.io/badge/open-ethical-%234baaaa)](https://ethicalsource.dev/)
-[![Mastodon Follow](https://img.shields.io/mastodon/follow/000062116?domain=https%3A%2F%2Ffloss.social&style=social)](https://floss.social/@AzuraCast)
+[![Mastodon Follow](https://img.shields.io/mastodon/follow/113766260463173065?domain=https%3A%2F%2Ffloss.social&style=social)](https://floss.social/@AzuraCast)
+[![BlueSky Follow](https://img.shields.io/bluesky/followers/azuracast.com)](https://bsky.app/profile/azuracast.com)
 
 [![Built with Depot](https://depot.dev/badges/built-with-depot.svg)](https://depot.dev/?utm_source=AzuraCast)
 
@@ -77,7 +78,7 @@ We frequently post to social media any time there are significant updates to our
 should be aware of, or upcoming changes to third-party software. You can get these updates in a more timely fashion by
 following our accounts:
 
-- On Bluesky at [@azuracast.com](https://bsky.app/profile/azuracast.com)
+- On BlueSky at [@azuracast.com](https://bsky.app/profile/azuracast.com)
 
 - On Mastodon at [@AzuraCast@floss.social](https://floss.social/@AzuraCast)
 

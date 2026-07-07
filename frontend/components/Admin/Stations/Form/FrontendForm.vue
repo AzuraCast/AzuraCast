@@ -83,6 +83,14 @@
                 </div>
 
                 <div class="row g-3 mb-3">
+                    <div class="col">
+                        <info-card v-if="isShoutcastFrontend">
+                            {{ $gettext('The Shoutcast DNAS 2 frontend does not support the "Allowed IP Addresses" or "Banned Countries" options. These settings will be ignored for listeners through Shoutcast.') }}
+                        </info-card>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
                     <div class="col-md-5">
                         <form-group-field
                             id="edit_form_frontend_banned_ips"
@@ -115,7 +123,7 @@
                     <div class="col-md-7">
                         <form-group-select
                             id="edit_form_frontend_banned_countries"
-                            :field="r$.frontend_config.banned_countries"
+                            :field="r$.frontend_config.banned_countries.$self"
                             :options="countries"
                             multiple
                             :label="$gettext('Banned Countries')"
@@ -167,6 +175,7 @@
 
 <script setup lang="ts">
 import FormFieldset from "~/components/Form/FormFieldset.vue";
+import InfoCard from "~/components/Common/InfoCard.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";

@@ -11,6 +11,29 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.23.7 (Jul 7, 2026)
+
+## New Features/Changes
+
+- **Liquidsoap 2.4.5**: This version ships with Liquidsoap version 2.4.5, which has incorporated a number of fixes for
+  CPU and RAM consumption issues that appeared after stations ran for long periods of time. Many AzuraCast users were
+  likely affected in some way by these bugs, so updating is strongly recommended.
+
+## Code Quality/Technical Changes
+
+- Banned/allowed countries and IPs now also apply to the HLS stream served by AzuraCast.
+
+- When configuring Smart Crossfading, advanced users can directly specify decibel level thresholds used in the
+  calculation.
+
+## Bug Fixes
+
+- Fixed a bug where newly added playlists wouldn't appear on the Media Manager page.
+
+- Fixed one remaining area where arbitrary strings could be included in Liquidsoap configuration.
+
+---
+
 # AzuraCast 0.23.6 (Apr 24, 2026)
 
 This release is solely to patch a number of reported security vulnerabilities in AzuraCast. A majority of these 

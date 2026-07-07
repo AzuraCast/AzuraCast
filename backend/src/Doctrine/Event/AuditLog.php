@@ -13,6 +13,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\Proxy\DefaultProxyClassNameResolver;
 use Doctrine\ORM\UnitOfWork;
 use ReflectionClass;
@@ -92,7 +93,13 @@ final class AuditLog implements EventSubscriber
                 // Look for the @AuditIgnore annotation on properties.
                 $changes = [];
 
-                foreach ($changesRaw as $changeField => [$fieldPrev, $fieldNow]) {
+                foreach ($changesRaw as $changeField => $changesArray) {
+                    if ($changesArray instanceof PersistentCollection) {
+                        continue;
+                    }
+
+                    [$fieldPrev, $fieldNow] = $changesArray;
+
                     // With new entity creation, fields left NULL are still included.
                     if ($fieldPrev === $fieldNow) {
                         continue;

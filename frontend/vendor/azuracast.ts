@@ -3,7 +3,7 @@ import {defineStore} from "pinia";
 import {InjectionKey} from "vue";
 import injectRequired from "~/functions/injectRequired.ts";
 
-export const globalConstantsKey: InjectionKey<VueAppGlobals> = Symbol() as InjectionKey<VueAppGlobals>;
+export const globalConstantsKey = Symbol() as InjectionKey<VueAppGlobals>;
 
 export const useAzuraCastStore = defineStore(
     'global-props',

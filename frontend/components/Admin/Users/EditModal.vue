@@ -42,7 +42,7 @@
             <form-group-multi-check
                 id="edit_form_roles"
                 class="col-md-12"
-                :field="r$.roles"
+                :field="r$.roles.$self"
                 :options="roles"
                 :label="$gettext('Roles')"
             />

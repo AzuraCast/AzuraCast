@@ -90,7 +90,7 @@
                 <form-group-multi-check
                     :id="'edit_form_days_'+index"
                     class="col-md-4"
-                    :field="r$.days"
+                    :field="r$.days.$self"
                     :label="$gettext('Scheduled Play Days of Week')"
                     :description="$gettext('Leave blank to play on every day of the week.')"
                     :options="dayOptions"

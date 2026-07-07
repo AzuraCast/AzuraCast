@@ -27,7 +27,7 @@
                 <form-group-multi-check
                     :id="'edit_form_station_permissions_'+row.id"
                     class="col-md-12"
-                    :field="r$.permissions"
+                    :field="r$.permissions.$self"
                     :options="stationPermissions"
                     stacked
                     :label="$gettext('Station Permissions')"

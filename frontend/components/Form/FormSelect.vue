@@ -16,7 +16,5 @@ defineProps<{
     options: NestedFormOptionInput
 }>();
 
-const model = defineModel<T>({
-    default: null,
-});
+const model = defineModel<T>();
 </script>

@@ -72,14 +72,47 @@ final class DownloadAction implements SingleActionInterface
         }
 
         $query = $this->em->createQuery(
-            <<<DQL
-                SELECT sm, spm, smcf
+            <<<'DQL'
+                SELECT sm
                 FROM App\Entity\StationMedia sm
-                LEFT JOIN sm.playlists spm
-                LEFT JOIN sm.custom_fields smcf
                 WHERE sm.storage_location = :storageLocation
             DQL
         )->setParameter('storageLocation', $station->media_storage_location);
+
+        $playlistIdsByMediaId = [];
+        $playlistMediaRaw = $this->em->createQuery(
+            <<<'DQL'
+                SELECT
+                    IDENTITY(spm.media) AS media_id,
+                    IDENTITY(spm.playlist) AS playlist_id
+                FROM App\Entity\StationPlaylistMedia spm
+                JOIN spm.media m
+                WHERE m.storage_location = :storageLocation
+            DQL
+        )->setParameter('storageLocation', $station->media_storage_location)
+            ->getScalarResult();
+
+        foreach ($playlistMediaRaw as $row) {
+            $playlistIdsByMediaId[$row['media_id']][] = $row['playlist_id'];
+        }
+
+        $customFieldsByMediaId = [];
+        $customFieldsRaw = $this->em->createQuery(
+            <<<'DQL'
+                SELECT
+                    IDENTITY(smcf.media) AS media_id,
+                    IDENTITY(smcf.field) AS field_id,
+                    smcf.value
+                FROM App\Entity\StationMediaCustomField smcf
+                JOIN smcf.media m
+                WHERE m.storage_location = :storageLocation
+            DQL
+        )->setParameter('storageLocation', $station->media_storage_location)
+            ->getScalarResult();
+
+        foreach ($customFieldsRaw as $row) {
+            $customFieldsByMediaId[$row['media_id']][$row['field_id']] = $row['value'];
+        }
 
         $filename = $station->short_name . '_all_media.csv';
 
@@ -123,15 +156,12 @@ final class DownloadAction implements SingleActionInterface
                 $extraMetadata[] = $row['extra_metadata_raw'][$fieldName] ?? '';
             }
 
-            $customFieldsById = [];
-            foreach ($row['custom_fields'] ?? [] as $rowCustomField) {
-                $customFieldsById[$rowCustomField['field_id']] = $rowCustomField['value'];
-            }
+            $customFieldsById = $customFieldsByMediaId[$row['id']] ?? [];
 
             $playlists = [];
-            foreach ($row['playlists'] ?? [] as $rowPlaylistMedia) {
-                if (isset($playlistsById[$rowPlaylistMedia['playlist_id']])) {
-                    $playlists[] = $playlistsById[$rowPlaylistMedia['playlist_id']];
+            foreach ($playlistIdsByMediaId[$row['id']] ?? [] as $playlistId) {
+                if (isset($playlistsById[$playlistId])) {
+                    $playlists[] = $playlistsById[$playlistId];
                 }
             }
 

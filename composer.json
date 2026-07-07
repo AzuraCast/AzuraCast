@@ -127,7 +127,7 @@
     "nette/php-generator": "^4.2",
     "php-parallel-lint/php-console-highlighter": "^1",
     "php-parallel-lint/php-parallel-lint": "^1.4",
-    "phpstan/phpstan": "2.1.50",
+    "phpstan/phpstan": "^2",
     "phpstan/phpstan-doctrine": "^2.0.10",
     "phpunit/phpunit": "^13",
     "psy/psysh": "^0.12.14",

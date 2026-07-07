@@ -276,7 +276,8 @@ export type WebhookRecordRadioReg = {
     type: WebhookTypes.RadioReg,
     config: {
         webhookurl: string,
-        apikey: string
+        apikey: string,
+        send_cover_art: boolean
     }
 }
 

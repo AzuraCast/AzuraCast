@@ -176,11 +176,11 @@ final class ListAction implements SingleActionInterface
                         );
                     } elseif ('unassigned' === $special) {
                         $mediaQueryBuilder->andWhere(
-                            'sm.id NOT IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2)'
+                            'sm.id NOT IN (SELECT IDENTITY(spm2.media) FROM App\Entity\StationPlaylistMedia spm2)'
                         );
                     } elseif (null !== $playlist) {
                         $mediaQueryBuilder->andWhere(
-                            'sm.id IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2 '
+                            'sm.id IN (SELECT IDENTITY(spm2.media) FROM App\Entity\StationPlaylistMedia spm2 '
                             . 'WHERE spm2.playlist = :playlist)'
                         )->setParameter('playlist', $playlist);
                     }
@@ -472,24 +472,28 @@ final class ListAction implements SingleActionInterface
         // Fetch playlists for all shown media.
         $allPlaylistsRaw = $this->em->createQuery(
             <<<'DQL'
-            SELECT spm, sp, spf
+            SELECT
+                IDENTITY(spm.media) AS media_id,
+                sp.id AS playlist_id,
+                sp.name AS playlist_name,
+                spf.path AS folder_path
             FROM App\Entity\StationPlaylistMedia spm
             JOIN spm.playlist sp
             LEFT JOIN spm.folder spf
-            WHERE sp.station = :station AND IDENTITY(spm.media) IN (:ids) 
+            WHERE sp.station = :station AND IDENTITY(spm.media) IN (:ids)
             DQL
         )->setParameter('station', $station)
             ->setParameter('ids', $mediaIds)
-            ->getArrayResult();
+            ->getScalarResult();
 
         $allPlaylists = [];
         foreach ($allPlaylistsRaw as $row) {
             $allPlaylists[$row['media_id']] ??= [];
             $allPlaylists[$row['media_id']][] = new StationMediaPlaylist(
-                id: $row['playlist']['id'],
-                name: $row['playlist']['name'],
-                short_name: StationPlaylist::generateShortName($row['playlist']['name']),
-                folder: $row['folder']['path'] ?? null
+                id: (int) $row['playlist_id'],
+                name: $row['playlist_name'],
+                short_name: StationPlaylist::generateShortName($row['playlist_name']),
+                folder: $row['folder_path'] ?? null
             );
         }
 

@@ -17,7 +17,7 @@
                 v-if="triggersForType.length > 0"
                 id="edit_form_triggers"
                 class="col-md-7"
-                :field="r$.triggers"
+                :field="r$.triggers.$self"
                 :options="triggerOptions"
                 stacked
                 :label="$gettext('Web Hook Triggers')"

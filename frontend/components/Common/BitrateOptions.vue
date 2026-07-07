@@ -46,7 +46,6 @@ const toPositiveNumberOrNull = (value: any): number | null => {
 };
 
 const model = defineModel<T, string, number | null, string | number | null>({
-    default: null,
     get(value) {
         return toPositiveNumberOrNull(value);
     },

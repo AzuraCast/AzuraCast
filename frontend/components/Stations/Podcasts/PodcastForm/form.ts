@@ -41,29 +41,26 @@ export const useStationsPodcastsForm = defineStore(
                 title: {required},
                 description: {required},
                 language: {required},
-                categories: {
-                    required,
-                    $each: {}
-                },
+                categories: {},
                 source: {required},
             },
             {
                 validationGroups: (fields) => ({
-                    basicInfoTab: [
+                    "basicInfoTab": [
                         fields.title,
                         fields.link,
                         fields.description,
                         fields.language,
                         fields.author,
                         fields.email,
-                        fields.categories,
+                        fields.categories.$self,
                         fields.is_enabled
                     ],
-                    brandingTab: [
+                    "brandingTab": [
                         fields.branding_config.public_custom_html,
                         fields.branding_config.enable_op3_prefix
                     ],
-                    sourceTab: [
+                    "sourceTab": [
                         fields.source,
                         fields.playlist_id,
                         fields.playlist_auto_publish,

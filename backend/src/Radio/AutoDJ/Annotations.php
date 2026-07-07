@@ -195,7 +195,12 @@ final class Annotations implements EventSubscriberInterface
 
         // Liquidsoap expects amplify to be in dB.
         if (isset($annotations[Meta::AMPLIFY])) {
-            $annotations[Meta::AMPLIFY] .= ' dB';
+            $amplify = trim((string) $annotations[Meta::AMPLIFY]);
+            if (!str_ends_with($amplify, 'dB')) {
+                $amplify .= ' dB';
+            }
+
+            $annotations[Meta::AMPLIFY] = $amplify;
 
             // If only amplify is specified, return just it to use it in other AutoCue/amplify functions.
             if (1 === count($annotations)) {

@@ -11,7 +11,7 @@
             <form-group-multi-check
                 id="edit_form_global_permissions"
                 class="col-md-12"
-                :field="r$.permissions.global"
+                :field="r$.permissions.global.$self"
                 :options="globalPermissions"
                 stacked
                 :label="$gettext('Global Permissions')"
@@ -41,9 +41,7 @@ const {r$} = useAppScopedRegle(
     {
         name: {required},
         permissions: {
-            global: {
-                $each: {}
-            }
+            global: {}
         }
     },
     {

@@ -5,7 +5,7 @@ info:
   license:
     name: 'GNU Affero General Public License v3.0 or later'
     url: 'https://www.gnu.org/licenses/agpl-3.0.txt'
-  version: 0.23.6
+  version: 0.23.7
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -7257,7 +7257,7 @@ components:
         - value
         - text
       properties:
-        value: {  }
+        value: {}
         text:
           type: string
         description:
@@ -9905,10 +9905,10 @@ components:
               example: true
             schedule_items:
               type: array
-              items: {  }
+              items: {}
             podcasts:
               type: array
-              items: {  }
+              items: {}
           type: object
     StationRemote:
       type: object
@@ -10041,7 +10041,7 @@ components:
               nullable: true
             schedule_items:
               type: array
-              items: {  }
+              items: {}
           type: object
     StationStreamerBroadcast:
       description: 'Each individual broadcast associated with a streamer.'
@@ -10069,15 +10069,15 @@ components:
             triggers:
               description: 'List of events that should trigger the webhook notification.'
               type: array
-              items: {  }
+              items: {}
             config:
               description: 'Detailed webhook configuration (if applicable)'
               type: array
-              items: {  }
+              items: {}
             metadata:
               description: 'Internal details used by the webhook to preserve state.'
               type: array
-              items: {  }
+              items: {}
           type: object
     StorageLocation:
       type: object
@@ -10269,7 +10269,7 @@ components:
               example: 1609480800
             roles:
               type: array
-              items: {  }
+              items: {}
           type: object
     UserLoginToken:
       type: object

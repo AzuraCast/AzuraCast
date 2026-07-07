@@ -55,9 +55,7 @@ const props = withDefaults(
     }
 )
 
-const value = defineModel<T>({
-    default: null
-});
+const value = defineModel<T>();
 
 const parsedOptions = objectToSimpleFormOptions(toRef(props, 'options'));
 </script>

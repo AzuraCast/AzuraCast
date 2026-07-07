@@ -6,7 +6,7 @@
 [![Latest Stable Release](https://img.shields.io/packagist/v/azuracast/azuracast.svg?label=latest+stable+version)]()
 [![AGPL-3.0 License](https://img.shields.io/github/license/azuracast/azuracast.svg)]()
 [![Ethical Open Source](https://img.shields.io/badge/open-ethical-%234baaaa)](https://ethicalsource.dev/)
-[![Mastodon Follow](https://img.shields.io/mastodon/follow/000062116?domain=https%3A%2F%2Ffloss.social&style=social)](https://floss.social/@AzuraCast)
+[![Mastodon Follow](https://img.shields.io/mastodon/follow/113766260463173065?domain=https%3A%2F%2Ffloss.social&style=social)](https://floss.social/@AzuraCast)
 
 [![Built with Depot](https://depot.dev/badges/built-with-depot.svg)](https://depot.dev/?utm_source=AzuraCast)
 

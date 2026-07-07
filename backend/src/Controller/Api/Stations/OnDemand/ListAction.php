@@ -37,7 +37,7 @@ use Psr\Http\Message\ResponseInterface;
         new OpenApi\Response\GenericError(),
     ]
 )]
-final class ListAction extends AbstractSearchableListAction
+class ListAction extends AbstractSearchableListAction
 {
     public function __invoke(
         ServerRequest $request,
@@ -84,7 +84,7 @@ final class ListAction extends AbstractSearchableListAction
      * @param Station $station
      * @return int[]
      */
-    private function getPlaylists(
+    protected function getPlaylists(
         Station $station
     ): array {
         $item = $this->psr6Cache->getItem(

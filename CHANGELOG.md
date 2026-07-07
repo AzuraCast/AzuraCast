@@ -7,6 +7,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- Added an extra check to on-demand media downloads to ensure only media in on-demand playlists is downloadable.
+
 ## Bug Fixes
 
 ---

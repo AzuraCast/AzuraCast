@@ -18,6 +18,7 @@ type Form = Required<Pick<
     | 'ip_source'
     | 'api_access_control'
     | 'enable_liquidsoap_editing'
+    | 'enable_all_webhooks'
     | 'check_for_updates'
     | 'acme_email'
     | 'acme_domains'
@@ -52,6 +53,7 @@ export const useAdminSettingsForm = defineStore(
             ip_source: IpSources.Local,
             api_access_control: '*',
             enable_liquidsoap_editing: true,
+            enable_all_webhooks: true,
             check_for_updates: true,
             acme_email: '',
             acme_domains: '',

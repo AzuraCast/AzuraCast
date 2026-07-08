@@ -86,6 +86,19 @@
                         }}
                     </template>
                 </form-group-checkbox>
+
+                <form-group-checkbox
+                    id="edit_form_enable_all_webhooks"
+                    class="col-md-12"
+                    :field="r$.enable_all_webhooks"
+                    :label="$gettext('Allow Stations to Dispatch Web Hooks')"
+                >
+                    <template #description>
+                        {{
+                            $gettext('Web hooks allow AzuraCast to make outgoing HTTP requests with information about station playback. This is often safe, but could represent a security risk in some scenarios.')
+                        }}
+                    </template>
+                </form-group-checkbox>
             </div>
         </form-fieldset>
     </tab>

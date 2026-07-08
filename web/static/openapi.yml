@@ -9220,6 +9220,10 @@ components:
           description: 'Allow stations to manually edit Liquidsoap code.'
           type: boolean
           example: 'true'
+        enable_all_webhooks:
+          description: 'Allow stations to dispatch webhooks.'
+          type: boolean
+          example: 'true'
         enable_static_nowplaying:
           description: 'Whether to use high-performance static JSON for Now Playing data updates.'
           type: boolean

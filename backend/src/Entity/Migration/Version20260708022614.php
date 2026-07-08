@@ -32,5 +32,4 @@ final class Version20260708022614 extends AbstractMigration
     {
         $this->addSql('ALTER TABLE settings DROP enable_all_webhooks');
     }
-
 }

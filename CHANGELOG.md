@@ -7,6 +7,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- Added a new system-wide toggle for enabling or disabling Web Hooks on all stations. Because web hooks dispatch an
+  outgoing HTTP POST request from your AzuraCast installation, this may be considered a security risk in your
+  infrastructure, so you can disable them entirely as a safety measure.
+
 - Added an extra check to on-demand media downloads to ensure only media in on-demand playlists is downloadable.
 
 ## Bug Fixes

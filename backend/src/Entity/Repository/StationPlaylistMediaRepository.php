@@ -331,7 +331,7 @@ final class StationPlaylistMediaRepository extends Repository
         $this->em->flush();
     }
 
-    public function resetAllQueues(Station $station): void
+    public function resetAllQueues(Station $station, bool $includeSequential = false): void
     {
         $now = Time::nowUtc();
 
@@ -340,8 +340,19 @@ final class StationPlaylistMediaRepository extends Repository
                 continue;
             }
 
+            if (!$this->shouldResetPlaylistQueue($playlist, $includeSequential)) {
+                continue;
+            }
+
             $this->resetQueue($playlist, $now);
         }
+    }
+
+    public function shouldResetPlaylistQueue(
+        StationPlaylist $playlist,
+        bool $includeSequential = false
+    ): bool {
+        return $includeSequential || PlaylistOrders::Sequential !== $playlist->order;
     }
 
     /**

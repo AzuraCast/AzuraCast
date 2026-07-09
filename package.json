@@ -5,8 +5,10 @@
   "scripts": {
     "build": "vite build",
     "serve": "vite",
-    "lint": "eslint frontend",
     "tsc": "vue-tsc",
+    "ci": "biome ci",
+    "lint": "biome lint",
+    "cleanup-and-test": "biome check --write",
     "generate-locales": "vue-gettext-extract",
     "generate-api": "node frontend/genapi.mjs"
   },
@@ -55,13 +57,10 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
-    "@eslint/js": "^10",
+    "@biomejs/biome": "2.5.3",
     "@iconify-json/bi": "^1.2.6",
     "@iconify-json/ic": "^1.2.4",
-    "@nabla/vite-plugin-eslint": "^3",
-    "@tanstack/eslint-plugin-query": "^5.90.1",
     "@types/bootstrap": "^5.2.6",
-    "@types/eslint__js": "^8.42.3",
     "@types/flowjs__flow.js": "^2.13.3",
     "@types/leaflet": "^1.9.3",
     "@types/luxon": "^3.3.1",
@@ -71,17 +70,14 @@
     "@vitejs/plugin-vue": "^6",
     "@vue/eslint-config-typescript": "^14",
     "del": "^8",
-    "eslint": "^10",
-    "eslint-plugin-vue": "^10",
     "glob": "^13",
     "jsdom": "^29",
     "sass": "^1.39.2",
     "svg.js": "^2.7.1",
     "swagger-typescript-api": "^13.2.18",
-    "typescript-eslint": "^8",
     "unplugin-icons": "^23",
     "vite": "^8",
-    "vue-eslint-parser": "^10",
+    "vite-plugin-biome": "^1.2.0",
     "vue-tsc": "^3"
   }
 }

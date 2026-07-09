@@ -83,11 +83,11 @@ jobs:
 
       - run: npm ci --include=dev
 
+      - name: Lint and check styling
+        run: npm run ci
+
       - name: Check TypeScript types
         run: npm run tsc
-
-      - name: Generate linting report
-        run: npm run lint
 
   prepare:
     name: Prepare Codebase

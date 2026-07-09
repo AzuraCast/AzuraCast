@@ -175,7 +175,7 @@
 <script setup lang="ts">
 import PlayButton from "~/components/Common/Audio/PlayButton.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
+import { useStationProfileData } from "~/components/Stations/Profile/useProfileQuery.ts";
 import IconIcCloudDownload from "~icons/ic/baseline-cloud-download";
 import IconIcHeadphones from "~icons/ic/baseline-headphones";
 

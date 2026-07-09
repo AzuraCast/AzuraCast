@@ -39,34 +39,32 @@
 </template>
 
 <script setup lang="ts">
-import {get} from "es-toolkit/compat";
+import { get } from "es-toolkit/compat";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
-import {ApiAdminRoleStationPermission} from "~/entities/ApiInterfaces.ts";
-import {useAppScopedRegle} from "~/vendor/regle.ts";
+import { ApiAdminRoleStationPermission } from "~/entities/ApiInterfaces.ts";
+import { SimpleFormOptionInput } from "~/functions/objectToFormOptions.ts";
+import { useAppScopedRegle } from "~/vendor/regle.ts";
 import IconIcRemove from "~icons/ic/baseline-remove";
 
 type T = ApiAdminRoleStationPermission;
 
 const props = defineProps<{
-    stations: Record<number, string>,
-    stationPermissions: SimpleFormOptionInput,
+    stations: Record<number, string>;
+    stationPermissions: SimpleFormOptionInput;
 }>();
 
-defineEmits<{
-    (e: 'remove'): void
-}>();
+defineEmits<(e: "remove") => void>();
 
-const row = defineModel<T>('row', {required: true});
+const row = defineModel<T>("row", { required: true });
 
-const {r$} = useAppScopedRegle(
+const { r$ } = useAppScopedRegle(
     row,
     {
-        permissions: {}
+        permissions: {},
     },
     {
-        namespace: 'admin-permissions'
-    }
+        namespace: "admin-permissions",
+    },
 );
 
 const getStationName = (stationId: number) => {

@@ -91,94 +91,88 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import { toRefs } from "@vueuse/core";
+import { computed, nextTick, ref, useTemplateRef, watch } from "vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
-import {computed, nextTick, ref, useTemplateRef, watch} from "vue";
-import {useTranslate} from "~/vendor/gettext";
+import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
 import useHasDatatable from "~/functions/useHasDatatable.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
-import {useLuxon} from "~/vendor/luxon.ts";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
-import {useStationData} from "~/functions/useStationQuery.ts";
-import {toRefs} from "@vueuse/core";
+import { useStationData } from "~/functions/useStationQuery.ts";
+import { useTranslate } from "~/vendor/gettext";
+import { useLuxon } from "~/vendor/luxon.ts";
 import IconIcCloudDownload from "~icons/ic/baseline-cloud-download";
 import IconIcTrendingDown from "~icons/ic/baseline-trending-down";
 import IconIcTrendingUp from "~icons/ic/baseline-trending-up";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
 
-const {getStationApiUrl} = useApiRouter();
-const baseApiUrl = getStationApiUrl('/history');
+const { getStationApiUrl } = useApiRouter();
+const baseApiUrl = getStationApiUrl("/history");
 
 const stationData = useStationData();
-const {timezone} = toRefs(stationData);
+const { timezone } = toRefs(stationData);
 
-const {DateTime} = useLuxon();
-const {
-    now,
-    formatDateTimeAsDateTime,
-    formatTimestampAsDateTime
-} = useStationDateTimeFormatter();
+const { DateTime } = useLuxon();
+const { now, formatDateTimeAsDateTime, formatTimestampAsDateTime } =
+    useStationDateTimeFormatter();
 
 const nowTz = now();
 
-const dateRange = ref(
-    {
-        startDate: nowTz.minus({days: 13}).toJSDate(),
-        endDate: nowTz.toJSDate(),
-    }
-);
+const dateRange = ref({
+    startDate: nowTz.minus({ days: 13 }).toJSDate(),
+    endDate: nowTz.toJSDate(),
+});
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const fields: DataTableField[] = [
     {
-        key: 'played_at',
-        label: $gettext('Date/Time (Browser)'),
+        key: "played_at",
+        label: $gettext("Date/Time (Browser)"),
         selectable: true,
         sortable: false,
         visible: false,
-        formatter: (value) => formatDateTimeAsDateTime(
-            DateTime.fromSeconds(value, {zone: 'system'}),
-            DateTime.DATETIME_SHORT
-        )
+        formatter: (value) =>
+            formatDateTimeAsDateTime(
+                DateTime.fromSeconds(value, { zone: "system" }),
+                DateTime.DATETIME_SHORT,
+            ),
     },
     {
-        key: 'played_at_station',
-        label: $gettext('Date/Time (Station)'),
+        key: "played_at_station",
+        label: $gettext("Date/Time (Station)"),
         sortable: false,
         selectable: true,
         visible: true,
-        formatter: (_value, _key, item) => formatTimestampAsDateTime(
-            item.played_at,
-            DateTime.DATETIME_SHORT
-        )
+        formatter: (_value, _key, item) =>
+            formatTimestampAsDateTime(item.played_at, DateTime.DATETIME_SHORT),
     },
     {
-        key: 'listeners_start',
-        label: $gettext('Listeners'),
+        key: "listeners_start",
+        label: $gettext("Listeners"),
         selectable: true,
-        sortable: false
+        sortable: false,
     },
     {
-        key: 'delta',
-        label: $gettext('Change'),
+        key: "delta",
+        label: $gettext("Change"),
         selectable: true,
-        sortable: false
+        sortable: false,
     },
     {
-        key: 'song',
+        key: "song",
         isRowHeader: true,
-        label: $gettext('Song Title'),
+        label: $gettext("Song Title"),
         selectable: true,
-        sortable: false
+        sortable: false,
     },
     {
-        key: 'source',
-        label: $gettext('Source'),
+        key: "source",
+        label: $gettext("Source"),
         selectable: true,
-        sortable: false
-    }
+        sortable: false,
+    },
 ];
 
 const apiUrl = computed(() => {
@@ -188,12 +182,12 @@ const apiUrl = computed(() => {
 
     const startDate = DateTime.fromJSDate(dateRange.value.startDate);
     if (startDate.isValid) {
-        apiUrlParams.set('start', startDate.toISO());
+        apiUrlParams.set("start", startDate.toISO());
     }
 
     const endDate = DateTime.fromJSDate(dateRange.value.endDate);
     if (endDate.isValid) {
-        apiUrlParams.set('end', endDate.toISO());
+        apiUrlParams.set("end", endDate.toISO());
     }
 
     return apiUrl.toString();
@@ -203,26 +197,22 @@ const exportUrl = computed(() => {
     const exportUrl = new URL(apiUrl.value, document.location.href);
     const exportUrlParams = exportUrl.searchParams;
 
-    exportUrlParams.set('format', 'csv');
+    exportUrlParams.set("format", "csv");
 
     return exportUrl.toString();
 });
 
 const listItemProvider = useApiItemProvider(
     apiUrl,
-    queryKeyWithStation([
-        QueryKeys.StationReports,
-        'timeline',
-        dateRange
-    ])
+    queryKeyWithStation([QueryKeys.StationReports, "timeline", dateRange]),
 );
 
 const abs = (val: number) => {
     return Math.abs(val);
 };
 
-const $dataTable = useTemplateRef('$dataTable');
-const {navigate} = useHasDatatable($dataTable);
+const $dataTable = useTemplateRef("$dataTable");
+const { navigate } = useHasDatatable($dataTable);
 
 watch(dateRange, () => void nextTick(navigate));
 </script>

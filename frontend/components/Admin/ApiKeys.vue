@@ -29,49 +29,48 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import {useTranslate} from "~/vendor/gettext";
-import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
-import {ApiKey, HasLinks} from "~/entities/ApiInterfaces.ts";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys} from "~/entities/Queries.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import { ApiKey, HasLinks } from "~/entities/ApiInterfaces.ts";
+import { QueryKeys } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import { useTranslate } from "~/vendor/gettext";
 
-const {getApiUrl} = useApiRouter();
-const apiUrl = getApiUrl('/admin/api-keys');
+const { getApiUrl } = useApiRouter();
+const apiUrl = getApiUrl("/admin/api-keys");
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
-type Row = Required<ApiKey & HasLinks>
+type Row = Required<ApiKey & HasLinks>;
 
 const fields: DataTableField<Row>[] = [
     {
-        key: 'comment',
+        key: "comment",
         isRowHeader: true,
-        label: $gettext('API Key Description/Comments'),
-        sortable: false
-    },
-    {
-        key: 'user.email',
-        label: $gettext('Owner'),
-        sortable: false
-    },
-    {
-        key: 'actions',
-        label: $gettext('Actions'),
+        label: $gettext("API Key Description/Comments"),
         sortable: false,
-        class: 'shrink'
-    }
+    },
+    {
+        key: "user.email",
+        label: $gettext("Owner"),
+        sortable: false,
+    },
+    {
+        key: "actions",
+        label: $gettext("Actions"),
+        sortable: false,
+        class: "shrink",
+    },
 ];
 
-const itemProvider = useApiItemProvider<Row>(
-    apiUrl,
-    [QueryKeys.AccountApiKeys]
-);
+const itemProvider = useApiItemProvider<Row>(apiUrl, [
+    QueryKeys.AccountApiKeys,
+]);
 
-const {doDelete} = useConfirmAndDelete(
-    $gettext('Delete API Key?'),
-    () => void itemProvider.refresh()
+const { doDelete } = useConfirmAndDelete(
+    $gettext("Delete API Key?"),
+    () => void itemProvider.refresh(),
 );
 </script>

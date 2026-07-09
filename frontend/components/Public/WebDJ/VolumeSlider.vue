@@ -23,13 +23,13 @@
 </template>
 
 <script setup lang="ts">
-import {computed, onMounted, ref} from "vue";
+import { computed, onMounted, ref } from "vue";
 import MuteButton from "~/components/Common/Audio/MuteButton.vue";
 
 const defaultVolume = 75;
 
 const volume = defineModel<number>({
-    default: defaultVolume
+    default: defaultVolume,
 });
 
 const initial = ref(defaultVolume);
@@ -51,9 +51,9 @@ const toggleMute = () => {
         preMute.value = volume.value;
         volume.value = 0;
     }
-}
+};
 
 const reset = () => {
     volume.value = initial.value;
-}
+};
 </script>

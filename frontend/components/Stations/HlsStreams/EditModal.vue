@@ -15,30 +15,35 @@
 </template>
 
 <script setup lang="ts">
-import FormBasicInfo from "~/components/Stations/HlsStreams/Form/BasicInfo.vue";
-import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, toRef, useTemplateRef} from "vue";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useTranslate} from "~/vendor/gettext";
+import { storeToRefs } from "pinia";
+import { computed, toRef, useTemplateRef } from "vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
-import {storeToRefs} from "pinia";
-import {HlsStreamRecord, useStationsHlsStreamsForm} from "~/components/Stations/HlsStreams/Form/form.ts";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import FormBasicInfo from "~/components/Stations/HlsStreams/Form/BasicInfo.vue";
+import {
+    HlsStreamRecord,
+    useStationsHlsStreamsForm,
+} from "~/components/Stations/HlsStreams/Form/form.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
+import {
+    BaseEditModalEmits,
+    BaseEditModalProps,
+    useBaseEditModal,
+} from "~/functions/useBaseEditModal";
+import { useTranslate } from "~/vendor/gettext";
 
 const props = defineProps<BaseEditModalProps>();
 
-const emit = defineEmits<BaseEditModalEmits & {
-    (e: 'needs-restart'): void
-}>();
+const emit = defineEmits<BaseEditModalEmits & ((e: "needs-restart") => void)>();
 
-const $modal = useTemplateRef('$modal');
+const $modal = useTemplateRef("$modal");
 
-const {notifySuccess} = useNotify();
+const { notifySuccess } = useNotify();
 
 const formStore = useStationsHlsStreamsForm();
-const {r$, form} = storeToRefs(formStore);
-const {$reset: resetForm} = formStore;
+const { r$, form } = storeToRefs(formStore);
+const { $reset: resetForm } = formStore;
 
 const {
     loading,
@@ -48,42 +53,42 @@ const {
     create,
     edit,
     doSubmit,
-    close
+    close,
 } = useBaseEditModal<HlsStreamRecord>(
-    toRef(props, 'createUrl'),
+    toRef(props, "createUrl"),
     emit,
     $modal,
     resetForm,
     (data) => {
         r$.value.$reset({
-            toState: mergeExisting(r$.value.$value, data)
-        })
+            toState: mergeExisting(r$.value.$value, data),
+        });
     },
     async () => {
-        const {valid} = await r$.value.$validate();
-        return {valid, data: form.value};
+        const { valid } = await r$.value.$validate();
+        return { valid, data: form.value };
     },
     {
         onSubmitSuccess: () => {
             notifySuccess();
-            emit('relist');
-            emit('needs-restart');
+            emit("relist");
+            emit("needs-restart");
             close();
         },
-    }
+    },
 );
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const langTitle = computed(() => {
     return isEditMode.value
-        ? $gettext('Edit HLS Stream')
-        : $gettext('Add HLS Stream');
+        ? $gettext("Edit HLS Stream")
+        : $gettext("Add HLS Stream");
 });
 
 defineExpose({
     create,
     edit,
-    close
+    close,
 });
 </script>

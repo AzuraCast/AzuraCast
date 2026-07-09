@@ -78,16 +78,16 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
 import Tab from "~/components/Common/Tab.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import PublishAtFields from "~/components/Stations/Podcasts/Common/PublishAtFields.vue";
-import {storeToRefs} from "pinia";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {computed} from "vue";
-import {useStationsPodcastEpisodesForm} from "~/components/Stations/Podcasts/EpisodeForm/form.ts";
+import { useStationsPodcastEpisodesForm } from "~/components/Stations/Podcasts/EpisodeForm/form.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
 
-const {r$} = storeToRefs(useStationsPodcastEpisodesForm());
+const { r$ } = storeToRefs(useStationsPodcastEpisodesForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.basicInfoTab));
 </script>

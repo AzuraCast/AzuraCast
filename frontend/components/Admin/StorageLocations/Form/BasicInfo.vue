@@ -41,42 +41,41 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {computed} from "vue";
-import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useTranslate} from "~/vendor/gettext";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
+import { useAdminStorageLocationsForm } from "~/components/Admin/StorageLocations/Form/form.ts";
 import Tab from "~/components/Common/Tab.vue";
-import {StorageLocationAdapters} from "~/entities/ApiInterfaces.ts";
-import {useAdminStorageLocationsForm} from "~/components/Admin/StorageLocations/Form/form.ts";
-import {storeToRefs} from "pinia";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import { StorageLocationAdapters } from "~/entities/ApiInterfaces.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
+import { useTranslate } from "~/vendor/gettext";
 
 const formStore = useAdminStorageLocationsForm();
-const {r$} = storeToRefs(formStore);
+const { r$ } = storeToRefs(formStore);
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.generalTab));
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const adapterOptions = computed(() => {
     return [
         {
             value: StorageLocationAdapters.Local,
-            text: $gettext('Local Filesystem')
+            text: $gettext("Local Filesystem"),
         },
         {
             value: StorageLocationAdapters.S3,
-            text: $gettext('Remote: S3 Compatible')
+            text: $gettext("Remote: S3 Compatible"),
         },
         {
             value: StorageLocationAdapters.Dropbox,
-            text: $gettext('Remote: Dropbox')
+            text: $gettext("Remote: Dropbox"),
         },
         {
             value: StorageLocationAdapters.Sftp,
-            text: $gettext('Remote: SFTP')
-        }
+            text: $gettext("Remote: SFTP"),
+        },
     ];
 });
-
 </script>

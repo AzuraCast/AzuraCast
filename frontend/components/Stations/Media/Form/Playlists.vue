@@ -14,26 +14,24 @@
 </template>
 
 <script setup lang="ts">
-import {map} from "es-toolkit/compat";
-import {computed} from "vue";
-import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {storeToRefs} from "pinia";
-import {useStationsMediaForm} from "~/components/Stations/Media/Form/form.ts";
-import {MediaInitialPlaylist} from "~/components/Stations/Media.vue";
+import { map } from "es-toolkit/compat";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
 import Tab from "~/components/Common/Tab.vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import { useStationsMediaForm } from "~/components/Stations/Media/Form/form.ts";
+import { MediaInitialPlaylist } from "~/components/Stations/Media.vue";
 
 const props = defineProps<{
-    playlists: MediaInitialPlaylist[],
+    playlists: MediaInitialPlaylist[];
 }>();
 
-const {r$} = storeToRefs(useStationsMediaForm());
+const { r$ } = storeToRefs(useStationsMediaForm());
 
 const options = computed(() => {
-    return map(props.playlists, function (row) {
-        return {
-            text: row.name,
-            value: row.id
-        };
-    });
+    return map(props.playlists, (row) => ({
+        text: row.name,
+        value: row.id,
+    }));
 });
 </script>

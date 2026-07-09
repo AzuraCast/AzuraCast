@@ -68,57 +68,60 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import CommonSocialPostFields from "~/components/Stations/Webhooks/Form/Common/SocialPostFields.vue";
-import {computed, Ref} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import FormMarkup from "~/components/Form/FormMarkup.vue";
-import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import { required } from "@regle/rules";
+import { storeToRefs } from "pinia";
+import { computed, Ref } from "vue";
 import Tab from "~/components/Common/Tab.vue";
-import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
-import {useStationsWebhooksForm,} from "~/components/Stations/Webhooks/Form/form.ts";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {useAppScopedRegle} from "~/vendor/regle.ts";
-import {required} from "@regle/rules";
-import {storeToRefs} from "pinia";
-import {WebhookRecordCommon, WebhookRecordMastodon} from "~/entities/Webhooks.ts";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
+import { WebhookComponentProps } from "~/components/Stations/Webhooks/EditModal.vue";
+import CommonSocialPostFields from "~/components/Stations/Webhooks/Form/Common/SocialPostFields.vue";
+import { useStationsWebhooksForm } from "~/components/Stations/Webhooks/Form/form.ts";
+import {
+    WebhookRecordCommon,
+    WebhookRecordMastodon,
+} from "~/entities/Webhooks.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
+import { useTranslate } from "~/vendor/gettext";
+import { useAppScopedRegle } from "~/vendor/regle.ts";
 
 defineProps<WebhookComponentProps>();
 
-const {form} = storeToRefs(useStationsWebhooksForm());
+const { form } = storeToRefs(useStationsWebhooksForm());
 
-const {r$} = useAppScopedRegle(
+const { r$ } = useAppScopedRegle(
     form as Ref<WebhookRecordCommon & WebhookRecordMastodon>,
     {
         config: {
-            instance_url: {required},
-            access_token: {required},
-            visibility: {required}
-        }
+            instance_url: { required },
+            access_token: { required },
+            visibility: { required },
+        },
     },
     {
-        namespace: 'station-webhooks'
-    }
+        namespace: "station-webhooks",
+    },
 );
 
 const tabClass = useFormTabClass(r$);
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const visibilityOptions = computed(() => {
     return [
         {
-            text: $gettext('Public'),
-            value: 'public',
+            text: $gettext("Public"),
+            value: "public",
         },
         {
-            text: $gettext('Unlisted'),
-            value: 'unlisted',
+            text: $gettext("Unlisted"),
+            value: "unlisted",
         },
         {
-            text: $gettext('Followers Only'),
-            value: 'private',
-        }
+            text: $gettext("Followers Only"),
+            value: "private",
+        },
     ];
 });
 </script>

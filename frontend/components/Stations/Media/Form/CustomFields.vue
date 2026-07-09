@@ -14,20 +14,22 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {CustomField} from "~/entities/ApiInterfaces.ts";
+import { storeToRefs } from "pinia";
 import Tab from "~/components/Common/Tab.vue";
-import {storeToRefs} from "pinia";
-import {useStationsMediaForm} from "~/components/Stations/Media/Form/form.ts";
-import {ValidatedField} from "~/components/Form/useFormField.ts";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { ValidatedField } from "~/components/Form/useFormField.ts";
+import { useStationsMediaForm } from "~/components/Stations/Media/Form/form.ts";
+import { CustomField } from "~/entities/ApiInterfaces.ts";
 
 defineProps<{
-    customFields: Required<CustomField>[],
+    customFields: Required<CustomField>[];
 }>();
 
-const {r$} = storeToRefs(useStationsMediaForm());
+const { r$ } = storeToRefs(useStationsMediaForm());
 
-const getCustomField = (field: Required<CustomField>): ValidatedField<string> => {
+const getCustomField = (
+    field: Required<CustomField>,
+): ValidatedField<string> => {
     // @ts-expect-error This is kinda weird magic.
     return r$.value.custom_fields[field.short_name];
 };

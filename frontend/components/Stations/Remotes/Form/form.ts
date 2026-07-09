@@ -1,25 +1,26 @@
-import {useAppRegle} from "~/vendor/regle.ts";
-import {defineStore} from "pinia";
-import {required} from "@regle/rules";
-import {RemoteAdapters, StationRemote, StreamFormats} from "~/entities/ApiInterfaces.ts";
-import {ref} from "vue";
+import { required } from "@regle/rules";
+import { defineStore } from "pinia";
+import { ref } from "vue";
+import {
+    RemoteAdapters,
+    StationRemote,
+    StreamFormats,
+} from "~/entities/ApiInterfaces.ts";
+import { useAppRegle } from "~/vendor/regle.ts";
 
 export type StationRemotesRecord = Omit<
     Required<StationRemote>,
-    | 'id'
-    | 'listeners_unique'
-    | 'listeners_total'
-    | 'is_editable'
->
+    "id" | "listeners_unique" | "listeners_total" | "is_editable"
+>;
 
 export const useStationsRemotesForm = defineStore(
-    'form-stations-remotes',
+    "form-stations-remotes",
     () => {
         const form = ref<StationRemotesRecord>({
-            display_name: '',
+            display_name: "",
             type: RemoteAdapters.Icecast,
             custom_listen_url: null,
-            url: '',
+            url: "",
             mount: null,
             admin_password: null,
             is_visible_on_public_pages: true,
@@ -30,14 +31,14 @@ export const useStationsRemotesForm = defineStore(
             source_mount: null,
             source_username: null,
             source_password: null,
-            is_public: false
+            is_public: false,
         });
 
-        const {r$} = useAppRegle(
+        const { r$ } = useAppRegle(
             form,
             {
-                type: {required},
-                url: {required},
+                type: { required },
+                url: { required },
             },
             {
                 validationGroups: (fields) => ({
@@ -58,22 +59,22 @@ export const useStationsRemotesForm = defineStore(
                         fields.source_mount,
                         fields.source_username,
                         fields.source_password,
-                        fields.is_public
+                        fields.is_public,
                     ],
-                })
-            }
+                }),
+            },
         );
 
         const $reset = () => {
             r$.$reset({
-                toOriginalState: true
+                toOriginalState: true,
             });
-        }
+        };
 
         return {
             form,
             r$,
-            $reset
-        }
-    }
+            $reset,
+        };
+    },
 );

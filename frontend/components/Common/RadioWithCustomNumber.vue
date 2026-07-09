@@ -33,30 +33,30 @@
 </template>
 
 <script setup lang="ts" generic="T = string | number | null">
-import {FormFieldProps} from "~/components/Form/useFormField";
-import {computed, nextTick, ref, toRef, useSlots} from "vue";
-import {find} from "es-toolkit/compat";
+import { pausableWatch, WatchPausableReturn } from "@vueuse/core";
+import { find } from "es-toolkit/compat";
+import { computed, nextTick, ref, toRef, useSlots } from "vue";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
-import {objectToSimpleFormOptions, SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
-import {pausableWatch, WatchPausableReturn} from "@vueuse/core";
+import { FormFieldProps } from "~/components/Form/useFormField";
+import {
+    objectToSimpleFormOptions,
+    SimpleFormOptionInput,
+} from "~/functions/objectToFormOptions.ts";
 
 type RadioCustomNumberProps = FormFieldProps<T> & {
-    id: string,
-    name?: string,
-    inputAttrs?: object,
-    options: SimpleFormOptionInput,
-}
+    id: string;
+    name?: string;
+    inputAttrs?: object;
+    options: SimpleFormOptionInput;
+};
 
-const props = withDefaults(
-    defineProps<RadioCustomNumberProps>(),
-    {
-        inputAttrs: () => ({
-            min: 1,
-            max: 4096,
-            step: 1
-        }),
-    }
-);
+const props = withDefaults(defineProps<RadioCustomNumberProps>(), {
+    inputAttrs: () => ({
+        min: 1,
+        max: 4096,
+        step: 1,
+    }),
+});
 
 const slots = useSlots();
 
@@ -75,19 +75,17 @@ const model = defineModel<T, string, number | null, string | number | null>({
     },
     set(value) {
         return toNumberOrNull(value);
-    }
+    },
 });
 
 const originalOptions = objectToSimpleFormOptions(toRef(() => props.options));
 
 const optionsWithCustom = computed(() => {
-    const parsedOptions = [
-        ...originalOptions.value
-    ];
-    
+    const parsedOptions = [...originalOptions.value];
+
     parsedOptions.push({
-        value: 'custom',
-        text: 'Custom'
+        value: "custom",
+        text: "Custom",
     });
 
     return parsedOptions;
@@ -99,68 +97,90 @@ const customField = ref<T | null>(null);
 const watchers: WatchPausableReturn[] = [];
 
 // Sync from models to others.
-watchers.push(pausableWatch(
-    model,
-    async (newValue) => {
-        watchers.forEach(w => w.pause());
+watchers.push(
+    pausableWatch(
+        model,
+        async (newValue) => {
+            watchers.forEach((w) => {
+                w.pause();
+            });
 
-        if (find(originalOptions.value, {
-            value: newValue
-        })) {
-            radioField.value = newValue;
-            customField.value = null;
-        } else {
-            radioField.value = "custom";
-            customField.value = newValue;
-        }
+            if (
+                find(originalOptions.value, {
+                    value: newValue,
+                })
+            ) {
+                radioField.value = newValue;
+                customField.value = null;
+            } else {
+                radioField.value = "custom";
+                customField.value = newValue;
+            }
 
-        await nextTick();
+            await nextTick();
 
-        watchers.forEach(w => w.resume());
-    },
-    {
-        flush: 'sync',
-        immediate: true
-    }
-));
+            watchers.forEach((w) => {
+                w.resume();
+            });
+        },
+        {
+            flush: "sync",
+            immediate: true,
+        },
+    ),
+);
 
 // Sync radio to model and others
-watchers.push(pausableWatch(
-    radioField,
-    async (newValue) => {
-        watchers.forEach(w => w.pause());
+watchers.push(
+    pausableWatch(
+        radioField,
+        async (newValue) => {
+            watchers.forEach((w) => {
+                w.pause();
+            });
 
-        if (newValue === "custom") {
-            customField.value = model.value;
-        } else {
-            customField.value = null;
-            model.value = newValue;
-        }
-        await nextTick();
+            if (newValue === "custom") {
+                customField.value = model.value;
+            } else {
+                customField.value = null;
+                model.value = newValue;
+            }
+            await nextTick();
 
-        watchers.forEach(w => w.resume());
-    }, {
-        flush: 'sync'
-    }
-));
+            watchers.forEach((w) => {
+                w.resume();
+            });
+        },
+        {
+            flush: "sync",
+        },
+    ),
+);
 
 // Sync custom field to model and others
-watchers.push(pausableWatch(
-    customField,
-    async (newValue) => {
-        watchers.forEach(w => w.pause());
+watchers.push(
+    pausableWatch(
+        customField,
+        async (newValue) => {
+            watchers.forEach((w) => {
+                w.pause();
+            });
 
-        model.value = newValue;
-        await nextTick();
+            model.value = newValue;
+            await nextTick();
 
-        watchers.forEach(w => w.resume());
-    }, {
-        flush: 'sync'
-    }
-));
+            watchers.forEach((w) => {
+                w.resume();
+            });
+        },
+        {
+            flush: "sync",
+        },
+    ),
+);
 
 const onCustomFieldFocus = () => {
-    radioField.value = 'custom';
+    radioField.value = "custom";
     customField.value = model.value;
-}
+};
 </script>

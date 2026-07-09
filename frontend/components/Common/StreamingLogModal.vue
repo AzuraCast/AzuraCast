@@ -40,20 +40,20 @@
 </template>
 
 <script setup lang="ts">
-import StreamingLogView from "~/components/Common/StreamingLogView.vue";
-import {ref, useTemplateRef} from "vue";
-import {useClipboard} from "@vueuse/core";
-import Modal from "~/components/Common/Modal.vue";
+import { useClipboard } from "@vueuse/core";
+import { ref, useTemplateRef } from "vue";
 import FixedLogView from "~/components/Common/FixedLogView.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
+import Modal from "~/components/Common/Modal.vue";
+import StreamingLogView from "~/components/Common/StreamingLogView.vue";
+import { useHasModal } from "~/functions/useHasModal.ts";
 
-const logUrl = ref<string>('');
+const logUrl = ref<string>("");
 const isStreaming = ref<boolean>(true);
 
-const $modal = useTemplateRef('$modal');
-const {show: showModal, hide} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { show: showModal, hide } = useHasModal($modal);
 
-const $logView = useTemplateRef('$logView');
+const $logView = useTemplateRef("$logView");
 
 const show = (newLogUrl: string, newIsStreaming: boolean = true) => {
     logUrl.value = newLogUrl;
@@ -64,14 +64,14 @@ const show = (newLogUrl: string, newIsStreaming: boolean = true) => {
 const clipboard = useClipboard();
 
 const doCopy = () => {
-    void clipboard.copy($logView.value?.getContents() ?? '');
+    void clipboard.copy($logView.value?.getContents() ?? "");
 };
 
 const clearContents = () => {
-    logUrl.value = '';
-}
+    logUrl.value = "";
+};
 
 defineExpose({
-    show
-})
+    show,
+});
 </script>

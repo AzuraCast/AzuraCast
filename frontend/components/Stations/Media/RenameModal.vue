@@ -38,19 +38,19 @@
 </template>
 
 <script setup lang="ts">
-import {required} from "@regle/rules";
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {nextTick, ref, useTemplateRef} from "vue";
-import {useAxios} from "~/vendor/axios";
-import Modal from "~/components/Common/Modal.vue";
+import { required } from "@regle/rules";
+import { nextTick, ref, useTemplateRef } from "vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
-import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
-import {useAppRegle} from "~/vendor/regle.ts";
+import Modal from "~/components/Common/Modal.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { HasRelistEmit } from "~/functions/useBaseEditModal.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
+import { useResettableRef } from "~/functions/useResettableRef.ts";
+import { useAxios } from "~/vendor/axios";
+import { useAppRegle } from "~/vendor/regle.ts";
 
 const props = defineProps<{
-    renameUrl: string
+    renameUrl: string;
 }>();
 
 const emit = defineEmits<HasRelistEmit>();
@@ -58,32 +58,32 @@ const emit = defineEmits<HasRelistEmit>();
 const file = ref<string | null>(null);
 
 type RenameModalRecord = {
-    newPath: string
-}
+    newPath: string;
+};
 
-const {record: form, reset: resetForm} = useResettableRef<RenameModalRecord>({
-    newPath: ''
+const { record: form, reset: resetForm } = useResettableRef<RenameModalRecord>({
+    newPath: "",
 });
 
-const {r$} = useAppRegle(
+const { r$ } = useAppRegle(
     form,
     {
-        newPath: {required}
+        newPath: { required },
     },
-    {}
+    {},
 );
 
-const $modal = useTemplateRef('$modal');
-const {show, hide} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { show, hide } = useHasModal($modal);
 
 const open = (filePath: string): void => {
     file.value = filePath;
     form.value.newPath = filePath;
 
     show();
-}
+};
 
-const $field = useTemplateRef('$field');
+const $field = useTemplateRef("$field");
 
 const onShown = () => {
     void nextTick(() => {
@@ -94,14 +94,14 @@ const onShown = () => {
 const onHidden = () => {
     resetForm();
     r$.$reset();
-    
-    file.value = null;
-}
 
-const {axios} = useAxios();
+    file.value = null;
+};
+
+const { axios } = useAxios();
 
 const doRename = async () => {
-    const {valid} = await r$.$validate();
+    const { valid } = await r$.$validate();
     if (!valid) {
         return;
     }
@@ -109,15 +109,15 @@ const doRename = async () => {
     try {
         await axios.put(props.renameUrl, {
             file: file.value,
-            ...form.value
+            ...form.value,
         });
     } finally {
         hide();
-        emit('relist');
+        emit("relist");
     }
 };
 
 defineExpose({
-    open
+    open,
 });
 </script>

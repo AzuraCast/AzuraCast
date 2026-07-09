@@ -32,10 +32,9 @@
 </template>
 
 <script setup lang="ts">
-
-import {MenuCategory} from "~/functions/filterMenu.ts";
+import { MenuCategory } from "~/functions/filterMenu.ts";
 
 defineProps<{
-    items: MenuCategory[]
+    items: MenuCategory[];
 }>();
 </script>

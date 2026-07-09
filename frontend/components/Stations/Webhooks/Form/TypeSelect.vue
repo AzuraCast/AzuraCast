@@ -47,20 +47,18 @@
 </template>
 
 <script setup lang="ts">
-import {WebhookTypeDetails} from "~/entities/Webhooks";
+import { reactivePick } from "@vueuse/core";
 import TypeSelectSection from "~/components/Stations/Webhooks/Form/TypeSelectSection.vue";
-import {reactivePick} from "@vueuse/core";
-import {WebhookTypes} from "~/entities/ApiInterfaces.ts";
+import { WebhookTypes } from "~/entities/ApiInterfaces.ts";
+import { WebhookTypeDetails } from "~/entities/Webhooks";
 
 defineProps<{
-    typeDetails: WebhookTypeDetails
+    typeDetails: WebhookTypeDetails;
 }>();
 
-const emit = defineEmits<{
-    (e: 'select', type: WebhookTypes): void
-}>();
+const emit = defineEmits<(e: "select", type: WebhookTypes) => void>();
 
 const selectType = (type: WebhookTypes) => {
-    emit('select', type);
-}
+    emit("select", type);
+};
 </script>

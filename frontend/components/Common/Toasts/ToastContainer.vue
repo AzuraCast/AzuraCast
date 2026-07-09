@@ -13,10 +13,10 @@
 </template>
 
 <script setup lang="ts">
-import {useNotify} from "./useNotify.ts";
-import {storeToRefs} from "pinia";
+import { storeToRefs } from "pinia";
 import Toast from "./Toast.vue";
+import { useNotify } from "./useNotify.ts";
 
 const notifyStore = useNotify();
-const {toasts} = storeToRefs(notifyStore);
+const { toasts } = storeToRefs(notifyStore);
 </script>

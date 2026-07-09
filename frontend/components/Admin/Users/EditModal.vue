@@ -51,42 +51,48 @@
 </template>
 
 <script setup lang="ts">
-import {map} from "es-toolkit/compat";
-import {computed, ref, toRef, useTemplateRef, watch} from "vue";
-import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {useTranslate} from "~/vendor/gettext";
+import { email, required, requiredIf } from "@regle/rules";
+import { map } from "es-toolkit/compat";
+import { computed, ref, toRef, useTemplateRef, watch } from "vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import mergeExisting from "~/functions/mergeExisting.ts";
-import {isValidPassword, useAppRegle} from "~/vendor/regle.ts";
-import {email, required, requiredIf} from "@regle/rules";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import mergeExisting from "~/functions/mergeExisting.ts";
+import {
+    BaseEditModalEmits,
+    BaseEditModalProps,
+    useBaseEditModal,
+} from "~/functions/useBaseEditModal";
+import { useTranslate } from "~/vendor/gettext";
+import { isValidPassword, useAppRegle } from "~/vendor/regle.ts";
 
-const props = defineProps<BaseEditModalProps & {
-    roles: Record<number, string>
-}>();
+const props = defineProps<
+    BaseEditModalProps & {
+        roles: Record<number, string>;
+    }
+>();
 const emit = defineEmits<BaseEditModalEmits>();
 
-const $modal = useTemplateRef('$modal');
+const $modal = useTemplateRef("$modal");
 
 // This value is needed higher up than it's defined, so it's synced back up here.
 const editMode = ref(false);
 
-const {r$} = useAppRegle(
+const { r$ } = useAppRegle(
     {
-        email: '',
-        new_password: '',
-        name: '',
+        email: "",
+        new_password: "",
+        name: "",
         roles: [],
     },
     {
-        email: {required, email},
+        email: { required, email },
         new_password: {
             isValidPassword,
-            required: requiredIf(() => !editMode.value)
+            required: requiredIf(() => !editMode.value),
         },
     },
-    {}
+    {},
 );
 
 const {
@@ -97,46 +103,44 @@ const {
     create,
     edit,
     doSubmit,
-    close
+    close,
 } = useBaseEditModal(
-    toRef(props, 'createUrl'),
+    toRef(props, "createUrl"),
     emit,
     $modal,
     () => {
         r$.$reset({
-            toOriginalState: true
+            toOriginalState: true,
         });
     },
     (data) => {
         r$.$reset({
             toState: mergeExisting(r$.$value, {
                 ...data,
-                roles: map(data.roles, 'id'),
-                new_password: ''
-            })
-        })
+                roles: map(data.roles, "id"),
+                new_password: "",
+            }),
+        });
     },
     async () => {
-        const {valid, data} = await r$.$validate();
-        return {valid, data};
-    }
+        const { valid, data } = await r$.$validate();
+        return { valid, data };
+    },
 );
 
 watch(isEditMode, (newValue) => {
     editMode.value = newValue;
 });
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const langTitle = computed(() => {
-    return isEditMode.value
-        ? $gettext('Edit User')
-        : $gettext('Add User');
+    return isEditMode.value ? $gettext("Edit User") : $gettext("Add User");
 });
 
 defineExpose({
     create,
     edit,
-    close
+    close,
 });
 </script>

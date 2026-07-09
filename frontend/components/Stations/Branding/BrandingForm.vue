@@ -85,20 +85,20 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from "vue";
 import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {onMounted, ref} from "vue";
-import {useAxios} from "~/vendor/axios";
-import mergeExisting from "~/functions/mergeExisting";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useTranslate} from "~/vendor/gettext";
 import Loading from "~/components/Common/Loading.vue";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
-import {useAppRegle} from "~/vendor/regle.ts";
-import {StationBrandingConfiguration} from "~/entities/ApiInterfaces.ts";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { StationBrandingConfiguration } from "~/entities/ApiInterfaces.ts";
+import mergeExisting from "~/functions/mergeExisting";
+import { useResettableRef } from "~/functions/useResettableRef.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
+import { useAppRegle } from "~/vendor/regle.ts";
 
 const props = defineProps<{
-    profileEditUrl: string
+    profileEditUrl: string;
 }>();
 
 const isLoading = ref(true);
@@ -106,26 +106,26 @@ const error = ref(null);
 
 type Row = Required<StationBrandingConfiguration>;
 
-const {record: form, reset: resetForm} = useResettableRef<Row>({
+const { record: form, reset: resetForm } = useResettableRef<Row>({
     default_album_art_url: "",
     public_custom_css: "",
     public_custom_js: "",
-    offline_text: ""
+    offline_text: "",
 });
 
-const {r$} = useAppRegle(
+const { r$ } = useAppRegle(
     form,
     {
         default_album_art_url: {},
         public_custom_css: {},
         public_custom_js: {},
-        offline_text: {}
+        offline_text: {},
     },
-    {}
+    {},
 );
 
-const {$gettext} = useTranslate();
-const {axios} = useAxios();
+const { $gettext } = useTranslate();
+const { axios } = useAxios();
 
 const populateForm = (data: typeof form.value) => {
     form.value = mergeExisting(form.value, data);
@@ -137,31 +137,31 @@ const relist = async () => {
 
     isLoading.value = true;
 
-    const {data} = await axios.get(props.profileEditUrl);
+    const { data } = await axios.get(props.profileEditUrl);
 
     populateForm(data.branding_config);
     isLoading.value = false;
-}
+};
 
 onMounted(relist);
 
-const {notifySuccess} = useNotify();
+const { notifySuccess } = useNotify();
 
 const submit = async () => {
-    const {valid} = await r$.$validate();
+    const { valid } = await r$.$validate();
     if (!valid) {
         return;
     }
 
     await axios({
-        method: 'PUT',
+        method: "PUT",
         url: props.profileEditUrl,
         data: {
-            branding_config: form.value
-        }
+            branding_config: form.value,
+        },
     });
 
     notifySuccess();
     await relist();
-}
+};
 </script>

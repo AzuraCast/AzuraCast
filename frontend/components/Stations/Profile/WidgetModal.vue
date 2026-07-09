@@ -321,21 +321,21 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
+import { computed, useTemplateRef } from "vue";
 import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton.vue";
-import {computed, useTemplateRef} from "vue";
-import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
-import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
-import {useStationData} from "~/functions/useStationQuery.ts";
-import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
-import WidgetTemplates from "~/components/Stations/Profile/Widgets/WidgetTemplates.vue";
-import {useWidgetStore} from "~/components/Stations/Profile/Widgets/useWidgetStore.ts";
-import {storeToRefs} from "pinia";
-import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
+import Tabs from "~/components/Common/Tabs.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import { useStationProfileData } from "~/components/Stations/Profile/useProfileQuery.ts";
+import { useWidgetStore } from "~/components/Stations/Profile/Widgets/useWidgetStore.ts";
+import WidgetTemplates from "~/components/Stations/Profile/Widgets/WidgetTemplates.vue";
+import { useHasModal } from "~/functions/useHasModal.ts";
+import { useStationData } from "~/functions/useStationQuery.ts";
+import { useTranslate } from "~/vendor/gettext";
 
 const stationData = useStationData();
 const profileData = useStationProfileData();
@@ -348,29 +348,31 @@ const {
     customHeight,
     customization,
 } = storeToRefs($store);
-const {
-    $reset: resetStore
-} = $store;
+const { $reset: resetStore } = $store;
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const encodeCustomCssParam = (css: string): string | null => {
     if (!css) {
         return null;
     }
 
-    const encoder = typeof globalThis.btoa === 'function' ? globalThis.btoa : null;
+    const encoder =
+        typeof globalThis.btoa === "function" ? globalThis.btoa : null;
     if (!encoder) {
         return null;
     }
 
     try {
-        const utf8 = encodeURIComponent(css).replace(/%([0-9A-F]{2})/g, (_match, hex) => {
-            return String.fromCharCode(Number.parseInt(hex, 16));
-        });
+        const utf8 = encodeURIComponent(css).replace(
+            /%([0-9A-F]{2})/g,
+            (_match, hex) => {
+                return String.fromCharCode(Number.parseInt(hex, 16));
+            },
+        );
         return encoder(utf8);
     } catch (error) {
-        console.warn('Failed to encode custom CSS.', error);
+        console.warn("Failed to encode custom CSS.", error);
         return null;
     }
 };
@@ -378,34 +380,37 @@ const encodeCustomCssParam = (css: string): string | null => {
 const types = computed(() => {
     const types = [
         {
-            value: 'player',
-            text: $gettext('Radio Player')
+            value: "player",
+            text: $gettext("Radio Player"),
         },
         {
-            value: 'history',
-            text: $gettext('History')
+            value: "history",
+            text: $gettext("History"),
         },
         {
-            value: 'podcasts',
-            text: $gettext('Podcasts')
+            value: "podcasts",
+            text: $gettext("Podcasts"),
         },
         {
-            value: 'schedule',
-            text: $gettext('Schedule')
-        }
+            value: "schedule",
+            text: $gettext("Schedule"),
+        },
     ];
 
-    if (stationData.value.features.requests && stationData.value.enableRequests) {
+    if (
+        stationData.value.features.requests &&
+        stationData.value.enableRequests
+    ) {
         types.push({
-            value: 'requests',
-            text: $gettext('Requests')
+            value: "requests",
+            text: $gettext("Requests"),
         });
     }
 
     if (stationData.value.enableOnDemand) {
         types.push({
-            value: 'ondemand',
-            text: $gettext('On-Demand Media')
+            value: "ondemand",
+            text: $gettext("On-Demand Media"),
         });
     }
 
@@ -415,59 +420,58 @@ const types = computed(() => {
 const themes = computed(() => {
     return [
         {
-            value: 'browser',
-            text: $gettext('Browser Default')
+            value: "browser",
+            text: $gettext("Browser Default"),
         },
         {
-            value: 'light',
-            text: $gettext('Light')
+            value: "light",
+            text: $gettext("Light"),
         },
         {
-            value: 'dark',
-            text: $gettext('Dark')
-        }
+            value: "dark",
+            text: $gettext("Dark"),
+        },
     ];
 });
 
 const layoutOptions = computed(() => {
     return [
         {
-            value: 'horizontal',
-            text: $gettext('Horizontal')
+            value: "horizontal",
+            text: $gettext("Horizontal"),
         },
         {
-            value: 'vertical',
-            text: $gettext('Vertical')
+            value: "vertical",
+            text: $gettext("Vertical"),
         },
         {
-            value: 'compact',
-            text: $gettext('Compact')
+            value: "compact",
+            text: $gettext("Compact"),
         },
         {
-            value: 'large',
-            text: $gettext('Large')
-        }
+            value: "large",
+            text: $gettext("Large"),
+        },
     ];
 });
 
 const baseEmbedUrl = computed(() => {
     switch (selectedType.value) {
-        case 'history':
+        case "history":
             return profileData.value.publicHistoryEmbedUrl;
 
-        case 'ondemand':
+        case "ondemand":
             return profileData.value.publicOnDemandEmbedUrl;
 
-        case 'requests':
+        case "requests":
             return profileData.value.publicRequestEmbedUrl;
 
-        case 'schedule':
+        case "schedule":
             return profileData.value.publicScheduleEmbedUrl;
 
-        case 'podcasts':
+        case "podcasts":
             return profileData.value.publicPodcastsEmbedUrl;
 
-        case 'player':
         default:
             return profileData.value.publicPageEmbedUrl;
     }
@@ -477,64 +481,96 @@ const embedUrl = computed(() => {
     const baseUrl = new URL(baseEmbedUrl.value);
 
     // Basic theme
-    if (selectedTheme.value !== 'browser') {
-        baseUrl.searchParams.set('theme', selectedTheme.value);
+    if (selectedTheme.value !== "browser") {
+        baseUrl.searchParams.set("theme", selectedTheme.value);
     }
 
     // Player-specific customizations
-    if (selectedType.value === 'player') {
+    if (selectedType.value === "player") {
         const settings = customization.value;
 
         // Colors
-        if ('primaryColor' in settings && settings.primaryColor && settings.primaryColor !== '#2196F3') {
-            baseUrl.searchParams.set('primary_color', settings.primaryColor.replace('#', ''));
+        if (
+            "primaryColor" in settings &&
+            settings.primaryColor &&
+            settings.primaryColor !== "#2196F3"
+        ) {
+            baseUrl.searchParams.set(
+                "primary_color",
+                settings.primaryColor.replace("#", ""),
+            );
         }
-        if ('backgroundColor' in settings && settings.backgroundColor && settings.backgroundColor !== '#ffffff') {
-            baseUrl.searchParams.set('bg_color', settings.backgroundColor.replace('#', ''));
+        if (
+            "backgroundColor" in settings &&
+            settings.backgroundColor &&
+            settings.backgroundColor !== "#ffffff"
+        ) {
+            baseUrl.searchParams.set(
+                "bg_color",
+                settings.backgroundColor.replace("#", ""),
+            );
         }
-        if ('textColor' in settings && settings.textColor && settings.textColor !== '#000000') {
-            baseUrl.searchParams.set('text_color', settings.textColor.replace('#', ''));
+        if (
+            "textColor" in settings &&
+            settings.textColor &&
+            settings.textColor !== "#000000"
+        ) {
+            baseUrl.searchParams.set(
+                "text_color",
+                settings.textColor.replace("#", ""),
+            );
         }
 
         // Functionality
         if (settings.autoplay) {
-            baseUrl.searchParams.set('autoplay', '1');
+            baseUrl.searchParams.set("autoplay", "1");
         }
         if (!settings.showAlbumArt) {
-            baseUrl.searchParams.set('hide_album_art', '1');
+            baseUrl.searchParams.set("hide_album_art", "1");
         }
         if (!settings.showVolumeControls) {
-            baseUrl.searchParams.set('hide_volume', '1');
+            baseUrl.searchParams.set("hide_volume", "1");
         }
         if (!settings.showTrackProgress) {
-            baseUrl.searchParams.set('hide_progress', '1');
+            baseUrl.searchParams.set("hide_progress", "1");
         }
         if (!settings.showStreamSelection) {
-            baseUrl.searchParams.set('hide_streams', '1');
+            baseUrl.searchParams.set("hide_streams", "1");
         }
-        if ('initialVolume' in settings && settings.initialVolume && settings.initialVolume !== 75) {
-            baseUrl.searchParams.set('volume', settings.initialVolume.toString());
+        if (
+            "initialVolume" in settings &&
+            settings.initialVolume &&
+            settings.initialVolume !== 75
+        ) {
+            baseUrl.searchParams.set(
+                "volume",
+                settings.initialVolume.toString(),
+            );
         }
 
         // Layout
-        if ('layout' in settings && settings.layout && settings.layout !== 'horizontal') {
-            baseUrl.searchParams.set('layout', settings.layout);
+        if (
+            "layout" in settings &&
+            settings.layout &&
+            settings.layout !== "horizontal"
+        ) {
+            baseUrl.searchParams.set("layout", settings.layout);
         }
         if (settings.roundedCorners) {
-            baseUrl.searchParams.set('rounded', '1');
+            baseUrl.searchParams.set("rounded", "1");
         }
 
         // Advanced
         if (settings.enablePopupPlayer) {
-            baseUrl.searchParams.set('allow_popup', '1');
+            baseUrl.searchParams.set("allow_popup", "1");
         }
         if (settings.continuousPlay) {
-            baseUrl.searchParams.set('continuous', '1');
+            baseUrl.searchParams.set("continuous", "1");
         }
         if (settings.customCss) {
             const encodedCss = encodeCustomCssParam(settings.customCss);
             if (encodedCss) {
-                baseUrl.searchParams.set('custom_css', encodedCss);
+                baseUrl.searchParams.set("custom_css", encodedCss);
             }
         }
     }
@@ -544,45 +580,45 @@ const embedUrl = computed(() => {
 
 const embedHeight = computed(() => {
     switch (selectedType.value) {
-        case 'ondemand':
-        case 'podcasts':
-            return '400px';
+        case "ondemand":
+        case "podcasts":
+            return "400px";
 
-        case 'requests':
-            return '850px';
+        case "requests":
+            return "850px";
 
-        case 'history':
-            return '300px';
+        case "history":
+            return "300px";
 
-        case 'schedule':
-            return '800px'
+        case "schedule":
+            return "800px";
 
-        case 'player':
         default:
             // Use custom height if specified, otherwise use layout-based defaults
             if (customHeight.value && customHeight.value > 0) {
-                return customHeight.value + 'px';
+                return `${customHeight.value}px`;
             }
 
             switch (customization.value.layout) {
-                case 'large':
-                    return '250px';
-                case 'vertical':
-                    return '200px';
-                case 'compact':
-                    return '80px';
-                case 'horizontal':
+                case "large":
+                    return "250px";
+                case "vertical":
+                    return "200px";
+                case "compact":
+                    return "80px";
                 default:
-                    return '150px';
+                    return "150px";
             }
     }
 });
 
 const embedCode = computed(() => {
-    const width = customWidth.value || '100%';
+    const width = customWidth.value || "100%";
     const height = embedHeight.value;
-    const isScrollableLayout = customization.value.layout === 'vertical' || customization.value.layout === 'large';
-    const minHeightStyle = isScrollableLayout ? '' : ` min-height: ${height};`;
+    const isScrollableLayout =
+        customization.value.layout === "vertical" ||
+        customization.value.layout === "large";
+    const minHeightStyle = isScrollableLayout ? "" : ` min-height: ${height};`;
     const heightStyle = ` height: ${height};`;
 
     return `<iframe src="${embedUrl.value}" frameborder="0" allowtransparency="true" style="width: ${width};${minHeightStyle}${heightStyle} border: 0;"></iframe>`;
@@ -592,12 +628,12 @@ const embedCode = computed(() => {
 const previewContainerStyle = computed(() => {
     const styles: Record<string, string> = {};
 
-    if (selectedType.value === 'player') {
-        if (customWidth.value && customWidth.value !== '100%') {
+    if (selectedType.value === "player") {
+        if (customWidth.value && customWidth.value !== "100%") {
             styles.width = String(customWidth.value);
         }
-        styles.maxWidth = '100%';
-        styles.margin = '0 auto';
+        styles.maxWidth = "100%";
+        styles.margin = "0 auto";
     }
 
     return styles;
@@ -605,9 +641,9 @@ const previewContainerStyle = computed(() => {
 
 const previewFrameStyle = computed(() => {
     const styles: Record<string, string> = {
-        width: '100%',
+        width: "100%",
         height: embedHeight.value,
-        border: '0'
+        border: "0",
     };
 
     return styles;
@@ -618,10 +654,10 @@ type ModalExpose = {
     hide(): void;
 };
 
-const modalRef = useTemplateRef<ModalExpose>('modalRef');
-const {show: open} = useHasModal(modalRef);
+const modalRef = useTemplateRef<ModalExpose>("modalRef");
+const { show: open } = useHasModal(modalRef);
 
 defineExpose({
-    open
+    open,
 });
 </script>

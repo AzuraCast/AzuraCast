@@ -32,33 +32,36 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import { required } from "@regle/rules";
+import { storeToRefs } from "pinia";
+import { Ref } from "vue";
 import Tab from "~/components/Common/Tab.vue";
-import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
-import {useAppScopedRegle} from "~/vendor/regle.ts";
-import {required} from "@regle/rules";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {storeToRefs} from "pinia";
-import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
-import {Ref} from "vue";
-import {WebhookRecordCommon, WebhookRecordRadioReg} from "~/entities/Webhooks.ts";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { WebhookComponentProps } from "~/components/Stations/Webhooks/EditModal.vue";
+import { useStationsWebhooksForm } from "~/components/Stations/Webhooks/Form/form.ts";
+import {
+    WebhookRecordCommon,
+    WebhookRecordRadioReg,
+} from "~/entities/Webhooks.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
+import { useAppScopedRegle } from "~/vendor/regle.ts";
 
 defineProps<WebhookComponentProps>();
 
-const {form} = storeToRefs(useStationsWebhooksForm());
+const { form } = storeToRefs(useStationsWebhooksForm());
 
-const {r$} = useAppScopedRegle(
+const { r$ } = useAppScopedRegle(
     form as Ref<WebhookRecordCommon & WebhookRecordRadioReg>,
     {
         config: {
-            webhookurl: {required},
-            apikey: {required}
-        }
+            webhookurl: { required },
+            apikey: { required },
+        },
     },
     {
-        namespace: 'station-webhooks'
-    }
+        namespace: "station-webhooks",
+    },
 );
 
 const tabClass = useFormTabClass(r$);

@@ -81,18 +81,18 @@
 <script setup lang="ts">
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import PlayButton from "~/components/Common/Audio/PlayButton.vue";
-import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import PodcastCommon from "~/components/Public/Podcasts/PodcastCommon.vue";
-import {usePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
-import {ApiPodcastRow} from "~/components/Public/Podcasts/usePodcastQuery.ts";
-import {PodcastEpisodeRow} from "~/components/Public/Podcasts/PodcastEpisodeWrapper.vue";
+import { PodcastEpisodeRow } from "~/components/Public/Podcasts/PodcastEpisodeWrapper.vue";
+import { usePodcastGlobals } from "~/components/Public/Podcasts/usePodcastGlobals.ts";
+import { ApiPodcastRow } from "~/components/Public/Podcasts/usePodcastQuery.ts";
+import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 
 defineProps<{
-    podcast: ApiPodcastRow,
-    episode: PodcastEpisodeRow
+    podcast: ApiPodcastRow;
+    episode: PodcastEpisodeRow;
 }>();
 
-const {stationTz} = usePodcastGlobals();
+const { stationTz } = usePodcastGlobals();
 
-const {formatTimestampAsDateTime} = useStationDateTimeFormatter(stationTz);
+const { formatTimestampAsDateTime } = useStationDateTimeFormatter(stationTz);
 </script>

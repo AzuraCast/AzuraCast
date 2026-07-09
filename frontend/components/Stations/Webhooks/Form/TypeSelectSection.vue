@@ -27,18 +27,16 @@
 </template>
 
 <script setup lang="ts">
-import {ActiveWebhookTypes, WebhookTypeDetails} from "~/entities/Webhooks.ts";
+import { ActiveWebhookTypes, WebhookTypeDetails } from "~/entities/Webhooks.ts";
 
 defineProps<{
-    title: string,
-    types: Partial<WebhookTypeDetails>
+    title: string;
+    types: Partial<WebhookTypeDetails>;
 }>();
 
-const emit = defineEmits<{
-    (e: 'select', type: ActiveWebhookTypes): void
-}>();
+const emit = defineEmits<(e: "select", type: ActiveWebhookTypes) => void>();
 
 const selectType = (type: ActiveWebhookTypes) => {
-    emit('select', type);
-}
+    emit("select", type);
+};
 </script>

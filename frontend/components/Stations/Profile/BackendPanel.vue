@@ -62,63 +62,57 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
-import {useTranslate} from "~/vendor/gettext";
-import {computed} from "vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
-import {BackendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
-import {useStationData} from "~/functions/useStationQuery.ts";
-import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
+import { useStationProfileData } from "~/components/Stations/Profile/useProfileQuery.ts";
+import {
+    BackendAdapters,
+    StationPermissions,
+} from "~/entities/ApiInterfaces.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useStationData } from "~/functions/useStationQuery.ts";
+import { useUserAllowedForStation } from "~/functions/useUserallowedForStation.ts";
+import { useTranslate } from "~/vendor/gettext";
 import IconIcPlayArrow from "~icons/ic/baseline-play-arrow";
 import IconIcStop from "~icons/ic/baseline-stop";
 import IconIcUpdate from "~icons/ic/baseline-update";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const stationData = useStationData();
 const profileData = useStationProfileData();
 
-const {userAllowedForStation} = useUserAllowedForStation();
+const { userAllowedForStation } = useUserAllowedForStation();
 
-const {getStationApiUrl} = useApiRouter();
+const { getStationApiUrl } = useApiRouter();
 
-const backendRestartUri = getStationApiUrl('/backend/restart');
-const backendStartUri = getStationApiUrl('/backend/start');
-const backendStopUri = getStationApiUrl('/backend/stop');
+const backendRestartUri = getStationApiUrl("/backend/restart");
+const backendStartUri = getStationApiUrl("/backend/start");
+const backendStopUri = getStationApiUrl("/backend/stop");
 
 const backendName = computed(() => {
     if (stationData.value.backendType === BackendAdapters.Liquidsoap) {
-        return 'Liquidsoap';
+        return "Liquidsoap";
     }
-    return '';
+    return "";
 });
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
-const doRestart = useMakeApiCall(
-    backendRestartUri,
-    {
-        title: $gettext('Restart service?'),
-        confirmButtonText: $gettext('Restart')
-    }
-);
+const doRestart = useMakeApiCall(backendRestartUri, {
+    title: $gettext("Restart service?"),
+    confirmButtonText: $gettext("Restart"),
+});
 
-const doStart = useMakeApiCall(
-    backendStartUri,
-    {
-        title: $gettext('Start service?'),
-        confirmButtonText: $gettext('Start'),
-        confirmButtonClass: 'btn-success'
-    }
-);
+const doStart = useMakeApiCall(backendStartUri, {
+    title: $gettext("Start service?"),
+    confirmButtonText: $gettext("Start"),
+    confirmButtonClass: "btn-success",
+});
 
-const doStop = useMakeApiCall(
-    backendStopUri,
-    {
-        title: $gettext('Stop service?'),
-        confirmButtonText: $gettext('Stop'),
-        confirmButtonClass: 'btn-danger'
-    }
-);
+const doStop = useMakeApiCall(backendStopUri, {
+    title: $gettext("Stop service?"),
+    confirmButtonText: $gettext("Stop"),
+    confirmButtonClass: "btn-danger",
+});
 </script>

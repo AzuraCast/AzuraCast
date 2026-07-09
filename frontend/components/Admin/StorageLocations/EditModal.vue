@@ -19,30 +19,39 @@
 </template>
 
 <script setup lang="ts">
-import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, toRef, useTemplateRef} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import ModalForm from "~/components/Common/ModalForm.vue";
+import { storeToRefs } from "pinia";
+import { computed, toRef, useTemplateRef } from "vue";
 import BasicInfo from "~/components/Admin/StorageLocations/Form/BasicInfo.vue";
-import Sftp from "~/components/Admin/StorageLocations/Form/Sftp.vue";
-import S3 from "~/components/Admin/StorageLocations/Form/S3.vue";
 import Dropbox from "~/components/Admin/StorageLocations/Form/Dropbox.vue";
+import {
+    StorageLocationRecord,
+    useAdminStorageLocationsForm,
+} from "~/components/Admin/StorageLocations/Form/form.ts";
+import S3 from "~/components/Admin/StorageLocations/Form/S3.vue";
+import Sftp from "~/components/Admin/StorageLocations/Form/Sftp.vue";
+import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
-import {StorageLocationRecord, useAdminStorageLocationsForm} from "~/components/Admin/StorageLocations/Form/form.ts";
-import {storeToRefs} from "pinia";
+import { StorageLocationTypes } from "~/entities/ApiInterfaces.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
-import {StorageLocationTypes} from "~/entities/ApiInterfaces.ts";
+import {
+    BaseEditModalEmits,
+    BaseEditModalProps,
+    useBaseEditModal,
+} from "~/functions/useBaseEditModal";
+import { useTranslate } from "~/vendor/gettext";
 
-const props = defineProps<BaseEditModalProps & {
-    type: StorageLocationTypes
-}>();
+const props = defineProps<
+    BaseEditModalProps & {
+        type: StorageLocationTypes;
+    }
+>();
 const emit = defineEmits<BaseEditModalEmits>();
 
-const $modal = useTemplateRef('$modal');
+const $modal = useTemplateRef("$modal");
 
 const formStore = useAdminStorageLocationsForm();
-const {form, r$} = storeToRefs(formStore);
-const {$reset: resetForm} = formStore;
+const { form, r$ } = storeToRefs(formStore);
+const { $reset: resetForm } = formStore;
 
 const {
     loading,
@@ -52,48 +61,48 @@ const {
     create,
     edit,
     doSubmit,
-    close
+    close,
 } = useBaseEditModal<StorageLocationRecord>(
-    toRef(props, 'createUrl'),
+    toRef(props, "createUrl"),
     emit,
     $modal,
     resetForm,
     (data) => {
         r$.value.$reset({
-            toState: mergeExisting(r$.value.$value, data)
-        })
+            toState: mergeExisting(r$.value.$value, data),
+        });
     },
     async (isEditMode) => {
-        const {valid} = await r$.value.$validate();
+        const { valid } = await r$.value.$validate();
         if (!valid) {
-            return {valid};
+            return { valid };
         }
 
         if (isEditMode) {
-            return {valid, data: form.value};
+            return { valid, data: form.value };
         }
 
         return {
             valid,
             data: {
                 ...form.value,
-                type: props.type
-            }
+                type: props.type,
+            },
         };
-    }
+    },
 );
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const langTitle = computed(() => {
     return isEditMode.value
-        ? $gettext('Edit Storage Location')
-        : $gettext('Add Storage Location');
+        ? $gettext("Edit Storage Location")
+        : $gettext("Add Storage Location");
 });
 
 defineExpose({
     create,
     edit,
-    close
+    close,
 });
 </script>

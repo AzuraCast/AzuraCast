@@ -70,55 +70,63 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import RemoteEditModal from "~/components/Stations/Remotes/EditModal.vue";
-import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
-import {useTranslate} from "~/vendor/gettext";
-import {useTemplateRef} from "vue";
-import showFormatAndBitrate from "~/functions/showFormatAndBitrate";
-import useHasEditModal from "~/functions/useHasEditModal";
-import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-import CardPage from "~/components/Common/CardPage.vue";
+import { useTemplateRef } from "vue";
 import AddButton from "~/components/Common/AddButton.vue";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
-import {HasLinks, StationRemote} from "~/entities/ApiInterfaces.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import CardPage from "~/components/Common/CardPage.vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import RemoteEditModal from "~/components/Stations/Remotes/EditModal.vue";
+import { HasLinks, StationRemote } from "~/entities/ApiInterfaces.ts";
+import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import showFormatAndBitrate from "~/functions/showFormatAndBitrate";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import useHasEditModal from "~/functions/useHasEditModal";
+import { useMayNeedRestart } from "~/functions/useMayNeedRestart";
+import { useTranslate } from "~/vendor/gettext";
 
-const {getStationApiUrl} = useApiRouter();
-const listUrl = getStationApiUrl('/remotes');
+const { getStationApiUrl } = useApiRouter();
+const listUrl = getStationApiUrl("/remotes");
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 type Row = Required<StationRemote & HasLinks>;
 
 const fields: DataTableField<Row>[] = [
-    {key: 'display_name', isRowHeader: true, label: $gettext('Name'), sortable: true},
-    {key: 'enable_autodj', label: $gettext('AutoDJ'), sortable: true},
-    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+    {
+        key: "display_name",
+        isRowHeader: true,
+        label: $gettext("Name"),
+        sortable: true,
+    },
+    { key: "enable_autodj", label: $gettext("AutoDJ"), sortable: true },
+    {
+        key: "actions",
+        label: $gettext("Actions"),
+        sortable: false,
+        class: "shrink",
+    },
 ];
 
 const listItemProvider = useApiItemProvider<Row>(
     listUrl,
-    queryKeyWithStation([
-        QueryKeys.StationRemotes
-    ])
+    queryKeyWithStation([QueryKeys.StationRemotes]),
 );
 
 const relist = () => {
     void listItemProvider.refresh();
 };
 
-const $editModal = useTemplateRef('$editModal');
-const {doCreate, doEdit} = useHasEditModal($editModal);
+const $editModal = useTemplateRef("$editModal");
+const { doCreate, doEdit } = useHasEditModal($editModal);
 
-const {mayNeedRestart} = useMayNeedRestart();
+const { mayNeedRestart } = useMayNeedRestart();
 
-const {doDelete} = useConfirmAndDelete(
-    $gettext('Delete Remote Relay?'),
+const { doDelete } = useConfirmAndDelete(
+    $gettext("Delete Remote Relay?"),
     () => {
         mayNeedRestart();
         relist();
-    }
+    },
 );
 </script>

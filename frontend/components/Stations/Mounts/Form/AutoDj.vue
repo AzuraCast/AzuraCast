@@ -48,54 +48,54 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {computed} from "vue";
-import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import Tab from "~/components/Common/Tab.vue";
+import { toRefs } from "@vueuse/core";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
-import {FrontendAdapters, StreamFormats} from "~/entities/ApiInterfaces.ts";
+import Tab from "~/components/Common/Tab.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {storeToRefs} from "pinia";
-import {useStationsMountsForm} from "~/components/Stations/Mounts/Form/form.ts";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {useStationData} from "~/functions/useStationQuery.ts";
-import {toRefs} from "@vueuse/core";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import { useStationsMountsForm } from "~/components/Stations/Mounts/Form/form.ts";
+import { FrontendAdapters, StreamFormats } from "~/entities/ApiInterfaces.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
+import { useStationData } from "~/functions/useStationQuery.ts";
 
 defineProps<{
-    stationFrontendType: FrontendAdapters
+    stationFrontendType: FrontendAdapters;
 }>();
 
 const stationData = useStationData();
-const {maxBitrate} = toRefs(stationData);
+const { maxBitrate } = toRefs(stationData);
 
-const {r$, form} = storeToRefs(useStationsMountsForm());
+const { r$, form } = storeToRefs(useStationsMountsForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.autoDjTab));
 
 const formatOptions = [
     {
         value: StreamFormats.Mp3,
-        text: 'MP3'
+        text: "MP3",
     },
     {
         value: StreamFormats.Ogg,
-        text: 'OGG Vorbis'
+        text: "OGG Vorbis",
     },
     {
         value: StreamFormats.Opus,
-        text: 'OGG Opus'
+        text: "OGG Opus",
     },
     {
         value: StreamFormats.Aac,
-        text: 'AAC+ (MPEG4 HE-AAC v2)'
+        text: "AAC+ (MPEG4 HE-AAC v2)",
     },
     {
         value: StreamFormats.Flac,
-        text: 'FLAC (OGG FLAC)'
-    }
+        text: "FLAC (OGG FLAC)",
+    },
 ];
 
 const formatSupportsBitrateOptions = computed(() => {
-    return (form.value.autodj_format !== StreamFormats.Flac);
+    return form.value.autodj_format !== StreamFormats.Flac;
 });
 </script>

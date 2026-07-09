@@ -105,56 +105,60 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
+import { useAdminSettingsForm } from "~/components/Admin/Settings/form.ts";
+import Tab from "~/components/Common/Tab.vue";
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {useTranslate} from "~/vendor/gettext";
-import {computed} from "vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import Tab from "~/components/Common/Tab.vue";
-import {useAdminSettingsForm} from "~/components/Admin/Settings/form.ts";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {storeToRefs} from "pinia";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
+import { useTranslate } from "~/vendor/gettext";
 
-const {r$} = storeToRefs(useAdminSettingsForm());
-const tabClass = useFormTabClass(computed(() => r$.value.$groups.securityPrivacyTab));
+const { r$ } = storeToRefs(useAdminSettingsForm());
+const tabClass = useFormTabClass(
+    computed(() => r$.value.$groups.securityPrivacyTab),
+);
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const analyticsOptions = computed(() => {
     return [
         {
-            value: 'all',
-            text: $gettext('Full'),
-            description: $gettext('Collect aggregate listener statistics and IP-based listener statistics')
+            value: "all",
+            text: $gettext("Full"),
+            description: $gettext(
+                "Collect aggregate listener statistics and IP-based listener statistics",
+            ),
         },
         {
-            value: 'no_ip',
-            text: $gettext('Limited'),
-            description: $gettext('Only collect aggregate listener statistics')
+            value: "no_ip",
+            text: $gettext("Limited"),
+            description: $gettext("Only collect aggregate listener statistics"),
         },
         {
-            value: 'none',
-            text: $gettext('None'),
-            description: $gettext('Do not collect any listener analytics')
-        }
-    ]
+            value: "none",
+            text: $gettext("None"),
+            description: $gettext("Do not collect any listener analytics"),
+        },
+    ];
 });
 
 const ipSourceOptions = computed(() => {
     return [
         {
-            value: 'local',
-            text: $gettext('Local IP (Default)')
+            value: "local",
+            text: $gettext("Local IP (Default)"),
         },
         {
-            value: 'cloudflare',
-            text: $gettext('CloudFlare (CF-Connecting-IP)')
+            value: "cloudflare",
+            text: $gettext("CloudFlare (CF-Connecting-IP)"),
         },
         {
-            value: 'xff',
-            text: $gettext('Reverse Proxy (X-Forwarded-For)')
-        }
-    ]
+            value: "xff",
+            text: $gettext("Reverse Proxy (X-Forwarded-For)"),
+        },
+    ];
 });
 </script>

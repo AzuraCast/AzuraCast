@@ -44,19 +44,19 @@
 
 <script setup lang="ts">
 import AdminStationsForm from "~/components/Admin/Stations/StationForm.vue";
-import SetupStep from "~/components/Setup/SetupStep.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
-import {ApiAdminVueStationsFormProps} from "~/entities/ApiInterfaces.ts";
+import SetupStep from "~/components/Setup/SetupStep.vue";
+import { ApiAdminVueStationsFormProps } from "~/entities/ApiInterfaces.ts";
 
 interface SetupStationProps {
-    formProps: ApiAdminVueStationsFormProps,
-    createUrl: string,
-    continueUrl: string,
+    formProps: ApiAdminVueStationsFormProps;
+    createUrl: string;
+    continueUrl: string;
 }
 
 const props = defineProps<SetupStationProps>();
 
 const onSubmitted = () => {
     window.location.href = props.continueUrl;
-}
+};
 </script>

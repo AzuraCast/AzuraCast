@@ -8,26 +8,26 @@
 </template>
 
 <script setup lang="ts">
-import useNowPlaying from "~/functions/useNowPlaying";
-import {computed, toRef} from "vue";
+import { computed, toRef } from "vue";
 import SongHistory from "~/components/Public/FullPlayer/SongHistory.vue";
-import {ApiNowPlayingVueProps} from "~/entities/ApiInterfaces.ts";
+import { ApiNowPlayingVueProps } from "~/entities/ApiInterfaces.ts";
+import useNowPlaying from "~/functions/useNowPlaying";
 
 defineOptions({
-    inheritAttrs: false
+    inheritAttrs: false,
 });
 
 const props = withDefaults(
     defineProps<{
-        nowPlayingProps: ApiNowPlayingVueProps,
-        showAlbumArt?: boolean
+        nowPlayingProps: ApiNowPlayingVueProps;
+        showAlbumArt?: boolean;
     }>(),
     {
-        showAlbumArt: true
-    }
+        showAlbumArt: true,
+    },
 );
 
-const {np} = useNowPlaying(toRef(props, 'nowPlayingProps'));
+const { np } = useNowPlaying(toRef(props, "nowPlayingProps"));
 
 const history = computed(() => {
     return np.value.song_history ?? [];

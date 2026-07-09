@@ -72,31 +72,31 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from "vue";
 import FlowUpload from "~/components/Common/FlowUpload.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
-import {onMounted, ref} from "vue";
-import {useAxios} from "~/vendor/axios";
-import FormMarkup from "~/components/Form/FormMarkup.vue";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
 import FormGroup from "~/components/Form/FormGroup.vue";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {ApiUploadedRecordStatus} from "~/entities/ApiInterfaces.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
+import { ApiUploadedRecordStatus } from "~/entities/ApiInterfaces.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useAxios } from "~/vendor/axios";
 
-const {getStationApiUrl} = useApiRouter();
-const apiUrl = getStationApiUrl('/fallback');
+const { getStationApiUrl } = useApiRouter();
+const apiUrl = getStationApiUrl("/fallback");
 
 const downloadUrl = ref<string | null>(null);
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 const relist = async () => {
-    const {data} = await axios.get<ApiUploadedRecordStatus>(apiUrl.value);
+    const { data } = await axios.get<ApiUploadedRecordStatus>(apiUrl.value);
     downloadUrl.value = data.url;
 };
 
 onMounted(relist);
 
-const {notifySuccess} = useNotify();
+const { notifySuccess } = useNotify();
 
 const deleteFallback = async () => {
     await axios.delete(apiUrl.value);

@@ -5,36 +5,33 @@
 </template>
 
 <script setup lang="ts">
-import {computed} from "vue";
-import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
-import {useAxios} from "~/vendor/axios.ts";
-import {useQuery} from "@tanstack/vue-query";
-import {useRoute} from "vue-router";
+import { useQuery } from "@tanstack/vue-query";
+import { computed } from "vue";
+import { useRoute } from "vue-router";
 import Loading from "~/components/Common/Loading.vue";
 import PodcastEpisodes from "~/components/Stations/PodcastEpisodes.vue";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import { ApiPodcast } from "~/entities/ApiInterfaces.ts";
+import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useAxios } from "~/vendor/axios.ts";
 
-const {params} = useRoute();
+const { params } = useRoute();
 const podcastId = computed(() => params.podcast_id as string);
 
-const {getStationApiUrl} = useApiRouter();
-const podcastUrl = getStationApiUrl(computed(() => `/podcast/${podcastId.value}`));
+const { getStationApiUrl } = useApiRouter();
+const podcastUrl = getStationApiUrl(
+    computed(() => `/podcast/${podcastId.value}`),
+);
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
-type Row = Required<ApiPodcast>
+type Row = Required<ApiPodcast>;
 
-const {data: podcast, isLoading} = useQuery<Row>({
-    queryKey: queryKeyWithStation(
-        [
-            QueryKeys.StationPodcasts,
-            podcastId
-        ]
-    ),
-    queryFn: async ({signal}) => {
-        const {data} = await axios.get<Row>(podcastUrl.value, {signal});
+const { data: podcast, isLoading } = useQuery<Row>({
+    queryKey: queryKeyWithStation([QueryKeys.StationPodcasts, podcastId]),
+    queryFn: async ({ signal }) => {
+        const { data } = await axios.get<Row>(podcastUrl.value, { signal });
         return data;
-    }
+    },
 });
 </script>

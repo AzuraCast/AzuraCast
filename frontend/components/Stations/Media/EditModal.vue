@@ -37,47 +37,50 @@
 </template>
 
 <script setup lang="ts">
-import {forEach, map} from "es-toolkit/compat";
-import MediaFormBasicInfo from "~/components/Stations/Media/Form/BasicInfo.vue";
-import MediaFormAlbumArt from "~/components/Stations/Media/Form/AlbumArt.vue";
-import MediaFormCustomFields from "~/components/Stations/Media/Form/CustomFields.vue";
+import { provideLocal } from "@vueuse/core";
+import { forEach, map } from "es-toolkit/compat";
+import { storeToRefs } from "pinia";
+import { toRef, useTemplateRef } from "vue";
+import ModalForm from "~/components/Common/ModalForm.vue";
+import Tab from "~/components/Common/Tab.vue";
+import Tabs from "~/components/Common/Tabs.vue";
 import MediaFormAdvancedSettings from "~/components/Stations/Media/Form/AdvancedSettings.vue";
+import MediaFormAlbumArt from "~/components/Stations/Media/Form/AlbumArt.vue";
+import MediaFormBasicInfo from "~/components/Stations/Media/Form/BasicInfo.vue";
+import MediaFormCustomFields from "~/components/Stations/Media/Form/CustomFields.vue";
+import {
+    customFieldsKey,
+    useStationsMediaForm,
+} from "~/components/Stations/Media/Form/form.ts";
 import MediaFormPlaylists from "~/components/Stations/Media/Form/Playlists.vue";
 import MediaFormWaveformEditor from "~/components/Stations/Media/Form/WaveformEditor.vue";
-import ModalForm from "~/components/Common/ModalForm.vue";
-import {toRef, useTemplateRef} from "vue";
-import Tabs from "~/components/Common/Tabs.vue";
-import Tab from "~/components/Common/Tab.vue";
-import {BaseEditModalEmits, useBaseEditModal} from "~/functions/useBaseEditModal.ts";
+import { MediaInitialPlaylist } from "~/components/Stations/Media.vue";
+import { CustomField } from "~/entities/ApiInterfaces.ts";
+import {
+    MediaHttpResponse,
+    StationMediaRecord,
+} from "~/entities/StationMedia.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
-import {CustomField} from "~/entities/ApiInterfaces.ts";
-import {MediaInitialPlaylist} from "~/components/Stations/Media.vue";
-import {storeToRefs} from "pinia";
-import {customFieldsKey, useStationsMediaForm} from "~/components/Stations/Media/Form/form.ts";
-import {provideLocal} from "@vueuse/core";
-import {MediaHttpResponse, StationMediaRecord} from "~/entities/StationMedia.ts";
+import {
+    BaseEditModalEmits,
+    useBaseEditModal,
+} from "~/functions/useBaseEditModal.ts";
 
 const props = defineProps<{
-    customFields: Required<CustomField>[],
-    playlists: MediaInitialPlaylist[]
+    customFields: Required<CustomField>[];
+    playlists: MediaInitialPlaylist[];
 }>();
 const emit = defineEmits<BaseEditModalEmits>();
 
-const $modal = useTemplateRef('$modal');
+const $modal = useTemplateRef("$modal");
 
-provideLocal(customFieldsKey, toRef(props, 'customFields'));
+provideLocal(customFieldsKey, toRef(props, "customFields"));
 
 const formStore = useStationsMediaForm();
-const {form, record, r$} = storeToRefs(formStore);
-const {$reset: resetForm} = formStore;
+const { form, record, r$ } = storeToRefs(formStore);
+const { $reset: resetForm } = formStore;
 
-const {
-    loading,
-    error,
-    clearContents,
-    edit,
-    doSubmit
-} = useBaseEditModal<
+const { loading, error, clearContents, edit, doSubmit } = useBaseEditModal<
     StationMediaRecord,
     MediaHttpResponse
 >(
@@ -89,24 +92,25 @@ const {
         record.value = mergeExisting(record.value, data);
 
         const newForm = mergeExisting(r$.value.$value, data);
-        newForm.playlists = map(data.playlists, 'id');
+        newForm.playlists = map(data.playlists, "id");
         newForm.custom_fields = {};
 
         forEach(props.customFields.slice(), (field) => {
-            newForm.custom_fields[field.short_name] =
-                (data.custom_fields && data.custom_fields[field.short_name])
-                    ? data.custom_fields[field.short_name]
-                    : null;
+            newForm.custom_fields[field.short_name] = data.custom_fields?.[
+                field.short_name
+            ]
+                ? data.custom_fields[field.short_name]
+                : null;
         });
 
         r$.value.$reset({
-            toState: newForm
-        })
+            toState: newForm,
+        });
     },
     async () => {
-        const {valid} = await r$.value.$validate();
-        return {valid, data: form.value};
-    }
+        const { valid } = await r$.value.$validate();
+        return { valid, data: form.value };
+    },
 );
 
 const open = (editRecordUrl: string) => {
@@ -115,9 +119,9 @@ const open = (editRecordUrl: string) => {
 
 const onClose = () => {
     clearContents();
-}
+};
 
 defineExpose({
-    open
+    open,
 });
 </script>

@@ -26,9 +26,9 @@
 </template>
 
 <script setup lang="ts">
-import {ChartAltData} from "~/functions/useChart.ts";
+import { ChartAltData } from "~/functions/useChart.ts";
 
 defineProps<{
-    alt: ChartAltData[]
+    alt: ChartAltData[];
 }>();
 </script>

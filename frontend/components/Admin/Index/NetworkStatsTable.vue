@@ -29,32 +29,31 @@
 </template>
 
 <script setup lang="ts">
-import {get, omit} from "es-toolkit/compat";
-import {computed} from "vue";
+import { get, omit } from "es-toolkit/compat";
+import { computed } from "vue";
 import {
     ApiAdminServerStatsNetworkInterfaceReceived,
-    ApiAdminServerStatsNetworkInterfaceTransmitted
+    ApiAdminServerStatsNetworkInterfaceTransmitted,
 } from "~/entities/ApiInterfaces.ts";
 
-type StatsSection = ApiAdminServerStatsNetworkInterfaceReceived
-    | ApiAdminServerStatsNetworkInterfaceTransmitted
+type StatsSection =
+    | ApiAdminServerStatsNetworkInterfaceReceived
+    | ApiAdminServerStatsNetworkInterfaceTransmitted;
 
 const props = defineProps<{
-    row: StatsSection,
+    row: StatsSection;
 }>();
 
 const visibleData = computed(() => {
     return {
-        'speed': props.row.speed_readable,
-        ...omit(props.row, 'speed_readable', 'speed_bytes')
+        speed: props.row.speed_readable,
+        ...omit(props.row, "speed_readable", "speed_bytes"),
     };
 });
 
 const fields = computed<string[]>(() => Object.keys(visibleData.value));
 
 const data = computed(() => {
-    return [
-        visibleData.value
-    ];
+    return [visibleData.value];
 });
 </script>

@@ -48,51 +48,55 @@
     </loading>
 </template>
 <script setup lang="ts">
+import { useQuery } from "@tanstack/vue-query";
 import Avatar from "~/components/Common/Avatar.vue";
-import {useAxios} from "~/vendor/axios.ts";
-import {useQuery} from "@tanstack/vue-query";
-import {QueryKeys} from "~/entities/Queries.ts";
+import { QueryKeys } from "~/entities/Queries.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useAxios } from "~/vendor/axios.ts";
 import Loading from "../Common/Loading.vue";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const slots = defineSlots();
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
-const {getApiUrl} = useApiRouter();
-const userUrl = getApiUrl('/frontend/account/me');
+const { getApiUrl } = useApiRouter();
+const userUrl = getApiUrl("/frontend/account/me");
 
 type Row = {
-    name: string | null,
-    email: string,
+    name: string | null;
+    email: string;
     avatar: {
-        url_32: string,
-        url_64: string,
-        url_128: string,
-        service_name: string,
-        service_url: string
-    },
+        url_32: string;
+        url_64: string;
+        url_128: string;
+        service_name: string;
+        service_url: string;
+    };
     roles: {
-        id: number,
-        name: string
-    }[]
-}
+        id: number;
+        name: string;
+    }[];
+};
 
-const {data: user, isLoading, refetch} = useQuery<Row>({
-    queryKey: [QueryKeys.AccountIndex, 'profile'],
-    queryFn: async ({signal}) => {
-        const {data} = await axios.get<Row>(userUrl.value, {signal});
+const {
+    data: user,
+    isLoading,
+    refetch,
+} = useQuery<Row>({
+    queryKey: [QueryKeys.AccountIndex, "profile"],
+    queryFn: async ({ signal }) => {
+        const { data } = await axios.get<Row>(userUrl.value, { signal });
         return data;
     },
     placeholderData: () => ({
         name: null,
-        email: '',
+        email: "",
         avatar: {
-            url_32: '',
-            url_64: '',
-            url_128: '',
-            service_name: '',
-            service_url: ''
+            url_32: "",
+            url_64: "",
+            url_128: "",
+            service_name: "",
+            service_url: "",
         },
         roles: [],
     }),
@@ -103,6 +107,6 @@ const reload = () => {
 };
 
 defineExpose({
-    reload
+    reload,
 });
 </script>

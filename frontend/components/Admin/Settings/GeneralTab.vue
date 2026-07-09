@@ -72,49 +72,49 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
+import { useAdminSettingsForm } from "~/components/Admin/Settings/form.ts";
+import RadioWithCustomNumber from "~/components/Common/RadioWithCustomNumber.vue";
+import Tab from "~/components/Common/Tab.vue";
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {computed} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import Tab from "~/components/Common/Tab.vue";
-import RadioWithCustomNumber from "~/components/Common/RadioWithCustomNumber.vue";
-import {useAdminSettingsForm} from "~/components/Admin/Settings/form.ts";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {storeToRefs} from "pinia";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
+import { useTranslate } from "~/vendor/gettext";
 
-const {r$} = storeToRefs(useAdminSettingsForm());
+const { r$ } = storeToRefs(useAdminSettingsForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.generalTab));
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const historyKeepDaysOptions = computed(() => {
     return [
         {
             value: 14,
-            text: $gettext('Last 14 Days')
+            text: $gettext("Last 14 Days"),
         },
         {
             value: 30,
-            text: $gettext('Last 30 Days')
+            text: $gettext("Last 30 Days"),
         },
         {
             value: 60,
-            text: $gettext('Last 60 Days')
+            text: $gettext("Last 60 Days"),
         },
         {
             value: 365,
-            text: $gettext('Last Year')
+            text: $gettext("Last Year"),
         },
         {
             value: 730,
-            text: $gettext('Last 2 Years')
+            text: $gettext("Last 2 Years"),
         },
         {
             value: 0,
-            text: $gettext('Indefinitely')
+            text: $gettext("Indefinitely"),
         },
-    ]
+    ];
 });
 </script>

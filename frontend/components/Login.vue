@@ -140,37 +140,41 @@
 </template>
 
 <script setup lang="ts">
-import useWebAuthn, {ProcessedValidateResponse} from "~/functions/useWebAuthn.ts";
-import {useAxios} from "~/vendor/axios.ts";
-import {nextTick, onMounted, ref, useTemplateRef} from "vue";
+import { nextTick, onMounted, ref, useTemplateRef } from "vue";
+import useWebAuthn, {
+    ProcessedValidateResponse,
+} from "~/functions/useWebAuthn.ts";
+import { useAxios } from "~/vendor/axios.ts";
 import IconIcEmail from "~icons/ic/baseline-email";
 import IconIcVpnKey from "~icons/ic/baseline-vpn-key";
 
 const props = defineProps<{
-    hideProductName: boolean,
-    instanceName: string,
-    forgotPasswordUrl: string,
-    webAuthnUrl: string,
+    hideProductName: boolean;
+    instanceName: string;
+    forgotPasswordUrl: string;
+    webAuthnUrl: string;
 }>();
 
 const {
     isSupported: passkeySupported,
     isConditionalSupported: passkeyConditionalSupported,
-    doValidate
+    doValidate,
 } = useWebAuthn();
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
-const $webAuthnForm = useTemplateRef('$webAuthnForm');
+const $webAuthnForm = useTemplateRef("$webAuthnForm");
 
 const validateArgs = ref<object | null>(null);
 const validateData = ref<string | null>(null);
 
-const handleValidationResponse = async (validateResp: ProcessedValidateResponse) => {
+const handleValidationResponse = async (
+    validateResp: ProcessedValidateResponse,
+) => {
     validateData.value = JSON.stringify(validateResp);
     await nextTick();
     $webAuthnForm.value?.submit();
-}
+};
 
 const logInWithPasskey = async () => {
     if (validateArgs.value === null) {

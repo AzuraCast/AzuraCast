@@ -22,30 +22,30 @@
 </template>
 
 <script setup lang="ts">
-import Tab from "~/components/Common/Tab.vue";
+import { Calendar, EventClickArg } from "@fullcalendar/core";
+import { EventImpl } from "@fullcalendar/core/internal";
+import { toRefs } from "@vueuse/core";
+import { useTemplateRef } from "vue";
 import Schedule from "~/components/Common/ScheduleView.vue";
-import {Calendar, EventClickArg} from "@fullcalendar/core";
-import {EventImpl} from "@fullcalendar/core/internal";
-import {useTemplateRef} from "vue";
-import {useStationData} from "~/functions/useStationQuery.ts";
-import {toRefs} from "@vueuse/core";
+import Tab from "~/components/Common/Tab.vue";
+import { useStationData } from "~/functions/useStationQuery.ts";
 
 defineProps<{
-    scheduleUrl: string
+    scheduleUrl: string;
 }>();
 
 const emit = defineEmits<{
-    click: [event: EventImpl]
+    click: [event: EventImpl];
 }>();
 
 const stationData = useStationData();
-const {timezone} = toRefs(stationData);
+const { timezone } = toRefs(stationData);
 
 const onClick = (arg: EventClickArg) => {
-    emit('click', arg.event);
-}
+    emit("click", arg.event);
+};
 
-const $schedule = useTemplateRef('$schedule');
+const $schedule = useTemplateRef("$schedule");
 
 const getCalendarApi = (): Calendar | undefined => {
     return $schedule.value?.getCalendarApi();
@@ -55,6 +55,6 @@ const refresh = () => getCalendarApi()?.refetchEvents();
 
 defineExpose({
     getCalendarApi,
-    refresh
+    refresh,
 });
 </script>

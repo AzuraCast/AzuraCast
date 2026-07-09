@@ -12,27 +12,27 @@
 </template>
 
 <script setup lang="ts">
-import {computed} from "vue";
-import {useTranslate} from "~/vendor/gettext";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
 import getUrlWithoutQuery from "~/functions/getUrlWithoutQuery.ts";
 import {
     blankStreamDescriptor,
     FullStreamDescriptor,
     StreamDescriptor,
-    usePlayerStore
+    usePlayerStore,
 } from "~/functions/usePlayerStore.ts";
-import {storeToRefs} from "pinia";
+import { useTranslate } from "~/vendor/gettext";
 import IconIcPlayCircle from "~icons/ic/baseline-play-circle";
 import IconIcStopCircle from "~icons/ic/baseline-stop-circle";
 
 const props = defineProps<{
-    stream: StreamDescriptor,
-    iconClass?: string
+    stream: StreamDescriptor;
+    iconClass?: string;
 }>();
 
 const playerStore = usePlayerStore();
-const {isPlaying, current} = storeToRefs(playerStore);
-const {toggle: storeToggle} = playerStore;
+const { isPlaying, current } = storeToRefs(playerStore);
+const { toggle: storeToggle } = playerStore;
 
 const isThisPlaying = computed(() => {
     if (!isPlaying.value) {
@@ -53,12 +53,10 @@ const isThisPlaying = computed(() => {
     return playingUrl === thisUrl;
 });
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const langTitle = computed(() => {
-    return isThisPlaying.value
-        ? $gettext('Stop')
-        : $gettext('Play');
+    return isThisPlaying.value ? $gettext("Stop") : $gettext("Play");
 });
 
 const toggle = () => {
@@ -66,6 +64,6 @@ const toggle = () => {
 };
 
 defineExpose({
-    toggle
-})
+    toggle,
+});
 </script>

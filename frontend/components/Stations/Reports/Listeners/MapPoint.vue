@@ -5,28 +5,28 @@
 </template>
 
 <script setup lang="ts">
-import {onUnmounted, toRef, useTemplateRef, watch} from "vue";
-import {LatLngTuple, Map, marker, Popup} from "leaflet";
+import { LatLngTuple, Map as LeafletMap, marker, Popup } from "leaflet";
+import { onUnmounted, toRef, useTemplateRef, watch } from "vue";
 
 const props = defineProps<{
-    map: Map,
-    position: LatLngTuple
+    map: LeafletMap;
+    position: LatLngTuple;
 }>();
 
 const mapMarker = marker(props.position);
 
 watch(
-    toRef(props, 'map'),
+    toRef(props, "map"),
     (mapRef) => {
         if (mapRef !== null) {
             mapMarker.addTo(mapRef);
         }
     },
-    {immediate: true}
+    { immediate: true },
 );
 
 const popup = new Popup();
-const $content = useTemplateRef('$content');
+const $content = useTemplateRef("$content");
 
 watch(
     $content,
@@ -36,7 +36,7 @@ watch(
             mapMarker.bindPopup(popup);
         }
     },
-    {immediate: true}
+    { immediate: true },
 );
 
 onUnmounted(() => {

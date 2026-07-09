@@ -141,55 +141,52 @@
 </template>
 
 <script setup lang="ts">
-import FlowUpload from "~/components/Common/FlowUpload.vue";
-import {computed, onMounted, ref} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useAxios} from "~/vendor/axios";
-import Loading from "~/components/Common/Loading.vue";
+import { computed, onMounted, ref } from "vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
-import {ApiAdminRsasStatus} from "~/entities/ApiInterfaces.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import { useDialog } from "~/components/Common/Dialogs/useDialog.ts";
+import FlowUpload from "~/components/Common/FlowUpload.vue";
+import Loading from "~/components/Common/Loading.vue";
+import { ApiAdminRsasStatus } from "~/entities/ApiInterfaces.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
 
-const {getApiUrl} = useApiRouter();
-const apiUrl = getApiUrl('/admin/rsas');
-const licenseUrl = getApiUrl('/admin/rsas/license');
+const { getApiUrl } = useApiRouter();
+const apiUrl = getApiUrl("/admin/rsas");
+const licenseUrl = getApiUrl("/admin/rsas/license");
 
 type Row = ApiAdminRsasStatus;
 
 const isLoading = ref(true);
 const record = ref<Row>({
     version: null,
-    hasLicense: false
+    hasLicense: false,
 });
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const langInstalledVersion = computed(() => {
-    return $gettext(
-        'RSAS version "%{version}" is currently installed.',
-        {
-            version: record.value.version ?? 'N/A'
-        }
-    );
+    return $gettext('RSAS version "%{version}" is currently installed.', {
+        version: record.value.version ?? "N/A",
+    });
 });
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 const relist = async () => {
     isLoading.value = true;
 
-    const {data} = await axios.get<Row>(apiUrl.value);
+    const { data } = await axios.get<Row>(apiUrl.value);
     record.value = data;
     isLoading.value = false;
 };
 
-const {confirmDelete} = useDialog();
+const { confirmDelete } = useDialog();
 
 const doDelete = async () => {
-    const {value} = await confirmDelete({
-        title: $gettext('Remove RSAS installation?'),
-        confirmButtonText: $gettext('Uninstall')
+    const { value } = await confirmDelete({
+        title: $gettext("Remove RSAS installation?"),
+        confirmButtonText: $gettext("Uninstall"),
     });
 
     if (!value) {
@@ -202,9 +199,9 @@ const doDelete = async () => {
 };
 
 const doRemoveLicense = async () => {
-    const {value} = await confirmDelete({
-        title: $gettext('Remove RSAS license key?'),
-        confirmButtonText: $gettext('Remove License Key')
+    const { value } = await confirmDelete({
+        title: $gettext("Remove RSAS license key?"),
+        confirmButtonText: $gettext("Remove License Key"),
     });
 
     if (!value) {
@@ -212,7 +209,7 @@ const doRemoveLicense = async () => {
     }
 
     await axios.delete(licenseUrl.value);
-    
+
     await relist();
 };
 

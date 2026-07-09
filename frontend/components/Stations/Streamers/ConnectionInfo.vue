@@ -92,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import {ApiStationsVueStreamersProps} from "~/entities/ApiInterfaces.ts";
+import { ApiStationsVueStreamersProps } from "~/entities/ApiInterfaces.ts";
 
 defineProps<ApiStationsVueStreamersProps>();
 </script>

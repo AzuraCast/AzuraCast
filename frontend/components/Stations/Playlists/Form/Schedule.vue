@@ -38,14 +38,14 @@
 </template>
 
 <script setup lang="ts">
-import PlaylistsFormScheduleRow from "~/components/Stations/Playlists/Form/ScheduleRow.vue";
-import FormMarkup from "~/components/Form/FormMarkup.vue";
 import Tab from "~/components/Common/Tab.vue";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
+import PlaylistsFormScheduleRow from "~/components/Stations/Playlists/Form/ScheduleRow.vue";
 import IconIcAdd from "~icons/ic/baseline-add";
 
-const scheduleItems = defineModel<Array<any>>('scheduleItems', {
-    default: () => []
-})
+const scheduleItems = defineModel<Array<any>>("scheduleItems", {
+    default: () => [],
+});
 
 const add = () => {
     scheduleItems.value.push({
@@ -54,7 +54,7 @@ const add = () => {
         start_date: null,
         end_date: null,
         days: [],
-        loop_once: false
+        loop_once: false,
     });
 };
 

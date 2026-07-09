@@ -65,20 +65,20 @@
 </template>
 
 <script setup lang="ts">
-import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
+import { required } from "@regle/rules";
+import { nextTick, ref, useTemplateRef } from "vue";
 import AccountApiKeyNewKey from "~/components/Account/ApiKeyNewKey.vue";
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {nextTick, ref, useTemplateRef} from "vue";
-import {getErrorAsString, useAxios} from "~/vendor/axios";
+import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import Modal from "~/components/Common/Modal.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
-import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
-import {ApiAccountNewApiKey} from "~/entities/ApiInterfaces.ts";
-import {useAppRegle} from "~/vendor/regle.ts";
-import {required} from "@regle/rules";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { ApiAccountNewApiKey } from "~/entities/ApiInterfaces.ts";
+import { HasRelistEmit } from "~/functions/useBaseEditModal.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
+import { getErrorAsString, useAxios } from "~/vendor/axios";
+import { useAppRegle } from "~/vendor/regle.ts";
 
 const props = defineProps<{
-    createUrl: string,
+    createUrl: string;
 }>();
 
 const emit = defineEmits<HasRelistEmit>();
@@ -86,45 +86,45 @@ const emit = defineEmits<HasRelistEmit>();
 const error = ref<string | null>(null);
 const newKey = ref<string | null>(null);
 
-const {r$} = useAppRegle(
+const { r$ } = useAppRegle(
     {
-        comment: ''
+        comment: "",
     },
     {
-        comment: {required}
+        comment: { required },
     },
-    {}
+    {},
 );
 
 const clearContents = () => {
     r$.$reset({
-        toOriginalState: true
+        toOriginalState: true,
     });
 
     error.value = null;
     newKey.value = null;
 };
 
-const $modal = useTemplateRef('$modal');
-const {show, hide} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { show, hide } = useHasModal($modal);
 
 const create = () => {
     clearContents();
     show();
 };
 
-const $field = useTemplateRef('$field');
+const $field = useTemplateRef("$field");
 
 const onShown = () => {
     void nextTick(() => {
         $field.value?.focus();
-    })
+    });
 };
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 const doSubmit = async () => {
-    const {valid, data: postData} = await r$.$validate();
+    const { valid, data: postData } = await r$.$validate();
     if (!valid) {
         return;
     }
@@ -132,9 +132,9 @@ const doSubmit = async () => {
     error.value = null;
 
     try {
-        const {data} = await axios.post<ApiAccountNewApiKey>(
+        const { data } = await axios.post<ApiAccountNewApiKey>(
             props.createUrl,
-            postData
+            postData,
         );
 
         newKey.value = data.key;
@@ -142,10 +142,10 @@ const doSubmit = async () => {
         error.value = getErrorAsString(e);
     }
 
-    emit('relist');
+    emit("relist");
 };
 
 defineExpose({
-    create
+    create,
 });
 </script>

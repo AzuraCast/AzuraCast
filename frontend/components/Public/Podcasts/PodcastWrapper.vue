@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import Loading from "~/components/Common/Loading.vue";
 import Podcast from "~/components/Public/Podcasts/Podcast.vue";
-import {usePodcastQuery} from "~/components/Public/Podcasts/usePodcastQuery.ts";
+import { usePodcastQuery } from "~/components/Public/Podcasts/usePodcastQuery.ts";
 
-const {data, isLoading} = usePodcastQuery();
+const { data, isLoading } = usePodcastQuery();
 </script>

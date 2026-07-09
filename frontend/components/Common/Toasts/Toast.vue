@@ -48,24 +48,21 @@
 </template>
 
 <script setup lang="ts">
-import {ToastProps, useNotify} from "./useNotify.ts";
-import {onMounted, useTemplateRef} from "vue";
-import {Toast as BSToast} from "bootstrap";
-import {FlashLevels} from "~/entities/ApiInterfaces.ts";
+import { Toast as BSToast } from "bootstrap";
+import { onMounted, useTemplateRef } from "vue";
+import { FlashLevels } from "~/entities/ApiInterfaces.ts";
+import { ToastProps, useNotify } from "./useNotify.ts";
 
-const props = withDefaults(
-    defineProps<ToastProps>(),
-    {
-        variant: FlashLevels.Info,
-    }
-);
+const props = withDefaults(defineProps<ToastProps>(), {
+    variant: FlashLevels.Info,
+});
 
-const {removeToast} = useNotify();
+const { removeToast } = useNotify();
 
-const $toast = useTemplateRef('$toast');
+const $toast = useTemplateRef("$toast");
 
 const eventListeners = {
-    ['hidden.bs.toast']: () => {
+    "hidden.bs.toast": () => {
         removeToast(props.id);
     },
 };

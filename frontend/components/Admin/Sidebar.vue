@@ -14,8 +14,8 @@
 </template>
 
 <script setup lang="ts">
+import { useAdminMenu } from "~/components/Admin/menu";
 import SidebarMenu from "~/components/Common/SidebarMenu.vue";
-import {useAdminMenu} from "~/components/Admin/menu";
 
 const menuItems = useAdminMenu();
 </script>

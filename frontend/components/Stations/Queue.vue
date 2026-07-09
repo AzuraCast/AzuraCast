@@ -71,80 +71,90 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import QueueLogsModal from "~/components/Stations/Queue/LogsModal.vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useTemplateRef} from "vue";
-import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useAxios} from "~/vendor/axios";
+import { useTemplateRef } from "vue";
 import CardPage from "~/components/Common/CardPage.vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import { useDialog } from "~/components/Common/Dialogs/useDialog.ts";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import QueueLogsModal from "~/components/Stations/Queue/LogsModal.vue";
+import {
+    ApiNowPlayingStationQueue,
+    ApiStationQueueDetailed,
+    ApiStatus,
+} from "~/entities/ApiInterfaces.ts";
+import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
-import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
-import {ApiNowPlayingStationQueue, ApiStationQueueDetailed, ApiStatus} from "~/entities/ApiInterfaces.ts";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
 import IconIcRemove from "~icons/ic/baseline-remove";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
 
-const {getStationApiUrl} = useApiRouter();
-const listUrl = getStationApiUrl('/queue');
-const clearUrl = getStationApiUrl('/queue/clear');
+const { getStationApiUrl } = useApiRouter();
+const listUrl = getStationApiUrl("/queue");
+const clearUrl = getStationApiUrl("/queue/clear");
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 type Row = Required<ApiNowPlayingStationQueue & ApiStationQueueDetailed>;
 
 const fields: DataTableField<Row>[] = [
-    {key: 'actions', label: $gettext('Actions'), sortable: false},
-    {key: 'song_title', isRowHeader: true, label: $gettext('Song Title'), sortable: false},
-    {key: 'played_at', label: $gettext('Expected to Play at'), sortable: false},
-    {key: 'source', label: $gettext('Source'), sortable: false}
+    { key: "actions", label: $gettext("Actions"), sortable: false },
+    {
+        key: "song_title",
+        isRowHeader: true,
+        label: $gettext("Song Title"),
+        sortable: false,
+    },
+    {
+        key: "played_at",
+        label: $gettext("Expected to Play at"),
+        sortable: false,
+    },
+    { key: "source", label: $gettext("Source"), sortable: false },
 ];
 
 const listItemProvider = useApiItemProvider(
     listUrl,
     queryKeyWithStation([QueryKeys.StationQueue]),
     {
-        refetchInterval: 30000
-    }
+        refetchInterval: 30000,
+    },
 );
 
 const relist = () => {
     void listItemProvider.refresh();
 };
 
-const {
-    formatTimestampAsTime,
-    formatTimestampAsRelative
-} = useStationDateTimeFormatter();
+const { formatTimestampAsTime, formatTimestampAsRelative } =
+    useStationDateTimeFormatter();
 
-const $logsModal = useTemplateRef('$logsModal');
+const $logsModal = useTemplateRef("$logsModal");
 
 const doShowLogs = (logs: string[]) => {
     $logsModal.value?.show(logs);
 };
 
-const {doDelete} = useConfirmAndDelete(
-    $gettext('Delete Queue Item?'),
-    () => relist()
+const { doDelete } = useConfirmAndDelete($gettext("Delete Queue Item?"), () =>
+    relist(),
 );
 
-const {confirmDelete} = useDialog();
-const {notifySuccess} = useNotify();
-const {axios} = useAxios();
+const { confirmDelete } = useDialog();
+const { notifySuccess } = useNotify();
+const { axios } = useAxios();
 
 const doClear = async () => {
-    const {value} = await confirmDelete({
-        title: $gettext('Clear Upcoming Song Queue?'),
-        confirmButtonText: $gettext('Clear'),
+    const { value } = await confirmDelete({
+        title: $gettext("Clear Upcoming Song Queue?"),
+        confirmButtonText: $gettext("Clear"),
     });
 
     if (value) {
-        const {data} = await axios.post<ApiStatus>(clearUrl.value);
+        const { data } = await axios.post<ApiStatus>(clearUrl.value);
 
         notifySuccess(data.message);
         relist();
     }
-}
+};
 </script>

@@ -14,13 +14,10 @@
 </template>
 
 <script setup lang="ts">
-import Sidebar from "~/components/Stations/Sidebar.vue";
-import {useStationQuery} from "~/functions/useStationQuery.ts";
 import Loading from "~/components/Common/Loading.vue";
 import DashboardWithSidebar from "~/components/Layout/DashboardWithSidebar.vue";
+import Sidebar from "~/components/Stations/Sidebar.vue";
+import { useStationQuery } from "~/functions/useStationQuery.ts";
 
-const {
-    isLoading,
-    isPlaceholderData
-} = useStationQuery();
+const { isLoading, isPlaceholderData } = useStationQuery();
 </script>

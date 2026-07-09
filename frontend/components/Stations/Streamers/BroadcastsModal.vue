@@ -75,95 +75,91 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import formatFileSize from "~/functions/formatFileSize";
-import InlinePlayer from "~/components/InlinePlayer.vue";
+import { ref, shallowRef, useTemplateRef } from "vue";
 import PlayButton from "~/components/Common/Audio/PlayButton.vue";
-import {ref, shallowRef, useTemplateRef} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useAxios} from "~/vendor/axios";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import { useDialog } from "~/components/Common/Dialogs/useDialog.ts";
 import Modal from "~/components/Common/Modal.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
-import {StreamChannel, usePlayerStore} from "~/functions/usePlayerStore.ts";
-import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import InlinePlayer from "~/components/InlinePlayer.vue";
 import BroadcastsModalToolbar from "~/components/Stations/Streamers/BroadcastsModalToolbar.vue";
-import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
-import {ApiStationStreamerBroadcast} from "~/entities/ApiInterfaces.ts";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import { ApiStationStreamerBroadcast } from "~/entities/ApiInterfaces.ts";
+import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import formatFileSize from "~/functions/formatFileSize";
+import { useHasModal } from "~/functions/useHasModal.ts";
+import { StreamChannel, usePlayerStore } from "~/functions/usePlayerStore.ts";
+import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
 import IconIcCloudDownload from "~icons/ic/baseline-cloud-download";
 
 const streamerId = ref<number | null>(null);
 const listUrl = ref<string | null>(null);
 const batchUrl = ref<string | null>(null);
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
-const {formatIsoAsDateTime} = useStationDateTimeFormatter();
+const { formatIsoAsDateTime } = useStationDateTimeFormatter();
 
 type Row = Required<ApiStationStreamerBroadcast>;
 
 const fields: DataTableField<Row>[] = [
     {
-        key: 'download',
-        label: ' ',
+        key: "download",
+        label: " ",
         sortable: false,
-        class: 'shrink pe-3'
+        class: "shrink pe-3",
     },
     {
-        key: 'timestampStart',
-        label: $gettext('Start Time'),
+        key: "timestampStart",
+        label: $gettext("Start Time"),
         sortable: false,
         formatter: (value) => formatIsoAsDateTime(value),
-        class: 'ps-3'
+        class: "ps-3",
     },
     {
-        key: 'timestampEnd',
-        label: $gettext('End Time'),
+        key: "timestampEnd",
+        label: $gettext("End Time"),
         sortable: false,
         formatter: (value) => {
             return value === null
-                ? $gettext('Live')
+                ? $gettext("Live")
                 : formatIsoAsDateTime(value);
-        }
+        },
     },
     {
-        key: 'size',
-        label: $gettext('Size'),
+        key: "size",
+        label: $gettext("Size"),
         sortable: false,
         formatter: (_value, _key, item) => {
             if (!item.recording?.size) {
-                return '';
+                return "";
             }
 
             return formatFileSize(item.recording.size);
-        }
+        },
     },
     {
-        key: 'actions',
-        label: $gettext('Actions'),
+        key: "actions",
+        label: $gettext("Actions"),
         sortable: false,
-        class: 'shrink'
-    }
+        class: "shrink",
+    },
 ];
 
 const listItemProvider = useApiItemProvider<Row>(
     listUrl,
-    queryKeyWithStation([
-        QueryKeys.StationStreamers,
-        'broadcasts',
-        streamerId
-    ])
+    queryKeyWithStation([QueryKeys.StationStreamers, "broadcasts", streamerId]),
 );
 
 const refresh = () => {
     void listItemProvider.refresh();
-}
+};
 
-const {confirmDelete} = useDialog();
-const {notifySuccess} = useNotify();
-const {axios} = useAxios();
+const { confirmDelete } = useDialog();
+const { notifySuccess } = useNotify();
+const { axios } = useAxios();
 
 const selectedItems = shallowRef<Row[]>([]);
 
@@ -172,24 +168,28 @@ const onRowSelected = (items: Row[]) => {
 };
 
 const doDelete = async (url: string) => {
-    const {value} = await confirmDelete({
-        title: $gettext('Delete Broadcast?'),
+    const { value } = await confirmDelete({
+        title: $gettext("Delete Broadcast?"),
     });
 
     if (!value) {
         return;
     }
 
-    const {data} = await axios.delete(url);
+    const { data } = await axios.delete(url);
 
     notifySuccess(data.message);
     refresh();
 };
 
-const $modal = useTemplateRef('$modal');
-const {show, hide} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { show, hide } = useHasModal($modal);
 
-const open = (newStreamerId: number, newListUrl: string, newBatchUrl: string) => {
+const open = (
+    newStreamerId: number,
+    newListUrl: string,
+    newBatchUrl: string,
+) => {
     streamerId.value = newStreamerId;
     listUrl.value = newListUrl;
     batchUrl.value = newBatchUrl;
@@ -197,7 +197,7 @@ const open = (newStreamerId: number, newListUrl: string, newBatchUrl: string) =>
     show();
 };
 
-const {stop} = usePlayerStore();
+const { stop } = usePlayerStore();
 
 const onHidden = () => {
     stop();
@@ -208,6 +208,6 @@ const onHidden = () => {
 };
 
 defineExpose({
-    open
+    open,
 });
 </script>

@@ -81,102 +81,99 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import {computed, ref, useTemplateRef} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useAxios} from "~/vendor/axios";
+import { useQuery } from "@tanstack/vue-query";
+import { computed, ref, useTemplateRef } from "vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
 import Modal from "~/components/Common/Modal.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
 import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchResponse.ts";
-import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
-import {useQuery} from "@tanstack/vue-query";
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
-import {useQueryItemProvider} from "~/functions/dataTable/useQueryItemProvider.ts";
-import {MediaSelectedItems} from "~/components/Stations/Media.vue";
-import IconIcFolder from "~icons/ic/baseline-folder";
+import { MediaSelectedItems } from "~/components/Stations/Media.vue";
+import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import { useQueryItemProvider } from "~/functions/dataTable/useQueryItemProvider.ts";
+import { HasRelistEmit } from "~/functions/useBaseEditModal.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
 import IconBiChevronLeft from "~icons/bi/chevron-left";
+import IconIcFolder from "~icons/ic/baseline-folder";
 
 const props = defineProps<{
-    selectedItems: MediaSelectedItems,
-    currentDirectory: string,
-    batchUrl: string,
-    listDirectoriesUrl: string,
+    selectedItems: MediaSelectedItems;
+    currentDirectory: string;
+    batchUrl: string;
+    listDirectoriesUrl: string;
 }>();
 
 const emit = defineEmits<HasRelistEmit>();
 
-const destinationDirectory = ref<string>('');
+const destinationDirectory = ref<string>("");
 const dirHistory = ref<string[]>([]);
 const isModalVisible = ref(false);
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const fields: DataTableField[] = [
-    {key: 'name', label: $gettext('Directory'), sortable: true}
+    { key: "name", label: $gettext("Directory"), sortable: true },
 ];
 
 const langHeader = computed(() => {
-    return $gettext(
-        'Move %{num} File(s) to',
-        {num: String(props.selectedItems.all.length)}
-    );
+    return $gettext("Move %{num} File(s) to", {
+        num: String(props.selectedItems.all.length),
+    });
 });
 
-const $modal = useTemplateRef('$modal');
-const {show, hide} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { show, hide } = useHasModal($modal);
 
 const onHidden = () => {
     dirHistory.value = [];
-    destinationDirectory.value = '';
+    destinationDirectory.value = "";
     isModalVisible.value = false;
-}
+};
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
-const {handleBatchResponse} = useHandleBatchResponse();
+const { handleBatchResponse } = useHandleBatchResponse();
 
 const directoriesQuery = useQuery({
-    queryKey: queryKeyWithStation(
-        [
-            QueryKeys.StationMedia,
-            'directories',
-            destinationDirectory
-        ]
-    ),
-    queryFn: async ({signal}) => {
-        const {data} = await axios.get(props.listDirectoriesUrl, {
+    queryKey: queryKeyWithStation([
+        QueryKeys.StationMedia,
+        "directories",
+        destinationDirectory,
+    ]),
+    queryFn: async ({ signal }) => {
+        const { data } = await axios.get(props.listDirectoriesUrl, {
             signal,
             params: {
-                currentDirectory: destinationDirectory.value
-            }
+                currentDirectory: destinationDirectory.value,
+            },
         });
 
         return data.rows;
     },
     staleTime: 60 * 1000,
-    enabled: isModalVisible
+    enabled: isModalVisible,
 });
 
 const directoryItemProvider = useQueryItemProvider(directoriesQuery);
 
 const doMove = async () => {
     try {
-        const {data} = await axios.put(props.batchUrl, {
-            'do': 'move',
-            'currentDirectory': props.currentDirectory,
-            'directory': destinationDirectory.value,
-            'files': props.selectedItems.files,
-            'dirs': props.selectedItems.directories
+        const { data } = await axios.put(props.batchUrl, {
+            do: "move",
+            currentDirectory: props.currentDirectory,
+            directory: destinationDirectory.value,
+            files: props.selectedItems.files,
+            dirs: props.selectedItems.directories,
         });
 
         handleBatchResponse(
             data,
-            $gettext('Files moved:'),
-            $gettext('Error moving files:')
+            $gettext("Files moved:"),
+            $gettext("Error moving files:"),
         );
     } finally {
         hide();
-        emit('relist');
+        emit("relist");
     }
 };
 
@@ -189,8 +186,8 @@ const pageBack = () => {
     dirHistory.value.pop();
 
     let newDirectory = dirHistory.value.slice(-1)[0];
-    if (typeof newDirectory === 'undefined' || null === newDirectory) {
-        newDirectory = '';
+    if (typeof newDirectory === "undefined" || null === newDirectory) {
+        newDirectory = "";
     }
 
     destinationDirectory.value = newDirectory;
@@ -199,9 +196,9 @@ const pageBack = () => {
 const open = () => {
     isModalVisible.value = true;
     show();
-}
+};
 
 defineExpose({
-    open
+    open,
 });
 </script>

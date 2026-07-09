@@ -157,71 +157,82 @@
 </template>
 
 <script setup lang="ts">
-import {computed} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useAxios} from "~/vendor/axios";
+import { useQuery } from "@tanstack/vue-query";
+import { computed } from "vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
-import {ApiAdminUpdateDetails, ApiAdminVueUpdateProps} from "~/entities/ApiInterfaces.ts";
-import {useQuery} from "@tanstack/vue-query";
-import {QueryKeys} from "~/entities/Queries.ts";
+import { useDialog } from "~/components/Common/Dialogs/useDialog.ts";
 import Loading from "~/components/Common/Loading.vue";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import {
+    ApiAdminUpdateDetails,
+    ApiAdminVueUpdateProps,
+} from "~/entities/ApiInterfaces.ts";
+import { QueryKeys } from "~/entities/Queries.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
+import IconIcCloudUpload from "~icons/ic/baseline-cloud-upload";
 import IconIcInfo from "~icons/ic/baseline-info";
 import IconIcSync from "~icons/ic/baseline-sync";
 import IconIcUpdate from "~icons/ic/baseline-update";
-import IconIcCloudUpload from "~icons/ic/baseline-cloud-upload";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
 
-const {getApiUrl} = useApiRouter();
-const propsUrl = getApiUrl('/admin/vue/updates');
-const updatesApiUrl = getApiUrl('/admin/updates');
+const { getApiUrl } = useApiRouter();
+const propsUrl = getApiUrl("/admin/vue/updates");
+const updatesApiUrl = getApiUrl("/admin/updates");
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
-const {data: props, isLoading: propsLoading} = useQuery<ApiAdminVueUpdateProps>({
-    queryKey: [QueryKeys.AdminUpdates, 'props'],
-    queryFn: async ({signal}) => {
-        const {data} = await axios.get<ApiAdminVueUpdateProps>(propsUrl.value, {signal});
-        return data;
-    }
-});
+const { data: props, isLoading: propsLoading } =
+    useQuery<ApiAdminVueUpdateProps>({
+        queryKey: [QueryKeys.AdminUpdates, "props"],
+        queryFn: async ({ signal }) => {
+            const { data } = await axios.get<ApiAdminVueUpdateProps>(
+                propsUrl.value,
+                { signal },
+            );
+            return data;
+        },
+    });
 
-const {data: updates, refetch: checkForUpdates} = useQuery<ApiAdminUpdateDetails>({
-    queryKey: [QueryKeys.AdminUpdates, 'updates'],
-    queryFn: async ({signal}) => {
-        const {data} = await axios.get<ApiAdminUpdateDetails>(updatesApiUrl.value, {signal});
-        return data;
-    },
-    enabled: false,
-    retry: false
-});
+const { data: updates, refetch: checkForUpdates } =
+    useQuery<ApiAdminUpdateDetails>({
+        queryKey: [QueryKeys.AdminUpdates, "updates"],
+        queryFn: async ({ signal }) => {
+            const { data } = await axios.get<ApiAdminUpdateDetails>(
+                updatesApiUrl.value,
+                { signal },
+            );
+            return data;
+        },
+        enabled: false,
+        retry: false,
+    });
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const langReleaseChannel = computed(() => {
-    return (props.value?.releaseChannel === 'stable')
-        ? $gettext('Stable')
-        : $gettext('Rolling Release');
+    return props.value?.releaseChannel === "stable"
+        ? $gettext("Stable")
+        : $gettext("Rolling Release");
 });
 
 const needsUpdates = computed(() => {
     const updateInfo = props.value?.initialUpdateInfo ?? updates.value ?? {};
 
-    if (props.value?.releaseChannel === 'stable') {
+    if (props.value?.releaseChannel === "stable") {
         return updateInfo?.needs_release_update ?? false;
     } else {
         return updateInfo?.needs_rolling_update ?? false;
     }
 });
 
-const {notifySuccess} = useNotify();
-const {showAlert} = useDialog();
+const { notifySuccess } = useNotify();
+const { showAlert } = useDialog();
 
 const doUpdate = async () => {
-    const {value} = await showAlert({
-        title: $gettext('Update AzuraCast? Your installation will restart.'),
-        confirmButtonText: $gettext('Update via Web')
+    const { value } = await showAlert({
+        title: $gettext("Update AzuraCast? Your installation will restart."),
+        confirmButtonText: $gettext("Update via Web"),
     });
 
     if (!value) {
@@ -231,7 +242,7 @@ const doUpdate = async () => {
     await axios.put(updatesApiUrl.value);
 
     notifySuccess(
-        $gettext('Update started. Your installation will restart shortly.')
+        $gettext("Update started. Your installation will restart shortly."),
     );
 };
 </script>

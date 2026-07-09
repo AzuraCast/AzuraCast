@@ -43,24 +43,27 @@
 </template>
 
 <script setup lang="ts">
-import {find, isEmpty, pickBy} from "es-toolkit/compat";
+import { find, isEmpty, pickBy } from "es-toolkit/compat";
+import { computed, toRaw } from "vue";
+import { PermissionsRecord } from "~/components/Admin/Permissions/EditModal.vue";
 import PermissionsFormStationRow from "~/components/Admin/Permissions/Form/StationRow.vue";
-import {computed, toRaw} from "vue";
 import Tab from "~/components/Common/Tab.vue";
-import {PermissionsRecord} from "~/components/Admin/Permissions/EditModal.vue";
 
 const props = defineProps<{
-    stations: Record<string, string>,
-    stationPermissions: Record<string, string>,
+    stations: Record<string, string>;
+    stationPermissions: Record<string, string>;
 }>();
 
-const form = defineModel<PermissionsRecord>('form', {required: true});
+const form = defineModel<PermissionsRecord>("form", { required: true });
 
 const remainingStations = computed(() => {
     const usedStations = form.value.permissions?.station ?? [];
 
     return pickBy(toRaw(props.stations), (_stationName, stationId) => {
-        return !find(usedStations, (station) => station.id === Number(stationId));
+        return !find(
+            usedStations,
+            (station) => station.id === Number(stationId),
+        );
     });
 });
 
@@ -74,8 +77,8 @@ const remove = (index: number) => {
 
 const add = (stationId: string | number) => {
     form.value.permissions.station.push({
-        'id': Number(stationId),
-        'permissions': []
+        id: Number(stationId),
+        permissions: [],
     });
 };
 </script>

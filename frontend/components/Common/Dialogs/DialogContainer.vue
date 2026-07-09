@@ -9,10 +9,10 @@
 </template>
 
 <script setup lang="ts">
-import {useDialog} from "./useDialog.ts";
+import { storeToRefs } from "pinia";
 import DialogRow from "./DialogRow.vue";
-import {storeToRefs} from "pinia";
+import { useDialog } from "./useDialog.ts";
 
 const dialogStore = useDialog();
-const {dialogs} = storeToRefs(dialogStore);
+const { dialogs } = storeToRefs(dialogStore);
 </script>

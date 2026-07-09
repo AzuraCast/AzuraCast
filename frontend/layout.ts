@@ -1,36 +1,36 @@
-import {App, Component, createApp, h, reactive} from "vue";
-import installAxios from "~/vendor/axios";
-import {installTranslate} from "~/vendor/gettext";
-import {globalConstantsKey, useAzuraCast} from "~/vendor/azuracast";
-import installTanstack from "~/vendor/tanstack.ts";
-import {createPinia} from "pinia";
-import {VueAppGlobals} from "~/entities/ApiInterfaces.ts";
+import { RegleVuePlugin } from "@regle/core";
+import { createHead } from "@unhead/vue/client";
+import { createPinia } from "pinia";
+import { App, Component, createApp, h, reactive } from "vue";
 import AppWrapper from "~/components/Layout/AppWrapper.vue";
-import {createHead} from "@unhead/vue/client";
-import {RegleVuePlugin} from "@regle/core";
+import { VueAppGlobals } from "~/entities/ApiInterfaces.ts";
+import installAxios from "~/vendor/axios";
+import { globalConstantsKey, useAzuraCast } from "~/vendor/azuracast";
+import { installTranslate } from "~/vendor/gettext";
+import installTanstack from "~/vendor/tanstack.ts";
 
 export default function initApp(
     appConfig: Component = {},
-    appCallback?: (app: App<Element>) => Promise<void>
+    appCallback?: (app: App<Element>) => Promise<void>,
 ): {
-    vueApp: App<Element>
+    vueApp: App<Element>;
 } {
     const vueApp: App<Element> = createApp({
         setup() {
-            const {componentProps} = useAzuraCast();
+            const { componentProps } = useAzuraCast();
             return {
-                componentProps
-            }
+                componentProps,
+            };
         },
         render() {
             return h(
                 AppWrapper,
                 {},
                 {
-                    default: () => h(appConfig, this.componentProps, {})
-                }
+                    default: () => h(appConfig, this.componentProps, {}),
+                },
             );
-        }
+        },
     });
 
     /* TanStack Query */
@@ -47,7 +47,10 @@ export default function initApp(
     /* Regle Dev Tools */
     vueApp.use(RegleVuePlugin);
 
-    (<any>window).vueComponent = async (el: string, globalProps: VueAppGlobals): Promise<void> => {
+    (<any>window).vueComponent = async (
+        el: string,
+        globalProps: VueAppGlobals,
+    ): Promise<void> => {
         vueApp.provide(globalConstantsKey, reactive(globalProps));
 
         /* Gettext */
@@ -56,7 +59,7 @@ export default function initApp(
         /* Axios */
         installAxios(vueApp);
 
-        if (typeof appCallback === 'function') {
+        if (typeof appCallback === "function") {
             await appCallback(vueApp);
         }
 
@@ -64,6 +67,6 @@ export default function initApp(
     };
 
     return {
-        vueApp
+        vueApp,
     };
 }

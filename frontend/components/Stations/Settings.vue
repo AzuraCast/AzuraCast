@@ -27,39 +27,40 @@
 </template>
 
 <script setup lang="ts">
+import { useQuery } from "@tanstack/vue-query";
+import { useRouter } from "vue-router";
 import AdminStationsForm from "~/components/Admin/Stations/StationForm.vue";
-import {useRouter} from "vue-router";
-import {useAxios} from "~/vendor/axios.ts";
-import {useQuery} from "@tanstack/vue-query";
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
-import {ApiAdminVueStationsFormProps} from "~/entities/ApiInterfaces.ts";
 import Loading from "~/components/Common/Loading.vue";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import { ApiAdminVueStationsFormProps } from "~/entities/ApiInterfaces.ts";
+import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useAxios } from "~/vendor/axios.ts";
 
-const {getStationApiUrl} = useApiRouter();
-const editUrl = getStationApiUrl('/profile/edit');
-const propsUrl = getStationApiUrl('/vue/profile/edit');
+const { getStationApiUrl } = useApiRouter();
+const editUrl = getStationApiUrl("/profile/edit");
+const propsUrl = getStationApiUrl("/vue/profile/edit");
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
-const {data: props, isLoading: propsLoading} = useQuery<ApiAdminVueStationsFormProps>({
-    queryKey: queryKeyWithStation([
-        QueryKeys.StationProfile,
-        'edit'
-    ]),
-    queryFn: async ({signal}) => {
-        const {data} = await axios.get<ApiAdminVueStationsFormProps>(propsUrl.value, {signal});
-        return data;
-    }
-});
+const { data: props, isLoading: propsLoading } =
+    useQuery<ApiAdminVueStationsFormProps>({
+        queryKey: queryKeyWithStation([QueryKeys.StationProfile, "edit"]),
+        queryFn: async ({ signal }) => {
+            const { data } = await axios.get<ApiAdminVueStationsFormProps>(
+                propsUrl.value,
+                { signal },
+            );
+            return data;
+        },
+    });
 
 const router = useRouter();
 
 const onSubmitted = async () => {
     await router.push({
-        name: 'stations:index'
+        name: "stations:index",
     });
-    
+
     window.location.reload();
-}
+};
 </script>

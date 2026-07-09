@@ -37,121 +37,119 @@
 </template>
 
 <script setup lang="ts">
+import { required } from "@regle/rules";
+import { map, pick } from "es-toolkit/compat";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
+import Tab from "~/components/Common/Tab.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {map, pick} from "es-toolkit/compat";
-import Tab from "~/components/Common/Tab.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {useTranslate} from "~/vendor/gettext.ts";
-import {getTriggers, WebhookTriggerDetails} from "~/entities/Webhooks.ts";
-import {computed} from "vue";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
-import {useAppScopedRegle} from "~/vendor/regle.ts";
-import {required} from "@regle/rules";
-import {storeToRefs} from "pinia";
+import { useStationsWebhooksForm } from "~/components/Stations/Webhooks/Form/form.ts";
+import { getTriggers, WebhookTriggerDetails } from "~/entities/Webhooks.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
+import { useTranslate } from "~/vendor/gettext.ts";
+import { useAppScopedRegle } from "~/vendor/regle.ts";
 
 const props = defineProps<{
-    triggerDetails: WebhookTriggerDetails
+    triggerDetails: WebhookTriggerDetails;
 }>();
 
-const {
-    form
-} = storeToRefs(useStationsWebhooksForm());
+const { form } = storeToRefs(useStationsWebhooksForm());
 
-const {r$} = useAppScopedRegle(
+const { r$ } = useAppScopedRegle(
     form,
     {
-        name: {required}
+        name: { required },
     },
     {
-        namespace: 'station-webhooks'
-    }
+        namespace: "station-webhooks",
+    },
 );
 
 const tabClass = useFormTabClass(r$);
 
 const triggersForType = computed(() => {
-    return (form.value.type) ? getTriggers(form.value.type) : [];
+    return form.value.type ? getTriggers(form.value.type) : [];
 });
 
 const triggerOptions = computed(() => {
-    const triggerDetailsForType = pick(props.triggerDetails, ...triggersForType.value);
+    const triggerDetailsForType = pick(
+        props.triggerDetails,
+        ...triggersForType.value,
+    );
 
-    return map(
-        triggerDetailsForType,
-        (trigger, key) => {
-            return {
-                value: key,
-                text: trigger.title,
-                description: trigger.description
-            };
-        }
-    )
+    return map(triggerDetailsForType, (trigger, key) => {
+        return {
+            value: key,
+            text: trigger.title,
+            description: trigger.description,
+        };
+    });
 });
 
-const {$gettext, interpolate} = useTranslate();
+const { $gettext, interpolate } = useTranslate();
 
-const langSeconds = $gettext('%{seconds} seconds');
-const langMinutes = $gettext('%{minutes} minutes');
-const langHours = $gettext('%{hours} hours');
+const langSeconds = $gettext("%{seconds} seconds");
+const langMinutes = $gettext("%{minutes} minutes");
+const langHours = $gettext("%{hours} hours");
 
 const rateLimitOptions = [
     {
-        text: $gettext('No Limit'),
+        text: $gettext("No Limit"),
         value: 0,
     },
     {
-        text: interpolate(langSeconds, {seconds: 15}),
+        text: interpolate(langSeconds, { seconds: 15 }),
         value: 15,
     },
     {
-        text: interpolate(langSeconds, {seconds: 30}),
+        text: interpolate(langSeconds, { seconds: 30 }),
         value: 30,
     },
     {
-        text: interpolate(langSeconds, {seconds: 60}),
+        text: interpolate(langSeconds, { seconds: 60 }),
         value: 60,
     },
     {
-        text: interpolate(langMinutes, {minutes: 2}),
+        text: interpolate(langMinutes, { minutes: 2 }),
         value: 120,
     },
     {
-        text: interpolate(langMinutes, {minutes: 5}),
+        text: interpolate(langMinutes, { minutes: 5 }),
         value: 300,
     },
     {
-        text: interpolate(langMinutes, {minutes: 10}),
+        text: interpolate(langMinutes, { minutes: 10 }),
         value: 600,
     },
     {
-        text: interpolate(langMinutes, {minutes: 15}),
+        text: interpolate(langMinutes, { minutes: 15 }),
         value: 900,
     },
     {
-        text: interpolate(langMinutes, {minutes: 30}),
+        text: interpolate(langMinutes, { minutes: 30 }),
         value: 1800,
     },
     {
-        text: interpolate(langMinutes, {minutes: 60}),
+        text: interpolate(langMinutes, { minutes: 60 }),
         value: 3600,
     },
     {
-        text: interpolate(langHours, {hours: 2}),
+        text: interpolate(langHours, { hours: 2 }),
         value: 7200,
     },
     {
-        text: interpolate(langHours, {hours: 3}),
+        text: interpolate(langHours, { hours: 3 }),
         value: 10800,
     },
     {
-        text: interpolate(langHours, {hours: 6}),
+        text: interpolate(langHours, { hours: 6 }),
         value: 21600,
     },
     {
-        text: interpolate(langHours, {hours: 12}),
+        text: interpolate(langHours, { hours: 12 }),
         value: 43200,
-    }
+    },
 ];
 </script>

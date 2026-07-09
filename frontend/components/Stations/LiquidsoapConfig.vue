@@ -105,81 +105,80 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref, useTemplateRef } from "vue";
+import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";
+import InfoCard from "~/components/Common/InfoCard.vue";
+import Loading from "~/components/Common/Loading.vue";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
-import mergeExisting from "~/functions/mergeExisting";
-import InfoCard from "~/components/Common/InfoCard.vue";
-import {onMounted, ref, useTemplateRef} from "vue";
-import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
-import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import Loading from "~/components/Common/Loading.vue";
-import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";
 import ImportModal from "~/components/Stations/LiquidsoapConfig/ImportModal.vue";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
-import {useAppRegle} from "~/vendor/regle.ts";
-import {StationBackendConfiguration} from "~/entities/ApiInterfaces.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import { StationBackendConfiguration } from "~/entities/ApiInterfaces.ts";
+import mergeExisting from "~/functions/mergeExisting";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useMayNeedRestart } from "~/functions/useMayNeedRestart";
+import { useResettableRef } from "~/functions/useResettableRef.ts";
+import { useAxios } from "~/vendor/axios";
+import { useAppRegle } from "~/vendor/regle.ts";
 
-const {getStationApiUrl} = useApiRouter();
-const settingsUrl = getStationApiUrl('/liquidsoap-config');
-const exportUrl = getStationApiUrl('/liquidsoap-config/export');
-const importUrl = getStationApiUrl('/liquidsoap-config/import');
+const { getStationApiUrl } = useApiRouter();
+const settingsUrl = getStationApiUrl("/liquidsoap-config");
+const exportUrl = getStationApiUrl("/liquidsoap-config/export");
+const importUrl = getStationApiUrl("/liquidsoap-config/import");
 
 type ConfigSectionNames =
-    | 'custom_config_top'
-    | 'custom_config_pre_playlists'
-    | 'custom_config_pre_live'
-    | 'custom_config_pre_fade'
-    | 'custom_config'
-    | 'custom_config_bottom';
+    | "custom_config_top"
+    | "custom_config_pre_playlists"
+    | "custom_config_pre_live"
+    | "custom_config_pre_fade"
+    | "custom_config"
+    | "custom_config_bottom";
 
-type ConfigRow = {
-    is_field: true,
-    field_name: ConfigSectionNames,
-    markup?: never
-} | {
-    is_field: false,
-    field_name?: never,
-    markup: string
-}
+type ConfigRow =
+    | {
+          is_field: true;
+          field_name: ConfigSectionNames;
+          markup?: never;
+      }
+    | {
+          is_field: false;
+          field_name?: never;
+          markup: string;
+      };
 
 const config = ref<ConfigRow[]>([]);
 
-type ConfigSections = Required<Pick<
-    StationBackendConfiguration,
-    ConfigSectionNames
->>
+type ConfigSections = Required<
+    Pick<StationBackendConfiguration, ConfigSectionNames>
+>;
 
 const sections = ref<string[]>([]);
 
-const {record: form, reset: resetForm} = useResettableRef<ConfigSections>(() => ({
-    custom_config_top: null,
-    custom_config_pre_playlists: null,
-    custom_config_pre_live: null,
-    custom_config_pre_fade: null,
-    custom_config: null,
-    custom_config_bottom: null
-}));
-
-const {r$} = useAppRegle(
-    form,
-    {},
-    {}
+const { record: form, reset: resetForm } = useResettableRef<ConfigSections>(
+    () => ({
+        custom_config_top: null,
+        custom_config_pre_playlists: null,
+        custom_config_pre_live: null,
+        custom_config_pre_fade: null,
+        custom_config: null,
+        custom_config_bottom: null,
+    }),
 );
+
+const { r$ } = useAppRegle(form, {}, {});
 
 const isLoading = ref(true);
 
-const {mayNeedRestart} = useMayNeedRestart();
+const { mayNeedRestart } = useMayNeedRestart();
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 const relist = async () => {
     isLoading.value = true;
 
     try {
-        const {data} = await axios.get(settingsUrl.value);
+        const { data } = await axios.get(settingsUrl.value);
         config.value = data.config;
         sections.value = data.sections;
 
@@ -194,17 +193,17 @@ const relist = async () => {
 
 onMounted(relist);
 
-const {notifySuccess} = useNotify();
+const { notifySuccess } = useNotify();
 
 const submit = async () => {
-    const {valid} = await r$.$validate();
+    const { valid } = await r$.$validate();
 
     if (!valid) {
         return;
     }
 
     await axios({
-        method: 'PUT',
+        method: "PUT",
         url: settingsUrl.value,
         data: form.value,
     });
@@ -212,9 +211,9 @@ const submit = async () => {
     notifySuccess();
     mayNeedRestart();
     await relist();
-}
+};
 
-const $importModal = useTemplateRef('$importModal');
+const $importModal = useTemplateRef("$importModal");
 
 const doImport = () => {
     $importModal.value?.open();

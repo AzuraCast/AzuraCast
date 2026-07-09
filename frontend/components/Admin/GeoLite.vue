@@ -103,45 +103,42 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {computed, onMounted, ref} from "vue";
-import {useAxios} from "~/vendor/axios";
-import {useTranslate} from "~/vendor/gettext";
-import Loading from "~/components/Common/Loading.vue";
+import { computed, onMounted, ref } from "vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
-import {ApiAdminGeoLiteStatus} from "~/entities/ApiInterfaces.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
+import { useDialog } from "~/components/Common/Dialogs/useDialog.ts";
+import Loading from "~/components/Common/Loading.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { ApiAdminGeoLiteStatus } from "~/entities/ApiInterfaces.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useResettableRef } from "~/functions/useResettableRef.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
 
-const {getApiUrl} = useApiRouter();
-const apiUrl = getApiUrl('/admin/geolite');
+const { getApiUrl } = useApiRouter();
+const apiUrl = getApiUrl("/admin/geolite");
 
 type Row = ApiAdminGeoLiteStatus;
 
 const isLoading = ref(true);
-const {record, reset} = useResettableRef<Row>({
+const { record, reset } = useResettableRef<Row>({
     key: null,
-    version: null
+    version: null,
 });
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const langInstalledVersion = computed(() => {
-    return $gettext(
-        'GeoLite version "%{version}" is currently installed.',
-        {
-            version: record.value.version ?? 'N/A'
-        }
-    );
+    return $gettext('GeoLite version "%{version}" is currently installed.', {
+        version: record.value.version ?? "N/A",
+    });
 });
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 const doFetch = async () => {
     isLoading.value = true;
 
-    const {data} = await axios.get<Row>(apiUrl.value);
+    const { data } = await axios.get<Row>(apiUrl.value);
     record.value = data;
     isLoading.value = false;
 };
@@ -152,19 +149,19 @@ const doUpdate = async () => {
     isLoading.value = true;
 
     try {
-        const {data} = await axios.post<Row>(apiUrl.value, record.value);
+        const { data } = await axios.post<Row>(apiUrl.value, record.value);
         record.value = data;
     } finally {
         isLoading.value = false;
     }
 };
 
-const {confirmDelete} = useDialog();
+const { confirmDelete } = useDialog();
 
 const doDelete = async () => {
-    const {value} = await confirmDelete({
-        title: $gettext('Remove GeoLite license key?'),
-        confirmButtonText: $gettext('Remove Key')
+    const { value } = await confirmDelete({
+        title: $gettext("Remove GeoLite license key?"),
+        confirmButtonText: $gettext("Remove Key"),
     });
 
     if (!value) {
@@ -174,5 +171,5 @@ const doDelete = async () => {
     reset();
 
     await doUpdate();
-}
+};
 </script>

@@ -45,30 +45,30 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref, toRef} from "vue";
-import {useAxios} from "~/vendor/axios";
-import FormGroup from "~/components/Form/FormGroup.vue";
-import FormFile from "~/components/Form/FormFile.vue";
+import { isString } from "es-toolkit/compat";
+import { computed, ref, toRef } from "vue";
+import { UploadResponseBody } from "~/components/Common/FlowUpload.vue";
 import Tab from "~/components/Common/Tab.vue";
-import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
-import {isString} from "es-toolkit/compat";
+import FormFile from "~/components/Form/FormFile.vue";
+import FormGroup from "~/components/Form/FormGroup.vue";
+import { useAxios } from "~/vendor/axios";
 
 const props = defineProps<{
-    artworkSrc: string,
-    editArtUrl: string,
-    newArtUrl: string,
+    artworkSrc: string;
+    editArtUrl: string;
+    newArtUrl: string;
 }>();
 
 const model = defineModel<UploadResponseBody | null>();
 
-const artworkSrc = toRef(props, 'artworkSrc');
+const artworkSrc = toRef(props, "artworkSrc");
 const localSrc = ref<string | ArrayBuffer | null>(null);
 
 const src = computed(() => {
     return localSrc.value ?? artworkSrc.value;
 });
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 const uploadFile = async (file: File | null) => {
     if (null === file) {
@@ -76,16 +76,20 @@ const uploadFile = async (file: File | null) => {
     }
 
     const fileReader = new FileReader();
-    fileReader.addEventListener('load', () => {
-        localSrc.value = fileReader.result;
-    }, false);
+    fileReader.addEventListener(
+        "load",
+        () => {
+            localSrc.value = fileReader.result;
+        },
+        false,
+    );
     fileReader.readAsDataURL(file);
 
-    const url = (props.editArtUrl) ? props.editArtUrl : props.newArtUrl;
+    const url = props.editArtUrl ? props.editArtUrl : props.newArtUrl;
     const formData = new FormData();
-    formData.append('art', file);
+    formData.append("art", file);
 
-    const {data} = await axios.post(url, formData);
+    const { data } = await axios.post(url, formData);
     model.value = data;
 };
 
@@ -97,5 +101,5 @@ const deleteArt = async () => {
     } else {
         localSrc.value = null;
     }
-}
+};
 </script>

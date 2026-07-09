@@ -22,38 +22,42 @@
 </template>
 
 <script setup lang="ts">
-import FormBasicInfo from "~/components/Stations/Streamers/Form/BasicInfo.vue";
-import FormSchedule from "~/components/Stations/Streamers/Form/Schedule.vue";
-import FormArtwork from "~/components/Stations/Streamers/Form/Artwork.vue";
-import mergeExisting from "~/functions/mergeExisting";
-import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, toRef, useTemplateRef, watch} from "vue";
-import {useTranslate} from "~/vendor/gettext";
+import { storeToRefs } from "pinia";
+import { computed, toRef, useTemplateRef, watch } from "vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
-import {storeToRefs} from "pinia";
-import {useAppCollectScope} from "~/vendor/regle.ts";
+import FormArtwork from "~/components/Stations/Streamers/Form/Artwork.vue";
+import FormBasicInfo from "~/components/Stations/Streamers/Form/BasicInfo.vue";
 import {
     StationStreamersRecord,
     StationStreamersResponseBody,
-    useStationsStreamersForm
+    useStationsStreamersForm,
 } from "~/components/Stations/Streamers/Form/form.ts";
+import FormSchedule from "~/components/Stations/Streamers/Form/Schedule.vue";
+import mergeExisting from "~/functions/mergeExisting";
+import {
+    BaseEditModalEmits,
+    BaseEditModalProps,
+    useBaseEditModal,
+} from "~/functions/useBaseEditModal";
+import { useTranslate } from "~/vendor/gettext";
+import { useAppCollectScope } from "~/vendor/regle.ts";
 
 interface StreamersEditModalProps extends BaseEditModalProps {
-    newArtUrl: string
+    newArtUrl: string;
 }
 
 const props = defineProps<StreamersEditModalProps>();
 
 const emit = defineEmits<BaseEditModalEmits>();
 
-const $modal = useTemplateRef('$modal');
+const $modal = useTemplateRef("$modal");
 
 const formStore = useStationsStreamersForm();
-const {form, r$, record} = storeToRefs(formStore);
-const {$reset: resetForm, setEditMode} = formStore;
+const { form, r$, record } = storeToRefs(formStore);
+const { $reset: resetForm, setEditMode } = formStore;
 
-const {r$: validater$} = useAppCollectScope('stations-playlists');
+const { r$: validater$ } = useAppCollectScope("stations-playlists");
 
 const {
     loading,
@@ -63,12 +67,9 @@ const {
     create,
     edit,
     doSubmit,
-    close
-} = useBaseEditModal<
-    StationStreamersRecord,
-    StationStreamersResponseBody
->(
-    toRef(props, 'createUrl'),
+    close,
+} = useBaseEditModal<StationStreamersRecord, StationStreamersResponseBody>(
+    toRef(props, "createUrl"),
     emit,
     $modal,
     resetForm,
@@ -76,30 +77,30 @@ const {
         record.value = mergeExisting(record.value, data);
 
         r$.value.$reset({
-            toState: mergeExisting(r$.value.$value, data)
-        })
+            toState: mergeExisting(r$.value.$value, data),
+        });
     },
     async () => {
-        const {valid} = await validater$.$validate();
-        return {valid, data: form.value};
-    }
+        const { valid } = await validater$.$validate();
+        return { valid, data: form.value };
+    },
 );
 
 watch(isEditMode, (newValue) => {
     setEditMode(newValue);
 });
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const langTitle = computed(() => {
     return isEditMode.value
-        ? $gettext('Edit Streamer')
-        : $gettext('Add Streamer');
+        ? $gettext("Edit Streamer")
+        : $gettext("Add Streamer");
 });
 
 defineExpose({
     create,
     edit,
-    close
+    close,
 });
 </script>

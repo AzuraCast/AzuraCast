@@ -37,21 +37,21 @@
 </template>
 
 <script setup lang="ts">
-import CustomAssetForm from "~/components/Admin/Branding/CustomAssetForm.vue";
+import { useTemplateRef } from "vue";
 import BrandingForm from "~/components/Admin/Branding/BrandingForm.vue";
+import CustomAssetForm from "~/components/Admin/Branding/CustomAssetForm.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import Lightbox from "~/components/Common/Lightbox.vue";
-import {useTemplateRef} from "vue";
-import {useProvideLightbox} from "~/vendor/lightbox";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useProvideLightbox } from "~/vendor/lightbox";
 
-const {getApiUrl} = useApiRouter();
-const settingsApiUrl = getApiUrl('/admin/settings/branding');
-const browserIconApiUrl = getApiUrl('/admin/custom_assets/browser_icon');
-const backgroundApiUrl = getApiUrl('/admin/custom_assets/background');
-const albumArtApiUrl = getApiUrl('/admin/custom_assets/album_art');
+const { getApiUrl } = useApiRouter();
+const settingsApiUrl = getApiUrl("/admin/settings/branding");
+const browserIconApiUrl = getApiUrl("/admin/custom_assets/browser_icon");
+const backgroundApiUrl = getApiUrl("/admin/custom_assets/background");
+const albumArtApiUrl = getApiUrl("/admin/custom_assets/album_art");
 
-const $lightbox = useTemplateRef('$lightbox');
+const $lightbox = useTemplateRef("$lightbox");
 useProvideLightbox($lightbox);
 </script>
 

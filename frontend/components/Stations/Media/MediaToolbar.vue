@@ -212,16 +212,19 @@
 </template>
 
 <script setup lang="ts">
-import {Dropdown} from "bootstrap";
-import {filter, intersection, map} from "es-toolkit/compat";
-import {computed, ref, toRef, useTemplateRef, watch} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useAxios} from "~/vendor/axios";
+import { Dropdown } from "bootstrap";
+import { filter, intersection, map } from "es-toolkit/compat";
+import { computed, ref, toRef, useTemplateRef, watch } from "vue";
+import { useDialog } from "~/components/Common/Dialogs/useDialog.ts";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
 import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchResponse.ts";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
-import {MediaInitialPlaylist, MediaSelectedItems} from "~/components/Stations/Media.vue";
-import {ApiStationMediaPlaylist} from "~/entities/ApiInterfaces";
+import {
+    MediaInitialPlaylist,
+    MediaSelectedItems,
+} from "~/components/Stations/Media.vue";
+import { ApiStationMediaPlaylist } from "~/entities/ApiInterfaces";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
 import IconIcClearAll from "~icons/ic/baseline-clear-all";
 import IconIcDelete from "~icons/ic/baseline-delete";
 import IconIcFolder from "~icons/ic/baseline-folder";
@@ -229,40 +232,39 @@ import IconIcMoreHoriz from "~icons/ic/baseline-more-horiz";
 import IconIcOpenWith from "~icons/ic/baseline-open-with";
 
 const props = defineProps<{
-    currentDirectory: string,
-    selectedItems: MediaSelectedItems,
-    playlists?: MediaInitialPlaylist[],
-    batchUrl: string,
-    supportsImmediateQueue: boolean
+    currentDirectory: string;
+    selectedItems: MediaSelectedItems;
+    playlists?: MediaInitialPlaylist[];
+    batchUrl: string;
+    supportsImmediateQueue: boolean;
 }>();
 
 const emit = defineEmits<{
-    (e: 'relist'): void,
-    (e: 'add-playlist', playlist: any): void,
-    (e: 'move-files'): void,
-    (e: 'create-directory'): void
+    (e: "relist"): void;
+    (e: "add-playlist", playlist: any): void;
+    (e: "move-files"): void;
+    (e: "create-directory"): void;
 }>();
 
-const selectedItems = toRef(props, 'selectedItems');
+const selectedItems = toRef(props, "selectedItems");
 
 const hasSelectedItems = computed(() => {
     return selectedItems.value.all.length > 0;
 });
 
 const checkedPlaylists = ref<(number | string)[]>([]);
-const newPlaylist = ref('');
+const newPlaylist = ref("");
 
 watch(selectedItems, (items) => {
     // Get all playlists that are active on ALL selected items.
     const playlistsForItems = map(items.all, (item) => {
-        const itemPlaylists = (item.dir?.playlists ?? item.media?.playlists ?? []) as Required<ApiStationMediaPlaylist>[];
+        const itemPlaylists = (item.dir?.playlists ??
+            item.media?.playlists ??
+            []) as Required<ApiStationMediaPlaylist>[];
 
         return map(
-            filter(
-                itemPlaylists,
-                (row) => row.folder === null
-            ),
-            'id'
+            filter(itemPlaylists, (row) => row.folder === null),
+            "id",
         );
     });
 
@@ -271,35 +273,39 @@ watch(selectedItems, (items) => {
 });
 
 watch(newPlaylist, (text: string) => {
-    if (text !== '') {
-        if (!checkedPlaylists.value.includes('new')) {
-            checkedPlaylists.value.push('new');
+    if (text !== "") {
+        if (!checkedPlaylists.value.includes("new")) {
+            checkedPlaylists.value.push("new");
         }
     }
 });
 
-const {$gettext} = useTranslate();
-const {axios} = useAxios();
+const { $gettext } = useTranslate();
+const { axios } = useAxios();
 
-const {handleBatchResponse} = useHandleBatchResponse();
+const { handleBatchResponse } = useHandleBatchResponse();
 
-const {notifyError} = useNotify();
+const { notifyError } = useNotify();
 
 const notifyNoFiles = () => {
-    notifyError($gettext('No files selected.'));
-}
+    notifyError($gettext("No files selected."));
+};
 
-const doBatch = async (action: string, successMessage: string, errorMessage: string) => {
+const doBatch = async (
+    action: string,
+    successMessage: string,
+    errorMessage: string,
+) => {
     if (hasSelectedItems.value) {
-        const {data} = await axios.put(props.batchUrl, {
-            'do': action,
-            'current_directory': props.currentDirectory,
-            'files': selectedItems.value.files,
-            'dirs': selectedItems.value.directories
+        const { data } = await axios.put(props.batchUrl, {
+            do: action,
+            current_directory: props.currentDirectory,
+            files: selectedItems.value.files,
+            dirs: selectedItems.value.directories,
         });
 
         handleBatchResponse(data, successMessage, errorMessage);
-        emit('relist');
+        emit("relist");
     } else {
         notifyNoFiles();
     }
@@ -307,48 +313,47 @@ const doBatch = async (action: string, successMessage: string, errorMessage: str
 
 const doImmediateQueue = () => {
     void doBatch(
-        'immediate',
-        $gettext('Files played immediately:'),
-        $gettext('Error queueing files:')
+        "immediate",
+        $gettext("Files played immediately:"),
+        $gettext("Error queueing files:"),
     );
 };
 
 const doQueue = () => {
     void doBatch(
-        'queue',
-        $gettext('Files queued for playback:'),
-        $gettext('Error queueing files:')
+        "queue",
+        $gettext("Files queued for playback:"),
+        $gettext("Error queueing files:"),
     );
 };
 
 const doReprocess = () => {
     void doBatch(
-        'reprocess',
-        $gettext('Files marked for reprocessing:'),
-        $gettext('Error reprocessing files:')
+        "reprocess",
+        $gettext("Files marked for reprocessing:"),
+        $gettext("Error reprocessing files:"),
     );
 };
 
 const doClearExtra = () => {
     void doBatch(
-        'clear-extra',
-        $gettext('Extra metadata cleared for files:'),
-        $gettext('Error reprocessing files:')
+        "clear-extra",
+        $gettext("Extra metadata cleared for files:"),
+        $gettext("Error reprocessing files:"),
     );
 };
 
-const {confirmDelete} = useDialog();
+const { confirmDelete } = useDialog();
 
 const doDelete = async () => {
     const numFiles = selectedItems.value.all.length;
-    const buttonConfirmText = $gettext(
-        'Delete %{num} media files?',
-        {num: String(numFiles)}
-    );
+    const buttonConfirmText = $gettext("Delete %{num} media files?", {
+        num: String(numFiles),
+    });
 
-    const {value} = await confirmDelete({
+    const { value } = await confirmDelete({
         title: buttonConfirmText,
-        confirmButtonText: $gettext('Delete')
+        confirmButtonText: $gettext("Delete"),
     });
 
     if (!value) {
@@ -356,13 +361,13 @@ const doDelete = async () => {
     }
 
     await doBatch(
-        'delete',
-        $gettext('Files removed:'),
-        $gettext('Error removing files:')
+        "delete",
+        $gettext("Files removed:"),
+        $gettext("Error removing files:"),
     );
 };
 
-const $playlistDropdown = useTemplateRef('$playlistDropdown');
+const $playlistDropdown = useTemplateRef("$playlistDropdown");
 
 const setPlaylists = async () => {
     if ($playlistDropdown.value) {
@@ -370,33 +375,33 @@ const setPlaylists = async () => {
     }
 
     if (hasSelectedItems.value) {
-        const {data} = await axios.put(props.batchUrl, {
-            'do': 'playlist',
-            'playlists': checkedPlaylists.value,
-            'new_playlist_name': newPlaylist.value,
-            'currentDirectory': props.currentDirectory,
-            'files': selectedItems.value.files,
-            'dirs': selectedItems.value.directories
+        const { data } = await axios.put(props.batchUrl, {
+            do: "playlist",
+            playlists: checkedPlaylists.value,
+            new_playlist_name: newPlaylist.value,
+            currentDirectory: props.currentDirectory,
+            files: selectedItems.value.files,
+            dirs: selectedItems.value.directories,
         });
 
         handleBatchResponse(
             data,
-            (checkedPlaylists.value.length > 0)
-                ? $gettext('Playlists updated for selected files:')
-                : $gettext('Playlists cleared for selected files:'),
-            $gettext('Error updating playlists:')
+            checkedPlaylists.value.length > 0
+                ? $gettext("Playlists updated for selected files:")
+                : $gettext("Playlists cleared for selected files:"),
+            $gettext("Error updating playlists:"),
         );
 
         if (data.success) {
             if (data.record) {
-                emit('add-playlist', data.record);
+                emit("add-playlist", data.record);
             }
 
             checkedPlaylists.value = [];
-            newPlaylist.value = '';
+            newPlaylist.value = "";
         }
 
-        emit('relist');
+        emit("relist");
     } else {
         notifyNoFiles();
     }
@@ -404,16 +409,16 @@ const setPlaylists = async () => {
 
 const clearPlaylists = () => {
     checkedPlaylists.value = [];
-    newPlaylist.value = '';
+    newPlaylist.value = "";
 
     void setPlaylists();
 };
 
 const moveFiles = () => {
-    emit('move-files');
-}
+    emit("move-files");
+};
 
 const createDirectory = () => {
-    emit('create-directory');
-}
+    emit("create-directory");
+};
 </script>

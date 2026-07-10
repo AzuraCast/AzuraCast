@@ -7,9 +7,11 @@ namespace App\Radio\Backend\Liquidsoap;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Doctrine\ReadOnlyBatchIteratorAggregate;
+use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
+use App\Entity\StationQueue;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
@@ -126,30 +128,52 @@ final class PlaylistFileWriter implements EventSubscriberInterface
 
         $playlistFile = [];
 
+        $queuedMediaIds = [];
+        if (PlaylistOrders::Sequential === $playlist->order) {
+            $queuedMediaQuery = $this->em->createQuery(
+                <<<'DQL'
+                    SELECT sq, sm
+                    FROM App\Entity\StationQueue sq
+                    JOIN sq.media sm
+                    WHERE sq.playlist = :playlist
+                    AND sq.is_played = 0
+                    ORDER BY sq.sent_to_autodj DESC, sq.timestamp_cued ASC
+                DQL
+            )->setParameter('playlist', $playlist);
+
+            /** @var StationQueue $queueRow */
+            foreach (ReadOnlyBatchIteratorAggregate::fromQuery($queuedMediaQuery, 1000) as $queueRow) {
+                $mediaFile = $queueRow->media;
+                if (!$mediaFile instanceof StationMedia) {
+                    continue;
+                }
+
+                $queuedMediaIds[] = $mediaFile->id;
+                $this->appendPlaylistFileEntry($playlistFile, $station, $playlist, $mediaFile);
+            }
+        }
+
+        $playlistMediaOrder = (PlaylistOrders::Sequential === $playlist->order)
+            ? 'spm.is_queued DESC, spm.weight ASC'
+            : 'spm.weight ASC';
+
         $mediaQuery = $this->em->createQuery(
-            <<<'DQL'
+            <<<DQL
                 SELECT DISTINCT sm
                 FROM App\Entity\StationMedia sm
                 JOIN sm.playlists spm
                 WHERE spm.playlist = :playlist
-                ORDER BY spm.weight ASC
+                ORDER BY {$playlistMediaOrder}
             DQL
         )->setParameter('playlist', $playlist);
 
         /** @var StationMedia $mediaFile */
         foreach (ReadOnlyBatchIteratorAggregate::fromQuery($mediaQuery, 1000) as $mediaFile) {
-            $event = new AnnotateNextSong(
-                station: $station,
-                media: $mediaFile,
-                playlist: $playlist,
-                asAutoDj: false
-            );
-
-            try {
-                $this->eventDispatcher->dispatch($event);
-                $playlistFile[] = $event->buildAnnotations();
-            } catch (Throwable) {
+            if (in_array($mediaFile->id, $queuedMediaIds, true)) {
+                continue;
             }
+
+            $this->appendPlaylistFileEntry($playlistFile, $station, $playlist, $mediaFile);
         }
 
         $playlistFilePath = self::getPlaylistFilePath($playlist);
@@ -157,6 +181,29 @@ final class PlaylistFileWriter implements EventSubscriberInterface
             $playlistFilePath,
             implode("\n", $playlistFile)
         );
+    }
+
+    /**
+     * @param string[] $playlistFile
+     */
+    private function appendPlaylistFileEntry(
+        array &$playlistFile,
+        Station $station,
+        StationPlaylist $playlist,
+        StationMedia $mediaFile
+    ): void {
+        $event = new AnnotateNextSong(
+            station: $station,
+            media: $mediaFile,
+            playlist: $playlist,
+            asAutoDj: false
+        );
+
+        try {
+            $this->eventDispatcher->dispatch($event);
+            $playlistFile[] = $event->buildAnnotations();
+        } catch (Throwable) {
+        }
     }
 
     public static function getPlaylistFilePath(StationPlaylist $playlist): string

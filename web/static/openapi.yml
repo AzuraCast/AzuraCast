@@ -3614,6 +3614,48 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/playlists/export-config':
+    get:
+      tags:
+        - 'Stations: Playlists'
+      summary: "Export all of a station's playlists as a JSON configuration dump."
+      operationId: getStationPlaylistsExportConfig
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessWithDownload'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/playlist/{id}/export-config':
+    get:
+      tags:
+        - 'Stations: Playlists'
+      summary: 'Export a single playlist (and any group members) as a JSON configuration dump.'
+      operationId: getStationPlaylistExportConfig
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Playlist ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessWithDownload'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/playlist/{id}/apply-to':
     get:
       tags:
@@ -3740,6 +3782,36 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '404':
           $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/playlists/import-config':
+    post:
+      tags:
+        - 'Stations: Playlists'
+      summary: 'Import playlists from a JSON configuration dump, creating new playlists on the station.'
+      operationId: postStationPlaylistsImportConfig
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                config_file:
+                  description: 'The JSON configuration dump to import.'
+                  type: string
+                  format: binary
+                name_prefix:
+                  description: 'Optional prefix prepended to every imported playlist name.'
+                  type: string
+                  nullable: true
+              type: object
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
   '/station/{station_id}/playlist/{id}/members':
@@ -7283,7 +7355,7 @@ components:
         - value
         - text
       properties:
-        value: {  }
+        value: {}
         text:
           type: string
         description:
@@ -7823,6 +7895,30 @@ components:
         useSse:
           type: boolean
       type: object
+    Api_PlaylistConfigurationImportResult:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_Status'
+        -
+          properties:
+            playlists_created:
+              type: integer
+              example: 3
+            media_relinked:
+              type: integer
+              example: 10
+            media_generated:
+              type: integer
+              example: 2
+            members_created:
+              type: integer
+              example: 1
+            warnings:
+              type: array
+              items:
+                type: string
+          type: object
     Api_Podcast:
       type: object
       allOf:
@@ -9948,13 +10044,13 @@ components:
               example: true
             schedule_items:
               type: array
-              items: {  }
+              items: {}
             podcasts:
               type: array
-              items: {  }
+              items: {}
             playlists:
               type: array
-              items: {  }
+              items: {}
           type: object
     StationPlaylistGroup:
       type: object
@@ -9974,6 +10070,9 @@ components:
             consecutive_plays:
               type: integer
               example: 0
+            play_full_cycle:
+              type: boolean
+              example: false
             allowed_requests:
               $ref: '#/components/schemas/PlaylistGroupAllowedRequests'
           type: object
@@ -10112,7 +10211,7 @@ components:
               nullable: true
             schedule_items:
               type: array
-              items: {  }
+              items: {}
           type: object
     StationStreamerBroadcast:
       description: 'Each individual broadcast associated with a streamer.'
@@ -10140,15 +10239,15 @@ components:
             triggers:
               description: 'List of events that should trigger the webhook notification.'
               type: array
-              items: {  }
+              items: {}
             config:
               description: 'Detailed webhook configuration (if applicable)'
               type: array
-              items: {  }
+              items: {}
             metadata:
               description: 'Internal details used by the webhook to preserve state.'
               type: array
-              items: {  }
+              items: {}
           type: object
     StorageLocation:
       type: object
@@ -10340,7 +10439,7 @@ components:
               example: 1609480800
             roles:
               type: array
-              items: {  }
+              items: {}
           type: object
     UserLoginToken:
       type: object

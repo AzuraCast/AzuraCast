@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Enums\PlaylistGroupAllowedRequests;
+use App\Entity\Enums\PlaylistOrders;
+use App\Entity\Enums\PlaylistSources;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
@@ -69,6 +71,26 @@ final class StationPlaylistGroup implements JsonSerializable, IdentifiableEntity
     public int $consecutive_plays_count = 0;
 
     #[
+        OA\Property(example: false),
+        ORM\Column
+    ]
+    public bool $play_full_cycle = false {
+        set (bool $value) {
+            $this->play_full_cycle = $value
+                && PlaylistSources::Songs === $this->playlist->source
+                && in_array(
+                    $this->playlist->order,
+                    [PlaylistOrders::Sequential, PlaylistOrders::Shuffle],
+                    true
+                );
+
+            if ($this->play_full_cycle) {
+                $this->consecutive_plays = 0;
+            }
+        }
+    }
+
+    #[
         OA\Property(example: 'any'),
         ORM\Column(type: 'string', enumType: PlaylistGroupAllowedRequests::class)
     ]
@@ -82,9 +104,16 @@ final class StationPlaylistGroup implements JsonSerializable, IdentifiableEntity
         $this->playlist_group = $playlistGroup;
     }
 
-    public function played(?int $timestamp = null, bool $forceAdvance = false): bool
-    {
+    public function played(
+        ?int $timestamp = null,
+        bool $forceAdvance = false,
+        bool $keepQueued = false
+    ): bool {
         $this->last_played = $timestamp ?? time();
+
+        if ($keepQueued && !$forceAdvance) {
+            return false;
+        }
 
         if ($this->consecutive_plays > 0) {
             $this->consecutive_plays_count++;
@@ -113,6 +142,7 @@ final class StationPlaylistGroup implements JsonSerializable, IdentifiableEntity
             'name' => $this->playlist->name,
             'weight' => $this->weight,
             'consecutive_plays' => $this->consecutive_plays,
+            'play_full_cycle' => $this->play_full_cycle,
             'allowed_requests' => $this->allowed_requests->value,
         ];
     }

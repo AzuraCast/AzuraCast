@@ -1,0 +1,35 @@
+{
+  "description": "A group whose members are of different playlist types. A member should be selectable only when its own type/schedule says it may play now: the Advanced (custom) member is never selected; Once-Per-X-Minutes and Once-Per-Hour members play when eligible and are skipped once they have played within their window; the Standard member is always eligible. Over four builds at 12:00: OPM (eligible), OPH (eligible, :00 window), STD, then STD again (OPM/OPH now gated, Advanced always skipped).",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "member-types-gated-by-own-type",
+      "now": "2018-01-15T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "opm",
+          "media_ref": "mOPM"
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "oph",
+          "media_ref": "mOPH"
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "std",
+          "media_ref": "mSTD"
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "std",
+          "media_ref": "mSTD"
+        }
+      ]
+    }
+  ]
+}

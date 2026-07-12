@@ -23,6 +23,7 @@ export type StationPlaylistEnriched = Required<
 // Extends the raw API member with runtime-computed fields for UI rendering.
 export type StationPlaylistGroupMemberEnriched = Required<StationPlaylistGroup> & {
     source: string,
+    order: string,
     num_songs: number,
     playlists: StationPlaylistGroup[],
 };

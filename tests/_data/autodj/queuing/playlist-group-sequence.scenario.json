@@ -1,0 +1,30 @@
+{
+  "description": "A sequential playlist group whose first member has consecutive_plays=2 stays selected for two successive builds (Rock m1, then Rock m2) before advancing to the next member (Pop m3).",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "member-repeats-then-advances",
+      "now": "2018-01-15T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "rock",
+          "media_ref": "m1"
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "rock",
+          "media_ref": "m2"
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "pop",
+          "media_ref": "m3"
+        }
+      ]
+    }
+  ]
+}

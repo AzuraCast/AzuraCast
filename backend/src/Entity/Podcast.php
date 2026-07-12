@@ -61,7 +61,7 @@ final class Podcast implements Interfaces\IdentifiableEntityInterface
     }
 
     #[ORM\Column]
-    public bool $explicit;
+    public bool $explicit = false;
 
     #[ORM\Column]
     public bool $is_enabled = true;

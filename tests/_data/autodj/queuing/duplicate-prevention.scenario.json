@@ -1,0 +1,29 @@
+{
+  "description": "A sequential avoid_duplicates playlist would normally pick its lowest-weight track (m1) first, but because m1 was recently played (seeded in queue_history within the duplicate-prevention time range) the AutoDJ avoids it and picks m2 instead.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "avoids-recently-played-track",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "media_ref": "m1",
+            "timestamp_played": "2018-01-15T11:55:00+00:00",
+            "is_visible": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "dp",
+          "media_ref": "m2"
+        }
+      ]
+    }
+  ]
+}

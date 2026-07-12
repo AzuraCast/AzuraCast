@@ -411,6 +411,7 @@ final class PlaylistConfigurationImporter
             $playlistGroup = new StationPlaylistGroup($member, $container);
             $playlistGroup->weight = $memberEntry->weight;
             $playlistGroup->consecutive_plays = max(0, $memberEntry->consecutivePlays);
+            $playlistGroup->play_full_cycle = $memberEntry->playFullCycle;
 
             $allowedRequests = $memberEntry->allowedRequests;
             if (

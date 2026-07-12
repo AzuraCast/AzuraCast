@@ -7,6 +7,13 @@ namespace App\Service\PlaylistConfiguration\Schema;
 use App\Utilities\Types;
 use JsonSerializable;
 
+/**
+ * @phpstan-type PlaylistMediaShape array{
+ *     media_ref: string,
+ *     weight: int,
+ *     folder_ref: ?string
+ * }
+ */
 final class PlaylistMediaEntry implements JsonSerializable
 {
     public function __construct(
@@ -28,6 +35,9 @@ final class PlaylistMediaEntry implements JsonSerializable
         );
     }
 
+    /**
+     * @return PlaylistMediaShape
+     */
     public function jsonSerialize(): mixed
     {
         return [

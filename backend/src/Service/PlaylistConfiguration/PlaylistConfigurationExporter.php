@@ -167,7 +167,7 @@ final class PlaylistConfigurationExporter
             $playlistEntry->schedules[] = new PlaylistScheduleEntry(
                 startTime: $schedule->start_time,
                 endTime: $schedule->end_time,
-                days: $schedule->days,
+                days: array_values($schedule->days),
                 startDate: $schedule->start_date,
                 endDate: $schedule->end_date,
                 loopOnce: $schedule->loop_once,
@@ -185,6 +185,7 @@ final class PlaylistConfigurationExporter
                 playlistRef: $memberRef,
                 weight: $playlistGroup->weight,
                 consecutivePlays: $playlistGroup->consecutive_plays,
+                playFullCycle: $playlistGroup->play_full_cycle,
                 allowedRequests: $playlistGroup->allowed_requests,
             );
         }

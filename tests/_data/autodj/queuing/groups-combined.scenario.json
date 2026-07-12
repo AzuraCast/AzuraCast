@@ -1,0 +1,85 @@
+{
+  "description": "A combined group cases test: one sequential root group whose members are child groups of every order (sequential/random/shuffle), a child group with a consecutive_plays member, a 2-level nested child group, and a direct-media playlist. Asserted over two full root cycles. Sequential/nested/consecutive/direct members are exact; the random member asserts membership; the shuffle member (c-shuffle) asserts distinct membership so its two picks across the cycles form a full permutation of its members. c-consec repeats its consecutive member (ccx -> mCCX) across both cycles.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "combined-groups-two-cycles",
+      "now": "2018-01-15T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "csa1",
+          "media_ref": "mCSA"
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "mCRA",
+            "mCRB"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "mCFA",
+            "mCFB"
+          ],
+          "distinct": true
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "ccx",
+          "media_ref": "mCCX"
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "cn-leaf",
+          "media_ref": "mCN"
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "direct",
+          "media_ref": "mD2"
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "csa2",
+          "media_ref": "mCSB"
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "mCRA",
+            "mCRB"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "mCFA",
+            "mCFB"
+          ],
+          "distinct": true
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "ccx",
+          "media_ref": "mCCX"
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "cn-leaf",
+          "media_ref": "mCN"
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "direct",
+          "media_ref": "mD2"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "description": "A random-order playlist selects one of its tracks; the exact pick is non-deterministic, so we assert set membership.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "selects-one-of-the-tracks",
+      "now": "2018-01-15T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "m1",
+            "m2",
+            "m3"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -347,8 +347,7 @@
                                             :model-value="member.consecutive_plays"
                                             @update:model-value="doUpdateConsecutivePlays(index, $event)"
                                             input-type="number"
-                                            :input-attrs="{min: '0'}"
-                                            :disabled="saving"
+                                            :input-attrs="{min: '0', disabled: saving || member.play_full_cycle}"
                                             :label="$gettext('Consecutive Plays')"
                                         />
 
@@ -360,6 +359,19 @@
                                             :options="getAllowedRequestsOptions(member)"
                                             :disabled="saving"
                                             :label="$gettext('Allowed Requests')"
+                                        />
+                                    </div>
+
+                                    <div
+                                        v-if="isFullCyclePlayable(member)"
+                                        class="mb-2"
+                                    >
+                                        <form-group-checkbox
+                                            :id="`play-full-cycle-${index}`"
+                                            :model-value="member.play_full_cycle"
+                                            @update:model-value="doUpdatePlayFullCycle(index, $event)"
+                                            :input-attrs="{disabled: saving}"
+                                            :label="$gettext('Play fully before advancing')"
                                         />
                                     </div>
 
@@ -455,6 +467,7 @@
 import Tab from "~/components/Common/Tab.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import IconIcHome from "~icons/ic/baseline-home";
 import IconIcLibraryMusic from "~icons/ic/baseline-library-music";
 import IconIcQueueMusic from "~icons/ic/baseline-queue-music";
@@ -532,6 +545,7 @@ watch($playlistList, (element) => {
             ...playlist,
             weight: 0,
             consecutive_plays: 0,
+            play_full_cycle: false,
             allowed_requests: PlaylistGroupAllowedRequests.Any,
         }),
     });
@@ -578,10 +592,12 @@ const buildTree = (raw: StationPlaylistEnriched[]): StationPlaylistEnriched[] =>
                         ...fullPlaylist,
                         weight: member.weight,
                         consecutive_plays: member.consecutive_plays ?? 0,
+                        play_full_cycle: member.play_full_cycle ?? false,
                         allowed_requests: member.allowed_requests ?? PlaylistGroupAllowedRequests.Any,
                     }
                     : {
                         ...member,
+                        play_full_cycle: member.play_full_cycle ?? false,
                         allowed_requests: member.allowed_requests ?? PlaylistGroupAllowedRequests.Any,
                         description: '',
                         type: 'default',
@@ -720,6 +736,7 @@ const saveMembersForSelected = async (members: StationPlaylistGroupMemberEnriche
                 id: member.id,
                 weight: index + 1,
                 consecutive_plays: member.consecutive_plays ?? 0,
+                play_full_cycle: member.play_full_cycle ?? false,
                 allowed_requests: member.allowed_requests ?? PlaylistGroupAllowedRequests.Any,
             })),
         });
@@ -756,8 +773,10 @@ const doAssign = async (playlist: StationPlaylistEnriched): Promise<void> => {
         name: playlist.name,
         weight: group.playlists.length + 1,
         consecutive_plays: 0,
+        play_full_cycle: false,
         allowed_requests: PlaylistGroupAllowedRequests.Any,
         source: playlist.source,
+        order: playlist.order,
         num_songs: playlist.num_songs,
         playlists: playlist.playlists,
     };
@@ -809,6 +828,25 @@ const doUpdateConsecutivePlays = (index: number, value: number | null): void => 
 
     const updated = [...playlistMembers.value];
     updated[index] = {...updated[index], consecutive_plays: consecutivePlays};
+    playlistMembers.value = updated;
+
+    void debouncedSaveMembers(updated);
+};
+
+const isFullCyclePlayable = (member: StationPlaylistGroupMemberEnriched): boolean => {
+    return (member.source as PlaylistSources) === PlaylistSources.Songs
+        && [PlaylistOrders.Sequential, PlaylistOrders.Shuffle].includes(member.order as PlaylistOrders);
+}
+
+const doUpdatePlayFullCycle = (index: number, value: boolean | null): void => {
+    const playFullCycle = value ?? false;
+
+    const updated = [...playlistMembers.value];
+    updated[index] = {
+        ...updated[index],
+        play_full_cycle: playFullCycle,
+        consecutive_plays: updated[index].consecutive_plays,
+    };
     playlistMembers.value = updated;
 
     void debouncedSaveMembers(updated);

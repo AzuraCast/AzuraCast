@@ -64,7 +64,14 @@ final readonly class PutMembersAction implements SingleActionInterface
             throw new Exception(__('This playlist is not a playlist group.'));
         }
 
-        /** @var array<array{id?: mixed, weight?: mixed, consecutive_plays?: mixed, allowed_requests?: mixed}> $members */
+        /** @var array<array{
+         *     id?: mixed,
+         *     weight?: mixed,
+         *     consecutive_plays?: mixed,
+         *     play_full_cycle?: mixed,
+         *     allowed_requests?: mixed
+         * }> $members
+         */
         $members = Types::array($request->getParam('members'));
 
         // Validate all members before making any changes to ensure we don't try
@@ -108,6 +115,7 @@ final readonly class PutMembersAction implements SingleActionInterface
             $memberId = Types::int($member['id'] ?? null);
             $weight = Types::int($member['weight'] ?? 0);
             $consecutivePlays = Types::int($member['consecutive_plays'] ?? 0);
+            $playFullCycle = Types::bool($member['play_full_cycle'] ?? false);
 
             $memberPlaylist = $this->playlistRepo->findForStation($memberId, $station);
             if (!$memberPlaylist instanceof StationPlaylist) {
@@ -117,6 +125,7 @@ final readonly class PutMembersAction implements SingleActionInterface
             $stationPlaylistGroup = new StationPlaylistGroup($memberPlaylist, $record);
             $stationPlaylistGroup->weight = $weight;
             $stationPlaylistGroup->consecutive_plays = max(0, $consecutivePlays);
+            $stationPlaylistGroup->play_full_cycle = $playFullCycle;
 
             $allowedRequests = PlaylistGroupAllowedRequests::tryFrom(
                 Types::stringOrNull($member['allowed_requests'] ?? null) ?? ''

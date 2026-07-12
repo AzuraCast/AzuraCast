@@ -1075,6 +1075,18 @@ export interface ApiNowPlayingVueProps {
   useSse: boolean;
 }
 
+export type ApiPlaylistConfigurationImportResult = ApiStatus & {
+  /** @example 3 */
+  playlists_created?: number;
+  /** @example 10 */
+  media_relinked?: number;
+  /** @example 2 */
+  media_generated?: number;
+  /** @example 1 */
+  members_created?: number;
+  warnings?: string[];
+};
+
 export type ApiPodcast = HasLinks & {
   id?: string;
   storage_location_id?: number;
@@ -2441,6 +2453,8 @@ export type StationPlaylistGroup = HasAutoIncrementId & {
   weight?: number;
   /** @example 0 */
   consecutive_plays?: number;
+  /** @example false */
+  play_full_cycle?: boolean;
   allowed_requests?: PlaylistGroupAllowedRequests;
 };
 

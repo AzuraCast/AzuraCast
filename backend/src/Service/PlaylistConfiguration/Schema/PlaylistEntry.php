@@ -11,6 +11,42 @@ use App\Entity\Enums\PlaylistTypes;
 use App\Utilities\Types;
 use JsonSerializable;
 
+/**
+ * @phpstan-import-type PlaylistFolderShape from PlaylistFolderEntry
+ * @phpstan-import-type PlaylistMediaShape from PlaylistMediaEntry
+ * @phpstan-import-type PlaylistScheduleShape from PlaylistScheduleEntry
+ * @phpstan-import-type PlaylistMemberShape from PlaylistMemberEntry
+ *
+ * @phpstan-type PlaylistConfigShape array{
+ *     type: string,
+ *     source: string,
+ *     order: string,
+ *     weight: int,
+ *     is_enabled: bool,
+ *     is_jingle: bool,
+ *     avoid_duplicates: bool,
+ *     include_in_requests: bool,
+ *     include_in_on_demand: bool,
+ *     play_per_songs: int,
+ *     play_per_minutes: int,
+ *     play_per_hour_minute: int,
+ *     backend_options: string[],
+ *     remote_url: ?string,
+ *     remote_type: ?string,
+ *     remote_buffer: int,
+ *     description: ?string
+ * }
+ *
+ * @phpstan-type PlaylistEntryShape array{
+ *     ref: string,
+ *     name: string,
+ *     config: PlaylistConfigShape,
+ *     folders: PlaylistFolderShape[],
+ *     media: PlaylistMediaShape[],
+ *     schedules: PlaylistScheduleShape[],
+ *     members: PlaylistMemberShape[]
+ * }
+ */
 final class PlaylistEntry implements JsonSerializable
 {
     /**
@@ -78,23 +114,36 @@ final class PlaylistEntry implements JsonSerializable
             description: Types::stringOrNull($config['description'] ?? null),
             folders: array_map(
                 static fn(mixed $item): PlaylistFolderEntry => PlaylistFolderEntry::fromArray(Types::array($item)),
-                array_values(Types::array($data['folders'] ?? []))
+                Types::array($data['folders'] ?? [])
             ),
             media: array_map(
                 static fn(mixed $item): PlaylistMediaEntry => PlaylistMediaEntry::fromArray(Types::array($item)),
-                array_values(Types::array($data['media'] ?? []))
+                Types::array($data['media'] ?? [])
             ),
             schedules: array_map(
                 static fn(mixed $item): PlaylistScheduleEntry => PlaylistScheduleEntry::fromArray(Types::array($item)),
-                array_values(Types::array($data['schedules'] ?? []))
+                Types::array($data['schedules'] ?? [])
             ),
             members: array_map(
                 static fn(mixed $item): PlaylistMemberEntry => PlaylistMemberEntry::fromArray(Types::array($item)),
-                array_values(Types::array($data['members'] ?? []))
+                Types::array($data['members'] ?? [])
             ),
         );
     }
 
+    /**
+     * @see PlaylistEntryShape for full serialized format since PHPStan can't infer the JSON serialized types
+     *
+     * @return array{
+     *     ref: string,
+     *     name: string,
+     *     config: PlaylistConfigShape,
+     *     folders: PlaylistFolderEntry[],
+     *     media: PlaylistMediaEntry[],
+     *     schedules: PlaylistScheduleEntry[],
+     *     members: PlaylistMemberEntry[]
+     * }
+     */
     public function jsonSerialize(): mixed
     {
         return [
@@ -113,7 +162,7 @@ final class PlaylistEntry implements JsonSerializable
                 'play_per_songs' => $this->playPerSongs,
                 'play_per_minutes' => $this->playPerMinutes,
                 'play_per_hour_minute' => $this->playPerHourMinute,
-                'backend_options' => array_values(array_filter($this->backendOptions)),
+                'backend_options' => array_filter($this->backendOptions),
                 'remote_url' => $this->remoteUrl,
                 'remote_type' => $this->remoteType?->value,
                 'remote_buffer' => $this->remoteBuffer,

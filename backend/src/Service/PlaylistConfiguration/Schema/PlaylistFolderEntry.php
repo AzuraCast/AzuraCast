@@ -7,6 +7,12 @@ namespace App\Service\PlaylistConfiguration\Schema;
 use App\Utilities\Types;
 use JsonSerializable;
 
+/**
+ * @phpstan-type PlaylistFolderShape array{
+ *     ref: string,
+ *     path: string
+ * }
+ */
 final class PlaylistFolderEntry implements JsonSerializable
 {
     public function __construct(
@@ -26,6 +32,9 @@ final class PlaylistFolderEntry implements JsonSerializable
         );
     }
 
+    /**
+     * @return PlaylistFolderShape
+     */
     public function jsonSerialize(): mixed
     {
         return [

@@ -1,0 +1,20 @@
+{
+  "description": "A top-level Standard (default) group is always eligible and plays its member's track.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "standard-group-plays",
+      "now": "2018-01-15T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "a",
+          "media_ref": "mA"
+        }
+      ]
+    }
+  ]
+}

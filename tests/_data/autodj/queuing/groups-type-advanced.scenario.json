@@ -1,0 +1,18 @@
+{
+  "description": "A top-level Advanced (custom) group is not managed by the AutoDJ and never plays automatically. Negative test for type that should not be available via the UI.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "advanced-group-never-plays",
+      "now": "2018-01-15T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "none"
+        }
+      ]
+    }
+  ]
+}

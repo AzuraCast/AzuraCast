@@ -26,7 +26,7 @@ final class RolePermission implements
     public readonly Role $role;
 
     public int $role_id {
-        get => $this->role_id;
+        get => $this->role->id;
     }
 
     #[ORM\ManyToOne(inversedBy: 'permissions')]
@@ -34,7 +34,7 @@ final class RolePermission implements
     public ?Station $station;
 
     public ?int $station_id {
-        get => $this->station_id;
+        get => $this->station?->id;
     }
 
     public function setStation(Station $station): void

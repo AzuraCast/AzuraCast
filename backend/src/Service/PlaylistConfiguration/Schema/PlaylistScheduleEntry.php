@@ -7,6 +7,17 @@ namespace App\Service\PlaylistConfiguration\Schema;
 use App\Utilities\Types;
 use JsonSerializable;
 
+/**
+ * @phpstan-type PlaylistScheduleShape array{
+ *     start_time: int,
+ *     end_time: int,
+ *     days: int[],
+ *     start_date: ?string,
+ *     end_date: ?string,
+ *     loop_once: bool,
+ *     prevent_requests: bool
+ * }
+ */
 final class PlaylistScheduleEntry implements JsonSerializable
 {
     /**
@@ -39,6 +50,9 @@ final class PlaylistScheduleEntry implements JsonSerializable
         );
     }
 
+    /**
+     * @return PlaylistScheduleShape
+     */
     public function jsonSerialize(): mixed
     {
         return [

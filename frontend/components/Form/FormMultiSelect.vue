@@ -3,6 +3,7 @@
         v-model="model"
         class="form-select"
         multiple
+        :disabled="disabled"
     >
         <select-options :options="options"/>
     </select>
@@ -13,9 +14,15 @@ import {NestedFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import SelectOptions from "~/components/Form/SelectOptions.vue";
 import {ModelFormField} from "~/components/Form/useFormField.ts";
 
-defineProps<{
-    options: NestedFormOptionInput
-}>();
+withDefaults(
+    defineProps<{
+        options: NestedFormOptionInput,
+        disabled?: boolean
+    }>(),
+    {
+        disabled: false
+    }
+);
 
 const model = defineModel<T>({
     default: () => [] as any[],

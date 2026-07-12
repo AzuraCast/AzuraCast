@@ -1,0 +1,20 @@
+{
+  "description": "A single sequential song playlist must queue its lowest-weight queued track first.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "picks-lowest-weight-track",
+      "now": "2018-01-15T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "seq",
+          "media_ref": "m1"
+        }
+      ]
+    }
+  ]
+}

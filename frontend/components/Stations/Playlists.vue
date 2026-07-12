@@ -470,6 +470,7 @@ const doGroupReorder = async (membersUrl: string, playlists: StationPlaylistGrou
                     ...full,
                     weight: weight,
                     consecutive_plays: consecutivePlays,
+                    play_full_cycle: member.play_full_cycle ?? false,
                     allowed_requests: member.allowed_requests ?? PlaylistGroupAllowedRequests.Any,
                 }
                 : {
@@ -477,8 +478,10 @@ const doGroupReorder = async (membersUrl: string, playlists: StationPlaylistGrou
                     name: member.name ?? '',
                     weight: weight,
                     consecutive_plays: consecutivePlays,
+                    play_full_cycle: member.play_full_cycle ?? false,
                     allowed_requests: member.allowed_requests ?? PlaylistGroupAllowedRequests.Any,
                     source: '',
+                    order: '',
                     num_songs: 0,
                     playlists: []
                 };

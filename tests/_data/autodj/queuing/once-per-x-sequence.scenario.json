@@ -1,0 +1,30 @@
+{
+  "description": "A once-per-30-minutes playlist plays, is ignored 10 minutes later, and plays again once 35 minutes have elapsed.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "plays-then-gated-then-plays-again",
+      "now": "2018-01-15T00:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "opx",
+          "media_ref": "m1"
+        },
+        {
+          "now": "2018-01-15T00:10:00+00:00",
+          "mode": "none"
+        },
+        {
+          "now": "2018-01-15T00:35:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "opx",
+          "media_ref": "m1"
+        }
+      ]
+    }
+  ]
+}

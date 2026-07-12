@@ -10,6 +10,30 @@ use App\Utilities\Time;
 use App\Utilities\Types;
 use JsonSerializable;
 
+/**
+ * @phpstan-import-type MediaEntryShape from MediaEntry
+ * @phpstan-import-type PlaylistEntryShape from PlaylistEntry
+ *
+ * @phpstan-type StationShape array{
+ *     name: string,
+ *     timezone: string,
+ *     requests_only_via_playlists: bool,
+ *     backend_config: array{
+ *         duplicate_prevention_time_range: int,
+ *         autodj_queue_length: int,
+ *         crossfade: float
+ *     }
+ * }
+ *
+ * @phpstan-type PlaylistConfigurationDump array{
+ *     schema_version: int,
+ *     type: value-of<PlaylistConfigurationType>,
+ *     exported_at: string,
+ *     station: StationShape,
+ *     media: MediaEntryShape[],
+ *     playlists: PlaylistEntryShape[]
+ * }
+ */
 final class PlaylistConfigurationSchema implements JsonSerializable
 {
     // Bumped on breaking schema changes
@@ -37,15 +61,27 @@ final class PlaylistConfigurationSchema implements JsonSerializable
             station: $station,
             mediaEntries: array_map(
                 static fn(mixed $item): MediaEntry => MediaEntry::fromArray(Types::array($item)),
-                array_values(Types::array($data['media'] ?? []))
+                Types::array($data['media'] ?? [])
             ),
             playlistEntries: array_map(
                 static fn(mixed $item): PlaylistEntry => PlaylistEntry::fromArray(Types::array($item)),
-                array_values(Types::array($data['playlists'] ?? []))
+                Types::array($data['playlists'] ?? [])
             ),
         );
     }
 
+    /**
+     * @see PlaylistConfigurationDump for full serialized format since PHPStan can't infer the JSON serialized types
+     *
+     * @return array{
+     *     schema_version: int,
+     *     type: PlaylistConfigurationType,
+     *     exported_at: string,
+     *     station: StationShape,
+     *     media: MediaEntry[],
+     *     playlists: PlaylistEntry[]
+     * }
+     */
     public function jsonSerialize(): mixed
     {
         $backendConfig = $this->station->backend_config;

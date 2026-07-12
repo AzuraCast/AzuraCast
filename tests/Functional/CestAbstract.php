@@ -217,6 +217,9 @@ abstract class CestAbstract
         array $createJson = [],
         array $editJson = []
     ): void {
+        // Use JSON to send like browsers, Codeception would use form data otherwise
+        $I->haveHttpHeader('Content-Type', 'application/json');
+
         // Create new record
         $I->sendPOST($listUrl, $createJson);
 

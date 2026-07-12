@@ -388,25 +388,31 @@ const { $gettext } = useTranslate();
 
 const sourceOptions = [
     {
-        value: 'songs',
-        text: $gettext('Song-Based'),
-        description: $gettext('A playlist containing media files hosted on this server.')
+        value: "songs",
+        text: $gettext("Song-Based"),
+        description: $gettext(
+            "A playlist containing media files hosted on this server.",
+        ),
     },
     {
-        value: 'playlists',
-        text: $gettext('Playlist Group'),
-        description: $gettext('A playlist containing other playlists.')
+        value: "playlists",
+        text: $gettext("Playlist Group"),
+        description: $gettext("A playlist containing other playlists."),
     },
     {
-        value: 'remote_url',
-        text: $gettext('Remote URL'),
-        description: $gettext('A playlist that instructs the station to play from a remote URL.')
+        value: "remote_url",
+        text: $gettext("Remote URL"),
+        description: $gettext(
+            "A playlist that instructs the station to play from a remote URL.",
+        ),
     },
     {
-        value: 'requests',
-        text: $gettext('Request Queue'),
-        description: $gettext('A playlist that plays songs requested by listeners.')
-    }
+        value: "requests",
+        text: $gettext("Request Queue"),
+        description: $gettext(
+            "A playlist that plays songs requested by listeners.",
+        ),
+    },
 ];
 
 const typeOptions = [

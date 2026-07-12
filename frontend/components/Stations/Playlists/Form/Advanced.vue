@@ -42,8 +42,8 @@ const backendOptions = [
         text: $gettext("Only play one track at scheduled time."),
     },
     {
-        value: 'merge',
-        text: $gettext('Merge playlist to play as a single track.')
-    }
+        value: "merge",
+        text: $gettext("Merge playlist to play as a single track."),
+    },
 ];
 </script>

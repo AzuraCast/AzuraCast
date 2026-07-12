@@ -16,12 +16,12 @@ import { NestedFormOptionInput } from "~/functions/objectToFormOptions.ts";
 
 withDefaults(
     defineProps<{
-        options: NestedFormOptionInput,
-        disabled?: boolean
+        options: NestedFormOptionInput;
+        disabled?: boolean;
     }>(),
     {
-        disabled: false
-    }
+        disabled: false,
+    },
 );
 
 const model = defineModel<T>();

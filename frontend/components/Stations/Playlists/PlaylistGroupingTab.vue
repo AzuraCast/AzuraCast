@@ -464,42 +464,47 @@
 </template>
 
 <script setup lang="ts">
+import { useDebounceFn } from "@vueuse/core";
+import { ref, useTemplateRef, watch } from "vue";
+import { useDraggable } from "vue-draggable-plus";
 import Tab from "~/components/Common/Tab.vue";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import IconIcHome from "~icons/ic/baseline-home";
-import IconIcLibraryMusic from "~icons/ic/baseline-library-music";
-import IconIcQueueMusic from "~icons/ic/baseline-queue-music";
-import IconIcPublic from "~icons/ic/baseline-public";
-import IconIcDriveFileMove from "~icons/ic/baseline-drive-file-move";
-import IconIcDelete from "~icons/ic/baseline-delete";
-import IconBiPeople from "~icons/bi/people";
-import IconBiFolder from "~icons/bi/folder";
+import {
+    PlaylistGroupAllowedRequests,
+    PlaylistOrders,
+    PlaylistSources,
+    PlaylistTypes,
+} from "~/entities/ApiInterfaces.ts";
+import {
+    type PlaylistBreadcrumb,
+    type StationPlaylistEnriched,
+    type StationPlaylistGroupMemberEnriched,
+} from "~/entities/StationPlaylist.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
 import IconBiChevronBarDown from "~icons/bi/chevron-bar-down";
 import IconBiChevronBarUp from "~icons/bi/chevron-bar-up";
 import IconBiChevronDown from "~icons/bi/chevron-down";
 import IconBiChevronUp from "~icons/bi/chevron-up";
-import {ref, useTemplateRef, watch} from "vue";
-import {useDebounceFn} from "@vueuse/core";
-import {useDraggable} from "vue-draggable-plus";
-import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useTranslate} from "~/vendor/gettext";
-import {
-    type StationPlaylistEnriched,
-    type StationPlaylistGroupMemberEnriched,
-    type PlaylistBreadcrumb,
-} from "~/entities/StationPlaylist.ts";
-import {PlaylistSources, PlaylistTypes, PlaylistOrders, PlaylistGroupAllowedRequests} from "~/entities/ApiInterfaces.ts";
+import IconBiFolder from "~icons/bi/folder";
+import IconBiPeople from "~icons/bi/people";
+import IconIcDelete from "~icons/ic/baseline-delete";
+import IconIcDriveFileMove from "~icons/ic/baseline-drive-file-move";
+import IconIcHome from "~icons/ic/baseline-home";
+import IconIcLibraryMusic from "~icons/ic/baseline-library-music";
+import IconIcPublic from "~icons/ic/baseline-public";
+import IconIcQueueMusic from "~icons/ic/baseline-queue-music";
 
 const props = defineProps<{
-    listUrl: string
+    listUrl: string;
 }>();
 
-const $tab = useTemplateRef<InstanceType<typeof Tab>>('$tab');
-const $playlistList = useTemplateRef<HTMLUListElement>('$playlistList');
-const $playlistContents = useTemplateRef<HTMLUListElement>('$playlistContents');
+const $tab = useTemplateRef<InstanceType<typeof Tab>>("$tab");
+const $playlistList = useTemplateRef<HTMLUListElement>("$playlistList");
+const $playlistContents = useTemplateRef<HTMLUListElement>("$playlistContents");
 
 watch(
     () => $tab.value?.isActive,
@@ -507,12 +512,12 @@ watch(
         if (isActive) {
             void loadPlaylists();
         }
-    }
+    },
 );
 
-const {$gettext} = useTranslate();
-const {axios} = useAxios();
-const {notifySuccess, notifyError} = useNotify();
+const { $gettext } = useTranslate();
+const { axios } = useAxios();
+const { notifySuccess, notifyError } = useNotify();
 
 const loading = ref<boolean>(true);
 const saving = ref<boolean>(false);
@@ -523,9 +528,10 @@ const selectedPlaylist = ref<StationPlaylistEnriched | undefined>(undefined);
 const playlistMembers = ref<StationPlaylistGroupMemberEnriched[]>([]);
 
 watch(selectedPlaylist, (playlist) => {
-    playlistMembers.value = playlist?.source === PlaylistSources.Playlists
-        ? [...playlist.playlists]
-        : [];
+    playlistMembers.value =
+        playlist?.source === PlaylistSources.Playlists
+            ? [...playlist.playlists]
+            : [];
 });
 
 watch($playlistList, (element) => {
@@ -535,11 +541,11 @@ watch($playlistList, (element) => {
 
     useDraggable($playlistList, currentPlaylists, {
         group: {
-            name: 'playlist-grouping',
-            pull: 'clone',
+            name: "playlist-grouping",
+            pull: "clone",
             put: false,
         },
-        filter: '.not-assignable',
+        filter: ".not-assignable",
         sort: false,
         clone: (playlist: StationPlaylistEnriched) => ({
             ...playlist,
@@ -553,21 +559,21 @@ watch($playlistList, (element) => {
 
 watch($playlistContents, (element) => {
     if (element === null) {
-        return
+        return;
     }
 
     useDraggable($playlistContents, playlistMembers, {
         group: {
-            name: 'playlist-grouping',
+            name: "playlist-grouping",
             put: true,
         },
-        filter: '.no-drag',
+        filter: ".no-drag",
         onEnd() {
             void saveMembersForSelected(playlistMembers.value);
         },
         onAdd() {
             void saveMembersForSelected(playlistMembers.value);
-        }
+        },
     });
 });
 
@@ -576,11 +582,18 @@ watch($playlistContents, (element) => {
  * their StationPlaylistGroup (id, name, weight) we need to enrich those to
  * have their full StationPlaylist forms available for easier handling.
  */
-const buildTree = (raw: StationPlaylistEnriched[]): StationPlaylistEnriched[] => {
-    const map = new Map<number, StationPlaylistEnriched>(raw.map((playlist) => [playlist.id, playlist]));
+const buildTree = (
+    raw: StationPlaylistEnriched[],
+): StationPlaylistEnriched[] => {
+    const map = new Map<number, StationPlaylistEnriched>(
+        raw.map((playlist) => [playlist.id, playlist]),
+    );
 
     for (const playlist of raw) {
-        if (playlist.source !== PlaylistSources.Playlists || !Array.isArray(playlist.playlists)) {
+        if (
+            playlist.source !== PlaylistSources.Playlists ||
+            !Array.isArray(playlist.playlists)
+        ) {
             continue;
         }
 
@@ -589,28 +602,32 @@ const buildTree = (raw: StationPlaylistEnriched[]): StationPlaylistEnriched[] =>
                 const fullPlaylist = map.get(member.id);
                 return fullPlaylist
                     ? {
-                        ...fullPlaylist,
-                        weight: member.weight,
-                        consecutive_plays: member.consecutive_plays ?? 0,
-                        play_full_cycle: member.play_full_cycle ?? false,
-                        allowed_requests: member.allowed_requests ?? PlaylistGroupAllowedRequests.Any,
-                    }
+                          ...fullPlaylist,
+                          weight: member.weight,
+                          consecutive_plays: member.consecutive_plays ?? 0,
+                          play_full_cycle: member.play_full_cycle ?? false,
+                          allowed_requests:
+                              member.allowed_requests ??
+                              PlaylistGroupAllowedRequests.Any,
+                      }
                     : {
-                        ...member,
-                        play_full_cycle: member.play_full_cycle ?? false,
-                        allowed_requests: member.allowed_requests ?? PlaylistGroupAllowedRequests.Any,
-                        description: '',
-                        type: 'default',
-                        is_jingle: false,
-                        order: 'shuffle',
-                        play_per_songs: 0,
-                        play_per_minutes: 0,
-                        play_per_hour_minute: 0,
-                        include_in_on_demand: false,
-                        schedule_items: [],
-                        is_enabled: true,
-                        links: {self: ''},
-                    };
+                          ...member,
+                          play_full_cycle: member.play_full_cycle ?? false,
+                          allowed_requests:
+                              member.allowed_requests ??
+                              PlaylistGroupAllowedRequests.Any,
+                          description: "",
+                          type: "default",
+                          is_jingle: false,
+                          order: "shuffle",
+                          play_per_songs: 0,
+                          play_per_minutes: 0,
+                          play_per_hour_minute: 0,
+                          include_in_on_demand: false,
+                          schedule_items: [],
+                          is_enabled: true,
+                          links: { self: "" },
+                      };
             })
             .sort((a, b) => a.weight - b.weight);
     }
@@ -619,36 +636,39 @@ const buildTree = (raw: StationPlaylistEnriched[]): StationPlaylistEnriched[] =>
 };
 
 const fetchAndBuildPlaylists = async (): Promise<void> => {
-    const {data} = await axios.get(props.listUrl, {
-        params: {rowCount: -1},
+    const { data } = await axios.get(props.listUrl, {
+        params: { rowCount: -1 },
     });
 
-    const items: StationPlaylistEnriched[] = data.rows as StationPlaylistEnriched[] ?? [];
+    const items: StationPlaylistEnriched[] =
+        (data.rows as StationPlaylistEnriched[]) ?? [];
 
     playlists.value = buildTree(items);
 };
 
-const resolveCurrentPlaylistsByCreadcrumbs = (breadcrumbs: PlaylistBreadcrumb[]): StationPlaylistEnriched[] => {
+const resolveCurrentPlaylistsByCreadcrumbs = (
+    breadcrumbs: PlaylistBreadcrumb[],
+): StationPlaylistEnriched[] => {
     if (breadcrumbs.length === 0) {
         return [...playlists.value];
     }
 
     let currentPlaylists = playlists.value;
     for (const breadcrumb of breadcrumbs) {
-        const breadcrumpPlaylist = currentPlaylists.find((playlist) => playlist.id === breadcrumb.id);
+        const breadcrumpPlaylist = currentPlaylists.find(
+            (playlist) => playlist.id === breadcrumb.id,
+        );
 
         if (breadcrumpPlaylist?.source !== PlaylistSources.Playlists) {
             continue;
         }
 
-        const resolvedPlaylists = breadcrumpPlaylist.playlists.map(
-            (member) => playlists.value.find(
-                (playlist) => playlist.id === member.id
-            )
+        const resolvedPlaylists = breadcrumpPlaylist.playlists.map((member) =>
+            playlists.value.find((playlist) => playlist.id === member.id),
         );
 
         if (resolvedPlaylists.some((playlist) => !playlist)) {
-            notifyError($gettext('Failed to resolve playlist in group.'));
+            notifyError($gettext("Failed to resolve playlist in group."));
             return currentPlaylists;
         }
 
@@ -667,7 +687,7 @@ const loadPlaylists = async () => {
         await fetchAndBuildPlaylists();
         currentPlaylists.value = [...playlists.value];
     } catch {
-        notifyError($gettext('Failed to load playlists.'));
+        notifyError($gettext("Failed to load playlists."));
     } finally {
         loading.value = false;
     }
@@ -675,18 +695,18 @@ const loadPlaylists = async () => {
 
 const navigateFromBreadcrumb = (breadcrumbIndex: number = 0): void => {
     playlistBreadcrumbs.value.splice(breadcrumbIndex);
-    currentPlaylists.value = resolveCurrentPlaylistsByCreadcrumbs(playlistBreadcrumbs.value);
+    currentPlaylists.value = resolveCurrentPlaylistsByCreadcrumbs(
+        playlistBreadcrumbs.value,
+    );
 };
 
 const enterPlaylistGroup = (playlist: StationPlaylistEnriched): void => {
-    const resolvedPlaylists = playlist.playlists.map(
-        (member) => playlists.value.find(
-            (fullPlaylist) => fullPlaylist.id === member.id
-        )
+    const resolvedPlaylists = playlist.playlists.map((member) =>
+        playlists.value.find((fullPlaylist) => fullPlaylist.id === member.id),
     );
 
     if (resolvedPlaylists.some((playlist) => !playlist)) {
-        notifyError($gettext('Failed to resolve playlist in group.'));
+        notifyError($gettext("Failed to resolve playlist in group."));
         return;
     }
 
@@ -702,18 +722,30 @@ const isSelected = (playlist: StationPlaylistEnriched): boolean =>
     playlist.id === selectedPlaylist.value?.id;
 
 const isSelectable = (playlist: StationPlaylistEnriched): boolean =>
-    [PlaylistSources.Songs, PlaylistSources.Playlists].includes(playlist.source) && !isSelected(playlist);
+    [PlaylistSources.Songs, PlaylistSources.Playlists].includes(
+        playlist.source,
+    ) && !isSelected(playlist);
 
 const isAssignable = (playlist: StationPlaylistEnriched): boolean => {
     if (selectedPlaylist.value?.source !== PlaylistSources.Playlists) {
         return false;
     }
 
-    if (![PlaylistSources.Songs, PlaylistSources.Requests, PlaylistSources.Playlists].includes(playlist.source)) {
+    if (
+        ![
+            PlaylistSources.Songs,
+            PlaylistSources.Requests,
+            PlaylistSources.Playlists,
+        ].includes(playlist.source)
+    ) {
         return false;
     }
 
-    if (playlistBreadcrumbs.value.some((breadcrump) => breadcrump.id === selectedPlaylist.value!.id)) {
+    if (
+        playlistBreadcrumbs.value.some(
+            (breadcrump) => breadcrump.id === selectedPlaylist.value!.id,
+        )
+    ) {
         return false;
     }
 
@@ -723,7 +755,9 @@ const isAssignable = (playlist: StationPlaylistEnriched): boolean => {
 const hasButtons = (playlist: StationPlaylistEnriched): boolean =>
     isAssignable(playlist) || playlist.source === PlaylistSources.Playlists;
 
-const saveMembersForSelected = async (members: StationPlaylistGroupMemberEnriched[]): Promise<void> => {
+const saveMembersForSelected = async (
+    members: StationPlaylistGroupMemberEnriched[],
+): Promise<void> => {
     const group = selectedPlaylist.value;
     if (!group?.links.members) {
         return;
@@ -737,7 +771,8 @@ const saveMembersForSelected = async (members: StationPlaylistGroupMemberEnriche
                 weight: index + 1,
                 consecutive_plays: member.consecutive_plays ?? 0,
                 play_full_cycle: member.play_full_cycle ?? false,
-                allowed_requests: member.allowed_requests ?? PlaylistGroupAllowedRequests.Any,
+                allowed_requests:
+                    member.allowed_requests ?? PlaylistGroupAllowedRequests.Any,
             })),
         });
 
@@ -746,20 +781,24 @@ const saveMembersForSelected = async (members: StationPlaylistGroupMemberEnriche
 
         await fetchAndBuildPlaylists();
 
-        currentPlaylists.value = resolveCurrentPlaylistsByCreadcrumbs(savedBreadcrumbs);
-        selectedPlaylist.value = playlists.value.find((playlist) => playlist.id === savedId);
+        currentPlaylists.value =
+            resolveCurrentPlaylistsByCreadcrumbs(savedBreadcrumbs);
+        selectedPlaylist.value = playlists.value.find(
+            (playlist) => playlist.id === savedId,
+        );
 
-        notifySuccess($gettext('Playlist group updated.'));
+        notifySuccess($gettext("Playlist group updated."));
     } catch {
-        notifyError($gettext('Failed to update playlist group.'));
+        notifyError($gettext("Failed to update playlist group."));
     } finally {
         saving.value = false;
     }
 };
 
 const debouncedSaveMembers = useDebounceFn(
-    (members: StationPlaylistGroupMemberEnriched[]) => saveMembersForSelected(members),
-    1500
+    (members: StationPlaylistGroupMemberEnriched[]) =>
+        saveMembersForSelected(members),
+    1500,
 );
 
 const doAssign = async (playlist: StationPlaylistEnriched): Promise<void> => {
@@ -823,20 +862,29 @@ const doMoveToBottom = async (index: number): Promise<void> => {
     await saveMembersForSelected(updated);
 };
 
-const doUpdateConsecutivePlays = (index: number, value: number | null): void => {
+const doUpdateConsecutivePlays = (
+    index: number,
+    value: number | null,
+): void => {
     const consecutivePlays = Math.max(0, value ?? 0);
 
     const updated = [...playlistMembers.value];
-    updated[index] = {...updated[index], consecutive_plays: consecutivePlays};
+    updated[index] = { ...updated[index], consecutive_plays: consecutivePlays };
     playlistMembers.value = updated;
 
     void debouncedSaveMembers(updated);
 };
 
-const isFullCyclePlayable = (member: StationPlaylistGroupMemberEnriched): boolean => {
-    return (member.source as PlaylistSources) === PlaylistSources.Songs
-        && [PlaylistOrders.Sequential, PlaylistOrders.Shuffle].includes(member.order as PlaylistOrders);
-}
+const isFullCyclePlayable = (
+    member: StationPlaylistGroupMemberEnriched,
+): boolean => {
+    return (
+        (member.source as PlaylistSources) === PlaylistSources.Songs &&
+        [PlaylistOrders.Sequential, PlaylistOrders.Shuffle].includes(
+            member.order as PlaylistOrders,
+        )
+    );
+};
 
 const doUpdatePlayFullCycle = (index: number, value: boolean | null): void => {
     const playFullCycle = value ?? false;
@@ -852,16 +900,24 @@ const doUpdatePlayFullCycle = (index: number, value: boolean | null): void => {
     void debouncedSaveMembers(updated);
 };
 
-const getAllowedRequestsOptions = (member: StationPlaylistGroupMemberEnriched) => {
+const getAllowedRequestsOptions = (
+    member: StationPlaylistGroupMemberEnriched,
+) => {
     const options: Record<string, string> = {
-        [PlaylistGroupAllowedRequests.Any]: $gettext('Any (Default)'),
+        [PlaylistGroupAllowedRequests.Any]: $gettext("Any (Default)"),
     };
 
-    if ([PlaylistSources.Songs, PlaylistSources.Playlists].includes(member.source as PlaylistSources)) {
-        options[PlaylistGroupAllowedRequests.Playlist] = $gettext('Playlist Media Only');
+    if (
+        [PlaylistSources.Songs, PlaylistSources.Playlists].includes(
+            member.source as PlaylistSources,
+        )
+    ) {
+        options[PlaylistGroupAllowedRequests.Playlist] = $gettext(
+            "Playlist Media Only",
+        );
     }
 
-    options[PlaylistGroupAllowedRequests.None] = $gettext('None');
+    options[PlaylistGroupAllowedRequests.None] = $gettext("None");
 
     return options;
 };
@@ -870,7 +926,8 @@ const doUpdateAllowedRequests = (index: number, value: string | null): void => {
     const updated = [...playlistMembers.value];
     updated[index] = {
         ...updated[index],
-        allowed_requests: (value ?? PlaylistGroupAllowedRequests.Any) as PlaylistGroupAllowedRequests
+        allowed_requests: (value ??
+            PlaylistGroupAllowedRequests.Any) as PlaylistGroupAllowedRequests,
     };
     playlistMembers.value = updated;
 

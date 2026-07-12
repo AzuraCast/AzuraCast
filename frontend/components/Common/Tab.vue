@@ -15,5 +15,5 @@ const props = defineProps<TabChildProps>();
 
 const { computedId, isActive, isLazy } = useTabChild(props);
 
-defineExpose({isActive});
+defineExpose({ isActive });
 </script>

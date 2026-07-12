@@ -113,6 +113,7 @@
 
 <script setup lang="ts">
 import { required } from "@regle/rules";
+import { storeToRefs } from "pinia";
 import { toRef } from "vue";
 import PlaylistTime from "~/components/Common/TimeCode.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
@@ -120,23 +121,22 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
+import { useStationsPlaylistsForm } from "~/components/Stations/Playlists/Form/form.ts";
+import { PlaylistSources } from "~/entities/ApiInterfaces";
 import { useTranslate } from "~/vendor/gettext";
 import { useAppScopedRegle } from "~/vendor/regle.ts";
 import IconIcRemove from "~icons/ic/baseline-remove";
-import { PlaylistSources } from "~/entities/ApiInterfaces";
-import {storeToRefs} from "pinia";
-import {useStationsPlaylistsForm} from "~/components/Stations/Playlists/Form/form.ts";
 
-const {form} = storeToRefs(useStationsPlaylistsForm());
+const { form } = storeToRefs(useStationsPlaylistsForm());
 
 interface PlaylistScheduleRow {
-    start_time: number,
-    end_time: number,
-    start_date: string,
-    end_date: string,
-    days: number[],
-    loop_once: boolean,
-    prevent_requests: boolean,
+    start_time: number;
+    end_time: number;
+    start_date: string;
+    end_date: string;
+    days: number[];
+    loop_once: boolean;
+    prevent_requests: boolean;
 }
 
 const props = defineProps<{

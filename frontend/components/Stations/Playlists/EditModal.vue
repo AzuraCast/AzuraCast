@@ -26,8 +26,8 @@ import FormAdvanced from "~/components/Stations/Playlists/Form/Advanced.vue";
 import FormBasicInfo from "~/components/Stations/Playlists/Form/BasicInfo.vue";
 import { useStationsPlaylistsForm } from "~/components/Stations/Playlists/Form/form.ts";
 import FormSchedule from "~/components/Stations/Playlists/Form/Schedule.vue";
-import mergeExisting from "~/functions/mergeExisting.ts";
 import { PlaylistSources } from "~/entities/ApiInterfaces";
+import mergeExisting from "~/functions/mergeExisting.ts";
 import {
     BaseEditModalEmits,
     BaseEditModalProps,

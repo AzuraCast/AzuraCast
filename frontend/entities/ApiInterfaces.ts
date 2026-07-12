@@ -197,10 +197,10 @@ export enum PlaylistTypes {
 }
 
 export enum PlaylistSources {
-  Songs = "songs",
-  Playlists = "playlists",
-  RemoteUrl = "remote_url",
-  Requests = "requests",
+    Songs = "songs",
+    Playlists = "playlists",
+    RemoteUrl = "remote_url",
+    Requests = "requests",
 }
 
 export enum PlaylistRemoteTypes {
@@ -216,9 +216,9 @@ export enum PlaylistOrders {
 }
 
 export enum PlaylistGroupAllowedRequests {
-  Any = "any",
-  Playlist = "playlist",
-  None = "none",
+    Any = "any",
+    Playlist = "playlist",
+    None = "none",
 }
 
 export enum LoginTokenTypes {
@@ -1076,15 +1076,15 @@ export interface ApiNowPlayingVueProps {
 }
 
 export type ApiPlaylistConfigurationImportResult = ApiStatus & {
-  /** @example 3 */
-  playlists_created?: number;
-  /** @example 10 */
-  media_relinked?: number;
-  /** @example 2 */
-  media_generated?: number;
-  /** @example 1 */
-  members_created?: number;
-  warnings?: string[];
+    /** @example 3 */
+    playlists_created?: number;
+    /** @example 10 */
+    media_relinked?: number;
+    /** @example 2 */
+    media_generated?: number;
+    /** @example 1 */
+    members_created?: number;
+    warnings?: string[];
 };
 
 export type ApiPodcast = HasLinks & {
@@ -1263,33 +1263,33 @@ export interface ApiStationOnDemand {
 }
 
 export interface ApiStationPlaylistQueue {
-  /**
-   * ID of the StationPlaylistMedia record associating this track with the playlist
-   * @example 1
-   */
-  spm_id?: number;
-  /**
-   * ID of the StationMedia record associating this track with the media
-   * @example 1
-   */
-  media_id?: number;
-  /**
-   * The song's 32-character unique identifier hash
-   * @example "9f33bbc912c19603e51be8e0987d076b"
-   */
-  song_id?: string;
-  /**
-   * The song artist.
-   * @example "Chet Porter"
-   */
-  artist?: string;
-  /**
-   * The song title.
-   * @example "Aluko River"
-   */
-  title?: string;
-  /** The UNIX timestamp when this specific track was last played. */
-  last_played?: number | null;
+    /**
+     * ID of the StationPlaylistMedia record associating this track with the playlist
+     * @example 1
+     */
+    spm_id?: number;
+    /**
+     * ID of the StationMedia record associating this track with the media
+     * @example 1
+     */
+    media_id?: number;
+    /**
+     * The song's 32-character unique identifier hash
+     * @example "9f33bbc912c19603e51be8e0987d076b"
+     */
+    song_id?: string;
+    /**
+     * The song artist.
+     * @example "Chet Porter"
+     */
+    artist?: string;
+    /**
+     * The song title.
+     * @example "Aluko River"
+     */
+    title?: string;
+    /** The UNIX timestamp when this specific track was last played. */
+    last_played?: number | null;
 }
 
 export interface ApiStationProfile {
@@ -2122,107 +2122,107 @@ export type SftpUser = HasAutoIncrementId & {
 };
 
 export type Station = HasAutoIncrementId & {
-  /**
-   * The full display name of the station.
-   * @example "AzuraTest Radio"
-   */
-  name?: string;
-  /**
-   * The URL-friendly name for the station, typically auto-generated from the full station name.
-   * @example "azuratest_radio"
-   */
-  short_name?: string;
-  /**
-   * If set to 'false', prevents the station from broadcasting but leaves it in the database.
-   * @example true
-   */
-  is_enabled?: boolean;
-  frontend_type?: FrontendAdapters;
-  frontend_config?: StationFrontendConfiguration;
-  backend_type?: BackendAdapters;
-  backend_config?: StationBackendConfiguration;
-  /** @example "A sample radio station." */
-  description?: string | null;
-  /** @example "https://demo.azuracast.com/" */
-  url?: string | null;
-  /** @example "Various" */
-  genre?: string | null;
-  /** @example "/var/azuracast/stations/azuratest_radio" */
-  radio_base_dir?: string;
-  /**
-   * Whether listeners can request songs to play on this station.
-   * @example true
-   */
-  enable_requests?: boolean;
-  /** @example 5 */
-  request_delay?: number | null;
-  /** @example 15 */
-  request_threshold?: number | null;
-  /** @example false */
-  requests_only_via_playlists?: boolean;
-  /** @example 0 */
-  disconnect_deactivate_streamer?: number | null;
-  /**
-   * Whether streamers are allowed to broadcast to this station at all.
-   * @example false
-   */
-  enable_streamers?: boolean;
-  /**
-   * Whether a streamer is currently active on the station.
-   * @example false
-   */
-  is_streamer_live?: boolean;
-  /**
-   * Whether this station's public pages (player, on-demand streaming, etc.) are visible to non-authenticated users.
-   * @example true
-   */
-  enable_public_page?: boolean;
-  /**
-   * Whether the public-facing API endpoints (now playing, art, etc.) are visible to non-authenticated users. Automatically enabled if 'enable_public_page' is true.
-   * @example true
-   */
-  enable_public_api?: boolean;
-  /**
-   * Whether this station has a public 'on-demand' streaming and download page.
-   * @example true
-   */
-  enable_on_demand?: boolean;
-  /**
-   * Whether the 'on-demand' page offers download capability.
-   * @example true
-   */
-  enable_on_demand_download?: boolean;
-  /**
-   * Whether HLS streaming is enabled.
-   * @example true
-   */
-  enable_hls?: boolean;
-  /**
-   * The number of 'last played' history items to show for a station in API responses.
-   * @example 5
-   */
-  api_history_items?: number;
-  /**
-   * The time zone that station operations should take place in.
-   * @example "UTC"
-   */
-  timezone?: string;
-  /**
-   * The maximum bitrate at which a station may broadcast, in Kbps. 0 for unlimited
-   * @example 128
-   */
-  max_bitrate?: number;
-  /**
-   * The maximum number of mount points the station can have, 0 for unlimited
-   * @example 3
-   */
-  max_mounts?: number;
-  /**
-   * The maximum number of HLS streams the station can have, 0 for unlimited
-   * @example 3
-   */
-  max_hls_streams?: number;
-  branding_config?: StationBrandingConfiguration;
+    /**
+     * The full display name of the station.
+     * @example "AzuraTest Radio"
+     */
+    name?: string;
+    /**
+     * The URL-friendly name for the station, typically auto-generated from the full station name.
+     * @example "azuratest_radio"
+     */
+    short_name?: string;
+    /**
+     * If set to 'false', prevents the station from broadcasting but leaves it in the database.
+     * @example true
+     */
+    is_enabled?: boolean;
+    frontend_type?: FrontendAdapters;
+    frontend_config?: StationFrontendConfiguration;
+    backend_type?: BackendAdapters;
+    backend_config?: StationBackendConfiguration;
+    /** @example "A sample radio station." */
+    description?: string | null;
+    /** @example "https://demo.azuracast.com/" */
+    url?: string | null;
+    /** @example "Various" */
+    genre?: string | null;
+    /** @example "/var/azuracast/stations/azuratest_radio" */
+    radio_base_dir?: string;
+    /**
+     * Whether listeners can request songs to play on this station.
+     * @example true
+     */
+    enable_requests?: boolean;
+    /** @example 5 */
+    request_delay?: number | null;
+    /** @example 15 */
+    request_threshold?: number | null;
+    /** @example false */
+    requests_only_via_playlists?: boolean;
+    /** @example 0 */
+    disconnect_deactivate_streamer?: number | null;
+    /**
+     * Whether streamers are allowed to broadcast to this station at all.
+     * @example false
+     */
+    enable_streamers?: boolean;
+    /**
+     * Whether a streamer is currently active on the station.
+     * @example false
+     */
+    is_streamer_live?: boolean;
+    /**
+     * Whether this station's public pages (player, on-demand streaming, etc.) are visible to non-authenticated users.
+     * @example true
+     */
+    enable_public_page?: boolean;
+    /**
+     * Whether the public-facing API endpoints (now playing, art, etc.) are visible to non-authenticated users. Automatically enabled if 'enable_public_page' is true.
+     * @example true
+     */
+    enable_public_api?: boolean;
+    /**
+     * Whether this station has a public 'on-demand' streaming and download page.
+     * @example true
+     */
+    enable_on_demand?: boolean;
+    /**
+     * Whether the 'on-demand' page offers download capability.
+     * @example true
+     */
+    enable_on_demand_download?: boolean;
+    /**
+     * Whether HLS streaming is enabled.
+     * @example true
+     */
+    enable_hls?: boolean;
+    /**
+     * The number of 'last played' history items to show for a station in API responses.
+     * @example 5
+     */
+    api_history_items?: number;
+    /**
+     * The time zone that station operations should take place in.
+     * @example "UTC"
+     */
+    timezone?: string;
+    /**
+     * The maximum bitrate at which a station may broadcast, in Kbps. 0 for unlimited
+     * @example 128
+     */
+    max_bitrate?: number;
+    /**
+     * The maximum number of mount points the station can have, 0 for unlimited
+     * @example 3
+     */
+    max_mounts?: number;
+    /**
+     * The maximum number of HLS streams the station can have, 0 for unlimited
+     * @example 3
+     */
+    max_hls_streams?: number;
+    branding_config?: StationBrandingConfiguration;
 };
 
 export interface StationBackendConfiguration {
@@ -2398,69 +2398,69 @@ export type StationMount = HasAutoIncrementId & {
 };
 
 export type StationPlaylist = HasAutoIncrementId & {
-  /** @example "Test Playlist" */
-  name?: string;
-  /** @example "A playlist containing my favorite songs" */
-  description?: string | null;
-  type?: PlaylistTypes;
-  source?: PlaylistSources;
-  order?: PlaylistOrders;
-  /** @example "https://remote-url.example.com/stream.mp3" */
-  remote_url?: string | null;
-  /** @example "stream" */
-  remote_type?: PlaylistRemoteTypes | null;
-  /**
-   * The total time (in seconds) that Liquidsoap should buffer remote URL streams.
-   * @example 0
-   */
-  remote_buffer?: number;
-  /** @example true */
-  is_enabled?: boolean;
-  /**
-   * If yes, do not send jingle metadata to AutoDJ or trigger web hooks.
-   * @example false
-   */
-  is_jingle?: boolean;
-  /** @example 5 */
-  play_per_songs?: number;
-  /** @example 120 */
-  play_per_minutes?: number;
-  /** @example 15 */
-  play_per_hour_minute?: number;
-  /**
-   * The relative weight of the playlist. Larger numbers play more often than playlists with lower number weights.
-   * @example 3
-   */
-  weight?: number;
-  /** @example true */
-  include_in_requests?: boolean;
-  /**
-   * Whether this playlist's media is included in 'on demand' download/streaming if enabled.
-   * @example true
-   */
-  include_in_on_demand?: boolean;
-  /** @example "interrupt,loop_once,single_track,merge" */
-  backend_options?: string[];
-  /** @example true */
-  avoid_duplicates?: boolean;
-  schedule_items?: any[];
-  podcasts?: any[];
-  playlists?: any[];
+    /** @example "Test Playlist" */
+    name?: string;
+    /** @example "A playlist containing my favorite songs" */
+    description?: string | null;
+    type?: PlaylistTypes;
+    source?: PlaylistSources;
+    order?: PlaylistOrders;
+    /** @example "https://remote-url.example.com/stream.mp3" */
+    remote_url?: string | null;
+    /** @example "stream" */
+    remote_type?: PlaylistRemoteTypes | null;
+    /**
+     * The total time (in seconds) that Liquidsoap should buffer remote URL streams.
+     * @example 0
+     */
+    remote_buffer?: number;
+    /** @example true */
+    is_enabled?: boolean;
+    /**
+     * If yes, do not send jingle metadata to AutoDJ or trigger web hooks.
+     * @example false
+     */
+    is_jingle?: boolean;
+    /** @example 5 */
+    play_per_songs?: number;
+    /** @example 120 */
+    play_per_minutes?: number;
+    /** @example 15 */
+    play_per_hour_minute?: number;
+    /**
+     * The relative weight of the playlist. Larger numbers play more often than playlists with lower number weights.
+     * @example 3
+     */
+    weight?: number;
+    /** @example true */
+    include_in_requests?: boolean;
+    /**
+     * Whether this playlist's media is included in 'on demand' download/streaming if enabled.
+     * @example true
+     */
+    include_in_on_demand?: boolean;
+    /** @example "interrupt,loop_once,single_track,merge" */
+    backend_options?: string[];
+    /** @example true */
+    avoid_duplicates?: boolean;
+    schedule_items?: any[];
+    podcasts?: any[];
+    playlists?: any[];
 };
 
 export type StationPlaylistGroup = HasAutoIncrementId & {
-  /**
-   * The playlist name.
-   * @example "My Playlist"
-   */
-  readonly name?: string;
-  /** @example 1 */
-  weight?: number;
-  /** @example 0 */
-  consecutive_plays?: number;
-  /** @example false */
-  play_full_cycle?: boolean;
-  allowed_requests?: PlaylistGroupAllowedRequests;
+    /**
+     * The playlist name.
+     * @example "My Playlist"
+     */
+    readonly name?: string;
+    /** @example 1 */
+    weight?: number;
+    /** @example 0 */
+    consecutive_plays?: number;
+    /** @example false */
+    play_full_cycle?: boolean;
+    allowed_requests?: PlaylistGroupAllowedRequests;
 };
 
 export type StationRemote = HasAutoIncrementId & {
@@ -2508,22 +2508,22 @@ export type StationRemote = HasAutoIncrementId & {
 };
 
 export type StationSchedule = HasAutoIncrementId & {
-  /** @example 900 */
-  start_time?: number;
-  /** @example 2200 */
-  end_time?: number;
-  /**
-   * Array of ISO-8601 days (1 for Monday, 7 for Sunday)
-   * @example "0,1,2,3"
-   */
-  days?: number[];
-  /** @example false */
-  loop_once?: boolean;
-  /**
-   * Used to suppress the global request queue while this schedule window is active.
-   * @example false
-   */
-  prevent_requests?: boolean;
+    /** @example 900 */
+    start_time?: number;
+    /** @example 2200 */
+    end_time?: number;
+    /**
+     * Array of ISO-8601 days (1 for Monday, 7 for Sunday)
+     * @example "0,1,2,3"
+     */
+    days?: number[];
+    /** @example false */
+    loop_once?: boolean;
+    /**
+     * Used to suppress the global request queue while this schedule window is active.
+     * @example false
+     */
+    prevent_requests?: boolean;
 };
 
 /** Station streamers (DJ accounts) allowed to broadcast to a station. */

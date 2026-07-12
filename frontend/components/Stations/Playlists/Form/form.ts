@@ -11,13 +11,8 @@ import { useResettableRef } from "~/functions/useResettableRef.ts";
 import { useAppScopedRegle } from "~/vendor/regle.ts";
 
 export type StationPlaylistsRecord = Required<
-    Omit<
-        StationPlaylist,
-        | 'id'
-        | 'podcasts'
-        | 'playlists'
-    >
->
+    Omit<StationPlaylist, "id" | "podcasts" | "playlists">
+>;
 
 export const useStationsPlaylistsForm = defineStore(
     "form-stations-playlists",

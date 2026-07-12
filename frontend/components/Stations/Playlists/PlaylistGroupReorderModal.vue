@@ -108,33 +108,37 @@
 </template>
 
 <script setup lang="ts">
-import {ref, useTemplateRef} from "vue";
-import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useTranslate} from "~/vendor/gettext";
+import { ref, useTemplateRef } from "vue";
+import { useDraggable } from "vue-draggable-plus";
 import Modal from "~/components/Common/Modal.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
-import {useDraggable} from "vue-draggable-plus";
-import {PlaylistSources, PlaylistGroupAllowedRequests} from "~/entities/ApiInterfaces.ts";
-import {StationPlaylistGroupMemberEnriched} from "~/entities/StationPlaylist.ts";
-import IconBiGripVertical from "~icons/bi/grip-vertical";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import {
+    PlaylistGroupAllowedRequests,
+    PlaylistSources,
+} from "~/entities/ApiInterfaces.ts";
+import { StationPlaylistGroupMemberEnriched } from "~/entities/StationPlaylist.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
 import IconBiChevronBarDown from "~icons/bi/chevron-bar-down";
 import IconBiChevronBarUp from "~icons/bi/chevron-bar-up";
 import IconBiChevronDown from "~icons/bi/chevron-down";
 import IconBiChevronUp from "~icons/bi/chevron-up";
+import IconBiGripVertical from "~icons/bi/grip-vertical";
 
-const emit = defineEmits<{
-    (e: 'relist'): void
-}>();
+const emit = defineEmits<(e: "relist") => void>();
 
 const membersUrl = ref<string | null>(null);
 const members = ref<StationPlaylistGroupMemberEnriched[]>([]);
 
-const $tbody = useTemplateRef('$tbody');
-const $modal = useTemplateRef('$modal');
-const {show} = useHasModal($modal);
+const $tbody = useTemplateRef("$tbody");
+const $modal = useTemplateRef("$modal");
+const { show } = useHasModal($modal);
 
-const open = (url: string, initialMembers: StationPlaylistGroupMemberEnriched[]) => {
+const open = (
+    url: string,
+    initialMembers: StationPlaylistGroupMemberEnriched[],
+) => {
     membersUrl.value = url;
     members.value = [...initialMembers].sort((a, b) => a.weight - b.weight);
     show();
@@ -142,13 +146,13 @@ const open = (url: string, initialMembers: StationPlaylistGroupMemberEnriched[])
     useDraggable($tbody, members, {
         onEnd() {
             void save();
-        }
+        },
     });
 };
 
-const {axios} = useAxios();
-const {notifySuccess} = useNotify();
-const {$gettext} = useTranslate();
+const { axios } = useAxios();
+const { notifySuccess } = useNotify();
+const { $gettext } = useTranslate();
 
 const save = async () => {
     if (!membersUrl.value) {
@@ -161,12 +165,13 @@ const save = async () => {
             weight: index + 1,
             consecutive_plays: member.consecutive_plays ?? 0,
             play_full_cycle: member.play_full_cycle ?? false,
-            allowed_requests: member.allowed_requests ?? PlaylistGroupAllowedRequests.Any,
+            allowed_requests:
+                member.allowed_requests ?? PlaylistGroupAllowedRequests.Any,
         })),
     });
 
-    notifySuccess($gettext('Playlist group order set.'));
-    emit('relist');
+    notifySuccess($gettext("Playlist group order set."));
+    emit("relist");
 };
 
 const moveDown = (index: number) => {
@@ -194,7 +199,7 @@ const moveToTop = (index: number) => {
 };
 
 defineExpose({
-    open
+    open,
 });
 </script>
 

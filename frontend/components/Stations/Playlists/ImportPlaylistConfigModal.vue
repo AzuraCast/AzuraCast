@@ -97,53 +97,53 @@
 </template>
 
 <script setup lang="ts">
+import { ref, useTemplateRef } from "vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
-import {ref, useTemplateRef} from "vue";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useAxios} from "~/vendor/axios";
-import FormGroup from "~/components/Form/FormGroup.vue";
 import Modal from "~/components/Common/Modal.vue";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
 import FormFile from "~/components/Form/FormFile.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
-import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
-import {ApiStatus} from "~/entities/ApiInterfaces.ts";
+import FormGroup from "~/components/Form/FormGroup.vue";
+import { ApiStatus } from "~/entities/ApiInterfaces.ts";
+import { HasRelistEmit } from "~/functions/useBaseEditModal.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
+import { useAxios } from "~/vendor/axios";
 
 type ConfigImportResult = Required<ApiStatus> & {
-    playlists_created: number,
-    media_relinked: number,
-    media_generated: number,
-    members_created: number,
-    warnings: string[],
-}
+    playlists_created: number;
+    media_relinked: number;
+    media_generated: number;
+    members_created: number;
+    warnings: string[];
+};
 
 const props = defineProps<{
-    importUrl: string,
+    importUrl: string;
 }>();
 
 const emit = defineEmits<HasRelistEmit>();
 
 const playlistsConfigFile = ref<File | null>(null);
-const namePrefix = ref<string>('');
+const namePrefix = ref<string>("");
 
 const results = ref<ConfigImportResult | null>(null);
 
 const uploaded = (file: File) => {
     playlistsConfigFile.value = file;
-}
+};
 
-const $modal = useTemplateRef('$modal');
-const {show, hide} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { show, hide } = useHasModal($modal);
 
 const open = () => {
     playlistsConfigFile.value = null;
-    namePrefix.value = '';
+    namePrefix.value = "";
     results.value = null;
 
     show();
 };
 
-const {notifySuccess, notifyError} = useNotify();
-const {axios} = useAxios();
+const { notifySuccess, notifyError } = useNotify();
+const { axios } = useAxios();
 
 const doSubmit = async () => {
     if (playlistsConfigFile.value === null) {
@@ -151,12 +151,15 @@ const doSubmit = async () => {
     }
 
     const formData = new FormData();
-    formData.append('config_file', playlistsConfigFile.value);
-    if (namePrefix.value !== '') {
-        formData.append('name_prefix', namePrefix.value);
+    formData.append("config_file", playlistsConfigFile.value);
+    if (namePrefix.value !== "") {
+        formData.append("name_prefix", namePrefix.value);
     }
 
-    const {data} = await axios.post<ConfigImportResult>(props.importUrl, formData);
+    const { data } = await axios.post<ConfigImportResult>(
+        props.importUrl,
+        formData,
+    );
 
     if (data.success) {
         results.value = data;
@@ -169,11 +172,11 @@ const doSubmit = async () => {
 };
 
 const onHidden = () => {
-    emit('relist');
+    emit("relist");
     results.value = null;
 };
 
 defineExpose({
-    open
+    open,
 });
 </script>

@@ -81,15 +81,16 @@ import {
 import ValidationError from "~/components/Form/ValidationError.vue";
 import { NestedFormOptionInput } from "~/functions/objectToFormOptions.ts";
 
-type FormGroupSelectProps = FormFieldProps<T> & FormLabelParentProps & {
-    id: string,
-    name?: string,
-    label?: string,
-    description?: string,
-    options: NestedFormOptionInput,
-    multiple?: boolean,
-    disabled?: boolean,
-}
+type FormGroupSelectProps = FormFieldProps<T> &
+    FormLabelParentProps & {
+        id: string;
+        name?: string;
+        label?: string;
+        description?: string;
+        options: NestedFormOptionInput;
+        multiple?: boolean;
+        disabled?: boolean;
+    };
 
 const props = withDefaults(defineProps<FormGroupSelectProps>(), {
     name: "",

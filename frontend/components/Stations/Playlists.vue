@@ -377,9 +377,19 @@ import CloneModal from "~/components/Stations/Playlists/CloneModal.vue";
 import EditModal from "~/components/Stations/Playlists/EditModal.vue";
 import ImportModal from "~/components/Stations/Playlists/ImportModal.vue";
 import ImportPlaylistConfigModal from "~/components/Stations/Playlists/ImportPlaylistConfigModal.vue";
+import PlaylistGroupingTab from "~/components/Stations/Playlists/PlaylistGroupingTab.vue";
+import PlaylistGroupReorderModal from "~/components/Stations/Playlists/PlaylistGroupReorderModal.vue";
 import QueueModal from "~/components/Stations/Playlists/QueueModal.vue";
 import ReorderModal from "~/components/Stations/Playlists/ReorderModal.vue";
+import {
+    PlaylistGroupAllowedRequests,
+    StationPlaylistGroup,
+} from "~/entities/ApiInterfaces.ts";
 import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import {
+    StationPlaylistEnriched,
+    StationPlaylistGroupMemberEnriched,
+} from "~/entities/StationPlaylist.ts";
 import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
 import { useApiRouter } from "~/functions/useApiRouter.ts";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
@@ -393,16 +403,12 @@ import IconBiContract from "~icons/bi/chevron-contract";
 import IconBiExpand from "~icons/bi/chevron-expand";
 import IconBiCloudDownload from "~icons/bi/cloud-download";
 import IconBiCloudUpload from "~icons/bi/cloud-upload";
-import PlaylistGroupingTab from "~/components/Stations/Playlists/PlaylistGroupingTab.vue";
-import PlaylistGroupReorderModal from "~/components/Stations/Playlists/PlaylistGroupReorderModal.vue";
-import {StationPlaylistEnriched, StationPlaylistGroupMemberEnriched} from "~/entities/StationPlaylist.ts";
-import {StationPlaylistGroup, PlaylistGroupAllowedRequests} from "~/entities/ApiInterfaces.ts";
 
 const { getStationApiUrl } = useApiRouter();
 const listUrl = getStationApiUrl("/playlists");
 const scheduleUrl = getStationApiUrl("/playlists/schedule");
-const exportPlaylistsConfigUrl = getStationApiUrl('/playlists/export-config');
-const importPlaylistsConfigUrl = getStationApiUrl('/playlists/import-config');
+const exportPlaylistsConfigUrl = getStationApiUrl("/playlists/export-config");
+const importPlaylistsConfigUrl = getStationApiUrl("/playlists/import-config");
 
 const { $gettext } = useTranslate();
 
@@ -413,7 +419,7 @@ const fields: DataTableField[] = [
         label: $gettext("Playlist"),
         sortable: true,
     },
-    {key: 'source', label: $gettext('Source'), sortable: false},
+    { key: "source", label: $gettext("Source"), sortable: false },
     { key: "scheduling", label: $gettext("Scheduling"), sortable: false },
     { key: "num_entries", label: $gettext("# Entries"), sortable: false },
     {
@@ -460,15 +466,20 @@ const doReorder = (url: string) => {
     $reorderModal.value?.open(url);
 };
 
-const $groupReorderModal = useTemplateRef('$groupReorderModal');
+const $groupReorderModal = useTemplateRef("$groupReorderModal");
 
-const doGroupReorder = async (membersUrl: string, playlists: StationPlaylistGroup[]): Promise<void> => {
-    const {data} = await axios.get(listUrl.value, {
-        params: {rowCount: -1}
+const doGroupReorder = async (
+    membersUrl: string,
+    playlists: StationPlaylistGroup[],
+): Promise<void> => {
+    const { data } = await axios.get(listUrl.value, {
+        params: { rowCount: -1 },
     });
 
     const allPlaylists: StationPlaylistEnriched[] = data.rows ?? [];
-    const playlistMap = new Map(allPlaylists.map((playlist) => [playlist.id, playlist]));
+    const playlistMap = new Map(
+        allPlaylists.map((playlist) => [playlist.id, playlist]),
+    );
 
     const enrichedMembers: StationPlaylistGroupMemberEnriched[] = playlists
         .map((member) => {
@@ -477,31 +488,35 @@ const doGroupReorder = async (membersUrl: string, playlists: StationPlaylistGrou
             const full = playlistMap.get(member.id);
             return full
                 ? {
-                    ...full,
-                    weight: weight,
-                    consecutive_plays: consecutivePlays,
-                    play_full_cycle: member.play_full_cycle ?? false,
-                    allowed_requests: member.allowed_requests ?? PlaylistGroupAllowedRequests.Any,
-                }
+                      ...full,
+                      weight: weight,
+                      consecutive_plays: consecutivePlays,
+                      play_full_cycle: member.play_full_cycle ?? false,
+                      allowed_requests:
+                          member.allowed_requests ??
+                          PlaylistGroupAllowedRequests.Any,
+                  }
                 : {
-                    ...member,
-                    name: member.name ?? '',
-                    weight: weight,
-                    consecutive_plays: consecutivePlays,
-                    play_full_cycle: member.play_full_cycle ?? false,
-                    allowed_requests: member.allowed_requests ?? PlaylistGroupAllowedRequests.Any,
-                    source: '',
-                    order: '',
-                    num_songs: 0,
-                    playlists: []
-                };
+                      ...member,
+                      name: member.name ?? "",
+                      weight: weight,
+                      consecutive_plays: consecutivePlays,
+                      play_full_cycle: member.play_full_cycle ?? false,
+                      allowed_requests:
+                          member.allowed_requests ??
+                          PlaylistGroupAllowedRequests.Any,
+                      source: "",
+                      order: "",
+                      num_songs: 0,
+                      playlists: [],
+                  };
         })
         .sort((a, b) => a.weight - b.weight);
 
     $groupReorderModal.value?.open(membersUrl, enrichedMembers);
 };
 
-const $queueModal = useTemplateRef('$queueModal');
+const $queueModal = useTemplateRef("$queueModal");
 
 const doQueue = (url: string) => {
     $queueModal.value?.open(url);
@@ -513,13 +528,13 @@ const doImport = (url: string) => {
     $importModal.value?.open(url);
 };
 
-const $importPlaylistConfigModal = useTemplateRef('$importPlaylistConfigModal');
+const $importPlaylistConfigModal = useTemplateRef("$importPlaylistConfigModal");
 
 const doImportPlaylistConfig = () => {
     $importPlaylistConfigModal.value?.open();
 };
 
-const $cloneModal = useTemplateRef('$cloneModal');
+const $cloneModal = useTemplateRef("$cloneModal");
 
 const doClone = (name: string, url: string) => {
     $cloneModal.value?.open(name, url);

@@ -76,55 +76,62 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref, useTemplateRef} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useAzuraCast} from "~/vendor/azuracast";
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
+import { computed, ref, useTemplateRef } from "vue";
 import DetailsModal from "~/components/Admin/AuditLog/DetailsModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useLuxon} from "~/vendor/luxon";
-import {ApiAdminAuditLogChangeset, AuditLog} from "~/entities/ApiInterfaces.ts";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys} from "~/entities/Queries.ts";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
+import {
+    ApiAdminAuditLogChangeset,
+    AuditLog,
+} from "~/entities/ApiInterfaces.ts";
+import { QueryKeys } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useAzuraCast } from "~/vendor/azuracast";
+import { useTranslate } from "~/vendor/gettext";
+import { useLuxon } from "~/vendor/luxon";
 import IconIcAddCircle from "~icons/ic/baseline-add-circle";
 import IconIcRemoveCircle from "~icons/ic/baseline-remove-circle";
 import IconIcSwapHorizontalCircle from "~icons/ic/baseline-swap-horizontal-circle";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
 
-const {getApiUrl} = useApiRouter();
-const baseApiUrl = getApiUrl('/admin/auditlog');
+const { getApiUrl } = useApiRouter();
+const baseApiUrl = getApiUrl("/admin/auditlog");
 
-const {DateTime} = useLuxon();
+const { DateTime } = useLuxon();
 
 const dateRange = ref({
-    startDate: DateTime.now().minus({days: 13}).toJSDate(),
+    startDate: DateTime.now().minus({ days: 13 }).toJSDate(),
     endDate: DateTime.now().toJSDate(),
 });
 
-const {$gettext} = useTranslate();
-const {timeConfig} = useAzuraCast();
+const { $gettext } = useTranslate();
+const { timeConfig } = useAzuraCast();
 
 type Row = AuditLog;
 
 const fields: DataTableField<Row>[] = [
     {
-        key: 'timestamp',
-        label: $gettext('Date/Time'),
+        key: "timestamp",
+        label: $gettext("Date/Time"),
         sortable: false,
         formatter: (value) => {
-            return DateTime.fromISO(value).toLocaleString(
-                {
-                    ...DateTime.DATETIME_SHORT, ...timeConfig
-                }
-            );
-        }
+            return DateTime.fromISO(value).toLocaleString({
+                ...DateTime.DATETIME_SHORT,
+                ...timeConfig,
+            });
+        },
     },
-    {key: 'user', label: $gettext('User'), sortable: false},
-    {key: 'operation', isRowHeader: true, label: $gettext('Operation'), sortable: false},
-    {key: 'identifier', label: $gettext('Identifier'), sortable: false},
-    {key: 'target', label: $gettext('Target'), sortable: false},
-    {key: 'actions', label: $gettext('Actions'), sortable: false}
+    { key: "user", label: $gettext("User"), sortable: false },
+    {
+        key: "operation",
+        isRowHeader: true,
+        label: $gettext("Operation"),
+        sortable: false,
+    },
+    { key: "identifier", label: $gettext("Identifier"), sortable: false },
+    { key: "target", label: $gettext("Target"), sortable: false },
+    { key: "actions", label: $gettext("Actions"), sortable: false },
 ];
 
 const apiUrl = computed(() => {
@@ -134,28 +141,25 @@ const apiUrl = computed(() => {
 
     const startDate = DateTime.fromJSDate(dateRange.value.startDate);
     if (startDate.isValid) {
-        apiUrlParams.set('start', startDate.toISO());
+        apiUrlParams.set("start", startDate.toISO());
     }
 
     const endDate = DateTime.fromJSDate(dateRange.value.endDate);
     if (endDate.isValid) {
-        apiUrlParams.set('end', endDate.toISO());
+        apiUrlParams.set("end", endDate.toISO());
     }
 
     return apiUrl.toString();
 });
 
-const apiItemProvider = useApiItemProvider<Row>(
-    apiUrl,
-    [
-        QueryKeys.AdminAuditLog,
-        dateRange
-    ]
-);
+const apiItemProvider = useApiItemProvider<Row>(apiUrl, [
+    QueryKeys.AdminAuditLog,
+    dateRange,
+]);
 
-const $detailsModal = useTemplateRef('$detailsModal');
+const $detailsModal = useTemplateRef("$detailsModal");
 
 const showDetails = (changes: ApiAdminAuditLogChangeset[]) => {
     $detailsModal.value?.open(changes);
-}
+};
 </script>

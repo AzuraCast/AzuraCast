@@ -65,14 +65,21 @@
 </template>
 
 <script setup lang="ts" generic="T = ModelFormField">
-import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
+import { useSlots } from "vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
-import {FormFieldEmits, FormFieldProps, ModelFormField, useFormField} from "~/components/Form/useFormField";
-import {useSlots} from "vue";
-import {NestedFormOptionInput} from "~/functions/objectToFormOptions.ts";
-import FormSelect from "~/components/Form/FormSelect.vue";
+import FormLabel, {
+    FormLabelParentProps,
+} from "~/components/Form/FormLabel.vue";
 import FormMultiSelect from "~/components/Form/FormMultiSelect.vue";
+import FormSelect from "~/components/Form/FormSelect.vue";
+import {
+    FormFieldEmits,
+    FormFieldProps,
+    ModelFormField,
+    useFormField,
+} from "~/components/Form/useFormField";
 import ValidationError from "~/components/Form/ValidationError.vue";
+import { NestedFormOptionInput } from "~/functions/objectToFormOptions.ts";
 
 type FormGroupSelectProps = FormFieldProps<T> & FormLabelParentProps & {
     id: string,
@@ -84,20 +91,17 @@ type FormGroupSelectProps = FormFieldProps<T> & FormLabelParentProps & {
     disabled?: boolean,
 }
 
-const props = withDefaults(
-    defineProps<FormGroupSelectProps>(),
-    {
-        name: '',
-        label: '',
-        description: '',
-        multiple: false,
-        disabled: false
-    }
-);
+const props = withDefaults(defineProps<FormGroupSelectProps>(), {
+    name: "",
+    label: "",
+    description: "",
+    multiple: false,
+    disabled: false,
+});
 
 const slots = useSlots();
 
 const emit = defineEmits<FormFieldEmits<T>>();
 
-const {model, fieldClass, isRequired} = useFormField<T>(props, emit);
+const { model, fieldClass, isRequired } = useFormField<T>(props, emit);
 </script>

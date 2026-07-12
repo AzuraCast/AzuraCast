@@ -61,23 +61,23 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
-import {computed} from "vue";
-import {StationPermissions} from "~/entities/ApiInterfaces.ts";
-import {useStationData} from "~/functions/useStationQuery.ts";
+import { StationPermissions } from "~/entities/ApiInterfaces.ts";
+import { useStationData } from "~/functions/useStationQuery.ts";
+import { useUserAllowedForStation } from "~/functions/useUserallowedForStation.ts";
+import IconIcAssignment from "~icons/ic/baseline-assignment";
 import IconIcCheck from "~icons/ic/baseline-check";
 import IconIcClose from "~icons/ic/baseline-close";
-import IconIcAssignment from "~icons/ic/baseline-assignment";
 
 const stationData = useStationData();
 
-const {userAllowedForStation} = useUserAllowedForStation();
+const { userAllowedForStation } = useUserAllowedForStation();
 
 const toggleRequests = useToggleFeature(
-    'enable_requests',
-    computed(() => stationData.value.enableRequests)
+    "enable_requests",
+    computed(() => stationData.value.enableRequests),
 );
 </script>

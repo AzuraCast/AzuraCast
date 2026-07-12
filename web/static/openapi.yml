@@ -5,7 +5,7 @@ info:
   license:
     name: 'GNU Affero General Public License v3.0 or later'
     url: 'https://www.gnu.org/licenses/agpl-3.0.txt'
-  version: 0.23.6
+  version: 0.23.7
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -7356,6 +7356,7 @@ components:
         - text
       properties:
         value: {}
+        value: {}
         text:
           type: string
         description:
@@ -9354,6 +9355,10 @@ components:
           nullable: true
         enable_liquidsoap_editing:
           description: 'Allow stations to manually edit Liquidsoap code.'
+          type: boolean
+          example: 'true'
+        enable_all_webhooks:
+          description: 'Allow stations to dispatch webhooks.'
           type: boolean
           example: 'true'
         enable_static_nowplaying:

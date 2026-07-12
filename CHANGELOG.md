@@ -7,7 +7,36 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- Added a new system-wide toggle for enabling or disabling Web Hooks on all stations. Because web hooks dispatch an
+  outgoing HTTP POST request from your AzuraCast installation, this may be considered a security risk in your
+  infrastructure, so you can disable them entirely as a safety measure.
+
+- Added an extra check to on-demand media downloads to ensure only media in on-demand playlists is downloadable.
+
 ## Bug Fixes
+
+---
+
+# AzuraCast 0.23.7 (Jul 7, 2026)
+
+## New Features/Changes
+
+- **Liquidsoap 2.4.5**: This version ships with Liquidsoap version 2.4.5, which has incorporated a number of fixes for
+  CPU and RAM consumption issues that appeared after stations ran for long periods of time. Many AzuraCast users were
+  likely affected in some way by these bugs, so updating is strongly recommended.
+
+## Code Quality/Technical Changes
+
+- Banned/allowed countries and IPs now also apply to the HLS stream served by AzuraCast.
+
+- When configuring Smart Crossfading, advanced users can directly specify decibel level thresholds used in the
+  calculation.
+
+## Bug Fixes
+
+- Fixed a bug where newly added playlists wouldn't appear on the Media Manager page.
+
+- Fixed one remaining area where arbitrary strings could be included in Liquidsoap configuration.
 
 ---
 

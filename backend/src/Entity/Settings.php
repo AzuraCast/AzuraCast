@@ -149,6 +149,13 @@ final class Settings implements Stringable
     public bool $enable_liquidsoap_editing = true;
 
     #[
+        OA\Property(description: "Allow stations to dispatch webhooks.", example: "true"),
+        ORM\Column,
+        Serializer\Groups(self::GROUP_GENERAL)
+    ]
+    public bool $enable_all_webhooks = true;
+
+    #[
         OA\Property(
             description: "Whether to use high-performance static JSON for Now Playing data updates.",
             example: "false"

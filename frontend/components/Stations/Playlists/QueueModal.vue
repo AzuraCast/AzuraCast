@@ -58,13 +58,13 @@
 </template>
 
 <script setup lang="ts">
-import {ref, useTemplateRef} from "vue";
-import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useTranslate} from "~/vendor/gettext";
+import { ref, useTemplateRef } from "vue";
 import Modal from "~/components/Common/Modal.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
-import {ApiStationPlaylistQueue} from "~/entities/ApiInterfaces.ts";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import { ApiStationPlaylistQueue } from "~/entities/ApiInterfaces.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
 
 type MediaRow = Required<ApiStationPlaylistQueue>;
 
@@ -72,17 +72,17 @@ const loading = ref<boolean>(true);
 const queueUrl = ref<string | null>(null);
 const media = ref<MediaRow[]>([]);
 
-const $modal = useTemplateRef('$modal');
-const {show, hide} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { show, hide } = useHasModal($modal);
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 const open = async (newQueueUrl: string) => {
     queueUrl.value = newQueueUrl;
     loading.value = true;
 
     try {
-        const {data} = await axios.get<MediaRow[]>(newQueueUrl);
+        const { data } = await axios.get<MediaRow[]>(newQueueUrl);
         media.value = data;
     } finally {
         loading.value = false;
@@ -94,21 +94,21 @@ const open = async (newQueueUrl: string) => {
 const onHidden = () => {
     loading.value = false;
     queueUrl.value = null;
-}
+};
 
-const {notifySuccess} = useNotify();
-const {$gettext} = useTranslate();
+const { notifySuccess } = useNotify();
+const { $gettext } = useTranslate();
 
 const doClear = async () => {
     if (queueUrl.value) {
         await axios.delete(queueUrl.value);
     }
 
-    notifySuccess($gettext('Playlist queue cleared.'));
+    notifySuccess($gettext("Playlist queue cleared."));
     hide();
 };
 
 defineExpose({
-    open
+    open,
 });
 </script>

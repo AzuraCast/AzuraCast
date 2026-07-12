@@ -6,24 +6,20 @@
 </template>
 
 <script setup lang="ts">
-import {computed} from "vue";
-import {useGettext} from "vue3-gettext";
+import { computed } from "vue";
+import { useGettext } from "vue3-gettext";
 
 const props = defineProps<{
-    enabled: boolean,
+    enabled: boolean;
 }>();
 
 const badgeClass = computed(() => {
-    return (props.enabled)
-        ? 'text-bg-success'
-        : 'text-bg-danger';
+    return props.enabled ? "text-bg-success" : "text-bg-danger";
 });
 
-const {$gettext} = useGettext();
+const { $gettext } = useGettext();
 
 const badgeText = computed(() => {
-    return (props.enabled)
-        ? $gettext('Enabled')
-        : $gettext('Disabled');
+    return props.enabled ? $gettext("Enabled") : $gettext("Disabled");
 });
 </script>

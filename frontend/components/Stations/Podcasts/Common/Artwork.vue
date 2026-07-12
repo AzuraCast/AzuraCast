@@ -45,25 +45,25 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref, toRef, watch} from "vue";
-import {useAxios} from "~/vendor/axios";
-import FormGroup from "~/components/Form/FormGroup.vue";
-import FormFile from "~/components/Form/FormFile.vue";
+import { computed, ref, toRef, watch } from "vue";
+import { UploadResponseBody } from "~/components/Common/FlowUpload.vue";
 import Tab from "~/components/Common/Tab.vue";
-import {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
+import FormFile from "~/components/Form/FormFile.vue";
+import FormGroup from "~/components/Form/FormGroup.vue";
+import { useAxios } from "~/vendor/axios";
 
 const props = defineProps<{
-    artworkSrc?: string,
-    newArtUrl: string
+    artworkSrc?: string;
+    newArtUrl: string;
 }>();
 
 const model = defineModel<UploadResponseBody | null>();
 
 const artworkSrc = ref(props.artworkSrc);
 const reloadArt = () => {
-    artworkSrc.value = props.artworkSrc + '?' + Math.floor(Date.now() / 1000);
-}
-watch(toRef(props, 'artworkSrc'), reloadArt);
+    artworkSrc.value = `${props.artworkSrc}?${Math.floor(Date.now() / 1000)}`;
+};
+watch(toRef(props, "artworkSrc"), reloadArt);
 
 const localSrc = ref<string | null>(null);
 
@@ -71,7 +71,7 @@ const src = computed(() => {
     return localSrc.value ?? artworkSrc.value;
 });
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 const uploaded = async (file: File | null) => {
     if (null === file) {
@@ -79,16 +79,20 @@ const uploaded = async (file: File | null) => {
     }
 
     const fileReader = new FileReader();
-    fileReader.addEventListener('load', () => {
-        localSrc.value = fileReader.result as string | null;
-    }, false);
+    fileReader.addEventListener(
+        "load",
+        () => {
+            localSrc.value = fileReader.result as string | null;
+        },
+        false,
+    );
     fileReader.readAsDataURL(file);
 
-    const url = (props.artworkSrc) ? props.artworkSrc : props.newArtUrl;
+    const url = props.artworkSrc ? props.artworkSrc : props.newArtUrl;
     const formData = new FormData();
-    formData.append('art', file);
+    formData.append("art", file);
 
-    const {data} = await axios.post(url, formData);
+    const { data } = await axios.post(url, formData);
     model.value = data;
     reloadArt();
 };
@@ -103,5 +107,5 @@ const deleteArt = async () => {
         reloadArt();
         localSrc.value = null;
     }
-}
+};
 </script>

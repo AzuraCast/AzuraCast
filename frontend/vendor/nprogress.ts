@@ -19,7 +19,7 @@ export function useNProgress() {
             isAxiosLoading = true;
         } else if (axiosLoadCount > 0) {
             axiosLoadCount--;
-            isAxiosLoading = (axiosLoadCount > 0);
+            isAxiosLoading = axiosLoadCount > 0;
         }
 
         // Handle state changes
@@ -33,6 +33,6 @@ export function useNProgress() {
     return {
         showLoading,
         hideLoading,
-        setLoading
+        setLoading,
     };
 }

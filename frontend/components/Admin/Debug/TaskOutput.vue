@@ -63,39 +63,39 @@
 </template>
 
 <script setup lang="ts">
-import {useTranslate} from "~/vendor/gettext.ts";
-import {ApiAdminDebugLogEntry} from "~/entities/ApiInterfaces.ts";
+import { ApiAdminDebugLogEntry } from "~/entities/ApiInterfaces.ts";
+import { useTranslate } from "~/vendor/gettext.ts";
 
 defineProps<{
-    logs: ApiAdminDebugLogEntry[]
+    logs: ApiAdminDebugLogEntry[];
 }>();
 
 const badgeClasses = {
-    100: 'text-bg-info',
-    200: 'text-bg-info',
-    250: 'text-bg-info',
-    300: 'text-bg-warning',
-    400: 'text-bg-danger',
-    500: 'text-bg-danger',
-    550: 'text-bg-danger',
-    600: 'text-bg-danger'
+    100: "text-bg-info",
+    200: "text-bg-info",
+    250: "text-bg-info",
+    300: "text-bg-warning",
+    400: "text-bg-danger",
+    500: "text-bg-danger",
+    550: "text-bg-danger",
+    600: "text-bg-danger",
 };
 
 const getBadgeClass = (logLevel: keyof typeof badgeClasses) => {
     return badgeClasses[logLevel] ?? badgeClasses[100];
 };
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const badgeLabels = {
-    100: $gettext('Debug'),
-    200: $gettext('Info'),
-    250: $gettext('Notice'),
-    300: $gettext('Warning'),
-    400: $gettext('Error'),
-    500: $gettext('Critical'),
-    550: $gettext('Alert'),
-    600: $gettext('Emergency')
+    100: $gettext("Debug"),
+    200: $gettext("Info"),
+    250: $gettext("Notice"),
+    300: $gettext("Warning"),
+    400: $gettext("Error"),
+    500: $gettext("Critical"),
+    550: $gettext("Alert"),
+    600: $gettext("Emergency"),
 };
 
 const getBadgeLabel = (logLevel: keyof typeof badgeLabels) => {
@@ -104,5 +104,5 @@ const getBadgeLabel = (logLevel: keyof typeof badgeLabels) => {
 
 const dump = (value: any) => {
     return JSON.stringify(value);
-}
+};
 </script>

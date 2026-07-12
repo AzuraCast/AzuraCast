@@ -54,65 +54,66 @@
 </template>
 
 <script setup lang="ts">
-import {required} from "@regle/rules";
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {nextTick, useTemplateRef} from "vue";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useAxios} from "~/vendor/axios";
-import {useTranslate} from "~/vendor/gettext";
-import Modal from "~/components/Common/Modal.vue";
-import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
+import { required } from "@regle/rules";
+import { nextTick, useTemplateRef } from "vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
-import {useAppRegle} from "~/vendor/regle.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
+import Modal from "~/components/Common/Modal.vue";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
+import { useResettableRef } from "~/functions/useResettableRef.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
+import { useAppRegle } from "~/vendor/regle.ts";
 
-const {getStationApiUrl} = useApiRouter();
+const { getStationApiUrl } = useApiRouter();
 
-const updateMetadataUrl = getStationApiUrl('/nowplaying/update');
+const updateMetadataUrl = getStationApiUrl("/nowplaying/update");
 
 type UpdateMetadataRecord = {
-    title: string,
-    artist: string
-}
+    title: string;
+    artist: string;
+};
 
-const {record: form, reset: resetForm} = useResettableRef<UpdateMetadataRecord>({
-    title: '',
-    artist: ''
-});
+const { record: form, reset: resetForm } =
+    useResettableRef<UpdateMetadataRecord>({
+        title: "",
+        artist: "",
+    });
 
-const {r$} = useAppRegle(
+const { r$ } = useAppRegle(
     form,
     {
-        title: {required},
-        artist: {}
+        title: { required },
+        artist: {},
     },
-    {}
+    {},
 );
 
-const $modal = useTemplateRef('$modal');
-const {hide, show: open} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { hide, show: open } = useHasModal($modal);
 
 const onHidden = () => {
     resetForm();
     r$.$reset();
-}
+};
 
-const $field = useTemplateRef('$field');
+const $field = useTemplateRef("$field");
 
 const onShown = () => {
     void nextTick(() => {
         $field.value?.focus();
-    })
+    });
 };
 
-const {notifySuccess} = useNotify();
-const {axios} = useAxios();
-const {$gettext} = useTranslate();
+const { notifySuccess } = useNotify();
+const { axios } = useAxios();
+const { $gettext } = useTranslate();
 
 const doUpdateMetadata = async () => {
-    const {valid} = await r$.$validate();
+    const { valid } = await r$.$validate();
     if (!valid) {
         return;
     }
@@ -120,13 +121,13 @@ const doUpdateMetadata = async () => {
     try {
         await axios.post(updateMetadataUrl.value, form.value);
 
-        notifySuccess($gettext('Metadata updated.'));
+        notifySuccess($gettext("Metadata updated."));
     } finally {
         hide();
     }
 };
 
 defineExpose({
-    open
+    open,
 });
 </script>

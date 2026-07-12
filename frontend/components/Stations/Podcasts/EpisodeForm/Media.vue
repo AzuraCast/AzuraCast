@@ -57,29 +57,29 @@
 </template>
 
 <script setup lang="ts">
-import FlowUpload, {UploadResponseBody} from "~/components/Common/FlowUpload.vue";
-import {computed, ref, toRef} from "vue";
-import {useAxios} from "~/vendor/axios";
-import {syncRef} from "@vueuse/core";
+import { syncRef } from "@vueuse/core";
+import { computed, ref, toRef } from "vue";
+import FlowUpload, {
+    UploadResponseBody,
+} from "~/components/Common/FlowUpload.vue";
+import Tab from "~/components/Common/Tab.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
-import Tab from "~/components/Common/Tab.vue";
+import { useAxios } from "~/vendor/axios";
 
 const props = defineProps<{
-    recordHasMedia: boolean,
-    editMediaUrl: string,
-    newMediaUrl: string,
+    recordHasMedia: boolean;
+    editMediaUrl: string;
+    newMediaUrl: string;
 }>();
 
 const model = defineModel<UploadResponseBody | null>();
 
 const hasMedia = ref<boolean | null>(null);
-syncRef(toRef(props, 'recordHasMedia'), hasMedia, {direction: 'ltr'});
+syncRef(toRef(props, "recordHasMedia"), hasMedia, { direction: "ltr" });
 
 const targetUrl = computed(() => {
-    return (props.editMediaUrl)
-        ? props.editMediaUrl
-        : props.newMediaUrl;
+    return props.editMediaUrl ? props.editMediaUrl : props.newMediaUrl;
 });
 
 const onFileSuccess = (_file: any, message: UploadResponseBody | null) => {
@@ -90,7 +90,7 @@ const onFileSuccess = (_file: any, message: UploadResponseBody | null) => {
     }
 };
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 const deleteMedia = async () => {
     if (props.editMediaUrl) {
@@ -101,5 +101,5 @@ const deleteMedia = async () => {
         hasMedia.value = false;
         model.value = null;
     }
-}
+};
 </script>

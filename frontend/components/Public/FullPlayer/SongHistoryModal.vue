@@ -14,26 +14,26 @@
 </template>
 
 <script setup lang="ts">
-import SongHistory from "~/components/Public/FullPlayer/SongHistory.vue";
+import { useTemplateRef } from "vue";
 import Modal from "~/components/Common/Modal.vue";
-import {useTemplateRef} from "vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
-import {ApiNowPlayingSongHistory} from "~/entities/ApiInterfaces.ts";
+import SongHistory from "~/components/Public/FullPlayer/SongHistory.vue";
+import { ApiNowPlayingSongHistory } from "~/entities/ApiInterfaces.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
 
 withDefaults(
     defineProps<{
-        history: ApiNowPlayingSongHistory[],
-        showAlbumArt?: boolean,
+        history: ApiNowPlayingSongHistory[];
+        showAlbumArt?: boolean;
     }>(),
     {
-        showAlbumArt: true
-    }
+        showAlbumArt: true,
+    },
 );
 
-const $modal = useTemplateRef('$modal');
-const {show: open} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { show: open } = useHasModal($modal);
 
 defineExpose({
-    open
+    open,
 });
 </script>

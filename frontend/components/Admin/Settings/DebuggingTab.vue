@@ -19,15 +19,15 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
+import { useAdminSettingsForm } from "~/components/Admin/Settings/form.ts";
+import Tab from "~/components/Common/Tab.vue";
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {computed} from "vue";
-import Tab from "~/components/Common/Tab.vue";
-import {useAdminSettingsForm} from "~/components/Admin/Settings/form.ts";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {storeToRefs} from "pinia";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
 
-const {r$} = storeToRefs(useAdminSettingsForm());
+const { r$ } = storeToRefs(useAdminSettingsForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.debuggingTab));
 </script>

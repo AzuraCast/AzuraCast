@@ -21,11 +21,11 @@
 </template>
 
 <script setup lang="ts">
+import { useTemplateRef } from "vue";
 import Lightbox from "~/components/Common/Lightbox.vue";
-import {useTemplateRef} from "vue";
-import {useProvideLightbox} from "~/vendor/lightbox.ts";
+import { useProvideLightbox } from "~/vendor/lightbox.ts";
 
-const $lightbox = useTemplateRef('$lightbox');
+const $lightbox = useTemplateRef("$lightbox");
 
 useProvideLightbox($lightbox);
 </script>

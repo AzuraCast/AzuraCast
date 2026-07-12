@@ -54,15 +54,15 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
+import { useAdminStorageLocationsForm } from "~/components/Admin/StorageLocations/Form/form.ts";
 import Tab from "~/components/Common/Tab.vue";
-import {useAdminStorageLocationsForm} from "~/components/Admin/StorageLocations/Form/form.ts";
-import {storeToRefs} from "pinia";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {computed} from "vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
 
 const formStore = useAdminStorageLocationsForm();
-const {r$} = storeToRefs(formStore);
+const { r$ } = storeToRefs(formStore);
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.sftpTab));
 </script>

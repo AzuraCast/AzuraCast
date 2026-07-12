@@ -174,57 +174,59 @@
 </template>
 
 <script setup lang="ts">
-import FormFieldset from "~/components/Form/FormFieldset.vue";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
+import { useAdminStationsForm } from "~/components/Admin/Stations/Form/form.ts";
 import InfoCard from "~/components/Common/InfoCard.vue";
+import Tab from "~/components/Common/Tab.vue";
+import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {computed} from "vue";
-import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import Tab from "~/components/Common/Tab.vue";
-import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
-import {FrontendAdapters} from "~/entities/ApiInterfaces.ts";
-import {storeToRefs} from "pinia";
-import {useAdminStationsForm} from "~/components/Admin/Stations/Form/form.ts";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import { FrontendAdapters } from "~/entities/ApiInterfaces.ts";
+import { SimpleFormOptionInput } from "~/functions/objectToFormOptions.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
+import { useTranslate } from "~/vendor/gettext";
 
 const props = defineProps<{
-    isRsasInstalled: boolean,
-    isShoutcastInstalled: boolean,
-    countries: Record<string, string>,
+    isRsasInstalled: boolean;
+    isShoutcastInstalled: boolean;
+    countries: Record<string, string>;
 }>();
 
-const {r$, form} = storeToRefs(useAdminStationsForm());
+const { r$, form } = storeToRefs(useAdminStationsForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.frontendTab));
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const frontendTypeOptions = computed<SimpleFormOptionInput>(() => {
     const frontendOptions: SimpleFormOptionInput = [
         {
-            text: $gettext('Use Icecast 2.4 on this server.'),
-            value: FrontendAdapters.Icecast
+            text: $gettext("Use Icecast 2.4 on this server."),
+            value: FrontendAdapters.Icecast,
         },
     ];
 
     if (props.isRsasInstalled) {
         frontendOptions.push({
-            text: $gettext('Use Rocket Streaming Audio Server (RSAS) on this server.'),
-            value: FrontendAdapters.Rsas
+            text: $gettext(
+                "Use Rocket Streaming Audio Server (RSAS) on this server.",
+            ),
+            value: FrontendAdapters.Rsas,
         });
     }
 
     if (props.isShoutcastInstalled) {
         frontendOptions.push({
-            text: $gettext('Use Shoutcast DNAS 2 on this server.'),
-            value: FrontendAdapters.Shoutcast
+            text: $gettext("Use Shoutcast DNAS 2 on this server."),
+            value: FrontendAdapters.Shoutcast,
         });
     }
 
     frontendOptions.push({
-        text: $gettext('Do not use a local broadcasting service.'),
-        value: FrontendAdapters.Remote
+        text: $gettext("Do not use a local broadcasting service."),
+        value: FrontendAdapters.Remote,
     });
 
     return frontendOptions;
@@ -240,5 +242,5 @@ const isShoutcastFrontend = computed(() => {
 
 const clearCountries = () => {
     form.value.frontend_config.banned_countries = [];
-}
+};
 </script>

@@ -81,18 +81,18 @@
 </template>
 
 <script setup lang="ts">
-import FormFieldset from "~/components/Form/FormFieldset.vue";
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
 import BackendDisabled from "~/components/Admin/Stations/Form/Common/BackendDisabled.vue";
-import {computed} from "vue";
+import { useAdminStationsForm } from "~/components/Admin/Stations/Form/form.ts";
 import Tab from "~/components/Common/Tab.vue";
-import {BackendAdapters} from "~/entities/ApiInterfaces.ts";
-import {storeToRefs} from "pinia";
-import {useAdminStationsForm} from "~/components/Admin/Stations/Form/form.ts";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import FormFieldset from "~/components/Form/FormFieldset.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { BackendAdapters } from "~/entities/ApiInterfaces.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
 
-const {r$, form} = storeToRefs(useAdminStationsForm());
+const { r$, form } = storeToRefs(useAdminStationsForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.hlsTab));
 
@@ -105,6 +105,6 @@ const tabClassWithBackend = computed(() => {
         return tabClass.value;
     }
 
-    return (isBackendEnabled.value) ? '' : 'text-muted';
+    return isBackendEnabled.value ? "" : "text-muted";
 });
 </script>

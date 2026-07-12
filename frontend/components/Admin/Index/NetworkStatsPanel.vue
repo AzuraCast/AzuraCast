@@ -36,12 +36,12 @@
 </template>
 
 <script setup lang="ts">
+import NetworkStatsTable from "~/components/Admin/Index/NetworkStatsTable.vue";
 import Tab from "~/components/Common/Tab.vue";
 import Tabs from "~/components/Common/Tabs.vue";
-import NetworkStatsTable from "~/components/Admin/Index/NetworkStatsTable.vue";
-import {ApiAdminServerStatsNetworkInterfaceStats} from "~/entities/ApiInterfaces.ts";
+import { ApiAdminServerStatsNetworkInterfaceStats } from "~/entities/ApiInterfaces.ts";
 
 defineProps<{
-    networkStats: ApiAdminServerStatsNetworkInterfaceStats[]
+    networkStats: ApiAdminServerStatsNetworkInterfaceStats[];
 }>();
 </script>

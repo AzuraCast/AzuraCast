@@ -243,60 +243,67 @@
 </template>
 
 <script setup lang="ts">
-import PlayButton from "~/components/Common/Audio/PlayButton.vue";
-import AlbumArt from "~/components/Common/AlbumArt.vue";
-import {useAxios} from "~/vendor/axios";
-import {computed} from "vue";
-import DashboardCharts from "~/components/DashboardCharts.vue";
-import {useTranslate} from "~/vendor/gettext";
-import CardPage from "~/components/Common/CardPage.vue";
-import useOptionalStorage from "~/functions/useOptionalStorage";
+import { useQuery } from "@tanstack/vue-query";
+import { computed } from "vue";
 import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import {ApiNotification, ApiNowPlaying, GlobalPermissions, HasLinks} from "~/entities/ApiInterfaces.ts";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys} from "~/entities/Queries.ts";
-import {useQuery} from "@tanstack/vue-query";
-import {useAzuraCastDashboardGlobals} from "~/vendor/azuracast.ts";
+import AlbumArt from "~/components/Common/AlbumArt.vue";
+import PlayButton from "~/components/Common/Audio/PlayButton.vue";
+import CardPage from "~/components/Common/CardPage.vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import DashboardCharts from "~/components/DashboardCharts.vue";
 import DashboardNoSidebar from "~/components/Layout/DashboardNoSidebar.vue";
+import {
+    ApiNotification,
+    ApiNowPlaying,
+    GlobalPermissions,
+    HasLinks,
+} from "~/entities/ApiInterfaces.ts";
+import { QueryKeys } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import useOptionalStorage from "~/functions/useOptionalStorage";
+import { useUserAllowed } from "~/functions/useUserAllowed.ts";
+import { useAxios } from "~/vendor/axios";
+import { useAzuraCastDashboardGlobals } from "~/vendor/azuracast.ts";
+import { useTranslate } from "~/vendor/gettext";
 import IconIcAccountCircle from "~icons/ic/baseline-account-circle";
 import IconIcHeadphones from "~icons/ic/baseline-headphones";
 import IconIcInfo from "~icons/ic/baseline-info";
 import IconIcSettings from "~icons/ic/baseline-settings";
 import IconIcWarning from "~icons/ic/baseline-warning";
-import {useUserAllowed} from "~/functions/useUserAllowed.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
 
-const {showCharts, showAlbumArt} = useAzuraCastDashboardGlobals();
+const { showCharts, showAlbumArt } = useAzuraCastDashboardGlobals();
 
-const {userAllowed} = useUserAllowed();
+const { userAllowed } = useUserAllowed();
 const showAdmin = userAllowed(GlobalPermissions.View);
 
-const {getApiUrl} = useApiRouter();
+const { getApiUrl } = useApiRouter();
 
-const notificationsUrl = getApiUrl('/frontend/dashboard/notifications');
-const chartsUrl = getApiUrl('/frontend/dashboard/charts');
-const stationsUrl = getApiUrl('/frontend/dashboard/stations');
+const notificationsUrl = getApiUrl("/frontend/dashboard/notifications");
+const chartsUrl = getApiUrl("/frontend/dashboard/charts");
+const stationsUrl = getApiUrl("/frontend/dashboard/stations");
 
-const chartsVisible = useOptionalStorage<boolean>('dashboard_show_chart', true);
+const chartsVisible = useOptionalStorage<boolean>("dashboard_show_chart", true);
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const langShowHideCharts = computed(() => {
-    return (chartsVisible.value)
-        ? $gettext('Hide Charts')
-        : $gettext('Show Charts')
+    return chartsVisible.value
+        ? $gettext("Hide Charts")
+        : $gettext("Show Charts");
 });
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
-const {data: notifications, isLoading: notificationsLoading} = useQuery<ApiNotification[]>({
-    queryKey: [
-        QueryKeys.Dashboard,
-        'notifications'
-    ],
-    queryFn: async ({signal}) => {
-        const {data} = await axios.get<ApiNotification[]>(notificationsUrl.value, {signal});
+const { data: notifications, isLoading: notificationsLoading } = useQuery<
+    ApiNotification[]
+>({
+    queryKey: [QueryKeys.Dashboard, "notifications"],
+    queryFn: async ({ signal }) => {
+        const { data } = await axios.get<ApiNotification[]>(
+            notificationsUrl.value,
+            { signal },
+        );
         return data;
     },
 });
@@ -305,42 +312,39 @@ type ApiDashboard = ApiNowPlaying & Required<HasLinks>;
 
 const stationFields: DataTableField<ApiDashboard>[] = [
     {
-        key: 'play_button',
-        label: '',
+        key: "play_button",
+        label: "",
         sortable: false,
-        class: 'shrink'
+        class: "shrink",
     },
     {
-        key: 'name',
-        label: $gettext('Station Name'),
+        key: "name",
+        label: $gettext("Station Name"),
         sortable: true,
     },
     {
-        key: 'listeners',
-        label: $gettext('Listeners'),
-        sortable: true
+        key: "listeners",
+        label: $gettext("Listeners"),
+        sortable: true,
     },
     {
-        key: 'now_playing',
-        label: $gettext('Now Playing'),
-        sortable: true
+        key: "now_playing",
+        label: $gettext("Now Playing"),
+        sortable: true,
     },
     {
-        key: 'actions',
-        label: '',
+        key: "actions",
+        label: "",
         sortable: false,
-        class: 'shrink'
-    }
+        class: "shrink",
+    },
 ];
 
 const stationsItemProvider = useApiItemProvider<ApiDashboard>(
     stationsUrl,
-    [
-        QueryKeys.Dashboard,
-        'stations'
-    ],
+    [QueryKeys.Dashboard, "stations"],
     {
-        refetchInterval: 15 * 1000
-    }
+        refetchInterval: 15 * 1000,
+    },
 );
 </script>

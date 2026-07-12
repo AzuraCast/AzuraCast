@@ -147,105 +147,105 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import AdminBackupsLastOutputModal from "~/components/Admin/Backups/LastOutputModal.vue";
-import formatFileSize from "~/functions/formatFileSize";
+import { useTemplateRef } from "vue";
 import AdminBackupsConfigureModal from "~/components/Admin/Backups/ConfigureModal.vue";
+import AdminBackupsLastOutputModal from "~/components/Admin/Backups/LastOutputModal.vue";
 import AdminBackupsRunBackupModal from "~/components/Admin/Backups/RunBackupModal.vue";
+import { BackupSettings } from "~/components/Admin/BackupsWrapper.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
-import {useAzuraCast} from "~/vendor/azuracast";
-import {useTemplateRef} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useLuxon} from "~/vendor/luxon";
-import {ApiAdminBackup, ApiAdminVueBackupProps} from "~/entities/ApiInterfaces.ts";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys} from "~/entities/Queries.ts";
-import {BackupSettings} from "~/components/Admin/BackupsWrapper.vue";
-import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import {
+    ApiAdminBackup,
+    ApiAdminVueBackupProps,
+} from "~/entities/ApiInterfaces.ts";
+import { QueryKeys } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import formatFileSize from "~/functions/formatFileSize";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { HasRelistEmit } from "~/functions/useBaseEditModal.ts";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import { useAzuraCast } from "~/vendor/azuracast";
+import { useTranslate } from "~/vendor/gettext";
+import { useLuxon } from "~/vendor/luxon";
 import IconIcAssignment from "~icons/ic/baseline-assignment";
 import IconIcSend from "~icons/ic/baseline-send";
 import IconIcSettings from "~icons/ic/baseline-settings";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
 
-const props = defineProps<ApiAdminVueBackupProps & {
-    settings: BackupSettings
-}>();
+const props = defineProps<
+    ApiAdminVueBackupProps & {
+        settings: BackupSettings;
+    }
+>();
 
 const emit = defineEmits<HasRelistEmit>();
 
-const {getApiUrl} = useApiRouter();
-const listUrl = getApiUrl('/admin/backups');
-const runBackupUrl = getApiUrl('/admin/backups/run');
-const settingsUrl = getApiUrl('/admin/settings/backup');
+const { getApiUrl } = useApiRouter();
+const listUrl = getApiUrl("/admin/backups");
+const runBackupUrl = getApiUrl("/admin/backups/run");
+const settingsUrl = getApiUrl("/admin/settings/backup");
 
-const {$gettext} = useTranslate();
-const {timeConfig} = useAzuraCast();
-const {DateTime, timestampToRelative} = useLuxon();
+const { $gettext } = useTranslate();
+const { timeConfig } = useAzuraCast();
+const { DateTime, timestampToRelative } = useLuxon();
 
-type Row = Required<ApiAdminBackup>
+type Row = Required<ApiAdminBackup>;
 
 const fields: DataTableField<Row>[] = [
     {
-        key: 'basename',
+        key: "basename",
         isRowHeader: true,
-        label: $gettext('File Name'),
-        sortable: false
+        label: $gettext("File Name"),
+        sortable: false,
     },
     {
-        key: 'timestamp',
-        label: $gettext('Last Modified'),
+        key: "timestamp",
+        label: $gettext("Last Modified"),
         sortable: false,
         formatter: (value) => {
-            return DateTime.fromSeconds(value).toLocaleString(
-                {...DateTime.DATETIME_SHORT, ...timeConfig}
-            );
-        }
+            return DateTime.fromSeconds(value).toLocaleString({
+                ...DateTime.DATETIME_SHORT,
+                ...timeConfig,
+            });
+        },
     },
     {
-        key: 'size',
-        label: $gettext('Size'),
+        key: "size",
+        label: $gettext("Size"),
         sortable: false,
-        formatter: (value) => formatFileSize(value)
+        formatter: (value) => formatFileSize(value),
     },
     {
-        key: 'actions',
-        label: $gettext('Actions'),
+        key: "actions",
+        label: $gettext("Actions"),
         sortable: false,
-        class: 'shrink'
-    }
+        class: "shrink",
+    },
 ];
 
-const itemProvider = useApiItemProvider<Row>(
-    listUrl,
-    [QueryKeys.AdminBackups]
-);
+const itemProvider = useApiItemProvider<Row>(listUrl, [QueryKeys.AdminBackups]);
 
 const relist = async () => {
     await itemProvider.refresh();
-    emit('relist');
+    emit("relist");
 };
 
-const $lastOutputModal = useTemplateRef('$lastOutputModal');
+const $lastOutputModal = useTemplateRef("$lastOutputModal");
 const showLastOutput = () => {
     $lastOutputModal.value?.show();
 };
 
-const $configureModal = useTemplateRef('$configureModal');
+const $configureModal = useTemplateRef("$configureModal");
 const doConfigure = () => {
     $configureModal.value?.open();
 };
 
-const $runBackupModal = useTemplateRef('$runBackupModal');
+const $runBackupModal = useTemplateRef("$runBackupModal");
 const doRunBackup = () => {
     $runBackupModal.value?.open();
 };
 
-const {doDelete} = useConfirmAndDelete(
-    $gettext('Delete Backup?'),
-    () => {
-        void relist();
-    }
-);
+const { doDelete } = useConfirmAndDelete($gettext("Delete Backup?"), () => {
+    void relist();
+});
 </script>

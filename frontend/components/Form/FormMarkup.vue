@@ -37,19 +37,19 @@
 </template>
 
 <script setup lang="ts">
+import { useSlots } from "vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
-import {useSlots} from "vue";
 
 withDefaults(
     defineProps<{
-        id: string,
-        label?: string,
-        description?: string
+        id: string;
+        label?: string;
+        description?: string;
     }>(),
     {
-        label: '',
-        description: ''
-    }
+        label: "",
+        description: "",
+    },
 );
 
 const slots = useSlots();

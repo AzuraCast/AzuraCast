@@ -3,9 +3,9 @@
 </template>
 
 <script setup lang="ts">
+import { delay } from "es-toolkit";
+import { ref } from "vue";
 import Settings from "~/components/Admin/Settings.vue";
-import {delay} from "es-toolkit";
-import {ref} from "vue";
 
 const loading = ref(false);
 
@@ -15,5 +15,5 @@ const onSaved = async () => {
     await delay(2000);
 
     window.location.reload();
-}
+};
 </script>

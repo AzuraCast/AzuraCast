@@ -188,54 +188,56 @@
 </template>
 
 <script setup lang="ts">
-import StationReportsListenersMap from "~/components/Stations/Reports/Listeners/Map.vue";
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import DateRangeDropdown, {DateRange} from "~/components/Common/DateRangeDropdown.vue";
-import {computed, ComputedRef, Ref, ref, useTemplateRef} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useAxios} from "~/vendor/axios";
-import useHasDatatable from "~/functions/useHasDatatable";
-import {ListenerFilters, ListenerTypeFilters} from "~/components/Stations/Reports/Listeners/listenerFilters.ts";
-import {filter} from "es-toolkit/compat";
-import formatTime from "~/functions/formatTime.ts";
+import { useQuery, useQueryClient } from "@tanstack/vue-query";
+import { toRefs } from "@vueuse/core";
+import { filter } from "es-toolkit/compat";
+import { ComputedRef, computed, Ref, ref, useTemplateRef } from "vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import DateRangeDropdown, {
+    DateRange,
+} from "~/components/Common/DateRangeDropdown.vue";
 import ListenerFiltersBar from "~/components/Stations/Reports/Listeners/FiltersBar.vue";
+import {
+    ListenerFilters,
+    ListenerTypeFilters,
+} from "~/components/Stations/Reports/Listeners/listenerFilters.ts";
+import StationReportsListenersMap from "~/components/Stations/Reports/Listeners/Map.vue";
+import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import { ListenerRequired } from "~/entities/StationReports.ts";
+import { useClientItemProvider } from "~/functions/dataTable/useClientItemProvider.ts";
+import formatTime from "~/functions/formatTime.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import useHasDatatable from "~/functions/useHasDatatable";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
-import {useLuxon} from "~/vendor/luxon.ts";
-import {useQuery, useQueryClient} from "@tanstack/vue-query";
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
-import {useClientItemProvider} from "~/functions/dataTable/useClientItemProvider.ts";
-import {useStationData} from "~/functions/useStationQuery.ts";
-import {toRefs} from "@vueuse/core";
-import {ListenerRequired} from "~/entities/StationReports.ts";
-import IconIcDesktopWindows from "~icons/ic/baseline-desktop-windows";
+import { useStationData } from "~/functions/useStationQuery.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
+import { useLuxon } from "~/vendor/luxon.ts";
 import IconIcCloudDownload from "~icons/ic/baseline-cloud-download";
+import IconIcDesktopWindows from "~icons/ic/baseline-desktop-windows";
 import IconIcRouter from "~icons/ic/baseline-router";
 import IconIcSmartphone from "~icons/ic/baseline-smartphone";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
 
-const {getStationApiUrl} = useApiRouter();
-const apiUrl = getStationApiUrl('/listeners');
+const { getStationApiUrl } = useApiRouter();
+const apiUrl = getStationApiUrl("/listeners");
 
 const isLive = ref<boolean>(true);
 
-const {DateTime} = useLuxon();
+const { DateTime } = useLuxon();
 
 const stationData = useStationData();
-const {timezone, ipGeoAttribution} = toRefs(stationData);
+const { timezone, ipGeoAttribution } = toRefs(stationData);
 
-const {
-    now,
-    formatTimestampAsDateTime
-} = useStationDateTimeFormatter();
+const { now, formatTimestampAsDateTime } = useStationDateTimeFormatter();
 
 const nowTz = now();
 
-const minDate = nowTz.minus({years: 5}).toJSDate();
-const maxDate = nowTz.plus({days: 5}).toJSDate();
+const minDate = nowTz.minus({ years: 5 }).toJSDate();
+const maxDate = nowTz.plus({ days: 5 }).toJSDate();
 
 const dateRange = ref<DateRange>({
-    startDate: nowTz.minus({days: 1}).toJSDate(),
-    endDate: nowTz.toJSDate()
+    startDate: nowTz.minus({ days: 1 }).toJSDate(),
+    endDate: nowTz.toJSDate(),
 });
 
 const filters: Ref<ListenerFilters> = ref({
@@ -244,143 +246,158 @@ const filters: Ref<ListenerFilters> = ref({
     type: ListenerTypeFilters.All,
 });
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 type Row = ListenerRequired;
 
 const fields: DataTableField<Row>[] = [
     {
-        key: 'ip', label: $gettext('IP'), sortable: false,
+        key: "ip",
+        label: $gettext("IP"),
+        sortable: false,
         selectable: true,
-        visible: true
+        visible: true,
     },
     {
-        key: 'connected_time',
-        label: $gettext('Time'),
+        key: "connected_time",
+        label: $gettext("Time"),
         sortable: true,
         formatter: (_col, _key, item): string => {
-            return formatTime(item.connected_time)
+            return formatTime(item.connected_time);
         },
         selectable: true,
-        visible: true
+        visible: true,
     },
     {
-        key: 'connected_time_sec',
-        label: $gettext('Time (sec)'),
+        key: "connected_time_sec",
+        label: $gettext("Time (sec)"),
         sortable: false,
         formatter: (_col, _key, item): string => {
             return String(item.connected_time);
         },
         selectable: true,
-        visible: false
+        visible: false,
     },
     {
-        key: 'connected_on',
-        label: $gettext('Start Time'),
+        key: "connected_on",
+        label: $gettext("Start Time"),
         sortable: true,
-        formatter: (_col, _key, item) => formatTimestampAsDateTime(
-            item.connected_on,
-            DateTime.DATETIME_SHORT
-        ),
+        formatter: (_col, _key, item) =>
+            formatTimestampAsDateTime(
+                item.connected_on,
+                DateTime.DATETIME_SHORT,
+            ),
         selectable: true,
-        visible: false
+        visible: false,
     },
     {
-        key: 'connected_until',
-        label: $gettext('End Time'),
+        key: "connected_until",
+        label: $gettext("End Time"),
         sortable: true,
-        formatter: (_col, _key, item) => formatTimestampAsDateTime(
-            item.connected_until,
-            DateTime.DATETIME_SHORT
-        ),
+        formatter: (_col, _key, item) =>
+            formatTimestampAsDateTime(
+                item.connected_until,
+                DateTime.DATETIME_SHORT,
+            ),
         selectable: true,
-        visible: false
+        visible: false,
     },
     {
-        key: 'device.client',
+        key: "device.client",
         isRowHeader: true,
-        label: $gettext('User Agent'),
+        label: $gettext("User Agent"),
         sortable: true,
         selectable: true,
-        visible: true
+        visible: true,
     },
     {
-        key: 'stream',
-        label: $gettext('Stream'),
+        key: "stream",
+        label: $gettext("Stream"),
         sortable: true,
         selectable: true,
-        visible: true
+        visible: true,
     },
     {
-        key: 'location',
-        label: $gettext('Location'),
+        key: "location",
+        label: $gettext("Location"),
         sortable: true,
         sorter: (row: Row): string => {
-            return row.location?.country + ' ' + row.location?.region + ' ' + row.location?.city;
+            return (
+                row.location?.country +
+                " " +
+                row.location?.region +
+                " " +
+                row.location?.city
+            );
         },
         selectable: true,
-        visible: true
-    }
+        visible: true,
+    },
 ];
 
 const exportUrl = computed(() => {
     const exportUrl = new URL(apiUrl.value, document.location.href);
     const exportUrlParams = exportUrl.searchParams;
-    exportUrlParams.set('format', 'csv');
+    exportUrlParams.set("format", "csv");
 
     if (!isLive.value) {
         const startDate = DateTime.fromJSDate(dateRange.value.startDate);
         if (startDate.isValid) {
-            exportUrlParams.set('start', startDate.toISO());
+            exportUrlParams.set("start", startDate.toISO());
         }
 
         const endDate = DateTime.fromJSDate(dateRange.value.endDate);
         if (endDate.isValid) {
-            exportUrlParams.set('end', endDate.toISO());
+            exportUrlParams.set("end", endDate.toISO());
         }
     }
 
     return exportUrl.toString();
 });
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
-const $dataTable = useTemplateRef('$dataTable');
-const {navigate} = useHasDatatable($dataTable);
+const $dataTable = useTemplateRef("$dataTable");
+const { navigate } = useHasDatatable($dataTable);
 
 const hasFilters: ComputedRef<boolean> = computed(() => {
-    return null !== filters.value.minLength
-        || null !== filters.value.maxLength
-        || ListenerTypeFilters.All !== filters.value.type;
+    return (
+        null !== filters.value.minLength ||
+        null !== filters.value.maxLength ||
+        ListenerTypeFilters.All !== filters.value.type
+    );
 });
 
-const {data: allListeners, isLoading} = useQuery<Row[]>({
-    queryKey: queryKeyWithStation(
-        [
-            QueryKeys.StationReports,
-            'listeners',
-            computed(() => (isLive.value) ? 'live' : dateRange.value)
-        ],
-    ),
-    queryFn: async ({signal}) => {
+const { data: allListeners, isLoading } = useQuery<Row[]>({
+    queryKey: queryKeyWithStation([
+        QueryKeys.StationReports,
+        "listeners",
+        computed(() => (isLive.value ? "live" : dateRange.value)),
+    ]),
+    queryFn: async ({ signal }) => {
         const params: {
-            [key: string]: any
+            [key: string]: any;
         } = {};
 
         if (!isLive.value) {
-            params.start = DateTime.fromJSDate(dateRange.value.startDate).toISO();
+            params.start = DateTime.fromJSDate(
+                dateRange.value.startDate,
+            ).toISO();
             params.end = DateTime.fromJSDate(dateRange.value.endDate).toISO();
         }
 
-        const {data} = await axios.get<Row[]>(apiUrl.value, {signal, params});
+        const { data } = await axios.get<Row[]>(apiUrl.value, {
+            signal,
+            params,
+        });
         return data;
     },
     staleTime: 10 * 1000,
     refetchInterval: (query) => {
         const queryKey = query.options?.queryKey ?? [];
         const broadcastType = [...queryKey].pop();
-        return (broadcastType === 'live') ? 15000 : false;
-    }
+        return broadcastType === "live" ? 15000 : false;
+    },
 });
 
 const filteredListeners = computed<Row[]>(() => {
@@ -390,27 +407,36 @@ const filteredListeners = computed<Row[]>(() => {
         return listeners;
     }
 
-    return filter(
-        listeners,
-        (row: Row) => {
-            const connectedTime: number = row.connected_time;
-            if (null !== filters.value.minLength && connectedTime < filters.value.minLength) {
-                return false;
-            }
-            if (null !== filters.value.maxLength && connectedTime > filters.value.maxLength) {
-                return false;
-            }
-            if (ListenerTypeFilters.All !== filters.value.type) {
-                if (ListenerTypeFilters.Mobile === filters.value.type && !row.device.is_mobile) {
-                    return false;
-                } else if (ListenerTypeFilters.Desktop === filters.value.type && row.device.is_mobile) {
-                    return false;
-                }
-            }
-
-            return true;
+    return filter(listeners, (row: Row) => {
+        const connectedTime: number = row.connected_time;
+        if (
+            null !== filters.value.minLength &&
+            connectedTime < filters.value.minLength
+        ) {
+            return false;
         }
-    );
+        if (
+            null !== filters.value.maxLength &&
+            connectedTime > filters.value.maxLength
+        ) {
+            return false;
+        }
+        if (ListenerTypeFilters.All !== filters.value.type) {
+            if (
+                ListenerTypeFilters.Mobile === filters.value.type &&
+                !row.device.is_mobile
+            ) {
+                return false;
+            } else if (
+                ListenerTypeFilters.Desktop === filters.value.type &&
+                row.device.is_mobile
+            ) {
+                return false;
+            }
+        }
+
+        return true;
+    });
 });
 
 const queryClient = useQueryClient();
@@ -421,14 +447,12 @@ const listenersItemProvider = useClientItemProvider<Row>(
     undefined,
     async (): Promise<void> => {
         await queryClient.invalidateQueries({
-            queryKey: queryKeyWithStation(
-                [
-                    QueryKeys.StationReports,
-                    'listeners'
-                ],
-            )
+            queryKey: queryKeyWithStation([
+                QueryKeys.StationReports,
+                "listeners",
+            ]),
         });
-    }
+    },
 );
 
 const totalListenerHours = computed(() => {

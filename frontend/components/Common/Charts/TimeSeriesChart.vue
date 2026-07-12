@@ -10,58 +10,57 @@
 </template>
 
 <script setup lang="ts">
-import {computed, useTemplateRef} from "vue";
-import {useTranslate} from "~/vendor/gettext";
+import { computed, useTemplateRef } from "vue";
 import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
-import useChart, {ChartProps} from "~/functions/useChart";
-import {useLuxon} from "~/vendor/luxon";
+import useChart, { ChartProps } from "~/functions/useChart";
+import { useTranslate } from "~/vendor/gettext";
+import { useLuxon } from "~/vendor/luxon";
 
-interface TimeSeriesChartProps extends ChartProps<'line'> {
-    tz?: string,
+interface TimeSeriesChartProps extends ChartProps<"line"> {
+    tz?: string;
 }
 
-const props = withDefaults(
-    defineProps<TimeSeriesChartProps>(),
-    {
-        tz: 'UTC'
-    }
-);
+const props = withDefaults(defineProps<TimeSeriesChartProps>(), {
+    tz: "UTC",
+});
 
-const $canvas = useTemplateRef('$canvas');
+const $canvas = useTemplateRef("$canvas");
 
-const {$gettext} = useTranslate();
-const {DateTime} = useLuxon();
+const { $gettext } = useTranslate();
+const { DateTime } = useLuxon();
 
-useChart<'line'>(
+useChart<"line">(
     props,
     $canvas,
     computed(() => ({
-        type: 'line',
+        type: "line",
         options: {
             datasets: {
                 line: {
                     spanGaps: true,
-                    showLine: true
-                }
+                    showLine: true,
+                },
             },
             plugins: {
                 zoom: {
                     // Container for pan options
                     pan: {
                         enabled: true,
-                        mode: 'x',
+                        mode: "x",
                     },
                     limits: {
                         x: {
-                            max: Number(DateTime.local({zone: props.tz}).toMillis()),
-                        }
-                    }
-                }, 
+                            max: Number(
+                                DateTime.local({ zone: props.tz }).toMillis(),
+                            ),
+                        },
+                    },
+                },
                 tooltip: {
                     intersect: false,
-                    mode: 'index',
+                    mode: "index",
                     callbacks: {
-                        title: function (ctx) {
+                        title: (ctx) => {
                             const title: string[] = [];
 
                             ctx.forEach((ctxRow) => {
@@ -70,58 +69,60 @@ useChart<'line'>(
                                 }
 
                                 title.push(
-                                    DateTime.fromMillis(ctxRow.parsed.x).setZone(props.tz)?.toLocaleString(DateTime.DATE_SHORT)
+                                    DateTime.fromMillis(ctxRow.parsed.x)
+                                        .setZone(props.tz)
+                                        ?.toLocaleString(DateTime.DATE_SHORT),
                                 );
                             });
 
-                            return title.join(', ');
+                            return title.join(", ");
                         },
-                        label: function (ctx) {
-                            let label = ctx.dataset.label || '';
+                        label: (ctx) => {
+                            let label = ctx.dataset.label || "";
                             if (ctx.parsed.y === null) {
                                 return label;
                             }
 
                             if (label) {
-                                label += ': ';
+                                label += ": ";
                             }
 
                             label += ctx.parsed.y.toFixed(2);
 
                             return label;
-                        }
-                    }
-                }
+                        },
+                    },
+                },
             },
             scales: {
                 x: {
-                    type: 'time',
+                    type: "time",
                     display: true,
                     max: Number(DateTime.local({ zone: props.tz }).toMillis()),
                     adapters: {
                         date: {
                             setZone: true,
-                            zone: props.tz
-                        }
+                            zone: props.tz,
+                        },
                     },
                     time: {
-                        unit: 'day'
+                        unit: "day",
                     },
                     ticks: {
-                        source: 'data',
-                        autoSkip: true
-                    }
+                        source: "data",
+                        autoSkip: true,
+                    },
                 },
                 y: {
                     display: true,
                     title: {
                         display: true,
-                        text: $gettext('Listeners')
+                        text: $gettext("Listeners"),
                     },
-                    min: 0
-                }
-            }
-        }
-    }))
+                    min: 0,
+                },
+            },
+        },
+    })),
 );
 </script>

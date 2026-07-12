@@ -339,25 +339,30 @@
 </template>
 
 <script setup lang="ts">
-import FormFieldset from "~/components/Form/FormFieldset.vue";
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import FormMarkup from "~/components/Form/FormMarkup.vue";
-import {computed} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
+import { useAdminStationsForm } from "~/components/Admin/Stations/Form/form.ts";
 import Tab from "~/components/Common/Tab.vue";
-import {SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
-import {AudioProcessingMethods, BackendAdapters, CrossfadeModes, MasterMePresets} from "~/entities/ApiInterfaces.ts";
-import {storeToRefs} from "pinia";
-import {useAdminStationsForm} from "~/components/Admin/Stations/Form/form.ts";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
+import FormFieldset from "~/components/Form/FormFieldset.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
+import {
+    AudioProcessingMethods,
+    BackendAdapters,
+    CrossfadeModes,
+    MasterMePresets,
+} from "~/entities/ApiInterfaces.ts";
+import { SimpleFormOptionInput } from "~/functions/objectToFormOptions.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
+import { useTranslate } from "~/vendor/gettext";
 
 const props = defineProps<{
-    isStereoToolInstalled: boolean
+    isStereoToolInstalled: boolean;
 }>();
 
-const {r$, form} = storeToRefs(useAdminStationsForm());
+const { r$, form } = storeToRefs(useAdminStationsForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.backendTab));
 
@@ -366,15 +371,24 @@ const isBackendEnabled = computed(() => {
 });
 
 const isStereoToolEnabled = computed(() => {
-    return form.value?.backend_config?.audio_processing_method === (AudioProcessingMethods.StereoTool as string);
+    return (
+        form.value?.backend_config?.audio_processing_method ===
+        (AudioProcessingMethods.StereoTool as string)
+    );
 });
 
 const isMasterMeEnabled = computed(() => {
-    return form.value?.backend_config?.audio_processing_method === (AudioProcessingMethods.MasterMe as string);
+    return (
+        form.value?.backend_config?.audio_processing_method ===
+        (AudioProcessingMethods.MasterMe as string)
+    );
 });
 
 const isPostProcessingEnabled = computed(() => {
-    return form.value?.backend_config?.audio_processing_method !== (AudioProcessingMethods.None as string);
+    return (
+        form.value?.backend_config?.audio_processing_method !==
+        (AudioProcessingMethods.None as string)
+    );
 });
 
 const isAutoCueEnabled = computed(() => {
@@ -382,64 +396,65 @@ const isAutoCueEnabled = computed(() => {
 });
 
 const isSmartCrossfade = computed(() => {
-    return form.value?.backend_config?.crossfade_type === (CrossfadeModes.Smart as string);
+    return (
+        form.value?.backend_config?.crossfade_type ===
+        (CrossfadeModes.Smart as string)
+    );
 });
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const backendTypeOptions = computed<SimpleFormOptionInput>(() => {
     return [
         {
-            text: $gettext('Use Liquidsoap on this server.'),
-            value: BackendAdapters.Liquidsoap
+            text: $gettext("Use Liquidsoap on this server."),
+            value: BackendAdapters.Liquidsoap,
         },
         {
-            text: $gettext('Do not use an AutoDJ service.'),
-            value: BackendAdapters.None
-        }
+            text: $gettext("Do not use an AutoDJ service."),
+            value: BackendAdapters.None,
+        },
     ];
 });
 
 const crossfadeOptions = computed<SimpleFormOptionInput>(() => {
     return [
         {
-            text: $gettext('Smart Mode'),
+            text: $gettext("Smart Mode"),
             value: CrossfadeModes.Smart,
         },
         {
-            text: $gettext('Normal Mode'),
+            text: $gettext("Normal Mode"),
             value: CrossfadeModes.Normal,
         },
         {
-            text: $gettext('Disable Crossfading'),
-            value: CrossfadeModes.Disabled
-        }
+            text: $gettext("Disable Crossfading"),
+            value: CrossfadeModes.Disabled,
+        },
     ];
 });
 
 const audioProcessingOptions = computed<SimpleFormOptionInput>(() => {
     const audioProcessingOptions: SimpleFormOptionInput = [
         {
-            text: $gettext('No Post-processing'),
-            value: AudioProcessingMethods.None
+            text: $gettext("No Post-processing"),
+            value: AudioProcessingMethods.None,
         },
         {
-            text: $gettext('Basic Normalization and Compression'),
-            value: AudioProcessingMethods.Liquidsoap
+            text: $gettext("Basic Normalization and Compression"),
+            value: AudioProcessingMethods.Liquidsoap,
         },
         {
-            text: $gettext('Master_me Post-processing'),
-            value: AudioProcessingMethods.MasterMe
+            text: $gettext("Master_me Post-processing"),
+            value: AudioProcessingMethods.MasterMe,
         },
     ];
 
     if (props.isStereoToolInstalled) {
-        audioProcessingOptions.push(
-            {
-                text: $gettext('Stereo Tool'),
-                value: AudioProcessingMethods.StereoTool
-            }
-        )
+        audioProcessingOptions.push({
+            text: $gettext("Stereo Tool"),
+            value: AudioProcessingMethods.StereoTool,
+        });
     }
 
     return audioProcessingOptions;
@@ -447,54 +462,54 @@ const audioProcessingOptions = computed<SimpleFormOptionInput>(() => {
 
 const charsetOptions = computed<SimpleFormOptionInput>(() => {
     return [
-        {text: 'UTF-8', value: 'UTF-8'},
-        {text: 'ISO-8859-1', value: 'ISO-8859-1'}
+        { text: "UTF-8", value: "UTF-8" },
+        { text: "ISO-8859-1", value: "ISO-8859-1" },
     ];
 });
 
 const masterMePresetOptions = computed<SimpleFormOptionInput>(() => {
     return [
         {
-            text: $gettext('Music General'),
-            value: MasterMePresets.MusicGeneral
+            text: $gettext("Music General"),
+            value: MasterMePresets.MusicGeneral,
         },
         {
-            text: $gettext('Speech General'),
-            value: MasterMePresets.SpeechGeneral
+            text: $gettext("Speech General"),
+            value: MasterMePresets.SpeechGeneral,
         },
         {
-            text: $gettext('EBU R128'),
-            value: MasterMePresets.EbuR128
+            text: $gettext("EBU R128"),
+            value: MasterMePresets.EbuR128,
         },
         {
-            text: $gettext('Apple Podcasts'),
-            value: MasterMePresets.ApplePodcasts
+            text: $gettext("Apple Podcasts"),
+            value: MasterMePresets.ApplePodcasts,
         },
         {
-            text: $gettext('YouTube'),
-            value: MasterMePresets.YouTube
-        }
-    ]
+            text: $gettext("YouTube"),
+            value: MasterMePresets.YouTube,
+        },
+    ];
 });
 
 const performanceModeOptions = computed<SimpleFormOptionInput>(() => {
     return [
         {
-            text: $gettext('Use Less Memory (Uses More CPU)'),
-            value: 'less_memory'
+            text: $gettext("Use Less Memory (Uses More CPU)"),
+            value: "less_memory",
         },
         {
-            text: $gettext('Balanced'),
-            value: 'balanced'
+            text: $gettext("Balanced"),
+            value: "balanced",
         },
         {
-            text: $gettext('Use Less CPU (Uses More Memory)'),
-            value: 'less_cpu'
+            text: $gettext("Use Less CPU (Uses More Memory)"),
+            value: "less_cpu",
         },
         {
-            text: $gettext('Disable Optimizations'),
-            value: 'disabled'
-        }
+            text: $gettext("Disable Optimizations"),
+            value: "disabled",
+        },
     ];
 });
 </script>

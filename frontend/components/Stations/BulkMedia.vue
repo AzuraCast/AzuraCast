@@ -313,38 +313,38 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref, useTemplateRef} from "vue";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {getErrorAsString, useAxios} from "~/vendor/axios";
+import { computed, ref, useTemplateRef } from "vue";
 import Modal from "~/components/Common/Modal.vue";
-import FormGroup from "~/components/Form/FormGroup.vue";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
 import FormFile from "~/components/Form/FormFile.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
-import {ApiStatus} from "~/entities/ApiInterfaces.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import FormGroup from "~/components/Form/FormGroup.vue";
+import { ApiStatus } from "~/entities/ApiInterfaces.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
+import { getErrorAsString, useAxios } from "~/vendor/axios";
 
-const {getStationApiUrl} = useApiRouter();
-const apiUrl = getStationApiUrl('/files/bulk');
-const previewApiUrl = getStationApiUrl('/files/bulk/preview');
+const { getStationApiUrl } = useApiRouter();
+const apiUrl = getStationApiUrl("/files/bulk");
+const previewApiUrl = getStationApiUrl("/files/bulk/preview");
 
 const importFile = ref<File | null>(null);
 const importResults = ref<any>(null);
 const previewResults = ref<any>(null);
 const previewCompleted = ref<boolean>(false);
 
-const {notifySuccess, notifyError} = useNotify();
-const {axios} = useAxios();
+const { notifySuccess, notifyError } = useNotify();
+const { axios } = useAxios();
 
-const $modal = useTemplateRef('$modal');
-const {show, hide} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { show, hide } = useHasModal($modal);
 
-const $previewModal = useTemplateRef('$previewModal');
-const {show: showPreview, hide: hidePreview} = useHasModal($previewModal);
+const $previewModal = useTemplateRef("$previewModal");
+const { show: showPreview, hide: hidePreview } = useHasModal($previewModal);
 
 const filteredPreviewResults = computed(() => {
     if (!previewResults.value?.previewResults) return [];
-    return previewResults.value.previewResults.filter((row: any) =>
-        row.has_changes || row.error
+    return previewResults.value.previewResults.filter(
+        (row: any) => row.has_changes || row.error,
     );
 });
 
@@ -356,22 +356,25 @@ const uploaded = (file: File) => {
 
 const doPreview = async () => {
     if (!importFile.value) {
-        notifyError('Please select a CSV file first.');
+        notifyError("Please select a CSV file first.");
         return;
     }
 
     const formData = new FormData();
-    formData.append('import_file', importFile.value);
+    formData.append("import_file", importFile.value);
 
     try {
-        const {data} = await axios.post<ApiStatus>(previewApiUrl.value, formData);
+        const { data } = await axios.post<ApiStatus>(
+            previewApiUrl.value,
+            formData,
+        );
 
         if (data.success) {
             previewResults.value = data;
             previewCompleted.value = true;
             showPreview();
         } else {
-            notifyError(data.message || 'Preview failed');
+            notifyError(data.message || "Preview failed");
         }
     } catch (e) {
         const errorMsg = getErrorAsString(e);
@@ -386,18 +389,18 @@ const proceedWithImport = () => {
 
 const doSubmit = async () => {
     if (!previewCompleted.value) {
-        notifyError('Please preview the changes first.');
+        notifyError("Please preview the changes first.");
         return;
     }
     if (!importFile.value) {
-        notifyError('No file provided.');
+        notifyError("No file provided.");
         return;
     }
 
     const formData = new FormData();
-    formData.append('import_file', importFile.value);
+    formData.append("import_file", importFile.value);
 
-    const {data} = await axios.post<ApiStatus>(apiUrl.value, formData);
+    const { data } = await axios.post<ApiStatus>(apiUrl.value, formData);
 
     importFile.value = null;
     previewCompleted.value = false;

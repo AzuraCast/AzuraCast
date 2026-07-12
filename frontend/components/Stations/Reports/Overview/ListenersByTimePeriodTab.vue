@@ -105,89 +105,89 @@
 </template>
 
 <script setup lang="ts">
-import TimeSeriesChart from "~/components/Common/Charts/TimeSeriesChart.vue";
+import { useQuery } from "@tanstack/vue-query";
+import { computed, ref, toRef } from "vue";
 import HourChart from "~/components/Common/Charts/HourChart.vue";
 import PieChart from "~/components/Common/Charts/PieChart.vue";
-import {computed, ref, toRef} from "vue";
-import {useAxios} from "~/vendor/axios";
+import TimeSeriesChart from "~/components/Common/Charts/TimeSeriesChart.vue";
 import Loading from "~/components/Common/Loading.vue";
-import {useLuxon} from "~/vendor/luxon";
-import {useTranslate} from "~/vendor/gettext.ts";
-import {DateRange} from "~/components/Stations/Reports/Overview/CommonMetricsView.vue";
-import {useQuery} from "@tanstack/vue-query";
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import { DateRange } from "~/components/Stations/Reports/Overview/CommonMetricsView.vue";
+import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext.ts";
+import { useLuxon } from "~/vendor/luxon";
 
 const props = defineProps<{
-    dateRange: DateRange,
-    apiUrl: string,
+    dateRange: DateRange;
+    apiUrl: string;
 }>();
 
-const dateRange = toRef(props, 'dateRange');
-const {axios} = useAxios();
+const dateRange = toRef(props, "dateRange");
+const { axios } = useAxios();
 
-const {DateTime} = useLuxon();
+const { DateTime } = useLuxon();
 
-const resultType = ref('average');
+const resultType = ref("average");
 
 type ChartData = {
-    labels: any[],
-    metrics: any[],
-    alt: any[]
-}
+    labels: any[];
+    metrics: any[];
+    alt: any[];
+};
 
 const blankChartSection: ChartData = {
     labels: [],
     metrics: [],
-    alt: []
+    alt: [],
 };
 
-const {data: chartData, isLoading} = useQuery({
+const { data: chartData, isLoading } = useQuery({
     queryKey: queryKeyWithStation([
         QueryKeys.StationReports,
-        'listeners_by_time_period',
+        "listeners_by_time_period",
         resultType,
-        dateRange
+        dateRange,
     ]),
-    queryFn: async ({signal}) => {
-        const {data} = await axios.get(props.apiUrl, {
+    queryFn: async ({ signal }) => {
+        const { data } = await axios.get(props.apiUrl, {
             signal,
             params: {
                 type: resultType.value,
                 start: DateTime.fromJSDate(dateRange.value.startDate).toISO(),
-                end: DateTime.fromJSDate(dateRange.value.endDate).toISO()
-            }
+                end: DateTime.fromJSDate(dateRange.value.endDate).toISO(),
+            },
         });
         return data;
     },
     placeholderData: () => ({
-        daily: {...blankChartSection},
-        day_of_week: {...blankChartSection},
+        daily: { ...blankChartSection },
+        day_of_week: { ...blankChartSection },
         hourly: {
-            all: {...blankChartSection},
-            day0: {...blankChartSection},
-            day1: {...blankChartSection},
-            day2: {...blankChartSection},
-            day3: {...blankChartSection},
-            day4: {...blankChartSection},
-            day5: {...blankChartSection},
-            day6: {...blankChartSection},
-        }
-    })
+            all: { ...blankChartSection },
+            day0: { ...blankChartSection },
+            day1: { ...blankChartSection },
+            day2: { ...blankChartSection },
+            day3: { ...blankChartSection },
+            day4: { ...blankChartSection },
+            day5: { ...blankChartSection },
+            day6: { ...blankChartSection },
+        },
+    }),
 });
 
-const currentHour = ref('all');
+const currentHour = ref("all");
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const currentHourOptions = computed(() => ({
-    'all': $gettext('All Days'),
-    'day0': $gettext('Monday'),
-    'day1': $gettext('Tuesday'),
-    'day2': $gettext('Wednesday'),
-    'day3': $gettext('Thursday'),
-    'day4': $gettext('Friday'),
-    'day5': $gettext('Saturday'),
-    'day6': $gettext('Sunday'),
+    all: $gettext("All Days"),
+    day0: $gettext("Monday"),
+    day1: $gettext("Tuesday"),
+    day2: $gettext("Wednesday"),
+    day3: $gettext("Thursday"),
+    day4: $gettext("Friday"),
+    day5: $gettext("Saturday"),
+    day6: $gettext("Sunday"),
 }));
 
 const currentHourlyChart = computed(() => {

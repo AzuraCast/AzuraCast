@@ -91,21 +91,25 @@
 </template>
 
 <script setup lang="ts">
-import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {computed, ref, useTemplateRef} from "vue";
-import {getErrorAsString, useAxios} from "~/vendor/axios";
-import Modal from "~/components/Common/Modal.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
-import {ApiAdminNewLoginToken, ApiAdminNewLoginTokenResponse, LoginTokenTypes} from "~/entities/ApiInterfaces.ts";
-import {useAppRegle} from "~/vendor/regle.ts";
+import { computed, ref, useTemplateRef } from "vue";
 import LoginLinkNewLink from "~/components/Admin/Users/LoginLinkNewLink.vue";
-import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import {useTranslate} from "~/vendor/gettext.ts";
+import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
+import Modal from "~/components/Common/Modal.vue";
 import RadioWithCustomNumber from "~/components/Common/RadioWithCustomNumber.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import {
+    ApiAdminNewLoginToken,
+    ApiAdminNewLoginTokenResponse,
+    LoginTokenTypes,
+} from "~/entities/ApiInterfaces.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
+import { getErrorAsString, useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext.ts";
+import { useAppRegle } from "~/vendor/regle.ts";
 
 const props = defineProps<{
-    createUrl: string,
+    createUrl: string;
 }>();
 
 const error = ref<string | null>(null);
@@ -120,28 +124,24 @@ const form = ref<NewToken>({
     expires_minutes: 30,
 });
 
-const {r$} = useAppRegle(
-    form,
-    {},
-    {}
-);
+const { r$ } = useAppRegle(form, {}, {});
 
 const clearContents = () => {
     r$.$reset({
-        toOriginalState: true
+        toOriginalState: true,
     });
 
     error.value = null;
     loginLink.value = null;
 };
 
-const $modal = useTemplateRef('$modal');
-const {show, hide} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { show, hide } = useHasModal($modal);
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 const doSubmit = async () => {
-    const {valid, data: postData} = await r$.$validate();
+    const { valid, data: postData } = await r$.$validate();
     if (!valid) {
         return;
     }
@@ -149,9 +149,9 @@ const doSubmit = async () => {
     error.value = null;
 
     try {
-        const {data} = await axios.post<ApiAdminNewLoginTokenResponse>(
+        const { data } = await axios.post<ApiAdminNewLoginTokenResponse>(
             props.createUrl,
-            postData
+            postData,
         );
 
         loginLink.value = data.links.login;
@@ -168,27 +168,27 @@ const create = (userId: number) => {
     show();
 };
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
-const typeOptions = computed(() => ([
+const typeOptions = computed(() => [
     {
         value: LoginTokenTypes.ResetPassword,
-        text: $gettext('Reset Password')
+        text: $gettext("Reset Password"),
     },
     {
         value: LoginTokenTypes.Login,
-        text: $gettext('Magic Login Link')
-    }
-]));
+        text: $gettext("Magic Login Link"),
+    },
+]);
 
-const expiresMinutesOptions = computed(() => [5, 15, 30, 60, 120].map(
-    (row) => ({
+const expiresMinutesOptions = computed(() =>
+    [5, 15, 30, 60, 120].map((row) => ({
         value: row,
-        text: String(row)
-    })
-));
+        text: String(row),
+    })),
+);
 
 defineExpose({
-    create
+    create,
 });
 </script>

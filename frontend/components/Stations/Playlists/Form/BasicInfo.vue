@@ -367,24 +367,24 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import { map, range } from "es-toolkit/compat";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
+import Tab from "~/components/Common/Tab.vue";
 import FormFieldset from "~/components/Form/FormFieldset.vue";
-import {map, range} from "es-toolkit/compat";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {useTranslate} from "~/vendor/gettext";
-import Tab from "~/components/Common/Tab.vue";
-import {storeToRefs} from "pinia";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {computed} from "vue";
-import {useStationsPlaylistsForm} from "~/components/Stations/Playlists/Form/form.ts";
+import { useStationsPlaylistsForm } from "~/components/Stations/Playlists/Form/form.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
+import { useTranslate } from "~/vendor/gettext";
 
-const {r$, form} = storeToRefs(useStationsPlaylistsForm());
+const { r$, form } = storeToRefs(useStationsPlaylistsForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.basicInfoTab));
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const sourceOptions = [
     {
@@ -411,72 +411,79 @@ const sourceOptions = [
 
 const typeOptions = [
     {
-        value: 'default',
-        text: $gettext('General Rotation'),
-        description: $gettext('Standard playlist, shuffles with other standard playlists based on weight.')
+        value: "default",
+        text: $gettext("General Rotation"),
+        description: $gettext(
+            "Standard playlist, shuffles with other standard playlists based on weight.",
+        ),
     },
     {
-        value: 'once_per_x_songs',
-        text: $gettext('Once per x Songs'),
-        description: $gettext('Play once every $x songs.')
+        value: "once_per_x_songs",
+        text: $gettext("Once per x Songs"),
+        description: $gettext("Play once every $x songs."),
     },
     {
-        value: 'once_per_x_minutes',
-        text: $gettext('Once per x Minutes'),
-        description: $gettext('Play once every $x minutes.')
+        value: "once_per_x_minutes",
+        text: $gettext("Once per x Minutes"),
+        description: $gettext("Play once every $x minutes."),
     },
     {
-        value: 'once_per_hour',
-        text: $gettext('Once per Hour'),
-        description: $gettext('Play once per hour at the specified minute.')
+        value: "once_per_hour",
+        text: $gettext("Once per Hour"),
+        description: $gettext("Play once per hour at the specified minute."),
     },
     {
-        value: 'custom',
-        text: $gettext('Advanced'),
-        description: $gettext('Manually define how this playlist is used in Liquidsoap configuration.')
-    }
+        value: "custom",
+        text: $gettext("Advanced"),
+        description: $gettext(
+            "Manually define how this playlist is used in Liquidsoap configuration.",
+        ),
+    },
 ];
 
 const orderOptions = [
     {
-        value: 'shuffle',
-        text: $gettext('Shuffled'),
-        description: $gettext('The full playlist is shuffled and then played through in the shuffled order.')
+        value: "shuffle",
+        text: $gettext("Shuffled"),
+        description: $gettext(
+            "The full playlist is shuffled and then played through in the shuffled order.",
+        ),
     },
     {
-        value: 'random',
-        text: $gettext('Random'),
-        description: $gettext('A completely random track is picked for playback every time the queue is populated.')
+        value: "random",
+        text: $gettext("Random"),
+        description: $gettext(
+            "A completely random track is picked for playback every time the queue is populated.",
+        ),
     },
     {
-        value: 'sequential',
-        text: $gettext('Sequential'),
-        description: $gettext('The order of the playlist is manually specified and followed by the AutoDJ.')
-    }
+        value: "sequential",
+        text: $gettext("Sequential"),
+        description: $gettext(
+            "The order of the playlist is manually specified and followed by the AutoDJ.",
+        ),
+    },
 ];
 
 const remoteTypeOptions = [
     {
-        value: 'stream',
-        text: $gettext('Icecast/Shoutcast Stream URL')
+        value: "stream",
+        text: $gettext("Icecast/Shoutcast Stream URL"),
     },
     {
-        value: 'playlist',
-        text: $gettext('Playlist (M3U/PLS) URL')
+        value: "playlist",
+        text: $gettext("Playlist (M3U/PLS) URL"),
     },
     {
-        value: 'other',
-        text: $gettext('Other Remote URL (File, HLS, etc.)')
-    }
+        value: "other",
+        text: $gettext("Other Remote URL (File, HLS, etc.)"),
+    },
 ];
 
-const weightOptions = map(
-    range(1, 26),
-    (val) => {
-        return {
-            value: val,
-            text: String(val)
-        }
-    }
-);
+const weightOptions = map(range(1, 26), (val) => {
+    return {
+        value: val,
+        text: String(val),
+    };
+});
 </script>

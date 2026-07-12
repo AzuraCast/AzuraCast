@@ -83,46 +83,46 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from "vue";
 import FlowUpload from "~/components/Common/FlowUpload.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
-import {onMounted, ref} from "vue";
-import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useAxios} from "~/vendor/axios";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
-import {ApiUploadedRecordStatus} from "~/entities/ApiInterfaces.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import { ApiUploadedRecordStatus } from "~/entities/ApiInterfaces.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useMayNeedRestart } from "~/functions/useMayNeedRestart";
+import { useAxios } from "~/vendor/axios";
 
-const {getStationApiUrl} = useApiRouter();
-const apiUrl = getStationApiUrl('/stereo_tool_config');
+const { getStationApiUrl } = useApiRouter();
+const apiUrl = getStationApiUrl("/stereo_tool_config");
 
 const downloadUrl = ref<string | null>(null);
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 const relist = async () => {
-    const {data} = await axios.get<ApiUploadedRecordStatus>(apiUrl.value);
+    const { data } = await axios.get<ApiUploadedRecordStatus>(apiUrl.value);
     downloadUrl.value = data.url;
 };
 
 onMounted(relist);
 
-const {mayNeedRestart} = useMayNeedRestart();
+const { mayNeedRestart } = useMayNeedRestart();
 
 const onFileSuccess = () => {
     mayNeedRestart();
     void relist();
 };
 
-const {notifySuccess} = useNotify();
+const { notifySuccess } = useNotify();
 
 const deleteConfigurationFile = async () => {
     await axios.delete(apiUrl.value);
 
     mayNeedRestart();
     notifySuccess();
-    
+
     await relist();
 };
 </script>

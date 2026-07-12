@@ -60,16 +60,15 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {computed} from "vue";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
 import Tab from "~/components/Common/Tab.vue";
-import {storeToRefs} from "pinia";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {useStationsStreamersForm} from "~/components/Stations/Streamers/Form/form.ts";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { useStationsStreamersForm } from "~/components/Stations/Streamers/Form/form.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
 
-const {r$} = storeToRefs(useStationsStreamersForm());
+const { r$ } = storeToRefs(useStationsStreamersForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.basicInfoTab));
-
 </script>

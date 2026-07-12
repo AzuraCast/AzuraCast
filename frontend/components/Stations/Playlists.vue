@@ -362,89 +362,99 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import { EventImpl } from "@fullcalendar/core/internal";
+import { toRefs } from "@vueuse/core";
+import { useTemplateRef } from "vue";
+import AddButton from "~/components/Common/AddButton.vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import Tab from "~/components/Common/Tab.vue";
+import Tabs from "~/components/Common/Tabs.vue";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import ScheduleViewTab from "~/components/Stations/Common/ScheduleViewTab.vue";
+import TimeZone from "~/components/Stations/Common/TimeZone.vue";
+import ApplyToModal from "~/components/Stations/Playlists/ApplyToModal.vue";
+import CloneModal from "~/components/Stations/Playlists/CloneModal.vue";
 import EditModal from "~/components/Stations/Playlists/EditModal.vue";
-import ReorderModal from "~/components/Stations/Playlists/ReorderModal.vue";
 import ImportModal from "~/components/Stations/Playlists/ImportModal.vue";
 import ImportPlaylistConfigModal from "~/components/Stations/Playlists/ImportPlaylistConfigModal.vue";
 import QueueModal from "~/components/Stations/Playlists/QueueModal.vue";
-import CloneModal from "~/components/Stations/Playlists/CloneModal.vue";
-import ApplyToModal from "~/components/Stations/Playlists/ApplyToModal.vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useTemplateRef} from "vue";
-import useHasEditModal from "~/functions/useHasEditModal";
-import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useAxios} from "~/vendor/axios";
+import ReorderModal from "~/components/Stations/Playlists/ReorderModal.vue";
+import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-import {useLuxon} from "~/vendor/luxon";
-import TimeZone from "~/components/Stations/Common/TimeZone.vue";
-import Tabs from "~/components/Common/Tabs.vue";
-import Tab from "~/components/Common/Tab.vue";
-import AddButton from "~/components/Common/AddButton.vue";
-import ScheduleViewTab from "~/components/Stations/Common/ScheduleViewTab.vue";
-import {EventImpl} from "@fullcalendar/core/internal";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
-import {useStationData} from "~/functions/useStationQuery.ts";
-import {toRefs} from "@vueuse/core";
+import useHasEditModal from "~/functions/useHasEditModal";
+import { useMayNeedRestart } from "~/functions/useMayNeedRestart";
+import { useStationData } from "~/functions/useStationQuery.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
+import { useLuxon } from "~/vendor/luxon";
 import IconBiContract from "~icons/bi/chevron-contract";
 import IconBiExpand from "~icons/bi/chevron-expand";
 import IconBiCloudDownload from "~icons/bi/cloud-download";
 import IconBiCloudUpload from "~icons/bi/cloud-upload";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
 import PlaylistGroupingTab from "~/components/Stations/Playlists/PlaylistGroupingTab.vue";
 import PlaylistGroupReorderModal from "~/components/Stations/Playlists/PlaylistGroupReorderModal.vue";
 import {StationPlaylistEnriched, StationPlaylistGroupMemberEnriched} from "~/entities/StationPlaylist.ts";
 import {StationPlaylistGroup, PlaylistGroupAllowedRequests} from "~/entities/ApiInterfaces.ts";
 
-const {getStationApiUrl} = useApiRouter();
-const listUrl = getStationApiUrl('/playlists');
-const scheduleUrl = getStationApiUrl('/playlists/schedule');
+const { getStationApiUrl } = useApiRouter();
+const listUrl = getStationApiUrl("/playlists");
+const scheduleUrl = getStationApiUrl("/playlists/schedule");
 const exportPlaylistsConfigUrl = getStationApiUrl('/playlists/export-config');
 const importPlaylistsConfigUrl = getStationApiUrl('/playlists/import-config');
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const fields: DataTableField[] = [
-    {key: 'name', isRowHeader: true, label: $gettext('Playlist'), sortable: true},
+    {
+        key: "name",
+        isRowHeader: true,
+        label: $gettext("Playlist"),
+        sortable: true,
+    },
     {key: 'source', label: $gettext('Source'), sortable: false},
-    {key: 'scheduling', label: $gettext('Scheduling'), sortable: false},
-    {key: 'num_entries', label: $gettext('# Entries'), sortable: false},
-    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+    { key: "scheduling", label: $gettext("Scheduling"), sortable: false },
+    { key: "num_entries", label: $gettext("# Entries"), sortable: false },
+    {
+        key: "actions",
+        label: $gettext("Actions"),
+        sortable: false,
+        class: "shrink",
+    },
 ];
 
 const listItemProvider = useApiItemProvider(
     listUrl,
-    queryKeyWithStation([QueryKeys.StationPlaylists])
+    queryKeyWithStation([QueryKeys.StationPlaylists]),
 );
 
-const {Duration} = useLuxon();
+const { Duration } = useLuxon();
 
 const formatLength = (length: number) => {
     if (0 === length) {
-        return $gettext('None');
+        return $gettext("None");
     }
 
     const duration = Duration.fromMillis(length * 1000);
     return duration.rescale().toHuman();
 };
 
-const $scheduleTab = useTemplateRef('$scheduleTab');
+const $scheduleTab = useTemplateRef("$scheduleTab");
 
 const relist = () => {
     void listItemProvider.refresh();
     $scheduleTab.value?.refresh();
-}
+};
 
-const $editModal = useTemplateRef('$editModal');
-const {doCreate, doEdit} = useHasEditModal($editModal);
+const $editModal = useTemplateRef("$editModal");
+const { doCreate, doEdit } = useHasEditModal($editModal);
 
 const doCalendarClick = (event: EventImpl) => {
     doEdit(event.extendedProps.edit_url);
 };
 
-const $reorderModal = useTemplateRef('$reorderModal');
+const $reorderModal = useTemplateRef("$reorderModal");
 
 const doReorder = (url: string) => {
     $reorderModal.value?.open(url);
@@ -497,7 +507,7 @@ const doQueue = (url: string) => {
     $queueModal.value?.open(url);
 };
 
-const $importModal = useTemplateRef('$importModal');
+const $importModal = useTemplateRef("$importModal");
 
 const doImport = (url: string) => {
     $importModal.value?.open(url);
@@ -515,16 +525,16 @@ const doClone = (name: string, url: string) => {
     $cloneModal.value?.open(name, url);
 };
 
-const $applyToModal = useTemplateRef('$applyToModal');
+const $applyToModal = useTemplateRef("$applyToModal");
 
 const doApplyTo = (url: string) => {
     $applyToModal.value?.open(url);
-}
+};
 
-const {mayNeedRestart: originalMayNeedRestart} = useMayNeedRestart();
+const { mayNeedRestart: originalMayNeedRestart } = useMayNeedRestart();
 
 const stationData = useStationData();
-const {useManualAutoDj} = toRefs(stationData);
+const { useManualAutoDj } = toRefs(stationData);
 
 const mayNeedRestart = () => {
     if (!useManualAutoDj.value) {
@@ -534,11 +544,11 @@ const mayNeedRestart = () => {
     originalMayNeedRestart();
 };
 
-const {notifySuccess} = useNotify();
-const {axios} = useAxios();
+const { notifySuccess } = useNotify();
+const { axios } = useAxios();
 
 const doModify = async (url: string) => {
-    const {data} = await axios.put(url);
+    const { data } = await axios.put(url);
 
     mayNeedRestart();
 
@@ -546,16 +556,13 @@ const doModify = async (url: string) => {
     relist();
 };
 
-const {doDelete} = useConfirmAndDelete(
-    $gettext('Delete Playlist?'),
-    () => {
-        relist();
-        mayNeedRestart();
-    },
-);
+const { doDelete } = useConfirmAndDelete($gettext("Delete Playlist?"), () => {
+    relist();
+    mayNeedRestart();
+});
 
-const {doDelete: doEmpty} = useConfirmAndDelete(
-    $gettext('Clear all media from playlist?'),
+const { doDelete: doEmpty } = useConfirmAndDelete(
+    $gettext("Clear all media from playlist?"),
     () => {
         relist();
         mayNeedRestart();

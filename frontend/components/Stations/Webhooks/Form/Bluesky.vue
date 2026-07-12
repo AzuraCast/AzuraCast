@@ -26,33 +26,36 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import CommonSocialPostFields from "~/components/Stations/Webhooks/Form/Common/SocialPostFields.vue";
+import { required } from "@regle/rules";
+import { storeToRefs } from "pinia";
+import { Ref } from "vue";
 import Tab from "~/components/Common/Tab.vue";
-import {WebhookComponentProps} from "~/components/Stations/Webhooks/EditModal.vue";
-import {useStationsWebhooksForm} from "~/components/Stations/Webhooks/Form/form.ts";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {useAppScopedRegle} from "~/vendor/regle.ts";
-import {required} from "@regle/rules";
-import {storeToRefs} from "pinia";
-import {WebhookRecordBluesky, WebhookRecordCommon} from "~/entities/Webhooks.ts";
-import {Ref} from "vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { WebhookComponentProps } from "~/components/Stations/Webhooks/EditModal.vue";
+import CommonSocialPostFields from "~/components/Stations/Webhooks/Form/Common/SocialPostFields.vue";
+import { useStationsWebhooksForm } from "~/components/Stations/Webhooks/Form/form.ts";
+import {
+    WebhookRecordBluesky,
+    WebhookRecordCommon,
+} from "~/entities/Webhooks.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
+import { useAppScopedRegle } from "~/vendor/regle.ts";
 
 defineProps<WebhookComponentProps>();
 
-const {form} = storeToRefs(useStationsWebhooksForm());
+const { form } = storeToRefs(useStationsWebhooksForm());
 
-const {r$} = useAppScopedRegle(
+const { r$ } = useAppScopedRegle(
     form as Ref<WebhookRecordCommon & WebhookRecordBluesky>,
     {
         config: {
-            handle: {required},
-            app_password: {required}
-        }
+            handle: { required },
+            app_password: { required },
+        },
     },
     {
-        namespace: 'station-webhooks'
-    }
+        namespace: "station-webhooks",
+    },
 );
 
 const tabClass = useFormTabClass(r$);

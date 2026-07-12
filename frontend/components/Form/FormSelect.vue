@@ -9,9 +9,9 @@
 </template>
 
 <script setup lang="ts" generic="T = ModelFormField">
-import {NestedFormOptionInput} from "~/functions/objectToFormOptions.ts";
 import SelectOptions from "~/components/Form/SelectOptions.vue";
-import {ModelFormField} from "~/components/Form/useFormField.ts";
+import { ModelFormField } from "~/components/Form/useFormField.ts";
+import { NestedFormOptionInput } from "~/functions/objectToFormOptions.ts";
 
 withDefaults(
     defineProps<{
@@ -23,7 +23,5 @@ withDefaults(
     }
 );
 
-const model = defineModel<T>({
-    default: null,
-});
+const model = defineModel<T>();
 </script>

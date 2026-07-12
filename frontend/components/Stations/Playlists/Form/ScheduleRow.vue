@@ -112,16 +112,16 @@
 </template>
 
 <script setup lang="ts">
+import { required } from "@regle/rules";
+import { toRef } from "vue";
 import PlaylistTime from "~/components/Common/TimeCode.vue";
-import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {required} from "@regle/rules";
-import {toRef} from "vue";
-import {useTranslate} from "~/vendor/gettext";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import FormMarkup from "~/components/Form/FormMarkup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
-import {useAppScopedRegle} from "~/vendor/regle.ts";
+import { useTranslate } from "~/vendor/gettext";
+import { useAppScopedRegle } from "~/vendor/regle.ts";
 import IconIcRemove from "~icons/ic/baseline-remove";
 import { PlaylistSources } from "~/entities/ApiInterfaces";
 import {storeToRefs} from "pinia";
@@ -140,38 +140,36 @@ interface PlaylistScheduleRow {
 }
 
 const props = defineProps<{
-    index: number,
-    row: PlaylistScheduleRow
+    index: number;
+    row: PlaylistScheduleRow;
 }>();
 
-const emit = defineEmits<{
-    (e: 'remove'): void
-}>();
+const emit = defineEmits<(e: "remove") => void>();
 
-const {r$} = useAppScopedRegle(
-    toRef(props, 'row'),
+const { r$ } = useAppScopedRegle(
+    toRef(props, "row"),
     {
-        start_time: {required},
-        end_time: {required},
+        start_time: { required },
+        end_time: { required },
     },
     {
-        namespace: 'stations-playlists'
-    }
+        namespace: "stations-playlists",
+    },
 );
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const dayOptions = [
-    {value: 1, text: $gettext('Monday')},
-    {value: 2, text: $gettext('Tuesday')},
-    {value: 3, text: $gettext('Wednesday')},
-    {value: 4, text: $gettext('Thursday')},
-    {value: 5, text: $gettext('Friday')},
-    {value: 6, text: $gettext('Saturday')},
-    {value: 7, text: $gettext('Sunday')}
+    { value: 1, text: $gettext("Monday") },
+    { value: 2, text: $gettext("Tuesday") },
+    { value: 3, text: $gettext("Wednesday") },
+    { value: 4, text: $gettext("Thursday") },
+    { value: 5, text: $gettext("Friday") },
+    { value: 6, text: $gettext("Saturday") },
+    { value: 7, text: $gettext("Sunday") },
 ];
 
 const doRemove = () => {
-    emit('remove');
+    emit("remove");
 };
 </script>

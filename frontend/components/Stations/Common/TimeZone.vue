@@ -8,9 +8,9 @@
 </template>
 
 <script setup lang="ts">
-import {useStationData} from "~/functions/useStationQuery.ts";
-import {toRefs} from "@vueuse/core";
+import { toRefs } from "@vueuse/core";
+import { useStationData } from "~/functions/useStationQuery.ts";
 
 const stationData = useStationData();
-const {timezone} = toRefs(stationData);
+const { timezone } = toRefs(stationData);
 </script>

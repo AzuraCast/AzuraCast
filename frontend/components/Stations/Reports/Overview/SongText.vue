@@ -9,9 +9,9 @@
 </template>
 
 <script setup lang="ts">
-import {ApiHasSongFields} from "~/entities/ApiInterfaces.ts";
+import { ApiHasSongFields } from "~/entities/ApiInterfaces.ts";
 
 defineProps<{
-    song: ApiHasSongFields
+    song: ApiHasSongFields;
 }>();
 </script>

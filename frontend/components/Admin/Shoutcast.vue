@@ -89,55 +89,52 @@
 </template>
 
 <script setup lang="ts">
-import FlowUpload from "~/components/Common/FlowUpload.vue";
-import {computed, onMounted, ref} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useAxios} from "~/vendor/axios";
-import Loading from "~/components/Common/Loading.vue";
+import { computed, onMounted, ref } from "vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {ApiAdminShoutcastStatus} from "~/entities/ApiInterfaces.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
-import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
+import { useDialog } from "~/components/Common/Dialogs/useDialog.ts";
+import FlowUpload from "~/components/Common/FlowUpload.vue";
+import Loading from "~/components/Common/Loading.vue";
+import { ApiAdminShoutcastStatus } from "~/entities/ApiInterfaces.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
 
-const {getApiUrl} = useApiRouter();
-const apiUrl = getApiUrl('/admin/shoutcast');
+const { getApiUrl } = useApiRouter();
+const apiUrl = getApiUrl("/admin/shoutcast");
 
 type Row = ApiAdminShoutcastStatus;
 
 const isLoading = ref(true);
 const record = ref<Row>({
-    version: null
+    version: null,
 });
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const langInstalledVersion = computed(() => {
-    return $gettext(
-        'Shoutcast version "%{version}" is currently installed.',
-        {
-            version: record.value.version ?? 'N/A'
-        }
-    );
+    return $gettext('Shoutcast version "%{version}" is currently installed.', {
+        version: record.value.version ?? "N/A",
+    });
 });
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 const relist = async () => {
     isLoading.value = true;
 
-    const {data} = await axios.get<Row>(apiUrl.value);
+    const { data } = await axios.get<Row>(apiUrl.value);
     record.value = data;
     isLoading.value = false;
 };
 
 onMounted(relist);
 
-const {confirmDelete} = useDialog();
+const { confirmDelete } = useDialog();
 
 const doDelete = async () => {
-    const {value} = await confirmDelete({
-        title: $gettext('Remove Shoutcast 2 DNAS?'),
-        confirmButtonText: $gettext('Uninstall')
+    const { value } = await confirmDelete({
+        title: $gettext("Remove Shoutcast 2 DNAS?"),
+        confirmButtonText: $gettext("Uninstall"),
     });
 
     if (!value) {
@@ -146,5 +143,5 @@ const doDelete = async () => {
 
     await axios.delete<Row>(apiUrl.value);
     await relist();
-}
+};
 </script>

@@ -1,37 +1,45 @@
 /* eslint-disable @typescript-eslint/prefer-promise-reject-errors */
 
-import axios, {AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse} from "axios";
-import {App, InjectionKey} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useAzuraCast} from "~/vendor/azuracast.ts";
-import {useNProgress} from "~/vendor/nprogress.ts";
+import axios, {
+    AxiosError,
+    AxiosInstance,
+    AxiosRequestConfig,
+    AxiosResponse,
+} from "axios";
+import { App, InjectionKey } from "vue";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import { ApiError } from "~/entities/ApiInterfaces.ts";
 import injectRequired from "~/functions/injectRequired.ts";
-import {ApiError} from "~/entities/ApiInterfaces.ts";
+import { useAzuraCast } from "~/vendor/azuracast.ts";
+import { useTranslate } from "~/vendor/gettext";
+import { useNProgress } from "~/vendor/nprogress.ts";
 
 const injectKey = Symbol() as InjectionKey<AxiosInstance>;
 const injectKeySilent = Symbol() as InjectionKey<AxiosInstance>;
 
 /* Composition API Axios utilities */
 interface UseAxios {
-    axios: AxiosInstance,
-    axiosSilent: AxiosInstance
+    axios: AxiosInstance;
+    axiosSilent: AxiosInstance;
 }
 
 export const useAxios = (): UseAxios => ({
     axios: injectRequired<AxiosInstance>(injectKey),
-    axiosSilent: injectRequired<AxiosInstance>(injectKeySilent)
+    axiosSilent: injectRequired<AxiosInstance>(injectKeySilent),
 });
 
-type AxiosApiError<D = any> = Omit<AxiosError<ApiError, D>, 'response'> & {
-    response: AxiosResponse<ApiError, D>
-}
+type AxiosApiError<D = any> = Omit<AxiosError<ApiError, D>, "response"> & {
+    response: AxiosResponse<ApiError, D>;
+};
 
 export const isApiError = (payload: any): payload is AxiosApiError => {
     if (axios.isAxiosError(payload)) {
-        if ('response' in payload && payload.response) {
-            if ('data' in payload.response) {
-                return 'success' in payload.response.data && 'message' in payload.response.data;
+        if ("response" in payload && payload.response) {
+            if ("data" in payload.response) {
+                return (
+                    "success" in payload.response.data &&
+                    "message" in payload.response.data
+                );
             }
         }
     }
@@ -53,29 +61,31 @@ export const getErrorAsString = (error: any): string => {
     }
 
     return String(error);
-}
+};
 
 export default function installAxios(vueApp: App) {
     // Configure auto-CSRF on requests
-    const {apiCsrf} = useAzuraCast();
+    const { apiCsrf } = useAzuraCast();
 
     const config: AxiosRequestConfig = {
         headers: {
-            "X-API-CSRF": apiCsrf
-        }
-    }
+            "X-API-CSRF": apiCsrf,
+        },
+    };
 
     // Configure some Axios settings that depend on the BootstrapVue $bvToast superglobal.
     const handleAxiosError = (error: any) => {
-        const {$gettext} = useTranslate();
+        const { $gettext } = useTranslate();
 
         // Canceled HTTP requests are expected.
         if (axios.isCancel(error)) {
-            console.log('HTTP request cancelled:', error.message);
+            console.log("HTTP request cancelled:", error.message);
             return;
         }
 
-        let notifyMessage = $gettext('An error occurred and your request could not be completed.');
+        let notifyMessage = $gettext(
+            "An error occurred and your request could not be completed.",
+        );
 
         if (isApiError(error)) {
             // Request made and server responded
@@ -94,55 +104,61 @@ export default function installAxios(vueApp: App) {
             console.error(error.request);
         } else {
             // Something happened in setting up the request that triggered an Error
-            console.error('Error', error.message);
+            console.error("Error", error.message);
         }
 
-        const {notifyError} = useNotify();
+        const { notifyError } = useNotify();
         notifyError(notifyMessage);
     };
 
-    const {setLoading} = useNProgress();
+    const { setLoading } = useNProgress();
 
     const axiosInstance = axios.create(config);
 
-    axiosInstance.interceptors.request.use((config) => {
-        setLoading(true);
-        return config;
-    }, (error) => {
-        setLoading(false);
-        handleAxiosError(error);
+    axiosInstance.interceptors.request.use(
+        (config) => {
+            setLoading(true);
+            return config;
+        },
+        (error) => {
+            setLoading(false);
+            handleAxiosError(error);
 
-        return Promise.reject(error);
-    });
+            return Promise.reject(error);
+        },
+    );
 
-    axiosInstance.interceptors.response.use((response) => {
-        setLoading(false);
-        return response;
-    }, (error) => {
-        setLoading(false);
-        handleAxiosError(error);
+    axiosInstance.interceptors.response.use(
+        (response) => {
+            setLoading(false);
+            return response;
+        },
+        (error) => {
+            setLoading(false);
+            handleAxiosError(error);
 
-        return Promise.reject(error);
-    });
+            return Promise.reject(error);
+        },
+    );
 
     const axiosSilent = axios.create(config);
 
     axiosSilent.interceptors.request.use(
-        (config) => (config),
+        (config) => config,
         (error) => {
             handleAxiosError(error);
 
             return Promise.reject(error);
-        }
+        },
     );
 
     axiosSilent.interceptors.response.use(
-        (response) => (response),
+        (response) => response,
         (error) => {
             handleAxiosError(error);
 
             return Promise.reject(error);
-        }
+        },
     );
 
     vueApp.provide(injectKey, axiosInstance);

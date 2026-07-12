@@ -37,13 +37,13 @@
 </template>
 
 <script setup lang="ts">
+import { ref, useTemplateRef } from "vue";
 import Modal from "~/components/Common/Modal.vue";
-import {ref, useTemplateRef} from "vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
-import {ApiAdminAuditLogChangeset} from "~/entities/ApiInterfaces.ts";
+import { ApiAdminAuditLogChangeset } from "~/entities/ApiInterfaces.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
 
-const $modal = useTemplateRef('$modal');
-const {show} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { show } = useHasModal($modal);
 
 const changes = ref<ApiAdminAuditLogChangeset[] | null>(null);
 
@@ -53,7 +53,7 @@ const open = (newChanges: ApiAdminAuditLogChangeset[]) => {
 };
 
 defineExpose({
-    open
+    open,
 });
 </script>
 

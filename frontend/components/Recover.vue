@@ -68,26 +68,26 @@
 </template>
 
 <script setup lang="ts">
+import { required } from "@regle/rules";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {isValidPassword, useAppRegle} from "~/vendor/regle.ts";
-import {required} from "@regle/rules";
+import { isValidPassword, useAppRegle } from "~/vendor/regle.ts";
 import IconIcVpnKey from "~icons/ic/baseline-vpn-key";
 
 defineProps<{
-    csrf: string,
-    error?: string,
+    csrf: string;
+    error?: string;
 }>();
 
-const {r$} = useAppRegle(
+const { r$ } = useAppRegle(
     {
-        password: ''
+        password: "",
     },
     {
         password: {
             required,
-            isValidPassword
-        }
+            isValidPassword,
+        },
     },
-    {}
+    {},
 );
 </script>

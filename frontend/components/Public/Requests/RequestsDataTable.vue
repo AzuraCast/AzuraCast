@@ -34,110 +34,105 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import {forEach} from "es-toolkit/compat";
+import { forEach } from "es-toolkit/compat";
+import { computed } from "vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
-import {computed} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {RequestsProps} from "~/components/Public/Requests.vue";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys} from "~/entities/Queries.ts";
-import {ApiStatus} from "~/entities/ApiInterfaces.ts";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import { RequestsProps } from "~/components/Public/Requests.vue";
+import { ApiStatus } from "~/entities/ApiInterfaces.ts";
+import { QueryKeys } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
 
 const props = defineProps<RequestsProps>();
 
-const emit = defineEmits<{
-    (e: 'submitted'): void
-}>();
+const emit = defineEmits<(e: "submitted") => void>();
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const fields = computed<DataTableField[]>(() => {
     const fields: DataTableField[] = [
         {
-            key: 'name',
+            key: "name",
             isRowHeader: true,
-            label: $gettext('Name'),
+            label: $gettext("Name"),
             sortable: false,
-            selectable: true
+            selectable: true,
         },
         {
-            key: 'title',
-            label: $gettext('Title'),
+            key: "title",
+            label: $gettext("Title"),
             sortable: true,
             selectable: true,
             visible: false,
-            formatter: (_value, _key, item) => item.song.title
+            formatter: (_value, _key, item) => item.song.title,
         },
         {
-            key: 'artist',
-            label: $gettext('Artist'),
+            key: "artist",
+            label: $gettext("Artist"),
             sortable: true,
             selectable: true,
             visible: false,
-            formatter: (_value, _key, item) => item.song.artist
+            formatter: (_value, _key, item) => item.song.artist,
         },
         {
-            key: 'album',
-            label: $gettext('Album'),
+            key: "album",
+            label: $gettext("Album"),
             sortable: true,
             selectable: true,
             visible: false,
-            formatter: (_value, _key, item) => item.song.album
+            formatter: (_value, _key, item) => item.song.album,
         },
         {
-            key: 'genre',
-            label: $gettext('Genre'),
+            key: "genre",
+            label: $gettext("Genre"),
             sortable: true,
             selectable: true,
             visible: false,
-            formatter: (_value, _key, item) => item.song.genre
-        }
+            formatter: (_value, _key, item) => item.song.genre,
+        },
     ];
 
-    forEach({...props.customFields}, (field) => {
+    forEach({ ...props.customFields }, (field) => {
         fields.push({
-            key: 'custom_field_' + field.id,
+            key: `custom_field_${field.id}`,
             label: field.name,
             sortable: false,
             selectable: true,
             visible: false,
-            formatter: (_value, _key, item) => item.song.custom_fields[field.short_name]
+            formatter: (_value, _key, item) =>
+                item.song.custom_fields[field.short_name],
         });
     });
 
-    fields.push(
-        {
-            key: 'actions',
-            label: $gettext('Actions'),
-            class: 'shrink',
-            sortable: false
-        }
-    );
+    fields.push({
+        key: "actions",
+        label: $gettext("Actions"),
+        class: "shrink",
+        sortable: false,
+    });
 
     return fields;
 });
 
 const requestListItemProvider = useApiItemProvider(
     props.requestListUri,
-    [
-        QueryKeys.PublicRequests
-    ],
+    [QueryKeys.PublicRequests],
     {
-        staleTime: 60 * 1000
-    }
+        staleTime: 60 * 1000,
+    },
 );
 
 const pageOptions = [10, 25];
 
-const {notifySuccess, notifyError} = useNotify();
-const {axios} = useAxios();
+const { notifySuccess, notifyError } = useNotify();
+const { axios } = useAxios();
 
 const doSubmitRequest = async (url: string) => {
     try {
-        const {data} = await axios.post<ApiStatus>(url);
+        const { data } = await axios.post<ApiStatus>(url);
 
         if (data.success) {
             notifySuccess(data.message);
@@ -145,7 +140,7 @@ const doSubmitRequest = async (url: string) => {
             notifyError(data.message);
         }
     } finally {
-        emit('submitted');
+        emit("submitted");
     }
 };
 

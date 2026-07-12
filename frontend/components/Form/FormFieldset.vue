@@ -19,13 +19,13 @@
 <script setup lang="ts">
 withDefaults(
     defineProps<{
-        label?: string,
-        description?: string
+        label?: string;
+        description?: string;
     }>(),
     {
-        label: '',
-        description: ''
-    }
+        label: "",
+        description: "",
+    },
 );
 
 const slots = defineSlots();

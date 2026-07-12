@@ -26,6 +26,6 @@
 import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton.vue";
 
 defineProps<{
-    loginLink: string,
+    loginLink: string;
 }>();
 </script>

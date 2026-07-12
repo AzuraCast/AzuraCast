@@ -253,53 +253,47 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref, watch} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useInjectWebDjNode} from "~/components/Public/WebDJ/useWebDjNode";
-import {usePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
-import {useInjectWebcaster, WebcasterMetadata} from "~/components/Public/WebDJ/useWebcaster";
+import { computed, ref, watch } from "vue";
+import { usePassthroughSync } from "~/components/Public/WebDJ/usePassthroughSync";
+import {
+    useInjectWebcaster,
+    WebcasterMetadata,
+} from "~/components/Public/WebDJ/useWebcaster";
+import { useInjectWebDjNode } from "~/components/Public/WebDJ/useWebDjNode";
+import { useTranslate } from "~/vendor/gettext";
 
 defineProps<{
-    stationName: string | null
+    stationName: string | null;
 }>();
 
 const djUsername = ref<string | null>(null);
 const djPassword = ref<string | null>(null);
 
-const {
-    doPassThrough,
-    bitrate,
-    sampleRate,
-    startStream,
-    stopStream
-} = useInjectWebDjNode();
+const { doPassThrough, bitrate, sampleRate, startStream, stopStream } =
+    useInjectWebDjNode();
 
-const {
-    metadata,
-    sendMetadata,
-    isConnected
-} = useInjectWebcaster();
+const { metadata, sendMetadata, isConnected } = useInjectWebcaster();
 
-usePassthroughSync(doPassThrough, 'global');
+usePassthroughSync(doPassThrough, "global");
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const langStreamButton = computed(() => {
-    return (isConnected.value)
-        ? $gettext('Stop Streaming')
-        : $gettext('Start Streaming');
+    return isConnected.value
+        ? $gettext("Stop Streaming")
+        : $gettext("Start Streaming");
 });
 
 const shownMetadata = ref<WebcasterMetadata>({
-    artist: '',
-    title: ''
+    artist: "",
+    title: "",
 });
 
 watch(metadata, (newMeta: WebcasterMetadata | null) => {
     if (newMeta === null) {
         newMeta = {
-            artist: '',
-            title: ''
+            artist: "",
+            title: "",
         };
     }
 

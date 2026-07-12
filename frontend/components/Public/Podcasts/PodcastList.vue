@@ -118,37 +118,39 @@
 
 <script setup lang="ts">
 import AlbumArt from "~/components/Common/AlbumArt.vue";
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import {useTranslate} from "~/vendor/gettext.ts";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
 import GridLayout from "~/components/Common/GridLayout.vue";
-import {usePodcastGlobals} from "~/components/Public/Podcasts/usePodcastGlobals.ts";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys} from "~/entities/Queries.ts";
-import {ApiPodcastRow} from "~/components/Public/Podcasts/usePodcastQuery.ts";
+import { usePodcastGlobals } from "~/components/Public/Podcasts/usePodcastGlobals.ts";
+import { ApiPodcastRow } from "~/components/Public/Podcasts/usePodcastQuery.ts";
+import { QueryKeys } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useTranslate } from "~/vendor/gettext.ts";
 import IconBiRssFill from "~icons/bi/rss-fill";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
 
-const {groupLayout, stationId} = usePodcastGlobals();
+const { groupLayout, stationId } = usePodcastGlobals();
 
-const {getStationApiUrl} = useApiRouter();
-const apiUrl = getStationApiUrl('/public/podcasts', stationId);
+const { getStationApiUrl } = useApiRouter();
+const apiUrl = getStationApiUrl("/public/podcasts", stationId);
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const fields: DataTableField<ApiPodcastRow>[] = [
-    {key: 'art', label: '', sortable: false, class: 'shrink pe-0'},
-    {key: 'title', label: $gettext('Podcast'), sortable: true},
-    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+    { key: "art", label: "", sortable: false, class: "shrink pe-0" },
+    { key: "title", label: $gettext("Podcast"), sortable: true },
+    {
+        key: "actions",
+        label: $gettext("Actions"),
+        sortable: false,
+        class: "shrink",
+    },
 ];
 
 const podcastsItemProvider = useApiItemProvider<ApiPodcastRow>(
     apiUrl,
-    [
-        QueryKeys.PublicPodcasts,
-        {station: stationId},
-    ],
+    [QueryKeys.PublicPodcasts, { station: stationId }],
     {
-        staleTime: 5 * 60 * 1000
-    }
-)
+        staleTime: 5 * 60 * 1000,
+    },
+);
 </script>

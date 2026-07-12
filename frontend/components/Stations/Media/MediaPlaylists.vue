@@ -36,14 +36,12 @@
 </template>
 
 <script setup lang="ts">
-import {ApiStationMediaPlaylist} from "~/entities/ApiInterfaces.ts";
+import { ApiStationMediaPlaylist } from "~/entities/ApiInterfaces.ts";
 import IconIcFolder from "~icons/ic/baseline-folder";
 
 defineProps<{
-    playlists: ApiStationMediaPlaylist[]
-}>()
-
-const emit = defineEmits<{
-    (e: 'filter', filter: string): void
+    playlists: ApiStationMediaPlaylist[];
 }>();
+
+const emit = defineEmits<(e: "filter", filter: string) => void>();
 </script>

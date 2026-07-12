@@ -40,20 +40,20 @@
 </template>
 
 <script setup lang="ts">
-import ProfileStreams from "~/components/Stations/Profile/StreamsPanel.vue";
-import ProfileHeader from "~/components/Stations/Profile/HeaderPanel.vue";
-import ProfileNowPlaying from "~/components/Stations/Profile/NowPlayingPanel.vue";
-import ProfileSchedule from "~/components/Stations/Profile/SchedulePanel.vue";
-import ProfileRequests from "~/components/Stations/Profile/RequestsPanel.vue";
-import ProfileStreamers from "~/components/Stations/Profile/StreamersPanel.vue";
-import ProfilePublicPages from "~/components/Stations/Profile/PublicPagesPanel.vue";
-import ProfileFrontend from "~/components/Stations/Profile/FrontendPanel.vue";
+import { computed } from "vue";
 import ProfileBackendNone from "~/components/Stations/Profile/BackendNonePanel.vue";
 import ProfileBackend from "~/components/Stations/Profile/BackendPanel.vue";
+import ProfileFrontend from "~/components/Stations/Profile/FrontendPanel.vue";
+import ProfileHeader from "~/components/Stations/Profile/HeaderPanel.vue";
 import NowPlayingNotStartedPanel from "~/components/Stations/Profile/NowPlayingNotStartedPanel.vue";
-import {computed} from "vue";
-import {BackendAdapters, FrontendAdapters} from "~/entities/ApiInterfaces.ts";
-import {useStationData} from "~/functions/useStationQuery.ts";
+import ProfileNowPlaying from "~/components/Stations/Profile/NowPlayingPanel.vue";
+import ProfilePublicPages from "~/components/Stations/Profile/PublicPagesPanel.vue";
+import ProfileRequests from "~/components/Stations/Profile/RequestsPanel.vue";
+import ProfileSchedule from "~/components/Stations/Profile/SchedulePanel.vue";
+import ProfileStreamers from "~/components/Stations/Profile/StreamersPanel.vue";
+import ProfileStreams from "~/components/Stations/Profile/StreamsPanel.vue";
+import { BackendAdapters, FrontendAdapters } from "~/entities/ApiInterfaces.ts";
+import { useStationData } from "~/functions/useStationQuery.ts";
 
 const stationData = useStationData();
 

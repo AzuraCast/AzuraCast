@@ -18,25 +18,25 @@
 </template>
 
 <script setup lang="ts">
-import {nextTick, ref, toRef, useTemplateRef, watch} from "vue";
-import {useAxios} from "~/vendor/axios";
-import {tryOnScopeDispose} from "@vueuse/core";
+import { tryOnScopeDispose } from "@vueuse/core";
+import { nextTick, ref, toRef, useTemplateRef, watch } from "vue";
 import Loading from "~/components/Common/Loading.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {ApiLogContents} from "~/entities/ApiInterfaces.ts";
+import { ApiLogContents } from "~/entities/ApiInterfaces.ts";
+import { useAxios } from "~/vendor/axios";
 
 const props = defineProps<{
-    logUrl: string
+    logUrl: string;
 }>();
 
 const isLoading = ref<boolean>(false);
-const logs = ref<string>('');
+const logs = ref<string>("");
 const currentLogPosition = ref<number | null>(null);
 const scrollToBottom = ref<boolean>(true);
 
-const {axiosSilent} = useAxios();
+const { axiosSilent } = useAxios();
 
-const $textarea = useTemplateRef('$textarea');
+const $textarea = useTemplateRef("$textarea");
 
 let updateInterval: ReturnType<typeof setInterval> | null = null;
 
@@ -50,19 +50,20 @@ tryOnScopeDispose(stop);
 
 const updateLogs = async () => {
     try {
-        const {data} = await axiosSilent.request<ApiLogContents>({
-            method: 'GET',
+        const { data } = await axiosSilent.request<ApiLogContents>({
+            method: "GET",
             url: props.logUrl,
             params: {
-                position: currentLogPosition.value
-            }
+                position: currentLogPosition.value,
+            },
         });
 
-        if (data.contents !== '') {
-            logs.value = logs.value + data.contents + "\n";
+        if (data.contents !== "") {
+            logs.value = `${logs.value + data.contents}\n`;
             if (scrollToBottom.value && $textarea.value) {
                 void nextTick(() => {
-                    $textarea.value!.scrollTop = $textarea.value?.scrollHeight ?? 0;
+                    $textarea.value!.scrollTop =
+                        $textarea.value?.scrollHeight ?? 0;
                 });
             }
         }
@@ -77,23 +78,27 @@ const updateLogs = async () => {
     }
 };
 
-watch(toRef(props, 'logUrl'), (newLogUrl) => {
-    isLoading.value = true;
-    logs.value = '';
-    currentLogPosition.value = 0;
-    stop();
+watch(
+    toRef(props, "logUrl"),
+    (newLogUrl) => {
+        isLoading.value = true;
+        logs.value = "";
+        currentLogPosition.value = 0;
+        stop();
 
-    if ('' !== newLogUrl) {
-        updateInterval = setInterval(() => void updateLogs(), 2500);
-        void updateLogs();
-    }
-}, {immediate: true});
+        if ("" !== newLogUrl) {
+            updateInterval = setInterval(() => void updateLogs(), 2500);
+            void updateLogs();
+        }
+    },
+    { immediate: true },
+);
 
 const getContents = () => {
     return logs.value;
 };
 
 defineExpose({
-    getContents
+    getContents,
 });
 </script>

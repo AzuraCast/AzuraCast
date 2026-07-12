@@ -5,24 +5,23 @@
 </template>
 
 <script setup lang="ts">
-import {defaultWidgetSettings} from "~/entities/PublicPlayer.ts";
-import Player, {PlayerProps} from "~/components/Public/Player.vue";
-import {computed} from "vue";
-import {useHead, useHeadSafe} from "@unhead/vue";
+import { useHead, useHeadSafe } from "@unhead/vue";
+import { computed } from "vue";
+import Player, { PlayerProps } from "~/components/Public/Player.vue";
+import { defaultWidgetSettings } from "~/entities/PublicPlayer.ts";
 
 defineOptions({
-    inheritAttrs: false
+    inheritAttrs: false,
 });
 
-const props = withDefaults(
-    defineProps<PlayerProps>(),
-    {
-        widgetCustomization: () => defaultWidgetSettings
-    }
-);
+const props = withDefaults(defineProps<PlayerProps>(), {
+    widgetCustomization: () => defaultWidgetSettings,
+});
 
-const popupLayout = computed(() => props.widgetCustomization?.layout ?? 'horizontal');
-const isPopupContext = new URLSearchParams(window.location.search).has('popup');
+const popupLayout = computed(
+    () => props.widgetCustomization?.layout ?? "horizontal",
+);
+const isPopupContext = new URLSearchParams(window.location.search).has("popup");
 
 const widgetClasses = computed(() => {
     const classes: string[] = [];
@@ -32,11 +31,11 @@ const widgetClasses = computed(() => {
     }
 
     if (props.widgetCustomization?.roundedCorners) {
-        classes.push('rounded-corners');
+        classes.push("rounded-corners");
     }
 
     if (isPopupContext) {
-        classes.push('popup-context');
+        classes.push("popup-context");
     }
 
     return classes;
@@ -46,19 +45,22 @@ const widgetStyles = computed(() => {
     const styles: Record<string, string> = {};
 
     if (props.widgetCustomization?.primaryColor) {
-        styles['--widget-primary-color'] = `#${props.widgetCustomization.primaryColor}`;
+        styles["--widget-primary-color"] =
+            `#${props.widgetCustomization.primaryColor}`;
     }
 
     if (props.widgetCustomization?.backgroundColor) {
-        styles['--widget-bg-color'] = `#${props.widgetCustomization.backgroundColor}`;
+        styles["--widget-bg-color"] =
+            `#${props.widgetCustomization.backgroundColor}`;
     }
 
     if (props.widgetCustomization?.textColor) {
-        styles['--widget-text-color'] = `#${props.widgetCustomization.textColor}`;
+        styles["--widget-text-color"] =
+            `#${props.widgetCustomization.textColor}`;
     }
 
     if (props.widgetCustomization?.roundedCorners) {
-        styles['--widget-border-radius'] = '12px';
+        styles["--widget-border-radius"] = "12px";
     }
 
     return styles;
@@ -68,40 +70,35 @@ const widgetStyles = computed(() => {
 useHeadSafe({
     style: [
         {
-            key: 'custom-css',
-            textContent: () => props.widgetCustomization?.customCss ?? ''
-        }
-    ]
+            key: "custom-css",
+            textContent: () => props.widgetCustomization?.customCss ?? "",
+        },
+    ],
 });
 
 useHead({
     bodyAttrs: {
         class: computed(() => {
-            const classes: string[] = [
-                'embed-player'
-            ];
+            const classes: string[] = ["embed-player"];
 
             if (isPopupContext) {
-                classes.push('embed-player-popup');
+                classes.push("embed-player-popup");
             }
 
-            const requiresScroll = popupLayout.value === 'vertical' || popupLayout.value === 'large';
+            const requiresScroll =
+                popupLayout.value === "vertical" ||
+                popupLayout.value === "large";
             if (requiresScroll) {
-                classes.push('embed-player-scrollable');
+                classes.push("embed-player-scrollable");
             }
 
             return classes;
         }),
-        style: [
-            'margin: 0',
-            'overflow: hidden'
-        ],
+        style: ["margin: 0", "overflow: hidden"],
     },
     htmlAttrs: {
-        style: [
-            'overflow: hidden'
-        ]
-    }
+        style: ["overflow: hidden"],
+    },
 });
 </script>
 

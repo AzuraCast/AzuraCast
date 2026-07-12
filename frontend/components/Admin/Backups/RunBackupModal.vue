@@ -102,23 +102,23 @@
 </template>
 
 <script setup lang="ts">
-import FormFieldset from "~/components/Form/FormFieldset.vue";
-import FormGroupField from "~/components/Form/FormGroupField.vue";
+import { ref, useTemplateRef } from "vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import StreamingLogView from "~/components/Common/StreamingLogView.vue";
-import {ref, useTemplateRef} from "vue";
-import {getErrorAsString, useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
+import StreamingLogView from "~/components/Common/StreamingLogView.vue";
+import FormFieldset from "~/components/Form/FormFieldset.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
-import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
-import {ApiTaskWithLog} from "~/entities/ApiInterfaces.ts";
-import {useAppRegle} from "~/vendor/regle.ts";
+import { ApiTaskWithLog } from "~/entities/ApiInterfaces.ts";
+import { HasRelistEmit } from "~/functions/useBaseEditModal.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
+import { getErrorAsString, useAxios } from "~/vendor/axios";
+import { useAppRegle } from "~/vendor/regle.ts";
 
 const props = defineProps<{
-    runBackupUrl: string,
-    storageLocations: Record<number, string>,
+    runBackupUrl: string;
+    storageLocations: Record<number, string>;
 }>();
 
 const emit = defineEmits<HasRelistEmit>();
@@ -126,43 +126,43 @@ const emit = defineEmits<HasRelistEmit>();
 const logUrl = ref<string | null>(null);
 const error = ref<string | null>(null);
 
-const $modal = useTemplateRef('$modal');
-const {show: open, hide} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { show: open, hide } = useHasModal($modal);
 
 type Row = {
-    storage_location: number | null,
-    path: string,
-    exclude_media: boolean
-}
+    storage_location: number | null;
+    path: string;
+    exclude_media: boolean;
+};
 
 const blankForm: Row = {
     storage_location: null,
-    path: '',
+    path: "",
     exclude_media: false,
 };
 
-const {r$} = useAppRegle(
+const { r$ } = useAppRegle(
     blankForm,
     {
         storage_location: {},
         path: {},
-        exclude_media: {}
+        exclude_media: {},
     },
-    {}
+    {},
 );
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 const submit = async () => {
-    const {valid, data: postData} = await r$.$validate();
+    const { valid, data: postData } = await r$.$validate();
     if (!valid) {
         return;
     }
 
     try {
-        const {data} = await axios.post<ApiTaskWithLog>(
+        const { data } = await axios.post<ApiTaskWithLog>(
             props.runBackupUrl,
-            postData
+            postData,
         );
         logUrl.value = data.logUrl;
     } catch (e) {
@@ -175,16 +175,16 @@ const clearContents = () => {
     error.value = null;
 
     r$.$reset({
-        toOriginalState: true
+        toOriginalState: true,
     });
-}
+};
 
 const onHidden = () => {
     clearContents();
-    emit('relist');
-}
+    emit("relist");
+};
 
 defineExpose({
-    open
+    open,
 });
 </script>

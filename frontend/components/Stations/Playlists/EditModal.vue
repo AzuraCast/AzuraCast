@@ -17,36 +17,38 @@
 </template>
 
 <script setup lang="ts">
-import FormBasicInfo from "~/components/Stations/Playlists/Form/BasicInfo.vue";
-import FormSchedule from "~/components/Stations/Playlists/Form/Schedule.vue";
-import FormAdvanced from "~/components/Stations/Playlists/Form/Advanced.vue";
-import {BaseEditModalEmits, BaseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, toRef, useTemplateRef} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
+import { storeToRefs } from "pinia";
+import { computed, toRef, useTemplateRef } from "vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
-import {storeToRefs} from "pinia";
-import {useAppCollectScope} from "~/vendor/regle.ts";
-import {useStationsPlaylistsForm} from "~/components/Stations/Playlists/Form/form.ts";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import FormAdvanced from "~/components/Stations/Playlists/Form/Advanced.vue";
+import FormBasicInfo from "~/components/Stations/Playlists/Form/BasicInfo.vue";
+import { useStationsPlaylistsForm } from "~/components/Stations/Playlists/Form/form.ts";
+import FormSchedule from "~/components/Stations/Playlists/Form/Schedule.vue";
 import mergeExisting from "~/functions/mergeExisting.ts";
 import { PlaylistSources } from "~/entities/ApiInterfaces";
+import {
+    BaseEditModalEmits,
+    BaseEditModalProps,
+    useBaseEditModal,
+} from "~/functions/useBaseEditModal";
+import { useTranslate } from "~/vendor/gettext";
+import { useAppCollectScope } from "~/vendor/regle.ts";
 
 const props = defineProps<BaseEditModalProps>();
 
-const emit = defineEmits<BaseEditModalEmits & {
-    (e: 'needs-restart'): void
-}>();
+const emit = defineEmits<BaseEditModalEmits & ((e: "needs-restart") => void)>();
 
-const $modal = useTemplateRef('$modal');
+const $modal = useTemplateRef("$modal");
 
-const {notifySuccess} = useNotify();
+const { notifySuccess } = useNotify();
 
 const formStore = useStationsPlaylistsForm();
-const {form, r$} = storeToRefs(formStore);
-const {$reset: resetForm} = formStore;
+const { form, r$ } = storeToRefs(formStore);
+const { $reset: resetForm } = formStore;
 
-const {r$: validatedr$} = useAppCollectScope('stations-playlists');
+const { r$: validatedr$ } = useAppCollectScope("stations-playlists");
 
 const {
     loading,
@@ -56,42 +58,42 @@ const {
     create,
     edit,
     doSubmit,
-    close
+    close,
 } = useBaseEditModal(
-    toRef(props, 'createUrl'),
+    toRef(props, "createUrl"),
     emit,
     $modal,
     resetForm,
     (data) => {
         r$.value.$reset({
-            toState: mergeExisting(r$.value.$value, data)
-        })
+            toState: mergeExisting(r$.value.$value, data),
+        });
     },
     async () => {
-        const {valid} = await validatedr$.$validate();
-        return {valid, data: form.value};
+        const { valid } = await validatedr$.$validate();
+        return { valid, data: form.value };
     },
     {
         onSubmitSuccess: () => {
             notifySuccess();
-            emit('relist');
-            emit('needs-restart');
+            emit("relist");
+            emit("needs-restart");
             close();
         },
-    }
+    },
 );
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const langTitle = computed(() => {
     return isEditMode.value
-        ? $gettext('Edit Playlist')
-        : $gettext('Add Playlist');
+        ? $gettext("Edit Playlist")
+        : $gettext("Add Playlist");
 });
 
 defineExpose({
     create,
     edit,
-    close
+    close,
 });
 </script>

@@ -52,36 +52,40 @@
 </template>
 
 <script setup lang="ts">
-import FormLabel, {FormLabelParentProps} from "~/components/Form/FormLabel.vue";
-import FormGroup from "~/components/Form/FormGroup.vue";
-import {FormFieldEmits, FormFieldProps, useFormField} from "~/components/Form/useFormField";
-import {useSlots} from "vue";
+import { useSlots } from "vue";
 import FormCheckbox from "~/components/Form/FormCheckbox.vue";
+import FormGroup from "~/components/Form/FormGroup.vue";
+import FormLabel, {
+    FormLabelParentProps,
+} from "~/components/Form/FormLabel.vue";
+import {
+    FormFieldEmits,
+    FormFieldProps,
+    useFormField,
+} from "~/components/Form/useFormField";
 import ValidationError from "~/components/Form/ValidationError.vue";
 
 type T = boolean | null;
 
-type FormGroupCheckboxProps = FormFieldProps<T> & FormLabelParentProps & {
-    id: string,
-    name?: string,
-    label?: string,
-    description?: string,
-    inputAttrs?: object
-}
+type FormGroupCheckboxProps = FormFieldProps<T> &
+    FormLabelParentProps & {
+        id: string;
+        name?: string;
+        label?: string;
+        description?: string;
+        inputAttrs?: object;
+    };
 
-const props = withDefaults(
-    defineProps<FormGroupCheckboxProps>(),
-    {
-        name: '',
-        label: '',
-        description: '',
-        inputAttrs: () => ({})
-    }
-);
+const props = withDefaults(defineProps<FormGroupCheckboxProps>(), {
+    name: "",
+    label: "",
+    description: "",
+    inputAttrs: () => ({}),
+});
 
 const slots = useSlots();
 
 const emit = defineEmits<FormFieldEmits<T>>();
 
-const {model, isRequired} = useFormField<T>(props, emit);
+const { model, isRequired } = useFormField<T>(props, emit);
 </script>

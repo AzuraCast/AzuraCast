@@ -1,14 +1,14 @@
-import {useAppScopedRegle} from "~/vendor/regle.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
-import {defineStore} from "pinia";
-import {required} from "@regle/rules";
+import { required } from "@regle/rules";
+import { defineStore } from "pinia";
 import {
     PlaylistOrders,
     PlaylistRemoteTypes,
     PlaylistSources,
     PlaylistTypes,
-    StationPlaylist
+    StationPlaylist,
 } from "~/entities/ApiInterfaces.ts";
+import { useResettableRef } from "~/functions/useResettableRef.ts";
+import { useAppScopedRegle } from "~/vendor/regle.ts";
 
 export type StationPlaylistsRecord = Required<
     Omit<
@@ -20,37 +20,38 @@ export type StationPlaylistsRecord = Required<
 >
 
 export const useStationsPlaylistsForm = defineStore(
-    'form-stations-playlists',
+    "form-stations-playlists",
     () => {
-        const {record: form, reset} = useResettableRef<StationPlaylistsRecord>({
-            name: '',
-            description: '',
-            is_enabled: true,
-            include_in_on_demand: false,
-            weight: 3,
-            type: PlaylistTypes.Standard,
-            source: PlaylistSources.Songs,
-            order: PlaylistOrders.Shuffle,
-            remote_url: null,
-            remote_type: PlaylistRemoteTypes.Stream,
-            remote_buffer: 0,
-            is_jingle: false,
-            play_per_songs: 0,
-            play_per_minutes: 0,
-            play_per_hour_minute: 0,
-            include_in_requests: true,
-            avoid_duplicates: true,
-            backend_options: [],
-            schedule_items: []
-        });
+        const { record: form, reset } =
+            useResettableRef<StationPlaylistsRecord>({
+                name: "",
+                description: "",
+                is_enabled: true,
+                include_in_on_demand: false,
+                weight: 3,
+                type: PlaylistTypes.Standard,
+                source: PlaylistSources.Songs,
+                order: PlaylistOrders.Shuffle,
+                remote_url: null,
+                remote_type: PlaylistRemoteTypes.Stream,
+                remote_buffer: 0,
+                is_jingle: false,
+                play_per_songs: 0,
+                play_per_minutes: 0,
+                play_per_hour_minute: 0,
+                include_in_requests: true,
+                avoid_duplicates: true,
+                backend_options: [],
+                schedule_items: [],
+            });
 
-        const {r$} = useAppScopedRegle(
+        const { r$ } = useAppScopedRegle(
             form,
             {
-                name: {required},
+                name: { required },
             },
             {
-                namespace: 'stations-playlists',
+                namespace: "stations-playlists",
                 validationGroups: (fields) => ({
                     basicInfoTab: [
                         fields.name,
@@ -70,22 +71,20 @@ export const useStationsPlaylistsForm = defineStore(
                         fields.include_in_requests,
                         fields.avoid_duplicates,
                     ],
-                    advancedTab: [
-                        fields.backend_options.$self
-                    ]
-                })
-            }
+                    advancedTab: [fields.backend_options.$self],
+                }),
+            },
         );
 
         const $reset = () => {
             reset();
             r$.$reset();
-        }
+        };
 
         return {
             form,
             r$,
-            $reset
-        }
-    }
+            $reset,
+        };
+    },
 );

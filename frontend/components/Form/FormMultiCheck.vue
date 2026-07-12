@@ -35,29 +35,30 @@
 </template>
 
 <script setup lang="ts" generic="T = ModelFormField">
-import {objectToSimpleFormOptions, SimpleFormOptionInput} from "~/functions/objectToFormOptions.ts";
-import {ModelFormField} from "~/components/Form/useFormField.ts";
-import {toRef} from "vue";
+import { toRef } from "vue";
+import { ModelFormField } from "~/components/Form/useFormField.ts";
+import {
+    objectToSimpleFormOptions,
+    SimpleFormOptionInput,
+} from "~/functions/objectToFormOptions.ts";
 
 const props = withDefaults(
     defineProps<{
-        id: string,
-        name?: string,
-        fieldClass?: string,
-        options: SimpleFormOptionInput,
-        radio?: boolean,
-        stacked?: boolean
+        id: string;
+        name?: string;
+        fieldClass?: string;
+        options: SimpleFormOptionInput;
+        radio?: boolean;
+        stacked?: boolean;
     }>(),
     {
         name: (props) => props.id,
         radio: false,
         stacked: false,
-    }
-)
+    },
+);
 
-const value = defineModel<T>({
-    default: null
-});
+const value = defineModel<T>();
 
-const parsedOptions = objectToSimpleFormOptions(toRef(props, 'options'));
+const parsedOptions = objectToSimpleFormOptions(toRef(props, "options"));
 </script>

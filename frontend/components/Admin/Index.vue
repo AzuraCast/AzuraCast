@@ -81,32 +81,32 @@
 </template>
 
 <script setup lang="ts">
-import {useAxios} from "~/vendor/axios";
-import {useAdminMenu} from "~/components/Admin/menu";
+import { useQuery } from "@tanstack/vue-query";
 import CpuStatsPanel from "~/components/Admin/Index/CpuStatsPanel.vue";
-import MemoryStatsPanel from "~/components/Admin/Index/MemoryStatsPanel.vue";
 import DiskUsagePanel from "~/components/Admin/Index/DiskUsagePanel.vue";
-import ServicesPanel from "~/components/Admin/Index/ServicesPanel.vue";
-import NetworkStatsPanel from "~/components/Admin/Index/NetworkStatsPanel.vue";
-import Loading from "~/components/Common/Loading.vue";
-import {ApiAdminServerStats} from "~/entities/ApiInterfaces.ts";
-import {useQuery} from "@tanstack/vue-query";
-import {QueryKeys} from "~/entities/Queries.ts";
-import DashboardNoSidebar from "~/components/Layout/DashboardNoSidebar.vue";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import MemoryStatsPanel from "~/components/Admin/Index/MemoryStatsPanel.vue";
 import MenuBlock from "~/components/Admin/Index/MenuBlock.vue";
+import NetworkStatsPanel from "~/components/Admin/Index/NetworkStatsPanel.vue";
+import ServicesPanel from "~/components/Admin/Index/ServicesPanel.vue";
+import { useAdminMenu } from "~/components/Admin/menu";
+import Loading from "~/components/Common/Loading.vue";
+import DashboardNoSidebar from "~/components/Layout/DashboardNoSidebar.vue";
+import { ApiAdminServerStats } from "~/entities/ApiInterfaces.ts";
+import { QueryKeys } from "~/entities/Queries.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useAxios } from "~/vendor/axios";
 
-const {getApiUrl} = useApiRouter();
-const statsUrl = getApiUrl('/admin/server/stats');
+const { getApiUrl } = useApiRouter();
+const statsUrl = getApiUrl("/admin/server/stats");
 
 const menuItems = useAdminMenu();
 
-const {axiosSilent} = useAxios();
+const { axiosSilent } = useAxios();
 
-const {data: stats, isLoading} = useQuery<ApiAdminServerStats>({
-    queryKey: [QueryKeys.AdminIndex, 'stats'],
-    queryFn: async ({signal}) => {
-        const {data} = await axiosSilent.get(statsUrl.value, {signal});
+const { data: stats, isLoading } = useQuery<ApiAdminServerStats>({
+    queryKey: [QueryKeys.AdminIndex, "stats"],
+    queryFn: async ({ signal }) => {
+        const { data } = await axiosSilent.get(statsUrl.value, { signal });
         return data;
     },
     placeholderData: () => ({
@@ -119,7 +119,7 @@ const {data: stats, isLoading} = useQuery<ApiAdminServerStats>({
                 steal: "",
             },
             cores: [],
-            load: [0, 0, 0]
+            load: [0, 0, 0],
         },
         memory: {
             total_bytes: "0",
@@ -135,7 +135,7 @@ const {data: stats, isLoading} = useQuery<ApiAdminServerStats>({
             shmem_bytes: "0",
             shmem_readable: "",
             used_bytes: "0",
-            used_readable: ""
+            used_readable: "",
         },
         swap: {
             total_bytes: "0",
@@ -143,7 +143,7 @@ const {data: stats, isLoading} = useQuery<ApiAdminServerStats>({
             free_bytes: "0",
             free_readable: "",
             used_bytes: "0",
-            used_readable: ""
+            used_readable: "",
         },
         disk: {
             total_bytes: "0",
@@ -151,10 +151,10 @@ const {data: stats, isLoading} = useQuery<ApiAdminServerStats>({
             free_bytes: "0",
             free_readable: "",
             used_bytes: "0",
-            used_readable: ""
+            used_readable: "",
         },
-        network: []
+        network: [],
     }),
-    refetchInterval: 5 * 1000
+    refetchInterval: 5 * 1000,
 });
 </script>

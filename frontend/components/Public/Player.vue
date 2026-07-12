@@ -146,60 +146,68 @@
 </template>
 
 <script setup lang="ts">
-import PlayButton from "~/components/Common/Audio/PlayButton.vue";
-import {computed, nextTick, onMounted, ref, toRef, watch} from "vue";
-import {useTranslate} from "~/vendor/gettext";
-import useNowPlaying from "~/functions/useNowPlaying";
-import MuteButton from "~/components/Common/Audio/MuteButton.vue";
+import { useEventListener } from "@vueuse/core";
+import { storeToRefs } from "pinia";
+import { computed, nextTick, onMounted, ref, toRef, watch } from "vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
-import {blankStreamDescriptor, StreamDescriptor, usePlayerStore} from "~/functions/usePlayerStore.ts";
-import {useEventListener} from "@vueuse/core";
-import {ApiNowPlaying, ApiNowPlayingVueProps, ApiWidgetCustomization} from "~/entities/ApiInterfaces.ts";
-import {storeToRefs} from "pinia";
-import {defaultWidgetSettings} from "~/entities/PublicPlayer.ts";
+import MuteButton from "~/components/Common/Audio/MuteButton.vue";
+import PlayButton from "~/components/Common/Audio/PlayButton.vue";
+import {
+    ApiNowPlaying,
+    ApiNowPlayingVueProps,
+    ApiWidgetCustomization,
+} from "~/entities/ApiInterfaces.ts";
+import { defaultWidgetSettings } from "~/entities/PublicPlayer.ts";
+import useNowPlaying from "~/functions/useNowPlaying";
 import useOptionalStorage from "~/functions/useOptionalStorage.ts";
+import {
+    blankStreamDescriptor,
+    StreamDescriptor,
+    usePlayerStore,
+} from "~/functions/usePlayerStore.ts";
+import { useTranslate } from "~/vendor/gettext";
 
 export interface PlayerProps {
-    nowPlayingProps: ApiNowPlayingVueProps,
-    offlineText?: string,
-    showHls?: boolean,
-    showAlbumArt?: boolean,
-    widgetCustomization?: ApiWidgetCustomization
+    nowPlayingProps: ApiNowPlayingVueProps;
+    offlineText?: string;
+    showHls?: boolean;
+    showAlbumArt?: boolean;
+    widgetCustomization?: ApiWidgetCustomization;
 }
 
-const props = withDefaults(
-    defineProps<PlayerProps>(),
-    {
-        showHls: true,
-        showAlbumArt: true,
-        widgetCustomization: () => defaultWidgetSettings
-    }
-);
+const props = withDefaults(defineProps<PlayerProps>(), {
+    showHls: true,
+    showAlbumArt: true,
+    widgetCustomization: () => defaultWidgetSettings,
+});
 
-const emit = defineEmits<{
-    (e: 'np_updated', np: ApiNowPlaying): void
-}>();
+const emit = defineEmits<(e: "np_updated", np: ApiNowPlaying) => void>();
 
 const {
     np,
     currentTrackPercent,
     currentTrackDurationDisplay,
-    currentTrackElapsedDisplay
-} = useNowPlaying(toRef(props, 'nowPlayingProps'));
+    currentTrackElapsedDisplay,
+} = useNowPlaying(toRef(props, "nowPlayingProps"));
 
-const isPopupContext = new URLSearchParams(window.location.search).has('popup');
+const isPopupContext = new URLSearchParams(window.location.search).has("popup");
 
 // Widget customization computed properties
 const computedShowAlbumArt = computed(() => {
-    return props.showAlbumArt && (props.widgetCustomization?.showAlbumArt ?? true);
+    return (
+        props.showAlbumArt && (props.widgetCustomization?.showAlbumArt ?? true)
+    );
 });
 
 const playerStore = usePlayerStore();
-const {volume, showVolume, isMuted, isPlaying} = storeToRefs(playerStore);
-const {setVolume, toggleMute, toggle} = playerStore;
+const { volume, showVolume, isMuted, isPlaying } = storeToRefs(playerStore);
+const { setVolume, toggleMute, toggle } = playerStore;
 
 // Set initial volume if specified
-if (typeof props.widgetCustomization?.initialVolume === 'number' && props.widgetCustomization.initialVolume !== 75) {
+if (
+    typeof props.widgetCustomization?.initialVolume === "number" &&
+    props.widgetCustomization.initialVolume !== 75
+) {
     setVolume(props.widgetCustomization.initialVolume);
 }
 
@@ -211,7 +219,7 @@ const hlsIsDefault = computed(() => {
     return enableHls.value && np.value?.station?.hls_is_default;
 });
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const activeStream = ref<StreamDescriptor>(blankStreamDescriptor);
 
@@ -220,28 +228,28 @@ const streams = computed<StreamDescriptor[]>(() => {
 
     if (enableHls.value) {
         allStreams.push({
-            title: $gettext('HLS'),
+            title: $gettext("HLS"),
             url: np.value?.station?.hls_url,
             isStream: true,
-            isHls: true
+            isHls: true,
         });
     }
 
-    np.value?.station?.mounts?.forEach(function (mount) {
+    np.value?.station?.mounts?.forEach((mount) => {
         allStreams.push({
             title: mount.name ?? mount.url,
             url: mount.url,
             isStream: true,
-            isHls: false
+            isHls: false,
         });
     });
 
-    np.value?.station?.remotes?.forEach(function (remote) {
+    np.value?.station?.remotes?.forEach((remote) => {
         allStreams.push({
             title: remote.name ?? remote.url,
             url: remote.url,
             isStream: true,
-            isHls: false
+            isHls: false,
         });
     });
 
@@ -259,7 +267,7 @@ const popupUrl = computed(() => {
     }
 
     const popupTarget = new URL(window.location.href);
-    popupTarget.searchParams.set('popup', '1');
+    popupTarget.searchParams.set("popup", "1");
     return popupTarget.toString();
 });
 
@@ -274,8 +282,8 @@ const openPopupPlayer = () => {
 
     window.open(
         popupUrl.value,
-        'azuracast-player-popup',
-        'width=540,height=760,resizable=yes,scrollbars=yes'
+        "azuracast-player-popup",
+        "width=540,height=760,resizable=yes,scrollbars=yes",
     );
 };
 
@@ -284,27 +292,31 @@ const continuousPlayEnabled = computed(() => {
 });
 
 type ContinuousStorage = {
-    streamUrl: string | null,
-    isPlaying: boolean,
-    resume: boolean
+    streamUrl: string | null;
+    isPlaying: boolean;
+    resume: boolean;
 };
 
 const blankContinuousStorage: ContinuousStorage = {
     streamUrl: null,
     isPlaying: false,
-    resume: false
-}
+    resume: false,
+};
 
 const continuousStorage = useOptionalStorage<ContinuousStorage>(
     () => `azuracast-player-state-${props.nowPlayingProps.stationShortName}`,
-    blankContinuousStorage
+    blankContinuousStorage,
 );
 
-watch(continuousPlayEnabled, (enabled) => {
-    if (!enabled) {
-        continuousStorage.value = blankContinuousStorage;
-    }
-}, {immediate: true});
+watch(
+    continuousPlayEnabled,
+    (enabled) => {
+        if (!enabled) {
+            continuousStorage.value = blankContinuousStorage;
+        }
+    },
+    { immediate: true },
+);
 
 watch(
     () => activeStream.value?.url ?? null,
@@ -312,7 +324,7 @@ watch(
         if (continuousPlayEnabled.value) {
             continuousStorage.value.streamUrl = streamUrl;
         }
-    }
+    },
 );
 
 watch(isPlaying, (playing) => {
@@ -321,7 +333,9 @@ watch(isPlaying, (playing) => {
     }
 });
 
-const urlParamVolume = (new URL(document.location.href)).searchParams.get('volume');
+const urlParamVolume = new URL(document.location.href).searchParams.get(
+    "volume",
+);
 if (null !== urlParamVolume) {
     setVolume(Number(urlParamVolume));
 }
@@ -340,7 +354,7 @@ onMounted(() => {
 });
 
 const onNowPlayingUpdated = (np_new: ApiNowPlaying) => {
-    emit('np_updated', np_new);
+    emit("np_updated", np_new);
 
     // Set a "default" current stream if none exists.
     const $streams = streams.value;
@@ -353,7 +367,7 @@ const onNowPlayingUpdated = (np_new: ApiNowPlaying) => {
             $currentStream = null;
 
             if (np_new.station?.listen_url) {
-                $streams.forEach(function (stream) {
+                $streams.forEach((stream) => {
                     if (stream.url === np_new.station?.listen_url) {
                         $currentStream = stream;
                     }
@@ -370,7 +384,9 @@ const onNowPlayingUpdated = (np_new: ApiNowPlaying) => {
 
     if (continuousPlayEnabled.value) {
         if (continuousStorage.value.streamUrl) {
-            const matchingStream = $streams.find((stream) => stream.url === continuousStorage.value.streamUrl);
+            const matchingStream = $streams.find(
+                (stream) => stream.url === continuousStorage.value.streamUrl,
+            );
             if (matchingStream) {
                 activeStream.value = matchingStream;
             }
@@ -388,7 +404,7 @@ const onNowPlayingUpdated = (np_new: ApiNowPlaying) => {
     }
 };
 
-watch(np, onNowPlayingUpdated, {immediate: true});
+watch(np, onNowPlayingUpdated, { immediate: true });
 </script>
 
 <style lang="scss">

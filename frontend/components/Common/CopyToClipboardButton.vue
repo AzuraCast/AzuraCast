@@ -13,32 +13,29 @@
 </template>
 
 <script setup lang="ts">
-import {refAutoReset, useClipboard} from "@vueuse/core";
-import {useTranslate} from "~/vendor/gettext";
+import { refAutoReset, useClipboard } from "@vueuse/core";
+import { useTranslate } from "~/vendor/gettext";
 
 import IconIcCopy from "~icons/ic/baseline-content-copy";
 
 const props = withDefaults(
     defineProps<{
-        text: string,
-        hideText?: boolean
+        text: string;
+        hideText?: boolean;
     }>(),
     {
         hideText: false,
-    }
+    },
 );
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
-const copyText = refAutoReset(
-    $gettext('Copy to Clipboard'),
-    1000
-);
+const copyText = refAutoReset($gettext("Copy to Clipboard"), 1000);
 
-const clipboard = useClipboard({legacy: true});
+const clipboard = useClipboard({ legacy: true });
 
 const doCopy = async () => {
     await clipboard.copy(props.text);
-    copyText.value = $gettext('Copied!');
+    copyText.value = $gettext("Copied!");
 };
 </script>

@@ -101,37 +101,37 @@
 </template>
 
 <script setup lang="ts">
+import { ref, useTemplateRef } from "vue";
+import { useDraggable } from "vue-draggable-plus";
 import PlayButton from "~/components/Common/Audio/PlayButton.vue";
-import InlinePlayer from "~/components/InlinePlayer.vue";
-import {ref, useTemplateRef} from "vue";
-import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
-import {StreamChannel, usePlayerStore} from "~/functions/usePlayerStore.ts";
-import {useDraggable} from "vue-draggable-plus";
-import {ApiStationMedia} from "~/entities/ApiInterfaces.ts";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import InlinePlayer from "~/components/InlinePlayer.vue";
+import { ApiStationMedia } from "~/entities/ApiInterfaces.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
+import { StreamChannel, usePlayerStore } from "~/functions/usePlayerStore.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
 import IconBiChevronBarDown from "~icons/bi/chevron-bar-down";
 import IconBiChevronBarUp from "~icons/bi/chevron-bar-up";
 import IconBiChevronDown from "~icons/bi/chevron-down";
 import IconBiChevronUp from "~icons/bi/chevron-up";
 
 type StationPlaylistMedia = {
-    id: number,
-    media: Required<ApiStationMedia>
-}
+    id: number;
+    media: Required<ApiStationMedia>;
+};
 
 const loading = ref(true);
 const reorderUrl = ref<string | null>(null);
 
-const $tbody = useTemplateRef('$tbody');
+const $tbody = useTemplateRef("$tbody");
 const media = ref<StationPlaylistMedia[]>([]);
 
-const $modal = useTemplateRef('$modal');
-const {show} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { show } = useHasModal($modal);
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
 const open = (newReorderUrl: string) => {
     reorderUrl.value = newReorderUrl;
@@ -139,14 +139,14 @@ const open = (newReorderUrl: string) => {
     show();
 
     void (async () => {
-        const {data} = await axios.get(newReorderUrl);
+        const { data } = await axios.get(newReorderUrl);
         media.value = data;
         loading.value = false;
     })();
 };
 
-const {notifySuccess} = useNotify();
-const {$gettext} = useTranslate();
+const { notifySuccess } = useNotify();
+const { $gettext } = useTranslate();
 
 const save = async () => {
     if (!reorderUrl.value) {
@@ -161,8 +161,8 @@ const save = async () => {
         newOrder[row.id] = i;
     });
 
-    await axios.put(reorderUrl.value, {'order': newOrder});
-    notifySuccess($gettext('Playlist order set.'));
+    await axios.put(reorderUrl.value, { order: newOrder });
+    notifySuccess($gettext("Playlist order set."));
 };
 
 const moveDown = (index: number) => {
@@ -189,13 +189,13 @@ const moveToTop = (index: number) => {
     void save();
 };
 
-const {stop} = usePlayerStore();
+const { stop } = usePlayerStore();
 
 const onShown = () => {
     useDraggable($tbody, media, {
         onEnd() {
             void save();
-        }
+        },
     });
 };
 
@@ -204,7 +204,7 @@ const onHidden = () => {
 };
 
 defineExpose({
-    open
+    open,
 });
 </script>
 

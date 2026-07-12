@@ -179,66 +179,72 @@
 </template>
 
 <script setup lang="ts">
-import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton.vue";
+import { computed } from "vue";
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
-import {computed} from "vue";
-import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useUserAllowedForStation} from "~/functions/useUserallowedForStation.ts";
-import useOptionalStorage from "~/functions/useOptionalStorage";
+import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton.vue";
 import useMakeApiCall from "~/components/Stations/Profile/useMakeApiCall.ts";
-import {FrontendAdapters, StationPermissions} from "~/entities/ApiInterfaces.ts";
-import {useStationData} from "~/functions/useStationQuery.ts";
-import {useStationProfileData} from "~/components/Stations/Profile/useProfileQuery.ts";
+import { useStationProfileData } from "~/components/Stations/Profile/useProfileQuery.ts";
+import {
+    FrontendAdapters,
+    StationPermissions,
+} from "~/entities/ApiInterfaces.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import useOptionalStorage from "~/functions/useOptionalStorage";
+import { useStationData } from "~/functions/useStationQuery.ts";
+import { useUserAllowedForStation } from "~/functions/useUserallowedForStation.ts";
+import { useTranslate } from "~/vendor/gettext";
 import IconIcMoreHoriz from "~icons/ic/baseline-more-horiz";
 import IconIcPlayArrow from "~icons/ic/baseline-play-arrow";
 import IconIcStop from "~icons/ic/baseline-stop";
 import IconIcUpdate from "~icons/ic/baseline-update";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const stationData = useStationData();
 const profileData = useStationProfileData();
 
-const {userAllowedForStation} = useUserAllowedForStation();
+const { userAllowedForStation } = useUserAllowedForStation();
 
-const {getStationApiUrl} = useApiRouter();
+const { getStationApiUrl } = useApiRouter();
 
-const frontendRestartUri = getStationApiUrl('/frontend/restart');
-const frontendStartUri = getStationApiUrl('/frontend/start');
-const frontendStopUri = getStationApiUrl('/frontend/stop');
+const frontendRestartUri = getStationApiUrl("/frontend/restart");
+const frontendStartUri = getStationApiUrl("/frontend/start");
+const frontendStopUri = getStationApiUrl("/frontend/stop");
 
-const credentialsVisible = useOptionalStorage<boolean>('station_show_frontend_credentials', false);
+const credentialsVisible = useOptionalStorage<boolean>(
+    "station_show_frontend_credentials",
+    false,
+);
 
 const collapseListeners = {
-    ['hidden.bs.collapse']: () => {
+    "hidden.bs.collapse": () => {
         credentialsVisible.value = false;
     },
-    ['shown.bs.collapse']: () => {
+    "shown.bs.collapse": () => {
         credentialsVisible.value = true;
     },
 };
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const langShowHideCredentials = computed(() => {
-    return (credentialsVisible.value)
-        ? $gettext('Hide Credentials')
-        : $gettext('Show Credentials')
+    return credentialsVisible.value
+        ? $gettext("Hide Credentials")
+        : $gettext("Show Credentials");
 });
 
 const frontendName = computed(() => {
     switch (stationData.value.frontendType) {
         case FrontendAdapters.Icecast:
-            return 'Icecast';
+            return "Icecast";
 
         case FrontendAdapters.Rsas:
-            return 'Rocket Streaming Audio Server (RSAS)';
+            return "Rocket Streaming Audio Server (RSAS)";
 
         case FrontendAdapters.Shoutcast:
-            return 'Shoutcast';
+            return "Shoutcast";
 
         default:
-            return '';
+            return "";
     }
 });
 
@@ -246,29 +252,20 @@ const isShoutcast = computed(() => {
     return stationData.value.frontendType === FrontendAdapters.Shoutcast;
 });
 
-const doRestart = useMakeApiCall(
-    frontendRestartUri,
-    {
-        title: $gettext('Restart service?'),
-        confirmButtonText: $gettext('Restart')
-    }
-);
+const doRestart = useMakeApiCall(frontendRestartUri, {
+    title: $gettext("Restart service?"),
+    confirmButtonText: $gettext("Restart"),
+});
 
-const doStart = useMakeApiCall(
-    frontendStartUri,
-    {
-        title: $gettext('Start service?'),
-        confirmButtonText: $gettext('Start'),
-        confirmButtonClass: 'btn-success'
-    }
-);
+const doStart = useMakeApiCall(frontendStartUri, {
+    title: $gettext("Start service?"),
+    confirmButtonText: $gettext("Start"),
+    confirmButtonClass: "btn-success",
+});
 
-const doStop = useMakeApiCall(
-    frontendStopUri,
-    {
-        title: $gettext('Stop service?'),
-        confirmButtonText: $gettext('Stop'),
-        confirmButtonClass: 'btn-danger'
-    }
-);
+const doStop = useMakeApiCall(frontendStopUri, {
+    title: $gettext("Stop service?"),
+    confirmButtonText: $gettext("Stop"),
+    confirmButtonClass: "btn-danger",
+});
 </script>

@@ -15,10 +15,12 @@
 </template>
 
 <script setup lang="ts">
-import CommonMetricsView, {DateRange} from "~/components/Stations/Reports/Overview/CommonMetricsView.vue";
+import CommonMetricsView, {
+    DateRange,
+} from "~/components/Stations/Reports/Overview/CommonMetricsView.vue";
 
 defineProps<{
-    dateRange: DateRange,
-    apiUrl: string,
+    dateRange: DateRange;
+    apiUrl: string;
 }>();
 </script>

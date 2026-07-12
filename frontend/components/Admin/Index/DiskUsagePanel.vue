@@ -40,13 +40,14 @@
 </template>
 
 <script setup lang="ts">
-import {ApiAdminServerStatsStorageStats} from "~/entities/ApiInterfaces.ts";
+import { ApiAdminServerStatsStorageStats } from "~/entities/ApiInterfaces.ts";
 
 defineProps<{
-    diskStats: ApiAdminServerStatsStorageStats
+    diskStats: ApiAdminServerStatsStorageStats;
 }>();
 
 const getPercent = (amount: string | number, total: string | number) => {
-    return ((Number(amount) / Number(total)) * 100) + '%';
-}
+    const percent = (Number(amount) / Number(total)) * 100;
+    return `${percent}%`;
+};
 </script>

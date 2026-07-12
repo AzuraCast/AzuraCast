@@ -1,52 +1,53 @@
-import {useAppRegle} from "~/vendor/regle.ts";
-import {useResettableRef} from "~/functions/useResettableRef.ts";
-import {defineStore} from "pinia";
-import {required} from "@regle/rules";
-import {PodcastExtraData, PodcastRecord} from "~/entities/Podcasts.ts";
+import { required } from "@regle/rules";
+import { defineStore } from "pinia";
+import { PodcastExtraData, PodcastRecord } from "~/entities/Podcasts.ts";
+import { useResettableRef } from "~/functions/useResettableRef.ts";
+import { useAppRegle } from "~/vendor/regle.ts";
 
 export const useStationsPodcastsForm = defineStore(
-    'form-stations-podcasts',
+    "form-stations-podcasts",
     () => {
-        const {record, reset: resetRecord} = useResettableRef<PodcastExtraData>({
-            has_custom_art: false,
-            art: '',
-            links: {
-                art: ''
-            }
-        });
+        const { record, reset: resetRecord } =
+            useResettableRef<PodcastExtraData>({
+                has_custom_art: false,
+                art: "",
+                links: {
+                    art: "",
+                },
+            });
 
-        const {record: form, reset} = useResettableRef<PodcastRecord>({
-            title: '',
-            link: '',
-            description: '',
-            language: 'en',
-            author: '',
-            email: '',
+        const { record: form, reset } = useResettableRef<PodcastRecord>({
+            title: "",
+            link: "",
+            description: "",
+            language: "en",
+            author: "",
+            email: "",
             categories: [],
             is_enabled: true,
             explicit: false,
             branding_config: {
-                public_custom_html: '',
-                enable_op3_prefix: false
+                public_custom_html: "",
+                enable_op3_prefix: false,
             },
-            source: 'manual',
+            source: "manual",
             playlist_id: null,
             playlist_auto_publish: true,
             artwork_file: null,
         });
 
-        const {r$} = useAppRegle(
+        const { r$ } = useAppRegle(
             form,
             {
-                title: {required},
-                description: {required},
-                language: {required},
+                title: { required },
+                description: { required },
+                language: { required },
                 categories: {},
-                source: {required},
+                source: { required },
             },
             {
                 validationGroups: (fields) => ({
-                    "basicInfoTab": [
+                    basicInfoTab: [
                         fields.title,
                         fields.link,
                         fields.description,
@@ -54,32 +55,32 @@ export const useStationsPodcastsForm = defineStore(
                         fields.author,
                         fields.email,
                         fields.categories.$self,
-                        fields.is_enabled
+                        fields.is_enabled,
                     ],
-                    "brandingTab": [
+                    brandingTab: [
                         fields.branding_config.public_custom_html,
-                        fields.branding_config.enable_op3_prefix
+                        fields.branding_config.enable_op3_prefix,
                     ],
-                    "sourceTab": [
+                    sourceTab: [
                         fields.source,
                         fields.playlist_id,
                         fields.playlist_auto_publish,
-                    ]
-                })
-            }
+                    ],
+                }),
+            },
         );
 
         const $reset = () => {
             reset();
             resetRecord();
             r$.$reset();
-        }
+        };
 
         return {
             record,
             form,
             r$,
-            $reset
-        }
-    }
+            $reset,
+        };
+    },
 );

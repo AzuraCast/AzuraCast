@@ -50,19 +50,19 @@
 </template>
 
 <script setup lang="ts">
+import { ref, useTemplateRef } from "vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
-import {ref, useTemplateRef} from "vue";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useAxios} from "~/vendor/axios";
-import FormGroup from "~/components/Form/FormGroup.vue";
 import Modal from "~/components/Common/Modal.vue";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
 import FormFile from "~/components/Form/FormFile.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
-import {HasRelistEmit} from "~/functions/useBaseEditModal.ts";
-import {ApiStatus} from "~/entities/ApiInterfaces.ts";
+import FormGroup from "~/components/Form/FormGroup.vue";
+import { ApiStatus } from "~/entities/ApiInterfaces.ts";
+import { HasRelistEmit } from "~/functions/useBaseEditModal.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
+import { useAxios } from "~/vendor/axios";
 
 const props = defineProps<{
-    importUrl: string
+    importUrl: string;
 }>();
 
 const emit = defineEmits<HasRelistEmit>();
@@ -71,13 +71,13 @@ const configFile = ref<File | null>(null);
 
 const uploaded = (file: File) => {
     configFile.value = file;
-}
+};
 
-const $modal = useTemplateRef('$modal');
-const {show: open, hide} = useHasModal($modal);
+const $modal = useTemplateRef("$modal");
+const { show: open, hide } = useHasModal($modal);
 
-const {notifySuccess, notifyError} = useNotify();
-const {axios} = useAxios();
+const { notifySuccess, notifyError } = useNotify();
+const { axios } = useAxios();
 
 const doSubmit = async () => {
     if (!configFile.value) {
@@ -85,9 +85,9 @@ const doSubmit = async () => {
     }
 
     const formData = new FormData();
-    formData.append('file', configFile.value);
+    formData.append("file", configFile.value);
 
-    const {data} = await axios.post<ApiStatus>(props.importUrl, formData);
+    const { data } = await axios.post<ApiStatus>(props.importUrl, formData);
 
     if (data.success) {
         notifySuccess(data.message);
@@ -99,11 +99,11 @@ const doSubmit = async () => {
 };
 
 const onHidden = () => {
-    emit('relist');
+    emit("relist");
     configFile.value = null;
 };
 
 defineExpose({
-    open
+    open,
 });
 </script>

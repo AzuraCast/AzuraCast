@@ -18,28 +18,28 @@
 </template>
 
 <script setup lang="ts">
-import {useTranslate} from "~/vendor/gettext";
-import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
 import Tab from "~/components/Common/Tab.vue";
-import {storeToRefs} from "pinia";
-import {useStationsPlaylistsForm} from "~/components/Stations/Playlists/Form/form.ts";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {computed} from "vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import { useStationsPlaylistsForm } from "~/components/Stations/Playlists/Form/form.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
+import { useTranslate } from "~/vendor/gettext";
 
-const {r$} = storeToRefs(useStationsPlaylistsForm());
+const { r$ } = storeToRefs(useStationsPlaylistsForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.advancedTab));
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const backendOptions = [
     {
-        value: 'interrupt',
-        text: $gettext('Interrupt other songs to play at scheduled time.')
+        value: "interrupt",
+        text: $gettext("Interrupt other songs to play at scheduled time."),
     },
     {
-        value: 'single_track',
-        text: $gettext('Only play one track at scheduled time.')
+        value: "single_track",
+        text: $gettext("Only play one track at scheduled time."),
     },
     {
         value: 'merge',

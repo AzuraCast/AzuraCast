@@ -38,6 +38,6 @@
 import { ApiPodcastRow } from "./usePodcastQuery";
 
 defineProps<{
-    podcast: ApiPodcastRow
+    podcast: ApiPodcastRow;
 }>();
 </script>

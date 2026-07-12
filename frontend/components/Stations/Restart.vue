@@ -103,31 +103,34 @@
 </template>
 
 <script setup lang="ts">
-import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/components/Common/Toasts/useNotify.ts";
-import {useAxios} from "~/vendor/axios";
-import {ref} from "vue";
-import {useRouter} from "vue-router";
-import {useDialog} from "~/components/Common/Dialogs/useDialog.ts";
-import {useClearAllStationQueries, useStationData} from "~/functions/useStationQuery.ts";
-import {ApiStatus, FlashLevels} from "~/entities/ApiInterfaces.ts";
-import {toRefs} from "@vueuse/core";
-import {delay} from "es-toolkit";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import { toRefs } from "@vueuse/core";
+import { delay } from "es-toolkit";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useDialog } from "~/components/Common/Dialogs/useDialog.ts";
+import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import { ApiStatus, FlashLevels } from "~/entities/ApiInterfaces.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import {
+    useClearAllStationQueries,
+    useStationData,
+} from "~/functions/useStationQuery.ts";
+import { useAxios } from "~/vendor/axios";
+import { useTranslate } from "~/vendor/gettext";
 
 const stationData = useStationData();
-const {canReload} = toRefs(stationData);
+const { canReload } = toRefs(stationData);
 
-const {getStationApiUrl} = useApiRouter();
-const reloadUrl = getStationApiUrl('/reload');
-const restartUrl = getStationApiUrl('/restart');
+const { getStationApiUrl } = useApiRouter();
+const reloadUrl = getStationApiUrl("/reload");
+const restartUrl = getStationApiUrl("/restart");
 
 const isLoading = ref(false);
 
-const {axios} = useAxios();
-const {showAlert} = useDialog();
-const {notify} = useNotify();
-const {$gettext} = useTranslate();
+const { axios } = useAxios();
+const { showAlert } = useDialog();
+const { notify } = useNotify();
+const { $gettext } = useTranslate();
 
 const router = useRouter();
 
@@ -137,15 +140,15 @@ const makeApiCall = async (uri: string) => {
     isLoading.value = true;
 
     try {
-        const {data} = await axios.post<ApiStatus>(uri);
+        const { data } = await axios.post<ApiStatus>(uri);
         notify(data.formatted_message, {
-            variant: (data.success) ? FlashLevels.Success : FlashLevels.Warning
+            variant: data.success ? FlashLevels.Success : FlashLevels.Warning,
         });
 
         await delay(2000);
 
         await router.push({
-            name: 'stations:index'
+            name: "stations:index",
         });
 
         await clearAllStationQueries();
@@ -155,10 +158,10 @@ const makeApiCall = async (uri: string) => {
 };
 
 const doReload = async () => {
-    const {value} = await showAlert({
-        title: $gettext('Are you sure?'),
-        confirmButtonClass: 'btn-warning',
-        confirmButtonText: $gettext('Reload Configuration')
+    const { value } = await showAlert({
+        title: $gettext("Are you sure?"),
+        confirmButtonClass: "btn-warning",
+        confirmButtonText: $gettext("Reload Configuration"),
     });
 
     if (!value) {
@@ -166,13 +169,13 @@ const doReload = async () => {
     }
 
     await makeApiCall(reloadUrl.value);
-}
+};
 
 const doRestart = async () => {
-    const {value} = await showAlert({
-        title: $gettext('Are you sure?'),
-        confirmButtonClass: 'btn-warning',
-        confirmButtonText: $gettext('Restart Broadcasting')
+    const { value } = await showAlert({
+        title: $gettext("Are you sure?"),
+        confirmButtonClass: "btn-warning",
+        confirmButtonText: $gettext("Restart Broadcasting"),
     });
 
     if (!value) {
@@ -180,5 +183,5 @@ const doRestart = async () => {
     }
 
     await makeApiCall(restartUrl.value);
-}
+};
 </script>

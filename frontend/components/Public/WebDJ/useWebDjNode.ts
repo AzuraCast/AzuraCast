@@ -1,10 +1,10 @@
 // noinspection JSDeprecatedSymbols
 
-import {computed, ref} from "vue";
+import { computed, ref } from "vue";
 import createRequiredInjectionState from "~/functions/createRequiredInjectionState.ts";
 
-export const [useProvideWebDjNode, useInjectWebDjNode] = createRequiredInjectionState(
-    (webcaster) => {
+export const [useProvideWebDjNode, useInjectWebDjNode] =
+    createRequiredInjectionState((webcaster) => {
         const { connect: connectSocket } = webcaster;
 
         const doPassThrough = ref(false);
@@ -16,7 +16,7 @@ export const [useProvideWebDjNode, useInjectWebDjNode] = createRequiredInjection
 
         const context = computed(() => {
             return new AudioContext({
-                sampleRate: sampleRate.value
+                sampleRate: sampleRate.value,
             });
         });
 
@@ -26,11 +26,15 @@ export const [useProvideWebDjNode, useInjectWebDjNode] = createRequiredInjection
             const sink = currentContext.createScriptProcessor(
                 bufferSize.value,
                 channelCount.value,
-                channelCount.value
+                channelCount.value,
             );
 
             sink.onaudioprocess = (buf) => {
-                for (let channel = 0; channel < buf.inputBuffer.numberOfChannels; channel++) {
+                for (
+                    let channel = 0;
+                    channel < buf.inputBuffer.numberOfChannels;
+                    channel++
+                ) {
                     const channelData = buf.inputBuffer.getChannelData(channel);
                     buf.outputBuffer.getChannelData(channel).set(channelData);
                 }
@@ -45,17 +49,25 @@ export const [useProvideWebDjNode, useInjectWebDjNode] = createRequiredInjection
             const passThrough = currentContext.createScriptProcessor(
                 bufferSize.value,
                 channelCount.value,
-                channelCount.value
+                channelCount.value,
             );
 
             passThrough.onaudioprocess = (buf) => {
-                for (let channel = 0; channel < buf.inputBuffer.numberOfChannels; channel++) {
+                for (
+                    let channel = 0;
+                    channel < buf.inputBuffer.numberOfChannels;
+                    channel++
+                ) {
                     const channelData = buf.inputBuffer.getChannelData(channel);
 
                     if (doPassThrough.value) {
-                        buf.outputBuffer.getChannelData(channel).set(channelData);
+                        buf.outputBuffer
+                            .getChannelData(channel)
+                            .set(channelData);
                     } else {
-                        buf.outputBuffer.getChannelData(channel).set(new Float32Array(channelData.length));
+                        buf.outputBuffer
+                            .getChannelData(channel)
+                            .set(new Float32Array(channelData.length));
                     }
                 }
             };
@@ -79,21 +91,21 @@ export const [useProvideWebDjNode, useInjectWebDjNode] = createRequiredInjection
 
         let mediaRecorder: MediaRecorder;
 
-        const startStream = (username: string | null = null, password: string | null = null) => {
+        const startStream = (
+            username: string | null = null,
+            password: string | null = null,
+        ) => {
             void context.value.resume();
 
-            mediaRecorder = new MediaRecorder(
-                streamNode.value.stream,
-                {
-                    mimeType: "audio/webm;codecs=opus",
-                    audioBitsPerSecond: bitrate.value * 1000
-                }
-            );
+            mediaRecorder = new MediaRecorder(streamNode.value.stream, {
+                mimeType: "audio/webm;codecs=opus",
+                audioBitsPerSecond: bitrate.value * 1000,
+            });
 
             connectSocket(mediaRecorder, username, password);
 
             mediaRecorder.start(1000);
-        }
+        };
 
         const stopStream = () => {
             mediaRecorder?.stop();
@@ -110,7 +122,6 @@ export const [useProvideWebDjNode, useInjectWebDjNode] = createRequiredInjection
             passThrough,
             streamNode,
             startStream,
-            stopStream
+            stopStream,
         };
-    }
-);
+    });

@@ -41,18 +41,18 @@
 </template>
 
 <script setup lang="ts">
-import {useTemplateRef} from "vue";
-import AccountEditModal from "~/components/Account/EditModal.vue";
-import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
-import SecurityPanel from "~/components/Account/SecurityPanel.vue";
+import { useTemplateRef } from "vue";
 import ApiKeysPanel from "~/components/Account/ApiKeysPanel.vue";
+import AccountEditModal from "~/components/Account/EditModal.vue";
+import SecurityPanel from "~/components/Account/SecurityPanel.vue";
+import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
 import DashboardNoSidebar from "~/components/Layout/DashboardNoSidebar.vue";
-import {useAzuraCastDashboardGlobals} from "~/vendor/azuracast.ts";
+import { useAzuraCastDashboardGlobals } from "~/vendor/azuracast.ts";
 import IconIcEdit from "~icons/ic/baseline-edit";
 
-const {supportedLocales} = useAzuraCastDashboardGlobals();
+const { supportedLocales } = useAzuraCastDashboardGlobals();
 
-const $editModal = useTemplateRef('$editModal');
+const $editModal = useTemplateRef("$editModal");
 
 const doEditProfile = () => {
     $editModal.value?.open();

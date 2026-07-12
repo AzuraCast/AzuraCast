@@ -36,12 +36,12 @@
 </template>
 
 <script setup lang="ts">
-import StreamersFormScheduleRow from "~/components/Stations/Streamers/Form/ScheduleRow.vue";
-import FormMarkup from "~/components/Form/FormMarkup.vue";
 import Tab from "~/components/Common/Tab.vue";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
+import StreamersFormScheduleRow from "~/components/Stations/Streamers/Form/ScheduleRow.vue";
 import IconIcAdd from "~icons/ic/baseline-add";
 
-const scheduleItems = defineModel<Array<any>>('scheduleItems', {
+const scheduleItems = defineModel<Array<any>>("scheduleItems", {
     default: () => [],
 });
 
@@ -51,7 +51,7 @@ const add = () => {
         end_time: null,
         start_date: null,
         end_date: null,
-        days: []
+        days: [],
     });
 };
 

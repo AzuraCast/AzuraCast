@@ -159,132 +159,130 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import EditModal from "~/components/Stations/Podcasts/EpisodeEditModal.vue";
-import AlbumArt from "~/components/Common/AlbumArt.vue";
-import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
-import {useTranslate} from "~/vendor/gettext";
-import {computed, shallowRef, toRef, useTemplateRef} from "vue";
+import { computed, shallowRef, toRef, useTemplateRef } from "vue";
 import AddButton from "~/components/Common/AddButton.vue";
-import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
-import {ApiPodcast, ApiPodcastEpisode} from "~/entities/ApiInterfaces.ts";
-import useHasEditModal from "~/functions/useHasEditModal.ts";
-import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import AlbumArt from "~/components/Common/AlbumArt.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import EpisodesToolbar from "~/components/Stations/Podcasts/EpisodesToolbar.vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
 import BatchEditModal from "~/components/Stations/Podcasts/BatchEditModal.vue";
-import {useHasModal} from "~/functions/useHasModal.ts";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys, queryKeyWithStation} from "~/entities/Queries.ts";
+import EditModal from "~/components/Stations/Podcasts/EpisodeEditModal.vue";
+import EpisodesToolbar from "~/components/Stations/Podcasts/EpisodesToolbar.vue";
+import { ApiPodcast, ApiPodcastEpisode } from "~/entities/ApiInterfaces.ts";
+import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
+import useHasEditModal from "~/functions/useHasEditModal.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
+import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import { useTranslate } from "~/vendor/gettext";
 import IconBiChevronLeft from "~icons/bi/chevron-left";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
 
 const props = defineProps<{
-    podcast: Required<ApiPodcast>
+    podcast: Required<ApiPodcast>;
 }>();
 
-const podcast = toRef(props, 'podcast');
+const podcast = toRef(props, "podcast");
 
-const {getStationApiUrl} = useApiRouter();
-const quotaUrl = getStationApiUrl('/quota/station_podcasts');
+const { getStationApiUrl } = useApiRouter();
+const quotaUrl = getStationApiUrl("/quota/station_podcasts");
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
-const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
+const { formatTimestampAsDateTime } = useStationDateTimeFormatter();
 
-type Row = Required<ApiPodcastEpisode>
+type Row = Required<ApiPodcastEpisode>;
 
 const fields: DataTableField<Row>[] = [
     {
-        key: 'art',
-        label: $gettext('Art'),
+        key: "art",
+        label: $gettext("Art"),
         sortable: false,
-        class: 'shrink pe-0',
-        selectable: true
+        class: "shrink pe-0",
+        selectable: true,
     },
     {
-        key: 'title',
-        label: $gettext('Episode'),
-        sortable: false
+        key: "title",
+        label: $gettext("Episode"),
+        sortable: false,
     },
     {
-        key: 'media',
-        label: $gettext('File Name'),
-        sortable: false
+        key: "media",
+        label: $gettext("File Name"),
+        sortable: false,
     },
     {
-        key: 'is_published',
-        label: $gettext('Is Published'),
+        key: "is_published",
+        label: $gettext("Is Published"),
         visible: false,
         sortable: false,
-        selectable: true
+        selectable: true,
     },
     {
-        key: 'publish_at',
-        label: $gettext('Publish At'),
-        formatter: (_col, _key, item) => formatTimestampAsDateTime(item.publish_at),
+        key: "publish_at",
+        label: $gettext("Publish At"),
+        formatter: (_col, _key, item) =>
+            formatTimestampAsDateTime(item.publish_at),
         sortable: true,
-        selectable: true
+        selectable: true,
     },
     {
-        key: 'explicit',
-        label: $gettext('Explicit'),
+        key: "explicit",
+        label: $gettext("Explicit"),
         sortable: true,
-        selectable: true
+        selectable: true,
     },
     {
-        key: 'season_number',
-        label: $gettext('Season Number'),
+        key: "season_number",
+        label: $gettext("Season Number"),
         visible: false,
         sortable: true,
-        selectable: true
+        selectable: true,
     },
     {
-        key: 'episode_number',
-        label: $gettext('Episode Number'),
+        key: "episode_number",
+        label: $gettext("Episode Number"),
         visible: false,
         sortable: true,
-        selectable: true
+        selectable: true,
     },
     {
-        key: 'actions',
-        label: $gettext('Actions'),
+        key: "actions",
+        label: $gettext("Actions"),
         sortable: false,
-        class: 'shrink'
-    }
+        class: "shrink",
+    },
 ];
 
 const episodesItemProvider = useApiItemProvider<Row>(
     computed(() => podcast.value.links.episodes),
-    queryKeyWithStation(
-        [
-            QueryKeys.StationPodcasts,
-            computed(() => podcast.value.id),
-            'episodes'
-        ]
-    )
+    queryKeyWithStation([
+        QueryKeys.StationPodcasts,
+        computed(() => podcast.value.id),
+        "episodes",
+    ]),
 );
 
-const {refresh} = episodesItemProvider;
+const { refresh } = episodesItemProvider;
 
 const podcastIsManual = computed(() => {
-    return podcast.value?.source == 'manual';
+    return podcast.value?.source === "manual";
 });
 
-const $quota = useTemplateRef('$quota');
+const $quota = useTemplateRef("$quota");
 
 const relist = () => {
     $quota.value?.update();
     void refresh();
 };
 
-const $editEpisodeModal = useTemplateRef('$editEpisodeModal');
+const $editEpisodeModal = useTemplateRef("$editEpisodeModal");
 
-const {doCreate, doEdit} = useHasEditModal($editEpisodeModal);
+const { doCreate, doEdit } = useHasEditModal($editEpisodeModal);
 
-const {doDelete} = useConfirmAndDelete(
-    $gettext('Delete Episode?'),
-    () => relist()
+const { doDelete } = useConfirmAndDelete($gettext("Delete Episode?"), () =>
+    relist(),
 );
 
 const selectedItems = shallowRef<Row[]>([]);
@@ -293,9 +291,9 @@ const onRowSelected = (rows: Row[]) => {
     selectedItems.value = rows;
 };
 
-const $batchEditModal = useTemplateRef('$batchEditModal');
+const $batchEditModal = useTemplateRef("$batchEditModal");
 
-const {show: showBatchEditModal} = useHasModal($batchEditModal);
+const { show: showBatchEditModal } = useHasModal($batchEditModal);
 
 const doBatchEdit = () => {
     showBatchEditModal();

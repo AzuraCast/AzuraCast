@@ -57,49 +57,55 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import Tab from "~/components/Common/Tab.vue";
-import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {useTranslate} from "~/vendor/gettext.ts";
-import {computed, onMounted, ref, shallowRef} from "vue";
-import {useAxios} from "~/vendor/axios.ts";
+import { storeToRefs } from "pinia";
+import { computed, onMounted, ref, shallowRef } from "vue";
 import Loading from "~/components/Common/Loading.vue";
-import {ApiFormSimpleOptions} from "~/entities/ApiInterfaces.ts";
-import {storeToRefs} from "pinia";
-import {useStationsPodcastsForm} from "~/components/Stations/Podcasts/PodcastForm/form.ts";
-import {useFormTabClass} from "~/functions/useFormTabClass.ts";
-import {useApiRouter} from "~/functions/useApiRouter.ts";
+import Tab from "~/components/Common/Tab.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
+import { useStationsPodcastsForm } from "~/components/Stations/Podcasts/PodcastForm/form.ts";
+import { ApiFormSimpleOptions } from "~/entities/ApiInterfaces.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
+import { useFormTabClass } from "~/functions/useFormTabClass.ts";
+import { useAxios } from "~/vendor/axios.ts";
+import { useTranslate } from "~/vendor/gettext.ts";
 
-const {r$, form} = storeToRefs(useStationsPodcastsForm());
+const { r$, form } = storeToRefs(useStationsPodcastsForm());
 
 const tabClass = useFormTabClass(computed(() => r$.value.$groups.sourceTab));
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const sourceOptions = [
     {
-        value: 'manual',
-        text: $gettext('Manually Add Episodes'),
-        description: $gettext('Create podcast episodes independent of your station\'s media collection.')
+        value: "manual",
+        text: $gettext("Manually Add Episodes"),
+        description: $gettext(
+            "Create podcast episodes independent of your station's media collection.",
+        ),
     },
     {
-        value: 'playlist',
-        text: $gettext('Synchronize with Playlist'),
-        description: $gettext('Automatically create new podcast episodes when media is added to a specified playlist.')
-    }
+        value: "playlist",
+        text: $gettext("Synchronize with Playlist"),
+        description: $gettext(
+            "Automatically create new podcast episodes when media is added to a specified playlist.",
+        ),
+    },
 ];
 
 const playlistsLoading = ref<boolean>(true);
 const playlistOptions = shallowRef<ApiFormSimpleOptions>([]);
 
-const {axios} = useAxios();
-const {getStationApiUrl} = useApiRouter();
-const playlistsApiUrl = getStationApiUrl('/podcasts/playlists');
+const { axios } = useAxios();
+const { getStationApiUrl } = useApiRouter();
+const playlistsApiUrl = getStationApiUrl("/podcasts/playlists");
 
 const loadPlaylists = async () => {
     try {
-        const {data} = await axios.get<ApiFormSimpleOptions>(playlistsApiUrl.value);
+        const { data } = await axios.get<ApiFormSimpleOptions>(
+            playlistsApiUrl.value,
+        );
         playlistOptions.value = data;
     } finally {
         playlistsLoading.value = false;

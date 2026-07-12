@@ -1,8 +1,8 @@
-import {useAzuraCastUser} from "~/vendor/azuracast.ts";
-import {GlobalPermissions} from "~/entities/ApiInterfaces.ts";
+import { GlobalPermissions } from "~/entities/ApiInterfaces.ts";
+import { useAzuraCastUser } from "~/vendor/azuracast.ts";
 
 export function useUserAllowed() {
-    const {permissions} = useAzuraCastUser();
+    const { permissions } = useAzuraCastUser();
 
     return {
         userAllowed: (permission: GlobalPermissions): boolean => {
@@ -15,6 +15,6 @@ export function useUserAllowed() {
             } catch {
                 return false;
             }
-        }
+        },
     };
 }

@@ -13,52 +13,56 @@
 </template>
 
 <script setup lang="ts">
-import {ref, toRef, watch} from "vue";
-import {useAxios} from "~/vendor/axios.ts";
-import Loading from "~/components/Common/Loading.vue";
+import { storeToRefs } from "pinia";
+import { ref, toRef, watch } from "vue";
 import CodeMirror from "vue-codemirror6";
-import {useTheme} from "~/functions/theme.ts";
-import {ApiLogContents} from "~/entities/ApiInterfaces.ts";
-import {storeToRefs} from "pinia";
+import Loading from "~/components/Common/Loading.vue";
+import { ApiLogContents } from "~/entities/ApiInterfaces.ts";
+import { useTheme } from "~/functions/theme.ts";
+import { useAxios } from "~/vendor/axios.ts";
 
 const props = defineProps<{
-    logUrl: string
+    logUrl: string;
 }>();
 
 const isLoading = ref(false);
-const logs = ref('');
+const logs = ref("");
 
-const {isDark} = storeToRefs(useTheme());
+const { isDark } = storeToRefs(useTheme());
 
-const {axios} = useAxios();
+const { axios } = useAxios();
 
-watch(toRef(props, 'logUrl'), (newLogUrl) => {
-    isLoading.value = true;
-    logs.value = '';
+watch(
+    toRef(props, "logUrl"),
+    (newLogUrl) => {
+        isLoading.value = true;
+        logs.value = "";
 
-    if (null !== newLogUrl) {
-        void (async () => {
-            try {
-                const {data} = await axios.request<ApiLogContents>({
-                    method: 'GET',
-                    url: props.logUrl
-                });
+        if (null !== newLogUrl) {
+            void (async () => {
+                try {
+                    const { data } = await axios.request<ApiLogContents>({
+                        method: "GET",
+                        url: props.logUrl,
+                    });
 
-                if (data.contents !== '') {
-                    logs.value = data.contents;
+                    if (data.contents !== "") {
+                        logs.value = data.contents;
+                    }
+                } finally {
+                    isLoading.value = false;
                 }
-            } finally {
-                isLoading.value = false;
-            }
-        })();
-    }
-}, {immediate: true});
+            })();
+        }
+    },
+    { immediate: true },
+);
 
 const getContents = () => {
     return logs.value;
 };
 
 defineExpose({
-    getContents
+    getContents,
 });
 </script>

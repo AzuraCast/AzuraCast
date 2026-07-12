@@ -7,17 +7,25 @@
 </template>
 
 <script setup lang="ts">
+import { isString } from "es-toolkit/compat";
 import Hls from "hls.js";
-import {nextTick, onMounted, onScopeDispose, ref, useTemplateRef, watch} from "vue";
-import {usePlayerStore} from "~/functions/usePlayerStore.ts";
-import {storeToRefs} from "pinia";
-import {isString} from "es-toolkit/compat";
+import { storeToRefs } from "pinia";
+import {
+    nextTick,
+    onMounted,
+    onScopeDispose,
+    ref,
+    useTemplateRef,
+    watch,
+} from "vue";
+import { usePlayerStore } from "~/functions/usePlayerStore.ts";
 
 const playerStore = usePlayerStore();
-const {logVolume, isMuted, isPlaying, current, duration, progress} = storeToRefs(playerStore);
-const {stop: storeStop, setIsPlaying, setPlayPosition} = playerStore;
+const { logVolume, isMuted, isPlaying, current, duration, progress } =
+    storeToRefs(playerStore);
+const { stop: storeStop, setIsPlaying, setPlayPosition } = playerStore;
 
-const $audio = useTemplateRef('$audio');
+const $audio = useTemplateRef("$audio");
 
 const hls = ref<Hls | null>(null);
 const bc = ref<BroadcastChannel | null>(null);
@@ -37,7 +45,7 @@ watch(isMuted, (newMuted) => {
 const stop = () => {
     if ($audio.value !== null) {
         $audio.value.pause();
-        $audio.value.src = '';
+        $audio.value.src = "";
     }
 
     if (hls.value !== null) {
@@ -72,8 +80,13 @@ const play = () => {
 
             const eventTarget = e.target as HTMLAudioElement;
 
-            if (eventTarget.error?.code === MediaError.MEDIA_ERR_NETWORK && $audio.value?.src) {
-                console.log('Network interrupted stream. Automatically reconnecting shortly...');
+            if (
+                eventTarget.error?.code === MediaError.MEDIA_ERR_NETWORK &&
+                $audio.value?.src
+            ) {
+                console.log(
+                    "Network interrupted stream. Automatically reconnecting shortly...",
+                );
                 setTimeout(() => {
                     play();
                 }, 5000);
@@ -88,8 +101,10 @@ const play = () => {
             const audioDuration = $audio.value?.duration ?? 0;
 
             setPlayPosition(
-                (audioDuration !== Infinity && !isNaN(audioDuration)) ? audioDuration : 0,
-                $audio.value?.currentTime ?? 0
+                audioDuration !== Infinity && !Number.isNaN(audioDuration)
+                    ? audioDuration
+                    : 0,
+                $audio.value?.currentTime ?? 0,
             );
         };
 
@@ -103,10 +118,12 @@ const play = () => {
                     hls.value = new Hls();
                     hls.value.loadSource(current.value.url);
                     hls.value.attachMedia($audio.value);
-                } else if ($audio.value.canPlayType('application/vnd.apple.mpegurl')) {
+                } else if (
+                    $audio.value.canPlayType("application/vnd.apple.mpegurl")
+                ) {
                     $audio.value.src = current.value.url;
                 } else {
-                    console.log('Your browser does not support HLS.');
+                    console.log("Your browser does not support HLS.");
                 }
             } else {
                 // Standard streams
@@ -115,7 +132,7 @@ const play = () => {
                 // Firefox caches the downloaded stream, this causes playback issues.
                 // Giving the browser a new url on each start bypasses the old cache/buffer
                 if (navigator.userAgent.includes("Firefox")) {
-                    $audio.value.src += "?refresh=" + Date.now();
+                    $audio.value.src += `?refresh=${Date.now()}`;
                 }
             }
         }
@@ -124,14 +141,15 @@ const play = () => {
         $audio.value.play();
 
         if (bc.value) {
-            bc.value.postMessage('played');
+            bc.value.postMessage("played");
         }
     });
 };
 
 watch(progress, (newProgress) => {
     if (newProgress.isSeek && $audio.value !== null) {
-        $audio.value.currentTime = (newProgress.position / 100) * duration.value;
+        $audio.value.currentTime =
+            (newProgress.position / 100) * duration.value;
     }
 });
 
@@ -145,23 +163,27 @@ watch(current, (newCurrent) => {
 
 onMounted(() => {
     // Allow pausing from the mobile metadata update.
-    if ('mediaSession' in navigator) {
-        navigator.mediaSession.setActionHandler('pause', () => {
+    if ("mediaSession" in navigator) {
+        navigator.mediaSession.setActionHandler("pause", () => {
             storeStop();
         });
     }
 
-    if ('BroadcastChannel' in window) {
-        bc.value = new BroadcastChannel('audio_player');
-        bc.value.addEventListener('message', () => {
-            storeStop();
-        }, {passive: true});
+    if ("BroadcastChannel" in window) {
+        bc.value = new BroadcastChannel("audio_player");
+        bc.value.addEventListener(
+            "message",
+            () => {
+                storeStop();
+            },
+            { passive: true },
+        );
     }
 });
 
 onScopeDispose(() => {
     if (bc.value) {
-        bc.value.close()
+        bc.value.close();
     }
 });
 </script>

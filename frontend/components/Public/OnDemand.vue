@@ -54,62 +54,62 @@
 </template>
 
 <script setup lang="ts">
-import InlinePlayer from "~/components/InlinePlayer.vue";
-import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
-import PlayButton from "~/components/Common/Audio/PlayButton.vue";
-import {useTranslate} from "~/vendor/gettext";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
+import PlayButton from "~/components/Common/Audio/PlayButton.vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import InlinePlayer from "~/components/InlinePlayer.vue";
 import FullHeightCard from "~/components/Public/FullHeightCard.vue";
-import {useApiItemProvider} from "~/functions/dataTable/useApiItemProvider.ts";
-import {QueryKeys} from "~/entities/Queries.ts";
+import { QueryKeys } from "~/entities/Queries.ts";
+import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { useTranslate } from "~/vendor/gettext";
 import IconIcCloudDownload from "~icons/ic/baseline-cloud-download";
 
 interface OnDemandCustomField {
-    display_key: string,
-    key: string,
-    label: string,
+    display_key: string;
+    key: string;
+    label: string;
 }
 
 const props = withDefaults(
     defineProps<{
-        listUrl: string,
-        stationName: string,
-        customFields?: OnDemandCustomField[],
-        showDownloadButton?: boolean
+        listUrl: string;
+        stationName: string;
+        customFields?: OnDemandCustomField[];
+        showDownloadButton?: boolean;
     }>(),
     {
-        customFields: () => ([]),
+        customFields: () => [],
         showDownloadButton: false,
-    }
+    },
 );
 
-const {$gettext} = useTranslate();
+const { $gettext } = useTranslate();
 
 const fields: DataTableField[] = [
-    {key: 'download_url', label: ' ', class: 'shrink'},
-    {key: 'art', label: $gettext('Art'), class: 'shrink'},
+    { key: "download_url", label: " ", class: "shrink" },
+    { key: "art", label: $gettext("Art"), class: "shrink" },
     {
-        key: 'title',
-        label: $gettext('Title'),
+        key: "title",
+        label: $gettext("Title"),
         sortable: true,
         selectable: true,
         formatter: (_value, _key, item) => item.media.title,
     },
     {
-        key: 'artist',
-        label: $gettext('Artist'),
+        key: "artist",
+        label: $gettext("Artist"),
         sortable: true,
         selectable: true,
         formatter: (_value, _key, item) => item.media.artist,
     },
     {
-        key: 'album',
-        label: $gettext('Album'),
+        key: "album",
+        label: $gettext("Album"),
         sortable: true,
         selectable: true,
         visible: false,
-        formatter: (_value, _key, item) => item.media.album
-    }
+        formatter: (_value, _key, item) => item.media.album,
+    },
 ];
 
 for (const field of props.customFields.slice()) {
@@ -119,14 +119,11 @@ for (const field of props.customFields.slice()) {
         sortable: true,
         selectable: true,
         visible: false,
-        formatter: (_value, _key, item) => item.media.custom_fields[field.key]
+        formatter: (_value, _key, item) => item.media.custom_fields[field.key],
     });
 }
 
-const listItemProvider = useApiItemProvider(
-    props.listUrl,
-    [
-        QueryKeys.PublicOnDemand
-    ]
-);
+const listItemProvider = useApiItemProvider(props.listUrl, [
+    QueryKeys.PublicOnDemand,
+]);
 </script>

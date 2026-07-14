@@ -1,0 +1,29 @@
+{
+  "description": "Duplicate-avoidance must follow only the group the track was picked from. The member 'dp' (avoid_duplicates=false) belongs to two groups: grp_active (avoid off, enabled) and grp_dedup (avoid on, disabled). Only grp_active plays, so dp is selected via a path with no duplicate avoidance. Even though m1 was recently played, the disabled grp_dedup's flag must not leak in, so dp picks its lowest-weight track m1 (not m2).",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "off-path-group-flag-does-not-leak",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "media_ref": "m1",
+            "timestamp_played": "2018-01-15T11:55:00+00:00",
+            "is_visible": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "dp",
+          "media_ref": "m1"
+        }
+      ]
+    }
+  ]
+}

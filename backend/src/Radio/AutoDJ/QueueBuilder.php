@@ -238,6 +238,7 @@ final class QueueBuilder implements EventSubscriberInterface
      * @param StationPlaylist $playlistGroup A playlist that is holding other playlists inside
      * @param mixed[] $recentSongHistory
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
+     * @param bool $ancestorAvoidsDuplicates Indicates if an ancestor group dictates its members to avoid duplicates
      *
      * @return bool Returns true if a track has been selected and registered
      */
@@ -245,9 +246,12 @@ final class QueueBuilder implements EventSubscriberInterface
         BuildQueue $event,
         StationPlaylist $playlistGroup,
         array $recentSongHistory,
-        bool $allowDuplicates = false
+        bool $allowDuplicates = false,
+        bool $ancestorAvoidsDuplicates = false
     ): bool {
         $expectedPlayTime = $event->getExpectedPlayTime();
+
+        $memberAvoidsDuplicates = $ancestorAvoidsDuplicates || $playlistGroup->avoid_duplicates;
 
         foreach ($this->getPlaylistGroupQueueForOrder($playlistGroup) as $selectedStationPlaylistGroup) {
             $selectedPlaylist = $selectedStationPlaylistGroup->playlist;
@@ -279,7 +283,8 @@ final class QueueBuilder implements EventSubscriberInterface
                 $event,
                 $selectedPlaylist,
                 $recentSongHistory,
-                $allowDuplicates
+                $allowDuplicates,
+                $memberAvoidsDuplicates
             );
 
             if ($hasRegisteredTrack) {
@@ -416,10 +421,11 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     /**
-     * Given a specified (sequential or shuffled) playlist, choose a song from the playlist to play
+     * Given a specified playlist, choose a song from the playlist to play
      *
-     * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      * @param mixed[] $recentSongHistory
+     * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
+     * @param bool $ancestorAvoidsDuplicates Indicates if an ancestor group dictates its members to avoid duplicates
      *
      * @return bool Returns true if a track has been selected and registered
      */
@@ -427,7 +433,8 @@ final class QueueBuilder implements EventSubscriberInterface
         BuildQueue $event,
         StationPlaylist $playlist,
         array $recentSongHistory,
-        bool $allowDuplicates = false
+        bool $allowDuplicates = false,
+        bool $ancestorAvoidsDuplicates = false
     ): bool {
         $selectedTracksResult = match ($playlist->source) {
             PlaylistSources::RemoteUrl => $this->getSongFromRemotePlaylist(
@@ -439,14 +446,16 @@ final class QueueBuilder implements EventSubscriberInterface
                 $event,
                 $playlist,
                 $recentSongHistory,
-                $allowDuplicates
+                $allowDuplicates,
+                $ancestorAvoidsDuplicates
             ),
 
             PlaylistSources::Songs => $this->playSongFromSongsPlaylist(
                 $event,
                 $playlist,
                 $recentSongHistory,
-                $allowDuplicates
+                $allowDuplicates,
+                $ancestorAvoidsDuplicates
             ),
 
             PlaylistSources::Requests => $this->playSongFromRequestsPlaylist(
@@ -472,11 +481,17 @@ final class QueueBuilder implements EventSubscriberInterface
         return false;
     }
 
+    /**
+     * @param mixed[] $recentSongHistory
+     * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
+     * @param bool $ancestorAvoidsDuplicates Indicates if an ancestor group dictates its members to avoid duplicates
+     */
     private function playSongFromSongsPlaylist(
         BuildQueue $event,
         StationPlaylist $playlist,
         array $recentSongHistory,
-        bool $allowDuplicates = false
+        bool $allowDuplicates = false,
+        bool $ancestorAvoidsDuplicates = false
     ): StationQueue|array|null {
         if ($playlist->backendMerge()) {
             $this->spmRepo->resetQueue($playlist);
@@ -504,17 +519,20 @@ final class QueueBuilder implements EventSubscriberInterface
                 PlaylistOrders::Random => $this->getRandomMediaIdFromPlaylist(
                     $playlist,
                     $recentSongHistory,
-                    $allowDuplicates
+                    $allowDuplicates,
+                    $ancestorAvoidsDuplicates
                 ),
                 PlaylistOrders::Sequential => $this->getSequentialMediaIdFromPlaylist(
                     $playlist,
                     $recentSongHistory,
-                    $allowDuplicates
+                    $allowDuplicates,
+                    $ancestorAvoidsDuplicates
                 ),
                 PlaylistOrders::Shuffle => $this->getShuffledMediaIdFromPlaylist(
                     $playlist,
                     $recentSongHistory,
-                    $allowDuplicates
+                    $allowDuplicates,
+                    $ancestorAvoidsDuplicates
                 )
             };
 
@@ -672,24 +690,36 @@ final class QueueBuilder implements EventSubscriberInterface
             : null;
     }
 
+    /**
+     * @param mixed[] $recentSongHistory
+     * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
+     * @param bool $ancestorAvoidsDuplicates Indicates if an ancestor group dictates its members to avoid duplicates
+     */
     private function getRandomMediaIdFromPlaylist(
         StationPlaylist $playlist,
         array $recentSongHistory,
-        bool $allowDuplicates
+        bool $allowDuplicates,
+        bool $ancestorAvoidsDuplicates = false
     ): ?StationPlaylistQueue {
         $mediaQueue = $this->spmRepo->getQueue($playlist);
 
-        if ($playlist->avoid_duplicates) {
+        if ($ancestorAvoidsDuplicates || $playlist->avoid_duplicates) {
             return $this->duplicatePrevention->preventDuplicates($mediaQueue, $recentSongHistory, $allowDuplicates);
         }
 
         return array_shift($mediaQueue);
     }
 
+    /**
+     * @param mixed[] $recentSongHistory
+     * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
+     * @param bool $ancestorAvoidsDuplicates Indicates if an ancestor group dictates its members to avoid duplicates
+     */
     private function getSequentialMediaIdFromPlaylist(
         StationPlaylist $playlist,
         array $recentSongHistory,
-        bool $allowDuplicates = false
+        bool $allowDuplicates = false,
+        bool $ancestorAvoidsDuplicates = false
     ): ?StationPlaylistQueue {
         $mediaQueue = $this->spmRepo->getQueue($playlist);
         if (empty($mediaQueue)) {
@@ -697,8 +727,8 @@ final class QueueBuilder implements EventSubscriberInterface
             $mediaQueue = $this->spmRepo->getQueue($playlist);
         }
 
-        // Apply duplicate prevention if enabled for this playlist
-        if ($playlist->avoid_duplicates) {
+        // Apply duplicate prevention if enabled for this playlist or one of its ancestor group
+        if ($ancestorAvoidsDuplicates || $playlist->avoid_duplicates) {
             $queueItem = $this->duplicatePrevention->preventDuplicates(
                 $mediaQueue,
                 $recentSongHistory,
@@ -713,10 +743,16 @@ final class QueueBuilder implements EventSubscriberInterface
         return array_shift($mediaQueue);
     }
 
+    /**
+     * @param mixed[] $recentSongHistory
+     * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
+     * @param bool $ancestorAvoidsDuplicates Indicates if an ancestor group dictates its members to avoid duplicates
+     */
     private function getShuffledMediaIdFromPlaylist(
         StationPlaylist $playlist,
         array $recentSongHistory,
-        bool $allowDuplicates
+        bool $allowDuplicates,
+        bool $ancestorAvoidsDuplicates = false
     ): ?StationPlaylistQueue {
         $mediaQueue = $this->spmRepo->getQueue($playlist);
         if (empty($mediaQueue)) {
@@ -724,7 +760,7 @@ final class QueueBuilder implements EventSubscriberInterface
             $mediaQueue = $this->spmRepo->getQueue($playlist);
         }
 
-        if (!$playlist->avoid_duplicates) {
+        if (!$ancestorAvoidsDuplicates && !$playlist->avoid_duplicates) {
             return array_shift($mediaQueue);
         }
 

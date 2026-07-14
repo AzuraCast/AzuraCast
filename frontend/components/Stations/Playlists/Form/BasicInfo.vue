@@ -226,7 +226,7 @@
                         class="col-md-6"
                         :field="r$.avoid_duplicates"
                         :label="$gettext('Avoid Duplicate Artists/Titles')"
-                        :description="$gettext('Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.')"
+                        :description="$gettext('Whether the AutoDJ should attempt to avoid duplicate artists and track titles across all member playlists in this group.')"
                     />
                 </div>
 

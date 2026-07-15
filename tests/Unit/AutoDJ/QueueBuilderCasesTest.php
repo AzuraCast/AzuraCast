@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Unit\AutoDJ;
 
-use App\Console\Command\Playlists\ExportCommand;
 use App\Entity\StationQueue;
 use App\Service\PlaylistConfiguration\Schema\PlaylistConfigurationSchema;
 use App\Tests\AutoDJ\DumpLoader;
@@ -64,6 +63,8 @@ final class QueueBuilderCasesTest extends Unit
                     CarbonImmutable::setTestNow($stepNow);
                 }
 
+                $autoDjHarness->clearLogs();
+
                 $nextSongs = $autoDjHarness->buildNextSongs(
                     $stepNow,
                     $step->expect->interrupting
@@ -99,12 +100,14 @@ final class QueueBuilderCasesTest extends Unit
         array $nextSongs,
         string $label
     ): void {
+        $logTrace = "\nAutoDJ log trace:\n{$autoDjHarness->formatLogs()}";
+
         if ($expect->mode === ExpectQueueMode::None) {
-            self::assertEmpty($nextSongs, "[{$label}] Expected no track to be queued.");
+            self::assertEmpty($nextSongs, "[{$label}] Expected no track to be queued.{$logTrace}");
             return;
         }
 
-        self::assertNotEmpty($nextSongs, "[{$label}] Expected a track to be queued.");
+        self::assertNotEmpty($nextSongs, "[{$label}] Expected a track to be queued.{$logTrace}");
 
         $first = $nextSongs[0];
 
@@ -113,7 +116,7 @@ final class QueueBuilderCasesTest extends Unit
                 self::assertSame(
                     $autoDjHarness->entities->playlistForRef($expect->playlistRef)->name,
                     $first->playlist?->name,
-                    "[{$label}] Selected playlist",
+                    "[{$label}] Selected playlist{$logTrace}",
                 );
             }
 
@@ -121,7 +124,7 @@ final class QueueBuilderCasesTest extends Unit
                 self::assertSame(
                     $autoDjHarness->entities->mediaByRef[$expect->mediaRef]->path,
                     $first->media?->path,
-                    "[{$label}] Selected media",
+                    "[{$label}] Selected media{$logTrace}",
                 );
             }
         } elseif ($expect->mode === ExpectQueueMode::Membership) {
@@ -133,7 +136,7 @@ final class QueueBuilderCasesTest extends Unit
             self::assertContains(
                 $first->media?->path,
                 $allowedPaths,
-                "[{$label}] Selected media is one of the allowed set"
+                "[{$label}] Selected media is one of the allowed set{$logTrace}"
             );
         }
     }

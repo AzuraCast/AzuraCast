@@ -12,6 +12,7 @@ use App\Tests\AutoDJ\Scenario\ScenarioCase;
 use Carbon\CarbonImmutable;
 use Codeception\Attribute\DataProvider;
 use Codeception\Test\Unit;
+use Dom\Text;
 
 /**
  * @phpstan-import-type PlaylistConfigurationDump from PlaylistConfigurationSchema
@@ -52,10 +53,18 @@ final class SchedulerCasesTest extends Unit
 
             foreach ($case->expectShouldPlay as $ref => $expected) {
                 $playlist = $harness->entities->playlistForRef($ref);
+
+                $harness->clearLogs();
+                $actual = $harness->scheduler->shouldPlaylistPlayNow($playlist, $now);
+
                 self::assertSame(
                     $expected,
-                    $harness->scheduler->shouldPlaylistPlayNow($playlist, $now),
-                    "{$context}shouldPlaylistPlayNow('{$ref}') at {$now->toIso8601String()}"
+                    $actual,
+                    <<<TEXT
+                    {$context}shouldPlaylistPlayNow('{$ref}') at {$now->toIso8601String()}
+                    Scheduler log trace:
+                    {$harness->formatLogs()}
+                    TEXT
                 );
             }
 
@@ -67,14 +76,22 @@ final class SchedulerCasesTest extends Unit
                 $schedules = $playlist->schedule_items->toArray();
                 $schedule = $schedules[(int) $index];
 
+                $harness->clearLogs();
+
+                $actual = $harness->scheduler->shouldSchedulePlayNow(
+                    $schedule,
+                    $playlist->station->getTimezoneObject(),
+                    $now
+                );
+
                 self::assertSame(
                     $expected,
-                    $harness->scheduler->shouldSchedulePlayNow(
-                        $schedule,
-                        $playlist->station->getTimezoneObject(),
-                        $now
-                    ),
-                    "{$context}shouldSchedulePlayNow('{$key}') at {$now->toIso8601String()}",
+                    $actual,
+                    <<<TEXT
+                    {$context}shouldSchedulePlayNow('{$key}') at {$now->toIso8601String()}
+                    Scheduler log trace:
+                    {$harness->formatLogs()}
+                    TEXT
                 );
             }
         } finally {

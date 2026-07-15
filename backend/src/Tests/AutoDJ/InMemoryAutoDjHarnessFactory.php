@@ -19,6 +19,7 @@ use App\Tests\AutoDJ\Scenario\ScenarioRuntime;
 use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use Mockery;
+use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Psr\SimpleCache\CacheInterface;
 
@@ -40,7 +41,10 @@ final class InMemoryAutoDjHarnessFactory
         $queueRepo = $this->fakeQueueRepo($dataProxy);
         $requestRepo = $this->fakeRequestRepo();
 
+        $logHandler = new TestHandler();
+
         $logger = new Logger('test_autodj');
+        $logger->pushHandler($logHandler);
 
         $entityManager = $this->fakeEntityManager($dataProxy);
 
@@ -71,7 +75,8 @@ final class InMemoryAutoDjHarnessFactory
             $entities,
             $scheduler,
             $queueBuilder,
-            $dataProxy
+            $dataProxy,
+            $logHandler
         );
     }
 

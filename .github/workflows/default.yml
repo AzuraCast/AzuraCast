@@ -73,6 +73,10 @@ jobs:
         run: |
           vendor/bin/phpcs --report=checkstyle | cs2pr
 
+      - name: Run Unit Tests
+        run: |
+          vendor/bin/codecept run Unit --no-interaction
+
   node-test:
     name: Node Test Suite
     runs-on: ubuntu-latest

@@ -1,0 +1,33 @@
+{
+  "description": "A group whose members are all ineligible (an Advanced member plus a once-per-90-minutes member inside its gate window) returns no track; the build falls back to the next eligible top-level playlist instead of stalling, and the group recovers in a later build once its member is eligible again.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "falls-back-then-recovers",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "playlists": {
+          "gopm": {
+            "played_at": "2018-01-15T11:30:00+00:00"
+          }
+        }
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "fill",
+          "media_ref": "mFill"
+        },
+        {
+          "now": "2018-01-15T13:10:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "gopm",
+          "media_ref": "mOpm"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "description": "The strict (no-duplicates) pass spans all eligible playlists before duplicates are allowed: playlist A's only track was just played, so regardless of playlist ordering the build selects playlist B's fresh track in the strict pass instead of replaying the duplicate from A.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "fresh-track-from-other-playlist-wins-strict-pass",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "media_ref": "mDup",
+            "playlist_ref": "pa",
+            "is_visible": true,
+            "timestamp_played": "2018-01-15T11:55:00+00:00"
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "pb",
+          "media_ref": "mFresh"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "description": "With playlists of several types simultaneously eligible, successive builds follow the type priority lattice: once_per_hour wins first, then once_per_x_minutes once the hourly is gated, then the scheduled standard playlist before the unscheduled one, and finally the unscheduled standard once every higher-priority playlist is gated or out of its window.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "type-buckets-win-in-priority-order",
+      "now": "2018-01-15T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "oph",
+          "media_ref": "mOph"
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "opm",
+          "media_ref": "mOpm"
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "sched",
+          "media_ref": "mSched"
+        },
+        {
+          "now": "2018-01-15T15:20:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "unsched",
+          "media_ref": "mUnsched"
+        }
+      ]
+    }
+  ]
+}

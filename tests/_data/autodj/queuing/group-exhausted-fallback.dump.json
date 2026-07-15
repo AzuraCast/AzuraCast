@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "type": "station",
+  "station": {
+    "name": "Test Station",
+    "timezone": "UTC",
+    "requests_only_via_playlists": false
+  },
+  "media": [
+    {
+      "ref": "mAdv",
+      "path": "grpfallback/advanced.mp3",
+      "unique_id": "grpfallbackaaaaaaaaaaa01",
+      "length": 120.0,
+      "artist": "Advanced Artist",
+      "title": "Advanced Track",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "mOpm",
+      "path": "grpfallback/opm.mp3",
+      "unique_id": "grpfallbackaaaaaaaaaaa02",
+      "length": 120.0,
+      "artist": "Minute Artist",
+      "title": "Minute Track",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "mFill",
+      "path": "grpfallback/fill.mp3",
+      "unique_id": "grpfallbackaaaaaaaaaaa03",
+      "length": 120.0,
+      "artist": "Fallback Artist",
+      "title": "Fallback Track",
+      "album": null,
+      "genre": null
+    }
+  ],
+  "playlists": [
+    {
+      "ref": "grp",
+      "name": "Hourly Group",
+      "config": {
+        "type": "once_per_hour",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [],
+      "members": [
+        {
+          "playlist_ref": "adv",
+          "weight": 1,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "gopm",
+          "weight": 2,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        }
+      ]
+    },
+    {
+      "ref": "adv",
+      "name": "Advanced Member",
+      "config": {
+        "type": "custom",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "mAdv",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "gopm",
+      "name": "Once Per Ninety Minutes Member",
+      "config": {
+        "type": "once_per_x_minutes",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 90,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "mOpm",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "fill",
+      "name": "Standard Fallback Rotation",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "mFill",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    }
+  ]
+}

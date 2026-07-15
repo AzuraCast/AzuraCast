@@ -1,0 +1,32 @@
+{
+  "description": "A playlist with the 'interrupt' backend option is excluded from normal queue builds even while scheduled, is the only playlist considered by an interrupting build, and an interrupting build outside its schedule window queues nothing.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "interrupt-gate-in-both-directions",
+      "now": "2018-01-15T12:30:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "interrupting": false,
+          "playlist_ref": "regular",
+          "media_ref": "mNorm"
+        },
+        {
+          "mode": "exact",
+          "interrupting": true,
+          "playlist_ref": "breaking",
+          "media_ref": "mIntr"
+        },
+        {
+          "now": "2018-01-15T14:00:00+00:00",
+          "mode": "none",
+          "interrupting": true
+        }
+      ]
+    }
+  ]
+}

@@ -268,11 +268,6 @@ final class Scheduler
             'endTime' => $endTime,
         ]);
 
-        if (!$this->shouldSchedulePlayOnCurrentDate($schedule, $tz, $now)) {
-            $this->logger->debug('Schedule is not scheduled to play today.');
-            return false;
-        }
-
         /** @var DateRange[] $comparePeriods */
         $comparePeriods = [];
 
@@ -326,6 +321,12 @@ final class Scheduler
         // Check day-of-week limitations.
         $dayToCheck = $dateRange->start->dayOfWeekIso;
         if (!$this->isScheduleScheduledToPlayToday($schedule, $dayToCheck)) {
+            return false;
+        }
+
+        // Check start/end date limitations against the day this window starts.
+        if (!$this->isScheduleDateInRange($schedule, $dateRange->start)) {
+            $this->logger->debug('Schedule window start date is outside the configured date range.');
             return false;
         }
 
@@ -487,6 +488,29 @@ final class Scheduler
                     return false;
                 }
             }
+        }
+
+        return true;
+    }
+
+    /**
+     * Given the day a schedule window starts, return whether the schedule's
+     * start/end date range (if any) permits a window starting on that day.
+     */
+    public function isScheduleDateInRange(
+        StationSchedule $schedule,
+        DateTimeImmutable $windowStart
+    ): bool {
+        $dateToCheck = $windowStart->format('Y-m-d');
+
+        $startDate = $schedule->start_date;
+        if (!empty($startDate) && $dateToCheck < $startDate) {
+            return false;
+        }
+
+        $endDate = $schedule->end_date;
+        if (!empty($endDate) && $dateToCheck > $endDate) {
+            return false;
         }
 
         return true;

@@ -24,6 +24,7 @@ use App\Tests\AutoDJ\Scenario\ExpectQueue;
 use App\Tests\AutoDJ\Scenario\QueueHistoryEntry;
 use App\Tests\AutoDJ\Scenario\ScenarioCase;
 use App\Tests\AutoDJ\Scenario\ScenarioRuntime;
+use App\Utilities\Types;
 use Carbon\CarbonImmutable;
 use Codeception\Attribute\DataProvider;
 use Codeception\Example;
@@ -290,9 +291,32 @@ final class AutoDjIntegrationCest extends CestAbstract
 
         $summary = $importer->import($dump, $this->getTestStation());
 
+        $this->applyStationSettings($dump);
+
         $this->em->flush();
 
         return $summary;
+    }
+
+    /**
+     * @param PlaylistConfigurationDump $dump
+     */
+    private function applyStationSettings(array $dump): void
+    {
+        $stationData = Types::array($dump['station']);
+
+        $station = $this->getTestStation();
+
+        $station->timezone = Types::stringOrNull(
+            $stationData['timezone'] ?? null,
+            countEmptyAsNull: true
+        ) ?? $station->timezone;
+
+        $station->requests_only_via_playlists = Types::bool(
+            $stationData['requests_only_via_playlists'] ?? $station->requests_only_via_playlists
+        );
+
+        $this->em->persist($station);
     }
 
     private function applyRuntime(ImportSummary $summary, ScenarioRuntime $runtime): void
@@ -373,6 +397,32 @@ final class AutoDjIntegrationCest extends CestAbstract
         $this->em->flush();
 
         $this->seedQueueHistory($summary, $runtime);
+        $this->seedCuedMedia($summary, $runtime);
+    }
+
+    private function seedCuedMedia(ImportSummary $summary, ScenarioRuntime $runtime): void
+    {
+        if ($runtime->cuedMedia === []) {
+            return;
+        }
+
+        $station = $this->getTestStation();
+
+        foreach ($runtime->cuedMedia as $entry) {
+            if (
+                !isset($summary->mediaByRef[$entry->mediaRef])
+                || !isset($summary->playlistsByRef[$entry->playlistRef])
+            ) {
+                continue;
+            }
+
+            $cuedEntry = StationQueue::fromMedia($station, $summary->mediaByRef[$entry->mediaRef]);
+            $cuedEntry->playlist = $summary->playlistsByRef[$entry->playlistRef];
+
+            $this->em->persist($cuedEntry);
+        }
+
+        $this->em->flush();
     }
 
     private function seedQueueHistory(ImportSummary $summary, ScenarioRuntime $runtime): void

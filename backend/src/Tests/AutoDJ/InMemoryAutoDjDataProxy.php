@@ -11,6 +11,7 @@ use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Entity\StationPlaylistGroup;
 use App\Entity\StationPlaylistMedia;
+use App\Entity\StationQueue;
 use App\Utilities\Time;
 use Carbon\CarbonImmutable;
 use DateTimeImmutable;
@@ -27,15 +28,59 @@ use DateTimeImmutable;
  *     playlist_ref: ?string,
  *     is_visible: bool
  * }
+ * @phpstan-type QueueEntryShape array{
+ *     song_id: string,
+ *     artist: ?string,
+ *     title: ?string,
+ *     playlist_ref: ?string,
+ *     is_visible: bool
+ * }
  */
 final class InMemoryAutoDjDataProxy
 {
     /** @var ?list<HistoryEntryShape> */
     private ?array $historyCache = null;
 
+    /** @var list<QueueEntryShape> */
+    private array $cuedEntries = [];
+
     public function __construct(
         private readonly InMemoryEntityStore $entities
     ) {
+        foreach ($entities->runtime->cuedMedia as $cuedMediaEntry) {
+            $media = $entities->mediaByRef[$cuedMediaEntry->mediaRef] ?? null;
+            if ($media === null || !isset($entities->playlistsByRef[$cuedMediaEntry->playlistRef])) {
+                continue;
+            }
+
+            $this->recordBuiltEntry($media, $cuedMediaEntry->playlistRef);
+        }
+    }
+
+    /**
+     * @template TEntry of StationQueue|StationMedia
+     *
+     * @param TEntry $entry
+     * @param (TEntry is StationMedia ? string : null) $playlistRef
+     */
+    public function recordBuiltEntry(StationQueue|StationMedia $entry, ?string $playlistRef = null): void
+    {
+        $isVisible = true;
+
+        if ($entry instanceof StationQueue) {
+            $playlist = $entry->playlist;
+
+            $playlistRef = ($playlist !== null) ? $this->entities->refForPlaylist($playlist) : null;
+            $isVisible = $entry->is_visible;
+        }
+
+        $this->cuedEntries[] = [
+            'song_id' => $entry->song_id,
+            'artist' => $entry->artist,
+            'title' => $entry->title,
+            'playlist_ref' => $playlistRef,
+            'is_visible' => $isVisible,
+        ];
     }
 
     // EntityManager
@@ -250,7 +295,7 @@ final class InMemoryAutoDjDataProxy
     /**
      * @return list<array{
      *     song_id: string,
-     *     timestamp_played: int,
+     *     timestamp_played: ?int,
      *     title: ?string,
      *     artist: ?string
      * }>
@@ -273,6 +318,15 @@ final class InMemoryAutoDjDataProxy
             ];
         }
 
+        foreach (array_reverse($this->cuedEntries) as $entry) {
+            $result[] = [
+                'song_id' => $entry['song_id'],
+                'timestamp_played' => null,
+                'title' => $entry['title'],
+                'artist' => $entry['artist'],
+            ];
+        }
+
         return $result;
     }
 
@@ -285,8 +339,13 @@ final class InMemoryAutoDjDataProxy
 
         $ref = $this->entities->refForPlaylist($playlist);
 
+        $rows = [
+            ...array_reverse($this->cuedEntries),
+            ...$this->history(),
+        ];
+
         $candidates = array_values(array_filter(
-            $this->history(),
+            $rows,
             static fn(array $entry): bool => $entry['is_visible'] || $entry['playlist_ref'] === $ref
         ));
 
@@ -312,7 +371,23 @@ final class InMemoryAutoDjDataProxy
 
     public function hasCuedPlaylistGroupMedia(StationPlaylist $playlist): bool
     {
-        return $this->isCued($playlist);
+        if ($this->isCued($playlist)) {
+            return true;
+        }
+
+        foreach ($playlist->playlists as $membership) {
+            $child = $membership->playlist;
+
+            $hasChildCuedMedia = (PlaylistSources::Playlists === $child->source)
+                ? $this->hasCuedPlaylistGroupMedia($child)
+                : $this->hasCuedPlaylistMedia($child);
+
+            if ($hasChildCuedMedia) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function isCued(StationPlaylist $playlist): bool
@@ -322,9 +397,13 @@ final class InMemoryAutoDjDataProxy
             return false;
         }
 
-        $cued = $this->entities->runtime->cuedPlaylists;
+        foreach ($this->cuedEntries as $entry) {
+            if ($entry['playlist_ref'] === $ref) {
+                return true;
+            }
+        }
 
-        return in_array($ref, $cued, true);
+        return false;
     }
 
     private function toPlaylistQueue(StationPlaylistMedia $spm): StationPlaylistQueue

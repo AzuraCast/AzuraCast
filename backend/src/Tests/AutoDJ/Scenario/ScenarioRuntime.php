@@ -12,14 +12,14 @@ final class ScenarioRuntime
      * @param array<string, PlaylistRuntimeState> $playlists Keyed by playlist ref
      * @param array<string, PlaylistMediaRuntimeState> $playlistMedia Keyed by "<playlistRef>:<mediaRef>"
      * @param array<string, GroupMemberRuntimeState> $groupMembers Keyed by "<containerRef>:<memberRef>"
-     * @param string[] $cuedPlaylists Playlist refs whose queue currently has cued media
+     * @param CuedMediaEntry[] $cuedMedia Unplayed queue entries in cue order, oldest first
      * @param QueueHistoryEntry[] $queueHistory Recently played entries, in fixture order
      */
     public function __construct(
         public readonly array $playlists,
         public readonly array $playlistMedia,
         public readonly array $groupMembers,
-        public readonly array $cuedPlaylists,
+        public readonly array $cuedMedia,
         public readonly array $queueHistory,
     ) {
     }
@@ -44,9 +44,9 @@ final class ScenarioRuntime
                     => GroupMemberRuntimeState::fromArray(Types::array($item)),
                 Types::array($data['group_members'] ?? [])
             ),
-            cuedPlaylists: array_map(
-                static fn(mixed $ref): string => Types::string($ref),
-                array_values(Types::array($data['cued_playlists'] ?? []))
+            cuedMedia: array_map(
+                static fn(mixed $item): CuedMediaEntry => CuedMediaEntry::fromArray(Types::array($item)),
+                array_values(Types::array($data['cued_media'] ?? []))
             ),
             queueHistory: array_map(
                 static fn(mixed $item): QueueHistoryEntry => QueueHistoryEntry::fromArray(Types::array($item)),

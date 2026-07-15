@@ -15,7 +15,8 @@ final readonly class InMemoryAutoDjHarness
     public function __construct(
         public InMemoryEntityStore $entities,
         public Scheduler $scheduler,
-        private QueueBuilder $queueBuilder
+        private QueueBuilder $queueBuilder,
+        private InMemoryAutoDjDataProxy $dataProxy
     ) {
     }
 
@@ -37,6 +38,12 @@ final readonly class InMemoryAutoDjHarness
             $this->queueBuilder->calculateNextSong($event);
         }
 
-        return $event->getNextSongs();
+        $nextSongs = $event->getNextSongs();
+
+        foreach ($nextSongs as $stationQueueEntry) {
+            $this->dataProxy->recordBuiltEntry($stationQueueEntry);
+        }
+
+        return $nextSongs;
     }
 }

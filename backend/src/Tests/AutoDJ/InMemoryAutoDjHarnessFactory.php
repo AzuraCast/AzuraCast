@@ -67,7 +67,12 @@ final class InMemoryAutoDjHarnessFactory
         $queueBuilder->setEntityManager($entityManager);
         $queueBuilder->setLogger($logger);
 
-        return new InMemoryAutoDjHarness($entities, $scheduler, $queueBuilder);
+        return new InMemoryAutoDjHarness(
+            $entities,
+            $scheduler,
+            $queueBuilder,
+            $dataProxy
+        );
     }
 
     private function fakeEntityManager(InMemoryAutoDjDataProxy $dataProxy): ReloadableEntityManagerInterface

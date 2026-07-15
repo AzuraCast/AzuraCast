@@ -12,7 +12,6 @@ use App\Tests\AutoDJ\Scenario\ScenarioCase;
 use Carbon\CarbonImmutable;
 use Codeception\Attribute\DataProvider;
 use Codeception\Test\Unit;
-use Dom\Text;
 
 /**
  * @phpstan-import-type PlaylistConfigurationDump from PlaylistConfigurationSchema

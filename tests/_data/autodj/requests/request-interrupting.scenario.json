@@ -1,0 +1,36 @@
+{
+  "description": "Requests are never used to cue an interrupting build: an interrupting build ignores the pending request and only the 'interrupt' playlist is considered, while the following normal build queues the request.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "interrupting-build-ignores-request",
+      "now": "2018-01-15T12:30:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "interrupting": true,
+          "playlist_ref": "breaking",
+          "media_ref": "mIntr",
+          "from_request": false
+        },
+        {
+          "mode": "exact",
+          "interrupting": false,
+          "media_ref": "mReq",
+          "from_request": true
+        }
+      ]
+    }
+  ]
+}

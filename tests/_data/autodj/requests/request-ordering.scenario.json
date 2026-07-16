@@ -1,0 +1,48 @@
+{
+  "description": "Playable requests are consumed in repository order: skip_delay requests first, then oldest id (FIFO). mB (skip_delay) plays before the two earlier-id non-skip requests mA and mC, which then follow in id order.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "skip-delay-first-then-fifo",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mA",
+            "skip_delay": false,
+            "timestamp": "2018-01-15T11:50:00+00:00"
+          },
+          {
+            "media_ref": "mB",
+            "skip_delay": true
+          },
+          {
+            "media_ref": "mC",
+            "skip_delay": false,
+            "timestamp": "2018-01-15T11:50:00+00:00"
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "media_ref": "mB",
+          "from_request": true
+        },
+        {
+          "mode": "exact",
+          "media_ref": "mA",
+          "from_request": true
+        },
+        {
+          "mode": "exact",
+          "media_ref": "mC",
+          "from_request": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "description": "A request is only eligible once its delay has elapsed: with request_delay 0 the request placed exactly at 'now' is not yet playable (rotation plays), but becomes playable one minute later.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "not-playable-until-delay-elapses",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": false,
+            "timestamp": "2018-01-15T12:00:00+00:00"
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "rot",
+          "media_ref": "mRot",
+          "from_request": false
+        },
+        {
+          "now": "2018-01-15T12:01:00+00:00",
+          "mode": "exact",
+          "media_ref": "mReq",
+          "from_request": true
+        }
+      ]
+    }
+  ]
+}

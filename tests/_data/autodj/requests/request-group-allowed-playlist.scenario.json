@@ -1,0 +1,48 @@
+{
+  "description": "A scheduled, active root group member with allowed_requests=playlist only permits requests for media within that member's subtree: a request for an in-subtree track is queued, while a request for an out-of-subtree track is blocked and the group plays its own track.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "in-subtree-request-allowed",
+      "now": "2018-01-15T12:30:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mIn",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "media_ref": "mIn",
+          "from_request": true
+        }
+      ]
+    },
+    {
+      "name": "out-of-subtree-request-blocked",
+      "now": "2018-01-15T12:30:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mOut",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "a",
+          "media_ref": "mIn",
+          "from_request": false
+        }
+      ]
+    }
+  ]
+}

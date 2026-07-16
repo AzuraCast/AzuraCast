@@ -22,6 +22,7 @@ final class ExpectQueue
         public readonly ?string $mediaRef,
         public readonly array $mediaAnyOf,
         public readonly bool $distinct,
+        public readonly ?bool $fromRequest,
     ) {
     }
 
@@ -42,6 +43,9 @@ final class ExpectQueue
                 Types::array($data['media_any_of'] ?? [])
             ),
             distinct: Types::bool($data['distinct'] ?? false),
+            fromRequest: array_key_exists('from_request', $data)
+                ? Types::bool($data['from_request'])
+                : null,
         );
     }
 }

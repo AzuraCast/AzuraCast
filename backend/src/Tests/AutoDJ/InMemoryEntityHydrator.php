@@ -17,10 +17,13 @@ use App\Entity\StationPlaylist;
 use App\Entity\StationPlaylistFolder;
 use App\Entity\StationPlaylistGroup;
 use App\Entity\StationPlaylistMedia;
+use App\Entity\StationRequest;
 use App\Entity\StationSchedule;
 use App\Entity\StorageLocation;
 use App\Tests\AutoDJ\Scenario\ScenarioRuntime;
+use App\Utilities\Time;
 use App\Utilities\Types;
+use Carbon\CarbonImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use ReflectionProperty;
 
@@ -41,6 +44,7 @@ final class InMemoryEntityHydrator
     private int $folderIdSeq = 1;
     private int $scheduleIdSeq = 1;
     private int $groupIdSeq = 1;
+    private int $requestIdSeq = 1;
 
     /**
      * @param array<string, mixed> $dump
@@ -56,6 +60,9 @@ final class InMemoryEntityHydrator
         $station->requests_only_via_playlists = Types::bool(
             $stationData['requests_only_via_playlists'] ?? $station->requests_only_via_playlists
         );
+        $station->request_delay = Types::intOrNull($stationData['request_delay'] ?? null) ?? $station->request_delay;
+        $station->request_threshold = Types::intOrNull($stationData['request_threshold'] ?? null)
+            ?? $station->request_threshold;
 
         $storageLocation = new StorageLocation(StorageLocationTypes::StationMedia, StorageLocationAdapters::Local);
         self::setId($storageLocation, 1);
@@ -96,6 +103,8 @@ final class InMemoryEntityHydrator
             spgByRefPair: $spgByRefPair
         );
 
+        $requests = $this->hydrateRequests($station, $runtime, $mediaByRef);
+
         return new InMemoryEntityStore(
             $station,
             $playlistsByRef,
@@ -103,7 +112,8 @@ final class InMemoryEntityHydrator
             $mediaById,
             $spmById,
             $refByPlaylistId,
-            $runtime
+            $runtime,
+            $requests
         );
     }
 
@@ -389,6 +399,56 @@ final class InMemoryEntityHydrator
         $playlist->remote_buffer = Types::int($config['remote_buffer'] ?? $playlist->remote_buffer);
 
         return $playlist;
+    }
+
+    /**
+     * @param array<string, StationMedia> $mediaByRef
+     *
+     * @return StationRequest[] In id order
+     */
+    private function hydrateRequests(
+        Station $station,
+        ScenarioRuntime $runtime,
+        array $mediaByRef
+    ): array {
+        $requests = [];
+        foreach ($runtime->requests as $entry) {
+            if (!isset($mediaByRef[$entry->mediaRef])) {
+                continue;
+            }
+
+            if ($entry->timestamp !== null) {
+                $restore = CarbonImmutable::getTestNow();
+
+                // StationRequest timestamp is readonly and set from "now" in the constructor
+                CarbonImmutable::setTestNow(CarbonImmutable::createFromTimestamp($entry->timestamp, 'UTC'));
+                $request = new StationRequest(
+                    station: $station,
+                    track: $mediaByRef[$entry->mediaRef],
+                    ip: '127.0.0.1',
+                    skipDelay: $entry->skipDelay
+                );
+
+                CarbonImmutable::setTestNow($restore);
+            } else {
+                $request = new StationRequest(
+                    station: $station,
+                    track: $mediaByRef[$entry->mediaRef],
+                    ip: '127.0.0.1',
+                    skipDelay: $entry->skipDelay
+                );
+            }
+
+            self::setId($request, $this->requestIdSeq++);
+
+            if ($entry->played) {
+                $request->played_at = Time::nowUtc();
+            }
+
+            $requests[] = $request;
+        }
+
+        return $requests;
     }
 
     /**

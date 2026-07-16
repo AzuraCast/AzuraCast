@@ -7,11 +7,14 @@ namespace App\Tests\AutoDJ;
 use App\Entity\Api\StationPlaylistQueue;
 use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Enums\PlaylistSources;
+use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Entity\StationPlaylistGroup;
 use App\Entity\StationPlaylistMedia;
 use App\Entity\StationQueue;
+use App\Entity\StationRequest;
+use App\Radio\AutoDJ\DuplicatePrevention;
 use App\Utilities\Time;
 use Carbon\CarbonImmutable;
 use DateTimeImmutable;
@@ -45,7 +48,8 @@ final class InMemoryAutoDjDataProxy
     private array $cuedEntries = [];
 
     public function __construct(
-        private readonly InMemoryEntityStore $entities
+        private readonly InMemoryEntityStore $entities,
+        private readonly DuplicatePrevention $duplicatePrevention
     ) {
         foreach ($entities->runtime->cuedMedia as $cuedMediaEntry) {
             $media = $entities->mediaByRef[$cuedMediaEntry->mediaRef] ?? null;
@@ -390,6 +394,34 @@ final class InMemoryAutoDjDataProxy
         return false;
     }
 
+    // StationRequestRepository
+
+    public function getNextPlayableRequest(Station $station, ?DateTimeImmutable $now = null): ?StationRequest
+    {
+        $now ??= Time::nowUtc();
+
+        $unplayed = array_filter(
+            $this->entities->requests,
+            static fn(StationRequest $request): bool => $request->played_at === null
+        );
+
+        usort(
+            $unplayed,
+            static fn(StationRequest $a, StationRequest $b): int
+                => [$b->skip_delay, $a->id] <=> [$a->skip_delay, $b->id]
+        );
+
+        return array_find(
+            $unplayed,
+            fn(StationRequest $request): bool => (
+                $request->shouldPlayNow($now)
+                && !$this->hasRequestTrackPlayedRecently($request->track, $now)
+            )
+        );
+    }
+
+    // Internal helpers
+
     private function isCued(StationPlaylist $playlist): bool
     {
         $ref = $this->entities->refForPlaylist($playlist);
@@ -446,5 +478,38 @@ final class InMemoryAutoDjDataProxy
         usort($entries, static fn(array $a, array $b): int => $b['timestamp_played'] <=> $a['timestamp_played']);
 
         return $this->historyCache = $entries;
+    }
+
+    private function hasRequestTrackPlayedRecently(StationMedia $media, DateTimeImmutable $now): bool
+    {
+        $thresholdMins = $this->entities->station->request_threshold ?? 15;
+        if ($thresholdMins === 0) {
+            return false;
+        }
+
+        $threshold = CarbonImmutable::instance($now)->subMinutes($thresholdMins)->getTimestamp();
+
+        $recentTracks = [];
+        foreach ($this->history() as $entry) {
+            if ($entry['timestamp_played'] < $threshold) {
+                continue;
+            }
+
+            $recentTracks[] = [
+                'song_id' => $entry['song_id'],
+                'text' => $entry['text'],
+                'artist' => $entry['artist'],
+                'title' => $entry['title'],
+                'timestamp_played' => $entry['timestamp_played'],
+            ];
+        }
+
+        $eligibleTrack = new StationPlaylistQueue();
+        $eligibleTrack->media_id = $media->id;
+        $eligibleTrack->song_id = $media->song_id;
+        $eligibleTrack->title = $media->title ?? '';
+        $eligibleTrack->artist = $media->artist ?? '';
+
+        return $this->duplicatePrevention->getDistinctTrack([$eligibleTrack], $recentTracks) === null;
     }
 }

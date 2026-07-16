@@ -14,6 +14,7 @@ final class ScenarioRuntime
      * @param array<string, GroupMemberRuntimeState> $groupMembers Keyed by "<containerRef>:<memberRef>"
      * @param CuedMediaEntry[] $cuedMedia Unplayed queue entries in cue order, oldest first
      * @param QueueHistoryEntry[] $queueHistory Recently played entries, in fixture order
+     * @param RequestEntry[] $requests Pending/played song requests, in fixture order
      */
     public function __construct(
         public readonly array $playlists,
@@ -21,6 +22,7 @@ final class ScenarioRuntime
         public readonly array $groupMembers,
         public readonly array $cuedMedia,
         public readonly array $queueHistory,
+        public readonly array $requests,
     ) {
     }
 
@@ -51,6 +53,10 @@ final class ScenarioRuntime
             queueHistory: array_map(
                 static fn(mixed $item): QueueHistoryEntry => QueueHistoryEntry::fromArray(Types::array($item)),
                 array_values(Types::array($data['queue_history'] ?? []))
+            ),
+            requests: array_map(
+                static fn(mixed $item): RequestEntry => RequestEntry::fromArray(Types::array($item)),
+                array_values(Types::array($data['requests'] ?? []))
             ),
         );
     }

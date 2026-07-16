@@ -8,6 +8,7 @@ use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Entity\StationPlaylistMedia;
+use App\Entity\StationRequest;
 use App\Tests\AutoDJ\Scenario\ScenarioRuntime;
 use InvalidArgumentException;
 
@@ -23,6 +24,7 @@ final readonly class InMemoryEntityStore
      * @param array<int, StationMedia> $mediaById
      * @param array<int, StationPlaylistMedia> $spmById
      * @param array<int, string> $refByPlaylistId
+     * @param StationRequest[] $requests In id order
      */
     public function __construct(
         public Station $station,
@@ -31,7 +33,8 @@ final readonly class InMemoryEntityStore
         public array $mediaById,
         public array $spmById,
         public array $refByPlaylistId,
-        public ScenarioRuntime $runtime
+        public ScenarioRuntime $runtime,
+        public array $requests
     ) {
     }
 

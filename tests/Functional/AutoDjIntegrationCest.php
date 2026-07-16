@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Functional;
 
 use App\Entity\Song;
+use App\Entity\SongHistory;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Entity\StationPlaylistGroup;
 use App\Entity\StationPlaylistMedia;
 use App\Entity\StationQueue;
+use App\Entity\StationRequest;
 use App\Event\Radio\BuildQueue;
 use App\Radio\AutoDJ\QueueBuilder;
 use App\Radio\AutoDJ\Scheduler;
@@ -221,6 +223,18 @@ final class AutoDjIntegrationCest extends CestAbstract
         $I->assertNotEmpty($result, "[{$label}] Expected a track to be queued.");
         $first = $result[0];
 
+        if ($expect->fromRequest === true) {
+            $I->assertNotNull(
+                $first->request,
+                "[{$label}] Expected the queued track to originate from a request."
+            );
+        } elseif ($expect->fromRequest === false) {
+            $I->assertNull(
+                $first->request,
+                "[{$label}] Expected the queued track to not originate from a request."
+            );
+        }
+
         if ($expect->mode === ExpectQueueMode::Exact) {
             if ($expect->playlistRef !== null) {
                 $I->assertSame(
@@ -316,6 +330,10 @@ final class AutoDjIntegrationCest extends CestAbstract
             $stationData['requests_only_via_playlists'] ?? $station->requests_only_via_playlists
         );
 
+        $station->request_delay = Types::intOrNull($stationData['request_delay'] ?? null) ?? $station->request_delay;
+        $station->request_threshold = Types::intOrNull($stationData['request_threshold'] ?? null)
+            ?? $station->request_threshold;
+
         $this->em->persist($station);
     }
 
@@ -398,6 +416,64 @@ final class AutoDjIntegrationCest extends CestAbstract
 
         $this->seedQueueHistory($summary, $runtime);
         $this->seedCuedMedia($summary, $runtime);
+        $this->seedRequests($summary, $runtime);
+    }
+
+    private function seedQueueHistory(ImportSummary $summary, ScenarioRuntime $runtime): void
+    {
+        if ($runtime->queueHistory === []) {
+            return;
+        }
+
+        $station = $this->getTestStation();
+
+        $entries = $runtime->queueHistory;
+        usort(
+            $entries,
+            static fn(QueueHistoryEntry $a, QueueHistoryEntry $b): int
+                => $a->timestampPlayed <=> $b->timestampPlayed
+        );
+
+        foreach ($entries as $entry) {
+            $media = $summary->mediaByRef[$entry->mediaRef ?? ''] ?? null;
+
+            $song = Song::createFromArray([
+                'text' => $entry->songId ?? '',
+                'title' => $entry->title,
+                'artist' => $entry->artist,
+            ]);
+
+            $playedAt = new DateTimeImmutable("@{$entry->timestampPlayed}");
+
+            $stationQueueEntry = ($media !== null)
+                ? StationQueue::fromMedia($station, $media)
+                : new StationQueue($station, $song);
+
+            if (isset($summary->playlistsByRef[$entry->playlistRef ?? ''])) {
+                $stationQueueEntry->playlist = $summary->playlistsByRef[$entry->playlistRef ?? ''];
+            }
+
+            $stationQueueEntry->is_played = true;
+            $stationQueueEntry->timestamp_played = $playedAt;
+            $stationQueueEntry->is_visible = $entry->isVisible;
+
+            $this->em->persist($stationQueueEntry);
+
+            // SongHistory timestamp_start is readonly and set from "now" in the constructor
+            CarbonImmutable::setTestNow(CarbonImmutable::createFromTimestamp($entry->timestampPlayed, 'UTC'));
+            $songHistory = new SongHistory($station, $media ?? $song);
+            CarbonImmutable::setTestNow();
+
+            if ($media !== null) {
+                $songHistory->media = $media;
+            }
+
+            $songHistory->is_visible = $entry->isVisible;
+
+            $this->em->persist($songHistory);
+        }
+
+        $this->em->flush();
     }
 
     private function seedCuedMedia(ImportSummary $summary, ScenarioRuntime $runtime): void
@@ -425,44 +501,45 @@ final class AutoDjIntegrationCest extends CestAbstract
         $this->em->flush();
     }
 
-    private function seedQueueHistory(ImportSummary $summary, ScenarioRuntime $runtime): void
+    private function seedRequests(ImportSummary $summary, ScenarioRuntime $runtime): void
     {
-        if ($runtime->queueHistory === []) {
+        if ($runtime->requests === []) {
             return;
         }
 
         $station = $this->getTestStation();
 
-        $entries = $runtime->queueHistory;
-        usort(
-            $entries,
-            static fn(QueueHistoryEntry $a, QueueHistoryEntry $b): int
-                => $a->timestampPlayed <=> $b->timestampPlayed
-        );
-
-        foreach ($entries as $entry) {
-            $media = $summary->mediaByRef[$entry->mediaRef ?? ''] ?? null;
-
-            $stationQueueEntry = ($media !== null)
-                ? StationQueue::fromMedia($station, $media)
-                : new StationQueue(
-                    $station,
-                    Song::createFromArray([
-                        'text' => $entry->songId ?? '',
-                        'title' => $entry->title,
-                        'artist' => $entry->artist,
-                    ])
-                );
-
-            if (isset($summary->playlistsByRef[$entry->playlistRef ?? ''])) {
-                $stationQueueEntry->playlist = $summary->playlistsByRef[$entry->playlistRef ?? ''];
+        foreach ($runtime->requests as $entry) {
+            $media = $summary->mediaByRef[$entry->mediaRef] ?? null;
+            if ($media === null) {
+                continue;
             }
 
-            $stationQueueEntry->is_played = true;
-            $stationQueueEntry->timestamp_played = new DateTimeImmutable("@{$entry->timestampPlayed}");
-            $stationQueueEntry->is_visible = $entry->isVisible;
+            // StationRequest timestamp is readonly and set from "now" in the constructor
+            if ($entry->timestamp !== null) {
+                CarbonImmutable::setTestNow(CarbonImmutable::createFromTimestamp($entry->timestamp, 'UTC'));
+                $request = new StationRequest(
+                    station: $station,
+                    track: $media,
+                    ip: '127.0.0.1',
+                    skipDelay: $entry->skipDelay
+                );
 
-            $this->em->persist($stationQueueEntry);
+                CarbonImmutable::setTestNow();
+            } else {
+                $request = new StationRequest(
+                    station: $station,
+                    track: $media,
+                    ip: '127.0.0.1',
+                    skipDelay: $entry->skipDelay
+                );
+            }
+
+            if ($entry->played) {
+                $request->played_at = new DateTimeImmutable();
+            }
+
+            $this->em->persist($request);
         }
 
         $this->em->flush();

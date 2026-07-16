@@ -12,6 +12,7 @@ use App\Entity\Repository\StationRequestRepository;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
+use App\Entity\StationRequest;
 use App\Radio\AutoDJ\DuplicatePrevention;
 use App\Radio\AutoDJ\QueueBuilder;
 use App\Radio\AutoDJ\Scheduler;
@@ -34,26 +35,27 @@ final class InMemoryAutoDjHarnessFactory
     public function create(array $dump, ScenarioRuntime $runtime): InMemoryAutoDjHarness
     {
         $entities = (new InMemoryEntityHydrator())->hydrate($dump, $runtime);
-        $dataProxy = new InMemoryAutoDjDataProxy($entities);
-
-        $spmRepo = $this->fakeSpmRepo($dataProxy);
-        $spRepo = $this->fakeSpRepo($dataProxy);
-        $queueRepo = $this->fakeQueueRepo($dataProxy);
-        $requestRepo = $this->fakeRequestRepo();
 
         $logHandler = new TestHandler();
 
         $logger = new Logger('test_autodj');
         $logger->pushHandler($logHandler);
 
+        $duplicatePrevention = new DuplicatePrevention();
+        $duplicatePrevention->setLogger($logger);
+
+        $dataProxy = new InMemoryAutoDjDataProxy($entities, $duplicatePrevention);
+
+        $spmRepo = $this->fakeSpmRepo($dataProxy);
+        $spRepo = $this->fakeSpRepo($dataProxy);
+        $queueRepo = $this->fakeQueueRepo($dataProxy);
+        $requestRepo = $this->fakeRequestRepo($dataProxy);
+
         $entityManager = $this->fakeEntityManager($dataProxy);
 
         $scheduler = new Scheduler($spRepo, $spmRepo, $queueRepo);
         $scheduler->setEntityManager($entityManager);
         $scheduler->setLogger($logger);
-
-        $duplicatePrevention = new DuplicatePrevention();
-        $duplicatePrevention->setLogger($logger);
 
         $cache = Mockery::mock(CacheInterface::class);
         $cache->allows('get')->andReturnNull();
@@ -181,10 +183,16 @@ final class InMemoryAutoDjHarnessFactory
         return $repo;
     }
 
-    private function fakeRequestRepo(): StationRequestRepository
+    private function fakeRequestRepo(InMemoryAutoDjDataProxy $dataProxy): StationRequestRepository
     {
         $repo = Mockery::mock(StationRequestRepository::class);
-        $repo->allows('getNextPlayableRequest')->andReturnNull();
+
+        $repo->allows('getNextPlayableRequest')->andReturnUsing(
+            static fn(
+                Station $station,
+                ?DateTimeImmutable $now = null
+            ): ?StationRequest => $dataProxy->getNextPlayableRequest($station, $now)
+        );
 
         return $repo;
     }

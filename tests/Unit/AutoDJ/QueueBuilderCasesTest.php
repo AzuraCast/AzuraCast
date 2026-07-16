@@ -111,6 +111,18 @@ final class QueueBuilderCasesTest extends Unit
 
         $first = $nextSongs[0];
 
+        if ($expect->fromRequest === true) {
+            self::assertNotNull(
+                $first->request,
+                "[{$label}] Expected the queued track to originate from a request.{$logTrace}"
+            );
+        } elseif ($expect->fromRequest === false) {
+            self::assertNull(
+                $first->request,
+                "[{$label}] Expected the queued track to NOT originate from a request.{$logTrace}"
+            );
+        }
+
         if ($expect->mode === ExpectQueueMode::Exact) {
             if ($expect->playlistRef !== null) {
                 self::assertSame(

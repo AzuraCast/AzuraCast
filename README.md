@@ -25,7 +25,7 @@ You can learn more about AzuraCast via our [Documentation](https://www.azuracast
 - [System Requirements](https://www.azuracast.com/docs/getting-started/requirements/)
 - [Installation](https://www.azuracast.com/docs/getting-started/installation/)
 
-AzuraCast is **100% human-coded.** We do not accept pull requests from AI assistants, nor do we allow AI to write our own code. Our application is the product of many years of hard work, and we want our users to have full trust and confidence in our code.
+AzuraCast is built and maintained by passionate human beings, and 100% of our code is reviewed and approved by humans. See [our policy on generative AI](https://github.com/AzuraCast/.github/blob/main/CONTRIBUTING.md#our-policy-on-generative-ai) for more details.
 
 ## Live Demo
 

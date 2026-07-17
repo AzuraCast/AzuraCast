@@ -11,10 +11,7 @@
 
 [![Built with Depot](https://depot.dev/badges/built-with-depot.svg)](https://depot.dev/?utm_source=AzuraCast)
 
-**AzuraCast** is a self-hosted, all-in-one web radio management suite. Using its easy installer and powerful but
-intuitive web interface, you can start up a fully working web radio station in a few quick minutes. AzuraCast works for
-web radio stations of all types and sizes, and is built to run on even the most affordable VPS web hosts. AzuraCast is
-currently beta software.
+AzuraCast is built and maintained by passionate human beings, and 100% of our code is reviewed and approved by humans. See [our policy on generative AI](https://github.com/AzuraCast/.github/blob/main/CONTRIBUTING.md#our-policy-on-generative-ai) for more details.
 
 ![](https://www.azuracast.com/img/ScreenshotTour.gif)
 
@@ -25,7 +22,7 @@ You can learn more about AzuraCast via our [Documentation](https://www.azuracast
 - [System Requirements](https://www.azuracast.com/docs/getting-started/requirements/)
 - [Installation](https://www.azuracast.com/docs/getting-started/installation/)
 
-AzuraCast is **100% human-coded.** We do not accept pull requests from AI assistants, nor do we allow AI to write our own code. Our application is the product of many years of hard work, and we want our users to have full trust and confidence in our code.
+AzuraCast is built and maintained by passionate human beings, and 100% of our code is reviewed and approved by humans. We do not allow AI to replace our role as software designers or developers, nor do we permit "vibe-coded" contributions. See [our policy on generative AI](https://github.com/AzuraCast/.github/blob/main/CONTRIBUTING.md#our-policy-on-generative-ai) for more details.
 
 ## Live Demo
 

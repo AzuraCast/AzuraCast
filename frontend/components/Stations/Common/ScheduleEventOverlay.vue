@@ -175,7 +175,13 @@
 
 <script setup lang="ts">
 import { createPopper, Instance } from "@popperjs/core";
-import { computed, nextTick, onBeforeUnmount, useTemplateRef, watch } from "vue";
+import {
+    computed,
+    nextTick,
+    onBeforeUnmount,
+    useTemplateRef,
+    watch,
+} from "vue";
 import PlaylistSourceIcon from "~/components/Stations/Common/PlaylistSourceIcon.vue";
 import {
     PlaylistOrders,
@@ -326,7 +332,12 @@ watch(
             popper = createPopper(referenceElement, $overlay.value, {
                 placement: "right",
                 modifiers: [
-                    { name: "flip", options: { fallbackPlacements: ["top", "left", "bottom"] } },
+                    {
+                        name: "flip",
+                        options: {
+                            fallbackPlacements: ["top", "left", "bottom"],
+                        },
+                    },
                     { name: "preventOverflow", options: { padding: 8 } },
                 ],
             });

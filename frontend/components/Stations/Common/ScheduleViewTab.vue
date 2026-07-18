@@ -72,7 +72,12 @@
 </template>
 
 <script setup lang="ts">
-import { Calendar, EventApi, EventClickArg, EventHoveringArg } from "@fullcalendar/core";
+import {
+    Calendar,
+    EventApi,
+    EventClickArg,
+    EventHoveringArg,
+} from "@fullcalendar/core";
 import { EventImpl } from "@fullcalendar/core/internal";
 import { toRefs, useTimeoutFn } from "@vueuse/core";
 import { ref, useTemplateRef } from "vue";

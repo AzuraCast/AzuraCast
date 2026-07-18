@@ -935,7 +935,7 @@ const doUpdateAllowedRequests = (index: number, value: string | null): void => {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .breadcrumb-item + .breadcrumb-item::before {
     float: none;
 }

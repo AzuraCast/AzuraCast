@@ -6,6 +6,7 @@ namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
+use App\Entity\Api\StationScheduleStreamerEvent;
 use App\Entity\Repository\StationScheduleRepository;
 use App\Entity\Repository\StationStreamerRepository;
 use App\Entity\Station;
@@ -213,6 +214,25 @@ final class StreamersController extends AbstractScheduledEntityController
         return $record;
     }
 
+    #[OA\Get(
+        path: '/station/{station_id}/streamers/schedule',
+        operationId: 'getStationStreamersSchedule',
+        summary: 'Return calendar events for the station\'s streamer/DJ schedule.',
+        tags: [OpenApi::TAG_STATIONS_STREAMERS],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: StationScheduleStreamerEvent::class)
+                )
+            ),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )]
     public function scheduleAction(
         ServerRequest $request,
         Response $response
@@ -239,20 +259,41 @@ final class StreamersController extends AbstractScheduledEntityController
                 DateRange $dateRange
             ) use (
                 $request
-            ) {
+            ): StationScheduleStreamerEvent {
                 /** @var StationStreamer $streamer */
                 $streamer = $scheduleItem->streamer;
 
-                return [
-                    'id' => $streamer->id,
-                    'title' => $streamer->display_name,
-                    'start' => $dateRange->start->toIso8601String(),
-                    'end' => $dateRange->end->toIso8601String(),
-                    'edit_url' => $request->getRouter()->named(
-                        'api:stations:streamer',
-                        ['station_id' => $station->id, 'id' => $streamer->id]
-                    ),
-                ];
+                $hasCustomArt = (0 !== $streamer->art_updated_at);
+
+                $event = new StationScheduleStreamerEvent();
+                $event->id = $streamer->id;
+                $event->title = $streamer->display_name;
+                $event->start = $dateRange->start->toIso8601String();
+                $event->end = $dateRange->end->toIso8601String();
+                $event->streamer_username = $streamer->streamer_username;
+                $event->comments = $streamer->comments;
+                $event->has_custom_art = $hasCustomArt;
+
+                $event->art = $hasCustomArt
+                    ? $request->getRouter()->named(
+                        'api:stations:streamer:art',
+                        [
+                            'station_id' => $station->id,
+                            'id' => $streamer->id,
+                            'timestamp' => $streamer->art_updated_at,
+                        ]
+                    )
+                    : null;
+
+                $event->edit_url = $request->getRouter()->named(
+                    'api:stations:streamer',
+                    [
+                        'station_id' => $station->id,
+                        'id' => $streamer->id,
+                    ]
+                );
+
+                return $event;
             }
         );
     }

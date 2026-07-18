@@ -395,10 +395,10 @@ import { useApiRouter } from "~/functions/useApiRouter.ts";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import useHasEditModal from "~/functions/useHasEditModal";
 import { useMayNeedRestart } from "~/functions/useMayNeedRestart";
+import { useFormatLength } from "~/functions/useFormatLength.ts";
 import { useStationData } from "~/functions/useStationQuery.ts";
 import { useAxios } from "~/vendor/axios";
 import { useTranslate } from "~/vendor/gettext";
-import { useLuxon } from "~/vendor/luxon";
 import IconBiContract from "~icons/bi/chevron-contract";
 import IconBiExpand from "~icons/bi/chevron-expand";
 import IconBiCloudDownload from "~icons/bi/cloud-download";
@@ -435,16 +435,7 @@ const listItemProvider = useApiItemProvider(
     queryKeyWithStation([QueryKeys.StationPlaylists]),
 );
 
-const { Duration } = useLuxon();
-
-const formatLength = (length: number) => {
-    if (0 === length) {
-        return $gettext("None");
-    }
-
-    const duration = Duration.fromMillis(length * 1000);
-    return duration.rescale().toHuman();
-};
+const formatLength = useFormatLength();
 
 const $scheduleTab = useTemplateRef("$scheduleTab");
 

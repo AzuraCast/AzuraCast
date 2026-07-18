@@ -4023,6 +4023,29 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/playlists/schedule':
+    get:
+      tags:
+        - 'Stations: Playlists'
+      summary: "Return calendar events for the station's playlist schedule."
+      description: 'Controller used to respond to AJAX requests from the playlist "Schedule View".'
+      operationId: getStationPlaylistsSchedule
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_StationSchedulePlaylistEvent'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/podcast/{podcast_id}/episodes':
     get:
       tags:
@@ -6079,6 +6102,28 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/streamers/schedule':
+    get:
+      tags:
+        - 'Stations: Streamers/DJs'
+      summary: "Return calendar events for the station's streamer/DJ schedule."
+      operationId: getStationStreamersSchedule
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_StationScheduleStreamerEvent'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/nowplaying/update':
     post:
       tags:
@@ -7356,7 +7401,6 @@ components:
         - text
       properties:
         value: {}
-        value: {}
         text:
           type: string
         description:
@@ -8368,6 +8412,208 @@ components:
           description: 'Whether the event is currently ongoing.'
           type: boolean
           example: true
+      type: object
+    Api_StationScheduleGroupMember:
+      required:
+        - id
+        - name
+        - source
+        - order
+        - weight
+        - count
+        - consecutive_plays
+        - play_full_cycle
+      properties:
+        id:
+          description: 'The unique identifier of the member playlist.'
+          type: integer
+          example: 1
+        name:
+          description: 'The name of the member playlist.'
+          type: string
+          example: 'Example Playlist'
+        source:
+          $ref: '#/components/schemas/PlaylistSources'
+        order:
+          $ref: '#/components/schemas/PlaylistOrders'
+        weight:
+          description: 'The weighting of this member within the group.'
+          type: integer
+          example: 3
+        count:
+          description: 'The number of songs or member playlists in this member, if applicable.'
+          type: integer
+          example: 25
+          nullable: true
+        consecutive_plays:
+          description: 'The number of consecutive plays configured for this member.'
+          type: integer
+          example: 1
+        play_full_cycle:
+          description: 'Whether the member plays through its full cycle before advancing.'
+          type: boolean
+          example: false
+      type: object
+    Api_StationSchedulePlaylistEvent:
+      required:
+        - id
+        - title
+        - type
+        - start
+        - end
+        - edit_url
+        - source
+        - order
+        - playlist_type
+        - play_per_songs
+        - play_per_minutes
+        - play_per_hour_minute
+        - weight
+        - is_jingle
+        - include_in_on_demand
+        - avoid_duplicates
+        - members
+        - num_songs
+        - total_length
+        - remote_url
+        - remote_type
+      properties:
+        id:
+          description: 'The unique identifier of the playlist.'
+          type: integer
+          example: 1
+        title:
+          description: 'The playlist name representing the event title.'
+          type: string
+          example: 'Example Playlist'
+        type:
+          description: 'The type of this schedule event.'
+          type: string
+          example: playlist
+          enum:
+            - playlist
+        start:
+          description: 'The start time of this schedule event, in ISO 8601 format.'
+          type: string
+          example: '2020-02-19T03:00:00-06:00'
+        end:
+          description: 'The end time of this schedule event, in ISO 8601 format.'
+          type: string
+          example: '2020-02-19T05:00:00-06:00'
+        edit_url:
+          description: 'The API URL used to edit the underlying playlist.'
+          type: string
+          example: /api/station/1/playlist/1
+        source:
+          $ref: '#/components/schemas/PlaylistSources'
+        order:
+          $ref: '#/components/schemas/PlaylistOrders'
+        playlist_type:
+          $ref: '#/components/schemas/PlaylistTypes'
+        play_per_songs:
+          type: integer
+          example: 0
+        play_per_minutes:
+          type: integer
+          example: 0
+        play_per_hour_minute:
+          type: integer
+          example: 0
+        weight:
+          type: integer
+          example: 3
+        is_jingle:
+          type: boolean
+          example: false
+        include_in_on_demand:
+          type: boolean
+          example: false
+        avoid_duplicates:
+          type: boolean
+          example: false
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/Api_StationScheduleGroupMember'
+        num_songs:
+          description: 'The number of songs in the playlist, if it is a song-based playlist.'
+          type: integer
+          example: 25
+          nullable: true
+        total_length:
+          description: 'The total length of the playlist in seconds, if it is a song-based playlist.'
+          type: number
+          format: float
+          example: 3600
+          nullable: true
+        remote_url:
+          description: 'The remote URL, if this is a remote URL playlist.'
+          type: string
+          example: 'https://example.com/stream'
+          nullable: true
+        remote_type:
+          oneOf:
+            -
+              $ref: '#/components/schemas/PlaylistRemoteTypes'
+          nullable: true
+      type: object
+    Api_StationScheduleStreamerEvent:
+      required:
+        - id
+        - title
+        - type
+        - start
+        - end
+        - edit_url
+        - streamer_username
+        - comments
+        - has_custom_art
+        - art
+      properties:
+        id:
+          description: 'The unique identifier of the streamer.'
+          type: integer
+          example: 1
+        title:
+          description: 'The streamer display name representing the event title.'
+          type: string
+          example: 'Example Streamer'
+        type:
+          description: 'The type of this schedule event.'
+          type: string
+          example: streamer
+          enum:
+            - streamer
+        start:
+          description: 'The start time of this schedule event, in ISO 8601 format.'
+          type: string
+          example: '2020-02-19T03:00:00-06:00'
+        end:
+          description: 'The end time of this schedule event, in ISO 8601 format.'
+          type: string
+          example: '2020-02-19T05:00:00-06:00'
+        edit_url:
+          description: 'The API URL used to edit the underlying streamer.'
+          type: string
+          example: /api/station/1/streamer/1
+        streamer_username:
+          description: 'The streamer login username.'
+          type: string
+          example: example_dj
+        comments:
+          description: 'Comments about the streamer.'
+          type: string
+          example: 'Live every weekday evening.'
+          nullable: true
+        has_custom_art:
+          description: 'Whether the streamer has custom artwork.'
+          type: boolean
+          example: true
+        art:
+          description: 'The URL of the streamer artwork, if custom artwork is present.'
+          type: string
+          example: /api/station/1/streamer/1/art/1.jpg
+          nullable: true
       type: object
     Api_StationServiceStatus:
       required:

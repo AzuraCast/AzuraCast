@@ -6,6 +6,8 @@ namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
+use App\Entity\Api\StationScheduleGroupMember;
+use App\Entity\Api\StationSchedulePlaylistEvent;
 use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Enums\PlaylistSources;
 use App\Entity\Enums\PlaylistTypes;
@@ -179,10 +181,26 @@ final class PlaylistsController extends AbstractScheduledEntityController
 
     /**
      * Controller used to respond to AJAX requests from the playlist "Schedule View".
-     *
-     * @param ServerRequest $request
-     * @param Response $response
      */
+    #[OA\Get(
+        path: '/station/{station_id}/playlists/schedule',
+        operationId: 'getStationPlaylistsSchedule',
+        summary: 'Return calendar events for the station\'s playlist schedule.',
+        tags: [OpenApi::TAG_STATIONS_PLAYLISTS],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            new OpenApi\Response\Success(
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: StationSchedulePlaylistEvent::class)
+                )
+            ),
+            new OpenApi\Response\AccessDenied(),
+            new OpenApi\Response\GenericError(),
+        ]
+    )]
     public function scheduleAction(
         ServerRequest $request,
         Response $response
@@ -199,6 +217,8 @@ final class PlaylistsController extends AbstractScheduledEntityController
         )->setParameter('station', $station)
             ->execute();
 
+        $eventCache = [];
+
         return $this->renderEvents(
             $request,
             $response,
@@ -208,23 +228,103 @@ final class PlaylistsController extends AbstractScheduledEntityController
                 StationSchedule $scheduleItem,
                 DateRange $dateRange
             ) use (
-                $request
-            ) {
+                $request,
+                &$eventCache
+            ): StationSchedulePlaylistEvent {
                 /** @var StationPlaylist $playlist */
                 $playlist = $scheduleItem->playlist;
 
-                return [
-                    'id' => $playlist->id,
-                    'title' => $playlist->name,
-                    'start' => $dateRange->start->toIso8601String(),
-                    'end' => $dateRange->end->toIso8601String(),
-                    'edit_url' => $request->getRouter()->named(
-                        'api:stations:playlist',
-                        ['station_id' => $station->id, 'id' => $playlist->id]
-                    ),
-                ];
+                $event = clone ($eventCache[$playlist->id] ??= $this->buildPlaylistScheduleEvent(
+                    $station,
+                    $playlist,
+                    $request
+                ));
+
+                $event->start = $dateRange->start->toIso8601String();
+                $event->end = $dateRange->end->toIso8601String();
+
+                return $event;
             }
         );
+    }
+
+    private function buildPlaylistScheduleEvent(
+        Station $station,
+        StationPlaylist $playlist,
+        ServerRequest $request
+    ): StationSchedulePlaylistEvent {
+        $event = new StationSchedulePlaylistEvent();
+        $event->id = $playlist->id;
+        $event->title = $playlist->name;
+        $event->edit_url = $request->getRouter()->named(
+            'api:stations:playlist',
+            [
+                'station_id' => $station->id,
+                'id' => $playlist->id,
+            ]
+        );
+        $event->source = $playlist->source;
+        $event->order = $playlist->order;
+        $event->playlist_type = $playlist->type;
+        $event->play_per_songs = $playlist->play_per_songs;
+        $event->play_per_minutes = $playlist->play_per_minutes;
+        $event->play_per_hour_minute = $playlist->play_per_hour_minute;
+        $event->weight = $playlist->weight;
+        $event->is_jingle = $playlist->is_jingle;
+        $event->include_in_on_demand = $playlist->include_in_on_demand;
+        $event->avoid_duplicates = $playlist->avoid_duplicates;
+
+        switch ($playlist->source) {
+            case PlaylistSources::Songs:
+                /** @var array{num_songs: int, total_length: ?string} $totals */
+                $totals = $this->em->createQuery(
+                    <<<'DQL'
+                        SELECT count(sm.id) AS num_songs, sum(sm.length) AS total_length
+                        FROM App\Entity\StationMedia sm
+                        JOIN sm.playlists spm
+                        WHERE spm.playlist = :playlist
+                    DQL
+                )->setParameter('playlist', $playlist)
+                    ->getSingleResult(AbstractQuery::HYDRATE_SCALAR);
+
+                $event->num_songs = (int) $totals['num_songs'];
+                $event->total_length = round((float) $totals['total_length']);
+                break;
+
+            case PlaylistSources::Playlists:
+                $members = [];
+                foreach ($playlist->playlists as $groupMember) {
+                    $memberPlaylist = $groupMember->playlist;
+
+                    $member = new StationScheduleGroupMember();
+                    $member->id = $memberPlaylist->id;
+                    $member->name = $memberPlaylist->name;
+                    $member->source = $memberPlaylist->source;
+                    $member->order = $memberPlaylist->order;
+                    $member->weight = $groupMember->weight;
+                    $member->count = match ($memberPlaylist->source) {
+                        PlaylistSources::Songs => $memberPlaylist->media_items->count(),
+                        PlaylistSources::Playlists => $memberPlaylist->playlists->count(),
+                        default => null,
+                    };
+                    $member->consecutive_plays = $groupMember->consecutive_plays;
+                    $member->play_full_cycle = $groupMember->play_full_cycle;
+
+                    $members[] = $member;
+                }
+                $event->members = $members;
+                break;
+
+            case PlaylistSources::RemoteUrl:
+                $event->remote_url = $playlist->remote_url;
+                $event->remote_type = $playlist->remote_type;
+                break;
+
+            default:
+                break;
+        }
+
+        return $event;
     }
 
     /**

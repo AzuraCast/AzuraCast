@@ -1391,6 +1391,162 @@ export interface ApiStationSchedule {
     is_now?: boolean;
 }
 
+export interface ApiStationScheduleGroupMember {
+    /**
+     * The unique identifier of the member playlist.
+     * @example 1
+     */
+    id: number;
+    /**
+     * The name of the member playlist.
+     * @example "Example Playlist"
+     */
+    name: string;
+    source: PlaylistSources;
+    order: PlaylistOrders;
+    /**
+     * The weighting of this member within the group.
+     * @example 3
+     */
+    weight: number;
+    /**
+     * The number of songs or member playlists in this member, if applicable.
+     * @example 25
+     */
+    count: number | null;
+    /**
+     * The number of consecutive plays configured for this member.
+     * @example 1
+     */
+    consecutive_plays: number;
+    /**
+     * Whether the member plays through its full cycle before advancing.
+     * @example false
+     */
+    play_full_cycle: boolean;
+}
+
+export interface ApiStationSchedulePlaylistEvent {
+    /**
+     * The unique identifier of the playlist.
+     * @example 1
+     */
+    id: number;
+    /**
+     * The playlist name representing the event title.
+     * @example "Example Playlist"
+     */
+    title: string;
+    /**
+     * The type of this schedule event.
+     * @example "playlist"
+     */
+    type: "playlist";
+    /**
+     * The start time of this schedule event, in ISO 8601 format.
+     * @example "2020-02-19T03:00:00-06:00"
+     */
+    start: string;
+    /**
+     * The end time of this schedule event, in ISO 8601 format.
+     * @example "2020-02-19T05:00:00-06:00"
+     */
+    end: string;
+    /**
+     * The API URL used to edit the underlying playlist.
+     * @example "/api/station/1/playlist/1"
+     */
+    edit_url: string;
+    source: PlaylistSources;
+    order: PlaylistOrders;
+    playlist_type: PlaylistTypes;
+    /** @example 0 */
+    play_per_songs: number;
+    /** @example 0 */
+    play_per_minutes: number;
+    /** @example 0 */
+    play_per_hour_minute: number;
+    /** @example 3 */
+    weight: number;
+    /** @example false */
+    is_jingle: boolean;
+    /** @example false */
+    include_in_on_demand: boolean;
+    /** @example false */
+    avoid_duplicates: boolean;
+    members: ApiStationScheduleGroupMember[];
+    /**
+     * The number of songs in the playlist, if it is a song-based playlist.
+     * @example 25
+     */
+    num_songs: number | null;
+    /**
+     * The total length of the playlist in seconds, if it is a song-based playlist.
+     * @format float
+     * @example 3600
+     */
+    total_length: number | null;
+    /**
+     * The remote URL, if this is a remote URL playlist.
+     * @example "https://example.com/stream"
+     */
+    remote_url: string | null;
+    remote_type: PlaylistRemoteTypes | null;
+}
+
+export interface ApiStationScheduleStreamerEvent {
+    /**
+     * The unique identifier of the streamer.
+     * @example 1
+     */
+    id: number;
+    /**
+     * The streamer display name representing the event title.
+     * @example "Example Streamer"
+     */
+    title: string;
+    /**
+     * The type of this schedule event.
+     * @example "streamer"
+     */
+    type: "streamer";
+    /**
+     * The start time of this schedule event, in ISO 8601 format.
+     * @example "2020-02-19T03:00:00-06:00"
+     */
+    start: string;
+    /**
+     * The end time of this schedule event, in ISO 8601 format.
+     * @example "2020-02-19T05:00:00-06:00"
+     */
+    end: string;
+    /**
+     * The API URL used to edit the underlying streamer.
+     * @example "/api/station/1/streamer/1"
+     */
+    edit_url: string;
+    /**
+     * The streamer login username.
+     * @example "example_dj"
+     */
+    streamer_username: string;
+    /**
+     * Comments about the streamer.
+     * @example "Live every weekday evening."
+     */
+    comments: string | null;
+    /**
+     * Whether the streamer has custom artwork.
+     * @example true
+     */
+    has_custom_art: boolean;
+    /**
+     * The URL of the streamer artwork, if custom artwork is present.
+     * @example "/api/station/1/streamer/1/art/1.jpg"
+     */
+    art: string | null;
+}
+
 export interface ApiStationServiceStatus {
     /** @example true */
     backendRunning: boolean;

@@ -6,7 +6,7 @@
             class="schedule-event-overlay card position-absolute"
             role="tooltip"
             @mouseenter="emit('mouseenter')"
-
+            @mouseleave="emit('mouseleave')"
         >
             <div class="card-header d-flex align-items-center gap-2 p-2 bg-body-tertiary border-bottom border-2">
                 <span

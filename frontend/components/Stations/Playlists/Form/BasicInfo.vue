@@ -1,5 +1,6 @@
 <template>
     <tab
+        id="basic_info"
         :label="$gettext('Basic Info')"
         :item-header-class="tabClass"
     >

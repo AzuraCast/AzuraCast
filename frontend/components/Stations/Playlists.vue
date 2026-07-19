@@ -58,7 +58,6 @@
 
                         <data-table
                             id="station_playlists"
-                            ref="$dataTable"
                             paginated
                             :fields="fields"
                             :provider="listItemProvider"
@@ -186,7 +185,7 @@
                                     v-if="row.item.playlist_groups.length > 0"
                                     type="button"
                                     class="btn btn-link"
-                                    @click="doShowGroups(row.item.name, row.item.playlist_groups)"
+                                    @click="doShowMemberships(row.item.links.self)"
                                 >
                                     {{ row.item.playlist_groups.length }}
                                 </button>
@@ -373,10 +372,6 @@
         ref="$applyToModal"
         @relist="() => relist()"
     />
-    <group-membership-modal
-        ref="$groupMembershipModal"
-        @select="doFilterBySelectedGroup"
-    />
 </template>
 
 <script setup lang="ts">
@@ -393,7 +388,6 @@ import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 import ApplyToModal from "~/components/Stations/Playlists/ApplyToModal.vue";
 import CloneModal from "~/components/Stations/Playlists/CloneModal.vue";
 import EditModal from "~/components/Stations/Playlists/EditModal.vue";
-import GroupMembershipModal from "~/components/Stations/Playlists/GroupMembershipModal.vue";
 import ImportModal from "~/components/Stations/Playlists/ImportModal.vue";
 import ImportPlaylistConfigModal from "~/components/Stations/Playlists/ImportPlaylistConfigModal.vue";
 import PlaylistGroupingTab from "~/components/Stations/Playlists/PlaylistGroupingTab.vue";
@@ -406,7 +400,6 @@ import {
 } from "~/entities/ApiInterfaces.ts";
 import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
 import {
-    PlaylistBreadcrumb,
     StationPlaylistEnriched,
     StationPlaylistGroupMemberEnriched,
 } from "~/entities/StationPlaylist.ts";
@@ -465,20 +458,12 @@ const relist = () => {
     $scheduleTab.value?.refresh();
 };
 
-const $groupMembershipModal = useTemplateRef("$groupMembershipModal");
-
-const doShowGroups = (name: string, groups: PlaylistBreadcrumb[]) => {
-    $groupMembershipModal.value?.open(name, groups);
-};
-
-const $dataTable = useTemplateRef("$dataTable");
-
-const doFilterBySelectedGroup = (name: string) => {
-    $dataTable.value?.setFilter(name);
-};
-
 const $editModal = useTemplateRef("$editModal");
 const { doCreate, doEdit } = useHasEditModal($editModal);
+
+const doShowMemberships = (url: string) => {
+    $editModal.value?.editMemberships(url);
+};
 
 const doCalendarClick = (event: EventImpl) => {
     doEdit(event.extendedProps.edit_url);

@@ -19,7 +19,7 @@
             >
                 <a
                     href="#"
-                    class="group-membership-item d-block w-100 p-3 text-body text-decoration-none"
+                    class="group-membership-item d-block w-100 p-3"
                     @click.prevent="doSelect(group.name)"
                 >
                     {{ group.name }}

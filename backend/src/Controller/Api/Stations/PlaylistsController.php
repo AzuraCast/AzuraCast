@@ -6,8 +6,10 @@ namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
+use App\Entity\Api\StationPlaylistComputedFields;
 use App\Entity\Api\StationScheduleGroupMember;
 use App\Entity\Api\StationSchedulePlaylistEvent;
+use App\Entity\Api\Traits\HasLinks;
 use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Enums\PlaylistSources;
 use App\Entity\Enums\PlaylistTypes;
@@ -38,7 +40,13 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
             new OpenApi\Response\Success(
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: StationPlaylist::class)
+                    items: new OA\Items(
+                        allOf: [
+                            new OA\Schema(ref: StationPlaylist::class),
+                            new OA\Schema(ref: HasLinks::class),
+                            new OA\Schema(ref: StationPlaylistComputedFields::class),
+                        ]
+                    )
                 )
             ),
             new OpenApi\Response\AccessDenied(),
@@ -58,7 +66,13 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         ],
         responses: [
             new OpenApi\Response\Success(
-                content: new OA\JsonContent(ref: StationPlaylist::class)
+                content: new OA\JsonContent(
+                    allOf: [
+                        new OA\Schema(ref: StationPlaylist::class),
+                        new OA\Schema(ref: HasLinks::class),
+                        new OA\Schema(ref: StationPlaylistComputedFields::class),
+                    ]
+                )
             ),
             new OpenApi\Response\AccessDenied(),
             new OpenApi\Response\GenericError(),
@@ -81,7 +95,13 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         ],
         responses: [
             new OpenApi\Response\Success(
-                content: new OA\JsonContent(ref: StationPlaylist::class)
+                content: new OA\JsonContent(
+                    allOf: [
+                        new OA\Schema(ref: StationPlaylist::class),
+                        new OA\Schema(ref: HasLinks::class),
+                        new OA\Schema(ref: StationPlaylistComputedFields::class),
+                    ]
+                )
             ),
             new OpenApi\Response\AccessDenied(),
             new OpenApi\Response\NotFound(),
@@ -351,6 +371,16 @@ final class PlaylistsController extends AbstractScheduledEntityController
 
         $return['num_songs'] = $songTotals['num_songs'];
         $return['total_length'] = round((float)$songTotals['total_length']);
+
+        $parentGroups = [];
+        foreach ($record->playlist_groups as $spg) {
+            $group = $spg->playlist_group;
+            $parentGroups[$group->id] = [
+                'id' => $group->id,
+                'name' => $group->name,
+            ];
+        }
+        $return['playlist_groups'] = array_values($parentGroups);
 
         $isInternal = $request->isInternal();
         $router = $request->getRouter();

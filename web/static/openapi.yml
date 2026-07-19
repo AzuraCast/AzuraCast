@@ -3909,7 +3909,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/StationPlaylist'
+                  allOf: [{ $ref: '#/components/schemas/StationPlaylist' }, { $ref: '#/components/schemas/HasLinks' }, { $ref: '#/components/schemas/Api_StationPlaylistComputedFields' }]
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -3933,7 +3933,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StationPlaylist'
+                allOf:
+                  - { $ref: '#/components/schemas/StationPlaylist' }
+                  - { $ref: '#/components/schemas/HasLinks' }
+                  - { $ref: '#/components/schemas/Api_StationPlaylistComputedFields' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -3961,7 +3964,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StationPlaylist'
+                allOf:
+                  - { $ref: '#/components/schemas/StationPlaylist' }
+                  - { $ref: '#/components/schemas/HasLinks' }
+                  - { $ref: '#/components/schemas/Api_StationPlaylistComputedFields' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -8252,6 +8258,46 @@ components:
           $ref: '#/components/schemas/Api_Song'
         playlist:
           type: string
+      type: object
+    Api_StationPlaylistComputedFields:
+      properties:
+        short_name:
+          description: 'A URL-safe version of the playlist name.'
+          type: string
+          readOnly: true
+        num_songs:
+          description: 'The number of songs in the playlist, if it is a song-based playlist.'
+          type: integer
+          readOnly: true
+          example: 25
+          nullable: true
+        total_length:
+          description: 'The total length of the playlist in seconds, if it is a song-based playlist.'
+          type: number
+          format: float
+          readOnly: true
+          example: 3600
+          nullable: true
+        playlist_groups:
+          description: 'The parent groups that this playlist is a member of.'
+          type: array
+          items:
+            $ref: '#/components/schemas/Api_StationPlaylistParentGroup'
+          readOnly: true
+      type: object
+    Api_StationPlaylistParentGroup:
+      required:
+        - id
+        - name
+      properties:
+        id:
+          description: 'The unique identifier of the parent group.'
+          type: integer
+          example: 1
+        name:
+          description: 'The name of the parent group.'
+          type: string
+          example: 'My Group'
       type: object
     Api_StationPlaylistQueue:
       properties:

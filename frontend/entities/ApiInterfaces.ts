@@ -1262,6 +1262,37 @@ export interface ApiStationOnDemand {
     playlist?: string;
 }
 
+export interface ApiStationPlaylistComputedFields {
+    /** A URL-safe version of the playlist name. */
+    readonly short_name?: string;
+    /**
+     * The number of songs in the playlist, if it is a song-based playlist.
+     * @example 25
+     */
+    readonly num_songs?: number | null;
+    /**
+     * The total length of the playlist in seconds, if it is a song-based playlist.
+     * @format float
+     * @example 3600
+     */
+    readonly total_length?: number | null;
+    /** The parent groups that this playlist is a member of. */
+    readonly playlist_groups?: ApiStationPlaylistParentGroup[];
+}
+
+export interface ApiStationPlaylistParentGroup {
+    /**
+     * The unique identifier of the parent group.
+     * @example 1
+     */
+    id: number;
+    /**
+     * The name of the parent group.
+     * @example "My Group"
+     */
+    name: string;
+}
+
 export interface ApiStationPlaylistQueue {
     /**
      * ID of the StationPlaylistMedia record associating this track with the playlist

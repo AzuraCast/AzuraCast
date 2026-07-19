@@ -58,6 +58,7 @@
 
                         <data-table
                             id="station_playlists"
+                            ref="$dataTable"
                             paginated
                             :fields="fields"
                             :provider="listItemProvider"
@@ -176,6 +177,19 @@
                                 <template v-else-if="row.item.source === 'playlists'">
                                     {{ row.item.playlists.length }}
                                 </template>
+                                <template v-else>
+                                    &nbsp;
+                                </template>
+                            </template>
+                            <template #cell(groups)="row">
+                                <button
+                                    v-if="row.item.playlist_groups.length > 0"
+                                    type="button"
+                                    class="btn btn-link"
+                                    @click="doShowGroups(row.item.name, row.item.playlist_groups)"
+                                >
+                                    {{ row.item.playlist_groups.length }}
+                                </button>
                                 <template v-else>
                                     &nbsp;
                                 </template>
@@ -359,6 +373,10 @@
         ref="$applyToModal"
         @relist="() => relist()"
     />
+    <group-membership-modal
+        ref="$groupMembershipModal"
+        @select="doFilterBySelectedGroup"
+    />
 </template>
 
 <script setup lang="ts">
@@ -375,6 +393,7 @@ import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 import ApplyToModal from "~/components/Stations/Playlists/ApplyToModal.vue";
 import CloneModal from "~/components/Stations/Playlists/CloneModal.vue";
 import EditModal from "~/components/Stations/Playlists/EditModal.vue";
+import GroupMembershipModal from "~/components/Stations/Playlists/GroupMembershipModal.vue";
 import ImportModal from "~/components/Stations/Playlists/ImportModal.vue";
 import ImportPlaylistConfigModal from "~/components/Stations/Playlists/ImportPlaylistConfigModal.vue";
 import PlaylistGroupingTab from "~/components/Stations/Playlists/PlaylistGroupingTab.vue";
@@ -387,6 +406,7 @@ import {
 } from "~/entities/ApiInterfaces.ts";
 import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
 import {
+    PlaylistBreadcrumb,
     StationPlaylistEnriched,
     StationPlaylistGroupMemberEnriched,
 } from "~/entities/StationPlaylist.ts";
@@ -422,6 +442,7 @@ const fields: DataTableField[] = [
     { key: "source", label: $gettext("Source"), sortable: false },
     { key: "scheduling", label: $gettext("Scheduling"), sortable: false },
     { key: "num_entries", label: $gettext("# Entries"), sortable: false },
+    { key: "groups", label: $gettext("Groups"), sortable: false },
     {
         key: "actions",
         label: $gettext("Actions"),
@@ -442,6 +463,18 @@ const $scheduleTab = useTemplateRef("$scheduleTab");
 const relist = () => {
     void listItemProvider.refresh();
     $scheduleTab.value?.refresh();
+};
+
+const $groupMembershipModal = useTemplateRef("$groupMembershipModal");
+
+const doShowGroups = (name: string, groups: PlaylistBreadcrumb[]) => {
+    $groupMembershipModal.value?.open(name, groups);
+};
+
+const $dataTable = useTemplateRef("$dataTable");
+
+const doFilterBySelectedGroup = (name: string) => {
+    $dataTable.value?.setFilter(name);
 };
 
 const $editModal = useTemplateRef("$editModal");

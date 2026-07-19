@@ -1,17 +1,24 @@
 import {
+    ApiStationPlaylistComputedFields,
+    ApiStationPlaylistParentGroup,
     ApiStationSchedule,
     HasLinks,
     StationPlaylist,
     StationPlaylistGroup,
 } from "~/entities/ApiInterfaces.ts";
 
-// Playlist as returned by the list API including runtime-computed fields
-// not present in the generated StationPlaylist type.
+export type PlaylistBreadcrumb = ApiStationPlaylistParentGroup;
+
+// Playlist as returned by the list API including runtime-computed fields.
 export type StationPlaylistEnriched = Required<
     Omit<StationPlaylist, "podcasts" | "schedule_items" | "playlists">
 > &
-    Required<HasLinks> & {
+    Required<HasLinks> &
+    Required<ApiStationPlaylistComputedFields> & {
+        // Tightened generated computed fields for template ergonomics.
         num_songs: number;
+        playlist_groups: PlaylistBreadcrumb[];
+        // Enriched relations with no generated equivalent.
         playlists: StationPlaylistGroupMemberEnriched[];
         schedule_items: ApiStationSchedule[];
         links: {
@@ -29,8 +36,3 @@ export type StationPlaylistGroupMemberEnriched =
         num_songs: number;
         playlists: StationPlaylistGroup[];
     };
-
-export type PlaylistBreadcrumb = {
-    id: number;
-    name: string;
-};

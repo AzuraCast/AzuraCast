@@ -76,7 +76,7 @@ jobs:
       - uses: actions/checkout@master
 
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: "lts/jod"
           cache: "npm"
@@ -116,7 +116,7 @@ jobs:
           key: ${{ runner.OS }}-build-${{ hashFiles('composer.lock') }}
 
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: "lts/jod"
           cache: "npm"

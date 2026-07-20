@@ -23,6 +23,13 @@
                     <div class="fc-event-main-frame schedule-event-content px-1">
                         <div class="d-flex align-items-center justify-content-between gap-1">
                             <span class="d-inline-flex flex-shrink-0">
+                                <icon-bi-exclamation-triangle-fill
+                                    v-if="getEventProps(arg.event).has_group_schedule_conflict"
+                                    class="text-warning flex-shrink-0 me-2"
+                                    :class="IconSize.Small"
+                                    :title="$gettext('This playlist is scheduled outside its group\'s active window and will not play at this time.')"
+                                />
+
                                 <span
                                     v-if="getEventProps(arg.event).type === 'streamer'"
                                     class="schedule-streamer-art d-inline-flex align-items-center justify-content-center overflow-hidden rounded-circle"
@@ -89,6 +96,7 @@ import { PlaylistSources } from "~/entities/ApiInterfaces.ts";
 import type { ScheduleEventDetails } from "~/entities/StationSchedule.ts";
 import { IconSize } from "~/functions/icons.ts";
 import { useStationData } from "~/functions/useStationQuery.ts";
+import IconBiExclamationTriangleFill from "~icons/bi/exclamation-triangle-fill";
 import IconBiMicFill from "~icons/bi/mic-fill";
 
 interface ScheduleEventCellProps {
@@ -96,6 +104,7 @@ interface ScheduleEventCellProps {
     source?: PlaylistSources;
     has_custom_art?: boolean;
     art?: string | null;
+    has_group_schedule_conflict?: boolean;
 }
 
 defineProps<{

@@ -8518,6 +8518,7 @@ components:
         - is_jingle
         - include_in_on_demand
         - avoid_duplicates
+        - has_group_schedule_conflict
         - members
         - num_songs
         - total_length
@@ -8576,6 +8577,11 @@ components:
           example: false
         avoid_duplicates:
           type: boolean
+          example: false
+        has_group_schedule_conflict:
+          description: 'True if this playlist is a group member whose schedule window is not covered by an active ancestor group schedule, so it will not play during this event.'
+          type: boolean
+          readOnly: true
           example: false
         members:
           type: array

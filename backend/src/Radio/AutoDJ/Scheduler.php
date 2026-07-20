@@ -133,6 +133,60 @@ final class Scheduler
         return null !== $scheduleItem;
     }
 
+    /**
+     * Determine whether a playlist that is a member of one or more groups is blocked from playing
+     * during the given window because no ancestor-group chain is scheduled to be active across it.
+     */
+    public function isPlaylistBlockedByGroupSchedule(
+        StationPlaylist $playlist,
+        DateRange $window
+    ): bool {
+        if ($playlist->playlist_groups->count() === 0) {
+            return false;
+        }
+
+        foreach ($playlist->playlist_groups as $spg) {
+            if ($this->isGroupActiveThroughoutWindow($spg->playlist_group, $window)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param int[] $visitedIdsInChain
+     */
+    private function isGroupActiveThroughoutWindow(
+        StationPlaylist $group,
+        DateRange $window,
+        array $visitedIdsInChain = []
+    ): bool {
+        if (in_array($group->id, $visitedIdsInChain, true)) {
+            return false;
+        }
+
+        $visitedIdsInChain[] = $group->id;
+
+        $coversStart = $this->isPlaylistScheduledToPlayNow($group, $window->start);
+        $coversEnd = $this->isPlaylistScheduledToPlayNow($group, $window->end->subSecond());
+        if (!$coversStart || !$coversEnd) {
+            return false;
+        }
+
+        if ($group->playlist_groups->count() === 0) {
+            return true;
+        }
+
+        foreach ($group->playlist_groups as $spg) {
+            if ($this->isGroupActiveThroughoutWindow($spg->playlist_group, $window, $visitedIdsInChain)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private function shouldPlaylistPlayNowPerHour(
         StationPlaylist $playlist,
         DateTimeImmutable $now

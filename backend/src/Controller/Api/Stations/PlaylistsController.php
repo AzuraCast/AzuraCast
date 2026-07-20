@@ -262,6 +262,10 @@ final class PlaylistsController extends AbstractScheduledEntityController
 
                 $event->start = $dateRange->start->toIso8601String();
                 $event->end = $dateRange->end->toIso8601String();
+                $event->has_group_schedule_conflict = $this->scheduler->isPlaylistBlockedByGroupSchedule(
+                    $playlist,
+                    $dateRange
+                );
 
                 return $event;
             }

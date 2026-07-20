@@ -55,6 +55,18 @@
             <template v-else>
                 <div class="card-body p-2 d-flex flex-column gap-2">
                     <div
+                        v-if="hasGroupScheduleConflict"
+                        class="d-flex align-items-start gap-2 text-warning"
+                    >
+                        <icon-bi-exclamation-triangle-fill class="flex-shrink-0 mt-1 sm" />
+                        <span class="small">
+                            {{
+                                $gettext('This playlist only plays while its group is scheduled. Its current schedule falls outside the group\'s window, so it will not play during this time.')
+                            }}
+                        </span>
+                    </div>
+
+                    <div
                         v-if="details.source === PlaylistSources.Songs"
                         class="d-flex align-items-center gap-2"
                     >
@@ -197,6 +209,7 @@ import { IconSize } from "~/functions/icons.ts";
 import { useFormatLength } from "~/functions/useFormatLength.ts";
 import { useTranslate } from "~/vendor/gettext";
 import IconBiArrowRepeat from "~icons/bi/arrow-repeat";
+import IconBiExclamationTriangleFill from "~icons/bi/exclamation-triangle-fill";
 import IconBiMicFill from "~icons/bi/mic-fill";
 
 const props = defineProps<{
@@ -219,6 +232,10 @@ const playlistDetails = computed(() => {
 
 const members = computed<ScheduleGroupMember[]>(
     () => playlistDetails.value?.members ?? [],
+);
+
+const hasGroupScheduleConflict = computed<boolean>(
+    () => playlistDetails.value?.has_group_schedule_conflict ?? false,
 );
 
 const headerCount = computed<number | null>(() => {

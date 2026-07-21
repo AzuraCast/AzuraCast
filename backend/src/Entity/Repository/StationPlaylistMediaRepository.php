@@ -331,7 +331,25 @@ final class StationPlaylistMediaRepository extends Repository
         $this->em->flush();
     }
 
-    public function resetAllQueues(Station $station): void
+    public function markMediaPlayed(
+        StationPlaylist $playlist,
+        StationMedia $media,
+        ?int $timestamp = null
+    ): void {
+        $this->em->createQuery(
+            <<<'DQL'
+                UPDATE App\Entity\StationPlaylistMedia spm
+                SET spm.last_played = :timestamp, spm.is_queued = 0
+                WHERE spm.playlist = :playlist
+                AND spm.media = :media
+            DQL
+        )->setParameter('timestamp', $timestamp ?? Time::nowUtc()->getTimestamp())
+            ->setParameter('playlist', $playlist)
+            ->setParameter('media', $media)
+            ->execute();
+    }
+
+    public function resetAllQueues(Station $station, bool $includeSequential = false): void
     {
         $now = Time::nowUtc();
 
@@ -340,8 +358,19 @@ final class StationPlaylistMediaRepository extends Repository
                 continue;
             }
 
+            if (!$this->shouldResetPlaylistQueue($playlist, $includeSequential)) {
+                continue;
+            }
+
             $this->resetQueue($playlist, $now);
         }
+    }
+
+    public function shouldResetPlaylistQueue(
+        StationPlaylist $playlist,
+        bool $includeSequential = false
+    ): bool {
+        return $includeSequential || PlaylistOrders::Sequential !== $playlist->order;
     }
 
     /**

@@ -22,12 +22,14 @@
           "mode": "exact",
           "playlist_ref": "rot",
           "media_ref": "mRot",
+          "playlist_chain_refs": [],
           "from_request": false
         },
         {
           "now": "2018-01-15T12:01:00+00:00",
           "mode": "exact",
           "media_ref": "mReq",
+          "playlist_chain_refs": [],
           "from_request": true
         }
       ]

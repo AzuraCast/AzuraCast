@@ -21,6 +21,7 @@
           "mode": "exact",
           "playlist_ref": "rot",
           "media_ref": "mRot",
+          "playlist_chain_refs": [],
           "from_request": false
         }
       ]

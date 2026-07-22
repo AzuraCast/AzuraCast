@@ -12,7 +12,11 @@
         {
           "mode": "exact",
           "playlist_ref": "a",
-          "media_ref": "mA"
+          "media_ref": "mA",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
         }
       ]
     },

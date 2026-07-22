@@ -22,7 +22,8 @@
         {
           "mode": "exact",
           "playlist_ref": "pb",
-          "media_ref": "mFresh"
+          "media_ref": "mFresh",
+          "playlist_chain_refs": []
         }
       ]
     }

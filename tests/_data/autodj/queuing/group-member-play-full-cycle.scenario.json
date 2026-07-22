@@ -12,42 +12,74 @@
         {
           "mode": "exact",
           "playlist_ref": "a",
-          "media_ref": "a1"
+          "media_ref": "a1",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "a",
-          "media_ref": "a2"
+          "media_ref": "a2",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "a",
-          "media_ref": "a3"
+          "media_ref": "a3",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "b",
-          "media_ref": "b1"
+          "media_ref": "b1",
+          "playlist_chain_refs": [
+            "grp",
+            "b"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "a",
-          "media_ref": "a1"
+          "media_ref": "a1",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "a",
-          "media_ref": "a2"
+          "media_ref": "a2",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "a",
-          "media_ref": "a3"
+          "media_ref": "a3",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "b",
-          "media_ref": "b1"
+          "media_ref": "b1",
+          "playlist_chain_refs": [
+            "grp",
+            "b"
+          ]
         }
       ]
     }

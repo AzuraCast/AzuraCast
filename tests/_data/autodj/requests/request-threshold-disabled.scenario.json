@@ -27,6 +27,7 @@
         {
           "mode": "exact",
           "media_ref": "mReq",
+          "playlist_chain_refs": [],
           "from_request": true
         }
       ]

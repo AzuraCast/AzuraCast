@@ -39,7 +39,11 @@
         {
           "mode": "exact",
           "playlist_ref": "b",
-          "media_ref": "b1"
+          "media_ref": "b1",
+          "playlist_chain_refs": [
+            "grp",
+            "b"
+          ]
         },
         {
           "mode": "membership",
@@ -71,7 +75,11 @@
         {
           "mode": "exact",
           "playlist_ref": "b",
-          "media_ref": "b1"
+          "media_ref": "b1",
+          "playlist_chain_refs": [
+            "grp",
+            "b"
+          ]
         }
       ]
     }

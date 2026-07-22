@@ -12,7 +12,11 @@
         {
           "mode": "exact",
           "playlist_ref": "a",
-          "media_ref": "mA"
+          "media_ref": "mA",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
         },
         {
           "now": "2018-01-15T12:05:00+00:00",
@@ -22,7 +26,11 @@
           "now": "2018-01-15T13:00:00+00:00",
           "mode": "exact",
           "playlist_ref": "a",
-          "media_ref": "mA"
+          "media_ref": "mA",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
         }
       ]
     }

@@ -13,7 +13,11 @@
           "mode": "exact",
           "interrupting": false,
           "playlist_ref": "sched",
-          "media_ref": "mSched"
+          "media_ref": "mSched",
+          "playlist_chain_refs": [
+            "grp",
+            "sched"
+          ]
         }
       ]
     },
@@ -25,7 +29,11 @@
           "mode": "exact",
           "interrupting": false,
           "playlist_ref": "fallback",
-          "media_ref": "mFallback"
+          "media_ref": "mFallback",
+          "playlist_chain_refs": [
+            "grp",
+            "fallback"
+          ]
         }
       ]
     },

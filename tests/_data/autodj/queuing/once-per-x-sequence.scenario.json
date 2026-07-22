@@ -12,7 +12,8 @@
         {
           "mode": "exact",
           "playlist_ref": "opx",
-          "media_ref": "m1"
+          "media_ref": "m1",
+          "playlist_chain_refs": []
         },
         {
           "now": "2018-01-15T00:10:00+00:00",
@@ -22,7 +23,8 @@
           "now": "2018-01-15T00:35:00+00:00",
           "mode": "exact",
           "playlist_ref": "opx",
-          "media_ref": "m1"
+          "media_ref": "m1",
+          "playlist_chain_refs": []
         }
       ]
     }

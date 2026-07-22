@@ -23,7 +23,8 @@
         {
           "mode": "exact",
           "playlist_ref": "dp",
-          "media_ref": "m2"
+          "media_ref": "m2",
+          "playlist_chain_refs": []
         }
       ]
     },
@@ -45,7 +46,8 @@
         {
           "mode": "exact",
           "playlist_ref": "dp",
-          "media_ref": "m2"
+          "media_ref": "m2",
+          "playlist_chain_refs": []
         }
       ]
     },
@@ -67,7 +69,8 @@
         {
           "mode": "exact",
           "playlist_ref": "dp",
-          "media_ref": "m1"
+          "media_ref": "m1",
+          "playlist_chain_refs": []
         }
       ]
     }

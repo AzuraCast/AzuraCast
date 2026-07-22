@@ -22,12 +22,14 @@
           "interrupting": true,
           "playlist_ref": "breaking",
           "media_ref": "mIntr",
+          "playlist_chain_refs": [],
           "from_request": false
         },
         {
           "mode": "exact",
           "interrupting": false,
           "media_ref": "mReq",
+          "playlist_chain_refs": [],
           "from_request": true
         }
       ]

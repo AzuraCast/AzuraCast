@@ -21,7 +21,8 @@
         {
           "mode": "exact",
           "playlist_ref": "dp",
-          "media_ref": "m2"
+          "media_ref": "m2",
+          "playlist_chain_refs": []
         }
       ]
     }

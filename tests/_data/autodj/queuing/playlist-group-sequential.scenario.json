@@ -12,7 +12,11 @@
         {
           "mode": "exact",
           "playlist_ref": "rock",
-          "media_ref": "m1"
+          "media_ref": "m1",
+          "playlist_chain_refs": [
+            "group",
+            "rock"
+          ]
         }
       ]
     }

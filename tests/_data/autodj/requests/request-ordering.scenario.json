@@ -30,16 +30,19 @@
         {
           "mode": "exact",
           "media_ref": "mB",
+          "playlist_chain_refs": [],
           "from_request": true
         },
         {
           "mode": "exact",
           "media_ref": "mA",
+          "playlist_chain_refs": [],
           "from_request": true
         },
         {
           "mode": "exact",
           "media_ref": "mC",
+          "playlist_chain_refs": [],
           "from_request": true
         }
       ]

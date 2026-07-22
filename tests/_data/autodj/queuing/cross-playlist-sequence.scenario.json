@@ -12,17 +12,29 @@
         {
           "mode": "exact",
           "playlist_ref": "a",
-          "media_ref": "m1"
+          "media_ref": "m1",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "b",
-          "media_ref": "m2"
+          "media_ref": "m2",
+          "playlist_chain_refs": [
+            "grp",
+            "b"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "c",
-          "media_ref": "m3"
+          "media_ref": "m3",
+          "playlist_chain_refs": [
+            "grp",
+            "c"
+          ]
         }
       ]
     }

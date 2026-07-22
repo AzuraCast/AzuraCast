@@ -19,13 +19,18 @@
         {
           "mode": "exact",
           "playlist_ref": "fill",
-          "media_ref": "mFill"
+          "media_ref": "mFill",
+          "playlist_chain_refs": []
         },
         {
           "now": "2018-01-15T13:10:00+00:00",
           "mode": "exact",
           "playlist_ref": "gopm",
-          "media_ref": "mOpm"
+          "media_ref": "mOpm",
+          "playlist_chain_refs": [
+            "grp",
+            "gopm"
+          ]
         }
       ]
     }

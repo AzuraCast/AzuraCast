@@ -12,7 +12,12 @@
         {
           "mode": "exact",
           "playlist_ref": "csa1",
-          "media_ref": "mCSA"
+          "media_ref": "mCSA",
+          "playlist_chain_refs": [
+            "root",
+            "c-seq",
+            "csa1"
+          ]
         },
         {
           "mode": "membership",
@@ -32,22 +37,42 @@
         {
           "mode": "exact",
           "playlist_ref": "ccx",
-          "media_ref": "mCCX"
+          "media_ref": "mCCX",
+          "playlist_chain_refs": [
+            "root",
+            "c-consec",
+            "ccx"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "cn-leaf",
-          "media_ref": "mCN"
+          "media_ref": "mCN",
+          "playlist_chain_refs": [
+            "root",
+            "c-nested",
+            "cn-mid",
+            "cn-leaf"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "direct",
-          "media_ref": "mD2"
+          "media_ref": "mD2",
+          "playlist_chain_refs": [
+            "root",
+            "direct"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "csa2",
-          "media_ref": "mCSB"
+          "media_ref": "mCSB",
+          "playlist_chain_refs": [
+            "root",
+            "c-seq",
+            "csa2"
+          ]
         },
         {
           "mode": "membership",
@@ -67,17 +92,32 @@
         {
           "mode": "exact",
           "playlist_ref": "ccx",
-          "media_ref": "mCCX"
+          "media_ref": "mCCX",
+          "playlist_chain_refs": [
+            "root",
+            "c-consec",
+            "ccx"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "cn-leaf",
-          "media_ref": "mCN"
+          "media_ref": "mCN",
+          "playlist_chain_refs": [
+            "root",
+            "c-nested",
+            "cn-mid",
+            "cn-leaf"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "direct",
-          "media_ref": "mD2"
+          "media_ref": "mD2",
+          "playlist_chain_refs": [
+            "root",
+            "direct"
+          ]
         }
       ]
     }

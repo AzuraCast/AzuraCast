@@ -21,6 +21,10 @@
           "mode": "exact",
           "playlist_ref": "a",
           "media_ref": "mMember",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ],
           "from_request": false
         }
       ]

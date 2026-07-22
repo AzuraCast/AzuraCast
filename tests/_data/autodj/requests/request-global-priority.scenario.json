@@ -20,6 +20,7 @@
         {
           "mode": "exact",
           "media_ref": "mReq",
+          "playlist_chain_refs": [],
           "from_request": true
         }
       ]
@@ -32,6 +33,7 @@
           "mode": "exact",
           "playlist_ref": "rot",
           "media_ref": "mRot",
+          "playlist_chain_refs": [],
           "from_request": false
         }
       ]

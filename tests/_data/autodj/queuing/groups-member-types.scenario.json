@@ -12,22 +12,38 @@
         {
           "mode": "exact",
           "playlist_ref": "opm",
-          "media_ref": "mOPM"
+          "media_ref": "mOPM",
+          "playlist_chain_refs": [
+            "grp",
+            "opm"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "oph",
-          "media_ref": "mOPH"
+          "media_ref": "mOPH",
+          "playlist_chain_refs": [
+            "grp",
+            "oph"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "std",
-          "media_ref": "mSTD"
+          "media_ref": "mSTD",
+          "playlist_chain_refs": [
+            "grp",
+            "std"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "std",
-          "media_ref": "mSTD"
+          "media_ref": "mSTD",
+          "playlist_chain_refs": [
+            "grp",
+            "std"
+          ]
         }
       ]
     }

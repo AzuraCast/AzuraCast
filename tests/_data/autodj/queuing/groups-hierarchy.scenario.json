@@ -12,32 +12,59 @@
         {
           "mode": "exact",
           "playlist_ref": "direct",
-          "media_ref": "mD"
+          "media_ref": "mD",
+          "playlist_chain_refs": [
+            "top",
+            "direct"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "n1leaf",
-          "media_ref": "mN1"
+          "media_ref": "mN1",
+          "playlist_chain_refs": [
+            "top",
+            "n1",
+            "n1leaf"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "n2leaf",
-          "media_ref": "mN2"
+          "media_ref": "mN2",
+          "playlist_chain_refs": [
+            "top",
+            "n2",
+            "n2mid",
+            "n2leaf"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "rep",
-          "media_ref": "mR"
+          "media_ref": "mR",
+          "playlist_chain_refs": [
+            "top",
+            "rep"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "rep",
-          "media_ref": "mR"
+          "media_ref": "mR",
+          "playlist_chain_refs": [
+            "top",
+            "rep"
+          ]
         },
         {
           "mode": "exact",
           "playlist_ref": "direct",
-          "media_ref": "mD"
+          "media_ref": "mD",
+          "playlist_chain_refs": [
+            "top",
+            "direct"
+          ]
         }
       ]
     }

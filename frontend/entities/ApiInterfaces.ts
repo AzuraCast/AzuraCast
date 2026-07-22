@@ -896,6 +896,13 @@ export interface ApiNowPlayingSongHistory {
      */
     playlist: string | null;
     /**
+     * Names of the playlist group chain the song was picked through if played from a group
+     * @example ["Main Rotation","Rock","Rock Hits"]
+     */
+    playlist_chain: string[] | null;
+    /** The source of the playlist that the song was played from, if available. */
+    playlist_source: PlaylistSources | null;
+    /**
      * Indicates the current streamer that was connected, if available, or empty string if not.
      * @example "Test DJ"
      */
@@ -1035,6 +1042,13 @@ export interface ApiNowPlayingStationQueue {
      * @example "Top 100"
      */
     playlist: string | null;
+    /**
+     * Names of the playlist group chain the song was picked through if played from a group
+     * @example ["Main Rotation","Rock","Rock Hits"]
+     */
+    playlist_chain: string[] | null;
+    /** The source of the playlist that the song was played from, if available. */
+    playlist_source: PlaylistSources | null;
     /** Indicates whether the song is a listener request. */
     is_request: boolean;
     song: ApiSong;

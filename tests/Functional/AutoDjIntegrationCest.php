@@ -235,6 +235,21 @@ final class AutoDjIntegrationCest extends CestAbstract
             );
         }
 
+        if ($expect->playlistChainRefs !== null) {
+            $expectedChain = ($expect->playlistChainRefs === [])
+                ? null
+                : array_map(
+                    static fn(string $ref): string => $playlistsByRef[$ref]->name,
+                    $expect->playlistChainRefs
+                );
+
+            $I->assertSame(
+                $expectedChain,
+                $first->playlist_chain,
+                "[{$label}] Playlist chain"
+            );
+        }
+
         if ($expect->mode === ExpectQueueMode::Exact) {
             if ($expect->playlistRef !== null) {
                 $I->assertSame(

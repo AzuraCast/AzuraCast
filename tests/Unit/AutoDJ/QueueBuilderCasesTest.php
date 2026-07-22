@@ -123,6 +123,21 @@ final class QueueBuilderCasesTest extends Unit
             );
         }
 
+        if ($expect->playlistChainRefs !== null) {
+            $expectedChain = ($expect->playlistChainRefs === [])
+                ? null
+                : array_map(
+                    static fn(string $ref): string => $autoDjHarness->entities->playlistForRef($ref)->name,
+                    $expect->playlistChainRefs
+                );
+
+            self::assertSame(
+                $expectedChain,
+                $first->playlist_chain,
+                "[{$label}] Playlist chain{$logTrace}"
+            );
+        }
+
         if ($expect->mode === ExpectQueueMode::Exact) {
             if ($expect->playlistRef !== null) {
                 self::assertSame(

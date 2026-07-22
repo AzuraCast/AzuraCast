@@ -27,7 +27,6 @@
                                     v-if="getEventProps(arg.event).has_group_schedule_conflict"
                                     class="text-warning flex-shrink-0 me-2"
                                     :class="IconSize.Small"
-                                    :title="$gettext('This playlist is scheduled outside its group\'s active window and will not play at this time.')"
                                 />
 
                                 <span

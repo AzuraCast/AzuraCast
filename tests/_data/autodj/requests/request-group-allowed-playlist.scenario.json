@@ -20,7 +20,8 @@
         {
           "mode": "exact",
           "media_ref": "mIn",
-          "from_request": true
+          "from_request": true,
+          "playlist_chain_refs": []
         }
       ]
     },
@@ -40,7 +41,11 @@
           "mode": "exact",
           "playlist_ref": "a",
           "media_ref": "mIn",
-          "from_request": false
+          "from_request": false,
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
         }
       ]
     }

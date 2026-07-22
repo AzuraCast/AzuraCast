@@ -12,7 +12,8 @@
         {
           "mode": "exact",
           "playlist_ref": "seq",
-          "media_ref": "m1"
+          "media_ref": "m1",
+          "playlist_chain_refs": []
         }
       ]
     }

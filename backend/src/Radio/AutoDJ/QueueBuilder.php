@@ -239,6 +239,7 @@ final class QueueBuilder implements EventSubscriberInterface
      * @param mixed[] $recentSongHistory
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      * @param bool $ancestorAvoidsDuplicates Indicates if an ancestor group dictates its members to avoid duplicates
+     * @param list<StationPlaylist> $playlistChain Group chain up to and including this group
      *
      * @return bool Returns true if a track has been selected and registered
      */
@@ -247,7 +248,8 @@ final class QueueBuilder implements EventSubscriberInterface
         StationPlaylist $playlistGroup,
         array $recentSongHistory,
         bool $allowDuplicates = false,
-        bool $ancestorAvoidsDuplicates = false
+        bool $ancestorAvoidsDuplicates = false,
+        array $playlistChain = []
     ): bool {
         $expectedPlayTime = $event->getExpectedPlayTime();
 
@@ -284,7 +286,8 @@ final class QueueBuilder implements EventSubscriberInterface
                 $selectedPlaylist,
                 $recentSongHistory,
                 $allowDuplicates,
-                $memberAvoidsDuplicates
+                $memberAvoidsDuplicates,
+                $playlistChain
             );
 
             if ($hasRegisteredTrack) {
@@ -426,6 +429,7 @@ final class QueueBuilder implements EventSubscriberInterface
      * @param mixed[] $recentSongHistory
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      * @param bool $ancestorAvoidsDuplicates Indicates if an ancestor group dictates its members to avoid duplicates
+     * @param list<StationPlaylist> $ancestorChain Group chain this playlist was reached through
      *
      * @return bool Returns true if a track has been selected and registered
      */
@@ -434,12 +438,17 @@ final class QueueBuilder implements EventSubscriberInterface
         StationPlaylist $playlist,
         array $recentSongHistory,
         bool $allowDuplicates = false,
-        bool $ancestorAvoidsDuplicates = false
+        bool $ancestorAvoidsDuplicates = false,
+        array $ancestorChain = []
     ): bool {
+        $playlistChain = [...$ancestorChain, $playlist];
+        $playlistChainSnapshot = $this->snapshotPlaylistChain($playlistChain);
+
         $selectedTracksResult = match ($playlist->source) {
             PlaylistSources::RemoteUrl => $this->getSongFromRemotePlaylist(
                 $playlist,
-                $event->getExpectedPlayTime()
+                $event->getExpectedPlayTime(),
+                $playlistChainSnapshot
             ),
 
             PlaylistSources::Playlists => $this->playSongFromPlaylistGroup(
@@ -447,7 +456,8 @@ final class QueueBuilder implements EventSubscriberInterface
                 $playlist,
                 $recentSongHistory,
                 $allowDuplicates,
-                $ancestorAvoidsDuplicates
+                $ancestorAvoidsDuplicates,
+                $playlistChain
             ),
 
             PlaylistSources::Songs => $this->playSongFromSongsPlaylist(
@@ -455,12 +465,14 @@ final class QueueBuilder implements EventSubscriberInterface
                 $playlist,
                 $recentSongHistory,
                 $allowDuplicates,
-                $ancestorAvoidsDuplicates
+                $ancestorAvoidsDuplicates,
+                $playlistChainSnapshot
             ),
 
             PlaylistSources::Requests => $this->playSongFromRequestsPlaylist(
                 $event,
-                $playlist
+                $playlist,
+                $playlistChainSnapshot
             ),
         };
 
@@ -482,27 +494,49 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     /**
+     * Snapshot names of playlist group chain for persisting alongside queue entry
+     *
+     * @param list<StationPlaylist> $playlistChain
+     *
+     * @return ?list<string>
+     */
+    private function snapshotPlaylistChain(array $playlistChain): ?array
+    {
+        if (count($playlistChain) < 2) {
+            return null;
+        }
+
+        return array_map(
+            static fn(StationPlaylist $playlist): string => $playlist->name,
+            $playlistChain
+        );
+    }
+
+    /**
      * @param mixed[] $recentSongHistory
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      * @param bool $ancestorAvoidsDuplicates Indicates if an ancestor group dictates its members to avoid duplicates
+     * @param ?list<string> $playlistChainSnapshot Name snapshot of the group chain this playlist was reached through
      */
     private function playSongFromSongsPlaylist(
         BuildQueue $event,
         StationPlaylist $playlist,
         array $recentSongHistory,
         bool $allowDuplicates = false,
-        bool $ancestorAvoidsDuplicates = false
+        bool $ancestorAvoidsDuplicates = false,
+        ?array $playlistChainSnapshot = null
     ): StationQueue|array|null {
         if ($playlist->backendMerge()) {
             $this->spmRepo->resetQueue($playlist);
 
             $queueEntries = array_filter(
                 array_map(
-                    function (StationPlaylistQueue $validTrack) use ($playlist, $event) {
+                    function (StationPlaylistQueue $validTrack) use ($playlist, $event, $playlistChainSnapshot) {
                         return $this->makeQueueFromApi(
                             $validTrack,
                             $playlist,
-                            $event->getExpectedPlayTime()
+                            $event->getExpectedPlayTime(),
+                            $playlistChainSnapshot
                         );
                     },
                     $this->spmRepo->getQueue($playlist)
@@ -540,7 +574,8 @@ final class QueueBuilder implements EventSubscriberInterface
                 $queueEntry = $this->makeQueueFromApi(
                     $validTrack,
                     $playlist,
-                    $event->getExpectedPlayTime()
+                    $event->getExpectedPlayTime(),
+                    $playlistChainSnapshot
                 );
 
                 if (null !== $queueEntry) {
@@ -554,9 +589,13 @@ final class QueueBuilder implements EventSubscriberInterface
         return null;
     }
 
+    /**
+     * @param ?list<string> $playlistChainSnapshot Name snapshot of the group chain this playlist was reached through
+     */
     private function playSongFromRequestsPlaylist(
         BuildQueue $event,
-        StationPlaylist $playlist
+        StationPlaylist $playlist,
+        ?array $playlistChainSnapshot = null
     ): bool {
         if ($this->areRequestsBlockedByAncestors($playlist, $event->getExpectedPlayTime())) {
             return false;
@@ -579,6 +618,7 @@ final class QueueBuilder implements EventSubscriberInterface
 
         $stationQueueEntry = StationQueue::fromRequest($request);
         $stationQueueEntry->playlist = $playlist;
+        $stationQueueEntry->playlist_chain = $playlistChainSnapshot;
         $this->em->persist($stationQueueEntry);
 
         $request->played_at = $event->getExpectedPlayTime();
@@ -591,10 +631,14 @@ final class QueueBuilder implements EventSubscriberInterface
         return true;
     }
 
+    /**
+     * @param ?list<string> $playlistChainSnapshot Name snapshot of the group chain this playlist was reached through
+     */
     private function makeQueueFromApi(
         StationPlaylistQueue $validTrack,
         StationPlaylist $playlist,
         DateTimeImmutable $expectedPlayTime,
+        ?array $playlistChainSnapshot = null,
     ): ?StationQueue {
         $mediaToPlay = $this->em->find(StationMedia::class, $validTrack->media_id);
         if (!$mediaToPlay instanceof StationMedia) {
@@ -609,15 +653,20 @@ final class QueueBuilder implements EventSubscriberInterface
 
         $stationQueueEntry = StationQueue::fromMedia($playlist->station, $mediaToPlay);
         $stationQueueEntry->playlist = $playlist;
+        $stationQueueEntry->playlist_chain = $playlistChainSnapshot;
 
         $this->em->persist($stationQueueEntry);
 
         return $stationQueueEntry;
     }
 
+    /**
+     * @param ?list<string> $playlistChainSnapshot Name snapshot of the group chain this playlist was reached through
+     */
     private function getSongFromRemotePlaylist(
         StationPlaylist $playlist,
-        DateTimeImmutable $expectedPlayTime
+        DateTimeImmutable $expectedPlayTime,
+        ?array $playlistChainSnapshot = null
     ): ?StationQueue {
         $mediaToPlay = $this->getMediaFromRemoteUrl($playlist);
 
@@ -633,6 +682,7 @@ final class QueueBuilder implements EventSubscriberInterface
             );
 
             $stationQueueEntry->playlist = $playlist;
+            $stationQueueEntry->playlist_chain = $playlistChainSnapshot;
             $stationQueueEntry->autodj_custom_uri = $mediaUri;
             $stationQueueEntry->duration = $mediaDuration;
 

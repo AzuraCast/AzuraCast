@@ -61,7 +61,11 @@
                     {{ $gettext('Listener Request') }}
                 </div>
                 <div v-else-if="row.item.playlist">
-                    {{ $gettext('Playlist') }}: {{ row.item.playlist }}
+                    <playlist-source-badge
+                        :chain="row.item.playlist_chain"
+                        :playlist-name="row.item.playlist"
+                        :source="row.item.playlist_source"
+                    />
                 </div>
             </template>
         </data-table>
@@ -76,6 +80,7 @@ import CardPage from "~/components/Common/CardPage.vue";
 import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
 import { useDialog } from "~/components/Common/Dialogs/useDialog.ts";
 import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import PlaylistSourceBadge from "~/components/Stations/Common/PlaylistSourceBadge.vue";
 import QueueLogsModal from "~/components/Stations/Queue/LogsModal.vue";
 import {
     ApiNowPlayingStationQueue,

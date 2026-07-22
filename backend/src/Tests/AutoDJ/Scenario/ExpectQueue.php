@@ -14,6 +14,7 @@ final class ExpectQueue
 {
     /**
      * @param string[] $mediaAnyOf Keyed by media ref
+     * @param ?string[] $playlistChainRefs Playlist refs from root to direct
      */
     public function __construct(
         public readonly ExpectQueueMode $mode,
@@ -23,6 +24,7 @@ final class ExpectQueue
         public readonly array $mediaAnyOf,
         public readonly bool $distinct,
         public readonly ?bool $fromRequest,
+        public readonly ?array $playlistChainRefs = null,
     ) {
     }
 
@@ -45,6 +47,12 @@ final class ExpectQueue
             distinct: Types::bool($data['distinct'] ?? false),
             fromRequest: array_key_exists('from_request', $data)
                 ? Types::bool($data['from_request'])
+                : null,
+            playlistChainRefs: array_key_exists('playlist_chain_refs', $data)
+                ? array_map(
+                    static fn(mixed $ref): string => Types::string($ref),
+                    Types::array($data['playlist_chain_refs'])
+                )
                 : null,
         );
     }

@@ -43,6 +43,12 @@ final class StationQueue implements
         get => $this->playlist?->id;
     }
 
+    /**
+     * @var ?list<string>
+     */
+    #[ORM\Column(type: 'json', nullable: true)]
+    public ?array $playlist_chain = null;
+
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     public ?StationMedia $media = null {

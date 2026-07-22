@@ -104,7 +104,11 @@
                                 </div>
                             </template>
                             <template #cell(source)="{ item }">
-                                <span class="badge text-bg-secondary">
+                                <span class="badge text-bg-secondary d-inline-flex align-items-center gap-1">
+                                    <playlist-source-icon
+                                        :source="item.source"
+                                        :size="IconSize.Small"
+                                    />
                                     <template v-if="item.source === 'songs'">
                                         {{ $gettext('Song-based') }}
                                     </template>
@@ -383,6 +387,7 @@ import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
 import Tab from "~/components/Common/Tab.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import PlaylistSourceIcon from "~/components/Stations/Common/PlaylistSourceIcon.vue";
 import ScheduleViewTab from "~/components/Stations/Common/ScheduleViewTab.vue";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 import ApplyToModal from "~/components/Stations/Playlists/ApplyToModal.vue";
@@ -404,6 +409,7 @@ import {
     StationPlaylistGroupMemberEnriched,
 } from "~/entities/StationPlaylist.ts";
 import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { IconSize } from "~/functions/icons.ts";
 import { useApiRouter } from "~/functions/useApiRouter.ts";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import { useFormatLength } from "~/functions/useFormatLength.ts";

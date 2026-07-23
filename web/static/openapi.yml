@@ -8505,6 +8505,7 @@ components:
         - count
         - consecutive_plays
         - play_full_cycle
+        - is_enabled
       properties:
         id:
           description: 'The unique identifier of the member playlist.'
@@ -8535,6 +8536,10 @@ components:
           description: 'Whether the member plays through its full cycle before advancing.'
           type: boolean
           example: false
+        is_enabled:
+          description: 'Whether the member playlist is enabled.'
+          type: boolean
+          example: true
       type: object
     Api_StationSchedulePlaylistEvent:
       required:

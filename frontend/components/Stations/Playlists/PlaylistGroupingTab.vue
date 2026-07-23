@@ -327,7 +327,16 @@
                             <div class="d-flex">
                                 <div class="d-flex flex-column flex-grow-1 min-w-0 gap-2">
                                     <div class="d-flex flex-grow-1 justify-content-between align-items-start">
-                                        <span class="flex-grow-1 pr-2 fs-5">{{ member.name }}</span>
+                                        <span class="d-flex flex-column flex-grow-1 gap-2 pe-2 fs-5 align-items-start">
+                                            {{ member.name }}
+
+                                            <span
+                                                v-if="!member.is_enabled"
+                                                class="badge text-bg-danger fs-6"
+                                            >
+                                                {{ $gettext('Disabled') }}
+                                            </span>
+                                        </span>
 
                                         <button
                                             type="button"
@@ -817,6 +826,7 @@ const doAssign = async (playlist: StationPlaylistEnriched): Promise<void> => {
         source: playlist.source,
         order: playlist.order,
         num_songs: playlist.num_songs,
+        is_enabled: playlist.is_enabled,
         playlists: playlist.playlists,
     };
 

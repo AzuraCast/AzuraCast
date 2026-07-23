@@ -1,0 +1,21 @@
+{
+  "description": "A group whose members are all disabled returns no track; the build falls back to the next eligible top-level playlist ('standalone') instead of stalling. The disabled members' tracks (mD1, mD2) must never be selected.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "all-disabled-group-falls-back-to-standalone",
+      "now": "2018-01-15T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "standalone",
+          "media_ref": "mStand",
+          "playlist_chain_refs": []
+        }
+      ]
+    }
+  ]
+}

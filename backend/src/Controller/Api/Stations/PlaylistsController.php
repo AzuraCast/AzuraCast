@@ -333,6 +333,7 @@ final class PlaylistsController extends AbstractScheduledEntityController
                     };
                     $member->consecutive_plays = $groupMember->consecutive_plays;
                     $member->play_full_cycle = $groupMember->play_full_cycle;
+                    $member->is_enabled = $memberPlaylist->is_enabled;
 
                     $members[] = $member;
                 }

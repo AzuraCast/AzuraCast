@@ -1,0 +1,42 @@
+{
+  "description": "A disabled playlist that is a member of an enabled, active group must never be selected. The sequential group has 'member_disabled' (is_enabled=false) at the lowest weight and 'member_enabled' at the next weight. Across successive builds only the enabled member's track is picked; the disabled member is skipped every time even though its weight would order it first.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "disabled-member-is-never-selected",
+      "now": "2018-01-15T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "member_enabled",
+          "media_ref": "mEn",
+          "playlist_chain_refs": [
+            "grp",
+            "member_enabled"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "member_enabled",
+          "media_ref": "mEn",
+          "playlist_chain_refs": [
+            "grp",
+            "member_enabled"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "member_enabled",
+          "media_ref": "mEn",
+          "playlist_chain_refs": [
+            "grp",
+            "member_enabled"
+          ]
+        }
+      ]
+    }
+  ]
+}

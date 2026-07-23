@@ -523,6 +523,7 @@ const doGroupReorder = async (
                       source: "",
                       order: "",
                       num_songs: 0,
+                      is_enabled: true,
                       playlists: [],
                   };
         })

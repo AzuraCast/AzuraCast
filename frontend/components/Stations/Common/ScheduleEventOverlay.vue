@@ -167,6 +167,13 @@
                             </span>
 
                             <span
+                                v-if="!member.is_enabled"
+                                class="badge text-bg-danger"
+                            >
+                                {{ $gettext('Disabled') }}
+                            </span>
+
+                            <span
                                 v-if="member.play_full_cycle || member.consecutive_plays > 0"
                                 class="badge text-bg-secondary d-inline-flex align-items-center gap-1 ms-auto"
                             >
@@ -280,6 +287,7 @@ const memberHasOrder = (member: ScheduleGroupMember): boolean =>
 
 const memberHasBadges = (member: ScheduleGroupMember): boolean =>
     memberHasOrder(member) ||
+    !member.is_enabled ||
     member.play_full_cycle ||
     member.consecutive_plays > 0;
 

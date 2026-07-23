@@ -56,4 +56,10 @@ final class StationScheduleGroupMember
         example: false
     )]
     public bool $play_full_cycle;
+
+    #[OA\Property(
+        description: 'Whether the member playlist is enabled.',
+        example: true
+    )]
+    public bool $is_enabled;
 }

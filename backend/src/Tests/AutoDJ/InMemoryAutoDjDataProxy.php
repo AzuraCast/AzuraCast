@@ -215,7 +215,12 @@ final class InMemoryAutoDjDataProxy
     public function getPlaylistGroupQueue(StationPlaylist $playlist): array
     {
         /** @var StationPlaylistGroup[] $members */
-        $members = $playlist->playlists->toArray();
+        $members = array_values(
+            array_filter(
+                $playlist->playlists->toArray(),
+                static fn(StationPlaylistGroup $spg): bool => $spg->playlist->is_enabled
+            )
+        );
 
         if (PlaylistOrders::Random === $playlist->order) {
             shuffle($members);
@@ -268,6 +273,10 @@ final class InMemoryAutoDjDataProxy
         }
 
         foreach ($playlist->playlists as $spg) {
+            if (!$spg->playlist->is_enabled) {
+                continue;
+            }
+
             if ($spg->is_queued) {
                 return false;
             }
@@ -286,6 +295,10 @@ final class InMemoryAutoDjDataProxy
         }
 
         foreach ($playlist->playlists as $spg) {
+            if (!$spg->playlist->is_enabled) {
+                continue;
+            }
+
             if (!$spg->is_queued) {
                 return false;
             }

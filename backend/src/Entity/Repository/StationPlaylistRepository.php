@@ -73,7 +73,9 @@ final class StationPlaylistRepository extends AbstractStationBasedRepository
         $queuedPlaylistQuery = $this->em->createQueryBuilder()
             ->select('spg')
             ->from(StationPlaylistGroup::class, 'spg')
+            ->join('spg.playlist', 'memberPlaylist')
             ->where('spg.playlist_group = :playlistGroup')
+            ->andWhere('memberPlaylist.is_enabled = 1')
             ->setParameter('playlistGroup', $playlist);
 
         if (PlaylistOrders::Random === $playlist->order) {
@@ -133,6 +135,7 @@ final class StationPlaylistRepository extends AbstractStationBasedRepository
             ->from(StationPlaylist::class, 'sp')
             ->join('sp.playlist_groups', 'spg')
             ->where('spg.playlist_group = :playlistGroup')
+            ->andWhere('sp.is_enabled = 1')
             ->setParameter('playlistGroup', $playlist);
     }
 

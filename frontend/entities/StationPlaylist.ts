@@ -34,5 +34,6 @@ export type StationPlaylistGroupMemberEnriched =
         source: string;
         order: string;
         num_songs: number;
+        is_enabled: boolean;
         playlists: StationPlaylistGroup[];
     };

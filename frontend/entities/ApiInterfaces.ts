@@ -1469,6 +1469,11 @@ export interface ApiStationScheduleGroupMember {
      * @example false
      */
     play_full_cycle: boolean;
+    /**
+     * Whether the member playlist is enabled.
+     * @example true
+     */
+    is_enabled: boolean;
 }
 
 export interface ApiStationSchedulePlaylistEvent {

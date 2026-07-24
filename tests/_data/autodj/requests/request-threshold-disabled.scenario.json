@@ -1,0 +1,36 @@
+{
+  "description": "With station.request_threshold 0 the recently-played check is disabled, so a request is queued even though its track was just played.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "threshold-zero-queues-despite-recent-play",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ],
+        "queue_history": [
+          {
+            "media_ref": "mReq",
+            "timestamp_played": "2018-01-15T11:59:00+00:00",
+            "is_visible": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "media_ref": "mReq",
+          "playlist_chain_refs": [],
+          "from_request": true
+        }
+      ]
+    }
+  ]
+}

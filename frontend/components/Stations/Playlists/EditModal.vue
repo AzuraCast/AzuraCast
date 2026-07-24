@@ -8,25 +8,51 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <tabs>
+        <tabs ref="$tabs">
             <form-basic-info/>
             <form-schedule v-model:schedule-items="form.schedule_items" />
-            <form-advanced/>
+            <playlist-link-list-tab
+                v-if="isEditMode && form.source === PlaylistSources.Playlists"
+                :label="$gettext('Members')"
+                :description="$gettext('This playlist group contains the following member playlists:')"
+                empty-id="no_playlist_members"
+                :empty-label="$gettext('No Members')"
+                :empty-text="$gettext('This playlist group has no member playlists.')"
+                :items="playlistMembers"
+                @navigate="onNavigateToPlaylist"
+            />
+            <playlist-link-list-tab
+                v-if="isEditMode"
+                tab-id="group_memberships"
+                :label="$gettext('Memberships')"
+                :description="$gettext('This playlist is a member of the following playlist groups:')"
+                empty-id="no_playlist_groups"
+                :empty-label="$gettext('No Group Memberships')"
+                :empty-text="$gettext('This playlist is not a member of any playlist group.')"
+                :items="playlistGroups"
+                @navigate="onNavigateToPlaylist"
+            />
+            <form-advanced v-if="![PlaylistSources.Playlists, PlaylistSources.Requests].includes(form.source)" />
         </tabs>
     </modal-form>
 </template>
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { computed, toRef, useTemplateRef } from "vue";
+import { computed, ref, toRef, useTemplateRef } from "vue";
+import { useDialog } from "~/components/Common/Dialogs/useDialog.ts";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
 import FormAdvanced from "~/components/Stations/Playlists/Form/Advanced.vue";
 import FormBasicInfo from "~/components/Stations/Playlists/Form/BasicInfo.vue";
 import { useStationsPlaylistsForm } from "~/components/Stations/Playlists/Form/form.ts";
+import PlaylistLinkListTab from "~/components/Stations/Playlists/Form/PlaylistLinkListTab.vue";
 import FormSchedule from "~/components/Stations/Playlists/Form/Schedule.vue";
+import { PlaylistSources } from "~/entities/ApiInterfaces";
+import { PlaylistBreadcrumb } from "~/entities/StationPlaylist.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
+import { useApiRouter } from "~/functions/useApiRouter.ts";
 import {
     BaseEditModalEmits,
     BaseEditModalProps,
@@ -49,6 +75,9 @@ const { $reset: resetForm } = formStore;
 
 const { r$: validatedr$ } = useAppCollectScope("stations-playlists");
 
+const playlistGroups = ref<PlaylistBreadcrumb[]>([]);
+const playlistMembers = ref<PlaylistBreadcrumb[]>([]);
+
 const {
     loading,
     error,
@@ -67,6 +96,15 @@ const {
         r$.value.$reset({
             toState: mergeExisting(r$.value.$value, data),
         });
+
+        playlistGroups.value =
+            (data as { playlist_groups?: PlaylistBreadcrumb[] })
+                .playlist_groups ?? [];
+
+        playlistMembers.value = (
+            (data as { playlists?: Array<{ id: number; name?: string }> })
+                .playlists ?? []
+        ).map((member) => ({ id: member.id, name: member.name ?? "" }));
     },
     async () => {
         const { valid } = await validatedr$.$validate();
@@ -82,7 +120,36 @@ const {
     },
 );
 
+const { getStationApiUrl } = useApiRouter();
+const { showAlert } = useDialog();
 const { $gettext } = useTranslate();
+const $tabs = useTemplateRef("$tabs");
+
+const onNavigateToPlaylist = async (
+    item: PlaylistBreadcrumb,
+): Promise<void> => {
+    if (r$.value.$anyEdited) {
+        const { value } = await showAlert({
+            title: $gettext("Discard unsaved changes?"),
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: $gettext("Discard"),
+        });
+
+        if (!value) {
+            return;
+        }
+    }
+
+    await edit(getStationApiUrl(`/playlist/${item.id}`).value);
+
+    $tabs.value?.selectTab("basic_info");
+};
+
+const editMemberships = async (recordUrl: string): Promise<void> => {
+    await edit(recordUrl);
+
+    $tabs.value?.selectTab("group_memberships");
+};
 
 const langTitle = computed(() => {
     return isEditMode.value
@@ -93,6 +160,7 @@ const langTitle = computed(() => {
 defineExpose({
     create,
     edit,
+    editMemberships,
     close,
 });
 </script>

@@ -1,0 +1,31 @@
+{
+  "description": "An already-played request (played_at set) is not re-queued; the global request queue only considers unplayed requests, so rotation plays.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "played-request-ignored",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true,
+            "played": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "rot",
+          "media_ref": "mRot",
+          "playlist_chain_refs": [],
+          "from_request": false
+        }
+      ]
+    }
+  ]
+}

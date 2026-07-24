@@ -33,6 +33,9 @@ final readonly class StationQueueApiGenerator
             $response->playlist = '';
         }
 
+        $response->playlist_chain = $record->playlist_chain;
+        $response->playlist_source = $record->playlist?->source;
+
         $recordMedia = $record->media;
         if (null !== $recordMedia) {
             $response->song = ($this->songApiGenerator)(

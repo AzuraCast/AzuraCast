@@ -1,0 +1,55 @@
+{
+  "description": "A scheduled playlist that is also a member of a group. Its own schedule is still honored while it plays via the group: inside the window the scheduled member plays, outside it the group force-advances past it to the unscheduled fallback member. Documents that group membership does not bypass the member's schedule, but the member only plays through its parent group (it is excluded from the top-level rotation).",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "inside-window-plays-scheduled-member",
+      "now": "2018-01-15T12:30:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "interrupting": false,
+          "playlist_ref": "sched",
+          "media_ref": "mSched",
+          "playlist_chain_refs": [
+            "grp",
+            "sched"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "outside-window-skips-to-fallback",
+      "now": "2018-01-15T03:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "interrupting": false,
+          "playlist_ref": "fallback",
+          "media_ref": "mFallback",
+          "playlist_chain_refs": [
+            "grp",
+            "fallback"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "scheduler-gate-inside-window",
+      "now": "2018-01-15T12:30:00+00:00",
+      "expect_should_play": {
+        "sched": true
+      }
+    },
+    {
+      "name": "scheduler-gate-outside-window",
+      "now": "2018-01-15T03:00:00+00:00",
+      "expect_should_play": {
+        "sched": false
+      }
+    }
+  ]
+}

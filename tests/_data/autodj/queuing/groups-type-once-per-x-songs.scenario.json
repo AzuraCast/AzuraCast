@@ -1,0 +1,43 @@
+{
+  "description": "A top-level Once-Per-X-Songs group (play_per_songs=1) is eligible when it is not among the recent plays and blocked when it is.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "plays-when-not-recent",
+      "now": "2018-01-15T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "a",
+          "media_ref": "mA",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "blocked-when-recently-played",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "playlist_ref": "grp",
+            "song_id": "recentsong",
+            "timestamp_played": "2018-01-15T11:59:00+00:00",
+            "is_visible": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "none"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "description": "A remote stream playlist (source=remote_url, remote_type=stream) is not supported by the AutoDJ and is excluded from queueing before any playlist reaches the scheduler.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "remote-never-selected",
+      "now": "2018-01-15T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "normal",
+          "media_ref": "m1",
+          "playlist_chain_refs": []
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "normal",
+          "media_ref": "m2",
+          "playlist_chain_refs": []
+        }
+      ]
+    },
+    {
+      "name": "remote-alone-queues-nothing",
+      "now": "2018-01-15T20:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "none"
+        }
+      ]
+    }
+  ]
+}

@@ -394,6 +394,10 @@ final class StationPlaylistMediaRepository extends Repository
 
     public function isQueueCompletelyFilled(StationPlaylist $playlist): bool
     {
+        if (PlaylistSources::Playlists === $playlist->source) {
+            throw new InvalidArgumentException('Playlist must not contain playlists.');
+        }
+
         if (PlaylistSources::Songs !== $playlist->source) {
             return true;
         }
@@ -430,6 +434,31 @@ final class StationPlaylistMediaRepository extends Repository
             ->getSingleScalarResult();
 
         return $notQueuedMediaCount === $totalMediaCount;
+    }
+
+    public function isMediaInPlaylist(StationMedia $media, StationPlaylist $playlist): bool
+    {
+        if ($playlist->source === PlaylistSources::Songs) {
+            return (int) $this->em->createQuery(
+                <<<'DQL'
+                    SELECT COUNT(spm.id)
+                    FROM App\Entity\StationPlaylistMedia spm
+                    WHERE spm.playlist = :playlist AND spm.media = :media
+                DQL
+            )->setParameter('playlist', $playlist)
+                ->setParameter('media', $media)
+                ->getSingleScalarResult() > 0;
+        }
+
+        if ($playlist->source === PlaylistSources::Playlists) {
+            foreach ($playlist->playlists as $membership) {
+                if ($this->isMediaInPlaylist($media, $membership->playlist)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private function getCountPlaylistMediaBaseQuery(StationPlaylist $playlist): QueryBuilder

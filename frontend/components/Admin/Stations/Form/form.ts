@@ -102,6 +102,7 @@ export const useAdminStationsForm = defineStore("form-admin-stations", () => {
         enable_requests: false,
         request_delay: 5,
         request_threshold: 15,
+        requests_only_via_playlists: false,
         enable_streamers: false,
         disconnect_deactivate_streamer: 0,
         media_storage_location: "",
@@ -193,6 +194,7 @@ export const useAdminStationsForm = defineStore("form-admin-stations", () => {
                     fields.enable_requests,
                     fields.request_delay,
                     fields.request_threshold,
+                    fields.requests_only_via_playlists,
                 ],
                 streamersTab: [
                     fields.enable_streamers,

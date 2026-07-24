@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "type": "station",
+  "station": {
+    "name": "Test Station",
+    "timezone": "UTC",
+    "requests_only_via_playlists": false
+  },
+  "media": [
+    {
+      "ref": "m1",
+      "path": "looponce/one.mp3",
+      "unique_id": "looponceaaaaaaaaaaaaaa01",
+      "length": 120.0,
+      "artist": "Alpha",
+      "title": "One",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m2",
+      "path": "looponce/two.mp3",
+      "unique_id": "looponceaaaaaaaaaaaaaa02",
+      "length": 120.0,
+      "artist": "Beta",
+      "title": "Two",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "m3",
+      "path": "looponce/three.mp3",
+      "unique_id": "looponceaaaaaaaaaaaaaa03",
+      "length": 120.0,
+      "artist": "Gamma",
+      "title": "Three",
+      "album": null,
+      "genre": null
+    }
+  ],
+  "playlists": [
+    {
+      "ref": "once",
+      "name": "Morning Loop Once Block",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m1",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "m2",
+          "weight": 2,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [
+        {
+          "start_time": 600,
+          "end_time": 700,
+          "days": [],
+          "start_date": null,
+          "end_date": null,
+          "loop_once": true,
+          "prevent_requests": false
+        }
+      ],
+      "members": []
+    },
+    {
+      "ref": "single",
+      "name": "Morning Single Track",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [
+          "single_track"
+        ],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "m3",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [
+        {
+          "start_time": 600,
+          "end_time": 700,
+          "days": [],
+          "start_date": null,
+          "end_date": null,
+          "loop_once": false,
+          "prevent_requests": false
+        }
+      ],
+      "members": []
+    }
+  ]
+}

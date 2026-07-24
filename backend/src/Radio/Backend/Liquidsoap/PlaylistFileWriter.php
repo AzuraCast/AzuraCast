@@ -7,6 +7,7 @@ namespace App\Radio\Backend\Liquidsoap;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Doctrine\ReadOnlyBatchIteratorAggregate;
+use App\Entity\Enums\PlaylistSources;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
@@ -52,6 +53,13 @@ final class PlaylistFileWriter implements EventSubscriberInterface
 
         $station = $playlist->station;
         if (!$station->backend_type->isEnabled()) {
+            return;
+        }
+
+        if (
+            PlaylistSources::Playlists === $playlist->source
+            || PlaylistSources::Requests === $playlist->source
+        ) {
             return;
         }
 

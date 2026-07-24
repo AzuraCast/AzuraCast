@@ -1,0 +1,37 @@
+{
+  "description": "Once-per-30-minutes playlist.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "played-20-min-ago-does-not-play",
+      "now": "2018-01-15T00:00:00+00:00",
+      "runtime": {
+        "playlists": {
+          "opx": {
+            "played_at": "2018-01-14T23:40:00+00:00"
+          }
+        }
+      },
+      "expect_should_play": {
+        "opx": false
+      }
+    },
+    {
+      "name": "played-40-min-ago-plays",
+      "now": "2018-01-15T00:00:00+00:00",
+      "runtime": {
+        "playlists": {
+          "opx": {
+            "played_at": "2018-01-14T23:20:00+00:00"
+          }
+        }
+      },
+      "expect_should_play": {
+        "opx": true
+      }
+    }
+  ]
+}

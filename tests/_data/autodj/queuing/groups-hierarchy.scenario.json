@@ -1,0 +1,72 @@
+{
+  "description": "One sequential parent group mixing member kinds in weight order: a direct-media playlist, a 1-level nested group, a 2-level nested group, and a consecutive_plays=2 member. Over six builds: Direct (mD), Nested-1 (mN1), Nested-2 (mN2), then Repeat (mR) twice (consecutive plays), then the cycle resets to Direct (mD).",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "mixed-members-rotate-with-consecutive-plays",
+      "now": "2018-01-15T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "direct",
+          "media_ref": "mD",
+          "playlist_chain_refs": [
+            "top",
+            "direct"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "n1leaf",
+          "media_ref": "mN1",
+          "playlist_chain_refs": [
+            "top",
+            "n1",
+            "n1leaf"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "n2leaf",
+          "media_ref": "mN2",
+          "playlist_chain_refs": [
+            "top",
+            "n2",
+            "n2mid",
+            "n2leaf"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "rep",
+          "media_ref": "mR",
+          "playlist_chain_refs": [
+            "top",
+            "rep"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "rep",
+          "media_ref": "mR",
+          "playlist_chain_refs": [
+            "top",
+            "rep"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "direct",
+          "media_ref": "mD",
+          "playlist_chain_refs": [
+            "top",
+            "direct"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -30,13 +30,32 @@
                     :label="$gettext('All Playlists')"
                 >
                     <div class="card-body-flush">
-                        <div class="card-body buttons">
+                        <div class="card-body buttons d-flex justify-content-between">
                             <add-button
                                 :text="$gettext('Add Playlist')"
                                 @click="doCreate"
                             />
+
+                            <div class="d-flex gap-2">
+                                <a
+                                    class="btn btn-secondary"
+                                    :href="exportPlaylistsConfigUrl"
+                                    target="_blank"
+                                >
+                                    <icon-bi-cloud-download/>
+                                    {{ $gettext('Export') }}
+                                </a>
+                                <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    @click="doImportPlaylistConfig"
+                                >
+                                    <icon-bi-cloud-upload/>
+                                    {{ $gettext('Import') }}
+                                </button>
+                            </div>
                         </div>
-                        
+
                         <data-table
                             id="station_playlists"
                             paginated
@@ -52,14 +71,6 @@
                                     {{ row.item.description }}
                                 </p>
                                 <div class="badges">
-                                    <span class="badge text-bg-secondary">
-                                        <template v-if="row.item.source === 'songs'">
-                                            {{ $gettext('Song-based') }}
-                                        </template>
-                                        <template v-else>
-                                            {{ $gettext('Remote URL') }}
-                                        </template>
-                                    </span>
                                     <span
                                         v-if="row.item.is_jingle"
                                         class="badge text-bg-primary"
@@ -67,7 +78,7 @@
                                         {{ $gettext('Jingle Mode') }}
                                     </span>
                                     <span
-                                        v-if="row.item.source === 'songs' && row.item.order === 'sequential'"
+                                        v-if="row.item.order === 'sequential'"
                                         class="badge text-bg-info"
                                     >
                                         {{ $gettext('Sequential') }}
@@ -92,11 +103,31 @@
                                     </span>
                                 </div>
                             </template>
+                            <template #cell(source)="{ item }">
+                                <span class="badge text-bg-secondary d-inline-flex align-items-center gap-1">
+                                    <playlist-source-icon
+                                        :source="item.source"
+                                        :size="IconSize.Small"
+                                    />
+                                    <template v-if="item.source === 'songs'">
+                                        {{ $gettext('Song-based') }}
+                                    </template>
+                                    <template v-else-if="item.source === 'playlists'">
+                                        {{ $gettext('Playlist Group') }}
+                                    </template>
+                                    <template v-else-if="item.source === 'requests'">
+                                        {{ $gettext('Request Queue') }}
+                                    </template>
+                                    <template v-else>
+                                        {{ $gettext('Remote URL') }}
+                                    </template>
+                                </span>
+                            </template>
                             <template #cell(scheduling)="{ item }">
                                 <template v-if="!item.is_enabled">
                                     {{ $gettext('Disabled') }}
                                 </template>
-                                <template v-else-if="item.source !== 'songs'">
+                                <template v-else-if="item.source === 'remote_url'">
                                     {{ $gettext('Remote URL') }}
                                 </template>
                                 <template v-else-if="item.type === 'default'">
@@ -131,7 +162,7 @@
                                     {{ $gettext('Custom') }}
                                 </template>
                             </template>
-                            <template #cell(num_songs)="row">
+                            <template #cell(num_entries)="row">
                                 <template v-if="row.item.source === 'songs'">
                                     <router-link
                                         :to="{
@@ -146,6 +177,22 @@
 
                                     ({{ formatLength(row.item.total_length) }})
                                 </template>
+                                <template v-else-if="row.item.source === 'playlists'">
+                                    {{ row.item.playlists.length }}
+                                </template>
+                                <template v-else>
+                                    &nbsp;
+                                </template>
+                            </template>
+                            <template #cell(groups)="row">
+                                <button
+                                    v-if="row.item.playlist_groups.length > 0"
+                                    type="button"
+                                    class="btn btn-link"
+                                    @click="doShowMemberships(row.item.links.self)"
+                                >
+                                    {{ row.item.playlist_groups.length }}
+                                </button>
                                 <template v-else>
                                     &nbsp;
                                 </template>
@@ -185,10 +232,18 @@
                                     style="line-height: 2.5;"
                                 >
                                     <button
-                                        v-if="item.links.order"
+                                        v-if="item.links.order && item.source !== 'playlists'"
                                         type="button"
                                         class="btn btn-sm btn-primary"
                                         @click="doReorder(item.links.order)"
+                                    >
+                                        {{ $gettext('Reorder') }}
+                                    </button>
+                                    <button
+                                        v-if="item.links.order && item.source === 'playlists'"
+                                        type="button"
+                                        class="btn btn-sm btn-primary"
+                                        @click="doGroupReorder(item.links.members, item.playlists)"
                                     >
                                         {{ $gettext('Reorder') }}
                                     </button>
@@ -247,25 +302,41 @@
                                     >
                                         {{ $gettext('Duplicate') }}
                                     </button>
+
+                                    <template v-if="item.source !== 'playlists'">
+                                        <a
+                                            v-for="format in ['pls', 'm3u']"
+                                            :key="format"
+                                            class="btn btn-sm btn-secondary"
+                                            :href="item.links.export[format]"
+                                            target="_blank"
+                                        >
+                                            {{
+                                                $gettext(
+                                                    'Export %{format}',
+                                                    {format: format.toUpperCase()}
+                                                )
+                                            }}
+                                        </a>
+                                    </template>
+
                                     <a
-                                        v-for="format in ['pls', 'm3u']"
-                                        :key="format"
+                                        v-if="item.links.export_config"
                                         class="btn btn-sm btn-secondary"
-                                        :href="item.links.export[format]"
+                                        :href="item.links.export_config"
                                         target="_blank"
                                     >
-                                        {{
-                                            $gettext(
-                                                'Export %{format}',
-                                                {format: format.toUpperCase()}
-                                            )
-                                        }}
+                                        {{ $gettext('Export JSON') }}
                                     </a>
                                 </div>
                             </template>
                         </data-table>
                     </div>
                 </tab>
+                <playlist-grouping-tab
+                    ref="$playlistGroupingTab"
+                    :list-url="listUrl"
+                />
                 <schedule-view-tab
                     ref="$scheduleTab"
                     :schedule-url="scheduleUrl"
@@ -282,10 +353,18 @@
         @needs-restart="() => mayNeedRestart()"
     />
     <reorder-modal ref="$reorderModal" />
+    <playlist-group-reorder-modal
+        ref="$groupReorderModal"
+        @relist="() => relist()"
+    />
     <queue-modal ref="$queueModal" />
-    <reorder-modal ref="$reorderModal" />
     <import-modal
         ref="$importModal"
+        @relist="() => relist()"
+    />
+    <import-playlist-config-modal
+        ref="$importPlaylistConfigModal"
+        :import-url="importPlaylistsConfigUrl"
         @relist="() => relist()"
     />
     <clone-modal
@@ -308,30 +387,47 @@ import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
 import Tab from "~/components/Common/Tab.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
+import PlaylistSourceIcon from "~/components/Stations/Common/PlaylistSourceIcon.vue";
 import ScheduleViewTab from "~/components/Stations/Common/ScheduleViewTab.vue";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 import ApplyToModal from "~/components/Stations/Playlists/ApplyToModal.vue";
 import CloneModal from "~/components/Stations/Playlists/CloneModal.vue";
 import EditModal from "~/components/Stations/Playlists/EditModal.vue";
 import ImportModal from "~/components/Stations/Playlists/ImportModal.vue";
+import ImportPlaylistConfigModal from "~/components/Stations/Playlists/ImportPlaylistConfigModal.vue";
+import PlaylistGroupingTab from "~/components/Stations/Playlists/PlaylistGroupingTab.vue";
+import PlaylistGroupReorderModal from "~/components/Stations/Playlists/PlaylistGroupReorderModal.vue";
 import QueueModal from "~/components/Stations/Playlists/QueueModal.vue";
 import ReorderModal from "~/components/Stations/Playlists/ReorderModal.vue";
+import {
+    PlaylistGroupAllowedRequests,
+    StationPlaylistGroup,
+} from "~/entities/ApiInterfaces.ts";
 import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
+import {
+    StationPlaylistEnriched,
+    StationPlaylistGroupMemberEnriched,
+} from "~/entities/StationPlaylist.ts";
 import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
+import { IconSize } from "~/functions/icons.ts";
 import { useApiRouter } from "~/functions/useApiRouter.ts";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import { useFormatLength } from "~/functions/useFormatLength.ts";
 import useHasEditModal from "~/functions/useHasEditModal";
 import { useMayNeedRestart } from "~/functions/useMayNeedRestart";
 import { useStationData } from "~/functions/useStationQuery.ts";
 import { useAxios } from "~/vendor/axios";
 import { useTranslate } from "~/vendor/gettext";
-import { useLuxon } from "~/vendor/luxon";
 import IconBiContract from "~icons/bi/chevron-contract";
 import IconBiExpand from "~icons/bi/chevron-expand";
+import IconBiCloudDownload from "~icons/bi/cloud-download";
+import IconBiCloudUpload from "~icons/bi/cloud-upload";
 
 const { getStationApiUrl } = useApiRouter();
 const listUrl = getStationApiUrl("/playlists");
 const scheduleUrl = getStationApiUrl("/playlists/schedule");
+const exportPlaylistsConfigUrl = getStationApiUrl("/playlists/export-config");
+const importPlaylistsConfigUrl = getStationApiUrl("/playlists/import-config");
 
 const { $gettext } = useTranslate();
 
@@ -342,8 +438,10 @@ const fields: DataTableField[] = [
         label: $gettext("Playlist"),
         sortable: true,
     },
+    { key: "source", label: $gettext("Source"), sortable: false },
     { key: "scheduling", label: $gettext("Scheduling"), sortable: false },
-    { key: "num_songs", label: $gettext("# Songs"), sortable: false },
+    { key: "num_entries", label: $gettext("# Entries"), sortable: false },
+    { key: "groups", label: $gettext("Groups"), sortable: false },
     {
         key: "actions",
         label: $gettext("Actions"),
@@ -357,16 +455,7 @@ const listItemProvider = useApiItemProvider(
     queryKeyWithStation([QueryKeys.StationPlaylists]),
 );
 
-const { Duration } = useLuxon();
-
-const formatLength = (length: number) => {
-    if (0 === length) {
-        return $gettext("None");
-    }
-
-    const duration = Duration.fromMillis(length * 1000);
-    return duration.rescale().toHuman();
-};
+const formatLength = useFormatLength();
 
 const $scheduleTab = useTemplateRef("$scheduleTab");
 
@@ -378,6 +467,10 @@ const relist = () => {
 const $editModal = useTemplateRef("$editModal");
 const { doCreate, doEdit } = useHasEditModal($editModal);
 
+const doShowMemberships = (url: string) => {
+    $editModal.value?.editMemberships(url);
+};
+
 const doCalendarClick = (event: EventImpl) => {
     doEdit(event.extendedProps.edit_url);
 };
@@ -386,6 +479,57 @@ const $reorderModal = useTemplateRef("$reorderModal");
 
 const doReorder = (url: string) => {
     $reorderModal.value?.open(url);
+};
+
+const $groupReorderModal = useTemplateRef("$groupReorderModal");
+
+const doGroupReorder = async (
+    membersUrl: string,
+    playlists: StationPlaylistGroup[],
+): Promise<void> => {
+    const { data } = await axios.get(listUrl.value, {
+        params: { rowCount: -1 },
+    });
+
+    const allPlaylists: StationPlaylistEnriched[] = data.rows ?? [];
+    const playlistMap = new Map(
+        allPlaylists.map((playlist) => [playlist.id, playlist]),
+    );
+
+    const enrichedMembers: StationPlaylistGroupMemberEnriched[] = playlists
+        .map((member) => {
+            const weight = member.weight ?? 0;
+            const consecutivePlays = member.consecutive_plays ?? 0;
+            const full = playlistMap.get(member.id);
+            return full
+                ? {
+                      ...full,
+                      weight: weight,
+                      consecutive_plays: consecutivePlays,
+                      play_full_cycle: member.play_full_cycle ?? false,
+                      allowed_requests:
+                          member.allowed_requests ??
+                          PlaylistGroupAllowedRequests.Any,
+                  }
+                : {
+                      ...member,
+                      name: member.name ?? "",
+                      weight: weight,
+                      consecutive_plays: consecutivePlays,
+                      play_full_cycle: member.play_full_cycle ?? false,
+                      allowed_requests:
+                          member.allowed_requests ??
+                          PlaylistGroupAllowedRequests.Any,
+                      source: "",
+                      order: "",
+                      num_songs: 0,
+                      is_enabled: true,
+                      playlists: [],
+                  };
+        })
+        .sort((a, b) => a.weight - b.weight);
+
+    $groupReorderModal.value?.open(membersUrl, enrichedMembers);
 };
 
 const $queueModal = useTemplateRef("$queueModal");
@@ -398,6 +542,12 @@ const $importModal = useTemplateRef("$importModal");
 
 const doImport = (url: string) => {
     $importModal.value?.open(url);
+};
+
+const $importPlaylistConfigModal = useTemplateRef("$importPlaylistConfigModal");
+
+const doImportPlaylistConfig = () => {
+    $importPlaylistConfigModal.value?.open();
 };
 
 const $cloneModal = useTemplateRef("$cloneModal");

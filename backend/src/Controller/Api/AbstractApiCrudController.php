@@ -241,6 +241,8 @@ abstract class AbstractApiCrudController
             $context[AbstractNormalizer::OBJECT_TO_POPULATE] = $record;
         }
 
+        $context[AbstractObjectNormalizer::ENABLE_TYPE_CONVERSION] = true;
+
         /** @var TEntity $result */
         $result = $this->serializer->denormalize($data, $this->entityClass, null, $context);
 

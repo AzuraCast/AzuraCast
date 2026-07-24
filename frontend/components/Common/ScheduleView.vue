@@ -78,6 +78,12 @@ const calendarOptions = computed<CalendarOptions>(() => {
         headerToolbar: false,
         footerToolbar: false,
         height: "auto",
+        eventTimeFormat: {
+            ...timeConfig,
+            hour: "numeric",
+            minute: "2-digit",
+            meridiem: "short",
+        },
         views: {
             timeGridWeek: {
                 slotLabelFormat: {

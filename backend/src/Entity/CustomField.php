@@ -50,10 +50,7 @@ final class CustomField implements Stringable, IdentifiableEntityInterface
         ),
         ORM\Column(length: 100, nullable: false)
     ]
-    public string $short_name {
-        get => !empty($this->short_name)
-            ? $this->short_name
-            : self::generateShortName($this->name);
+    public string $short_name = '' {
         set => $this->truncateString(trim($value), 100);
     }
 

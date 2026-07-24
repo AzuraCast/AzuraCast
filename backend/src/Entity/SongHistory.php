@@ -48,6 +48,12 @@ final class SongHistory implements
         get => $this->playlist?->id;
     }
 
+    /**
+     * @var ?list<string>
+     */
+    #[ORM\Column(type: 'json', nullable: true)]
+    public ?array $playlist_chain = null;
+
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     public ?StationStreamer $streamer = null;
@@ -221,6 +227,7 @@ final class SongHistory implements
         $sh->media = $queue->media;
         $sh->request = $queue->request;
         $sh->playlist = $queue->playlist;
+        $sh->playlist_chain = $queue->playlist_chain;
         $sh->duration = $queue->duration;
         $sh->updateVisibility();
 

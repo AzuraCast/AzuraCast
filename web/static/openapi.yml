@@ -3614,6 +3614,48 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/playlists/export-config':
+    get:
+      tags:
+        - 'Stations: Playlists'
+      summary: "Export all of a station's playlists as a JSON configuration dump."
+      operationId: getStationPlaylistsExportConfig
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessWithDownload'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/playlist/{id}/export-config':
+    get:
+      tags:
+        - 'Stations: Playlists'
+      summary: 'Export a single playlist (and any group members) as a JSON configuration dump.'
+      operationId: getStationPlaylistExportConfig
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Playlist ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessWithDownload'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/playlist/{id}/apply-to':
     get:
       tags:
@@ -3742,6 +3784,62 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/playlists/import-config':
+    post:
+      tags:
+        - 'Stations: Playlists'
+      summary: 'Import playlists from a JSON configuration dump, creating new playlists on the station.'
+      operationId: postStationPlaylistsImportConfig
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                config_file:
+                  description: 'The JSON configuration dump to import.'
+                  type: string
+                  format: binary
+                name_prefix:
+                  description: 'Optional prefix prepended to every imported playlist name.'
+                  type: string
+                  nullable: true
+              type: object
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/playlist/{id}/members':
+    put:
+      tags:
+        - 'Stations: Playlists'
+      summary: 'Set the member playlists of the specified playlist group.'
+      operationId: putStationPlaylistMembers
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'Playlist ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/playlist/{id}/reshuffle':
     put:
       tags:
@@ -3811,7 +3909,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/StationPlaylist'
+                  allOf: [{ $ref: '#/components/schemas/StationPlaylist' }, { $ref: '#/components/schemas/HasLinks' }, { $ref: '#/components/schemas/Api_StationPlaylistComputedFields' }]
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -3835,7 +3933,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StationPlaylist'
+                allOf:
+                  - { $ref: '#/components/schemas/StationPlaylist' }
+                  - { $ref: '#/components/schemas/HasLinks' }
+                  - { $ref: '#/components/schemas/Api_StationPlaylistComputedFields' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -3863,7 +3964,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StationPlaylist'
+                allOf:
+                  - { $ref: '#/components/schemas/StationPlaylist' }
+                  - { $ref: '#/components/schemas/HasLinks' }
+                  - { $ref: '#/components/schemas/Api_StationPlaylistComputedFields' }
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -3923,6 +4027,29 @@ paths:
           $ref: '#/components/responses/AccessDenied'
         '404':
           $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/playlists/schedule':
+    get:
+      tags:
+        - 'Stations: Playlists'
+      summary: "Return calendar events for the station's playlist schedule."
+      description: 'Controller used to respond to AJAX requests from the playlist "Schedule View".'
+      operationId: getStationPlaylistsSchedule
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_StationSchedulePlaylistEvent'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
         '500':
           $ref: '#/components/responses/GenericError'
   '/station/{station_id}/podcast/{podcast_id}/episodes':
@@ -5981,6 +6108,28 @@ paths:
           $ref: '#/components/responses/RecordNotFound'
         '500':
           $ref: '#/components/responses/GenericError'
+  '/station/{station_id}/streamers/schedule':
+    get:
+      tags:
+        - 'Stations: Streamers/DJs'
+      summary: "Return calendar events for the station's streamer/DJ schedule."
+      operationId: getStationStreamersSchedule
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_StationScheduleStreamerEvent'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/nowplaying/update':
     post:
       tags:
@@ -7560,6 +7709,8 @@ components:
         - played_at
         - duration
         - playlist
+        - playlist_chain
+        - playlist_source
         - streamer
         - is_request
         - song
@@ -7580,6 +7731,22 @@ components:
           type: string
           example: 'Top 100'
           nullable: true
+        playlist_chain:
+          description: 'Names of the playlist group chain the song was picked through if played from a group'
+          type: array
+          items:
+            type: string
+          example:
+            - 'Main Rotation'
+            - Rock
+            - 'Rock Hits'
+          nullable: true
+        playlist_source:
+          oneOf:
+            -
+              $ref: '#/components/schemas/PlaylistSources'
+          nullable: true
+          description: 'The source of the playlist that the song was played from, if available.'
         streamer:
           description: 'Indicates the current streamer that was connected, if available, or empty string if not.'
           type: string
@@ -7722,6 +7889,8 @@ components:
         - played_at
         - duration
         - playlist
+        - playlist_chain
+        - playlist_source
         - is_request
         - song
       properties:
@@ -7744,6 +7913,22 @@ components:
           type: string
           example: 'Top 100'
           nullable: true
+        playlist_chain:
+          description: 'Names of the playlist group chain the song was picked through if played from a group'
+          type: array
+          items:
+            type: string
+          example:
+            - 'Main Rotation'
+            - Rock
+            - 'Rock Hits'
+          nullable: true
+        playlist_source:
+          oneOf:
+            -
+              $ref: '#/components/schemas/PlaylistSources'
+          nullable: true
+          description: 'The source of the playlist that the song was played from, if available.'
         is_request:
           description: 'Indicates whether the song is a listener request.'
           type: boolean
@@ -7797,6 +7982,30 @@ components:
         useSse:
           type: boolean
       type: object
+    Api_PlaylistConfigurationImportResult:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_Status'
+        -
+          properties:
+            playlists_created:
+              type: integer
+              example: 3
+            media_relinked:
+              type: integer
+              example: 10
+            media_generated:
+              type: integer
+              example: 2
+            members_created:
+              type: integer
+              example: 1
+            warnings:
+              type: array
+              items:
+                type: string
+          type: object
     Api_Podcast:
       type: object
       allOf:
@@ -8086,6 +8295,46 @@ components:
         playlist:
           type: string
       type: object
+    Api_StationPlaylistComputedFields:
+      properties:
+        short_name:
+          description: 'A URL-safe version of the playlist name.'
+          type: string
+          readOnly: true
+        num_songs:
+          description: 'The number of songs in the playlist, if it is a song-based playlist.'
+          type: integer
+          readOnly: true
+          example: 25
+          nullable: true
+        total_length:
+          description: 'The total length of the playlist in seconds, if it is a song-based playlist.'
+          type: number
+          format: float
+          readOnly: true
+          example: 3600
+          nullable: true
+        playlist_groups:
+          description: 'The parent groups that this playlist is a member of.'
+          type: array
+          items:
+            $ref: '#/components/schemas/Api_StationPlaylistParentGroup'
+          readOnly: true
+      type: object
+    Api_StationPlaylistParentGroup:
+      required:
+        - id
+        - name
+      properties:
+        id:
+          description: 'The unique identifier of the parent group.'
+          type: integer
+          example: 1
+        name:
+          description: 'The name of the parent group.'
+          type: string
+          example: 'My Group'
+      type: object
     Api_StationPlaylistQueue:
       properties:
         spm_id:
@@ -8093,7 +8342,7 @@ components:
           type: integer
           example: 1
         media_id:
-          description: 'ID of the StationPlaylistMedia record associating this track with the playlist'
+          description: 'ID of the StationMedia record associating this track with the media'
           type: integer
           example: 1
         song_id:
@@ -8245,6 +8494,219 @@ components:
           description: 'Whether the event is currently ongoing.'
           type: boolean
           example: true
+      type: object
+    Api_StationScheduleGroupMember:
+      required:
+        - id
+        - name
+        - source
+        - order
+        - weight
+        - count
+        - consecutive_plays
+        - play_full_cycle
+        - is_enabled
+      properties:
+        id:
+          description: 'The unique identifier of the member playlist.'
+          type: integer
+          example: 1
+        name:
+          description: 'The name of the member playlist.'
+          type: string
+          example: 'Example Playlist'
+        source:
+          $ref: '#/components/schemas/PlaylistSources'
+        order:
+          $ref: '#/components/schemas/PlaylistOrders'
+        weight:
+          description: 'The weighting of this member within the group.'
+          type: integer
+          example: 3
+        count:
+          description: 'The number of songs or member playlists in this member, if applicable.'
+          type: integer
+          example: 25
+          nullable: true
+        consecutive_plays:
+          description: 'The number of consecutive plays configured for this member.'
+          type: integer
+          example: 1
+        play_full_cycle:
+          description: 'Whether the member plays through its full cycle before advancing.'
+          type: boolean
+          example: false
+        is_enabled:
+          description: 'Whether the member playlist is enabled.'
+          type: boolean
+          example: true
+      type: object
+    Api_StationSchedulePlaylistEvent:
+      required:
+        - id
+        - title
+        - type
+        - start
+        - end
+        - edit_url
+        - source
+        - order
+        - playlist_type
+        - play_per_songs
+        - play_per_minutes
+        - play_per_hour_minute
+        - weight
+        - is_jingle
+        - include_in_on_demand
+        - avoid_duplicates
+        - has_group_schedule_conflict
+        - members
+        - num_songs
+        - total_length
+        - remote_url
+        - remote_type
+      properties:
+        id:
+          description: 'The unique identifier of the playlist.'
+          type: integer
+          example: 1
+        title:
+          description: 'The playlist name representing the event title.'
+          type: string
+          example: 'Example Playlist'
+        type:
+          description: 'The type of this schedule event.'
+          type: string
+          example: playlist
+          enum:
+            - playlist
+        start:
+          description: 'The start time of this schedule event, in ISO 8601 format.'
+          type: string
+          example: '2020-02-19T03:00:00-06:00'
+        end:
+          description: 'The end time of this schedule event, in ISO 8601 format.'
+          type: string
+          example: '2020-02-19T05:00:00-06:00'
+        edit_url:
+          description: 'The API URL used to edit the underlying playlist.'
+          type: string
+          example: /api/station/1/playlist/1
+        source:
+          $ref: '#/components/schemas/PlaylistSources'
+        order:
+          $ref: '#/components/schemas/PlaylistOrders'
+        playlist_type:
+          $ref: '#/components/schemas/PlaylistTypes'
+        play_per_songs:
+          type: integer
+          example: 0
+        play_per_minutes:
+          type: integer
+          example: 0
+        play_per_hour_minute:
+          type: integer
+          example: 0
+        weight:
+          type: integer
+          example: 3
+        is_jingle:
+          type: boolean
+          example: false
+        include_in_on_demand:
+          type: boolean
+          example: false
+        avoid_duplicates:
+          type: boolean
+          example: false
+        has_group_schedule_conflict:
+          description: 'True if this playlist is a group member whose schedule window is not covered by an active ancestor group schedule, so it will not play during this event.'
+          type: boolean
+          readOnly: true
+          example: false
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/Api_StationScheduleGroupMember'
+        num_songs:
+          description: 'The number of songs in the playlist, if it is a song-based playlist.'
+          type: integer
+          example: 25
+          nullable: true
+        total_length:
+          description: 'The total length of the playlist in seconds, if it is a song-based playlist.'
+          type: number
+          format: float
+          example: 3600
+          nullable: true
+        remote_url:
+          description: 'The remote URL, if this is a remote URL playlist.'
+          type: string
+          example: 'https://example.com/stream'
+          nullable: true
+        remote_type:
+          oneOf:
+            -
+              $ref: '#/components/schemas/PlaylistRemoteTypes'
+          nullable: true
+      type: object
+    Api_StationScheduleStreamerEvent:
+      required:
+        - id
+        - title
+        - type
+        - start
+        - end
+        - edit_url
+        - streamer_username
+        - comments
+        - has_custom_art
+        - art
+      properties:
+        id:
+          description: 'The unique identifier of the streamer.'
+          type: integer
+          example: 1
+        title:
+          description: 'The streamer display name representing the event title.'
+          type: string
+          example: 'Example Streamer'
+        type:
+          description: 'The type of this schedule event.'
+          type: string
+          example: streamer
+          enum:
+            - streamer
+        start:
+          description: 'The start time of this schedule event, in ISO 8601 format.'
+          type: string
+          example: '2020-02-19T03:00:00-06:00'
+        end:
+          description: 'The end time of this schedule event, in ISO 8601 format.'
+          type: string
+          example: '2020-02-19T05:00:00-06:00'
+        edit_url:
+          description: 'The API URL used to edit the underlying streamer.'
+          type: string
+          example: /api/station/1/streamer/1
+        streamer_username:
+          description: 'The streamer login username.'
+          type: string
+          example: example_dj
+        comments:
+          description: 'Comments about the streamer.'
+          type: string
+          example: 'Live every weekday evening.'
+          nullable: true
+        has_custom_art:
+          description: 'Whether the streamer has custom artwork.'
+          type: boolean
+          example: true
+        art:
+          description: 'The URL of the streamer artwork, if custom artwork is present.'
+          type: string
+          example: /api/station/1/streamer/1/art/1.jpg
+          nullable: true
       type: object
     Api_StationServiceStatus:
       required:
@@ -8998,6 +9460,16 @@ components:
       x-enumNames:
         - ResetPassword
         - Login
+    PlaylistGroupAllowedRequests:
+      type: string
+      enum:
+        - any
+        - playlist
+        - none
+      x-enumNames:
+        - Any
+        - Playlist
+        - None
     PlaylistOrders:
       type: string
       enum:
@@ -9022,10 +9494,14 @@ components:
       type: string
       enum:
         - songs
+        - playlists
         - remote_url
+        - requests
       x-enumNames:
         - Songs
+        - Playlists
         - RemoteUrl
+        - Requests
     PlaylistTypes:
       type: string
       enum:
@@ -9497,6 +9973,9 @@ components:
               type: integer
               example: 15
               nullable: true
+            requests_only_via_playlists:
+              type: boolean
+              example: false
             disconnect_deactivate_streamer:
               type: integer
               example: 0
@@ -9913,6 +10392,33 @@ components:
             podcasts:
               type: array
               items: {}
+            playlists:
+              type: array
+              items: {}
+          type: object
+    StationPlaylistGroup:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            name:
+              description: 'The playlist name.'
+              type: string
+              readOnly: true
+              example: 'My Playlist'
+            weight:
+              type: integer
+              example: 1
+            consecutive_plays:
+              type: integer
+              example: 0
+            play_full_cycle:
+              type: boolean
+              example: false
+            allowed_requests:
+              $ref: '#/components/schemas/PlaylistGroupAllowedRequests'
           type: object
     StationRemote:
       type: object
@@ -10009,6 +10515,10 @@ components:
                 type: integer
               example: '0,1,2,3'
             loop_once:
+              type: boolean
+              example: false
+            prevent_requests:
+              description: 'Used to suppress the global request queue while this schedule window is active.'
               type: boolean
               example: false
           type: object

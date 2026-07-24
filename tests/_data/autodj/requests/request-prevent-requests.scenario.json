@@ -1,0 +1,50 @@
+{
+  "description": "A schedule item with prevent_requests blocks the global request queue while its window is active: inside the window the request is skipped and the scheduled playlist plays; outside the window the request is queued.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "blocked-inside-prevent-window",
+      "now": "2018-01-15T12:30:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "blocker",
+          "media_ref": "mBlock",
+          "playlist_chain_refs": [],
+          "from_request": false
+        }
+      ]
+    },
+    {
+      "name": "allowed-outside-prevent-window",
+      "now": "2018-01-15T14:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "media_ref": "mReq",
+          "playlist_chain_refs": [],
+          "from_request": true
+        }
+      ]
+    }
+  ]
+}

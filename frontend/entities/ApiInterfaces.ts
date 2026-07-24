@@ -198,7 +198,9 @@ export enum PlaylistTypes {
 
 export enum PlaylistSources {
     Songs = "songs",
+    Playlists = "playlists",
     RemoteUrl = "remote_url",
+    Requests = "requests",
 }
 
 export enum PlaylistRemoteTypes {
@@ -211,6 +213,12 @@ export enum PlaylistOrders {
     Random = "random",
     Shuffle = "shuffle",
     Sequential = "sequential",
+}
+
+export enum PlaylistGroupAllowedRequests {
+    Any = "any",
+    Playlist = "playlist",
+    None = "none",
 }
 
 export enum LoginTokenTypes {
@@ -888,6 +896,13 @@ export interface ApiNowPlayingSongHistory {
      */
     playlist: string | null;
     /**
+     * Names of the playlist group chain the song was picked through if played from a group
+     * @example ["Main Rotation","Rock","Rock Hits"]
+     */
+    playlist_chain: string[] | null;
+    /** The source of the playlist that the song was played from, if available. */
+    playlist_source: PlaylistSources | null;
+    /**
      * Indicates the current streamer that was connected, if available, or empty string if not.
      * @example "Test DJ"
      */
@@ -1027,6 +1042,13 @@ export interface ApiNowPlayingStationQueue {
      * @example "Top 100"
      */
     playlist: string | null;
+    /**
+     * Names of the playlist group chain the song was picked through if played from a group
+     * @example ["Main Rotation","Rock","Rock Hits"]
+     */
+    playlist_chain: string[] | null;
+    /** The source of the playlist that the song was played from, if available. */
+    playlist_source: PlaylistSources | null;
     /** Indicates whether the song is a listener request. */
     is_request: boolean;
     song: ApiSong;
@@ -1066,6 +1088,18 @@ export interface ApiNowPlayingVueProps {
     useStatic: boolean;
     useSse: boolean;
 }
+
+export type ApiPlaylistConfigurationImportResult = ApiStatus & {
+    /** @example 3 */
+    playlists_created?: number;
+    /** @example 10 */
+    media_relinked?: number;
+    /** @example 2 */
+    media_generated?: number;
+    /** @example 1 */
+    members_created?: number;
+    warnings?: string[];
+};
 
 export type ApiPodcast = HasLinks & {
     id?: string;
@@ -1242,6 +1276,37 @@ export interface ApiStationOnDemand {
     playlist?: string;
 }
 
+export interface ApiStationPlaylistComputedFields {
+    /** A URL-safe version of the playlist name. */
+    readonly short_name?: string;
+    /**
+     * The number of songs in the playlist, if it is a song-based playlist.
+     * @example 25
+     */
+    readonly num_songs?: number | null;
+    /**
+     * The total length of the playlist in seconds, if it is a song-based playlist.
+     * @format float
+     * @example 3600
+     */
+    readonly total_length?: number | null;
+    /** The parent groups that this playlist is a member of. */
+    readonly playlist_groups?: ApiStationPlaylistParentGroup[];
+}
+
+export interface ApiStationPlaylistParentGroup {
+    /**
+     * The unique identifier of the parent group.
+     * @example 1
+     */
+    id: number;
+    /**
+     * The name of the parent group.
+     * @example "My Group"
+     */
+    name: string;
+}
+
 export interface ApiStationPlaylistQueue {
     /**
      * ID of the StationPlaylistMedia record associating this track with the playlist
@@ -1249,7 +1314,7 @@ export interface ApiStationPlaylistQueue {
      */
     spm_id?: number;
     /**
-     * ID of the StationPlaylistMedia record associating this track with the playlist
+     * ID of the StationMedia record associating this track with the media
      * @example 1
      */
     media_id?: number;
@@ -1369,6 +1434,172 @@ export interface ApiStationSchedule {
      * @example true
      */
     is_now?: boolean;
+}
+
+export interface ApiStationScheduleGroupMember {
+    /**
+     * The unique identifier of the member playlist.
+     * @example 1
+     */
+    id: number;
+    /**
+     * The name of the member playlist.
+     * @example "Example Playlist"
+     */
+    name: string;
+    source: PlaylistSources;
+    order: PlaylistOrders;
+    /**
+     * The weighting of this member within the group.
+     * @example 3
+     */
+    weight: number;
+    /**
+     * The number of songs or member playlists in this member, if applicable.
+     * @example 25
+     */
+    count: number | null;
+    /**
+     * The number of consecutive plays configured for this member.
+     * @example 1
+     */
+    consecutive_plays: number;
+    /**
+     * Whether the member plays through its full cycle before advancing.
+     * @example false
+     */
+    play_full_cycle: boolean;
+    /**
+     * Whether the member playlist is enabled.
+     * @example true
+     */
+    is_enabled: boolean;
+}
+
+export interface ApiStationSchedulePlaylistEvent {
+    /**
+     * The unique identifier of the playlist.
+     * @example 1
+     */
+    id: number;
+    /**
+     * The playlist name representing the event title.
+     * @example "Example Playlist"
+     */
+    title: string;
+    /**
+     * The type of this schedule event.
+     * @example "playlist"
+     */
+    type: "playlist";
+    /**
+     * The start time of this schedule event, in ISO 8601 format.
+     * @example "2020-02-19T03:00:00-06:00"
+     */
+    start: string;
+    /**
+     * The end time of this schedule event, in ISO 8601 format.
+     * @example "2020-02-19T05:00:00-06:00"
+     */
+    end: string;
+    /**
+     * The API URL used to edit the underlying playlist.
+     * @example "/api/station/1/playlist/1"
+     */
+    edit_url: string;
+    source: PlaylistSources;
+    order: PlaylistOrders;
+    playlist_type: PlaylistTypes;
+    /** @example 0 */
+    play_per_songs: number;
+    /** @example 0 */
+    play_per_minutes: number;
+    /** @example 0 */
+    play_per_hour_minute: number;
+    /** @example 3 */
+    weight: number;
+    /** @example false */
+    is_jingle: boolean;
+    /** @example false */
+    include_in_on_demand: boolean;
+    /** @example false */
+    avoid_duplicates: boolean;
+    /**
+     * True if this playlist is a group member whose schedule window is not covered by an active ancestor group schedule, so it will not play during this event.
+     * @example false
+     */
+    readonly has_group_schedule_conflict: boolean;
+    members: ApiStationScheduleGroupMember[];
+    /**
+     * The number of songs in the playlist, if it is a song-based playlist.
+     * @example 25
+     */
+    num_songs: number | null;
+    /**
+     * The total length of the playlist in seconds, if it is a song-based playlist.
+     * @format float
+     * @example 3600
+     */
+    total_length: number | null;
+    /**
+     * The remote URL, if this is a remote URL playlist.
+     * @example "https://example.com/stream"
+     */
+    remote_url: string | null;
+    remote_type: PlaylistRemoteTypes | null;
+}
+
+export interface ApiStationScheduleStreamerEvent {
+    /**
+     * The unique identifier of the streamer.
+     * @example 1
+     */
+    id: number;
+    /**
+     * The streamer display name representing the event title.
+     * @example "Example Streamer"
+     */
+    title: string;
+    /**
+     * The type of this schedule event.
+     * @example "streamer"
+     */
+    type: "streamer";
+    /**
+     * The start time of this schedule event, in ISO 8601 format.
+     * @example "2020-02-19T03:00:00-06:00"
+     */
+    start: string;
+    /**
+     * The end time of this schedule event, in ISO 8601 format.
+     * @example "2020-02-19T05:00:00-06:00"
+     */
+    end: string;
+    /**
+     * The API URL used to edit the underlying streamer.
+     * @example "/api/station/1/streamer/1"
+     */
+    edit_url: string;
+    /**
+     * The streamer login username.
+     * @example "example_dj"
+     */
+    streamer_username: string;
+    /**
+     * Comments about the streamer.
+     * @example "Live every weekday evening."
+     */
+    comments: string | null;
+    /**
+     * Whether the streamer has custom artwork.
+     * @example true
+     */
+    has_custom_art: boolean;
+    /**
+     * The URL of the streamer artwork, if custom artwork is present.
+     * @example "/api/station/1/streamer/1/art/1.jpg"
+     */
+    art: string | null;
 }
 
 export interface ApiStationServiceStatus {
@@ -2138,6 +2369,8 @@ export type Station = HasAutoIncrementId & {
     request_delay?: number | null;
     /** @example 15 */
     request_threshold?: number | null;
+    /** @example false */
+    requests_only_via_playlists?: boolean;
     /** @example 0 */
     disconnect_deactivate_streamer?: number | null;
     /**
@@ -2423,6 +2656,22 @@ export type StationPlaylist = HasAutoIncrementId & {
     avoid_duplicates?: boolean;
     schedule_items?: any[];
     podcasts?: any[];
+    playlists?: any[];
+};
+
+export type StationPlaylistGroup = HasAutoIncrementId & {
+    /**
+     * The playlist name.
+     * @example "My Playlist"
+     */
+    readonly name?: string;
+    /** @example 1 */
+    weight?: number;
+    /** @example 0 */
+    consecutive_plays?: number;
+    /** @example false */
+    play_full_cycle?: boolean;
+    allowed_requests?: PlaylistGroupAllowedRequests;
 };
 
 export type StationRemote = HasAutoIncrementId & {
@@ -2481,6 +2730,11 @@ export type StationSchedule = HasAutoIncrementId & {
     days?: number[];
     /** @example false */
     loop_once?: boolean;
+    /**
+     * Used to suppress the global request queue while this schedule window is active.
+     * @example false
+     */
+    prevent_requests?: boolean;
 };
 
 /** Station streamers (DJ accounts) allowed to broadcast to a station. */

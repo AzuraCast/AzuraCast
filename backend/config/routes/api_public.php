@@ -51,7 +51,6 @@ return static function (RouteCollectorProxy $group) {
         '/nowplaying',
         Controller\Api\NowPlayingAction::class
     )->setName('api:nowplaying:index')
-        ->add(new Middleware\Cache\SetCache(15))
         ->add(Middleware\GetStation::class);
 
     $group->get('/stations', Controller\Api\Stations\IndexController::class . ':listAction')

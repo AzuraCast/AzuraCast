@@ -15,8 +15,7 @@ return static function (RouteCollectorProxy $group) {
             $group->get(
                 '',
                 Controller\Api\NowPlayingAction::class
-            )->setName('api:nowplaying:station')
-                ->add(new Middleware\Cache\SetCache(15));
+            )->setName('api:nowplaying:station');
 
             $group->get(
                 '/art[/{timestamp}.jpg]',

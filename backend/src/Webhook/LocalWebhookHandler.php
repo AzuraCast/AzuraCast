@@ -30,6 +30,8 @@ final class LocalWebhookHandler
         NowPlaying $np,
         array $triggers
     ): void {
+        $np->update();
+
         $fsUtils = new Filesystem();
 
         $staticNpDir = $this->environment->getTempDirectory() . '/nowplaying';

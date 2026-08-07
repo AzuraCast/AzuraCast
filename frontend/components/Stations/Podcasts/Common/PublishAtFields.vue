@@ -50,8 +50,8 @@ watch(
                 zone: timezone.value,
             });
             if (publishDateTime.isValid) {
-                publishDate.value = publishDateTime.toISODate();
-                publishTime.value = publishDateTime.toISOTime({
+                publishDate.value = <string>publishDateTime.toISODate();
+                publishTime.value = <string>publishDateTime.toISOTime({
                     suppressMilliseconds: true,
                     includeOffset: false,
                 });

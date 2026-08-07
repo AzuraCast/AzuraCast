@@ -24,6 +24,7 @@ type Form = Required<
         | "api_access_control"
         | "enable_liquidsoap_editing"
         | "enable_all_webhooks"
+        | "filter_local_user_urls"
         | "check_for_updates"
         | "acme_email"
         | "acme_domains"
@@ -58,6 +59,7 @@ export const useAdminSettingsForm = defineStore("form-admin-settings", () => {
         api_access_control: "*",
         enable_liquidsoap_editing: true,
         enable_all_webhooks: true,
+        filter_local_user_urls: true,
         check_for_updates: true,
         acme_email: "",
         acme_domains: "",

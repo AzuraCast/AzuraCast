@@ -88,6 +88,19 @@
                 </form-group-checkbox>
 
                 <form-group-checkbox
+                    id="edit_form_filter_local_user_urls"
+                    class="col-md-12"
+                    :field="r$.filter_local_user_urls"
+                    :label="$gettext('Filter Local User-provided URLs')"
+                >
+                    <template #description>
+                        {{
+                            $gettext('Prevent users from supplying URLs that point to local IPs in sensitive scenarios, like web hooks or remote relays. In some scenarios, these tools can be used to exfiltrate data from your local hosting environment. If you need to connect to local services (i.e. you are running a single-station Docker installation), disable this setting to allow more permissive URLs.')
+                        }}
+                    </template>
+                </form-group-checkbox>
+
+                <form-group-checkbox
                     id="edit_form_enable_all_webhooks"
                     class="col-md-12"
                     :field="r$.enable_all_webhooks"

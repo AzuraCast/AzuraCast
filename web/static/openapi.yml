@@ -9224,6 +9224,10 @@ components:
           description: 'Allow stations to dispatch webhooks.'
           type: boolean
           example: 'true'
+        filter_local_user_urls:
+          description: 'Prevent users from using local IPs or URLs in Webhooks, etc.'
+          type: boolean
+          example: 'true'
         enable_static_nowplaying:
           description: 'Whether to use high-performance static JSON for Now Playing data updates.'
           type: boolean

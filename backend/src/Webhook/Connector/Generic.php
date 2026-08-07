@@ -8,9 +8,18 @@ use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
 use App\Utilities\Types;
+use App\Utilities\UserUrlFilter;
+use GuzzleHttp\Client;
 
 final class Generic extends AbstractConnector
 {
+    public function __construct(
+        Client $httpClient,
+        private readonly UserUrlFilter $userUrlFilter
+    ) {
+        parent::__construct($httpClient);
+    }
+
     /**
      * @inheritDoc
      */
@@ -22,7 +31,10 @@ final class Generic extends AbstractConnector
     ): void {
         $config = $webhook->config ?? [];
 
-        $webhookUrl = $this->getValidUrl($config['webhook_url']);
+        $webhookUrl = $this->userUrlFilter->filterSensitiveUserUrl(
+            $config['webhook_url'],
+            'Generic Webhook'
+        );
 
         if (empty($webhookUrl)) {
             throw $this->incompleteConfigException($webhook);

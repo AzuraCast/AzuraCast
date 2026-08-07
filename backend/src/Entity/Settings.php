@@ -156,6 +156,13 @@ final class Settings implements Stringable
     public bool $enable_all_webhooks = true;
 
     #[
+        OA\Property(description: "Prevent users from using local IPs or URLs in Webhooks, etc.", example: "true"),
+        ORM\Column,
+        Serializer\Groups(self::GROUP_GENERAL)
+    ]
+    public bool $filter_local_user_urls = true;
+
+    #[
         OA\Property(
             description: "Whether to use high-performance static JSON for Now Playing data updates.",
             example: "false"

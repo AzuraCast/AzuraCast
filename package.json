@@ -57,7 +57,7 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.3",
+    "@biomejs/biome": "^2.5.7",
     "@iconify-json/bi": "^1.2.6",
     "@iconify-json/ic": "^1.2.4",
     "@types/bootstrap": "^5.2.6",

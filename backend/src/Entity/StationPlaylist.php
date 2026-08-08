@@ -286,9 +286,7 @@ final class StationPlaylist implements
     /** @var Collection<int, StationPlaylistGroup> */
     #[
         ORM\OneToMany(targetEntity: StationPlaylistGroup::class, mappedBy: 'playlist', fetch: 'EXTRA_LAZY'),
-        ORM\OrderBy(['weight' => 'ASC']),
-        DeepNormalize(true),
-        Serializer\MaxDepth(1)
+        ORM\OrderBy(['weight' => 'ASC'])
     ]
     public private(set) Collection $playlist_groups;
 

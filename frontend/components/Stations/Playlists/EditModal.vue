@@ -46,11 +46,17 @@ import Tabs from "~/components/Common/Tabs.vue";
 import { useNotify } from "~/components/Common/Toasts/useNotify.ts";
 import FormAdvanced from "~/components/Stations/Playlists/Form/Advanced.vue";
 import FormBasicInfo from "~/components/Stations/Playlists/Form/BasicInfo.vue";
-import { useStationsPlaylistsForm } from "~/components/Stations/Playlists/Form/form.ts";
+import {
+    StationPlaylistsRecord,
+    useStationsPlaylistsForm,
+} from "~/components/Stations/Playlists/Form/form.ts";
 import PlaylistLinkListTab from "~/components/Stations/Playlists/Form/PlaylistLinkListTab.vue";
 import FormSchedule from "~/components/Stations/Playlists/Form/Schedule.vue";
 import { PlaylistSources } from "~/entities/ApiInterfaces";
-import { PlaylistBreadcrumb } from "~/entities/StationPlaylist.ts";
+import {
+    PlaylistBreadcrumb,
+    StationPlaylistEnriched,
+} from "~/entities/StationPlaylist.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
 import { useApiRouter } from "~/functions/useApiRouter.ts";
 import {
@@ -87,7 +93,7 @@ const {
     edit,
     doSubmit,
     close,
-} = useBaseEditModal(
+} = useBaseEditModal<StationPlaylistsRecord, StationPlaylistEnriched>(
     toRef(props, "createUrl"),
     emit,
     $modal,
@@ -97,14 +103,12 @@ const {
             toState: mergeExisting(r$.value.$value, data),
         });
 
-        playlistGroups.value =
-            (data as { playlist_groups?: PlaylistBreadcrumb[] })
-                .playlist_groups ?? [];
+        playlistGroups.value = data.playlist_groups ?? [];
 
-        playlistMembers.value = (
-            (data as { playlists?: Array<{ id: number; name?: string }> })
-                .playlists ?? []
-        ).map((member) => ({ id: member.id, name: member.name ?? "" }));
+        playlistMembers.value = (data.playlists ?? []).map((member) => ({
+            id: member.id,
+            name: member.name,
+        }));
     },
     async () => {
         const { valid } = await validatedr$.$validate();

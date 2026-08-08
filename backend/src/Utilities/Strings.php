@@ -23,7 +23,7 @@ final class Strings
         $shortenedText = mb_substr(
             $wrappedText,
             0,
-            strpos($wrappedText, '{N}') ?: null
+            mb_strpos($wrappedText, '{N}') ?: null
         );
 
         // Prevent the padding string from bumping up against punctuation.

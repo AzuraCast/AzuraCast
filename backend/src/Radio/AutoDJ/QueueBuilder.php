@@ -24,8 +24,10 @@ use App\Entity\StationPlaylistMedia;
 use App\Entity\StationQueue;
 use App\Event\Radio\BuildQueue;
 use App\Radio\PlaylistParser;
+use App\Utilities\UserUrlFilter;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\Collection;
+use GuzzleHttp\Client;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -46,7 +48,9 @@ final class QueueBuilder implements EventSubscriberInterface
         private readonly StationPlaylistRepository $spRepo,
         private readonly StationPlaylistMediaRepository $spmRepo,
         private readonly StationRequestRepository $requestRepo,
-        private readonly StationQueueRepository $queueRepo
+        private readonly StationQueueRepository $queueRepo,
+        private readonly UserUrlFilter $userUrlFilter,
+        private readonly Client $httpClient
     ) {
     }
 
@@ -718,12 +722,16 @@ final class QueueBuilder implements EventSubscriberInterface
         if (empty($mediaQueue)) {
             $mediaQueue = [];
 
-            $playlistRemoteUrl = $playlist->remote_url;
-            if (null !== $playlistRemoteUrl) {
-                $playlistRaw = file_get_contents($playlistRemoteUrl);
-                if (false !== $playlistRaw) {
-                    $mediaQueue = PlaylistParser::getSongs($playlistRaw);
-                }
+            $playlistRemoteUrl = $this->userUrlFilter->filterSensitiveUserUrl(
+                $playlist->remote_url,
+                'Playlist Remote URL'
+            );
+
+            $httpResponse = $this->httpClient->get($playlistRemoteUrl);
+
+            $playlistRaw = $httpResponse->getBody()->getContents();
+            if (!empty($playlistRaw)) {
+                $mediaQueue = PlaylistParser::getSongs($playlistRaw);
             }
         }
 

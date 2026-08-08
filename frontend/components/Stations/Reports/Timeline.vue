@@ -186,12 +186,12 @@ const apiUrl = computed(() => {
 
     const startDate = DateTime.fromJSDate(dateRange.value.startDate);
     if (startDate.isValid) {
-        apiUrlParams.set("start", startDate.toISO());
+        apiUrlParams.set("start", <string>startDate.toISO());
     }
 
     const endDate = DateTime.fromJSDate(dateRange.value.endDate);
     if (endDate.isValid) {
-        apiUrlParams.set("end", endDate.toISO());
+        apiUrlParams.set("end", <string>endDate.toISO());
     }
 
     return apiUrl.toString();

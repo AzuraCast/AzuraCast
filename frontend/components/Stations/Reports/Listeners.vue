@@ -343,12 +343,12 @@ const exportUrl = computed(() => {
     if (!isLive.value) {
         const startDate = DateTime.fromJSDate(dateRange.value.startDate);
         if (startDate.isValid) {
-            exportUrlParams.set("start", startDate.toISO());
+            exportUrlParams.set("start", <string>startDate.toISO());
         }
 
         const endDate = DateTime.fromJSDate(dateRange.value.endDate);
         if (endDate.isValid) {
-            exportUrlParams.set("end", endDate.toISO());
+            exportUrlParams.set("end", <string>endDate.toISO());
         }
     }
 

@@ -7,6 +7,7 @@ namespace App\Controller\Api\Stations\Vue;
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Stations\Vue\ProfileProps;
+use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
@@ -39,6 +40,11 @@ final class ProfileAction implements SingleActionInterface
         $frontendConfig = $station->frontend_config;
 
         $router = $request->getRouter();
+
+        $canManageBroadcasting = $request->getAcl()->isAllowed(
+            StationPermissions::Broadcasting,
+            $station
+        );
 
         return $response->withJson(
             new ProfileProps(
@@ -74,11 +80,21 @@ final class ProfileAction implements SingleActionInterface
                     queryParams: ['embed' => 'true'],
                     absolute: true
                 ),
-                frontendAdminUri: (string)$frontend?->getAdminUrl($station, $router->getBaseUrl()),
-                frontendAdminPassword: $frontendConfig->admin_pw,
-                frontendSourcePassword: $frontendConfig->source_pw,
-                frontendRelayPassword: $frontendConfig->relay_pw,
-                frontendPort: $frontendConfig->port
+                frontendAdminUri: $canManageBroadcasting
+                    ? (string)$frontend?->getAdminUrl($station, $router->getBaseUrl())
+                    : '',
+                frontendAdminPassword: $canManageBroadcasting
+                    ? $frontendConfig->admin_pw
+                    : '',
+                frontendSourcePassword: $canManageBroadcasting
+                    ? $frontendConfig->source_pw
+                    : '',
+                frontendRelayPassword: $canManageBroadcasting
+                    ? $frontendConfig->relay_pw
+                    : '',
+                frontendPort: $canManageBroadcasting
+                    ? $frontendConfig->port
+                    : null
             )
         );
     }

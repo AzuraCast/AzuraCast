@@ -7,6 +7,13 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- Added a new system-wide toggle to heavily filter user-supplied URLs in certain sensitive scenarios. In some places
+  (notably, Webhooks and Remote Relays), station administrators can input a URL that will then invoke outbound HTTP
+  requests from your installation. Multi-tenant installations or resellers should enable this setting, in order to
+  prevent users from possibly exfiltrating local data about your hosting setup. If you are running a single-installation
+  station locally, you can likely leave this setting disabled, which will allow you to use local services for these
+  items.
+
 - Added a new system-wide toggle for enabling or disabling Web Hooks on all stations. Because web hooks dispatch an
   outgoing HTTP POST request from your AzuraCast installation, this may be considered a security risk in your
   infrastructure, so you can disable them entirely as a safety measure.

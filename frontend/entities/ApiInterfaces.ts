@@ -2116,6 +2116,11 @@ export interface Settings {
      */
     enable_all_webhooks?: boolean;
     /**
+     * Prevent users from using local IPs or URLs in Webhooks, etc.
+     * @example "true"
+     */
+    filter_local_user_urls?: boolean;
+    /**
      * Whether to use high-performance static JSON for Now Playing data updates.
      * @example "false"
      */

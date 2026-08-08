@@ -10,6 +10,7 @@ use App\Container\SettingsAwareTrait;
 use App\Entity\Relay;
 use App\Entity\StationRemote;
 use App\Nginx\CustomUrls;
+use App\Utilities\UserUrlFilter;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\Create;
 use GuzzleHttp\Promise\PromiseInterface;
@@ -25,11 +26,12 @@ final class AzuraRelay extends AbstractRemote
     use SettingsAwareTrait;
 
     public function __construct(
-        private readonly AzuraRelayCache $azuraRelayCache,
         Client $httpClient,
         AdapterFactory $adapterFactory,
+        UserUrlFilter $userUrlFilter,
+        private readonly AzuraRelayCache $azuraRelayCache
     ) {
-        parent::__construct($httpClient, $adapterFactory);
+        parent::__construct($httpClient, $adapterFactory, $userUrlFilter);
     }
 
     public function getNowPlayingAsync(StationRemote $remote, bool $includeClients = false): PromiseInterface

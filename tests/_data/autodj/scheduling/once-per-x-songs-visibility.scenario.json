@@ -1,0 +1,131 @@
+{
+  "description": "A once-per-3-songs playlist counts its song window over visible history rows plus its own rows: hidden rows of other playlists do not advance the window, the playlist's own hidden (jingle) rows still count, and it becomes eligible again after three visible songs.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "hidden-rows-of-other-playlists-do-not-advance-window",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "song_id": "ids-play",
+            "artist": "Station",
+            "title": "ID One",
+            "playlist_ref": "ids",
+            "is_visible": true,
+            "timestamp_played": "2018-01-15T11:50:00+00:00"
+          },
+          {
+            "song_id": "music-b",
+            "artist": "Artist B",
+            "title": "Song B",
+            "is_visible": true,
+            "timestamp_played": "2018-01-15T11:52:00+00:00"
+          },
+          {
+            "song_id": "sweeper-1",
+            "artist": "Station",
+            "title": "Sweeper One",
+            "playlist_ref": "sweep",
+            "is_visible": false,
+            "timestamp_played": "2018-01-15T11:54:00+00:00"
+          },
+          {
+            "song_id": "sweeper-2",
+            "artist": "Station",
+            "title": "Sweeper Two",
+            "playlist_ref": "sweep",
+            "is_visible": false,
+            "timestamp_played": "2018-01-15T11:56:00+00:00"
+          },
+          {
+            "song_id": "music-a",
+            "artist": "Artist A",
+            "title": "Song A",
+            "is_visible": true,
+            "timestamp_played": "2018-01-15T11:58:00+00:00"
+          }
+        ]
+      },
+      "expect_should_play": {
+        "ids": false
+      }
+    },
+    {
+      "name": "own-hidden-rows-count-toward-window",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "song_id": "ids-hidden-play",
+            "artist": "Station",
+            "title": "ID One",
+            "playlist_ref": "ids",
+            "is_visible": false,
+            "timestamp_played": "2018-01-15T11:54:00+00:00"
+          },
+          {
+            "song_id": "music-c",
+            "artist": "Artist C",
+            "title": "Song C",
+            "is_visible": true,
+            "timestamp_played": "2018-01-15T11:56:00+00:00"
+          },
+          {
+            "song_id": "music-d",
+            "artist": "Artist D",
+            "title": "Song D",
+            "is_visible": true,
+            "timestamp_played": "2018-01-15T11:58:00+00:00"
+          }
+        ]
+      },
+      "expect_should_play": {
+        "ids": false
+      }
+    },
+    {
+      "name": "eligible-again-after-three-visible-songs",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "song_id": "ids-play",
+            "artist": "Station",
+            "title": "ID One",
+            "playlist_ref": "ids",
+            "is_visible": true,
+            "timestamp_played": "2018-01-15T11:50:00+00:00"
+          },
+          {
+            "song_id": "music-e",
+            "artist": "Artist E",
+            "title": "Song E",
+            "is_visible": true,
+            "timestamp_played": "2018-01-15T11:52:00+00:00"
+          },
+          {
+            "song_id": "music-f",
+            "artist": "Artist F",
+            "title": "Song F",
+            "is_visible": true,
+            "timestamp_played": "2018-01-15T11:54:00+00:00"
+          },
+          {
+            "song_id": "music-g",
+            "artist": "Artist G",
+            "title": "Song G",
+            "is_visible": true,
+            "timestamp_played": "2018-01-15T11:56:00+00:00"
+          }
+        ]
+      },
+      "expect_should_play": {
+        "ids": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "description": "A sequential playlist group selects its lowest-weight member first, then queues that member's track.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "selects-first-member-track",
+      "now": "2018-01-15T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "rock",
+          "media_ref": "m1",
+          "playlist_chain_refs": [
+            "group",
+            "rock"
+          ]
+        }
+      ]
+    }
+  ]
+}

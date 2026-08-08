@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "type": "station",
+  "station": {
+    "name": "Test Station",
+    "timezone": "UTC",
+    "requests_only_via_playlists": false
+  },
+  "media": [
+    {
+      "ref": "mDis",
+      "path": "grp-disabled/disabled.mp3",
+      "unique_id": "grpdisabledaaaaaaaaaaa01",
+      "length": 120.0,
+      "artist": "Disabled Artist",
+      "title": "Disabled Track",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "mEn",
+      "path": "grp-disabled/enabled.mp3",
+      "unique_id": "grpdisabledaaaaaaaaaaa02",
+      "length": 120.0,
+      "artist": "Enabled Artist",
+      "title": "Enabled Track",
+      "album": null,
+      "genre": null
+    }
+  ],
+  "playlists": [
+    {
+      "ref": "grp",
+      "name": "Group With Disabled Member",
+      "config": {
+        "type": "default",
+        "source": "playlists",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [],
+      "schedules": [],
+      "members": [
+        {
+          "playlist_ref": "member_disabled",
+          "weight": 1,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        },
+        {
+          "playlist_ref": "member_enabled",
+          "weight": 2,
+          "consecutive_plays": 0,
+          "allowed_requests": "any"
+        }
+      ]
+    },
+    {
+      "ref": "member_disabled",
+      "name": "Disabled Member",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": false,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "mDis",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "member_enabled",
+      "name": "Enabled Member",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "mEn",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    }
+  ]
+}

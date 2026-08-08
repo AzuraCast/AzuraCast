@@ -1,0 +1,33 @@
+{
+  "description": "Parent-group override: the member playlist has avoid_duplicates=false, but its parent group has avoid_duplicates=true. m1 was recently played, so the group-level flag forces duplicate avoidance on the member and the AutoDJ picks m2 instead of the lowest-weight m1.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "group-flag-forces-member-dedup",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "queue_history": [
+          {
+            "media_ref": "m1",
+            "timestamp_played": "2018-01-15T11:55:00+00:00",
+            "is_visible": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "dp",
+          "media_ref": "m2",
+          "playlist_chain_refs": [
+            "grp",
+            "dp"
+          ]
+        }
+      ]
+    }
+  ]
+}

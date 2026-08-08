@@ -6,8 +6,10 @@ namespace App\Radio\AutoDJ;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Entity\Enums\PlaylistSources;
 use App\Entity\Enums\PlaylistTypes;
 use App\Entity\Repository\StationPlaylistMediaRepository;
+use App\Entity\Repository\StationPlaylistRepository;
 use App\Entity\Repository\StationQueueRepository;
 use App\Entity\StationPlaylist;
 use App\Entity\StationSchedule;
@@ -26,6 +28,7 @@ final class Scheduler
     use EntityManagerAwareTrait;
 
     public function __construct(
+        private readonly StationPlaylistRepository $spRepo,
         private readonly StationPlaylistMediaRepository $spmRepo,
         private readonly StationQueueRepository $queueRepo
     ) {
@@ -128,6 +131,60 @@ final class Scheduler
         );
 
         return null !== $scheduleItem;
+    }
+
+    /**
+     * Determine whether a playlist that is a member of one or more groups is blocked from playing
+     * during the given window because no ancestor-group chain is scheduled to be active across it.
+     */
+    public function isPlaylistBlockedByGroupSchedule(
+        StationPlaylist $playlist,
+        DateRange $window
+    ): bool {
+        if ($playlist->playlist_groups->count() === 0) {
+            return false;
+        }
+
+        foreach ($playlist->playlist_groups as $spg) {
+            if ($this->isGroupActiveThroughoutWindow($spg->playlist_group, $window)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param int[] $visitedIdsInChain
+     */
+    private function isGroupActiveThroughoutWindow(
+        StationPlaylist $group,
+        DateRange $window,
+        array $visitedIdsInChain = []
+    ): bool {
+        if (in_array($group->id, $visitedIdsInChain, true)) {
+            return false;
+        }
+
+        $visitedIdsInChain[] = $group->id;
+
+        $coversStart = $this->isPlaylistScheduledToPlayNow($group, $window->start);
+        $coversEnd = $this->isPlaylistScheduledToPlayNow($group, $window->end->subSecond());
+        if (!$coversStart || !$coversEnd) {
+            return false;
+        }
+
+        if ($group->playlist_groups->count() === 0) {
+            return true;
+        }
+
+        foreach ($group->playlist_groups as $spg) {
+            if ($this->isGroupActiveThroughoutWindow($spg->playlist_group, $window, $visitedIdsInChain)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function shouldPlaylistPlayNowPerHour(
@@ -265,11 +322,6 @@ final class Scheduler
             'endTime' => $endTime,
         ]);
 
-        if (!$this->shouldSchedulePlayOnCurrentDate($schedule, $tz, $now)) {
-            $this->logger->debug('Schedule is not scheduled to play today.');
-            return false;
-        }
-
         /** @var DateRange[] $comparePeriods */
         $comparePeriods = [];
 
@@ -326,6 +378,12 @@ final class Scheduler
             return false;
         }
 
+        // Check start/end date limitations against the day this window starts.
+        if (!$this->isScheduleDateInRange($schedule, $dateRange->start)) {
+            $this->logger->debug('Schedule window start date is outside the configured date range.');
+            return false;
+        }
+
         // Check playlist special handling rules.
         $playlist = $schedule->playlist;
         if (null === $playlist) {
@@ -372,26 +430,43 @@ final class Scheduler
 
         $playlistPlayedAt = $playlist->played_at;
 
-        $isQueueEmpty = $this->spmRepo->isQueueEmpty($playlist);
-        $hasCuedPlaylistMedia = $this->queueRepo->hasCuedPlaylistMedia($playlist);
+        $isQueueEmpty = (PlaylistSources::Playlists === $playlist->source)
+            ? $this->spRepo->isPlaylistGroupQueueEmpty($playlist)
+            : $this->spmRepo->isQueueEmpty($playlist);
+
+        $hasCuedPlaylistMedia = (PlaylistSources::Playlists === $playlist->source)
+            ? $this->queueRepo->hasCuedPlaylistGroupMedia($playlist)
+            : $this->queueRepo->hasCuedPlaylistMedia($playlist);
 
         if (!$dateRange->contains($playlistPlayedAt)) {
             $this->logger->debug('Playlist was not played yet.');
 
-            $isQueueFilled = $this->spmRepo->isQueueCompletelyFilled($playlist);
+            $isQueueFilled = (PlaylistSources::Playlists === $playlist->source)
+                ? $this->spRepo->isPlaylistGroupQueueCompletelyFilled($playlist)
+                : $this->spmRepo->isQueueCompletelyFilled($playlist);
 
             if ((!$isQueueFilled || $isQueueEmpty) && !$hasCuedPlaylistMedia) {
                 $now = $dateRange->start->subSecond();
 
                 $this->logger->debug('Resetting playlist queue with now override', [$now]);
 
-                $this->spmRepo->resetQueue($playlist, $now);
+                if (PlaylistSources::Playlists === $playlist->source) {
+                    $this->spRepo->resetPlaylistGroupQueue($playlist, $now);
+                } else {
+                    $this->spmRepo->resetQueue($playlist, $now);
+                }
+
                 $isQueueEmpty = false;
             }
         } elseif ($isQueueEmpty && !$hasCuedPlaylistMedia) {
             $this->logger->debug('Resetting playlist queue.');
 
-            $this->spmRepo->resetQueue($playlist);
+            if (PlaylistSources::Playlists === $playlist->source) {
+                $this->spRepo->resetPlaylistGroupQueue($playlist);
+            } else {
+                $this->spmRepo->resetQueue($playlist);
+            }
+
             $isQueueEmpty = false;
         }
 
@@ -467,6 +542,29 @@ final class Scheduler
                     return false;
                 }
             }
+        }
+
+        return true;
+    }
+
+    /**
+     * Given the day a schedule window starts, return whether the schedule's
+     * start/end date range (if any) permits a window starting on that day.
+     */
+    public function isScheduleDateInRange(
+        StationSchedule $schedule,
+        DateTimeImmutable $windowStart
+    ): bool {
+        $dateToCheck = $windowStart->format('Y-m-d');
+
+        $startDate = $schedule->start_date;
+        if (!empty($startDate) && $dateToCheck < $startDate) {
+            return false;
+        }
+
+        $endDate = $schedule->end_date;
+        if (!empty($endDate) && $dateToCheck > $endDate) {
+            return false;
         }
 
         return true;

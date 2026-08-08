@@ -138,7 +138,6 @@ class Api_Stations_ReportsCest extends CestAbstract
 
         $csvHeaders = $csvReader->getHeader();
 
-        $this->assertIsArray($csvHeaders);
         $this->assertTrue(
             count($csvHeaders) > 0,
             'CSV is not empty'

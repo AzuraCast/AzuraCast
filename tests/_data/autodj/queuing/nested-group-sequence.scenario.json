@@ -1,0 +1,48 @@
+{
+  "description": "A sequential playlist group nested two levels deep (top -> branch -> seq) rotates its leaf members in weight order across successive builds: A (mA), then B (mB), then C (mC). Verifies that a nested group reached via the group path honors its own sequential order.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "nested-sequential-rotates-a-b-c",
+      "now": "2018-01-15T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "a",
+          "media_ref": "mA",
+          "playlist_chain_refs": [
+            "top",
+            "branch",
+            "seq",
+            "a"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "b",
+          "media_ref": "mB",
+          "playlist_chain_refs": [
+            "top",
+            "branch",
+            "seq",
+            "b"
+          ]
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "c",
+          "media_ref": "mC",
+          "playlist_chain_refs": [
+            "top",
+            "branch",
+            "seq",
+            "c"
+          ]
+        }
+      ]
+    }
+  ]
+}

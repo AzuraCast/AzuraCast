@@ -6,6 +6,7 @@ namespace App\Controller\Api\Stations\Playlists;
 
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Status;
+use App\Entity\Enums\PlaylistSources;
 use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\Repository\StationPlaylistRepository;
 use App\Http\Response;
@@ -57,7 +58,9 @@ final readonly class ReshuffleAction implements SingleActionInterface
 
         $record = $this->playlistRepo->requireForStation($id, $request->getStation());
 
-        $this->spmRepo->resetQueue($record);
+        (PlaylistSources::Playlists === $record->source)
+            ? $this->playlistRepo->resetPlaylistGroupQueue($record)
+            : $this->spmRepo->resetQueue($record);
 
         // Write changes to file.
         $message = new WritePlaylistFileMessage();

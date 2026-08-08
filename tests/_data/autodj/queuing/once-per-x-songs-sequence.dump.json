@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "type": "station",
+  "station": {
+    "name": "Test Station",
+    "timezone": "UTC",
+    "requests_only_via_playlists": false
+  },
+  "media": [
+    {
+      "ref": "mJ",
+      "path": "opxsseq/jingle.mp3",
+      "unique_id": "opxsseqaaaaaaaaaaaaaaa01",
+      "length": 15.0,
+      "artist": "Station",
+      "title": "Station ID",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "mA",
+      "path": "opxsseq/song-a.mp3",
+      "unique_id": "opxsseqaaaaaaaaaaaaaaa02",
+      "length": 120.0,
+      "artist": "Artist A",
+      "title": "Song A",
+      "album": null,
+      "genre": null
+    },
+    {
+      "ref": "mB",
+      "path": "opxsseq/song-b.mp3",
+      "unique_id": "opxsseqaaaaaaaaaaaaaaa03",
+      "length": 120.0,
+      "artist": "Artist B",
+      "title": "Song B",
+      "album": null,
+      "genre": null
+    }
+  ],
+  "playlists": [
+    {
+      "ref": "jid",
+      "name": "ID Every Two Songs",
+      "config": {
+        "type": "once_per_x_songs",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": false,
+        "include_in_on_demand": false,
+        "play_per_songs": 2,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "mJ",
+          "weight": 1,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    },
+    {
+      "ref": "music",
+      "name": "Music Rotation",
+      "config": {
+        "type": "default",
+        "source": "songs",
+        "order": "sequential",
+        "weight": 3,
+        "is_enabled": true,
+        "is_jingle": false,
+        "avoid_duplicates": false,
+        "include_in_requests": true,
+        "include_in_on_demand": false,
+        "play_per_songs": 0,
+        "play_per_minutes": 0,
+        "play_per_hour_minute": 0,
+        "backend_options": [],
+        "remote_url": null,
+        "remote_type": "stream",
+        "remote_buffer": 0,
+        "description": null
+      },
+      "folders": [],
+      "media": [
+        {
+          "media_ref": "mA",
+          "weight": 1,
+          "folder_ref": null
+        },
+        {
+          "media_ref": "mB",
+          "weight": 2,
+          "folder_ref": null
+        }
+      ],
+      "schedules": [],
+      "members": []
+    }
+  ]
+}

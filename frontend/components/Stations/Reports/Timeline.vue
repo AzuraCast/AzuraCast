@@ -75,8 +75,11 @@
                     {{ $gettext('Listener Request') }}
                 </template>
                 <template v-else-if="row.item.playlist">
-                    {{ $gettext('Playlist:') }}
-                    {{ row.item.playlist }}
+                    <playlist-source-badge
+                        :chain="row.item.playlist_chain"
+                        :playlist-name="row.item.playlist"
+                        :source="row.item.playlist_source"
+                    />
                 </template>
                 <template v-else-if="row.item.streamer">
                     {{ $gettext('Live Streamer:') }}
@@ -95,6 +98,7 @@ import { toRefs } from "@vueuse/core";
 import { computed, nextTick, ref, useTemplateRef, watch } from "vue";
 import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
+import PlaylistSourceBadge from "~/components/Stations/Common/PlaylistSourceBadge.vue";
 import { QueryKeys, queryKeyWithStation } from "~/entities/Queries.ts";
 import { useApiItemProvider } from "~/functions/dataTable/useApiItemProvider.ts";
 import { useApiRouter } from "~/functions/useApiRouter.ts";

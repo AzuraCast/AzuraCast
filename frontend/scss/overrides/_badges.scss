@@ -1,9 +1,7 @@
-.badges {
-  & > * {
-    margin-right: .25rem;
-  }
+@use "sass:map";
 
-  & > *:last-child {
-    margin-right: 0;
-  }
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: map.get($spacers, 1);
 }

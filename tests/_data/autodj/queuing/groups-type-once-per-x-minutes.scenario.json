@@ -1,0 +1,38 @@
+{
+  "description": "A top-level Once-Per-30-Minutes group plays, is blocked 10 minutes later, and plays again after 35 minutes.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "once-per-x-minutes-group-gated",
+      "now": "2018-01-15T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "a",
+          "media_ref": "mA",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
+        },
+        {
+          "now": "2018-01-15T12:10:00+00:00",
+          "mode": "none"
+        },
+        {
+          "now": "2018-01-15T12:35:00+00:00",
+          "mode": "exact",
+          "playlist_ref": "a",
+          "media_ref": "mA",
+          "playlist_chain_refs": [
+            "grp",
+            "a"
+          ]
+        }
+      ]
+    }
+  ]
+}

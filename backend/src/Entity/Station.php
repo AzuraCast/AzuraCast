@@ -311,6 +311,13 @@ final class Station implements Stringable, IdentifiableEntityInterface
     public ?int $request_threshold = 15;
 
     #[
+        OA\Property(example: false),
+        ORM\Column,
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
+    public bool $requests_only_via_playlists = false;
+
+    #[
         OA\Property(example: 0),
         ORM\Column(nullable: true, options: ['default' => 0]),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])

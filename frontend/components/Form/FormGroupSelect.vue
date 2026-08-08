@@ -32,6 +32,7 @@
                     v-model="model"
                     :class="fieldClass"
                     :options="options"
+                    :disabled="disabled"
                 />
                 <form-select
                     v-else
@@ -39,6 +40,7 @@
                     v-model="model"
                     :class="fieldClass"
                     :options="options"
+                    :disabled="disabled"
                 />
             </slot>
 
@@ -87,6 +89,7 @@ type FormGroupSelectProps = FormFieldProps<T> &
         description?: string;
         options: NestedFormOptionInput;
         multiple?: boolean;
+        disabled?: boolean;
     };
 
 const props = withDefaults(defineProps<FormGroupSelectProps>(), {
@@ -94,6 +97,7 @@ const props = withDefaults(defineProps<FormGroupSelectProps>(), {
     label: "",
     description: "",
     multiple: false,
+    disabled: false,
 });
 
 const slots = useSlots();

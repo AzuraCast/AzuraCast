@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Api\NowPlaying;
 
 use App\Entity\Api\Song;
+use App\Entity\Enums\PlaylistSources;
 use App\OpenApi;
 use OpenApi\Attributes as OA;
 
@@ -38,6 +39,22 @@ class StationQueue
         example: 'Top 100'
     )]
     public ?string $playlist = null;
+
+    /** @var ?string[] */
+    #[OA\Property(
+        description: 'Names of the playlist group chain the song was picked through if played from a group',
+        type: 'array',
+        items: new OA\Items(type: 'string'),
+        example: ['Main Rotation', 'Rock', 'Rock Hits'],
+        nullable: true
+    )]
+    public ?array $playlist_chain = null;
+
+    #[OA\Property(
+        description: 'The source of the playlist that the song was played from, if available.',
+        nullable: true
+    )]
+    public ?PlaylistSources $playlist_source = null;
 
     #[OA\Property(
         description: 'Indicates whether the song is a listener request.',

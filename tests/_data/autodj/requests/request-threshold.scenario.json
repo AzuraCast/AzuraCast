@@ -1,0 +1,64 @@
+{
+  "description": "A request whose track played within station.request_threshold minutes is skipped, so rotation plays; once the last play falls outside the threshold window the request is queued.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "recently-played-request-skipped",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ],
+        "queue_history": [
+          {
+            "media_ref": "mReq",
+            "timestamp_played": "2018-01-15T11:55:00+00:00",
+            "is_visible": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "playlist_ref": "rot",
+          "media_ref": "mRot",
+          "playlist_chain_refs": [],
+          "from_request": false
+        }
+      ]
+    },
+    {
+      "name": "outside-threshold-request-allowed",
+      "now": "2018-01-15T12:00:00+00:00",
+      "runtime": {
+        "requests": [
+          {
+            "media_ref": "mReq",
+            "skip_delay": true
+          }
+        ],
+        "queue_history": [
+          {
+            "media_ref": "mReq",
+            "timestamp_played": "2018-01-15T11:40:00+00:00",
+            "is_visible": true
+          }
+        ]
+      },
+      "expect_sequence": [
+        {
+          "mode": "exact",
+          "media_ref": "mReq",
+          "playlist_chain_refs": [],
+          "from_request": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "description": "A sequential group whose first member (A) is a shuffle playlist with play_full_cycle=true and 3 tracks. The group holds A for one complete shuffled permutation (every track exactly once, in some order) before advancing to member B, then repeats.",
+  "modes": [
+    "in_memory",
+    "integration"
+  ],
+  "cases": [
+    {
+      "name": "shuffle-member-plays-full-permutation-then-advances",
+      "now": "2018-01-15T12:00:00+00:00",
+      "expect_sequence": [
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "a1",
+            "a2",
+            "a3"
+          ],
+          "distinct": true
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "a1",
+            "a2",
+            "a3"
+          ],
+          "distinct": true
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "a1",
+            "a2",
+            "a3"
+          ],
+          "distinct": true
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "b",
+          "media_ref": "b1",
+          "playlist_chain_refs": [
+            "grp",
+            "b"
+          ]
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "a1",
+            "a2",
+            "a3"
+          ],
+          "distinct": true
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "a1",
+            "a2",
+            "a3"
+          ],
+          "distinct": true
+        },
+        {
+          "mode": "membership",
+          "media_any_of": [
+            "a1",
+            "a2",
+            "a3"
+          ],
+          "distinct": true
+        },
+        {
+          "mode": "exact",
+          "playlist_ref": "b",
+          "media_ref": "b1",
+          "playlist_chain_refs": [
+            "grp",
+            "b"
+          ]
+        }
+      ]
+    }
+  ]
+}

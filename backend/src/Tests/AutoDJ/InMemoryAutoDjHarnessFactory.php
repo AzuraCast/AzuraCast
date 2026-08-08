@@ -17,8 +17,10 @@ use App\Radio\AutoDJ\DuplicatePrevention;
 use App\Radio\AutoDJ\QueueBuilder;
 use App\Radio\AutoDJ\Scheduler;
 use App\Tests\AutoDJ\Scenario\ScenarioRuntime;
+use App\Utilities\UserUrlFilter;
 use Carbon\CarbonImmutable;
 use DateTimeImmutable;
+use GuzzleHttp\Client;
 use Mockery;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
@@ -68,7 +70,9 @@ final class InMemoryAutoDjHarnessFactory
             $spRepo,
             $spmRepo,
             $requestRepo,
-            $queueRepo
+            $queueRepo,
+            new UserUrlFilter(),
+            new Client()
         );
         $queueBuilder->setEntityManager($entityManager);
         $queueBuilder->setLogger($logger);

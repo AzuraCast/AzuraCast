@@ -41,7 +41,7 @@
         </div>
 
         <section
-            v-show="form.source === 'songs'"
+            v-if="form.source === 'songs'"
             class="card mb-3"
             role="region"
         >
@@ -191,7 +191,7 @@
         </section>
 
         <section
-            v-show="form.source === 'playlists'"
+            v-if="form.source === 'playlists'"
             class="card mb-3"
             role="region"
         >
@@ -305,7 +305,7 @@
         </section>
 
         <section
-            v-show="form.source === 'remote_url'"
+            v-if="form.source === 'remote_url'"
             class="card mb-3"
             role="region"
         >
@@ -347,7 +347,7 @@
             </div>
         </section>
         <section
-            v-show="form.source === 'requests'"
+            v-if="form.source === 'requests'"
             class="card mb-3"
             role="region"
         >

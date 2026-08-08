@@ -13,6 +13,7 @@
             <form-schedule v-model:schedule-items="form.schedule_items" />
             <playlist-link-list-tab
                 v-if="isEditMode && form.source === PlaylistSources.Playlists"
+                tab-id="playlist_members"
                 :label="$gettext('Members')"
                 :description="$gettext('This playlist group contains the following member playlists:')"
                 empty-id="no_playlist_members"
@@ -149,6 +150,12 @@ const onNavigateToPlaylist = async (
     $tabs.value?.selectTab("basic_info");
 };
 
+const editMembers = async (recordUrl: string): Promise<void> => {
+    await edit(recordUrl);
+
+    $tabs.value?.selectTab("playlist_members");
+};
+
 const editMemberships = async (recordUrl: string): Promise<void> => {
     await edit(recordUrl);
 
@@ -164,6 +171,7 @@ const langTitle = computed(() => {
 defineExpose({
     create,
     edit,
+    editMembers,
     editMemberships,
     close,
 });

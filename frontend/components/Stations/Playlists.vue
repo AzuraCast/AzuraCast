@@ -178,7 +178,17 @@
                                     ({{ formatLength(row.item.total_length) }})
                                 </template>
                                 <template v-else-if="row.item.source === 'playlists'">
-                                    {{ row.item.playlists.length }}
+                                    <button
+                                        v-if="row.item.playlists.length > 0"
+                                        type="button"
+                                        class="btn btn-link"
+                                        @click="doShowMembers(row.item.links.self)"
+                                    >
+                                        {{ row.item.playlists.length }}
+                                    </button>
+                                    <template v-else>
+                                        {{ row.item.playlists.length }}
+                                    </template>
                                 </template>
                                 <template v-else>
                                     &nbsp;
@@ -466,6 +476,10 @@ const relist = () => {
 
 const $editModal = useTemplateRef("$editModal");
 const { doCreate, doEdit } = useHasEditModal($editModal);
+
+const doShowMembers = (url: string) => {
+    $editModal.value?.editMembers(url);
+};
 
 const doShowMemberships = (url: string) => {
     $editModal.value?.editMemberships(url);

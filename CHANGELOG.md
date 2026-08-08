@@ -22,6 +22,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Fixed a bug preventing users from changing their password on the accounts page.
+
 ---
 
 # AzuraCast 0.23.7 (Jul 7, 2026)

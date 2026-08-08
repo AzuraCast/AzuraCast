@@ -53,6 +53,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
             location ~ ^({$listenBaseUrlForRegex}|/radio/{$port})/(.*)\$ {
                 include proxy_params;
+                chunked_transfer_encoding off;
 
                 proxy_intercept_errors    on;
                 proxy_next_upstream       error timeout invalid_header;

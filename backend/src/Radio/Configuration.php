@@ -77,7 +77,7 @@ final class Configuration
 
         $this->em->flush();
 
-        $this->spmRepo->resetAllQueues($station);
+        $this->spmRepo->resetAllQueues($station, includeSequential: false);
     }
 
     /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Entity\Interfaces\SongInterface;
+use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
@@ -214,6 +215,8 @@ final class StationQueueRepository extends AbstractStationBasedRepository
 
     public function clearUnplayed(?Station $station = null): void
     {
+        $this->restoreSequentialPlaylistMediaFromUnplayedQueues($station);
+
         $qb = $this->em->createQueryBuilder()
             ->delete(StationQueue::class, 'sq')
             ->where('sq.is_played = 0');
@@ -224,6 +227,46 @@ final class StationQueueRepository extends AbstractStationBasedRepository
         }
 
         $qb->getQuery()->execute();
+    }
+
+    private function restoreSequentialPlaylistMediaFromUnplayedQueues(?Station $station = null): void
+    {
+        $qb = $this->em->createQueryBuilder()
+            ->select('sq, sp, sm')
+            ->from(StationQueue::class, 'sq')
+            ->join('sq.playlist', 'sp')
+            ->join('sq.media', 'sm')
+            ->where('sq.is_played = 0')
+            ->andWhere('sp.order = :sequential')
+            ->setParameter('sequential', PlaylistOrders::Sequential);
+
+        if (null !== $station) {
+            $qb->andWhere('sq.station = :station')
+                ->setParameter('station', $station);
+        }
+
+        $restorePlaylistMediaQuery = $this->em->createQuery(
+            <<<'DQL'
+                UPDATE App\Entity\StationPlaylistMedia spm
+                SET spm.is_queued = 1
+                WHERE spm.playlist = :playlist
+                AND spm.media = :media
+            DQL
+        );
+
+        /** @var StationQueue $queueRow */
+        foreach ($qb->getQuery()->toIterable() as $queueRow) {
+            $playlist = $queueRow->playlist;
+            $media = $queueRow->media;
+
+            if (!$playlist instanceof StationPlaylist || !$media instanceof StationMedia) {
+                continue;
+            }
+
+            $restorePlaylistMediaQuery->setParameter('playlist', $playlist)
+                ->setParameter('media', $media)
+                ->execute();
+        }
     }
 
     public function cleanup(int $daysToKeep): void

@@ -12,6 +12,7 @@ use App\Utilities\Types;
 use App\Utilities\Urls;
 use App\Utilities\UserUrlFilter;
 use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 
 /*
  * https://discordapp.com/developers/docs/resources/webhook#execute-webhook
@@ -165,10 +166,11 @@ final class Discord extends AbstractConnector
             'POST',
             $webhookUrl,
             [
-                'headers' => [
+                RequestOptions::ALLOW_REDIRECTS => false,
+                RequestOptions::HEADERS => [
                     'Content-Type' => 'application/json',
                 ],
-                'json' => $webhookBody,
+                RequestOptions::JSON => $webhookBody,
             ]
         );
 
